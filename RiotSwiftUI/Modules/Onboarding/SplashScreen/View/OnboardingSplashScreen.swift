@@ -70,7 +70,7 @@ struct OnboardingSplashScreen: View {
                 
                 buttons
                     .padding(.horizontal, 16)
-                    .frame(maxWidth: OnboardingCoordinator.maxContentWidth)
+                    .frame(maxWidth: OnboardingConstants.maxContentWidth)
                 Spacer()
             }
             .background(ViewFrameReader(frame: $overlayFrame))
@@ -195,6 +195,5 @@ struct OnboardingSplashScreen_Previews: PreviewProvider {
     static let stateRenderer = MockOnboardingSplashScreenScreenState.stateRenderer
     static var previews: some View {
         stateRenderer.screenGroup()
-//            .environment(\.layoutDirection, .rightToLeft)
     }
 }

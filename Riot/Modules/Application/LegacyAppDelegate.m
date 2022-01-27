@@ -1773,7 +1773,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         else
         {
             [_masterTabBarController showOnboardingFlow];
-            [_masterTabBarController.onboardingCoordinatorBridgePresenter showCustomHomeserver:homeserver andIdentityServer:identityServer];
+            [_masterTabBarController.onboardingCoordinatorBridgePresenter updateHomeserver:homeserver andIdentityServer:identityServer];
         }
 
         return YES;

@@ -43,6 +43,21 @@ enum OnboardingSplashScreenViewModelResult {
 
 @available(iOS 13.0, *)
 struct OnboardingSplashScreenViewState: BindableState, CustomDebugStringConvertible {
+    
+    // MARK: - Constants
+    
+    private enum Constants {
+        static let gradientColors = [
+            Color(red: 0.95, green: 0.98, blue: 0.96),
+            Color(red: 0.89, green: 0.96, blue: 0.97),
+            Color(red: 0.95, green: 0.89, blue: 0.97),
+            Color(red: 0.81, green: 0.95, blue: 0.91),
+            Color(red: 0.95, green: 0.98, blue: 0.96)
+        ]
+    }
+    
+    // MARK: - Properties
+    
     /// An array containing all content of the carousel pages
     let content: [OnboardingSplashScreenPageContent]
     var bindings: OnboardingSplashScreenBindings
@@ -62,34 +77,22 @@ struct OnboardingSplashScreenViewState: BindableState, CustomDebugStringConverti
                                               message: VectorL10n.onboardingSplashPage1Message,
                                               image: Asset.Images.onboardingSplashScreenPage1,
                                               darkImage: Asset.Images.onboardingSplashScreenPage1Dark,
-                                              gradient: Gradient(colors: [
-                                                Color(red: 0.95, green: 0.98, blue: 0.96),
-                                                Color(red: 0.89, green: 0.96, blue: 0.97)
-                                              ])),
+                                              gradient: Gradient(colors: [Constants.gradientColors[0], Constants.gradientColors[1]])),
             OnboardingSplashScreenPageContent(title: VectorL10n.onboardingSplashPage2Title,
                                               message: VectorL10n.onboardingSplashPage2Message,
                                               image: Asset.Images.onboardingSplashScreenPage2,
                                               darkImage: Asset.Images.onboardingSplashScreenPage2Dark,
-                                              gradient: Gradient(colors: [
-                                                Color(red: 0.89, green: 0.96, blue: 0.97),
-                                                Color(red: 0.95, green: 0.89, blue: 0.97)
-                                              ])),
+                                              gradient: Gradient(colors: [Constants.gradientColors[1], Constants.gradientColors[2]])),
             OnboardingSplashScreenPageContent(title: VectorL10n.onboardingSplashPage3Title,
                                               message: VectorL10n.onboardingSplashPage3Message,
                                               image: Asset.Images.onboardingSplashScreenPage3,
                                               darkImage: Asset.Images.onboardingSplashScreenPage3Dark,
-                                              gradient: Gradient(colors: [
-                                                Color(red: 0.95, green: 0.89, blue: 0.97),
-                                                Color(red: 0.81, green: 0.95, blue: 0.91)
-                                              ])),
+                                              gradient: Gradient(colors: [Constants.gradientColors[2], Constants.gradientColors[3]])),
             OnboardingSplashScreenPageContent(title: page4Title,
                                               message: VectorL10n.onboardingSplashPage4Message,
                                               image: Asset.Images.onboardingSplashScreenPage4,
                                               darkImage: Asset.Images.onboardingSplashScreenPage4Dark,
-                                              gradient: Gradient(colors: [
-                                                Color(red: 0.81, green: 0.95, blue: 0.91),
-                                                Color(red: 0.95, green: 0.98, blue: 0.96)
-                                              ])),
+                                              gradient: Gradient(colors: [Constants.gradientColors[3], Constants.gradientColors[4]])),
         ]
         self.bindings = OnboardingSplashScreenBindings()
     }

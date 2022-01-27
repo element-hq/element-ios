@@ -14,19 +14,18 @@
 // limitations under the License.
 //
 
-import Foundation
-import UIKit
 import SwiftUI
 
-struct OnboardingSplashScreenCoordinatorParameters { }
+protocol OnboardingSplashScreenCoordinatorProtocol: Coordinator, Presentable {
+    var completion: ((OnboardingSplashScreenViewModelResult) -> Void)? { get set }
+}
 
-final class OnboardingSplashScreenCoordinator: Coordinator, Presentable {
+final class OnboardingSplashScreenCoordinator: OnboardingSplashScreenCoordinatorProtocol {
     
     // MARK: - Properties
     
     // MARK: Private
     
-    private let parameters: OnboardingSplashScreenCoordinatorParameters
     private let onboardingSplashScreenHostingController: UIViewController
     private var onboardingSplashScreenViewModel: OnboardingSplashScreenViewModelProtocol
     
@@ -39,8 +38,7 @@ final class OnboardingSplashScreenCoordinator: Coordinator, Presentable {
     // MARK: - Setup
     
     @available(iOS 14.0, *)
-    init(parameters: OnboardingSplashScreenCoordinatorParameters) {
-        self.parameters = parameters
+    init() {
         let viewModel = OnboardingSplashScreenViewModel()
         let view = OnboardingSplashScreen(viewModel: viewModel.context)
         onboardingSplashScreenViewModel = viewModel

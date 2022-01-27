@@ -85,7 +85,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     }
     
     /// Set up the authentication screen with the specified homeserver and/or identity server.
-    func showCustomHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?) {
+    func updateHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?) {
         authenticationViewController.showCustomHomeserver(homeserver, andIdentityServer: identityServer)
     }
     

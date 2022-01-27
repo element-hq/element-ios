@@ -109,8 +109,8 @@ final class OnboardingCoordinatorBridgePresenter: NSObject {
     }
     
     /// Set up the authentication screen with the specified homeserver and/or identity server.
-    func showCustomHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?) {
-        coordinator?.showCustomHomeserver(homeserver, andIdentityServer: identityServer)
+    func updateHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?) {
+        coordinator?.updateHomeserver(homeserver, andIdentityServer: identityServer)
     }
     
     /// When SSO login succeeded, when SFSafariViewController is used, continue login with success parameters.

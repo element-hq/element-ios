@@ -30,15 +30,11 @@ struct OnboardingSplashScreenPage: View {
     /// The height of the non-scrollable content in the splash screen.
     let overlayHeight: CGFloat
     
-    var isDarkModeEnabled: Bool {
-        theme.identifier != .light
-    }
-    
     // MARK: - Views
     
     @ViewBuilder
     var backgroundGradient: some View {
-        if !isDarkModeEnabled {
+        if !theme.isDark {
             LinearGradient(gradient: content.gradient, startPoint: .leading, endPoint: .trailing)
                 .flipsForRightToLeftLayoutDirection(true)
         }
@@ -47,7 +43,7 @@ struct OnboardingSplashScreenPage: View {
     var body: some View {
         VStack {
             VStack {
-                Image(isDarkModeEnabled ? content.darkImage.name : content.image.name)
+                Image(theme.isDark ? content.darkImage.name : content.image.name)
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: 300)
@@ -70,8 +66,8 @@ struct OnboardingSplashScreenPage: View {
                 Spacer().frame(maxHeight: overlayHeight)
             }
             .padding(.horizontal, 16)
-            .frame(maxWidth: OnboardingCoordinator.maxContentWidth,
-                   maxHeight: OnboardingCoordinator.maxContentHeight)
+            .frame(maxWidth: OnboardingConstants.maxContentWidth,
+                   maxHeight: OnboardingConstants.maxContentHeight)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(backgroundGradient.ignoresSafeArea())

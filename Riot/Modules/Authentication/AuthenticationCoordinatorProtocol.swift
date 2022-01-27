@@ -18,7 +18,17 @@
 
 import Foundation
 
-/// `AuthenticationCoordinatorProtocol` is a protocol describing a Coordinator that handle xxxxxxx navigation flow.
+/// `AuthenticationCoordinatorProtocol` is a protocol describing a Coordinator that handle's the authentication navigation flow.
 protocol AuthenticationCoordinatorProtocol: Coordinator, Presentable {
-    #warning("Can this be removed?")
+    var completion: (() -> Void)? { get set }
+    
+    /// Force a registration process based on a predefined set of parameters from a server provisioning link.
+    /// For more information see `AuthenticationViewController.externalRegistrationParameters`.
+    func update(externalRegistrationParameters: [AnyHashable: Any])
+    
+    /// Set up the authentication screen with the specified homeserver and/or identity server.
+    func updateHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?)
+    
+    /// When SSO login succeeded, when SFSafariViewController is used, continue login with success parameters.
+    func continueSSOLogin(withToken loginToken: String, transactionID: String) -> Bool
 }

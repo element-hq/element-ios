@@ -35,11 +35,7 @@ struct OnboardingCoordinatorParameters {
 
 @objcMembers
 /// A coordinator to manage the full onboarding flow with pre-auth screens, authentication and setup screens once signed in.
-final class OnboardingCoordinator: NSObject, Coordinator, Presentable {
-    
-    // MARK: - Constants
-    static let maxContentWidth: CGFloat = 600
-    static let maxContentHeight: CGFloat = 750
+final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     
     // MARK: - Properties
     
@@ -58,7 +54,7 @@ final class OnboardingCoordinator: NSObject, Coordinator, Presentable {
         parameters.router
     }
     private var splashScreenResult: OnboardingSplashScreenViewModelResult?
-    private weak var authenticationCoordinator: AuthenticationCoordinator?
+    private weak var authenticationCoordinator: AuthenticationCoordinatorProtocol?
     
     // MARK: Public
 
@@ -97,10 +93,10 @@ final class OnboardingCoordinator: NSObject, Coordinator, Presentable {
     }
     
     /// Set up the authentication screen with the specified homeserver and/or identity server.
-    func showCustomHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?) {
+    func updateHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?) {
         self.customHomeserver = homeserver
         self.customIdentityServer = identityServer
-        authenticationCoordinator?.showCustomHomeserver(homeserver, andIdentityServer: identityServer)
+        authenticationCoordinator?.updateHomeserver(homeserver, andIdentityServer: identityServer)
     }
     
     /// When SSO login succeeded, when SFSafariViewController is used, continue login with success parameters.
@@ -114,8 +110,7 @@ final class OnboardingCoordinator: NSObject, Coordinator, Presentable {
     @available(iOS 14.0, *)
     /// Show the onboarding splash screen as the root module in the flow.
     private func showSplashScreen() {
-        let coordinatorParameters = OnboardingSplashScreenCoordinatorParameters()
-        let coordinator = OnboardingSplashScreenCoordinator(parameters: coordinatorParameters)
+        let coordinator = OnboardingSplashScreenCoordinator()
         coordinator.completion = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
             self.splashScreenCoordinator(coordinator, didCompleteWith: result)
@@ -159,7 +154,7 @@ final class OnboardingCoordinator: NSObject, Coordinator, Presentable {
         authenticationCoordinator = coordinator
         
         if customHomeserver != nil || customIdentityServer != nil {
-            coordinator.showCustomHomeserver(customHomeserver, andIdentityServer: customIdentityServer)
+            coordinator.updateHomeserver(customHomeserver, andIdentityServer: customIdentityServer)
         }
         
         if self.navigationRouter.modules.isEmpty {
