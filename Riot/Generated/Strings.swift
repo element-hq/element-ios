@@ -1599,6 +1599,46 @@ public class VectorL10n: NSObject {
   public static var groupSection: String { 
     return VectorL10n.tr("Vector", "group_section") 
   }
+  /// Favourite
+  public static var homeContextMenuFavourite: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_favourite") 
+  }
+  /// Leave
+  public static var homeContextMenuLeave: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_leave") 
+  }
+  /// Low priority
+  public static var homeContextMenuLowPriority: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_low_priority") 
+  }
+  /// Move to People
+  public static var homeContextMenuMakeDm: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_make_dm") 
+  }
+  /// Move to Rooms
+  public static var homeContextMenuMakeRoom: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_make_room") 
+  }
+  /// Mute
+  public static var homeContextMenuMute: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_mute") 
+  }
+  /// Normal priority
+  public static var homeContextMenuNormalPriority: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_normal_priority") 
+  }
+  /// Notifications
+  public static var homeContextMenuNotifications: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_notifications") 
+  }
+  /// Remove from Favourites
+  public static var homeContextMenuUnfavourite: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_unfavourite") 
+  }
+  /// Unmute
+  public static var homeContextMenuUnmute: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_unmute") 
+  }
   /// The all-in-one secure chat app for teams, friends and organisations. Tap the + button below to add people and rooms.
   public static var homeEmptyViewInformation: String { 
     return VectorL10n.tr("Vector", "home_empty_view_information") 
