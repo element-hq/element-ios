@@ -684,7 +684,7 @@
         MXWeakify(self);
         
         BOOL isDirect = room.isDirect;
-        UIAction *directChatAction = [UIAction actionWithTitle:isDirect ? @"Room" : @"Direct Chat"
+        UIAction *directChatAction = [UIAction actionWithTitle:isDirect ? VectorL10n.homeContextMenuMakeRoom : VectorL10n.homeContextMenuMakeDm
                                                          image:[UIImage systemImageNamed:isDirect ? @"person.crop.circle.badge.xmark" : @"person.circle"]
                                                     identifier:nil
                                                        handler:^(__kindof UIAction * _Nonnull action) {
@@ -697,12 +697,12 @@
         NSString *notificationsTitle;
         if ([BuildSettings showNotificationsV2])
         {
-            notificationsTitle = @"Notifications";
+            notificationsTitle = VectorL10n.homeContextMenuNotifications;
             notificationsImage = [UIImage systemImageNamed:@"bell"];
         }
         else
         {
-            notificationsTitle = isMuted ? @"Un-mute" : @"Mute";
+            notificationsTitle = isMuted ? VectorL10n.homeContextMenuUnmute : VectorL10n.homeContextMenuMute;
             notificationsImage = [UIImage systemImageNamed:isMuted ? @"bell.slash": @"bell"];
         }
         
@@ -727,7 +727,7 @@
         }
         
         BOOL isFavourite = (currentTag && [kMXRoomTagFavourite isEqualToString:currentTag.name]);
-        UIAction *favouriteAction = [UIAction actionWithTitle:isFavourite ? @"Un-favourite" : @"Favourite"
+        UIAction *favouriteAction = [UIAction actionWithTitle:isFavourite ? VectorL10n.homeContextMenuUnfavourite : VectorL10n.homeContextMenuFavourite
                                                         image:[UIImage systemImageNamed:isFavourite ? @"star.slash" : @"star"]
                                                    identifier:nil
                                                       handler:^(__kindof UIAction * _Nonnull action) {
@@ -737,7 +737,7 @@
         
         BOOL isLowPriority = (currentTag && [kMXRoomTagLowPriority isEqualToString:currentTag.name]);
         UIImage *lowPriorityImage = [UIImage systemImageNamed:isLowPriority ? @"arrow.up" : @"arrow.down"];
-        UIAction *lowPriorityAction = [UIAction actionWithTitle:isLowPriority ? @"Normal Priority" : @"Low Priority"
+        UIAction *lowPriorityAction = [UIAction actionWithTitle:isLowPriority ? VectorL10n.homeContextMenuNormalPriority : VectorL10n.homeContextMenuLowPriority
                                                           image:lowPriorityImage
                                                      identifier:nil
                                                         handler:^(__kindof UIAction * _Nonnull action) {
@@ -745,8 +745,17 @@
             [self updateRoomWithId:roomId asLowPriority:!isLowPriority];
         }];
         
-        UIAction *leaveAction = [UIAction actionWithTitle:@"Leave"
-                                                    image:[UIImage systemImageNamed:@"rectangle.righthalf.inset.filled.arrow.right"]
+        UIImage *leaveImage;
+        if (@available(iOS 14.0, *))
+        {
+            leaveImage = [UIImage systemImageNamed:@"rectangle.righthalf.inset.fill.arrow.right"];
+        }
+        else
+        {
+            leaveImage = [UIImage systemImageNamed:@"rectangle.xmark"];
+        }
+        UIAction *leaveAction = [UIAction actionWithTitle:VectorL10n.homeContextMenuLeave
+                                                    image:leaveImage
                                                identifier:nil
                                                   handler:^(__kindof UIAction * _Nonnull action) {
             MXStrongifyAndReturnIfNil(self);
