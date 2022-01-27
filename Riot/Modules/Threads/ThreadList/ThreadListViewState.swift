@@ -23,10 +23,10 @@ enum ThreadListViewState {
     case idle
     case loading
     case loaded
-    case empty(_ viewModel: ThreadListEmptyViewModel)
+    case empty(_ viewModel: ThreadListEmptyModel)
     case showingFilterTypes
-    case showingLongPressActions
-    case share(_ string: String)
+    case showingLongPressActions(_ index: Int)
+    case share(_ url: URL, _ index: Int)
     case toastForCopyLink
     case error(Error)
 }

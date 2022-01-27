@@ -118,14 +118,14 @@
 @protocol RoomDataSourceDelegate <MXKDataSourceDelegate>
 
 /**
- Called when the room's encryption trust level did updated.
+ Called when the room's encryption trust level did update.
  
  @param roomDataSource room data source instance
  */
 - (void)roomDataSourceDidUpdateEncryptionTrustLevel:(RoomDataSource * _Nonnull)roomDataSource;
 
 /**
- Called when a thread summary view
+ Called when a thread summary view is tapped.
  
  @param roomDataSource room data source instance
  */

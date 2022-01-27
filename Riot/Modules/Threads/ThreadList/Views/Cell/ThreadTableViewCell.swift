@@ -40,10 +40,7 @@ class ThreadTableViewCell: UITableViewCell {
     @IBOutlet private weak var summaryView: ThreadSummaryView!
     @IBOutlet private weak var notificationStatusView: ThreadNotificationStatusView!
     
-    private static var usernameColorGenerator: UserNameColorGenerator = {
-        let generator = UserNameColorGenerator()
-        return generator
-    }()
+    private static var usernameColorGenerator = UserNameColorGenerator()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -51,26 +48,26 @@ class ThreadTableViewCell: UITableViewCell {
         separatorInset = Constants.separatorInset
     }
     
-    func configure(withViewModel viewModel: ThreadViewModel) {
-        if let rootAvatar = viewModel.rootMessageSenderAvatar {
+    func configure(withModel model: ThreadModel) {
+        if let rootAvatar = model.rootMessageSenderAvatar {
             rootMessageAvatarView.fill(with: rootAvatar)
         } else {
             rootMessageAvatarView.avatarImageView.image = nil
         }
-        configuredSenderId = viewModel.rootMessageSenderUserId
-        configuredRootMessageRedacted = viewModel.rootMessageRedacted
+        configuredSenderId = model.rootMessageSenderUserId
+        configuredRootMessageRedacted = model.rootMessageRedacted
         updateRootMessageSenderColor()
-        rootMessageSenderLabel.text = viewModel.rootMessageSenderDisplayName
-        if let rootMessageText = viewModel.rootMessageText {
+        rootMessageSenderLabel.text = model.rootMessageSenderDisplayName
+        if let rootMessageText = model.rootMessageText {
             updateRootMessageContentAttributes(rootMessageText, color: rootMessageColor)
         } else {
             rootMessageContentLabel.attributedText = nil
         }
-        lastMessageTimeLabel.text = viewModel.lastMessageTime
-        if let summaryViewModel = viewModel.summaryViewModel {
-            summaryView.configure(withViewModel: summaryViewModel)
+        lastMessageTimeLabel.text = model.lastMessageTime
+        if let summaryModel = model.summaryModel {
+            summaryView.configure(withModel: summaryModel)
         }
-        notificationStatusView.status = viewModel.notificationStatus
+        notificationStatusView.status = model.notificationStatus
     }
 
     private func updateRootMessageSenderColor() {

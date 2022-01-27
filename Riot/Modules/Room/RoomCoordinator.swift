@@ -134,7 +134,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         self.selectedEventId = eventId
         
         if self.hasStartedOnce {
-            self.roomViewController.highlightEvent(eventId, completion: completion)
+            self.roomViewController.highlightAndDisplayEvent(eventId, completion: completion)
         } else {
             self.start(withCompletion: completion)
         }

@@ -54,7 +54,12 @@ final class ThreadsCoordinator: NSObject, ThreadsCoordinatorProtocol {
     
     func start() {
 
-        let rootCoordinator = self.createThreadListCoordinator()
+        let rootCoordinator: Coordinator & Presentable
+        if let threadId = parameters.threadId {
+            rootCoordinator = createThreadCoordinator(forThreadId: threadId)
+        } else {
+            rootCoordinator = createThreadListCoordinator()
+        }
         
         rootCoordinator.start()
 
@@ -77,6 +82,10 @@ final class ThreadsCoordinator: NSObject, ThreadsCoordinatorProtocol {
     func stop() {
         if selectedThreadCoordinator != nil {
             let modules = self.navigationRouter.modules
+            //  if a thread is selected from the thread list coordinator, then navigation stack will look like:
+            //  ... -> Screen A -> Thread List Screen -> Thread Screen
+            //  we'll try to pop to Screen A here
+            //  sanity check: navigation stack contains at least 3 items
             guard modules.count >= 3 else {
                 return
             }
@@ -116,13 +125,13 @@ final class ThreadsCoordinator: NSObject, ThreadsCoordinatorProtocol {
         return coordinator
     }
     
-    private func createThreadCoordinator(forThread thread: MXThread) -> RoomCoordinator {
+    private func createThreadCoordinator(forThreadId threadId: String) -> RoomCoordinator {
         let parameters = RoomCoordinatorParameters(navigationRouter: navigationRouter,
                                                    navigationRouterStore: nil,
                                                    session: parameters.session,
                                                    roomId: parameters.roomId,
                                                    eventId: nil,
-                                                   threadId: thread.id,
+                                                   threadId: threadId,
                                                    displayConfiguration: .forThreads)
         let coordinator = RoomCoordinator(parameters: parameters)
         coordinator.delegate = self
@@ -145,7 +154,7 @@ extension ThreadsCoordinator: ThreadListCoordinatorDelegate {
     }
     
     func threadListCoordinatorDidSelectThread(_ coordinator: ThreadListCoordinatorProtocol, thread: MXThread) {
-        let roomCoordinator = createThreadCoordinator(forThread: thread)
+        let roomCoordinator = createThreadCoordinator(forThreadId: thread.id)
         selectedThreadCoordinator = roomCoordinator
         roomCoordinator.start()
         self.add(childCoordinator: roomCoordinator)

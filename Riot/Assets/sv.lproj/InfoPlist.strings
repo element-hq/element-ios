@@ -5,3 +5,4 @@
 "NSMicrophoneUsageDescription" = "Element behöver åtkomst till din mikrofon för att kunna ringa och ta emot samtal samt spela in video och röstmeddelanden.";
 "NSContactsUsageDescription" = "Element kommer att visa dina kontakter så du kan bjuda in dem att chatta.";
 "NSFaceIDUsageDescription" = "Face ID används för att komma åt appen.";
+"NSLocationWhenInUseUsageDescription" = "När du delar din plats med folk så behöver Element åtkomst för att visa dem en karta.";

@@ -395,58 +395,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private func showRoom(withNavigationParameters roomNavigationParameters: RoomNavigationParameters, completion: (() -> Void)?) {
         
         if let threadParameters = roomNavigationParameters.threadParameters, threadParameters.stackRoomScreen {
-            self.activityIndicatorPresenter.presentActivityIndicator(on: toPresentable().view, animated: false)
-            let dispatchGroup = DispatchGroup()
-            
-            //  create room coordinator
-            let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
-                                                                      session: roomNavigationParameters.mxSession,
-                                                                      roomId: roomNavigationParameters.roomId,
-                                                                      eventId: nil,
-                                                                      threadId: nil)
-            
-            dispatchGroup.enter()
-            let roomCoordinator = RoomCoordinator(parameters: roomCoordinatorParameters)
-            roomCoordinator.delegate = self
-            roomCoordinator.start {
-                dispatchGroup.leave()
-            }
-            self.add(childCoordinator: roomCoordinator)
-            
-            //  create thread coordinator
-            let threadCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
-                                                                        session: roomNavigationParameters.mxSession,
-                                                                        roomId: roomNavigationParameters.roomId,
-                                                                        eventId: roomNavigationParameters.eventId,
-                                                                        threadId: roomNavigationParameters.threadParameters?.threadId,
-                                                                        displayConfiguration: .forThreads)
-            
-            dispatchGroup.enter()
-            let threadCoordinator = RoomCoordinator(parameters: threadCoordinatorParameters)
-            threadCoordinator.delegate = self
-            threadCoordinator.start {
-                dispatchGroup.leave()
-            }
-            self.add(childCoordinator: threadCoordinator)
-            
-            dispatchGroup.notify(queue: .main) { [weak self] in
-                guard let self = self else { return }
-                let modules: [PresentableModule] = [
-                    PresentableModule(presentable: roomCoordinator, popCompletion: { [weak self] in
-                        // NOTE: The RoomDataSource releasing is handled in SplitViewCoordinator
-                        self?.remove(childCoordinator: roomCoordinator)
-                    }),
-                    PresentableModule(presentable: threadCoordinator, popCompletion: { [weak self] in
-                        // NOTE: The RoomDataSource releasing is handled in SplitViewCoordinator
-                        self?.remove(childCoordinator: threadCoordinator)
-                    })
-                ]
-                
-                self.showSplitViewDetails(with: modules,
-                                          stack: roomNavigationParameters.presentationParameters.stackAboveVisibleViews)
-                
-                self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
-            }
+            showRoomAndThread(with: roomNavigationParameters,
+                              completion: completion)
         } else {
             let threadId = roomNavigationParameters.threadParameters?.threadId
             let displayConfig: RoomDisplayConfiguration
@@ -531,6 +481,62 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             self?.remove(childCoordinator: coordinator)
         }
     }
+
+    private func showRoomAndThread(with roomNavigationParameters: RoomNavigationParameters,
+                                   completion: (() -> Void)? = nil) {
+        self.activityIndicatorPresenter.presentActivityIndicator(on: toPresentable().view, animated: false)
+        let dispatchGroup = DispatchGroup()
+
+        //  create room coordinator
+        let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
+                                                                  session: roomNavigationParameters.mxSession,
+                                                                  roomId: roomNavigationParameters.roomId,
+                                                                  eventId: nil,
+                                                                  threadId: nil)
+
+        dispatchGroup.enter()
+        let roomCoordinator = RoomCoordinator(parameters: roomCoordinatorParameters)
+        roomCoordinator.delegate = self
+        roomCoordinator.start {
+            dispatchGroup.leave()
+        }
+        self.add(childCoordinator: roomCoordinator)
+
+        //  create thread coordinator
+        let threadCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
+                                                                    session: roomNavigationParameters.mxSession,
+                                                                    roomId: roomNavigationParameters.roomId,
+                                                                    eventId: roomNavigationParameters.eventId,
+                                                                    threadId: roomNavigationParameters.threadParameters?.threadId,
+                                                                    displayConfiguration: .forThreads)
+
+        dispatchGroup.enter()
+        let threadCoordinator = RoomCoordinator(parameters: threadCoordinatorParameters)
+        threadCoordinator.delegate = self
+        threadCoordinator.start {
+            dispatchGroup.leave()
+        }
+        self.add(childCoordinator: threadCoordinator)
+
+        dispatchGroup.notify(queue: .main) { [weak self] in
+            guard let self = self else { return }
+            let modules: [NavigationModule] = [
+                NavigationModule(presentable: roomCoordinator, popCompletion: { [weak self] in
+                    // NOTE: The RoomDataSource releasing is handled in SplitViewCoordinator
+                    self?.remove(childCoordinator: roomCoordinator)
+                }),
+                NavigationModule(presentable: threadCoordinator, popCompletion: { [weak self] in
+                    // NOTE: The RoomDataSource releasing is handled in SplitViewCoordinator
+                    self?.remove(childCoordinator: threadCoordinator)
+                })
+            ]
+
+            self.showSplitViewDetails(with: modules,
+                                      stack: roomNavigationParameters.presentationParameters.stackAboveVisibleViews)
+
+            self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+        }
+    }
     
     // MARK: Split view
     
@@ -553,7 +559,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         }
     }
     
-    private func showSplitViewDetails(with modules: [PresentableModule], stack: Bool) {
+    private func showSplitViewDetails(with modules: [NavigationModule], stack: Bool) {
         if stack {
             self.splitViewMasterPresentableDelegate?.splitViewMasterPresentable(self, wantsToStack: modules)
         } else {

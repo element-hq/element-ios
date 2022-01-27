@@ -875,7 +875,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
                                                                                     eventId:nil
                                                                                   mxSession:matrixSession
-                                                                 threadParameters:nil
+                                                                           threadParameters:nil
                                                                      presentationParameters:presentationParameters];
     
     [[AppDelegate theDelegate] showRoomWithParameters:parameters completion:^{
@@ -1025,6 +1025,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     if (!cellReloaded)
     {
         [super dataSource:dataSource didCellChange:changes];
+    }
+    else
+    {
+        // Since we've enabled room list pagination, `refreshRecentsTable` not called in this case.
+        // Refresh tab bar badges separately.
+        [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
     }
     
     if (changes == nil)

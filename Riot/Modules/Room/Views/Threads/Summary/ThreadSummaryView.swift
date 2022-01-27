@@ -38,7 +38,7 @@ class ThreadSummaryView: UIView {
     @IBOutlet private weak var lastMessageContentLabel: UILabel!
     
     private var theme: Theme = ThemeService.shared().theme
-    private(set) var thread: MXThread!
+    private(set) var thread: MXThread?
     
     private lazy var tapGestureRecognizer: UITapGestureRecognizer = {
         return UITapGestureRecognizer(target: self, action: #selector(tapped(_:)))
@@ -56,9 +56,10 @@ class ThreadSummaryView: UIView {
         loadNibContent()
         update(theme: ThemeService.shared().theme)
         configure()
+        translatesAutoresizingMaskIntoConstraints = false
     }
     
-    static func contentViewHeight(forThread thread: MXThread, fitting maxWidth: CGFloat) -> CGFloat {
+    static func contentViewHeight(forThread thread: MXThread?, fitting maxWidth: CGFloat) -> CGFloat {
         return RoomBubbleCellLayout.threadSummaryViewHeight
     }
     
@@ -67,14 +68,14 @@ class ThreadSummaryView: UIView {
         loadNibContent()
     }
     
-    @nonobjc func configure(withViewModel viewModel: ThreadSummaryViewModel) {
-        numberOfRepliesLabel.text = String(viewModel.numberOfReplies)
-        if let avatar = viewModel.lastMessageSenderAvatar {
+    @nonobjc func configure(withModel model: ThreadSummaryModel) {
+        numberOfRepliesLabel.text = String(model.numberOfReplies)
+        if let avatar = model.lastMessageSenderAvatar {
             lastMessageAvatarView.fill(with: avatar)
         } else {
             lastMessageAvatarView.avatarImageView.image = nil
         }
-        if let lastMessage = viewModel.lastMessageText {
+        if let lastMessage = model.lastMessageText {
             let mutable = NSMutableAttributedString(attributedString: lastMessage)
             mutable.setAttributes([
                 .font: Constants.lastMessageFont
@@ -116,10 +117,10 @@ class ThreadSummaryView: UIView {
                                                                   with: roomState,
                                                                   error: formatterError)
             
-            let viewModel = ThreadSummaryViewModel(numberOfReplies: thread.numberOfReplies,
-                                                   lastMessageSenderAvatar: avatarViewData,
-                                                   lastMessageText: lastMessageText)
-            self.configure(withViewModel: viewModel)
+            let model = ThreadSummaryModel(numberOfReplies: thread.numberOfReplies,
+                                           lastMessageSenderAvatar: avatarViewData,
+                                           lastMessageText: lastMessageText)
+            self.configure(withModel: model)
         }
     }
     
@@ -131,8 +132,6 @@ class ThreadSummaryView: UIView {
         delegate?.threadSummaryViewTapped(self)
     }
 }
-
-// extension ThreadSummaryView: NibLoadable {}
 
 extension ThreadSummaryView: NibOwnerLoadable {}
 

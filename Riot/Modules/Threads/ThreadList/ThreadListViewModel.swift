@@ -92,14 +92,14 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         return threads.count
     }
     
-    func threadViewModel(at index: Int) -> ThreadViewModel? {
+    func threadModel(at index: Int) -> ThreadModel? {
         guard index < threads.count else {
             return nil
         }
-        return viewModel(forThread: threads[index])
+        return model(forThread: threads[index])
     }
     
-    var titleViewModel: ThreadRoomTitleViewModel {
+    var titleModel: ThreadRoomTitleModel {
         guard let room = session.room(withRoomId: roomId) else {
             return .empty
         }
@@ -118,33 +118,33 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
             encrpytionBadge = nil
         }
         
-        return ThreadRoomTitleViewModel(roomAvatar: avatarViewData,
-                                        roomEncryptionBadge: encrpytionBadge,
-                                        roomDisplayName: room.displayName)
+        return ThreadRoomTitleModel(roomAvatar: avatarViewData,
+                                    roomEncryptionBadge: encrpytionBadge,
+                                    roomDisplayName: room.displayName)
     }
     
-    private var emptyViewModel: ThreadListEmptyViewModel {
+    private var emptyViewModel: ThreadListEmptyModel {
         switch selectedFilterType {
         case .all:
-            return ThreadListEmptyViewModel(icon: Asset.Images.threadsIcon.image,
-                                            title: VectorL10n.threadsEmptyTitle,
-                                            info: VectorL10n.threadsEmptyInfoAll,
-                                            tip: VectorL10n.threadsEmptyTip,
-                                            showAllThreadsButtonTitle: VectorL10n.threadsEmptyShowAllThreads,
-                                            showAllThreadsButtonHidden: true)
+            return ThreadListEmptyModel(icon: Asset.Images.threadsIcon.image,
+                                        title: VectorL10n.threadsEmptyTitle,
+                                        info: VectorL10n.threadsEmptyInfoAll,
+                                        tip: VectorL10n.threadsEmptyTip,
+                                        showAllThreadsButtonTitle: VectorL10n.threadsEmptyShowAllThreads,
+                                        showAllThreadsButtonHidden: true)
         case .myThreads:
-            return ThreadListEmptyViewModel(icon: Asset.Images.threadsIcon.image,
-                                            title: VectorL10n.threadsEmptyTitle,
-                                            info: VectorL10n.threadsEmptyInfoMy,
-                                            tip: nil,
-                                            showAllThreadsButtonTitle: VectorL10n.threadsEmptyShowAllThreads,
-                                            showAllThreadsButtonHidden: false)
+            return ThreadListEmptyModel(icon: Asset.Images.threadsIcon.image,
+                                        title: VectorL10n.threadsEmptyTitle,
+                                        info: VectorL10n.threadsEmptyInfoMy,
+                                        tip: nil,
+                                        showAllThreadsButtonTitle: VectorL10n.threadsEmptyShowAllThreads,
+                                        showAllThreadsButtonHidden: false)
         }
     }
     
     // MARK: - Private
     
-    private func viewModel(forThread thread: MXThread) -> ThreadViewModel {
+    private func model(forThread thread: MXThread) -> ThreadModel {
         let rootAvatarViewData: AvatarViewData?
         let rootMessageSender: MXUser?
         let lastAvatarViewData: AvatarViewData?
@@ -184,19 +184,19 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
             lastAvatarViewData = nil
             lastMessageSender = nil
         }
-        
-        let summaryViewModel = ThreadSummaryViewModel(numberOfReplies: thread.numberOfReplies,
-                                                      lastMessageSenderAvatar: lastAvatarViewData,
-                                                      lastMessageText: lastMessageText)
-        
-        return ThreadViewModel(rootMessageSenderUserId: rootMessageSender?.userId,
-                               rootMessageSenderAvatar: rootAvatarViewData,
-                               rootMessageSenderDisplayName: rootMessageSender?.displayname,
-                               rootMessageText: rootMessageText,
-                               rootMessageRedacted: thread.rootMessage?.isRedactedEvent() ?? false,
-                               lastMessageTime: lastMessageTime,
-                               summaryViewModel: summaryViewModel,
-                               notificationStatus: notificationStatus)
+
+        let summaryModel = ThreadSummaryModel(numberOfReplies: thread.numberOfReplies,
+                                              lastMessageSenderAvatar: lastAvatarViewData,
+                                              lastMessageText: lastMessageText)
+
+        return ThreadModel(rootMessageSenderUserId: rootMessageSender?.userId,
+                           rootMessageSenderAvatar: rootAvatarViewData,
+                           rootMessageSenderDisplayName: rootMessageSender?.displayname,
+                           rootMessageText: rootMessageText,
+                           rootMessageRedacted: thread.rootMessage?.isRedactedEvent() ?? false,
+                           lastMessageTime: lastMessageTime,
+                           summaryModel: summaryModel,
+                           notificationStatus: notificationStatus)
     }
     
     private func rootMessageText(forThread thread: MXThread) -> NSAttributedString? {
@@ -298,7 +298,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
             return
         }
         longPressedThread = threads[index]
-        viewState = .showingLongPressActions
+        viewState = .showingLongPressActions(index)
     }
     
     private func actionViewInRoom() {
@@ -313,19 +313,22 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         guard let thread = longPressedThread else {
             return
         }
-        if let permalink = MXTools.permalink(toEvent: thread.id, inRoom: thread.roomId) {
-            MXKPasteboardManager.shared.pasteboard.string = permalink
+        if let permalink = MXTools.permalink(toEvent: thread.id, inRoom: thread.roomId),
+           let url = URL(string: permalink) {
+            MXKPasteboardManager.shared.pasteboard.url = url
             viewState = .toastForCopyLink
         }
         longPressedThread = nil
     }
     
     private func actionShare() {
-        guard let thread = longPressedThread else {
+        guard let thread = longPressedThread,
+              let index = threads.firstIndex(of: thread) else {
             return
         }
-        if let permalink = MXTools.permalink(toEvent: thread.id, inRoom: thread.roomId) {
-            viewState = .share(permalink)
+        if let permalink = MXTools.permalink(toEvent: thread.id, inRoom: thread.roomId),
+           let url = URL(string: permalink) {
+            viewState = .share(url, index)
         }
         longPressedThread = nil
     }

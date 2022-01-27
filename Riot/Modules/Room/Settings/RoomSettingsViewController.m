@@ -1041,10 +1041,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 // Create a matrix.to permalink to the room
                 
                 NSString *permalink = [MXTools permalinkToRoom:roomAliasLabel.text];
-                
-                if (permalink)
+                NSURL *url = [NSURL URLWithString:permalink];
+
+                if (url)
                 {
-                    MXKPasteboardManager.shared.pasteboard.string = permalink;
+                    MXKPasteboardManager.shared.pasteboard.URL = url;
                     [self.view vc_toastWithMessage:VectorL10n.roomEventCopyLinkInfo
                                              image:[UIImage imageNamed:@"link_icon"]
                                           duration:2.0

@@ -478,3 +478,4 @@
 "attachment_unsupported_preview_message" = "Den här filtypen stöds inte.";
 "attachment_unsupported_preview_title" = "Kunde inte förhandsgranska";
 "room_displayname_all_other_members_left" = "%@ (Kvar)";
+"message_reply_to_sender_sent_their_location" = "har delat sin plats.";

@@ -45,6 +45,7 @@ final class ThreadsCoordinatorBridgePresenter: NSObject {
     
     private let session: MXSession
     private let roomId: String
+    private let threadId: String?
     private var navigationType: NavigationType = .present
     private var coordinator: ThreadsCoordinator?
     
@@ -53,11 +54,18 @@ final class ThreadsCoordinatorBridgePresenter: NSObject {
     weak var delegate: ThreadsCoordinatorBridgePresenterDelegate?
     
     // MARK: - Setup
-    
+
+    /// Initializer
+    /// - Parameters:
+    ///   - session: Session instance
+    ///   - roomId: Room identifier
+    ///   - threadId: Thread identifier. Specified thread will be opened if provided, the thread list otherwise
     init(session: MXSession,
-         roomId: String) {
+         roomId: String,
+         threadId: String?) {
         self.session = session
         self.roomId = roomId
+        self.threadId = threadId
         super.init()
     }
     
@@ -71,7 +79,8 @@ final class ThreadsCoordinatorBridgePresenter: NSObject {
     func present(from viewController: UIViewController, animated: Bool) {
         
         let threadsCoordinatorParameters = ThreadsCoordinatorParameters(session: self.session,
-                                                                        roomId: self.roomId)
+                                                                        roomId: self.roomId,
+                                                                        threadId: self.threadId)
         
         let threadsCoordinator = ThreadsCoordinator(parameters: threadsCoordinatorParameters)
         threadsCoordinator.delegate = self
@@ -89,6 +98,7 @@ final class ThreadsCoordinatorBridgePresenter: NSObject {
         
         let threadsCoordinatorParameters = ThreadsCoordinatorParameters(session: self.session,
                                                                         roomId: self.roomId,
+                                                                        threadId: self.threadId,
                                                                         navigationRouter: navigationRouter)
         
         let threadsCoordinator = ThreadsCoordinator(parameters: threadsCoordinatorParameters)

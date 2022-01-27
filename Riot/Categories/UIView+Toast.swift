@@ -232,7 +232,7 @@ private class ToastView: UIView, Themable {
     
     private lazy var messageLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 15)
+        label.font = ThemeService.shared().theme.fonts.body
         label.backgroundColor = .clear
         label.numberOfLines = 0
         label.textAlignment = .left
@@ -305,6 +305,7 @@ private class ToastView: UIView, Themable {
         backgroundColor = theme.colors.quinaryContent
         imageView.tintColor = theme.colors.tertiaryContent
         messageLabel.textColor = theme.colors.primaryContent
+        messageLabel.font = theme.fonts.body
     }
     
 }

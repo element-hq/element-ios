@@ -3898,6 +3898,13 @@ TableViewSectionsDelegate>
 - (void)toggleEnableRoomMessageBubbles:(UISwitch *)sender
 {
     RiotSettings.shared.roomScreenEnableMessageBubbles = sender.isOn;
+            
+    [[RoomTimelineConfiguration shared] updateStyleWithIdentifier:RiotSettings.shared.roomTimelineStyleIdentifier];
+    
+    // Close all room data sources
+    // Be sure to use new room timeline style configurations
+    MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
+    [roomDataSourceManager reset];
 }
 
 #pragma mark - TextField listener

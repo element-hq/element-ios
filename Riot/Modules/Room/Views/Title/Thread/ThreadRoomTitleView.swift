@@ -38,15 +38,15 @@ class ThreadRoomTitleView: RoomTitleView {
     
     //  MARK: - Methods
     
-    func configure(withViewModel viewModel: ThreadRoomTitleViewModel) {
-        if let avatarViewData = viewModel.roomAvatar {
+    func configure(withModel model: ThreadRoomTitleModel) {
+        if let avatarViewData = model.roomAvatar {
             roomAvatarView.fill(with: avatarViewData)
         } else {
             roomAvatarView.avatarImageView.image = nil
         }
-        roomEncryptionBadgeView.image = viewModel.roomEncryptionBadge
-        roomEncryptionBadgeView.isHidden = viewModel.roomEncryptionBadge == nil
-        roomNameLabel.text = viewModel.roomDisplayName
+        roomEncryptionBadgeView.image = model.roomEncryptionBadge
+        roomEncryptionBadgeView.isHidden = model.roomEncryptionBadge == nil
+        roomNameLabel.text = model.roomDisplayName
     }
     
     //  MARK: - Overrides
@@ -81,10 +81,10 @@ class ThreadRoomTitleView: RoomTitleView {
             encrpytionBadge = nil
         }
         
-        let viewModel = ThreadRoomTitleViewModel(roomAvatar: avatarViewData,
-                                                 roomEncryptionBadge: encrpytionBadge,
-                                                 roomDisplayName: room.displayName)
-        configure(withViewModel: viewModel)
+        let model = ThreadRoomTitleModel(roomAvatar: avatarViewData,
+                                         roomEncryptionBadge: encrpytionBadge,
+                                         roomDisplayName: room.displayName)
+        configure(withModel: model)
     }
     
     override func awakeFromNib() {

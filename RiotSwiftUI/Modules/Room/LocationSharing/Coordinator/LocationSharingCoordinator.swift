@@ -17,7 +17,6 @@
 import Foundation
 import UIKit
 import SwiftUI
-import Keys
 
 struct LocationSharingCoordinatorParameters {
     let roomDataSource: MXKRoomDataSource

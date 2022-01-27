@@ -20,12 +20,6 @@ import UIKit
 
 final class ThreadListViewController: UIViewController {
     
-    // MARK: - Constants
-    
-    private enum Constants {
-        static let aConstant: Int = 666
-    }
-    
     // MARK: - Properties
     
     // MARK: Outlets
@@ -125,7 +119,7 @@ final class ThreadListViewController: UIViewController {
     private func setupViews() {
         let titleView = ThreadRoomTitleView.loadFromNib()
         titleView.mode = .allThreads
-        titleView.configure(withViewModel: viewModel.titleViewModel)
+        titleView.configure(withModel: viewModel.titleModel)
         titleView.updateLayout(for: UIApplication.shared.statusBarOrientation)
         self.titleView = titleView
         navigationItem.leftItemsSupplementBackButton = true
@@ -150,14 +144,14 @@ final class ThreadListViewController: UIViewController {
             renderLoading()
         case .loaded:
             renderLoaded()
-        case .empty(let viewModel):
-            renderEmptyView(withViewModel: viewModel)
+        case .empty(let model):
+            renderEmptyView(withModel: model)
         case .showingFilterTypes:
             renderShowingFilterTypes()
-        case .showingLongPressActions:
-            renderShowingLongPressActions()
-        case .share(let string):
-            renderShare(string)
+        case .showingLongPressActions(let index):
+            renderShowingLongPressActions(index)
+        case .share(let url, let index):
+            renderShare(url, index: index)
         case .toastForCopyLink:
             toastForCopyLink()
         case .error(let error):
@@ -184,9 +178,9 @@ final class ThreadListViewController: UIViewController {
         }
     }
     
-    private func renderEmptyView(withViewModel emptyViewModel: ThreadListEmptyViewModel) {
+    private func renderEmptyView(withModel model: ThreadListEmptyModel) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        emptyView.configure(withViewModel: emptyViewModel)
+        emptyView.configure(withModel: model)
         threadsTableView.isHidden = true
         emptyView.isHidden = false
         navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectedFilterType == .myThreads
@@ -232,7 +226,7 @@ final class ThreadListViewController: UIViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
-    private func renderShowingLongPressActions() {
+    private func renderShowingLongPressActions(_ index: Int) {
         let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         controller.addAction(UIAlertAction(title: VectorL10n.roomEventActionViewInRoom,
@@ -259,14 +253,25 @@ final class ThreadListViewController: UIViewController {
         controller.addAction(UIAlertAction(title: VectorL10n.cancel,
                                            style: .cancel,
                                            handler: nil))
-        
+
+        if let cell = threadsTableView.cellForRow(at: IndexPath(row: index, section: 0)) {
+            controller.popoverPresentationController?.sourceView = cell
+        } else {
+            controller.popoverPresentationController?.sourceView = view
+        }
+
         self.present(controller, animated: true, completion: nil)
     }
     
-    private func renderShare(_ string: String) {
-        let activityVC = UIActivityViewController(activityItems: [string],
+    private func renderShare(_ url: URL, index: Int) {
+        let activityVC = UIActivityViewController(activityItems: [url],
                                                   applicationActivities: nil)
         activityVC.modalTransitionStyle = .coverVertical
+        if let cell = threadsTableView.cellForRow(at: IndexPath(row: index, section: 0)) {
+            activityVC.popoverPresentationController?.sourceView = cell
+        } else {
+            activityVC.popoverPresentationController?.sourceView = view
+        }
         present(activityVC, animated: true, completion: nil)
     }
     
@@ -327,8 +332,8 @@ extension ThreadListViewController: UITableViewDataSource {
         let cell: ThreadTableViewCell = tableView.dequeueReusableCell(for: indexPath)
         
         cell.update(theme: theme)
-        if let threadVM = viewModel.threadViewModel(at: indexPath.row) {
-            cell.configure(withViewModel: threadVM)
+        if let threadModel = viewModel.threadModel(at: indexPath.row) {
+            cell.configure(withModel: threadModel)
         }
         
         return cell

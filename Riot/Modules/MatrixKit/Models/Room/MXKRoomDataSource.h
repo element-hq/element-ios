@@ -274,7 +274,7 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
 
  @param roomId the id of the room to get data from.
  @param initialEventId the id of the event where to start the timeline.
- @param threadId the id of the thread to load.
+ @param threadId the id of the thread to load. If provided, thread data source will be loaded from the room specified with `roomId`.
  @param mxSession the Matrix session to get data from.
  @param onComplete a block providing the newly created instance.
  */
@@ -316,7 +316,7 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
 
  @param roomId the id of the room to get data from.
  @param initialEventId the id of the event where to start the timeline.
- @param threadId the id of the thread to initialize.
+ @param threadId the id of the thread to initialize. If provided, thread data source will be initialized from the room specified with `roomId`.
  @param mxSession the Matrix session to get data from.
  @return the newly created instance.
  */

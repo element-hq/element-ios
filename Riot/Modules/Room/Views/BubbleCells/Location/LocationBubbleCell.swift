@@ -37,11 +37,17 @@ class LocationBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplayable 
         
         let location = CLLocationCoordinate2D(latitude: locationContent.latitude, longitude: locationContent.longitude)
         
-        locationView.displayLocation(location,
-                                     userIdentifier: bubbleData.senderId,
-                                     userDisplayName: bubbleData.senderDisplayName,
-                                     userAvatarURLString: bubbleData.senderAvatarUrl,
-                                     mediaManager: bubbleData.mxSession.mediaManager)
+        if locationContent.assetType == .user {
+            let avatarViewData = AvatarViewData(matrixItemId: bubbleData.senderId,
+                                                displayName: bubbleData.senderDisplayName,
+                                                avatarUrl: bubbleData.senderAvatarUrl,
+                                                mediaManager: bubbleData.mxSession.mediaManager,
+                                                fallbackImage: .matrixItem(bubbleData.senderId, bubbleData.senderDisplayName))
+            
+            locationView.displayLocation(location, userAvatarData: avatarViewData)
+        } else {
+            locationView.displayLocation(location)
+        }
     }
     
     override func setupViews() {

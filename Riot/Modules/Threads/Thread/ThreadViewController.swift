@@ -113,11 +113,11 @@ class ThreadViewController: RoomViewController {
     }
     
     private func copyPermalink() {
-        guard let permalink = permalink else {
+        guard let permalink = permalink, let url = URL(string: permalink) else {
             return
         }
         
-        MXKPasteboardManager.shared.pasteboard.string = permalink
+        MXKPasteboardManager.shared.pasteboard.url = url
         view.vc_toast(message: VectorL10n.roomEventCopyLinkInfo,
                       image: Asset.Images.linkIcon.image,
                       additionalMargin: self.roomInputToolbarContainerHeightConstraint.constant)
