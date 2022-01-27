@@ -527,8 +527,8 @@
 "deactivate_account_validate_action" = "Konto deaktiveren";
 "deactivate_account_password_alert_title" = "Konto deaktivieren";
 "deactivate_account_password_alert_message" = "Zum Fortfahren, Passwort eingeben";
-"event_formatter_rerequest_keys_part1_link" = "Verschlüsselungsschlüssel neu anfordern";
-"event_formatter_rerequest_keys_part2" = " von deinen anderen Sitzungen anfragen.";
+"event_formatter_rerequest_keys_part1_link" = "Verschlüsselungsschlüssel erneut von deinen anderen Sitzungen anfordern";
+"event_formatter_rerequest_keys_part2" = " .";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Anfrage gesendet";
 "rerequest_keys_alert_message" = "Bitte %@ auf einem anderen Gerät öffenen, das die Nachricht entschlüsseln kann, damit es die Schlüssel an diese Sitzung senden kann.";
@@ -1596,3 +1596,9 @@
 // Onboarding
 "onboarding_splash_register_button_title" = "Konto erstellen";
 "settings_enable_room_message_bubbles" = "Nachrichtenblasen";
+"poll_edit_form_update_failure_subtitle" = "Bitte erneut versuchen";
+"poll_edit_form_poll_type" = "Umfragetyp";
+"poll_edit_form_poll_type_closed_description" = "Ergebnisse werden erst angezeigt, wenn du die Umfrage beendest";
+"poll_edit_form_poll_type_closed" = "Geschlossene Umfrage";
+"poll_edit_form_poll_type_open_description" = "Ergebnisse werden direkt nach Stimmabgabe angezeigt";
+"poll_edit_form_poll_type_open" = "Offene Umfrage";
