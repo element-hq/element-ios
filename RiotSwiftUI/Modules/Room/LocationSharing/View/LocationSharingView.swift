@@ -32,7 +32,7 @@ struct LocationSharingView: View {
     
     var body: some View {
         NavigationView {
-            LocationSharingMapView(tileServerMapURL: context.viewState.tileServerMapURL,
+            LocationSharingMapView(tileServerMapURL: context.viewState.mapStyleURL,
                                    avatarData: context.viewState.avatarData,
                                    location: context.viewState.location,
                                    errorSubject: context.viewState.errorSubject,

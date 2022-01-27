@@ -47,7 +47,7 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
     init(parameters: LocationSharingCoordinatorParameters) {
         self.parameters = parameters
         
-        let viewModel = LocationSharingViewModel(tileServerMapURL: BuildSettings.tileServerMapURL,
+        let viewModel = LocationSharingViewModel(mapStyleURL: BuildSettings.tileServerMapStyleURL,
                                                  avatarData: parameters.avatarData,
                                                  location: parameters.location)
         let view = LocationSharingView(context: viewModel.context)
