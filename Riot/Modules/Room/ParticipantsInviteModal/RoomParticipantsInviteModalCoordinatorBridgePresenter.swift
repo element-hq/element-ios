@@ -105,42 +105,32 @@ final class RoomParticipantsInviteCoordinatorBridgePresenter: NSObject {
              image: UIImage? = nil,
              room: MXRoom,
              accessoryImage: UIImage? = Asset.Images.chevron.image,
-             enabled: Bool) {
+             enabled: Bool = true) {
             self.room = room
             super.init(title: title, detail: detail, image: image, accessoryImage: accessoryImage, enabled: enabled)
         }
     }
     
     private func presentRoomSelector(between room: MXRoom, and spaceRoom: MXRoom) {
-        canInvite(to: room) { [weak self] canInviteToRoom in
-            guard let self = self else { return }
-            
-            self.canInvite(to: spaceRoom) { [weak self] canInviteToSpace in
-                guard let self = self else { return }
-                
-                let roomName = room.displayName ?? ""
-                let spaceName = spaceRoom.displayName ?? ""
-                
-                self.roomOptions = [
-                    RoomOptionListItemViewData(title: VectorL10n.roomInviteToSpaceOptionTitle(spaceName),
-                                               detail: canInviteToSpace ? VectorL10n.roomInviteToSpaceOptionDetail(spaceName, roomName) : VectorL10n.spaceInviteNotEnoughPermission,
-                                               image: Asset.Images.addParticipants.image, room: spaceRoom,
-                                               accessoryImage: canInviteToSpace ? Asset.Images.chevron.image : nil,
-                                               enabled: canInviteToSpace),
-                    RoomOptionListItemViewData(title: VectorL10n.roomInviteToRoomOptionTitle,
-                                               detail: canInviteToRoom ? VectorL10n.roomInviteToRoomOptionDetail(spaceName) : VectorL10n.roomInviteNotEnoughPermission,
-                                               image: Asset.Images.addParticipants.image, room: room,
-                                               accessoryImage: canInviteToRoom ? Asset.Images.chevron.image : nil,
-                                               enabled: canInviteToRoom)
-                ]
-                
-                let coordinator = OptionListCoordinator(parameters: OptionListCoordinatorParameters(title: VectorL10n.roomIntroCellAddParticipantsAction, options: self.roomOptions, navigationRouter: self.navigationRouter))
-                coordinator.delegate = self
-                coordinator.start()
-                
-                self.optionListCoordinator = coordinator
-            }
-        }
+        let roomName = room.displayName ?? ""
+        let spaceName = spaceRoom.displayName ?? ""
+        
+        self.roomOptions = [
+            RoomOptionListItemViewData(title: VectorL10n.roomInviteToSpaceOptionTitle(spaceName),
+                                       detail: VectorL10n.roomInviteToSpaceOptionDetail(spaceName, roomName),
+                                       image: Asset.Images.addParticipants.image, room: spaceRoom,
+                                       accessoryImage: Asset.Images.chevron.image),
+            RoomOptionListItemViewData(title: VectorL10n.roomInviteToRoomOptionTitle,
+                                       detail: VectorL10n.roomInviteToRoomOptionDetail(spaceName),
+                                       image: Asset.Images.addParticipants.image, room: room,
+                                       accessoryImage: Asset.Images.chevron.image)
+        ]
+        
+        let coordinator = OptionListCoordinator(parameters: OptionListCoordinatorParameters(title: VectorL10n.roomIntroCellAddParticipantsAction, options: self.roomOptions, navigationRouter: self.navigationRouter))
+        coordinator.delegate = self
+        coordinator.start()
+        
+        self.optionListCoordinator = coordinator
     }
     
     private func pushContactsPicker(for room: MXRoom) {
