@@ -68,7 +68,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     if (event.isRedactedEvent)
     {
         // Check whether the event is a thread root or redacted information is required
-        if ([mxSession.threadingService isEventThreadRoot:event]
+        if ((RiotSettings.shared.enableThreads && [mxSession.threadingService isEventThreadRoot:event])
             || self.settings.showRedactionsInRoomHistory)
         {
             UIFont *font = self.defaultTextFont;
