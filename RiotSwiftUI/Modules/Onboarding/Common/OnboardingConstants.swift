@@ -14,13 +14,10 @@
 // limitations under the License.
 //
 
-import Foundation
-import DesignKit
+import CoreGraphics
 
-@available(iOS 14.0, *)
-struct DefaultThemeSwiftUI: ThemeSwiftUI {
-    var identifier: ThemeIdentifier = .light
-    let isDark: Bool = false
-    var colors: ColorSwiftUI = LightColors.swiftUI
-    var fonts: FontSwiftUI = FontSwiftUI(values: ElementFonts())
+/// Constants used across the entire onboarding flow.
+struct OnboardingConstants {
+    static let maxContentWidth: CGFloat = 600
+    static let maxContentHeight: CGFloat = 750
 }
