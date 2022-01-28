@@ -31,24 +31,12 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
         
         // If cell contains a bubble background, add the timestamp inside of it
         if let bubbleBackgroundView = cell.messageBubbleBackgroundView, bubbleBackgroundView.isHidden == false, let timestampLabel = self.createTimestampLabel(for: cellData) {
-
-            timestampLabel.translatesAutoresizingMaskIntoConstraints = false
-
-            cell.addTemporarySubview(timestampLabel)
-
-            bubbleBackgroundView.addSubview(timestampLabel)
-
-            let rightMargin: CGFloat = 8.0
-            let bottomMargin: CGFloat = 4.0
-
-            let trailingConstraint = timestampLabel.trailingAnchor.constraint(equalTo: bubbleBackgroundView.trailingAnchor, constant: -rightMargin)
-
-            let bottomConstraint = timestampLabel.bottomAnchor.constraint(equalTo: bubbleBackgroundView.bottomAnchor, constant: -bottomMargin)
-
-            NSLayoutConstraint.activate([
-                trailingConstraint,
-                bottomConstraint
-            ])
+            
+            self.addTimestampLabel(timestampLabel,
+                                   to: cell,
+                                   on: bubbleBackgroundView,
+                                   constrainingView: bubbleBackgroundView)
+            
         } else if cellData.isAttachmentWithThumbnail {
                                                  
             if cellData.attachment?.type == .sticker {
@@ -56,28 +44,23 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
             } else if let attachmentView = cell.attachmentView, let timestampLabel = self.createTimestampLabel(for: cellData, textColor: self.theme.baseIconPrimaryColor) {
                 // For media with thumbnail cells, add timestamp inside thumbnail
                 
-                timestampLabel.translatesAutoresizingMaskIntoConstraints = false
-
-                cell.addTemporarySubview(timestampLabel)
+                self.addTimestampLabel(timestampLabel,
+                                       to: cell,
+                                       on: cell.contentView,
+                                       constrainingView: attachmentView)
                 
-                let cellContentView = cell.contentView
-                
-                cellContentView.addSubview(timestampLabel)
-
-                let rightMargin: CGFloat = 8.0
-                let bottomMargin: CGFloat = 4.0
-
-                let trailingConstraint = timestampLabel.trailingAnchor.constraint(equalTo: attachmentView.trailingAnchor, constant: -rightMargin)
-
-                let bottomConstraint = timestampLabel.bottomAnchor.constraint(equalTo: attachmentView.bottomAnchor, constant: -bottomMargin)
-
-                NSLayoutConstraint.activate([
-                    trailingConstraint,
-                    bottomConstraint
-                ])
             } else {
                 super.addTimestampLabel(toCell: cell, cellData: cellData)
             }
+        } else if let voiceMessageCell = cell as? VoiceMessageBubbleCell, let playbackView = voiceMessageCell.playbackController?.playbackView, let timestampLabel = self.createTimestampLabel(for: cellData) {
+            
+            // Add timestamp on cell inherting from VoiceMessageBubbleCell
+            
+            self.addTimestampLabel(timestampLabel,
+                                   to: cell,
+                                   on: cell.contentView,
+                                   constrainingView: playbackView)
+            
         } else {
             super.addTimestampLabel(toCell: cell, cellData: cellData)
         }
@@ -200,6 +183,8 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
     
     // MARK: - Private
     
+    // MARK: Timestamp management
+    
     private func createTimestampLabel(cellData: MXKRoomBubbleCellData, bubbleComponent: MXKRoomBubbleComponent, viewTag: Int, textColor: UIColor) -> UILabel {
         
         let timeLabel = UILabel()
@@ -281,5 +266,28 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
         }
         
         return false
+    }
+    
+    private func addTimestampLabel(_ timestampLabel: UILabel,
+                           to cell: MXKRoomBubbleTableViewCell,
+                           on containerView: UIView,
+                           constrainingView: UIView) {
+        timestampLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        cell.addTemporarySubview(timestampLabel)
+                
+        containerView.addSubview(timestampLabel)
+
+        let rightMargin: CGFloat = 8.0
+        let bottomMargin: CGFloat = 4.0
+
+        let trailingConstraint = timestampLabel.trailingAnchor.constraint(equalTo: constrainingView.trailingAnchor, constant: -rightMargin)
+
+        let bottomConstraint = timestampLabel.bottomAnchor.constraint(equalTo: constrainingView.bottomAnchor, constant: -bottomMargin)
+
+        NSLayoutConstraint.activate([
+            trailingConstraint,
+            bottomConstraint
+        ])
     }
 }
