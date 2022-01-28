@@ -74,6 +74,9 @@ class CommonConfiguration: NSObject, Configurable {
         
         // Disable key backup on common
         sdkOptions.enableKeyBackupWhenStartingMXCrypto = false
+
+        // Pass threading option to the SDK
+        sdkOptions.enableThreads = RiotSettings.shared.enableThreads
         
         sdkOptions.clientPermalinkBaseUrl = BuildSettings.clientPermalinkBaseUrl
         // Configure key provider delegate
