@@ -37,64 +37,41 @@
 /**
  The account's credentials: homeserver, access token, user id.
  */
-@property (nonatomic, readonly) MXCredentials *mxCredentials;
+@property (nonatomic, readonly, nonnull) MXCredentials *mxCredentials;
 
 /**
  The identity server URL.
  */
-@property (nonatomic) NSString *identityServerURL;
+@property (nonatomic, nonnull) NSString *identityServerURL;
 
 /**
  The antivirus server URL, if any (nil by default).
  Set a non-null url to configure the antivirus scanner use.
  */
-@property (nonatomic) NSString *antivirusServerURL;
+@property (nonatomic, nullable) NSString *antivirusServerURL;
 
 /**
  The Push Gateway URL used to send event notifications to (nil by default).
  This URL should be over HTTPS and never over HTTP.
  */
-@property (nonatomic) NSString *pushGatewayURL;
+@property (nonatomic, nullable) NSString *pushGatewayURL;
 
 /**
  The 3PIDs linked to this account.
  [self load3PIDs] must be called to update the property.
  */
-@property (nonatomic, readonly) NSArray<MXThirdPartyIdentifier *> *threePIDs;
-
-/**
- The email addresses linked to this account.
- This is a subset of self.threePIDs.
- */
-@property (nonatomic, readonly) NSArray<NSString *> *linkedEmails;
-
-/**
- The phone numbers linked to this account.
- This is a subset of self.threePIDs.
- */
-@property (nonatomic, readonly) NSArray<NSString *> *linkedPhoneNumbers;
+@property (nonatomic, readonly, nullable) NSArray<MXThirdPartyIdentifier *> *threePIDs;
 
 /**
  The account user's device.
  [self loadDeviceInformation] must be called to update the property.
  */
-@property (nonatomic, readonly) MXDevice *device;
-
-/**
- The account user's tint color: a unique color fixed by the user id. This tint color may be used to highlight
- rooms which belong to this account's user.
- */
-@property (nonatomic, readonly) UIColor *userTintColor;
-
-/**
- The Apple Push Notification Service activity for this account. YES when APNS is turned on (locally available and synced with server).
- */
-@property (nonatomic, readonly) BOOL pushNotificationServiceIsActive;
+@property (nonatomic, readonly, nullable) MXDevice *device;
 
 /**
  Transient information storage.
  */
-@property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, id<NSCoding>> *others;
+@property (nonatomic, strong, readonly, nonnull) NSMutableDictionary<NSString *, id<NSCoding>> *others;
 
 /**
  Flag to indicate that an APNS pusher has been set on the homeserver for this device.

@@ -262,11 +262,6 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     }
 }
 
-//- (NSArray<MXThirdPartyIdentifier *> *)threePIDs
-//{
-//    return _threePIDs;
-//}
-
 - (NSArray<NSString *> *)linkedEmails
 {
     NSMutableArray<NSString *> *linkedEmails = [NSMutableArray array];
