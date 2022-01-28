@@ -16,7 +16,12 @@
 
 import Foundation
 
-struct UserSuggestionCoordinatorParameters {
-    let mediaManager: MXMediaManager
-    let room: MXRoom
+protocol TimelinePollViewModelProtocol {
+    @available(iOS 14, *)
+    var context: TimelinePollViewModelType.Context { get }
+    var completion: ((TimelinePollViewModelResult) -> Void)? { get set }
+    
+    func updateWithPollDetails(_ pollDetails: TimelinePollDetails)
+    func showAnsweringFailure()
+    func showClosingFailure()
 }

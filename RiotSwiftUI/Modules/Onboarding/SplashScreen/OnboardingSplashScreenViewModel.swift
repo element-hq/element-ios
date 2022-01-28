@@ -19,7 +19,7 @@ import Combine
 
 @available(iOS 14, *)
 typealias OnboardingSplashScreenViewModelType = StateStoreViewModel<OnboardingSplashScreenViewState,
-                                                                    OnboardingSplashScreenStateAction,
+                                                                    Never,
                                                                     OnboardingSplashScreenViewAction>
 
 protocol OnboardingSplashScreenViewModelProtocol {
@@ -54,29 +54,16 @@ class OnboardingSplashScreenViewModel: OnboardingSplashScreenViewModelType, Onbo
             register()
         case .login:
             login()
-        case .nextPage, .previousPage, .hiddenPage:
-            dispatch(action: .viewAction(viewAction))
+        case .nextPage:
+            // Wrap back round to the first page index when reaching the end.
+            state.bindings.pageIndex = (state.bindings.pageIndex + 1) % state.content.count
+        case .previousPage:
+            // Prevent the hidden page at index -1 from being shown.
+            state.bindings.pageIndex = max(0, (state.bindings.pageIndex - 1))
+        case .hiddenPage:
+            // Hidden page for a nicer animation when looping back to the start.
+            state.bindings.pageIndex = -1
         }
-    }
-
-    override class func reducer(state: inout OnboardingSplashScreenViewState, action: OnboardingSplashScreenStateAction) {
-        switch action {
-        case .viewAction(let viewAction):
-            switch viewAction {
-            case .nextPage:
-                // Wrap back round to the first page index when reaching the end.
-                state.bindings.pageIndex = (state.bindings.pageIndex + 1) % state.content.count
-            case .previousPage:
-                // Prevent the hidden page at index -1 from being shown.
-                state.bindings.pageIndex = max(0, (state.bindings.pageIndex - 1))
-            case .hiddenPage:
-                // Hidden page for a nicer animation when looping back to the start.
-                state.bindings.pageIndex = -1
-            case .login, .register:
-                break
-            }
-        }
-        UILog.debug("[OnboardingSplashScreenViewModel] reducer with action \(action) produced state: \(state)")
     }
 
     private func register() {

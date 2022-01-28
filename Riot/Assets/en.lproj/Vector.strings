@@ -1905,6 +1905,10 @@ Tap the + to start adding people.";
 
 "location_sharing_share_action" = "Share";
 
+"location_sharing_post_failure_title" = "We couldn’t send your location";
+
+"location_sharing_post_failure_subtitle" = "%@ could not send your location. Please try again later.";
+
 "location_sharing_loading_map_error_title" = "%@ could not load the map. Please try again later.";
 
 "location_sharing_locating_user_error_title" = "%@ could not access your location. Please try again later.";

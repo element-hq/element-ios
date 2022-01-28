@@ -16,7 +16,20 @@
 
 import Foundation
 
-@available(iOS 14, *)
+enum UserSuggestionViewAction {
+    case selectedItem(UserSuggestionViewStateItem)
+}
+
 enum UserSuggestionViewModelResult {
     case selectedItemWithIdentifier(String)
+}
+
+struct UserSuggestionViewStateItem: Identifiable {
+    let id: String
+    let avatar: AvatarInputProtocol?
+    let displayName: String?
+}
+
+struct UserSuggestionViewState: BindableState {
+    var items: [UserSuggestionViewStateItem]
 }

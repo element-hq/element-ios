@@ -41,7 +41,7 @@ class LocationSharingUITests: XCTestCase {
         goToScreenWithIdentifier(MockLocationSharingScreenState.displayExistingLocation.title)
         
         XCTAssertTrue(app.buttons["Cancel"].exists)
-        XCTAssertTrue(app.buttons["location share icon"].exists)
+        XCTAssertTrue(app.buttons["LocationSharingView.shareButton"].exists)
         XCTAssertTrue(app.otherElements["Map"].exists)
     }
     

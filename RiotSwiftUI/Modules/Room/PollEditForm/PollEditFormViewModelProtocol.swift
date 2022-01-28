@@ -16,7 +16,15 @@
 
 import Foundation
 
-@available(iOS 14, *)
-enum UserSuggestionViewAction {
-    case selectedItem(UserSuggestionViewStateItem)
+protocol PollEditFormViewModelProtocol {
+    var completion: ((PollEditFormViewModelResult) -> Void)? { get set }
+    
+    func startLoading()
+    func stopLoading(errorAlertType: PollEditFormErrorAlertInfo.AlertType?)
+}
+
+extension PollEditFormViewModelProtocol {
+    func stopLoading() {
+        stopLoading(errorAlertType: nil)
+    }
 }

@@ -35,7 +35,7 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
     private let selectedAnswerIdentifiersSubject = PassthroughSubject<[String], Never>()
     
     private var pollAggregator: PollAggregator
-    private var viewModel: TimelinePollViewModel!
+    private var viewModel: TimelinePollViewModelProtocol!
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: Public
@@ -53,7 +53,7 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
         pollAggregator.delegate = self
         
         viewModel = TimelinePollViewModel(timelinePollDetails: buildTimelinePollFrom(pollAggregator.poll))
-        viewModel.callback = { [weak self] result in
+        viewModel.completion = { [weak self] result in
             guard let self = self else { return }
             
             switch result {
@@ -76,7 +76,7 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
                     
                     MXLog.error("[TimelinePollCoordinator]] Failed submitting response with error \(String(describing: error))")
                     
-                    self.viewModel.dispatch(action: .showAnsweringFailure)
+                    self.viewModel.showAnsweringFailure()
                 }
             }
             .store(in: &cancellables)
@@ -102,14 +102,14 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
     
     func endPoll() {
         parameters.room.sendPollEnd(for: parameters.pollStartEvent, threadId: nil, localEcho: nil, success: nil) { [weak self] error in
-            self?.viewModel.dispatch(action: .showClosingFailure)
+            self?.viewModel.showClosingFailure()
         }
     }
     
     // MARK: - PollAggregatorDelegate
     
     func pollAggregatorDidUpdateData(_ aggregator: PollAggregator) {
-        viewModel.dispatch(action: .updateWithPoll(buildTimelinePollFrom(aggregator.poll)))
+        viewModel.updateWithPollDetails(buildTimelinePollFrom(aggregator.poll))
     }
     
     func pollAggregatorDidStartLoading(_ aggregator: PollAggregator) {

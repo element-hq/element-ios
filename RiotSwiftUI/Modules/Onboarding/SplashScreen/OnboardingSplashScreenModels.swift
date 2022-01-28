@@ -30,10 +30,6 @@ struct OnboardingSplashScreenPageContent {
 
 // MARK: View model
 
-enum OnboardingSplashScreenStateAction {
-    case viewAction(OnboardingSplashScreenViewAction)
-}
-
 enum OnboardingSplashScreenViewModelResult {
     case register
     case login

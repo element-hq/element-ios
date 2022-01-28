@@ -31,12 +31,7 @@ final class PollEditFormCoordinator: Coordinator, Presentable {
     
     private let parameters: PollEditFormCoordinatorParameters
     private let pollEditFormHostingController: UIViewController
-    private var _pollEditFormViewModel: Any? = nil
-    
-    @available(iOS 14.0, *)
-    fileprivate var pollEditFormViewModel: PollEditFormViewModel {
-        return _pollEditFormViewModel as! PollEditFormViewModel
-    }
+    private var pollEditFormViewModel: PollEditFormViewModelProtocol
     
     // MARK: Public
     
@@ -64,7 +59,7 @@ final class PollEditFormCoordinator: Coordinator, Presentable {
         
         let view = PollEditForm(viewModel: viewModel.context)
         
-        _pollEditFormViewModel = viewModel
+        pollEditFormViewModel = viewModel
         pollEditFormHostingController = VectorHostingController(rootView: view)
     }
     
@@ -84,18 +79,18 @@ final class PollEditFormCoordinator: Coordinator, Presentable {
                 
                 let pollStartContent = self.buildPollContentWithDetails(details)
                 
-                self.pollEditFormViewModel.dispatch(action: .startLoading)
+                self.pollEditFormViewModel.startLoading()
                 
                 self.parameters.room.sendPollStart(withContent: pollStartContent, threadId: nil, localEcho: nil) { [weak self] result in
                     guard let self = self else { return }
                     
-                    self.pollEditFormViewModel.dispatch(action: .stopLoading(nil))
+                    self.pollEditFormViewModel.stopLoading()
                     self.completion?()
                 } failure: { [weak self] error in
                     guard let self = self else { return }
                     
                     MXLog.error("Failed creating poll with error: \(String(describing: error))")
-                    self.pollEditFormViewModel.dispatch(action: .stopLoading(.failedCreatingPoll))
+                    self.pollEditFormViewModel.stopLoading(errorAlertType: .failedCreatingPoll)
                 }
                 
             case .update(let details):
@@ -103,10 +98,10 @@ final class PollEditFormCoordinator: Coordinator, Presentable {
                     fatalError()
                 }
                 
-                self.pollEditFormViewModel.dispatch(action: .startLoading)
+                self.pollEditFormViewModel.startLoading()
                 
                 guard let oldPollContent = MXEventContentPollStart(fromJSON: pollStartEvent.content) else {
-                    self.pollEditFormViewModel.dispatch(action: .stopLoading(.failedUpdatingPoll))
+                    self.pollEditFormViewModel.stopLoading(errorAlertType: .failedUpdatingPoll)
                     return
                 }
                 
@@ -117,13 +112,13 @@ final class PollEditFormCoordinator: Coordinator, Presentable {
                                                     newContent: newPollContent, localEcho: nil) { [weak self] result in
                     guard let self = self else { return }
                     
-                    self.pollEditFormViewModel.dispatch(action: .stopLoading(nil))
+                    self.pollEditFormViewModel.stopLoading()
                     self.completion?()
                 } failure: { [weak self] error in
                     guard let self = self else { return }
                     
                     MXLog.error("Failed updating poll with error: \(String(describing: error))")
-                    self.pollEditFormViewModel.dispatch(action: .stopLoading(.failedUpdatingPoll))
+                    self.pollEditFormViewModel.stopLoading(errorAlertType: .failedUpdatingPoll)
                 }   
             }
         }

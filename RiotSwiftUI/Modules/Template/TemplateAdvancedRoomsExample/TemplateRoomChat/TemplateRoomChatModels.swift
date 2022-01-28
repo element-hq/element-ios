@@ -83,13 +83,6 @@ enum TemplateRoomChatRoomInitializationStatus {
     case failedToInitialize
 }
 
-/// Actions to be performed on the `ViewModel` State
-enum TemplateRoomChatStateAction {
-    case updateRoomInitializationStatus(TemplateRoomChatRoomInitializationStatus)
-    case updateBubbles([TemplateRoomChatBubble])
-    case clearMessageInput
-}
-
 /// Actions sent by the `ViewModel` to the `Coordinator`
 enum TemplateRoomChatViewModelAction {
     case done

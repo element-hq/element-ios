@@ -15,16 +15,16 @@
 //
 
 import Foundation
-import Combine
 
-@available(iOS 14.0, *)
-struct UserSuggestionViewStateItem: Identifiable {
-    let id: String
-    let avatar: AvatarInputProtocol?
-    let displayName: String?
+protocol LocationSharingViewModelProtocol {
+    var completion: ((LocationSharingViewModelResult) -> Void)? { get set }
+    
+    func startLoading()
+    func stopLoading(error: LocationSharingErrorAlertInfo.AlertType?)
 }
 
-@available(iOS 14.0, *)
-struct UserSuggestionViewState: BindableState {
-    var items: [UserSuggestionViewStateItem]
+extension LocationSharingViewModelProtocol {
+    func stopLoading() {
+        stopLoading(error: nil)
+    }
 }

@@ -41,11 +41,6 @@ extension TemplateUserProfilePresence: Identifiable, CaseIterable {
 
 // MARK: View model
 
-enum TemplateUserProfileStateAction {
-    case viewAction(TemplateUserProfileViewAction)
-    case updatePresence(TemplateUserProfilePresence)
-}
-
 enum TemplateUserProfileViewModelResult {
     case cancel
     case done

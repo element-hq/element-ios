@@ -2227,6 +2227,14 @@ public class VectorL10n: NSObject {
   public static var locationSharingOpenGoogleMaps: String { 
     return VectorL10n.tr("Vector", "location_sharing_open_google_maps") 
   }
+  /// %@ could not send your location. Please try again later.
+  public static func locationSharingPostFailureSubtitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "location_sharing_post_failure_subtitle", p1)
+  }
+  /// We couldn’t send your location
+  public static var locationSharingPostFailureTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_post_failure_title") 
+  }
   /// Location sharing
   public static var locationSharingSettingsHeader: String { 
     return VectorL10n.tr("Vector", "location_sharing_settings_header") 

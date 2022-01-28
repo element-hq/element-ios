@@ -21,5 +21,5 @@ import Combine
 
 @available(iOS 14.0, *)
 class OnboardingSplashScreenViewModelTests: XCTestCase {
-    // TODO: Check for any useful tests when finished
+    
 }

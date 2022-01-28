@@ -100,12 +100,12 @@ class LocationSharingViewModelTests: XCTestCase {
     func testLoading() {
         let viewModel = buildViewModel(withLocation: false)
         
-        viewModel.dispatch(action: .startLoading)
+        viewModel.startLoading()
         
         XCTAssertFalse(viewModel.context.viewState.shareButtonEnabled)
         XCTAssertTrue(viewModel.context.viewState.showLoadingIndicator)
         
-        viewModel.dispatch(action: .stopLoading(nil))
+        viewModel.stopLoading()
         
         XCTAssertTrue(viewModel.context.viewState.shareButtonEnabled)
         XCTAssertFalse(viewModel.context.viewState.showLoadingIndicator)
