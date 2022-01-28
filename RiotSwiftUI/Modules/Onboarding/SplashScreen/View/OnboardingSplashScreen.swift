@@ -102,7 +102,7 @@ struct OnboardingSplashScreen: View {
                 .gesture(
                     DragGesture()
                         .onChanged(handleDragGestureChange)
-                        .onEnded { _ in handleDragGestureEnded(viewSize: geometry.size) }
+                        .onEnded { handleDragGestureEnded($0, viewSize: geometry.size) }
                 )
                 
                 overlay
@@ -175,11 +175,17 @@ struct OnboardingSplashScreen: View {
     
     /// Clears the drag offset and informs the view model to switch to another page if necessary.
     /// - Parameter viewSize: The size of the view in which the gesture took place.
-    private func handleDragGestureEnded(viewSize: CGSize) {
+    private func handleDragGestureEnded(_ drag: DragGesture.Value, viewSize: CGSize) {
+        guard shouldSwipeForTranslation(drag.predictedEndTranslation.width) else {
+            // Reset the offset just in case.
+            withAnimation { dragOffset = 0 }
+            return
+        }
+        
         withAnimation(.easeInOut(duration: 0.2)) {
-            if dragOffset < -viewSize.width / 3 {
+            if drag.predictedEndTranslation.width < -viewSize.width / 2 {
                 viewModel.send(viewAction: .nextPage)
-            } else if dragOffset > viewSize.width / 3 {
+            } else if drag.predictedEndTranslation.width > viewSize.width / 2 {
                 viewModel.send(viewAction: .previousPage)
             }
             
