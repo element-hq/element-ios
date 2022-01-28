@@ -24,9 +24,12 @@ class VoiceMessageIncomingBubbleCell: VoiceMessageBubbleCell {
         // TODO: Use constants
         let messageViewMarginRight: CGFloat = 80
         let messageLeftMargin: CGFloat = 48
+        let playbackViewRightMargin: CGFloat = 40
         
         bubbleCellContentView?.innerContentViewTrailingConstraint.constant = messageViewMarginRight
-        bubbleCellContentView?.innerContentViewLeadingConstraint.constant = messageLeftMargin                
+        bubbleCellContentView?.innerContentViewLeadingConstraint.constant = messageLeftMargin
+        
+        playbackController.playbackView.stackViewTrailingContraint.constant = playbackViewRightMargin        
     }
     
     override func update(theme: Theme) {

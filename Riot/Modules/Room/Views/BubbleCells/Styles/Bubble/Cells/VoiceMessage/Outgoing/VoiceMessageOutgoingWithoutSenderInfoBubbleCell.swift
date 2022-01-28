@@ -27,10 +27,12 @@ class VoiceMessageOutgoingWithoutSenderInfoBubbleCell: VoiceMessageBubbleCell {
         // Same as outgoing message
         let rightMargin: CGFloat = 34.0
         let leftMargin: CGFloat = 80.0
-
+        let playbackViewRightMargin: CGFloat = 40
         
         bubbleCellContentView?.innerContentViewTrailingConstraint.constant = rightMargin
         bubbleCellContentView?.innerContentViewLeadingConstraint.constant = leftMargin
+                
+        playbackController.playbackView.stackViewTrailingContraint.constant = playbackViewRightMargin
     }
     
     override func update(theme: Theme) {
