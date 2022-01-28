@@ -1619,3 +1619,10 @@
 
 // Onboarding
 "onboarding_splash_register_button_title" = "Fiók létrehozása";
+"poll_edit_form_poll_type_closed_description" = "Az eredmény csak a szavazás végeztével válik láthatóvá";
+"poll_edit_form_poll_type_closed" = "Lezárt szavazás";
+"poll_edit_form_poll_type_open_description" = "A szavazók a szavazásuk után látják a szavazatokat";
+"poll_edit_form_poll_type_open" = "Szavazás megnyitása";
+"poll_edit_form_update_failure_subtitle" = "Kérlek próbáld újra";
+"poll_edit_form_update_failure_title" = "A szavazást nem sikerült frissíteni";
+"poll_edit_form_poll_type" = "Szavazás típusa";
