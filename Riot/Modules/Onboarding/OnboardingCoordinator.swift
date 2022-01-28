@@ -50,11 +50,16 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     /// A custom identity server to be used once logged in.
     private var customIdentityServer: String?
     
+    // MARK: Navigation State
     private var navigationRouter: NavigationRouterType {
         parameters.router
     }
+    // Keep a strong ref as we need to init authVC early to preload its view (it is *really* slow to do in realtime)
+    private var authenticationCoordinator: AuthenticationCoordinatorProtocol = AuthenticationCoordinator()
+    private var isShowingAuthentication = false
+    
+    // MARK: Screen results
     private var splashScreenResult: OnboardingSplashScreenViewModelResult?
-    private weak var authenticationCoordinator: AuthenticationCoordinatorProtocol?
     
     // MARK: Public
 
@@ -75,7 +80,6 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         // TODO: Manage a separate flow for soft logout that just uses AuthenticationCoordinator
         if #available(iOS 14.0, *), parameters.softLogoutCredentials == nil, BuildSettings.authScreenShowRegister {
             showSplashScreen()
-            preloadAuthentication()
         } else {
             showAuthenticationScreen()
         }
@@ -89,19 +93,19 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     /// For more information see `AuthenticationViewController.externalRegistrationParameters`.
     func update(externalRegistrationParameters: [AnyHashable: Any]) {
         self.externalRegistrationParameters = externalRegistrationParameters
-        authenticationCoordinator?.update(externalRegistrationParameters: externalRegistrationParameters)
+        authenticationCoordinator.update(externalRegistrationParameters: externalRegistrationParameters)
     }
     
     /// Set up the authentication screen with the specified homeserver and/or identity server.
     func updateHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?) {
         self.customHomeserver = homeserver
         self.customIdentityServer = identityServer
-        authenticationCoordinator?.updateHomeserver(homeserver, andIdentityServer: identityServer)
+        authenticationCoordinator.updateHomeserver(homeserver, andIdentityServer: identityServer)
     }
     
     /// When SSO login succeeded, when SFSafariViewController is used, continue login with success parameters.
     func continueSSOLogin(withToken loginToken: String, transactionID: String) -> Bool {
-        guard let authenticationCoordinator = authenticationCoordinator else { return false }
+        guard isShowingAuthentication else { return false }
         return authenticationCoordinator.continueSSOLogin(withToken: loginToken, transactionID: transactionID)
     }
     
@@ -128,25 +132,30 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         showAuthenticationScreen()
     }
     
-    /// Preload the authentication view controller to avoid a delay during its presentation
-    private func preloadAuthentication() {
-        AuthenticationCoordinator.preload()
-    }
-    
     /// Show the authentication screen. Any parameters that have been set in previous screens are be applied.
     private func showAuthenticationScreen() {
-        guard authenticationCoordinator == nil else { return }
+        guard !isShowingAuthentication else { return }
         
         MXLog.debug("[OnboardingCoordinator] showAuthenticationScreen")
         
-        let parameters = AuthenticationCoordinatorParameters(authenticationType: splashScreenResult == .register ? MXKAuthenticationTypeRegister : MXKAuthenticationTypeLogin,
-                                                             externalRegistrationParameters: externalRegistrationParameters,
-                                                             softLogoutCredentials: parameters.softLogoutCredentials)
-        
-        let coordinator = AuthenticationCoordinator(parameters: parameters)
+        let coordinator = authenticationCoordinator
         coordinator.completion = { [weak self, weak coordinator] in
             guard let self = self, let coordinator = coordinator else { return }
             self.authenticationCoordinatorDidComplete(coordinator)
+        }
+        
+        // Due to needing to preload the authVC, this breaks the Coordinator init/start pattern.
+        // This can be re-assessed once we re-write a native flow for authentication.
+        
+        // Set authType first as registration parameters or soft logout credentials will modify this.
+        let mxkAuthenticationType = splashScreenResult == .register ? MXKAuthenticationTypeRegister : MXKAuthenticationTypeLogin
+        coordinator.update(authenticationType: mxkAuthenticationType)
+        
+        if let externalRegistrationParameters = externalRegistrationParameters {
+            coordinator.update(externalRegistrationParameters: externalRegistrationParameters)
+        }
+        if let softLogoutCredentials = parameters.softLogoutCredentials {
+            coordinator.update(softLogoutCredentials: softLogoutCredentials)
         }
         
         coordinator.start()
@@ -162,12 +171,15 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         } else {
             self.navigationRouter.push(coordinator, animated: true) { [weak self] in
                 self?.remove(childCoordinator: coordinator)
+                self?.isShowingAuthentication = false
             }
         }
+        isShowingAuthentication = true
     }
     
     /// Displays the next view in the flow after the authentication screen.
-    private func authenticationCoordinatorDidComplete(_ coordinator: AuthenticationCoordinator) {
+    private func authenticationCoordinatorDidComplete(_ coordinator: AuthenticationCoordinatorProtocol) {
         completion?()
+        isShowingAuthentication = false
     }
 }

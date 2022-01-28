@@ -19,17 +19,6 @@
 import Foundation
 import UIKit
 
-/// AuthenticationCoordinator input parameters
-struct AuthenticationCoordinatorParameters {
-    /// The initial type of authentication to be shown
-    let authenticationType: MXKAuthenticationType
-    /// The registration parameters.
-    let externalRegistrationParameters: [AnyHashable: Any]?
-    /// The credentials to use after a soft logout has taken place.
-    let softLogoutCredentials: MXCredentials?
-}
-
-
 /// A coordinator that handles authentication, verification and setting a PIN.
 final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtocol {
     
@@ -37,7 +26,6 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     // MARK: Private
     
-    private let parameters: AuthenticationCoordinatorParameters
     private let authenticationViewController: AuthenticationViewController
     
     // MARK: Public
@@ -48,11 +36,13 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     // MARK: - Setup
     
-    init(parameters: AuthenticationCoordinatorParameters) {
-        self.parameters = parameters
-        
+    override init() {
         let authenticationViewController = AuthenticationViewController()
         self.authenticationViewController = authenticationViewController
+        
+        // Preload the view as this can a second and lock up the UI at presentation.
+        // The coordinator is initialised early in the onboarding flow to take advantage of this.
+        authenticationViewController.loadViewIfNeeded()
         
         super.init()
     }
@@ -62,42 +52,30 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     func start() {
         // Listen to the end of the authentication flow
         authenticationViewController.authVCDelegate = self
-        
-        // Set authType first as registration parameters or soft logout credentials
-        // may update this afterwards to handle those use cases.
-        authenticationViewController.authType = parameters.authenticationType
-        if let externalRegistrationParameters = parameters.externalRegistrationParameters {
-            authenticationViewController.externalRegistrationParameters = externalRegistrationParameters
-        }
-        if let softLogoutCredentials = parameters.softLogoutCredentials {
-            authenticationViewController.softLogoutCredentials = softLogoutCredentials
-        }
     }
     
     func toPresentable() -> UIViewController {
         return self.authenticationViewController
     }
     
-    /// Force a registration process based on a predefined set of parameters from a server provisioning link.
-    /// For more information see `AuthenticationViewController.externalRegistrationParameters`.
+    func update(authenticationType: MXKAuthenticationType) {
+        authenticationViewController.authType = authenticationType
+    }
+    
     func update(externalRegistrationParameters: [AnyHashable: Any]) {
         authenticationViewController.externalRegistrationParameters = externalRegistrationParameters
     }
     
-    /// Set up the authentication screen with the specified homeserver and/or identity server.
+    func update(softLogoutCredentials: MXCredentials) {
+        authenticationViewController.softLogoutCredentials = softLogoutCredentials
+    }
+    
     func updateHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?) {
         authenticationViewController.showCustomHomeserver(homeserver, andIdentityServer: identityServer)
     }
     
-    /// When SSO login succeeded, when SFSafariViewController is used, continue login with success parameters.
     func continueSSOLogin(withToken loginToken: String, transactionID: String) -> Bool {
         authenticationViewController.continueSSOLogin(withToken: loginToken, txnId: transactionID)
-    }
-    
-    /// Preload `AuthenticationViewController` from it's xib file to avoid locking up the UI when before presentation.
-    static func preload() {
-        let authenticationViewController = AuthenticationViewController()
-        authenticationViewController.loadViewIfNeeded()
     }
 }
 

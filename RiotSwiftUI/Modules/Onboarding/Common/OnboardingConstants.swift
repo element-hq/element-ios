@@ -14,7 +14,7 @@
 // limitations under the License.
 //
 
-import Foundation
+import CoreGraphics
 
 /// Constants used across the entire onboarding flow.
 struct OnboardingConstants {

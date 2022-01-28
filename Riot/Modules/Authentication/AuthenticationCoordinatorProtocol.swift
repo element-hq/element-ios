@@ -22,9 +22,15 @@ import Foundation
 protocol AuthenticationCoordinatorProtocol: Coordinator, Presentable {
     var completion: (() -> Void)? { get set }
     
+    /// Update the screen to display registration or login.
+    func update(authenticationType: MXKAuthenticationType)
+    
     /// Force a registration process based on a predefined set of parameters from a server provisioning link.
     /// For more information see `AuthenticationViewController.externalRegistrationParameters`.
     func update(externalRegistrationParameters: [AnyHashable: Any])
+    
+    /// Update the screen to use any credentials to use after a soft logout has taken place.
+    func update(softLogoutCredentials: MXCredentials)
     
     /// Set up the authentication screen with the specified homeserver and/or identity server.
     func updateHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?)
