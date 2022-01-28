@@ -34,6 +34,26 @@ struct TemplateSimpleScreen: View {
     
     @ObservedObject var viewModel: TemplateSimpleScreenViewModel.Context
     
+    // MARK: Views
+    
+    var body: some View {
+        GeometryReader { geometry in
+            VStack {
+                ScrollView(showsIndicators: false) {
+                    mainContent
+                        .padding(.top, 50)
+                        .padding(.horizontal, horizontalPadding)
+                }
+                
+                buttons
+                    .padding(.horizontal, horizontalPadding)
+                    .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
+            }
+        }
+        .background(theme.colors.background.ignoresSafeArea())
+        .accentColor(theme.colors.accent)
+    }
+    
     /// The main content of the view to be shown in a scroll view.
     var mainContent: some View {
         VStack(spacing: 36) {
@@ -42,7 +62,7 @@ struct TemplateSimpleScreen: View {
                 .foregroundColor(theme.colors.primaryContent)
                 .accessibilityIdentifier("title")
             
-            Image(systemName: viewModel.viewState.promptType.imageName)
+            Image(viewModel.viewState.promptType.image.name)
                 .resizable()
                 .scaledToFit()
                 .frame(width:100)
@@ -79,24 +99,6 @@ struct TemplateSimpleScreen: View {
                     .padding(.vertical, 12)
             }
         }
-    }
-    
-    var body: some View {
-        GeometryReader { geometry in
-            VStack {
-                ScrollView(showsIndicators: false) {
-                    mainContent
-                        .padding(.top, 50)
-                        .padding(.horizontal, horizontalPadding)
-                }
-                
-                buttons
-                    .padding(.horizontal, horizontalPadding)
-                    .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
-            }
-        }
-        .background(theme.colors.background.ignoresSafeArea())
-        .accentColor(theme.colors.accent)
     }
 }
 
