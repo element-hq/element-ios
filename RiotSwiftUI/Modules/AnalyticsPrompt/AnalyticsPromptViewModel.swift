@@ -19,7 +19,7 @@ import Combine
 
 @available(iOS 14, *)
 typealias AnalyticsPromptViewModelType = StateStoreViewModel<AnalyticsPromptViewState,
-                                                             AnalyticsPromptStateAction,
+                                                             Never,
                                                              AnalyticsPromptViewAction>
 @available(iOS 14, *)
 class AnalyticsPromptViewModel: AnalyticsPromptViewModelType {
@@ -53,10 +53,6 @@ class AnalyticsPromptViewModel: AnalyticsPromptViewModelType {
         case .openTermsURL:
             openTermsURL()
         }
-    }
-
-    override class func reducer(state: inout AnalyticsPromptViewState, action: AnalyticsPromptStateAction) {
-        // There is no mutable state to reduce :)
     }
     
     /// Enable analytics. The call to the Analytics class is made in the completion.

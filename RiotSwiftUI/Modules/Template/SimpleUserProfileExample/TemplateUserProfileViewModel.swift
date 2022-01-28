@@ -19,7 +19,7 @@ import Combine
 
 @available(iOS 14, *)
 typealias TemplateUserProfileViewModelType = StateStoreViewModel<TemplateUserProfileViewState,
-                                                                 TemplateUserProfileStateAction,
+                                                                 Never,
                                                                  TemplateUserProfileViewAction>
 @available(iOS 14, *)
 class TemplateUserProfileViewModel: TemplateUserProfileViewModelType, TemplateUserProfileViewModelProtocol {
@@ -54,49 +54,28 @@ class TemplateUserProfileViewModel: TemplateUserProfileViewModelType, TemplateUs
             count: 0
         )
     }
-
+    
     private func setupPresenceObserving() {
-        let presenceUpdatePublisher = templateUserProfileService.presenceSubject
-            .map(TemplateUserProfileStateAction.updatePresence)
-            .eraseToAnyPublisher()
-        dispatch(actionPublisher: presenceUpdatePublisher)
+        templateUserProfileService
+            .presenceSubject
+            .sink(receiveValue: { [weak self] presence in
+                self?.state.presence = presence
+            })
+            .store(in: &cancellables)
     }
-
+    
     // MARK: - Public
 
     override func process(viewAction: TemplateUserProfileViewAction) {
         switch viewAction {
         case .cancel:
-            cancel()
+            completion?(.cancel)
         case .done:
-            done()
-        case .incrementCount, .decrementCount:
-            dispatch(action: .viewAction(viewAction))
+            completion?(.done)
+        case .incrementCount:
+            state.count += 1
+        case .decrementCount:
+            state.count -= 1
         }
-    }
-
-    override class func reducer(state: inout TemplateUserProfileViewState, action: TemplateUserProfileStateAction) {
-        switch action {
-        case .updatePresence(let presence):
-            state.presence = presence
-        case .viewAction(let viewAction):
-            switch viewAction {
-            case .incrementCount:
-                state.count += 1
-            case .decrementCount:
-                state.count -= 1
-            case .cancel, .done:
-                break
-            }
-        }
-        UILog.debug("[TemplateUserProfileViewModel] reducer with action \(action) produced state: \(state)")
-    }
-
-    private func done() {
-        completion?(.done)
-    }
-
-    private func cancel() {
-        completion?(.cancel)
     }
 }

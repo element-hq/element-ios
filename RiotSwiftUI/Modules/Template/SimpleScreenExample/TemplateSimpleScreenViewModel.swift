@@ -18,7 +18,7 @@ import SwiftUI
 
 @available(iOS 14, *)
 typealias TemplateSimpleScreenViewModelType = StateStoreViewModel<TemplateSimpleScreenViewState,
-                                                                  TemplateSimpleScreenStateAction,
+                                                                  Never,
                                                                   TemplateSimpleScreenViewAction>
 @available(iOS 14, *)
 class TemplateSimpleScreenViewModel: TemplateSimpleScreenViewModelType, TemplateSimpleScreenViewModelProtocol {
@@ -45,23 +45,10 @@ class TemplateSimpleScreenViewModel: TemplateSimpleScreenViewModelType, Template
             completion?(.accept)
         case .cancel:
             completion?(.cancel)
-        case .incrementCount, .decrementCount:
-            dispatch(action: .viewAction(viewAction))
+        case .incrementCount:
+            state.count += 1
+        case .decrementCount:
+            state.count -= 1
         }
-    }
-
-    override class func reducer(state: inout TemplateSimpleScreenViewState, action: TemplateSimpleScreenStateAction) {
-        switch action {
-        case .viewAction(let viewAction):
-            switch viewAction {
-            case .incrementCount:
-                state.count += 1
-            case .decrementCount:
-                state.count -= 1
-            case .accept, .cancel:
-                break
-            }
-        }
-        UILog.debug("[TemplateSimpleScreenViewModel] reducer with action \(action) produced state: \(state)")
     }
 }

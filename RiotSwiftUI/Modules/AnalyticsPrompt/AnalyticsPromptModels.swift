@@ -16,9 +16,6 @@
 
 import Foundation
 
-// The state is never modified so this is unnecessary.
-enum AnalyticsPromptStateAction { }
-
 enum AnalyticsPromptViewAction {
     /// Enable analytics.
     case enable

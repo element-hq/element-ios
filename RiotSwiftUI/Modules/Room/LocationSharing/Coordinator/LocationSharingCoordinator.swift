@@ -33,12 +33,7 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
     
     private let parameters: LocationSharingCoordinatorParameters
     private let locationSharingHostingController: UIViewController
-    private var _locationSharingViewModel: Any? = nil
-    
-    @available(iOS 14.0, *)
-    fileprivate var locationSharingViewModel: LocationSharingViewModel {
-        return _locationSharingViewModel as! LocationSharingViewModel
-    }
+    private var locationSharingViewModel: LocationSharingViewModelProtocol
     
     // MARK: Public
     
@@ -58,7 +53,7 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
         let view = LocationSharingView(context: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
         
-        _locationSharingViewModel = viewModel
+        locationSharingViewModel = viewModel
         locationSharingHostingController = VectorHostingController(rootView: view)
     }
     
@@ -81,20 +76,18 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
                     return
                 }
                 
-                self.locationSharingViewModel.dispatch(action: .startLoading)
+                self.locationSharingViewModel.startLoading()
                 
-                self.parameters.roomDataSource.sendLocation(withLatitude: latitude,
-                                                            longitude: longitude,
-                                                            description: nil) { [weak self] _ in
+                self.parameters.roomDataSource.sendLocation(withLatitude: latitude, longitude: longitude, description: nil) { [weak self] _ in
                     guard let self = self else { return }
                     
-                    self.locationSharingViewModel.dispatch(action: .stopLoading(nil))
+                    self.locationSharingViewModel.stopLoading()
                     self.completion?()
                 } failure: { [weak self] error in
                     guard let self = self else { return }
                     
                     MXLog.error("[LocationSharingCoordinator] Failed sharing location with error: \(String(describing: error))")
-                    self.locationSharingViewModel.dispatch(action: .stopLoading(error))
+                    self.locationSharingViewModel.stopLoading(error: .locationSharingError)
                 }
             }
             
