@@ -79,6 +79,8 @@ class CommonConfiguration: NSObject, Configurable {
         sdkOptions.enableThreads = RiotSettings.shared.enableThreads
         
         sdkOptions.clientPermalinkBaseUrl = BuildSettings.clientPermalinkBaseUrl
+        
+        sdkOptions.authEnableRefreshTokens = BuildSettings.authEnableRefreshTokens
         // Configure key provider delegate
         MXKeyProvider.sharedInstance().delegate = EncryptionKeyManager.shared
     }
