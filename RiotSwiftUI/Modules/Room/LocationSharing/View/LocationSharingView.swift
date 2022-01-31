@@ -88,6 +88,10 @@ struct LocationSharingView: View {
         }
         .accentColor(theme.colors.accent)
         .activityIndicator(show: context.viewState.showLoadingIndicator)
+        .navigationViewStyle(StackNavigationViewStyle())
+        .introspectNavigationController { navigationController in
+            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationController.navigationBar)
+        }
     }
     
     @ViewBuilder
