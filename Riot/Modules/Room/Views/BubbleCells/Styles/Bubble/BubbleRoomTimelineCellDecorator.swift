@@ -39,8 +39,21 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
             
         } else if cellData.isAttachmentWithThumbnail {
                                                  
-            if cellData.attachment?.type == .sticker {
-                // TODO: Handle sticker & selected sticker
+            if cellData.attachment?.type == .sticker,
+               let attachmentView = cell.attachmentView,
+                let timestampLabel = self.createTimestampLabel(for: cellData) {
+                
+                // Prevent overlap with send status icon
+                let bottomMargin: CGFloat = 20.0
+                let rightMargin: CGFloat = -27.0
+                
+                self.addTimestampLabel(timestampLabel,
+                                       to: cell,
+                                       on: cell.contentView,
+                                       constrainingView: attachmentView,
+                                       rightMargin: rightMargin,
+                                       bottomMargin: bottomMargin)
+                
             } else if let attachmentView = cell.attachmentView, let timestampLabel = self.createTimestampLabel(for: cellData, textColor: self.theme.baseIconPrimaryColor) {
                 // For media with thumbnail cells, add timestamp inside thumbnail
                 
@@ -248,9 +261,6 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
             switch attachmentType {
             case .voiceMessage, .audio:
                 return true
-            case .sticker:
-                // Do not show timestamp for stickers atm
-                return false
             default:
                 break
             }
@@ -278,18 +288,17 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
     }
     
     private func addTimestampLabel(_ timestampLabel: UILabel,
-                           to cell: MXKRoomBubbleTableViewCell,
-                           on containerView: UIView,
-                           constrainingView: UIView) {
+                                   to cell: MXKRoomBubbleTableViewCell,
+                                   on containerView: UIView,
+                                   constrainingView: UIView,
+                                   rightMargin: CGFloat = 8.0,
+                                   bottomMargin: CGFloat = 4.0) {
         timestampLabel.translatesAutoresizingMaskIntoConstraints = false
 
         cell.addTemporarySubview(timestampLabel)
                 
         containerView.addSubview(timestampLabel)
-
-        let rightMargin: CGFloat = 8.0
-        let bottomMargin: CGFloat = 4.0
-
+        
         let trailingConstraint = timestampLabel.trailingAnchor.constraint(equalTo: constrainingView.trailingAnchor, constant: -rightMargin)
 
         let bottomConstraint = timestampLabel.bottomAnchor.constraint(equalTo: constrainingView.bottomAnchor, constant: -bottomMargin)
