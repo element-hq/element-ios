@@ -1602,3 +1602,4 @@
 "poll_edit_form_poll_type_closed" = "Geschlossene Umfrage";
 "poll_edit_form_poll_type_open_description" = "Ergebnisse werden direkt nach Stimmabgabe angezeigt";
 "poll_edit_form_poll_type_open" = "Offene Umfrage";
+"poll_edit_form_update_failure_title" = "Aktualisierung der Umfrage fehlgeschlagen";
