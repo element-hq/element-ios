@@ -107,6 +107,17 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
         self.setupOutgoingFileAttachViewMargins(for: cell)
     }
     
+    func updateLayout(forSelectedStickerCell cell: RoomSelectedStickerBubbleCell) {
+        
+        if cell.bubbleData.isIncoming {
+            self.setupLayout(forIncomingTextMessageCell: cell)
+        } else {
+            self.setupLayout(forOutgoingFileAttachmentCell: cell)
+            cell.userNameLabel?.isHidden = true
+            cell.pictureView?.isHidden = true
+        }
+    }
+    
     // MARK: Themable
     
     func update(theme: Theme) {
