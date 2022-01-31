@@ -174,6 +174,7 @@ internal enum Asset {
     internal static let addParticipants = ImageAsset(name: "add_participants")
     internal static let detailsIcon = ImageAsset(name: "details_icon")
     internal static let editIcon = ImageAsset(name: "edit_icon")
+    internal static let fileAttachment = ImageAsset(name: "file_attachment")
     internal static let integrationsIcon = ImageAsset(name: "integrations_icon")
     internal static let mainAliasIcon = ImageAsset(name: "main_alias_icon")
     internal static let membersListIcon = ImageAsset(name: "members_list_icon")
