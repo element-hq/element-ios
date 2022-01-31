@@ -67,6 +67,25 @@ typedef NS_ENUM(NSUInteger, RoomTimelineCellIdentifier) {
     RoomTimelineCellIdentifierOutgoingAttachmentEncryptedWithoutSenderInfo,
     RoomTimelineCellIdentifierOutgoingAttachmentEncryptedWithPaginationTitle,
     
+    // - Attachment without thumbnail
+    // --- Clear
+    RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnail,
+    RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailWithoutSenderInfo,
+    RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailWithPaginationTitle,
+    // --- Encrypted
+    RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncrypted,
+    RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncryptedWithoutSenderInfo,
+    RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncryptedWithPaginationTitle,
+    // -- Outgoing
+    // --- Clear
+    RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnail,
+    RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailWithoutSenderInfo,
+    RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailWithPaginationTitle,
+    // --- Encrypted
+    RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncrypted,
+    RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncryptedWithoutSenderInfo,
+    RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncryptedWithPaginationTitle,
+    
     // - Room membership
     RoomTimelineCellIdentifierMembership,
     RoomTimelineCellIdentifierMembershipWithPaginationTitle,
