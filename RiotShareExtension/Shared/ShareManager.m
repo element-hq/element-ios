@@ -78,7 +78,14 @@
 
 - (void)shareViewController:(ShareViewController *)shareViewController didRequestShareForRoomIdentifiers:(NSSet<NSString *> *)roomIdentifiers
 {
-    MXSession *session = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:self.userAccount.mxCredentials andOnUnrecognizedCertificateBlock:nil]];
+    MXWeakify(self);
+    MXRestClient *restClient = [[MXRestClient alloc] initWithCredentials:self.userAccount.mxCredentials andOnUnrecognizedCertificateBlock:nil andPersistentTokenDataHandler:^(void (^handler)(NSArray<MXCredentials *> *credentials, void (^completion)(BOOL didUpdateCredentials))) {
+        [[MXKAccountManager sharedManager] readAndWriteCredentials:handler];
+    } andUnauthenticatedHandler:^(MXError *error, BOOL isSoftLogout, BOOL isRefreshTokenAuth, void (^completion)(void)) {
+        MXStrongifyAndReturnIfNil(self);
+        [self.userAccount handleUnauthenticatedWithError:error isSoftLogout:isSoftLogout isRefreshTokenAuth:isRefreshTokenAuth andCompletion:completion];
+    }];
+    MXSession *session = [[MXSession alloc] initWithMatrixRestClient:restClient];
     [MXFileStore setPreloadOptions:0];
     
     MXWeakify(session);
@@ -147,7 +154,7 @@
 - (void)checkUserAccount
 {
     // Force account manager to reload account from the local storage.
-    [[MXKAccountManager sharedManager] forceReloadAccounts];
+    [MXKAccountManager sharedManagerWithReload:YES];
     
     if (self.userAccount)
     {
