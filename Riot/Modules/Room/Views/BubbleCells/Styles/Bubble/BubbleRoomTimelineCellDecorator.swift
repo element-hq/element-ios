@@ -61,6 +61,15 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
                                    on: cell.contentView,
                                    constrainingView: playbackView)
             
+        } else if let fileWithoutThumbnailCell = cell as? FileWithoutThumbnailBaseBubbleCell, let fileAttachementView = fileWithoutThumbnailCell.fileAttachementView, let timestampLabel = self.createTimestampLabel(for: cellData) {
+            
+            // Add timestamp on cell inherting from VoiceMessageBubbleCell
+            
+            self.addTimestampLabel(timestampLabel,
+                                   to: cell,
+                                   on: fileAttachementView,
+                                   constrainingView: fileAttachementView)
+            
         } else {
             super.addTimestampLabel(toCell: cell, cellData: cellData)
         }
