@@ -352,7 +352,7 @@ final class BuildSettings: NSObject {
     static let authScreenShowSocialLoginSection = true
     
     // MARK: - Authentication Options
-    static let authEnableRefreshTokens = true
+    static let authEnableRefreshTokens = false
     
     // MARK: - Unified Search
     static let unifiedSearchScreenShowPublicDirectory = true
