@@ -1071,10 +1071,7 @@ static BOOL _disableLongPressGestureOnEvent;
 
 - (BOOL)isBubbleDataContainsFileAttachment
 {
-    return bubbleData.attachment
-    && (bubbleData.attachment.type == MXKAttachmentTypeFile || bubbleData.attachment.type == MXKAttachmentTypeAudio || bubbleData.attachment.type == MXKAttachmentTypeVoiceMessage)
-    && bubbleData.attachment.contentURL
-    && bubbleData.attachment.contentInfo;
+    return bubbleData.isAttachment;
 }
 
 - (MXKRoomBubbleComponent*)closestBubbleComponentForGestureRecognizer:(UIGestureRecognizer*)gestureRecognizer locationInView:(UIView*)view
