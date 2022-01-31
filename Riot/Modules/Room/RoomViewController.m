@@ -2707,6 +2707,21 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingAttachmentEncrypted : RoomTimelineCellIdentifierIncomingAttachment;
             }
         }
+        else if (bubbleData.isAttachment)
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncryptedWithPaginationTitle : RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncryptedWithoutSenderInfo : RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncrypted : RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnail;
+            }
+        }
         else
         {
             if (bubbleData.isPaginationFirstBubble)
@@ -2755,6 +2770,21 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             else
             {
                 cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingAttachmentEncrypted : RoomTimelineCellIdentifierOutgoingAttachment;
+            }
+        }
+        else if (bubbleData.isAttachment)
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncryptedWithPaginationTitle : RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncryptedWithoutSenderInfo : RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncrypted : RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnail;
             }
         }
         else
