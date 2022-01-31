@@ -15,13 +15,13 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="tvT-jE-0OH">
-                    <rect key="frame" x="12" y="15" width="261" height="12"/>
+                    <rect key="frame" x="20" y="15" width="253" height="12"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" image="file_attachment" translatesAutoresizingMaskIntoConstraints="NO" id="Pse-Mu-Gle">
                             <rect key="frame" x="0.0" y="0.0" width="16" height="12"/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Filename.docx" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eCx-a1-1CO">
-                            <rect key="frame" x="32" y="0.0" width="229" height="12"/>
+                            <rect key="frame" x="32" y="0.0" width="221" height="12"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <color key="textColor" systemColor="systemGray2Color"/>
                             <nil key="highlightedColor"/>
@@ -33,7 +33,7 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="tvT-jE-0OH" secondAttribute="trailing" constant="40" id="At8-ah-N7j"/>
                 <constraint firstItem="tvT-jE-0OH" firstAttribute="top" secondItem="8T9-hj-ply" secondAttribute="top" constant="15" id="C7r-6f-Bqf"/>
-                <constraint firstItem="tvT-jE-0OH" firstAttribute="leading" secondItem="8T9-hj-ply" secondAttribute="leading" constant="12" id="Yh6-91-Thq"/>
+                <constraint firstItem="tvT-jE-0OH" firstAttribute="leading" secondItem="8T9-hj-ply" secondAttribute="leading" constant="20" id="Yh6-91-Thq"/>
                 <constraint firstAttribute="bottom" secondItem="tvT-jE-0OH" secondAttribute="bottom" constant="15" id="yHE-fi-Paj"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
