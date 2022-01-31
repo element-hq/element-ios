@@ -34,6 +34,6 @@ class FileWithoutThumbnailIncomingBubbleCell: FileWithoutThumbnailBaseBubbleCell
     override func update(theme: Theme) {
         super.update(theme: theme)
         
-        self.fileAttachementView?.backgroundColor = theme.bubbleCellIncomingBackgroundColor
+        self.fileAttachementView?.backgroundColor = theme.roomCellIncomingBubbleBackgroundColor
     }
 }

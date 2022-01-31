@@ -41,6 +41,6 @@ class VoiceMessageOutgoingWithoutSenderInfoBubbleCell: VoiceMessageBubbleCell {
             return
         }
         
-        playbackController.playbackView.backgroundViewColor = theme.bubbleCellOutgoingBackgroundColor
+        playbackController.playbackView.backgroundViewColor = theme.roomCellOutgoingBubbleBackgroundColor
     }
 }
