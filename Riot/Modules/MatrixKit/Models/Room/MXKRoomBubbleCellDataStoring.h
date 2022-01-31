@@ -148,6 +148,11 @@
 @property (nonatomic) BOOL isAttachmentWithIcon;
 
 /**
+ YES when the bubble correspond to an attachment (audio, file...).
+ */
+@property (nonatomic, readonly) BOOL isAttachment;
+
+/**
  Flag that indicates that self.attributedTextMessage will be not nil.
  This avoids the computation of self.attributedTextMessage that can take time.
  */

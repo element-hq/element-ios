@@ -724,6 +724,27 @@
     return NO;
 }
 
+- (BOOL)isAttachment
+{
+    if (!self.attachment)
+    {
+        return NO;
+    }
+    
+    if (!attachment.contentURL || !attachment.contentInfo) {
+        return NO;
+    }
+    
+    switch (self.attachment.type) {
+        case MXKAttachmentTypeFile:
+        case MXKAttachmentTypeAudio:
+        case MXKAttachmentTypeVoiceMessage:
+            return YES;
+        default:
+            return NO;
+    }
+}
+
 - (void)setMaxTextViewWidth:(CGFloat)inMaxTextViewWidth
 {
     // Check change
