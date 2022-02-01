@@ -1980,7 +1980,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             [self.delegate roomViewControllerDidRequestPollCreationFormPresentation:self];
         }]];
     }
-    if (RiotSettings.shared.roomScreenAllowLocationAction)
+    if (BuildSettings.locationSharingEnabled)
     {
         [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_location"] andAction:^{
             MXStrongifyAndReturnIfNil(self);
