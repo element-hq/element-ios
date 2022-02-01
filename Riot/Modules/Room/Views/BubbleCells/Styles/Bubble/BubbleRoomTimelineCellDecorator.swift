@@ -133,10 +133,10 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
             var outgoingLeftMargin: CGFloat = 80.0
             
             if cellData.containsBubbleComponentWithEncryptionBadge {
-                outgointLeftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
+                outgoingLeftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
             }
             
-            leftMargin = outgointLeftMargin
+            leftMargin = outgoingLeftMargin
             
             // TODO: Use constants
             rightMargin = 33
