@@ -108,24 +108,9 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
         let topMargin: CGFloat = 4.0
         let leftMargin: CGFloat
         let rightMargin: CGFloat
-        
-        // Outgoing message
-        if cellData.isIncoming == false {
-            reactionsView.alignment = .right
-            
-            // TODO: Use constants
-            var outgointLeftMargin: CGFloat = 80.0
-            
-            if cellData.containsBubbleComponentWithEncryptionBadge {
-                outgointLeftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
-            }
-            
-            leftMargin = outgointLeftMargin
-            
-            // TODO: Use constants
-            rightMargin = 33
-        } else {
-            // Incoming message
+                
+        // Incoming message
+        if cellData.isIncoming {
             
             var incomingLeftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin
             
@@ -139,6 +124,22 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
             let messageViewMarginRight: CGFloat = 42.0
             
             rightMargin = messageViewMarginRight
+        } else {
+            // Outgoing message
+            
+            reactionsView.alignment = .right
+            
+            // TODO: Use constants
+            var outgointLeftMargin: CGFloat = 80.0
+            
+            if cellData.containsBubbleComponentWithEncryptionBadge {
+                outgointLeftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
+            }
+            
+            leftMargin = outgointLeftMargin
+            
+            // TODO: Use constants
+            rightMargin = 33
         }
         
         let leadingConstraint = reactionsView.leadingAnchor.constraint(equalTo: cellContentView.leadingAnchor, constant: leftMargin)
@@ -174,16 +175,10 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
         
         let leadingOrTrailingConstraint: NSLayoutConstraint
         
-        // Outgoing message
-        if cellData.isIncoming == false {
-            
-            // TODO: Use constants
-            let rightMargin: CGFloat = 34.0
-            
-            leadingOrTrailingConstraint = urlPreviewView.trailingAnchor.constraint(equalTo: cellContentView.trailingAnchor, constant: -rightMargin)
-        } else {
-            // Incoming message
-            
+        
+        // Incoming message
+        if cellData.isIncoming {
+
             var leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin
             if cellData.containsBubbleComponentWithEncryptionBadge {
                 leftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
@@ -192,6 +187,13 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
             leftMargin-=5.0
             
             leadingOrTrailingConstraint = urlPreviewView.leadingAnchor.constraint(equalTo: cellContentView.leadingAnchor, constant: leftMargin)
+        } else {
+            // Outgoing message
+            
+            // TODO: Use constants
+            let rightMargin: CGFloat = 34.0
+            
+            leadingOrTrailingConstraint = urlPreviewView.trailingAnchor.constraint(equalTo: cellContentView.trailingAnchor, constant: -rightMargin)
         }
         
         let topMargin = contentViewPositionY + RoomBubbleCellLayout.urlPreviewViewTopMargin + RoomBubbleCellLayout.reactionsViewTopMargin

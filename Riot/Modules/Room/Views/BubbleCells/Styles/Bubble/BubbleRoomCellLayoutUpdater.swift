@@ -41,10 +41,10 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
     
     func updateLayoutIfNeeded(for cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData) {
         
-        if cellData.isIncoming == false {
-            self.updateLayout(forOutgoingTextMessageCell: cell, andCellData: cellData)
-        } else {
+        if cellData.isIncoming {
             self.updateLayout(forIncomingTextMessageCell: cell, andCellData: cellData)
+        } else {
+            self.updateLayout(forOutgoingTextMessageCell: cell, andCellData: cellData)
         }
     }
             
