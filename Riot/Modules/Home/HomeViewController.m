@@ -673,15 +673,19 @@
 
 - (UIContextMenuConfiguration *)collectionView:(UICollectionView *)collectionView contextMenuConfigurationForItemAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point API_AVAILABLE(ios(13.0))
 {
-    id<MXKRecentCellDataStoring> cellData = [recentsDataSource cellDataAtIndexPath:[NSIndexPath indexPathForRow:indexPath.item inSection:collectionView.tag]];
+    UIView *cell = [collectionView cellForItemAtIndexPath:indexPath];
     MXRoom *room = [self.dataSource getRoomAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:collectionView.tag]];
     NSString *roomId = room.roomId;
     
+    MXWeakify(self);
+    MXWeakify(room);
+    
     return [UIContextMenuConfiguration configurationWithIdentifier:roomId previewProvider:^UIViewController * _Nullable {
         // Add a preview using the cell's data to prevent the avatar and displayname from changing with a room list update.
-        return [[RoomPreviewViewController alloc] initWithCellData:cellData];
+        return [[ContextMenuSnapshotPreviewViewController alloc] initWithView:cell];
+        
     } actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
-        MXWeakify(self);
+        MXStrongifyAndReturnValueIfNil(room, nil);
         
         BOOL isDirect = room.isDirect;
         UIAction *directChatAction = [UIAction actionWithTitle:isDirect ? VectorL10n.homeContextMenuMakeRoom : VectorL10n.homeContextMenuMakeDm
@@ -736,9 +740,8 @@
         }];
         
         BOOL isLowPriority = (currentTag && [kMXRoomTagLowPriority isEqualToString:currentTag.name]);
-        UIImage *lowPriorityImage = [UIImage systemImageNamed:isLowPriority ? @"arrow.up" : @"arrow.down"];
         UIAction *lowPriorityAction = [UIAction actionWithTitle:isLowPriority ? VectorL10n.homeContextMenuNormalPriority : VectorL10n.homeContextMenuLowPriority
-                                                          image:lowPriorityImage
+                                                          image:[UIImage systemImageNamed:isLowPriority ? @"arrow.up" : @"arrow.down"]
                                                      identifier:nil
                                                         handler:^(__kindof UIAction * _Nonnull action) {
             MXStrongifyAndReturnIfNil(self);
