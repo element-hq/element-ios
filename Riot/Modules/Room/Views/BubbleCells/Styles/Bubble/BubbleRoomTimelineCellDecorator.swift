@@ -232,10 +232,9 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
         
         let componentIndex = cellData.mostRecentComponentIndex
         
-        guard let bubbleComponents = cellData.bubbleComponents,
-              componentIndex < bubbleComponents.count else {
-                  return nil
-              }
+        guard let bubbleComponents = cellData.bubbleComponents, componentIndex < bubbleComponents.count else {
+            return nil
+        }
         
         let component = bubbleComponents[componentIndex]
 
