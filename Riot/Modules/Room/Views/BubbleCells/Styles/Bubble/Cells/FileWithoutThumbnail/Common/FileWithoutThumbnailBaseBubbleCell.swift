@@ -54,9 +54,8 @@ class FileWithoutThumbnailBaseBubbleCell: SizableBaseBubbleCell, BubbleCellReact
     
     override func onContentViewTap(_ sender: UITapGestureRecognizer!) {
         
-        if self.bubbleData.isAttachment {
-            self.delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellTapOnAttachmentView, userInfo: nil)
-            
+        if let bubbleData = self.bubbleData, bubbleData.isAttachment {
+            self.delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellTapOnAttachmentView, userInfo: nil)            
         } else {
             super.onContentViewTap(sender)
         }
