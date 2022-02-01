@@ -16,23 +16,21 @@
 
 import UIKit
 
-/// A view controller that provides a preview of a room for use in context menus.
+/// A view controller that provides a preview for use in context menus.
+/// The preview will display a snapshot of whichever view is passed into the init.
 @objcMembers
-class RoomPreviewViewController: UIViewController {
-    
-    // MARK: - Constants
-    private enum Constants {
-        static let size = CGSize(width: 80, height: 115)
-    }
+class ContextMenuSnapshotPreviewViewController: UIViewController {
     
     // MARK: - Private
     
-    private var cellData: MXKCellData
+    private let snapshotView: UIView?
     
     // MARK: - Setup
     
-    init(cellData: MXKCellData) {
-        self.cellData = cellData
+    /// Creates a new preview by snapshotting the supplied view.
+    /// - Parameter view: The view to use as a preview.
+    init(view: UIView) {
+        self.snapshotView = view.snapshotView(afterScreenUpdates: false)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -40,16 +38,15 @@ class RoomPreviewViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Lifecyle
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let cell = RoomCollectionViewCell(frame: CGRect(origin: .zero, size: Constants.size))
-        cell.render(cellData)
-        view.vc_addSubViewMatchingParent(cell)
+        guard let snapshotView = snapshotView else { return }
+        view.vc_addSubViewMatchingParent(snapshotView)
         
-        preferredContentSize = Constants.size
+        preferredContentSize = snapshotView.bounds.size
     }
     
 }
