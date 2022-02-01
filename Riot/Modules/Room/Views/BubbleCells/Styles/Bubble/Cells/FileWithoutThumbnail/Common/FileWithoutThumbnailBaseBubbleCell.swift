@@ -48,10 +48,6 @@ class FileWithoutThumbnailBaseBubbleCell: SizableBaseBubbleCell, BubbleCellReact
         self.fileAttachementView = fileAttachementView
     }
     
-    override func update(theme: Theme) {
-        super.update(theme: theme)
-    }
-    
     override func onContentViewTap(_ sender: UITapGestureRecognizer!) {
         
         if let bubbleData = self.bubbleData, bubbleData.isAttachment {
