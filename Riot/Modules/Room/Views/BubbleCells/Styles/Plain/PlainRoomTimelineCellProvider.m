@@ -283,6 +283,12 @@
     NSDictionary *outgoingAttachmentCellsMapping = [self outgoingAttachmentCellsMapping];
     [cellClasses addEntriesFromDictionary:outgoingAttachmentCellsMapping];
     
+    NSDictionary *outgoingAttachmentWithoutThumbnailCellsMapping = [self outgoingAttachmentWithoutThumbnailCellsMapping];
+    [cellClasses addEntriesFromDictionary:outgoingAttachmentWithoutThumbnailCellsMapping];
+    
+    NSDictionary *incomingAttachmentWithoutThumbnailCellsMapping = [self incomingAttachmentWithoutThumbnailCellsMapping];
+    [cellClasses addEntriesFromDictionary:incomingAttachmentWithoutThumbnailCellsMapping];
+    
     // Other cells
     
     NSDictionary *roomMembershipCellsMapping = [self membershipCellsMapping];
@@ -382,6 +388,34 @@
     };
 }
 
+- (NSDictionary<NSNumber*, Class>*)incomingAttachmentWithoutThumbnailCellsMapping
+{
+    return @{
+        // Clear
+        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnail) : RoomIncomingTextMsgBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailWithoutSenderInfo) : RoomIncomingTextMsgWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailWithPaginationTitle) : RoomIncomingTextMsgWithPaginationTitleBubbleCell.class,
+        // Encrypted
+        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncrypted) : RoomIncomingEncryptedTextMsgBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncryptedWithoutSenderInfo) : RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncryptedWithPaginationTitle) : RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.class
+    };
+}
+
+- (NSDictionary<NSNumber*, Class>*)outgoingAttachmentWithoutThumbnailCellsMapping
+{
+    return @{
+        // Clear
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnail) : RoomOutgoingTextMsgBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailWithoutSenderInfo) : RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailWithPaginationTitle) : RoomOutgoingTextMsgWithPaginationTitleBubbleCell.class,
+        // Encrypted
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncrypted) : RoomOutgoingEncryptedTextMsgBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncryptedWithoutSenderInfo) : RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncryptedWithPaginationTitle) : RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.class
+    };
+}
+
 - (NSDictionary<NSNumber*, Class>*)membershipCellsMapping
 {
     return @{
@@ -425,9 +459,14 @@
 - (NSDictionary<NSNumber*, Class>*)voiceMessageCellsMapping
 {
     return @{
-        @(RoomTimelineCellIdentifierVoiceMessage) : VoiceMessageBubbleCell.class,
-        @(RoomTimelineCellIdentifierVoiceMessageWithoutSenderInfo) : VoiceMessageWithoutSenderInfoBubbleCell.class,
-        @(RoomTimelineCellIdentifierVoiceMessageWithPaginationTitle) : VoiceMessageWithPaginationTitleBubbleCell.class,
+        // Incoming
+        @(RoomTimelineCellIdentifierIncomingVoiceMessage) : VoiceMessageBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingVoiceMessageWithoutSenderInfo) : VoiceMessageWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingVoiceMessageWithPaginationTitle) : VoiceMessageWithPaginationTitleBubbleCell.class,
+        // Outoing
+        @(RoomTimelineCellIdentifierOutgoingVoiceMessage) : VoiceMessageBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceMessageWithoutSenderInfo) : VoiceMessageWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceMessageWithPaginationTitle) : VoiceMessageWithPaginationTitleBubbleCell.class
     };
 }
 
@@ -443,9 +482,14 @@
 - (NSDictionary<NSNumber*, Class>*)locationCellsMapping
 {
     return @{
-        @(RoomTimelineCellIdentifierLocation) : LocationBubbleCell.class,
-        @(RoomTimelineCellIdentifierLocationWithoutSenderInfo) : LocationWithoutSenderInfoBubbleCell.class,
-        @(RoomTimelineCellIdentifierLocationWithPaginationTitle) : LocationWithPaginationTitleBubbleCell.class
+        // Incoming
+        @(RoomTimelineCellIdentifierIncomingLocation) : LocationBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingLocationWithoutSenderInfo) : LocationWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingLocationWithPaginationTitle) : LocationWithPaginationTitleBubbleCell.class,
+        // Outgoing
+        @(RoomTimelineCellIdentifierOutgoingLocation) : LocationBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingLocationWithoutSenderInfo) : LocationWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingLocationWithPaginationTitle) : LocationWithPaginationTitleBubbleCell.class
     };
 }
 

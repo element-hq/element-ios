@@ -20,9 +20,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PlainRoomTimelineCellProvider: NSObject<RoomTimelineCellProvider>
 
+#pragma mark - Registration
+
+- (void)registerVoiceMessageCellsForTableView:(UITableView*)tableView;
+
+- (void)registerLocationCellsForTableView:(UITableView*)tableView;
+
+#pragma mark - Mapping
+
 - (NSDictionary<NSNumber*, Class>*)outgoingTextMessageCellsMapping;
 
 - (NSDictionary<NSNumber*, Class>*)outgoingAttachmentCellsMapping;
+
+- (NSDictionary<NSNumber*, Class>*)incomingAttachmentWithoutThumbnailCellsMapping;
+
+- (NSDictionary<NSNumber*, Class>*)outgoingAttachmentWithoutThumbnailCellsMapping;
+
+- (NSDictionary<NSNumber*, Class>*)voiceMessageCellsMapping;
+
+- (NSDictionary<NSNumber*, Class>*)locationCellsMapping;
 
 @end
 

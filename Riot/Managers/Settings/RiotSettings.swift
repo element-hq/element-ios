@@ -195,7 +195,7 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "roomScreenShowsURLPreviews", defaultValue: true, storage: defaults)
     var roomScreenShowsURLPreviews
     
-    @UserDefault(key: "roomScreenEnableMessageBubbles", defaultValue: BuildSettings.roomScreenEnableMessageBubblesByDefault, storage: defaults)
+    @UserDefault(key: "roomScreenEnableMessageBubbles", defaultValue: BuildSettings.isRoomScreenEnableMessageBubblesByDefault, storage: defaults)
     var roomScreenEnableMessageBubbles
     
     var roomTimelineStyleIdentifier: RoomTimelineStyleIdentifier {

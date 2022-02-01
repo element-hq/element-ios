@@ -34,6 +34,8 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
 
     weak var bubbleCellContentView: BubbleCellContentView?
     
+    private(set) var theme: Theme?
+    
     // Overrides
     
     override var bubbleInfoContainer: UIView! {
@@ -205,6 +207,7 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
     // MARK: - Themable
     
     func update(theme: Theme) {
+        self.theme = theme
         self.bubbleCellContentView?.update(theme: theme)
     }
     

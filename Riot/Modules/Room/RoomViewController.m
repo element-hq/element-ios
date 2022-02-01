@@ -2672,17 +2672,35 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     else if (bubbleData.attachment.type == MXKAttachmentTypeVoiceMessage || bubbleData.attachment.type == MXKAttachmentTypeAudio)
     {
-        if (bubbleData.isPaginationFirstBubble)
+        if (bubbleData.isIncoming)
         {
-            cellIdentifier = RoomTimelineCellIdentifierVoiceMessageWithPaginationTitle;
-        }
-        else if (bubbleData.shouldHideSenderInformation)
-        {
-            cellIdentifier = RoomTimelineCellIdentifierVoiceMessageWithoutSenderInfo;
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceMessageWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceMessageWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceMessage;
+            }
         }
         else
         {
-            cellIdentifier = RoomTimelineCellIdentifierVoiceMessage;
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceMessageWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceMessageWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceMessage;
+            }
         }
     }
     else if (bubbleData.tag == RoomBubbleCellDataTagPoll)
@@ -2702,17 +2720,35 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     else if (bubbleData.tag == RoomBubbleCellDataTagLocation)
     {
-        if (bubbleData.isPaginationFirstBubble)
+        if (bubbleData.isIncoming)
         {
-            cellIdentifier = RoomTimelineCellIdentifierLocationWithPaginationTitle;
-        }
-        else if (bubbleData.shouldHideSenderInformation)
-        {
-            cellIdentifier = RoomTimelineCellIdentifierLocationWithoutSenderInfo;
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingLocationWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingLocationWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingLocation;
+            }
         }
         else
         {
-            cellIdentifier = RoomTimelineCellIdentifierLocation;
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingLocationWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingLocationWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingLocation;
+            }
         }
     }
     else if (bubbleData.isIncoming)
@@ -2735,6 +2771,21 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             else
             {
                 cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingAttachmentEncrypted : RoomTimelineCellIdentifierIncomingAttachment;
+            }
+        }
+        else if (bubbleData.isAttachment)
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncryptedWithPaginationTitle : RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncryptedWithoutSenderInfo : RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncrypted : RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnail;
             }
         }
         else
@@ -2785,6 +2836,21 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             else
             {
                 cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingAttachmentEncrypted : RoomTimelineCellIdentifierOutgoingAttachment;
+            }
+        }
+        else if (bubbleData.isAttachment)
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncryptedWithPaginationTitle : RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncryptedWithoutSenderInfo : RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncrypted : RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnail;
             }
         }
         else

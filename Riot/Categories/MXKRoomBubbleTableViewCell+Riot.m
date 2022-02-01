@@ -37,6 +37,29 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
 
 - (void)addTimestampLabelForComponent:(NSUInteger)componentIndex
 {
+    BOOL isFirstDisplayedComponent = (componentIndex == 0);
+    BOOL isLastMessageMostRecentComponent = NO;
+    
+    RoomBubbleCellData *roomBubbleCellData;
+    
+    if ([bubbleData isKindOfClass:RoomBubbleCellData.class])
+    {
+        roomBubbleCellData = (RoomBubbleCellData*)bubbleData;
+        isFirstDisplayedComponent = (componentIndex == roomBubbleCellData.oldestComponentIndex);
+        isLastMessageMostRecentComponent = roomBubbleCellData.containsLastMessage && (componentIndex == roomBubbleCellData.mostRecentComponentIndex);
+    }
+    
+    // Display timestamp on the left for selected component when it cannot overlap other UI elements like user's avatar
+    BOOL displayLabelOnLeft = roomBubbleCellData.displayTimestampForSelectedComponentOnLeftWhenPossible
+    && !isLastMessageMostRecentComponent
+    && (!isFirstDisplayedComponent || roomBubbleCellData.shouldHideSenderInformation);
+    
+    [self addTimestampLabelForComponent:componentIndex displayOnLeft:displayLabelOnLeft];
+}
+
+- (void)addTimestampLabelForComponent:(NSUInteger)componentIndex
+                        displayOnLeft:(BOOL)displayLabelOnLeft
+{
     MXKRoomBubbleComponent *component;
     
     NSArray *bubbleComponents = bubbleData.bubbleComponents;
@@ -49,7 +72,6 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
     if (component && component.date)
     {
         BOOL isFirstDisplayedComponent = (componentIndex == 0);
-        BOOL isLastMessageMostRecentComponent = NO;
         
         RoomBubbleCellData *roomBubbleCellData;
         
@@ -57,13 +79,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
         {
             roomBubbleCellData = (RoomBubbleCellData*)bubbleData;
             isFirstDisplayedComponent = (componentIndex == roomBubbleCellData.oldestComponentIndex);
-            isLastMessageMostRecentComponent = roomBubbleCellData.containsLastMessage && (componentIndex == roomBubbleCellData.mostRecentComponentIndex);
         }
-        
-        // Display timestamp on the left for selected component when it cannot overlap other UI elements like user's avatar
-        BOOL displayLabelOnLeft = roomBubbleCellData.displayTimestampForSelectedComponentOnLeftWhenPossible
-        && !isLastMessageMostRecentComponent
-        && ( !isFirstDisplayedComponent || roomBubbleCellData.shouldHideSenderInformation);
         
         [self addTimestampLabelForComponentIndex:componentIndex
                        isFirstDisplayedComponent:isFirstDisplayedComponent
