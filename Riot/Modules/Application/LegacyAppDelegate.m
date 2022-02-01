@@ -2335,6 +2335,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 case MXSessionStateClosed:
                 case MXSessionStateInitialised:
                 case MXSessionStateBackgroundSyncInProgress:
+                case MXSessionStateProcessingBackgroundSyncCache:
                     self.roomListDataReady = NO;
                     isLaunching = YES;
                     break;
