@@ -38,6 +38,6 @@ class VoiceMessageIncomingBubbleCell: VoiceMessageBubbleCell {
             return
         }
         
-        playbackController.playbackView.backgroundViewColor = theme.roomCellIncomingBubbleBackgroundColor
+        playbackController.playbackView.customBackgroundViewColor = theme.roomCellIncomingBubbleBackgroundColor
     }
 }

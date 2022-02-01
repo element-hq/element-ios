@@ -62,7 +62,9 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
         return _waveformView
     }
     
-    var backgroundViewColor: UIColor? {
+    /// Define the `backgroundView.backgroundColor`.
+    /// By setting this value the theme color will not be applyied to `backgroundView` in `update(theme: Theme)` method.
+    var customBackgroundViewColor: UIColor? {
         didSet {
             if let theme = currentTheme {
                 self.update(theme: theme)
@@ -138,7 +140,7 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
         playButton.backgroundColor = theme.colors.background
         playButton.tintColor = theme.colors.secondaryContent
         
-        let backgroundViewColor = self.backgroundViewColor ?? theme.colors.quinaryContent
+        let backgroundViewColor = self.customBackgroundViewColor ?? theme.colors.quinaryContent
         
         backgroundView.backgroundColor = backgroundViewColor
         _waveformView.primaryLineColor =  theme.colors.quarterlyContent
