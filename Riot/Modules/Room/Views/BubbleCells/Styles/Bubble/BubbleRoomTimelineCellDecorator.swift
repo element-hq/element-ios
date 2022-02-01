@@ -130,7 +130,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
             reactionsView.alignment = .right
             
             // TODO: Use constants
-            var outgointLeftMargin: CGFloat = 80.0
+            var outgoingLeftMargin: CGFloat = 80.0
             
             if cellData.containsBubbleComponentWithEncryptionBadge {
                 outgointLeftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
