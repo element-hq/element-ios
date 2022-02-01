@@ -51,7 +51,6 @@ typedef NS_ENUM(NSUInteger, SECTION_TAG)
 {
     SECTION_TAG_SIGN_OUT = 0,
     SECTION_TAG_USER_SETTINGS,
-    SECTION_TAG_LOCATION_SHARING,
     SECTION_TAG_SENDING_MEDIA,
     SECTION_TAG_LINKS,
     SECTION_TAG_SECURITY,
@@ -85,11 +84,6 @@ typedef NS_ENUM(NSUInteger, USER_SETTINGS_OFFSET)
 {
     USER_SETTINGS_EMAILS_OFFSET = 2000,
     USER_SETTINGS_PHONENUMBERS_OFFSET = 1000
-};
-
-typedef NS_ENUM(NSUInteger, LOCATION_SHARING)
-{
-    LOCATION_SHARING_ENABLED
 };
 
 typedef NS_ENUM(NSUInteger, SENDING_MEDIA)
@@ -381,15 +375,7 @@ TableViewSectionsDelegate>
     
     sectionUserSettings.headerTitle = [VectorL10n settingsUserSettings];
     [tmpSections addObject:sectionUserSettings];
-    
-    if (BuildSettings.locationSharingEnabled)
-    {
-        Section *sectionLocationSharing = [Section sectionWithTag:SECTION_TAG_LOCATION_SHARING];
-        [sectionLocationSharing addRowWithTag:LOCATION_SHARING_ENABLED];
-        sectionLocationSharing.headerTitle = VectorL10n.locationSharingSettingsHeader.uppercaseString;
-        [tmpSections addObject:sectionLocationSharing];
-    }
-    
+        
     if (BuildSettings.settingsScreenShowConfirmMediaSize)
     {
         Section *sectionMedia = [Section sectionWithTag:SECTION_TAG_SENDING_MEDIA];
@@ -1964,21 +1950,6 @@ TableViewSectionsDelegate>
             cell = passwordCell;
         }
     }
-    else if (section == SECTION_TAG_LOCATION_SHARING)
-    {
-        if (row == LOCATION_SHARING_ENABLED)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-    
-            labelAndSwitchCell.mxkLabel.text = VectorL10n.locationSharingSettingsToggleTitle;
-            labelAndSwitchCell.mxkSwitch.on =  RiotSettings.shared.roomScreenAllowLocationAction;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLocationSharing:) forControlEvents:UIControlEventTouchUpInside];
-            
-            cell = labelAndSwitchCell;
-        }
-    }
     else if (section == SECTION_TAG_SENDING_MEDIA)
     {
         if (row == SENDING_MEDIA_CONFIRM_SIZE)
@@ -3011,11 +2982,6 @@ TableViewSectionsDelegate>
             currentAlert = removePrompt;
         }
     }
-}
-
-- (void)toggleLocationSharing:(UISwitch *)sender
-{
-    RiotSettings.shared.roomScreenAllowLocationAction = sender.on;
 }
 
 - (void)toggleConfirmMediaSize:(UISwitch *)sender
