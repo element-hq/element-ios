@@ -155,15 +155,18 @@
 - (void)selectEvent:(MXEvent *)event
 {
     ThreadParameters *threadParameters = nil;
-    if (event.threadId)
+    if (RiotSettings.shared.enableThreads)
     {
-        threadParameters = [[ThreadParameters alloc] initWithThreadId:event.threadId
-                                                      stackRoomScreen:NO];
-    }
-    else if ([self.mainSession.threadingService isEventThreadRoot:event])
-    {
-        threadParameters = [[ThreadParameters alloc] initWithThreadId:event.eventId
-                                                      stackRoomScreen:NO];
+        if (event.threadId)
+        {
+            threadParameters = [[ThreadParameters alloc] initWithThreadId:event.threadId
+                                                          stackRoomScreen:NO];
+        }
+        else if ([self.mainSession.threadingService isEventThreadRoot:event])
+        {
+            threadParameters = [[ThreadParameters alloc] initWithThreadId:event.eventId
+                                                          stackRoomScreen:NO];
+        }
     }
     
     ScreenPresentationParameters *screenParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO

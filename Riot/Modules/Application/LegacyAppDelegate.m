@@ -1388,15 +1388,18 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                             }
                             
                             ThreadParameters *threadParameters = nil;
-                            if (event.threadId)
+                            if (RiotSettings.shared.enableThreads)
                             {
-                                threadParameters = [[ThreadParameters alloc] initWithThreadId:event.threadId
-                                                                              stackRoomScreen:NO];
-                            }
-                            else if ([account.mxSession.threadingService threadWithId:eventId])
-                            {
-                                threadParameters = [[ThreadParameters alloc] initWithThreadId:eventId
-                                                                              stackRoomScreen:NO];
+                                if (event.threadId)
+                                {
+                                    threadParameters = [[ThreadParameters alloc] initWithThreadId:event.threadId
+                                                                                  stackRoomScreen:NO];
+                                }
+                                else if ([account.mxSession.threadingService threadWithId:eventId])
+                                {
+                                    threadParameters = [[ThreadParameters alloc] initWithThreadId:eventId
+                                                                                  stackRoomScreen:NO];
+                                }
                             }
                             
                             RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId

@@ -83,23 +83,30 @@
                         dispatch_group_leave(group);
                     };
 
-                    if (result.result.isInThread)
+                    if (RiotSettings.shared.enableThreads)
                     {
-                        continueBlock();
-                    }
-                    else if (room)
-                    {
-                        [room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
-                            [liveTimeline paginate:NSUIntegerMax
-                                         direction:MXTimelineDirectionBackwards
-                                     onlyFromStore:YES
-                                          complete:^{
-                                [liveTimeline resetPagination];
-                                continueBlock();
-                            } failure:^(NSError * _Nonnull error) {
-                                continueBlock();
+                        if (result.result.isInThread)
+                        {
+                            continueBlock();
+                        }
+                        else if (room)
+                        {
+                            [room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
+                                [liveTimeline paginate:NSUIntegerMax
+                                             direction:MXTimelineDirectionBackwards
+                                         onlyFromStore:YES
+                                              complete:^{
+                                    [liveTimeline resetPagination];
+                                    continueBlock();
+                                } failure:^(NSError * _Nonnull error) {
+                                    continueBlock();
+                                }];
                             }];
-                        }];
+                        }
+                        else
+                        {
+                            continueBlock();
+                        }
                     }
                     else
                     {

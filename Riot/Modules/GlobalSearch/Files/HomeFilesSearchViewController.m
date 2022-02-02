@@ -152,12 +152,27 @@
             andEventId:(NSString*)eventId
        inMatrixSession:(MXSession*)session
 {
+    ThreadParameters *threadParameters = nil;
+    if (RiotSettings.shared.enableThreads)
+    {
+        if (event.threadId)
+        {
+            threadParameters = [[ThreadParameters alloc] initWithThreadId:event.threadId
+                                                          stackRoomScreen:NO];
+        }
+        else if ([self.mainSession.threadingService isEventThreadRoot:event])
+        {
+            threadParameters = [[ThreadParameters alloc] initWithThreadId:event.eventId
+                                                          stackRoomScreen:NO];
+        }
+    }
+
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
     
     RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
                                                                                     eventId:eventId
                                                                                   mxSession:session
-                                                                           threadParameters:nil
+                                                                           threadParameters:threadParameters
                                                                      presentationParameters:presentationParameters];
     
     [[AppDelegate theDelegate] showRoomWithParameters:parameters];
