@@ -171,6 +171,12 @@ import AnalyticsEvents
 // The following methods are exposed for compatibility with Objective-C as
 // the `capture` method and the generated events cannot be bridged from Swift.
 extension Analytics {
+    /// Updates any user properties to help with creating cohorts.
+    func updateUserProperties(/* Pass in properties as parameters in here */) {
+        let event = AnalyticsEvent.Identify(ftueUseCaseSelection: nil)
+        client.updateUserProperties(event)
+    }
+    
     /// Track the presentation of a screen
     /// - Parameters:
     ///   - screen: The screen that was shown.

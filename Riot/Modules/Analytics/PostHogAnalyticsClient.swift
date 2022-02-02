@@ -55,11 +55,17 @@ class PostHogAnalyticsClient: AnalyticsClientProtocol {
     }
     
     func capture(_ event: AnalyticsEventProtocol) {
-        postHog?.capture(event.eventName, properties: event.properties)
+        // Cast the dictionary values from Any? to Any as we're keeping all nil values for capture.
+        postHog?.capture(event.eventName, properties: event.properties as [String: Any])
     }
     
     func screen(_ event: AnalyticsScreenProtocol) {
-        postHog?.screen(event.screenName.rawValue, properties: event.properties)
+        // Cast the dictionary values from Any? to Any as we're keeping all nil values for capture.
+        postHog?.screen(event.screenName.rawValue, properties: event.properties as [String: Any])
     }
     
+    func updateUserProperties(_ event: AnalyticsEvent.Identify) {
+        // As user properties overwrite old ones via $set, compactMap the dictionary to avoid resetting any missing properties
+        postHog?.capture(event.eventName, properties: ["$set": event.properties.compactMapValues { $0 }])
+    }
 }
