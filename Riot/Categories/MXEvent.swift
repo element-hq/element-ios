@@ -15,8 +15,15 @@
 //
 
 import Foundation
+import MatrixSDK
 
-@available(iOS 14, *)
-enum UserSuggestionViewAction {
-    case selectedItem(UserSuggestionViewStateItem)
+extension MXEvent {
+    
+    /// Get MXMessageType if any
+    var messageType: MXMessageType? {
+        guard let messageTypeString = self.content["msgtype"] as? String else {
+            return nil
+        }
+        return MXMessageType(identifier: messageTypeString)
+    }
 }

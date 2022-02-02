@@ -217,6 +217,7 @@ extern NSString *const kMXKRoomBubbleCellUrlItemInteraction;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachViewTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachViewBottomConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachViewLeadingConstraint;
+@property (weak, nonatomic) NSLayoutConstraint *attachViewTrailingConstraint;
 
 /**
  The constraints which defines the relationship between bubbleInfoContainer and its superview
@@ -328,5 +329,8 @@ extern NSString *const kMXKRoomBubbleCellUrlItemInteraction;
 
 /// Add temporary subview to `tmpSubviews` property.
 - (void)addTemporarySubview:(UIView*)subview;
+
+/// Called when content view cell is tapped
+- (IBAction)onContentViewTap:(UITapGestureRecognizer*)sender;
 
 @end

@@ -19,6 +19,15 @@ import UIKit
 @objcMembers
 class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
     
+    // MARK: - Properties
+    
+    // TODO: Conforms to Themable and don't use ThemeService
+    var theme: Theme {
+        return ThemeService.shared().theme
+    }
+    
+    // MARK: - RoomTimelineCellDecorator
+    
     func addTimestampLabelIfNeeded(toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData) {
                 
         guard cellData.containsLastMessage && cellData.isCollapsableAndCollapsed == false else {

@@ -16,7 +16,10 @@
 
 import Foundation
 
-@available(iOS 14.0, *)
-enum UserSuggestionStateAction {
-    case updateWithItems([UserSuggestionItemProtocol])
+class LocationIncomingWithPaginationTitleBubbleCell: LocationIncomingBubbleCell {
+    override func setupViews() {
+        super.setupViews()
+        
+        bubbleCellContentView?.showPaginationTitle = true
+    }
 }

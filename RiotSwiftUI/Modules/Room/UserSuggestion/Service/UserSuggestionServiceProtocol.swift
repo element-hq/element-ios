@@ -17,7 +17,6 @@
 import Foundation
 import Combine
 
-@available(iOS 14.0, *)
 protocol UserSuggestionItemProtocol: Avatarable {
     var userId: String { get }
     var displayName: String? { get }
@@ -36,7 +35,6 @@ protocol UserSuggestionServiceProtocol {
 
 // MARK: Avatarable
 
-@available(iOS 14.0, *)
 extension UserSuggestionItemProtocol {
     var mxContentUri: String? {
         avatarUrl

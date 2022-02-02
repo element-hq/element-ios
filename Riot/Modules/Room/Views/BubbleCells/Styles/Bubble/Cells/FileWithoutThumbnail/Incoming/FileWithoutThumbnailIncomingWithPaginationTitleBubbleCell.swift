@@ -14,9 +14,13 @@
 // limitations under the License.
 //
 
-import Foundation
+import UIKit
 
-struct UserSuggestionCoordinatorParameters {
-    let mediaManager: MXMediaManager
-    let room: MXRoom
+class FileWithoutThumbnailIncomingWithPaginationTitleBubbleCell: FileWithoutThumbnailIncomingBubbleCell {
+    
+    override func setupViews() {
+        super.setupViews()
+        
+        bubbleCellContentView?.showPaginationTitle = true
+    }
 }

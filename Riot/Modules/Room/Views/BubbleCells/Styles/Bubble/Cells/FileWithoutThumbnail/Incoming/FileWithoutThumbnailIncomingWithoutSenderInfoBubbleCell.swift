@@ -14,14 +14,13 @@
 // limitations under the License.
 //
 
-import Foundation
+import UIKit
 
-@available(iOS 14, *)
-protocol UserSuggestionViewModelProtocol {
+class FileWithoutThumbnailIncomingWithoutSenderInfoBubbleCell: FileWithoutThumbnailIncomingBubbleCell {
     
-    static func makeUserSuggestionViewModel(userSuggestionService: UserSuggestionServiceProtocol) -> UserSuggestionViewModelProtocol
-    
-    var context: UserSuggestionViewModelType.Context { get }
-    
-    var completion: ((UserSuggestionViewModelResult) -> Void)? { get set }
+    override func setupViews() {
+        super.setupViews()
+        
+        bubbleCellContentView?.showSenderInfo = false        
+    }
 }

@@ -96,6 +96,12 @@ import DesignKit
     
     /// Color to use in shadows. Should be contrast to `backgroundColor`.
     var shadowColor: UIColor { get }
+        
+    // Timeline cells
+
+    var roomCellIncomingBubbleBackgroundColor: UIColor { get }
+    
+    var roomCellOutgoingBubbleBackgroundColor: UIColor { get }
     
     // MARK: - Customisation methods
 

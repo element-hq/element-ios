@@ -85,7 +85,7 @@ class TimelinePollViewModelTests: XCTestCase {
     }
 
     func testClosedSelection() {
-        context.viewState.poll.closed = true
+        viewModel.state.poll.closed = true
 
         context.send(viewAction: .selectAnswerOptionWithIdentifier("1"))
         context.send(viewAction: .selectAnswerOptionWithIdentifier("3"))
@@ -96,7 +96,7 @@ class TimelinePollViewModelTests: XCTestCase {
     }
 
     func testSingleSelectionOnMax2Allowed() {
-        context.viewState.poll.maxAllowedSelections = 2
+        viewModel.state.poll.maxAllowedSelections = 2
         
         context.send(viewAction: .selectAnswerOptionWithIdentifier("1"))
         
@@ -106,7 +106,7 @@ class TimelinePollViewModelTests: XCTestCase {
     }
     
     func testSingleReselectionOnMax2Allowed() {
-        context.viewState.poll.maxAllowedSelections = 2
+        viewModel.state.poll.maxAllowedSelections = 2
         
         context.send(viewAction: .selectAnswerOptionWithIdentifier("1"))
         context.send(viewAction: .selectAnswerOptionWithIdentifier("1"))
@@ -117,7 +117,7 @@ class TimelinePollViewModelTests: XCTestCase {
     }
     
     func testMultipleSelectionOnMax2Allowed() {
-        context.viewState.poll.maxAllowedSelections = 2
+        viewModel.state.poll.maxAllowedSelections = 2
         
         context.send(viewAction: .selectAnswerOptionWithIdentifier("1"))
         context.send(viewAction: .selectAnswerOptionWithIdentifier("3"))

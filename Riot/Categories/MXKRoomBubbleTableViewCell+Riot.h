@@ -68,6 +68,17 @@ extern NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePr
 - (void)addTimestampLabelForComponent:(NSUInteger)componentIndex;
 
 /**
+ Add timestamp label for a component in receiver.
+ 
+ Note: The label added here is automatically removed when [didEndDisplay] is called.
+ 
+ @param componentIndex index of the component in bubble message data
+ @param displayOnLeft Indicate true to display label on left and false to display on right
+ */
+- (void)addTimestampLabelForComponent:(NSUInteger)componentIndex
+                        displayOnLeft:(BOOL)displayOnLeft;
+
+/**
  Highlight a component in receiver.
  
  @param componentIndex index of the component in bubble message data

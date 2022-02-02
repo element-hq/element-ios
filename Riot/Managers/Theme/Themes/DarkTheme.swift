@@ -91,6 +91,12 @@ class DarkTheme: NSObject, Theme {
     var shadowColor: UIColor = UIColor(rgb: 0xFFFFFF)
     
     var messageTickColor: UIColor = .white
+    
+    var roomCellIncomingBubbleBackgroundColor: UIColor {
+        return self.colors.system
+    }
+    
+    var roomCellOutgoingBubbleBackgroundColor: UIColor = UIColor(rgb: 0x133A34)
 
     func applyStyle(onTabBar tabBar: UITabBar) {
         tabBar.unselectedItemTintColor = self.tabBarUnselectedItemTintColor

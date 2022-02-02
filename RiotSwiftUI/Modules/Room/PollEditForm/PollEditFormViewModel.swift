@@ -23,11 +23,11 @@ struct PollEditFormViewModelParameters {
 }
 
 @available(iOS 14, *)
-typealias PollEditFormViewModelType = StateStoreViewModel< PollEditFormViewState,
-                                                           PollEditFormStateAction,
-                                                           PollEditFormViewAction >
+typealias PollEditFormViewModelType = StateStoreViewModel <PollEditFormViewState,
+                                                           Never,
+                                                           PollEditFormViewAction>
 @available(iOS 14, *)
-class PollEditFormViewModel: PollEditFormViewModelType {
+class PollEditFormViewModel: PollEditFormViewModelType, PollEditFormViewModelProtocol {
     
     private struct Constants {
         static let minAnswerOptionsCount = 2
@@ -71,40 +71,32 @@ class PollEditFormViewModel: PollEditFormViewModelType {
             completion?(.create(buildPollDetails()))
         case .update:
             completion?(.update(buildPollDetails()))
-        default:
-            dispatch(action: .viewAction(viewAction))
+        case .addAnswerOption:
+            state.bindings.answerOptions.append(PollEditFormAnswerOption(text: "", maxLength: Constants.maxAnswerOptionLength))
+        case .deleteAnswerOption(let answerOption):
+            state.bindings.answerOptions.removeAll { $0 == answerOption }
         }
     }
-
-    override class func reducer(state: inout PollEditFormViewState, action: PollEditFormStateAction) {
-        switch action {
-        case .viewAction(let viewAction):
-            switch viewAction {
-            case .deleteAnswerOption(let answerOption):
-                state.bindings.answerOptions.removeAll { $0 == answerOption }
-            case .addAnswerOption:
-                state.bindings.answerOptions.append(PollEditFormAnswerOption(text: "", maxLength: Constants.maxAnswerOptionLength))
-            default:
-                break
-            }
-        case .startLoading:
-            state.showLoadingIndicator = true
-            break
-        case .stopLoading(let error):
-            state.showLoadingIndicator = false
-            
-            switch error {
-            case .failedCreatingPoll:
-                state.bindings.alertInfo = PollEditFormErrorAlertInfo(id: .failedCreatingPoll,
-                                                                      title: VectorL10n.pollEditFormPostFailureTitle,
-                                                                      subtitle: VectorL10n.pollEditFormPostFailureSubtitle)
-            case .failedUpdatingPoll:
-                state.bindings.alertInfo = PollEditFormErrorAlertInfo(id: .failedUpdatingPoll,
-                                                                      title: VectorL10n.pollEditFormUpdateFailureTitle,
-                                                                      subtitle: VectorL10n.pollEditFormUpdateFailureSubtitle)
-            case .none:
-                break
-            }
+    
+    // MARK: - PollEditFormViewModelProtocol
+    
+    func startLoading() {
+        state.showLoadingIndicator = true
+    }
+    
+    func stopLoading(errorAlertType: PollEditFormErrorAlertInfo.AlertType?) {
+        state.showLoadingIndicator = false
+        
+        switch errorAlertType {
+        case .failedCreatingPoll:
+            state.bindings.alertInfo = PollEditFormErrorAlertInfo(id: .failedCreatingPoll,
+                                                                  title: VectorL10n.pollEditFormPostFailureTitle,
+                                                                  subtitle: VectorL10n.pollEditFormPostFailureSubtitle)
+        case .failedUpdatingPoll:
+            state.bindings.alertInfo = PollEditFormErrorAlertInfo(id: .failedUpdatingPoll,
+                                                                  title: VectorL10n.pollEditFormUpdateFailureTitle,
+                                                                  subtitle: VectorL10n.pollEditFormUpdateFailureSubtitle)
+        case .none:
             break
         }
     }
@@ -115,8 +107,8 @@ class PollEditFormViewModel: PollEditFormViewModelType {
         return EditFormPollDetails(type: state.bindings.type,
                                    question: state.bindings.question.text.trimmingCharacters(in: .whitespacesAndNewlines),
                                    answerOptions: state.bindings.answerOptions.compactMap({ answerOption in
-                                    let text = answerOption.text.trimmingCharacters(in: .whitespacesAndNewlines)
-                                    return text.isEmpty ? nil : text
-                                   }))
+            let text = answerOption.text.trimmingCharacters(in: .whitespacesAndNewlines)
+            return text.isEmpty ? nil : text
+        }))
     }
 }

@@ -51,7 +51,55 @@
 #import "RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.h"
 #import "RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.h"
 
+#import "GeneratedInterface-Swift.h"
+
 @implementation BubbleRoomTimelineCellProvider
+
+#pragma mark - Registration
+
+- (void)registerCellsForTableView:(UITableView *)tableView
+{
+    [super registerCellsForTableView:tableView];
+    
+    [self registerFileWithoutThumbnailCellsForTableView:tableView];
+}
+
+- (void)registerVoiceMessageCellsForTableView:(UITableView*)tableView
+{
+    // Incoming
+    [tableView registerClass:VoiceMessageIncomingBubbleCell.class forCellReuseIdentifier:VoiceMessageIncomingBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceMessageIncomingWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:VoiceMessageIncomingWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceMessageIncomingWithPaginationTitleBubbleCell.class forCellReuseIdentifier:VoiceMessageIncomingWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    // Outgoing
+    [tableView registerClass:VoiceMessageOutgoingWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:VoiceMessageOutgoingWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceMessageOutgoingWithPaginationTitleBubbleCell.class forCellReuseIdentifier:VoiceMessageOutgoingWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+}
+
+- (void)registerLocationCellsForTableView:(UITableView*)tableView
+{
+    // Incoming
+    [tableView registerClass:LocationIncomingBubbleCell.class forCellReuseIdentifier:LocationIncomingBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:LocationIncomingWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:LocationIncomingWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:LocationIncomingWithPaginationTitleBubbleCell.class forCellReuseIdentifier:LocationIncomingWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    
+    // Outgoing
+    [tableView registerClass:LocationOutgoingWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:LocationOutgoingWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:LocationOutgoingWithPaginationTitleBubbleCell.class forCellReuseIdentifier:LocationOutgoingWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+}
+
+- (void)registerFileWithoutThumbnailCellsForTableView:(UITableView*)tableView
+{
+    // Incoming
+    [tableView registerClass:FileWithoutThumbnailIncomingBubbleCell.class forCellReuseIdentifier:FileWithoutThumbnailIncomingBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:FileWithoutThumbnailIncomingWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:FileWithoutThumbnailIncomingWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:FileWithoutThumbnailIncomingWithPaginationTitleBubbleCell.class forCellReuseIdentifier:FileWithoutThumbnailIncomingWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    
+    // Outgoing
+    [tableView registerClass:FileWithoutThumbnailOutoingWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:FileWithoutThumbnailOutoingWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:FileWithoutThumbnailOutoingWithPaginationTitleBubbleCell.class forCellReuseIdentifier:FileWithoutThumbnailOutoingWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+}
+
+#pragma mark - Mapping
 
 - (NSDictionary<NSNumber*, Class>*)outgoingTextMessageCellsMapping
 {
@@ -84,6 +132,62 @@
         @(RoomTimelineCellIdentifierOutgoingAttachmentEncrypted) : RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.class,
         @(RoomTimelineCellIdentifierOutgoingAttachmentEncryptedWithoutSenderInfo) : RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.class,
         @(RoomTimelineCellIdentifierOutgoingAttachmentEncryptedWithPaginationTitle) : RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.class
+    };
+}
+
+- (NSDictionary<NSNumber*, Class>*)incomingAttachmentWithoutThumbnailCellsMapping
+{
+    return @{
+        // Clear
+        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnail) : FileWithoutThumbnailIncomingBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailWithoutSenderInfo) : FileWithoutThumbnailIncomingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailWithPaginationTitle) : FileWithoutThumbnailIncomingWithPaginationTitleBubbleCell.class,
+        // Encrypted
+        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncrypted) : FileWithoutThumbnailIncomingBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncryptedWithoutSenderInfo) : FileWithoutThumbnailIncomingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncryptedWithPaginationTitle) : FileWithoutThumbnailIncomingWithPaginationTitleBubbleCell.class
+    };
+}
+
+- (NSDictionary<NSNumber*, Class>*)outgoingAttachmentWithoutThumbnailCellsMapping
+{
+    return @{
+        // Clear
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnail) : FileWithoutThumbnailOutoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailWithoutSenderInfo) : FileWithoutThumbnailOutoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailWithPaginationTitle) : FileWithoutThumbnailOutoingWithPaginationTitleBubbleCell.class,
+        // Encrypted
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncrypted) : FileWithoutThumbnailOutoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncryptedWithoutSenderInfo) : FileWithoutThumbnailOutoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncryptedWithPaginationTitle) : FileWithoutThumbnailOutoingWithPaginationTitleBubbleCell.class
+    };
+}
+
+- (NSDictionary<NSNumber*, Class>*)voiceMessageCellsMapping
+{
+    return @{
+        // Incoming
+        @(RoomTimelineCellIdentifierIncomingVoiceMessage) : VoiceMessageIncomingBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingVoiceMessageWithoutSenderInfo) : VoiceMessageIncomingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingVoiceMessageWithPaginationTitle) : VoiceMessageIncomingWithPaginationTitleBubbleCell.class,
+        // Outgoing
+        @(RoomTimelineCellIdentifierOutgoingVoiceMessage) : VoiceMessageOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceMessageWithoutSenderInfo) : VoiceMessageOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceMessageWithPaginationTitle) : VoiceMessageOutgoingWithPaginationTitleBubbleCell.class,
+    };
+}
+
+- (NSDictionary<NSNumber*, Class>*)locationCellsMapping
+{
+    return @{
+        // Incoming
+        @(RoomTimelineCellIdentifierIncomingLocation) : LocationIncomingBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingLocationWithoutSenderInfo) : LocationIncomingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingLocationWithPaginationTitle) : LocationIncomingWithPaginationTitleBubbleCell.class,
+        // Outgoing
+        @(RoomTimelineCellIdentifierOutgoingLocation) : LocationOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingLocationWithoutSenderInfo) : LocationOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingLocationWithPaginationTitle) : LocationOutgoingWithPaginationTitleBubbleCell.class
     };
 }
 

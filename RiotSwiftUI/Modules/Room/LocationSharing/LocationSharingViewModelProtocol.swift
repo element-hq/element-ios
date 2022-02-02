@@ -16,7 +16,15 @@
 
 import Foundation
 
-@available(iOS 14, *)
-enum UserSuggestionViewModelResult {
-    case selectedItemWithIdentifier(String)
+protocol LocationSharingViewModelProtocol {
+    var completion: ((LocationSharingViewModelResult) -> Void)? { get set }
+    
+    func startLoading()
+    func stopLoading(error: LocationSharingErrorAlertInfo.AlertType?)
+}
+
+extension LocationSharingViewModelProtocol {
+    func stopLoading() {
+        stopLoading(error: nil)
+    }
 }
