@@ -58,6 +58,7 @@
                             <constraints>
                                 <constraint firstItem="Ro1-vP-6Ha" firstAttribute="top" secondItem="u1e-Q2-PhY" secondAttribute="top" constant="10" id="5kZ-rt-pvq"/>
                                 <constraint firstAttribute="trailing" secondItem="Ro1-vP-6Ha" secondAttribute="trailing" constant="10" id="8P7-ZL-7pg"/>
+                                <constraint firstItem="Ro1-vP-6Ha" firstAttribute="leading" secondItem="u1e-Q2-PhY" secondAttribute="leading" constant="56" id="A4v-WV-EGn"/>
                                 <constraint firstAttribute="bottom" secondItem="Ro1-vP-6Ha" secondAttribute="bottom" constant="10" id="UcW-P4-rQv"/>
                             </constraints>
                         </view>
@@ -205,7 +206,6 @@
                         <constraint firstItem="meG-P8-61b" firstAttribute="trailing" secondItem="oeI-eO-mFK" secondAttribute="trailing" id="2Dy-o0-r33"/>
                         <constraint firstItem="w0C-6a-f5M" firstAttribute="width" secondItem="5GX-gn-bK1" secondAttribute="width" id="5nl-Le-VDi"/>
                         <constraint firstItem="u1e-Q2-PhY" firstAttribute="width" secondItem="5GX-gn-bK1" secondAttribute="width" id="KrJ-dm-TaV"/>
-                        <constraint firstItem="Ro1-vP-6Ha" firstAttribute="leading" secondItem="oeI-eO-mFK" secondAttribute="leading" id="S0v-mG-74W"/>
                         <constraint firstItem="4zo-V8-CNe" firstAttribute="width" secondItem="5GX-gn-bK1" secondAttribute="width" id="bdq-sQ-NQy"/>
                         <constraint firstItem="meG-P8-61b" firstAttribute="leading" secondItem="oeI-eO-mFK" secondAttribute="leading" id="lq1-xP-tea"/>
                         <constraint firstItem="SNw-aM-ILI" firstAttribute="leading" secondItem="oeI-eO-mFK" secondAttribute="leading" id="x1n-oT-dez"/>
