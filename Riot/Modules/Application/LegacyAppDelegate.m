@@ -2335,11 +2335,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 case MXSessionStateClosed:
                 case MXSessionStateInitialised:
                 case MXSessionStateBackgroundSyncInProgress:
-                case MXSessionStateProcessingBackgroundSyncCache:
                     self.roomListDataReady = NO;
                     isLaunching = YES;
                     break;
                 case MXSessionStateStoreDataReady:
+                case MXSessionStateProcessingBackgroundSyncCache:
                 case MXSessionStateSyncInProgress:
                     // Stay in launching during the first server sync if the store is empty.
                     isLaunching = (mainSession.rooms.count == 0 && launchAnimationContainerView);
