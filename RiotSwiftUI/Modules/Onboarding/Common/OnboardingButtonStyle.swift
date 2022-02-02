@@ -14,11 +14,19 @@
 // limitations under the License.
 //
 
-import Foundation
+import SwiftUI
 
 @available(iOS 14.0, *)
-struct AnalyticsPromptStrings: AnalyticsPromptStringsProtocol {
-    let point1 = HTMLFormatter().formatHTML(VectorL10n.analyticsPromptPoint1, withAllowedTags: ["b", "p"], fontSize: UIFont.systemFontSize)
-    let point2 = HTMLFormatter().formatHTML(VectorL10n.analyticsPromptPoint2, withAllowedTags: ["b", "p"], fontSize: UIFont.systemFontSize)
+struct OnboardingButtonStyle: ButtonStyle {
+    @Environment(\.theme) private var theme
+    
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(configuration.isPressed ? theme.colors.accent : theme.colors.quinaryContent, lineWidth: configuration.isPressed ? 2 : 1.5)
+            )
+            .contentShape(RoundedRectangle(cornerRadius: 8))
+    }
 }
-

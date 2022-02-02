@@ -20,7 +20,7 @@ import Foundation
 
 /// `AuthenticationCoordinatorProtocol` is a protocol describing a Coordinator that handle's the authentication navigation flow.
 protocol AuthenticationCoordinatorProtocol: Coordinator, Presentable {
-    var completion: (() -> Void)? { get set }
+    var completion: ((MXKAuthenticationType) -> Void)? { get set }
     
     /// Update the screen to display registration or login.
     func update(authenticationType: MXKAuthenticationType)

@@ -33,6 +33,8 @@ class UserSession: NSObject, UserSessionProtocol {
     let account: MXKAccount
     // Keep strong reference to the MXSession because account.mxSession can become nil on logout or failure
     let matrixSession: MXSession
+    /// An object that contains user specific properties.
+    private(set) lazy var properties = UserSessionProperties(userId: userId)
     
     var userId: String {
         guard let userId = self.account.mxCredentials.userId else {

@@ -42,12 +42,10 @@ struct AnalyticsPrompt: View {
         VStack {
             Text("\(viewModel.viewState.promptType.message)\n")
             
-            AnalyticsPromptTermsText(attributedString: viewModel.viewState.promptType.termsStrings)
-                .accessibilityLabel(Text(viewModel.viewState.promptType.termsStrings.string))
-                .accessibilityValue(Text(VectorL10n.accessibilityButtonLabel))
-                .onTapGesture {
-                    viewModel.send(viewAction: .openTermsURL)
-                }
+            InlineTextButton(viewModel.viewState.promptType.mainTermsString,
+                             tappableText: viewModel.viewState.promptType.termsLinkString) {
+                viewModel.send(viewAction: .openTermsURL)
+            }
         }
     }
     
@@ -71,7 +69,7 @@ struct AnalyticsPrompt: View {
             Image(uiImage: Asset.Images.analyticsLogo.image)
                 .padding(.bottom, 25)
             
-            Text(VectorL10n.analyticsPromptTitle(viewModel.viewState.strings.appDisplayName))
+            Text(VectorL10n.analyticsPromptTitle(AppInfo.current.displayName))
                 .font(theme.fonts.title2B)
                 .foregroundColor(theme.colors.primaryContent)
                 .padding(.bottom, 2)
@@ -125,6 +123,7 @@ struct AnalyticsPrompt: View {
                     .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
             }
             .background(theme.colors.background.ignoresSafeArea())
+            .accentColor(theme.colors.accent)
         }
     }
 }

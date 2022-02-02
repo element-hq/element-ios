@@ -16,9 +16,26 @@
 
 import Foundation
 
-@available(iOS 14.0, *)
-struct AnalyticsPromptStrings: AnalyticsPromptStringsProtocol {
-    let point1 = HTMLFormatter().formatHTML(VectorL10n.analyticsPromptPoint1, withAllowedTags: ["b", "p"], fontSize: UIFont.systemFontSize)
-    let point2 = HTMLFormatter().formatHTML(VectorL10n.analyticsPromptPoint2, withAllowedTags: ["b", "p"], fontSize: UIFont.systemFontSize)
+// MARK: - Coordinator
+
+// MARK: View model
+
+enum OnboardingUseCaseStateAction {
+    case viewAction(OnboardingUseCaseViewAction)
 }
 
+enum OnboardingUseCaseViewModelResult {
+    case personalMessaging
+    case workMessaging
+    case communityMessaging
+    case skipped
+    case customServer
+}
+
+// MARK: View
+
+struct OnboardingUseCaseViewState: BindableState { }
+
+enum OnboardingUseCaseViewAction {
+    case answer(OnboardingUseCaseViewModelResult)
+}

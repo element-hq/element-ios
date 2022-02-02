@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +14,10 @@
 // limitations under the License.
 //
 
-import Foundation
+import XCTest
+import RiotSwiftUI
 
 @available(iOS 14.0, *)
-struct AnalyticsPromptStrings: AnalyticsPromptStringsProtocol {
-    let point1 = HTMLFormatter().formatHTML(VectorL10n.analyticsPromptPoint1, withAllowedTags: ["b", "p"], fontSize: UIFont.systemFontSize)
-    let point2 = HTMLFormatter().formatHTML(VectorL10n.analyticsPromptPoint2, withAllowedTags: ["b", "p"], fontSize: UIFont.systemFontSize)
+class OnboardingUseCaseUITests: MockScreenTest {
+    // The view has no parameters or changing state to test.
 }
-

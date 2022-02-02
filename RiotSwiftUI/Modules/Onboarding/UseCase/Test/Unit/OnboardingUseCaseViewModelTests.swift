@@ -14,11 +14,11 @@
 // limitations under the License.
 //
 
-import Foundation
+import XCTest
+
+@testable import RiotSwiftUI
 
 @available(iOS 14.0, *)
-struct AnalyticsPromptStrings: AnalyticsPromptStringsProtocol {
-    let point1 = HTMLFormatter().formatHTML(VectorL10n.analyticsPromptPoint1, withAllowedTags: ["b", "p"], fontSize: UIFont.systemFontSize)
-    let point2 = HTMLFormatter().formatHTML(VectorL10n.analyticsPromptPoint2, withAllowedTags: ["b", "p"], fontSize: UIFont.systemFontSize)
+class OnboardingUseCaseViewModelTests: XCTestCase {
+    // The view model has nothing to test.
 }
-

@@ -93,6 +93,17 @@
 "onboarding_splash_page_4_title_no_pun" = "Messaging for your team.";
 "onboarding_splash_page_4_message" = "Element is also great for the workplace. It’s trusted by the world’s most secure organisations.";
 
+"onboarding_use_case_title" = "Who will you chat to the most?";
+"onboarding_use_case_message" = "We’ll help you get connected.";
+"onboarding_use_case_personal_messaging" = "Friends and family";
+"onboarding_use_case_work_messaging" = "Coworkers and teams";
+"onboarding_use_case_community_messaging" = "Online community members";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "Not sure yet? You can %@";
+"onboarding_use_case_skip_button" = "skip this question";
+"onboarding_use_case_existing_server_message" = "Looking to join an existing server?";
+"onboarding_use_case_existing_server_button" = "Connect to server";
+
 // Authentication
 "auth_login" = "Log in";
 "auth_register" = "Register";

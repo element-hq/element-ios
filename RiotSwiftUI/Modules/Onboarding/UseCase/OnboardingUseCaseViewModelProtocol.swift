@@ -16,9 +16,9 @@
 
 import Foundation
 
-@available(iOS 14.0, *)
-struct AnalyticsPromptStrings: AnalyticsPromptStringsProtocol {
-    let point1 = HTMLFormatter().formatHTML(VectorL10n.analyticsPromptPoint1, withAllowedTags: ["b", "p"], fontSize: UIFont.systemFontSize)
-    let point2 = HTMLFormatter().formatHTML(VectorL10n.analyticsPromptPoint2, withAllowedTags: ["b", "p"], fontSize: UIFont.systemFontSize)
+protocol OnboardingUseCaseViewModelProtocol {
+    
+    var completion: ((OnboardingUseCaseViewModelResult) -> Void)? { get set }
+    @available(iOS 14, *)
+    var context: OnboardingUseCaseViewModelType.Context { get }
 }
-
