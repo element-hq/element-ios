@@ -120,7 +120,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     tableSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 600, 44)];
     tableSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     tableSearchBar.showsCancelButton = NO;
-    tableSearchBar.placeholder = [VectorL10n searchDefaultPlaceholder];
+    tableSearchBar.placeholder = [VectorL10n searchFilterPlaceholder];
+    UIImage *filterIcon = [UIImage imageNamed:@"filter_off"];
+    [tableSearchBar setImage:filterIcon
+            forSearchBarIcon:UISearchBarIconSearch
+                       state:UIControlStateNormal];
+
     tableSearchBar.delegate = self;
     
     displayedSectionHeaders = [NSMutableArray array];
@@ -165,8 +170,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }];
     
     self.recentsSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    self.recentsSearchBar.placeholder = [VectorL10n searchDefaultPlaceholder];
-    
+    self.recentsSearchBar.placeholder = [VectorL10n searchFilterPlaceholder];
+    UIImage *filterIcon = [UIImage imageNamed:@"filter_off"];
+    [self.recentsSearchBar setImage:filterIcon
+                   forSearchBarIcon:UISearchBarIconSearch
+                              state:UIControlStateNormal];
+
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -2175,6 +2184,25 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
     [self.recentsSearchBar setShowsCancelButton:NO animated:NO];
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    [super searchBar:searchBar textDidChange:searchText];
+
+    UIImage *filterIcon;
+    if ([searchText length] == 0)
+    {
+        filterIcon = [UIImage imageNamed:@"filter_off"];
+    }
+    else
+    {
+        filterIcon = [UIImage imageNamed:@"threads_filter"];
+    }
+
+    [self.recentsSearchBar setImage:filterIcon
+                   forSearchBarIcon:UISearchBarIconSearch
+                              state:UIControlStateNormal];
 }
 
 #pragma mark - CreateRoomCoordinatorBridgePresenterDelegate

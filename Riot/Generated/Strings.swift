@@ -3987,6 +3987,10 @@ public class VectorL10n: NSObject {
   public static var searchFiles: String { 
     return VectorL10n.tr("Vector", "search_files") 
   }
+  /// Filter
+  public static var searchFilterPlaceholder: String { 
+    return VectorL10n.tr("Vector", "search_filter_placeholder") 
+  }
   /// Searching…
   public static var searchInProgress: String { 
     return VectorL10n.tr("Vector", "search_in_progress") 
