@@ -262,7 +262,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
                                                                                  constant: -rightMargin)
             }
             
-            let topMargin = RoomBubbleCellLayout.threadSummaryViewTopMargin
+            let topMargin = RoomBubbleCellLayout.threadSummaryViewTopMargin + 15.0
             let height = ThreadSummaryView.contentViewHeight(forThread: threadSummaryView.thread,
                                                              fitting: cellData.maxTextViewWidth)
 
