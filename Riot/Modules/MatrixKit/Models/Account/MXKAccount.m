@@ -1020,7 +1020,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                 }
             }
             
-            MXLogDebug(@"[MXKAccount] Pause is delayed at the end of sync (current state %tu)", mxSession.state);
+            MXLogDebug(@"[MXKAccount] Pause is delayed at the end of sync (current state %@)", [MXTools readableSessionState: mxSession.state]);
             isPauseRequested = YES;
         }
     }
@@ -1032,7 +1032,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     
     if (mxSession)
     {
-        MXLogVerbose(@"[MXKAccount] resume with session state: %tu", mxSession.state);
+        MXLogVerbose(@"[MXKAccount] resume with session state: %@", [MXTools readableSessionState:mxSession.state]);
         
         [self cancelBackgroundSync];
         
@@ -1891,7 +1891,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         }
         else
         {
-            MXLogDebug(@"[MXKAccount] cannot start background Sync (invalid state %tu)", mxSession.state);
+            MXLogDebug(@"[MXKAccount] cannot start background Sync (invalid state %@)", [MXTools readableSessionState:mxSession.state]);
             failure([NSError errorWithDomain:kMXKAccountErrorDomain code:0 userInfo:nil]);
         }
     }
