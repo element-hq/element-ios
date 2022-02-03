@@ -22,7 +22,7 @@ class BadgedBarButtonItem: UIBarButtonItem {
     var baseButton: UIButton
     private var badgeLabel: UILabel
     
-    private var theme: Theme = ThemeService.shared().theme
+    private var theme: Theme
     
     var badgeText: String? {
         didSet {
@@ -57,8 +57,9 @@ class BadgedBarButtonItem: UIBarButtonItem {
         return text.isEmpty || text == "0" || text == "nil" || text == "null"
     }
     
-    init(withBaseButton baseButton: UIButton) {
+    init(withBaseButton baseButton: UIButton, theme: Theme) {
         self.baseButton = baseButton
+        self.theme = theme
         badgeBackgroundColor = .gray
         badgeTextColor = .white
         badgeFont = .systemFont(ofSize: 12, weight: .semibold)

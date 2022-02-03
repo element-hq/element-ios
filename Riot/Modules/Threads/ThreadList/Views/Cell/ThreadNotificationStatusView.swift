@@ -19,7 +19,17 @@ import UIKit
 /// Dot view for a thread notification status
 class ThreadNotificationStatusView: UIView {
     
-    private var theme: Theme = ThemeService.shared().theme
+    private var theme: Theme
+
+    init(withTheme theme: Theme) {
+        self.theme = theme
+        super.init(frame: .zero)
+    }
+
+    required init?(coder: NSCoder) {
+        theme = ThemeService.shared().theme
+        super.init(coder: coder)
+    }
     
     /// Current status. Update this property to change background color accordingly.
     var status: ThreadNotificationStatus = .none {

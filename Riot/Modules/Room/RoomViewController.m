@@ -1461,7 +1461,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
      forControlEvents:UIControlEventTouchUpInside];
     button.accessibilityLabel = [VectorL10n roomAccessibilityThreads];
     
-    return [[BadgedBarButtonItem alloc] initWithBaseButton:button];
+    return [[BadgedBarButtonItem alloc] initWithBaseButton:button
+                                                     theme:ThemeService.shared.theme];
 }
 
 - (void)setupRemoveJitsiWidgetRemoveView
