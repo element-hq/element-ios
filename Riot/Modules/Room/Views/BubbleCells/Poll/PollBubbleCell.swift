@@ -34,10 +34,7 @@ class PollBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplayable {
         }
         
         self.event = event
-        
-        pollView?.removeFromSuperview()
-        contentView.vc_addSubViewMatchingParent(view)
-        pollView = view
+        self.addPollView(view, on: contentView)
     }
     
     override func setupViews() {
@@ -55,6 +52,13 @@ class PollBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplayable {
         }
         
         delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellTapOnContentView, userInfo: [kMXKRoomBubbleCellEventKey: event])
+    }
+    
+    func addPollView(_ pollView: UIView, on contentView: UIView) {
+        
+        self.pollView?.removeFromSuperview()
+        contentView.vc_addSubViewMatchingParent(pollView)
+        self.pollView = pollView
     }
 }
 
