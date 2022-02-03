@@ -21,9 +21,7 @@ class RoomInviteViewController: ContactsTableViewController {
     var room: MXRoom?
     var roomAlias: String?
     
-    private lazy var shareLinkPresenter: ShareInviteLinkPresenter = {
-        ShareInviteLinkPresenter()
-    }()
+    private lazy var shareLinkPresenter: ShareInviteLinkPresenter = ShareInviteLinkPresenter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
