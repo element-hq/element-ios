@@ -171,7 +171,7 @@ extension SpaceMembersCoordinator: ContactsPickerCoordinatorDelegate {
     }
     
     func contactsPickerCoordinatorDidClose(_ coordinator: ContactsPickerCoordinatorType) {
-        childCoordinators.removeLast()
+        remove(childCoordinator: coordinator)
     }
 }
 
