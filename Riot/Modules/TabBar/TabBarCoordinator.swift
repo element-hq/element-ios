@@ -394,7 +394,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         
         let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
                                                                   session: roomNavigationParameters.mxSession,
-                                                                  parentSpaceId: self.currentSpaceId, roomId: roomNavigationParameters.roomId,
+                                                                  parentSpaceId: self.currentSpaceId,
+                                                                  roomId: roomNavigationParameters.roomId,
                                                                   eventId: roomNavigationParameters.eventId)
         
         self.showRoom(with: roomCoordinatorParameters,
