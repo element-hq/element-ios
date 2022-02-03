@@ -875,6 +875,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
                                                                                     eventId:nil
                                                                                   mxSession:matrixSession
+                                                                           threadParameters:nil
                                                                      presentationParameters:presentationParameters];
     
     [[AppDelegate theDelegate] showRoomWithParameters:parameters completion:^{
@@ -1005,12 +1006,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
 {
     BOOL cellReloaded = NO;
-    if ([changes isKindOfClass:NSNumber.class])
+    if ([changes isKindOfClass:RecentsSectionUpdate.class])
     {
-        NSInteger section = ((NSNumber *)changes).integerValue;
-        if (section >= 0)
+        RecentsSectionUpdate *update = (RecentsSectionUpdate*)changes;
+        if (update.isValid && !update.totalCountsChanged)
         {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:section];
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:update.sectionIndex];
             UITableViewCell *cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
             if ([cell isKindOfClass:TableViewCellWithCollectionView.class])
             {
@@ -1024,6 +1025,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     if (!cellReloaded)
     {
         [super dataSource:dataSource didCellChange:changes];
+    }
+    else
+    {
+        // Since we've enabled room list pagination, `refreshRecentsTable` not called in this case.
+        // Refresh tab bar badges separately.
+        [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
     }
     
     if (changes == nil)

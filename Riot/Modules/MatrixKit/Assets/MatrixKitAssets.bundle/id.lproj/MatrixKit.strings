@@ -249,7 +249,7 @@
 // titles 
 
 // button names 
-"ok" = "OK";
+"ok" = "OKE";
 "notice_room_history_visible_to_members_from_joined_point_by_you_for_dm" = "Anda membuat sejarah pesan di masa mendatang dapat dilihat oleh semuanya, sejak mereka bergabung.";
 "notice_room_history_visible_to_members_from_joined_point_by_you" = "Anda membuat sejarah ruangan di masa mendatang dapat dilihat oleh semua anggota ruang, sejak mereka bergabung.";
 "notice_encryption_enabled_unknown_algorithm_by_you" = "Anda mengaktifkan enkripsi ujung-ke-ujung (algoritma %@ tidak dikenal).";
@@ -557,3 +557,4 @@
 "notice_room_power_level_acting_requirement" = "Tingkat daya minimum yang harus dimiliki pengguna sebelum bertindak adalah:";
 "attachment_unsupported_preview_title" = "Tidak dapat ditampilkan";
 "attachment_unsupported_preview_message" = "Tipe file ini tidak didukung.";
+"message_reply_to_sender_sent_their_location" = "telah membagikan lokasinya.";

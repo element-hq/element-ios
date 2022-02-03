@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -78,6 +78,7 @@
                 <outlet property="elapsedTimeLabel" destination="eAi-HM-Wvj" id="z70-aJ-O90"/>
                 <outlet property="playButton" destination="GL1-b8-dZK" id="5u7-CG-d99"/>
                 <outlet property="recordingIcon" destination="REB-gl-h0h" id="uL1-nI-bhF"/>
+                <outlet property="stackViewTrailingContraint" destination="fM3-nY-rDV" id="67I-8E-RFv"/>
                 <outlet property="waveformContainerView" destination="7Fl-yZ-dZB" id="f9u-wS-jvG"/>
             </connections>
             <point key="canvasLocation" x="-1742.753623188406" y="-299.33035714285711"/>

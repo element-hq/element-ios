@@ -93,7 +93,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, ThreadsCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate>
 {
     
     // The preview header
@@ -178,6 +178,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     // Time to display notification content in the timeline
     MXTaskProfile *notificationTaskProfile;
+    
+    // Reference to thread list bar button item, to update it easily later
+    BadgedBarButtonItem *threadListBarButtonItem;
 }
 
 @property (nonatomic, weak) IBOutlet UIView *overlayContainerView;
@@ -198,6 +201,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @property (nonatomic, strong) RoomCreationModalCoordinatorBridgePresenter *roomCreationModalCoordinatorBridgePresenter;
 @property (nonatomic, strong) RoomInfoCoordinatorBridgePresenter *roomInfoCoordinatorBridgePresenter;
 @property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
+@property (nonatomic, strong) ThreadsCoordinatorBridgePresenter *threadsBridgePresenter;
 @property (nonatomic, getter=isActivitiesViewExpanded) BOOL activitiesViewExpanded;
 @property (nonatomic, getter=isScrollToBottomHidden) BOOL scrollToBottomHidden;
 @property (nonatomic, getter=isMissedDiscussionsBadgeHidden) BOOL missedDiscussionsBadgeHidden;
@@ -206,11 +210,18 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @property (nonatomic, strong) SpaceDetailPresenter *spaceDetailPresenter;
 
 @property (nonatomic, strong) ShareManager *shareManager;
+@property (nonatomic, strong) EventMenuBuilder *eventMenuBuilder;
 
 @property (nonatomic, strong) UserSuggestionCoordinatorBridge *userSuggestionCoordinator;
 @property (nonatomic, weak) IBOutlet UIView *userSuggestionContainerView;
 
+@property (nonatomic, readwrite) RoomDisplayConfiguration *displayConfiguration;
 @property (nonatomic) AnalyticsScreenTimer *screenTimer;
+
+// When layout of the screen changes (e.g. height), we no longer know whether
+// to autoscroll to the bottom again or not. Instead we need to capture the
+// scroll state just before the layout change, and restore it after the layout.
+@property (nonatomic) BOOL shouldScrollToBottomAfterLayout;
 
 @end
 
@@ -227,14 +238,29 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 + (instancetype)roomViewController
 {
-    return [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
-                                          bundle:[NSBundle bundleForClass:self.class]];
+    RoomViewController *controller = [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
+                                                                    bundle:[NSBundle bundleForClass:self.class]];
+    controller.displayConfiguration = [RoomDisplayConfiguration default];
+    return controller;
 }
 
-+ (instancetype)instantiate
++ (instancetype)instantiateWithConfiguration:(RoomDisplayConfiguration *)configuration
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-    return [storyboard instantiateViewControllerWithIdentifier:@"RoomViewControllerStoryboardId"];
+    NSString *storyboardId = [NSString stringWithFormat:@"%@StoryboardId", self.className];
+    RoomViewController *controller = [storyboard instantiateViewControllerWithIdentifier:storyboardId];
+    controller.displayConfiguration = configuration;
+    return controller;
+}
+
++ (NSString *)className
+{
+    NSString *result = NSStringFromClass(self.class);
+    if ([result containsString:@"."])
+    {
+        result = [result componentsSeparatedByString:@"."].lastObject;
+    }
+    return result;
 }
 
 #pragma mark -
@@ -281,6 +307,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     formattedBodyParser = [FormattedBodyParser new];
+    self.eventMenuBuilder = [EventMenuBuilder new];
     
     _showMissedDiscussionsBadge = YES;
     _scrollToBottomHidden = YES;
@@ -435,6 +462,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     self.scrollToBottomBadgeLabel.badgeColor = ThemeService.shared.theme.tintColor;
     
+    [self updateThreadListBarButtonBadgeWith:self.mainSession.threadingService];
+    [threadListBarButtonItem updateWithTheme:ThemeService.shared.theme];
+    
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
@@ -518,6 +548,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             [self cancelEventSelection];
         }
     }
+    [self cancelEventHighlight];
     
     // Hide preview header to restore navigation bar settings
     [self showPreviewHeader:NO];
@@ -631,6 +662,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self.screenTimer stop];
 }
 
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    self.shouldScrollToBottomAfterLayout = self.isBubblesTableScrollViewAtTheBottom;
+}
+
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
@@ -696,9 +732,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         self.edgesForExtendedLayout = UIRectEdgeLeft | UIRectEdgeBottom | UIRectEdgeRight;
     }
     
-    //  stay at the bottom if already was
-    if (self.isBubblesTableScrollViewAtTheBottom)
+    // re-scroll to the bottom, if at bottom before the most recent layout
+    if (self.shouldScrollToBottomAfterLayout)
     {
+        self.shouldScrollToBottomAfterLayout = NO;
         [self scrollBubblesTableViewToBottomAnimated:NO];
     }
     
@@ -869,6 +906,21 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 
 #pragma mark - Override MXKRoomViewController
+
+- (void)addMatrixSession:(MXSession *)mxSession
+{
+    [super addMatrixSession:mxSession];
+    
+    [mxSession.threadingService addDelegate:self];
+    [self updateThreadListBarButtonBadgeWith:mxSession.threadingService];
+}
+
+- (void)removeMatrixSession:(MXSession *)mxSession
+{
+    [mxSession.threadingService removeDelegate:self];
+    
+    [super removeMatrixSession:mxSession];
+}
 
 - (void)onMatrixSessionChange
 {
@@ -1386,8 +1438,40 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     return item;
 }
 
+- (UIBarButtonItem *)threadMoreBarButtonItem
+{
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"room_context_menu_more"]
+                                                             style:UIBarButtonItemStylePlain
+                                                            target:self
+                                                            action:@selector(onButtonPressed:)];
+    item.accessibilityLabel = [VectorL10n roomAccessibilityThreadMore];
+    
+    return item;
+}
+
+- (BadgedBarButtonItem *)threadListBarButtonItem
+{
+    UIButton *button = [UIButton new];
+    UIImage *icon = [[UIImage imageNamed:@"threads_icon"] vc_resizedWith:CGSizeMake(21, 21)];
+    button.contentEdgeInsets = UIEdgeInsetsMake(4, 8, 4, 8);
+    [button setImage:icon
+            forState:UIControlStateNormal];
+    [button addTarget:self
+               action:@selector(onThreadListTapped:)
+     forControlEvents:UIControlEventTouchUpInside];
+    button.accessibilityLabel = [VectorL10n roomAccessibilityThreads];
+    
+    return [[BadgedBarButtonItem alloc] initWithBaseButton:button
+                                                     theme:ThemeService.shared.theme];
+}
+
 - (void)setupRemoveJitsiWidgetRemoveView
 {
+    if (!self.displayConfiguration.jitsiWidgetRemoverEnabled)
+    {
+        return;
+    }
+    
     self.removeJitsiWidgetView = [RemoveJitsiWidgetView instantiate];
     self.removeJitsiWidgetView.delegate = self;
     
@@ -1430,6 +1514,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (BOOL)supportCallOption
 {
+    if (!self.displayConfiguration.callsEnabled)
+    {
+        return NO;
+    }
     BOOL callOptionAllowed = (self.roomDataSource.room.isDirect && RiotSettings.shared.roomScreenAllowVoIPForDirectRoom) || (!self.roomDataSource.room.isDirect && RiotSettings.shared.roomScreenAllowVoIPForNonDirectRoom);
     return callOptionAllowed && BuildSettings.allowVoIPUsage && self.roomDataSource.mxSession.callManager && self.roomDataSource.room.summary.membersCount.joined >= 2;
 }
@@ -1593,11 +1681,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 }
                 [rightBarButtonItems addObject:item];
             }
-            
-            // Do not change title view class here if the expanded header is visible.
-            [self setRoomTitleViewClass:RoomTitleView.class];
-            ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
         }
+        
+        // Do not change title view class here if the expanded header is visible.
+        [self setRoomTitleViewClass:RoomTitleView.class];
+        ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
         
         MXKImageView *userPictureView = ((RoomTitleView*)self.titleView).pictureView;
         
@@ -1608,6 +1696,28 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         }
         
         [self refreshMissedDiscussionsCount:YES];
+        
+        if (RiotSettings.shared.enableThreads)
+        {
+            if (self.roomDataSource.threadId)
+            {
+                //  in a thread
+                if (rightBarButtonItems == nil)
+                {
+                    rightBarButtonItems = [NSMutableArray new];
+                }
+                UIBarButtonItem *itemThreadMore = [self threadMoreBarButtonItem];
+                [rightBarButtonItems insertObject:itemThreadMore atIndex:0];
+            }
+            else
+            {
+                //  in a regular timeline
+                BadgedBarButtonItem *itemThreadList = [self threadListBarButtonItem];
+                [rightBarButtonItems insertObject:itemThreadList atIndex:0];
+                threadListBarButtonItem = itemThreadList;
+                [self updateThreadListBarButtonBadgeWith:self.mainSession.threadingService];
+            }
+        }
     }
     
     self.navigationItem.rightBarButtonItems = rightBarButtonItems;
@@ -1904,7 +2014,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             [self roomInputToolbarViewDidTapFileUpload];
         }]];
     }
-    if (BuildSettings.pollsEnabled)
+    if (BuildSettings.pollsEnabled && self.displayConfiguration.sendingPollsEnabled)
     {
         [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_poll"] andAction:^{
             MXStrongifyAndReturnIfNil(self);
@@ -1914,7 +2024,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             [self.delegate roomViewControllerDidRequestPollCreationFormPresentation:self];
         }]];
     }
-    if (RiotSettings.shared.roomScreenAllowLocationAction)
+    if (BuildSettings.locationSharingEnabled)
     {
         [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_location"] andAction:^{
             MXStrongifyAndReturnIfNil(self);
@@ -2067,7 +2177,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 {
     if (self.delegate)
     {
-        [self.delegate roomViewController:self showRoomWithId:roomId];
+        [self.delegate roomViewController:self showRoomWithId:roomId eventId:nil];
     }
     else
     {
@@ -2606,17 +2716,35 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     else if (bubbleData.attachment.type == MXKAttachmentTypeVoiceMessage || bubbleData.attachment.type == MXKAttachmentTypeAudio)
     {
-        if (bubbleData.isPaginationFirstBubble)
+        if (bubbleData.isIncoming)
         {
-            cellIdentifier = RoomTimelineCellIdentifierVoiceMessageWithPaginationTitle;
-        }
-        else if (bubbleData.shouldHideSenderInformation)
-        {
-            cellIdentifier = RoomTimelineCellIdentifierVoiceMessageWithoutSenderInfo;
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceMessageWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceMessageWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceMessage;
+            }
         }
         else
         {
-            cellIdentifier = RoomTimelineCellIdentifierVoiceMessage;
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceMessageWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceMessageWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceMessage;
+            }
         }
     }
     else if (bubbleData.tag == RoomBubbleCellDataTagPoll)
@@ -2636,17 +2764,35 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     else if (bubbleData.tag == RoomBubbleCellDataTagLocation)
     {
-        if (bubbleData.isPaginationFirstBubble)
+        if (bubbleData.isIncoming)
         {
-            cellIdentifier = RoomTimelineCellIdentifierLocationWithPaginationTitle;
-        }
-        else if (bubbleData.shouldHideSenderInformation)
-        {
-            cellIdentifier = RoomTimelineCellIdentifierLocationWithoutSenderInfo;
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingLocationWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingLocationWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingLocation;
+            }
         }
         else
         {
-            cellIdentifier = RoomTimelineCellIdentifierLocation;
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingLocationWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingLocationWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingLocation;
+            }
         }
     }
     else if (bubbleData.isIncoming)
@@ -2669,6 +2815,21 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             else
             {
                 cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingAttachmentEncrypted : RoomTimelineCellIdentifierIncomingAttachment;
+            }
+        }
+        else if (bubbleData.isAttachment)
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncryptedWithPaginationTitle : RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncryptedWithoutSenderInfo : RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncrypted : RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnail;
             }
         }
         else
@@ -2719,6 +2880,21 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             else
             {
                 cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingAttachmentEncrypted : RoomTimelineCellIdentifierOutgoingAttachment;
+            }
+        }
+        else if (bubbleData.isAttachment)
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncryptedWithPaginationTitle : RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncryptedWithoutSenderInfo : RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncrypted : RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnail;
             }
         }
         else
@@ -3106,15 +3282,34 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         currentAlert = nil;
     }
     
+    [self.eventMenuBuilder reset];
+    
     MXWeakify(self);
-    UIAlertController *actionsMenu = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    BOOL showThreadOption = RiotSettings.shared.enableThreads
+    && !self.roomDataSource.threadId
+    && !selectedEvent.threadId;
+    if (showThreadOption && [self canCopyEvent:selectedEvent andCell:cell])
+    {
+        [self.eventMenuBuilder addItemWithType:EventMenuItemTypeCopy
+                                        action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCopy]
+                                                                        style:UIAlertActionStyleDefault
+                                                                      handler:^(UIAlertAction * action) {
+            MXStrongifyAndReturnIfNil(self);
+            
+            [self cancelEventSelection];
+            
+            [self copyEvent:selectedEvent inCell:cell];
+        }]];
+    }
     
     // Add actions for a failed event
     if (selectedEvent.sentState == MXEventSentStateFailed)
     {
-        [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n retry]
-                                                        style:UIAlertActionStyleDefault
-                                                      handler:^(UIAlertAction * action) {
+        [self.eventMenuBuilder addItemWithType:EventMenuItemTypeRetrySending
+                                        action:[UIAlertAction actionWithTitle:[VectorL10n retry]
+                                                                        style:UIAlertActionStyleDefault
+                                                                      handler:^(UIAlertAction * action) {
             MXStrongifyAndReturnIfNil(self);
             
             [self cancelEventSelection];
@@ -3123,14 +3318,31 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             [self.roomDataSource resendEventWithEventId:selectedEvent.eventId success:nil failure:nil];
         }]];
         
-        [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionDelete]
-                                                        style:UIAlertActionStyleDefault
-                                                      handler:^(UIAlertAction * action) {
+        [self.eventMenuBuilder addItemWithType:EventMenuItemTypeRemove
+                                        action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionDelete]
+                                                                        style:UIAlertActionStyleDestructive
+                                                                      handler:^(UIAlertAction * action) {
             MXStrongifyAndReturnIfNil(self);
             
             [self cancelEventSelection];
             
             [self.roomDataSource removeEventWithEventId:selectedEvent.eventId];
+        }]];
+    }
+    
+    // View in room action
+    if (self.roomDataSource.threadId && [selectedEvent.eventId isEqualToString:self.roomDataSource.threadId])
+    {
+        //  if in the thread and selected event is the root event
+        //  add "View in room" action
+        [self.eventMenuBuilder addItemWithType:EventMenuItemTypeViewInRoom
+                                        action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewInRoom]
+                                                                        style:UIAlertActionStyleDefault
+                                                                      handler:^(UIAlertAction * action) {
+            MXStrongifyAndReturnIfNil(self);
+            [self.delegate roomViewController:self
+                               showRoomWithId:self.roomDataSource.roomId
+                                      eventId:selectedEvent.eventId];
         }]];
     }
     
@@ -3155,9 +3367,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             selectedEvent.sentState == MXEventSentStateEncrypting ||
             selectedEvent.sentState == MXEventSentStateSending)
         {
-            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCancelSend]
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
+            [self.eventMenuBuilder addItemWithType:EventMenuItemTypeCancelSending
+                                            action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCancelSend]
+                                                                            style:UIAlertActionStyleDefault
+                                                                          handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
                 
                 self->currentAlert = nil;
@@ -3169,24 +3382,29 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 [self cancelEventSelection];
             }]];
         }
-        
+
         if (selectedEvent.sentState == MXEventSentStateSent &&
             selectedEvent.eventType != MXEventTypePollStart &&
             !selectedEvent.location)
         {
-            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
+            [self.eventMenuBuilder addItemWithType:EventMenuItemTypeForward
+                                            action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
+                                                                            style:UIAlertActionStyleDefault
+                                                                          handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
+
+                [self cancelEventSelection];
+
                 [self presentEventForwardingDialogForSelectedEvent:selectedEvent];
             }]];
         }
-        
+
         if (!isJitsiCallEvent && selectedEvent.eventType != MXEventTypePollStart)
         {
-            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionQuote]
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
+            [self.eventMenuBuilder addItemWithType:EventMenuItemTypeQuote
+                                            action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionQuote]
+                                                                            style:UIAlertActionStyleDefault
+                                                                          handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
                 
                 [self cancelEventSelection];
@@ -3199,11 +3417,26 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }]];
         }
         
+        if (selectedEvent.sentState == MXEventSentStateSent && selectedEvent.eventType != MXEventTypePollStart)
+        {
+            [self.eventMenuBuilder addItemWithType:EventMenuItemTypeForward
+                                            action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
+                                                                            style:UIAlertActionStyleDefault
+                                                                          handler:^(UIAlertAction * action) {
+                MXStrongifyAndReturnIfNil(self);
+
+                [self cancelEventSelection];
+
+                [self presentEventForwardingDialogForSelectedEvent:selectedEvent];
+            }]];
+        }
+        
         if (!isJitsiCallEvent && BuildSettings.messageDetailsAllowShare && selectedEvent.eventType != MXEventTypePollStart)
         {
-            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionShare]
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
+            [self.eventMenuBuilder addItemWithType:EventMenuItemTypeShare
+                                            action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionShare]
+                                                                            style:UIAlertActionStyleDefault
+                                                                          handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
                 
                 [self cancelEventSelection];
@@ -3230,10 +3463,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                                                 attachment.type == MXKAttachmentTypeImage ||
                                                                 attachment.type == MXKAttachmentTypeVideo ||
                                                                 attachment.type == MXKAttachmentTypeVoiceMessage)) {
-            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
+            [self.eventMenuBuilder addItemWithType:EventMenuItemTypeForward
+                                            action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
+                                                                            style:UIAlertActionStyleDefault
+                                                                          handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
+
+                [self cancelEventSelection];
+                
                 [self presentEventForwardingDialogForSelectedEvent:selectedEvent];
             }]];
         }
@@ -3242,9 +3479,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         {
             if (attachment.type == MXKAttachmentTypeImage || attachment.type == MXKAttachmentTypeVideo)
             {
-                [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionSave]
-                                                                style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction * action) {
+                [self.eventMenuBuilder addItemWithType:EventMenuItemTypeSaveMedia
+                                                action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionSave]
+                                                                                style:UIAlertActionStyleDefault
+                                                                              handler:^(UIAlertAction * action) {
                     MXStrongifyAndReturnIfNil(self);
                     
                     [self cancelEventSelection];
@@ -3279,9 +3517,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             NSString *uploadId = roomBubbleTableViewCell.bubbleData.attachment.contentURL;
             if ([MXMediaManager existingUploaderWithId:uploadId])
             {
-                [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCancelSend]
-                                                                style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction * action) {
+                [self.eventMenuBuilder addItemWithType:EventMenuItemTypeCancelSending
+                                                action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCancelSend]
+                                                                                style:UIAlertActionStyleDefault
+                                                                              handler:^(UIAlertAction * action) {
                     
                     MXStrongifyAndReturnIfNil(self);
                     
@@ -3313,9 +3552,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         {
             if (BuildSettings.messageDetailsAllowShare)
             {
-                [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionShare]
-                                                                style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction * action) {
+                [self.eventMenuBuilder addItemWithType:EventMenuItemTypeShare
+                                                action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionShare]
+                                                                                style:UIAlertActionStyleDefault
+                                                                              handler:^(UIAlertAction * action) {
                     MXStrongifyAndReturnIfNil(self);
                     
                     [self cancelEventSelection];
@@ -3360,9 +3600,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             NSString *downloadId = roomBubbleTableViewCell.bubbleData.attachment.downloadId;
             if ([MXMediaManager existingDownloaderWithIdentifier:downloadId])
             {
-                [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCancelDownload]
-                                                                style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction * action) {
+                [self.eventMenuBuilder addItemWithType:EventMenuItemTypeCancelDownloading
+                                                action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCancelDownload]
+                                                                                style:UIAlertActionStyleDefault
+                                                                              handler:^(UIAlertAction * action) {
                     MXStrongifyAndReturnIfNil(self);
                     
                     [self cancelEventSelection];
@@ -3379,23 +3620,89 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }
         }
         
+        if (BuildSettings.messageDetailsAllowPermalink)
+        {
+            [self.eventMenuBuilder addItemWithType:EventMenuItemTypePermalink
+                                            action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionPermalink]
+                                                                            style:UIAlertActionStyleDefault
+                                                                          handler:^(UIAlertAction * action) {
+                MXStrongifyAndReturnIfNil(self);
+                
+                [self cancelEventSelection];
+                
+                // Create a matrix.to permalink that is common to all matrix clients
+                NSString *permalink = [MXTools permalinkToEvent:selectedEvent.eventId inRoom:selectedEvent.roomId];
+                NSURL *url = [NSURL URLWithString:permalink];
+                
+                if (url)
+                {
+                    MXKPasteboardManager.shared.pasteboard.URL = url;
+                    [self.view vc_toastWithMessage:VectorL10n.roomEventCopyLinkInfo
+                                             image:[UIImage imageNamed:@"link_icon"]
+                                          duration:2.0
+                                          position:ToastPositionBottom
+                                  additionalMargin:self.roomInputToolbarContainerHeightConstraint.constant];
+                }
+                else
+                {
+                    MXLogDebug(@"[RoomViewController] Contextual menu permalink action failed. Permalink is nil room id/event id: %@/%@", selectedEvent.roomId, selectedEvent.eventId);
+                }
+            }]];
+        }
+        
+        if (BuildSettings.messageDetailsAllowViewSource)
+        {
+            [self.eventMenuBuilder addItemWithType:EventMenuItemTypeViewSource
+                                            action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewSource]
+                                                                            style:UIAlertActionStyleDefault
+                                                                          handler:^(UIAlertAction * action) {
+                MXStrongifyAndReturnIfNil(self);
+                
+                [self cancelEventSelection];
+                
+                // Display event details
+                [self showEventDetails:selectedEvent];
+            }]];
+            
+            
+            // Add "View Decrypted Source" for e2ee event we can decrypt
+            if (selectedEvent.isEncrypted && selectedEvent.clearEvent)
+            {
+                [self.eventMenuBuilder addItemWithType:EventMenuItemTypeViewDecryptedSource
+                                                action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewDecryptedSource]
+                                                                                style:UIAlertActionStyleDefault
+                                                                              handler:^(UIAlertAction * action) {
+                    MXStrongifyAndReturnIfNil(self);
+                    
+                    [self cancelEventSelection];
+                    
+                    // Display clear event details
+                    [self showEventDetails:selectedEvent.clearEvent];
+                }]];
+            }
+        }
+        
         // Do not allow to redact the event that enabled encryption (m.room.encryption)
         // because it breaks everything
         if (selectedEvent.eventType != MXEventTypeRoomEncryption)
         {
             NSString *title;
+            EventMenuItemType itemType;
             if (selectedEvent.eventType == MXEventTypePollStart)
             {
                 title = [VectorL10n roomEventActionRemovePoll];
+                itemType = EventMenuItemTypeRemovePoll;
             }
             else
             {
                 title = [VectorL10n roomEventActionRedact];
+                itemType = EventMenuItemTypeRemove;
             }
             
-            [actionsMenu addAction:[UIAlertAction actionWithTitle:title
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
+            [self.eventMenuBuilder addItemWithType:itemType
+                                            action:[UIAlertAction actionWithTitle:title
+                                                                            style:UIAlertActionStyleDestructive
+                                                                          handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
                 
                 [self cancelEventSelection];
@@ -3417,11 +3724,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }]];
         }
         
-        if (selectedEvent.eventType == MXEventTypePollStart && [selectedEvent.sender isEqualToString:self.mainSession.myUser.userId]) {
-            if ([self.delegate roomViewController:self canEndPollWithEventIdentifier:selectedEvent.eventId]) {
-                [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionEndPoll]
-                                                                style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction * action) {
+        if (selectedEvent.eventType == MXEventTypePollStart && [selectedEvent.sender isEqualToString:self.mainSession.myUserId])
+        {
+            if ([self.delegate roomViewController:self canEndPollWithEventIdentifier:selectedEvent.eventId])
+            {
+                [self.eventMenuBuilder addItemWithType:EventMenuItemTypeEndPoll
+                                                action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionEndPoll]
+                                                                                style:UIAlertActionStyleDefault
+                                                                              handler:^(UIAlertAction * action) {
                     MXStrongifyAndReturnIfNil(self);
                     
                     [self.delegate roomViewController:self endPollWithEventIdentifier:selectedEvent.eventId];
@@ -3431,43 +3741,13 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }
         }
         
-        [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
-                                                        style:UIAlertActionStyleCancel
-                                                      handler:^(UIAlertAction * action) {
-            MXStrongifyAndReturnIfNil(self);
-            
-            [self hideContextualMenuAnimated:YES];
-        }]];
-        
-        if (BuildSettings.messageDetailsAllowPermalink)
-        {
-            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionPermalink]
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
-                MXStrongifyAndReturnIfNil(self);
-                
-                [self cancelEventSelection];
-                
-                // Create a matrix.to permalink that is common to all matrix clients
-                NSString *permalink = [MXTools permalinkToEvent:selectedEvent.eventId inRoom:selectedEvent.roomId];
-                
-                if (permalink)
-                {
-                    MXKPasteboardManager.shared.pasteboard.string = permalink;
-                }
-                else
-                {
-                    MXLogDebug(@"[RoomViewController] Contextual menu permalink action failed. Permalink is nil room id/event id: %@/%@", selectedEvent.roomId, selectedEvent.eventId);
-                }
-            }]];
-        }
-        
         // Add reaction history if event contains reactions
         if (roomBubbleTableViewCell.bubbleData.reactions[selectedEvent.eventId].aggregatedReactionsWithNonZeroCount)
         {
-            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionReactionHistory]
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
+            [self.eventMenuBuilder addItemWithType:EventMenuItemTypeReactionHistory
+                                            action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionReactionHistory]
+                                                                            style:UIAlertActionStyleDefault
+                                                                          handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
                 
                 [self cancelEventSelection];
@@ -3477,41 +3757,12 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }]];
         }
         
-        if (BuildSettings.messageDetailsAllowViewSource)
+        if (![selectedEvent.sender isEqualToString:self.mainSession.myUserId] && RiotSettings.shared.roomContextualMenuShowReportContentOption)
         {
-            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewSource]
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
-                MXStrongifyAndReturnIfNil(self);
-                
-                [self cancelEventSelection];
-                
-                // Display event details
-                [self showEventDetails:selectedEvent];
-            }]];
-            
-            
-            // Add "View Decrypted Source" for e2ee event we can decrypt
-            if (selectedEvent.isEncrypted && selectedEvent.clearEvent)
-            {
-                [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewDecryptedSource]
-                                                                style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction * action) {
-                    MXStrongifyAndReturnIfNil(self);
-                    
-                    [self cancelEventSelection];
-                    
-                    // Display clear event details
-                    [self showEventDetails:selectedEvent.clearEvent];
-                }]];
-            }
-        }
-        
-        if (![selectedEvent.sender isEqualToString:self.mainSession.myUser.userId] && RiotSettings.shared.roomContextualMenuShowReportContentOption)
-        {
-            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionReport]
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
+            [self.eventMenuBuilder addItemWithType:EventMenuItemTypeReport
+                                            action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionReport]
+                                                                            style:UIAlertActionStyleDestructive
+                                                                          handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
                 
                 [self cancelEventSelection];
@@ -3601,9 +3852,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         if (!isJitsiCallEvent && self.roomDataSource.room.summary.isEncrypted)
         {
-            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewEncryption]
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
+            [self.eventMenuBuilder addItemWithType:EventMenuItemTypeViewEncryption
+                                            action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewEncryption]
+                                                                            style:UIAlertActionStyleDefault
+                                                                          handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
                 
                 [self cancelEventSelection];
@@ -3613,11 +3865,29 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }]];
         }
         
+        [self.eventMenuBuilder addItemWithType:EventMenuItemTypeCancel
+                                        action:[UIAlertAction actionWithTitle:[VectorL10n cancel]
+                                                                        style:UIAlertActionStyleCancel
+                                                                      handler:^(UIAlertAction * action) {
+            MXStrongifyAndReturnIfNil(self);
+            
+            [self hideContextualMenuAnimated:YES];
+        }]];
+        
     }
     
     // Do not display empty action sheet
-    if (actionsMenu.actions.count > 1)
+    if (!self.eventMenuBuilder.isEmpty)
     {
+        UIAlertController *actionsMenu = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        //  build actions and add them to the alert
+        NSArray<UIAlertAction*> *actions = [self.eventMenuBuilder build];
+        for (UIAlertAction *action in actions)
+        {
+            [actionsMenu addAction:action];
+        }
+        
         NSInteger bubbleComponentIndex = [roomBubbleTableViewCell.bubbleData bubbleComponentIndexForEventId:selectedEvent.eventId];
         
         CGRect sourceRect = [roomBubbleTableViewCell componentFrameInContentViewForIndex:bubbleComponentIndex];
@@ -3625,6 +3895,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [actionsMenu mxk_setAccessibilityIdentifier:@"RoomVCEventMenuAlert"];
         [actionsMenu popoverPresentationController].sourceView = roomBubbleTableViewCell;
         [actionsMenu popoverPresentationController].sourceRect = sourceRect;
+        [self dismissKeyboard];
         [self presentViewController:actionsMenu animated:animated completion:nil];
         currentAlert = actionsMenu;
     }
@@ -3872,6 +4143,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     customizedRoomDataSource.showBubbleDateTimeOnSelection = YES;
     customizedRoomDataSource.selectedEventId = nil;
+    customizedRoomDataSource.highlightedEventId = nil;
     
     [self restoreTextMessageBeforeEditing];
     
@@ -3926,10 +4198,15 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 #pragma mark - RoomDataSourceDelegate
 
-- (void)roomDataSource:(RoomDataSource *)roomDataSource didUpdateEncryptionTrustLevel:(RoomEncryptionTrustLevel)roomEncryptionTrustLevel
+- (void)roomDataSourceDidUpdateEncryptionTrustLevel:(RoomDataSource *)roomDataSource
 {
     [self updateInputToolbarEncryptionDecoration];
     [self updateTitleViewEncryptionDecoration];
+}
+
+- (void)roomDataSource:(RoomDataSource *)roomDataSource didTapThread:(MXThread *)thread
+{
+    [self openThreadWithId:thread.id];
 }
 
 #pragma mark - Segues
@@ -4239,6 +4516,15 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self placeCallWithVideo:YES];
 }
 
+- (IBAction)onThreadListTapped:(id)sender
+{
+    self.threadsBridgePresenter = [[ThreadsCoordinatorBridgePresenter alloc] initWithSession:self.mainSession
+                                                                                      roomId:self.roomDataSource.roomId
+                                                                                    threadId:nil];
+    self.threadsBridgePresenter.delegate = self;
+    [self.threadsBridgePresenter pushFrom:self.navigationController animated:YES];
+}
+
 - (IBAction)onIntegrationsPressed:(id)sender
 {
     WidgetPickerViewController *widgetPicker = [[WidgetPickerViewController alloc] initForMXSession:self.roomDataSource.mxSession
@@ -4261,7 +4547,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         // Jump to the last unread event by using a temporary room data source initialized with the last unread event id.
         MXWeakify(self);
-        [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId initialEventId:self.roomDataSource.room.accountData.readMarkerEventId andMatrixSession:self.mainSession onComplete:^(id roomDataSource) {
+        [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
+                                      initialEventId:self.roomDataSource.room.accountData.readMarkerEventId
+                                            threadId:self.roomDataSource.threadId
+                                    andMatrixSession:self.mainSession
+                                          onComplete:^(id roomDataSource) {
             MXStrongifyAndReturnIfNil(self);
             
             [roomDataSource finalizeInitialization];
@@ -4360,6 +4650,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     {
         [super scrollViewWillBeginDragging:scrollView];
     }
+    
+    [self cancelEventHighlight];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
@@ -4484,7 +4776,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     if (eventId)
                     {
                         MXWeakify(self);
-                        [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId initialEventId:eventId andMatrixSession:self.mainSession onComplete:^(id roomDataSource) {
+                        [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
+                                                      initialEventId:eventId
+                                                            threadId:self.roomDataSource.threadId
+                                                    andMatrixSession:self.mainSession
+                                                          onComplete:^(id roomDataSource) {
                             MXStrongifyAndReturnIfNil(self);
                             
                             [roomDataSource finalizeInitialization];
@@ -4561,7 +4857,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         if (typingNotifListener)
         {
             MXWeakify(self);
-            [self.roomDataSource.room liveTimeline:^(MXEventTimeline *liveTimeline) {
+            [self.roomDataSource.room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
                 MXStrongifyAndReturnIfNil(self);
                 
                 [liveTimeline removeListener:self->typingNotifListener];
@@ -4766,6 +5062,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)listenWidgetNotifications
 {
+    if (!self.displayConfiguration.jitsiWidgetRemoverEnabled)
+    {
+        return;
+    }
+    
     MXWeakify(self);
     
     kMXKWidgetManagerDidUpdateWidgetObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kWidgetManagerDidUpdateWidgetNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -4802,6 +5103,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (NSUInteger)widgetsCount:(BOOL)includeUserWidgets
 {
+    if (!self.displayConfiguration.integrationsEnabled)
+    {
+        return 0;
+    }
+    
     NSUInteger widgetsCount = [[WidgetManager sharedManager] widgetsNotOfTypes:@[kWidgetTypeJitsiV1, kWidgetTypeJitsiV2]
                                                                         inRoom:self.roomDataSource.room
                                                                  withRoomState:self.roomDataSource.roomState].count;
@@ -4898,7 +5204,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     // Retrieve the unread messages count
                     NSUInteger unreadCount = self.roomDataSource.room.summary.localUnreadEventCount;
                     
-                    self.scrollToBottomBadgeLabel.text = unreadCount ? [NSString stringWithFormat:@"%lu", unreadCount] : nil;
+                    if (!self.roomDataSource.threadId)
+                    {
+                        self.scrollToBottomBadgeLabel.text = unreadCount ? [NSString stringWithFormat:@"%lu", unreadCount] : nil;
+                    }
+                    else
+                    {
+                        self.scrollToBottomBadgeLabel.text = nil;
+                    }
                     self.scrollToBottomHidden = NO;
                 }
                 else
@@ -4946,33 +5259,58 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         self.updateRoomReadMarker = NO;
         
         [self scrollBubblesTableViewToBottomAnimated:YES];
+
+        [self cancelEventHighlight];
     }
     else
     {
-        // Switch back to the room live timeline managed by MXKRoomDataSourceManager
-        MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
-        
         MXWeakify(self);
-        [roomDataSourceManager roomDataSourceForRoom:self.roomDataSource.roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
+
+        void(^continueBlock)(MXKRoomDataSource *, BOOL) = ^(MXKRoomDataSource *roomDataSource, BOOL hasRoomDataSourceOwnership){
             MXStrongifyAndReturnIfNil(self);
-            
+
+            [roomDataSource finalizeInitialization];
+
             // Scroll to bottom the bubble history on the display refresh.
             self->shouldScrollToBottomOnTableRefresh = YES;
-            
+
             [self displayRoom:roomDataSource];
-            
-            // The room view controller do not have here the data source ownership.
-            self.hasRoomDataSourceOwnership = NO;
-            
+
+            // Set the room view controller has the data source ownership here.
+            self.hasRoomDataSourceOwnership = hasRoomDataSourceOwnership;
+
             [self refreshActivitiesViewDisplay];
             [self refreshJumpToLastUnreadBannerDisplay];
-            
+
             if (self.saveProgressTextInput)
             {
                 // Restore the potential message partially typed before jump to last unread messages.
                 self.inputToolbarView.textMessage = roomDataSource.partialTextMessage;
             }
-        }];
+        };
+
+        if (self.roomDataSource.threadId)
+        {
+            [ThreadDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
+                                            initialEventId:nil
+                                                  threadId:self.roomDataSource.threadId
+                                          andMatrixSession:self.mainSession
+                                                onComplete:^(ThreadDataSource *threadDataSource)
+             {
+                continueBlock(threadDataSource, YES);
+            }];
+        }
+        else
+        {
+            // Switch back to the room live timeline managed by MXKRoomDataSourceManager
+            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
+
+            [roomDataSourceManager roomDataSourceForRoom:self.roomDataSource.roomId
+                                                  create:YES
+                                              onComplete:^(MXKRoomDataSource *roomDataSource) {
+                continueBlock(roomDataSource, NO);
+            }];
+        }
     }
 }
 
@@ -5434,6 +5772,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)refreshRemoveJitsiWidgetView
 {
+    if (!self.displayConfiguration.jitsiWidgetRemoverEnabled)
+    {
+        return;
+    }
+    
     if (self.roomDataSource.isLive && !self.roomDataSource.isPeeking)
     {
         Widget *jitsiWidget = [customizedRoomDataSource jitsiWidget];
@@ -5814,25 +6157,29 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         ];
     }
     
-    BOOL showMoreOption = (event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForStates) || (!event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForMessages);
+    BOOL showMoreOption = (event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForStates)
+        || (!event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForMessages);
+    BOOL showThreadOption = RiotSettings.shared.enableThreads && !self.roomDataSource.threadId && !event.threadId;
     
+    NSMutableArray<RoomContextualMenuItem*> *items = [NSMutableArray arrayWithCapacity:5];
+    
+    [items addObject:[self replyMenuItemWithEvent:event]];
+    if (showThreadOption)
+    {
+        //  add "Thread" option only if not already in a thread
+        [items addObject:[self replyInThreadMenuItemWithEvent:event]];
+    }
+    [items addObject:[self editMenuItemWithEvent:event]];
+    if (!showThreadOption)
+    {
+        [items addObject:[self copyMenuItemWithEvent:event andCell:cell]];
+    }
     if (showMoreOption)
     {
-        return @[
-            [self copyMenuItemWithEvent:event andCell:cell],
-            [self replyMenuItemWithEvent:event],
-            [self editMenuItemWithEvent:event],
-            [self moreMenuItemWithEvent:event andCell:cell]
-        ];
+        [items addObject:[self moreMenuItemWithEvent:event andCell:cell]];
     }
-    else
-    {
-        return @[
-            [self copyMenuItemWithEvent:event andCell:cell],
-            [self replyMenuItemWithEvent:event],
-            [self editMenuItemWithEvent:event]
-        ];
-    }
+    
+    return items;
 }
 
 - (void)showContextualMenuForEvent:(MXEvent*)event fromSingleTapGesture:(BOOL)usedSingleTapGesture cell:(id<MXKCellRendering>)cell animated:(BOOL)animated
@@ -6026,19 +6373,32 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (RoomContextualMenuItem *)copyMenuItemWithEvent:(MXEvent*)event andCell:(id<MXKCellRendering>)cell
 {
+    MXWeakify(self);
+    
+    RoomContextualMenuItem *copyMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionCopy];
+    copyMenuItem.isEnabled = [self canCopyEvent:event andCell:cell];
+    copyMenuItem.action = ^{
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self copyEvent:event inCell:cell];
+    };
+    
+    return copyMenuItem;
+}
+
+- (BOOL)canCopyEvent:(MXEvent*)event andCell:(id<MXKCellRendering>)cell
+{
     MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
     MXKAttachment *attachment = roomBubbleTableViewCell.bubbleData.attachment;
     
-    MXWeakify(self);
-    
-    BOOL isCopyActionEnabled = (event.eventType != MXEventTypePollStart && (!attachment || attachment.type != MXKAttachmentTypeSticker));
+    BOOL result = (event.eventType != MXEventTypePollStart && (!attachment || attachment.type != MXKAttachmentTypeSticker));
     
     if (attachment && !BuildSettings.messageDetailsAllowCopyMedia)
     {
-        isCopyActionEnabled = NO;
+        result = NO;
     }
     
-    if (isCopyActionEnabled)
+    if (result)
     {
         switch (event.eventType) {
             case MXEventTypeRoomMessage:
@@ -6047,7 +6407,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 
                 if ([messageType isEqualToString:kMXMessageTypeKeyVerificationRequest])
                 {
-                    isCopyActionEnabled = NO;
+                    result = NO;
                 }
                 break;
             }
@@ -6057,7 +6417,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             case MXEventTypeKeyVerificationMac:
             case MXEventTypeKeyVerificationDone:
             case MXEventTypeKeyVerificationCancel:
-                isCopyActionEnabled = NO;
+                result = NO;
                 break;
             case MXEventTypeCustom:
                 if ([event.type isEqualToString:kWidgetMatrixEventTypeString]
@@ -6067,7 +6427,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     if ([widget.type isEqualToString:kWidgetTypeJitsiV1] ||
                         [widget.type isEqualToString:kWidgetTypeJitsiV2])
                     {
-                        isCopyActionEnabled = NO;
+                        result = NO;
                     }
                 }
             default:
@@ -6075,60 +6435,60 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         }
     }
     
-    RoomContextualMenuItem *copyMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionCopy];
-    copyMenuItem.isEnabled = isCopyActionEnabled;
-    copyMenuItem.action = ^{
-        MXStrongifyAndReturnIfNil(self);
-        
-        if (!attachment)
-        {
-            NSArray *components = roomBubbleTableViewCell.bubbleData.bubbleComponents;
-            MXKRoomBubbleComponent *selectedComponent;
-            for (selectedComponent in components)
-            {
-                if ([selectedComponent.event.eventId isEqualToString:event.eventId])
-                {
-                    break;
-                }
-                selectedComponent = nil;
-            }
-            NSString *textMessage = selectedComponent.textMessage;
-            
-            if (textMessage)
-            {
-                MXKPasteboardManager.shared.pasteboard.string = textMessage;
-            }
-            else
-            {
-                MXLogDebug(@"[RoomViewController] Contextual menu copy failed. Text is nil for room id/event id: %@/%@", selectedComponent.event.roomId, selectedComponent.event.eventId);
-            }
-            
-            [self hideContextualMenuAnimated:YES];
-        }
-        else if (attachment.type != MXKAttachmentTypeSticker)
-        {
-            [self hideContextualMenuAnimated:YES completion:^{
-                [self startActivityIndicator];
-                
-                [attachment copy:^{
-                    
-                    [self stopActivityIndicator];
-                    
-                } failure:^(NSError *error) {
-                    
-                    [self stopActivityIndicator];
-                    
-                    //Alert user
-                    [self showError:error];
-                }];
-                
-                // Start animation in case of download during attachment preparing
-                [roomBubbleTableViewCell startProgressUI];
-            }];
-        }
-    };
+    return result;
+}
+
+- (void)copyEvent:(MXEvent*)event inCell:(id<MXKCellRendering>)cell
+{
+    MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
+    MXKAttachment *attachment = roomBubbleTableViewCell.bubbleData.attachment;
     
-    return copyMenuItem;
+    if (!attachment)
+    {
+        NSArray *components = roomBubbleTableViewCell.bubbleData.bubbleComponents;
+        MXKRoomBubbleComponent *selectedComponent;
+        for (selectedComponent in components)
+        {
+            if ([selectedComponent.event.eventId isEqualToString:event.eventId])
+            {
+                break;
+            }
+            selectedComponent = nil;
+        }
+        NSString *textMessage = selectedComponent.textMessage;
+        
+        if (textMessage)
+        {
+            MXKPasteboardManager.shared.pasteboard.string = textMessage;
+        }
+        else
+        {
+            MXLogDebug(@"[RoomViewController] Contextual menu copy failed. Text is nil for room id/event id: %@/%@", selectedComponent.event.roomId, selectedComponent.event.eventId);
+        }
+        
+        [self hideContextualMenuAnimated:YES];
+    }
+    else if (attachment.type != MXKAttachmentTypeSticker)
+    {
+        [self hideContextualMenuAnimated:YES completion:^{
+            [self startActivityIndicator];
+            
+            [attachment copy:^{
+                
+                [self stopActivityIndicator];
+                
+            } failure:^(NSError *error) {
+                
+                [self stopActivityIndicator];
+                
+                //Alert user
+                [self showError:error];
+            }];
+            
+            // Start animation in case of download during attachment preparing
+            [roomBubbleTableViewCell startProgressUI];
+        }];
+    }
 }
 
 - (RoomContextualMenuItem *)replyMenuItemWithEvent:(MXEvent*)event
@@ -6150,6 +6510,23 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     return replyMenuItem;
 }
 
+- (RoomContextualMenuItem *)replyInThreadMenuItemWithEvent:(MXEvent*)event
+{
+    MXWeakify(self);
+    
+    RoomContextualMenuItem *item = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionReplyInThread];
+    item.isEnabled = [self.roomDataSource canReplyToEventWithId:event.eventId] && !self.voiceMessageController.isRecordingAudio;
+    item.action = ^{
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
+
+        [self openThreadWithId:event.eventId];
+    };
+    
+    return item;
+}
+
 - (RoomContextualMenuItem *)moreMenuItemWithEvent:(MXEvent*)event andCell:(id<MXKCellRendering>)cell
 {
     MXWeakify(self);
@@ -6162,6 +6539,135 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     };
     
     return moreMenuItem;
+}
+
+#pragma mark - Threads
+
+- (void)openThreadWithId:(NSString *)threadId
+{
+    if (self.threadsBridgePresenter)
+    {
+        [self.threadsBridgePresenter dismissWithAnimated:YES completion:nil];
+        self.threadsBridgePresenter = nil;
+    }
+
+    self.threadsBridgePresenter = [[ThreadsCoordinatorBridgePresenter alloc] initWithSession:self.mainSession
+                                                                                      roomId:self.roomDataSource.roomId
+                                                                                    threadId:threadId];
+    self.threadsBridgePresenter.delegate = self;
+    [self.threadsBridgePresenter pushFrom:self.navigationController animated:YES];
+}
+
+- (void)highlightAndDisplayEvent:(NSString *)eventId completion:(void (^)(void))completion
+{
+    NSInteger row = [self.roomDataSource indexOfCellDataWithEventId:eventId];
+    if (row == NSNotFound)
+    {
+        //  event with eventId is not loaded into data source yet, load another data source and display it
+        [self startActivityIndicator];
+        MXWeakify(self);
+        [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
+                                      initialEventId:eventId
+                                            threadId:nil
+                                    andMatrixSession:self.roomDataSource.mxSession
+                                          onComplete:^(RoomDataSource *roomDataSource) {
+            MXStrongifyAndReturnIfNil(self);
+            [roomDataSource finalizeInitialization];
+            [self stopActivityIndicator];
+            roomDataSource.markTimelineInitialEvent = YES;
+            [self displayRoom:roomDataSource];
+            // Give the data source ownership to the room view controller.
+            self.hasRoomDataSourceOwnership = YES;
+            if (completion)
+            {
+                completion();
+            }
+        }];
+        return;
+    }
+    
+    self->customizedRoomDataSource.highlightedEventId = eventId;
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+    if ([[self.bubblesTableView indexPathsForVisibleRows] containsObject:indexPath])
+    {
+        [self.bubblesTableView reloadRowsAtIndexPaths:@[indexPath]
+                                     withRowAnimation:UITableViewRowAnimationNone];
+        [self.bubblesTableView scrollToRowAtIndexPath:indexPath
+                                     atScrollPosition:UITableViewScrollPositionMiddle
+                                             animated:YES];
+    }
+    else if ([self.bubblesTableView vc_hasIndexPath:indexPath])
+    {
+        [self.bubblesTableView scrollToRowAtIndexPath:indexPath
+                                     atScrollPosition:UITableViewScrollPositionMiddle
+                                             animated:YES];
+    }
+    if (completion)
+    {
+        completion();
+    }
+}
+
+- (void)cancelEventHighlight
+{
+    //  if data source is highlighting an event, dismiss the highlight when user dragges the table view
+    if (customizedRoomDataSource.highlightedEventId)
+    {
+        NSInteger row = [self.roomDataSource indexOfCellDataWithEventId:customizedRoomDataSource.highlightedEventId];
+        if (row == NSNotFound)
+        {
+            customizedRoomDataSource.highlightedEventId = nil;
+            return;
+        }
+        
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+        if ([[self.bubblesTableView indexPathsForVisibleRows] containsObject:indexPath])
+        {
+            customizedRoomDataSource.highlightedEventId = nil;
+            [self.bubblesTableView reloadRowsAtIndexPaths:@[indexPath]
+                                         withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+    }
+}
+
+- (void)updateThreadListBarButtonBadgeWith:(MXThreadingService *)service
+{
+    if (!threadListBarButtonItem || !service)
+    {
+        //  there is no thread list bar button, ignore
+        return;
+    }
+    
+    MXThreadNotificationsCount *notificationsCount = [service notificationsCountForRoom:self.roomDataSource.roomId];
+    
+    if (notificationsCount.numberOfHighlightedThreads > 0)
+    {
+        threadListBarButtonItem.badgeText = [self threadListBadgeTextFor:notificationsCount.numberOfHighlightedThreads];
+        threadListBarButtonItem.badgeBackgroundColor = ThemeService.shared.theme.colors.alert;
+    }
+    else if (notificationsCount.numberOfNotifiedThreads > 0)
+    {
+        threadListBarButtonItem.badgeText = [self threadListBadgeTextFor:notificationsCount.numberOfNotifiedThreads];
+        threadListBarButtonItem.badgeBackgroundColor = ThemeService.shared.theme.noticeSecondaryColor;
+    }
+    else
+    {
+        //  remove badge
+        threadListBarButtonItem.badgeText = nil;
+    }
+}
+
+- (NSString *)threadListBadgeTextFor:(NSUInteger)numberOfThreads
+{
+    if (numberOfThreads < 100)
+    {
+        return [NSString stringWithFormat:@"%tu", numberOfThreads];
+    }
+    else
+    {
+        return @"···";
+    }
 }
 
 #pragma mark - RoomContextualMenuViewControllerDelegate
@@ -6561,6 +7067,38 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     
     [self mention:member];
+}
+
+#pragma mark - ThreadsCoordinatorBridgePresenterDelegate
+
+- (void)threadsCoordinatorBridgePresenterDelegateDidComplete:(ThreadsCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    self.threadsBridgePresenter = nil;
+}
+
+- (void)threadsCoordinatorBridgePresenterDelegateDidSelect:(ThreadsCoordinatorBridgePresenter *)coordinatorBridgePresenter roomId:(NSString *)roomId eventId:(NSString *)eventId
+{
+    MXWeakify(self);
+    [self.threadsBridgePresenter dismissWithAnimated:YES completion:^{
+        MXStrongifyAndReturnIfNil(self);
+        
+        if (eventId)
+        {
+            [self highlightAndDisplayEvent:eventId completion:nil];
+        }
+    }];
+}
+
+- (void)threadsCoordinatorBridgePresenterDidDismissInteractively:(ThreadsCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    self.threadsBridgePresenter = nil;
+}
+
+#pragma mark - MXThreadingServiceDelegate
+
+- (void)threadingServiceDidUpdateThreads:(MXThreadingService *)service
+{
+    [self updateThreadListBarButtonBadgeWith:service];
 }
 
 @end

@@ -1,1 +1,1 @@
-Added static location sharing sending and rendering support.
+Remove location sharing settings entry and enable it by default.

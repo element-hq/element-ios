@@ -27,6 +27,15 @@ protocol SplitViewMasterPresentableDelegate: AnyObject {
     /// Stack the detailPresentable on the existing split view detail stack
     func splitViewMasterPresentable(_ presentable: Presentable, wantsToStack detailPresentable: Presentable, popCompletion: (() -> Void)?)
     
+    /// Replace split view detail with the given modules
+    func splitViewMasterPresentable(_ presentable: Presentable, wantsToReplaceDetailsWith modules: [NavigationModule])
+    
+    /// Stack modules on the existing split view detail stack
+    func splitViewMasterPresentable(_ presentable: Presentable, wantsToStack modules: [NavigationModule])
+    
+    /// Pop to module on the existing split view detail stack
+    func splitViewMasterPresentable(_ presentable: Presentable, wantsToPopTo module: Presentable)
+    
     /// Reset detail stack with placeholder
     func splitViewMasterPresentableWantsToResetDetail(_ presentable: Presentable)
 }

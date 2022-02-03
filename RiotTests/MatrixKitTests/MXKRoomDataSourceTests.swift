@@ -119,7 +119,7 @@ private final class FakeMXKRoomDataSource: MXKRoomDataSource {
         let data = try XCTUnwrap(json.data(using: .utf8))
         let dict = try XCTUnwrap((try JSONSerialization.jsonObject(with: data, options: [])) as? [AnyHashable: Any])
         let event = MXEvent(fromJSON: dict)
-        queueEvent(forProcessing: event, with: nil, direction: __MXTimelineDirectionForwards)
+        queueEvent(forProcessing: event, with: nil, direction: .forwards)
     }
 
     func verifyCollapsedEvents(_ number: Int) {

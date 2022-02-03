@@ -611,7 +611,7 @@
 "open" = "Buka";
 "version_check_banner_subtitle_deprecated" = "Kami tidak mendukung %@ di iOS %@ lagi. Untuk terus menggunakan %@ secara maksimal, kami menyarankan Anda untuk meningkatkan versi iOS Anda.";
 "version_check_banner_subtitle_supported" = "Kami akan segera mengakhiri dukungan untuk %@ di iOS %@. Untuk terus menggunakan %@ secara maksimal, kami menyarankan Anda untuk meningkatkan versi iOS Anda.";
-"spaces_coming_soon_detail" = "Fitur ini belum ada di sini, tetapi sedang dalam proses. Untuk saat ini, Anda dapat melakukannya dengan Element di komputer Anda.";
+"spaces_coming_soon_detail" = "Fitur ini belum ada di sini, tetapi sedang dalam proses. Untuk saat ini, Anda dapat melakukannya dengan %@ di komputer Anda.";
 "spaces_no_member_found_detail" = "Mencari seseorang yang tidak ada di %@? Untuk saat ini, Anda dapat mengundangnya di web atau desktop.";
 "spaces_no_room_found_detail" = "Beberapa hasil mungkin disembunyikan karena ruangannya pribadi dan Anda memerlukan sebuah undangan untuk bergabung.";
 "spaces_empty_space_detail" = "Beberapa ruangan mungkin disembunyikan karena ruangannya pribadi dan Anda memerlukan sebuah undangan.";
@@ -1699,10 +1699,39 @@
 /* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
 "analytics_prompt_terms_new_user" = "Anda dapat membaca semua kebijakan kami %@.";
 "analytics_prompt_message_upgrade" = "Anda sebelumnya setuju untuk mengirimkan data penggunaan anonim dengan kami. Sekarang, supaya kami dapat memahami bagaimana orang-orang menggunakan beberapa perangkat-perangkat, kami akan membuat pengenal acak, yang dibagikan oleh perangkat Anda.";
-"analytics_prompt_message_new_user" = "Bantu kami mengidentifikasi masalah-masalah dan membuat Element lebih baik dengan membagikan data penggunaan anonim. Untuk memahami bagaimana orang-orang menggunakan beberapa perangkat-perangkat, kami akan membuat pengenal acak, yang dibagikan oleh perangkat Anda.";
+"analytics_prompt_message_new_user" = "Bantu kami mengidentifikasi masalah-masalah dan membuat %@ lebih baik dengan membagikan data penggunaan anonim. Untuk memahami bagaimana orang-orang menggunakan beberapa perangkat-perangkat, kami akan membuat pengenal acak, yang dibagikan oleh perangkat Anda.";
 
 // Analytics
 "analytics_prompt_title" = "Bantu membuat %@ lebih baik";
 "settings_analytics_and_crash_data" = "Kirim data crash dan analitik";
 "accessibility_button_label" = "tombol";
 "enable" = "Aktifkan";
+"location_sharing_invalid_authorization_error_title" = "%@ tidak memiliki izin untuk mengakses lokasi. Anda dapat mengaktifkan akses di Pengaturan > Lokasi";
+"location_sharing_settings_toggle_title" = "Aktifkan pembagian lokasi";
+"location_sharing_settings_header" = "Pembagian lokasi";
+"location_sharing_open_google_maps" = "Buka di Google Maps";
+"location_sharing_open_apple_maps" = "Buka di Apple Maps";
+"location_sharing_invalid_authorization_settings" = "Pengaturan";
+"location_sharing_invalid_authorization_not_now" = "Jangan sekarang";
+"location_sharing_locating_user_error_title" = "%@ tidak dapat mengakses lokasi Anda. Silakan coba lagi nanti.";
+"location_sharing_loading_map_error_title" = "%@ tidak dapat memuat peta. Silakan coba lagi nanti.";
+"location_sharing_share_action" = "Bagikan";
+"location_sharing_close_action" = "Tutup";
+
+// MARK: - Location sharing
+
+"location_sharing_title" = "Lokasi";
+"ok" = "OKE";
+"settings_enable_room_message_bubbles" = "Gelembung pesan";
+"onboarding_splash_page_4_message" = "Element juga bagus untuk tempat kerja. Terpercayai oleh organisasi paling aman di dunia.";
+"onboarding_splash_page_4_title_no_pun" = "Perpesanan untuk tim Anda.";
+"onboarding_splash_page_3_message" = "Terenkripsi secara ujung-ke-ujung dan tidak memerlukan nomor telepon. Tidak ada iklan atau penambangan data.";
+"onboarding_splash_page_3_title" = "Perpesanan aman.";
+"onboarding_splash_page_2_message" = "Pilihlah di mana percakapan Anda disimpan, memberikan Anda kendali dan kebebasan. Terhubung via Matrix.";
+"onboarding_splash_page_2_title" = "Anda dalam kendali.";
+"onboarding_splash_page_1_message" = "Komunikasi aman dan independen yang memberikan tingkat privasi yang sama seperti percakapan tatap muka di rumah Anda sendiri.";
+"onboarding_splash_page_1_title" = "Miliki percakapan Anda.";
+"onboarding_splash_login_button_title" = "Saya sudah punya akun";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Buat akun";

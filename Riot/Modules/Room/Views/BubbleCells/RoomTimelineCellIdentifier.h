@@ -67,6 +67,25 @@ typedef NS_ENUM(NSUInteger, RoomTimelineCellIdentifier) {
     RoomTimelineCellIdentifierOutgoingAttachmentEncryptedWithoutSenderInfo,
     RoomTimelineCellIdentifierOutgoingAttachmentEncryptedWithPaginationTitle,
     
+    // - Attachment without thumbnail
+    // --- Clear
+    RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnail,
+    RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailWithoutSenderInfo,
+    RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailWithPaginationTitle,
+    // --- Encrypted
+    RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncrypted,
+    RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncryptedWithoutSenderInfo,
+    RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncryptedWithPaginationTitle,
+    // -- Outgoing
+    // --- Clear
+    RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnail,
+    RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailWithoutSenderInfo,
+    RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailWithPaginationTitle,
+    // --- Encrypted
+    RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncrypted,
+    RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncryptedWithoutSenderInfo,
+    RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncryptedWithPaginationTitle,
+    
     // - Room membership
     RoomTimelineCellIdentifierMembership,
     RoomTimelineCellIdentifierMembershipWithPaginationTitle,
@@ -92,19 +111,29 @@ typedef NS_ENUM(NSUInteger, RoomTimelineCellIdentifier) {
     RoomTimelineCellIdentifierGroupCallStatus,
     
     // - Voice message
-    RoomTimelineCellIdentifierVoiceMessage,
-    RoomTimelineCellIdentifierVoiceMessageWithoutSenderInfo,
-    RoomTimelineCellIdentifierVoiceMessageWithPaginationTitle,
-
+    // -- Incoming
+    RoomTimelineCellIdentifierIncomingVoiceMessage,
+    RoomTimelineCellIdentifierIncomingVoiceMessageWithoutSenderInfo,
+    RoomTimelineCellIdentifierIncomingVoiceMessageWithPaginationTitle,
+    // -- Outgoing
+    RoomTimelineCellIdentifierOutgoingVoiceMessage,
+    RoomTimelineCellIdentifierOutgoingVoiceMessageWithoutSenderInfo,
+    RoomTimelineCellIdentifierOutgoingVoiceMessageWithPaginationTitle,
+    
     // - Poll
     RoomTimelineCellIdentifierPoll,
     RoomTimelineCellIdentifierPollWithoutSenderInfo,
     RoomTimelineCellIdentifierPollWithPaginationTitle,
     
     // - Location sharing
-    RoomTimelineCellIdentifierLocation,
-    RoomTimelineCellIdentifierLocationWithoutSenderInfo,
-    RoomTimelineCellIdentifierLocationWithPaginationTitle,
+    // -- Incoming
+    RoomTimelineCellIdentifierIncomingLocation,
+    RoomTimelineCellIdentifierIncomingLocationWithoutSenderInfo,
+    RoomTimelineCellIdentifierIncomingLocationWithPaginationTitle,
+    // -- Outgoing
+    RoomTimelineCellIdentifierOutgoingLocation,
+    RoomTimelineCellIdentifierOutgoingLocationWithoutSenderInfo,
+    RoomTimelineCellIdentifierOutgoingLocationWithPaginationTitle,
     
     // - Others
     RoomTimelineCellIdentifierEmpty,
