@@ -39,6 +39,19 @@ class ThreadViewController: RoomViewController {
         return UINib(nibName: String(describing: RoomViewController.self), bundle: .main)
     }
     
+    override func finalizeInit() {
+        super.finalizeInit()
+        
+        self.saveProgressTextInput = false
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        guard let threadId = threadId else { return }
+        mainSession?.threadingService.markThreadAsRead(threadId)
+    }
+    
     override func setRoomTitleViewClass(_ roomTitleViewClass: AnyClass!) {
         super.setRoomTitleViewClass(ThreadRoomTitleView.self)
         
@@ -57,6 +70,10 @@ class ThreadViewController: RoomViewController {
         super.onButtonPressed(sender)
     }
     
+    override func handleTypingNotification(_ typing: Bool) {
+        //  no-op
+    }
+
     private func showThreadActions() {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
@@ -102,7 +119,8 @@ class ThreadViewController: RoomViewController {
         
         MXKPasteboardManager.shared.pasteboard.url = url
         view.vc_toast(message: VectorL10n.roomEventCopyLinkInfo,
-                      image: Asset.Images.linkIcon.image)
+                      image: Asset.Images.linkIcon.image,
+                      additionalMargin: self.roomInputToolbarContainerHeightConstraint.constant)
     }
     
     private func sharePermalink() {

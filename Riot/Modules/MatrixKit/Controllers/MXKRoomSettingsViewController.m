@@ -70,7 +70,7 @@
     if (roomListener)
     {
         MXWeakify(self);
-        [mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+        [mxRoom liveTimeline:^(id<MXEventTimeline> liveTimeline) {
             MXStrongifyAndReturnIfNil(self);
 
             [liveTimeline removeListener:self->roomListener];
@@ -139,7 +139,7 @@
     {
         // Register a listener to handle messages related to room name, topic...
         MXWeakify(self);
-        [mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+        [mxRoom liveTimeline:^(id<MXEventTimeline> liveTimeline) {
             MXStrongifyAndReturnIfNil(self);
 
             self->roomListener = [liveTimeline listenToEventsOfTypes:@[kMXEventTypeStringRoomName, kMXEventTypeStringRoomTopic, kMXEventTypeStringRoomAliases, kMXEventTypeStringRoomAvatar, kMXEventTypeStringRoomPowerLevels, kMXEventTypeStringRoomCanonicalAlias, kMXEventTypeStringRoomJoinRules, kMXEventTypeStringRoomGuestAccess, kMXEventTypeStringRoomHistoryVisibility] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {

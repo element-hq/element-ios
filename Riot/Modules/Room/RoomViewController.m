@@ -93,7 +93,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, ThreadsCoordinatorBridgePresenterDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, ThreadsCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate>
 {
     
     // The preview header
@@ -178,6 +178,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     // Time to display notification content in the timeline
     MXTaskProfile *notificationTaskProfile;
+    
+    // Reference to thread list bar button item, to update it easily later
+    BadgedBarButtonItem *threadListBarButtonItem;
 }
 
 @property (nonatomic, weak) IBOutlet UIView *overlayContainerView;
@@ -459,6 +462,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     self.scrollToBottomBadgeLabel.badgeColor = ThemeService.shared.theme.tintColor;
     
+    [self updateThreadListBarButtonBadgeWith:self.mainSession.threadingService];
+    [threadListBarButtonItem updateWithTheme:ThemeService.shared.theme];
+    
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
@@ -542,6 +548,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             [self cancelEventSelection];
         }
     }
+    [self cancelEventHighlight];
     
     // Hide preview header to restore navigation bar settings
     [self showPreviewHeader:NO];
@@ -899,6 +906,21 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 
 #pragma mark - Override MXKRoomViewController
+
+- (void)addMatrixSession:(MXSession *)mxSession
+{
+    [super addMatrixSession:mxSession];
+    
+    [mxSession.threadingService addDelegate:self];
+    [self updateThreadListBarButtonBadgeWith:mxSession.threadingService];
+}
+
+- (void)removeMatrixSession:(MXSession *)mxSession
+{
+    [mxSession.threadingService removeDelegate:self];
+    
+    [super removeMatrixSession:mxSession];
+}
 
 - (void)onMatrixSessionChange
 {
@@ -1427,15 +1449,20 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     return item;
 }
 
-- (UIBarButtonItem *)threadListBarButtonItem
+- (BadgedBarButtonItem *)threadListBarButtonItem
 {
+    UIButton *button = [UIButton new];
     UIImage *icon = [[UIImage imageNamed:@"threads_icon"] vc_resizedWith:CGSizeMake(21, 21)];
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:icon
-                                                             style:UIBarButtonItemStylePlain
-                                                            target:self
-                                                            action:@selector(onThreadListTapped:)];
-    item.accessibilityLabel = [VectorL10n roomAccessibilityThreads];
-    return item;
+    button.contentEdgeInsets = UIEdgeInsetsMake(4, 8, 4, 8);
+    [button setImage:icon
+            forState:UIControlStateNormal];
+    [button addTarget:self
+               action:@selector(onThreadListTapped:)
+     forControlEvents:UIControlEventTouchUpInside];
+    button.accessibilityLabel = [VectorL10n roomAccessibilityThreads];
+    
+    return [[BadgedBarButtonItem alloc] initWithBaseButton:button
+                                                     theme:ThemeService.shared.theme];
 }
 
 - (void)setupRemoveJitsiWidgetRemoveView
@@ -1675,14 +1702,20 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             if (self.roomDataSource.threadId)
             {
                 //  in a thread
+                if (rightBarButtonItems == nil)
+                {
+                    rightBarButtonItems = [NSMutableArray new];
+                }
                 UIBarButtonItem *itemThreadMore = [self threadMoreBarButtonItem];
                 [rightBarButtonItems insertObject:itemThreadMore atIndex:0];
             }
             else
             {
                 //  in a regular timeline
-                UIBarButtonItem *itemThreadList = [self threadListBarButtonItem];
+                BadgedBarButtonItem *itemThreadList = [self threadListBarButtonItem];
                 [rightBarButtonItems insertObject:itemThreadList atIndex:0];
+                threadListBarButtonItem = itemThreadList;
+                [self updateThreadListBarButtonBadgeWith:self.mainSession.threadingService];
             }
         }
     }
@@ -4618,24 +4651,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [super scrollViewWillBeginDragging:scrollView];
     }
     
-    //  if data source is highlighting an event, dismiss the highlight when user drags the table view
-    if (customizedRoomDataSource.highlightedEventId)
-    {
-        NSInteger row = [self.roomDataSource indexOfCellDataWithEventId:customizedRoomDataSource.highlightedEventId];
-        if (row == NSNotFound)
-        {
-            customizedRoomDataSource.highlightedEventId = nil;
-            return;
-        }
-        
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
-        if ([[self.bubblesTableView indexPathsForVisibleRows] containsObject:indexPath])
-        {
-            customizedRoomDataSource.highlightedEventId = nil;
-            [self.bubblesTableView reloadRowsAtIndexPaths:@[indexPath]
-                                         withRowAnimation:UITableViewRowAnimationAutomatic];
-        }
-    }
+    [self cancelEventHighlight];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
@@ -4841,7 +4857,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         if (typingNotifListener)
         {
             MXWeakify(self);
-            [self.roomDataSource.room liveTimeline:^(MXEventTimeline *liveTimeline) {
+            [self.roomDataSource.room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
                 MXStrongifyAndReturnIfNil(self);
                 
                 [liveTimeline removeListener:self->typingNotifListener];
@@ -5188,7 +5204,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     // Retrieve the unread messages count
                     NSUInteger unreadCount = self.roomDataSource.room.summary.localUnreadEventCount;
                     
-                    self.scrollToBottomBadgeLabel.text = unreadCount ? [NSString stringWithFormat:@"%lu", unreadCount] : nil;
+                    if (!self.roomDataSource.threadId)
+                    {
+                        self.scrollToBottomBadgeLabel.text = unreadCount ? [NSString stringWithFormat:@"%lu", unreadCount] : nil;
+                    }
+                    else
+                    {
+                        self.scrollToBottomBadgeLabel.text = nil;
+                    }
                     self.scrollToBottomHidden = NO;
                 }
                 else
@@ -5236,33 +5259,58 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         self.updateRoomReadMarker = NO;
         
         [self scrollBubblesTableViewToBottomAnimated:YES];
+
+        [self cancelEventHighlight];
     }
     else
     {
-        // Switch back to the room live timeline managed by MXKRoomDataSourceManager
-        MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
-        
         MXWeakify(self);
-        [roomDataSourceManager roomDataSourceForRoom:self.roomDataSource.roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
+
+        void(^continueBlock)(MXKRoomDataSource *, BOOL) = ^(MXKRoomDataSource *roomDataSource, BOOL hasRoomDataSourceOwnership){
             MXStrongifyAndReturnIfNil(self);
-            
+
+            [roomDataSource finalizeInitialization];
+
             // Scroll to bottom the bubble history on the display refresh.
             self->shouldScrollToBottomOnTableRefresh = YES;
-            
+
             [self displayRoom:roomDataSource];
-            
-            // The room view controller do not have here the data source ownership.
-            self.hasRoomDataSourceOwnership = NO;
-            
+
+            // Set the room view controller has the data source ownership here.
+            self.hasRoomDataSourceOwnership = hasRoomDataSourceOwnership;
+
             [self refreshActivitiesViewDisplay];
             [self refreshJumpToLastUnreadBannerDisplay];
-            
+
             if (self.saveProgressTextInput)
             {
                 // Restore the potential message partially typed before jump to last unread messages.
                 self.inputToolbarView.textMessage = roomDataSource.partialTextMessage;
             }
-        }];
+        };
+
+        if (self.roomDataSource.threadId)
+        {
+            [ThreadDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
+                                            initialEventId:nil
+                                                  threadId:self.roomDataSource.threadId
+                                          andMatrixSession:self.mainSession
+                                                onComplete:^(ThreadDataSource *threadDataSource)
+             {
+                continueBlock(threadDataSource, YES);
+            }];
+        }
+        else
+        {
+            // Switch back to the room live timeline managed by MXKRoomDataSourceManager
+            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
+
+            [roomDataSourceManager roomDataSourceForRoom:self.roomDataSource.roomId
+                                                  create:YES
+                                              onComplete:^(MXKRoomDataSource *roomDataSource) {
+                continueBlock(roomDataSource, NO);
+            }];
+        }
     }
 }
 
@@ -6524,6 +6572,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                     andMatrixSession:self.roomDataSource.mxSession
                                           onComplete:^(RoomDataSource *roomDataSource) {
             MXStrongifyAndReturnIfNil(self);
+            [roomDataSource finalizeInitialization];
             [self stopActivityIndicator];
             roomDataSource.markTimelineInitialEvent = YES;
             [self displayRoom:roomDataSource];
@@ -6543,7 +6592,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     if ([[self.bubblesTableView indexPathsForVisibleRows] containsObject:indexPath])
     {
         [self.bubblesTableView reloadRowsAtIndexPaths:@[indexPath]
-                                     withRowAnimation:UITableViewRowAnimationAutomatic];
+                                     withRowAnimation:UITableViewRowAnimationNone];
+        [self.bubblesTableView scrollToRowAtIndexPath:indexPath
+                                     atScrollPosition:UITableViewScrollPositionMiddle
+                                             animated:YES];
     }
     else if ([self.bubblesTableView vc_hasIndexPath:indexPath])
     {
@@ -6554,6 +6606,67 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     if (completion)
     {
         completion();
+    }
+}
+
+- (void)cancelEventHighlight
+{
+    //  if data source is highlighting an event, dismiss the highlight when user dragges the table view
+    if (customizedRoomDataSource.highlightedEventId)
+    {
+        NSInteger row = [self.roomDataSource indexOfCellDataWithEventId:customizedRoomDataSource.highlightedEventId];
+        if (row == NSNotFound)
+        {
+            customizedRoomDataSource.highlightedEventId = nil;
+            return;
+        }
+        
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+        if ([[self.bubblesTableView indexPathsForVisibleRows] containsObject:indexPath])
+        {
+            customizedRoomDataSource.highlightedEventId = nil;
+            [self.bubblesTableView reloadRowsAtIndexPaths:@[indexPath]
+                                         withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+    }
+}
+
+- (void)updateThreadListBarButtonBadgeWith:(MXThreadingService *)service
+{
+    if (!threadListBarButtonItem || !service)
+    {
+        //  there is no thread list bar button, ignore
+        return;
+    }
+    
+    MXThreadNotificationsCount *notificationsCount = [service notificationsCountForRoom:self.roomDataSource.roomId];
+    
+    if (notificationsCount.numberOfHighlightedThreads > 0)
+    {
+        threadListBarButtonItem.badgeText = [self threadListBadgeTextFor:notificationsCount.numberOfHighlightedThreads];
+        threadListBarButtonItem.badgeBackgroundColor = ThemeService.shared.theme.colors.alert;
+    }
+    else if (notificationsCount.numberOfNotifiedThreads > 0)
+    {
+        threadListBarButtonItem.badgeText = [self threadListBadgeTextFor:notificationsCount.numberOfNotifiedThreads];
+        threadListBarButtonItem.badgeBackgroundColor = ThemeService.shared.theme.noticeSecondaryColor;
+    }
+    else
+    {
+        //  remove badge
+        threadListBarButtonItem.badgeText = nil;
+    }
+}
+
+- (NSString *)threadListBadgeTextFor:(NSUInteger)numberOfThreads
+{
+    if (numberOfThreads < 100)
+    {
+        return [NSString stringWithFormat:@"%tu", numberOfThreads];
+    }
+    else
+    {
+        return @"···";
     }
 }
 
@@ -6979,6 +7092,13 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 - (void)threadsCoordinatorBridgePresenterDidDismissInteractively:(ThreadsCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
     self.threadsBridgePresenter = nil;
+}
+
+#pragma mark - MXThreadingServiceDelegate
+
+- (void)threadingServiceDidUpdateThreads:(MXThreadingService *)service
+{
+    [self updateThreadListBarButtonBadgeWith:service];
 }
 
 @end

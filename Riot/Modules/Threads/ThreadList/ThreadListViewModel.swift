@@ -151,6 +151,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         let lastMessageSender: MXUser?
         let rootMessageText = rootMessageText(forThread: thread)
         let (lastMessageText, lastMessageTime) = lastMessageTextAndTime(forThread: thread)
+        let notificationStatus = ThreadNotificationStatus(withThread: thread)
         
         //  root message
         if let rootMessage = thread.rootMessage, let senderId = rootMessage.sender {
@@ -183,7 +184,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
             lastAvatarViewData = nil
             lastMessageSender = nil
         }
-        
+
         let summaryModel = ThreadSummaryModel(numberOfReplies: thread.numberOfReplies,
                                               lastMessageSenderAvatar: lastAvatarViewData,
                                               lastMessageText: lastMessageText)
@@ -194,7 +195,8 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
                            rootMessageText: rootMessageText,
                            rootMessageRedacted: thread.rootMessage?.isRedactedEvent() ?? false,
                            lastMessageTime: lastMessageTime,
-                           summaryModel: summaryModel)
+                           summaryModel: summaryModel,
+                           notificationStatus: notificationStatus)
     }
     
     private func rootMessageText(forThread thread: MXThread) -> NSAttributedString? {

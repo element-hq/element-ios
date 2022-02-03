@@ -507,7 +507,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                                                                     session: roomNavigationParameters.mxSession,
                                                                     roomId: roomNavigationParameters.roomId,
                                                                     eventId: roomNavigationParameters.eventId,
-                                                                    threadId: roomNavigationParameters.threadParameters?.threadId)
+                                                                    threadId: roomNavigationParameters.threadParameters?.threadId,
+                                                                    displayConfiguration: .forThreads)
 
         dispatchGroup.enter()
         let threadCoordinator = RoomCoordinator(parameters: threadCoordinatorParameters)
@@ -534,8 +535,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                                       stack: roomNavigationParameters.presentationParameters.stackAboveVisibleViews)
 
             self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
-
-            completion?()
         }
     }
     
