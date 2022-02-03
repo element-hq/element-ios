@@ -17,7 +17,7 @@ env:
 jobs:
   build:
     # Run job if secrets are avilable (not avaiable for forks).
-    if: env.ALPHA_CERTIFICATES_P12 != null || env.ALPHA_CERTIFICATES_P12_PASSWORD != null
+    # if: env.ALPHA_CERTIFICATES_P12 != null || env.ALPHA_CERTIFICATES_P12_PASSWORD != null
     name: Release
     runs-on: macos-11
     
