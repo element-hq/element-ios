@@ -1377,6 +1377,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                 event = eventFromServer;
                                 dispatch_group_leave(eventDispatchGroup);
                             } failure:^(NSError *error) {
+                                MXLogError(@"[LegacyAppDelegate] handleUniversalLinkWithParameters: event fetch failed: %@", error);
                                 dispatch_group_leave(eventDispatchGroup);
                             }];
                         }

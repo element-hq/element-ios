@@ -1754,6 +1754,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                     
                     dispatch_group_leave(dispatchGroup);
                 } failure:^(NSError *error) {
+                    MXLogError(@"[MXKAccount] onDateTimeFormatUpdate: event fetch failed: %@", error);
                     dispatch_group_leave(dispatchGroup);
                 }];
             }
