@@ -218,6 +218,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @property (nonatomic, readwrite) RoomDisplayConfiguration *displayConfiguration;
 @property (nonatomic) AnalyticsScreenTimer *screenTimer;
 
+// When layout of the screen changes (e.g. height), we no longer know whether
+// to autoscroll to the bottom again or not. Instead we need to capture the
+// scroll state just before the layout change, and restore it after the layout.
+@property (nonatomic) BOOL shouldScrollToBottomAfterLayout;
+
 @end
 
 @implementation RoomViewController
@@ -657,6 +662,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self.screenTimer stop];
 }
 
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    self.shouldScrollToBottomAfterLayout = self.isBubblesTableScrollViewAtTheBottom;
+}
+
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
@@ -722,9 +732,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         self.edgesForExtendedLayout = UIRectEdgeLeft | UIRectEdgeBottom | UIRectEdgeRight;
     }
     
-    //  stay at the bottom if already was
-    if (self.isBubblesTableScrollViewAtTheBottom)
+    // re-scroll to the bottom, if at bottom before the most recent layout
+    if (self.shouldScrollToBottomAfterLayout)
     {
+        self.shouldScrollToBottomAfterLayout = NO;
         [self scrollBubblesTableViewToBottomAnimated:NO];
     }
     
