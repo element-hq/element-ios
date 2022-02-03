@@ -17,11 +17,11 @@
 import Foundation
 
 protocol ContactsPickerCoordinatorDelegate: AnyObject {
-    func contactsPickerCoordinatorDidStartLoading(_ coordinator: ContactsPickerCoordinatorType)
-    func contactsPickerCoordinatorDidEndLoading(_ coordinator: ContactsPickerCoordinatorType)
-    func contactsPickerCoordinatorDidClose(_ coordinator: ContactsPickerCoordinatorType)
+    func contactsPickerCoordinatorDidStartLoading(_ coordinator: ContactsPickerCoordinatorProtocol)
+    func contactsPickerCoordinatorDidEndLoading(_ coordinator: ContactsPickerCoordinatorProtocol)
+    func contactsPickerCoordinatorDidClose(_ coordinator: ContactsPickerCoordinatorProtocol)
 }
 
-protocol ContactsPickerCoordinatorType: Coordinator, Presentable {
+protocol ContactsPickerCoordinatorProtocol: Coordinator, Presentable {
     var delegate: ContactsPickerCoordinatorDelegate? { get }
 }

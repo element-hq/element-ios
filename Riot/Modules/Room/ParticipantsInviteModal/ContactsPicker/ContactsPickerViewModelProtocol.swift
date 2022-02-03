@@ -17,14 +17,15 @@
 import Foundation
 
 protocol ContactsPickerViewModelCoordinatorDelegate: AnyObject {
-    func contactsPickerViewModelDidStartLoading(_ viewModel: ContactsPickerViewModelType)
-    func contactsPickerViewModelDidEndLoading(_ viewModel: ContactsPickerViewModelType)
-    func contactsPickerViewModelDidStartInvite(_ viewModel: ContactsPickerViewModelType)
-    func contactsPickerViewModelDidEndInvite(_ viewModel: ContactsPickerViewModelType)
-    func contactsPickerViewModel(_ viewModel: ContactsPickerViewModelType, display message: String, title: String, actions: [UIAlertAction])
+    func contactsPickerViewModelDidStartLoading(_ viewModel: ContactsPickerViewModelProtocol)
+    func contactsPickerViewModelDidEndLoading(_ viewModel: ContactsPickerViewModelProtocol)
+    func contactsPickerViewModelDidStartInvite(_ viewModel: ContactsPickerViewModelProtocol)
+    func contactsPickerViewModelDidEndInvite(_ viewModel: ContactsPickerViewModelProtocol)
+    func contactsPickerViewModel(_ viewModel: ContactsPickerViewModelProtocol, inviteFailedWithError error: Error?)
+    func contactsPickerViewModel(_ viewModel: ContactsPickerViewModelProtocol, display message: String, title: String, actions: [UIAlertAction])
 }
 
-protocol ContactsPickerViewModelType {
+protocol ContactsPickerViewModelProtocol {
     var coordinatorDelegate: ContactsPickerViewModelCoordinatorDelegate? { get set }
     var areParticipantsLoaded: Bool { get }
     

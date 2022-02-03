@@ -82,7 +82,7 @@ final class RoomParticipantsInviteCoordinatorBridgePresenter: NSObject {
         }
         
         if let navigationController = viewController.navigationController {
-            self.navigationRouter = NavigationRouterStore.shared.findNavigationRouter(for: navigationController) ?? NavigationRouter(navigationController: navigationController)
+            self.navigationRouter = NavigationRouterStore.shared.navigationRouter(for: navigationController)
         } else {
             self.navigationRouter = nil
         }
@@ -152,7 +152,7 @@ final class RoomParticipantsInviteCoordinatorBridgePresenter: NSObject {
             
             let coordinator = ContactsPickerCoordinator(session: session,
                                                         room: room,
-                                                        currentSearchText: self.currentSearchText,
+                                                        initialSearchText: self.currentSearchText,
                                                         actualParticipants: self.actualParticipants,
                                                         invitedParticipants: self.invitedParticipants,
                                                         userParticipant: self.userParticipant,
@@ -185,15 +185,15 @@ final class RoomParticipantsInviteCoordinatorBridgePresenter: NSObject {
 }
 
 extension RoomParticipantsInviteCoordinatorBridgePresenter: ContactsPickerCoordinatorDelegate {
-    func contactsPickerCoordinatorDidStartLoading(_ coordinator: ContactsPickerCoordinatorType) {
+    func contactsPickerCoordinatorDidStartLoading(_ coordinator: ContactsPickerCoordinatorProtocol) {
         delegate?.roomParticipantsInviteCoordinatorBridgePresenterDidStartLoading(self)
     }
     
-    func contactsPickerCoordinatorDidEndLoading(_ coordinator: ContactsPickerCoordinatorType) {
+    func contactsPickerCoordinatorDidEndLoading(_ coordinator: ContactsPickerCoordinatorProtocol) {
         delegate?.roomParticipantsInviteCoordinatorBridgePresenterDidEndLoading(self)
     }
     
-    func contactsPickerCoordinatorDidClose(_ coordinator: ContactsPickerCoordinatorType) {
+    func contactsPickerCoordinatorDidClose(_ coordinator: ContactsPickerCoordinatorProtocol) {
         delegate?.roomParticipantsInviteCoordinatorBridgePresenterDidComplete(self)
     }
 }

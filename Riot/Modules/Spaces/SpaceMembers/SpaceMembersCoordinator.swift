@@ -154,7 +154,7 @@ extension SpaceMembersCoordinator: SpaceMemberListCoordinatorDelegate {
                 return
             }
             
-            let coordinator = ContactsPickerCoordinator(session: self.parameters.session, room: spaceRoom, currentSearchText: nil, actualParticipants: nil, invitedParticipants: nil, userParticipant: nil, navigationRouter: self.navigationRouter)
+            let coordinator = ContactsPickerCoordinator(session: self.parameters.session, room: spaceRoom, initialSearchText: nil, actualParticipants: nil, invitedParticipants: nil, userParticipant: nil, navigationRouter: self.navigationRouter)
             coordinator.delegate = self
             coordinator.start()
             self.childCoordinators.append(coordinator)
@@ -164,13 +164,13 @@ extension SpaceMembersCoordinator: SpaceMemberListCoordinatorDelegate {
 
 // MARK: - ContactsPickerCoordinatorDelegate
 extension SpaceMembersCoordinator: ContactsPickerCoordinatorDelegate {
-    func contactsPickerCoordinatorDidStartLoading(_ coordinator: ContactsPickerCoordinatorType) {
+    func contactsPickerCoordinatorDidStartLoading(_ coordinator: ContactsPickerCoordinatorProtocol) {
     }
     
-    func contactsPickerCoordinatorDidEndLoading(_ coordinator: ContactsPickerCoordinatorType) {
+    func contactsPickerCoordinatorDidEndLoading(_ coordinator: ContactsPickerCoordinatorProtocol) {
     }
     
-    func contactsPickerCoordinatorDidClose(_ coordinator: ContactsPickerCoordinatorType) {
+    func contactsPickerCoordinatorDidClose(_ coordinator: ContactsPickerCoordinatorProtocol) {
         remove(childCoordinator: coordinator)
     }
 }
