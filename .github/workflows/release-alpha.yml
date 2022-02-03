@@ -11,11 +11,13 @@ on:
 env:
   # Make the git branch for a PR available to our Fastfile
   MX_GIT_BRANCH: ${{ github.event.pull_request.head.ref }}
+  ALPHA_CERTIFICATES_P12: ${{ secrets.ALPHA_CERTIFICATES_P12 }}
+  ALPHA_CERTIFICATES_P12_PASSWORD: ${{ secrets.ALPHA_CERTIFICATES_P12_PASSWORD }}
 
 jobs:
   build:
     # Run job if secrets are avilable (not avaiable for forks).
-    if: ${{ secrets.ALPHA_CERTIFICATES_P12 }} || ${{ secrets.ALPHA_CERTIFICATES_P12_PASSWORD }}
+    if: env.ALPHA_CERTIFICATES_P12 != null || env.ALPHA_CERTIFICATES_P12_PASSWORD != null
     name: Release
     runs-on: macos-11
     
