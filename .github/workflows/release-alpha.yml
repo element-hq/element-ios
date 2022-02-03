@@ -14,7 +14,8 @@ env:
 
 jobs:
   build:
-    if: github.repository == 'vector-im/element-ios'
+    # Run job if secrets are avilable (not avaiable for forks).
+    if: ${{ secrets.ALPHA_CERTIFICATES_P12 }} || ${{ secrets.ALPHA_CERTIFICATES_P12_PASSWORD }}
     name: Release
     runs-on: macos-11
     
