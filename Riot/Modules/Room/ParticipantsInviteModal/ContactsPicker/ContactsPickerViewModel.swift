@@ -105,7 +105,7 @@ class ContactsPickerViewModel: NSObject, ContactsPickerViewModelType {
         contactsDataSource.forceMatrixIdInDisplayName = true
         
         // Add a plus icon to the contact cell in the contacts picker, in order to make it more understandable for the end user.
-        contactsDataSource.contactCellAccessoryImage = UIImage(named: "plus_icon")?.vc_tintedImage(usingColor: ThemeService.shared().theme.textPrimaryColor)
+        contactsDataSource.contactCellAccessoryImage = Asset.Images.plusIcon.image.vc_tintedImage(usingColor: ThemeService.shared().theme.textPrimaryColor)
         
         // List all the participants matrix user id to ignore them during the contacts search.
         for contact in actualParticipants ?? [] {
