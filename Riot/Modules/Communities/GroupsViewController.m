@@ -225,6 +225,8 @@
         
     }];
     
+    // The title gets updated in the MasterTabBarController based on accessibilityLabel
+    self.accessibilityLabel = [VectorL10n titleGroups];
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titleGroups];
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;        
 }
