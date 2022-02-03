@@ -174,6 +174,10 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
         if let bubbleCellThreadSummaryDisplayable = self as? BubbleCellThreadSummaryDisplayable {
             bubbleCellThreadSummaryDisplayable.removeThreadSummaryView()
         }
+        
+        if let timestampDisplayable = self as? TimestampDisplayable {
+            timestampDisplayable.removeTimestampView()
+        }
     }
     
     override func render(_ cellData: MXKCellData!) {

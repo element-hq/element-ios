@@ -29,8 +29,13 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
         
     override func addTimestampLabel(toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData) {
         
-        // If cell contains a bubble background, add the timestamp inside of it
-        if let bubbleBackgroundView = cell.messageBubbleBackgroundView, bubbleBackgroundView.isHidden == false, let timestampLabel = self.createTimestampLabel(for: cellData) {
+        if let timestampDisplayable = cell as? TimestampDisplayable, let timestampLabel = self.createTimestampLabel(for: cellData) {
+            
+            timestampDisplayable.addTimestampView(timestampLabel)
+            
+        } else if let bubbleBackgroundView = cell.messageBubbleBackgroundView, bubbleBackgroundView.isHidden == false, let timestampLabel = self.createTimestampLabel(for: cellData) {
+            
+            // If cell contains a bubble background, add the timestamp inside of it
             
             self.addTimestampLabel(timestampLabel,
                                    to: cell,
