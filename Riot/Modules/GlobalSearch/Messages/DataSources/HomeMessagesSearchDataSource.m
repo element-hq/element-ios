@@ -69,8 +69,8 @@
                         {
                             // Highlight the search pattern
                             [cellData highlightPatternInTextMessage:self.searchText
-                                                withBackgroundColor:[UIColor clearColor]
-                                                    foregroundColor:ThemeService.shared.theme.tintColor
+                                                withBackgroundColor:ThemeService.shared.theme.searchResultHighlightColor
+                                                    foregroundColor:ThemeService.shared.theme.textPrimaryColor
                                                             andFont:patternFont];
 
                             // Use profile information as data to display
