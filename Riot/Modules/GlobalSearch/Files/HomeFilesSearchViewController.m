@@ -149,7 +149,7 @@
 }
 
 - (void)showRoomWithId:(NSString*)roomId
-            andEventId:(NSString*)eventId
+              andEvent:(MXEvent*)event
        inMatrixSession:(MXSession*)session
 {
     ThreadParameters *threadParameters = nil;
@@ -170,7 +170,7 @@
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
     
     RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
-                                                                                    eventId:eventId
+                                                                                    eventId:event.eventId
                                                                                   mxSession:session
                                                                            threadParameters:threadParameters
                                                                      presentationParameters:presentationParameters];
@@ -228,7 +228,7 @@
 
     // Make the master tabBar view controller open the RoomViewController
     [self showRoomWithId:cellData.roomId
-              andEventId:_selectedEvent.eventId
+                andEvent:_selectedEvent
          inMatrixSession:self.mainSession];
 
     // Reset the selected event. HomeViewController got it when here
