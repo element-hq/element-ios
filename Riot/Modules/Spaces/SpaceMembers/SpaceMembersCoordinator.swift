@@ -142,7 +142,7 @@ extension SpaceMembersCoordinator: SpaceMemberListCoordinatorDelegate {
             guard let self = self else { return }
             
             guard let powerLevels = roomState?.powerLevels, let userId = self.parameters.session.myUserId else {
-                MXLog.error("[RoomParticipantsInviteCoordinatorBridgePresenter] present: powerLevels room found")
+                MXLog.error("[SpaceMembersCoordinator] spaceMemberListCoordinatorShowInvite: failed to find powerLevels for room")
                 return
             }
             let userPowerLevel = powerLevels.powerLevelOfUser(withUserID: userId)
