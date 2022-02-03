@@ -2705,17 +2705,35 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     else if (bubbleData.tag == RoomBubbleCellDataTagPoll)
     {
-        if (bubbleData.isPaginationFirstBubble)
+        if (bubbleData.isIncoming)
         {
-            cellIdentifier = RoomTimelineCellIdentifierPollWithPaginationTitle;
-        }
-        else if (bubbleData.shouldHideSenderInformation)
-        {
-            cellIdentifier = RoomTimelineCellIdentifierPollWithoutSenderInfo;
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingPollWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingPollWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingPoll;
+            }
         }
         else
         {
-            cellIdentifier = RoomTimelineCellIdentifierPoll;
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingPollWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingPollWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingPoll;
+            }
         }
     }
     else if (bubbleData.tag == RoomBubbleCellDataTagLocation)
