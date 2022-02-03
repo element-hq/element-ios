@@ -72,7 +72,7 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
                 self.completion?()
             case .share(let latitude, let longitude):
                 if let location = self.parameters.location {
-                    self.locationSharingHostingController.present(Self.shareActivityControllerForLocation(location), animated: true)
+                    self.locationSharingHostingController.present(Self.shareLocationActivityController(location), animated: true)
                     return
                 }
                 
@@ -94,7 +94,7 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
         }
     }
     
-    static func shareActivityControllerForLocation(_ location: CLLocationCoordinate2D) -> UIActivityViewController {
+    static func shareLocationActivityController(_ location: CLLocationCoordinate2D) -> UIActivityViewController {
         return UIActivityViewController(activityItems: [ShareToMapsAppActivity.urlForMapsAppType(.apple, location: location)],
                                         applicationActivities: [ShareToMapsAppActivity(type: .apple, location: location),
                                                                 ShareToMapsAppActivity(type: .google, location: location)])

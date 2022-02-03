@@ -20,8 +20,8 @@ extension UIActivity.ActivityType {
     static let shareToMapsApp = UIActivity.ActivityType("Element.ShareToMapsApp")
 }
 
-public class ShareToMapsAppActivity: UIActivity {
-    public enum MapsAppType {
+class ShareToMapsAppActivity: UIActivity {
+    enum MapsAppType {
         case apple
         case google
     }
@@ -33,12 +33,12 @@ public class ShareToMapsAppActivity: UIActivity {
         fatalError()
     }
     
-    public init(type: MapsAppType, location: CLLocationCoordinate2D) {
+    init(type: MapsAppType, location: CLLocationCoordinate2D) {
         self.type = type
         self.location = location
     }
     
-    public static func urlForMapsAppType(_ type: MapsAppType, location: CLLocationCoordinate2D) -> URL {
+    static func urlForMapsAppType(_ type: MapsAppType, location: CLLocationCoordinate2D) -> URL {
         switch type {
         case .apple:
             return URL(string: "https://maps.apple.com?ll=\(location.latitude),\(location.longitude)&q=Pin")!
@@ -47,7 +47,7 @@ public class ShareToMapsAppActivity: UIActivity {
         }
     }
     
-    public override var activityTitle: String? {
+    override var activityTitle: String? {
         switch type {
         case .apple:
             return VectorL10n.locationSharingOpenAppleMaps
@@ -60,15 +60,15 @@ public class ShareToMapsAppActivity: UIActivity {
         return .action
     }
     
-    public override var activityType: UIActivity.ActivityType {
+    override var activityType: UIActivity.ActivityType {
         return .shareToMapsApp
     }
     
-    public override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
+    override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
         return true
     }
     
-    public override func prepare(withActivityItems activityItems: [Any]) {
+    override func prepare(withActivityItems activityItems: [Any]) {
         let url = Self.urlForMapsAppType(type, location: location)
         
         UIApplication.shared.open(url, options: [:]) { [weak self] result in

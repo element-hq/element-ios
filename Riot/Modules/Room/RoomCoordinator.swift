@@ -391,7 +391,7 @@ extension RoomCoordinator: RoomViewControllerDelegate {
             return nil
         }
         
-        return LocationSharingCoordinator.shareActivityControllerForLocation(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
+        return LocationSharingCoordinator.shareLocationActivityController(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
     }
     
     func roomViewController(_ roomViewController: RoomViewController, canEndPollWithEventIdentifier eventIdentifier: String) -> Bool {
