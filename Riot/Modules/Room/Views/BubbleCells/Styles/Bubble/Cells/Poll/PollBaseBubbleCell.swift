@@ -50,13 +50,12 @@ class PollBaseBubbleCell: PollBubbleCell {
             return
         }
         
-        self.addBubbleBackgroundView(bubbleBackgroundView: messageBubbleBackgroundView, toPollView: pollView)
-        
+        self.addBubbleBackgroundView( messageBubbleBackgroundView, to: pollView)
         messageBubbleBackgroundView.backgroundColor = self.bubbleBackgroundColor
     }
     
-    private func addBubbleBackgroundView(bubbleBackgroundView: RoomMessageBubbleBackgroundView,
-                                         toPollView pollView: UIView) {
+    private func addBubbleBackgroundView(_ bubbleBackgroundView: RoomMessageBubbleBackgroundView,
+                                         to pollView: UIView) {
         
         let topMargin: CGFloat = 2.0
         let leftMargin: CGFloat = 10.0
@@ -81,6 +80,7 @@ class PollBaseBubbleCell: PollBubbleCell {
         self.bubbleCellContentView?.insertSubview(bubbleBackgroundView, at: 0)
     }
     
+    // The extension property MXKRoomBubbleTableViewCell.messageBubbleBackgroundView is not working there even by doing recursion
     private func getBubbleBackgroundView() -> RoomMessageBubbleBackgroundView? {
         guard let contentView = self.bubbleCellContentView else {
             return nil
@@ -90,5 +90,23 @@ class PollBaseBubbleCell: PollBubbleCell {
             return view is RoomMessageBubbleBackgroundView
         }
         return foundView as? RoomMessageBubbleBackgroundView
+    }
+}
+
+// MARK: - RoomCellTimestampDisplayable
+extension PollBaseBubbleCell: TimestampDisplayable {
+    
+    func addTimestampView(_ timestampView: UIView) {
+        guard let messageBubbleBackgroundView = self.getBubbleBackgroundView() else {
+            return
+        }
+        messageBubbleBackgroundView.addTimestampView(timestampView)
+    }
+    
+    func removeTimestampView() {
+        guard let messageBubbleBackgroundView = self.getBubbleBackgroundView() else {
+            return
+        }
+        messageBubbleBackgroundView.removeTimestampView()
     }
 }

@@ -259,6 +259,8 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
         switch cellData.cellDataTag {
         case .location:
             return true
+        case .poll:
+            return true
         default:
             break
         }
