@@ -121,9 +121,14 @@ typedef NS_ENUM(NSUInteger, RoomTimelineCellIdentifier) {
     RoomTimelineCellIdentifierOutgoingVoiceMessageWithPaginationTitle,
     
     // - Poll
-    RoomTimelineCellIdentifierPoll,
-    RoomTimelineCellIdentifierPollWithoutSenderInfo,
-    RoomTimelineCellIdentifierPollWithPaginationTitle,
+    // -- Incoming
+    RoomTimelineCellIdentifierIncomingPoll,
+    RoomTimelineCellIdentifierIncomingPollWithoutSenderInfo,
+    RoomTimelineCellIdentifierIncomingPollWithPaginationTitle,
+    // -- Outgoing
+    RoomTimelineCellIdentifierOutgoingPoll,
+    RoomTimelineCellIdentifierOutgoingPollWithoutSenderInfo,
+    RoomTimelineCellIdentifierOutgoingPollWithPaginationTitle,
     
     // - Location sharing
     // -- Incoming
