@@ -33,6 +33,7 @@ class DarkTheme: NSObject, Theme {
 
     var searchBackgroundColor: UIColor = UIColor(rgb: 0x15191E)
     var searchPlaceholderColor: UIColor = UIColor(rgb: 0xA9B2BC)
+    var searchResultHighlightColor: UIColor = UIColor(rgb: 0xFCC639).withAlphaComponent(0.3)
 
     var headerBackgroundColor: UIColor = UIColor(rgb: 0x21262C)
     var headerBorderColor: UIColor  = UIColor(rgb: 0x15191E)
