@@ -132,6 +132,10 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     private func splashScreenCoordinator(_ coordinator: OnboardingSplashScreenCoordinator, didCompleteWith result: OnboardingSplashScreenViewModelResult) {
         splashScreenResult = result
         
+        // Set the auth type early to allow network requests to finish during display of the use case screen.
+        let mxkAuthenticationType = splashScreenResult == .register ? MXKAuthenticationTypeRegister : MXKAuthenticationTypeLogin
+        authenticationCoordinator.update(authenticationType: mxkAuthenticationType)
+        
         switch result {
         case .register:
             showUseCase()
@@ -182,13 +186,14 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         // Due to needing to preload the authVC, this breaks the Coordinator init/start pattern.
         // This can be re-assessed once we re-write a native flow for authentication.
         
-        // Set authType first as registration parameters or soft logout credentials will modify this.
-        let mxkAuthenticationType = splashScreenResult == .register ? MXKAuthenticationTypeRegister : MXKAuthenticationTypeLogin
-        coordinator.update(authenticationType: mxkAuthenticationType)
-        
         if let externalRegistrationParameters = externalRegistrationParameters {
             coordinator.update(externalRegistrationParameters: externalRegistrationParameters)
         }
+        
+        if useCaseResult == .customServer {
+            coordinator.showCustomServer()
+        }
+        
         if let softLogoutCredentials = parameters.softLogoutCredentials {
             coordinator.update(softLogoutCredentials: softLogoutCredentials)
         }
@@ -217,10 +222,11 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         completion?()
         isShowingAuthentication = false
         
-        // Store the chosen use case when appropriate for any default configuration and, if opted in, for analytics.
+        // Handle the chosen use case if appropriate
         if authenticationType == MXKAuthenticationTypeRegister,
            let useCaseResult = useCaseResult,
            let userSession = UserSessionsService.shared.mainUserSession {
+            // Store the value in the user's session
             userSession.properties.useCase = useCaseResult.userSessionPropertyValue
         }
     }

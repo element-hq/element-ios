@@ -2443,7 +2443,7 @@ public class VectorL10n: NSObject {
   public static var onboardingSplashRegisterButtonTitle: String { 
     return VectorL10n.tr("Vector", "onboarding_splash_register_button_title") 
   }
-  /// Online community members
+  /// Communities
   public static var onboardingUseCaseCommunityMessaging: String { 
     return VectorL10n.tr("Vector", "onboarding_use_case_community_messaging") 
   }
@@ -2475,7 +2475,7 @@ public class VectorL10n: NSObject {
   public static var onboardingUseCaseTitle: String { 
     return VectorL10n.tr("Vector", "onboarding_use_case_title") 
   }
-  /// Coworkers and teams
+  /// Teams
   public static var onboardingUseCaseWorkMessaging: String { 
     return VectorL10n.tr("Vector", "onboarding_use_case_work_messaging") 
   }

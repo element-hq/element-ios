@@ -62,6 +62,10 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         authenticationViewController.authType = authenticationType
     }
     
+    func showCustomServer() {
+        authenticationViewController.hideCustomServers(false)
+    }
+    
     func update(externalRegistrationParameters: [AnyHashable: Any]) {
         authenticationViewController.externalRegistrationParameters = externalRegistrationParameters
     }

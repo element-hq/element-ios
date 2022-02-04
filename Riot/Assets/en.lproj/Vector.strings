@@ -96,8 +96,8 @@
 "onboarding_use_case_title" = "Who will you chat to the most?";
 "onboarding_use_case_message" = "We’ll help you get connected.";
 "onboarding_use_case_personal_messaging" = "Friends and family";
-"onboarding_use_case_work_messaging" = "Coworkers and teams";
-"onboarding_use_case_community_messaging" = "Online community members";
+"onboarding_use_case_work_messaging" = "Teams";
+"onboarding_use_case_community_messaging" = "Communities";
 /* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
 "onboarding_use_case_not_sure_yet" = "Not sure yet? You can %@";
 "onboarding_use_case_skip_button" = "skip this question";

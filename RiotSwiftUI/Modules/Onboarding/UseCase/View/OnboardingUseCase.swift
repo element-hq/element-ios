@@ -36,6 +36,7 @@ struct OnboardingUseCase: View {
         VStack(spacing: 8) {
             Image(Asset.Images.onboardingUseCaseIcon.name)
                 .padding(.bottom, 8)
+                .accessibilityHidden(true)
             
             Text(VectorL10n.onboardingUseCaseTitle)
                 .font(theme.fonts.title2B)
@@ -101,9 +102,7 @@ struct OnboardingUseCase: View {
                     }
                     .frame(maxWidth: OnboardingConstants.maxContentWidth,
                            maxHeight: OnboardingConstants.maxContentHeight)
-                    .padding(.horizontal, 16)
-                    .padding(.top, 48)
-                    .padding(.bottom, 16)
+                    .padding(16)
                 }
                 .frame(maxWidth: .infinity)
                 

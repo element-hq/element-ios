@@ -118,9 +118,15 @@ class DefaultTheme: NSObject, Theme {
         }
     }
     
-    // Note: We are not using UINavigationBarAppearance on iOS 13/14 because of UINavigationBar directly including UISearchBar on their titleView that cause crop issues with UINavigationController pop.
+    // Protocols don't support default parameter values and a protocol extension doesn't work for @objc
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
-        navigationBar.tintColor = self.tintColor
+        applyStyle(onNavigationBar: navigationBar, withModernScrollEdgesAppearance: false)
+    }
+    
+    // Note: We are not using UINavigationBarAppearance on iOS 13/14 because of UINavigationBar directly including UISearchBar on their titleView that cause crop issues with UINavigationController pop.
+    func applyStyle(onNavigationBar navigationBar: UINavigationBar,
+                    withModernScrollEdgesAppearance modernScrollEdgesAppearance: Bool) {
+        navigationBar.tintColor = tintColor
         
         // On iOS 15 use UINavigationBarAppearance to fix visual issues with the scrollEdgeAppearance style.
         if #available(iOS 15.0, *) {
@@ -128,13 +134,15 @@ class DefaultTheme: NSObject, Theme {
             
             appearance.configureWithOpaqueBackground()
             appearance.backgroundColor = baseColor
-            appearance.shadowColor = nil
+            if !modernScrollEdgesAppearance {
+                appearance.shadowColor = nil
+            }
             appearance.titleTextAttributes = [
                 NSAttributedString.Key.foregroundColor: textPrimaryColor
             ]
             
             navigationBar.standardAppearance = appearance
-            navigationBar.scrollEdgeAppearance = appearance
+            navigationBar.scrollEdgeAppearance = modernScrollEdgesAppearance ? nil : appearance
         } else {
             navigationBar.titleTextAttributes = [
                 NSAttributedString.Key.foregroundColor: textPrimaryColor

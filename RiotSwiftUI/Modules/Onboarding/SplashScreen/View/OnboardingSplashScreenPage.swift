@@ -48,6 +48,7 @@ struct OnboardingSplashScreenPage: View {
                     .scaledToFit()
                     .frame(maxWidth: 300)
                     .padding(20)
+                    .accessibilityHidden(true)
                 
                 VStack(spacing: 8) {
                     OnboardingSplashScreenTitleText(content.title)
