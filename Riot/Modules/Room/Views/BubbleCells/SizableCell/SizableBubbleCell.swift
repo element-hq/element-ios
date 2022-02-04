@@ -130,6 +130,13 @@ class SizableBaseBubbleCell: BaseBubbleCell, SizableBaseBubbleCellType {
             let reactionsHeight = self.reactionsViewSizer.height(for: bubbleReactionsViewModel, fittingWidth: reactionWidth)
             height+=reactionsHeight
         }
+
+        // Add thread summary view height if needed
+        if sizingView is BubbleCellThreadSummaryDisplayable,
+           let roomBubbleCellData = cellData as? RoomBubbleCellData,
+           roomBubbleCellData.hasThreadRoot {
+            height += RoomBubbleCellLayout.threadSummaryViewHeight
+        }
         
         return height
     }         

@@ -115,9 +115,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"MessagesGlobalSearch"];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshSearchResult:) name:kMXSessionDidLeaveRoomNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshSearchResult:) name:kMXSessionNewRoomNotification object:nil];
@@ -129,6 +126,18 @@
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionDidLeaveRoomNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionNewRoomNotification object:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.screenTimer start];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self.screenTimer stop];
 }
 
 #pragma mark -
@@ -147,17 +156,32 @@
 }
 
 - (void)showRoomWithId:(NSString*)roomId
-            andEventId:(NSString*)eventId
+              andEvent:(MXEvent*)event
        inMatrixSession:(MXSession*)session
 {
-    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
-    
+    ThreadParameters *threadParameters = nil;
+    if (RiotSettings.shared.enableThreads)
+    {
+        if (event.threadId)
+        {
+            threadParameters = [[ThreadParameters alloc] initWithThreadId:event.threadId
+                                                          stackRoomScreen:NO];
+        }
+        else if ([self.mainSession.threadingService isEventThreadRoot:event])
+        {
+            threadParameters = [[ThreadParameters alloc] initWithThreadId:event.eventId
+                                                          stackRoomScreen:NO];
+        }
+    }
+
+    ScreenPresentationParameters *screenParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
+
     RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
-                                                                                    eventId:eventId
-                                                                                  mxSession:session
-                                                                     presentationParameters:presentationParameters];
-    
-    [[AppDelegate theDelegate] showRoomWithParameters:parameters];
+                                                                                    eventId:event.eventId
+                                                                                  mxSession:self.mainSession
+                                                                           threadParameters:threadParameters
+                                                                     presentationParameters:screenParameters];
+    [[LegacyAppDelegate theDelegate] showRoomWithParameters:parameters];
 }
 
 #pragma mark - MXKDataSourceDelegate
@@ -254,7 +278,7 @@
 
     // Make the master tabBar view controller open the RoomViewController
     [self showRoomWithId:cellData.roomId
-              andEventId:_selectedEvent.eventId
+                andEvent:_selectedEvent
          inMatrixSession:cellData.mxSession];
     
     // Reset the selected event. HomeViewController got it when here

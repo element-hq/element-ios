@@ -1454,7 +1454,7 @@
 "space_private_join_rule" = "Spazio privato";
 "space_participants_action_ban" = "Bandisci da questo spazio";
 "space_participants_action_remove" = "Rimuovi da questo spazio";
-"spaces_coming_soon_detail" = "Questa funzionalità non è stata implementata qui, ma è in arrivo. Per adesso, puoi farlo con Element sul tuo computer.";
+"spaces_coming_soon_detail" = "Questa funzionalità non è stata implementata qui, ma è in arrivo. Per adesso, puoi farlo con %@ sul tuo computer.";
 "spaces_invites_coming_soon_title" = "Inviti in arrivo";
 "spaces_add_rooms_coming_soon_title" = "Aggiunta di stanze in arrivo";
 "spaces_coming_soon_title" = "Prossimamente";
@@ -1504,7 +1504,7 @@
 "space_home_show_all_rooms" = "Mostra tutte le stanze";
 "room_event_action_forward" = "Inoltra";
 "poll_edit_form_add_option" = "Aggiungi opzione";
-"poll_edit_form_option_number" = "Opzione %d";
+"poll_edit_form_option_number" = "Opzione %lu";
 "poll_edit_form_create_options" = "Crea opzioni";
 "poll_edit_form_input_placeholder" = "Scrivi qualcosa";
 "poll_edit_form_question_or_topic" = "Domanda o argomento";
@@ -1518,3 +1518,75 @@
 "share_extension_low_quality_video_title" = "Il video verrà inviato in bassa qualità";
 "settings_discovery_accept_terms" = "Accetta termini del server d'identità";
 "settings_about" = "INFORMAZIONI";
+"poll_timeline_not_closed_action" = "OK";
+"poll_timeline_not_closed_subtitle" = "Riprova";
+"poll_timeline_not_closed_title" = "Chiusura del sondaggio fallita";
+"poll_timeline_vote_not_registered_action" = "OK";
+"poll_timeline_vote_not_registered_subtitle" = "Spiacenti, il tuo voto non è stato registrato, riprova";
+"poll_timeline_vote_not_registered_title" = "Voto non registrato";
+"poll_timeline_total_final_results" = "Risultato finale basato su %lu voti";
+"poll_timeline_total_final_results_one_vote" = "Risultato finale basato su 1 voto";
+"poll_timeline_total_votes_not_voted" = "%lu voti inviati. Vota per vedere i risultati";
+"poll_timeline_total_one_vote_not_voted" = "1 voto inviato. Vota per vedere i risultati";
+"poll_timeline_total_votes" = "%lu voti";
+"poll_timeline_total_one_vote" = "1 voto";
+"poll_timeline_total_no_votes" = "Nessun voto";
+"poll_timeline_votes_count" = "%lu voti";
+"poll_timeline_one_vote" = "1 voto";
+"poll_edit_form_post_failure_action" = "OK";
+"poll_edit_form_post_failure_subtitle" = "Riprova";
+"poll_edit_form_post_failure_title" = "Invio del sondaggio fallito";
+"settings_labs_enabled_polls" = "Sondaggi";
+"room_event_action_end_poll" = "Termina sondaggio";
+"room_event_action_remove_poll" = "Rimuovi sondaggio";
+"analytics_prompt_stop" = "Non condividere più";
+"analytics_prompt_yes" = "Sì, va bene";
+"analytics_prompt_not_now" = "Non ora";
+"analytics_prompt_point_3" = "Puoi disattivarlo in qualsiasi momento nelle impostazioni";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "<b>Non</b> condividiamo informazioni con terze parti";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "<b>Non</b> registriamo o profiliamo alcun dato dell'account";
+"analytics_prompt_terms_link_upgrade" = "qui";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "Leggi i nostri termini di servizio %@. Accetti?";
+"analytics_prompt_terms_link_new_user" = "qui";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "Puoi leggere i nostri termini di servizio %@.";
+"analytics_prompt_message_upgrade" = "Hai acconsentito precedentemente a condividere con noi dati di utilizzo anonimi. Ora, per capire come le persone usano diversi dispositivi, genereremo un identificativo casuale, condiviso dai tuoi dispositivi.";
+"analytics_prompt_message_new_user" = "Aiutaci a identificare problemi e a migliorare %@ condividendo dati di utilizzo anonimi. Per capire come le persone usano diversi dispositivi, genereremo un identificativo casuale, condiviso dai tuoi dispositivi.";
+
+// Analytics
+"analytics_prompt_title" = "Aiuta a migliorare %@";
+"settings_analytics_and_crash_data" = "Invia crash e dati analitici";
+"accessibility_button_label" = "pulsante";
+"enable" = "Attiva";
+"location_sharing_settings_toggle_title" = "Attiva condivisione posizione";
+"location_sharing_settings_header" = "Condivisione posizione";
+"location_sharing_open_google_maps" = "Apri in Google Maps";
+"location_sharing_open_apple_maps" = "Apri in Apple Maps";
+"location_sharing_invalid_authorization_settings" = "Impostazioni";
+"location_sharing_invalid_authorization_not_now" = "Non ora";
+"location_sharing_invalid_authorization_error_title" = "%@ non ha l'autorizzazione per accedere alla tua posizione. Puoi attivarne l'accesso in Impostazioni > Localizzazione";
+"location_sharing_locating_user_error_title" = "%@ non ha potuto rilevare la tua posizione. Riprova più tardi.";
+"location_sharing_loading_map_error_title" = "%@ non ha potuto caricare la mappa. Riprova più tardi.";
+"location_sharing_share_action" = "Condividi";
+"location_sharing_close_action" = "Chiudi";
+
+// MARK: - Location sharing
+
+"location_sharing_title" = "Posizione";
+"ok" = "OK";
+"settings_enable_room_message_bubbles" = "Messaggi";
+"onboarding_splash_page_4_message" = "Element è ottimo anche per i luoghi di lavoro. È considerato affidabile dalle più sicure organizzazioni del mondo.";
+"onboarding_splash_page_4_title_no_pun" = "Messaggistica per la tua squadra.";
+"onboarding_splash_page_3_message" = "Crittografia end-to-end e nessun numero di telefono richiesto. Niente pubblicità o raccolta di dati.";
+"onboarding_splash_page_3_title" = "Messaggistica sicura.";
+"onboarding_splash_page_2_message" = "Scegli dove vengono tenute le tue conversazioni, dandoti controllo e indipendenza. Connesso via Matrix.";
+"onboarding_splash_page_2_title" = "Tu hai il controllo.";
+"onboarding_splash_page_1_message" = "Comunicazioni sicure e indipendenti che ti danno lo stesso livello di riservatezza di una conversazione faccia a faccia in casa tua.";
+"onboarding_splash_page_1_title" = "Prendi il controllo delle tue conversazioni.";
+"onboarding_splash_login_button_title" = "Ho già un account";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Crea account";

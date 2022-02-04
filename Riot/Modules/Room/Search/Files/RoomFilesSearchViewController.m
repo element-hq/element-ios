@@ -109,9 +109,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"RoomFilesSearch"];
     
     // Observe kAppDelegateDidTapStatusBarNotificationObserver.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -173,18 +170,16 @@
 {
     // Data in the cells are actually Vector RoomBubbleCellData
     FilesSearchCellData *cellData = (FilesSearchCellData*)[self.dataSource cellDataAtIndex:indexPath.row];
-    _selectedEvent = cellData.searchResult.result;
+    MXEvent *event = cellData.searchResult.result;
+    
+    RoomSearchViewController *roomSearchViewController = (RoomSearchViewController*)self.parentViewController;
     
     // Hide the keyboard handled by the search text input which belongs to RoomSearchViewController
-    [((RoomSearchViewController*)self.parentViewController).searchBar resignFirstResponder];
+    [roomSearchViewController resignFirstResponder];
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    // Make the RoomSearchViewController (that contains this VC) open the RoomViewController
-    [self.parentViewController performSegueWithIdentifier:@"showTimeline" sender:self];
-    
-    // Reset the selected event. RoomSearchViewController got it when here
-    _selectedEvent = nil;
+    [roomSearchViewController selectEvent:event];
 }
 
 @end

@@ -37,6 +37,7 @@ class HomeserverConfigurationTests: XCTestCase {
         let expectedDeprecatedJitsiServer = "your.deprecated.jitsi.example.org"
         let expectedE2EEEByDefaultEnabled = true
         let expectedDeprecatedE2EEEByDefaultEnabled = false
+        let expectedMapStyleURLString = "https://your.tileserver.org/style.json"
     
         let wellKnownDictionary: [String: Any] = [
             "m.homeserver": [
@@ -44,6 +45,9 @@ class HomeserverConfigurationTests: XCTestCase {
             ],
              "m.identity_server": [
                  "base_url": "https://your.identity-server.org"
+            ],
+            "m.tile_server": [
+                 "map_style_url": expectedMapStyleURLString
             ],
             "im.vector.riot.e2ee" : [
                 "default" : expectedDeprecatedE2EEEByDefaultEnabled
@@ -67,5 +71,7 @@ class HomeserverConfigurationTests: XCTestCase {
         XCTAssertEqual(homeserverConfiguration.jitsi.serverDomain, expectedJitsiServer)
         XCTAssertEqual(homeserverConfiguration.jitsi.serverURL.absoluteString, expectedJitsiServerStringURL)
         XCTAssertEqual(homeserverConfiguration.isE2EEByDefaultEnabled, expectedE2EEEByDefaultEnabled)
+        
+        XCTAssertEqual(homeserverConfiguration.tileServer.mapStyleURL.absoluteString, expectedMapStyleURLString)
     }
 }

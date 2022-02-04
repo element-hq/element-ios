@@ -56,7 +56,7 @@
         date = [searchDataSource.eventFormatter dateStringFromEvent:searchResult.result withTime:YES];
 
         // Code from [MXEventFormatter stringFromEvent] for the particular case of a text message
-        message = [searchResult.result.content[@"body"] isKindOfClass:[NSString class]] ? searchResult.result.content[@"body"] : nil;
+        message = [searchResult.result.content[kMXMessageBodyKey] isKindOfClass:[NSString class]] ? searchResult.result.content[kMXMessageBodyKey] : nil;
     }
     return self;
 }

@@ -1,3 +1,72 @@
+## Changes in 1.7.0 (2022-01-25)
+
+✨ Features
+
+- Message bubbles: Text message layout. ([#5208](https://github.com/vector-im/element-ios/issues/5208))
+- Message Bubbles: Layout for Media. ([#5209](https://github.com/vector-im/element-ios/issues/5209))
+- Message Bubbles: Support URL Previews. ([#5212](https://github.com/vector-im/element-ios/issues/5212))
+- Message Bubbles: Support reactions. ([#5214](https://github.com/vector-im/element-ios/issues/5214))
+- Added static location sharing sending and rendering support. ([#5298](https://github.com/vector-im/element-ios/issues/5298))
+- Message bubbles: Add settings and build flag. ([#5321](https://github.com/vector-im/element-ios/issues/5321))
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.21.0](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.21.0)).
+- Using mutable room list fetch sort options after chaning them to be a structure. Adaptation to MXStore api changes. ([#4384](https://github.com/vector-im/element-ios/issues/4384))
+- Reduce grace period to report decryption failure ([#5345](https://github.com/vector-im/element-ios/issues/5345))
+
+🐛 Bugfixes
+
+- Fixed home screen not updating properly on theme changes. ([#4208](https://github.com/vector-im/element-ios/issues/4208))
+- Fixes DTMF(dial tones) during voice calls. ([#5375](https://github.com/vector-im/element-ios/issues/5375))
+- Fix crash when uploading a video on iPad when "Confirm size when sending" is enabled in settings. ([#5399](https://github.com/vector-im/element-ios/issues/5399))
+- Fix BuildSetting to show/hide the "Invite Friends" button in the side SideMenu. ([#5402](https://github.com/vector-im/element-ios/issues/5402))
+- Add BuildSetting to hide social login in favour of the simple SSO button. ([#5404](https://github.com/vector-im/element-ios/issues/5404))
+- Fix grey spinner showing indefinitely over the home view after launch. ([#5407](https://github.com/vector-im/element-ios/issues/5407))
+- RecentsViewController: Update tab bar badges on section-only updates. ([#5421](https://github.com/vector-im/element-ios/issues/5421))
+
+Others
+
+- Fix graphql warnings in issue workflow automation ([#5294](https://github.com/vector-im/element-ios/issues/5294))
+
+
+## Changes in 1.6.12 (2022-01-11)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.20.16](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.20.16)).
+- Analytics: Replace Matomo with PostHog. ([#5035](https://github.com/vector-im/element-ios/issues/5035))
+
+🐛 Bugfixes
+
+- RoomVC: Fix left room reason label memory management. ([#5311](https://github.com/vector-im/element-ios/issues/5311))
+
+
+## Changes in 1.6.11 (2021-12-14)
+
+✨ Features
+
+- Added support for creating, displaying and interacting with polls in the timeline. ([#5114](https://github.com/vector-im/element-ios/issues/5114))
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.20.15](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.20.15)).
+- Room member details: Display user Matrix ID and make it copyable. ([#4568](https://github.com/vector-im/element-ios/issues/4568))
+
+🐛 Bugfixes
+
+- Fix crash when trying to scroll the people's tab to the top. ([#5190](https://github.com/vector-im/element-ios/issues/5190))
+
+🧱 Build
+
+- Fix SwiftGen only generating strings for MatrixKit. ([#5280](https://github.com/vector-im/element-ios/issues/5280))
+
+Others
+
+- Update issue workflow automation for the Delight team ([#5285](https://github.com/vector-im/element-ios/issues/5285))
+- Update workflow to add automation for the new Message Bubbles board ([#5289](https://github.com/vector-im/element-ios/issues/5289))
+
+
 ## Changes in 1.6.10 (2021-12-09)
 
 🙌 Improvements

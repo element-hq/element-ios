@@ -27,4 +27,6 @@ INFOPLIST_FILE = RiotSwiftUI/Info.plist
 
 SKIP_INSTALL = YES
 
+SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/RiotSwiftUI/RiotSwiftUI-Bridging-Header.h
+
 SWIFT_OBJC_INTERFACE_HEADER_NAME = GeneratedInterface-Swift.h

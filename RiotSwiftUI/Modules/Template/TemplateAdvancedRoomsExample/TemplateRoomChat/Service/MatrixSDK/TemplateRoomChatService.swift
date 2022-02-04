@@ -57,7 +57,7 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
     // MARK: Public
     func send(textMessage: String) {
         var localEcho: MXEvent? = nil
-        room.sendTextMessage(textMessage, localEcho: &localEcho, completion: { _ in })
+        room.sendTextMessage(textMessage, threadId: nil, localEcho: &localEcho, completion: { _ in })
     }
     
     // MARK: Private
@@ -96,14 +96,14 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
         return events
             .filter({ event in
                 event.type == kMXEventTypeStringRoomMessage
-                    && event.content["msgtype"] as? String == kMXMessageTypeText
+                    && event.content[kMXMessageTypeKey] as? String == kMXMessageTypeText
                 
                 // TODO: New to our SwiftUI Template? Why not implement another message type like image?
                 
             })
             .compactMap({ event -> TemplateRoomChatMessage?  in
                 guard let eventId = event.eventId,
-                      let body = event.content["body"] as? String,
+                      let body = event.content[kMXMessageBodyKey] as? String,
                       let sender = senderForMessage(event: event)
                 else { return nil }
                 

@@ -19,17 +19,14 @@ import Foundation
 /// Used to handle the application information
 @objcMembers
 final class AppInfo: NSObject {
- 
+    
     // MARK: - Constants
     
     /// Current application information
     static var current: AppInfo {
-        let appDisplayName = BuildSettings.bundleDisplayName
-        let buildInfo: BuildInfo = BuildInfo()
-        
-        return AppInfo(displayName: appDisplayName,
+        return AppInfo(displayName: self.bundleDisplayName,
                        appVersion: AppVersion.current,
-                       buildInfo: buildInfo)
+                       buildInfo: BuildInfo())
     }
     
     // MARK: - Properties
@@ -51,5 +48,12 @@ final class AppInfo: NSObject {
         self.displayName = displayName
         self.appVersion = appVersion
         self.buildInfo = buildInfo
+    }
+    
+    private static var bundleDisplayName: String {
+        guard let bundleDisplayName = Bundle.app.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String else {
+            fatalError("CFBundleDisplayName should be defined")
+        }
+        return bundleDisplayName
     }
 }

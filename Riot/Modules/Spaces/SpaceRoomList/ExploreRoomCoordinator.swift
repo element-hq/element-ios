@@ -28,6 +28,8 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
     private let spaceId: String
+    // We need to stack the ID of visited space and subspaces so we know what is the current space ID when navigating to a room
+    private var spaceIdStack: [String]
     private weak var roomDetailCoordinator: SpaceChildRoomDetailCoordinator?
 
     private lazy var slidingModalPresenter: SlidingModalPresenter = {
@@ -47,6 +49,7 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
         self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
         self.spaceId = spaceId
+        self.spaceIdStack = [spaceId]
     }
     
     // MARK: - Public methods
@@ -72,8 +75,10 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
         let coordinator = self.createShowSpaceExploreRoomCoordinator(session: self.session, spaceId: item.childInfo.childRoomId, spaceName: item.childInfo.name)
         coordinator.start()
         self.add(childCoordinator: coordinator)
+        self.spaceIdStack.append(item.childInfo.childRoomId)
         self.navigationRouter.push(coordinator.toPresentable(), animated: true) {
             self.remove(childCoordinator: coordinator)
+            self.spaceIdStack.removeLast()
         }
     }
     
@@ -134,6 +139,7 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
             }
             
             self?.navigationRouter.push(roomViewController, animated: true, popCompletion: nil)
+            roomViewController.parentSpaceId = self?.spaceIdStack.last
             roomViewController.displayRoom(roomDataSource)
             roomViewController.navigationItem.leftItemsSupplementBackButton = true
             roomViewController.showMissedDiscussionsBadge = false

@@ -37,7 +37,7 @@
         roomId = event.roomId;
         
         // Title is here the file name stored in event body
-        title = [event.content[@"body"] isKindOfClass:[NSString class]] ? event.content[@"body"] : nil;
+        title = [event.content[kMXMessageBodyKey] isKindOfClass:[NSString class]] ? event.content[kMXMessageBodyKey] : nil;
         
         // Check attachment if any
         if ([searchDataSource.eventFormatter isSupportedAttachment:event])
@@ -128,7 +128,7 @@
 {
     MXEvent *event = searchResult.result;
     NSString *msgtype;
-    MXJSONModelSetString(msgtype, event.content[@"msgtype"]);
+    MXJSONModelSetString(msgtype, event.content[kMXMessageTypeKey]);
     
     if ([msgtype isEqualToString:kMXMessageTypeImage])
     {
@@ -141,10 +141,6 @@
     else if ([msgtype isEqualToString:kMXMessageTypeVideo])
     {
        return [UIImage imageNamed:@"file_video_icon"];
-    }
-    else if ([msgtype isEqualToString:kMXMessageTypeLocation])
-    {
-        // Not supported yet
     }
     else if ([msgtype isEqualToString:kMXMessageTypeFile])
     {

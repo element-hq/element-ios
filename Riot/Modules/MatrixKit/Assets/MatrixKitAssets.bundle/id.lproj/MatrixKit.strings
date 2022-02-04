@@ -249,7 +249,7 @@
 // titles 
 
 // button names 
-"ok" = "OK";
+"ok" = "OKE";
 "notice_room_history_visible_to_members_from_joined_point_by_you_for_dm" = "Anda membuat sejarah pesan di masa mendatang dapat dilihat oleh semuanya, sejak mereka bergabung.";
 "notice_room_history_visible_to_members_from_joined_point_by_you" = "Anda membuat sejarah ruangan di masa mendatang dapat dilihat oleh semua anggota ruang, sejak mereka bergabung.";
 "notice_encryption_enabled_unknown_algorithm_by_you" = "Anda mengaktifkan enkripsi ujung-ke-ujung (algoritma %@ tidak dikenal).";
@@ -345,7 +345,7 @@
 // Country picker
 "country_picker_title" = "Pilih sebuah negara";
 "microphone_access_not_granted_for_voice_message" = "Pesan suara membutuhkan akses ke Mikrofon tetapi %@ tidak memiliki izin untuk menggunakannya";
-"local_contacts_access_discovery_warning" = "Untuk menemukan kontak Anda yang sudah menggunakan Matrix, %@ dapat mengirim alamat email dan nomor telepon di kontak Anda ke server identitas Matrix yang Anda pilih. Di mana saja yang didukung, data personal akan di-hash sebelum dikirim - mohon cek kebijakan privasi identitas server Anda untuk detail lainnya.";
+"local_contacts_access_discovery_warning" = "Untuk menemukan kontak Anda yang sudah menggunakan Matrix, %@ dapat mengirim alamat email dan nomor telepon di kontak Anda ke server identitas Matrix yang Anda pilih. Di mana saja yang didukung, data personal akan di-hash sebelum dikirim — mohon cek kebijakan privasi identitas server Anda untuk detail lainnya.";
 "local_contacts_access_discovery_warning_title" = "Penemuan pengguna";
 "local_contacts_access_not_granted" = "Penemuan pengguna dari kontak lokal membutuhkan akses ke kontak Anda tetapi %@ tidak memiliki izin untuk menggunakannya";
 "microphone_access_not_granted_for_call" = "Panggilan membutuhkan akses ke Mikrofon tetapi %@ tidak memiliki izin untuk menggunakannya";
@@ -557,3 +557,4 @@
 "notice_room_power_level_acting_requirement" = "Tingkat daya minimum yang harus dimiliki pengguna sebelum bertindak adalah:";
 "attachment_unsupported_preview_title" = "Tidak dapat ditampilkan";
 "attachment_unsupported_preview_message" = "Tipe file ini tidak didukung.";
+"message_reply_to_sender_sent_their_location" = "telah membagikan lokasinya.";

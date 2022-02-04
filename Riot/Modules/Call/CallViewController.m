@@ -645,8 +645,8 @@ CallAudioRouteMenuViewDelegate>
 {
     CallTransferMainViewController *controller = [CallTransferMainViewController instantiateWithSession:self.mainSession ignoredUserIds:@[self.peer.userId]];
     controller.delegate = self;
-    
     UINavigationController *navController = [[RiotNavigationController alloc] initWithRootViewController:controller];
+    [self.mxCall hold:YES];
     [self presentViewController:navController animated:YES completion:nil];
 }
 
@@ -664,9 +664,7 @@ CallAudioRouteMenuViewDelegate>
     {
         return;
     }
-    BOOL result = [self.mxCall sendDTMF:digit
-                               duration:0
-                           interToneGap:0];
+    BOOL result = [self.mxCall sendDTMF:digit];
     
     MXLogDebug(@"[CallViewController] Sending DTMF tones %@", result ? @"succeeded": @"failed");
 }
@@ -734,6 +732,7 @@ CallAudioRouteMenuViewDelegate>
 
 - (void)callTransferMainViewControllerDidCancel:(CallTransferMainViewController *)viewController
 {
+    [self.mxCall hold:NO];
     [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 

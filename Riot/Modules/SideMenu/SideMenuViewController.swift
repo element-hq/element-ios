@@ -48,6 +48,7 @@ final class SideMenuViewController: UIViewController {
     private var keyboardAvoider: KeyboardAvoider?
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
+    private var screenTimer = AnalyticsScreenTimer(screen: .sidebar)
     
     private var sideMenuActionViews: [SideMenuActionView] = []
     private weak var sideMenuVersionView: SideMenuVersionView?
@@ -86,8 +87,14 @@ final class SideMenuViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        screenTimer.start()
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        screenTimer.stop()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

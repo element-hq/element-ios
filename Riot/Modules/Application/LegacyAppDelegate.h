@@ -22,7 +22,6 @@
 #import "JitsiViewController.h"
 
 #import "RageShakeManager.h"
-#import "Analytics.h"
 
 #import "ThemeService.h"
 #import "UniversalLink.h"

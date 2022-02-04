@@ -63,6 +63,7 @@ final class ShowDirectoryCoordinator: ShowDirectoryCoordinatorType {
     
     private func createDirectoryServerPickerViewController() -> DirectoryServerPickerViewController {
         let controller = DirectoryServerPickerViewController()
+        controller.finalizeInit()
         let dataSource: MXKDirectoryServersDataSource = MXKDirectoryServersDataSource(matrixSession: session)
         dataSource.finalizeInitialization()
         dataSource.roomDirectoryServers = BuildSettings.publicRoomsDirectoryServers

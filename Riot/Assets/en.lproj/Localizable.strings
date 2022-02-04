@@ -71,6 +71,9 @@
 /* New file message from a specific person, not referencing a room. */
 "FILE_FROM_USER" = "%@ sent a file %@";
 
+/* New file message from a specific person, not referencing a room. */
+"LOCATION_FROM_USER" = "%@ shared their location";
+
 /* A single unread message in a room */
 "SINGLE_UNREAD_IN_ROOM" = "You received a message in %@";
 

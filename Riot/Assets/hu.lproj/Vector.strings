@@ -1483,7 +1483,7 @@
 "space_private_join_rule" = "Privát tér";
 "space_participants_action_ban" = "Kitiltás a térről";
 "space_participants_action_remove" = "Eltávolítás a térről";
-"spaces_coming_soon_detail" = "Ez a lehetőség még nincs meg, de fejlesztés alatt van. Egyenlőre a számítógépeden Elementtel tudod ezt megtenni.";
+"spaces_coming_soon_detail" = "Ez a lehetőség még nincs meg, de fejlesztés alatt van. Egyenlőre a számítógépeden %@ alkalmazással tudod ezt megtenni.";
 "spaces_invites_coming_soon_title" = "Meghívók küldése hamarosan érkezik";
 "spaces_add_rooms_coming_soon_title" = "Szobák hozzáadása hamarosan érkezik";
 "spaces_coming_soon_title" = "Hamarosan";
@@ -1533,7 +1533,7 @@
 "space_home_show_all_rooms" = "Minden szoba megjelenítése";
 "room_event_action_forward" = "Továbbítás";
 "poll_edit_form_add_option" = "Lehetőség hozzáadása";
-"poll_edit_form_option_number" = "%d lehetőség";
+"poll_edit_form_option_number" = "%lu lehetőség";
 "poll_edit_form_create_options" = "Lehetőségek hozzáadása";
 "poll_edit_form_input_placeholder" = "Írjon valamit";
 "poll_edit_form_question_or_topic" = "Kérdés vagy téma";
@@ -1547,3 +1547,75 @@
 "share_extension_low_quality_video_title" = "Alacsony minőségű videó lesz elküldve";
 "settings_discovery_accept_terms" = "Azonosítási Szolgáltatás felhasználási feltételeinek elfogadása";
 "settings_about" = "NÉVJEGY";
+"poll_timeline_not_closed_action" = "OK";
+"poll_timeline_not_closed_subtitle" = "Kérlek próbáld újra";
+"poll_timeline_not_closed_title" = "Nem sikerült a szavazás lezárása";
+"poll_timeline_vote_not_registered_action" = "OK";
+"poll_timeline_vote_not_registered_subtitle" = "Sajnos a szavazatod nem lett rögzítve. Kérlek ismételd meg újra";
+"poll_timeline_vote_not_registered_title" = "Szavazás nem sikerült";
+"poll_timeline_total_final_results" = "Végeredmény %lu szavazat alapján";
+"poll_timeline_total_final_results_one_vote" = "Eredmény 1 szavazat alapján";
+"poll_timeline_total_votes_not_voted" = "%lu szavazatot adtak le. Szavazz az eredmény megtekintéséhez";
+"poll_timeline_total_one_vote_not_voted" = "1 szavazatot adtak le. Szavazz az eredmény megtekintéséhez";
+"poll_timeline_total_votes" = "%lu szavazatot adtak le";
+"poll_timeline_total_one_vote" = "1 szavazatot adtak le";
+"poll_timeline_total_no_votes" = "Nem adtak le szavazatot";
+"poll_timeline_votes_count" = "%lu szavazat";
+"poll_timeline_one_vote" = "1 szavazat";
+"poll_edit_form_post_failure_action" = "OK";
+"poll_edit_form_post_failure_subtitle" = "Kérlek próbáld újra";
+"poll_edit_form_post_failure_title" = "A szavazást nem sikerült beküldeni";
+"analytics_prompt_stop" = "Megosztás megállítása";
+"analytics_prompt_yes" = "Igen, rendben van";
+"analytics_prompt_not_now" = "Nem most";
+"analytics_prompt_point_3" = "Ezt bármikor kikapcsolhatod a beállításokban";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "<b>Nem</b> osztjuk meg az információt harmadik féllel";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "<b>Nem</b> küldünk és nem profilozunk semmilyen fiók adatot";
+"analytics_prompt_terms_link_upgrade" = "itt";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "Olvasd el minden feltételünket: %@. Rendben?";
+"analytics_prompt_terms_link_new_user" = "itt";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "Az összes feltételünket elolvashatod itt: %@.";
+"analytics_prompt_message_new_user" = "Segíts észrevennünk a hibákat, és jobbá tenni a(z) %@ alkalmazást a névtelen használati adatok küldése által. Ahhoz, hogy megértsük, hogyan használnak a felhasználók egyszerre több eszközt, egy véletlenszerű azonosítót generálunk, ami az eszközeid között meg lesz osztva.";
+
+// Analytics
+"analytics_prompt_title" = "Segíts jobbá tenni %@";
+"settings_analytics_and_crash_data" = "Összeomlás és analitikai adatok küldése";
+"settings_labs_enabled_polls" = "Szavazások";
+"room_event_action_end_poll" = "Szavazás lezárása";
+"room_event_action_remove_poll" = "Szavazás törlése";
+"accessibility_button_label" = "gomb";
+"enable" = "Engedélyezés";
+"analytics_prompt_message_upgrade" = "Korábban beleegyeztél, hogy velünk anonimizált adatokat osztasz meg. Most, hogy jobban megértsük, hogyan használnak több eszközt az emberek, véletlenszerű azonosítót állítunk elő amit az eszközeid használni fognak.";
+"location_sharing_settings_toggle_title" = "Földrajzi hely megosztás engedélyezése";
+"location_sharing_settings_header" = "Földrajzi hely megosztása";
+"location_sharing_open_google_maps" = "Megnyitás a Google Térképen";
+"location_sharing_open_apple_maps" = "Megnyitás az Apple Térképen";
+"location_sharing_invalid_authorization_settings" = "Beállítások";
+"location_sharing_invalid_authorization_not_now" = "Nem most";
+"location_sharing_invalid_authorization_error_title" = "%@ alkalmazásnak nincs jogosultsága a helyadatod eléréséhez. Engedélyezheted a Beállítások > Helyadatokban";
+"location_sharing_loading_map_error_title" = "%@ nem tudja betölteni a térképet. Próbáld újra később.";
+"location_sharing_locating_user_error_title" = "%@ nem fér hozzá a helyadatodhoz. Próbáld újra később.";
+"location_sharing_share_action" = "Megoszt";
+"location_sharing_close_action" = "Bezár";
+
+// MARK: - Location sharing
+
+"location_sharing_title" = "Földrajzi helyzet";
+"ok" = "OK";
+"onboarding_splash_page_4_message" = "Element megállja a helyét a munkahelyen is. A világ legbiztonságosabb szervezetei bíznak meg benne.";
+"onboarding_splash_page_3_message" = "Telefonszám nélkül végpontok között titkosított. Reklámok és adatbányászat nélkül.";
+"onboarding_splash_page_2_message" = "Válaszd meg hol legyenek a beszélgetéseid tárolva, visszaadja az irányítást és függetlenné tesz. Csatlakozva a Matrixhoz.";
+"onboarding_splash_page_1_message" = "Biztonságos és független kommunikáció ami olyan biztonságos mintha valakivel négyszemközt beszélgetnél a házadban.";
+"settings_enable_room_message_bubbles" = "Üzenet buborékok";
+"onboarding_splash_page_4_title_no_pun" = "Üzenetküldés a csoportodnak.";
+"onboarding_splash_page_3_title" = "Biztonságos üzenetküldés.";
+"onboarding_splash_page_2_title" = "Te irányítasz.";
+"onboarding_splash_page_1_title" = "Az ön beszélgetései csak az öné.";
+"onboarding_splash_login_button_title" = "Már van fiókom";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Fiók létrehozása";

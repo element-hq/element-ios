@@ -33,8 +33,7 @@ struct ScreenList: View {
                 ForEach(0..<allStates.count) { i in
                     let state = allStates[i]
                     NavigationLink(destination: state.view) {
-                        Text(state.fullScreenTitle)
-                            .accessibilityIdentifier(state.stateKey)
+                        Text(state.screenTitle)
                     }
                 }
             }

@@ -49,6 +49,7 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
     @IBOutlet private var playButton: UIButton!
     @IBOutlet private var elapsedTimeLabel: UILabel!
     @IBOutlet private var waveformContainerView: UIView!
+    @IBOutlet private (set)var stackViewTrailingContraint: NSLayoutConstraint!
     
     private var longPressGestureRecognizer: UILongPressGestureRecognizer!
     private var panGestureRecognizer: UIPanGestureRecognizer!
@@ -59,6 +60,16 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
     
     var waveformView: UIView {
         return _waveformView
+    }
+    
+    /// Define the `backgroundView.backgroundColor`.
+    /// By setting this value the theme color will not be applyied to `backgroundView` in `update(theme: Theme)` method.
+    var customBackgroundViewColor: UIColor? {
+        didSet {
+            if let theme = currentTheme {
+                self.update(theme: theme)
+            }
+        }
     }
     
     override var bounds: CGRect {
@@ -128,7 +139,10 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
         self.backgroundColor = theme.colors.background
         playButton.backgroundColor = theme.colors.background
         playButton.tintColor = theme.colors.secondaryContent
-        backgroundView.backgroundColor = theme.colors.quinaryContent
+        
+        let backgroundViewColor = self.customBackgroundViewColor ?? theme.colors.quinaryContent
+        
+        backgroundView.backgroundColor = backgroundViewColor
         _waveformView.primaryLineColor =  theme.colors.quarterlyContent
         _waveformView.secondaryLineColor = theme.colors.secondaryContent
         elapsedTimeLabel.textColor = theme.colors.tertiaryContent

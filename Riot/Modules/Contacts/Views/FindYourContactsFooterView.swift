@@ -55,7 +55,7 @@ class FindYourContactsFooterView: UIView, NibLoadable, Themable {
         button.layer.cornerRadius = 8
         
         titleLabel.text = VectorL10n.findYourContactsTitle
-        messageLabel.text = VectorL10n.findYourContactsMessage(BuildSettings.bundleDisplayName)
+        messageLabel.text = VectorL10n.findYourContactsMessage(AppInfo.current.displayName)
         button.setTitle(VectorL10n.findYourContactsButtonTitle, for: .normal)
         footerLabel.text = VectorL10n.findYourContactsFooter
     }

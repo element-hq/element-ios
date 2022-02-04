@@ -97,10 +97,14 @@ final class SideMenuViewModel: SideMenuViewModelType {
             return
         }
         
-        let sideMenuItems: [SideMenuItem] = [
-            .inviteFriends,
+        var sideMenuItems: [SideMenuItem] = []
+        
+        if BuildSettings.sideMenuShowInviteFriends {
+            sideMenuItems += [.inviteFriends]
+        }
+        
+        sideMenuItems += [
             .settings,
-            .help,
             .feedback
         ]
         

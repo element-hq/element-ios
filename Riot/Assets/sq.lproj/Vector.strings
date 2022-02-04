@@ -222,7 +222,7 @@
 "settings_ignored_users" = "PËRDORUES TË SHPËRFILLUR";
 "settings_contacts" = "KONTAKTE PAJISJEJE";
 "settings_advanced" = "TË MËTEJSHME";
-"settings_other" = "TË TJERA";
+"settings_other" = "Tjetër";
 "settings_devices" = "SESIONE";
 "settings_cryptography" = "KRIPTOGRAFI";
 "settings_sign_out" = "Dilni";
@@ -1471,7 +1471,7 @@
 "space_private_join_rule" = "Hapësirë private";
 "space_participants_action_ban" = "Dëboje prej kësaj hapësire";
 "space_participants_action_remove" = "Hiqe prej kësaj hapësire";
-"spaces_coming_soon_detail" = "Kjo veçori s’është sendërtuar këtu, por po bëhet. Tani për tani, mund ta bëni këtë me Element-in në kompjuterin tuaj.";
+"spaces_coming_soon_detail" = "Kjo veçori s’është sendërtuar këtu, por po bëhet. Tani për tani, mund ta bëni këtë me %@-in në kompjuterin tuaj.";
 "spaces_invites_coming_soon_title" = "Ftesat vijnë së shpejti";
 "spaces_add_rooms_coming_soon_title" = "Shtimi i dhomave vjen së shpejti";
 "spaces_coming_soon_title" = "S’afërmi";
@@ -1519,3 +1519,92 @@
 "contacts_address_book_permission_denied_alert_message" = "Që të aktivizoni kontakte, kaloni te rregullimet e pajisjes tua.";
 "contacts_address_book_permission_denied_alert_title" = "Kontaktet u çaktivizuan";
 "space_home_show_all_rooms" = "Shfaqi krejt dhomat";
+"poll_timeline_not_closed_action" = "OK";
+"poll_timeline_not_closed_subtitle" = "Ju lutemi, riprovoni";
+"poll_timeline_not_closed_title" = "S’u arrit të përfundohej pyetësori";
+"poll_timeline_vote_not_registered_action" = "OK";
+"poll_timeline_vote_not_registered_subtitle" = "Na ndjeni, vota juaj s’u regjistrua, ju lutemi, riprovoni";
+"poll_timeline_vote_not_registered_title" = "Votë e paregjistruar";
+"poll_timeline_total_final_results" = "Rezultati përfundimtar, bazua në %lu votë";
+"poll_timeline_total_final_results_one_vote" = "Rezultati përfundimtar, bazua në 1 votë";
+"poll_timeline_total_votes_not_voted" = "%lu vota të hedhura. Që të shihni përfundimet, votoni";
+"poll_timeline_total_one_vote_not_voted" = "1 votë e hedhur. Që të shihni përfundimet, votoni";
+"poll_timeline_total_votes" = "%lu vota të hedhura";
+"poll_timeline_total_one_vote" = "1 votë e hedhur";
+"poll_timeline_total_no_votes" = "S’u votua gjë";
+"poll_timeline_votes_count" = "%lu vota";
+"poll_timeline_one_vote" = "1 votë";
+"poll_edit_form_post_failure_action" = "OK";
+"poll_edit_form_post_failure_subtitle" = "Ju lutemi, riprovoni";
+"poll_edit_form_post_failure_title" = "S’u arrit të postohej anketimi";
+"poll_edit_form_add_option" = "Shtoni mundësi";
+"poll_edit_form_option_number" = "Mundësia %lu";
+"poll_edit_form_create_options" = "Krijo mundësi";
+"poll_edit_form_input_placeholder" = "Shkruani diçka!";
+"poll_edit_form_question_or_topic" = "Pyetje ose temë";
+"poll_edit_form_poll_question_or_topic" = "Pyetje ose temë pyetësori";
+
+// Mark: - Polls
+
+"poll_edit_form_create_poll" = "Krijoni anketim";
+"share_extension_send_now" = "Dërgoje tani";
+"share_extension_low_quality_video_message" = "Dërgojeni në %@. për cilësi më të mirë, ose dërgojeni në cilësi të ulët si më poshtë.";
+"share_extension_low_quality_video_title" = "Videoja do të dërgohet në cilësi të ulët";
+"analytics_prompt_stop" = "Resht së ndari";
+"analytics_prompt_yes" = "Po, s’ka problem";
+"analytics_prompt_not_now" = "Jo tani";
+"analytics_prompt_point_3" = "Këtë mund të çaktivizoni në çfarëdo kohe, që nga rregullimet";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "<b>Nuk</b> u japin hollësi palëve të treta";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "<b>Nuk</b> regjistrojmë ose profilizojmë ndonjë të dhënë llogarie";
+"analytics_prompt_terms_link_upgrade" = "këtu";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "Lexoni krejt kushtet tona %@. Në rregull?";
+"analytics_prompt_terms_link_new_user" = "këtu";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "Mund të lexoni krejt kushtet tona %@.";
+"analytics_prompt_message_upgrade" = "Keni pranuar më herët të ndani me ne të dhëna anonime përdorimi. Tani, që të na ndihmoni të kuptojmë se si njerëzit përdorin pajisje të shumta, do të prodhojmë një identifikues kuturu, të përbashkët për pajisjet tuaja.";
+"analytics_prompt_message_new_user" = "Ndihmonani të identifikojmë probleme dhe të përmirësojmë %@-in, duke ndarë me ne të dhëna anonime përdorimi. Për të kuptuar se si i përdorin njerëzit disa pajisje njëherësh, do të prodhojmë një identifikues kuturu, të përbashkët për pajisjet tuaja.";
+
+// Analytics
+"analytics_prompt_title" = "Ndihmoni të përmirësohet %@";
+"settings_discovery_accept_terms" = "Pranoni Kushte Shërbyesi Identitetesh";
+"settings_analytics_and_crash_data" = "Dërgoni të dhëna vithisjesh dhe analitike";
+"settings_labs_enabled_polls" = "Pyetësorë";
+"settings_about" = "MBI";
+"room_event_action_forward" = "Përpara";
+"room_event_action_end_poll" = "Përfundoje pyetësorin";
+"room_event_action_remove_poll" = "Hiqe pyetësorin";
+"accessibility_button_label" = "kopsë";
+"open" = "Hapur";
+"enable" = "Aktivizoje";
+"location_sharing_settings_toggle_title" = "Aktivizoni tregim vendndodhjeje";
+"location_sharing_settings_header" = "Tregim vendndodhjeje";
+"location_sharing_open_google_maps" = "Hape në Google Maps";
+"location_sharing_open_apple_maps" = "Hape në Apple Maps";
+"location_sharing_invalid_authorization_settings" = "Rregullime";
+"location_sharing_invalid_authorization_not_now" = "Jo tani";
+"location_sharing_locating_user_error_title" = "%@ s’njohu dot vendndodhjen tuaj. Ju lutemi, riprovoni më vonë.";
+"location_sharing_invalid_authorization_error_title" = "%@ s’ka leje të njohë vendndodhjen tuaj. Njohjen mund ta lejoni që nga Rregullime > Vendndodhje";
+"location_sharing_loading_map_error_title" = "%@ s’ngarkoi dot hartën. Ju lutemi, riprovoni më vonë.";
+"location_sharing_share_action" = "Ndajeni me të tjerë";
+"location_sharing_close_action" = "Mbylle";
+
+// MARK: - Location sharing
+
+"location_sharing_title" = "Vendndodhje";
+"ok" = "OK";
+"settings_enable_room_message_bubbles" = "Flluska mesazhesh";
+"onboarding_splash_page_4_message" = "Element-i është gjithashtu i goditur për në punë. Është i besuar nga entet më të sigurta të botës.";
+"onboarding_splash_page_4_title_no_pun" = "Shkëmbim mesazhesh për ekipin tuaj.";
+"onboarding_splash_page_3_message" = "I fshehtëzuar skaj më skaj dhe pa u dashur numër telefoni. Pa reklama, apo shfrytëzim të dhënash.";
+"onboarding_splash_page_3_title" = "Shkëmbim i sigurt mesazhesh.";
+"onboarding_splash_page_2_message" = "Zgjidhni ku mbahen bisedat tuaja, duke ju dhënë kontroll dhe pavarësi. Të lidhur përmes Matrix-i.";
+"onboarding_splash_page_2_title" = "Kontrollin e keni ju.";
+"onboarding_splash_page_1_message" = "Komunikim i sigurt dhe i pavarur, që ju jep të njëjtën shkallë privatësie si biseda kokë më kokë, në shtëpinë tuaj.";
+"onboarding_splash_page_1_title" = "Jini zot i bisedave tuaja.";
+"onboarding_splash_login_button_title" = "Kam tashmë një llogari";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Krijoni llogari";

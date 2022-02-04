@@ -19,6 +19,7 @@
 #import "ContactTableViewCell.h"
 
 @class ContactsTableViewController;
+@class AnalyticsScreenTimer;
 
 /**
  `ContactsTableViewController` delegate.
@@ -86,11 +87,6 @@
 @property (nonatomic) BOOL shouldScrollToTopOnRefresh;
 
 /**
- The analytics instance screen name (Default is "ContactsTable").
- */
-@property (nonatomic) NSString *screenName;
-
-/**
  Callback used to take into account the change of the user interface theme.
  */
 - (void)userInterfaceThemeDidChange;
@@ -123,6 +119,11 @@
  The delegate for the view controller.
  */
 @property (nonatomic, weak) id<ContactsTableViewControllerDelegate> contactsTableViewControllerDelegate;
+
+/**
+ The screen timer used for analytics if they've been enabled. The default value is nil.
+ */
+@property (nonatomic) AnalyticsScreenTimer *screenTimer;
 
 @end
 

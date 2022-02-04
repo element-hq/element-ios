@@ -27,17 +27,15 @@ extern NSString * const kMXKAttachmentErrorDomain;
 /**
  List attachment types
  */
-typedef enum : NSUInteger {
+typedef NS_ENUM(NSUInteger, MXKAttachmentType) {
     MXKAttachmentTypeUndefined,
     MXKAttachmentTypeImage,
     MXKAttachmentTypeAudio,
     MXKAttachmentTypeVoiceMessage,
     MXKAttachmentTypeVideo,
-    MXKAttachmentTypeLocation,
     MXKAttachmentTypeFile,
     MXKAttachmentTypeSticker
-    
-} MXKAttachmentType;
+};
 
 /**
  `MXKAttachment` represents a room attachment.

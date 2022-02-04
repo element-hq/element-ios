@@ -28,6 +28,7 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
     private let room: MXRoom
+    private let parentSpaceId: String?
     private let initialSection: RoomInfoSection
     private weak var roomSettingsViewController: RoomSettingsViewController?
     
@@ -38,10 +39,13 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         participants.finalizeInit()
         participants.enableMention = true
         participants.mxRoom = self.room
+        participants.parentSpaceId = self.parentSpaceId
         participants.delegate = self
+        participants.screenTimer = AnalyticsScreenTimer(screen: .roomMembers)
         
         let files = RoomFilesViewController()
         files.finalizeInit()
+        files.screenTimer = AnalyticsScreenTimer(screen: .roomUploads)
         MXKRoomDataSource.load(withRoomId: self.room.roomId, andMatrixSession: self.session) { (dataSource) in
             guard let dataSource = dataSource as? MXKRoomDataSource else { return }
             dataSource.filterMessagesWithURL = true
@@ -52,6 +56,7 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         
         let settings = RoomSettingsViewController()
         settings.finalizeInit()
+        settings.screenTimer = AnalyticsScreenTimer(screen: .roomSettings)
         settings.initWith(self.session, andRoomId: self.room.roomId)
         
         if self.room.isDirect {
@@ -95,6 +100,7 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
 
         self.session = parameters.session
         self.room = parameters.room
+        self.parentSpaceId = parameters.parentSpaceId
         self.initialSection = parameters.initialSection
     }    
     

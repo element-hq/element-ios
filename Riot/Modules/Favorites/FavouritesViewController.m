@@ -24,6 +24,8 @@
     RecentsDataSource *recentsDataSource;
 }
 
+@property (nonatomic, strong) MXThrottler *tableViewPaginationThrottler;
+
 @end
 
 @implementation FavouritesViewController
@@ -39,9 +41,10 @@
 {
     [super finalizeInit];
     
-    self.screenName = @"Favourites";
-    
     self.enableDragging = YES;
+    
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenFavourites];
+    self.tableViewPaginationThrottler = [[MXThrottler alloc] initWithMinimumDelay:0.1];
 }
 
 - (void)viewDidLoad
@@ -119,6 +122,24 @@
 {
     // Hide the unique header
     return 0.0f;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([super respondsToSelector:@selector(tableView:willDisplayCell:forRowAtIndexPath:)])
+    {
+        [super tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
+    }
+    
+    [self.tableViewPaginationThrottler throttle:^{
+        NSInteger section = indexPath.section;
+        NSInteger numberOfRowsInSection = [tableView numberOfRowsInSection:section];
+        if (tableView.numberOfSections > section
+            && indexPath.row == numberOfRowsInSection - 1)
+        {
+            [self->recentsDataSource paginateInSection:section];
+        }
+    }];
 }
 
 #pragma mark - Empty view management

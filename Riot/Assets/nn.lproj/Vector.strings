@@ -1,0 +1,11 @@
+
+
+"title_rooms" = "Rom";
+"title_people" = "Folk";
+"title_favourites" = "Favorittar";
+
+// Titles
+"title_home" = "Heim";
+"warning" = "Åtvaring";
+// String for App Store
+"store_short_description" = "Sikker desentralisert chat/IP-telefoni";

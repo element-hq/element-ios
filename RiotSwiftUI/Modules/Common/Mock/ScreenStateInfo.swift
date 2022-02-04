@@ -21,7 +21,5 @@ import SwiftUI
 struct ScreenStateInfo {
     var dependencies: [Any]
     var view: AnyView
-    var stateTitle: String
-    var fullScreenTitle: String
-    var stateKey: String
+    var screenTitle: String
 }

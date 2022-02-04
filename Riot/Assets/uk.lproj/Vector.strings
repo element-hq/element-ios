@@ -163,7 +163,7 @@
 "room_participants_leave_prompt_msg_for_dm" = "Ви впевнені, що хочете вийти?";
 "room_participants_leave_prompt_title_for_dm" = "Вийти";
 "client_android_name" = "Element Android";
-"store_promotional_text" = "Застосунок для бесід та співпраці, що зберігає приватність у відкритій мережі. Децентралізований, щоб надати вам контроль над даними. Без обробки даних, без бекдорів, без доступу для третіх сторін.";
+"store_promotional_text" = "Застосунок для спілкування та співпраці, що зберігає приватність у відкритій мережі. Децентралізований, щоб надати вам контроль над даними. Без обробки даних, без бекдорів, без доступу для третіх сторін.";
 "settings_three_pids_management_information_part3" = ".";
 "settings_three_pids_management_information_part1" = "Керуйте звідси адресами е-пошти чи номерами телефонів, які можна застосовувати для входу або відновлення облікового запису. Контролюйте хто і як може вас знайти ";
 "contacts_address_book_no_identity_server" = "Сервер ідентифікації не налаштований";
@@ -388,7 +388,7 @@
 "settings_identity_server_settings" = "СЕРВЕР ІДЕНТИФІКАЦІЇ";
 "settings_calls_settings" = "ВИКЛИКИ";
 "settings_notifications" = "СПОВІЩЕННЯ";
-"settings_user_settings" = "НАЛАШТУВАННЯ КОРИСТУВАЧА";
+"settings_user_settings" = "КОРИСТУВАЦЬКІ НАЛАШТУВАННЯ";
 "event_formatter_call_connecting" = "З'єднання…";
 "settings_config_identity_server" = "Сервер ідентифікації %@";
 "settings_config_home_server" = "Домашній сервер %@";
@@ -408,7 +408,7 @@
 
 // Bug report
 "bug_report_title" = "Звіт про ваду";
-"e2e_key_backup_wrong_version_button_wasme" = "Це був я";
+"e2e_key_backup_wrong_version_button_wasme" = "Це я";
 "e2e_key_backup_wrong_version_button_settings" = "Налаштування";
 "settings_privacy_policy" = "Політика приватності";
 "settings_term_conditions" = "Умови та положення";
@@ -433,7 +433,7 @@
 "room_widget_permission_theme_permission" = "Ваша тема";
 "room_widget_permission_user_id_permission" = "Ваш ID користувача";
 "room_widget_permission_avatar_url_permission" = "URL-адреса вашого аватара";
-"room_widget_permission_display_name_permission" = "Ваше показуване ім'я";
+"room_widget_permission_display_name_permission" = "Ваше показуване імʼя";
 "room_widget_permission_creator_info_title" = "Цей віджет додано:";
 
 // Room widget permissions
@@ -591,7 +591,7 @@
 
 "user_avatar_view_accessibility_label" = "аватар";
 "room_intro_cell_information_dm_sentence1_part3" = ". ";
-"room_intro_cell_information_room_without_topic_sentence2_part1" = "Додати тему";
+"room_intro_cell_information_room_without_topic_sentence2_part1" = "Додайте тему,";
 "room_intro_cell_information_room_with_topic_sentence2" = "Тема: %@";
 "room_intro_cell_information_room_sentence1_part3" = ". ";
 "room_intro_cell_information_room_sentence1_part1" = "Це початок ";
@@ -1002,7 +1002,7 @@
 // Room key request dialog
 "e2e_room_key_request_title" = "Запит ключів шифрування";
 "share_extension_send_now" = "Надіслати зараз";
-"service_terms_modal_accept_button" = "Прийняти";
+"service_terms_modal_accept_button" = "Погодитися";
 "room_details_flair_invalid_id_prompt_msg" = "%@ — неправильний ідентифікатор спільноти";
 "room_details_flair_invalid_id_prompt_title" = "Неправильний формат";
 "room_details_new_flair_placeholder" = "Додати новий ID спільноти (напр., +foo%@)";
@@ -1022,3 +1022,712 @@
 "room_details_history_section_members_only" = "Лише учасники (від часу вибору цієї опції)";
 "room_details_history_section_anyone" = "Будь-хто";
 "room_details_history_section" = "Хто може переглядати історію?";
+"identity_server_settings_alert_disconnect" = "Від'єднатися від сервера ідентифікації %@?";
+"identity_server_settings_alert_disconnect_title" = "Від'єднатися від сервера ідентифікації";
+"identity_server_settings_alert_change" = "Від'єднатися від сервера ідентифікації %1$@ й натомість під'єднатися до %2$@?";
+"identity_server_settings_alert_change_title" = "Змінити сервер ідентифікації";
+"identity_server_settings_alert_no_terms" = "Обраний вами сервер ідентифікації не має жодних умов використання. Продовжуйте лише якщо довіряєте власнику сервісу.";
+"identity_server_settings_alert_no_terms_title" = "Сервер ідентифікації не має умов використання";
+"identity_server_settings_disconnect_info" = "Після від'єднання від сервера ідентифікації вас більше не зможуть знаходити інші користувачі, а ви не зможете запрошувати інших за е-поштою чи телефоном.";
+"identity_server_settings_no_is_description" = "Зараз ви не використовуєте сервер ідентифікації. Щоб знаходити наявні контакти й вони знаходили вас, додайте сервер угорі.";
+"identity_server_settings_description" = "Ви користуєтесь %@, щоб знаходити людей за наявними контактами й вони знаходили вас.";
+
+// AuthenticatedSessionViewControllerFactory
+"authenticated_session_flow_not_supported" = "Цей застосунок не підтримує способу входу, доступного на вашому домашньому сервері.";
+"security_settings_user_password_description" = "Підтвердьте свою особу, ввівши пароль свого облікового запису";
+"security_settings_coming_soon" = "Вибачте, ця дія ще не доступна в %@ iOS. Якщо налаштуєте це іншим клієнтом Matrix, %@ iOS зможе також це використати.";
+"security_settings_complete_security_alert_message" = "Спершу слід доповнити захист вашого поточного сеансу.";
+"security_settings_blacklist_unverified_devices_description" = "Звірте всі сеанси користувача, щоб позначити його довіреним і надіслати йому повідомлення.";
+"security_settings_crosssigning_bootstrap" = "Налаштувати";
+"security_settings_crosssigning_info_ok" = "Перехресне підписування готове до використання.";
+"security_settings_crosssigning_info_trusted" = "Перехресне підписування увімкнено. Ви можете робити інших користувачів і свої інші сеанси довіреними на підставі перехресного підпису, але ви не можете перехресно підписувати цим сеансом, бо в нього ще нема закритих ключів перехресного підписування. Доповніть захист цього сеансу.";
+"security_settings_crosssigning_info_exists" = "Ваш обліковий запис має ідентичність перехресного підписування, але вона ще не довірена цим сеансом. Доповніть захист цього сеансу.";
+"security_settings_secure_backup_description" = "Зробіть резервну копію своїх ключів шифрування й даних облікового запису на випадок втрати доступу до своїх сеансів. Ваші ключі будуть захищені унікальним ключем безпеки.";
+"security_settings_crypto_sessions_description_2" = "Якщо не впізнаєте вхід, скиньте пароль і налаштування безпечного резервного копіювання.";
+"settings_identity_server_no_is_description" = "Зараз ви не використовуєте сервер ідентифікації. Щоб знаходити наявні контакти й вони знаходили вас, додайте сервер угорі.";
+"settings_identity_server_description" = "Налаштований угорі сервер ідентифікації дає вам змогу знаходити людей за наявними контактами, а їм знаходити вас.";
+"settings_discovery_three_pid_details_information_phone_number" = "Керуйте параметрами для цього номера телефону, за яким інші користувачі можуть вас знаходити й запрошувати до кімнат. Додавайте й видаляйте номери в Облікових записах.";
+"settings_discovery_three_pid_details_information_email" = "Керуйте параметрами для цієї адреси е-пошти, за якою інші користувачі можуть вас знаходити й запрошувати до кімнат. Додавайте й видаляйте адреси в Облікових записах.";
+"settings_discovery_three_pids_management_information_part1" = "Керуйте, за якими адресами е-пошти й номерами телефону інші користувачі зможуть вас знаходити й запрошувати до кімнат. Щоб додати адреси й номери в цей список чи вилучити наявні, перейдіть у ";
+"settings_discovery_no_identity_server" = "Зараз ви не використовуєте сервер ідентифікації. Щоб наявні контакти могли вас знаходити, додайте такий сервер.";
+"settings_key_backup_info_not_valid" = "Цей сеанс не створює резервної копії ваших ключів, але у вас уже є резервна копія, яку ви можете відновити й додати у майбутньому.";
+"settings_key_backup_info_version" = "Версія резервного копіювання ключів: %@";
+"settings_labs_message_reaction" = "Реагувати на повідомлення за допомогою емодзі";
+"settings_contacts_enable_sync_description" = "Це використовуватиме ваш сервер ідентифікації, щоб ви знаходили свої контакти, а вони вас.";
+"settings_integrations_allow_description" = "Використовуйте менеджер інтеграцій (%@), щоб керувати ботами, мостами, віджетами й пакунками наліпок.\n\nМенеджери інтеграцій отримують ваші параметри й можуть змінювати віджети, надсилати запрошення до кімнат і надавати повноваження від вашого імені.";
+"settings_calls_stun_server_fallback_description" = "Дозволити допоміжний сервер викликів %@, коли ваш домашній сервер не надає свого (ваша IP-адреса ставатиме відомою при виклику).";
+"settings_callkit_info" = "Отримувати вхідні виклики, не розблоковуючи екран. Перегляньте свої виклики (%@) в історії викликів системи. Якщо iCloud увімкнено, ця історія викликів надсилатиметься Apple.";
+"settings_confirm_media_size_description" = "Коли це ввімкнено, при надсиланні зображень чи відео вам пропонуватиметься підтвердити їхній розмір.";
+"settings_three_pids_management_information_part2" = "Знаходження";
+"settings_config_user_id" = "Ви ввійшли як %@";
+"unknown_devices_alert" = "Кімната містить сеанси, які досі не пройшли звірку.\nТобто нема гарантії, що ці сеанси належать користувачам, від імені яких вони створені.\nРадимо звірити кожен сеанс, перш ніж продовжити; але за потреби можете повторити надсилання повідомлення без звірки.";
+"room_action_camera" = "Зробити світлину або відео";
+"room_ongoing_conference_call_with_close" = "Відбувається конференц-виклик. Приєднатись як %1$s чи %2$s. %@ його.";
+"room_member_power_level_short_custom" = "Інше";
+"room_member_power_level_custom_in" = "Інше (%@) у %@";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Поки жоден сервер ідентифікації не налаштований, ви не можете почати бесіду з кимось за адресою е-пошти.";
+"find_your_contacts_message" = "Дозвольте %@ показувати ваші контакти, щоб ви могли швидко почати бесіду з тими, кого знаєте найкраще.";
+"find_your_contacts_title" = "Почніть із переліку своїх контактів";
+"store_full_description" = "Element — застосунок для листування й співпраці нового покоління:\n\n1. Надає вам контроль над збереженням вашої приватності\n2. Дає змогу спілкуватися з будь-ким у мережі Matrix і навіть за її межами, інтегруючись із такими застосунками, як Slack\n3. Оберігає вас від реклами, збору даних, бекдорів і прив'язаності до провайдера\n4. Захищає вас наскрізним шифруванням і звіркою інших перехресним підписуванням\n\nElement суттєво відрізняється від інших застосунків для листування й співпраці тим, що децентралізований і має відкритий код.\n\nElement дає змогу самостійно встановити сервер або обрати з-поміж загальнодоступних, щоб ви зберігали приватність своїх даних і розмов, власність і контроль над ними. Він надає вам доступ до відкритої мережі; тож ви можете спілкуватися з користувачами інших застосунків, не лише Element. А ще він добре захищений.\n\nElement здатен на це все завдяки своїй основі Matrix — стандарту відкритого, децентралізованого спілкування.\n\nElement надає вам контроль, даючи змогу обрати, в кого зберігаються ваші розмови. У застосунку Element ви можете обрати між такими шляхами:\n\n1. Зареєструвати безплатний обліковий запис на загальнодоступному сервері matrix.org\n2. Самостійно розмістити свій обліковий запис, встановивши сервер на власному обладнанні\n3. Отримати обліковий запис на виділеному сервері, просто передплативши хостинг-платформу Element Matrix Services\n\nЧому Element?\n\nВОЛОДІЙТЕ СВОЇМИ ДАНИМИ: Ви обираєте, де зберігати свої дані й повідомлення. Ви володієте й керуєте ними, не якась МЕГАКОРПОРАЦІЯ, що аналізує ваші дані й передає їх стороннім особам.\n\nВІДКРИТЕ ЛИСТУВАННЯ Й СПІВПРАЦЯ: Можете розмовляти з будь-ким іншим у мережі Matrix незалежно від того, використовують вони Element, інший застосунок Matrix чи навіть сторонню систему листування на зразок Slack, IRC чи XMPP.\n\nНАДБЕЗПЕКА: Справжнє наскрізне шифрування (лише учасники розмови можуть розшифрувати повідомлення) й звірка пристроїв учасників розмови перехресним підписуванням.\n\nДОСКОНАЛЕ СПІЛКУВАННЯ: Листуйтеся, робіть голосові й відеовиклики, діліться файлами, транслюйте екран, підʼєднуйте різноманітні інтеграції, ботів і віджети. Розбудовуйте кімнати, спільноти, будьте на звʼязку й досягайте цілей.\n\nСКРІЗЬ, ДЕ ВИ: Будьте на зв'язку, де б ви не були, завдяки повній синхронізації історії повідомлень між усіма вашим пристроями та онлайн-клієнтом https://app.element.io.";
+"security_settings_crosssigning_info_not_bootstrapped" = "Перехресне підписування ще не налаштовано.";
+"security_settings_crosssigning" = "ПЕРЕХРЕСНЕ ПІДПИСУВАННЯ";
+"security_settings_backup" = "РЕЗЕРВНЕ КОПІЮВАННЯ ПОВІДОМЛЕНЬ";
+"security_settings_secure_backup_restore" = "Відновити з резервної копії";
+"key_verification_manually_verify_device_key_title" = "Ключ сеансу";
+"key_verification_manually_verify_device_id_title" = "ID сеансу";
+"identity_server_settings_alert_error_invalid_identity_server" = "%@ не дійсний сервер ідентифікації.";
+"identity_server_settings_alert_error_terms_not_accepted" = "Ви повинні погодитися з умовами %@, щоб налаштувати сервер ідентифікації.";
+"identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "Усе одно відʼєднати";
+"identity_server_settings_alert_disconnect_button" = "Відʼєднати";
+"identity_server_settings_disconnect" = "Відʼєднати";
+"identity_server_settings_change" = "Змінити";
+"identity_server_settings_add" = "Додати";
+"identity_server_settings_place_holder" = "Введіть сервер ідентифікації";
+
+// Identity server settings
+"identity_server_settings_title" = "Сервер ідентифікації";
+"manage_session_sign_out" = "Вийти з цього сеансу";
+"manage_session_not_trusted" = "Не довірені";
+"manage_session_trusted" = "Довірені вами";
+"key_verification_manually_verify_device_name_title" = "Назва сеансу";
+"manage_session_name" = "Назва сеансу";
+"manage_session_info" = "ВІДОМОСТІ ПРО СЕАНС";
+
+// Manage session
+"manage_session_title" = "Керувати сеансом";
+"security_settings_complete_security_alert_title" = "Завершити налаштування безпеки";
+"user_verification_session_details_verify_action_current_user" = "Інтерактивна перевірка";
+"secrets_recovery_reset_action_part_2" = "Скинути все";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "Скинути все";
+"cross_signing_setup_banner_subtitle" = "Спростіть перевірку інших своїх пристроїв";
+
+// MARK: - Cross-signing
+
+// Banner
+
+"cross_signing_setup_banner_title" = "Налаштування шифрування";
+"secrets_reset_authentication_message" = "Введіть пароль свого облікового запису, щоб продовжити";
+"security_settings_blacklist_unverified_devices" = "Ніколи не надсилати повідомлення не довіреним сеансам";
+"security_settings_advanced" = "ДОДАТКОВО";
+"security_settings_export_keys_manually" = "Експорт ключів вручну";
+"security_settings_cryptography" = "КРИПТОГРАФІЯ";
+"security_settings_crosssigning_complete_security" = "Завершити налаштування безпеки";
+"security_settings_crosssigning_reset" = "Скинути";
+"secrets_reset_reset_action" = "Скинути";
+"security_settings_secure_backup_reset" = "Скинути";
+"settings_show_NSFW_public_rooms" = "Показувати загальнодоступні кімнати з делікатним вмістом";
+"settings_identity_server_no_is" = "Сервер ідентифікації не налаштований";
+"settings_discovery_three_pid_details_enter_sms_code_action" = "Введіть код активації з СМС";
+"settings_discovery_three_pid_details_cancel_email_validation_action" = "Скасувати перевірку е-пошти";
+"settings_key_backup_info_trust_signature_invalid_device_unverified" = "Резервна копія має недійсний підпис %@";
+"settings_key_backup_info_trust_signature_invalid_device_verified" = "Резервна копія має недійсний підпис %@";
+"settings_key_backup_info_trust_signature_valid_device_unverified" = "Резервна копія має підпис %@";
+"settings_key_backup_info_trust_signature_valid_device_verified" = "Резервна копія має дійсний підпис %@";
+"settings_send_crash_report" = "Надсилати анонімні дані про збої та користування";
+"settings_show_url_previews_description" = "Попередній перегляд виконується лише у кімнатах без шифрування.";
+"settings_show_url_previews" = "Попередній перегляд вебсайтів";
+"settings_ui_theme_picker_message_match_system_theme" = "«Авто» застосовує тему вашого пристрою";
+"settings_ui_theme_picker_message_invert_colours" = "«Авто» застосовує налаштування вашого пристрою «Інвертувати кольори»";
+"settings_messages_containing_display_name" = "Моє показуване імʼя";
+"settings_discovery_three_pid_details_title_phone_number" = "Керувати номером телефону";
+"settings_discovery_three_pid_details_title_email" = "Керувати е-поштою";
+"settings_discovery_error_message" = "Сталася помилка. Повторіть спробу.";
+"settings_discovery_three_pids_management_information_part2" = "Користувацькі налаштування";
+"settings_discovery_accept_terms" = "Погодитися з умовами використання сервера ідентифікації";
+"settings_discovery_terms_not_signed" = "Погодьтеся з умовами використання сервера ідентифікації (%@), щоб дозволити вашу виявність за електронною адресою та номером телефону.";
+"settings_key_backup_delete_confirmation_prompt_msg" = "Ви впевнені? Ви втратите ваші зашифровані повідомлення якщо копія ключів не була створена коректно.";
+"settings_key_backup_delete_confirmation_prompt_title" = "Видалити резервну копію";
+"settings_key_backup_button_connect" = "Налаштувати цьому сеансу резервне копіювання ключів";
+"settings_key_backup_button_delete" = "Видалити резервну копію";
+"settings_key_backup_button_restore" = "Відновити з резервної копії";
+"settings_key_backup_button_create" = "Почати використовувати резервне копіювання ключів";
+"settings_key_backup_info_trust_signature_valid" = "Резервна копія має чинний підпис цього сеансу";
+"settings_key_backup_info_trust_signature_unknown" = "Резервна копія містить підпис невідомого сеансу з ID: %@";
+"settings_key_backup_info_progress_done" = "Резервні копії всіх ключів створено";
+"settings_key_backup_info_progress" = "Резервне копіювання %@ ключів…";
+"security_settings_secure_backup_info_valid" = "Цей сеанс створює резервну копію ваших ключів.";
+"settings_key_backup_info_valid" = "Цей сеанс створює резервну копію ваших ключів.";
+"settings_key_backup_info_signout_warning" = "Створіть резервну копію ключів перед виходом, щоб не втратити їх.";
+"settings_key_backup_info_none" = "Для цього сеансу не створюється резервна копія ваших ключів.";
+"security_settings_secure_backup_info_checking" = "Перевірка…";
+"settings_key_backup_info_checking" = "Перевірка…";
+"settings_key_backup_info" = "Зашифровані повідомлення захищені наскрізним шифруванням. Лише ви та отримувачі повідомлень мають ключі для їх читання.";
+"settings_deactivate_my_account" = "Деактивувати обліковий запис";
+"settings_enable_rageshake" = "Струснути пристрій, щоб повідомити про ваду";
+"settings_third_party_notices" = "Примітки третіх сторін";
+"settings_labs_enable_ringing_for_group_calls" = "Дзвінок групових викликів";
+"settings_labs_enabled_polls" = "Опитування";
+"settings_labs_create_conference_with_jitsi" = "Створити конференц-виклик за допомогою jitsi";
+"settings_labs_e2e_encryption_prompt_message" = "Щоб завершити налаштування шифрування вам потрібно повторно увійти.";
+"settings_labs_e2e_encryption" = "Наскрізне шифрування";
+"settings_unignore_user" = "Показати всі повідомлення від %@?";
+"settings_ui_theme_picker_title" = "Вибрати тему";
+"settings_ui_theme_black" = "Чорна";
+"settings_ui_theme_dark" = "Темна";
+"settings_ui_theme_light" = "Світла";
+"settings_ui_theme_auto" = "Авто";
+"settings_ui_theme" = "Тема";
+"settings_ui_language" = "Мова";
+"settings_integrations_allow_button" = "Керування інтеграціями";
+"settings_calls_stun_server_fallback_button" = "Дозволити допоміжний сервер викликів";
+"settings_enable_callkit" = "Інтегрований виклик";
+"settings_new_keyword" = "Додати нове ключове слово";
+"settings_your_keywords" = "Ваші ключові слова";
+"settings_room_upgrades" = "Поліпшення кімнати";
+"settings_messages_by_a_bot" = "Повідомлення бота";
+"settings_call_invitations" = "Запрошення до виклику";
+"settings_room_invitations" = "Запрошення до кімнати";
+"settings_messages_containing_keywords" = "Ключові слова";
+"settings_messages_containing_user_name" = "Моє користувацьке імʼя";
+"settings_messages_containing_at_room" = "@room";
+"settings_encrypted_group_messages" = "Зашифровані групові повідомлення";
+"settings_group_messages" = "Групові повідомлення";
+"settings_other" = "Інше";
+"settings_mentions_and_keywords" = "Згадки та ключові слова";
+"settings_pin_rooms_with_unread" = "Закріплювати кімнати з новими повідомленнями";
+"settings_confirm_media_size" = "Підтверджувати розмір під час надсилання";
+"settings_discovery_settings" = "ВИЯВНІСТЬ";
+"room_preview_unlinked_email_warning" = "Запрошення надіслано на адресу %@, не повʼязану з цим обліковим записом. Ви можете увійти за допомогою іншого облікового запису або додати е-пошту до цього.";
+"unknown_devices_verify" = "Перевірка…";
+"room_message_edits_history_title" = "Редагування повідомлення";
+"room_resource_usage_limit_reached_message_1_monthly_active_user" = "Цей домашній сервер досяг свого місячного обмеження активних користувачів, тож ";
+"room_resource_usage_limit_reached_message_1_default" = "Цей домашній сервер досягнув одного зі своїх лімітів ресурсів, тож ";
+"room_conference_call_no_power" = "Для керування конференц-викликами у цій кімнаті потрібен дозвіл";
+"room_ongoing_conference_call" = "Відбувається конференц-виклик. Приєднатись як %1$s чи %2$s.";
+"room_participants_security_information_room_encrypted_for_dm" = "Повідомлення тут захищені наскрізним шифруванням.\n\nВаші повідомлення захищені замками, тож лише ви та отримувач маєте унікальні ключі для їхнього відмикання.";
+"room_participants_security_information_room_encrypted" = "Повідомлення тут захищені наскрізним шифруванням.\n\nВаші повідомлення захищені замками, тож лише ви та отримувачі мають унікальні ключі для їхнього відмикання.";
+"room_participants_action_security_status_complete_security" = "Завершити налаштування безпеки";
+"room_participants_idle" = "Неактивний";
+"settings_labs" = "ЛАБОРАТОРІЯ";
+"settings_about" = "ПРО";
+"settings_advanced" = "ДОДАТКОВО";
+"settings_phone_contacts" = "КОНТАКТИ ТЕЛЕФОНА";
+"settings_links" = "ПОСИЛАННЯ";
+"settings_sending_media" = "НАДСИЛАННЯ ЗОБРАЖЕНЬ І ВІДЕО";
+"room_preview_try_join_an_unknown_room" = "Ви намагаєтесь отримати доступ до %@. Бажаєте приєднатися, щоб взяти участь в обговоренні?";
+"room_preview_subtitle" = "Це попередній перегляд кімнати. Ви в режимі лише читання.";
+
+// Room Preview
+"room_preview_invitation_format" = "%s запрошує вас приєднатися до цієї кімнати";
+
+// Unknown devices
+"unknown_devices_alert_title" = "Кімната містить невідомі сеанси";
+"external_link_confirmation_message" = "Посилання %@ спрямовує вас на інший сайт: %@.\n\nВи впевнені, що бажаєте продовжити?";
+"external_link_confirmation_title" = "Перевірте це посилання";
+"room_accessibility_hangup" = "Покласти слухавку";
+"room_resource_usage_limit_reached_message_contact_3" = " , щоб збільшити ліміт.";
+"room_resource_usage_limit_reached_message_2" = "деякі користувачі не зможуть увійти.";
+"room_resource_limit_exceeded_message_contact_3" = " , щоб продовжити користуватися цією службою.";
+"room_resource_limit_exceeded_message_contact_2_link" = "зв’яжіться з адміністратором вашого сервера";
+"room_predecessor_link" = "Торкніться тут, щоб переглянути давніші повідомлення.";
+"room_predecessor_information" = "Ця кімната — продовження спілкування в іншій кімнаті.";
+"room_replacement_link" = "Спілкування продовжується тут.";
+"room_replacement_information" = "Цю кімнату замінено й вона більше не активна.";
+"room_event_action_end_poll" = "Завершити опитування";
+"room_event_action_remove_poll" = "Вилучити опитування";
+"user_verification_session_details_information_trusted_current_user" = "Цей сеанс довірений для захищеного листування, бо ви звірили його:";
+"user_verification_session_details_information_trusted_other_user_part1" = "Цей сеанс довірений для захищеного листування, бо ";
+"user_verification_session_details_information_trusted_other_user_part2" = " звіряє його:";
+"user_verification_session_details_information_untrusted_other_user" = " входить у новому сеансі:";
+"user_verification_session_details_additional_information_untrusted_other_user" = "Надіслані цьому сеансу й цим сеансом повідомлення позначатимуться застереженнями, поки цей користувач йому не довірить. Або ви можете власноруч звірити сеанс.";
+"user_verification_session_details_additional_information_untrusted_current_user" = "Якщо ви не входили в цей сеанс, ваш обліковий запис може бути під загрозою.";
+"user_verification_session_details_verify_action_other_user" = "Звірити власноруч";
+"key_verification_bootstrap_not_setup_message" = "Спершу налаштуйте перехресне підписування.";
+"key_verification_verify_qr_code_information" = "Відскануйте код, щоб безпечно звірити одне одного.";
+"key_verification_verify_qr_code_scan_code_action" = "Сканувати їхній код";
+"key_verification_verify_qr_code_cannot_scan_action" = "Не вдалося сканувати?";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "Чи зміг інший користувач відсканувати QR-код?";
+"key_verification_verify_qr_code_scan_other_code_success_title" = "Код підтверджено!";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "QR-код успішно підтверджено.";
+
+// MARK: Self verification start
+
+// New login
+"device_verification_self_verify_alert_title" = "Новий вхід. Це були ви?";
+"device_verification_self_verify_alert_message" = "Звірте новий вхід до вашого облікового запису: %@";
+"device_verification_self_verify_start_information" = "Звірте цим сеансом свій новий. Це надасть йому доступ до зашифрованих повідомлень.";
+"device_verification_self_verify_start_waiting" = "Очікування…";
+
+// MARK: Self verification wait
+
+"device_verification_self_verify_wait_title" = "Доповніть безпеку";
+"device_verification_self_verify_wait_information" = "Звірте цей сеанс одним зі своїх інших, щоб надати йому доступ до зашифрованих повідомлень.\n\nВикористайте найостанніший %@ на своїх інших пристроях:";
+
+// Recover from private key
+"key_backup_recover_from_private_key_info" = "Відновлення резервної копії…";
+
+// MARK: Scan confirmation
+
+// Scanning
+"key_verification_scan_confirmation_scanning_title" = "Майже все! Чекаємо на підтвердження…";
+"key_verification_scan_confirmation_scanning_user_waiting_other" = "Очікування на %@…";
+"key_verification_scan_confirmation_scanning_device_waiting_other" = "Очікування іншого пристрою…";
+
+// Scanned
+"key_verification_scan_confirmation_scanned_title" = "Майже все!";
+"key_verification_scan_confirmation_scanned_user_information" = "Чи показує %@ такий же щит?";
+"key_verification_scan_confirmation_scanned_device_information" = "Чи показує інший пристрій такий же щит?";
+"device_verification_self_verify_wait_new_sign_in_title" = "Звірте цей вхід";
+"device_verification_self_verify_wait_additional_information" = "Це працює з %@ та іншими клієнтами Matrix, здатними на перехресне підписування.";
+
+// MARK: - Device Verification
+"key_verification_other_session_title" = "Звірте сеанс";
+"key_verification_new_session_title" = "Звірте свій новий сеанс";
+"key_verification_this_session_title" = "Звірити цей сеанс";
+"device_verification_security_advice_emoji" = "Порівняйте унікальні емоджі, переконавшись, що їх показано в однаковому порядку.";
+"device_verification_security_advice_number" = "Порівняйте числа, переконавшись, що їх показано в однаковому порядку.";
+
+// MARK: Verify
+
+"key_verification_verify_sas_title_emoji" = "Порівняйте емодзі";
+"key_verification_verify_sas_title_number" = "Порівняйте числа";
+"key_verification_verify_sas_cancel_action" = "Вони не збігаються";
+"key_verification_verify_sas_validate_action" = "Вони збігаються";
+"key_verification_verify_sas_additional_information" = "Для більшої безпеки зв'яжіться іншим довіреним засобом чи особисто.";
+"key_verification_verify_qr_code_emoji_information" = "Звірити порівнянням унікальних емодзі.";
+"key_verification_verify_qr_code_start_emoji_action" = "Звірити за допомогою емодзі";
+"key_verification_verified_other_session_information" = "Тепер ви можете читати захищені повідомлення в своєму іншому сеансі, а інші користувачі знатимуть, що можуть йому довіряти.";
+"key_verification_verified_new_session_information" = "Тепер ви можете читати захищені повідомлення на своєму новому пристрої, а інші користувачі знатимуть, що можуть йому довіряти.";
+"key_verification_verified_this_session_information" = "Тепер ви можете читати захищені повідомлення на цьому пристрої, а інші користувачі знатимуть, що можуть йому довіряти.";
+
+// User
+
+"key_verification_verified_user_information" = "Листування з цим користувачем наскрізно зашифроване й непрочитне для сторонніх.";
+
+// Current session
+
+"key_verification_self_verify_current_session_alert_title" = "Звірити цей сеанс";
+"key_verification_self_verify_current_session_alert_message" = "Інші користувачі можуть йому не довіряти.";
+"key_verification_verify_qr_code_information_other_device" = "Відскануйте код знизу для звірки:";
+
+// MARK: Manually Verify Device
+
+"key_verification_manually_verify_device_title" = "Звірити власноруч за допомогою тексту";
+"key_verification_manually_verify_device_instruction" = "Підтвердьте шляхом порівняння наступного рядка з рядком у користувацьких налаштуваннях вашого іншого сеансу:";
+"key_verification_manually_verify_device_additional_information" = "Якщо вони відрізняються, безпека вашого зв'язку може бути під загрозою.";
+"user_verification_session_details_verify_action_current_user_manually" = "Звірити власноруч за допомогою тексту";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Використати ключ безпеки";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Використати фразу чи ключ безпеки";
+"device_verification_self_verify_wait_recover_secrets_additional_information" = "Якщо не маєте доступу до наявного сеансу";
+
+// Recover with passphrase
+
+"secrets_recovery_with_passphrase_title" = "Фраза безпеки";
+"secrets_recovery_with_passphrase_information_default" = "Отримайте доступ до своєї захищеної історії повідомлень та ідентичності перехресного підписування для звірки інших сеансів, увівши свою фразу безпеки.";
+"secrets_recovery_with_passphrase_information_verify_device" = "Підтвердьте цей пристрій своєю фразою безпеки.";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Введіть фразу безпеки";
+"secrets_recovery_with_passphrase_recover_action" = "Використати фразу";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Забули свою фразу безпеки? Можете ";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "використати ключ безпеки";
+"secrets_recovery_with_passphrase_invalid_passphrase_title" = "Не вдалося зайти до таємного сховища";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Переконайтеся, що вводите правильну фразу безпеки.";
+
+// Recover with key
+
+"secrets_recovery_with_key_title" = "Ключ безпеки";
+"secrets_recovery_with_key_information_default" = "Отримайте доступ до своєї захищеної історії повідомлень та ідентичності перехресного підписування для звірки інших сеансів, увівши свій ключ безпеки.";
+"secrets_recovery_with_key_information_verify_device" = "Підтвердьте цей пристрій своїм ключем безпеки.";
+"secrets_recovery_with_key_recovery_key_placeholder" = "Введіть ключ безпеки";
+"secrets_recovery_with_key_recover_action" = "Використати ключ";
+"secrets_recovery_with_key_invalid_recovery_key_title" = "Не вдалося зайти до таємного сховища";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "Переконайтеся, що вводите правильний ключ безпеки.";
+"secure_key_backup_setup_intro_use_security_key_title" = "Використати ключ безпеки";
+"secure_key_backup_setup_intro_use_security_key_info" = "Згенерувати ключ безпеки для зберігання в надійному місці, наприклад у менеджері паролів чи сейфі.";
+"secure_key_backup_setup_intro_use_security_passphrase_title" = "Встановити фразу безпеки";
+"secure_key_backup_setup_intro_use_security_passphrase_info" = "Ввести таємну фразу, відому лише вам, і згенерувати ключ резервного копіювання.";
+
+
+// Cancel
+
+"secure_key_backup_setup_cancel_alert_title" = "Ви впевнені?";
+"secure_key_backup_setup_cancel_alert_message" = "Якщо скасуєте це й загубите пристрій, то втратите зашифровані повідомлення й дані.\n\nВвімкнути захищене резервне копіювання й керувати своїми ключами можна в налаштуваннях.";
+
+// MARK: - Secrets set up
+
+// Recovery Key
+
+"secrets_setup_recovery_key_title" = "Збережіть ключ безпеки";
+"secrets_setup_recovery_key_information" = "Зберігайте ключ безпеки в надійному місці. Ним можна буде розблокувати ваші зашифровані повідомлення й дані.";
+"secrets_setup_recovery_key_storage_alert_title" = "Зберігайте його у надійному місці";
+
+// Recovery passphrase
+
+"secrets_setup_recovery_passphrase_title" = "Встановіть фразу безпеки";
+"secrets_setup_recovery_passphrase_information" = "Введіть відому лише вам фразу безпеки для захисту таємниць на вашому сервері.";
+"secrets_setup_recovery_passphrase_additional_information" = "Не застосовуйте пароль облікового запису повторно.";
+"secrets_setup_recovery_passphrase_confirm_information" = "Для підтвердження введіть таємну фразу ще раз.";
+"secure_key_backup_setup_existing_backup_error_title" = "Резервна копія повідомлень уже існує";
+"secure_key_backup_setup_existing_backup_error_info" = "Розблокуйте її, щоб продовжити попереднє захищене резервне копіювання, або видаліть її, щоб почати захищене резервне копіювання повідомлень заново.";
+"secure_key_backup_setup_existing_backup_error_unlock_it" = "Розблокувати";
+"secure_key_backup_setup_existing_backup_error_delete_it" = "Видалити";
+"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Налаштувати резервне копіювання ключів";
+"major_update_information" = "Ми раді повідомити, що змінили назву! Ваш застосунок оновлено й ви ввійшли у свій обліковий запис.";
+"pin_protection_reset_alert_message" = "Щоб скинути PIN-код, увійдіть заново та створіть новий";
+"pin_protection_explanatory" = "Встановлення PIN-коду захищає ваші дані, як-от повідомлення чи контакти, обов'язковим запитом вашого PIN-коду при відкритті застосунку.";
+"pin_protection_not_allowed_pin" = "Цей PIN-код недостатньо безпечний. Спробуйте інший";
+"pin_protection_settings_section_footer" = "Щоб скинути PIN-код, потрібно ввійти заново та створити новий.";
+"pin_protection_mismatch_too_many_times_error_message" = "Не пригадуєте свій PIN-код? Торкніться кнопки \"Забули PIN-код\".";
+"biometrics_usage_reason" = "Застосунок потребує підтвердження особи";
+"biometrics_cant_unlocked_alert_message_x" = "Розблокуйте за допомогою %@ або ввійдіть заново й увімкніть %@ ще раз";
+"biometrics_cant_unlocked_alert_message_login" = "Увійти заново";
+"device_verification_self_verify_wait_recover_secrets_checking_availability" = "Перевірка інших можливостей звірки ...";
+"create_room_section_footer_type" = "Вхід до закритої кімнати — лише за запрошенням.";
+"pin_protection_kick_user_alert_message" = "Забагато помилок, ваш сеанс припинено";
+
+// MARK: - Secrets recovery
+
+"secrets_recovery_reset_action_part_1" = "Забули чи втратили всі способи відновлення? ";
+"secrets_reset_information" = "Робіть це лише якщо у вас немає іншого пристрою для звірки.";
+"secrets_reset_warning_title" = "Якщо ви скинете все";
+"secrets_reset_warning_message" = "Ви розпочнете знову, але без історії повідомлень, без довірених пристроїв та користувачів.";
+"secrets_setup_recovery_passphrase_summary_title" = "Збережіть ключ безпеки";
+"secrets_setup_recovery_passphrase_summary_information" = "Запам'ятайте свою фразу безпеки. Нею можна буде розблокувати ваші зашифровані повідомлення й дані.";
+"home_empty_view_information" = "Досконалий застосунок для захищеного спілкування команд, друзів і організацій. Торкніться кнопки + унизу, щоб додати людей і кімнати.";
+"bug_report_background_mode" = "Продовжити у фоновому режимі";
+"room_intro_cell_information_room_without_topic_sentence2_part2" = " щоб люди знали, про що ця кімната.";
+"room_intro_cell_information_dm_sentence2" = "У цій розмові лише ви двоє, більше ніхто не може приєднатися.";
+"room_intro_cell_information_multiple_dm_sentence2" = "У цій розмові лише ви, поки хтось із вас не запросить іще когось приєднатися.";
+"space_feature_unavailable_subtitle" = "Простори ще не готові на iOS, але доступні у вебпереглядачі та на комп'ютері";
+"space_feature_unavailable_information" = "Простори — новий спосіб групувати кімнати й людей.\n\nСкоро ми їх допрацюємо. Якщо приєднаєтеся до простору на іншій платформі, всі його кімнати стануть доступні й тут.";
+
+// Success from secure backup
+"key_backup_setup_success_from_secure_backup_info" = "Створюється резервна копія ключів.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Введіть фразу безпеки для продовження.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Скористайтеся ключем безпеки для продовження.";
+"key_verification_verify_qr_code_scan_code_other_device_action" = "Сканувати цим пристроєм";
+"voice_message_stop_locked_mode_recording" = "Торкніться запису, щоб зупинити або прослухати";
+"version_check_banner_subtitle_supported" = "Ми скоро припинимо підтримку %@ на iOS %@. Щоб усі можливості %@ залишалися вам доступні, радимо оновити вашу версію iOS.";
+"version_check_banner_subtitle_deprecated" = "Ми більше не підтримуємо %@ на iOS %@. Щоб усі можливості %@ залишалися вам доступні, радимо оновити вашу версію iOS.";
+"version_check_modal_subtitle_supported" = "Ми вдосконалюємо швидкодію та дизайн %@. На жаль, ваша версія iOS сумісна не з усіма нашими виправленнями й скоро втратить підтримку.\nРадимо оновити операційну систему, щоб усі можливості %@ були вам доступні.";
+"version_check_modal_subtitle_deprecated" = "Ми вдосконалюємо швидкодію та дизайн %@. На жаль, ваша версія iOS  сумісна не з усіма нашими виправленнями й більше не підтримується.\nРадимо оновити операційну систему, щоб усі можливості %@ були вам доступні.";
+"leave_space_message" = "Точно вийти з %@? Вийти також із усіх кімнат і просторів цього простору?";
+"leave_space_message_admin_warning" = "Ви адмініструєте цей простір. Перед виходом переконайтесь, що передали права адміністрування іншому учаснику.";
+"leave_space_only_action" = "Не виходити з жодної кімнати";
+"leave_space_and_all_rooms_action" = "Вийти з усіх кімнат і просторів";
+"spaces_explore_rooms" = "Дослідити кімнати";
+"spaces_empty_space_detail" = "Деяких кімнат може бути не видно, бо вони закриті й потребують запрошення.";
+"spaces_suggested_room" = "Пропоновано";
+"room_details_access_section_anyone_for_dm" = "Будь-хто з посиланням, зокрема гості";
+"spaces_no_room_found_detail" = "Деяких результатів може бути не видно, бо вони закриті й потребують запрошення.";
+"spaces_no_member_found_detail" = "Шукаєте когось, хто ще не в %@? Запросіть їх вебпереглядачем або комп'ютером.";
+"spaces_invites_coming_soon_title" = "Запрошення ще в розробці";
+"spaces_coming_soon_detail" = "Ця можливість ще не втілена, але скоро буде. Поки що можете зробити це в %@ на комп'ютері.";
+"space_participants_action_remove" = "Вилучити з цього простору";
+"space_participants_action_ban" = "Заблокувати в цьому просторі";
+
+// Service terms
+"service_terms_modal_title_message" = "Щоб продовжити, погодьтеся з запропонованими умови й положеннями";
+"service_terms_modal_description_identity_server" = "Інші зможуть знаходити вас, якщо в контактах їхнього телефону записаний ваш номер чи е-пошта.";
+"service_terms_modal_description_integration_manager" = "Це дасть змогу використовувати ботів, мости, віджети й пакунки наліпок.";
+"service_terms_modal_information_description_identity_server" = "Сервер ідентифікації допомагає знаходити облікові записи за номером телефону чи адресою е-пошти.";
+"service_terms_modal_information_description_integration_manager" = "Менеджер інтеграцій дає змогу додавати сторонній функціонал.";
+"share_extension_low_quality_video_message" = "Надішліть в %@ у кращій якості, або нижче в низькій.";
+
+// Mark: - Polls
+
+"poll_edit_form_create_poll" = "Створити опитування";
+"poll_edit_form_poll_question_or_topic" = "Питання опитування або тема";
+"poll_edit_form_question_or_topic" = "Питання чи тема";
+"poll_edit_form_input_placeholder" = "Напишіть щось";
+"poll_edit_form_create_options" = "Створіть варіанти";
+"poll_edit_form_option_number" = "Варіант %lu";
+"poll_edit_form_add_option" = "Додати варіант";
+"poll_edit_form_post_failure_title" = "Не вдалося надіслати опитування";
+"poll_edit_form_post_failure_subtitle" = "Повторіть спробу";
+"poll_edit_form_post_failure_action" = "Гаразд";
+"poll_timeline_one_vote" = "1 голос";
+"poll_timeline_votes_count" = "%lu голосів";
+"poll_timeline_total_no_votes" = "Жодного голосу";
+"poll_timeline_total_one_vote" = "1 голос надіслано";
+"poll_timeline_total_votes" = "%lu голосів надіслано";
+"poll_timeline_total_one_vote_not_voted" = "1 голос надіслано. Проголосуйте, щоб побачити результати";
+"poll_timeline_total_votes_not_voted" = "%lu голосів надіслано. Проголосуйте, щоб побачити результати";
+"poll_timeline_total_final_results_one_vote" = "Остаточні результати на підставі 1 голосу";
+"poll_timeline_total_final_results" = "Остаточні результати на підставі %lu голосів";
+"poll_timeline_vote_not_registered_title" = "Голос не зареєстровано";
+"poll_timeline_vote_not_registered_subtitle" = "Не вдалося зареєструвати ваш голос, просимо повторити спробу";
+"poll_timeline_vote_not_registered_action" = "Гаразд";
+"poll_timeline_not_closed_title" = "Не вдалося завершити опитування";
+"poll_timeline_not_closed_subtitle" = "Повторіть спробу";
+"poll_timeline_not_closed_action" = "Гаразд";
+"e2e_need_log_in_again" = "Вам потрібно ввійти заново, щоб згенерувати ключі наскрізного шифрування для цього сеансу й надіслати відкритий ключ домашньому серверу.\nЦе одноразова дія; перепрошуємо за незручності.";
+
+// Crypto
+"e2e_enabling_on_app_update" = "%@ тепер підтримує наскрізне шифрування. Перезайдіть, щоб його ввімкнути.\n\nМожете зробити це зараз або пізніше в налаштуваннях застосунку.";
+
+// Key backup wrong version
+"e2e_key_backup_wrong_version_title" = "Нова резервна копія ключів";
+"e2e_key_backup_wrong_version" = "Знайдено нову резервну копію ключів до захищених повідомлень.\n\nЯкщо це були не ви, встановіть нову фразу безпеки в налаштуваннях.";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "Ми <b>не</b> записуємо й <b>не</b> аналізуємо жодних даних облікового запису";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "Ми <b>не</b> передаємо даних стороннім особам";
+"analytics_prompt_point_3" = "Можете вимкнути це коли завгодно в налаштуваннях";
+"analytics_prompt_not_now" = "Відкласти";
+"analytics_prompt_yes" = "Так, усе гаразд";
+"analytics_prompt_stop" = "Більше не надсилати";
+"analytics_prompt_terms_link_upgrade" = "тут";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "Прочитайте всі наші умови %@. Згодні з ними?";
+"analytics_prompt_terms_link_new_user" = "тут";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "Можете прочитати всі наші умови %@.";
+"analytics_prompt_message_upgrade" = "Раніше ви погодилися надсилати нам анонімні дані про використання. Тепер, щоб розуміти, як люди використовують кілька пристроїв, ми створимо спільний для ваших пристроїв випадковий ідентифікатор.";
+"analytics_prompt_message_new_user" = "Допомагайте нам визначати проблеми й удосконалювати %@, надсилаючи анонімні дані про використання. Щоб розуміти, як люди використовують кілька пристроїв, ми створимо спільний для ваших пристроїв випадковий ідентифікатор.";
+
+// Analytics
+"analytics_prompt_title" = "Допоможіть удосконалити %@";
+"widget_integration_room_not_visible" = "Кімната %@ недоступна.";
+"widget_integration_missing_user_id" = "В запиті бракує user_id.";
+"widget_integration_missing_room_id" = "В запиті бракує room_id.";
+"widget_integration_no_permission_in_room" = "У вас нема такого дозволу в цій кімнаті.";
+"widget_integration_must_be_in_room" = "Вас нема в цій кімнаті.";
+"widget_integration_positive_power_level" = "Рівень повноважень має бути цілим додатним числом.";
+"widget_integration_room_not_recognised" = "Кімнату не знайдено.";
+"widget_integration_failed_to_send_request" = "Не вдалося надіслати запит.";
+"widget_integration_unable_to_create" = "Не вдалося створити віджет.";
+
+// Widget Integration Manager
+"widget_integration_need_to_be_able_to_invite" = "Для цього вам потрібен дозвіл запрошувати користувачів.";
+"widget_creation_failure" = "Помилка створення віджету";
+"widget_no_power_to_manage" = "Для керування віджетами у цій кімнаті потрібен дозвіл";
+"bug_report_progress_uploading" = "Надсилання звіту";
+"bug_report_progress_zipping" = "Збір журналів";
+"bug_report_send_screenshot" = "Надіслати знімок екрана";
+"room_details_access_section_for_dm" = "Хто може мати доступ?";
+"room_details_access_section" = "Хто має доступ до кімнати?";
+"room_details_low_priority_tag" = "Неважливе";
+"room_details_favourite_tag" = "Улюблене";
+"identity_server_settings_alert_disconnect_still_sharing_3pid" = "Сервер ідентифікації %@ досі поширює ваші особисті дані.\n\nРадимо вилучити адреси е-пошти й номери телефонів із сервера ідентифікації, перш ніж від'єднатися.";
+"settings_analytics_and_crash_data" = "Надсилати дані про збої та аналітику";
+"accessibility_button_label" = "кнопка";
+"enable" = "Увімкнути";
+"call_no_stun_server_error_use_fallback_button" = "Спробувати %@";
+"call_no_stun_server_error_message_2" = "Також ви можете спробувати публічний сервер %@, але це буде менш надійно й сервер бачитиме вашу IP-адресу. Ви можете керувати цим у налаштуваннях";
+"call_no_stun_server_error_message_1" = "Запропонуйте адміністратору вашого домашнього сервера %@ налаштувати сервер TURN для надійної роботи викликів.";
+"call_no_stun_server_error_title" = "Не вдалося зателефонувати через неправильно налаштований сервер";
+"call_jitsi_error" = "Не вдалося приєднатися до конференції.";
+"call_already_displayed" = "Виклик уже триває.";
+"photo_library_access_not_granted" = "%@ не має доступу до медіатеки, просимо змінити налаштування приватності";
+"camera_unavailable" = "Камера недоступна на вашому пристрої";
+"camera_access_not_granted" = "%@ не має дозволу використовувати камеру, просимо змінити налаштування приватності";
+"rage_shake_prompt" = "Схоже, ви розчаровано струсили телефон. Бажаєте надіслати звіт про ваду?";
+"bug_report_prompt" = "При останньому запуску застосунок закрився з помилкою. Бажаєте надіслати звіт про помилку?";
+"homeserver_connection_lost" = "Не вдалося з'єднатися з домашнім сервером.";
+"event_formatter_jitsi_widget_removed_by_you" = "Ви вилучаєте голосову конференцію";
+"event_formatter_jitsi_widget_added_by_you" = "Ви додаєте голосову конференцію";
+"event_formatter_rerequest_keys_part2" = " ваших інших сеансів.";
+"event_formatter_rerequest_keys_part1_link" = "Повторити запит ключів шифрування";
+"event_formatter_jitsi_widget_removed" = "%@ вилучає голосову конференцію";
+"event_formatter_jitsi_widget_added" = "%@ додає голосову конференцію";
+"event_formatter_widget_removed" = "%@ віджет видалено %@";
+"event_formatter_widget_added" = "%@ віджет додано %@";
+
+// Events formatter
+"event_formatter_member_updates" = "%tu змін членства";
+"directory_server_type_homeserver" = "Загальнодоступні кімнати якого домашнього сервера перелічити?";
+"receipt_status_read" = "Прочитано: ";
+
+// Read Receipts
+"read_receipts_list" = "Список міток прочитання";
+"room_details_addresses_disable_main_address_prompt_msg" = "Ви вилучаєте головну адресу. Усталена головна адреса для цієї кімнати буде обрана випадково";
+"room_details_access_section_no_address_warning" = "Щоб на кімнату посилалися, вона повинна мати адресу";
+"room_details_access_section_anyone" = "Будь-хто з посиланням, зокрема гості";
+"room_details_access_section_anyone_apart_from_guest_for_dm" = "Будь-хто з посиланням, окрім гостей";
+"room_details_access_section_anyone_apart_from_guest" = "Будь-хто з посиланням, окрім гостей";
+"deactivate_account_informations_part5" = "Якщо ви хочете, щоб ми вилучили ваші повідомлення, встановіть прапорець унизу\n\nВидимість повідомлень у Matrix схожа на електронну пошту. Тобто ваші повідомлення не зможуть переглянути нові або незареєстровані користувачі, але зареєстровані користувачі, які вже мають доступ до цих повідомлень і надалі матимуть доступ до їхньої копії на своїх пристроях.";
+"deactivate_account_informations_part4_emphasize" = "типово не вилучає надіслані вами повідомлення. ";
+"deactivate_account_informations_part2_emphasize" = "Ця дія незворотна.";
+"deactivate_account_informations_part1" = "Вашим обліковим записом більше ніколи не можна буде користуватися. Ви не зможете увійти, і ніхто не зможе повторно зареєструвати той самий ID користувача. Ваш обліковий запис буде видалено з усіх кімнат, а всі його дані вилучено з вашого сервера ідентифікації. ";
+"e2e_room_key_request_message" = "Ваш не звірений сеанс «%@» запитує ключі шифрування.";
+"e2e_room_key_request_message_new_device" = "Ви додали новий сеанс «%@», котрий запитує ключі шифрування.";
+"room_widget_permission_information_title" = "Віджет може надсилати дані до %@:\n";
+"room_widget_permission_webview_information_title" = "Віджет може встановлювати куки та надсилати дані до %@:\n";
+"share_extension_failed_to_encrypt" = "Не вдалося надіслати. Перевірте налаштування шифрування для цієї кімнати в головному застосунку";
+
+// Share extension
+"share_extension_auth_prompt" = "Увійдіть до основного застосунку, щоб поділитися вмістом";
+"service_terms_modal_policy_checkbox_accessibility_hint" = "Позначте, щоб погодитися на %@";
+"gdpr_consent_not_given_alert_review_now_action" = "Переглянути зараз";
+
+// GDPR
+"gdpr_consent_not_given_alert_message" = "Перегляньте та погодьтеся з умовами користування, щоб продовжувати використовувати сервер %@.";
+"e2e_room_key_request_ignore_request" = "Знехтувати запит";
+"e2e_room_key_request_share_without_verifying" = "Надіслати без перевірки";
+"e2e_room_key_request_start_verification" = "Починається перевірка…";
+"deactivate_account_forget_messages_information_part3" = ": внаслідок цього майбутні користувачі не можуть не розуміти змісту розмов)";
+"deactivate_account_forget_messages_information_part1" = "Видаліть усі надіслані мною повідомлення після деактивації мого облікового запису (";
+"rerequest_keys_alert_message" = "Запустіть %@ на іншому пристрої, який зможе розшифрувати повідомлення та надіслати ключі цьому сеансу.";
+"widget_integration_manager_disabled" = "Необхідно увімкнути менеджер інтеграцій у налаштуваннях";
+"widget_menu_remove" = "Вилучити для всіх";
+"widget_menu_revoke_permission" = "Відкликати мій доступ";
+"widget_menu_open_outside" = "Відкрити у переглядачі";
+"widget_menu_refresh" = "Оновити";
+"widget_sticker_picker_no_stickerpacks_alert_add_now" = "Додати зараз?";
+"widget_sticker_picker_no_stickerpacks_alert" = "На разі жоден пакунок наліпок не увімкнено.";
+"widget_integrations_server_failed_to_connect" = "Не вдалося зʼєднатися з сервером інтеграцій";
+
+// Widget
+"widget_no_integrations_server_configured" = "Сервер інтеграцій не налаштовано";
+"bug_report_description" = "Опишіть ваду. Що ви робили? Виконання якої дії очікували? Що сталося натомість?";
+"bug_crash_report_title" = "Звіт про збій";
+"bug_crash_report_description" = "Будь ласка, опишіть свої дії перед збоєм:";
+"bug_report_logs_description" = "Задля діагностики, журнали клієнта будуть надіслані разом зі звітом про ваду. Якщо бажаєте надіслати лише текст угорі, зніміть галочку:";
+"bug_report_send_logs" = "Надіслати журнали";
+"group_participants_invite_another_user" = "Знайти чи запросити за ID користувача чи іменем";
+"group_participants_invite_malformed_id" = "Хибний ID. Треба Matrix ID вигляду «@localpart:domain»";
+
+
+// MARK: Key backup setup
+
+"key_backup_setup_title" = "Резервне копіювання ключів";
+"key_backup_setup_skip_alert_message" = "Ви втратите захищені повідомлення, якщо вийдете чи загубите пристрій.";
+
+// Intro
+
+"key_backup_setup_intro_title" = "Ніколи не втрачайте зашифровані повідомлення";
+"key_backup_setup_intro_info" = "Повідомлення в зашифрованих кімнатах захищені наскрізним шифруванням. Тільки ви та одержувачі маєте ключі для читання цих повідомлень.\n\nСтворіть захищену резервну копію ключів, щоб їх не втратити.";
+"key_backup_setup_passphrase_info" = "Ми збережемо зашифровану копію ваших ключів на нашому сервері. Захистіть свою резервну копію парольною фразою.\n\nДля максимальної безпеки фраза повинна відрізнятися від пароля вашого облікового запису.";
+"key_backup_setup_passphrase_set_passphrase_action" = "Встановити фразу";
+
+// MARK: Key backup recover
+
+"key_backup_recover_title" = "Захищені повідомлення";
+
+// Recover from passphrase
+
+"key_backup_recover_from_passphrase_info" = "Використайте фразу безпеки, щоб розблокувати історію зашифрованих повідомлень";
+
+// Recover from recovery key
+
+"key_backup_recover_from_recovery_key_info" = "Використайте ключ безпеки, щоб розблокувати історію зашифрованих повідомлень";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Забули свою фразу безпеки? Можете ";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "використати ключ безпеки";
+"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Введіть ключ безпеки";
+"key_backup_recover_from_recovery_key_recover_action" = "Розблокувати історію";
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Втратили ключ безпеки? Встановіть новий у налаштуваннях.";
+
+// Success
+
+"key_backup_recover_success_info" = "Резервну копію відновлено!";
+"key_backup_recover_done_action" = "Готово";
+"key_backup_setup_intro_setup_action_without_existing_backup" = "Налаштувати резервне копіювання ключів";
+
+// Passphrase
+
+"key_backup_setup_passphrase_title" = "Захистіть резервну копію фразою безпеки";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "Або захистіть резервну копію ключем безпеки, який зберігатимете в надійному місці.";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "(Додатково) Налаштувати ключ безпеки";
+
+// Success
+
+"key_backup_setup_success_title" = "Успіх!";
+
+// Success from passphrase
+"key_backup_setup_success_from_passphrase_info" = "Триває резервне копіювання ваших ключів.\n\nКлюч безпеки підстраховує вас: можете використати його для відновлення доступу до ваших зашифрованих повідомлень, якщо забудете парольну фразу.\n\nТримайте відновлювальний ключ у якомусь дуже надійному місці, наприклад у менеджері паролів (або сейфі).";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Зберегти ключ безпеки";
+
+// Success from recovery key
+"key_backup_setup_success_from_recovery_key_info" = "Триває резервне копіювання ваших ключів.\n\nСкопіюйте цей ключ безпеки й надійно його зберігайте.";
+"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Ключ безпеки";
+"key_backup_setup_success_from_recovery_key_make_copy_action" = "Зробити копію";
+"key_backup_setup_success_from_recovery_key_made_copy_action" = "Вже маю копію";
+"key_backup_recover_invalid_passphrase_title" = "Хибна фраза безпеки";
+"key_backup_recover_invalid_passphrase" = "Не вдається розшифрувати резервну копію цією фразою: переконайтеся, що вводите правильну фразу безпеки.";
+"key_backup_recover_invalid_recovery_key_title" = "Хибний ключ безпеки";
+"key_backup_recover_invalid_recovery_key" = "Не вдалося розшифрувати резервну копію цим ключем: переконайтеся, що вводите правильний ключ безпеки.";
+
+// MARK: Sign out warning
+
+"sign_out_existing_key_backup_alert_title" = "Точно вийти?";
+"sign_out_existing_key_backup_alert_sign_out_action" = "Вийти";
+"sign_out_non_existing_key_backup_alert_title" = "Якщо вийти зараз, ви втратите свої зашифровані повідомлення";
+"sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "Мені не потрібні мої зашифровані повідомлення";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "Ви втратите доступ до ваших зашифрованих повідомлень";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_message" = "Ви втратите доступ до своїх зашифрованих повідомлень, якщо не зробите резервну копію ключів перед виходом з системи.";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_sign_out_action" = "Вийти";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_backup_action" = "Резервна копія";
+"sign_out_key_backup_in_progress_alert_title" = "Триває резервне копіювання ключів. Якщо вийти зараз, ви втратите доступ до своїх зашифрованих повідомлень.";
+"sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Мені не потрібні мої зашифровані повідомлення";
+"sign_out_key_backup_in_progress_alert_cancel_action" = "Почекаю";
+"key_backup_setup_intro_manual_export_info" = "(Розширені)";
+"key_backup_setup_intro_manual_export_action" = "Експорт ключів вручну";
+"key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Налаштувати цьому пристрою резервне копіювання ключів";
+"device_verification_cancelled" = "Інша сторона скасувала звірку.";
+"device_verification_cancelled_by_me" = "Звірку скасовано. Причина: %@";
+"device_verification_error_cannot_load_device" = "Не вдалося отримати дані сеансу.";
+
+// Mark: Incoming
+"device_verification_incoming_title" = "Надійшов запит на звірку";
+"device_verification_incoming_description_1" = "Звірте цей сеанс, щоб позначити його довіреним. Довірені сеанси партнерів дають змогу впевненіше користуватися наскрізним шифруванням повідомлень.";
+"device_verification_incoming_description_2" = "Звірка цього сеансу позначить його довіреним для вас, а ваш довіреним для партнера.";
+
+// MARK: Start
+"device_verification_start_title" = "Звірити, порівнявши короткий текстовий рядок";
+"device_verification_start_wait_partner" = "Очікування підтвердження партнером…";
+"device_verification_start_use_legacy" = "Нічого не з'являється? Ще не всі клієнти підтримують інтерактивну звірку. Звірте по-старому.";
+"device_verification_start_verify_button" = "Почати звірку";
+"device_verification_start_use_legacy_action" = "Звірити по-старому";
+"key_verification_tile_request_status_expired" = "Термін сплив";
+"key_verification_user_title" = "Звірте їх";
+"user_verification_start_information_part2" = " порівнявши одноразовий код на обох ваших пристроях.";
+"user_verification_start_information_part1" = "Звірте безпечніше, ";
+
+// MARK: - User verification
+
+// Start
+
+"user_verification_start_verify_action" = "Почати звірку";
+"user_verification_start_waiting_partner" = "Очікування на %@…";
+"user_verification_start_additional_information" = "Для безпеки зробіть це особисто або скористайтеся іншим способом зв'язку.";
+
+// Sessions list
+
+"user_verification_sessions_list_user_trust_level_trusted_title" = "Довірений";
+"user_verification_sessions_list_information" = "Листування з цим користувачем у цій кімнаті наскрізно зашифроване й непрочитне для сторонніх.";
+"user_verification_session_details_information_untrusted_current_user" = "Звірте цей сеанс, щоб позначити його довіреним і надати йому доступ до зашифрованих повідомлень:";
+"secrets_setup_recovery_key_storage_alert_message" = "✓ Надрукуйте його й зберігайте в надійному місці\n✓ Збережіть його на USB-ключ або носій резервного копіювання\n✓ Скопіюйте його до вашого особистого хмарного сховища";
+"call_transfer_error_message" = "Не вдалося переадресувати виклик";
+"favourites_empty_view_information" = "Ви можете додати до улюблених кількома способами, найшвидший — це просто натиснути й утримувати. Торкніться зірки, і вони автоматично зʼявляться тут для безпечного зберігання.";
+
+// MARK: - Favourites
+
+"favourites_empty_view_title" = "Улюблені кімнати й люди";
+"group_participants_filter_members" = "Фільтр учасників спільноти";
+"group_participants_invite_prompt_msg" = "Ви впевнені, що хочете запросити %@ до цієї групи?";
+"room_details_fail_to_update_room_direct" = "Не вдалося оновити прямий прапор цієї кімнати";
+"room_details_flair_section" = "Показувати значки для спільнот";
+"settings_flair" = "Показувати значок, де це дозволено";
+"room_warning_about_encryption" = "Наскрізне шифрування ще на етапі бета-тестування й може бути ненадійним.\n\nПоки що не варто довіряти йому захист даних.\n\nПристрої ще не зможуть розшифрувати історію до того, як з них приєдналися до кімнати.\n\nЗашифровані повідомлення не буде показано у клієнтах, які ще не використовують шифрування.";
+"location_sharing_settings_toggle_title" = "Увімкнути надсилання місцеперебування";
+"location_sharing_settings_header" = "Надсилання місцеперебування";
+"location_sharing_open_google_maps" = "Відкрити в Картах Google";
+"location_sharing_open_apple_maps" = "Відкрити в Apple Maps";
+"location_sharing_invalid_authorization_settings" = "Налаштування";
+"location_sharing_invalid_authorization_not_now" = "Не зараз";
+"location_sharing_invalid_authorization_error_title" = "%@ не має дозволу на доступ до вашого місцеперебування. Ви можете увімкнути доступ у Налаштування > Місцеперебування";
+"location_sharing_locating_user_error_title" = "%@ не може отримати доступ до вашого місцеперебування. Повторіть спробу пізніше.";
+"location_sharing_loading_map_error_title" = "%@ не може завантажити карту. Повторіть спробу пізніше.";
+"location_sharing_share_action" = "Поділиться";
+"location_sharing_close_action" = "Закрити";
+
+// MARK: - Location sharing
+
+"location_sharing_title" = "Місцеперебування";
+"ok" = "Гаразд";
+"settings_enable_room_message_bubbles" = "Бульбашки повідомлень";
+"onboarding_splash_page_4_message" = "Елемент також чудово підходить для роботи. Йому довіряють найбезпечніші організації світу.";
+"onboarding_splash_page_4_title_no_pun" = "Спілкування зі своєю командою.";
+"onboarding_splash_page_3_message" = "Наскрізне шифрування та відсутність потреби у телефонному номері. Без реклами чи аналізу даних.";
+"onboarding_splash_page_3_title" = "Безпечне спілкування.";
+"onboarding_splash_page_2_message" = "Оберіть, де зберігати ваші бесіди, що дасть вам контроль і незалежність. Спілкуйтеся через Matrix.";
+"onboarding_splash_page_2_title" = "Ви контролюєте все.";
+"onboarding_splash_page_1_message" = "Безпечне та незалежне спілкування, яке дає вам такий же рівень приватності як особиста розмова у вашому власному домі.";
+"onboarding_splash_page_1_title" = "Будьте господарем свого спілкування.";
+"onboarding_splash_login_button_title" = "У мене вже є обліковий запис";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Створити обліковий запис";

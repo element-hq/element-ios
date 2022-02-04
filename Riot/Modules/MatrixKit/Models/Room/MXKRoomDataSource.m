@@ -34,6 +34,7 @@
 #import "MXKSendReplyEventStringLocalizer.h"
 #import "MXKSlashCommands.h"
 
+const BOOL USE_THREAD_TIMELINE = NO;
 
 #pragma mark - Constant definitions
 
@@ -201,9 +202,11 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 @property (nonatomic, assign) BOOL shouldStopBackPagination;
 
 @property (nonatomic, readwrite) MXRoom *room;
+@property (nonatomic, readwrite) MXThread *thread;
 
 @property (nonatomic, readwrite) MXRoom *secondaryRoom;
-@property (nonatomic, strong) MXEventTimeline *secondaryTimeline;
+@property (nonatomic, strong) id<MXEventTimeline> secondaryTimeline;
+@property (nonatomic, readwrite) NSString *threadId;
 
 @end
 
@@ -215,9 +218,9 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     [self ensureSessionStateForDataSource:roomDataSource initialEventId:nil andMatrixSession:mxSession onComplete:onComplete];
 }
 
-+ (void)loadRoomDataSourceWithRoomId:(NSString*)roomId initialEventId:(NSString*)initialEventId andMatrixSession:(MXSession*)mxSession onComplete:(void (^)(id roomDataSource))onComplete
++ (void)loadRoomDataSourceWithRoomId:(NSString*)roomId initialEventId:(NSString*)initialEventId threadId:(NSString*)threadId andMatrixSession:(MXSession*)mxSession onComplete:(void (^)(id roomDataSource))onComplete
 {
-    MXKRoomDataSource *roomDataSource = [[self alloc] initWithRoomId:roomId initialEventId:initialEventId andMatrixSession:mxSession];
+    MXKRoomDataSource *roomDataSource = [[self alloc] initWithRoomId:roomId initialEventId:initialEventId threadId:threadId andMatrixSession:mxSession];
     [self ensureSessionStateForDataSource:roomDataSource initialEventId:initialEventId andMatrixSession:mxSession onComplete:onComplete];
 }
 
@@ -257,9 +260,31 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
         // Asynchronously preload data here so that the data will be ready later
         // to synchronously respond to that request
-        [roomDataSource.room liveTimeline:^(MXEventTimeline *liveTimeline) {
-            onComplete(roomDataSource);
-        }];
+
+        if (USE_THREAD_TIMELINE)
+        {
+            if (roomDataSource.threadId)
+            {
+                [roomDataSource.thread liveTimeline:^(id<MXEventTimeline> _Nonnull liveTimeline) {
+                    [liveTimeline resetPagination];
+                    onComplete(roomDataSource);
+                }];
+            }
+            else
+            {
+                [roomDataSource.room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
+                    [liveTimeline resetPagination];
+                    onComplete(roomDataSource);
+                }];
+            }
+        }
+        else
+        {
+            [roomDataSource.room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
+                [liveTimeline resetPagination];
+                onComplete(roomDataSource);
+            }];
+        }
     }
 }
 
@@ -347,7 +372,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     return self;
 }
 
-- (instancetype)initWithRoomId:(NSString*)roomId initialEventId:(NSString*)initialEventId2 andMatrixSession:(MXSession*)mxSession
+- (instancetype)initWithRoomId:(NSString*)roomId initialEventId:(NSString*)initialEventId2 threadId:(NSString*)threadId andMatrixSession:(MXSession*)mxSession
 {
     self = [self initWithRoomId:roomId andMatrixSession:mxSession];
     if (self)
@@ -357,6 +382,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             initialEventId = initialEventId2;
             _isLive = NO;
         }
+        _threadId = threadId;
     }
 
     return self;
@@ -364,7 +390,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 - (instancetype)initWithPeekingRoom:(MXPeekingRoom*)peekingRoom2 andInitialEventId:(NSString*)theInitialEventId
 {
-    self = [self initWithRoomId:peekingRoom2.roomId initialEventId:theInitialEventId andMatrixSession:peekingRoom2.mxSession];
+    self = [self initWithRoomId:peekingRoom2.roomId initialEventId:theInitialEventId threadId:nil andMatrixSession:peekingRoom2.mxSession];
     if (self)
     {
         peekingRoom = peekingRoom2;
@@ -620,209 +646,318 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 {
     if (MXSessionStateStoreDataReady <= self.mxSession.state)
     {
-        // Check whether the room is not already set
-        if (!_room)
+        if (USE_THREAD_TIMELINE)
         {
-            // Are we peeking into a random room or displaying a room the user is part of?
-            if (peekingRoom)
+            if (_threadId)
             {
-                self.room = peekingRoom;
+                [self initializeTimelineForThread];
             }
             else
             {
-                self.room = [self.mxSession roomWithRoomId:_roomId];
+                [self initializeTimelineForRoom];
             }
+        }
+        else
+        {
+            [self initializeTimelineForRoom];
+        }
+    }
+}
 
-            if (_room)
+- (void)initializeTimelineForRoom
+{
+    // Check whether the room is not already set
+    if (!_room)
+    {
+        // Are we peeking into a random room or displaying a room the user is part of?
+        if (peekingRoom)
+        {
+            self.room = peekingRoom;
+        }
+        else
+        {
+            self.room = [self.mxSession roomWithRoomId:_roomId];
+        }
+
+        if (_room)
+        {
+            // This is the time to set up the timeline according to the called init method
+            if (_isLive)
             {
-                // This is the time to set up the timeline according to the called init method
-                if (_isLive)
-                {
-                    // LIVE
-                    MXWeakify(self);
-                    [_room liveTimeline:^(MXEventTimeline *liveTimeline) {
-                        MXStrongifyAndReturnIfNil(self);
+                // LIVE
+                MXWeakify(self);
+                [_room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
+                    MXStrongifyAndReturnIfNil(self);
 
-                        self->_timeline = liveTimeline;
+                    self->_timeline = liveTimeline;
 
-                        // Only one pagination process can be done at a time by an MXRoom object.
-                        // This assumption is satisfied by MatrixKit. Only MXRoomDataSource does it.
-                        [self.timeline resetPagination];
+                    // Only one pagination process can be done at a time by an MXRoom object.
+                    // This assumption is satisfied by MatrixKit. Only MXRoomDataSource does it.
+                    [self.timeline resetPagination];
 
-                        // Observe room history flush (sync with limited timeline, or state event redaction)
-                        self->roomDidFlushDataNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXRoomDidFlushDataNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+                    // Observe room history flush (sync with limited timeline, or state event redaction)
+                    self->roomDidFlushDataNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXRoomDidFlushDataNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
 
-                            MXRoom *room = notif.object;
-                            if (self.mxSession == room.mxSession && ([self.roomId isEqualToString:room.roomId] ||
-                                                                     ([self.secondaryRoomId isEqualToString:room.roomId])))
-                            {
-                                // The existing room history has been flushed during server sync because a gap has been observed between local and server storage.
-                                [self reload];
-                            }
-
-                        }];
-
-                        // Add the event listeners, by considering all the event types (the event filtering is applying by the event formatter),
-                        // except if only the events with a url key in their content must be handled.
-                        [self refreshEventListeners:(self.filterMessagesWithURL ? @[kMXEventTypeStringRoomMessage] : [MXKAppSettings standardAppSettings].allEventTypesForMessages)];
-
-                        // display typing notifications is optional
-                        // the inherited class can manage them by its own.
-                        if (self.showTypingNotifications)
+                        MXRoom *room = notif.object;
+                        if (self.mxSession == room.mxSession && ([self.roomId isEqualToString:room.roomId] ||
+                                                                 ([self.secondaryRoomId isEqualToString:room.roomId])))
                         {
-                            // Register on typing notif
-                            [self listenTypingNotifications];
+                            // The existing room history has been flushed during server sync because a gap has been observed between local and server storage.
+                            [self reload];
                         }
 
-                        // Manage unsent messages
-                        [self handleUnsentMessages];
-
-                        // Update here data source state if it is not already ready
-                        if (!self->_secondaryRoomId)
-                        {
-                            [self setState:MXKDataSourceStateReady];
-                        }
-
-                        // Check user membership in this room
-                        MXMembership membership = self.room.summary.membership;
-                        if (membership == MXMembershipUnknown || membership == MXMembershipInvite)
-                        {
-                            // Here the initial sync is not ended or the room is a pending invitation.
-                            // Note: In case of invitation, a full sync will be triggered if the user joins this room.
-
-                            // We have to observe here 'kMXRoomInitialSyncNotification' to reload room data when room sync is done.
-                            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didMXRoomInitialSynced:) name:kMXRoomInitialSyncNotification object:self.room];
-                        }
                     }];
-                    
-                    if (!_secondaryRoom && _secondaryRoomId)
+
+                    // Add the event listeners, by considering all the event types (the event filtering is applying by the event formatter),
+                    // except if only the events with a url key in their content must be handled.
+                    [self refreshEventListeners:(self.filterMessagesWithURL ? @[kMXEventTypeStringRoomMessage] : [MXKAppSettings standardAppSettings].allEventTypesForMessages)];
+
+                    // display typing notifications is optional
+                    // the inherited class can manage them by its own.
+                    if (self.showTypingNotifications)
                     {
-                        _secondaryRoom = [self.mxSession roomWithRoomId:_secondaryRoomId];
-                        
-                        if (_secondaryRoom)
-                        {
-                            MXWeakify(self);
-                            [_secondaryRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
-                                MXStrongifyAndReturnIfNil(self);
+                        // Register on typing notif
+                        [self listenTypingNotifications];
+                    }
 
-                                self->_secondaryTimeline = liveTimeline;
+                    // Manage unsent messages
+                    [self handleUnsentMessages];
 
-                                // Only one pagination process can be done at a time by an MXRoom object.
-                                // This assumption is satisfied by MatrixKit. Only MXRoomDataSource does it.
-                                [self.secondaryTimeline resetPagination];
+                    // Update here data source state if it is not already ready
+                    if (!self->_secondaryRoomId)
+                    {
+                        [self setState:MXKDataSourceStateReady];
+                    }
 
-                                // Add the secondary event listeners, by considering the event types in self.secondaryRoomEventTypes
-                                [self refreshSecondaryEventListeners:self.secondaryRoomEventTypes];
-                                
-                                // Update here data source state if it is not already ready
-                                [self setState:MXKDataSourceStateReady];
+                    // Check user membership in this room
+                    MXMembership membership = self.room.summary.membership;
+                    if (membership == MXMembershipUnknown || membership == MXMembershipInvite)
+                    {
+                        // Here the initial sync is not ended or the room is a pending invitation.
+                        // Note: In case of invitation, a full sync will be triggered if the user joins this room.
 
-                                // Check user membership in the secondary room
-                                MXMembership membership = self.secondaryRoom.summary.membership;
-                                if (membership == MXMembershipUnknown || membership == MXMembershipInvite)
-                                {
-                                    // Here the initial sync is not ended or the room is a pending invitation.
-                                    // Note: In case of invitation, a full sync will be triggered if the user joins this room.
+                        // We have to observe here 'kMXRoomInitialSyncNotification' to reload room data when room sync is done.
+                        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didMXRoomInitialSynced:) name:kMXRoomInitialSyncNotification object:self.room];
+                    }
+                }];
+                
+                if (!_secondaryRoom && _secondaryRoomId)
+                {
+                    _secondaryRoom = [self.mxSession roomWithRoomId:_secondaryRoomId];
+                    
+                    if (_secondaryRoom)
+                    {
+                        MXWeakify(self);
+                        [_secondaryRoom liveTimeline:^(id<MXEventTimeline> liveTimeline) {
+                            MXStrongifyAndReturnIfNil(self);
 
-                                    // We have to observe here 'kMXRoomInitialSyncNotification' to reload room data when room sync is done.
-                                    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didMXRoomInitialSynced:) name:kMXRoomInitialSyncNotification object:self.secondaryRoom];
-                                }
-                            }];
-                        }
+                            self->_secondaryTimeline = liveTimeline;
+
+                            // Only one pagination process can be done at a time by an MXRoom object.
+                            // This assumption is satisfied by MatrixKit. Only MXRoomDataSource does it.
+                            [self.secondaryTimeline resetPagination];
+
+                            // Add the secondary event listeners, by considering the event types in self.secondaryRoomEventTypes
+                            [self refreshSecondaryEventListeners:self.secondaryRoomEventTypes];
+                            
+                            // Update here data source state if it is not already ready
+                            [self setState:MXKDataSourceStateReady];
+
+                            // Check user membership in the secondary room
+                            MXMembership membership = self.secondaryRoom.summary.membership;
+                            if (membership == MXMembershipUnknown || membership == MXMembershipInvite)
+                            {
+                                // Here the initial sync is not ended or the room is a pending invitation.
+                                // Note: In case of invitation, a full sync will be triggered if the user joins this room.
+
+                                // We have to observe here 'kMXRoomInitialSyncNotification' to reload room data when room sync is done.
+                                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didMXRoomInitialSynced:) name:kMXRoomInitialSyncNotification object:self.secondaryRoom];
+                            }
+                        }];
                     }
                 }
-                else
-                {
-                    // Past timeline
-                    // Less things need to configured
-                    _timeline = [_room timelineOnEvent:initialEventId];
+            }
+            else
+            {
+                // Past timeline
+                // Less things need to configured
+                _timeline = [_room timelineOnEvent:initialEventId];
 
-                    // Refresh the event listeners. Note: events for past timelines come only from pagination request
-                    [self refreshEventListeners:nil];
+                // Refresh the event listeners. Note: events for past timelines come only from pagination request
+                [self refreshEventListeners:nil];
+                
+                MXWeakify(self);
+
+                // Preload the state and some messages around the initial event
+                [_timeline resetPaginationAroundInitialEventWithLimit:_paginationLimitAroundInitialEvent success:^{
+
+                    MXStrongifyAndReturnIfNil(self);
                     
-                    MXWeakify(self);
+                    // Do a "classic" reset. The room view controller will paginate
+                    // from the events stored in the timeline store
+                    [self.timeline resetPagination];
+                    
+                    // Update here data source state if it is not already ready
+                    [self setState:MXKDataSourceStateReady];
 
-                    // Preload the state and some messages around the initial event
-                    [_timeline resetPaginationAroundInitialEventWithLimit:_paginationLimitAroundInitialEvent success:^{
+                } failure:^(NSError *error) {
+                    
+                    MXStrongifyAndReturnIfNil(self);
 
-                        MXStrongifyAndReturnIfNil(self);
-                        
-                        // Do a "classic" reset. The room view controller will paginate
-                        // from the events stored in the timeline store
-                        [self.timeline resetPagination];
-                        
-                        // Update here data source state if it is not already ready
-                        [self setState:MXKDataSourceStateReady];
+                    MXLogDebug(@"[MXKRoomDataSource][%p] Failed to resetPaginationAroundInitialEventWithLimit", self);
+
+                    // Notify the error
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kMXKRoomDataSourceTimelineError
+                                                                        object:self
+                                                                      userInfo:@{
+                                                                                 kMXKRoomDataSourceTimelineErrorErrorKey: error
+                                                                                 }];
+                }];
+            }
+        }
+        else
+        {
+            MXLogDebug(@"[MXKRoomDataSource][%p] Warning: The user does not know the room %@", self, _roomId);
+            
+            // Update here data source state if it is not already ready
+            [self setState:MXKDataSourceStateFailed];
+        }
+    }
+    
+    if (_room && MXSessionStateRunning == self.mxSession.state)
+    {
+        // Flair handling: observe the update in the publicised groups by users when the flair is enabled in the room.
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionDidUpdatePublicisedGroupsForUsersNotification object:self.mxSession];
+        [self.room state:^(MXRoomState *roomState) {
+            if (roomState.relatedGroups.count)
+            {
+                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didMXSessionUpdatePublicisedGroupsForUsers:) name:kMXSessionDidUpdatePublicisedGroupsForUsersNotification object:self.mxSession];
+
+                // Get a fresh profile for all the related groups. Trigger a table refresh when all requests are done.
+                __block NSUInteger count = roomState.relatedGroups.count;
+                for (NSString *groupId in roomState.relatedGroups)
+                {
+                    MXGroup *group = [self.mxSession groupWithGroupId:groupId];
+                    if (!group)
+                    {
+                        // Create a group instance for the groups that the current user did not join.
+                        group = [[MXGroup alloc] initWithGroupId:groupId];
+                        [self->externalRelatedGroups setObject:group forKey:groupId];
+                    }
+
+                    // Refresh the group profile from server.
+                    [self.mxSession updateGroupProfile:group success:^{
+
+                        if (self.delegate && !(--count))
+                        {
+                            // All the requests have been done.
+                            [self.delegate dataSource:self didCellChange:nil];
+                        }
 
                     } failure:^(NSError *error) {
-                        
-                        MXStrongifyAndReturnIfNil(self);
 
-                        MXLogDebug(@"[MXKRoomDataSource][%p] Failed to resetPaginationAroundInitialEventWithLimit", self);
+                        MXLogDebug(@"[MXKRoomDataSource][%p] group profile update failed %@", self, groupId);
 
-                        // Notify the error
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKRoomDataSourceTimelineError
-                                                                            object:self
-                                                                          userInfo:@{
-                                                                                     kMXKRoomDataSourceTimelineErrorErrorKey: error
-                                                                                     }];
+                        if (self.delegate && !(--count))
+                        {
+                            // All the requests have been done.
+                            [self.delegate dataSource:self didCellChange:nil];
+                        }
+
                     }];
                 }
             }
-            else
-            {
-                MXLogDebug(@"[MXKRoomDataSource][%p] Warning: The user does not know the room %@", self, _roomId);
-                
-                // Update here data source state if it is not already ready
-                [self setState:MXKDataSourceStateFailed];
-            }
-        }
-        
-        if (_room && MXSessionStateRunning == self.mxSession.state)
+        }];
+    }
+}
+
+- (void)initializeTimelineForThread
+{
+    // Check whether the thread is not already set
+    if (_thread && self.state == MXKDataSourceStateReady)
+    {
+        return;
+    }
+    
+    _thread = [self.mxSession.threadingService threadWithId:_threadId];
+    
+    if (!_thread)
+    {
+        //  there is not a thread yet available, this will be a new thread
+        _thread = [self.mxSession.threadingService createTempThreadWithId:_threadId roomId:_roomId];
+    }
+    
+    if (!_room)
+    {
+        //  also hold a reference to the room
+        _room = [self.mxSession roomWithRoomId:_roomId];
+    }
+    
+    if (_thread)
+    {
+        if (_isLive)
         {
-            // Flair handling: observe the update in the publicised groups by users when the flair is enabled in the room.
-            [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionDidUpdatePublicisedGroupsForUsersNotification object:self.mxSession];
-            [self.room state:^(MXRoomState *roomState) {
-                if (roomState.relatedGroups.count)
-                {
-                    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didMXSessionUpdatePublicisedGroupsForUsers:) name:kMXSessionDidUpdatePublicisedGroupsForUsersNotification object:self.mxSession];
-
-                    // Get a fresh profile for all the related groups. Trigger a table refresh when all requests are done.
-                    __block NSUInteger count = roomState.relatedGroups.count;
-                    for (NSString *groupId in roomState.relatedGroups)
-                    {
-                        MXGroup *group = [self.mxSession groupWithGroupId:groupId];
-                        if (!group)
-                        {
-                            // Create a group instance for the groups that the current user did not join.
-                            group = [[MXGroup alloc] initWithGroupId:groupId];
-                            [self->externalRelatedGroups setObject:group forKey:groupId];
-                        }
-
-                        // Refresh the group profile from server.
-                        [self.mxSession updateGroupProfile:group success:^{
-
-                            if (self.delegate && !(--count))
-                            {
-                                // All the requests have been done.
-                                [self.delegate dataSource:self didCellChange:nil];
-                            }
-
-                        } failure:^(NSError *error) {
-
-                            MXLogDebug(@"[MXKRoomDataSource][%p] group profile update failed %@", self, groupId);
-
-                            if (self.delegate && !(--count))
-                            {
-                                // All the requests have been done.
-                                [self.delegate dataSource:self didCellChange:nil];
-                            }
-
-                        }];
-                    }
-                }
+            [_thread liveTimeline:^(id<MXEventTimeline> _Nonnull liveTimeline) {
+                self->_timeline = liveTimeline;
+                
+                // Only one pagination process can be done at a time by an MXThread object.
+                // This assumption is satisfied by MXRoomDataSource.
+                [self.timeline resetPagination];
+                
+                // Add the event listeners, by considering all the event types (the event filtering is applying by the event formatter),
+                // except if only the events with a url key in their content must be handled.
+                [self refreshEventListeners:(self.filterMessagesWithURL ? @[kMXEventTypeStringRoomMessage] : [MXKAppSettings standardAppSettings].allEventTypesForMessages)];
+                
+                // Manage unsent messages
+                [self handleUnsentMessages];
+                
+                [self setState:MXKDataSourceStateReady];
             }];
         }
+        else
+        {
+            // Past timeline
+            // Less things need to configured
+            _timeline = [_thread timelineOnEvent:initialEventId];
+            
+            // Refresh the event listeners. Note: events for past timelines come only from pagination request
+            [self refreshEventListeners:nil];
+            
+            MXWeakify(self);
+
+            // Preload the state and some messages around the initial event
+            [_timeline resetPaginationAroundInitialEventWithLimit:_paginationLimitAroundInitialEvent success:^{
+
+                MXStrongifyAndReturnIfNil(self);
+                
+                // Do a "classic" reset. The room view controller will paginate
+                // from the events stored in the timeline store
+                [self.timeline resetPagination];
+                
+                // Update here data source state if it is not already ready
+                [self setState:MXKDataSourceStateReady];
+
+            } failure:^(NSError *error) {
+                
+                MXStrongifyAndReturnIfNil(self);
+
+                MXLogDebug(@"[MXKRoomDataSource][%p] Failed to resetPaginationAroundInitialEventWithLimit", self);
+
+                // Notify the error
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKRoomDataSourceTimelineError
+                                                                    object:self
+                                                                  userInfo:@{
+                                                                      kMXKRoomDataSourceTimelineErrorErrorKey: error
+                                                                  }];
+            }];
+        }
+    }
+    else
+    {
+        MXLogDebug(@"[MXKRoomDataSource][%p] Warning: The user does not know the thread %@", self, _threadId);
+        
+        // Update here data source state if it is not already ready
+        [self setState:MXKDataSourceStateFailed];
     }
 }
 
@@ -1289,6 +1424,34 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     
 }
 
+- (BOOL)shouldQueueEventForProcessing:(MXEvent*)event roomState:(MXRoomState*)roomState direction:(MXTimelineDirection)direction
+{
+    if (self.filterMessagesWithURL)
+    {
+        // Check whether the event has a value for the 'url' key in its content.
+        if (!event.getMediaURLs.count)
+        {
+            // ignore the event
+            return NO;
+        }
+    }
+    
+    // Check for undecryptable messages that were sent while the user was not in the room and hide them
+    if ([MXKAppSettings standardAppSettings].hidePreJoinedUndecryptableEvents
+        && direction == MXTimelineDirectionBackwards)
+    {
+        [self checkForPreJoinUTDWithEvent:event roomState:roomState];
+        
+        // Hide pre joint UTD events
+        if (self.shouldStopBackPagination)
+        {
+            return NO;
+        }
+    }
+    
+    return YES;
+}
+
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -1425,7 +1588,10 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     // Launch the pagination
     
     MXWeakify(self);
-    paginationRequest = [_timeline paginate:numItems direction:direction onlyFromStore:onlyFromStore complete:^{
+    paginationRequest = [_timeline paginate:numItems
+                                  direction:direction
+                              onlyFromStore:onlyFromStore
+                                   complete:^{
         
         MXStrongifyAndReturnIfNil(self);
         
@@ -1489,7 +1655,10 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         dispatch_group_enter(dispatchGroup);
         // Launch the pagination
         MXWeakify(self);
-        secondaryPaginationRequest = [_secondaryTimeline paginate:numItems direction:direction onlyFromStore:onlyFromStore complete:^{
+        secondaryPaginationRequest = [_secondaryTimeline paginate:numItems
+                                                        direction:direction
+                                                    onlyFromStore:onlyFromStore
+                                                         complete:^{
             
             MXStrongifyAndReturnIfNil(self);
             
@@ -1676,11 +1845,11 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     // Make the request to the homeserver
     if (isEmote)
     {
-        [_room sendEmote:sanitizedText formattedText:html localEcho:&localEchoEvent success:success failure:failure];
+        [_room sendEmote:sanitizedText formattedText:html threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure];
     }    
     else
     {
-        [_room sendTextMessage:sanitizedText formattedText:html localEcho:&localEchoEvent success:success failure:failure];
+        [_room sendTextMessage:sanitizedText formattedText:html threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure];
     }
     
     if (localEchoEvent)
@@ -1821,7 +1990,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 {
     __block MXEvent *localEchoEvent = nil;
     
-    [_room sendImage:imageData withImageSize:imageSize mimeType:mimetype andThumbnail:thumbnail localEcho:&localEchoEvent success:success failure:failure];
+    [_room sendImage:imageData withImageSize:imageSize mimeType:mimetype andThumbnail:thumbnail threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure];
     
     if (localEchoEvent)
     {
@@ -1841,7 +2010,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 {
     __block MXEvent *localEchoEvent = nil;
     
-    [_room sendVideoAsset:videoAsset withThumbnail:videoThumbnail localEcho:&localEchoEvent success:success failure:failure];
+    [_room sendVideoAsset:videoAsset withThumbnail:videoThumbnail threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure];
     
     if (localEchoEvent)
     {
@@ -1855,7 +2024,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 {
     __block MXEvent *localEchoEvent = nil;
     
-    [_room sendAudioFile:audioFileLocalURL mimeType:mimeType localEcho:&localEchoEvent success:success failure:failure keepActualFilename:YES];
+    [_room sendAudioFile:audioFileLocalURL mimeType:mimeType threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure keepActualFilename:YES];
     
     if (localEchoEvent)
     {
@@ -1874,7 +2043,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 {
     __block MXEvent *localEchoEvent = nil;
     
-    [_room sendVoiceMessage:audioFileLocalURL mimeType:mimeType duration:duration samples:samples localEcho:&localEchoEvent success:success failure:failure keepActualFilename:YES];
+    [_room sendVoiceMessage:audioFileLocalURL mimeType:mimeType duration:duration samples:samples threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure keepActualFilename:YES];
     
     if (localEchoEvent)
     {
@@ -1889,7 +2058,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 {
     __block MXEvent *localEchoEvent = nil;
     
-    [_room sendFile:fileLocalURL mimeType:mimeType localEcho:&localEchoEvent success:success failure:failure];
+    [_room sendFile:fileLocalURL mimeType:mimeType threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure];
     
     if (localEchoEvent)
     {
@@ -1904,7 +2073,31 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     __block MXEvent *localEchoEvent = nil;
     
     // Make the request to the homeserver
-    [_room sendMessageWithContent:msgContent localEcho:&localEchoEvent success:success failure:failure];
+    [_room sendMessageWithContent:msgContent threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure];
+    
+    if (localEchoEvent)
+    {
+        // Make the data source digest this fake local echo message
+        [self queueEventForProcessing:localEchoEvent withRoomState:self.roomState direction:MXTimelineDirectionForwards];
+        [self processQueuedEvents:nil];
+    }
+}
+
+- (void)sendLocationWithLatitude:(double)latitude
+                       longitude:(double)longitude
+                     description:(NSString *)description
+                         success:(void (^)(NSString *))success
+                         failure:(void (^)(NSError *))failure
+{
+    __block MXEvent *localEchoEvent = nil;
+    
+    // Make the request to the homeserver
+    [_room sendLocationWithLatitude:latitude
+                          longitude:longitude
+                        description:description
+                           threadId:self.threadId
+                          localEcho:&localEchoEvent
+                            success:success failure:failure];
     
     if (localEchoEvent)
     {
@@ -1919,7 +2112,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     __block MXEvent *localEchoEvent = nil;
 
     // Make the request to the homeserver
-    [_room sendEventOfType:eventTypeString content:msgContent localEcho:&localEchoEvent success:success failure:failure];
+    [_room sendEventOfType:eventTypeString content:msgContent threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure];
 
     if (localEchoEvent)
     {
@@ -1946,16 +2139,16 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     {
         // We try here to resent an encrypted event
         // Note: we keep the existing local echo.
-        [_room sendEventOfType:kMXEventTypeStringRoomEncrypted content:event.wireContent localEcho:&event success:success failure:failure];
+        [_room sendEventOfType:kMXEventTypeStringRoomEncrypted content:event.wireContent threadId:self.threadId localEcho:&event success:success failure:failure];
     }
     else if ([event.type isEqualToString:kMXEventTypeStringRoomMessage])
     {
         // And retry the send the message according to its type
-        NSString *msgType = event.content[@"msgtype"];
+        NSString *msgType = event.content[kMXMessageTypeKey];
         if ([msgType isEqualToString:kMXMessageTypeText] || [msgType isEqualToString:kMXMessageTypeEmote])
         {
             // Resend the Matrix event by reusing the existing echo
-            [_room sendMessageWithContent:event.content localEcho:&event success:success failure:failure];
+            [_room sendMessageWithContent:event.content threadId:self.threadId localEcho:&event success:success failure:failure];
         }
         else if ([msgType isEqualToString:kMXMessageTypeImage])
         {
@@ -1998,7 +2191,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             else
             {
                 // Resend the Matrix event by reusing the existing echo
-                [_room sendMessageWithContent:event.content localEcho:&event success:success failure:failure];
+                [_room sendMessageWithContent:event.content threadId:self.threadId localEcho:&event success:success failure:failure];
             }
         }
         else if ([msgType isEqualToString:kMXMessageTypeAudio])
@@ -2009,7 +2202,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             if (!contentURL || ![contentURL hasPrefix:kMXMediaUploadIdPrefix])
             {
                 // Resend the Matrix event by reusing the existing echo
-                [_room sendMessageWithContent:event.content localEcho:&event success:success failure:failure];
+                [_room sendMessageWithContent:event.content threadId:self.threadId localEcho:&event success:success failure:failure];
                 return;
             }
             
@@ -2027,8 +2220,8 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             [self removeEventWithEventId:eventId];
             
             if (event.isVoiceMessage) {
-                NSNumber *duration = event.content[kMXMessageContentKeyExtensibleAudio][kMXMessageContentKeyExtensibleAudioDuration];
-                NSArray<NSNumber *> *samples = event.content[kMXMessageContentKeyExtensibleAudio][kMXMessageContentKeyExtensibleAudioWaveform];
+                NSNumber *duration = event.content[kMXMessageContentKeyExtensibleAudioMSC1767][kMXMessageContentKeyExtensibleAudioDuration];
+                NSArray<NSNumber *> *samples = event.content[kMXMessageContentKeyExtensibleAudioMSC1767][kMXMessageContentKeyExtensibleAudioWaveform];
                 
                 [self sendVoiceMessage:localFileURL mimeType:mimetype duration:duration.doubleValue samples:samples success:success failure:failure];
             } else {
@@ -2049,7 +2242,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             else
             {
                 // Resend the Matrix event by reusing the existing echo
-                [_room sendMessageWithContent:event.content localEcho:&event success:success failure:failure];
+                [_room sendMessageWithContent:event.content threadId:self.threadId localEcho:&event success:success failure:failure];
             }
         }
         else if ([msgType isEqualToString:kMXMessageTypeFile])
@@ -2085,7 +2278,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             else
             {
                 // Resend the Matrix event by reusing the existing echo
-                [_room sendMessageWithContent:event.content localEcho:&event success:success failure:failure];
+                [_room sendMessageWithContent:event.content threadId:self.threadId localEcho:&event success:success failure:failure];
             }
         }
         else
@@ -2712,7 +2905,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         return NO;
     }
     
-    NSString *messageType = event.content[@"msgtype"];
+    NSString *messageType = event.content[kMXMessageTypeKey];
     if (messageType == nil || [messageType isEqualToString:@"m.bad.encrypted"]) {
         return NO;
     }
@@ -2782,27 +2975,9 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         MXLogVerbose(@"[MXKRoomDataSource][%p] queueEventForProcessing: %@", self, event.eventId);
     }
     
-    if (self.filterMessagesWithURL)
+    if (![self shouldQueueEventForProcessing:event roomState:roomState direction:direction])
     {
-        // Check whether the event has a value for the 'url' key in its content.
-        if (!event.getMediaURLs.count)
-        {
-            // Ignore the event
-            return;
-        }
-    }
-    
-    // Check for undecryptable messages that were sent while the user was not in the room and hide them
-    if ([MXKAppSettings standardAppSettings].hidePreJoinedUndecryptableEvents
-        && direction == MXTimelineDirectionBackwards)
-    {
-        [self checkForPreJoinUTDWithEvent:event roomState:roomState];
-        
-        // Hide pre joint UTD events
-        if (self.shouldStopBackPagination)
-        {
-            return;
-        }
+        return;
     }
     
     MXKQueuedEvent *queuedEvent = [[MXKQueuedEvent alloc] initWithEvent:event andRoomState:roomState direction:direction];
@@ -3928,7 +4103,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     
     if ([self canPerformActionOnEvent:event])
     {
-        NSString *messageType = event.content[@"msgtype"];
+        NSString *messageType = event.content[kMXMessageTypeKey];
         
         if ([messageType isEqualToString:kMXMessageTypeKeyVerificationRequest])
         {
@@ -3971,7 +4146,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 {
     MXEvent *event = [self eventWithEventId:eventId];
     BOOL isRoomMessage = event.eventType == MXEventTypeRoomMessage;
-    NSString *messageType = event.content[@"msgtype"];
+    NSString *messageType = event.content[kMXMessageTypeKey];
     
     return isRoomMessage
     && ([messageType isEqualToString:kMXMessageTypeText] || [messageType isEqualToString:kMXMessageTypeEmote])
@@ -3992,7 +4167,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     }
     else
     {
-        editableTextMessage = event.content[@"body"];
+        editableTextMessage = event.content[kMXMessageBodyKey];
     }
     
     return editableTextMessage;
@@ -4109,7 +4284,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     NSString *sanitizedText = [self sanitizedMessageText:text];
     NSString *formattedText = [self htmlMessageFromSanitizedText:sanitizedText];
     
-    NSString *eventBody = event.content[@"body"];
+    NSString *eventBody = event.content[kMXMessageBodyKey];
     NSString *eventFormattedBody = event.content[@"formatted_body"];
     
     if (![sanitizedText isEqualToString:eventBody] && (!eventFormattedBody || ![formattedText isEqualToString:eventFormattedBody]))

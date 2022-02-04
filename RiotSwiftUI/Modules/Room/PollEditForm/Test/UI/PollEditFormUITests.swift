@@ -1,5 +1,3 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh Room/PollEditForm PollEditForm
 //
 // Copyright 2021 New Vector Ltd
 //
@@ -29,7 +27,7 @@ class PollEditFormUITests: XCTestCase {
                 
         app = XCUIApplication()
         app.launch()
-        app.buttons[MockPollEditFormScreenState.screenStateKeys.first!].tap()
+        app.goToScreenWithIdentifier(MockPollEditFormScreenState.standard.title)
     }
     
     func testInitialStateComponents() {

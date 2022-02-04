@@ -232,9 +232,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"ContactDetails"];
     
     // Hide the bottom border of the navigation bar to display the expander header
     [self hideNavigationBarBorder:YES];

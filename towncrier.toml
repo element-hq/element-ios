@@ -40,6 +40,11 @@ template = "changelog.d/_template.md.jinja"
     showcontent = true
 
 [[tool.towncrier.type]]
+    directory = "wip"
+    name = "🚧 In development 🚧"
+    showcontent = true
+
+[[tool.towncrier.type]]
     directory = "misc"
     name = "Others"
     showcontent = true

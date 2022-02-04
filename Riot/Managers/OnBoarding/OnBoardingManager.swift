@@ -81,19 +81,18 @@ final public class OnBoardingManager: NSObject {
     // MARK: - Private
     
     private func isUserJoinedARoom() -> Bool {
-        guard let roomSummaries = self.session.roomsSummaries() else {
-            return false
-        }
+        var isUserJoinedARoom = false
         
-        var isUSerJoinedARoom = false
-        
-        for roomSummary in roomSummaries {
+        for room in session.rooms {
+            guard let roomSummary = room.summary else {
+                continue
+            }
             if case .join = roomSummary.membership {
-                isUSerJoinedARoom = true
+                isUserJoinedARoom = true
                 break
             }
         }
 
-        return isUSerJoinedARoom
+        return isUserJoinedARoom
     }
 }

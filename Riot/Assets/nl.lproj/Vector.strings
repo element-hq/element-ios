@@ -1583,7 +1583,7 @@
 "space_private_join_rule" = "Privé Space";
 "space_participants_action_ban" = "Uit deze Space verbannen";
 "space_participants_action_remove" = "Uit deze kamer verwijderen";
-"spaces_coming_soon_detail" = "Deze functies is nog niet klaar, maar er wordt aan gewerkt. Voor nu kan u dit wel doen met Element via uw computer.";
+"spaces_coming_soon_detail" = "Deze functies is nog niet klaar, maar er wordt aan gewerkt. Voor nu kan u dit wel doen met %@ via uw computer.";
 "spaces_invites_coming_soon_title" = "Uitnodigen komt binnenkort";
 "spaces_add_rooms_coming_soon_title" = "Kamers toevoegen komt binnenkort";
 "spaces_coming_soon_title" = "Komt binnenkort";
@@ -1633,7 +1633,7 @@
 "contacts_address_book_permission_denied_alert_message" = "Om contacten in te schakelen, ga naar uw apparaatinstellingen.";
 "contacts_address_book_permission_denied_alert_title" = "Contacten uitgeschakeld";
 "poll_edit_form_add_option" = "Optie toevoegen";
-"poll_edit_form_option_number" = "Optie %d";
+"poll_edit_form_option_number" = "Optie %lu";
 "poll_edit_form_create_options" = "Opties maken";
 "poll_edit_form_input_placeholder" = "Schrijf iets";
 "poll_edit_form_question_or_topic" = "Vraag of onderwerp";
@@ -1647,3 +1647,75 @@
 "share_extension_low_quality_video_title" = "Video zal in lage kwaliteit worden verstuurd";
 "settings_discovery_accept_terms" = "Identiteitsserver-voorwaarden aanvaarden";
 "settings_about" = "OVER";
+"poll_timeline_not_closed_action" = "OK";
+"poll_timeline_not_closed_subtitle" = "Probeer het opnieuw";
+"poll_timeline_not_closed_title" = "Sluiten van de poll mislukt";
+"poll_timeline_vote_not_registered_action" = "OK";
+"poll_timeline_vote_not_registered_subtitle" = "Sorry, uw stem is niet geregistreerd. Probeer het opnieuw";
+"poll_timeline_vote_not_registered_title" = "Stem niet geregistreerd";
+"poll_timeline_total_final_results" = "Uitslag gebaseerd op %lu stemmen";
+"poll_timeline_total_final_results_one_vote" = "Uitslag gebaseerd op 1 stem";
+"poll_timeline_total_votes_not_voted" = "%lu stemmen uitgebracht. Stem om de resultaten te zien";
+"poll_timeline_total_one_vote_not_voted" = "1 stem uitgebracht. Stem om de resultaten te zien";
+"poll_timeline_total_votes" = "%lu stemmen uitgebracht";
+"poll_timeline_total_one_vote" = "1 stem uitgebracht";
+"poll_timeline_total_no_votes" = "Geen stemmen uitgebracht";
+"poll_timeline_votes_count" = "%lu stemmen";
+"poll_timeline_one_vote" = "1 stem";
+"poll_edit_form_post_failure_action" = "OK";
+"poll_edit_form_post_failure_subtitle" = "Probeer het opnieuw";
+"poll_edit_form_post_failure_title" = "Poll plaatsen mislukt";
+"analytics_prompt_stop" = "Delen stoppen";
+"analytics_prompt_yes" = "Ja, dat is prima";
+"analytics_prompt_not_now" = "Niet nu";
+"analytics_prompt_point_3" = "U kunt dit op elk moment uitzetten in de instellingen";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "Wij delen <b>geen</b> informatie met derden";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "We registreren of profileren <b>geen</b> accountgegevens";
+"analytics_prompt_terms_link_upgrade" = "hier";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "Lees al onze voorwaarden %@. Is dit akkoord?";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "U kunt al onze voorwaarden %@ lezen.";
+"analytics_prompt_terms_link_new_user" = "hier";
+"analytics_prompt_message_upgrade" = "U heeft eerder toestemming gegeven om anonieme gebruiksgegevens met ons te delen. Om beter te begrijpen hoe mensen meerdere apparaten gebruiken, genereren we nu een willekeurige identificatiecode die door uw apparaten wordt gedeeld.";
+"analytics_prompt_message_new_user" = "Help ons bij het identificeren van problemen en het verbeteren van %@ door anonieme gebruiksgegevens te delen. Om te begrijpen hoe mensen meerdere apparaten gebruiken genereren we een willekeurige identificatie die we verspreiden over uw apparaten.";
+
+// Analytics
+"analytics_prompt_title" = "Help %@ verbeteren";
+"settings_analytics_and_crash_data" = "Crash en analytische data versturen";
+"settings_labs_enabled_polls" = "Polls";
+"room_event_action_end_poll" = "Poll sluiten";
+"room_event_action_remove_poll" = "Poll verwijderen";
+"accessibility_button_label" = "knop";
+"enable" = "Inschakelen";
+"location_sharing_settings_toggle_title" = "Locatie delen inschakelen";
+"location_sharing_settings_header" = "Locatie delen";
+"location_sharing_open_google_maps" = "In Google Maps openen";
+"location_sharing_open_apple_maps" = "In Apple Maps openen";
+"location_sharing_invalid_authorization_settings" = "Instellingen";
+"location_sharing_invalid_authorization_not_now" = "Niet nu";
+"location_sharing_invalid_authorization_error_title" = "%@ heeft geen toegang tot uw locatie. U kan dit inschakelen via Instellingen > Locatie";
+"location_sharing_locating_user_error_title" = "%@ heeft geen toegang tot uw locatie. Probeer het later opnieuw.";
+"location_sharing_loading_map_error_title" = "%@ kan de kaart niet laden. Probeer het later opnieuw.";
+"location_sharing_share_action" = "Delen";
+"location_sharing_close_action" = "Sluiten";
+
+// MARK: - Location sharing
+
+"location_sharing_title" = "Locatie";
+"ok" = "OK";
+"settings_enable_room_message_bubbles" = "Bericht bubbels";
+"onboarding_splash_page_4_message" = "Element is ook zeer geschikt voor op de werkvloer. Het wordt vertrouwd door 's werelds veiligste organisaties.";
+"onboarding_splash_page_4_title_no_pun" = "Berichten voor uw team.";
+"onboarding_splash_page_3_message" = "End-to-end versleuteld en geen telefoonnummer vereist. Geen advertenties of datamining.";
+"onboarding_splash_page_3_title" = "Veilig berichtenverkeer.";
+"onboarding_splash_page_2_message" = "Kies waar u gesprekken worden gehouden, zodat u controle en onafhankelijkheid heeft. Verbonden via Matrix.";
+"onboarding_splash_page_2_title" = "U heeft de controle.";
+"onboarding_splash_page_1_message" = "Veilige en onafhankelijke communicatie die u dezelfde mate van privacy geeft als een persoonlijk gesprek in uw eigen huis.";
+"onboarding_splash_page_1_title" = "Word eigenaar van uw gesprekken.";
+"onboarding_splash_login_button_title" = "Ik heb al een account";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Account aanmaken";

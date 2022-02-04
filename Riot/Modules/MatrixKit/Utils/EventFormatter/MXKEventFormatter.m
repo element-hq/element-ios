@@ -175,10 +175,6 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
         {
             isSupportedAttachment = hasUrl || hasFile;
         }
-        else if ([msgtype isEqualToString:kMXMessageTypeLocation])
-        {
-            // Not supported yet
-        }
         else if ([msgtype isEqualToString:kMXMessageTypeFile])
         {
             isSupportedAttachment = hasUrl || hasFile;
@@ -329,11 +325,12 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     
     // Check first whether the event has been redacted
     NSString *redactedInfo = nil;
-    BOOL isRedacted = (event.redactedBecause != nil);
+    BOOL isRedacted = event.isRedactedEvent;
     if (isRedacted)
     {
-        // Check whether redacted information is required
-        if (_settings.showRedactionsInRoomHistory)
+        // Check whether the event is a thread root or redacted information is required
+        if ((RiotSettings.shared.enableThreads && [mxSession.threadingService isEventThreadRoot:event])
+            || _settings.showRedactionsInRoomHistory)
         {
             MXLogDebug(@"[MXKEventFormatter] Redacted event %@ (%@)", event.description, event.redactedBecause);
             
@@ -1252,11 +1249,11 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
             else
             {
                 NSString *msgtype;
-                MXJSONModelSetString(msgtype, event.content[@"msgtype"]);
+                MXJSONModelSetString(msgtype, event.content[kMXMessageTypeKey]);
 
                 NSString *body;
                 BOOL isHTML = NO;
-                NSString *eventThreadIdentifier = event.threadIdentifier;
+                NSString *eventThreadId = event.threadId;
 
                 // Use the HTML formatted string if provided
                 if ([event.content[@"format"] isEqualToString:kMXRoomMessageFormatHTML])
@@ -1264,26 +1261,27 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                     isHTML =YES;
                     MXJSONModelSetString(body, event.content[@"formatted_body"]);
                 }
-                else if (eventThreadIdentifier)
+                else if (eventThreadId && !RiotSettings.shared.enableThreads)
                 {
+                    NSString *repliedEventId = event.relatesTo.inReplyTo.eventId ?: eventThreadId;
                     isHTML = YES;
-                    MXJSONModelSetString(body, event.content[@"body"]);
-                    MXEvent *threadRootEvent = [mxSession.store eventWithEventId:eventThreadIdentifier
-                                                                          inRoom:event.roomId];
+                    MXJSONModelSetString(body, event.content[kMXMessageBodyKey]);
+                    MXEvent *repliedEvent = [mxSession.store eventWithEventId:repliedEventId
+                                                                       inRoom:event.roomId];
                     
-                    NSString *threadRootEventContent;
-                    MXJSONModelSetString(threadRootEventContent, threadRootEvent.content[@"body"]);
+                    NSString *repliedEventContent;
+                    MXJSONModelSetString(repliedEventContent, repliedEvent.content[kMXMessageBodyKey]);
                     body = [NSString stringWithFormat:@"<mx-reply><blockquote><a href=\"%@\">In reply to</a> <a href=\"%@\">%@</a><br>%@</blockquote></mx-reply>%@",
-                            [MXTools permalinkToEvent:eventThreadIdentifier inRoom:event.roomId],
-                            [MXTools permalinkToUserWithUserId:threadRootEvent.sender],
-                            threadRootEvent.sender,
-                            threadRootEventContent,
+                            [MXTools permalinkToEvent:repliedEventId inRoom:event.roomId],
+                            [MXTools permalinkToUserWithUserId:repliedEvent.sender],
+                            repliedEvent.sender,
+                            repliedEventContent,
                             body];
                     
                 }
                 else
                 {
-                    MXJSONModelSetString(body, event.content[@"body"]);
+                    MXJSONModelSetString(body, event.content[kMXMessageBodyKey]);
                 }
 
                 if (body)
@@ -1333,23 +1331,6 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                             *error = MXKEventFormatterErrorUnsupported;
                         }
                     }
-                    else if ([msgtype isEqualToString:kMXMessageTypeLocation])
-                    {
-                        body = body? body : [MatrixKitL10n noticeLocationAttachment];
-                        if (![self isSupportedAttachment:event])
-                        {
-                            MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported attachment %@", event.description);
-                            if (_isForSubtitle || !_settings.showUnsupportedEventsInRoomHistory)
-                            {
-                                body = [MatrixKitL10n noticeInvalidAttachment];
-                            }
-                            else
-                            {
-                                body = [MatrixKitL10n noticeUnsupportedAttachment:event.description];
-                            }
-                            *error = MXKEventFormatterErrorUnsupported;
-                        }
-                    }
                     else if ([msgtype isEqualToString:kMXMessageTypeFile])
                     {
                         body = body? body : [MatrixKitL10n noticeFileAttachment];
@@ -1380,9 +1361,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
 
                         // For replies, look for the end of the parent message
                         // This helps us insert the emote prefix in the right place
-                        NSDictionary *relatesTo;
-                        MXJSONModelSetDictionary(relatesTo, event.content[@"m.relates_to"]);
-                        if ([relatesTo[@"m.in_reply_to"] isKindOfClass:NSDictionary.class] || event.isInThread)
+                        if (event.relatesTo.inReplyTo || (event.isInThread && !RiotSettings.shared.enableThreads))
                         {
                             [attributedDisplayText enumerateAttribute:kMXKToolsBlockquoteMarkAttribute
                                                               inRange:NSMakeRange(0, attributedDisplayText.length)
@@ -1582,7 +1561,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
             else
             {
                 NSString *body;
-                MXJSONModelSetString(body, event.content[@"body"]);
+                MXJSONModelSetString(body, event.content[kMXMessageBodyKey]);
                 
                 // Check sticker validity
                 if (![self isSupportedAttachment:event])
@@ -1598,6 +1577,11 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
         }
         case MXEventTypePollStart:
         {
+            if (event.isEditEvent)
+            {
+                return nil;
+            }
+            
             displayText = [MXEventContentPollStart modelFromJSON:event.content].question;
             break;
         }
@@ -1720,7 +1704,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     NSString *html = htmlString;
 
     // Special treatment for "In reply to" message
-    if (event.isReplyEvent || event.isInThread)
+    if (event.isReplyEvent || (event.isInThread && !RiotSettings.shared.enableThreads))
     {
         html = [self renderReplyTo:html withRoomState:roomState];
     }
@@ -2000,7 +1984,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
 
             if (event.eventType == MXEventTypeRoomMessage)
             {
-                NSString *msgtype = event.content[@"msgtype"];
+                NSString *msgtype = event.content[kMXMessageTypeKey];
                 if ([msgtype isEqualToString:kMXMessageTypeEmote] == NO)
                 {
                     NSString *senderDisplayName = [self senderDisplayNameForEvent:event withRoomState:roomState];
@@ -2046,7 +2030,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
         textColor = _errorTextColor;
     }
     // Check whether the message is highlighted.
-    else if (event.mxkIsHighlighted || (event.isInThread && ![event.sender isEqualToString:mxSession.myUserId]))
+    else if (event.mxkIsHighlighted || (event.isInThread && !RiotSettings.shared.enableThreads && ![event.sender isEqualToString:mxSession.myUserId]))
     {
         textColor = _bingTextColor;
     }
@@ -2110,7 +2094,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     {
         font = _callNoticesTextFont;
     }
-    else if (event.mxkIsHighlighted || (event.isInThread && ![event.sender isEqualToString:mxSession.myUserId]))
+    else if (event.mxkIsHighlighted || (event.isInThread && !RiotSettings.shared.enableThreads && ![event.sender isEqualToString:mxSession.myUserId]))
     {
         font = _bingTextFont;
     }
@@ -2121,7 +2105,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     else if (!_isForSubtitle && event.eventType == MXEventTypeRoomMessage && (_emojiOnlyTextFont || _singleEmojiTextFont))
     {
         NSString *message;
-        MXJSONModelSetString(message, event.content[@"body"]);
+        MXJSONModelSetString(message, event.content[kMXMessageBodyKey]);
 
         if (_emojiOnlyTextFont && [MXKTools isEmojiOnlyString:message])
         {

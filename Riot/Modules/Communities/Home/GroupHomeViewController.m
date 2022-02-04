@@ -48,6 +48,8 @@
 
 @property (nonatomic, readonly) DTHTMLAttributedStringBuilderWillFlushCallback longDescriptionSanitizationCallback;
 
+@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+
 @end
 
 @implementation GroupHomeViewController
@@ -95,6 +97,8 @@
         MXStrongifyAndReturnIfNil(self);
         [element sanitizeWith:allowedHTMLTags bodyFont:self->_groupLongDescription.font imageHandler:[self groupLongDescriptionImageHandler]];
     };
+    
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenGroup];
 }
 
 - (void)viewDidLoad
@@ -205,9 +209,6 @@
 {
     [super viewWillAppear:animated];
     
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"GroupDetailsHome"];
-    
     // Release the potential pushed view controller
     [self releasePushedViewController];
     
@@ -257,6 +258,18 @@
     [super viewWillDisappear:animated];
     
     [self cancelRegistrationOnGroupChangeNotifications];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.screenTimer start];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self.screenTimer stop];
 }
 
 - (void)viewDidLayoutSubviews

@@ -102,7 +102,7 @@
 "joined" = "Bergabung";
 "collapse" = "tutup";
 "store_promotional_text" = "Aplikasi perpesanan dan kolaborasi yang menjaga privasi, pada jaringan terbuka. Terdesentralisasi untuk Anda kendali. Tidak ada penambangan data, tidak ada pintu belakang dan tidak ada akses pihak ketiga.";
-"store_full_description" = "Element adalah aplikasi messenger dan kolaborasi tipe baru yang:\n\n1. Menempatkan Anda dalam kendali untuk mempertahankan privasi Anda\n2. Memungkinkan Anda berkomunikasi dengan siapa pun di jaringan Matrix, dan bahkan di luar dengan mengintegrasikan dengan aplikasi seperti Slack\n3. Melindungi Anda dari iklan, menambangan data, pintu belakang, dan taman berdinding\n4. Mengamankan Anda melalui enkripsi ujung-ke-ujung, dengan penandatanganan silang untuk memverifikasi orang lain\n\nElement benar-benar berbeda dari aplikasi perpesanan dan kolaborasi lain karena Element terdesentralisasi dan sumber terbuka.\n\nElement memungkinkan Anda host sendiri - atau memilih host - sehingga Anda memiliki privasi, kepemilikan, dan kontrol data dan obrolan Anda. Ini memberi Anda akses ke jaringan terbuka, jadi Anda tidak hanya terjebak berbicara dengan pengguna Element. Itu sangat aman.\n\nElement dapat melakukan semua ini karena beroperasi pada Matrix - standar untuk komunikasi terdesentralisasi terbuka.\n\nElement menempatkan Anda dalam kendali dengan membiarkan Anda memilih siapa yang menghost percakapan Anda. Dari aplikasi Element, Anda dapat memilih untuk menghost dengan cara yang berbeda:\n\n1. Dapatkan akun gratis pada server publik matrix.org\n2. Host sendiri akun Anda dengan menjalankan server pada perangkat keras Anda sendiri\n3. Mendaftar untuk akun di server khusus dengan hanya berlangganan platform hosting Element Matrix Services\n\nMengapa memilih Element?\n\nMILIKI DATA ANDA: Anda memutuskan di mana untuk menyimpan data dan pesan Anda. Anda memilikinya dan mengendalikannya, bukan perusahaan besar yang menambang data Anda atau memberikan akses ke pihak ketiga.\n\nPESAN DAN KOLABORASI TERBUKA: Anda dapat mengobrol dengan orang lain di jaringan Matrix, jika mereka menggunakan Element atau aplikasi Matrix lain, dan bahkan jika mereka menggunakan sistem perpesanan seperti Slack, IRC atau XMPP.\n\nSANGAT AMAN: Enkripsi ujung-ke-ujung yang nyata (hanya mereka yang dalam percakapan dapat mendekripsi pesan), dan penandatanganan silang untuk memverifikasi perangkat anggota obrolan.\n\nKOMUNIKASI LENGKAP: Perpesanan, panggilan suara dan video, pembagian file, pembagian layar dan banyak integrasi, bot dan widget. Buat ruangan, komunitas, tetap terhubung dan selesaikan hal-hal.\n\nDI MANA PUN ANDA BERADA: Tetap berkomunikasi di mana pun Anda berada dengan riwayat pesan yang sepenuhnya disinkronkan di semua perangkat Anda dan di web di https://app.element.io/.";
+"store_full_description" = "Element adalah aplikasi messenger dan kolaborasi tipe baru yang:\n\n1. Menempatkan Anda dalam kendali untuk mempertahankan privasi Anda\n2. Memungkinkan Anda berkomunikasi dengan siapa pun di jaringan Matrix, dan bahkan di luar dengan mengintegrasikan dengan aplikasi seperti Slack\n3. Melindungi Anda dari iklan, menambangan data, pintu belakang, dan taman berdinding\n4. Mengamankan Anda melalui enkripsi ujung-ke-ujung, dengan penandatanganan silang untuk memverifikasi orang lain\n\nElement benar-benar berbeda dari aplikasi perpesanan dan kolaborasi lain karena Element terdesentralisasi dan sumber terbuka.\n\nElement memungkinkan Anda host sendiri — atau memilih host — sehingga Anda memiliki privasi, kepemilikan, dan kontrol data dan obrolan Anda. Ini memberi Anda akses ke jaringan terbuka, jadi Anda tidak hanya terjebak berbicara dengan pengguna Element. Itu sangat aman.\n\nElement dapat melakukan semua ini karena beroperasi pada Matrix — standar untuk komunikasi terdesentralisasi terbuka.\n\nElement menempatkan Anda dalam kendali dengan membiarkan Anda memilih siapa yang menghost percakapan Anda. Dari aplikasi Element, Anda dapat memilih untuk menghost dengan cara yang berbeda:\n\n1. Dapatkan akun gratis pada server publik matrix.org\n2. Host sendiri akun Anda dengan menjalankan server pada perangkat keras Anda sendiri\n3. Mendaftar untuk akun di server khusus dengan hanya berlangganan platform hosting Element Matrix Services\n\nMengapa memilih Element?\n\nMILIKI DATA ANDA: Anda memutuskan di mana untuk menyimpan data dan pesan Anda. Anda memilikinya dan mengendalikannya, bukan perusahaan besar yang menambang data Anda atau memberikan akses ke pihak ketiga.\n\nPESAN DAN KOLABORASI TERBUKA: Anda dapat mengobrol dengan orang lain di jaringan Matrix, jika mereka menggunakan Element atau aplikasi Matrix lain, dan bahkan jika mereka menggunakan sistem perpesanan seperti Slack, IRC atau XMPP.\n\nSANGAT AMAN: Enkripsi ujung-ke-ujung yang nyata (hanya mereka yang dalam percakapan dapat mendekripsi pesan), dan penandatanganan silang untuk memverifikasi perangkat anggota obrolan.\n\nKOMUNIKASI LENGKAP: Perpesanan, panggilan suara dan video, pembagian file, pembagian layar dan banyak integrasi, bot dan widget. Buat ruangan, komunitas, tetap terhubung dan selesaikan hal-hal.\n\nDI MANA PUN ANDA BERADA: Tetap berkomunikasi di mana pun Anda berada dengan riwayat pesan yang sepenuhnya disinkronkan di semua perangkat Anda dan di web di https://app.element.io/.";
 // String for App Store
 "store_short_description" = "Obrolan/VoIP terdesentralisasi aman";
 
@@ -611,13 +611,13 @@
 "open" = "Buka";
 "version_check_banner_subtitle_deprecated" = "Kami tidak mendukung %@ di iOS %@ lagi. Untuk terus menggunakan %@ secara maksimal, kami menyarankan Anda untuk meningkatkan versi iOS Anda.";
 "version_check_banner_subtitle_supported" = "Kami akan segera mengakhiri dukungan untuk %@ di iOS %@. Untuk terus menggunakan %@ secara maksimal, kami menyarankan Anda untuk meningkatkan versi iOS Anda.";
-"spaces_coming_soon_detail" = "Fitur ini belum ada di sini, tetapi sedang dalam proses. Untuk saat ini, Anda dapat melakukannya dengan Element di komputer Anda.";
+"spaces_coming_soon_detail" = "Fitur ini belum ada di sini, tetapi sedang dalam proses. Untuk saat ini, Anda dapat melakukannya dengan %@ di komputer Anda.";
 "spaces_no_member_found_detail" = "Mencari seseorang yang tidak ada di %@? Untuk saat ini, Anda dapat mengundangnya di web atau desktop.";
 "spaces_no_room_found_detail" = "Beberapa hasil mungkin disembunyikan karena ruangannya pribadi dan Anda memerlukan sebuah undangan untuk bergabung.";
 "spaces_empty_space_detail" = "Beberapa ruangan mungkin disembunyikan karena ruangannya pribadi dan Anda memerlukan sebuah undangan.";
 "leave_space_message" = "Apakah anda Anda yakin ingin keluar dari %@? Apakah Anda juga ingin meninggalkan semua ruangan dan space lainnya di space ini?";
 "space_beta_announce_information" = "Space adalah cara baru untuk mengelompokkan ruangan dan orang. Mereka belum ada di iOS, tetapi Anda dapat menggunakannya sekarang di Web dan Desktop.";
-"favourites_empty_view_information" = "Anda dapat memfavoritkan dengan beberapa cara - yang tercepat adalah dengan menekan dan menahan. Ketuk ikon bintang dan mereka akan secara otomatis muncul di sini.";
+"favourites_empty_view_information" = "Anda dapat memfavoritkan dengan beberapa cara — yang tercepat adalah dengan menekan dan menahan. Ketuk ikon bintang dan mereka akan secara otomatis muncul di sini.";
 "home_empty_view_information" = "Aplikasi obrolan aman semua-dalam-satu untuk tim, teman, dan organisasi. Ketuk tombol + di bawah untuk menambahkan orang dan ruangan.";
 "pin_protection_explanatory" = "Menyiapkan PIN memungkinkan Anda melindungi data seperti pesan dan kontak, jadi hanya Anda yang dapat mengaksesnya dengan memasukkan PIN di awal aplikasi.";
 "major_update_information" = "Kami senang mengumumkan bahwa kami telah mengubah nama kami! Aplikasi Anda telah diperbarui dan Anda masuk ke akun Anda.";
@@ -1538,7 +1538,7 @@
 "space_feature_unavailable_information" = "Space adalah cara baru untuk mengelompokkan ruangan dan pengguna.\n\nMereka akan segera datang. Untuk saat ini, jika Anda bergabung sebuah space di platform lain, Anda akan dapat mengakses ruang mana saja yang Anda ikuti di sini.";
 
 // Success from passphrase
-"key_backup_setup_success_from_passphrase_info" = "Kunci Anda sedang dicadangkan.\n\nKunci Keamanan Anda adalah jaring pengaman - Anda dapat menggunakannya untuk memulihkan akses ke pesan terenkripsi jika Anda lupa frasa sandi.\n\nSimpan Kunci Keamanan Anda di suatu tempat yang sangat aman, seperti pengelola kata sandi (atau brankas).";
+"key_backup_setup_success_from_passphrase_info" = "Kunci Anda sedang dicadangkan.\n\nKunci Keamanan Anda adalah jaring pengaman — Anda dapat menggunakannya untuk memulihkan akses ke pesan terenkripsi jika Anda lupa frasa sandi.\n\nSimpan Kunci Keamanan Anda di suatu tempat yang sangat aman, seperti pengelola kata sandi (atau brankas).";
 "key_backup_setup_passphrase_info" = "Kami akan menyimpan salinan terenkripsi dari kunci Anda di server kami. Lindungi cadangan Anda dengan frasa agar tetap aman.\n\nUntuk keamanan maksimum, ini harus berbeda dari kata sandi akun Anda.";
 "key_backup_setup_intro_info" = "Pesan di ruang terenkripsi diamankan dengan enkripsi ujung-ke-ujung. Hanya Anda dan penerima yang memiliki kunci untuk membaca pesan ini.\n\nCadangkan kunci Anda dengan aman untuk menghindari kehilangannya.";
 "deactivate_account_informations_part5" = "Jika Anda ingin kami melupakan pesan Anda, silakan centang kotak di bawah ini\n\nVisibilitas pesan di Matrix mirip dengan email. Kami melupakan pesan Anda berarti bahwa pesan yang telah Anda kirim tidak akan dibagikan dengan pengguna baru atau tidak terdaftar, tetapi pengguna terdaftar yang sudah memiliki akses ke pesan ini akan tetap memiliki akses ke salinannya.";
@@ -1649,7 +1649,7 @@
 "group_details_title" = "Detail Komunitas";
 "room_event_action_forward" = "Teruskan";
 "poll_edit_form_add_option" = "Tambahkan opsi";
-"poll_edit_form_option_number" = "Opsi %d";
+"poll_edit_form_option_number" = "Opsi %lu";
 "poll_edit_form_create_options" = "Buat opsi";
 "poll_edit_form_input_placeholder" = "Tulis sesuatu";
 "poll_edit_form_question_or_topic" = "Pertanyaan atau topik";
@@ -1663,3 +1663,75 @@
 "share_extension_low_quality_video_title" = "Video akan dikirim dalam kualitas rendah";
 "settings_discovery_accept_terms" = "Terima Persyaratan Server Identitas";
 "settings_about" = "TENTANG";
+"poll_timeline_not_closed_action" = "OK";
+"poll_timeline_not_closed_subtitle" = "Mohon coba lagi";
+"poll_timeline_not_closed_title" = "Gagal untuk mengakhiri poll";
+"poll_timeline_vote_not_registered_action" = "OK";
+"poll_timeline_vote_not_registered_subtitle" = "Maaf, suara Anda tidak diberikan, mohon coba lagi";
+"poll_timeline_vote_not_registered_title" = "Suara tidak diberikan";
+"poll_timeline_total_final_results" = "Hasil akhir berdasarkan %lu suara";
+"poll_timeline_total_final_results_one_vote" = "Hasil akhir berdasarkan 1 suara";
+"poll_timeline_total_votes_not_voted" = "%lu suara diberikan. Berikan suara untuk melihat hasilnya";
+"poll_timeline_total_one_vote_not_voted" = "1 suara diberikan. Berikan suara untuk melihat hasilnya";
+"poll_timeline_total_no_votes" = "Tidak ada suara yang diberikan";
+"poll_timeline_total_votes" = "%lu suara diberikan";
+"poll_timeline_total_one_vote" = "1 suara diberikan";
+"poll_timeline_votes_count" = "%lu suara";
+"poll_timeline_one_vote" = "1 suara";
+"poll_edit_form_post_failure_action" = "OK";
+"poll_edit_form_post_failure_subtitle" = "Silakan coba lagi";
+"poll_edit_form_post_failure_title" = "Gagal untuk mengirim poll";
+"settings_labs_enabled_polls" = "Poll";
+"room_event_action_end_poll" = "Akhiri poll";
+"room_event_action_remove_poll" = "Hapus poll";
+"analytics_prompt_stop" = "Berhenti membagikan";
+"analytics_prompt_yes" = "Iya, saya tidak keberatan";
+"analytics_prompt_not_now" = "Jangan sekarang";
+"analytics_prompt_point_3" = "Anda dapat mematikannya kapan saja di pengaturan";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "Kami <b>tidak</b> membagikan informasi ini dengan pihak ketiga";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "Kami <b>tidak</b> merekam atau memprofil data akun apapun";
+"analytics_prompt_terms_link_upgrade" = "di sini";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "Baca semua kebijakan kami %@. Apakah Anda tidak keberatan?";
+"analytics_prompt_terms_link_new_user" = "di sini";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "Anda dapat membaca semua kebijakan kami %@.";
+"analytics_prompt_message_upgrade" = "Anda sebelumnya setuju untuk mengirimkan data penggunaan anonim dengan kami. Sekarang, supaya kami dapat memahami bagaimana orang-orang menggunakan beberapa perangkat-perangkat, kami akan membuat pengenal acak, yang dibagikan oleh perangkat Anda.";
+"analytics_prompt_message_new_user" = "Bantu kami mengidentifikasi masalah-masalah dan membuat %@ lebih baik dengan membagikan data penggunaan anonim. Untuk memahami bagaimana orang-orang menggunakan beberapa perangkat-perangkat, kami akan membuat pengenal acak, yang dibagikan oleh perangkat Anda.";
+
+// Analytics
+"analytics_prompt_title" = "Bantu membuat %@ lebih baik";
+"settings_analytics_and_crash_data" = "Kirim data crash dan analitik";
+"accessibility_button_label" = "tombol";
+"enable" = "Aktifkan";
+"location_sharing_invalid_authorization_error_title" = "%@ tidak memiliki izin untuk mengakses lokasi. Anda dapat mengaktifkan akses di Pengaturan > Lokasi";
+"location_sharing_settings_toggle_title" = "Aktifkan pembagian lokasi";
+"location_sharing_settings_header" = "Pembagian lokasi";
+"location_sharing_open_google_maps" = "Buka di Google Maps";
+"location_sharing_open_apple_maps" = "Buka di Apple Maps";
+"location_sharing_invalid_authorization_settings" = "Pengaturan";
+"location_sharing_invalid_authorization_not_now" = "Jangan sekarang";
+"location_sharing_locating_user_error_title" = "%@ tidak dapat mengakses lokasi Anda. Silakan coba lagi nanti.";
+"location_sharing_loading_map_error_title" = "%@ tidak dapat memuat peta. Silakan coba lagi nanti.";
+"location_sharing_share_action" = "Bagikan";
+"location_sharing_close_action" = "Tutup";
+
+// MARK: - Location sharing
+
+"location_sharing_title" = "Lokasi";
+"ok" = "OKE";
+"settings_enable_room_message_bubbles" = "Gelembung pesan";
+"onboarding_splash_page_4_message" = "Element juga bagus untuk tempat kerja. Terpercayai oleh organisasi paling aman di dunia.";
+"onboarding_splash_page_4_title_no_pun" = "Perpesanan untuk tim Anda.";
+"onboarding_splash_page_3_message" = "Terenkripsi secara ujung-ke-ujung dan tidak memerlukan nomor telepon. Tidak ada iklan atau penambangan data.";
+"onboarding_splash_page_3_title" = "Perpesanan aman.";
+"onboarding_splash_page_2_message" = "Pilihlah di mana percakapan Anda disimpan, memberikan Anda kendali dan kebebasan. Terhubung via Matrix.";
+"onboarding_splash_page_2_title" = "Anda dalam kendali.";
+"onboarding_splash_page_1_message" = "Komunikasi aman dan independen yang memberikan tingkat privasi yang sama seperti percakapan tatap muka di rumah Anda sendiri.";
+"onboarding_splash_page_1_title" = "Miliki percakapan Anda.";
+"onboarding_splash_login_button_title" = "Saya sudah punya akun";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Buat akun";

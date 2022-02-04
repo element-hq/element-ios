@@ -40,6 +40,7 @@ final class RoomInfoListViewController: UIViewController {
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
     private var isRoomDirect: Bool = false
+    private var screenTimer = AnalyticsScreenTimer(screen: .roomDetails)
     
     private lazy var closeButton: CloseButton = {
         let button = CloseButton()
@@ -128,10 +129,20 @@ final class RoomInfoListViewController: UIViewController {
         return self.theme.statusBarStyle
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        screenTimer.start()
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         mainTableView.vc_relayoutHeaderView()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        screenTimer.stop()
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

@@ -475,3 +475,7 @@
 "auth_username_in_use" = "Emër përdoruesi i përdorur";
 "auth_invalid_user_name" = "Emër i pavlefshëm përdoruesi";
 "rename" = "Riemërtojeni";
+"attachment_unsupported_preview_message" = "Ky lloj kartele nuk mbulohet.";
+"attachment_unsupported_preview_title" = "S’arrihet të bëhet paraparje";
+"room_displayname_all_other_members_left" = "%@ (Iku)";
+"message_reply_to_sender_sent_their_location" = "ka dhënë vendndodhjen e vet.";

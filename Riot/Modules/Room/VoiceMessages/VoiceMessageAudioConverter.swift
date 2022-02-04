@@ -35,7 +35,7 @@ struct VoiceMessageAudioConverter {
     
     static func mediaDurationAt(_ sourceURL: URL, completion: @escaping (Result<TimeInterval, VoiceMessageAudioConverterError>) -> Void) {
         FFprobeKit.getMediaInformationAsync(sourceURL.path) { session in
-            guard let session = session as? MediaInformationSession else {
+            guard let session = session else {
                 completion(.failure(.generic("Invalid session")))
                 return
             }
@@ -46,14 +46,14 @@ struct VoiceMessageAudioConverter {
             }
             
             DispatchQueue.main.async {
-                if returnCode.isSuccess() {
+                if returnCode.isValueSuccess() {
                     let mediaInfo = session.getMediaInformation()
                     if let duration = try? TimeInterval(value: mediaInfo?.getDuration() ?? "0") {
                         completion(.success(duration))
                     } else {
                         completion(.failure(.generic("Failed to get media duration")))
                     }
-                } else if returnCode.isCancel() {
+                } else if returnCode.isValueCancel() {
                     completion(.failure(.cancelled))
                 } else {
                     completion(.failure(.generic(String(returnCode.getValue()))))
@@ -82,9 +82,9 @@ struct VoiceMessageAudioConverter {
             }
             
             DispatchQueue.main.async {
-                if returnCode.isSuccess() {
+                if returnCode.isValueSuccess() {
                     completion(.success(()))
-                } else if returnCode.isCancel() {
+                } else if returnCode.isValueCancel() {
                     completion(.failure(.cancelled))
                 } else {
                     completion(.failure(.generic(String(returnCode.getValue()))))

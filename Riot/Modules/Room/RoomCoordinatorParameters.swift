@@ -34,8 +34,17 @@ struct RoomCoordinatorParameters {
     /// The room identifier
     let roomId: String
     
+    /// The identifier of the parent space. `nil` for home space
+    let parentSpaceId: String?
+
     /// If not nil, the room will be opened on this event.
     let eventId: String?
+    
+    /// If not nil, specified thread will be opened.
+    let threadId: String?
+    
+    /// Display configuration for the room
+    let displayConfiguration: RoomDisplayConfiguration
     
     /// The data for the room preview.
     let previewData: RoomPreviewData?
@@ -46,13 +55,19 @@ struct RoomCoordinatorParameters {
                  navigationRouterStore: NavigationRouterStoreProtocol?,
                  session: MXSession,
                  roomId: String,
+                 parentSpaceId: String?,
                  eventId: String?,
+                 threadId: String?,
+                 displayConfiguration: RoomDisplayConfiguration,
                  previewData: RoomPreviewData?) {
         self.navigationRouter = navigationRouter
         self.navigationRouterStore = navigationRouterStore
         self.session = session
         self.roomId = roomId
+        self.parentSpaceId = parentSpaceId
         self.eventId = eventId
+        self.threadId = threadId
+        self.displayConfiguration = displayConfiguration
         self.previewData = previewData
     }
     
@@ -60,17 +75,37 @@ struct RoomCoordinatorParameters {
     init(navigationRouter: NavigationRouterType? = nil,
          navigationRouterStore: NavigationRouterStoreProtocol? = nil,
          session: MXSession,
+         parentSpaceId: String?,
          roomId: String,
-         eventId: String? = nil) {
+         eventId: String? = nil,
+         threadId: String? = nil,
+         displayConfiguration: RoomDisplayConfiguration = .default) {
         
-        self.init(navigationRouter: navigationRouter, navigationRouterStore: navigationRouterStore, session: session, roomId: roomId, eventId: eventId, previewData: nil)
+        self.init(navigationRouter: navigationRouter,
+                  navigationRouterStore: navigationRouterStore,
+                  session: session,
+                  roomId: roomId,
+                  parentSpaceId: parentSpaceId,
+                  eventId: eventId,
+                  threadId: threadId,
+                  displayConfiguration: displayConfiguration,
+                  previewData: nil)
     }
     
     /// Init to present a room preview
     init(navigationRouter: NavigationRouterType? = nil,
          navigationRouterStore: NavigationRouterStoreProtocol? = nil,
+         parentSpaceId: String?,
          previewData: RoomPreviewData) {
         
-        self.init(navigationRouter: navigationRouter, navigationRouterStore: navigationRouterStore, session: previewData.mxSession, roomId: previewData.roomId, eventId: nil, previewData: previewData)
+        self.init(navigationRouter: navigationRouter,
+                  navigationRouterStore: navigationRouterStore,
+                  session: previewData.mxSession,
+                  roomId: previewData.roomId,
+                  parentSpaceId: parentSpaceId,
+                  eventId: nil,
+                  threadId: nil,
+                  displayConfiguration: .default,
+                  previewData: previewData)
     }
 }

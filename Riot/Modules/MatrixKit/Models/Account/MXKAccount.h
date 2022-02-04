@@ -17,6 +17,7 @@
  */
 
 #import <MatrixSDK/MatrixSDK.h>
+#import "MXKAccountData.h"
 
 @class MXKAccount;
 
@@ -56,29 +57,7 @@ typedef BOOL (^MXKAccountOnCertificateChange)(MXKAccount *mxAccount, NSData *cer
  `MXKAccount` object contains the credentials of a logged matrix user. It is used to handle matrix
  session and presence for this user.
  */
-@interface MXKAccount : NSObject <NSCoding>
-
-/**
- The account's credentials: homeserver, access token, user id.
- */
-@property (nonatomic, readonly) MXCredentials *mxCredentials;
-
-/**
- The identity server URL.
- */
-@property (nonatomic) NSString *identityServerURL;
-
-/**
- The antivirus server URL, if any (nil by default).
- Set a non-null url to configure the antivirus scanner use.
- */
-@property (nonatomic) NSString *antivirusServerURL;
-
-/**
- The Push Gateway URL used to send event notifications to (nil by default).
- This URL should be over HTTPS and never over HTTP.
- */
-@property (nonatomic) NSString *pushGatewayURL;
+@interface MXKAccount : MXKAccountData
 
 /**
  The matrix REST client used to make matrix API requests.
@@ -108,12 +87,6 @@ typedef BOOL (^MXKAccountOnCertificateChange)(MXKAccount *mxAccount, NSData *cer
 @property (nonatomic, readonly) NSString *fullDisplayName;
 
 /**
- The 3PIDs linked to this account.
- [self load3PIDs] must be called to update the property.
- */
-@property (nonatomic, readonly) NSArray<MXThirdPartyIdentifier *> *threePIDs;
-
-/**
  The email addresses linked to this account.
  This is a subset of self.threePIDs.
  */
@@ -124,12 +97,6 @@ typedef BOOL (^MXKAccountOnCertificateChange)(MXKAccount *mxAccount, NSData *cer
  This is a subset of self.threePIDs.
  */
 @property (nonatomic, readonly) NSArray<NSString *> *linkedPhoneNumbers;
-
-/**
- The account user's device.
- [self loadDeviceInformation] must be called to update the property.
- */
-@property (nonatomic, readonly) MXDevice *device;
 
 /**
  The account user's presence (`MXPresenceUnknown` by default, available if matrix session `mxSession` is opened).
@@ -149,11 +116,6 @@ typedef BOOL (^MXKAccountOnCertificateChange)(MXKAccount *mxAccount, NSData *cer
 @property (nonatomic, readonly) BOOL pushNotificationServiceIsActive;
 
 /**
- Transient information storage.
- */
-@property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, id<NSCoding>> *others;
-
-/**
  Enable Push notification based on Apple Push Notification Service (APNS).
 
  This method creates or removes a pusher on the homeserver.
@@ -165,11 +127,6 @@ typedef BOOL (^MXKAccountOnCertificateChange)(MXKAccount *mxAccount, NSData *cer
 - (void)enablePushNotifications:(BOOL)enable
                         success:(void (^)(void))success
                         failure:(void (^)(NSError *))failure;
-
-/**
- Flag to indicate that an APNS pusher has been set on the homeserver for this device.
- */
-@property (nonatomic, readonly) BOOL hasPusherForPushNotifications;
 
 /**
  The Push notification activity (based on PushKit) for this account.
@@ -191,36 +148,11 @@ typedef BOOL (^MXKAccountOnCertificateChange)(MXKAccount *mxAccount, NSData *cer
                            failure:(void (^)(NSError *))failure;
 
 /**
- Flag to indicate that a PushKit pusher has been set on the homeserver for this device.
- */
-@property (nonatomic, readonly) BOOL hasPusherForPushKitNotifications;
-
-
-/**
- Enable In-App notifications based on Remote notifications rules.
- NO by default.
- */
-@property (nonatomic) BOOL enableInAppNotifications;
-
-/**
- Disable the account without logging out (NO by default).
- 
- A matrix session is automatically opened for the account when this property is toggled from YES to NO.
- The session is closed when this property is set to YES.
- */
-@property (nonatomic,getter=isDisabled) BOOL disabled;
-
-/**
  Manage the online presence event.
  
  The presence event must not be sent if the application is launched by a push notification.
  */
 @property (nonatomic) BOOL hideUserPresence;
-
-/**
- Flag indicating if the end user has been warned about encryption and its limitations.
- */
-@property (nonatomic,getter=isWarnedAboutEncryption) BOOL warnedAboutEncryption;
 
 /**
  Register the MXKAccountOnCertificateChange block that will be used to handle certificate change during account use.
@@ -283,11 +215,6 @@ typedef BOOL (^MXKAccountOnCertificateChange)(MXKAccount *mxAccount, NSData *cer
 
 
 #pragma mark - Soft logout
-
-/**
- Flag to indicate if the account has been logged out by the homeserver admin.
- */
-@property (nonatomic, readonly) BOOL isSoftLogout;
 
 /**
  Soft logout the account.
@@ -432,4 +359,8 @@ typedef BOOL (^MXKAccountOnCertificateChange)(MXKAccount *mxAccount, NSData *cer
                                     success:(void (^)(void))success
                                     failure:(void (^)(NSError *error))failure;
 
+/**
+ Handle unauthenticated errors from  the server triggering hard/soft logouts as appropriate.
+ */
+- (void)handleUnauthenticatedWithError:(MXError *)error isSoftLogout:(BOOL)isSoftLogout isRefreshTokenAuth:(BOOL)isRefreshTokenAuth andCompletion:(void (^)(void))completion;
 @end

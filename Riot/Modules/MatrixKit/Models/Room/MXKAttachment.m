@@ -91,7 +91,7 @@ NSString *const kMXKAttachmentFileNameBase = @"attatchment";
         else
         {
             // Note: mxEvent.eventType is supposed to be MXEventTypeRoomMessage here.
-            NSString *msgtype = eventContent[@"msgtype"];
+            NSString *msgtype = eventContent[kMXMessageTypeKey];
             if ([msgtype isEqualToString:kMXMessageTypeImage])
             {
                 _type = MXKAttachmentTypeImage;
@@ -109,12 +109,6 @@ NSString *const kMXKAttachmentFileNameBase = @"attatchment";
                 _type = MXKAttachmentTypeVideo;
                 MXJSONModelSetDictionary(_thumbnailInfo, eventContent[@"info"][@"thumbnail_info"]);
             }
-            else if ([msgtype isEqualToString:kMXMessageTypeLocation])
-            {
-                // Not supported yet
-                // _type = MXKAttachmentTypeLocation;
-                return nil;
-            }
             else if ([msgtype isEqualToString:kMXMessageTypeFile])
             {
                 _type = MXKAttachmentTypeFile;
@@ -125,7 +119,7 @@ NSString *const kMXKAttachmentFileNameBase = @"attatchment";
             }
         }
         
-        MXJSONModelSetString(_originalFileName, eventContent[@"body"]);
+        MXJSONModelSetString(_originalFileName, eventContent[kMXMessageBodyKey]);
         MXJSONModelSetDictionary(_contentInfo, eventContent[@"info"]);
         MXJSONModelSetMXJSONModel(contentFile, MXEncryptedContentFile, eventContent[@"file"]);
         

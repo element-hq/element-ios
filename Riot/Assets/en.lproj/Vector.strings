@@ -41,6 +41,7 @@
 "retry" = "Retry";
 "on" = "On";
 "off" = "Off";
+"enable" = "Enable";
 "cancel" = "Cancel";
 "save" = "Save";
 "join" = "Join";
@@ -65,6 +66,10 @@
 "less" = "Less";
 "open" = "Open";
 "done" = "Done";
+"private" = "Private";
+"public" = "Public";
+"stop" = "Stop";
+"ok" = "OK";
 
 // Call Bar
 "callbar_only_single_active" = "Tap to return to the call (%@)";
@@ -77,6 +82,19 @@
 
 // Accessibility
 "accessibility_checkbox_label" = "checkbox";
+"accessibility_button_label" = "button";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Create account";
+"onboarding_splash_login_button_title" = "I already have an account";
+"onboarding_splash_page_1_title" = "Own your conversations.";
+"onboarding_splash_page_1_message" = "Secure and independent communication that gives you the same level of privacy as a face-to-face conversation in your own home.";
+"onboarding_splash_page_2_title" = "You’re in control.";
+"onboarding_splash_page_2_message" = "Choose where your conversations are kept, giving you control and independence. Connected via Matrix.";
+"onboarding_splash_page_3_title" = "Secure messaging.";
+"onboarding_splash_page_3_message" = "End-to-end encrypted and no phone number required. No ads or datamining.";
+"onboarding_splash_page_4_title_no_pun" = "Messaging for your team.";
+"onboarding_splash_page_4_message" = "Element is also great for the workplace. It’s trusted by the world’s most secure organisations.";
 
 // Authentication
 "auth_login" = "Log in";
@@ -268,6 +286,7 @@ Tap the + to start adding people.";
 "room_participants_remove_third_party_invite_prompt_msg" = "Are you sure you want to revoke this invite?";
 "room_participants_invite_prompt_title" = "Confirmation";
 "room_participants_invite_prompt_msg" = "Are you sure you want to invite %@ to this chat?";
+"room_participants_invite_prompt_to_msg" = "Are you sure you want to invite %@ to %@?";
 "room_participants_filter_room_members" = "Filter room members";
 "room_participants_filter_room_members_for_dm" = "Filter members";
 "room_participants_invite_another_user" = "Search / invite by User ID, Name or email";
@@ -323,7 +342,8 @@ Tap the + to start adding people.";
 "room_member_power_level_short_moderator" = "Mod";
 "room_member_power_level_short_custom" = "Custom";
 
-// Chat
+// MARK: - Chat
+
 "room_slide_to_end_group_call" = "Slide to end the call for everyone";
 "room_jump_to_first_unread" = "Jump to unread";
 "room_accessiblity_scroll_to_bottom" = "Scroll to bottom";
@@ -363,7 +383,8 @@ Tap the + to start adding people.";
 "room_event_action_more" = "More";
 "room_event_action_share" = "Share";
 "room_event_action_forward" = "Forward";
-"room_event_action_permalink" = "Permalink";
+"room_event_action_view_in_room" = "View in room";
+"room_event_action_permalink" = "Copy link to message";
 "room_event_action_view_source" = "View Source";
 "room_event_action_view_decrypted_source" = "View Decrypted Source";
 "room_event_action_report" = "Report content";
@@ -380,10 +401,12 @@ Tap the + to start adding people.";
 "room_event_action_cancel_download" = "Cancel Download";
 "room_event_action_view_encryption" = "Encryption Information";
 "room_event_action_reply" = "Reply";
+"room_event_action_reply_in_thread" = "Thread";
 "room_event_action_edit" = "Edit";
 "room_event_action_reaction_show_all" = "Show all";
 "room_event_action_reaction_show_less" = "Show less";
 "room_event_action_reaction_history" = "Reaction history";
+"room_event_copy_link_info" = "Link copied to clipboard.";
 "room_warning_about_encryption" = "End-to-end encryption is in beta and may not be reliable.\n\nYou should not yet trust it to secure data.\n\nDevices will not yet be able to decrypt history from before they joined the room.\n\nEncrypted messages will not be visible on clients that do not yet implement encryption.";
 "room_event_failed_to_send" = "Failed to send";
 "room_action_camera" = "Take photo or video";
@@ -408,11 +431,26 @@ Tap the + to start adding people.";
 "room_accessibility_upload" = "Upload";
 "room_accessibility_call" = "Call";
 "room_accessibility_video_call" = "Video Call";
+"room_accessibility_threads" = "Threads";
 "room_accessibility_hangup" = "Hang up";
+"room_accessibility_thread_more" = "More";
 "room_place_voice_call" = "Voice call";
 "room_open_dialpad" = "Dial pad";
 "room_join_group_call" = "Join";
 "room_no_privileges_to_create_group_call" = "You need to be an admin or a moderator to start a call.";
+
+// MARK: Threads
+"room_thread_title" = "Thread";
+"thread_copy_link_to_thread" = "Copy link to thread";
+"threads_title" = "Threads";
+"threads_action_all_threads" = "All threads";
+"threads_action_my_threads" = "My threads";
+"threads_empty_title" = "Keep discussions organised with threads";
+"threads_empty_info_all" = "Threads help keep your conversations on-topic and easy to track.";
+"threads_empty_info_my" = "Reply to an ongoing thread or tap a message and use “Thread” to start a new one.";
+"threads_empty_tip" = "Tip: Tap a message and use “Thread” to start one.";
+"threads_empty_show_all_threads" = "Show all threads";
+"message_from_a_thread" = "From a thread";
 
 "media_type_accessibility_image" = "Image";
 "media_type_accessibility_audio" = "Audio";
@@ -570,6 +608,7 @@ Tap the + to start adding people.";
 "settings_labs_message_reaction" = "React to messages with emoji";
 "settings_labs_enable_ringing_for_group_calls" = "Ring for group calls";
 "settings_labs_enabled_polls" = "Polls";
+"settings_labs_enable_threads" = "Threaded messaging";
 
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";
@@ -577,7 +616,7 @@ Tap the + to start adding people.";
 "settings_term_conditions" = "Terms & Conditions";
 "settings_privacy_policy" = "Privacy Policy";
 "settings_third_party_notices" = "Third-party Notices";
-"settings_send_crash_report" = "Send anon crash & usage data";
+"settings_analytics_and_crash_data" = "Send crash and analytics data";
 "settings_enable_rageshake" = "Rage shake to report bug";
 "settings_clear_cache" = "Clear cache";
 
@@ -651,6 +690,8 @@ Tap the + to start adding people.";
 "settings_identity_server_no_is_description" = "You are not currently using an identity server. To discover and be discoverable by existing contacts you know, add one above.";
 
 "settings_show_NSFW_public_rooms" = "Show NSFW public rooms";
+
+"settings_enable_room_message_bubbles" = "Message bubbles";
 
 // Security settings
 "security_settings_title" = "Security";
@@ -902,6 +943,7 @@ Tap the + to start adding people.";
 "event_formatter_group_call_join" = "Join";
 "event_formatter_group_call_leave" = "Leave";
 "event_formatter_group_call_incoming" = "%@ in %@";
+"event_formatter_message_deleted" = "Message deleted";
 
 // Events formatter with you
 "event_formatter_widget_added_by_you" = "You added the widget: %@";
@@ -945,8 +987,24 @@ Tap the + to start adding people.";
 "no_voip_title" = "Incoming call";
 "no_voip" = "%@ is calling you but %@ does not support calls yet.\nYou can ignore this notification and answer the call from another device or you can reject it.";
 
-// Crash report
-"google_analytics_use_prompt" = "Would you like to help improve %@ by automatically reporting anonymous crash reports and usage data?";
+// Analytics
+"analytics_prompt_title" = "Help improve %@";
+"analytics_prompt_message_new_user" = "Help us identify issues and improve %@ by sharing anonymous usage data. To understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.";
+"analytics_prompt_message_upgrade" = "You previously consented to share anonymous usage data with us. Now, to help understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "You can read all our terms %@.";
+"analytics_prompt_terms_link_new_user" = "here";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "Read all our terms %@. Is that OK?";
+"analytics_prompt_terms_link_upgrade" = "here";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "We <b>don't</b> record or profile any account data";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "We <b>don't</b> share information with third parties";
+"analytics_prompt_point_3" = "You can turn this off anytime in settings";
+"analytics_prompt_not_now" = "Not now";
+"analytics_prompt_yes" = "Yes, that's fine";
+"analytics_prompt_stop" = "Stop sharing";
 
 // Crypto
 "e2e_enabling_on_app_update" = "%@ now supports end-to-end encryption but you need to log in again to enable it.\n\nYou can do it now or later from the application settings.";
@@ -1671,6 +1729,16 @@ Tap the + to start adding people.";
 
 "home_empty_view_title" = "Welcome to %@,\n%@";
 "home_empty_view_information" = "The all-in-one secure chat app for teams, friends and organisations. Tap the + button below to add people and rooms.";
+"home_context_menu_make_dm" = "Move to People";
+"home_context_menu_make_room" = "Move to Rooms";
+"home_context_menu_notifications" = "Notifications";
+"home_context_menu_mute" = "Mute";
+"home_context_menu_unmute" = "Unmute";
+"home_context_menu_favourite" = "Favourite";
+"home_context_menu_unfavourite" = "Remove from Favourites";
+"home_context_menu_low_priority" = "Low priority";
+"home_context_menu_normal_priority" = "Normal priority";
+"home_context_menu_leave" = "Leave";
 
 // MARK: - Favourites
 
@@ -1681,6 +1749,12 @@ Tap the + to start adding people.";
 
 "invite_friends_action" = "Invite friends to %@";
 "invite_friends_share_text" = "Hey, talk to me on %@: %@";
+
+// MARK: - Share invite link
+
+"share_invite_link_action" = "Share invite link";
+"share_invite_link_room_text" = "Hey, join this room on %@";
+"share_invite_link_space_text" = "Hey, join this space on %@";
 
 // Mark: - Room avatar view
 
@@ -1704,6 +1778,15 @@ Tap the + to start adding people.";
 "room_intro_cell_information_dm_sentence2" = "Only the two of you are in this conversation, no one else can join.";
 "room_intro_cell_information_multiple_dm_sentence2" = "Only you are in this conversation, unless any of you invites someone to join.";
 
+// Mark: - Room invite
+
+"room_invite_to_space_option_title" = "To %@";
+"room_invite_to_space_option_detail" = "They can explore %@, but won’t be a member of %@.";
+"room_invite_to_room_option_title" = "To just this room";
+"room_invite_to_room_option_detail" = "They won’t be a part of %@.";
+"room_invite_not_enough_permission" = "You do not have permission to invite people to this room";
+"space_invite_not_enough_permission" = "You do not have permission to invite people to this space";
+
 // Mark: - Spaces
 
 "space_feature_unavailable_title" = "Spaces aren’t here yet";
@@ -1716,6 +1799,8 @@ Tap the + to start adding people.";
 "space_beta_announce_information" = "Spaces are a new way to group rooms and people. They’re not on iOS yet, but you can use them now on Web and Desktop.";
 
 "spaces_home_space_title" = "Home";
+"spaces_add_space_title" = "Create space";
+"spaces_create_space_title" = "Create a space";
 "spaces_left_panel_title" = "Spaces";
 "leave_space_title" = "Leave %@";
 "leave_space_message" = "Are you sure you want to leave %@? Do you also want to leave all rooms and spaces of this space?";
@@ -1733,13 +1818,75 @@ Tap the + to start adding people.";
 "spaces_coming_soon_title" = "Coming soon";
 "spaces_add_rooms_coming_soon_title" = "Adding rooms coming soon";
 "spaces_invites_coming_soon_title" = "Invites coming soon";
-"spaces_coming_soon_detail" = "This feature hasn’t been implemented here, but it’s on the way. For now, you can do that with Element on your computer.";
+"spaces_coming_soon_detail" = "This feature hasn’t been implemented here, but it’s on the way. For now, you can do that with %@ on your computer.";
 "space_participants_action_remove" = "Remove from this space";
 "space_participants_action_ban" = "Ban from this space";
 "space_home_show_all_rooms" = "Show all rooms";
 
 "space_private_join_rule" = "Private space";
+"space_private_join_rule_detail" = "Invite only, best for yourself or teams";
 "space_public_join_rule" = "Public space";
+"spaces_invite_people" = "Invite people";
+"spaces_add_room" = "Add room";
+"spaces_add_space" = "Add space";
+"space_public_join_rule_detail" = "Open to anyone, best for communities";
+
+"space_topic" = "description";
+
+// Mark: - Space Creation
+
+"spaces_creation_hint" = "Spaces are a new way to group rooms and people.";
+"spaces_creation_visibility_title" = "What type of space do you want to create?";
+"spaces_creation_visibility_message" = "To join an existing space, you need an invite.";
+"spaces_creation_footer" = "You can change this later";
+"spaces_creation_settings_message" = "Add some details to help it stand out. You can change these at any point.";
+"spaces_creation_address" = "Address";
+"spaces_creation_empty_room_name_error" = "Name required";
+"spaces_creation_address_default_message" = "Your space will be viewable at\n%@";
+"spaces_creation_address_invalid_characters" = "%@\nhas invalid characters";
+"spaces_creation_address_already_exists" = "%@\nalready exists";
+"spaces_creation_public_space_title" = "Your public space";
+"spaces_creation_private_space_title" = "Your private space";
+"spaces_creation_cancel_title" = "Stop creating a space?";
+"spaces_creation_cancel_message" = "Your progress will be lost.";
+
+"spaces_creation_new_rooms_title" = "What are some discussions you’ll have?";
+"spaces_creation_new_rooms_message" = "We’ll create a room for each one.";
+"spaces_creation_new_rooms_room_name_title" = "Room name";
+"spaces_creation_new_rooms_general" = "General";
+"spaces_creation_new_rooms_random" = "Random";
+"spaces_creation_new_rooms_support" = "Support";
+
+"spaces_creation_email_invites_title" = "Invite your team";
+"spaces_creation_email_invites_message" = "You can invite them later too.";
+"spaces_creation_email_invites_email_title" = "Email";
+
+"spaces_creation_sharing_type_title" = "Who are you working with?";
+"spaces_creation_sharing_type_message" = "Make sure the right people have access %@. You can change this later.";
+"spaces_creation_sharing_type_just_me_title" = "Just me";
+"spaces_creation_sharing_type_just_me_detail" = "A private space to organise your rooms";
+"spaces_creation_sharing_type_me_and_teammates_title" = "Me and teammates";
+"spaces_creation_sharing_type_me_and_teammates_detail" = "A private space for you & your teammates";
+
+"spaces_creation_add_rooms_title" = "What do you want to add?";
+"spaces_creation_add_rooms_message" = "As this space is just for you, no one will be informed. You can add more later.";
+
+"spaces_creation_invite_by_username" = "Invite by username";
+"spaces_creation_invite_by_username_title" = "Invite your team";
+"spaces_creation_invite_by_username_message" = "You can invite them later too.";
+
+"spaces_creation_post_process_creating_space" = "Creating space";
+"spaces_creation_post_process_creating_space_task" = "Creating %@";
+"spaces_creation_post_process_uploading_avatar" = "Uploading avatar";
+"spaces_creation_post_process_creating_room" = "Creating %@";
+"spaces_creation_post_process_adding_rooms" = "Adding %@ rooms";
+"spaces_creation_post_process_inviting_users" = "Inviting %@ users";
+
+"spaces_creation_in_spacename" = "in %@";
+"spaces_creation_in_spacename_plus_one" = "in %@ + 1 space";
+"spaces_creation_in_spacename_plus_many" = "in %@ + %@ spaces";
+"spaces_creation_in_many_spaces" = "in %@ spaces";
+"spaces_creation_in_one_space" = "in 1 space";
 
 // Mark: Avatar
 
@@ -1788,6 +1935,8 @@ Tap the + to start adding people.";
 
 "poll_edit_form_create_poll" = "Create poll";
 
+"poll_edit_form_poll_type" = "Poll type";
+
 "poll_edit_form_poll_question_or_topic" = "Poll question or topic";
 
 "poll_edit_form_question_or_topic" = "Question or topic";
@@ -1804,7 +1953,17 @@ Tap the + to start adding people.";
 
 "poll_edit_form_post_failure_subtitle" = "Please try again";
 
-"poll_edit_form_post_failure_action" = "OK";
+"poll_edit_form_update_failure_title" = "Failed to update poll";
+
+"poll_edit_form_update_failure_subtitle" = "Please try again";
+
+"poll_edit_form_poll_type_open" = "Open poll";
+
+"poll_edit_form_poll_type_open_description" = "Voters see results as soon as they have voted";
+
+"poll_edit_form_poll_type_closed" = "Closed poll";
+
+"poll_edit_form_poll_type_closed_description" = "Results are only revealed when you end the poll";
 
 "poll_timeline_one_vote" = "1 vote";
 
@@ -1828,10 +1987,36 @@ Tap the + to start adding people.";
 
 "poll_timeline_vote_not_registered_subtitle" = "Sorry, your vote was not registered, please try again";
 
-"poll_timeline_vote_not_registered_action" = "OK";
-
 "poll_timeline_not_closed_title" = "Failed to end poll";
 
 "poll_timeline_not_closed_subtitle" = "Please try again";
 
-"poll_timeline_not_closed_action" = "OK";
+// MARK: - Location sharing
+
+"location_sharing_title" = "Location";
+
+"location_sharing_close_action" = "Close";
+
+"location_sharing_share_action" = "Share";
+
+"location_sharing_post_failure_title" = "We couldn’t send your location";
+
+"location_sharing_post_failure_subtitle" = "%@ could not send your location. Please try again later.";
+
+"location_sharing_loading_map_error_title" = "%@ could not load the map. Please try again later.";
+
+"location_sharing_locating_user_error_title" = "%@ could not access your location. Please try again later.";
+
+"location_sharing_invalid_authorization_error_title" = "%@ does not have permission to access your location. You can enable access in Settings > Location";
+
+"location_sharing_invalid_authorization_not_now" = "Not now";
+
+"location_sharing_invalid_authorization_settings" = "Settings";
+
+"location_sharing_open_apple_maps" = "Open in Apple Maps";
+
+"location_sharing_open_google_maps" = "Open in Google Maps";
+
+"location_sharing_settings_header" = "Location sharing";
+
+"location_sharing_settings_toggle_title" = "Enable location sharing";

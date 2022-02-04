@@ -1548,7 +1548,7 @@
 "space_home_show_all_rooms" = "显示所有聊天室";
 "room_event_action_forward" = "转发";
 "poll_edit_form_add_option" = "添加选项";
-"poll_edit_form_option_number" = "选项 %d";
+"poll_edit_form_option_number" = "选项 %lu";
 "poll_edit_form_create_options" = "创建选项";
 "poll_edit_form_input_placeholder" = "写些东西";
 "poll_edit_form_question_or_topic" = "问题或话题";
@@ -1562,3 +1562,46 @@
 "share_extension_low_quality_video_title" = "将以低画质发送视频";
 "settings_discovery_accept_terms" = "接受身份服务器条款";
 "settings_about" = "关于";
+"poll_timeline_not_closed_action" = "好";
+"poll_timeline_not_closed_subtitle" = "请再试一次";
+"poll_timeline_not_closed_title" = "结束投票失败";
+"poll_timeline_vote_not_registered_action" = "好";
+"poll_timeline_vote_not_registered_subtitle" = "抱歉，您的投票未登记，请重试";
+"poll_timeline_vote_not_registered_title" = "投票未登记";
+"poll_timeline_total_final_results" = "基于 %lu 票的最终结果";
+"poll_timeline_total_final_results_one_vote" = "基于 1 票的最终结果";
+"poll_timeline_total_votes_not_voted" = "已有 %lu 票。投票查看结果";
+"poll_timeline_total_one_vote_not_voted" = "已有 1 票。 投票查看结果";
+"poll_timeline_total_votes" = "%lu 票";
+"poll_timeline_total_one_vote" = "1 票";
+"poll_timeline_total_no_votes" = "尚无投票";
+"poll_timeline_votes_count" = "%lu 票";
+"poll_timeline_one_vote" = "1 票";
+"poll_edit_form_post_failure_action" = "好";
+"poll_edit_form_post_failure_subtitle" = "请再试一次";
+"poll_edit_form_post_failure_title" = "发布投票失败";
+"settings_labs_enabled_polls" = "投票";
+"room_event_action_end_poll" = "结束投票";
+"room_event_action_remove_poll" = "删除投票";
+"analytics_prompt_stop" = "停止共享";
+"analytics_prompt_yes" = "是的，没关系";
+"analytics_prompt_not_now" = "不是现在";
+"analytics_prompt_point_3" = "您可以随时在设置中关闭此功能";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "我们<b>不</b>与第三方共享信息";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "我们 <b>不</b>记录任何账户数据或绘制任何账户数据的画像";
+"analytics_prompt_terms_link_upgrade" = "此处";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "阅读我们所有的条款 %@。 那样行吗？";
+"analytics_prompt_terms_link_new_user" = "此处";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "你可以阅读我们所有的条款 %@。";
+"analytics_prompt_message_upgrade" = "您之前同意与我们共享匿名使用数据。 现在，为了帮助了解人们如何使用多个设备，我们将生成一个随机标识符，由您的设备共享。";
+"analytics_prompt_message_new_user" = "通过共享匿名使用数据帮助我们发现问题并改进 Element。 为了了解人们如何使用多个设备，我们将生成一个随机标识符，由您的设备共享。";
+
+// Analytics
+"analytics_prompt_title" = "帮助改进 %@";
+"settings_analytics_and_crash_data" = "发送崩溃和分析数据";
+"accessibility_button_label" = "按钮";
+"enable" = "启用";

@@ -27,6 +27,7 @@ protocol SpaceListViewModelCoordinatorDelegate: AnyObject {
     func spaceListViewModel(_ viewModel: SpaceListViewModelType, didSelectSpaceWithId spaceId: String)
     func spaceListViewModel(_ viewModel: SpaceListViewModelType, didSelectInviteWithId spaceId: String, from sourceView: UIView?)
     func spaceListViewModel(_ viewModel: SpaceListViewModelType, didPressMoreForSpaceWithId spaceId: String, from sourceView: UIView)
+    func spaceListViewModelDidSelectCreateSpace(_ viewModel: SpaceListViewModelType)
 }
 
 /// Protocol describing the view model used by `SpaceListViewController`

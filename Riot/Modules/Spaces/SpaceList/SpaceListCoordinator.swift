@@ -85,4 +85,9 @@ extension SpaceListCoordinator: SpaceListViewModelCoordinatorDelegate {
     func spaceListViewModel(_ viewModel: SpaceListViewModelType, didPressMoreForSpaceWithId spaceId: String, from sourceView: UIView) {
         self.delegate?.spaceListCoordinator(self, didPressMoreForSpaceWithId: spaceId, from: sourceView)
     }
+    
+    func spaceListViewModelDidSelectCreateSpace(_ viewModel: SpaceListViewModelType) {
+        self.delegate?.spaceListCoordinatorDidSelectCreateSpace(self)
+    }
+    
 }

@@ -56,8 +56,14 @@ class NotificationService: UNNotificationServiceExtension {
         guard let userAccount = userAccount else {
             return nil
         }
-        return MXRestClient(credentials: userAccount.mxCredentials, unrecognizedCertificateHandler: nil)
+        let restClient = MXRestClient(credentials: userAccount.mxCredentials, unrecognizedCertificateHandler: nil, persistentTokenDataHandler: { persistTokenDataHandler in
+            MXKAccountManager.shared().readAndWriteCredentials(persistTokenDataHandler)
+        }, unauthenticatedHandler: { error, softLogout, refreshTokenAuth, completion in
+            userAccount.handleUnauthenticatedWithError(error, isSoftLogout: softLogout, isRefreshTokenAuth: refreshTokenAuth, andCompletion: completion)
+        })
+        return restClient
     }()
+    
     private static var isLoggerInitialized: Bool = false
     private lazy var pushGatewayRestClient: MXPushGatewayRestClient = {
         let url = URL(string: BuildSettings.serverConfigSygnalAPIUrlString)!
@@ -90,6 +96,8 @@ class NotificationService: UNNotificationServiceExtension {
         
         //  log memory at the beginning of the process
         logMemory()
+        
+        setupAnalytics()
         
         UNUserNotificationCenter.current().removeUnwantedNotifications()
         
@@ -164,15 +172,26 @@ class NotificationService: UNNotificationServiceExtension {
         }
     }
     
+    private func setupAnalytics(){
+        // Configure our analytics. It will start if the option is enabled
+        let analytics = Analytics.shared
+        MXSDKOptions.sharedInstance().analyticsDelegate = analytics
+        analytics.startIfEnabled()
+    }
+    
     private func setup(withRoomId roomId: String, eventId: String, completion: @escaping () -> Void) {
-        MXKAccountManager.shared()?.forceReloadAccounts()
+        MXKAccountManager.sharedManager(withReload: true)
         self.userAccount = MXKAccountManager.shared()?.activeAccounts.first
         if let userAccount = userAccount {
             Self.backgroundServiceInitQueue.sync {
                 if NotificationService.backgroundSyncService?.credentials != userAccount.mxCredentials {
                     MXLog.debug("[NotificationService] setup: MXBackgroundSyncService init: BEFORE")
                     self.logMemory()
-                    NotificationService.backgroundSyncService = MXBackgroundSyncService(withCredentials: userAccount.mxCredentials)
+                    NotificationService.backgroundSyncService = MXBackgroundSyncService(withCredentials: userAccount.mxCredentials, persistTokenDataHandler: { persistTokenDataHandler in
+                        MXKAccountManager.shared().readAndWriteCredentials(persistTokenDataHandler)
+                    }, unauthenticatedHandler: { error, softLogout, refreshTokenAuth, completion in
+                        userAccount.handleUnauthenticatedWithError(error, isSoftLogout: softLogout, isRefreshTokenAuth: refreshTokenAuth, andCompletion: completion)
+                    })
                     MXLog.debug("[NotificationService] setup: MXBackgroundSyncService init: AFTER")
                     self.logMemory()
                 }
@@ -385,8 +404,8 @@ class NotificationService: UNNotificationServiceExtension {
                                 }
                             }
                             
-                            let msgType = event.content["msgtype"] as? String
-                            let messageContent = event.content["body"] as? String
+                            let msgType = event.content[kMXMessageTypeKey] as? String
+                            let messageContent = event.content[kMXMessageBodyKey] as? String
                             let isReply = event.isReply()
                             
                             if isReply {
@@ -398,6 +417,11 @@ class NotificationService: UNNotificationServiceExtension {
                             if event.isEncrypted && !self.showDecryptedContentInNotifications {
                                 // Hide the content
                                 notificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE", arguments: [])
+                                break
+                            }
+                            
+                            if event.location != nil {
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "LOCATION_FROM_USER", arguments: [eventSenderName])
                                 break
                             }
                             
@@ -422,7 +446,7 @@ class NotificationService: UNNotificationServiceExtension {
                                 if event.isReply() {
                                     let parser = MXReplyEventParser()
                                     let replyParts = parser.parse(event)
-                                    notificationBody = replyParts.bodyParts.replyText
+                                    notificationBody = replyParts?.bodyParts.replyText
                                 } else {
                                     notificationBody = messageContent
                                 }

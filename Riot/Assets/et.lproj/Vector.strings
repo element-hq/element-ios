@@ -1420,7 +1420,7 @@
 "space_private_join_rule" = "Privaatne kogukond";
 "space_participants_action_ban" = "Sea selles kogukonnakeskus suhtluskeeld";
 "space_participants_action_remove" = "Eemalda sellest kogukonnakeskusest";
-"spaces_coming_soon_detail" = "See funktsionaalsus pole siin rakenduses hetkel veel saadaval, aga üsna varsti saab olema. Seni saad sa seda toimingut teha Element'i töölauarakenduses.";
+"spaces_coming_soon_detail" = "See funktsionaalsus pole siin rakenduses hetkel veel saadaval, aga üsna varsti saab olema. Seni saad sa seda toimingut teha %@'i töölauarakenduses.";
 "spaces_invites_coming_soon_title" = "Varsti lisandub kutsete saatmine";
 "spaces_add_rooms_coming_soon_title" = "Varsti on jututubade lisamine võimalik";
 "spaces_coming_soon_title" = "Mõne aja pärast on meil uuendusi";
@@ -1474,7 +1474,7 @@
 "share_extension_low_quality_video_title" = "Saadame video madalama kvalitediga";
 "settings_about" = "TEAVE MEIST";
 "poll_edit_form_add_option" = "Lisa valik";
-"poll_edit_form_option_number" = "Valik %d";
+"poll_edit_form_option_number" = "Valik %lu";
 "poll_edit_form_create_options" = "Koosta valikud";
 "poll_edit_form_input_placeholder" = "Kirjuta midagi";
 "poll_edit_form_question_or_topic" = "Küsimus või teema";
@@ -1484,3 +1484,75 @@
 
 "poll_edit_form_create_poll" = "Koosta üks küsitlus";
 "settings_discovery_accept_terms" = "Nõustu isikutuvastusserveri tingimustega";
+"poll_timeline_not_closed_action" = "Sobib";
+"poll_timeline_not_closed_subtitle" = "Palun proovi uuesti";
+"poll_timeline_not_closed_title" = "Küsitluse lõpetamine ei õnnestunud";
+"poll_timeline_vote_not_registered_action" = "Sobib";
+"poll_timeline_vote_not_registered_subtitle" = "Vabandust, aga sinu valik jäi salvestamata. Palun proovi uuesti";
+"poll_timeline_vote_not_registered_title" = "Hääl ei salvestunud";
+"poll_timeline_total_final_results" = "%lu'l häälel põhinev lõpptulemus";
+"poll_timeline_total_final_results_one_vote" = "Ühel häälel põhinev lõpptulemus";
+"poll_timeline_total_votes_not_voted" = "%lu hääletanut. Tulemuste nägemiseks osale ise ka küsitluses";
+"poll_timeline_total_one_vote_not_voted" = "1 hääletanu. Tulemuste nägemiseks osale ise ka küsitluses";
+"poll_timeline_total_votes" = "%lu hääletanut";
+"poll_timeline_total_one_vote" = "1 hääletanu";
+"poll_timeline_total_no_votes" = "Hääletanuid ei ole";
+"poll_timeline_votes_count" = "%lu häält";
+"poll_timeline_one_vote" = "1 hääl";
+"poll_edit_form_post_failure_action" = "Sobib";
+"poll_edit_form_post_failure_subtitle" = "Palun proovi uuesti";
+"poll_edit_form_post_failure_title" = "Küsitluse üleslaadimine ei õnnestunud";
+"settings_labs_enabled_polls" = "Küsitlused";
+"room_event_action_end_poll" = "Lõpeta küsitlus";
+"room_event_action_remove_poll" = "Kustuta küsitlus";
+"analytics_prompt_stop" = "Lõpeta andmete jagamine";
+"analytics_prompt_yes" = "Jah, see on sobilik";
+"analytics_prompt_not_now" = "Mitte praegu";
+"analytics_prompt_point_3" = "Seadistustest saad alati määrata, et see funktsionaalsus pole kasutusel";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "Meie <b>ei</b> jaga teavet kolmandate osapooltega";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "Meie <b>ei</b> salvesta ega profileeri sinu kasutajakonto andmeid";
+"analytics_prompt_terms_link_upgrade" = "siit";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "Kõik meie tingimused leiad %@. Kas sa oled nõus?";
+"analytics_prompt_terms_link_new_user" = "siit";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "Meie kasutustingimused leiad %@.";
+"analytics_prompt_message_upgrade" = "Sa oled varem nõustunud meiega anonüümsete andmete jagamisega. Selleks, et mõistaksime, kuidas kasutajad erinevaid seadmeid pruugivad, me loome sinu seadmetele ühise juhusliku tunnuse.";
+"analytics_prompt_message_new_user" = "Võimalike vigade leidmiseks ja %@'i arendamiseks jaga meiega anonüümseid andmeid. Selleks, et mõistaksime, kuidas kasutajad erinevaid seadmeid pruugivad, me loome sinu seadmetele ühise juhusliku tunnuse.";
+
+// Analytics
+"analytics_prompt_title" = "Aita arendada %@ rakendust";
+"settings_analytics_and_crash_data" = "Saada rakenduse vigade ja analüütika andmeid";
+"accessibility_button_label" = "nupp";
+"enable" = "Võta kasutusele";
+"location_sharing_settings_toggle_title" = "Luba asukohta jagada";
+"location_sharing_settings_header" = "Asukoha jagamine";
+"location_sharing_open_google_maps" = "Ava rakendusega Google Maps";
+"location_sharing_open_apple_maps" = "Ava rakendusega Apple Maps";
+"location_sharing_invalid_authorization_settings" = "Seadistused";
+"location_sharing_invalid_authorization_not_now" = "Mitte praegu";
+"location_sharing_invalid_authorization_error_title" = "%@ vajab asukoha määramiseks õigusi, mida saad määrata Seadistused > Asukoht valikust";
+"location_sharing_locating_user_error_title" = "%@ ei saanud asukohta tuvastada. Palun proovi hiljem uuesti.";
+"location_sharing_loading_map_error_title" = "%@ ei saanud kaarti avada. Palun proovi hiljem uuesti.";
+"location_sharing_share_action" = "Jaga";
+"location_sharing_close_action" = "Sulge";
+
+// MARK: - Location sharing
+
+"location_sharing_title" = "Asukoht";
+"ok" = "Sobib";
+"settings_enable_room_message_bubbles" = "Jutumullid";
+"onboarding_splash_page_4_message" = "Element sobib ideaalselt kasutamiseks töökeskkonnas. Ta on kasutusel ka mitmetes üliturvalistes organisatsioonides.";
+"onboarding_splash_page_4_title_no_pun" = "Sõnumisuhtlus sinu tiimi või kogukonna jaoks.";
+"onboarding_splash_page_3_message" = "Tagatud on andmete läbiv krüptimine ning oma telefoninumbrit ei pea sa jagama. Pole reklaame ega sinu andmete kogumist.";
+"onboarding_splash_page_3_title" = "Turvaline sõnumisuhtlus.";
+"onboarding_splash_page_2_message" = "Sa ise valid serveri, kus sinu vestlusi hoitakse ning sellega tagadki kontrolli oma andmete üle. Lahendus põhineb Matrix'i võrgul.";
+"onboarding_splash_page_2_title" = "Sul on kontroll oma andmete üle.";
+"onboarding_splash_page_1_message" = "Turvaline ja sõltumatu suhtluslahendus, mis tagab sama privaatsuse, kui omavaheline vestlus sinu kodus.";
+"onboarding_splash_page_1_title" = "Vestlused, mida sa tegelikult ka omad.";
+"onboarding_splash_login_button_title" = "Mul on kasutajakonto juba olemas";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Loo kasutajakonto";

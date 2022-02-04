@@ -18,6 +18,13 @@
 
 #import "MXEvent+MatrixKit.h"
 #import "MXKSwiftHeader.h"
+#import <MatrixSDK/MatrixSDK.h>
+
+@interface MXKRoomBubbleComponent ()
+
+@property (nonatomic, readwrite) MXThread *thread;
+
+@end
 
 @implementation MXKRoomBubbleComponent
 
@@ -62,6 +69,8 @@
         _showEncryptionBadge = [self shouldShowWarningBadgeForEvent:event roomState:(MXRoomState*)roomState session:session];
         
         [self updateLinkWithRoomState:roomState];
+        
+        self.thread = [session.threadingService threadWithId:event.eventId];
     }
     return self;
 }
@@ -115,7 +124,7 @@
         return;
     }
     
-    NSString *messageType = self.event.content[@"msgtype"];
+    NSString *messageType = self.event.content[kMXMessageTypeKey];
     
     if (!messageType || !([messageType isEqualToString:kMXMessageTypeText] || [messageType isEqualToString:kMXMessageTypeNotice] || [messageType isEqualToString:kMXMessageTypeEmote]))
     {

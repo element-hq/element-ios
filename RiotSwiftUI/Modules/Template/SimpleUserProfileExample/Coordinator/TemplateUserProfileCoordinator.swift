@@ -14,15 +14,13 @@
 // limitations under the License.
 //
 
-import Foundation
-import UIKit
 import SwiftUI
 
 struct TemplateUserProfileCoordinatorParameters {
     let session: MXSession
 }
 
-final class TemplateUserProfileCoordinator: Coordinator {
+final class TemplateUserProfileCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties
     

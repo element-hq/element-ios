@@ -126,8 +126,11 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 {
     [super viewDidLoad];
     
-    self.mainNavigationItem.title = nil;
-    self.rightBarButtonItem.title = [VectorL10n authRegister];
+    self.navigationItem.title = nil;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:VectorL10n.authRegister
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(onButtonPressed:)];
     
     self.defaultHomeServerUrl = RiotSettings.shared.homeserverUrlString;
     
@@ -152,8 +155,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     
     if (!BuildSettings.authScreenShowRegister)
     {
-        self.rightBarButtonItem.enabled = NO;
-        self.rightBarButtonItem.title = nil;
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+        self.navigationItem.rightBarButtonItem.title = nil;
     }
     self.serverOptionsContainer.hidden = !BuildSettings.authScreenShowCustomServerOptions;
     
@@ -211,16 +214,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
 - (void)userInterfaceThemeDidChange
 {
-    self.navigationBackView.backgroundColor = ThemeService.shared.theme.baseColor;
-    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationBar];
-    self.navigationBarSeparatorView.backgroundColor = ThemeService.shared.theme.lineBreakColor;
-
-    // This view controller is not part of a navigation controller
-    // so that applyStyleOnNavigationBar does not fully work.
-    // In order to have the right status bar color, use the expected status bar color
-    // as the main view background color.
-    // Hopefully, subviews define their own background color with `theme.backgroundColor`,
-    // which makes all work together.
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    
     self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
 
     self.authenticationScrollView.backgroundColor = ThemeService.shared.theme.backgroundColor;
@@ -309,11 +304,9 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"Authentication"];
     
     [_keyboardAvoider startAvoiding];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -330,7 +323,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         return;
     }        
 
-    // Verify that the app does not show the authentification screean whereas
+    // Verify that the app does not show the authentication screen whereas
     // the user has already logged in.
     // This bug rarely happens (https://github.com/vector-im/riot-ios/issues/1643)
     // but it invites the user to log in again. They will then lose all their
@@ -340,7 +333,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         didCheckFalseAuthScreenDisplay = YES;
         
         MXLogDebug(@"[AuthenticationVC] viewDidAppear: Checking false logout");
-        [[MXKAccountManager sharedManager] forceReloadAccounts];
+        [MXKAccountManager sharedManagerWithReload: YES];
         if ([MXKAccountManager sharedManager].activeAccounts.count)
         {
             // For now, we do not have better solution than forcing the user to restart the app
@@ -482,13 +475,17 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 {
     BOOL hideAuthInputView = NO;
     
-    // Hide input view when there is only social login actions to present
-    if ((self.authType == MXKAuthenticationTypeLogin || self.authType == MXKAuthenticationTypeRegister)
+    // Hide input view when there is only social login actions to present at login
+    if ((self.authType == MXKAuthenticationTypeLogin)
         && self.currentLoginSSOFlow
-        && !self.isAuthSessionContainsPasswordFlow)
+        && !self.isAuthSessionContainsPasswordFlow
+        && BuildSettings.authScreenShowSocialLoginSection)
     {
         hideAuthInputView = YES;
     }
+    
+    // Note: Registration will hide the input view in onFailureDuringMXOperation
+    // if registration has been disabled.
     
     self.authInputsView.hidden = hideAuthInputView;
 }
@@ -498,7 +495,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     super.userInteractionEnabled = userInteractionEnabled;
 
     // Reset
-    self.rightBarButtonItem.enabled = YES;
+    self.navigationItem.rightBarButtonItem.enabled = YES;
     
     // Show/Hide server options
     if (_optionsContainer.hidden == userInteractionEnabled)
@@ -512,10 +509,10 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     if (!userInteractionEnabled)
     {
         // The right bar button is used to cancel the running request.
-        self.rightBarButtonItem.title = [VectorL10n cancel];
+        self.navigationItem.rightBarButtonItem.title = [VectorL10n cancel];
 
         // Remove the potential back button.
-        self.mainNavigationItem.leftBarButtonItem = nil;
+        self.navigationItem.leftBarButtonItem = nil;
     }
     else
     {
@@ -532,18 +529,18 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
                 && !self.softLogoutCredentials
                 && BuildSettings.authScreenShowRegister)
             {
-                self.rightBarButtonItem.title = [VectorL10n authRegister];
+                self.navigationItem.rightBarButtonItem.title = [VectorL10n authRegister];
             }
             else
             {
                 // Disable register on SSO
-                self.rightBarButtonItem.enabled = NO;
-                self.rightBarButtonItem.title = nil;
+                self.navigationItem.rightBarButtonItem.enabled = NO;
+                self.navigationItem.rightBarButtonItem.title = nil;
             }
         }
         else if (self.authType == MXKAuthenticationTypeRegister)
         {
-            self.rightBarButtonItem.title = [VectorL10n authLogin];
+            self.navigationItem.rightBarButtonItem.title = [VectorL10n authLogin];
             
             // Restore the back button
             if (authInputsview)
@@ -554,7 +551,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         else if (self.authType == MXKAuthenticationTypeForgotPassword)
         {
             // The right bar button is used to return to login.
-            self.rightBarButtonItem.title = [VectorL10n cancel];
+            self.navigationItem.rightBarButtonItem.title = [VectorL10n cancel];
         }
     }
 }
@@ -564,14 +561,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     KeyVerificationCoordinatorBridgePresenter *keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:session];
     keyVerificationCoordinatorBridgePresenter.delegate = self;
     
-    if (self.navigationController)
-    {
-        [keyVerificationCoordinatorBridgePresenter pushCompleteSecurityFrom:self.navigationController isNewSignIn:YES animated:YES];
-    }
-    else
-    {
-        [keyVerificationCoordinatorBridgePresenter presentCompleteSecurityFrom:self isNewSignIn:YES animated:YES];
-    }
+    [keyVerificationCoordinatorBridgePresenter presentCompleteSecurityFrom:self isNewSignIn:YES animated:YES];
     
     self.keyVerificationCoordinatorBridgePresenter = keyVerificationCoordinatorBridgePresenter;
 }
@@ -581,17 +571,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     self.userInteractionEnabled = YES;
     [self.authenticationActivityIndicator stopAnimating];
     
-    // Remove auth view controller on successful login
-    if (self.navigationController)
-    {
-        // Pop the view controller
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    else
-    {
-        // Dismiss on successful login
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-    }
+    // Dismiss (key verification) on successful login
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     
     if (self.authVCDelegate)
     {
@@ -609,7 +590,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         [self loginWithToken:loginToken];
         return YES;
     }
-        
+    
     MXLogDebug(@"[AuthenticationVC] Fail to continue SSO login");
     return NO;
 }
@@ -687,8 +668,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
     // Customise the screen for soft logout
     self.customServersTickButton.hidden = YES;
-    self.rightBarButtonItem.title = nil;
-    self.mainNavigationItem.title = [VectorL10n authSoftlogoutSignedOut];
+    self.navigationItem.rightBarButtonItem.title = nil;
+    self.navigationItem.title = [VectorL10n authSoftlogoutSignedOut];
 
     [self showSoftLogoutClearDataContainer];
 }
@@ -832,14 +813,21 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     }
 }
 
-- (void)handleAuthenticationSession:(MXAuthenticationSession *)authSession
+- (void)refreshAuthenticationSession
+{
+    // Hide the social login buttons while the session refreshes
+    [self hideSocialLoginView];
+    [super refreshAuthenticationSession];
+}
+
+- (void)handleAuthenticationSession:(MXAuthenticationSession *)authSession withFallbackSSOFlow:(MXLoginSSOFlow *)fallbackSSOFlow
 {
     // Make some cleaning from the server response according to what the app supports
     authSession = [self handleSupportedFlowsInAuthenticationSession:authSession];
     
-    [super handleAuthenticationSession:authSession];
+    [super handleAuthenticationSession:authSession withFallbackSSOFlow:fallbackSSOFlow];
     
-    self.currentLoginSSOFlow = [self logginSSOFlowWithProvidersFromFlows:authSession.flows];
+    self.currentLoginSSOFlow = [self loginSSOFlowWithProvidersFromFlows:authSession.flows] ?: fallbackSSOFlow;
     
     [self updateAuthInputViewVisibility];
     [self updateSocialLoginViewVisibility];
@@ -895,27 +883,6 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     return NO;
 }
 
-- (MXLoginSSOFlow*)logginSSOFlowWithProvidersFromFlows:(NSArray<MXLoginFlow*>*)loginFlows
-{
-    MXLoginSSOFlow *ssoFlowWithProviders;
-    
-    for (MXLoginFlow *loginFlow in loginFlows)
-    {
-        if ([loginFlow isKindOfClass:MXLoginSSOFlow.class])
-        {
-            MXLoginSSOFlow *ssoFlow = (MXLoginSSOFlow *)loginFlow;
-            
-            if (ssoFlow.identityProviders.count)
-            {
-                ssoFlowWithProviders = ssoFlow;
-                break;
-            }
-        }
-    }
-    
-    return ssoFlowWithProviders;
-}
-
 - (IBAction)onButtonPressed:(id)sender
 {
     if (sender == self.customServersTickButton)
@@ -940,7 +907,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
             self.authType = MXKAuthenticationTypeForgotPassword;
         }
     }
-    else if (sender == self.rightBarButtonItem)
+    else if (sender == self.navigationItem.rightBarButtonItem)
     {
         // Check whether a request is in progress
         if (!self.userInteractionEnabled)
@@ -951,15 +918,15 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         else if (self.authType == MXKAuthenticationTypeLogin)
         {
             self.authType = MXKAuthenticationTypeRegister;
-            self.rightBarButtonItem.title = [VectorL10n authLogin];
+            self.navigationItem.rightBarButtonItem.title = [VectorL10n authLogin];
         }
         else
         {
             self.authType = MXKAuthenticationTypeLogin;
-            self.rightBarButtonItem.title = [VectorL10n authRegister];
+            self.navigationItem.rightBarButtonItem.title = [VectorL10n authRegister];
         }
     }
-    else if (sender == self.mainNavigationItem.leftBarButtonItem)
+    else if (sender == self.navigationItem.leftBarButtonItem)
     {
         if ([self.authInputsView isKindOfClass:AuthInputsView.class])
         {
@@ -1187,15 +1154,18 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         [self.submitButton setTitle:[VectorL10n authRegister] forState:UIControlStateNormal];
         [self.submitButton setTitle:[VectorL10n authRegister] forState:UIControlStateHighlighted];
         
-        self.mainNavigationItem.leftBarButtonItem = nil;
+        self.navigationItem.leftBarButtonItem = nil;
     }
     else
     {
         [self.submitButton setTitle:[VectorL10n authSubmit] forState:UIControlStateNormal];
         [self.submitButton setTitle:[VectorL10n authSubmit] forState:UIControlStateHighlighted];
         
-        UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(onButtonPressed:)];
-        self.mainNavigationItem.leftBarButtonItem = leftBarButtonItem;
+        UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:VectorL10n.back
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(onButtonPressed:)];
+        self.navigationItem.leftBarButtonItem = leftBarButtonItem;
     }
 }
 
@@ -1738,8 +1708,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 - (void)updateSocialLoginViewVisibility
 {
     SocialLoginButtonMode socialLoginButtonMode = SocialLoginButtonModeContinue;
-    
-    BOOL showSocialLoginView = self.currentLoginSSOFlow ? YES : NO;
+
+    BOOL showSocialLoginView = BuildSettings.authScreenShowSocialLoginSection && (self.currentLoginSSOFlow ? YES : NO);
     
     switch (self.authType)
     {

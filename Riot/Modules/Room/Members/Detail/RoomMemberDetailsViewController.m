@@ -104,6 +104,8 @@
 
 @property(nonatomic, strong) UserVerificationCoordinatorBridgePresenter *userVerificationCoordinatorBridgePresenter;
 
+@property(nonatomic) AnalyticsScreenTimer *screenTimer;
+
 @end
 
 @implementation RoomMemberDetailsViewController
@@ -139,6 +141,8 @@
     
     // Keep visible the status bar by default.
     isStatusBarHidden = NO;
+    
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenUser];
 }
 
 - (void)viewDidLoad
@@ -206,6 +210,7 @@
     
     self.memberHeaderView.backgroundColor = ThemeService.shared.theme.baseColor;
     self.roomMemberNameLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.roomMemberUserIdLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
 
     self.roomMemberStatusLabel.textColor = ThemeService.shared.theme.tintColor;
     self.roomMemberPowerLevelLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
@@ -238,9 +243,6 @@
 {
     [super viewWillAppear:animated];
 
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"RoomMemberDetails"];
-
     [self userInterfaceThemeDidChange];
 
     // Hide the bottom border of the navigation bar to display the expander header
@@ -261,6 +263,18 @@
     [self hideNavigationBarBorder:NO];
     
     self.bottomImageView.hidden = YES;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.screenTimer start];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self.screenTimer stop];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator

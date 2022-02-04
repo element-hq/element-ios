@@ -42,6 +42,8 @@
     __weak id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
+@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+
 @end
 
 @implementation GroupsViewController
@@ -74,6 +76,8 @@
     
     // Set itself as delegate by default.
     self.delegate = self;
+    
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenMyGroups];
 }
 
 - (void)viewDidLoad
@@ -203,9 +207,6 @@
 {
     [super viewWillAppear:animated];
     
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"Groups"];
-    
     // Deselect the current selected row, it will be restored on viewDidAppear (if any)
     NSIndexPath *indexPath = [self.groupsTableView indexPathForSelectedRow];
     if (indexPath)
@@ -258,11 +259,14 @@
         // the selected group (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
     }
+    
+    [self.screenTimer start];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    [self.screenTimer stop];
 }
 
 #pragma mark - Override MXKGroupListViewController

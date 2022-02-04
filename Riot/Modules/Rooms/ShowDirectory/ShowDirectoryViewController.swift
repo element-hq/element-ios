@@ -68,6 +68,8 @@ final class ShowDirectoryViewController: UIViewController {
     }()
     
     private var sections: [ShowDirectorySection] = []
+    
+    private let screenTimer = AnalyticsScreenTimer(screen: .roomDirectory)
 
     // MARK: - Setup
     
@@ -104,10 +106,17 @@ final class ShowDirectoryViewController: UIViewController {
         self.keyboardAvoider?.startAvoiding()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        screenTimer.start()
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
         self.keyboardAvoider?.stopAvoiding()
+        
+        screenTimer.stop()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

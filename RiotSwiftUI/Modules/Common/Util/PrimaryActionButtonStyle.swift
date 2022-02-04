@@ -18,9 +18,10 @@ import SwiftUI
 
 @available(iOS 14.0, *)
 struct PrimaryActionButtonStyle: ButtonStyle {
-    @Environment(\.theme) private var theme: ThemeSwiftUI
+    @Environment(\.theme) private var theme
+    @Environment(\.isEnabled) private var isEnabled
     
-    var enabled: Bool = false
+    var customColor: Color? = nil
     
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
@@ -28,9 +29,17 @@ struct PrimaryActionButtonStyle: ButtonStyle {
             .frame(maxWidth: .infinity)
             .foregroundColor(.white)
             .font(theme.fonts.body)
-            .background(configuration.isPressed ? theme.colors.accent.opacity(0.6) : theme.colors.accent)
-            .opacity(enabled ? 1.0 : 0.6)
+            .background(backgroundColor(configuration.isPressed))
+            .opacity(isEnabled ? 1.0 : 0.6)
             .cornerRadius(8.0)
+    }
+    
+    func backgroundColor(_ isPressed: Bool) -> Color {
+        if let customColor = customColor {
+            return customColor
+        }
+        
+        return isPressed ? theme.colors.accent.opacity(0.6) : theme.colors.accent
     }
 }
 
@@ -40,11 +49,20 @@ struct PrimaryActionButtonStyle_Previews: PreviewProvider {
         Group {
             VStack {
                 Button("Enabled") { }
-                    .buttonStyle(PrimaryActionButtonStyle(enabled: true))
+                    .buttonStyle(PrimaryActionButtonStyle())
                 
                 Button("Disabled") { }
-                    .buttonStyle(PrimaryActionButtonStyle(enabled: false))
+                    .buttonStyle(PrimaryActionButtonStyle())
                     .disabled(true)
+                
+                Button { } label: {
+                    Text("Clear BG")
+                        .foregroundColor(.red)
+                }
+                .buttonStyle(PrimaryActionButtonStyle(customColor: .clear))
+                
+                Button("Red BG") { }
+                .buttonStyle(PrimaryActionButtonStyle(customColor: .red))
             }
             .padding()
         }

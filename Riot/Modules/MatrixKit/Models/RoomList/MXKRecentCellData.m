@@ -46,7 +46,14 @@
 
 - (MXSession *)mxSession
 {
-    return dataSource.mxSession;
+    MXSession *session = dataSource.mxSession;
+    
+    if (session == nil)
+    {
+        session = roomSummary.mxSession;
+    }
+    
+    return session;
 }
 
 - (NSString*)lastEventDate
