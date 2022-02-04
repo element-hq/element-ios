@@ -16,7 +16,7 @@
 
 import Foundation
 
-class ContactsPickerCoordinator: ContactsPickerCoordinatorType {
+class ContactsPickerCoordinator: ContactsPickerCoordinatorProtocol {
     
     private weak var currentAlert: UIAlertController?
 
@@ -24,14 +24,14 @@ class ContactsPickerCoordinator: ContactsPickerCoordinatorType {
 
     private let session: MXSession?
     private let room: MXRoom?
-    private let currentSearchText: String?
+    private let initialSearchText: String?
     private var actualParticipants: [Contact]?
     private var invitedParticipants: [Contact]?
     private var userParticipant: Contact?
 
     private let navigationRouter: NavigationRouterType
     private weak var contactsPickerViewController: ContactsTableViewController?
-    private var viewModel: ContactsPickerViewModelType?
+    private var viewModel: ContactsPickerViewModelProtocol?
 
     // MARK: Public
 
@@ -40,10 +40,10 @@ class ContactsPickerCoordinator: ContactsPickerCoordinatorType {
     
     // MARK: - Setup
     
-    init(session: MXSession, room: MXRoom, currentSearchText: String?, actualParticipants: [Contact]?, invitedParticipants: [Contact]?, userParticipant: Contact?, navigationRouter: NavigationRouterType? = nil) {
+    init(session: MXSession, room: MXRoom, initialSearchText: String?, actualParticipants: [Contact]?, invitedParticipants: [Contact]?, userParticipant: Contact?, navigationRouter: NavigationRouterType? = nil) {
         self.session = session
         self.room = room
-        self.currentSearchText = currentSearchText
+        self.initialSearchText = initialSearchText
         
         self.actualParticipants = actualParticipants
         self.invitedParticipants = invitedParticipants
@@ -85,7 +85,7 @@ class ContactsPickerCoordinator: ContactsPickerCoordinatorType {
     private func startWithParticipants() {
         // Push the contacts picker.
         let contactsViewController = RoomInviteViewController()
-        viewModel?.prepare(contactsViewController: contactsViewController, currentSearchText: currentSearchText)
+        viewModel?.prepare(contactsViewController: contactsViewController, currentSearchText: initialSearchText)
         self.navigationRouter.push(contactsViewController, animated: true) { [weak self] in
             guard let self = self else { return }
             self.delegate?.contactsPickerCoordinatorDidClose(self)
@@ -97,27 +97,34 @@ class ContactsPickerCoordinator: ContactsPickerCoordinatorType {
 // MARK: - ContactsViewModelCoordinatorDelegate
 
 extension ContactsPickerCoordinator: ContactsPickerViewModelCoordinatorDelegate {
-    func contactsPickerViewModelDidStartLoading(_ viewModel: ContactsPickerViewModelType) {
+    func contactsPickerViewModelDidStartLoading(_ viewModel: ContactsPickerViewModelProtocol) {
         delegate?.contactsPickerCoordinatorDidStartLoading(self)
     }
     
-    func contactsPickerViewModelDidEndLoading(_ viewModel: ContactsPickerViewModelType) {
+    func contactsPickerViewModelDidEndLoading(_ viewModel: ContactsPickerViewModelProtocol) {
         delegate?.contactsPickerCoordinatorDidEndLoading(self)
         startWithParticipants()
     }
     
-    func contactsPickerViewModelDidStartInvite(_ viewModel: ContactsPickerViewModelType) {
+    func contactsPickerViewModelDidStartInvite(_ viewModel: ContactsPickerViewModelProtocol) {
         contactsPickerViewController?.startActivityIndicator()
     }
     
-    func contactsPickerViewModelDidEndInvite(_ viewModel: ContactsPickerViewModelType) {
+    func contactsPickerViewModelDidEndInvite(_ viewModel: ContactsPickerViewModelProtocol) {
         contactsPickerViewController?.stopActivityIndicator()
         contactsPickerViewController?.withdrawViewController(animated: true, completion: {
             self.delegate?.contactsPickerCoordinatorDidClose(self)
         })
     }
     
-    func contactsPickerViewModel(_ viewModel: ContactsPickerViewModelType, display message: String, title: String, actions: [UIAlertAction]) {
+    func contactsPickerViewModel(_ viewModel: ContactsPickerViewModelProtocol, inviteFailedWithError error: Error?) {
+        contactsPickerViewController?.stopActivityIndicator()
+        if let error = error {
+            AppDelegate.theDelegate().showError(asAlert: error)
+        }
+    }
+    
+    func contactsPickerViewModel(_ viewModel: ContactsPickerViewModelProtocol, display message: String, title: String, actions: [UIAlertAction]) {
         currentAlert?.dismiss(animated: false, completion: nil)
         currentAlert = nil
         

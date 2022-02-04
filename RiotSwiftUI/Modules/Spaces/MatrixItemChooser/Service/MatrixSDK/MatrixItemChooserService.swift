@@ -30,7 +30,7 @@ class MatrixItemChooserService: MatrixItemChooserServiceProtocol {
     
     // MARK: Private
     
-    private let processingQueue = DispatchQueue(label: "org.matrix.element.MatrixItemChooserService.processingQueue")
+    private let processingQueue = DispatchQueue(label: "io.element.element.MatrixItemChooserService.processingQueue")
     private let completionQueue = DispatchQueue.main
 
     private let session: MXSession
@@ -66,7 +66,7 @@ class MatrixItemChooserService: MatrixItemChooserServiceProtocol {
             }
         case .room:
             self.items = session.rooms.compactMap { room in
-                if room.summary.roomType == .space || room.isDirect {
+                if room.summary.roomType == .space {
                     return nil
                 }
                 

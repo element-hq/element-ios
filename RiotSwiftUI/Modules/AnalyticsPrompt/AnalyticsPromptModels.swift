@@ -1,5 +1,3 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh AnalyticsPrompt AnalyticsPrompt
 // 
 // Copyright 2021 New Vector Ltd
 //
@@ -17,9 +15,6 @@
 //
 
 import Foundation
-
-// The state is never modified so this is unnecessary.
-enum AnalyticsPromptStateAction { }
 
 enum AnalyticsPromptViewAction {
     /// Enable analytics.

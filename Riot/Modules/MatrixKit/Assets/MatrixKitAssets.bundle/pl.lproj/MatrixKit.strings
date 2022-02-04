@@ -496,3 +496,12 @@
 "attachment_small_with_resolution" = "Mały %@ (~%@)";
 "attachment_size_prompt_message" = "Możesz to wyłączyć w ustawieniach.";
 "attachment_size_prompt_title" = "Potwierdź rozmiar, który chcesz wysłać";
+"auth_reset_password_error_not_found" = "Nie znaleziono";
+"auth_reset_password_error_unauthorized" = "Brak autoryzacji";
+"auth_invalid_user_name" = "Niepoprawna nazwa użytkownika";
+"attachment_unsupported_preview_message" = "Ten format pliku nie jest obsługiwany.";
+"attachment_unsupported_preview_title" = "Brak podglądu";
+"message_reply_to_sender_sent_their_location" = "udostępnił(-a) swoją lokację.";
+"room_displayname_all_other_members_left" = "%@ (Opuścił-a)";
+"auth_username_in_use" = "Nazwa użytkownika jest już używana";
+"rename" = "Zmień nazwę";

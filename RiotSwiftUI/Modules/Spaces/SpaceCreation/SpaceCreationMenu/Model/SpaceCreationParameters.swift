@@ -99,7 +99,7 @@ class SpaceCreationParameters {
             isModified = true
         }
     }
-    private(set) var isModified: Bool = false
+    var isModified: Bool = false
 }
 
 struct SpaceCreationNewRoom: Equatable {

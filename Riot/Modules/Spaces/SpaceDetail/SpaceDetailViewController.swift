@@ -186,7 +186,7 @@ class SpaceDetailViewController: UIViewController {
     private func setup(button: UIButton, withTitle title: String) {
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 8.0
-        button.setTitle(title.uppercased(), for: .normal)
+        button.setTitle(title, for: .normal)
     }
     
     private func render(viewState: SpaceDetailViewState) {

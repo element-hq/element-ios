@@ -138,7 +138,7 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
  The timeline being managed. It can be the live timeline of the room
  or a timeline from a past event, initialEventId.
  */
-@property (nonatomic, readonly) MXEventTimeline *timeline;
+@property (nonatomic, readonly) id<MXEventTimeline> timeline;
 
 /**
  Flag indicating if the data source manages, or will manage, a live timeline.
@@ -168,6 +168,11 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
  The current text message partially typed in text input (use nil to reset it).
  */
 @property (nonatomic) NSString *partialTextMessage;
+
+/**
+ The current thread id for the data source. If provided, data source displays the specified thread, otherwise the whole room messages.
+ */
+@property (nonatomic, readonly) NSString *threadId;
 
 #pragma mark - Configuration
 /**
@@ -269,10 +274,15 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
 
  @param roomId the id of the room to get data from.
  @param initialEventId the id of the event where to start the timeline.
+ @param threadId the id of the thread to load. If provided, thread data source will be loaded from the room specified with `roomId`.
  @param mxSession the Matrix session to get data from.
  @param onComplete a block providing the newly created instance.
  */
-+ (void)loadRoomDataSourceWithRoomId:(NSString*)roomId initialEventId:(NSString*)initialEventId andMatrixSession:(MXSession*)mxSession onComplete:(void (^)(id roomDataSource))onComplete;
++ (void)loadRoomDataSourceWithRoomId:(NSString*)roomId
+                      initialEventId:(NSString*)initialEventId
+                            threadId:(NSString*)threadId
+                    andMatrixSession:(MXSession*)mxSession
+                          onComplete:(void (^)(id roomDataSource))onComplete;
 
 /**
  Asynchronously create a data source to peek into a room.
@@ -306,10 +316,14 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
 
  @param roomId the id of the room to get data from.
  @param initialEventId the id of the event where to start the timeline.
+ @param threadId the id of the thread to initialize. If provided, thread data source will be initialized from the room specified with `roomId`.
  @param mxSession the Matrix session to get data from.
  @return the newly created instance.
  */
-- (instancetype)initWithRoomId:(NSString*)roomId initialEventId:(NSString*)initialEventId andMatrixSession:(MXSession*)mxSession;
+- (instancetype)initWithRoomId:(NSString*)roomId
+                initialEventId:(NSString*)initialEventId
+                      threadId:(NSString*)threadId
+              andMatrixSession:(MXSession*)mxSession;
 
 /**
  Initialise the data source to peek into a room.
@@ -696,6 +710,20 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
  All MXKRoomDataSource instances share the same dispatch queue.
  */
 + (dispatch_queue_t)processingQueue;
+
+/**
+ Decides whether an event should be considered for asynchronous event processing.
+ Default implementation checks for `filterMessagesWithURL` and undecryptable events sent before the user joined.
+ Subclasses must call super at some point.
+ 
+ @param event event to be processed or not
+ @param roomState the state of the room when the event fired
+ @param direction the direction of the event
+ @return YES to process the event, NO otherwise
+ */
+- (BOOL)shouldQueueEventForProcessing:(MXEvent*)event
+                            roomState:(MXRoomState*)roomState
+                            direction:(MXTimelineDirection)direction;
 
 #pragma mark - Bubble collapsing
 

@@ -283,7 +283,7 @@
 "notice_conference_call_started" = "VoIP konferencia indult";
 "notice_conference_call_finished" = "VoIP konferencia befejeződött";
 // button names 
-"ok" = "Rendben";
+"ok" = "OK";
 "cancel" = "Mégse";
 "save" = "Ment";
 "send" = "Küld";
@@ -479,3 +479,4 @@
 "room_displayname_all_other_members_left" = "%@ (Bal)";
 "attachment_unsupported_preview_message" = "Ez a fájl típus nem támogatott.";
 "attachment_unsupported_preview_title" = "Az előnézetet nem lehet megjeleníteni";
+"message_reply_to_sender_sent_their_location" = "megosztotta a földrajzi helyzetét.";

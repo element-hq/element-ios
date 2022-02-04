@@ -22,6 +22,8 @@ protocol AddItemHeaderViewDelegate: AnyObject {
     func addItemHeaderView(_ headerView: AddItemHeaderView, didTapButton button: UIButton)
 }
 
+/// `AddItemHeaderView` is a generic view used as a header view for UITableView.
+/// With this view we can add an extra action cell with icon and text as for SpaceMemberList and SpaceExploreRooms
 @objcMembers
 final class AddItemHeaderView: UIView, NibLoadable, Themable {
     

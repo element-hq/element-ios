@@ -28,6 +28,7 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
     private let spaceId: String
+    // We need to stack the ID of visited space and subspaces so we know what is the current space ID when navigating to a room
     private var spaceIdStack: [String]
     private weak var roomDetailCoordinator: SpaceChildRoomDetailCoordinator?
     private weak var currentExploreRoomCoordiantor: SpaceExploreRoomCoordinator?

@@ -1,5 +1,3 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh Room/UserSuggestion UserSuggestion
 // 
 // Copyright 2021 New Vector Ltd
 //
