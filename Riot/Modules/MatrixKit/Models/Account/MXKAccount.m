@@ -75,10 +75,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     
     // Internal list of ignored rooms
     NSMutableArray* ignoredRooms;
-    
-    // If a server sync is in progress, the pause is delayed at the end of sync (except if resume is called).
-    BOOL isPauseRequested;
-    
+
     // Background sync management
     MXOnBackgroundSyncDone backgroundSyncDone;
     MXOnBackgroundSyncFail backgroundSyncFails;
@@ -91,7 +88,9 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     id NSCurrentLocaleDidChangeNotificationObserver;
 }
 
-@property (nonatomic, strong) id<MXBackgroundTask> backgroundTask;
+/// Will be true if the session is not in a pauseable state or we requested for the session to pause but not finished yet. Will be reverted to false again after `resume` called.
+@property (nonatomic, assign, getter=isPauseRequested) BOOL pauseRequested;
+@property (nonatomic, strong) id<MXBackgroundTask> pauseBackgroundTask;
 @property (nonatomic, strong) id<MXBackgroundTask> backgroundSyncBgTask;
 
 @end
@@ -513,6 +512,32 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     }
     
     return _others;
+}
+
+- (void)setPauseRequested:(BOOL)pauseRequested
+{
+    if (_pauseRequested != pauseRequested)
+    {
+        _pauseRequested = pauseRequested;
+
+        if (_pauseRequested)
+        {
+            // Make sure the SDK finish its work before the app goes sleeping in background
+            id<MXBackgroundModeHandler> handler = [MXSDKOptions sharedInstance].backgroundModeHandler;
+            if (handler)
+            {
+                if (!self.pauseBackgroundTask.isRunning)
+                {
+                    self.pauseBackgroundTask = [handler startBackgroundTaskWithName:@"[MXKAccount] pauseInBackgroundTask"
+                                                                  expirationHandler:nil];
+                }
+            }
+        }
+        else
+        {
+            [self cancelPauseBackgroundTask];
+        }
+    }
 }
 
 #pragma mark - Matrix user's profile
@@ -966,38 +991,25 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 
 - (void)pauseInBackgroundTask
 {
-    // Reset internal flag
-    isPauseRequested = NO;
-    
-    if (mxSession && mxSession.isPauseable)
+    if (mxSession == nil)
     {
-        id<MXBackgroundModeHandler> handler = [MXSDKOptions sharedInstance].backgroundModeHandler;
-        if (handler)
-        {
-            if (!self.backgroundTask.isRunning)
-            {
-                self.backgroundTask = [handler startBackgroundTaskWithName:@"[MXKAccount] pauseInBackgroundTask" expirationHandler:nil];
-            }
-        }
-        
+        //  no session to pause
+        return;
+    }
+
+    //  mark that we want to pause when possible
+    self.pauseRequested = YES;
+
+    if (mxSession.isPauseable)
+    {
         // Pause SDK
         [mxSession pause];
         
         // Update user presence
-        __weak typeof(self) weakSelf = self;
+        MXWeakify(self);
         [self setUserPresence:MXPresenceUnavailable andStatusMessage:nil completion:^{
-            
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
-                
-                if (self.backgroundTask.isRunning)
-                {
-                    [self.backgroundTask stop];
-                    self.backgroundTask = nil;
-                }
-            }
-            
+            MXStrongifyAndReturnIfNil(self);
+            [self cancelPauseBackgroundTask];
         }];
     }
     else
@@ -1007,65 +1019,61 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         reachabilityObserver = nil;
         [initialServerSyncTimer invalidate];
         initialServerSyncTimer = nil;
-        
-        if (mxSession.state == MXSessionStateSyncInProgress || mxSession.state == MXSessionStateInitialised || mxSession.state == MXSessionStateStoreDataReady)
-        {
-            // Make sure the SDK finish its work before the app goes sleeping in background
-            id<MXBackgroundModeHandler> handler = [MXSDKOptions sharedInstance].backgroundModeHandler;
-            if (handler)
-            {
-                if (!self.backgroundTask.isRunning)
-                {
-                    self.backgroundTask = [handler startBackgroundTaskWithName:@"[MXKAccount] pauseInBackgroundTask" expirationHandler:nil];
-                }
-            }
-            
-            MXLogDebug(@"[MXKAccount] Pause is delayed at the end of sync (current state %@)", [MXTools readableSessionState: mxSession.state]);
-            isPauseRequested = YES;
-        }
+
+        MXLogDebug(@"[MXKAccount] Pause is delayed due to the session state: %@", [MXTools readableSessionState: mxSession.state]);
     }
 }
 
 - (void)resume
 {
-    isPauseRequested = NO;
-    
-    if (mxSession)
+    if (mxSession == nil)
     {
-        MXLogVerbose(@"[MXKAccount] resume with session state: %@", [MXTools readableSessionState:mxSession.state]);
-        
-        [self cancelBackgroundSync];
-        
-        if (mxSession.state == MXSessionStatePaused || mxSession.state == MXSessionStatePauseRequested)
+        //  no session to resume
+        return;
+    }
+
+    //  mark that we don't want to pause anymore
+    self.pauseRequested = NO;
+
+    MXLogVerbose(@"[MXKAccount] resume: with session state: %@", [MXTools readableSessionState:mxSession.state]);
+
+    [self cancelBackgroundSync];
+
+    switch (mxSession.state)
+    {
+        case MXSessionStatePaused:
+        case MXSessionStatePauseRequested:
         {
             // Resume SDK and update user presence
             [mxSession resume:^{
                 [self setUserPresence:MXPresenceOnline andStatusMessage:nil completion:nil];
-                
+
                 [self refreshAPNSPusher];
                 [self refreshPushKitPusher];
             }];
+
+            break;
         }
-        else if (mxSession.state == MXSessionStateStoreDataReady || mxSession.state == MXSessionStateInitialSyncFailed)
+        case MXSessionStateStoreDataReady:
+        case MXSessionStateInitialSyncFailed:
         {
             // The session initialisation was uncompleted, we try to complete it here.
             [self launchInitialServerSync];
-            
+
             [self refreshAPNSPusher];
             [self refreshPushKitPusher];
+
+            break;
         }
-        else if (mxSession.state == MXSessionStateSyncInProgress)
+        case MXSessionStateSyncInProgress:
         {
             [self refreshAPNSPusher];
             [self refreshPushKitPusher];
+
+            break;
         }
-        
-        // Cancel background task
-        if (self.backgroundTask.isRunning)
-        {
-            [self.backgroundTask stop];
-            self.backgroundTask = nil;
-        }
+        default:
+            break;
     }
 }
 
@@ -1616,16 +1624,16 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 
 - (void)onMatrixSessionStateChange
 {
+    // Check if pause has been requested
+    if (self.isPauseRequested && mxSession.isPauseable)
+    {
+        MXLogDebug(@"[MXKAccount] Apply the pending pause.");
+        [self pauseInBackgroundTask];
+        return;
+    }
+
     if (mxSession.state == MXSessionStateRunning)
     {
-        // Check if pause has been requested
-        if (isPauseRequested)
-        {
-            MXLogDebug(@"[MXKAccount] Apply the pending pause.");
-            [self pauseInBackgroundTask];
-            return;
-        }
-        
         // Check whether the session was not already running
         if (!userUpdateListener)
         {
@@ -1662,7 +1670,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     }
     else if (mxSession.state == MXSessionStatePaused)
     {
-        isPauseRequested = NO;
+        self.pauseRequested = NO;
     }
 }
 
@@ -1772,6 +1780,16 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
             [[NSNotificationCenter defaultCenter] postNotificationName:kMXRoomSummaryDidChangeNotification object:nil userInfo:nil];
             
         });
+    }
+}
+
+- (void)cancelPauseBackgroundTask
+{
+    // Cancel background task
+    if (self.pauseBackgroundTask.isRunning)
+    {
+        [self.pauseBackgroundTask stop];
+        self.pauseBackgroundTask = nil;
     }
 }
 
