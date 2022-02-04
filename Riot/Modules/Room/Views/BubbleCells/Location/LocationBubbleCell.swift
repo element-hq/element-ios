@@ -37,6 +37,8 @@ class LocationBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplayable 
         
         let location = CLLocationCoordinate2D(latitude: locationContent.latitude, longitude: locationContent.longitude)
         
+        let mapStyleURL = bubbleData.mxSession.vc_homeserverConfiguration().tileServer.mapStyleURL
+        
         if locationContent.assetType == .user {
             let avatarViewData = AvatarViewData(matrixItemId: bubbleData.senderId,
                                                 displayName: bubbleData.senderDisplayName,
@@ -44,9 +46,9 @@ class LocationBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplayable 
                                                 mediaManager: bubbleData.mxSession.mediaManager,
                                                 fallbackImage: .matrixItem(bubbleData.senderId, bubbleData.senderDisplayName))
             
-            locationView.displayLocation(location, userAvatarData: avatarViewData)
+            locationView.displayLocation(location, userAvatarData: avatarViewData, mapStyleURL: mapStyleURL)
         } else {
-            locationView.displayLocation(location)
+            locationView.displayLocation(location, mapStyleURL: mapStyleURL)
         }
     }
     

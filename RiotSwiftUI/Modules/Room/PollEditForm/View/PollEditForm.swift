@@ -121,6 +121,9 @@ struct PollEditForm: View {
         }
         .accentColor(theme.colors.accent)
         .navigationViewStyle(StackNavigationViewStyle())
+        .introspectNavigationController { navigationController in
+            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationController.navigationBar)
+        }
     }
 }
 

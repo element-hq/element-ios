@@ -386,6 +386,14 @@ extension RoomCoordinator: RoomViewControllerDelegate {
         startLocationCoordinatorWithEvent(event, bubbleData: bubbleData)
     }
     
+    func roomViewController(_ roomViewController: RoomViewController, locationShareActivityViewControllerFor event: MXEvent) -> UIActivityViewController? {
+        guard let location = event.location else {
+            return nil
+        }
+        
+        return LocationSharingCoordinator.shareLocationActivityController(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
+    }
+    
     func roomViewController(_ roomViewController: RoomViewController, canEndPollWithEventIdentifier eventIdentifier: String) -> Bool {
         guard #available(iOS 14.0, *) else {
             return false

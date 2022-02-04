@@ -93,6 +93,9 @@
         UIImage *image = [MXKTools paintImage:backgroundImageView.image withColor:ThemeService.shared.theme.matrixSearchBackgroundImageTintColor];
         backgroundImageView.image = image;
     }
+    
+    // Match the search bar color to the navigation bar color as it extends slightly outside the frame.
+    self.searchBar.backgroundColor = ThemeService.shared.theme.baseColor;
 }
 
 - (void)destroy

@@ -32,7 +32,7 @@ struct LocationSharingView: View {
     
     var body: some View {
         NavigationView {
-            LocationSharingMapView(tileServerMapURL: context.viewState.tileServerMapURL,
+            LocationSharingMapView(tileServerMapURL: context.viewState.mapStyleURL,
                                    avatarData: context.viewState.avatarData,
                                    location: context.viewState.location,
                                    errorSubject: context.viewState.errorSubject,
@@ -88,6 +88,10 @@ struct LocationSharingView: View {
         }
         .accentColor(theme.colors.accent)
         .activityIndicator(show: context.viewState.showLoadingIndicator)
+        .navigationViewStyle(StackNavigationViewStyle())
+        .introspectNavigationController { navigationController in
+            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationController.navigationBar)
+        }
     }
     
     @ViewBuilder

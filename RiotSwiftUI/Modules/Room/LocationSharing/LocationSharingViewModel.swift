@@ -35,8 +35,8 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
     
     // MARK: - Setup
     
-    init(tileServerMapURL: URL, avatarData: AvatarInputProtocol, location: CLLocationCoordinate2D? = nil) {
-        let viewState = LocationSharingViewState(tileServerMapURL: tileServerMapURL, avatarData: avatarData, location: location)
+    init(mapStyleURL: URL, avatarData: AvatarInputProtocol, location: CLLocationCoordinate2D? = nil) {
+        let viewState = LocationSharingViewState(mapStyleURL: mapStyleURL, avatarData: avatarData, location: location)
         super.init(initialViewState: viewState)
         
         state.errorSubject.sink { [weak self] error in
