@@ -1725,6 +1725,16 @@ Tap the + to start adding people.";
 
 "home_empty_view_title" = "Welcome to %@,\n%@";
 "home_empty_view_information" = "The all-in-one secure chat app for teams, friends and organisations. Tap the + button below to add people and rooms.";
+"home_context_menu_make_dm" = "Move to People";
+"home_context_menu_make_room" = "Move to Rooms";
+"home_context_menu_notifications" = "Notifications";
+"home_context_menu_mute" = "Mute";
+"home_context_menu_unmute" = "Unmute";
+"home_context_menu_favourite" = "Favourite";
+"home_context_menu_unfavourite" = "Remove from Favourites";
+"home_context_menu_low_priority" = "Low priority";
+"home_context_menu_normal_priority" = "Normal priority";
+"home_context_menu_leave" = "Leave";
 
 // MARK: - Favourites
 
