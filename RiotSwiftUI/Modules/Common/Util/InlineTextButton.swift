@@ -20,7 +20,7 @@ import SwiftUI
 /// A `Button`, that fakes having a tappable string inside of a regular string.
 struct InlineTextButton: View {
     
-    struct StringComponent {
+    private struct StringComponent {
         let string: Substring
         let isTinted: Bool
     }
@@ -66,7 +66,7 @@ struct InlineTextButton: View {
         .accessibilityLabel(components.map { $0.string }.joined())
     }
     
-    struct Style: ButtonStyle {
+    private struct Style: ButtonStyle {
         let components: [StringComponent]
         
         func makeBody(configuration: Configuration) -> some View {

@@ -36,7 +36,7 @@ class PostHogAnalyticsClient: AnalyticsClientProtocol {
     }
     
     func identify(id: String) {
-        postHog?.identify(id, properties: nil)
+        postHog?.identify(id)
     }
     
     func reset() {

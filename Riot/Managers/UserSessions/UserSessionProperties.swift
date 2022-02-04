@@ -34,7 +34,7 @@ class UserSessionProperties: NSObject {
     /// The underlying dictionary that stores the properties in user defaults.
     private var dictionary: [String: Any] {
         didSet {
-            UserDefaults(suiteName: Constants.suiteName)?.dictionary(forKey: userId)
+            UserDefaults(suiteName: Constants.suiteName)?.set(dictionary, forKey: userId)
         }
     }
     

@@ -25,7 +25,6 @@ struct OnboardingUseCase: View {
     // MARK: Private
     
     @Environment(\.theme) private var theme
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     // MARK: Public
     

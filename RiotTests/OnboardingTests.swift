@@ -40,7 +40,7 @@ class OnboardingTests: XCTestCase {
         
         // When storing a use case result of personal messaging
         let result = OnboardingUseCaseViewModelResult.personalMessaging
-        properties.store(useCaseResult: result)
+        properties.useCase = result.userSessionPropertyValue
         
         // Then the use case property should return personal messaging
         XCTAssertEqual(properties.useCase, .personalMessaging, "The use case should be Personal Messaging")
@@ -52,7 +52,7 @@ class OnboardingTests: XCTestCase {
         
         // When storing a skipped use case result
         let result = OnboardingUseCaseViewModelResult.skipped
-        properties.store(useCaseResult: result)
+        properties.useCase = result.userSessionPropertyValue
         
         // Then the use case property should return skipped
         XCTAssertEqual(properties.useCase, .skipped)
@@ -64,7 +64,7 @@ class OnboardingTests: XCTestCase {
         
         // When storing a custom server case result
         let result = OnboardingUseCaseViewModelResult.customServer
-        properties.store(useCaseResult: result)
+        properties.useCase = result.userSessionPropertyValue
         
         // Then the use case property should return nil
         XCTAssertNil(properties.useCase)
@@ -74,7 +74,7 @@ class OnboardingTests: XCTestCase {
         // Given a set of user properties with the Work Messaging use case
         let properties = UserSessionProperties(userId: userId)
         let result = OnboardingUseCaseViewModelResult.workMessaging
-        properties.store(useCaseResult: result)
+        properties.useCase = result.userSessionPropertyValue
         XCTAssertEqual(properties.useCase, .workMessaging, "The use case should be Work Messaging")
         
         // When deleting the user properties
@@ -82,6 +82,21 @@ class OnboardingTests: XCTestCase {
         
         // Then the use case property should return nil
         XCTAssertNil(properties.useCase)
+    }
+    
+    func testUseCasePersistence() {
+        // Given a set of user properties with the Personal Messaging use case
+        var properties: UserSessionProperties? = UserSessionProperties(userId: userId)
+        let result = OnboardingUseCaseViewModelResult.personalMessaging
+        properties?.useCase = result.userSessionPropertyValue
+        XCTAssertEqual(properties?.useCase, .personalMessaging, "The use case should be Personal Messaging")
+        
+        // When the app is relaunched and a new user properties instance is creates
+        properties = nil
+        let newProperties = UserSessionProperties(userId: userId)
+        
+        // Then the use case property should still return Personal Messaging
+        XCTAssertEqual(newProperties.useCase, .personalMessaging, "The use case should be Personal Messaging")
     }
     
 }
