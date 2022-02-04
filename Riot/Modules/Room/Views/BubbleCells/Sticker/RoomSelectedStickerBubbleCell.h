@@ -27,7 +27,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *userNameLabelTopConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachViewLeadingConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *descriptionContainerViewBottomConstraint;
 
 @end

@@ -145,16 +145,13 @@
     // Force UI refresh according to selected  media types - Set default media type if none.
     self.mediaTypes = _mediaTypes ? _mediaTypes : @[(NSString *)kUTTypeImage];
     
-    // Check photo library access
-    [self checkPhotoLibraryAuthorizationStatus];
     
     // Observe UIApplicationWillEnterForegroundNotification to refresh captures collection when app leaves the background state.
     UIApplicationWillEnterForegroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXStrongifyAndReturnIfNil(self);
 
-        [self reloadRecentCapturesCollection];
-        [self reloadUserLibraryAlbums];
+        [self checkPhotoLibraryAuthorizationStatusAndReload];
 
     }];
 
@@ -218,8 +215,7 @@
         userAlbumsQueue = dispatch_queue_create("media.picker.user.albums", DISPATCH_QUEUE_SERIAL);
     }
     
-    [self reloadRecentCapturesCollection];
-    [self reloadUserLibraryAlbums];
+    [self checkPhotoLibraryAuthorizationStatusAndReload];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
@@ -231,29 +227,28 @@
         [self updateRecentCapturesCollectionViewHeightIfNeeded];
     });
 }
-
-- (void)checkPhotoLibraryAuthorizationStatus
+    
+- (void)checkPhotoLibraryAuthorizationStatusAndReload
 {
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
         
         switch (status) {
-            case PHAuthorizationStatusAuthorized:
+            case PHAuthorizationStatusAuthorized: {
                 // Load recent captures if this is not already done
-                if (!self->recentCaptures.count)
-                {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        
-                        [self reloadRecentCapturesCollection];
-                        [self reloadUserLibraryAlbums];
-                        
-                    });
-                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    [self reloadRecentCapturesCollection];
+                    [self reloadUserLibraryAlbums];
+                    
+                });
                 break;
-            default:
+            }
+            default:{
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self presentPermissionDeniedAlert];
                 });
                 break;
+            }
         }
     }];
 }
@@ -302,8 +297,7 @@
     {
         _mediaTypes = mediaTypes;
         
-        [self reloadRecentCapturesCollection];
-        [self reloadUserLibraryAlbums];
+        [self checkPhotoLibraryAuthorizationStatusAndReload];
     }
 }
 

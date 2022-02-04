@@ -51,7 +51,6 @@ typedef NS_ENUM(NSUInteger, SECTION_TAG)
 {
     SECTION_TAG_SIGN_OUT = 0,
     SECTION_TAG_USER_SETTINGS,
-    SECTION_TAG_LOCATION_SHARING,
     SECTION_TAG_SENDING_MEDIA,
     SECTION_TAG_LINKS,
     SECTION_TAG_SECURITY,
@@ -85,11 +84,6 @@ typedef NS_ENUM(NSUInteger, USER_SETTINGS_OFFSET)
 {
     USER_SETTINGS_EMAILS_OFFSET = 2000,
     USER_SETTINGS_PHONENUMBERS_OFFSET = 1000
-};
-
-typedef NS_ENUM(NSUInteger, LOCATION_SHARING)
-{
-    LOCATION_SHARING_ENABLED
 };
 
 typedef NS_ENUM(NSUInteger, SENDING_MEDIA)
@@ -163,7 +157,8 @@ typedef NS_ENUM(NSUInteger, ABOUT)
 
 typedef NS_ENUM(NSUInteger, LABS_ENABLE)
 {
-    LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX
+    LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX = 0,
+    LABS_ENABLE_THREADS_INDEX
 };
 
 typedef NS_ENUM(NSUInteger, SECURITY)
@@ -380,15 +375,7 @@ TableViewSectionsDelegate>
     
     sectionUserSettings.headerTitle = [VectorL10n settingsUserSettings];
     [tmpSections addObject:sectionUserSettings];
-    
-    if (BuildSettings.locationSharingEnabled)
-    {
-        Section *sectionLocationSharing = [Section sectionWithTag:SECTION_TAG_LOCATION_SHARING];
-        [sectionLocationSharing addRowWithTag:LOCATION_SHARING_ENABLED];
-        sectionLocationSharing.headerTitle = VectorL10n.locationSharingSettingsHeader.uppercaseString;
-        [tmpSections addObject:sectionLocationSharing];
-    }
-    
+        
     if (BuildSettings.settingsScreenShowConfirmMediaSize)
     {
         Section *sectionMedia = [Section sectionWithTag:SECTION_TAG_SENDING_MEDIA];
@@ -578,7 +565,7 @@ TableViewSectionsDelegate>
     {
         Section *sectionLabs = [Section sectionWithTag:SECTION_TAG_LABS];
         [sectionLabs addRowWithTag:LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX];
-        
+        [sectionLabs addRowWithTag:LABS_ENABLE_THREADS_INDEX];
         sectionLabs.headerTitle = [VectorL10n settingsLabs];
         if (sectionLabs.hasAnyRows)
         {
@@ -1963,21 +1950,6 @@ TableViewSectionsDelegate>
             cell = passwordCell;
         }
     }
-    else if (section == SECTION_TAG_LOCATION_SHARING)
-    {
-        if (row == LOCATION_SHARING_ENABLED)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-    
-            labelAndSwitchCell.mxkLabel.text = VectorL10n.locationSharingSettingsToggleTitle;
-            labelAndSwitchCell.mxkSwitch.on =  RiotSettings.shared.roomScreenAllowLocationAction;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLocationSharing:) forControlEvents:UIControlEventTouchUpInside];
-            
-            cell = labelAndSwitchCell;
-        }
-    }
     else if (section == SECTION_TAG_SENDING_MEDIA)
     {
         if (row == SENDING_MEDIA_CONFIRM_SIZE)
@@ -2459,6 +2431,18 @@ TableViewSectionsDelegate>
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableRingingForGroupCalls:) forControlEvents:UIControlEventValueChanged];
+            
+            cell = labelAndSwitchCell;
+        }
+        else if (row == LABS_ENABLE_THREADS_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsLabsEnableThreads];
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.enableThreads;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+            
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableThreads:) forControlEvents:UIControlEventValueChanged];
             
             cell = labelAndSwitchCell;
         }
@@ -3000,11 +2984,6 @@ TableViewSectionsDelegate>
     }
 }
 
-- (void)toggleLocationSharing:(UISwitch *)sender
-{
-    RiotSettings.shared.roomScreenAllowLocationAction = sender.on;
-}
-
 - (void)toggleConfirmMediaSize:(UISwitch *)sender
 {
     RiotSettings.shared.showMediaCompressionPrompt = sender.on;
@@ -3192,6 +3171,14 @@ TableViewSectionsDelegate>
 - (void)toggleEnableRingingForGroupCalls:(UISwitch *)sender
 {
     RiotSettings.shared.enableRingingForGroupCalls = sender.isOn;
+}
+
+- (void)toggleEnableThreads:(UISwitch *)sender
+{
+    RiotSettings.shared.enableThreads = sender.isOn;
+    MXSDKOptions.sharedInstance.enableThreads = sender.isOn;
+    [[MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession] reset];
+    [[AppDelegate theDelegate] restoreEmptyDetailsViewController];
 }
 
 - (void)togglePinRoomsWithMissedNotif:(UISwitch *)sender

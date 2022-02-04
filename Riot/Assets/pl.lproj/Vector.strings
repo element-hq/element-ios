@@ -217,9 +217,9 @@
 "settings_calls_settings" = "POŁĄCZENIA";
 "settings_user_interface" = "INTERFEJS UŻYTKOWNIKA";
 "settings_ignored_users" = "IGNOROWANI UŻYTKOWNICY";
-"settings_contacts" = "LOKALNE KONTAKTY";
+"settings_contacts" = "KONTAKTY NA URZĄDZENIU";
 "settings_advanced" = "ZAAWANSOWANE";
-"settings_other" = "Pozostałe powiadomienia";
+"settings_other" = "Pozostałe ustawienia";
 "settings_devices" = "SESJE";
 "settings_cryptography" = "KRYPTOGRAFIA";
 "settings_deactivate_account" = "DEZAKTYWUJ KONTO";
@@ -416,7 +416,7 @@
 "auth_email_not_found" = "Nie udało się wysłać wiadomości e-mail: Adres e-mail nie został znaleziony";
 "auth_accept_policies" = "Przeczytaj i zaakceptuj zasady tego serwera domowego:";
 "room_creation_wait_for_creation" = "Pokój jest już tworzony. Proszę czekaj.";
-"room_creation_invite_another_user" = "Szukaj / zaproś przez ID Użytkownika, Nazwę lub e-mail";
+"room_creation_invite_another_user" = "ID użytkownika, nazwa lub email";
 "search_people_placeholder" = "Szukaj przez ID Użytkownika, Nazwę lub e-mail";
 "contacts_user_directory_offline_section" = "KATALOG UŻYTKOWNIKÓW (offline)";
 "room_participants_remove_prompt_msg" = "Czy na pewno chcesz usunąć %@ z tej rozmowy?";
@@ -1265,7 +1265,7 @@
 
 // Widget Picker
 "widget_picker_title" = "Integracje";
-"widget_integration_manager_disabled" = "Musisz włączyć Menadżer Integracji w ustawieniach";
+"widget_integration_manager_disabled" = "Musisz włączyć menadżer integracji w ustawieniach";
 "widget_menu_remove" = "Usuń dla wszystkich";
 "widget_menu_revoke_permission" = "Odbierz mi dostęp";
 "widget_menu_open_outside" = "Otwórz w przeglądarce";
@@ -1321,7 +1321,7 @@
 "identity_server_settings_description" = "Obecnie używasz %@ do wyszukiwania i bycia znalezionym przez kontakty, które znasz.";
 
 // Identity server settings
-"identity_server_settings_title" = "Serwer Tożsamości";
+"identity_server_settings_title" = "Serwer tożsamości";
 
 // AuthenticatedSessionViewControllerFactory
 "authenticated_session_flow_not_supported" = "Ta aplikacja nie obsługuje mechanizmu uwierzytelniania na Twoim serwerze domowym.";
@@ -1365,7 +1365,7 @@
 "settings_discovery_terms_not_signed" = "Zaakceptuj warunki korzystania z usługi serwera tożsamości (%@), aby umożliwić innym osobom wyszukiwanie Ciebie za pomocą adresu e-mail lub numeru telefonu.";
 "settings_discovery_no_identity_server" = "Obecnie nie używasz serwera tożsamości. Pomyśl o tym, aby go dodać by móc być odnalezionym przez osoby, które znasz.";
 "settings_devices_description" = "Publiczna nazwa sesji jest widoczna dla osób, z którymi się komunikujesz";
-"settings_integrations_allow_description" = "Użyj Menedżera Integracji (%@) do zarządzania botami, mostami, widżetami i pakietami naklejek.\n\nMenedżerowie integracji otrzymują dane konfiguracyjne i mogą modyfikować widżety, wysyłać zaproszenia do pokojów i ustawiać poziomy mocy w Twoim imieniu.";
+"settings_integrations_allow_description" = "Użyj menedżera integracji (%@) do zarządzania botami, mostami, widżetami i pakietami naklejek.\n\nMenedżerowie integracji otrzymują dane konfiguracyjne i mogą modyfikować widżety, wysyłać zaproszenia do pokojów i ustawiać poziomy mocy w Twoim imieniu.";
 "settings_calls_stun_server_fallback_description" = "Zezwalaj na użycie rezerwowego serwera połączeń %@ w przypadku, gdy Twój serwer domowy go nie oferuje (Twój adres IP będzie udostępniany podczas połączenia).";
 "settings_three_pids_management_information_part1" = "Wybierz, które adresy e-mail lub numery telefonów chcesz wykorzystać do logowania się lub odzyskiwania konta. Kontroluj, kto może Cię dzięki nim znaleźć przechodząc do ";
 "room_multiple_typing_notification" = "%@ i inni";
@@ -1535,7 +1535,58 @@
 "settings_default" = "Powiadomienia dotyczące wiadomości";
 "settings_notifications" = "POWIADOMIENIA";
 "settings_show_url_previews_description" = "Podgląd URL będzie wyświetlany tylko w niezaszyfrowanych pokojach.";
-"settings_show_url_previews" = "Pokaż podgląd adresów URL";
+"settings_show_url_previews" = "Pokaż podgląd stron";
 "settings_confirm_media_size_description" = "Gdy ta opcja jest włączona, zostaniesz poproszony o potwierdzenie, w jakim rozmiarze obrazy i filmy będą wysyłane.";
 "settings_confirm_media_size" = "Potwierdź rozmiar podczas wysyłania";
 "settings_sending_media" = "WYSYŁANIE ZDJĘĆ I WIDEO";
+"service_terms_modal_table_header_integration_manager" = "WARUNKI KORZYSTANIA Z MENEDŻERA INTEGRACJI";
+"service_terms_modal_table_header_identity_server" = "WARUNKI KORZYSTANIA Z SERWERA TOŻSAMOŚCI";
+"service_terms_modal_footer" = "To może być wyłączone później w ustawieniach.";
+
+// Service terms
+"service_terms_modal_title_message" = "Aby kontynuować, wyraź zgodę na poniższe warunki użytkowania";
+"share_extension_send_now" = "Udostępnij teraz";
+"share_extension_low_quality_video_message" = "Udostępnij w %@ by uzyskać lepszą jakość, lub udostępnij w niskiej jakości poniżej.";
+"share_extension_low_quality_video_title" = "Video będzie udostępnianie w niskiej jakości";
+"analytics_prompt_stop" = "Przestań udostępniać";
+"analytics_prompt_yes" = "Tak, to jest w porządku";
+"analytics_prompt_not_now" = "Nie teraz";
+"analytics_prompt_point_3" = "Możesz to wyłączyć w dowolnym momencie w ustawieniach";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "Nie dzielimy się informacjami z <b>żadnymi</b> firmami zewnętrznymi";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "Nie gromadzimy ani profilujemy <b>żadnych</b> danych na temat kont";
+"analytics_prompt_terms_link_upgrade" = "tutaj";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "Przeczytaj nasze warunki użytkowania %@. Czy odpowiadają one Tobie?";
+"analytics_prompt_terms_link_new_user" = "tutaj";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "Tutaj możesz przeczytać nasze warunki użytkowania %@.";
+"analytics_prompt_message_upgrade" = "Wcześniej dostaliśmy Twoją zgodę na używanie zanonimizowanych danych na temat użytkowania. Teraz, by zrozumieć jak użytkownicy korzystają z wielu urządzeń, wygenerujemy identyfikator używany przez nie wszystkie.";
+"analytics_prompt_message_new_user" = "Pomóż nam zidentyfikować problemy i poprawić @% udostępniając zanonimizowane dane o użytkowaniu. W celu zrozumienia jak użytkownicy korzystają z wielu urządzeń wygenerujemy identyfikator używany przez nie wszystkie.";
+
+// Analytics
+"analytics_prompt_title" = "Pomóż ulepszyć %@";
+"settings_discovery_accept_terms" = "Zaakceptuj warunki używania serwera tożsamości";
+"settings_analytics_and_crash_data" = "Wysyłaj dane analityczne i o zawieszeniu aplikacji";
+"settings_labs_enabled_polls" = "Ankiety";
+"settings_contacts_enable_sync" = "Znajdź swoje kontakty";
+"settings_phone_contacts" = "KONTAKTY TELEFONICZNE";
+"settings_links" = "LINKI";
+"room_event_action_forward" = "Przekaż dalej";
+"room_event_action_end_poll" = "Zakończ ankietę";
+"room_event_action_remove_poll" = "Usuń ankietę";
+"find_your_contacts_identity_service_error" = "Nie można połączyć się s serwerem tożsamości.";
+"contacts_address_book_permission_denied_alert_message" = "Aby włączyć kontakty, wejdź do ustawień Twojego urządzenia.";
+"contacts_address_book_permission_denied_alert_title" = "Kontakty wyłączone";
+"room_recents_suggested_rooms_section" = "SUGEROWANE POKOJE";
+"onboarding_splash_page_1_message" = "Bezpieczna i niezależna komunikacja dająca Tobie ten sam poziom prywatności jak rozmowa twarzą w twarz w Twoim domu.";
+"onboarding_splash_login_button_title" = "Mam już konto";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Stwórz konto";
+"accessibility_button_label" = "przycisk";
+"done" = "Gotowe";
+"open" = "Otwórz";
+"enable" = "Włącz";
+"ok" = "OK";

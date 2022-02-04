@@ -23,6 +23,11 @@ protocol UserSuggestionCoordinatorDelegate: AnyObject {
     func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didRequestMentionForMember member: MXRoomMember, textTrigger: String?)
 }
 
+struct UserSuggestionCoordinatorParameters {
+    let mediaManager: MXMediaManager
+    let room: MXRoom
+}
+
 @available(iOS 14.0, *)
 final class UserSuggestionCoordinator: Coordinator, Presentable {
     
@@ -53,11 +58,12 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
         
         roomMemberProvider = UserSuggestionCoordinatorRoomMemberProvider(room: parameters.room)
         userSuggestionService = UserSuggestionService(roomMemberProvider: roomMemberProvider)
-        userSuggestionViewModel = UserSuggestionViewModel.makeUserSuggestionViewModel(userSuggestionService: userSuggestionService)
         
-        let view = UserSuggestionList(viewModel: userSuggestionViewModel.context)
+        let viewModel = UserSuggestionViewModel(userSuggestionService: userSuggestionService)
+        let view = UserSuggestionList(viewModel: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
         
+        userSuggestionViewModel = viewModel
         userSuggestionHostingController = VectorHostingController(rootView: view)
         
         userSuggestionViewModel.completion = { [weak self] result in
@@ -90,7 +96,6 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
     }
 }
 
-@available(iOS 14.0, *)
 private class UserSuggestionCoordinatorRoomMemberProvider: RoomMembersProviderProtocol {
     
     private let room: MXRoom

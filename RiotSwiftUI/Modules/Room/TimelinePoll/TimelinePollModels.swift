@@ -19,13 +19,6 @@ import SwiftUI
 
 typealias TimelinePollViewModelCallback = ((TimelinePollViewModelResult) -> Void)
 
-enum TimelinePollStateAction {
-    case viewAction(TimelinePollViewAction, TimelinePollViewModelCallback?)
-    case updateWithPoll(TimelinePollDetails)
-    case showAnsweringFailure
-    case showClosingFailure
-}
-
 enum TimelinePollViewAction {
     case selectAnswerOptionWithIdentifier(String)
 }
@@ -39,7 +32,7 @@ enum TimelinePollType {
     case undisclosed
 }
 
-class TimelinePollAnswerOption: Identifiable {
+struct TimelinePollAnswerOption: Identifiable {
     var id: String
     var text: String
     var count: UInt
@@ -55,7 +48,15 @@ class TimelinePollAnswerOption: Identifiable {
     }
 }
 
-class TimelinePollDetails {
+extension MutableCollection where Element == TimelinePollAnswerOption {
+    mutating func updateEach(_ update: (inout Element) -> Void) {
+        for index in indices {
+            update(&self[index])
+        }
+    }
+}
+
+struct TimelinePollDetails {
     var question: String
     var answerOptions: [TimelinePollAnswerOption]
     var closed: Bool

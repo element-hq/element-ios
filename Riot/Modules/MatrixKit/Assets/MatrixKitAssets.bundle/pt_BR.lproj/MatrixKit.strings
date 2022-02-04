@@ -121,7 +121,7 @@
 "room_displayname_two_members" = "%@ e %@";
 "room_displayname_more_than_two_members" = "%@ e %@ outros";
 // Settings
-"settings" = "Configurações";
+"settings" = "Ajustes";
 "settings_enable_inapp_notifications" = "Habilitar notificações Em-App";
 "settings_enable_push_notifications" = "Habilitar notificações push";
 "settings_enter_validation_token_for" = "Entrar token de validação para %@:";
@@ -157,7 +157,7 @@
 "room_event_encryption_info_block" = "Adicionar à lista negra";
 "room_event_encryption_info_unblock" = "Remover da lista negra";
 "room_event_encryption_verify_title" = "Verificar sessão\n\n";
-"room_event_encryption_verify_message" = "Para verificar que esta sessão pode ser confiada, por favor contacte a/o dona(o) dela usando alguma outro meio (e.g. em pessoa ou uma chamada de telefone) e pergunte-lhe se a chave que ela/ele vê em suas Configurações de Usuária(o) para esta sessão bate com a chave abaixo:\n\n\tNome de sessão: %@\n\tID de sessão: %@\n\tChave de sessão: %@\n\nSe ela bate, pressione o botão verificar abaixo. Se não bate, então alguma outra pessoa está interceptando esa sessão e você provavelmente quer pressionar o botão adicionar à lista negra em vez disso.\n\nNo futuro este processo de verificação vai ser mais sofisticado.";
+"room_event_encryption_verify_message" = "Para verificar que esta sessão pode ser confiada, por favor contacte a/o dona(o) dela usando alguma outro meio (e.g. em pessoa ou uma chamada de telefone) e pergunte-lhe se a chave que ela/ele vê em seus Ajustes de Usuária(o) para esta sessão corresponde com a chave abaixo:\n\n\tNome de sessão: %@\n\tID de sessão: %@\n\tChave de sessão: %@\n\nSe ela corresponde, pressione o botão verificar abaixo. Se não corresponde, então alguma outra pessoa está interceptando esa sessão e você provavelmente quer pressionar o botão adicionar à lista negra em vez disso.\n\nNo futuro este processo de verificação vai ser mais sofisticado.";
 "room_event_encryption_verify_ok" = "Verificar";
 // Account
 "account_save_changes" = "Salvar mudanças";
@@ -331,9 +331,9 @@
 "notification_settings_disable_all" = "Desabilitar todas as notificações";
 "notification_settings_enable_notifications" = "Habilitar notificações";
 "notification_settings_enable_notifications_warning" = "Todas as notificações estão atualmente desabilitadas para todos os dispositivos.";
-"notification_settings_global_info" = "Configurações de notificação são salvas em sua conta de usuária(o) e são compartilhadas entre todos os clientes que as suportam (incluindo notificações de desktop).\n\nRegras são aplicadas em ordem; a primeira regra que corresponde define o resultado da mensagem.\nEntão: Notificações per-palavra são mais importantes que notificações per-sala que são mais importantes que notificações per-enviador(a).\nPara múltiplas regras do mesmo tipo, a primeira na lista que corresponde leva prioridade.";
+"notification_settings_global_info" = "Ajustes de notificação são salvas em sua conta de usuária(o) e são compartilhadas entre todos os clientes que as suportam (incluindo notificações de desktop).\n\nRegras são aplicadas em ordem; a primeira regra que corresponde define o resultado da mensagem.\nEntão: Notificações per-palavra são mais importantes que notificações per-sala que são mais importantes que notificações per-enviador(a).\nPara múltiplas regras do mesmo tipo, a primeira na lista que corresponde leva prioridade.";
 "notification_settings_per_word_notifications" = "Notificações per-palavra";
-"notification_settings_per_word_info" = "Palavras correspondem insensivelmente a maiúsculas e minúsculas, e podem incluir um wildcard *. Então:\nfoo corresponde a string foo rodeado por delimitadores de palavras (e.g., pontuação e whitespace ou início/fim de linha).\nfoo* corresponde a qualquer palavra que começa foo.\n*foo* corresponde a qualquer palavra que inclui as 3 letras foo.";
+"notification_settings_per_word_info" = "Palavras correspondem insensivelmente com maiúsculas e minúsculas, e podem incluir um wildcard *. Então:\nfoo corresponde com string foo rodeado por delimitadores de palavras (e.g., pontuação e whitespace ou início/fim de linha).\nfoo* corresponde com qualquer palavra que começa foo.\n*foo* corresponde com qualquer palavra que inclui as 3 letras foo.";
 "notification_settings_always_notify" = "Sempre notificar";
 "notification_settings_never_notify" = "Nunca notificar";
 "notification_settings_word_to_match" = "palavra para corresponder";
@@ -372,10 +372,10 @@
 "ssl_fingerprint_hash" = "Impressão digital (%@):";
 "ssl_could_not_verify" = "Não foi possível verificar identidade de servidor remoto.";
 "ssl_cert_not_trust" = "Isto pode significar que alguém está interceptando maliciosamente seu tráfico, ou que seu telefone não confia no certificado provido pelo servidor remoto.";
-"ssl_cert_new_account_expl" = "Se o/a administrador(a) do servidor tem dito que isto é esperado, assegure-se que a impressão digital abaixo bate com a impressão digital provida por ele(a).";
+"ssl_cert_new_account_expl" = "Se o/a administrador(a) do servidor tem dito que isto é esperado, assegure-se que a impressão digital abaixo corresponde com a impressão digital provida por ele(a).";
 "ssl_unexpected_existing_expl" = "O certificado tem mudado de um que esta confiado por seu telefone. Isto é ALTAMENTE INCOMUM. É recomendado que você NÃO ACEITE este novo certificado.";
 "ssl_expected_existing_expl" = "O certificado tem sido mudado de um previamente confiado para um que não é confiado. O servidor pode ter renovado o certificado dele. Contacte o/a administrador(a) do servidor a impressão digital esperada.";
-"ssl_only_accept" = "SOMENTE aceite o certificado se o/a administrador(a) do servidor tem publicado uma impressão digital que corresponde à acima.";
+"ssl_only_accept" = "SOMENTE aceite o certificado se o/a administrador(a) do servidor tem publicado uma impressão digital que corresponde com a acima.";
 "notice_encryption_enabled_ok" = "%@ ativou encriptação ponta-a-ponta.";
 "notice_encryption_enabled_unknown_algorithm" = "%1$@ ativou encriptação ponta-a-ponta (algoritmo não-reconhecido %2$@).";
 "device_details_rename_prompt_title" = "Nome da Sessão";
@@ -468,7 +468,7 @@
 "attachment_large_with_resolution" = "Grande %@ (~%@)";
 "attachment_medium_with_resolution" = "Médio %@ (~%@)";
 "attachment_small_with_resolution" = "Pequeno %@ (~%@)";
-"attachment_size_prompt_message" = "Você pode desligar isto em configurações.";
+"attachment_size_prompt_message" = "Você pode desligar isto em ajustes.";
 "attachment_size_prompt_title" = "Confirmar tamanho para enviar";
 "room_displayname_all_other_participants_left" = "%@ (Saiu)";
 "auth_reset_password_error_not_found" = "Não encontrado";
@@ -479,3 +479,4 @@
 "room_displayname_all_other_members_left" = "%@ (Saiu)";
 "attachment_unsupported_preview_message" = "Este tipo de arquivo não é suportado.";
 "attachment_unsupported_preview_title" = "Incapaz de previsualizar";
+"message_reply_to_sender_sent_their_location" = "tem compartilhado a localização dela(e).";

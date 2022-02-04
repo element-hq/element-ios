@@ -32,7 +32,7 @@ struct LocationSharingView: View {
     
     var body: some View {
         NavigationView {
-            LocationSharingMapView(tileServerMapURL: context.viewState.tileServerMapURL,
+            LocationSharingMapView(tileServerMapURL: context.viewState.mapStyleURL,
                                    avatarData: context.viewState.avatarData,
                                    location: context.viewState.location,
                                    errorSubject: context.viewState.errorSubject,
@@ -54,6 +54,7 @@ struct LocationSharingView: View {
                                 context.send(viewAction: .share)
                             } label: {
                                 Image(uiImage: Asset.Images.locationShareIcon.image)
+                                    .accessibilityIdentifier("LocationSharingView.shareButton")
                             }
                             .disabled(!context.viewState.shareButtonEnabled)
                         } else {
@@ -69,6 +70,7 @@ struct LocationSharingView: View {
                 .alert(item: $context.alertInfo) { info in
                     if let secondaryButton = info.secondaryButton {
                         return Alert(title: Text(info.title),
+                                     message: subtitleTextForAlertInfo(info),
                                      primaryButton: .default(Text(info.primaryButton.title)) {
                                         info.primaryButton.action?()
                                      },
@@ -77,6 +79,7 @@ struct LocationSharingView: View {
                                      })
                     } else {
                         return Alert(title: Text(info.title),
+                                     message: subtitleTextForAlertInfo(info),
                                      dismissButton: .default(Text(info.primaryButton.title)) {
                                         info.primaryButton.action?()
                                      })
@@ -85,6 +88,10 @@ struct LocationSharingView: View {
         }
         .accentColor(theme.colors.accent)
         .activityIndicator(show: context.viewState.showLoadingIndicator)
+        .navigationViewStyle(StackNavigationViewStyle())
+        .introspectNavigationController { navigationController in
+            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationController.navigationBar)
+        }
     }
     
     @ViewBuilder
@@ -92,6 +99,14 @@ struct LocationSharingView: View {
         if context.viewState.showLoadingIndicator {
             ActivityIndicator()
         }
+    }
+    
+    private func subtitleTextForAlertInfo(_ alertInfo: LocationSharingErrorAlertInfo) -> Text? {
+        guard let subtitle = alertInfo.subtitle else {
+            return nil
+        }
+        
+        return Text(subtitle)
     }
 }
 

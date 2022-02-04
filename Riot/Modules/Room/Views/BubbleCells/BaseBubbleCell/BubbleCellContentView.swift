@@ -36,6 +36,9 @@ final class BubbleCellContentView: UIView, NibLoadable {
     
     @IBOutlet weak var innerContentView: UIView!
     
+    @IBOutlet weak var innerContentViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var innerContentViewTrailingConstraint: NSLayoutConstraint!
+    
     @IBOutlet weak var encryptionStatusContainerView: UIView!
     @IBOutlet weak var encryptionImageView: UIImageView!
     
@@ -47,6 +50,8 @@ final class BubbleCellContentView: UIView, NibLoadable {
     
     @IBOutlet weak var reactionsContainerView: UIView!
     @IBOutlet weak var reactionsContentView: UIView!
+
+    @IBOutlet weak var threadSummaryContainerView: UIView!
     
     @IBOutlet weak var bubbleOverlayContainer: UIView!
     
@@ -67,6 +72,14 @@ final class BubbleCellContentView: UIView, NibLoadable {
         }
         set {
             self.reactionsContainerView.isHidden = !newValue
+        }
+    }
+
+    private var showThreadSummary: Bool {
+        get {
+            return !self.threadSummaryContainerView.isHidden
+        } set {
+            self.threadSummaryContainerView.isHidden = !newValue
         }
     }
     
@@ -142,4 +155,28 @@ extension BubbleCellContentView: BubbleCellReactionsDisplayable {
         self.showReactions = false
         self.reactionsContentView.vc_removeAllSubviews()
     }
+}
+
+// MARK: - BubbleCellThreadSummaryDisplayable
+extension BubbleCellContentView: BubbleCellThreadSummaryDisplayable {
+
+    func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView) {
+        self.threadSummaryContainerView.vc_removeAllSubviews()
+        self.threadSummaryContainerView.addSubview(threadSummaryView)
+        NSLayoutConstraint.activate([
+            threadSummaryView.leadingAnchor.constraint(equalTo: innerContentView.leadingAnchor),
+            threadSummaryView.topAnchor.constraint(equalTo: threadSummaryContainerView.topAnchor),
+            threadSummaryView.heightAnchor.constraint(equalToConstant: RoomBubbleCellLayout.threadSummaryViewHeight),
+            threadSummaryView.bottomAnchor.constraint(equalTo: threadSummaryContainerView.bottomAnchor),
+            threadSummaryView.trailingAnchor.constraint(lessThanOrEqualTo: threadSummaryContainerView.trailingAnchor,
+                                                        constant: -RoomBubbleCellLayout.reactionsViewRightMargin)
+        ])
+        self.showThreadSummary = true
+    }
+
+    func removeThreadSummaryView() {
+        self.showThreadSummary = false
+        self.threadSummaryContainerView.vc_removeAllSubviews()
+    }
+
 }

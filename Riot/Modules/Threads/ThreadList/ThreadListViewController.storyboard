@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="V8j-Lb-PgC">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Thread List View Controller-->
+        <scene sceneID="mt5-wz-YKA">
+            <objects>
+                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="V8j-Lb-PgC" customClass="ThreadListViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="EL9-GA-lwo">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="X8K-NO-SQ3">
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outlet property="dataSource" destination="V8j-Lb-PgC" id="FCQ-5E-AuZ"/>
+                                    <outlet property="delegate" destination="V8j-Lb-PgC" id="Kxs-vj-1RW"/>
+                                    <outletCollection property="gestureRecognizers" destination="OxP-Mp-c6Z" appends="YES" id="371-L6-Skg"/>
+                                </connections>
+                            </tableView>
+                            <view contentMode="scaleToFill" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="818" translatesAutoresizingMaskIntoConstraints="NO" id="7VY-m9-wCS" customClass="ThreadListEmptyView" customModule="Riot" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="delegate" destination="V8j-Lb-PgC" id="SQT-2N-wnf"/>
+                                </connections>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="bFg-jh-JZB"/>
+                        <color key="backgroundColor" red="0.94509803921568625" green="0.96078431372549022" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="7VY-m9-wCS" secondAttribute="trailing" id="JYi-uG-Yqc"/>
+                            <constraint firstItem="X8K-NO-SQ3" firstAttribute="top" secondItem="bFg-jh-JZB" secondAttribute="top" id="Mfw-In-peq"/>
+                            <constraint firstAttribute="bottom" secondItem="7VY-m9-wCS" secondAttribute="bottom" id="PkX-MO-5aO"/>
+                            <constraint firstAttribute="bottom" secondItem="X8K-NO-SQ3" secondAttribute="bottom" id="SIG-7P-2CK"/>
+                            <constraint firstItem="7VY-m9-wCS" firstAttribute="top" secondItem="EL9-GA-lwo" secondAttribute="top" id="aFs-kb-rJp"/>
+                            <constraint firstItem="7VY-m9-wCS" firstAttribute="leading" secondItem="EL9-GA-lwo" secondAttribute="leading" id="acw-H6-LKX"/>
+                            <constraint firstItem="X8K-NO-SQ3" firstAttribute="leading" secondItem="EL9-GA-lwo" secondAttribute="leading" id="ehI-Nc-6di"/>
+                            <constraint firstAttribute="trailing" secondItem="X8K-NO-SQ3" secondAttribute="trailing" id="hbZ-R8-8kH"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="emptyView" destination="7VY-m9-wCS" id="Yny-Rn-edF"/>
+                        <outlet property="threadsTableView" destination="X8K-NO-SQ3" id="owA-Uh-r9B"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zK0-v6-7Wt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="OxP-Mp-c6Z">
+                    <connections>
+                        <action selector="longPressed:" destination="V8j-Lb-PgC" id="rvv-ml-CSq"/>
+                    </connections>
+                </pongPressGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="-3198.5507246376815" y="-647.54464285714278"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

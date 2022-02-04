@@ -1419,6 +1419,10 @@ public class VectorL10n: NSObject {
   public static func eventFormatterMemberUpdates(_ p1: Int) -> String {
     return VectorL10n.tr("Vector", "event_formatter_member_updates", p1)
   }
+  /// Message deleted
+  public static var eventFormatterMessageDeleted: String { 
+    return VectorL10n.tr("Vector", "event_formatter_message_deleted") 
+  }
   /// (edited)
   public static var eventFormatterMessageEditedMention: String { 
     return VectorL10n.tr("Vector", "event_formatter_message_edited_mention") 
@@ -1594,6 +1598,46 @@ public class VectorL10n: NSObject {
   /// COMMUNITIES
   public static var groupSection: String { 
     return VectorL10n.tr("Vector", "group_section") 
+  }
+  /// Favourite
+  public static var homeContextMenuFavourite: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_favourite") 
+  }
+  /// Leave
+  public static var homeContextMenuLeave: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_leave") 
+  }
+  /// Low priority
+  public static var homeContextMenuLowPriority: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_low_priority") 
+  }
+  /// Move to People
+  public static var homeContextMenuMakeDm: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_make_dm") 
+  }
+  /// Move to Rooms
+  public static var homeContextMenuMakeRoom: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_make_room") 
+  }
+  /// Mute
+  public static var homeContextMenuMute: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_mute") 
+  }
+  /// Normal priority
+  public static var homeContextMenuNormalPriority: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_normal_priority") 
+  }
+  /// Notifications
+  public static var homeContextMenuNotifications: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_notifications") 
+  }
+  /// Remove from Favourites
+  public static var homeContextMenuUnfavourite: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_unfavourite") 
+  }
+  /// Unmute
+  public static var homeContextMenuUnmute: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_unmute") 
   }
   /// The all-in-one secure chat app for teams, friends and organisations. Tap the + button below to add people and rooms.
   public static var homeEmptyViewInformation: String { 
@@ -2223,6 +2267,14 @@ public class VectorL10n: NSObject {
   public static var locationSharingOpenGoogleMaps: String { 
     return VectorL10n.tr("Vector", "location_sharing_open_google_maps") 
   }
+  /// %@ could not send your location. Please try again later.
+  public static func locationSharingPostFailureSubtitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "location_sharing_post_failure_subtitle", p1)
+  }
+  /// We couldn’t send your location
+  public static var locationSharingPostFailureTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_post_failure_title") 
+  }
   /// Location sharing
   public static var locationSharingSettingsHeader: String { 
     return VectorL10n.tr("Vector", "location_sharing_settings_header") 
@@ -2314,6 +2366,10 @@ public class VectorL10n: NSObject {
   /// Video
   public static var mediaTypeAccessibilityVideo: String { 
     return VectorL10n.tr("Vector", "media_type_accessibility_video") 
+  }
+  /// From a thread
+  public static var messageFromAThread: String { 
+    return VectorL10n.tr("Vector", "message_from_a_thread") 
   }
   /// More
   public static var more: String { 
@@ -2694,6 +2750,14 @@ public class VectorL10n: NSObject {
   /// Search
   public static var roomAccessibilitySearch: String { 
     return VectorL10n.tr("Vector", "room_accessibility_search") 
+  }
+  /// More
+  public static var roomAccessibilityThreadMore: String { 
+    return VectorL10n.tr("Vector", "room_accessibility_thread_more") 
+  }
+  /// Threads
+  public static var roomAccessibilityThreads: String { 
+    return VectorL10n.tr("Vector", "room_accessibility_threads") 
   }
   /// Upload
   public static var roomAccessibilityUpload: String { 
@@ -3175,7 +3239,7 @@ public class VectorL10n: NSObject {
   public static var roomEventActionMore: String { 
     return VectorL10n.tr("Vector", "room_event_action_more") 
   }
-  /// Permalink
+  /// Copy link to message
   public static var roomEventActionPermalink: String { 
     return VectorL10n.tr("Vector", "room_event_action_permalink") 
   }
@@ -3206,6 +3270,10 @@ public class VectorL10n: NSObject {
   /// Reply
   public static var roomEventActionReply: String { 
     return VectorL10n.tr("Vector", "room_event_action_reply") 
+  }
+  /// Thread
+  public static var roomEventActionReplyInThread: String { 
+    return VectorL10n.tr("Vector", "room_event_action_reply_in_thread") 
   }
   /// Report content
   public static var roomEventActionReport: String { 
@@ -3239,9 +3307,17 @@ public class VectorL10n: NSObject {
   public static var roomEventActionViewEncryption: String { 
     return VectorL10n.tr("Vector", "room_event_action_view_encryption") 
   }
+  /// View in room
+  public static var roomEventActionViewInRoom: String { 
+    return VectorL10n.tr("Vector", "room_event_action_view_in_room") 
+  }
   /// View Source
   public static var roomEventActionViewSource: String { 
     return VectorL10n.tr("Vector", "room_event_action_view_source") 
+  }
+  /// Link copied to clipboard.
+  public static var roomEventCopyLinkInfo: String { 
+    return VectorL10n.tr("Vector", "room_event_copy_link_info") 
   }
   /// Failed to send
   public static var roomEventFailedToSend: String { 
@@ -3830,6 +3906,10 @@ public class VectorL10n: NSObject {
   /// Slide to end the call for everyone
   public static var roomSlideToEndGroupCall: String { 
     return VectorL10n.tr("Vector", "room_slide_to_end_group_call") 
+  }
+  /// Thread
+  public static var roomThreadTitle: String { 
+    return VectorL10n.tr("Vector", "room_thread_title") 
   }
   /// Invite members
   public static var roomTitleInviteMembers: String { 
@@ -4819,6 +4899,10 @@ public class VectorL10n: NSObject {
   public static var settingsLabsEnableRingingForGroupCalls: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_ringing_for_group_calls") 
   }
+  /// Threaded messaging
+  public static var settingsLabsEnableThreads: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enable_threads") 
+  }
   /// Polls
   public static var settingsLabsEnabledPolls: String { 
     return VectorL10n.tr("Vector", "settings_labs_enabled_polls") 
@@ -5558,6 +5642,42 @@ public class VectorL10n: NSObject {
   /// Switch
   public static var `switch`: String { 
     return VectorL10n.tr("Vector", "switch") 
+  }
+  /// Copy link to thread
+  public static var threadCopyLinkToThread: String { 
+    return VectorL10n.tr("Vector", "thread_copy_link_to_thread") 
+  }
+  /// All threads
+  public static var threadsActionAllThreads: String { 
+    return VectorL10n.tr("Vector", "threads_action_all_threads") 
+  }
+  /// My threads
+  public static var threadsActionMyThreads: String { 
+    return VectorL10n.tr("Vector", "threads_action_my_threads") 
+  }
+  /// Threads help keep your conversations on-topic and easy to track.
+  public static var threadsEmptyInfoAll: String { 
+    return VectorL10n.tr("Vector", "threads_empty_info_all") 
+  }
+  /// Reply to an ongoing thread or tap a message and use “Thread” to start a new one.
+  public static var threadsEmptyInfoMy: String { 
+    return VectorL10n.tr("Vector", "threads_empty_info_my") 
+  }
+  /// Show all threads
+  public static var threadsEmptyShowAllThreads: String { 
+    return VectorL10n.tr("Vector", "threads_empty_show_all_threads") 
+  }
+  /// Tip: Tap a message and use “Thread” to start one.
+  public static var threadsEmptyTip: String { 
+    return VectorL10n.tr("Vector", "threads_empty_tip") 
+  }
+  /// Keep discussions organised with threads
+  public static var threadsEmptyTitle: String { 
+    return VectorL10n.tr("Vector", "threads_empty_title") 
+  }
+  /// Threads
+  public static var threadsTitle: String { 
+    return VectorL10n.tr("Vector", "threads_title") 
   }
   /// Favourites
   public static var titleFavourites: String { 

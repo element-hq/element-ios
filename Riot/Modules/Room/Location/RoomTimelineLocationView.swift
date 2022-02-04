@@ -54,7 +54,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        mapView = MGLMapView(frame: .zero, styleURL: BuildSettings.tileServerMapURL)
+        mapView = MGLMapView(frame: .zero)
         mapView.delegate = self
         mapView.logoView.isHidden = true
         mapView.attributionButton.isHidden = true
@@ -72,7 +72,11 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     
     // MARK: - Public
     
-    public func displayLocation(_ location: CLLocationCoordinate2D, userAvatarData: AvatarViewData? = nil) {
+    public func displayLocation(_ location: CLLocationCoordinate2D,
+                                userAvatarData: AvatarViewData? = nil,
+                                mapStyleURL: URL) {
+        
+        mapView.styleURL = mapStyleURL
         
         annotationView = LocationMarkerView.loadFromNib()
         

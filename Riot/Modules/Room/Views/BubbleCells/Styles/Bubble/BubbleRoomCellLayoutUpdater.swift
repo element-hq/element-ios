@@ -24,11 +24,11 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
     private var theme: Theme
     
     private var incomingColor: UIColor {
-        return self.theme.colors.system
+        return self.theme.roomCellIncomingBubbleBackgroundColor
     }
     
     private var outgoingColor: UIColor {
-        return self.theme.colors.accent.withAlphaComponent(0.10)
+        return self.theme.roomCellOutgoingBubbleBackgroundColor
     }
     
     // MARK: - Setup
@@ -41,10 +41,10 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
     
     func updateLayoutIfNeeded(for cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData) {
         
-        if cellData.isSenderCurrentUser {
-            self.updateLayout(forOutgoingTextMessageCell: cell, andCellData: cellData)
-        } else {
+        if cellData.isIncoming {
             self.updateLayout(forIncomingTextMessageCell: cell, andCellData: cellData)
+        } else {
+            self.updateLayout(forOutgoingTextMessageCell: cell, andCellData: cellData)
         }
     }
             
@@ -97,6 +97,30 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
         self.addBubbleBackgroundViewToCell(cell, backgroundColor: self.outgoingColor)
         
         cell.setNeedsUpdateConstraints()
+    }
+    
+    func setupLayout(forOutgoingFileAttachmentCell cell: MXKRoomBubbleTableViewCell) {
+                
+        // Hide avatar view
+        cell.pictureView?.isHidden = true
+        
+        self.setupOutgoingFileAttachViewMargins(for: cell)
+    }
+    
+    func setupLayout(forIncomingFileAttachmentCell cell: MXKRoomBubbleTableViewCell) {
+
+        self.setupIncomingFileAttachViewMargins(for: cell)
+    }
+    
+    func updateLayout(forSelectedStickerCell cell: RoomSelectedStickerBubbleCell) {
+        
+        if cell.bubbleData.isIncoming {
+            self.setupLayout(forIncomingFileAttachmentCell: cell)
+        } else {
+            self.setupLayout(forOutgoingFileAttachmentCell: cell)
+            cell.userNameLabel?.isHidden = true
+            cell.pictureView?.isHidden = true
+        }
     }
     
     // MARK: Themable
@@ -152,13 +176,13 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
         
         switch firstEvent.eventType {
         case .roomMessage:
-            if let messageTypeString = firstEvent.content["msgtype"] as? String {
-                
-                let messageType = MXMessageType(identifier: messageTypeString)
-                
+            if let messageType = firstEvent.messageType {
                 switch messageType {
-                case .text :
+                case .text, .file:
                     return true
+                case .emote:
+                    // Explicitely disable bubble for emotes
+                    return false                    
                 default:
                     break
                 }
@@ -309,5 +333,57 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
         cell.msgTextViewTrailingConstraint = rightConstraint
         
         cell.msgTextViewBottomConstraint.constant += bottomMargin
+    }
+    
+    private func setupOutgoingFileAttachViewMargins(for cell: MXKRoomBubbleTableViewCell) {
+        
+        guard let attachmentView = cell.attachmentView else {
+            return
+        }
+
+        let contentView = cell.contentView
+        
+        // TODO: Use constants
+        // Same as URL preview
+        let rightMargin: CGFloat = 34.0
+
+        if let attachViewLeadingConstraint = cell.attachViewLeadingConstraint {
+            attachViewLeadingConstraint.isActive = false
+            cell.attachViewLeadingConstraint = nil
+        }
+
+        let rightConstraint = attachmentView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -rightMargin)
+
+        NSLayoutConstraint.activate([
+            rightConstraint
+        ])
+        
+        cell.attachViewTrailingConstraint = rightConstraint
+    }
+    
+    private func setupIncomingFileAttachViewMargins(for cell: MXKRoomBubbleTableViewCell) {
+        
+        guard let attachmentView = cell.attachmentView,
+              cell.attachViewLeadingConstraint == nil || cell.attachViewLeadingConstraint.isActive == false else {
+            return
+        }
+        
+        if let attachViewTrailingConstraint = cell.attachViewTrailingConstraint {
+            attachViewTrailingConstraint.isActive = false
+            cell.attachViewTrailingConstraint = nil
+        }
+
+        let contentView = cell.contentView
+        
+        // TODO: Use constants
+        let leftMargin: CGFloat = 67
+
+        let leftConstraint = attachmentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: -leftMargin)
+
+        NSLayoutConstraint.activate([
+            leftConstraint
+        ])
+        
+        cell.attachViewLeadingConstraint = leftConstraint
     }
 }

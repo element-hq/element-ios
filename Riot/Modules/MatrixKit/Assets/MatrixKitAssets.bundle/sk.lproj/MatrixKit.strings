@@ -543,3 +543,7 @@
 "notice_feedback" = "Udalosť spätnej väzby (id: %@): %@";
 "resume_call" = "Pokračovať";
 "answer_call" = "Prijať hovor";
+"message_reply_to_sender_sent_their_location" = "zdieľal/a svoju polohu.";
+"account_link_email" = "Prepojený email";
+"account_linked_emails" = "Prepojené e-maily";
+"room_event_encryption_info_event_fingerprint_key" = "Deklarovaný kľúč odtlačkov prstov Ed25519\n";

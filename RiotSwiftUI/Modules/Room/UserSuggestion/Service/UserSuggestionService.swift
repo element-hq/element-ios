@@ -17,19 +17,16 @@
 import Foundation
 import Combine
 
-@available(iOS 14.0, *)
 struct RoomMembersProviderMember {
     var userId: String
     var displayName: String
     var avatarUrl: String
 }
 
-@available(iOS 14.0, *)
 protocol RoomMembersProviderProtocol {
     func fetchMembers(_ members: @escaping ([RoomMembersProviderMember]) -> Void)
 }
 
-@available(iOS 14.0, *)
 struct UserSuggestionServiceItem: UserSuggestionItemProtocol {
     let userId: String
     let displayName: String?

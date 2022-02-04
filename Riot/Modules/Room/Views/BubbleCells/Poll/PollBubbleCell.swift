@@ -49,7 +49,7 @@ class PollBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplayable {
     }
     
     // The normal flow for tapping on cell content views doesn't work for bubbles without attributed strings
-    func onContentViewTap(_ sender: UITapGestureRecognizer) {
+    override func onContentViewTap(_ sender: UITapGestureRecognizer) {
         guard let event = self.event else {
             return
         }
@@ -57,3 +57,5 @@ class PollBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplayable {
         delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellTapOnContentView, userInfo: [kMXKRoomBubbleCellEventKey: event])
     }
 }
+
+extension PollBubbleCell: BubbleCellThreadSummaryDisplayable {}
