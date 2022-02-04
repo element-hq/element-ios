@@ -47,7 +47,7 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
     init(parameters: LocationSharingCoordinatorParameters) {
         self.parameters = parameters
         
-        let viewModel = LocationSharingViewModel(tileServerMapURL: BuildSettings.tileServerMapURL,
+        let viewModel = LocationSharingViewModel(mapStyleURL: BuildSettings.tileServerMapStyleURL,
                                                  avatarData: parameters.avatarData,
                                                  location: parameters.location)
         let view = LocationSharingView(context: viewModel.context)
@@ -72,7 +72,7 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
                 self.completion?()
             case .share(let latitude, let longitude):
                 if let location = self.parameters.location {
-                    self.showActivityControllerForLocation(location)
+                    self.locationSharingHostingController.present(Self.shareLocationActivityController(location), animated: true)
                     return
                 }
                 
@@ -94,19 +94,15 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
         }
     }
     
+    static func shareLocationActivityController(_ location: CLLocationCoordinate2D) -> UIActivityViewController {
+        return UIActivityViewController(activityItems: [ShareToMapsAppActivity.urlForMapsAppType(.apple, location: location)],
+                                        applicationActivities: [ShareToMapsAppActivity(type: .apple, location: location),
+                                                                ShareToMapsAppActivity(type: .google, location: location)])
+    }
+    
     // MARK: - Presentable
     
     func toPresentable() -> UIViewController {
         return locationSharingHostingController
-    }
-    
-    // MARK: - Private
-    
-    private func showActivityControllerForLocation(_ location: CLLocationCoordinate2D) {   
-        let vc = UIActivityViewController(activityItems: [ShareToMapsAppActivity.urlForMapsAppType(.apple, location: location)],
-                                          applicationActivities: [ShareToMapsAppActivity(type: .apple, location: location),
-                                                                  ShareToMapsAppActivity(type: .google, location: location)])
-        
-        locationSharingHostingController.present(vc, animated: true)
     }
 }

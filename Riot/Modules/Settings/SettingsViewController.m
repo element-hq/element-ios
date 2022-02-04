@@ -3176,6 +3176,7 @@ TableViewSectionsDelegate>
 - (void)toggleEnableThreads:(UISwitch *)sender
 {
     RiotSettings.shared.enableThreads = sender.isOn;
+    MXSDKOptions.sharedInstance.enableThreads = sender.isOn;
     [[MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession] reset];
     [[AppDelegate theDelegate] restoreEmptyDetailsViewController];
 }

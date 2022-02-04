@@ -329,7 +329,8 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     if (isRedacted)
     {
         // Check whether the event is a thread root or redacted information is required
-        if ([mxSession.threadingService isEventThreadRoot:event] || _settings.showRedactionsInRoomHistory)
+        if ((RiotSettings.shared.enableThreads && [mxSession.threadingService isEventThreadRoot:event])
+            || _settings.showRedactionsInRoomHistory)
         {
             MXLogDebug(@"[MXKEventFormatter] Redacted event %@ (%@)", event.description, event.redactedBecause);
             
@@ -1262,18 +1263,19 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                 }
                 else if (eventThreadId && !RiotSettings.shared.enableThreads)
                 {
+                    NSString *repliedEventId = event.relatesTo.inReplyTo.eventId ?: eventThreadId;
                     isHTML = YES;
                     MXJSONModelSetString(body, event.content[kMXMessageBodyKey]);
-                    MXEvent *threadRootEvent = [mxSession.store eventWithEventId:eventThreadId
-                                                                          inRoom:event.roomId];
+                    MXEvent *repliedEvent = [mxSession.store eventWithEventId:repliedEventId
+                                                                       inRoom:event.roomId];
                     
-                    NSString *threadRootEventContent;
-                    MXJSONModelSetString(threadRootEventContent, threadRootEvent.content[kMXMessageBodyKey]);
+                    NSString *repliedEventContent;
+                    MXJSONModelSetString(repliedEventContent, repliedEvent.content[kMXMessageBodyKey]);
                     body = [NSString stringWithFormat:@"<mx-reply><blockquote><a href=\"%@\">In reply to</a> <a href=\"%@\">%@</a><br>%@</blockquote></mx-reply>%@",
-                            [MXTools permalinkToEvent:eventThreadId inRoom:event.roomId],
-                            [MXTools permalinkToUserWithUserId:threadRootEvent.sender],
-                            threadRootEvent.sender,
-                            threadRootEventContent,
+                            [MXTools permalinkToEvent:repliedEventId inRoom:event.roomId],
+                            [MXTools permalinkToUserWithUserId:repliedEvent.sender],
+                            repliedEvent.sender,
+                            repliedEventContent,
                             body];
                     
                 }
@@ -1359,9 +1361,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
 
                         // For replies, look for the end of the parent message
                         // This helps us insert the emote prefix in the right place
-                        NSDictionary *relatesTo;
-                        MXJSONModelSetDictionary(relatesTo, event.content[@"m.relates_to"]);
-                        if ([relatesTo[@"m.in_reply_to"] isKindOfClass:NSDictionary.class] || (event.isInThread && !RiotSettings.shared.enableThreads))
+                        if (event.relatesTo.inReplyTo || (event.isInThread && !RiotSettings.shared.enableThreads))
                         {
                             [attributedDisplayText enumerateAttribute:kMXKToolsBlockquoteMarkAttribute
                                                               inRange:NSMakeRange(0, attributedDisplayText.length)

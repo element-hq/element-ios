@@ -38,6 +38,7 @@ class ThreadTableViewCell: UITableViewCell {
     @IBOutlet private weak var rootMessageContentLabel: UILabel!
     @IBOutlet private weak var lastMessageTimeLabel: UILabel!
     @IBOutlet private weak var summaryView: ThreadSummaryView!
+    @IBOutlet private weak var notificationStatusView: ThreadNotificationStatusView!
     
     private static var usernameColorGenerator = UserNameColorGenerator()
 
@@ -66,6 +67,7 @@ class ThreadTableViewCell: UITableViewCell {
         if let summaryModel = model.summaryModel {
             summaryView.configure(withModel: summaryModel)
         }
+        notificationStatusView.status = model.notificationStatus
     }
 
     private func updateRootMessageSenderColor() {
@@ -102,6 +104,7 @@ extension ThreadTableViewCell: Themable {
         lastMessageTimeLabel.textColor = theme.colors.secondaryContent
         summaryView.update(theme: theme)
         summaryView.backgroundColor = .clear
+        notificationStatusView.update(theme: theme)
     }
     
 }
