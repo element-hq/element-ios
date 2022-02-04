@@ -286,6 +286,7 @@ Tap the + to start adding people.";
 "room_participants_remove_third_party_invite_prompt_msg" = "Are you sure you want to revoke this invite?";
 "room_participants_invite_prompt_title" = "Confirmation";
 "room_participants_invite_prompt_msg" = "Are you sure you want to invite %@ to this chat?";
+"room_participants_invite_prompt_to_msg" = "Are you sure you want to invite %@ to %@?";
 "room_participants_filter_room_members" = "Filter room members";
 "room_participants_filter_room_members_for_dm" = "Filter members";
 "room_participants_invite_another_user" = "Search / invite by User ID, Name or email";
@@ -1718,6 +1719,12 @@ Tap the + to start adding people.";
 "invite_friends_action" = "Invite friends to %@";
 "invite_friends_share_text" = "Hey, talk to me on %@: %@";
 
+// MARK: - Share invite link
+
+"share_invite_link_action" = "Share invite link";
+"share_invite_link_room_text" = "Hey, join this room on %@";
+"share_invite_link_space_text" = "Hey, join this space on %@";
+
 // Mark: - Room avatar view
 
 "room_avatar_view_accessibility_label" = "avatar";
@@ -1739,6 +1746,15 @@ Tap the + to start adding people.";
 
 "room_intro_cell_information_dm_sentence2" = "Only the two of you are in this conversation, no one else can join.";
 "room_intro_cell_information_multiple_dm_sentence2" = "Only you are in this conversation, unless any of you invites someone to join.";
+
+// Mark: - Room invite
+
+"room_invite_to_space_option_title" = "To %@";
+"room_invite_to_space_option_detail" = "They can explore %@, but won’t be a member of %@.";
+"room_invite_to_room_option_title" = "To just this room";
+"room_invite_to_room_option_detail" = "They won’t be a part of %@.";
+"room_invite_not_enough_permission" = "You do not have permission to invite people to this room";
+"space_invite_not_enough_permission" = "You do not have permission to invite people to this space";
 
 // Mark: - Spaces
 
@@ -1779,6 +1795,9 @@ Tap the + to start adding people.";
 "space_private_join_rule" = "Private space";
 "space_private_join_rule_detail" = "Invite only, best for yourself or teams";
 "space_public_join_rule" = "Public space";
+"spaces_invite_people" = "Invite people";
+"spaces_add_room" = "Add room";
+"spaces_add_space" = "Add space";
 "space_public_join_rule_detail" = "Open to anyone, best for communities";
 
 "space_topic" = "description";

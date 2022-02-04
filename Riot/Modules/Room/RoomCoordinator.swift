@@ -75,6 +75,8 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         self.roomViewController = RoomViewController.instantiate()
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         
+        self.roomViewController.parentSpaceId = parameters.parentSpaceId
+
         if #available(iOS 14, *) {
             TimelinePollProvider.shared.session = parameters.session
         }

@@ -147,6 +147,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.MajorUpdateViewController>(storyboard: MajorUpdateViewController.self)
   }
+  internal enum OptionListViewController: StoryboardType {
+    internal static let storyboardName = "OptionListViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.OptionListViewController>(storyboard: OptionListViewController.self)
+  }
   internal enum QRCodeReaderViewController: StoryboardType {
     internal static let storyboardName = "QRCodeReaderViewController"
 

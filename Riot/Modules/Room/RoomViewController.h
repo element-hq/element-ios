@@ -79,6 +79,11 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 @property (nonatomic) BOOL showMissedDiscussionsBadge;
 
 /**
+ ID of the parent space. `nil` for home space.
+ */
+@property (nonatomic, nullable) NSString *parentSpaceId;
+
+/**
  Display the preview of a room that is unknown for the user.
 
  This room can come from an email invitation link or a simple link to a room.

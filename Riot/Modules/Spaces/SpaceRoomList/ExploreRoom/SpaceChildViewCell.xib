@@ -26,18 +26,18 @@
                         </constraints>
                     </view>
                     <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GVJ-S7-stu" customClass="RoomAvatarView" customModule="Riot" customModuleProvider="target">
-                        <rect key="frame" x="18" y="11" width="32" height="32"/>
+                        <rect key="frame" x="16" y="11" width="40" height="40"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="GVJ-S7-stu" secondAttribute="height" multiplier="1:1" id="87c-7u-7ge"/>
-                            <constraint firstAttribute="height" constant="32" id="zvP-oT-8po"/>
+                            <constraint firstAttribute="height" constant="40" id="zvP-oT-8po"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XbP-0o-uBP">
-                        <rect key="frame" x="66" y="7.5" width="238" height="39"/>
+                        <rect key="frame" x="72" y="11.5" width="232" height="39"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gVa-kK-bqa">
-                                <rect key="frame" x="0.0" y="0.0" width="198" height="17"/>
+                                <rect key="frame" x="0.0" y="0.0" width="192" height="17"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -56,13 +56,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cKk-HO-IfB">
-                                <rect key="frame" x="41" y="23" width="197" height="16"/>
+                                <rect key="frame" x="41" y="23" width="191" height="16"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xhg-rs-E5l">
-                                <rect key="frame" x="202" y="0.0" width="36" height="17"/>
+                                <rect key="frame" x="196" y="0.0" width="36" height="17"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -92,7 +92,7 @@
                     <constraint firstItem="4Ic-S2-Ph6" firstAttribute="leading" secondItem="YoL-49-1Hj" secondAttribute="leading" constant="11" id="BzO-a8-pjD"/>
                     <constraint firstAttribute="bottom" secondItem="GVJ-S7-stu" secondAttribute="bottom" constant="11" id="CCO-dh-iNA"/>
                     <constraint firstItem="XbP-0o-uBP" firstAttribute="centerY" secondItem="GVJ-S7-stu" secondAttribute="centerY" id="GUt-0Z-6Px"/>
-                    <constraint firstItem="GVJ-S7-stu" firstAttribute="leading" secondItem="YoL-49-1Hj" secondAttribute="leading" constant="18" id="TmX-fw-4A1"/>
+                    <constraint firstItem="GVJ-S7-stu" firstAttribute="leading" secondItem="YoL-49-1Hj" secondAttribute="leading" constant="16" id="TmX-fw-4A1"/>
                     <constraint firstAttribute="trailing" secondItem="XbP-0o-uBP" secondAttribute="trailing" constant="16" id="WHX-0h-KAF"/>
                     <constraint firstItem="4Ic-S2-Ph6" firstAttribute="top" secondItem="YoL-49-1Hj" secondAttribute="top" constant="1" id="ZBt-T2-SNc"/>
                     <constraint firstAttribute="bottom" secondItem="4Ic-S2-Ph6" secondAttribute="bottom" constant="1" id="aaA-eT-Ma1"/>
