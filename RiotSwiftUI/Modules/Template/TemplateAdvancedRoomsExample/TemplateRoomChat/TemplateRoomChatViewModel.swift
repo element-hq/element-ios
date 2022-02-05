@@ -19,7 +19,7 @@ import Combine
 
 @available(iOS 14, *)
 typealias TemplateRoomChatViewModelType = StateStoreViewModel<TemplateRoomChatViewState,
-                                                              TemplateRoomChatStateAction,
+                                                              Never,
                                                               TemplateRoomChatViewAction>
 
 @available(iOS 14, *)
@@ -48,21 +48,22 @@ class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChat
     }
     
     private func setupRoomInitializationObserving() {
-        let initializationPublisher = templateRoomChatService
+        templateRoomChatService
             .roomInitializationStatus
-            .map(TemplateRoomChatStateAction.updateRoomInitializationStatus)
-            .eraseToAnyPublisher()
-
-        dispatch(actionPublisher: initializationPublisher)
+            .sink { [weak self] status in
+                self?.state.roomInitializationStatus = status
+            }
+            .store(in: &cancellables)
     }
-        
+    
     private func setupMessageObserving() {
-        let messageActionPublisher = templateRoomChatService
+        templateRoomChatService
             .chatMessagesSubject
             .map(Self.makeBubbles(messages:))
-            .map(TemplateRoomChatStateAction.updateBubbles)
-            .eraseToAnyPublisher()
-        dispatch(actionPublisher: messageActionPublisher)
+            .sink { [weak self] bubbles in
+                self?.state.bubbles = bubbles
+            }
+            .store(in: &cancellables)
     }
     
     private static func defaultState(templateRoomChatService: TemplateRoomChatServiceProtocol) -> TemplateRoomChatViewState {
@@ -117,27 +118,10 @@ class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChat
     override func process(viewAction: TemplateRoomChatViewAction) {
         switch viewAction {
         case .done:
-            done()
+            callback?(.done)
         case .sendMessage:
             templateRoomChatService.send(textMessage: state.bindings.messageInput)
-            dispatch(action: .clearMessageInput)
-        }
-    }
-    
-    override class func reducer(state: inout TemplateRoomChatViewState, action: TemplateRoomChatStateAction) {
-        switch action {
-        case .updateRoomInitializationStatus(let status):
-            state.roomInitializationStatus = status
-        case .clearMessageInput:
             state.bindings.messageInput = ""
-        case .updateBubbles(let bubbles):
-            state.bubbles = bubbles
         }
-    }
-    
-    // MARK: - Private
-    
-    private func done() {
-        callback?(.done)
     }
 }

@@ -21,3 +21,4 @@
 "NSContactsUsageDescription" = "Element zal uw contacten tonen zodat u ze kunt uitnodigen om te chatten.";
 "NSCalendarsUsageDescription" = "Bekijk uw geplande afspraken in de app.";
 "NSFaceIDUsageDescription" = "Face ID wordt gebruikt om toegang te krijgen tot uw app.";
+"NSLocationWhenInUseUsageDescription" = "Wanneer u uw locatie deelt met mensen heeft Element toegang nodig om dit op een kaart te tonen.";

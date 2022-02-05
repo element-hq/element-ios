@@ -16,10 +16,9 @@
 
 #import "SegmentedViewController.h"
 
-#import "ContactsTableViewController.h"
-
 @class Contact;
 @class RoomParticipantsViewController;
+@class AnalyticsScreenTimer;
 
 /**
  `RoomParticipantsViewController` delegate.

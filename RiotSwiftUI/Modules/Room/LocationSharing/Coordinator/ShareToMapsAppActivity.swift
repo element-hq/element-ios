@@ -26,8 +26,8 @@ class ShareToMapsAppActivity: UIActivity {
         case google
     }
     
-    let type: MapsAppType
-    let location: CLLocationCoordinate2D
+    private let type: MapsAppType
+    private let location: CLLocationCoordinate2D
     
     private override init() {
         fatalError()

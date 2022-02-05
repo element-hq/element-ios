@@ -28,9 +28,7 @@ final class OptionListCoordinator: OptionListCoordinatorProtocol {
     private let parameters: OptionListCoordinatorParameters
     private var optionListViewModel: OptionListViewModelProtocol
     private let optionListViewController: OptionListViewController
-    private lazy var slidingModalPresenter: SlidingModalPresenter = {
-        return SlidingModalPresenter()
-    }()
+    private lazy var slidingModalPresenter: SlidingModalPresenter = SlidingModalPresenter()
 
     // MARK: Public
 

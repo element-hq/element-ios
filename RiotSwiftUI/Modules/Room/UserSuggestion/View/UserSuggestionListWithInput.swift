@@ -18,7 +18,7 @@ import SwiftUI
 
 @available(iOS 14.0, *)
 struct UserSuggestionListWithInputViewModel {
-    let listViewModel: UserSuggestionViewModelProtocol
+    let listViewModel: UserSuggestionViewModel
     let callback: (String)->()
 }
 

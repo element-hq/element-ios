@@ -43,7 +43,7 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
     
     private var currentSubTaskIndex = 0
 
-    private var processingQueue = DispatchQueue(label: "org.matrix.sdk.MXSpace.processingQueue", attributes: .concurrent)
+    private var processingQueue = DispatchQueue(label: "io.element.MXSpace.processingQueue", attributes: .concurrent)
 
     private lazy var stateEventBuilder: MXRoomInitialStateEventBuilder = {
         return MXRoomInitialStateEventBuilder()
@@ -141,10 +141,6 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
             return
         }
         
-//        createdSpaceId = session.spaceService.rootSpaceSummaries.first?.roomId
-//        fakeTaskExecution(task: task)
-//        return
-
         switch task.type {
         case .createSpace:
             createSpace(andUpdate: task)
@@ -176,6 +172,7 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
             if response.isFailure {
                 self.updateCurrentTask(with: .failure)
             } else {
+                self.creationParams.isModified = false
                 self.createdSpace = response.value
                 self.updateCurrentTask(with: .success)
                 self.runNextTask()

@@ -53,6 +53,11 @@
         }
         
         [MXLog configure:configuration];
+        
+        // Configure our analytics. It will start if the option is enabled
+        Analytics *analytics = Analytics.shared;
+        [MXSDKOptions sharedInstance].analyticsDelegate = analytics;
+        [analytics startIfEnabled];
     }
     return self;
 }
@@ -227,36 +232,38 @@
                     break;
                 }
             }
-            
+
             if (isEncrypted)
             {
                 [MXFileStore setPreloadOptions:0];
-                
+
                 MXSession *session = [[MXSession alloc] initWithMatrixRestClient:account.mxRestClient];
                 MXWeakify(session);
                 [session setStore:fileStore success:^{
                     MXStrongifyAndReturnIfNil(session);
-                    
+
                     MXRoom *room = [MXRoom loadRoomFromStore:fileStore withRoomId:roomID matrixSession:session];
-                    
+
                     // Do not warn for unknown devices. We have cross-signing now
                     session.crypto.warnOnUnknowDevices = NO;
-                    
+
                     [room sendTextMessage:intent.content
+                                 threadId:nil
                                   success:^(NSString *eventId) {
                         completeWithCode(INSendMessageIntentResponseCodeSuccess);
                     } failure:^(NSError *error) {
                         completeWithCode(INSendMessageIntentResponseCodeFailure);
                     }];
-                    
+
                 } failure:^(NSError *error) {
                     completeWithCode(INSendMessageIntentResponseCodeFailure);
                 }];
-                
+
                 return;
             }
             
             [account.mxRestClient sendTextMessageToRoom:roomID
+                                               threadId:nil
                                                    text:intent.content
                                                 success:^(NSString *eventId) {
                 completeWithCode(INSendMessageIntentResponseCodeSuccess);

@@ -214,7 +214,7 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
     }
     
     private func notifyDataChange() {
-        multicastDelegate.invoke({ $0.recentsListServiceDidChangeData?(self) })
+        multicastDelegate.invoke({ $0.recentsListServiceDidChangeData?(self, totalCountsChanged: true) })
     }
     
 }

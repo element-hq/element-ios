@@ -19,7 +19,7 @@ import Combine
     
 @available(iOS 14, *)
 typealias TemplateRoomListViewModelType = StateStoreViewModel<TemplateRoomListViewState,
-                                                              TemplateRoomListStateAction,
+                                                              Never,
                                                               TemplateRoomListViewAction>
 @available(iOS 14.0, *)
 class TemplateRoomListViewModel: TemplateRoomListViewModelType, TemplateRoomListViewModelProtocol {
@@ -47,10 +47,12 @@ class TemplateRoomListViewModel: TemplateRoomListViewModelType, TemplateRoomList
     }
     
     private func startObservingRooms() {
-        let roomsUpdatePublisher = templateRoomListService.roomsSubject
-            .map(TemplateRoomListStateAction.updateRooms)
-            .eraseToAnyPublisher()
-        dispatch(actionPublisher: roomsUpdatePublisher)
+        templateRoomListService
+            .roomsSubject
+            .sink { [weak self] rooms in
+                self?.state.rooms = rooms
+            }
+            .store(in: &cancellables)
     }
     
     // MARK: - Public
@@ -61,13 +63,6 @@ class TemplateRoomListViewModel: TemplateRoomListViewModelType, TemplateRoomList
             didSelect(by: roomId)
         case .done:
             done()
-        }
-    }
-    
-    override class func reducer(state: inout TemplateRoomListViewState, action: TemplateRoomListStateAction) {
-        switch action {
-        case .updateRooms(let rooms):
-            state.rooms = rooms
         }
     }
     

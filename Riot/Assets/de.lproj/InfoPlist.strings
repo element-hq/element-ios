@@ -5,3 +5,4 @@
 "NSContactsUsageDescription" = "Element zeigt deine Kontakte an, damit du sie zum chatten einladen kannst.";
 "NSCalendarsUsageDescription" = "Sieh dir deine geplanten Meetings in der App an.";
 "NSFaceIDUsageDescription" = "Face-ID wird zum Zugriff auf deine App verwendet.";
+"NSLocationWhenInUseUsageDescription" = "Wenn du deinen Standort mit Personen teilst, braucht Element Zugriff um ihnen eine Karte anzuzeigen.";

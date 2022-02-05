@@ -125,12 +125,14 @@ final class SpaceExploreRoomViewController: UIViewController {
     }
     
     private func setupViews() {
-        let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
-            self?.cancelButtonAction()
+        if viewModel.showCancelMenuItem {
+            let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
+                self?.cancelButtonAction()
+            }
+            
+            self.navigationItem.leftBarButtonItem = cancelBarButtonItem
         }
-        
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
-        
+
         self.vc_removeBackTitle()
 
         self.titleView = MainTitleView()
@@ -143,6 +145,18 @@ final class SpaceExploreRoomViewController: UIViewController {
         self.setupTableView()
         
         self.setupTableViewHeader()
+    }
+    
+    private func setupJoinButton(canJoin: Bool) {
+        if canJoin {
+            let joinButtonItem = MXKBarButtonItem(title: VectorL10n.join, style: .done) { [weak self] in
+                self?.viewModel.process(viewAction: .join)
+            }
+            
+            self.navigationItem.rightBarButtonItem = joinButtonItem
+        } else {
+            self.navigationItem.rightBarButtonItem = nil
+        }
     }
     
     private func setupTableViewHeader() {
@@ -176,6 +190,8 @@ final class SpaceExploreRoomViewController: UIViewController {
             self.renderEmptyFilterResult()
         case .error(let error):
             self.render(error: error)
+        case .canJoin(let canJoin):
+            self.setupJoinButton(canJoin: canJoin)
         }
     }
     

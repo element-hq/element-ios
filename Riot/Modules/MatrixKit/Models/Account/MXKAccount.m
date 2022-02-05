@@ -36,6 +36,8 @@
 
 #import "MXKSwiftHeader.h"
 
+#import "GeneratedInterface-Swift.h"
+
 NSString *const kMXKAccountUserInfoDidChangeNotification = @"kMXKAccountUserInfoDidChangeNotification";
 NSString *const kMXKAccountAPNSActivityDidChangeNotification = @"kMXKAccountAPNSActivityDidChangeNotification";
 NSString *const kMXKAccountPushKitActivityDidChangeNotification = @"kMXKAccountPushKitActivityDidChangeNotification";
@@ -92,13 +94,10 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 @property (nonatomic, strong) id<MXBackgroundTask> backgroundTask;
 @property (nonatomic, strong) id<MXBackgroundTask> backgroundSyncBgTask;
 
-@property (nonatomic, strong) NSMutableDictionary<NSString *, id<NSCoding>> *others;
-
 @end
 
 @implementation MXKAccount
-@synthesize mxCredentials, mxSession, mxRestClient;
-@synthesize threePIDs;
+@synthesize mxSession, mxRestClient;
 @synthesize userPresence;
 @synthesize userTintColor;
 @synthesize hideUserPresence;
@@ -144,7 +143,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         notifyOpenSessionFailure = YES;
         
         // Report credentials and alloc REST client.
-        mxCredentials = credentials;
+        _mxCredentials = credentials;
         [self prepareRESTClient];
         
         userPresence = MXPresenceUnknown;
@@ -171,124 +170,24 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 
 - (id)initWithCoder:(NSCoder *)coder
 {
-    self = [super init];
+    self = [super initWithCoder:coder];
     
     if (self)
     {
         notifyOpenSessionFailure = YES;
-        
-        NSString *homeServerURL = [coder decodeObjectForKey:@"homeserverurl"];
-        NSString *userId = [coder decodeObjectForKey:@"userid"];
-        NSString *accessToken = [coder decodeObjectForKey:@"accesstoken"];
-        _identityServerURL = [coder decodeObjectForKey:@"identityserverurl"];
-        NSString *identityServerAccessToken = [coder decodeObjectForKey:@"identityserveraccesstoken"];
-        
-        mxCredentials = [[MXCredentials alloc] initWithHomeServer:homeServerURL
-                                                           userId:userId
-                                                      accessToken:accessToken];
-
-        mxCredentials.identityServer = _identityServerURL;
-        mxCredentials.identityServerAccessToken = identityServerAccessToken;
-        mxCredentials.deviceId = [coder decodeObjectForKey:@"deviceId"];  
-        mxCredentials.allowedCertificate = [coder decodeObjectForKey:@"allowedCertificate"];
         
         [self prepareRESTClient];
         
         [self registerAccountDataDidChangeIdentityServerNotification];
         [self registerIdentityServiceDidChangeAccessTokenNotification];
 
-        if ([coder decodeObjectForKey:@"threePIDs"])
-        {
-            threePIDs = [coder decodeObjectForKey:@"threePIDs"];
-        }
-        
-        if ([coder decodeObjectForKey:@"device"])
-        {
-            _device = [coder decodeObjectForKey:@"device"];
-        }
-
         userPresence = MXPresenceUnknown;
-        
-        if ([coder decodeObjectForKey:@"antivirusserverurl"])
-        {
-            _antivirusServerURL = [coder decodeObjectForKey:@"antivirusserverurl"];
-        }
-        
-        if ([coder decodeObjectForKey:@"pushgatewayurl"])
-        {
-            _pushGatewayURL = [coder decodeObjectForKey:@"pushgatewayurl"];
-        }
-        
-        _hasPusherForPushNotifications = [coder decodeBoolForKey:@"_enablePushNotifications"];
-        _hasPusherForPushKitNotifications = [coder decodeBoolForKey:@"enablePushKitNotifications"];
-        _enableInAppNotifications = [coder decodeBoolForKey:@"enableInAppNotifications"];
-        
-        _disabled = [coder decodeBoolForKey:@"disabled"];
-        _isSoftLogout = [coder decodeBoolForKey:@"isSoftLogout"];
-
-        _warnedAboutEncryption = [coder decodeBoolForKey:@"warnedAboutEncryption"];
-        
-        _others = [coder decodeObjectForKey:@"others"];
         
         // Refresh device information
         [self loadDeviceInformation:nil failure:nil];
     }
     
     return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)coder
-{
-    [coder encodeObject:mxCredentials.homeServer forKey:@"homeserverurl"];
-    [coder encodeObject:mxCredentials.userId forKey:@"userid"];
-    [coder encodeObject:mxCredentials.accessToken forKey:@"accesstoken"];
-    [coder encodeObject:mxCredentials.identityServerAccessToken forKey:@"identityserveraccesstoken"];
-
-    if (mxCredentials.deviceId)
-    {
-        [coder encodeObject:mxCredentials.deviceId forKey:@"deviceId"];
-    }
-
-    if (mxCredentials.allowedCertificate)
-    {
-        [coder encodeObject:mxCredentials.allowedCertificate forKey:@"allowedCertificate"];
-    }
-
-    if (self.threePIDs)
-    {
-        [coder encodeObject:threePIDs forKey:@"threePIDs"];
-    }
-    
-    if (self.device)
-    {
-        [coder encodeObject:_device forKey:@"device"];
-    }
-
-    if (self.identityServerURL)
-    {
-        [coder encodeObject:_identityServerURL forKey:@"identityserverurl"];
-    }
-    
-    if (self.antivirusServerURL)
-    {
-        [coder encodeObject:_antivirusServerURL forKey:@"antivirusserverurl"];
-    }
-    
-    if (self.pushGatewayURL)
-    {
-        [coder encodeObject:_pushGatewayURL forKey:@"pushgatewayurl"];
-    }
-    
-    [coder encodeBool:_hasPusherForPushNotifications forKey:@"_enablePushNotifications"];
-    [coder encodeBool:_hasPusherForPushKitNotifications forKey:@"enablePushKitNotifications"];
-    [coder encodeBool:_enableInAppNotifications forKey:@"enableInAppNotifications"];
-    
-    [coder encodeBool:_disabled forKey:@"disabled"];
-    [coder encodeBool:_isSoftLogout forKey:@"isSoftLogout"];
-
-    [coder encodeBool:_warnedAboutEncryption forKey:@"warnedAboutEncryption"];
-    
-    [coder encodeObject:_others forKey:@"others"];
 }
 
 #pragma mark - Properties
@@ -298,10 +197,10 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     if (identityServerURL.length)
     {
         _identityServerURL = identityServerURL;
-        mxCredentials.identityServer = identityServerURL;
+        self.mxCredentials.identityServer = identityServerURL;
         
         // Update services used in MXSession
-        [mxSession setIdentityServer:mxCredentials.identityServer andAccessToken:mxCredentials.identityServerAccessToken];
+        [mxSession setIdentityServer:self.mxCredentials.identityServer andAccessToken:self.mxCredentials.identityServerAccessToken];
     }
     else
     {
@@ -355,24 +254,19 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 {
     if (self.userDisplayName.length)
     {
-        return [NSString stringWithFormat:@"%@ (%@)", self.userDisplayName, mxCredentials.userId];
+        return [NSString stringWithFormat:@"%@ (%@)", self.userDisplayName, self.mxCredentials.userId];
     }
     else
     {
-        return mxCredentials.userId;
+        return self.mxCredentials.userId;
     }
-}
-
-- (NSArray<MXThirdPartyIdentifier *> *)threePIDs
-{
-    return threePIDs;
 }
 
 - (NSArray<NSString *> *)linkedEmails
 {
     NSMutableArray<NSString *> *linkedEmails = [NSMutableArray array];
 
-    for (MXThirdPartyIdentifier *threePID in threePIDs)
+    for (MXThirdPartyIdentifier *threePID in self.threePIDs)
     {
         if ([threePID.medium isEqualToString:kMX3PIDMediumEmail])
         {
@@ -387,7 +281,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 {
     NSMutableArray<NSString *> *linkedPhoneNumbers = [NSMutableArray array];
     
-    for (MXThirdPartyIdentifier *threePID in threePIDs)
+    for (MXThirdPartyIdentifier *threePID in self.threePIDs)
     {
         if ([threePID.medium isEqualToString:kMX3PIDMediumMSISDN])
         {
@@ -402,7 +296,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 {
     if (!userTintColor)
     {
-        userTintColor = [MXKTools colorWithRGBValue:[mxCredentials.userId hash]];
+        userTintColor = [MXKTools colorWithRGBValue:[self.mxCredentials.userId hash]];
     }
     
     return userTintColor;
@@ -410,7 +304,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 
 - (BOOL)pushNotificationServiceIsActive
 {
-    BOOL pushNotificationServiceIsActive = ([[MXKAccountManager sharedManager] isAPNSAvailable] && _hasPusherForPushNotifications && mxSession);
+    BOOL pushNotificationServiceIsActive = ([[MXKAccountManager sharedManager] isAPNSAvailable] && self.hasPusherForPushNotifications && mxSession);
     MXLogDebug(@"[MXKAccount][Push] pushNotificationServiceIsActive: %@", @(pushNotificationServiceIsActive));
 
     return pushNotificationServiceIsActive;
@@ -461,7 +355,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
             }
         }
     }
-    else if (_hasPusherForPushNotifications)
+    else if (self.hasPusherForPushNotifications)
     {
         MXLogDebug(@"[MXKAccount][Push] enablePushNotifications: Disable APNS for %@ account", self.mxCredentials.userId);
         
@@ -487,7 +381,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 
 - (BOOL)isPushKitNotificationActive
 {
-    BOOL isPushKitNotificationActive = ([[MXKAccountManager sharedManager] isPushAvailable] && _hasPusherForPushKitNotifications && mxSession);
+    BOOL isPushKitNotificationActive = ([[MXKAccountManager sharedManager] isPushAvailable] && self.hasPusherForPushKitNotifications && mxSession);
     MXLogDebug(@"[MXKAccount][Push] isPushKitNotificationActive: %@", @(isPushKitNotificationActive));
 
     return isPushKitNotificationActive;
@@ -535,7 +429,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
             failure (error);
         }
     }
-    else if (_hasPusherForPushKitNotifications)
+    else if (self.hasPusherForPushKitNotifications)
     {
         MXLogDebug(@"[MXKAccount][Push] enablePushKitNotifications: Disable Push for %@ account", self.mxCredentials.userId);
 
@@ -633,7 +527,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                                          success();
                                      }
                                      
-                                     [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountUserInfoDidChangeNotification object:self->mxCredentials.userId];
+                                     [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountUserInfoDidChangeNotification object:self.mxCredentials.userId];
                                  }
                                  failure:failure];
     }
@@ -653,7 +547,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                                        success();
                                    }
                                    
-                                   [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountUserInfoDidChangeNotification object:self->mxCredentials.userId];
+                                   [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountUserInfoDidChangeNotification object:self.mxCredentials.userId];
                                }
                                failure:failure];
     }
@@ -686,9 +580,9 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 
 - (void)load3PIDs:(void (^)(void))success failure:(void (^)(NSError *))failure
 {
+    
     [mxRestClient threePIDs:^(NSArray<MXThirdPartyIdentifier *> *threePIDs2) {
-
-        self->threePIDs = threePIDs2;
+        self->_threePIDs = threePIDs2;
 
         // Archive updated field
         [[MXKAccountManager sharedManager] saveAccounts];
@@ -708,9 +602,9 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 
 - (void)loadDeviceInformation:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
-    if (mxCredentials.deviceId)
+    if (self.mxCredentials.deviceId)
     {
-        [mxRestClient deviceByDeviceId:mxCredentials.deviceId success:^(MXDevice *device) {
+        [mxRestClient deviceByDeviceId:self.mxCredentials.deviceId success:^(MXDevice *device) {
             
             self->_device = device;
             
@@ -751,21 +645,21 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         [mxSession.myUser setPresence:userPresence
                      andStatusMessage:statusMessage
                               success:^{
-                                  MXLogDebug(@"[MXKAccount] %@: set user presence (%lu) succeeded", self->mxCredentials.userId, (unsigned long)self->userPresence);
+                                  MXLogDebug(@"[MXKAccount] %@: set user presence (%lu) succeeded", self.mxCredentials.userId, (unsigned long)self->userPresence);
                                   if (completion)
                                   {
                                       completion();
                                   }
                                   
-                                  [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountUserInfoDidChangeNotification object:self->mxCredentials.userId];
+                                  [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountUserInfoDidChangeNotification object:self.mxCredentials.userId];
                               }
                               failure:^(NSError *error) {
-                                  MXLogDebug(@"[MXKAccount] %@: set user presence (%lu) failed", self->mxCredentials.userId, (unsigned long)self->userPresence);
+                                  MXLogDebug(@"[MXKAccount] %@: set user presence (%lu) failed", self.mxCredentials.userId, (unsigned long)self->userPresence);
                               }];
     }
     else if (hideUserPresence)
     {
-        MXLogDebug(@"[MXKAccount] %@: set user presence is disabled.", mxCredentials.userId);
+        MXLogDebug(@"[MXKAccount] %@: set user presence is disabled.", self.mxCredentials.userId);
     }
 }
 
@@ -783,7 +677,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 -(void)openSessionWithStore:(id<MXStore>)store
 {
     // Sanity check
-    if (!mxCredentials || !mxRestClient)
+    if (!self.mxCredentials || !mxRestClient)
     {
         MXLogDebug(@"[MXKAccount] Matrix session cannot be created without credentials");
         return;
@@ -1048,9 +942,9 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 - (void)hydrateWithCredentials:(MXCredentials*)credentials
 {
     // Sanity check
-    if ([mxCredentials.userId isEqualToString:credentials.userId])
+    if ([self.mxCredentials.userId isEqualToString:credentials.userId])
     {
-        mxCredentials = credentials;
+        _mxCredentials = credentials;
         _isSoftLogout = NO;
         [[MXKAccountManager sharedManager] saveAccounts];
 
@@ -1058,10 +952,9 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     }
     else
     {
-        MXLogDebug(@"[MXKAccount] hydrateWithCredentials: Error: users ids mismatch: %@ vs %@", credentials.userId, mxCredentials.userId);
+        MXLogDebug(@"[MXKAccount] hydrateWithCredentials: Error: users ids mismatch: %@ vs %@", credentials.userId, self.mxCredentials.userId);
     }
 }
-
 
 - (void)deletePusher
 {
@@ -1259,7 +1152,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
             success();
         }
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountAPNSActivityDidChangeNotification object:self->mxCredentials.userId];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountAPNSActivityDidChangeNotification object:self.mxCredentials.userId];
         
     } failure:^(NSError *error) {
         
@@ -1278,7 +1171,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                     success();
                 }
                 
-                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountAPNSActivityDidChangeNotification object:self->mxCredentials.userId];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountAPNSActivityDidChangeNotification object:self.mxCredentials.userId];
                 
                 return;
             }
@@ -1295,7 +1188,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
             failure(error);
         }
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountAPNSActivityDidChangeNotification object:self->mxCredentials.userId];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountAPNSActivityDidChangeNotification object:self.mxCredentials.userId];
     }];
 }
 
@@ -1322,7 +1215,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                               MXLogDebug(@"[MXKAccount][Push] refreshPushKitPusher: Error: %@", error);
                           }];
     }
-    else if (_hasPusherForPushKitNotifications)
+    else if (self.hasPusherForPushKitNotifications)
     {
         if ([MXKAccountManager sharedManager].pushDeviceToken)
         {
@@ -1336,7 +1229,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         else
         {
             MXLogDebug(@"[MXKAccount][Push] refreshPushKitPusher: PushKit pusher for %@ account is already disabled. Reset _hasPusherForPushKitNotifications", self.mxCredentials.userId);
-            _hasPusherForPushKitNotifications = NO;
+            self->_hasPusherForPushKitNotifications = NO;
             [[MXKAccountManager sharedManager] saveAccounts];
         }
     }
@@ -1398,7 +1291,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
             success();
         }
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountPushKitActivityDidChangeNotification object:self->mxCredentials.userId];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountPushKitActivityDidChangeNotification object:self.mxCredentials.userId];
         
     } failure:^(NSError *error) {
         
@@ -1417,7 +1310,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                     success();
                 }
                 
-                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountPushKitActivityDidChangeNotification object:self->mxCredentials.userId];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountPushKitActivityDidChangeNotification object:self.mxCredentials.userId];
                 
                 return;
             }
@@ -1434,7 +1327,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
             failure(error);
         }
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountPushKitActivityDidChangeNotification object:self->mxCredentials.userId];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountPushKitActivityDidChangeNotification object:self.mxCredentials.userId];
     }];
 }
 
@@ -1443,7 +1336,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     MXLogDebug(@"[MXKAccount][Push] enablePusher: %@", @(enabled));
 
     // Refuse to try & turn push on if we're not logged in, it's nonsensical.
-    if (!mxCredentials)
+    if (!self.mxCredentials)
     {
         MXLogDebug(@"[MXKAccount][Push] enablePusher: Not setting push token because we're not logged in");
         return;
@@ -1610,7 +1503,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
             [self.mxSession startWithSyncFilter:syncFilter onServerSyncDone:^{
                 MXStrongifyAndReturnIfNil(self);
 
-                MXLogDebug(@"[MXKAccount] %@: The session is ready. Matrix SDK session has been started in %0.fms.", self->mxCredentials.userId, [[NSDate date] timeIntervalSinceDate:self->openSessionStartDate] * 1000);
+                MXLogDebug(@"[MXKAccount] %@: The session is ready. Matrix SDK session has been started in %0.fms.", self.mxCredentials.userId, [[NSDate date] timeIntervalSinceDate:self->openSessionStartDate] * 1000);
 
                 [self setUserPresence:MXPresenceOnline andStatusMessage:nil completion:nil];
 
@@ -1745,11 +1638,11 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                 }
                 
                 // Here displayname or other information have been updated, post update notification.
-                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountUserInfoDidChangeNotification object:self->mxCredentials.userId];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountUserInfoDidChangeNotification object:self.mxCredentials.userId];
             }];
             
             // User information are just up-to-date (`mxSession` is running), post update notification.
-            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountUserInfoDidChangeNotification object:mxCredentials.userId];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountUserInfoDidChangeNotification object:self.mxCredentials.userId];
         }
     }
     else if (mxSession.state == MXSessionStateStoreDataReady || mxSession.state == MXSessionStateSyncInProgress)
@@ -1764,40 +1657,30 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         {
             // Here the initial server sync is in progress. The session is not running yet, but some user's information are available (from local storage).
             // We post update notification to let observer take into account this user's information even if they may not be up-to-date.
-            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountUserInfoDidChangeNotification object:mxCredentials.userId];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountUserInfoDidChangeNotification object:self.mxCredentials.userId];
         }
     }
     else if (mxSession.state == MXSessionStatePaused)
     {
         isPauseRequested = NO;
     }
-    else if (mxSession.state == MXSessionStateUnknownToken)
-    {
-        // Logout this account
-        [[MXKAccountManager sharedManager] removeAccount:self completion:nil];
-    }
-    else if (mxSession.state == MXSessionStateSoftLogout)
-    {
-        // Soft logout this account
-        [[MXKAccountManager sharedManager] softLogout:self];
-    }
 }
 
 - (void)prepareRESTClient
 {
-    if (!mxCredentials)
+    if (!self.mxCredentials)
     {
         return;
     }
-    
-    mxRestClient = [[MXRestClient alloc] initWithCredentials:mxCredentials andOnUnrecognizedCertificateBlock:^BOOL(NSData *certificate) {
-        
+    MXWeakify(self);
+    mxRestClient = [[MXRestClient alloc] initWithCredentials:self.mxCredentials andOnUnrecognizedCertificateBlock:^BOOL(NSData *certificate) {
+        MXStrongifyAndReturnValueIfNil(self, NO);
         if (_onCertificateChangeBlock)
         {
             if (_onCertificateChangeBlock (self, certificate))
             {
                 // Update the certificate in credentials
-                self->mxCredentials.allowedCertificate = certificate;
+                self.mxCredentials.allowedCertificate = certificate;
                 
                 // Archive updated field
                 [[MXKAccountManager sharedManager] saveAccounts];
@@ -1805,14 +1688,37 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                 return YES;
             }
             
-            self->mxCredentials.ignoredCertificate = certificate;
+            self.mxCredentials.ignoredCertificate = certificate;
             
             // Archive updated field
             [[MXKAccountManager sharedManager] saveAccounts];
         }
         return NO;
     
+    } andPersistentTokenDataHandler:^(void (^handler)(NSArray<MXCredentials *> *credentials, void (^completion)(BOOL didUpdateCredentials))) {
+        [MXKAccountManager.sharedManager readAndWriteCredentials:handler];
+    } andUnauthenticatedHandler:^(MXError *error, BOOL isSoftLogout, BOOL isRefreshTokenAuth, void (^completion)(void)) {
+        MXStrongifyAndReturnIfNil(self);
+        [self handleUnauthenticatedWithError:error isSoftLogout:isSoftLogout isRefreshTokenAuth:isRefreshTokenAuth andCompletion:completion];
     }];
+}
+
+- (void)handleUnauthenticatedWithError:(MXError *)error isSoftLogout:(BOOL)isSoftLogout isRefreshTokenAuth:(BOOL)isRefreshTokenAuth andCompletion:(void (^)(void))completion
+{
+    
+    [Analytics.shared trackAuthUnauthenticatedErrorWithSoftLogout:isSoftLogout refreshTokenAuth:isRefreshTokenAuth errorCode:error.errcode errorReason:error.error];
+    MXLogDebug(@"[MXKAccountManager] handleUnauthenticated: trackAuthUnauthenticatedErrorWithSoftLogout sent");
+    if (isSoftLogout)
+    {
+        MXLogDebug(@"[MXKAccountManager] handleUnauthenticated: soft logout.");
+        [[MXKAccountManager sharedManager] softLogout:self];
+        completion();
+    }
+    else
+    {
+        MXLogDebug(@"[MXKAccountManager] handleUnauthenticated: hard logout.");
+        [[MXKAccountManager sharedManager] removeAccount:self sendLogoutRequest:NO completion:completion];
+    }
 }
 
 - (void)onDateTimeFormatUpdate
@@ -1871,7 +1777,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 #pragma mark - Crypto
 - (void)resetDeviceId
 {
-    mxCredentials.deviceId = nil;
+    self.mxCredentials.deviceId = nil;
 
     // Archive updated field
     [[MXKAccountManager sharedManager] saveAccounts];
@@ -2187,11 +2093,11 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     MXSession *mxSession = notification.object;
     if (mxSession == self.mxSession)
     {
-        if (![mxCredentials.identityServer isEqualToString:self.mxSession.accountDataIdentityServer])
+        if (![self.mxCredentials.identityServer isEqualToString:self.mxSession.accountDataIdentityServer])
         {
             _identityServerURL = self.mxSession.accountDataIdentityServer;
-            mxCredentials.identityServer = _identityServerURL;
-            mxCredentials.identityServerAccessToken = nil;
+            self.mxCredentials.identityServer = _identityServerURL;
+            self.mxCredentials.identityServerAccessToken = nil;
 
             // Archive updated field
             [[MXKAccountManager sharedManager] saveAccounts];
@@ -2204,7 +2110,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 
 - (void)identityService:(MXIdentityService *)identityService didUpdateAccessToken:(NSString *)accessToken
 {
-    mxCredentials.identityServerAccessToken = accessToken;
+    self.mxCredentials.identityServerAccessToken = accessToken;
 }
 
 - (void)registerIdentityServiceDidChangeAccessTokenNotification
@@ -2220,9 +2126,9 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     NSString *identityServer = userInfo[MXIdentityServiceNotificationIdentityServerKey];
     NSString *accessToken = userInfo[MXIdentityServiceNotificationAccessTokenKey];
     
-    if (userId && identityServer && accessToken && [mxCredentials.identityServer isEqualToString:identityServer])
+    if (userId && identityServer && accessToken && [self.mxCredentials.identityServer isEqualToString:identityServer])
     {
-        mxCredentials.identityServerAccessToken = accessToken;
+        self.mxCredentials.identityServerAccessToken = accessToken;
 
         // Archive updated field
         [[MXKAccountManager sharedManager] saveAccounts];

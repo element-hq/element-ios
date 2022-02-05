@@ -16,6 +16,7 @@
 
 import SwiftUI
 
+/// `WaitOverlay` allows to easily add an overlay that covers the entire with an `ActivityIndicator` at the center
 @available(iOS 14.0, *)
 struct WaitOverlay: ViewModifier {
     // MARK: - Properties
