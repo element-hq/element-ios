@@ -5415,6 +5415,10 @@ public class VectorL10n: NSObject {
   public static var spacesAddRoom: String { 
     return VectorL10n.tr("Vector", "spaces_add_room") 
   }
+  /// You do not have permissions to add rooms to this space.
+  public static var spacesAddRoomMissingPermissionMessage: String { 
+    return VectorL10n.tr("Vector", "spaces_add_room_missing_permission_message") 
+  }
   /// Adding rooms coming soon
   public static var spacesAddRoomsComingSoonTitle: String { 
     return VectorL10n.tr("Vector", "spaces_add_rooms_coming_soon_title") 

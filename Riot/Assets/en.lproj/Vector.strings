@@ -1900,6 +1900,7 @@ Tap the + to start adding people.";
 
 "spaces_invite_people" = "Invite people";
 "spaces_add_room" = "Add room";
+"spaces_add_room_missing_permission_message" = "You do not have permissions to add rooms to this space.";
 "spaces_add_space" = "Add space";
 
 // Mark: Avatar

@@ -393,7 +393,15 @@ extension SideMenuCoordinator: SpaceMenuPresenterDelegate {
             case .exploreMembers:
                 self.showMembers(spaceId: spaceId, session: session)
             case .addRoom:
-                self.showAddRoom(spaceId: spaceId, session: session)
+                session.spaceService.getSpace(withId: spaceId)?.canAddRoom { canAddRoom in
+                    if canAddRoom {
+                        self.showAddRoom(spaceId: spaceId, session: session)
+                    } else {
+                        let alert = UIAlertController(title: VectorL10n.spacesAddRoom, message: VectorL10n.spacesAddRoomMissingPermissionMessage, preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: VectorL10n.ok, style: .default, handler: nil))
+                        self.toPresentable().present(alert, animated: true, completion: nil)
+                    }
+                }
             case .addSpace:
                 AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.spacesAddSpace, message: VectorL10n.spacesComingSoonDetail(AppInfo.current.displayName))
             case .settings:

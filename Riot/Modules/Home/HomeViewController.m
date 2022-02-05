@@ -309,6 +309,22 @@
     }
 }
 
+- (void)createNewRoom
+{
+    if (recentsDataSource.currentSpace) {
+        [recentsDataSource.currentSpace canAddRoomWithCompletion:^(BOOL canAddRoom) {
+            if (canAddRoom) {
+                [super createNewRoom];
+            } else {
+                [[AppDelegate theDelegate] showAlertWithTitle:[VectorL10n roomRecentsCreateEmptyRoom]
+                                                      message:[VectorL10n spacesAddRoomMissingPermissionMessage]];
+            }
+        }];
+    } else {
+        [super createNewRoom];
+    }
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

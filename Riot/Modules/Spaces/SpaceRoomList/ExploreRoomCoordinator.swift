@@ -124,7 +124,7 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
     }
 
     private func createShowSpaceExploreRoomCoordinator(session: MXSession, spaceId: String, spaceName: String?) -> SpaceExploreRoomCoordinator {
-        let coordinator = SpaceExploreRoomCoordinator(parameters: SpaceExploreRoomCoordinatorParameters(session: session, spaceId: spaceId, spaceName: spaceName))
+        let coordinator = SpaceExploreRoomCoordinator(parameters: SpaceExploreRoomCoordinatorParameters(session: session, spaceId: spaceId, spaceName: spaceName, showCancelMenuItem: self.navigationRouter.modules.isEmpty))
         coordinator.delegate = self
         return coordinator
     }
