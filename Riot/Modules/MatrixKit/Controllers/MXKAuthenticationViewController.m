@@ -981,8 +981,7 @@
                     {
                         // Trigger here a register request in order to associate the filled userId and password to the current session id
                         // This will check the availability of the userId at the same time
-                        NSDictionary *parameters = @{@"auth": @{},
-                                                     @"username": self.authInputsView.userId,
+                        NSDictionary *parameters = @{@"username": self.authInputsView.userId,
                                                      @"password": self.authInputsView.password,
                                                      @"bind_email": @(NO),
                                                      @"initial_device_display_name":self.deviceDisplayName
