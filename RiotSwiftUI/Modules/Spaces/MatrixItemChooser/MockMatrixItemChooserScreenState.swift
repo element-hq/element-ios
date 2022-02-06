@@ -50,7 +50,7 @@ enum MockMatrixItemChooserScreenState: MockScreenState, CaseIterable {
         
         return (
             [service, viewModel],
-            AnyView(MatrixItemChooser(viewModel: viewModel.context)
+            AnyView(MatrixItemChooser(viewModel: viewModel.context, listBottomPadding: nil)
                 .addDependency(MockAvatarService.example))
         )
     }

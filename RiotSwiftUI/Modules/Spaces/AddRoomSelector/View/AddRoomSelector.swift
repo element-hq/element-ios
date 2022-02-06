@@ -29,7 +29,7 @@ struct AddRoomSelector: View {
 
     @ViewBuilder
     var body: some View {
-        MatrixItemChooser(viewModel: viewModel)
+        MatrixItemChooser(viewModel: viewModel, listBottomPadding: nil)
             .background(theme.colors.background)
             .navigationBarItems(leading: Button(VectorL10n.cancel, action: {
                 viewModel.send(viewAction: .cancel)

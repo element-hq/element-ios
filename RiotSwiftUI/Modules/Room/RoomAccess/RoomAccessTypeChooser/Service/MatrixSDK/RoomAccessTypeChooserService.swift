@@ -117,11 +117,6 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
         
         if let joinRule = _joinRule {
             
-//            waitingMessageSubject.send(VectorL10n.roomAccessSettingsScreenSettingRoomAccess)
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//                self.waitingMessageSubject.send(nil)
-//                completion()
-//            }
             room.setJoinRule(joinRule) { [weak self] response in
                 guard let self = self else { return }
 
@@ -147,12 +142,6 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
         
         waitingMessageSubject.send(VectorL10n.roomAccessSettingsScreenUpgradeAlertUpgrading)
         
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//            self.waitingMessageSubject.send(nil)
-//            self.roomUpgradeRequired = false
-//            completion(true, self.currentRoomId)
-//        }
-
         if autoInviteUsers, let room = session.room(withRoomId: self.currentRoomId) {
             self.currentOperation = room.members { [weak self] response in
                 guard let self = self else { return }
