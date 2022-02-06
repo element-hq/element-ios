@@ -30,7 +30,6 @@ struct TemplateUserProfile: View {
     @ObservedObject var viewModel: TemplateUserProfileViewModel.Context
     
     var body: some View {
-        EmptyView()
         VStack {
             TemplateUserProfileHeader(
                 avatar: viewModel.viewState.avatar,

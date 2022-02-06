@@ -23,7 +23,7 @@ protocol OptionListCoordinatorDelegate: AnyObject {
     func optionListCoordinatorDidCancel(_ coordinator: OptionListCoordinatorProtocol)
 }
 
-/// `OptionListCoordinatorProtocol` is a protocol describing a Coordinator that handle xxxxxxx navigation flow.
+/// `OptionListCoordinatorProtocol` is a protocol describing a Coordinator that handle invite options screen navigation flow.
 protocol OptionListCoordinatorProtocol: Coordinator, Presentable {
     var delegate: OptionListCoordinatorDelegate? { get }
 }

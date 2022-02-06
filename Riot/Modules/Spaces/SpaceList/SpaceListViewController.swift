@@ -32,13 +32,13 @@ final class SpaceListViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     // MARK: Private
 
     private var viewModel: SpaceListViewModelType!
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
-    private var activityPresenter: ActivityIndicatorPresenter!
     
     private var sections: [SpaceListSection] = []
 
@@ -59,7 +59,6 @@ final class SpaceListViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.setupViews()
-        self.activityPresenter = ActivityIndicatorPresenter()
         self.errorPresenter = MXKErrorAlertPresentation()
         
         self.registerThemeServiceDidChangeThemeNotification()
@@ -86,6 +85,8 @@ final class SpaceListViewController: UIViewController {
         
         self.titleLabel.textColor = theme.colors.primaryContent
         self.titleLabel.font = theme.fonts.bodySB
+        
+        self.activityIndicator.color = theme.colors.secondaryContent
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -124,14 +125,11 @@ final class SpaceListViewController: UIViewController {
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
-        if let selectedRow = self.tableView.indexPathForSelectedRow {
-            self.tableView.deselectRow(at: selectedRow, animated: true)
-        }
+        self.activityIndicator.startAnimating()
     }
     
     private func renderLoaded(sections: [SpaceListSection]) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        self.activityIndicator.stopAnimating()
         self.sections = sections
         self.tableView.reloadData()
     }
@@ -141,7 +139,6 @@ final class SpaceListViewController: UIViewController {
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
 }

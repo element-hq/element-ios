@@ -30,7 +30,7 @@ struct RoomSuggestionSpaceChooserSelector: View {
 
     @ViewBuilder
     var body: some View {
-        MatrixItemChooser(viewModel: viewModel)
+        MatrixItemChooser(viewModel: viewModel, listBottomPadding: nil)
             .background(theme.colors.background)
             .navigationTitle(VectorL10n.roomSuggestionSettingsScreenNavTitle)
             .navigationBarBackButtonHidden(true)

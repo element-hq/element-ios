@@ -32,11 +32,6 @@ enum TemplateRoomListCoordinatorAction {
 
 // MARK: - View model
 
-/// Actions to be performed on the `ViewModel` State
-enum TemplateRoomListStateAction {
-    case updateRooms([TemplateRoomListRoom])
-}
-
 /// Actions sent by the`ViewModel` to the `Coordinator`.
 enum TemplateRoomListViewModelAction {
     case didSelectRoom(String)

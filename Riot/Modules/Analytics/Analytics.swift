@@ -23,11 +23,14 @@ import AnalyticsEvents
 /// ## Creating Analytics Events
 ///
 /// Events are managed in a shared repo for all Element clients https://github.com/matrix-org/matrix-analytics-events
-/// To add a new event create a PR to that repo with the new/updated schema.
+/// To add a new event create a PR to that repo with the new/updated schema. Element's Podfile has
+/// a local version of the pod (commented out) for development purposes.
 /// Once merged into `main`, follow the steps below to integrate the changes into the project:
-/// 1. Merge `main` into the `release/swift` branch.
-/// 2. Run `bundle exec pod update AnalyticsEvents` to update the pod.
-/// 3. Make sure to commit `Podfile.lock` with the new commit hash.
+/// 1. Check if `main` contains any source breaking changes to the events. If so, please
+/// wait until you are ready to merge your work into element-ios.
+/// 2. Merge `main` into the `release/swift` branch.
+/// 3. Run `bundle exec pod update AnalyticsEvents` to update the pod.
+/// 4. Make sure to commit `Podfile.lock` with the new commit hash.
 ///
 @objcMembers class Analytics: NSObject {
     
@@ -93,7 +96,7 @@ import AnalyticsEvents
         
         // Catch and log crashes
         MXLogger.logCrashes(true)
-        MXLogger.setBuildVersion(AppDelegate.theDelegate().build)
+        MXLogger.setBuildVersion(AppInfo.current.buildInfo.readableBuildVersion)
     }
     
     /// Use the analytics settings from the supplied session to configure analytics.
@@ -208,6 +211,18 @@ extension Analytics {
             let event = AnalyticsEvent.Error(context: nil, domain: .E2EE, name: reason.errorName)
             capture(event: event)
         }
+    }
+    
+    /// Track when a user becomes unauthenticated without pressing the `sign out` button.
+    /// - Parameters:
+    ///   - softLogout: Wether it was a soft/hard logout that was triggered.
+    ///   - refreshTokenAuth: Wether it was either an access-token-based or refresh-token-based auth mechanism enabled.
+    ///   - errorCode: The error code as returned by the homeserver that triggered the logout.
+    ///   - errorReason: The reason for the error as returned by the homeserver that triggered the logout.
+    func trackAuthUnauthenticatedError(softLogout: Bool, refreshTokenAuth: Bool, errorCode: String, errorReason: String) {
+        let errorCode = AnalyticsEvent.UnauthenticatedError.ErrorCode(rawValue: errorCode) ?? .M_UNKNOWN
+        let event = AnalyticsEvent.UnauthenticatedError(errorCode: errorCode, errorReason: errorReason, refreshTokenAuth: refreshTokenAuth, softLogout: softLogout)
+        client.capture(event)
     }
     
     /// Track whether the user accepted or declined the terms to an identity server.

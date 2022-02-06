@@ -306,16 +306,15 @@
     return first;
 }
 
-- (MXKRoomBubbleComponent*) getFirstBubbleComponentWithDisplay
+- (MXKRoomBubbleComponent*)getFirstBubbleComponentWithDisplay
 {
     // Look for the first component which is actually displayed (some event are ignored in room history display).
     MXKRoomBubbleComponent* first = nil;
     
     @synchronized(bubbleComponents)
     {
-        for (NSInteger index = 0; index < bubbleComponents.count; index++)
+        for (MXKRoomBubbleComponent *component in bubbleComponents)
         {
-            MXKRoomBubbleComponent *component = bubbleComponents[index];
             if (component.attributedTextMessage)
             {
                 first = component;
@@ -325,6 +324,26 @@
     }
     
     return first;
+}
+
+- (MXKRoomBubbleComponent*)getLastBubbleComponentWithDisplay
+{
+    // Look for the first component which is actually displayed (some event are ignored in room history display).
+    MXKRoomBubbleComponent* lastVisibleComponent = nil;
+
+    @synchronized(bubbleComponents)
+    {
+        for (MXKRoomBubbleComponent *component in bubbleComponents.reverseObjectEnumerator)
+        {
+            if (component.attributedTextMessage)
+            {
+                lastVisibleComponent = component;
+                break;
+            }
+        }
+    }
+
+    return lastVisibleComponent;
 }
 
 - (NSAttributedString*)attributedTextMessageWithHighlightedEvent:(NSString*)eventId tintColor:(UIColor*)tintColor
@@ -351,10 +370,14 @@
     return customAttributedTextMsg;
 }
 
-- (void)highlightPatternInTextMessage:(NSString*)pattern withForegroundColor:(UIColor*)patternColor andFont:(UIFont*)patternFont
+- (void)highlightPatternInTextMessage:(NSString*)pattern
+                  withBackgroundColor:(UIColor *)backgroundColor
+                      foregroundColor:(UIColor*)foregroundColor
+                              andFont:(UIFont*)patternFont
 {
     highlightedPattern = pattern;
-    highlightedPatternColor = patternColor;
+    highlightedPatternBackgroundColor = backgroundColor;
+    highlightedPatternForegroundColor = foregroundColor;
     highlightedPatternFont = patternFont;
     
     // Indicate that the text message layout should be recomputed.
@@ -607,6 +630,22 @@
     return NO;
 }
 
+- (BOOL)hasThreadRoot
+{
+    @synchronized (bubbleComponents)
+    {
+        for (MXKRoomBubbleComponent *component in bubbleComponents)
+        {
+            if (component.thread)
+            {
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
+}
+
 - (MXKRoomBubbleComponentDisplayFix)displayFix
 {
     MXKRoomBubbleComponentDisplayFix displayFix = MXKRoomBubbleComponentDisplayFixNone;
@@ -703,6 +742,27 @@
 {
     // Not supported yet (TODO for audio, file).
     return NO;
+}
+
+- (BOOL)isAttachment
+{
+    if (!self.attachment)
+    {
+        return NO;
+    }
+    
+    if (!attachment.contentURL || !attachment.contentInfo) {
+        return NO;
+    }
+    
+    switch (self.attachment.type) {
+        case MXKAttachmentTypeFile:
+        case MXKAttachmentTypeAudio:
+        case MXKAttachmentTypeVoiceMessage:
+            return YES;
+        default:
+            return NO;
+    }
 }
 
 - (void)setMaxTextViewWidth:(CGFloat)inMaxTextViewWidth
@@ -873,10 +933,16 @@
         
         while (range.location != NSNotFound)
         {
-            if (highlightedPatternColor)
+            if (highlightedPatternBackgroundColor)
+            {
+                // Update background color
+                [customAttributedTextMsg addAttribute:NSBackgroundColorAttributeName value:highlightedPatternBackgroundColor range:range];
+            }
+
+            if (highlightedPatternForegroundColor)
             {
                 // Update text color
-                [customAttributedTextMsg addAttribute:NSForegroundColorAttributeName value:highlightedPatternColor range:range];
+                [customAttributedTextMsg addAttribute:NSForegroundColorAttributeName value:highlightedPatternForegroundColor range:range];
             }
             
             if (highlightedPatternFont)

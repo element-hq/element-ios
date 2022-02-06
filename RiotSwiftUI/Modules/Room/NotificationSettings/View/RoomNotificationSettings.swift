@@ -19,6 +19,8 @@ import SwiftUI
 @available(iOS 14.0.0, *)
 struct RoomNotificationSettings: View {
     
+    @Environment(\.theme) var theme: ThemeSwiftUI
+    
     @ObservedObject var viewModel: RoomNotificationSettingsSwiftUIViewModel
     
     let presentedModally: Bool
@@ -67,6 +69,7 @@ struct RoomNotificationSettings: View {
         .onAppear {
             viewModel.process(viewAction: .load)
         }
+        .accentColor(theme.colors.accent)
     }
 }
 

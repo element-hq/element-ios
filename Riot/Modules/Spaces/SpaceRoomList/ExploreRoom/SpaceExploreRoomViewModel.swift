@@ -17,6 +17,7 @@
  */
 
 import Foundation
+import MatrixSDK
 
 final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
     
@@ -35,6 +36,12 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
     private var spaceRoom: MXRoom?
     private var powerLevels: MXRoomPowerLevels?
     private var oneSelfPowerLevel: Int?
+
+    private var canJoin: Bool = false {
+        didSet {
+            self.update(viewState: .canJoin(self.canJoin))
+        }
+    }
 
     private var itemDataList: [SpaceExploreRoomListItemViewData] = [] {
         didSet {
@@ -60,21 +67,26 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
         }
     }
     
+    private var spaceGraphObserver: Any?
+    
     // MARK: Public
 
     weak var viewDelegate: SpaceExploreRoomViewModelViewDelegate?
     weak var coordinatorDelegate: SpaceExploreRoomViewModelCoordinatorDelegate?
-    
+    private(set) var showCancelMenuItem: Bool
+
     // MARK: - Setup
     
     init(parameters: SpaceExploreRoomCoordinatorParameters) {
         self.session = parameters.session
         self.spaceId = parameters.spaceId
         self.spaceName = parameters.spaceName
+        self.showCancelMenuItem = parameters.showCancelMenuItem
     }
     
     deinit {
         self.cancelOperations()
+
     }
     
     // MARK: - Public
@@ -105,6 +117,8 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
             removeChild(withRoomId: item.childInfo.childRoomId)
         case .join(let item):
             joinRoom(withRoomId: item.childInfo.childRoomId)
+        case .joinOpenedSpace:
+            self.joinSpace()
         }
     }
     
@@ -152,6 +166,8 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
             }
         }
 
+        self.canJoin = self.session.room(withRoomId: spaceId) == nil
+        
         self.currentOperation = self.session.spaceService.getSpaceChildrenForSpace(withId: self.spaceId, suggestedOnly: false, limit: nil, maxDepth: 1, paginationToken: self.nextBatch, completion: { [weak self] response in
             guard let self = self else {
                 return
@@ -201,6 +217,9 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
     
     private func cancelOperations() {
         self.currentOperation?.cancel()
+        if let observer = self.spaceGraphObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
     
     private func updateFilteredItemList() {
@@ -362,5 +381,27 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
             action.attributes = .disabled
         }
         return action
+    }
+
+    private func joinSpace() {
+        self.update(viewState: .loading)
+        
+        self.currentOperation = session.joinRoom(spaceId) { [weak self] response in
+            switch response {
+            case .success:
+                self?.spaceGraphObserver = NotificationCenter.default.addObserver(forName: MXSpaceService.didBuildSpaceGraph, object: nil, queue: OperationQueue.main, using: { [weak self] notification in
+                    guard let self = self else { return }
+                    
+                    self.currentOperation = nil
+                    if let observer = self.spaceGraphObserver {
+                        NotificationCenter.default.removeObserver(observer)
+                    }
+                    self.canJoin = false
+                    self.update(viewState: .loaded(self.filteredItemDataList, self.nextBatch != nil && (self.searchKeyword ?? "").isEmpty))
+                })
+            case .failure(let error):
+                self?.update(viewState: .error(error))
+            }
+        }
     }
 }

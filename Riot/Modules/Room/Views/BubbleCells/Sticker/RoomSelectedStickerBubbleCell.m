@@ -121,6 +121,10 @@
             }
         }
         
+        RoomTimelineConfiguration *timelineConfiguration = [RoomTimelineConfiguration shared];
+        
+        [timelineConfiguration.currentStyle.cellLayoutUpdater updateLayoutForSelectedStickerCell:self];
+        
         // Retrieve the suitable content size for the attachment thumbnail
         CGSize contentSize = bubbleData.contentSize;
         // Update image view frame in order to center loading wheel (if any)

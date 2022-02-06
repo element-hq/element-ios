@@ -59,12 +59,26 @@ final class HomeserverConfigurationBuilder: NSObject {
             jitsiServerURL = hardcodedJitsiServerURL
         }
         
+        // Tile server configuration
+        
+        let tileServerMapStyleURL: URL
+        if let mapStyleURLString = wellKnown?.tileServer?.mapStyleURLString,
+           let mapStyleURL = URL(string: mapStyleURLString) {
+            tileServerMapStyleURL = mapStyleURL
+        } else {
+            tileServerMapStyleURL = BuildSettings.tileServerMapStyleURL
+        }
+        
+        let tileServerConfiguration = HomeserverTileServerConfiguration(mapStyleURL: tileServerMapStyleURL)
+        
         // Create HomeserverConfiguration
         
         let jitsiConfiguration = HomeserverJitsiConfiguration(serverDomain: jitsiPreferredDomain,
                                                               serverURL: jitsiServerURL)
                 
-        return HomeserverConfiguration(jitsi: jitsiConfiguration, isE2EEByDefaultEnabled: isE2EEByDefaultEnabled)
+        return HomeserverConfiguration(jitsi: jitsiConfiguration,
+                                       isE2EEByDefaultEnabled: isE2EEByDefaultEnabled,
+                                       tileServer: tileServerConfiguration)
     }
     
     // MARK: - Private

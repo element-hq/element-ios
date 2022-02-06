@@ -57,7 +57,7 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
     // MARK: Public
     func send(textMessage: String) {
         var localEcho: MXEvent? = nil
-        room.sendTextMessage(textMessage, localEcho: &localEcho, completion: { _ in })
+        room.sendTextMessage(textMessage, threadId: nil, localEcho: &localEcho, completion: { _ in })
     }
     
     // MARK: Private

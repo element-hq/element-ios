@@ -75,7 +75,7 @@ final class MatrixItemChooserCoordinator: Coordinator, Presentable {
             let view = viewProvider.view(with: viewModel.context).addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
             matrixItemChooserHostingController = VectorHostingController(rootView: view)
         } else {
-            let view = MatrixItemChooser(viewModel: viewModel.context)
+            let view = MatrixItemChooser(viewModel: viewModel.context, listBottomPadding: nil)
                 .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
             matrixItemChooserHostingController = VectorHostingController(rootView: view)
         }

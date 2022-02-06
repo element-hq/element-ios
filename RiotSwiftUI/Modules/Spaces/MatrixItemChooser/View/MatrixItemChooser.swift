@@ -24,6 +24,7 @@ struct MatrixItemChooser: View {
     // MARK: Properties
     
     @ObservedObject var viewModel: MatrixItemChooserViewModel.Context
+    let listBottomPadding: CGFloat?
     @State var searchText: String = ""
     
     // MARK: Private
@@ -73,6 +74,9 @@ struct MatrixItemChooser: View {
                             }
                         }
                     }
+                }
+                if let listBottomPadding = listBottomPadding {
+                    Spacer().frame(height: listBottomPadding)
                 }
             }
             .accessibility(identifier: "sectionsList")

@@ -36,7 +36,7 @@ class MatrixItemChooserService: MatrixItemChooserServiceProtocol {
     
     // MARK: Private
     
-    private let processingQueue = DispatchQueue(label: "io.matrix.element.MatrixItemChooserService.processingQueue")
+    private let processingQueue = DispatchQueue(label: "io.element.MatrixItemChooserService.processingQueue")
     private let completionQueue = DispatchQueue.main
 
     private let session: MXSession

@@ -17,7 +17,8 @@
 import Foundation
 
 /// Represents the room timeline style identifiers available
-enum RoomTimelineStyleIdentifier {
+@objc
+enum RoomTimelineStyleIdentifier: Int {
     case plain
     case bubble
 }

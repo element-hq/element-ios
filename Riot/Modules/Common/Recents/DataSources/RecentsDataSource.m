@@ -1468,12 +1468,14 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 #pragma mark - RecentsListServiceDelegate
 
 - (void)recentsListServiceDidChangeData:(id<RecentsListServiceProtocol>)service
+                     totalCountsChanged:(BOOL)totalCountsChanged
 {
     // no-op
 }
 
 - (void)recentsListServiceDidChangeData:(id<RecentsListServiceProtocol>)service
                              forSection:(RecentsListServiceSection)section
+                     totalCountsChanged:(BOOL)totalCountsChanged
 {
     NSInteger sectionIndex = -1;
     switch (section)
@@ -1500,8 +1502,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             sectionIndex = suggestedRoomsSection;
             break;
     }
-    
-    [self.delegate dataSource:self didCellChange:@(sectionIndex)];
+
+    RecentsSectionUpdate *update = [[RecentsSectionUpdate alloc] initWithSectionIndex:sectionIndex
+                                                                   totalCountsChanged:totalCountsChanged];
+    [self.delegate dataSource:self didCellChange:update];
 }
 
 @end

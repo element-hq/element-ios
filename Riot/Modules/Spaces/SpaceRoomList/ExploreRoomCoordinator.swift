@@ -28,6 +28,7 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
     private let spaceId: String
+    // We need to stack the ID of visited space and subspaces so we know what is the current space ID when navigating to a room
     private var spaceIdStack: [String]
     private weak var roomDetailCoordinator: SpaceChildRoomDetailCoordinator?
     private weak var currentExploreRoomCoordinator: SpaceExploreRoomCoordinator?
@@ -125,7 +126,7 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
     }
 
     private func createShowSpaceExploreRoomCoordinator(session: MXSession, spaceId: String, spaceName: String?) -> SpaceExploreRoomCoordinator {
-        let coordinator = SpaceExploreRoomCoordinator(parameters: SpaceExploreRoomCoordinatorParameters(session: session, spaceId: spaceId, spaceName: spaceName))
+        let coordinator = SpaceExploreRoomCoordinator(parameters: SpaceExploreRoomCoordinatorParameters(session: session, spaceId: spaceId, spaceName: spaceName, showCancelMenuItem: self.navigationRouter.modules.isEmpty))
         coordinator.delegate = self
         return coordinator
     }
@@ -180,10 +181,33 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
             return
         }
         
-        let coordinator = ContactsPickerCoordinator(session: session, room: room, currentSearchText: nil, actualParticipants: nil, invitedParticipants: nil, userParticipant: nil, navigationRouter: navigationRouter)
+        let coordinator = ContactsPickerCoordinator(session: session, room: room, initialSearchText: nil, actualParticipants: nil, invitedParticipants: nil, userParticipant: nil, navigationRouter: navigationRouter)
         coordinator.delegate = self
         coordinator.start()
         childCoordinators.append(coordinator)
+    }
+
+    private func startEditPollCoordinator(room: MXRoom, startEvent: MXEvent? = nil) {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+        
+        let parameters = PollEditFormCoordinatorParameters(room: room, pollStartEvent: startEvent)
+        let coordinator = PollEditFormCoordinator(parameters: parameters)
+        
+        coordinator.completion = { [weak self, weak coordinator] in
+            guard let self = self, let coordinator = coordinator else {
+                return
+            }
+            
+            self.navigationRouter.dismissModule(animated: true, completion: nil)
+            self.remove(childCoordinator: coordinator)
+        }
+        
+        add(childCoordinator: coordinator)
+        
+        navigationRouter.present(coordinator, animated: true)
+        coordinator.start()
     }
 }
 
@@ -290,7 +314,7 @@ extension ExploreRoomCoordinator: RoomViewControllerDelegate {
         // TODO:
     }
     
-    func roomViewController(_ roomViewController: RoomViewController, showRoomWithId roomID: String) {
+    func roomViewController(_ roomViewController: RoomViewController, showRoomWithId roomID: String, eventId eventID: String?) {
         self.navigateTo(roomWith: roomID)
     }
     
@@ -321,27 +345,8 @@ extension ExploreRoomCoordinator: RoomViewControllerDelegate {
         return true
     }
     
-    func roomViewControllerDidRequestPollCreationFormPresentation(_ roomViewController: RoomViewController) {
-        guard #available(iOS 14.0, *) else {
-            return
-        }
-        
-        let parameters = PollEditFormCoordinatorParameters(room: roomViewController.roomDataSource.room)
-        let coordinator = PollEditFormCoordinator(parameters: parameters)
-        
-        coordinator.completion = { [weak self, weak coordinator] in
-            guard let self = self, let coordinator = coordinator else {
-                return
-            }
-            
-            self.navigationRouter.dismissModule(animated: true, completion: nil)
-            self.remove(childCoordinator: coordinator)
-        }
-        
-        add(childCoordinator: coordinator)
-        
-        navigationRouter.present(coordinator, animated: true)
-        coordinator.start()
+    func roomViewController(_ roomViewController: RoomViewController, didRequestEditForPollWithStart startEvent: MXEvent) {
+        startEditPollCoordinator(room: roomViewController.roomDataSource.room, startEvent: startEvent)
     }
     
     func roomViewControllerDidRequestLocationSharingFormPresentation(_ roomViewController: RoomViewController) {
@@ -352,33 +357,53 @@ extension ExploreRoomCoordinator: RoomViewControllerDelegate {
         // TODO:
     }
 
-    func roomViewController(_ roomViewController: RoomViewController, canEndPollWithEventIdentifier eventIdentifier: String) -> Bool {
+    func roomViewController(_ roomViewController: RoomViewController, locationShareActivityViewControllerFor event: MXEvent) -> UIActivityViewController? {
+        guard let location = event.location else {
+            return nil
+        }
+        
+        return LocationSharingCoordinator.shareLocationActivityController(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
+    }
+
+    func roomViewController(_ roomViewController: RoomViewController, canEditPollWithEventIdentifier eventIdentifier: String) -> Bool {
         guard #available(iOS 14.0, *) else {
             return false
         }
         
-        return PollTimelineProvider.shared.pollTimelineCoordinatorForEventIdentifier(eventIdentifier)?.canEndPoll() ?? false
+        return TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.canEditPoll() ?? false
     }
-    
+
     func roomViewController(_ roomViewController: RoomViewController, endPollWithEventIdentifier eventIdentifier: String) {
         guard #available(iOS 14.0, *) else {
             return
         }
         
-        PollTimelineProvider.shared.pollTimelineCoordinatorForEventIdentifier(eventIdentifier)?.endPoll()
+        TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.endPoll()
+    }
+    
+    func roomViewControllerDidRequestPollCreationFormPresentation(_ roomViewController: RoomViewController) {
+        startEditPollCoordinator(room: roomViewController.roomDataSource.room)
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, canEndPollWithEventIdentifier eventIdentifier: String) -> Bool {
+        guard #available(iOS 14.0, *) else {
+            return false
+        }
+        
+        return TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.canEndPoll() ?? false
     }
     
 }
 
 // MARK: - ContactsPickerCoordinatorDelegate
 extension ExploreRoomCoordinator: ContactsPickerCoordinatorDelegate {
-    func contactsPickerCoordinatorDidStartLoading(_ coordinator: ContactsPickerCoordinatorType) {
+    func contactsPickerCoordinatorDidStartLoading(_ coordinator: ContactsPickerCoordinatorProtocol) {
     }
     
-    func contactsPickerCoordinatorDidEndLoading(_ coordinator: ContactsPickerCoordinatorType) {
+    func contactsPickerCoordinatorDidEndLoading(_ coordinator: ContactsPickerCoordinatorProtocol) {
     }
     
-    func contactsPickerCoordinatorDidClose(_ coordinator: ContactsPickerCoordinatorType) {
+    func contactsPickerCoordinatorDidClose(_ coordinator: ContactsPickerCoordinatorProtocol) {
         childCoordinators.removeLast()
     }
     

@@ -115,7 +115,7 @@
             if (self->roomTopicListener && self.mxRoom)
             {
                 MXWeakify(self);
-                [self.mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+                [self.mxRoom liveTimeline:^(id<MXEventTimeline> liveTimeline) {
                     MXStrongifyAndReturnIfNil(self);
 
                     [liveTimeline removeListener:self->roomTopicListener];

@@ -93,6 +93,9 @@
         UIImage *image = [MXKTools paintImage:backgroundImageView.image withColor:ThemeService.shared.theme.matrixSearchBackgroundImageTintColor];
         backgroundImageView.image = image;
     }
+    
+    // Match the search bar color to the navigation bar color as it extends slightly outside the frame.
+    self.searchBar.backgroundColor = ThemeService.shared.theme.baseColor;
 }
 
 - (void)destroy
@@ -150,6 +153,34 @@
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return ThemeService.shared.theme.statusBarStyle;
+}
+
+- (void)selectEvent:(MXEvent *)event
+{
+    ThreadParameters *threadParameters = nil;
+    if (RiotSettings.shared.enableThreads)
+    {
+        if (event.threadId)
+        {
+            threadParameters = [[ThreadParameters alloc] initWithThreadId:event.threadId
+                                                          stackRoomScreen:NO];
+        }
+        else if ([self.mainSession.threadingService isEventThreadRoot:event])
+        {
+            threadParameters = [[ThreadParameters alloc] initWithThreadId:event.eventId
+                                                          stackRoomScreen:NO];
+        }
+    }
+    
+    ScreenPresentationParameters *screenParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO
+                                                                                                  stackAboveVisibleViews:YES];
+    
+    RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:event.roomId
+                                                                                    eventId:event.eventId
+                                                                                  mxSession:self.mainSession
+                                                                           threadParameters:threadParameters
+                                                                     presentationParameters:screenParameters];
+    [[LegacyAppDelegate theDelegate] showRoomWithParameters:parameters];
 }
 
 #pragma mark -
@@ -301,46 +332,6 @@
     [super setSelectedIndex:selectedIndex];
     
     [self updateSearch];
-}
-
-#pragma mark - Navigation
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    [super prepareForSegue:segue sender:sender];
-    
-    if ([[segue identifier] isEqualToString:@"showTimeline"])
-    {
-        // Check whether an event has been selected from messages or files search tab
-        MXEvent *selectedSearchEvent = messagesSearchViewController.selectedEvent;
-        MXSession *selectedSearchEventSession = messagesSearchDataSource.mxSession;
-        if (!selectedSearchEvent)
-        {
-            selectedSearchEvent = filesSearchViewController.selectedEvent;
-            selectedSearchEventSession = filesSearchDataSource.mxSession;
-        }
-        
-        if (selectedSearchEvent)
-        {
-            RoomViewController *roomViewController = segue.destinationViewController;
-
-            [RoomDataSource loadRoomDataSourceWithRoomId:selectedSearchEvent.roomId
-                                          initialEventId:selectedSearchEvent.eventId
-                                        andMatrixSession:selectedSearchEventSession onComplete:^(RoomDataSource *roomDataSource) {
-
-                                            [roomDataSource finalizeInitialization];
-                                            roomDataSource.markTimelineInitialEvent = YES;
-
-                                            [roomViewController displayRoom:roomDataSource];
-                                            roomViewController.hasRoomDataSourceOwnership = YES;
-
-                                            roomViewController.navigationItem.leftItemsSupplementBackButton = YES;
-                                        }];
-        }
-        
-        // Hide back button title
-        self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    }
 }
 
 #pragma mark - Search
