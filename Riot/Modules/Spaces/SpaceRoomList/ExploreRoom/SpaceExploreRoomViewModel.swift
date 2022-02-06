@@ -365,7 +365,7 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
         let action = UIAction(title: VectorL10n.join) { action in
             self.process(viewAction: .join(itemData))
         }
-        if !isJoined {
+        if isJoined {
             action.attributes = .disabled
         }
         return action

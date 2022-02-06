@@ -229,11 +229,11 @@ extension ExploreRoomCoordinator: SpaceExploreRoomCoordinatorDelegate {
         self.presentRoomCreation()
     }
     
-    func spaceExploreRoomCoordinatorDidAddRoom(_ viewModel: SpaceExploreRoomCoordinatorType, openSettingsOf item: SpaceExploreRoomListItemViewData) {
+    func spaceExploreRoomCoordinator(_ coordinator: SpaceExploreRoomCoordinatorType, openSettingsOf item: SpaceExploreRoomListItemViewData) {
         self.navigateTo(roomWith: item.childInfo.childRoomId, showSettingsInitially: true, animated: true)
     }
     
-    func spaceExploreRoomCoordinatorDidAddRoom(_ viewModel: SpaceExploreRoomCoordinatorType, inviteTo item: SpaceExploreRoomListItemViewData) {
+    func spaceExploreRoomCoordinator(_ coordinator: SpaceExploreRoomCoordinatorType, inviteTo item: SpaceExploreRoomListItemViewData) {
         self.pushInviteScreen(forRoomWithId: item.childInfo.childRoomId)
     }
 }
