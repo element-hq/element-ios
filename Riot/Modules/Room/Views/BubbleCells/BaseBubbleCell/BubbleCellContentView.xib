@@ -178,12 +178,13 @@
                             </constraints>
                         </view>
                         <view hidden="YES" contentMode="scaleToFill" verticalHuggingPriority="253" translatesAutoresizingMaskIntoConstraints="NO" id="4zo-V8-CNe">
-                            <rect key="frame" x="0.0" y="0.0" width="595" height="12"/>
+                            <rect key="frame" x="0.0" y="0.0" width="595" height="16"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rQt-NH-Cb0">
-                                    <rect key="frame" x="439" y="0.0" width="150" height="12"/>
+                                    <rect key="frame" x="439" y="0.0" width="150" height="16"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
+                                        <constraint firstAttribute="height" constant="16" id="WZx-xk-gav"/>
                                         <constraint firstAttribute="width" constant="150" id="fsY-DK-hUg"/>
                                     </constraints>
                                 </view>
@@ -192,7 +193,6 @@
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="rQt-NH-Cb0" secondAttribute="bottom" id="6yV-vn-doj"/>
                                 <constraint firstItem="rQt-NH-Cb0" firstAttribute="top" secondItem="4zo-V8-CNe" secondAttribute="top" id="DNc-jy-Urh"/>
-                                <constraint firstAttribute="height" constant="12" id="TxZ-dJ-UI6"/>
                                 <constraint firstAttribute="trailing" secondItem="rQt-NH-Cb0" secondAttribute="trailing" constant="6" id="lq2-AY-Lus"/>
                             </constraints>
                         </view>
