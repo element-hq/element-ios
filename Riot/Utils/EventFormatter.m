@@ -247,7 +247,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     {
         // Track e2e failures
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[DecryptionFailureTracker sharedInstance] reportUnableToDecryptErrorForEvent:event withRoomState:roomState myUser:mxSession.myUser.userId];
+            [[DecryptionFailureTracker sharedInstance] reportUnableToDecryptErrorForEvent:event withRoomState:roomState myUser:self->mxSession.myUser.userId];
         });
 
         if (event.decryptionError.code == MXDecryptingErrorUnknownInboundSessionIdCode)

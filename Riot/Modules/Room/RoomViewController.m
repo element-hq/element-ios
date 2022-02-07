@@ -90,7 +90,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
 NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTileTappedNotification";
 const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
-@interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
+@interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
     RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, ThreadsCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate>
@@ -2585,7 +2585,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             
             self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.adjustedContentInset.top;
             
-            previewHeader.roomAvatar.alpha = 1;
+            self->previewHeader.roomAvatar.alpha = 1;
             
             // Force to render the view
             [self forceLayoutRefresh];
@@ -5662,6 +5662,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     self->encryptionInfoView = encryptionInfoView;
     
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated"
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
                                                           attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
@@ -5677,6 +5679,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                                           attribute:NSLayoutAttributeTop
                                                          multiplier:1.0f
                                                            constant:-10.0f]];
+    #pragma clang diagnostic pop
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.view
                                                           attribute:NSLayoutAttributeLeading
@@ -5756,19 +5759,19 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 [UIView animateWithDuration:1.5 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                                  animations:^{
                     
-                    readMarkerTableViewCell.readMarkerViewLeadingConstraint.constant = readMarkerTableViewCell.readMarkerViewTrailingConstraint.constant = readMarkerTableViewCell.bubbleOverlayContainer.frame.size.width / 2;
-                    readMarkerTableViewCell.readMarkerView.alpha = 0;
+                    self->readMarkerTableViewCell.readMarkerViewLeadingConstraint.constant = self->readMarkerTableViewCell.readMarkerViewTrailingConstraint.constant = self->readMarkerTableViewCell.bubbleOverlayContainer.frame.size.width / 2;
+                    self->readMarkerTableViewCell.readMarkerView.alpha = 0;
                     
                     // Force to render the view
-                    [readMarkerTableViewCell.bubbleOverlayContainer layoutIfNeeded];
+                    [self->readMarkerTableViewCell.bubbleOverlayContainer layoutIfNeeded];
                     
                 }
                                  completion:^(BOOL finished){
                     
-                    readMarkerTableViewCell.readMarkerView.hidden = YES;
-                    readMarkerTableViewCell.readMarkerView.alpha = 1;
+                    self->readMarkerTableViewCell.readMarkerView.hidden = YES;
+                    self->readMarkerTableViewCell.readMarkerView.alpha = 1;
                     
-                    readMarkerTableViewCell = nil;
+                    self->readMarkerTableViewCell = nil;
                 }];
                 
             });

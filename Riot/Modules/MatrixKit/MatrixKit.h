@@ -69,7 +69,6 @@
 #import "MXKRoomCreationView.h"
 
 #import "MXKRoomInputToolbarView.h"
-#import "MXKRoomInputToolbarViewWithHPGrowingText.h"
 
 #import "MXKRoomDataSourceManager.h"
 

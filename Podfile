@@ -49,7 +49,6 @@ end
 ########################################
 
 def import_MatrixKit_pods
-  pod 'HPGrowingTextView', '~> 1.1'  
   pod 'libPhoneNumber-iOS', '~> 0.9.13'  
   pod 'DTCoreText', '~> 1.6.25'
   #pod 'DTCoreText/Extension', '~> 1.6.25'
@@ -98,7 +97,7 @@ abstract_target 'RiotPods' do
     pod 'DSWaveformImage', '~> 6.1.1'
     pod 'ffmpeg-kit-ios-audio', '4.5.1'
     
-    pod 'FLEX', '~> 4.5.0', :configurations => ['Debug']
+    pod 'FLEX', '~> 4.5.0', :configurations => ['Debug'], :inhibit_warnings => true
 
     target 'RiotTests' do
       inherit! :search_paths
@@ -149,6 +148,10 @@ post_install do |installer|
 
       # Stop Xcode 12 complaining about old IPHONEOS_DEPLOYMENT_TARGET from pods
       config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
+
+      # Disable nullability checks
+      config.build_settings['WARNING_CFLAGS'] ||= ['$(inherited)','-Wno-nullability-completeness']
+      config.build_settings['OTHER_SWIFT_FLAGS'] ||= ['$(inherited)', '-Xcc', '-Wno-nullability-completeness']
     end
   end
 end

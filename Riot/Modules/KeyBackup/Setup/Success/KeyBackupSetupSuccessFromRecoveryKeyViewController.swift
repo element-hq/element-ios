@@ -143,7 +143,7 @@ final class KeyBackupSetupSuccessFromRecoveryKeyViewController: UIViewController
     private func shareRecoveryKey() {
         
         // Set up activity view controller
-        let activityItems: [Any] = [ self.recoveryKey ]
+        let activityItems: [Any] = [ self.recoveryKey as Any ]
         let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         
         activityViewController.completionWithItemsHandler = { (activityType, completed, returnedItems, error) in

@@ -92,7 +92,7 @@
                                                                    // Accept the received requests from this device
                                                                    [self.mxSession.crypto acceptAllPendingKeyRequestsFromUser:self.device.userId andDevice:self.device.deviceId onComplete:^{
 
-                                                                       onComplete();
+                                                                       self->onComplete();
                                                                    }];
                                                                }
                                                            }]];
@@ -110,7 +110,7 @@
                                                                    // Ignore all pending requests from this device
                                                                    [self.mxSession.crypto ignoreAllPendingKeyRequestsFromUser:self.device.userId andDevice:self.device.deviceId onComplete:^{
 
-                                                                       onComplete();
+                                                                       self->onComplete();
                                                                    }];
                                                                }
                                                            }]];
@@ -169,7 +169,7 @@
             // As the device is now verified, all other key requests will be automatically accepted.
             [self.mxSession.crypto acceptAllPendingKeyRequestsFromUser:self.device.userId andDevice:self.device.deviceId onComplete:^{
                 
-                onComplete();
+                self->onComplete();
             }];
         }
         else

@@ -175,7 +175,11 @@
     _attachmentsCollection.hidden = YES;
     
     // Display collection cell in full screen
+    
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated"
     self.automaticallyAdjustsScrollViewInsets = NO;
+    #pragma clang diagnostic pop
 }
 
 - (BOOL)prefersStatusBarHidden

@@ -40,9 +40,6 @@
 /**
  Set the group for which the details are displayed.
  Provide the related matrix session.
- 
- @param group
- @param mxSession
  */
 - (void)setGroup:(MXGroup*)group withMatrixSession:(MXSession*)mxSession;
 

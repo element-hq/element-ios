@@ -35,18 +35,6 @@
 
 @implementation UnifiedSearchRecentsDataSource
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self)
-    {
-        searchedRoomIdOrAliasSection = -1;
-        
-        _hideRecents = NO;
-    }
-    return self;
-}
-
 #pragma mark -
 
 - (void)setPublicRoomsDirectoryDataSource:(PublicRoomsDirectoryDataSource *)publicRoomsDirectoryDataSource

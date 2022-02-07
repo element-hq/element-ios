@@ -97,6 +97,8 @@
         [[[self class] nib] instantiateWithOwner:self options:nil];
     }
     
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated"
     // Adjust search bar Top constraint to take into account potential navBar.
     if (_recentsSearchBarTopConstraint)
     {
@@ -126,6 +128,7 @@
 
         _recentsTableViewBottomConstraint.active = YES;
     }
+    #pragma clang diagnostic pop
     
     // Hide search bar by default
     [self hideSearchBar:YES];
@@ -229,6 +232,8 @@
     self.keyboardView = _recentsSearchBar.inputAccessoryView.superview;
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated"
 - (void)setKeyboardHeight:(CGFloat)keyboardHeight
 {
     // Deduce the bottom constraint for the table view (Don't forget the potential tabBar)
@@ -245,6 +250,7 @@
     // Force layout immediately to take into account new constraint
     [self.view layoutIfNeeded];
 }
+#pragma clang diagnostic pop
 
 - (void)destroy
 {

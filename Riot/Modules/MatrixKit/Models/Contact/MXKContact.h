@@ -93,6 +93,8 @@ extern NSString *const kMXKContactDefaultContactPrefixId;
  */
 - (void)resetMatrixThumbnail;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated"
 /**
  The contact ID from native phonebook record
  */
@@ -105,6 +107,7 @@ extern NSString *const kMXKContactDefaultContactPrefixId;
  @return MXKContact instance
  */
 - (id)initLocalContactWithABRecord:(ABRecordRef)record;
+#pragma clang diagnostic pop
 
 /**
  Create a matrix contact with the dedicated info

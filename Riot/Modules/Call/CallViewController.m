@@ -721,7 +721,9 @@ CallAudioRouteMenuViewDelegate>
     {
         MXWeakify(self);
         [self.mainSession.callManager getThirdPartyUserFrom:phoneNumber success:^(MXThirdPartyUserInstance * _Nonnull user) {
-            MXStrongifyAndReturnIfNil(self);
+            if (weakself == nil) {
+                return;
+            }
             
             continueBlock(user.userId);
         } failure:^(NSError * _Nullable error) {

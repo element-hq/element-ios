@@ -537,6 +537,8 @@ NSString *const MXKContactManagerDataType = @"org.matrix.kit.MXKContactManagerDa
     }
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (void)refreshLocalContacts
 {
     MXLogDebug(@"[MXKContactManager] refreshLocalContacts : Started");
@@ -721,6 +723,7 @@ NSString *const MXKContactManagerDataType = @"org.matrix.kit.MXKContactManagerDa
         });
     }
 }
+#pragma clang diagnostic pop
 
 - (void)updateMatrixIDsForLocalContact:(MXKContact *)contact
 {
@@ -1582,6 +1585,9 @@ static NSString *matrixIDsDictFile = @"matrixIDsDictV2";
 static NSString *localContactsFile = @"localContactsV2";
 static NSString *contactsBookInfoFile = @"contactsV2";
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 - (NSString*)dataFilePathForComponent:(NSString*)component
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -1856,6 +1862,8 @@ static NSString *contactsBookInfoFile = @"contactsV2";
         }
     }
 }
+
+#pragma clang diagnostic pop
 
 - (BOOL)encryptAndSaveData:(NSData*)data toFile:(NSString*)fileName
 {

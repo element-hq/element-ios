@@ -146,8 +146,6 @@ final class BuildSettings: NSObject {
     static let stunServerFallbackUrlString: String? = "stun:turn.matrix.org"
     
     // MARK: -  Public rooms Directory
-    #warning("Unused build setting: should this be implemented in ShowDirectory?")
-    static let publicRoomsAllowServerChange: Bool = true
     // List of homeservers for the public rooms directory
     static let publicRoomsDirectoryServers = [
         "matrix.org",

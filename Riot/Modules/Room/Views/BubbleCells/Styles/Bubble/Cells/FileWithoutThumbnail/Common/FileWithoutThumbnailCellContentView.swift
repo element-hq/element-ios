@@ -79,4 +79,3 @@ final class FileWithoutThumbnailCellContentView: UIView, NibLoadable {
         self.titleLabel.textColor = theme.textPrimaryColor
     }
 }
-

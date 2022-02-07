@@ -160,7 +160,7 @@ NSString* const kMXKLanguagePickerCellDataKeyLanguage = @"language";
 {
     UISearchController *searchController = [[UISearchController alloc]
      initWithSearchResultsController:nil];
-    searchController.dimsBackgroundDuringPresentation = NO;
+    searchController.obscuresBackgroundDuringPresentation = NO;
     searchController.hidesNavigationBarDuringPresentation = NO;
     searchController.searchResultsUpdater = self;
     
