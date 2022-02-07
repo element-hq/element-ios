@@ -44,6 +44,5 @@ class TextMessageIncomingBubbleCell: TextMessageBaseBubbleCell, BubbleIncomingRo
         let innerContentViewTrailingMargin = self.bubbleCellContentView?.innerContentViewTrailingConstraint.constant ?? 0
         
         self.textMessageContentView?.bubbleBackgroundViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right - innerContentViewTrailingMargin
-        
     }
 }

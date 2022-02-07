@@ -27,5 +27,7 @@ class LocationIncomingBubbleCell: LocationBubbleCell, BubbleIncomingRoomCellProt
         
         bubbleCellContentView?.innerContentViewTrailingConstraint.constant = messageViewMarginRight
         bubbleCellContentView?.innerContentViewLeadingConstraint.constant = messageLeftMargin
+        
+        self.setupBubbleDecorations()
     }
 }
