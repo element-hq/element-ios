@@ -178,6 +178,10 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
         if let timestampDisplayable = self as? TimestampDisplayable {
             timestampDisplayable.removeTimestampView()
         }
+        
+        if let urlPreviewDisplayable = self as? RoomCellURLPreviewDisplayable {
+            urlPreviewDisplayable.removeURLPreviewView()
+        }
     }
     
     override func render(_ cellData: MXKCellData!) {
@@ -232,6 +236,17 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
         let bubbleCellContentView = BubbleCellContentView.instantiate()
         self.contentView.vc_addSubViewMatchingParent(bubbleCellContentView)
         self.bubbleCellContentView = bubbleCellContentView
+    }
+    
+    // MARK: - RoomCellURLPreviewDisplayable
+    // Cannot use default implementation with ObjC protocol, if self conforms to BubbleCellReadReceiptsDisplayable method below will be used
+    
+    func addURLPreviewView(_ urlPreviewView: UIView) {
+        self.bubbleCellContentView?.addURLPreviewView(urlPreviewView)
+    }
+    
+    func removeURLPreviewView() {
+        self.bubbleCellContentView?.removeURLPreviewView()
     }
     
     // MARK: - BubbleCellReadReceiptsDisplayable
