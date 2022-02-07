@@ -161,7 +161,30 @@
                         </view>
                         <view hidden="YES" clipsSubviews="YES" contentMode="scaleAspectFit" verticalHuggingPriority="254" translatesAutoresizingMaskIntoConstraints="NO" id="57V-Sl-EmD">
                             <rect key="frame" x="0.0" y="0.0" width="595" height="0.0"/>
+                            <subviews>
+                                <view clipsSubviews="YES" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="vpX-Nl-AEt">
+                                    <rect key="frame" x="56" y="0.0" width="524" height="0.0"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HIe-iQ-d37">
+                                            <rect key="frame" x="248" y="-11" width="42" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" priority="250" placeholder="YES" id="0Sv-R6-k3e"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="vpX-Nl-AEt" secondAttribute="trailing" constant="15" id="ZmA-Ns-chh"/>
+                                <constraint firstAttribute="bottom" secondItem="vpX-Nl-AEt" secondAttribute="bottom" id="blD-s1-b1N"/>
+                                <constraint firstItem="vpX-Nl-AEt" firstAttribute="top" secondItem="57V-Sl-EmD" secondAttribute="top" id="sFV-XK-lE4"/>
+                            </constraints>
                         </view>
                         <view hidden="YES" contentMode="scaleToFill" verticalHuggingPriority="253" translatesAutoresizingMaskIntoConstraints="NO" id="4zo-V8-CNe">
                             <rect key="frame" x="0.0" y="0.0" width="595" height="12"/>
@@ -212,6 +235,7 @@
                         <constraint firstItem="u1e-Q2-PhY" firstAttribute="width" secondItem="5GX-gn-bK1" secondAttribute="width" id="KrJ-dm-TaV"/>
                         <constraint firstItem="57V-Sl-EmD" firstAttribute="width" secondItem="5GX-gn-bK1" secondAttribute="width" id="a2p-Bn-M5e"/>
                         <constraint firstItem="4zo-V8-CNe" firstAttribute="width" secondItem="5GX-gn-bK1" secondAttribute="width" id="bdq-sQ-NQy"/>
+                        <constraint firstItem="vpX-Nl-AEt" firstAttribute="leading" secondItem="oeI-eO-mFK" secondAttribute="leading" id="lTt-Qx-fuQ"/>
                         <constraint firstItem="meG-P8-61b" firstAttribute="leading" secondItem="oeI-eO-mFK" secondAttribute="leading" id="lq1-xP-tea"/>
                         <constraint firstItem="SNw-aM-ILI" firstAttribute="leading" secondItem="oeI-eO-mFK" secondAttribute="leading" id="x1n-oT-dez"/>
                     </constraints>
@@ -254,6 +278,9 @@
                 <outlet property="senderInfoContainerView" destination="w0C-6a-f5M" id="fZE-vY-0nR"/>
                 <outlet property="threadSummaryContainerView" destination="2eB-kB-m20" id="0Y4-4E-I9K"/>
                 <outlet property="urlPreviewContainerView" destination="57V-Sl-EmD" id="9c6-ai-BY8"/>
+                <outlet property="urlPreviewContentView" destination="vpX-Nl-AEt" id="P8S-Fg-VFQ"/>
+                <outlet property="urlPreviewContentViewLeadingConstraint" destination="lTt-Qx-fuQ" id="5Fc-zl-b1j"/>
+                <outlet property="urlPreviewContentViewTrailingConstraint" destination="ZmA-Ns-chh" id="EXg-Rr-cuJ"/>
                 <outlet property="userNameLabel" destination="meG-P8-61b" id="ETK-ag-WYR"/>
                 <outlet property="userNameTouchMaskView" destination="ohU-Sc-mgb" id="FwW-aL-kc5"/>
             </connections>

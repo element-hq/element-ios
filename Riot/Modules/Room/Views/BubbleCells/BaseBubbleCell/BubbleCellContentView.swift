@@ -47,6 +47,9 @@ final class BubbleCellContentView: UIView, NibLoadable {
     @IBOutlet weak var bubbleInfoContainerTopConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var urlPreviewContainerView: UIView!
+    @IBOutlet weak var urlPreviewContentView: UIView!
+    @IBOutlet weak var urlPreviewContentViewLeadingConstraint: UIView!
+    @IBOutlet weak var urlPreviewContentViewTrailingConstraint: UIView!
     
     @IBOutlet weak var readReceiptsContainerView: UIView!
     @IBOutlet weak var readReceiptsContentView: UIView!
@@ -198,13 +201,30 @@ extension BubbleCellContentView: BubbleCellThreadSummaryDisplayable {
 extension BubbleCellContentView: RoomCellURLPreviewDisplayable {
 
     func addURLPreviewView(_ urlPreviewView: UIView) {
-        self.urlPreviewContainerView.vc_removeAllSubviews()
-        self.urlPreviewContainerView.vc_addSubViewMatchingParent(urlPreviewView)
+        
+        guard let containerView = self.urlPreviewContentView else {
+            return
+        }
+        
+        self.urlPreviewContentView.vc_removeAllSubviews()
+        
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(urlPreviewView)
+        
+        // Stick URL Preview to left content view
+        
+        NSLayoutConstraint.activate([
+            urlPreviewView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            urlPreviewView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            urlPreviewView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            urlPreviewView.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor)
+        ])
+        
         self.showURLPreview = true
     }
     
     func removeURLPreviewView() {
         self.showURLPreview = false
-        self.urlPreviewContainerView.vc_removeAllSubviews()
+        self.urlPreviewContentView.vc_removeAllSubviews()
     }
 }
