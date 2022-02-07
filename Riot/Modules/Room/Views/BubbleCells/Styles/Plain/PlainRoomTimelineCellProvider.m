@@ -473,9 +473,14 @@
 - (NSDictionary<NSNumber*, Class>*)pollCellsMapping
 {
     return @{
-        @(RoomTimelineCellIdentifierPoll) : PollBubbleCell.class,
-        @(RoomTimelineCellIdentifierPollWithoutSenderInfo) : PollWithoutSenderInfoBubbleCell.class,
-        @(RoomTimelineCellIdentifierPollWithPaginationTitle) : PollWithPaginationTitleBubbleCell.class,
+        // Incoming
+        @(RoomTimelineCellIdentifierIncomingPoll) : PollBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingPollWithoutSenderInfo) : PollWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingPollWithPaginationTitle) : PollWithPaginationTitleBubbleCell.class,
+        // Outoing
+        @(RoomTimelineCellIdentifierOutgoingPoll) : PollBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingPollWithoutSenderInfo) : PollWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingPollWithPaginationTitle) : PollWithPaginationTitleBubbleCell.class
     };
 }
 

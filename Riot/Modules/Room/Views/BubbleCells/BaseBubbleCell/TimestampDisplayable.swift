@@ -16,14 +16,8 @@
 
 import UIKit
 
-/// UICollectionViewFlowLayout with right align behavior
-class CollectionViewRightAlignFlowLayout: UICollectionViewFlowLayout {
-
-    override var flipsHorizontallyInOppositeLayoutDirection: Bool {
-        return true
-    }
-
-    override var developmentLayoutDirection: UIUserInterfaceLayoutDirection {
-        return UIUserInterfaceLayoutDirection.rightToLeft
-    }    
+/// `TimestampDisplayable` is a protocol indicating that a view supports displaying a timestamp.
+@objc protocol TimestampDisplayable {
+    func addTimestampView(_ timestampView: UIView)
+    func removeTimestampView()
 }
