@@ -430,7 +430,7 @@
 "room_participants_action_mention" = "Nämn";
 "room_participants_security_information_room_encrypted" = "Meddelanden i det här rummet är totalsträckskrypterade.\n\nDina meddelanden är säkrade med lås och bara du och mottagaren har de unika nycklarna för att låsa upp dem.";
 "room_accessiblity_scroll_to_bottom" = "Scrolla till botten";
-"room_do_not_have_permission_to_post" = "Du har inte behörighet att posta till det här rummet";
+"room_do_not_have_permission_to_post" = "Du är inte behörig att posta till det här rummet";
 "room_unsent_messages_notification" = "Meddelanden misslyckades att skickas.";
 "room_conference_call_no_power" = "Du behöver behörighet för att hantera gruppsamtal i det här rummet";
 "room_prompt_resend" = "Skicka alla igen";
@@ -704,7 +704,7 @@
 "event_formatter_jitsi_widget_removed_by_you" = "Du tog bort VoIP-konferens";
 "public_room_section_title" = "Offentliga rum (på %@):";
 "bug_report_prompt" = "Appen har kraschat förra gången. Vill du skicka en kraschrapport?";
-"camera_access_not_granted" = "%@ verkar inte ha behörighet att använda kameran, vänligen ändra integritetsinställningarna";
+"camera_access_not_granted" = "%@ verkar inte vara behörig att använda kameran, vänligen ändra integritetsinställningarna";
 "photo_library_access_not_granted" = "%@ verkar inte ha åtkomst till bildbiblioteket, vänligen ändra integritetsinställningarna";
 "large_badge_value_k_format" = "%.1fK";
 "call_incoming_voice" = "Inkommande samtal…";
@@ -838,7 +838,7 @@
 // Widget Integration Manager
 "widget_integration_need_to_be_able_to_invite" = "Du behöver kunna bjuda in användare för att göra det där.";
 "widget_integration_positive_power_level" = "Behörighetsnivå måste vara ett positivt heltal.";
-"widget_integration_no_permission_in_room" = "Du har inte behörighet att göra det där i det här rummet.";
+"widget_integration_no_permission_in_room" = "Du är inte behörig att göra det där i det här rummet.";
 "widget_integration_manager_disabled" = "Du behöver aktivera integrationshanteraren i inställningarna";
 "room_widget_permission_webview_information_title" = "Att använda den kan sätta kakor och dela data med %@:\n";
 "room_widget_permission_information_title" = "Att använda den kan dela data med %@:\n";
