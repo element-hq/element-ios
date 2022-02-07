@@ -1084,7 +1084,7 @@
                     MXRoomCreationParameters *roomCreationParameters = [MXRoomCreationParameters parametersForDirectRoomWithUser:matrixId];
                     roomCreationRequest = [self.mainSession createRoomWithParameters:roomCreationParameters success:^(MXRoom *room) {
 
-                        roomCreationRequest = nil;
+                        self->roomCreationRequest = nil;
 
                         // Delay the call in order to be sure that the room is ready
                         dispatch_async(dispatch_get_main_queue(), ^{
@@ -1096,7 +1096,7 @@
 
                         MXLogDebug(@"[ContactDetailsViewController] Create room failed");
 
-                        roomCreationRequest = nil;
+                        self->roomCreationRequest = nil;
 
                         [self removePendingActionMask];
 

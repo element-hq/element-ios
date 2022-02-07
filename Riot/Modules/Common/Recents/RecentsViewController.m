@@ -35,7 +35,7 @@
 
 NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewControllerDataReadyNotification";
 
-@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate>
+@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -1292,7 +1292,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                              [self stopActivityIndicator];
                                                                              
                                                                              // Leave editing mode
-                                                                             [self cancelEditionMode:isRefreshPending];
+                                                                             [self cancelEditionMode:self->isRefreshPending];
                                                                          }
                                                                          
                                                                      }];
@@ -1300,7 +1300,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                  else
                                                                  {
                                                                      // Leave editing mode
-                                                                     [self cancelEditionMode:isRefreshPending];
+                                                                     [self cancelEditionMode:self->isRefreshPending];
                                                                  }
                                                              }
                                                              
@@ -1358,7 +1358,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                 
                 [self stopActivityIndicator];
                 // Leave editing mode
-                [self cancelEditionMode:isRefreshPending];
+                [self cancelEditionMode:self->isRefreshPending];
                 
             } failure:^(NSError *error) {
                 
@@ -1366,7 +1366,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                 
                 [self stopActivityIndicator];
                 
-                MXLogDebug(@"[RecentsViewController] Failed to update direct tag of the room (%@)", editedRoomId);
+                MXLogDebug(@"[RecentsViewController] Failed to update direct tag of the room (%@)", self->editedRoomId);
                 
                 // Notify the end user
                 NSString *userId = self.mainSession.myUser.userId; // TODO: handle multi-account
@@ -1375,7 +1375,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                   userInfo:userId ? @{kMXKErrorUserIdKey: userId} : nil];
                 
                 // Leave editing mode
-                [self cancelEditionMode:isRefreshPending];
+                [self cancelEditionMode:self->isRefreshPending];
                 
             }];
         }

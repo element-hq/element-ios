@@ -352,8 +352,8 @@
                 // Do it asynchronously to give time to messagesSearchViewController to be set up
                 // so that it can display its loading wheel
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [messagesSearchDataSource searchMessages:self.searchBar.text force:NO];
-                    messagesSearchViewController.shouldScrollToBottomOnRefresh = YES;
+                    [self->messagesSearchDataSource searchMessages:self.searchBar.text force:NO];
+                    self->messagesSearchViewController.shouldScrollToBottomOnRefresh = YES;
                 });
             }
         }
@@ -365,8 +365,8 @@
                 // Do it asynchronously to give time to filesSearchViewController to be set up
                 // so that it can display its loading wheel
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [filesSearchDataSource searchMessages:self.searchBar.text force:NO];
-                    filesSearchViewController.shouldScrollToBottomOnRefresh = YES;
+                    [self->filesSearchDataSource searchMessages:self.searchBar.text force:NO];
+                    self->filesSearchViewController.shouldScrollToBottomOnRefresh = YES;
                 });
             }
         }

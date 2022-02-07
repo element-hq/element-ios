@@ -838,28 +838,28 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 }
                 
                 // Enable error notifications
-                isErrorNotificationSuspended = NO;
+                self->isErrorNotificationSuspended = NO;
                 
-                if (noCallSupportAlert)
+                if (self->noCallSupportAlert)
                 {
                     MXLogDebug(@"[AppDelegate] restoreInitialDisplay: keep visible noCall support alert");
-                    [self showNotificationAlert:noCallSupportAlert];
+                    [self showNotificationAlert:self->noCallSupportAlert];
                 }
-                else if (cryptoDataCorruptedAlert)
+                else if (self->cryptoDataCorruptedAlert)
                 {
                     MXLogDebug(@"[AppDelegate] restoreInitialDisplay: keep visible log in again");
-                    [self showNotificationAlert:cryptoDataCorruptedAlert];
+                    [self showNotificationAlert:self->cryptoDataCorruptedAlert];
                 }
-                else if (wrongBackupVersionAlert)
+                else if (self->wrongBackupVersionAlert)
                 {
                     MXLogDebug(@"[AppDelegate] restoreInitialDisplay: keep visible wrongBackupVersionAlert");
-                    [self showNotificationAlert:wrongBackupVersionAlert];
+                    [self showNotificationAlert:self->wrongBackupVersionAlert];
 
                 }
                 // Check whether an error notification is pending
-                else if (_errorNotification)
+                else if (self->_errorNotification)
                 {
-                    [self showNotificationAlert:_errorNotification];
+                    [self showNotificationAlert:self->_errorNotification];
                 }
                 
             }];
@@ -876,10 +876,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             }
             
             // Enable error notification (Check whether a notification is pending)
-            isErrorNotificationSuspended = NO;
-            if (_errorNotification)
+            self->isErrorNotificationSuspended = NO;
+            if (self->_errorNotification)
             {
-                [self showNotificationAlert:_errorNotification];
+                [self showNotificationAlert:self->_errorNotification];
             }
         }];
     }
@@ -1429,9 +1429,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             else
             {
                 void(^findRoom)(void) = ^{
-                    if ([_masterTabBarController.selectedViewController conformsToProtocol:@protocol(MXKViewControllerActivityHandling)])
+                    if ([self->_masterTabBarController.selectedViewController conformsToProtocol:@protocol(MXKViewControllerActivityHandling)])
                     {
-                        UIViewController<MXKViewControllerActivityHandling> *homeViewController = (UIViewController<MXKViewControllerActivityHandling>*)_masterTabBarController.selectedViewController;
+                        UIViewController<MXKViewControllerActivityHandling> *homeViewController = (UIViewController<MXKViewControllerActivityHandling>*)self->_masterTabBarController.selectedViewController;
                         
                         [homeViewController startActivityIndicator];
                         
@@ -1439,7 +1439,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                         {
                             // The alias may be not part of user's rooms states
                             // Ask the HS to resolve the room alias into a room id and then retry
-                            universalLinkFragmentPending = fragment;
+                            self->universalLinkFragmentPending = fragment;
                             MXKAccount* account = accountManager.activeAccounts.firstObject;
                             [account.mxSession.matrixRestClient roomIDForRoomAlias:roomIdOrAlias success:^(NSString *roomId) {
                                 
@@ -1447,7 +1447,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                 [homeViewController stopActivityIndicator];
                                 
                                 // Check that 'fragment' has not been cancelled
-                                if ([universalLinkFragmentPending isEqualToString:fragment])
+                                if ([self->universalLinkFragmentPending isEqualToString:fragment])
                                 {
                                     // Retry opening the link but with the returned room id
                                     NSString *newUniversalLinkFragment =
@@ -1467,7 +1467,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                     
                                     if (![newUniversalLinkFragment isEqualToString:fragment])
                                     {
-                                        universalLinkFragmentPendingRoomAlias = @{roomId: roomIdOrAlias};
+                                        self->universalLinkFragmentPendingRoomAlias = @{roomId: roomIdOrAlias};
                                         
                                         UniversalLinkParameters *newParameters = [[UniversalLinkParameters alloc] initWithFragment:newUniversalLinkFragment universalLinkURL:universalLinkURL presentationParameters:presentationParameters];
                                         
@@ -1498,12 +1498,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                             MXKAccount* account = accountManager.activeAccounts.firstObject;
                             
                             MXLogDebug(@"[AppDelegate] Universal link: Need to wait for the session to be sync'ed and running");
-                            universalLinkFragmentPending = fragment;
+                            self->universalLinkFragmentPending = fragment;
                             
-                            universalLinkWaitingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull notif) {
+                            self->universalLinkWaitingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull notif) {
                                 
                                 // Check that 'fragment' has not been cancelled
-                                if ([universalLinkFragmentPending isEqualToString:fragment])
+                                if ([self->universalLinkFragmentPending isEqualToString:fragment])
                                 {
                                     // Check whether the concerned session is the associated one
                                     if (notif.object == account.mxSession && account.mxSession.state == MXSessionStateRunning)
@@ -1582,7 +1582,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             universalLinkWaitingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
                 
                 // Check that 'fragment' has not been cancelled
-                if ([universalLinkFragmentPending isEqualToString:fragment])
+                if ([self->universalLinkFragmentPending isEqualToString:fragment])
                 {
                     MXLogDebug(@"[AppDelegate] Universal link:  The user is now logged in. Retry the link");
                     [self handleUniversalLinkWithParameters:universalLinkParameters];
@@ -1647,7 +1647,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             universalLinkWaitingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
                 
                 // Check that 'fragment' has not been cancelled
-                if ([universalLinkFragmentPending isEqualToString:fragment])
+                if ([self->universalLinkFragmentPending isEqualToString:fragment])
                 {
                     MXLogDebug(@"[AppDelegate] Universal link: The user is now logged in. Retry the link");
                     [self handleUniversalLinkWithParameters:universalLinkParameters];
@@ -2319,7 +2319,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         }
         
         // Return to authentication screen
-        [_masterTabBarController showOnboardingFlow];
+        [self->_masterTabBarController showOnboardingFlow];
         
         // Note: Keep App settings
         // But enforce usage of member lazy loading
@@ -2730,7 +2730,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                 if ([[ruleAction.parameters valueForKey:@"set_tweak"] isEqualToString:@"sound"])
                                 {
                                     // Play message sound
-                                    AudioServicesPlaySystemSound(_messageSound);
+                                    AudioServicesPlaySystemSound(self->_messageSound);
                                 }
                             }
                         }
@@ -3425,9 +3425,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                      {
                                          case MXEventTypeCallInvite:
                                          {
-                                             if (noCallSupportAlert)
+                                             if (self->noCallSupportAlert)
                                              {
-                                                 [noCallSupportAlert dismissViewControllerAnimated:NO completion:nil];
+                                                 [self->noCallSupportAlert dismissViewControllerAnimated:NO completion:nil];
                                              }
                                              
                                              MXCallInviteEventContent *callInviteEventContent = [MXCallInviteEventContent modelFromJSON:event.content];
@@ -3449,15 +3449,15 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                              
                                              NSString *message = [VectorL10n noVoip:callerDisplayname :appDisplayName];
                                              
-                                             noCallSupportAlert = [UIAlertController alertControllerWithTitle:[VectorL10n noVoipTitle]
-                                                                                                      message:message
-                                                                                               preferredStyle:UIAlertControllerStyleAlert];
+                                             self->noCallSupportAlert = [UIAlertController alertControllerWithTitle:[VectorL10n noVoipTitle]
+                                                                                                            message:message
+                                                                                                     preferredStyle:UIAlertControllerStyleAlert];
                                              
                                              __weak typeof(self) weakSelf = self;
                                              
-                                             [noCallSupportAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ignore]
-                                                                                                    style:UIAlertActionStyleDefault
-                                                                                                  handler:^(UIAlertAction * action) {
+                                             [self->noCallSupportAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ignore]
+                                                                                                          style:UIAlertActionStyleDefault
+                                                                                                        handler:^(UIAlertAction * action) {
                                                                                                       
                                                                                                       if (weakSelf)
                                                                                                       {
@@ -3467,9 +3467,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                                                                                       
                                                                                                   }]];
                                              
-                                             [noCallSupportAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n rejectCall]
-                                                                                                    style:UIAlertActionStyleDefault
-                                                                                                  handler:^(UIAlertAction * action) {
+                                             [self->noCallSupportAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n rejectCall]
+                                                                                                          style:UIAlertActionStyleDefault
+                                                                                                        handler:^(UIAlertAction * action) {
                                                                                                       
                                                  // Reject the call by sending the hangup event
                                                  NSDictionary *content = @{
@@ -3490,7 +3490,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                                  
                                              }]];
                                              
-                                             [self showNotificationAlert:noCallSupportAlert];
+                                             [self showNotificationAlert:self->noCallSupportAlert];
                                              break;
                                          }
                                              
@@ -3498,10 +3498,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                          case MXEventTypeCallHangup:
                                          case MXEventTypeCallReject:
                                              // The call has ended. The alert is no more needed.
-                                             if (noCallSupportAlert)
+                                             if (self->noCallSupportAlert)
                                              {
-                                                 [noCallSupportAlert dismissViewControllerAnimated:YES completion:nil];
-                                                 noCallSupportAlert = nil;
+                                                 [self->noCallSupportAlert dismissViewControllerAnimated:YES completion:nil];
+                                                 self->noCallSupportAlert = nil;
                                              }
                                              break;
                                              

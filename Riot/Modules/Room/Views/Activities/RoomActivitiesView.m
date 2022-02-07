@@ -484,6 +484,8 @@
 
 #pragma mark - UITextViewDelegate
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
 {
     if ([[URL absoluteString] isEqualToString:@"onResendLink"])
@@ -559,6 +561,7 @@
     
     return YES;
 }
+#pragma clang diagnostic pop
 
 #pragma mark - UIGestureRecognizerDelegate
 

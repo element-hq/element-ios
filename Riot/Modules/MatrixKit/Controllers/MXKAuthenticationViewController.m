@@ -215,6 +215,8 @@
     // and report the inputAccessoryView.superview of the firstResponder in self.keyboardView.
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated"
 - (void)setKeyboardHeight:(CGFloat)keyboardHeight
 {
     // Deduce the bottom inset for the scroll view (Don't forget the potential tabBar)
@@ -229,6 +231,7 @@
     insets.bottom = scrollViewInsetBottom;
     self.authenticationScrollView.contentInset = insets;
 }
+#pragma clang diagnostic pop
 
 - (void)destroy
 {

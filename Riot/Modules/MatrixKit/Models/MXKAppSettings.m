@@ -670,6 +670,8 @@ static NSString *const kMXAppGroupID = @"group.org.matrix";
     }
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated"
 - (NSString*)phonebookCountryCode
 {
     NSString* res = phonebookCountryCode;
@@ -699,6 +701,7 @@ static NSString *const kMXAppGroupID = @"group.org.matrix";
     
     return res;
 }
+#pragma clang diagnostic pop
 
 - (void)setPhonebookCountryCode:(NSString *)stringValue
 {

@@ -37,7 +37,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *customServersTickButton;
 @property (weak, nonatomic) IBOutlet UIView *customServersContainer;
 @property (weak, nonatomic) IBOutlet UIView *homeServerContainer;
-@property (weak, nonatomic) IBOutlet UIView *identityServerContainer;
 
 @property (weak, nonatomic) IBOutlet UIView *homeServerSeparator;
 @property (weak, nonatomic) IBOutlet UIView *identityServerSeparator;

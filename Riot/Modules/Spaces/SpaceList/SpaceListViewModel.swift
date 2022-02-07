@@ -204,7 +204,11 @@ final class SpaceListViewModel: SpaceListViewModelType {
         
         let homeNotificationState = session.spaceService.notificationCounter.homeNotificationState
         let homeViewData = SpaceListItemViewData(spaceId: Constants.homeSpaceId,
-                                                 title: VectorL10n.spacesHomeSpaceTitle, avatarViewData: avatarViewData, isInvite: false, notificationCount: homeNotificationState.allCount, highlightedNotificationCount: homeNotificationState.allHighlightCount)
+                                                 title: VectorL10n.spacesHomeSpaceTitle,
+                                                 avatarViewData: avatarViewData,
+                                                 isInvite: false,
+                                                 notificationCount: homeNotificationState.allCount,
+                                                 highlightedNotificationCount: homeNotificationState.allHighlightCount)
         return homeViewData
     }
     
@@ -214,7 +218,11 @@ final class SpaceListViewModel: SpaceListViewModelType {
         session.spaceService.rootSpaceSummaries.forEach { summary in
             let avatarViewData = AvatarViewData(matrixItemId: summary.roomId, displayName: summary.displayname, avatarUrl: summary.avatar, mediaManager: session.mediaManager, fallbackImage: .matrixItem(summary.roomId, summary.displayname))
             let notificationState = session.spaceService.notificationCounter.notificationState(forSpaceWithId: summary.roomId)
-            let viewData = SpaceListItemViewData(spaceId: summary.roomId, title: summary.displayname, avatarViewData: avatarViewData, isInvite: summary.membership == .invite, notificationCount: notificationState?.groupMissedDiscussionsCount ?? 0, highlightedNotificationCount: notificationState?.groupMissedDiscussionsHighlightedCount ?? 0)
+            let viewData = SpaceListItemViewData(spaceId: summary.roomId, title: summary.displayname,
+                                                 avatarViewData: avatarViewData,
+                                                 isInvite: summary.membership == .invite,
+                                                 notificationCount: notificationState?.groupMissedDiscussionsCount ?? 0,
+                                                 highlightedNotificationCount: notificationState?.groupMissedDiscussionsHighlightedCount ?? 0)
             if viewData.isInvite {
                 invites.append(viewData)
             } else {

@@ -1549,6 +1549,8 @@ static NSMutableDictionary *childClasses;
     return shouldInteractWithURL;
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
 // Delegate method only called on iOS 9. iOS 10+ use method above.
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
 {
@@ -1571,6 +1573,7 @@ static NSMutableDictionary *childClasses;
     
     return shouldInteractWithURL;
 }
+#pragma clang diagnostic pop
 
 #pragma mark - WKNavigationDelegate
 
