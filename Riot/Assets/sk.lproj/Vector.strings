@@ -1388,7 +1388,7 @@
 
 // Unverified sessions
 
-"key_verification_self_verify_unverified_sessions_alert_title" = "Zobraziť, kde ste prihlásený";
+"key_verification_self_verify_unverified_sessions_alert_title" = "Skontrolujte, kde ste prihlásení";
 "key_verification_self_verify_current_session_alert_message" = "Ostatní používatelia jej nemusia dôverovať.";
 
 // Current session
