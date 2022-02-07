@@ -22,6 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Registration
 
+- (void)registerIncomingTextMessageCellsForTableView:(UITableView*)tableView;
+
+- (void)registerOutgoingTextMessageCellsForTableView:(UITableView*)tableView;
+
 - (void)registerVoiceMessageCellsForTableView:(UITableView*)tableView;
 
 - (void)registerPollCellsForTableView:(UITableView*)tableView;
@@ -29,6 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)registerLocationCellsForTableView:(UITableView*)tableView;
 
 #pragma mark - Mapping
+
+- (NSDictionary<NSNumber*, Class>*)incomingTextMessageCellsMapping;
 
 - (NSDictionary<NSNumber*, Class>*)outgoingTextMessageCellsMapping;
 
