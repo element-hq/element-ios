@@ -16,15 +16,7 @@
 
 import UIKit
 
-class TextMessageOutgoingWithoutSenderInfoBubbleCell: TextMessageBaseBubbleCell {
-    
-    // MARK: - Constants
-    
-    // TODO: Use global constants
-    private enum BubbleMargins {
-        static let leading: CGFloat = 80.0
-        static let trailing: CGFloat = 34.0
-    }
+class TextMessageOutgoingWithoutSenderInfoBubbleCell: TextMessageBaseBubbleCell, BubbleOutgoingRoomCellProtocol {    
     
     // MARK: - Overrides
     
@@ -32,9 +24,15 @@ class TextMessageOutgoingWithoutSenderInfoBubbleCell: TextMessageBaseBubbleCell 
         super.setupViews()
         
         bubbleCellContentView?.showSenderInfo = false
-                
+        
         self.setupBubbleConstraints()
-        self.setupDecorationConstraints()
+        self.setupBubbleDecorations()
+    }
+    
+    override func update(theme: Theme) {
+        super.update(theme: theme)
+        
+        self.textMessageContentView?.bubbleBackgroundView?.backgroundColor = theme.roomCellOutgoingBubbleBackgroundColor
     }
     
     // MARK: - Private
@@ -59,7 +57,7 @@ class TextMessageOutgoingWithoutSenderInfoBubbleCell: TextMessageBaseBubbleCell 
         
         // Setup new constraints
         
-        let leadingConstraint = bubbleBackgroundView.leadingAnchor.constraint(greaterThanOrEqualTo: containerView.leadingAnchor, constant: BubbleMargins.leading)
+        let leadingConstraint = bubbleBackgroundView.leadingAnchor.constraint(greaterThanOrEqualTo: containerView.leadingAnchor, constant: 0)
         
         let trailingConstraint = bubbleBackgroundView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: 0)
                 
@@ -71,69 +69,5 @@ class TextMessageOutgoingWithoutSenderInfoBubbleCell: TextMessageBaseBubbleCell 
         self.textMessageContentView?.bubbleBackgroundViewLeadingConstraint = leadingConstraint
         
         self.textMessageContentView?.bubbleBackgroundViewTrailingConstraint = trailingConstraint
-    }
-    
-    private func setupDecorationConstraints() {
-        
-        self.setupReactionsContentViewContraints()
-    }
-    
-    private func setupReactionsContentViewContraints () {
-        guard let bubbleCellContentView = self.bubbleCellContentView, let reactionsContentView = bubbleCellContentView.reactionsContentView, let reactionsContainerView = bubbleCellContentView.reactionsContainerView else {
-            return
-        }
-        
-        // Remove leading constraint
-        
-        bubbleCellContentView.reactionsContentViewLeadingConstraint.isActive = false
-        bubbleCellContentView.reactionsContentViewLeadingConstraint = nil
-        
-        // Setup new leading constraint
-        
-        let leadingConstraint = reactionsContentView.leadingAnchor.constraint(equalTo: reactionsContainerView.leadingAnchor, constant: BubbleMargins.leading)
-        
-        leadingConstraint.isActive = true
-        
-        bubbleCellContentView.reactionsContentViewLeadingConstraint = leadingConstraint
-        
-        // Update trailing constraint
-                                
-        bubbleCellContentView.reactionsContentViewTrailingConstraint.constant = BubbleMargins.trailing
-    }
-    
-    override func update(theme: Theme) {
-        super.update(theme: theme)
-        
-        self.textMessageContentView?.bubbleBackgroundView?.backgroundColor = theme.roomCellOutgoingBubbleBackgroundColor
-    }
-    
-    override func addReactionsView(_ reactionsView: UIView) {
-        
-        super.addReactionsView(reactionsView)
-        
-        if let bubbleReactionsView = reactionsView as? BubbleReactionsView {
-            bubbleReactionsView.alignment = .right
-        }
-    }
-    
-    override func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView) {
-        
-        guard let bubbleCellContentView = self.bubbleCellContentView, let containerView = bubbleCellContentView.threadSummaryContainerView else {
-            return
-        }
-        
-        containerView.vc_removeAllSubviews()
-        
-        containerView.addSubview(threadSummaryView)
-        
-        NSLayoutConstraint.activate([
-            threadSummaryView.leadingAnchor.constraint(greaterThanOrEqualTo: containerView.leadingAnchor, constant: BubbleMargins.trailing),
-            threadSummaryView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            threadSummaryView.heightAnchor.constraint(equalToConstant: RoomBubbleCellLayout.threadSummaryViewHeight),
-            threadSummaryView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            threadSummaryView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor,
-                                                        constant: -BubbleMargins.trailing)
-        ])
-        containerView.isHidden = false
     }
 }
