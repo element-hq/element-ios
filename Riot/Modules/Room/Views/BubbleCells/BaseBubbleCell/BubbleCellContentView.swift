@@ -38,6 +38,7 @@ final class BubbleCellContentView: UIView, NibLoadable {
     
     @IBOutlet weak var innerContentViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var innerContentViewTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var innerContentViewBottomContraint: NSLayoutConstraint!
     
     @IBOutlet weak var encryptionStatusContainerView: UIView!
     @IBOutlet weak var encryptionImageView: UIImageView!
@@ -45,17 +46,30 @@ final class BubbleCellContentView: UIView, NibLoadable {
     @IBOutlet weak var bubbleInfoContainer: UIView!
     @IBOutlet weak var bubbleInfoContainerTopConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var urlPreviewContainerView: UIView!
+    
     @IBOutlet weak var readReceiptsContainerView: UIView!
     @IBOutlet weak var readReceiptsContentView: UIView!
     
     @IBOutlet weak var reactionsContainerView: UIView!
     @IBOutlet weak var reactionsContentView: UIView!
+    @IBOutlet weak var reactionsContentViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var reactionsContentViewTrailingConstraint: NSLayoutConstraint!
 
     @IBOutlet weak var threadSummaryContainerView: UIView!
     
     @IBOutlet weak var bubbleOverlayContainer: UIView!
     
     // MARK: Private
+    
+    private var showURLPreview: Bool {
+        get {
+            return !self.urlPreviewContainerView.isHidden
+        }
+        set {
+            self.urlPreviewContainerView.isHidden = !newValue
+        }
+    }
     
     private var showReadReceipts: Bool {
         get {
@@ -178,5 +192,19 @@ extension BubbleCellContentView: BubbleCellThreadSummaryDisplayable {
         self.showThreadSummary = false
         self.threadSummaryContainerView.vc_removeAllSubviews()
     }
+}
 
+// MARK: - RoomCellURLPreviewDisplayable
+extension BubbleCellContentView: RoomCellURLPreviewDisplayable {
+
+    func addURLPreviewView(_ urlPreviewView: UIView) {
+        self.urlPreviewContainerView.vc_removeAllSubviews()
+        self.urlPreviewContainerView.vc_addSubViewMatchingParent(urlPreviewView)
+        self.showURLPreview = true
+    }
+    
+    func removeURLPreviewView() {
+        self.showURLPreview = false
+        self.urlPreviewContainerView.vc_removeAllSubviews()
+    }
 }
