@@ -16,7 +16,7 @@
 
 import Foundation
 
-class PollIncomingBubbleCell: PollBaseBubbleCell {
+class PollIncomingBubbleCell: PollBaseBubbleCell, BubbleIncomingRoomCellProtocol {
 
     override func setupViews() {
         super.setupViews()
@@ -27,7 +27,9 @@ class PollIncomingBubbleCell: PollBaseBubbleCell {
         let messageLeftMargin: CGFloat = 48 + bubbleBackgroundSideMargin
         
         bubbleCellContentView?.innerContentViewTrailingConstraint.constant = messageViewMarginRight
-        bubbleCellContentView?.innerContentViewLeadingConstraint.constant = messageLeftMargin        
+        bubbleCellContentView?.innerContentViewLeadingConstraint.constant = messageLeftMargin
+        
+        self.setupBubbleDecorations()
     }
     
     override func update(theme: Theme) {
