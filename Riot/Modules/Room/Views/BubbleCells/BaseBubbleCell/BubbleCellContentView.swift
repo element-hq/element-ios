@@ -48,8 +48,8 @@ final class BubbleCellContentView: UIView, NibLoadable {
     
     @IBOutlet weak var urlPreviewContainerView: UIView!
     @IBOutlet weak var urlPreviewContentView: UIView!
-    @IBOutlet weak var urlPreviewContentViewLeadingConstraint: UIView!
-    @IBOutlet weak var urlPreviewContentViewTrailingConstraint: UIView!
+    @IBOutlet weak var urlPreviewContentViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var urlPreviewContentViewTrailingConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var readReceiptsContainerView: UIView!
     @IBOutlet weak var readReceiptsContentView: UIView!
@@ -60,6 +60,9 @@ final class BubbleCellContentView: UIView, NibLoadable {
     @IBOutlet weak var reactionsContentViewTrailingConstraint: NSLayoutConstraint!
 
     @IBOutlet weak var threadSummaryContainerView: UIView!
+    @IBOutlet weak var threadSummaryContentView: UIView!
+    @IBOutlet weak var threadSummaryContentViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var threadSummaryContentViewTrailingConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var bubbleOverlayContainer: UIView!
     
@@ -129,6 +132,8 @@ final class BubbleCellContentView: UIView, NibLoadable {
         }
     }
     
+    var decorationViewsAlignment: RoomCellDecorationAlignment = .left
+    
     // MARK: - Setup
     
     class func instantiate() -> BubbleCellContentView {
@@ -164,7 +169,24 @@ extension BubbleCellContentView: BubbleCellReactionsDisplayable {
     
     func addReactionsView(_ reactionsView: UIView) {
         self.reactionsContentView.vc_removeAllSubviews()
-        self.reactionsContentView.vc_addSubViewMatchingParent(reactionsView) 
+        
+        // Update reactions alignment according to current decoration alignment
+        if let bubbleReactionsView = reactionsView as? BubbleReactionsView {
+            
+            let reactionsAlignment: BubbleReactionsViewAlignment
+            
+            switch self.decorationViewsAlignment {
+            case .left:
+                reactionsAlignment = .left
+            case .right:
+                reactionsAlignment = .right
+            }
+                        
+            bubbleReactionsView.alignment = reactionsAlignment
+        }
+        
+        self.reactionsContentView.vc_addSubViewMatchingParent(reactionsView)
+        
         self.showReactions = true
     }
     
@@ -176,24 +198,43 @@ extension BubbleCellContentView: BubbleCellReactionsDisplayable {
 
 // MARK: - BubbleCellThreadSummaryDisplayable
 extension BubbleCellContentView: BubbleCellThreadSummaryDisplayable {
-
+    
     func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView) {
-        self.threadSummaryContainerView.vc_removeAllSubviews()
-        self.threadSummaryContainerView.addSubview(threadSummaryView)
+        
+        guard let containerView = self.threadSummaryContentView else {
+            return
+        }
+        
+        containerView.vc_removeAllSubviews()
+        
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(threadSummaryView)
+        
+        let leadingConstraint: NSLayoutConstraint
+        let trailingConstraint: NSLayoutConstraint
+        
+        if self.decorationViewsAlignment == .right {
+            leadingConstraint = threadSummaryView.leadingAnchor.constraint(greaterThanOrEqualTo: containerView.leadingAnchor)
+            trailingConstraint = threadSummaryView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
+        } else {
+            leadingConstraint = threadSummaryView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor)
+            trailingConstraint =             threadSummaryView.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor)
+        }
+        
         NSLayoutConstraint.activate([
-            threadSummaryView.leadingAnchor.constraint(equalTo: innerContentView.leadingAnchor),
+            leadingConstraint,
             threadSummaryView.topAnchor.constraint(equalTo: threadSummaryContainerView.topAnchor),
             threadSummaryView.heightAnchor.constraint(equalToConstant: RoomBubbleCellLayout.threadSummaryViewHeight),
             threadSummaryView.bottomAnchor.constraint(equalTo: threadSummaryContainerView.bottomAnchor),
-            threadSummaryView.trailingAnchor.constraint(lessThanOrEqualTo: threadSummaryContainerView.trailingAnchor,
-                                                        constant: -RoomBubbleCellLayout.reactionsViewRightMargin)
+            trailingConstraint
         ])
+        
         self.showThreadSummary = true
     }
 
     func removeThreadSummaryView() {
         self.showThreadSummary = false
-        self.threadSummaryContainerView.vc_removeAllSubviews()
+        self.threadSummaryContentView.vc_removeAllSubviews()
     }
 }
 
@@ -206,18 +247,31 @@ extension BubbleCellContentView: RoomCellURLPreviewDisplayable {
             return
         }
         
-        self.urlPreviewContentView.vc_removeAllSubviews()
+        containerView.vc_removeAllSubviews()
         
         containerView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(urlPreviewView)
         
-        // Stick URL Preview to left content view
+        if let urlPreviewView = urlPreviewView as? URLPreviewView {
+            urlPreviewView.availableWidth = containerView.frame.width
+        }
+        
+        let leadingConstraint: NSLayoutConstraint
+        let trailingConstraint: NSLayoutConstraint
+        
+        if self.decorationViewsAlignment == .right {
+            leadingConstraint = urlPreviewView.leadingAnchor.constraint(greaterThanOrEqualTo: containerView.leadingAnchor)
+            trailingConstraint = urlPreviewView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
+        } else {
+            leadingConstraint = urlPreviewView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor)
+            trailingConstraint =             urlPreviewView.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor)
+        }
         
         NSLayoutConstraint.activate([
-            urlPreviewView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            leadingConstraint,
             urlPreviewView.topAnchor.constraint(equalTo: containerView.topAnchor),
             urlPreviewView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            urlPreviewView.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor)
+            trailingConstraint
         ])
         
         self.showURLPreview = true
