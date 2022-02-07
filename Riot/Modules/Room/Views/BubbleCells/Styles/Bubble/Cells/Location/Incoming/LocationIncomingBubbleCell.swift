@@ -16,7 +16,7 @@
 
 import Foundation
 
-class LocationIncomingBubbleCell: LocationBubbleCell {
+class LocationIncomingBubbleCell: LocationBubbleCell, BubbleIncomingRoomCellProtocol {
             
     override func setupViews() {
         super.setupViews()
