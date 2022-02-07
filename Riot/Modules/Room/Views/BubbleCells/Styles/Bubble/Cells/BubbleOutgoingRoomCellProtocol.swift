@@ -80,6 +80,10 @@ extension BubbleOutgoingRoomCellProtocol {
         // Update trailing constraint
                                 
         bubbleCellContentView.threadSummaryContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
+        
+        // Update bottom constraint
+                
+        bubbleCellContentView.threadSummaryContentViewBottomConstraint.constant = BubbleRoomCellLayoutConstants.threadSummaryViewMargins.bottom
     }
     
     private func setupURLPreviewContentViewContraints() {

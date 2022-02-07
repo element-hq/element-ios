@@ -44,6 +44,8 @@ extension BubbleIncomingRoomCellProtocol {
     
     private func setupThreadSummaryViewContentViewContraints() {
         self.bubbleCellContentView?.threadSummaryContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
+        
+        self.bubbleCellContentView?.threadSummaryContentViewBottomConstraint.constant = BubbleRoomCellLayoutConstants.threadSummaryViewMargins.bottom
     }
     
     private func setupURLPreviewContentViewContraints() {

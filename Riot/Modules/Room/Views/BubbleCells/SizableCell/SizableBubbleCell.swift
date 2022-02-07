@@ -137,7 +137,11 @@ class SizableBaseBubbleCell: BaseBubbleCell, SizableBaseBubbleCellType {
         if sizingView is BubbleCellThreadSummaryDisplayable,
            let roomBubbleCellData = cellData as? RoomBubbleCellData,
            roomBubbleCellData.hasThreadRoot {
+            
+            let bottomMargin = sizingView.bubbleCellContentView?.threadSummaryContentViewBottomConstraint.constant ?? 0
+            
             height += RoomBubbleCellLayout.threadSummaryViewHeight
+            height += bottomMargin
         }
         
         // Add URL preview view height if needed

@@ -63,6 +63,7 @@ final class BubbleCellContentView: UIView, NibLoadable {
     @IBOutlet weak var threadSummaryContentView: UIView!
     @IBOutlet weak var threadSummaryContentViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var threadSummaryContentViewTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var threadSummaryContentViewBottomConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var bubbleOverlayContainer: UIView!
     
@@ -223,9 +224,9 @@ extension BubbleCellContentView: BubbleCellThreadSummaryDisplayable {
         
         NSLayoutConstraint.activate([
             leadingConstraint,
-            threadSummaryView.topAnchor.constraint(equalTo: threadSummaryContainerView.topAnchor),
+            threadSummaryView.topAnchor.constraint(equalTo: containerView.topAnchor),
             threadSummaryView.heightAnchor.constraint(equalToConstant: RoomBubbleCellLayout.threadSummaryViewHeight),
-            threadSummaryView.bottomAnchor.constraint(equalTo: threadSummaryContainerView.bottomAnchor),
+            threadSummaryView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             trailingConstraint
         ])
         

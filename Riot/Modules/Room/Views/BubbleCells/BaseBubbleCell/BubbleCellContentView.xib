@@ -284,6 +284,7 @@
                 <outlet property="senderInfoContainerView" destination="w0C-6a-f5M" id="fZE-vY-0nR"/>
                 <outlet property="threadSummaryContainerView" destination="2eB-kB-m20" id="0Y4-4E-I9K"/>
                 <outlet property="threadSummaryContentView" destination="snf-Ea-To0" id="6Oo-Gj-e4Z"/>
+                <outlet property="threadSummaryContentViewBottomConstraint" destination="4tt-w0-4JE" id="6db-Jz-jys"/>
                 <outlet property="threadSummaryContentViewLeadingConstraint" destination="2lm-T3-dEu" id="jR6-sh-Nul"/>
                 <outlet property="threadSummaryContentViewTrailingConstraint" destination="Qwm-Of-Zgc" id="dfE-aR-MQQ"/>
                 <outlet property="urlPreviewContainerView" destination="57V-Sl-EmD" id="9c6-ai-BY8"/>
