@@ -16,7 +16,7 @@
 
 import UIKit
 
-/// `TimestampDisplayable` is a protocol indicating that a view support displaying a timestamp.
+/// `TimestampDisplayable` is a protocol indicating that a view supports displaying a timestamp.
 @objc protocol TimestampDisplayable {
     func addTimestampView(_ timestampView: UIView)
     func removeTimestampView()
