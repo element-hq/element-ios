@@ -35,6 +35,9 @@ protocol RoomTimelineStyle: Themable {
     /// Handle cell decorations (reactions, read receipts, URL preview, …)
     var cellDecorator: RoomTimelineCellDecorator { get }
     
+    /// Indicate true to make RoomBubbleCellData use vertical spaces for the attributedText
+    var useVerticalWhiteSpaceForText: Bool { get }
+    
     // MARK: - Methods
     
     /// Indicate to merge or not event in timeline

@@ -32,7 +32,9 @@ class PlainRoomTimelineStyle: RoomTimelineStyle {
     
     let cellProvider: RoomTimelineCellProvider
     
-    let cellDecorator: RoomTimelineCellDecorator    
+    let cellDecorator: RoomTimelineCellDecorator
+    
+    let useVerticalWhiteSpaceForText: Bool
  
     // MARK: - Setup
     
@@ -42,6 +44,7 @@ class PlainRoomTimelineStyle: RoomTimelineStyle {
         self.cellLayoutUpdater = nil
         self.cellProvider = PlainRoomTimelineCellProvider()
         self.cellDecorator = PlainRoomTimelineCellDecorator()
+        self.useVerticalWhiteSpaceForText = true
     }
     
     // MARK: - Methods
