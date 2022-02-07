@@ -1000,6 +1000,11 @@ const CGFloat kTypingCellHeight = 24;
 
 - (void)newThreadCreated:(NSNotification *)notification
 {
+    if (self.threadId)
+    {
+        //  no need to reload the thread screen
+        return;
+    }
     NSUInteger count = 0;
     @synchronized (bubbles)
     {
