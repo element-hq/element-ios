@@ -38,6 +38,9 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 // Flags to "Show All" reactions for an event
 @property(nonatomic) NSMutableSet<NSString* /* eventId */> *eventsToShowAllReactions;
 
+@property (nonatomic, strong) NSAttributedString *currentAttributedTextMsg;
+@property (nonatomic, strong) NSAttributedString *currentAttributedTextMsgWithoutVertSpace;
+
 @end
 
 @implementation RoomBubbleCellData
@@ -252,12 +255,14 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             {
                 MXLogDebug(@"[RoomBubbleCellData] attributedTextMessage called on wrong thread");
                 dispatch_sync(dispatch_get_main_queue(), ^{
-                    self.attributedTextMessage = [self makeAttributedString];
+                    [self buildAttributedString];
+                    self.attributedTextMessage = [self getAppropriatedAttributedString];
                 });
             }
             else
             {
-                self.attributedTextMessage = [self makeAttributedString];
+                [self buildAttributedString];
+                self.attributedTextMessage = [self getAppropriatedAttributedString];
             }
         }
     }
@@ -378,17 +383,36 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     [self setNeedsUpdateAdditionalContentHeight];
 }
 
-- (NSAttributedString*)makeAttributedString
+- (NSAttributedString*)getAppropriatedAttributedString
+{
+    RoomTimelineConfiguration *timelineConfiguration = [RoomTimelineConfiguration shared];
+    
+    if (timelineConfiguration.currentStyle.useVerticalWhiteSpaceForText)
+    {
+        return self.currentAttributedTextMsg;
+    }
+    else
+    {
+        return self.currentAttributedTextMsgWithoutVertSpace;
+    }
+}
+
+- (void)buildAttributedString
 {
     // CAUTION: This method must be called on the main thread.
 
     // Return the collapsed string only for cells series header
     if (self.collapsed && self.collapsedAttributedTextMessage && self.nextCollapsableCellData)
     {
-        return super.collapsedAttributedTextMessage;
+        self.currentAttributedTextMsg =  super.collapsedAttributedTextMessage;
+        self.currentAttributedTextMsgWithoutVertSpace = super.collapsedAttributedTextMessage;
+        
+        return;
     }
 
     NSMutableAttributedString *currentAttributedTextMsg;
+    
+    NSMutableAttributedString *currentAttributedTextMsgWithoutVertSpace = [NSMutableAttributedString new];
     
     NSInteger selectedComponentIndex = self.selectedComponentIndex;
     NSInteger lastMessageIndex = self.containsLastMessage ? self.mostRecentComponentIndex : NSNotFound;
@@ -416,11 +440,15 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             {
                 currentAttributedTextMsg = [[NSMutableAttributedString alloc] initWithAttributedString:[RoomBubbleCellData timestampVerticalWhitespace]];
                 [currentAttributedTextMsg appendAttributedString:componentString];
+                
+                [currentAttributedTextMsgWithoutVertSpace appendAttributedString:componentString];
             }
             else
             {
                 // Init attributed string with the first text component
                 currentAttributedTextMsg = [[NSMutableAttributedString alloc] initWithAttributedString:componentString];
+                
+                [currentAttributedTextMsgWithoutVertSpace appendAttributedString:componentString];
             }
 
             [self addVerticalWhitespaceToString:currentAttributedTextMsg forEvent:component.event.eventId];
@@ -456,10 +484,14 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             [currentAttributedTextMsg appendAttributedString:componentString];
             
             [self addVerticalWhitespaceToString:currentAttributedTextMsg forEvent:component.event.eventId];
+            
+            [currentAttributedTextMsgWithoutVertSpace appendAttributedString:componentString];
         }
     }
     
-    return currentAttributedTextMsg;
+    self.currentAttributedTextMsg = currentAttributedTextMsg;
+    
+    self.currentAttributedTextMsgWithoutVertSpace = currentAttributedTextMsgWithoutVertSpace;
 }
 
 - (NSInteger)firstVisibleComponentIndex
