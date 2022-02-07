@@ -21,7 +21,32 @@ protocol BubbleIncomingRoomCellProtocol: BubbleRoomCellProtocol {
 
 extension BubbleIncomingRoomCellProtocol {
     
+    // MARK: - Public
+    
     func setupBubbleDecorations() {
+        self.bubbleCellContentView?.decorationViewsAlignment = .left
+        self.setupDecorationConstraints()
+    }
+    
+    // MARK: - Private
+    
+    private func setupDecorationConstraints() {
         
+        self.setupURLPreviewContentViewContraints()
+        self.setupReactionsContentViewContraints()
+        self.setupThreadSummaryViewContentViewContraints()
+    }
+    
+    private func setupReactionsContentViewContraints() {
+        
+        self.bubbleCellContentView?.reactionsContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
+    }
+    
+    private func setupThreadSummaryViewContentViewContraints() {
+        self.bubbleCellContentView?.threadSummaryContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
+    }
+    
+    private func setupURLPreviewContentViewContraints() {
+        self.bubbleCellContentView?.urlPreviewContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
     }
 }

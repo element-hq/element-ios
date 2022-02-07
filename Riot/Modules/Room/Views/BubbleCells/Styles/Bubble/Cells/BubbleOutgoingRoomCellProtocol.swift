@@ -39,7 +39,7 @@ extension BubbleOutgoingRoomCellProtocol {
         self.setupThreadSummaryViewContentViewContraints()
     }
     
-    private func setupReactionsContentViewContraints () {
+    private func setupReactionsContentViewContraints() {
         guard let bubbleCellContentView = self.bubbleCellContentView, let reactionsContentView = bubbleCellContentView.reactionsContentView, let reactionsContainerView = bubbleCellContentView.reactionsContainerView else {
             return
         }
@@ -60,7 +60,7 @@ extension BubbleOutgoingRoomCellProtocol {
         bubbleCellContentView.reactionsContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
     }
     
-    private func setupThreadSummaryViewContentViewContraints () {
+    private func setupThreadSummaryViewContentViewContraints() {
         
         guard let bubbleCellContentView = self.bubbleCellContentView, let threadSummaryContentView = bubbleCellContentView.threadSummaryContentView, let threadSummaryContainerView = bubbleCellContentView.threadSummaryContainerView else {
             return
@@ -82,7 +82,7 @@ extension BubbleOutgoingRoomCellProtocol {
         bubbleCellContentView.threadSummaryContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
     }
     
-    private func setupURLPreviewContentViewContraints () {
+    private func setupURLPreviewContentViewContraints() {
         
         guard let bubbleCellContentView = self.bubbleCellContentView, let contentView = bubbleCellContentView.urlPreviewContentView, let containerView = bubbleCellContentView.urlPreviewContainerView else {
             return
