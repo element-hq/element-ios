@@ -119,9 +119,9 @@
 
 // Others
 "user_id_title" = "ID používateľa:";
-"e2e_passphrase_create" = "Vytvoriť heslo";
-"e2e_passphrase_confirm" = "Potvrďte heslo";
-"e2e_passphrase_enter" = "Zadajte heslo";
+"e2e_passphrase_create" = "Vytvoriť prístupovú frázu";
+"e2e_passphrase_confirm" = "Potvrďte prístupovú frázu";
+"e2e_passphrase_enter" = "Zadajte prístupovú frázu";
 
 // Search
 "search_no_results" = "Žiadne výsledky";
