@@ -16,15 +16,7 @@
 
 import UIKit
 
-class TextMessageIncomingBubbleCell: TextMessageBaseBubbleCell {
-    
-    // MARK: - Constants
-    
-    // TODO: Use global constants
-    private enum BubbleMargins {
-        static let leading: CGFloat = 0
-        static let trailing: CGFloat = 80
-    }
+class TextMessageIncomingBubbleCell: TextMessageBaseBubbleCell, BubbleIncomingRoomCellProtocol {
     
     // MARK: - Overrides
     
@@ -34,7 +26,7 @@ class TextMessageIncomingBubbleCell: TextMessageBaseBubbleCell {
         bubbleCellContentView?.showSenderInfo = true
 
         self.setupBubbleConstraints()
-        self.setupDecorationConstraints()
+        self.setupBubbleDecorations()
     }
     
     override func update(theme: Theme) {
@@ -47,21 +39,11 @@ class TextMessageIncomingBubbleCell: TextMessageBaseBubbleCell {
     
     private func setupBubbleConstraints() {
         
-        self.textMessageContentView?.bubbleBackgroundViewLeadingConstraint.constant = BubbleMargins.leading
+        self.textMessageContentView?.bubbleBackgroundViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left
         
         let innerContentViewTrailingMargin = self.bubbleCellContentView?.innerContentViewTrailingConstraint.constant ?? 0
         
-        self.textMessageContentView?.bubbleBackgroundViewTrailingConstraint.constant = BubbleMargins.trailing - innerContentViewTrailingMargin
+        self.textMessageContentView?.bubbleBackgroundViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right - innerContentViewTrailingMargin
         
-    }
-    
-    private func setupDecorationConstraints() {
-        
-        self.setupReactionsContentViewContraints()
-    }
-    
-    private func setupReactionsContentViewContraints () {
-        
-        self.bubbleCellContentView?.reactionsContentViewTrailingConstraint.constant = BubbleMargins.trailing
     }
 }
