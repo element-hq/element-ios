@@ -16,7 +16,7 @@
 
 import Foundation
 
-class PollOutgoingWithoutSenderInfoBubbleCell: PollBaseBubbleCell {
+class PollOutgoingWithoutSenderInfoBubbleCell: PollBaseBubbleCell, BubbleOutgoingRoomCellProtocol {
         
     override func setupViews() {
         super.setupViews()
@@ -31,6 +31,8 @@ class PollOutgoingWithoutSenderInfoBubbleCell: PollBaseBubbleCell {
         
         bubbleCellContentView?.innerContentViewTrailingConstraint.constant = rightMargin
         bubbleCellContentView?.innerContentViewLeadingConstraint.constant = leftMargin
+        
+        self.setupBubbleDecorations()
     }
     
     override func update(theme: Theme) {
