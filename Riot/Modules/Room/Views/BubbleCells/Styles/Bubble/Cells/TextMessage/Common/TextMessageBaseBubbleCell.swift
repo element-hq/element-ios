@@ -85,6 +85,7 @@ class TextMessageBaseBubbleCell: SizableBaseBubbleCell, RoomCellURLPreviewDispla
         
         self.bubbleCellContentView?.reactionsContainerView.layer.borderColor = UIColor.blue.cgColor
         self.bubbleCellContentView?.reactionsContainerView.layer.borderWidth = 1.0
+        self.bubbleCellContentView?.reactionsContentView.backgroundColor = .blue
         
         self.bubbleCellContentView?.threadSummaryContainerView.layer.borderColor = UIColor.purple.cgColor
         self.bubbleCellContentView?.threadSummaryContainerView.layer.borderWidth = 1.0
@@ -98,6 +99,7 @@ extension TextMessageBaseBubbleCell: TimestampDisplayable {
         guard let messageBubbleBackgroundView = self.textMessageContentView?.bubbleBackgroundView else {
             return
         }
+        messageBubbleBackgroundView.removeTimestampView()
         messageBubbleBackgroundView.addTimestampView(timestampView)
     }
     
