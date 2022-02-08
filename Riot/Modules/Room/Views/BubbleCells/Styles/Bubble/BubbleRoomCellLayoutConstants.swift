@@ -24,4 +24,6 @@ final class BubbleRoomCellLayoutConstants: NSObject {
     static let outgoingBubbleBackgroundMargins: UIEdgeInsets = UIEdgeInsets(top: 0, left: 80, bottom: 0, right: 34)
 
     static let incomingBubbleBackgroundMargins: UIEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 80)
+    
+    static let threadSummaryViewMargins: UIEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: 0)
 }
