@@ -243,6 +243,9 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
     
     func addURLPreviewView(_ urlPreviewView: UIView) {
         self.bubbleCellContentView?.addURLPreviewView(urlPreviewView)
+        
+        // tmpSubviews is used for touch detection in MXKRoomBubbleTableViewCell
+        self.addTemporarySubview(urlPreviewView)
     }
     
     func removeURLPreviewView() {
@@ -254,6 +257,9 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
     
     func addReadReceiptsView(_ readReceiptsView: UIView) {
         self.bubbleCellContentView?.addReadReceiptsView(readReceiptsView)
+        
+        // tmpSubviews is used for touch detection in MXKRoomBubbleTableViewCell
+        self.addTemporarySubview(readReceiptsView)
     }
     
     func removeReadReceiptsView() {
@@ -265,6 +271,9 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
     
     func addReactionsView(_ reactionsView: UIView) {
         self.bubbleCellContentView?.addReactionsView(reactionsView)
+        
+        // tmpSubviews is used for touch detection in MXKRoomBubbleTableViewCell
+        self.addTemporarySubview(reactionsView)
     }
     
     func removeReactionsView() {
@@ -275,6 +284,9 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
 
     func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView) {
         self.bubbleCellContentView?.addThreadSummaryView(threadSummaryView)
+        
+        // tmpSubviews is used for touch detection in MXKRoomBubbleTableViewCell
+        self.addTemporarySubview(threadSummaryView)
     }
 
     func removeThreadSummaryView() {
