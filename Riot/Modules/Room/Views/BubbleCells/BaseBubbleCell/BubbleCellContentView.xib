@@ -177,6 +177,24 @@
                                 <constraint firstItem="vpX-Nl-AEt" firstAttribute="top" secondItem="57V-Sl-EmD" secondAttribute="top" id="sFV-XK-lE4"/>
                             </constraints>
                         </view>
+                        <view hidden="YES" clipsSubviews="YES" contentMode="scaleAspectFit" verticalHuggingPriority="252" translatesAutoresizingMaskIntoConstraints="NO" id="Dj1-m6-1Jw">
+                            <rect key="frame" x="0.0" y="0.0" width="595" height="0.0"/>
+                            <subviews>
+                                <view clipsSubviews="YES" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="SNw-aM-ILI">
+                                    <rect key="frame" x="56" y="0.0" width="524" height="0.0"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" priority="250" placeholder="YES" id="kBO-PM-cjY"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="SNw-aM-ILI" firstAttribute="top" secondItem="Dj1-m6-1Jw" secondAttribute="top" id="1PE-go-s7Z"/>
+                                <constraint firstAttribute="bottom" secondItem="SNw-aM-ILI" secondAttribute="bottom" id="SBT-1C-CPb"/>
+                                <constraint firstAttribute="trailing" secondItem="SNw-aM-ILI" secondAttribute="trailing" constant="15" id="ynR-d4-6cf"/>
+                            </constraints>
+                        </view>
                         <view hidden="YES" contentMode="scaleToFill" verticalHuggingPriority="253" translatesAutoresizingMaskIntoConstraints="NO" id="4zo-V8-CNe">
                             <rect key="frame" x="0.0" y="0.0" width="595" height="16"/>
                             <subviews>
@@ -194,24 +212,6 @@
                                 <constraint firstAttribute="bottom" secondItem="rQt-NH-Cb0" secondAttribute="bottom" id="6yV-vn-doj"/>
                                 <constraint firstItem="rQt-NH-Cb0" firstAttribute="top" secondItem="4zo-V8-CNe" secondAttribute="top" id="DNc-jy-Urh"/>
                                 <constraint firstAttribute="trailing" secondItem="rQt-NH-Cb0" secondAttribute="trailing" constant="6" id="lq2-AY-Lus"/>
-                            </constraints>
-                        </view>
-                        <view hidden="YES" clipsSubviews="YES" contentMode="scaleAspectFit" verticalHuggingPriority="252" translatesAutoresizingMaskIntoConstraints="NO" id="Dj1-m6-1Jw">
-                            <rect key="frame" x="0.0" y="0.0" width="595" height="0.0"/>
-                            <subviews>
-                                <view clipsSubviews="YES" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="SNw-aM-ILI">
-                                    <rect key="frame" x="56" y="0.0" width="524" height="0.0"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" priority="250" placeholder="YES" id="kBO-PM-cjY"/>
-                                    </constraints>
-                                </view>
-                            </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstItem="SNw-aM-ILI" firstAttribute="top" secondItem="Dj1-m6-1Jw" secondAttribute="top" id="1PE-go-s7Z"/>
-                                <constraint firstAttribute="bottom" secondItem="SNw-aM-ILI" secondAttribute="bottom" id="SBT-1C-CPb"/>
-                                <constraint firstAttribute="trailing" secondItem="SNw-aM-ILI" secondAttribute="trailing" constant="15" id="ynR-d4-6cf"/>
                             </constraints>
                         </view>
                         <view hidden="YES" clipsSubviews="YES" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="2eB-kB-m20">
