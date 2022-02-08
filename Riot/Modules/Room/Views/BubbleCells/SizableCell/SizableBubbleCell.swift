@@ -131,6 +131,11 @@ class SizableBaseBubbleCell: BaseBubbleCell, SizableBaseBubbleCellType {
             
             let reactionsHeight = self.reactionsViewSizer.height(for: bubbleReactionsViewModel, fittingWidth: reactionWidth)
             height+=reactionsHeight
+            
+            // FIXME: Sized is always 24.0 pts too high when the reaction height is 49.0 pts high
+            if height > 48.0 {
+                height-=24
+            }
         }
 
         // Add thread summary view height if needed
