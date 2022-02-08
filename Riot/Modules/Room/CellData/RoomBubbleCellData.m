@@ -489,6 +489,13 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         }
     }
     
+    // With bubbles the text is truncated with quote messages containing vertical border view
+    // Add horizontal space to fix the issue
+    if (self.displayFix & MXKRoomBubbleComponentDisplayFixHtmlBlockquote)
+    {
+        [currentAttributedTextMsgWithoutVertSpace appendString:@"       "];
+    }
+    
     self.currentAttributedTextMsg = currentAttributedTextMsg;
     
     self.currentAttributedTextMsgWithoutVertSpace = currentAttributedTextMsgWithoutVertSpace;
