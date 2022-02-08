@@ -276,7 +276,7 @@
 "settings_ignored_users" = "IGNORERADE ANVÄNDARE";
 "settings_contacts" = "ENHETSKONTAKTER";
 "settings_advanced" = "AVANCERAT";
-"settings_other" = "ANNAT";
+"settings_other" = "Annat";
 "settings_labs" = "EXPERIMENT";
 "settings_devices" = "SESSIONER";
 "settings_cryptography" = "KRYPTOGRAFI";
@@ -1452,7 +1452,7 @@
 "space_home_show_all_rooms" = "Visa alla rum";
 "space_participants_action_ban" = "Banna från det här utrymmet";
 "space_participants_action_remove" = "Ta bort från det här utrymmet";
-"spaces_coming_soon_detail" = "Den här funktionen har inte bjudits in än, men den är på väg. För tillfället så kan du göra det med Element på din dator.";
+"spaces_coming_soon_detail" = "Den här funktionen har inte implementerats än, men den är på väg. För tillfället så kan du göra det med %@ på din dator.";
 "spaces_invites_coming_soon_title" = "Inbjudningar kommer snart";
 "spaces_add_rooms_coming_soon_title" = "Tilläggning av rum kommer snart";
 "spaces_coming_soon_title" = "Kommer snart";
