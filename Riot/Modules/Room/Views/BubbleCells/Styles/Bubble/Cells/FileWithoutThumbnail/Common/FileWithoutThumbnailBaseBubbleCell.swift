@@ -27,7 +27,7 @@ class FileWithoutThumbnailBaseBubbleCell: SizableBaseBubbleCell, BubbleCellReact
             return
         }
         
-        self.fileAttachementView?.title = data.attributedTextMessage.string
+        self.fileAttachementView?.titleLabel.attributedText = data.attributedTextMessage
         
         self.update(theme: ThemeService.shared().theme)
     }
