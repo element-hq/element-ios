@@ -50,39 +50,15 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
             
     func updateLayout(forIncomingTextMessageCell cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData) {
         
-        if let messageBubbleBackgroundView = cell.messageBubbleBackgroundView {
-            
-            if self.canUseBubbleBackground(forCell: cell, withCellData: cellData) {
-                
-                messageBubbleBackgroundView.isHidden = false
-                
-                self.updateMessageBubbleBackgroundView(messageBubbleBackgroundView, withCell: cell, andCellData: cellData)
-            } else {
-                messageBubbleBackgroundView.isHidden = true
-            }
-        }
     }
     
     func updateLayout(forOutgoingTextMessageCell cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData) {
 
-        if let messageBubbleBackgroundView = cell.messageBubbleBackgroundView {
-            
-            if self.canUseBubbleBackground(forCell: cell, withCellData: cellData) {
-                
-                messageBubbleBackgroundView.isHidden = false
-                
-                self.updateMessageBubbleBackgroundView(messageBubbleBackgroundView, withCell: cell, andCellData: cellData)
-            } else {
-                messageBubbleBackgroundView.isHidden = true
-            }
-        }
     }
     
     func setupLayout(forIncomingTextMessageCell cell: MXKRoomBubbleTableViewCell) {
         
         self.setupIncomingMessageTextViewMargins(for: cell)
-        
-        self.addBubbleBackgroundViewToCell(cell, backgroundColor: self.incomingColor)
         
         cell.setNeedsUpdateConstraints()
     }
@@ -93,8 +69,6 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
         
         // Hide avatar view
         cell.pictureView?.isHidden = true
-        
-        self.addBubbleBackgroundViewToCell(cell, backgroundColor: self.outgoingColor)
         
         cell.setNeedsUpdateConstraints()
     }
@@ -131,152 +105,15 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
     
     // MARK: - Private
     
-    // MARK: Bubble background view
-    
-    private func createBubbleBackgroundView(with backgroundColor: UIColor) -> RoomMessageBubbleBackgroundView {
-        
-        let bubbleBackgroundView = RoomMessageBubbleBackgroundView()
-        bubbleBackgroundView.backgroundColor = backgroundColor
-        
-        return bubbleBackgroundView
-    }
-    
-    private func addBubbleBackgroundViewToCell(_ bubbleCell: MXKRoomBubbleTableViewCell, backgroundColor: UIColor) {
-        
-        guard let messageTextView =  bubbleCell.messageTextView else {
-            return
-        }
-        
-        let topMargin: CGFloat = 0.0
-        let leftMargin: CGFloat = 5.0
-        let rightMargin: CGFloat = 45.0 // Add extra space for timestamp
-                        
-        let bubbleBackgroundView = self.createBubbleBackgroundView(with: backgroundColor)
-        
-        bubbleCell.contentView.insertSubview(bubbleBackgroundView, at: 0)
-        
-        let topAnchor = messageTextView.topAnchor
-        let leadingAnchor = messageTextView.leadingAnchor
-        let trailingAnchor = messageTextView.trailingAnchor
-        
-        bubbleBackgroundView.updateHeight(messageTextView.frame.height)
-        
-        NSLayoutConstraint.activate([
-            bubbleBackgroundView.topAnchor.constraint(equalTo: topAnchor, constant: topMargin),
-            bubbleBackgroundView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -leftMargin),
-            bubbleBackgroundView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: rightMargin)
-        ])
-    }
-    
-    private func canUseBubbleBackground(forCell cell: MXKRoomBubbleTableViewCell, withCellData cellData: MXKRoomBubbleCellData) -> Bool {
-
-        guard let firstComponent = cellData.getFirstBubbleComponentWithDisplay(), let firstEvent = firstComponent.event else {
-            return false
-        }
-        
-        switch firstEvent.eventType {
-        case .roomMessage:
-            if let messageType = firstEvent.messageType {
-                switch messageType {
-                case .text, .file:
-                    return true
-                case .emote:
-                    // Explicitely disable bubble for emotes
-                    return false                    
-                default:
-                    break
-                }
-            }
-        default:
-            break
-        }
-        
-        return false
-    }
-    
-    private func getTextMessageHeight(for cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData) -> CGFloat? {
-
-        guard let roomBubbleCellData = cellData as? RoomBubbleCellData,
-                let lastBubbleComponent = cellData.getLastBubbleComponentWithDisplay(),
-                let firstComponent = roomBubbleCellData.getFirstBubbleComponentWithDisplay() else {
-            return nil
-        }
-
-        let bubbleHeight: CGFloat
-
-        let lastEventId = lastBubbleComponent.event.eventId
-        let lastMessageBottomPosition = cell.bottomPosition(ofEvent: lastEventId)
-
-        let firstEventId = firstComponent.event.eventId
-        let firstMessageTopPosition = cell.topPosition(ofEvent: firstEventId)
-
-        let additionalContentHeight = roomBubbleCellData.additionalContentHeight
-
-        bubbleHeight = lastMessageBottomPosition - firstMessageTopPosition - additionalContentHeight
-
-        guard bubbleHeight >= 0 else {
-            return nil
-        }
-
-        return bubbleHeight
-    }
-    
-    // TODO: Improve text message height calculation
-    // This method is closer to final result but lack of stability because of extra vertical space not handled here.
-//    private func getTextMessageHeight(for cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData) -> CGFloat? {
-//
-//        guard let roomBubbleCellData = cellData as? RoomBubbleCellData,
-//              let firstComponent = roomBubbleCellData.getFirstBubbleComponentWithDisplay() else {
-//                  return nil
-//              }
-//
-//        let bubbleHeight: CGFloat
-//
-//        let componentIndex = cellData.bubbleComponentIndex(forEventId: firstComponent.event.eventId)
-//
-//        let componentFrame = cell.componentFrameInContentView(for: componentIndex)
-//
-//        bubbleHeight = componentFrame.height
-//
-//        guard bubbleHeight >= 0 else {
-//            return nil
-//        }
-//
-//        return bubbleHeight
-//    }
-    
-    private func getMessageBubbleBackgroundHeight(for cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData) -> CGFloat? {
-
-        var finalBubbleHeight: CGFloat?
-        let extraMargin: CGFloat = 4.0
-
-        if let bubbleHeight = self.getTextMessageHeight(for: cell, andCellData: cellData) {
-            finalBubbleHeight = bubbleHeight + extraMargin
-
-        } else if let messageTextViewHeight = cell.messageTextView?.frame.height {
-
-            finalBubbleHeight = messageTextViewHeight + extraMargin
-        }
-
-        return finalBubbleHeight
-    }
-    
-    @discardableResult
-    private func updateMessageBubbleBackgroundView(_ roomMessageBubbleBackgroundView: RoomMessageBubbleBackgroundView, withCell cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData) -> Bool {
-        
-        if let bubbleHeight = self.getMessageBubbleBackgroundHeight(for: cell, andCellData: cellData) {
-            return roomMessageBubbleBackgroundView.updateHeight(bubbleHeight)
-        } else {
-            return false
-        }
-    }
+    // MARK: Text message
     
     private func getIncomingMessageTextViewInsets(from bubbleCell: MXKRoomBubbleTableViewCell) -> UIEdgeInsets {
         
+        let bubbleBgRightMargin: CGFloat = 45
         let messageViewMarginTop: CGFloat
         let messageViewMarginBottom: CGFloat = -2.0
         let messageViewMarginLeft: CGFloat = 3.0
-        let messageViewMarginRight: CGFloat = 80
+        let messageViewMarginRight: CGFloat = 80 + bubbleBgRightMargin
         
         if bubbleCell.userNameLabel != nil {
             messageViewMarginTop = 10.0
@@ -288,8 +125,6 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
         
         return messageViewInsets
     }
-    
-    // MARK: Text message
     
     private func setupIncomingMessageTextViewMargins(for cell: MXKRoomBubbleTableViewCell) {
         
@@ -313,7 +148,8 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
         
         let contentView = cell.contentView
         
-        let leftMargin: CGFloat = 80.0
+        let innerContentLeftMargin: CGFloat = 57
+        let leftMargin: CGFloat = 80.0 + innerContentLeftMargin
         let rightMargin: CGFloat = 78.0
         let bottomMargin: CGFloat = -2.0
         
@@ -334,6 +170,8 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
         
         cell.msgTextViewBottomConstraint.constant += bottomMargin
     }
+    
+    // MARK: File attachment
     
     private func setupOutgoingFileAttachViewMargins(for cell: MXKRoomBubbleTableViewCell) {
         
