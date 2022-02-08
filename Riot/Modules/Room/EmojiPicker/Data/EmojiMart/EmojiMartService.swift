@@ -41,9 +41,13 @@ final class EmojiMartService: EmojiServiceType {
                 let emojiJSONData = try self.getEmojisJSONData()
                 let emojiJSONStore: EmojiMartStore = try self.serializationService.deserialize(emojiJSONData)
                 let emojiCategories = self.emojiCategories(from: emojiJSONStore)
-                completion(MXResponse.success(emojiCategories))
+                DispatchQueue.main.async {
+                    completion(MXResponse.success(emojiCategories))
+                }
             } catch {
-                completion(MXResponse.failure(error))
+                DispatchQueue.main.async {
+                    completion(MXResponse.failure(error))
+                }
             }
         }
     }
