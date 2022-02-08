@@ -20,7 +20,11 @@ import XCTest
 
 class EmojiStoreTests: XCTestCase {
 
-    private lazy var store = loadStore()
+    private var emojiStore: EmojiStore!
+    
+    override func setUp() {
+        emojiStore = loadStore()
+    }
 
     // MARK: - Tests
 
@@ -65,7 +69,7 @@ class EmojiStoreTests: XCTestCase {
     }
 
     private func find(_ searchText: String, expect emoji: String) {
-        let emojis = store.findEmojiItemsSortedByCategory(with: searchText).flatMap { $0.emojis.map { $0.value } }
+        let emojis = emojiStore.findEmojiItemsSortedByCategory(with: searchText).flatMap { $0.emojis.map { $0.value } }
         XCTAssert(emojis.contains(emoji), "Search text \"\(searchText)\" should find \"\(emoji)\" but only found \(emojis)")
     }
 
