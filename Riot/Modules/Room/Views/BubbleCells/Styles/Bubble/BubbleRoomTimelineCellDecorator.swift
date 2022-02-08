@@ -96,12 +96,12 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
     override func addReactionView(_ reactionsView: BubbleReactionsView,
                                   toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData, contentViewPositionY: CGFloat, upperDecorationView: UIView?) {
         
-        cell.addTemporarySubview(reactionsView)
-        
         if let reactionsDisplayable = cell as? BubbleCellReactionsDisplayable {
             reactionsDisplayable.addReactionsView(reactionsView)
             return
         }
+        
+        cell.addTemporarySubview(reactionsView)
         
         reactionsView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -221,11 +221,11 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
                               contentViewPositionY: CGFloat,
                               upperDecorationView: UIView?) {
 
-        cell.addTemporarySubview(threadSummaryView)
-
         if let threadSummaryDisplayable = cell as? BubbleCellThreadSummaryDisplayable {
             threadSummaryDisplayable.addThreadSummaryView(threadSummaryView)
         } else {
+            
+            cell.addTemporarySubview(threadSummaryView)
             threadSummaryView.translatesAutoresizingMaskIntoConstraints = false
 
             let cellContentView = cell.contentView
