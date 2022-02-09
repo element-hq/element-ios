@@ -1388,7 +1388,7 @@
 
 // Unverified sessions
 
-"key_verification_self_verify_unverified_sessions_alert_title" = "Zobraziť, kde ste prihlásený";
+"key_verification_self_verify_unverified_sessions_alert_title" = "Skontrolujte, kde ste prihlásení";
 "key_verification_self_verify_current_session_alert_message" = "Ostatní používatelia jej nemusia dôverovať.";
 
 // Current session
@@ -1664,3 +1664,48 @@
 "onboarding_splash_page_4_title_no_pun" = "Zasielanie správ pre váš tím.";
 "onboarding_splash_page_4_message" = "Element je skvelý aj na pracovisku. Dôverujú mu najbezpečnejšie organizácie na svete.";
 "settings_enable_room_message_bubbles" = "Správy v bublinách";
+"share_extension_failed_to_encrypt" = "Nepodarilo sa odoslať. Skontrolujte v hlavnej aplikácii nastavenia šifrovania pre túto miestnosť";
+"service_terms_modal_policy_checkbox_accessibility_hint" = "Označte, či chcete prijať %@";
+
+// Intro
+
+"key_backup_setup_intro_title" = "Nikdy neprídete o šifrované správy";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "Alebo zabezpečte zálohu bezpečnostným kľúčom a uložte ju na bezpečné miesto.";
+"key_verification_user_title" = "Overte ich";
+"poll_edit_form_poll_question_or_topic" = "Otázka alebo téma ankety";
+"poll_timeline_total_no_votes" = "Žiadne odovzdané hlasy";
+"poll_timeline_total_one_vote_not_voted" = "1 odovzdaný hlas. Hlasujte a pozrite si výsledky";
+"poll_timeline_total_final_results_one_vote" = "Konečný výsledok na základe 1 hlasu";
+"poll_timeline_total_final_results" = "Konečný výsledok na základe %lu hlasov";
+"poll_edit_form_poll_type" = "Typ ankety";
+"poll_edit_form_update_failure_title" = "Nepodarilo sa aktualizovať anketu";
+"poll_edit_form_update_failure_subtitle" = "Prosím, skúste to znova";
+"poll_edit_form_poll_type_open" = "Otvoriť anketu";
+"poll_edit_form_poll_type_open_description" = "Hlasujúci uvidia výsledky hneď po hlasovaní";
+"poll_edit_form_poll_type_closed_description" = "Výsledky sa zobrazia až po ukončení ankety";
+"poll_timeline_total_votes_not_voted" = "%lu odovzdaných hlasov. Hlasujte a pozrite si výsledky";
+"poll_timeline_total_votes" = "%lu odovzdaných hlasov";
+"poll_timeline_total_one_vote" = "1 odovzdaný hlas";
+"poll_edit_form_poll_type_closed" = "Uzavretá anketa";
+"poll_edit_form_post_failure_title" = "Nepodarilo sa odoslať anketu";
+"call_transfer_error_message" = "Prenos hovoru zlyhal";
+"user_verification_session_details_information_untrusted_other_user" = " sa prihlásil pomocou novej relácie:";
+"key_verification_bootstrap_not_setup_message" = "Najprv musíte zaviesť krížové podpisovanie.";
+"device_verification_emoji_pin" = "Špendlík";
+"device_verification_emoji_folder" = "Fascikel";
+"secure_key_backup_setup_existing_backup_error_info" = "Odomknite to a znovu to použite v zabezpečenej zálohe alebo to vymažte a vytvorte novú zálohu správ v zabezpečenej zálohe.";
+
+// Share extension
+"share_extension_auth_prompt" = "Prihláste sa v hlavnej aplikácii na zdieľanie obsahu";
+
+// Widget Integration Manager
+"widget_integration_need_to_be_able_to_invite" = "Musíte mať možnosť pozvať používateľov, aby ste to mohli urobiť.";
+"bug_report_logs_description" = "Za účelom diagnostiky problémov budú spolu s týmto hlásením o chybe odoslané protokoly z tohto klienta. Ak chcete radšej posielať len vyššie uvedený text, zrušte prosím označené:";
+"call_no_stun_server_error_message_1" = "Požiadajte prosím správcu vášho domovského servera %@ o nastavenie servera TURN, aby hovory fungovali spoľahlivo.";
+"call_no_stun_server_error_title" = "Hovor zlyhal z dôvodu nesprávne nastaveného servera";
+"room_details_addresses_disable_main_address_prompt_title" = "Upozornenie na hlavnú adresu";
+"manage_session_trusted" = "Dôveryhodný pre vás";
+"settings_contacts_phonebook_country" = "Krajina telefónneho zoznamu";
+"settings_ui_theme_picker_message_invert_colours" = "\"Auto\" používa nastavenia \"Invertovať farby\" vášho zariadenia";
+"external_link_confirmation_title" = "Prekontrolujte tento odkaz";
+"callbar_only_single_active_group" = "Ťuknutím sa pripojíte k skupinovému hovoru (%@)";
