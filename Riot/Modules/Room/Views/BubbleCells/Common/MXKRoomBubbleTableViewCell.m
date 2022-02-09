@@ -966,6 +966,7 @@ static BOOL _disableLongPressGestureOnEvent;
     [self clearBubbleInfoContainer];
     [self clearBubbleOverlayContainer];
     [self resetConstraintsConstantToDefault];
+    [self clearAttachmentWebView];
     
     [self didEndDisplay];
 }
