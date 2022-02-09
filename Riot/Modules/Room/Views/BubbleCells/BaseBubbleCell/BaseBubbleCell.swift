@@ -77,7 +77,7 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
     override var pictureView: MXKImageView! {
         get {
             guard let bubbleCellContentView = self.bubbleCellContentView,
-                bubbleCellContentView.showSenderInfo else {
+                bubbleCellContentView.showSenderAvatar else {
                 return nil
             }
             
@@ -93,8 +93,7 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
     
     override var userNameLabel: UILabel! {
         get {
-            guard let bubbleCellContentView = self.bubbleCellContentView,
-                bubbleCellContentView.showSenderInfo else {
+            guard let bubbleCellContentView = self.bubbleCellContentView, bubbleCellContentView.showSenderName  else {
                 return nil
             }
             
@@ -111,7 +110,7 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
     override var userNameTapGestureMaskView: UIView! {
         get {
             guard let bubbleCellContentView = self.bubbleCellContentView,
-                bubbleCellContentView.showSenderInfo else {
+                bubbleCellContentView.showSenderName else {
                 return nil
             }
             

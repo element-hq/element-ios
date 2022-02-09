@@ -29,10 +29,12 @@ final class BubbleCellContentView: UIView, NibLoadable {
     @IBOutlet weak var paginationLabel: UILabel!
     @IBOutlet weak var paginationSeparatorView: UIView!
     
-    @IBOutlet weak var senderInfoContainerView: UIView!
-    @IBOutlet weak var avatarImageView: MXKImageView!
+    @IBOutlet weak var userNameContainerView: UIView!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var userNameTouchMaskView: UIView!
+    
+    @IBOutlet weak var avatarContainerView: UIView!
+    @IBOutlet weak var avatarImageView: MXKImageView!
     
     @IBOutlet weak var innerContentView: UIView!
     
@@ -117,10 +119,29 @@ final class BubbleCellContentView: UIView, NibLoadable {
     
     var showSenderInfo: Bool {
         get {
-            return !self.senderInfoContainerView.isHidden
+            return self.showSenderAvatar && self.showSenderName
         }
         set {
-            self.senderInfoContainerView.isHidden = !newValue
+            self.showSenderAvatar = newValue
+            self.showSenderName = newValue
+        }
+    }
+    
+    var showSenderAvatar: Bool {
+        get {
+            return !self.avatarContainerView.isHidden
+        }
+        set {
+            self.avatarContainerView.isHidden = !newValue
+        }
+    }
+    
+    var showSenderName: Bool {
+        get {
+            return !self.userNameContainerView.isHidden
+        }
+        set {
+            self.userNameContainerView.isHidden = !newValue
         }
     }
     
