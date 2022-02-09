@@ -38,6 +38,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSDictionary<NSNumber*, Class>*)outgoingTextMessageCellsMapping;
 
+- (NSDictionary<NSNumber*, Class>*)incomingEmoteCellsMapping;
+
+- (NSDictionary<NSNumber*, Class>*)outgoingEmoteCellsMapping;
+
 - (NSDictionary<NSNumber*, Class>*)outgoingAttachmentCellsMapping;
 
 - (NSDictionary<NSNumber*, Class>*)incomingAttachmentWithoutThumbnailCellsMapping;
