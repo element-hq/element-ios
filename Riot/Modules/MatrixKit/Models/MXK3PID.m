@@ -29,6 +29,10 @@
 @property (nonatomic) NSString *sid;
 @property (nonatomic) MXIdentityService *identityService;
 @property (nonatomic) NSString *submitUrl;
+/**
+ HTTP client dedicated to sending MSISDN token to custom URLs.
+ */
+@property (nonatomic, strong) MXHTTPClient *customUrlHttpClient;
 
 @end
 
@@ -255,14 +259,23 @@
                                  @"token": token
                                  };
 
-    MXHTTPClient *httpClient = [[MXHTTPClient alloc] initWithBaseURL:nil andOnUnrecognizedCertificateBlock:nil];
-    return [httpClient requestWithMethod:@"POST"
-                                    path:url
-                              parameters:parameters
-                                 success:^(NSDictionary *JSONResponse) {
-                                     success();
-                                 }
-                                 failure:failure];
+    self.customUrlHttpClient = [[MXHTTPClient alloc] initWithBaseURL:nil andOnUnrecognizedCertificateBlock:nil];
+
+    MXWeakify(self);
+    return [self.customUrlHttpClient requestWithMethod:@"POST"
+                                                  path:url
+                                            parameters:parameters
+                                               success:^(NSDictionary *JSONResponse) {
+        success();
+        MXStrongifyAndReturnIfNil(self);
+        self.customUrlHttpClient = nil;
+    }
+                                               failure:^(NSError *error) {
+        failure(error);
+        MXStrongifyAndReturnIfNil(self);
+        self.customUrlHttpClient = nil;
+    }];
+
 }
 
 - (void)add3PIDToUser:(BOOL)bind
