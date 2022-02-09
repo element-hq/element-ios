@@ -1322,7 +1322,7 @@
         
         [phoneNumberPickerNavigationController pushViewController:phoneNumberCountryPicker animated:NO];
         
-        UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(dismissCountryPicker)];
+        UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[AssetImages backIcon] image] style:UIBarButtonItemStylePlain target:self action:@selector(dismissCountryPicker)];
         phoneNumberCountryPicker.navigationItem.leftBarButtonItem = leftBarButtonItem;
         
         [self.delegate authInputsView:self presentViewController:phoneNumberPickerNavigationController animated:YES];

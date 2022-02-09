@@ -840,11 +840,11 @@
         UIImage *chevron;
         if (shrinkedSectionsBitMask & sectionBitwise)
         {
-            chevron = [UIImage imageNamed:@"disclosure_icon"];
+            chevron = [[AssetImages disclosureIcon] image];
         }
         else
         {
-            chevron = [UIImage imageNamed:@"shrink_icon"];
+            chevron = [[AssetImages shrinkIcon] image];
         }
         UIImageView *chevronView = [[UIImageView alloc] initWithImage:chevron];
         chevronView.tintColor = ThemeService.shared.theme.textSecondaryColor;
@@ -889,7 +889,7 @@
         checkboxLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
         
         // Set the right value of the tick box
-        localContactsCheckbox.image = hideNonMatrixEnabledContacts ? [UIImage imageNamed:@"selection_tick"] : [UIImage imageNamed:@"selection_untick"];
+        localContactsCheckbox.image = hideNonMatrixEnabledContacts ? [[AssetImages selectionTick] image] : [[AssetImages selectionUntick] image];
         localContactsCheckbox.tintColor = ThemeService.shared.theme.tintColor;
         
         // Add the check box container

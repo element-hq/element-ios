@@ -16,6 +16,7 @@
  */
 
 #import "RoomEncryptedDataBubbleCell.h"
+#import "GeneratedInterface-Swift.h"
 
 NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon = @"kRoomEncryptedDataBubbleCellTapOnEncryptionIcon";
 
@@ -28,7 +29,7 @@ NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon = @"kRoomEncrypt
         return nil;
     }
     
-    return [UIImage imageNamed:@"encryption_warning"];
+    return [[AssetImages encryptionWarning] image];
 }
 
 + (void)addEncryptionStatusFromBubbleData:(MXKRoomBubbleCellData *)bubbleData inContainerView:(UIView *)containerView

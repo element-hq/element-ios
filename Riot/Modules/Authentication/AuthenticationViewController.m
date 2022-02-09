@@ -136,7 +136,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     
     self.defaultIdentityServerUrl = RiotSettings.shared.identityServerUrlString;
     
-    self.welcomeImageView.image = [UIImage imageNamed:@"horizontal_logo"];
+    self.welcomeImageView.image = [[AssetSharedImages horizontalLogo] image];
     
     [self.submitButton.layer setCornerRadius:5];
     self.submitButton.clipsToBounds = YES;
@@ -150,8 +150,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     [self.skipButton setTitle:[VectorL10n authSkip] forState:UIControlStateHighlighted];
     self.skipButton.enabled = YES;
     
-    [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateNormal];
-    [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateHighlighted];
+    [self.customServersTickButton setImage:[[AssetImages selectionUntick] image] forState:UIControlStateNormal];
+    [self.customServersTickButton setImage:[[AssetImages selectionUntick] image] forState:UIControlStateHighlighted];
     
     if (!BuildSettings.authScreenShowRegister)
     {
@@ -1272,7 +1272,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         [self setHomeServerTextFieldText:self.defaultHomeServerUrl];
         [self setIdentityServerTextFieldText:self.defaultIdentityServerUrl];
         
-        [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateNormal];
+        [self.customServersTickButton setImage:[[AssetImages selectionUntick] image] forState:UIControlStateNormal];
         self.customServersContainer.hidden = YES;
         
         // Refresh content view height
@@ -1296,7 +1296,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
             [self setIdentityServerTextFieldText:customIdentityServerURL];
         }
         
-        [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_tick"] forState:UIControlStateNormal];
+        [self.customServersTickButton setImage:[[AssetImages selectionTick] image] forState:UIControlStateNormal];
         self.customServersContainer.hidden = NO;
         
         // Refresh content view height

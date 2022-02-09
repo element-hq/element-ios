@@ -18,8 +18,10 @@ internal typealias AssetImageTypeAlias = ImageAsset.Image
 // MARK: - Asset Catalogs
 
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
-internal enum Asset {
-  internal enum Images {
+@objcMembers
+internal class Asset: NSObject {
+  @objcMembers
+  @objc(AssetImages) internal class Images: NSObject {
     internal static let analyticsCheckmark = ImageAsset(name: "AnalyticsCheckmark")
     internal static let analyticsLogo = ImageAsset(name: "AnalyticsLogo")
     internal static let socialLoginButtonApple = ImageAsset(name: "social_login_button_apple")
@@ -237,7 +239,8 @@ internal enum Asset {
     internal static let tabRooms = ImageAsset(name: "tab_rooms")
     internal static let launchScreenLogo = ImageAsset(name: "launch_screen_logo")
   }
-  internal enum SharedImages {
+  @objcMembers
+  @objc(AssetSharedImages) internal class SharedImages: NSObject {
     internal static let cancel = ImageAsset(name: "cancel")
     internal static let e2eVerified = ImageAsset(name: "e2e_verified")
     internal static let horizontalLogo = ImageAsset(name: "horizontal_logo")
@@ -249,7 +252,8 @@ internal enum Asset {
 
 // MARK: - Implementation Details
 
-internal struct ImageAsset {
+@objcMembers
+internal class ImageAsset: NSObject {
   internal fileprivate(set) var name: String
 
   #if os(macOS)
@@ -273,6 +277,10 @@ internal struct ImageAsset {
       fatalError("Unable to load image asset named \(name).")
     }
     return result
+  }
+
+  init(name: String) {
+    self.name = name
   }
 
   #if os(iOS) || os(tvOS)
@@ -314,3 +322,4 @@ private final class BundleToken {
   }()
 }
 // swiftlint:enable convenience_type
+

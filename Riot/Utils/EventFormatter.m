@@ -82,7 +82,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
             
             CGSize imageSize = CGSizeMake(20, 20);
             NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
-            attachment.image = [[[UIImage imageNamed:@"room_context_menu_delete"] vc_resizedWith:imageSize] vc_tintedImageUsingColor:color];
+            attachment.image = [[[[AssetImages roomContextMenuDelete] image] vc_resizedWith:imageSize] vc_tintedImageUsingColor:color];
             attachment.bounds = CGRectMake(0, font.descender, imageSize.width, imageSize.height);
             NSAttributedString *imageString = [NSAttributedString attributedStringWithAttachment:attachment];
             
