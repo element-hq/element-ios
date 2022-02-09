@@ -34,8 +34,6 @@ class BubbleRoomTimelineStyle: RoomTimelineStyle {
     
     let cellDecorator: RoomTimelineCellDecorator
     
-    let useVerticalWhiteSpaceForText: Bool
-    
     // MARK: - Setup
     
     init(theme: Theme) {
@@ -44,7 +42,6 @@ class BubbleRoomTimelineStyle: RoomTimelineStyle {
         self.cellLayoutUpdater = BubbleRoomCellLayoutUpdater(theme: theme)
         self.cellProvider = BubbleRoomTimelineCellProvider()
         self.cellDecorator = BubbleRoomTimelineCellDecorator()
-        self.useVerticalWhiteSpaceForText = false
     }
     
     // MARK: - Public
