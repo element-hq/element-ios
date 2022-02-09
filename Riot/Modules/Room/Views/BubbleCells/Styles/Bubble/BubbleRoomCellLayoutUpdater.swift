@@ -97,6 +97,49 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
         }
     }
     
+    func maximumTextViewWidth(for cell: MXKRoomBubbleTableViewCell, cellData: MXKCellData, maximumCellWidth: CGFloat) -> CGFloat {
+        
+        guard cell.messageTextView != nil else {
+            return 0
+        }
+        
+        let maxTextViewWidth: CGFloat
+        
+        let textViewleftMargin: CGFloat
+        let textViewRightMargin: CGFloat
+        
+        if let roomBubbleCellData = cellData as? RoomBubbleCellData, cell is MXKRoomIncomingTextMsgBubbleCell || cell is MXKRoomOutgoingTextMsgBubbleCell {
+            
+            if roomBubbleCellData.isIncoming {
+                let textViewInsets = self.getIncomingMessageTextViewInsets(from: cell)
+                
+                textViewleftMargin = cell.msgTextViewLeadingConstraint.constant + textViewInsets.left
+                // Right inset is in fact margin in this case
+                textViewRightMargin = textViewInsets.right
+            } else {
+                let textViewMargins = self.getOutgoingMessageTextViewMargins(from: cell)
+                
+                textViewleftMargin = textViewMargins.left
+                textViewRightMargin = textViewMargins.right
+            }
+        } else {
+            textViewleftMargin = cell.msgTextViewLeadingConstraint.constant
+            textViewRightMargin = cell.msgTextViewTrailingConstraint.constant
+        }
+        
+        maxTextViewWidth = maximumCellWidth - (textViewleftMargin + textViewRightMargin)
+        
+        guard maxTextViewWidth >= 0 else {
+            return 0
+        }
+        
+        guard maxTextViewWidth <= maximumCellWidth else {
+            return maxTextViewWidth
+        }
+        
+        return maxTextViewWidth
+    }
+    
     // MARK: Themable
     
     func update(theme: Theme) {
@@ -131,7 +174,23 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
         cell.msgTextViewBottomConstraint.constant += messageViewInsets.bottom
         cell.msgTextViewTopConstraint.constant += messageViewInsets.top
         cell.msgTextViewLeadingConstraint.constant += messageViewInsets.left
-        cell.msgTextViewTrailingConstraint.constant += messageViewInsets.right
+        
+        // Right inset is in fact margin in this case
+        cell.msgTextViewTrailingConstraint.constant = messageViewInsets.right
+    }
+    
+    private func getOutgoingMessageTextViewMargins(from bubbleCell: MXKRoomBubbleTableViewCell) -> UIEdgeInsets {
+            
+        let innerContentLeftMargin: CGFloat = 57
+        
+        let messageViewMarginTop: CGFloat = 0
+        let messageViewMarginBottom: CGFloat = 0
+        let messageViewMarginLeft: CGFloat = 80.0 + innerContentLeftMargin
+        let messageViewMarginRight: CGFloat = 78.0
+            
+        let messageViewInsets = UIEdgeInsets(top: messageViewMarginTop, left: messageViewMarginLeft, bottom: messageViewMarginBottom, right: messageViewMarginRight)
+                
+        return messageViewInsets
     }
     
     private func setupOutgoingMessageTextViewMargins(for cell: MXKRoomBubbleTableViewCell) {
@@ -142,17 +201,14 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
         
         let contentView = cell.contentView
         
-        let innerContentLeftMargin: CGFloat = 57
-        let leftMargin: CGFloat = 80.0 + innerContentLeftMargin
-        let rightMargin: CGFloat = 78.0
-        let bottomMargin: CGFloat = -2.0
+        let messageViewMargins = self.getOutgoingMessageTextViewMargins(from: cell)
         
         cell.msgTextViewLeadingConstraint.isActive = false
         cell.msgTextViewTrailingConstraint.isActive = false
         
-        let leftConstraint = messageTextView.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor, constant: leftMargin)
+        let leftConstraint = messageTextView.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor, constant: messageViewMargins.left)
         
-        let rightConstraint = messageTextView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -rightMargin)
+        let rightConstraint = messageTextView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -messageViewMargins.right)
         
         NSLayoutConstraint.activate([
             leftConstraint,
@@ -162,7 +218,7 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
         cell.msgTextViewLeadingConstraint = leftConstraint
         cell.msgTextViewTrailingConstraint = rightConstraint
         
-        cell.msgTextViewBottomConstraint.constant += bottomMargin
+        cell.msgTextViewBottomConstraint.constant = messageViewMargins.bottom
     }
     
     // MARK: File attachment
