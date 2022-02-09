@@ -99,7 +99,7 @@
 "notice_image_attachment" = "anexo de imagem";
 "notice_audio_attachment" = "anexo de áudio";
 "notice_video_attachment" = "anexo de vídeo";
-"notice_location_attachment" = "anexo de local";
+"notice_location_attachment" = "anexo de localização";
 "notice_file_attachment" = "anexo de arquivo";
 "notice_invalid_attachment" = "anexo inválido";
 "notice_unsupported_attachment" = "Anexo insuportado: %@";
