@@ -16,18 +16,8 @@
 
 import Foundation
 
-class LocationIncomingBubbleCell: LocationBubbleCell, BubbleIncomingRoomCellProtocol {
-            
-    override func setupViews() {
-        super.setupViews()
-        
-        // TODO: Use constants
-        let messageViewMarginRight: CGFloat = 80
-        let messageLeftMargin: CGFloat = 48
-        
-        bubbleCellContentView?.innerContentViewTrailingConstraint.constant = messageViewMarginRight
-        bubbleCellContentView?.innerContentViewLeadingConstraint.constant = messageLeftMargin
-        
-        self.setupBubbleDecorations()
-    }
+/// BubbleCellContentView decoration view items alignment
+enum RoomCellDecorationAlignment {
+    case left
+    case right
 }

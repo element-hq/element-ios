@@ -16,26 +16,33 @@
 
 import UIKit
 
-class FileWithoutThumbnailIncomingBubbleCell: FileWithoutThumbnailBaseBubbleCell, BubbleIncomingRoomCellProtocol {
+class TextMessageIncomingBubbleCell: TextMessageBaseBubbleCell, BubbleIncomingRoomCellProtocol {
+    
+    // MARK: - Overrides
     
     override func setupViews() {
         super.setupViews()
         
         bubbleCellContentView?.showSenderInfo = true
-        
-        // TODO: Use constants
-        let messageViewMarginRight: CGFloat = 80
-        let messageLeftMargin: CGFloat = 48
-        
-        bubbleCellContentView?.innerContentViewTrailingConstraint.constant = messageViewMarginRight
-        bubbleCellContentView?.innerContentViewLeadingConstraint.constant = messageLeftMargin
-        
+
+        self.setupBubbleConstraints()
         self.setupBubbleDecorations()
     }
     
     override func update(theme: Theme) {
         super.update(theme: theme)
         
-        self.fileAttachementView?.backgroundColor = theme.roomCellIncomingBubbleBackgroundColor
+        self.textMessageContentView?.bubbleBackgroundView?.backgroundColor = theme.roomCellIncomingBubbleBackgroundColor
+    }
+    
+    // MARK: - Private
+    
+    private func setupBubbleConstraints() {
+        
+        self.textMessageContentView?.bubbleBackgroundViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left
+        
+        let innerContentViewTrailingMargin = self.bubbleCellContentView?.innerContentViewTrailingConstraint.constant ?? 0
+        
+        self.textMessageContentView?.bubbleBackgroundViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right - innerContentViewTrailingMargin
     }
 }

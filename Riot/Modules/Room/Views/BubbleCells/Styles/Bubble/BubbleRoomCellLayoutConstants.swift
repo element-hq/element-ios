@@ -16,18 +16,14 @@
 
 import Foundation
 
-class LocationIncomingBubbleCell: LocationBubbleCell, BubbleIncomingRoomCellProtocol {
-            
-    override func setupViews() {
-        super.setupViews()
-        
-        // TODO: Use constants
-        let messageViewMarginRight: CGFloat = 80
-        let messageLeftMargin: CGFloat = 48
-        
-        bubbleCellContentView?.innerContentViewTrailingConstraint.constant = messageViewMarginRight
-        bubbleCellContentView?.innerContentViewLeadingConstraint.constant = messageLeftMargin
-        
-        self.setupBubbleDecorations()
-    }
+
+/// Bubble style room cell layout constants
+@objcMembers
+final class BubbleRoomCellLayoutConstants: NSObject {
+    
+    static let outgoingBubbleBackgroundMargins: UIEdgeInsets = UIEdgeInsets(top: 0, left: 80, bottom: 0, right: 34)
+
+    static let incomingBubbleBackgroundMargins: UIEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 80)
+    
+    static let threadSummaryViewMargins: UIEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: 0)
 }

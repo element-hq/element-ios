@@ -668,6 +668,13 @@ const CGFloat kTypingCellHeight = 24;
         // Make extra cell layout updates if needed
         [self updateCellLayoutIfNeeded:bubbleCell withCellData:cellData];
     }
+    
+    if ([cell conformsToProtocol:@protocol(Themable)])
+    {
+        id<Themable> cellThemable = (id<Themable>)cell;
+
+        [cellThemable updateWithTheme:ThemeService.shared.theme];
+    }
 
     return cell;
 }

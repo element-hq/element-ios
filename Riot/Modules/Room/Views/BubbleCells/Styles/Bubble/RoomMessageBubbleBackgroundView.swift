@@ -77,7 +77,11 @@ class RoomMessageBubbleBackgroundView: UIView {
 
 // MARK: - TimestampDisplayable
 extension RoomMessageBubbleBackgroundView: TimestampDisplayable {
+    
     func addTimestampView(_ timestampView: UIView) {
+        
+        self.removeTimestampView()
+        
         self.addTimestampView(timestampView, rightMargin: 8.0, bottomMargin: 4.0)
         self.timestampView = timestampView
     }

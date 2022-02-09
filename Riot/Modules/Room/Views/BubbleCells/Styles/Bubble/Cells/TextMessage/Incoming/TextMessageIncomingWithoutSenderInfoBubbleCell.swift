@@ -14,20 +14,13 @@
 // limitations under the License.
 //
 
-import Foundation
+import UIKit
 
-class LocationIncomingBubbleCell: LocationBubbleCell, BubbleIncomingRoomCellProtocol {
-            
+class TextMessageIncomingWithoutSenderInfoBubbleCell: TextMessageIncomingBubbleCell {
+    
     override func setupViews() {
         super.setupViews()
         
-        // TODO: Use constants
-        let messageViewMarginRight: CGFloat = 80
-        let messageLeftMargin: CGFloat = 48
-        
-        bubbleCellContentView?.innerContentViewTrailingConstraint.constant = messageViewMarginRight
-        bubbleCellContentView?.innerContentViewLeadingConstraint.constant = messageLeftMargin
-        
-        self.setupBubbleDecorations()
+        bubbleCellContentView?.showSenderInfo = false        
     }
 }
