@@ -167,6 +167,10 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
     
     // MARK: - Overrides
     
+    override var isTextViewNeedsPositioningVerticalSpace: Bool {
+        return false
+    }
+    
     override func setupViews() {
         super.setupViews()
         
