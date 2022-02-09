@@ -38,9 +38,6 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 // Flags to "Show All" reactions for an event
 @property(nonatomic) NSMutableSet<NSString* /* eventId */> *eventsToShowAllReactions;
 
-@property (nonatomic, strong) NSAttributedString *currentAttributedTextMsg;
-@property (nonatomic, strong) NSAttributedString *currentAttributedTextMsgWithoutVertSpace;
-
 @end
 
 @implementation RoomBubbleCellData
@@ -244,30 +241,16 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 
 - (NSAttributedString*)attributedTextMessage
 {
-    @synchronized(bubbleComponents)
-    {
-        if (self.hasAttributedTextMessage && !attributedTextMessage.length)
-        {
-            // Attributed text message depends on the room read receipts which must be retrieved on the main thread to prevent us from race conditions.
-            // Check here the current thread, this is just a sanity check because the attributed text message
-            // is requested during the rendering step which takes place on the main thread.
-            if ([NSThread currentThread] != [NSThread mainThread])
-            {
-                MXLogDebug(@"[RoomBubbleCellData] attributedTextMessage called on wrong thread");
-                dispatch_sync(dispatch_get_main_queue(), ^{
-                    [self buildAttributedString];
-                    self.attributedTextMessage = [self getAppropriatedAttributedString];
-                });
-            }
-            else
-            {
-                [self buildAttributedString];
-                self.attributedTextMessage = [self getAppropriatedAttributedString];
-            }
-        }
-    }
+    [self buildAttributedStringIfNeeded];
     
     return attributedTextMessage;
+}
+
+- (NSAttributedString*)attributedTextMessageWithoutPositioningSpace
+{
+    [self buildAttributedStringIfNeeded];
+    
+    return attributedTextMessageWithoutPositioningSpace;
 }
 
 - (BOOL)hasNoDisplay
@@ -383,20 +366,6 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     [self setNeedsUpdateAdditionalContentHeight];
 }
 
-- (NSAttributedString*)getAppropriatedAttributedString
-{
-    RoomTimelineConfiguration *timelineConfiguration = [RoomTimelineConfiguration shared];
-    
-    if (timelineConfiguration.currentStyle.useVerticalWhiteSpaceForText)
-    {
-        return self.currentAttributedTextMsg;
-    }
-    else
-    {
-        return self.currentAttributedTextMsgWithoutVertSpace;
-    }
-}
-
 - (void)buildAttributedString
 {
     // CAUTION: This method must be called on the main thread.
@@ -404,8 +373,10 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     // Return the collapsed string only for cells series header
     if (self.collapsed && self.collapsedAttributedTextMessage && self.nextCollapsableCellData)
     {
-        self.currentAttributedTextMsg =  super.collapsedAttributedTextMessage;
-        self.currentAttributedTextMsgWithoutVertSpace = super.collapsedAttributedTextMessage;
+        NSAttributedString *attributedString = super.collapsedAttributedTextMessage;
+        
+        self.attributedTextMessage = attributedString;
+        self.attributedTextMessageWithoutPositioningSpace = attributedString;
         
         return;
     }
@@ -495,10 +466,34 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     {
         [currentAttributedTextMsgWithoutVertSpace appendString:@"       "];
     }
+        
+    self.attributedTextMessage = currentAttributedTextMsg;
     
-    self.currentAttributedTextMsg = currentAttributedTextMsg;
-    
-    self.currentAttributedTextMsgWithoutVertSpace = currentAttributedTextMsgWithoutVertSpace;
+    self.attributedTextMessageWithoutPositioningSpace = currentAttributedTextMsgWithoutVertSpace;
+}
+
+- (void)buildAttributedStringIfNeeded
+{
+    @synchronized(bubbleComponents)
+    {
+        if (self.hasAttributedTextMessage && !attributedTextMessage.length)
+        {
+            // Attributed text message depends on the room read receipts which must be retrieved on the main thread to prevent us from race conditions.
+            // Check here the current thread, this is just a sanity check because the attributed text message
+            // is requested during the rendering step which takes place on the main thread.
+            if ([NSThread currentThread] != [NSThread mainThread])
+            {
+                MXLogDebug(@"[RoomBubbleCellData] attributedTextMessage called on wrong thread");
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    [self buildAttributedString];
+                });
+            }
+            else
+            {
+                [self buildAttributedString];
+            }
+        }
+    }
 }
 
 - (NSInteger)firstVisibleComponentIndex
