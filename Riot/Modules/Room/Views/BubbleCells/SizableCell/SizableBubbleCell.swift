@@ -15,6 +15,7 @@
  */
 
 import UIKit
+import MatrixSDK
 
 @objc protocol SizableBaseBubbleCellType: BaseBubbleCellType {
     static func sizingViewHeightHashValue(from bubbleCellData: MXKRoomBubbleCellData) -> Int
@@ -32,6 +33,8 @@ class SizableBaseBubbleCell: BaseBubbleCell, SizableBaseBubbleCellType {
     
     private static let reactionsViewSizer = BubbleReactionsViewSizer()
     private static let reactionsViewModelBuilder = BubbleReactionsViewModelBuilder()
+    
+    private static let urlPreviewViewSizer = URLPreviewViewSizer()
 
     private class var sizingView: SizableBaseBubbleCell {
         let sizingView: SizableBaseBubbleCell
@@ -129,6 +132,28 @@ class SizableBaseBubbleCell: BaseBubbleCell, SizableBaseBubbleCellType {
             
             let reactionsHeight = self.reactionsViewSizer.height(for: bubbleReactionsViewModel, fittingWidth: reactionWidth)
             height+=reactionsHeight
+        }
+
+        // Add thread summary view height if needed
+        if sizingView is BubbleCellThreadSummaryDisplayable,
+           let roomBubbleCellData = cellData as? RoomBubbleCellData,
+           roomBubbleCellData.hasThreadRoot {
+            
+            let bottomMargin = sizingView.bubbleCellContentView?.threadSummaryContentViewBottomConstraint.constant ?? 0
+            
+            height += RoomBubbleCellLayout.threadSummaryViewHeight
+            height += bottomMargin
+        }
+        
+        // Add URL preview view height if needed
+        if sizingView is RoomCellURLPreviewDisplayable,
+            let roomBubbleCellData = cellData as? RoomBubbleCellData, let firstBubbleComponent =
+            roomBubbleCellData.getFirstBubbleComponentWithDisplay(), firstBubbleComponent.showURLPreview, let urlPreviewData = firstBubbleComponent.urlPreviewData as? URLPreviewData {
+            
+            let urlPreviewMaxWidth = sizingView.bubbleCellContentView?.urlPreviewContentView.frame.width ?? roomBubbleCellData.maxTextViewWidth
+            
+            let urlPreviewHeight = self.urlPreviewViewSizer.height(for: urlPreviewData, fittingWidth: urlPreviewMaxWidth)
+            height+=urlPreviewHeight
         }
         
         return height

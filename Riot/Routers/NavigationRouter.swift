@@ -117,13 +117,13 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         self.didPushViewController(controller)
     }
         
-    func setModules(_ modules: [Presentable], hideNavigationBar: Bool, animated: Bool) {
+    func setModules(_ modules: [NavigationModule], hideNavigationBar: Bool, animated: Bool) {
         
         MXLog.debug("[NavigationRouter] Set modules \(modules)")
         
-        let controllers = modules.map { (presentable) -> UIViewController in
-            let controller = presentable.toPresentable()
-            self.addModule(presentable, for: controller)
+        let controllers = modules.map { (module) -> UIViewController in
+            let controller = module.presentable.toPresentable()
+            self.addModule(module.presentable, for: controller)
             return controller
         }
                 
@@ -147,8 +147,8 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         }
         
         // Add again controller to module association, in case same modules instance are added back
-        modules.forEach { (presentable) in
-            self.addModule(presentable, for: presentable.toPresentable())
+        modules.forEach { (module) in
+            self.addModule(module.presentable, for: module.presentable.toPresentable())
         }
         
         controllers.forEach {
@@ -219,6 +219,36 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         navigationController.pushViewController(controller, animated: animated)
         
         self.didPushViewController(controller)
+    }
+    
+    func push(_ modules: [NavigationModule], animated: Bool) {
+        MXLog.debug("[NavigationRouter] Push modules \(modules)")
+        
+        // Avoid pushing any UINavigationController onto stack
+        guard modules.first(where: { $0.presentable.toPresentable() is UINavigationController }) == nil else {
+            MXLog.error("Cannot push a UINavigationController to NavigationRouter")
+            return
+        }
+        
+        for module in modules {
+            let controller = module.presentable.toPresentable()
+            self.addModule(module.presentable, for: controller)
+            
+            if let completion = module.popCompletion {
+                completions[controller] = completion
+            }
+            
+            self.willPushViewController(controller)
+        }
+        
+        var viewControllers = navigationController.viewControllers
+        viewControllers.append(contentsOf: modules.map({ $0.presentable.toPresentable() }))
+        navigationController.setViewControllers(viewControllers, animated: animated)
+        
+        for module in modules {
+            let controller = module.presentable.toPresentable()
+            self.didPushViewController(controller)
+        }
     }
     
     func popModule(animated: Bool = true) {
@@ -338,7 +368,7 @@ extension NavigationRouter: UINavigationControllerDelegate {
                 return
         }
         
-        MXLog.debug("[NavigationRouter] Poppped module: \(poppedViewController)")
+        MXLog.debug("[NavigationRouter] Popped module: \(poppedViewController)")
         
         self.didPopViewController(poppedViewController)
     }

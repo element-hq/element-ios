@@ -43,6 +43,7 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 @class RoomNavigationParameters;
 @class RoomPreviewNavigationParameters;
 @class ScreenPresentationParameters;
+@class OnboardingCoordinatorBridgePresenter;
 
 @interface MasterTabBarController : UITabBarController
 
@@ -58,26 +59,26 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 - (void)removeMatrixSession:(MXSession*)mxSession;
 
 /**
- Display the authentication screen.
+ Display the default onboarding flow.
  */
-- (void)showAuthenticationScreen;
+- (void)showOnboardingFlow;
 
 /**
- Display the authentication screen in order to pursue a registration process by using a predefined set
+ Display the onboarding flow in order to pursue a registration process by using a predefined set
  of parameters.
  
- If the provided registration parameters are not supported, we switch back to the default login screen.
+ If the provided registration parameters are not supported, the default onboarding flow will be used.
  
  @param parameters the set of parameters.
  */
-- (void)showAuthenticationScreenWithRegistrationParameters:(NSDictionary*)parameters;
+- (void)showOnboardingFlowWithRegistrationParameters:(NSDictionary*)parameters;
 
 /**
- Display the authentication screen in order to login back a soft logout session.
+ Display the onboarding flow configured to log back into a soft logout session.
 
  @param softLogoutCredentials the credentials of the soft logout session.
  */
-- (void)showAuthenticationScreenAfterSoftLogout:(MXCredentials*)softLogoutCredentials;
+- (void)showSoftLogoutOnboardingFlowWithCredentials:(MXCredentials*)softLogoutCredentials;
 
 /// Open the room with the provided identifier in a specific matrix session.
 /// @param parameters the presentation parameters that contains room information plus display information.
@@ -149,8 +150,8 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 - (void)filterRoomsWithParentId:(NSString*)roomParentId
                 inMatrixSession:(MXSession*)mxSession;
 
-// Reference to the current auth VC. It is not nil only when the auth screen is displayed.
-@property (nonatomic, readonly) AuthenticationViewController *authViewController;
+// Reference to the current onboarding flow. It is always nil unless the flow is being presented.
+@property (nonatomic, readonly) OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter;
 
 @property (nonatomic, readonly) HomeViewController *homeViewController;
 @property (nonatomic, readonly) FavouritesViewController *favouritesViewController;
@@ -172,8 +173,8 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 @property (nonatomic, readonly) MXGroup *selectedGroup;
 @property (nonatomic, readonly) MXSession *selectedGroupSession;
 
-// YES while the authentication screen is displayed
-@property (nonatomic, readonly) BOOL authenticationInProgress;
+// YES while the onboarding flow is displayed
+@property (nonatomic, readonly) BOOL isOnboardingInProgress;
 
 // Set tab bar item controllers
 - (void)updateViewControllers:(NSArray<UIViewController*>*)viewControllers;

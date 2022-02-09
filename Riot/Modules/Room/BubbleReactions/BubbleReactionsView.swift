@@ -19,6 +19,7 @@ import MatrixSDK
 import Reusable
 import DGCollectionViewLeftAlignFlowLayout
 import UIKit
+import UICollectionViewRightAlignedLayout
 
 /// BubbleReactionsView items alignment
 enum BubbleReactionsViewAlignment {
@@ -131,7 +132,7 @@ final class BubbleReactionsView: UIView, NibOwnerLoadable {
         case .left:
             collectionViewLayout = DGCollectionViewLeftAlignFlowLayout()
         case .right:
-            collectionViewLayout = CollectionViewRightAlignFlowLayout()
+            collectionViewLayout = UICollectionViewRightAlignedLayout()
         }
         
         return collectionViewLayout

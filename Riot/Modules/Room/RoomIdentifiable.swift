@@ -20,5 +20,6 @@ import Foundation
 /// Useful to identify existing objects that should be removed when the user leaves a room for example.
 protocol RoomIdentifiable {
     var roomId: String? { get }
+    var threadId: String? { get }
     var mxSession: MXSession? { get }
 }

@@ -19,6 +19,15 @@ import UIKit
 @objcMembers
 class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
     
+    // MARK: - Properties
+    
+    // TODO: Conforms to Themable and don't use ThemeService
+    var theme: Theme {
+        return ThemeService.shared().theme
+    }
+    
+    // MARK: - RoomTimelineCellDecorator
+    
     func addTimestampLabelIfNeeded(toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData) {
                 
         guard cellData.containsLastMessage && cellData.isCollapsableAndCollapsed == false else {
@@ -137,6 +146,55 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
                 widthConstraint,
                 heightConstraint,
                 trailingConstraint,
+                topConstraint
+            ])
+        }
+    }
+
+    func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView,
+                              toCell cell: MXKRoomBubbleTableViewCell,
+                              cellData: RoomBubbleCellData,
+                              contentViewPositionY: CGFloat,
+                              upperDecorationView: UIView?) {
+
+        cell.addTemporarySubview(threadSummaryView)
+
+        if let threadSummaryDisplayable = cell as? BubbleCellThreadSummaryDisplayable {
+            threadSummaryDisplayable.addThreadSummaryView(threadSummaryView)
+        } else {
+            threadSummaryView.translatesAutoresizingMaskIntoConstraints = false
+
+            let cellContentView = cell.contentView
+
+            cellContentView.addSubview(threadSummaryView)
+
+            var leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin
+
+            if cellData.containsBubbleComponentWithEncryptionBadge {
+                leftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
+            }
+
+            let rightMargin = RoomBubbleCellLayout.reactionsViewRightMargin
+            let topMargin = RoomBubbleCellLayout.threadSummaryViewTopMargin
+            let height = ThreadSummaryView.contentViewHeight(forThread: threadSummaryView.thread,
+                                                             fitting: cellData.maxTextViewWidth)
+
+            // The top constraint may need to include the URL preview view
+            let topConstraint: NSLayoutConstraint
+            if let upperDecorationView = upperDecorationView {
+                topConstraint = threadSummaryView.topAnchor.constraint(equalTo: upperDecorationView.bottomAnchor,
+                                                                       constant: topMargin)
+            } else {
+                topConstraint = threadSummaryView.topAnchor.constraint(equalTo: cellContentView.topAnchor,
+                                                                       constant: contentViewPositionY + topMargin)
+            }
+
+            NSLayoutConstraint.activate([
+                threadSummaryView.leadingAnchor.constraint(equalTo: cellContentView.leadingAnchor,
+                                                           constant: leftMargin),
+                threadSummaryView.trailingAnchor.constraint(lessThanOrEqualTo: cellContentView.trailingAnchor,
+                                                            constant: -rightMargin),
+                threadSummaryView.heightAnchor.constraint(equalToConstant: height),
                 topConstraint
             ])
         }

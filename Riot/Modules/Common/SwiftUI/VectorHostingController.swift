@@ -19,7 +19,7 @@ import SwiftUI
 
 /**
  UIHostingController that applies some app-level specific configuration
- (E.g. `vectorContent` modifier and themeing to the NavigationController container.
+ (E.g. `vectorContent` modifier and theming to the NavigationController container.
  */
 @available(iOS 14.0, *)
 class VectorHostingController: UIHostingController<AnyView> {

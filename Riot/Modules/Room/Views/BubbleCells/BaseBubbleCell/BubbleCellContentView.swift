@@ -29,12 +29,18 @@ final class BubbleCellContentView: UIView, NibLoadable {
     @IBOutlet weak var paginationLabel: UILabel!
     @IBOutlet weak var paginationSeparatorView: UIView!
     
-    @IBOutlet weak var senderInfoContainerView: UIView!
-    @IBOutlet weak var avatarImageView: MXKImageView!
+    @IBOutlet weak var userNameContainerView: UIView!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var userNameTouchMaskView: UIView!
     
+    @IBOutlet weak var avatarContainerView: UIView!
+    @IBOutlet weak var avatarImageView: MXKImageView!
+    
     @IBOutlet weak var innerContentView: UIView!
+    
+    @IBOutlet weak var innerContentViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var innerContentViewTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var innerContentViewBottomContraint: NSLayoutConstraint!
     
     @IBOutlet weak var encryptionStatusContainerView: UIView!
     @IBOutlet weak var encryptionImageView: UIImageView!
@@ -42,15 +48,37 @@ final class BubbleCellContentView: UIView, NibLoadable {
     @IBOutlet weak var bubbleInfoContainer: UIView!
     @IBOutlet weak var bubbleInfoContainerTopConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var urlPreviewContainerView: UIView!
+    @IBOutlet weak var urlPreviewContentView: UIView!
+    @IBOutlet weak var urlPreviewContentViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var urlPreviewContentViewTrailingConstraint: NSLayoutConstraint!
+    
     @IBOutlet weak var readReceiptsContainerView: UIView!
     @IBOutlet weak var readReceiptsContentView: UIView!
     
     @IBOutlet weak var reactionsContainerView: UIView!
     @IBOutlet weak var reactionsContentView: UIView!
+    @IBOutlet weak var reactionsContentViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var reactionsContentViewTrailingConstraint: NSLayoutConstraint!
+
+    @IBOutlet weak var threadSummaryContainerView: UIView!
+    @IBOutlet weak var threadSummaryContentView: UIView!
+    @IBOutlet weak var threadSummaryContentViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var threadSummaryContentViewTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var threadSummaryContentViewBottomConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var bubbleOverlayContainer: UIView!
     
     // MARK: Private
+    
+    private var showURLPreview: Bool {
+        get {
+            return !self.urlPreviewContainerView.isHidden
+        }
+        set {
+            self.urlPreviewContainerView.isHidden = !newValue
+        }
+    }
     
     private var showReadReceipts: Bool {
         get {
@@ -69,6 +97,14 @@ final class BubbleCellContentView: UIView, NibLoadable {
             self.reactionsContainerView.isHidden = !newValue
         }
     }
+
+    private var showThreadSummary: Bool {
+        get {
+            return !self.threadSummaryContainerView.isHidden
+        } set {
+            self.threadSummaryContainerView.isHidden = !newValue
+        }
+    }
     
     // MARK: Public
     
@@ -83,10 +119,29 @@ final class BubbleCellContentView: UIView, NibLoadable {
     
     var showSenderInfo: Bool {
         get {
-            return !self.senderInfoContainerView.isHidden
+            return self.showSenderAvatar && self.showSenderName
         }
         set {
-            self.senderInfoContainerView.isHidden = !newValue
+            self.showSenderAvatar = newValue
+            self.showSenderName = newValue
+        }
+    }
+    
+    var showSenderAvatar: Bool {
+        get {
+            return !self.avatarContainerView.isHidden
+        }
+        set {
+            self.avatarContainerView.isHidden = !newValue
+        }
+    }
+    
+    var showSenderName: Bool {
+        get {
+            return !self.userNameContainerView.isHidden
+        }
+        set {
+            self.userNameContainerView.isHidden = !newValue
         }
     }
     
@@ -98,6 +153,8 @@ final class BubbleCellContentView: UIView, NibLoadable {
             self.encryptionStatusContainerView.isHidden = !newValue
         }
     }
+    
+    var decorationViewsAlignment: RoomCellDecorationAlignment = .left
     
     // MARK: - Setup
     
@@ -134,12 +191,116 @@ extension BubbleCellContentView: BubbleCellReactionsDisplayable {
     
     func addReactionsView(_ reactionsView: UIView) {
         self.reactionsContentView.vc_removeAllSubviews()
-        self.reactionsContentView.vc_addSubViewMatchingParent(reactionsView) 
+        
+        // Update reactions alignment according to current decoration alignment
+        if let bubbleReactionsView = reactionsView as? BubbleReactionsView {
+            
+            let reactionsAlignment: BubbleReactionsViewAlignment
+            
+            switch self.decorationViewsAlignment {
+            case .left:
+                reactionsAlignment = .left
+            case .right:
+                reactionsAlignment = .right
+            }
+                        
+            bubbleReactionsView.alignment = reactionsAlignment
+        }
+        
+        self.reactionsContentView.vc_addSubViewMatchingParent(reactionsView)
+        
         self.showReactions = true
     }
     
     func removeReactionsView() {
         self.showReactions = false
         self.reactionsContentView.vc_removeAllSubviews()
+    }
+}
+
+// MARK: - BubbleCellThreadSummaryDisplayable
+extension BubbleCellContentView: BubbleCellThreadSummaryDisplayable {
+    
+    func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView) {
+        
+        guard let containerView = self.threadSummaryContentView else {
+            return
+        }
+        
+        containerView.vc_removeAllSubviews()
+        
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(threadSummaryView)
+        
+        let leadingConstraint: NSLayoutConstraint
+        let trailingConstraint: NSLayoutConstraint
+        
+        if self.decorationViewsAlignment == .right {
+            leadingConstraint = threadSummaryView.leadingAnchor.constraint(greaterThanOrEqualTo: containerView.leadingAnchor)
+            trailingConstraint = threadSummaryView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
+        } else {
+            leadingConstraint = threadSummaryView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor)
+            trailingConstraint =             threadSummaryView.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor)
+        }
+        
+        NSLayoutConstraint.activate([
+            leadingConstraint,
+            threadSummaryView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            threadSummaryView.heightAnchor.constraint(equalToConstant: RoomBubbleCellLayout.threadSummaryViewHeight),
+            threadSummaryView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            trailingConstraint
+        ])
+        
+        self.showThreadSummary = true
+    }
+
+    func removeThreadSummaryView() {
+        self.showThreadSummary = false
+        self.threadSummaryContentView.vc_removeAllSubviews()
+    }
+}
+
+// MARK: - RoomCellURLPreviewDisplayable
+extension BubbleCellContentView: RoomCellURLPreviewDisplayable {
+
+    func addURLPreviewView(_ urlPreviewView: UIView) {
+        
+        guard let containerView = self.urlPreviewContentView else {
+            return
+        }
+        
+        containerView.vc_removeAllSubviews()
+        
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(urlPreviewView)
+        
+        if let urlPreviewView = urlPreviewView as? URLPreviewView {
+            urlPreviewView.availableWidth = containerView.frame.width
+        }
+        
+        let leadingConstraint: NSLayoutConstraint
+        let trailingConstraint: NSLayoutConstraint
+        
+        if self.decorationViewsAlignment == .right {
+            leadingConstraint = urlPreviewView.leadingAnchor.constraint(greaterThanOrEqualTo: containerView.leadingAnchor)
+            trailingConstraint = urlPreviewView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
+        } else {
+            leadingConstraint = urlPreviewView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor)
+            trailingConstraint =             urlPreviewView.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor)
+        }
+        
+        NSLayoutConstraint.activate([
+            leadingConstraint,
+            urlPreviewView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            urlPreviewView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            trailingConstraint
+        ])
+        
+        self.showURLPreview = true
+    }
+    
+    func removeURLPreviewView() {
+        self.showURLPreview = false
+        self.urlPreviewContentView.vc_removeAllSubviews()
     }
 }

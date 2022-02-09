@@ -28,39 +28,63 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
     }
         
     override func addTimestampLabel(toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData) {
-
-        // If cell contains a bubble background, add the timestamp inside of it
-        if let bubbleBackgroundView = cell.messageBubbleBackgroundView, bubbleBackgroundView.isHidden == false {
-
-            let componentIndex = cellData.mostRecentComponentIndex
-
-            guard let bubbleComponents = cellData.bubbleComponents,
-                    componentIndex < bubbleComponents.count else {
-                      return
-                  }
-
-            let component = bubbleComponents[componentIndex]
-
-            let timestampLabel = self.createTimestampLabel(cellData: cellData,
-                                                           bubbleComponent: component,
-                                                           viewTag: componentIndex)
-            timestampLabel.translatesAutoresizingMaskIntoConstraints = false
-
-            cell.addTemporarySubview(timestampLabel)
-
-            bubbleBackgroundView.addSubview(timestampLabel)
-
-            let rightMargin: CGFloat = 8.0
-            let bottomMargin: CGFloat = 4.0
-
-            let trailingConstraint = timestampLabel.trailingAnchor.constraint(equalTo: bubbleBackgroundView.trailingAnchor, constant: -rightMargin)
-
-            let bottomConstraint = timestampLabel.bottomAnchor.constraint(equalTo: bubbleBackgroundView.bottomAnchor, constant: -bottomMargin)
-
-            NSLayoutConstraint.activate([
-                trailingConstraint,
-                bottomConstraint
-            ])
+        
+        guard let timestampLabel = self.createTimestampLabel(for: cellData) else {
+            super.addTimestampLabel(toCell: cell, cellData: cellData)
+            return
+        }
+        
+        if let timestampDisplayable = cell as? TimestampDisplayable {
+            
+            timestampDisplayable.addTimestampView(timestampLabel)
+            
+        } else if cellData.isAttachmentWithThumbnail {
+                                                 
+            if cellData.attachment?.type == .sticker,
+               let attachmentView = cell.attachmentView {
+                
+                // Prevent overlap with send status icon
+                let bottomMargin: CGFloat = 20.0
+                let rightMargin: CGFloat = -27.0
+                
+                self.addTimestampLabel(timestampLabel,
+                                       to: cell,
+                                       on: cell.contentView,
+                                       constrainingView: attachmentView,
+                                       rightMargin: rightMargin,
+                                       bottomMargin: bottomMargin)
+                
+            } else if let attachmentView = cell.attachmentView {
+                // For media with thumbnail cells, add timestamp inside thumbnail
+                
+                timestampLabel.textColor = self.theme.baseIconPrimaryColor
+                
+                self.addTimestampLabel(timestampLabel,
+                                       to: cell,
+                                       on: cell.contentView,
+                                       constrainingView: attachmentView)
+                
+            } else {
+                super.addTimestampLabel(toCell: cell, cellData: cellData)
+            }
+        } else if let voiceMessageCell = cell as? VoiceMessageBubbleCell, let playbackView = voiceMessageCell.playbackController?.playbackView {
+            
+            // Add timestamp on cell inherting from VoiceMessageBubbleCell
+            
+            self.addTimestampLabel(timestampLabel,
+                                   to: cell,
+                                   on: cell.contentView,
+                                   constrainingView: playbackView)
+            
+        } else if let fileWithoutThumbnailCell = cell as? FileWithoutThumbnailBaseBubbleCell, let fileAttachementView = fileWithoutThumbnailCell.fileAttachementView {
+            
+            // Add timestamp on cell inherting from VoiceMessageBubbleCell
+            
+            self.addTimestampLabel(timestampLabel,
+                                   to: cell,
+                                   on: fileAttachementView,
+                                   constrainingView: fileAttachementView)
+            
         } else {
             super.addTimestampLabel(toCell: cell, cellData: cellData)
         }
@@ -69,12 +93,12 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
     override func addReactionView(_ reactionsView: BubbleReactionsView,
                                   toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData, contentViewPositionY: CGFloat, upperDecorationView: UIView?) {
         
-        cell.addTemporarySubview(reactionsView)
-        
         if let reactionsDisplayable = cell as? BubbleCellReactionsDisplayable {
             reactionsDisplayable.addReactionsView(reactionsView)
             return
         }
+        
+        cell.addTemporarySubview(reactionsView)
         
         reactionsView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -86,24 +110,9 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
         let topMargin: CGFloat = 4.0
         let leftMargin: CGFloat
         let rightMargin: CGFloat
-        
-        // Outgoing message
-        if cellData.isSenderCurrentUser {
-            reactionsView.alignment = .right
-            
-            // TODO: Use constants
-            var outgointLeftMargin: CGFloat = 80.0
-            
-            if cellData.containsBubbleComponentWithEncryptionBadge {
-                outgointLeftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
-            }
-            
-            leftMargin = outgointLeftMargin
-            
-            // TODO: Use constants
-            rightMargin = 33
-        } else {
-            // Incoming message
+                
+        // Incoming message
+        if cellData.isIncoming {
             
             var incomingLeftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin
             
@@ -117,6 +126,22 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
             let messageViewMarginRight: CGFloat = 42.0
             
             rightMargin = messageViewMarginRight
+        } else {
+            // Outgoing message
+            
+            reactionsView.alignment = .right
+            
+            // TODO: Use constants
+            var outgoingLeftMargin: CGFloat = 80.0
+            
+            if cellData.containsBubbleComponentWithEncryptionBadge {
+                outgoingLeftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
+            }
+            
+            leftMargin = outgoingLeftMargin
+            
+            // TODO: Use constants
+            rightMargin = 33
         }
         
         let leadingConstraint = reactionsView.leadingAnchor.constraint(equalTo: cellContentView.leadingAnchor, constant: leftMargin)
@@ -142,60 +167,160 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
                                     cellData: RoomBubbleCellData,
                                     contentViewPositionY: CGFloat) {
         
-        cell.addTemporarySubview(urlPreviewView)
-        
-        let cellContentView = cell.contentView
-        
-        urlPreviewView.translatesAutoresizingMaskIntoConstraints = false
-        urlPreviewView.availableWidth = cellData.maxTextViewWidth
-        cellContentView.addSubview(urlPreviewView)
-        
-        let leadingOrTrailingConstraint: NSLayoutConstraint
-        
-        // Outgoing message
-        if cellData.isSenderCurrentUser {
-            
-            // TODO: Use constants
-            let rightMargin: CGFloat = 34.0
-            
-            leadingOrTrailingConstraint = urlPreviewView.trailingAnchor.constraint(equalTo: cellContentView.trailingAnchor, constant: -rightMargin)
+        if let urlPreviewDisplayable = cell as? RoomCellURLPreviewDisplayable {
+            urlPreviewView.translatesAutoresizingMaskIntoConstraints = false
+            urlPreviewDisplayable.addURLPreviewView(urlPreviewView)
         } else {
-            // Incoming message
+            cell.addTemporarySubview(urlPreviewView)
             
-            var leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin
-            if cellData.containsBubbleComponentWithEncryptionBadge {
-                leftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
+            let cellContentView = cell.contentView
+            
+            urlPreviewView.translatesAutoresizingMaskIntoConstraints = false
+            urlPreviewView.availableWidth = cellData.maxTextViewWidth
+            cellContentView.addSubview(urlPreviewView)
+            
+            let leadingOrTrailingConstraint: NSLayoutConstraint
+            
+            
+            // Incoming message
+            if cellData.isIncoming {
+
+                var leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin
+                if cellData.containsBubbleComponentWithEncryptionBadge {
+                    leftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
+                }
+                
+                leftMargin-=5.0
+                
+                leadingOrTrailingConstraint = urlPreviewView.leadingAnchor.constraint(equalTo: cellContentView.leadingAnchor, constant: leftMargin)
+            } else {
+                // Outgoing message
+                
+                // TODO: Use constants
+                let rightMargin: CGFloat = 34.0
+                
+                leadingOrTrailingConstraint = urlPreviewView.trailingAnchor.constraint(equalTo: cellContentView.trailingAnchor, constant: -rightMargin)
             }
             
-            leftMargin-=5.0
+            let topMargin = contentViewPositionY + RoomBubbleCellLayout.urlPreviewViewTopMargin + RoomBubbleCellLayout.reactionsViewTopMargin
             
-            leadingOrTrailingConstraint = urlPreviewView.leadingAnchor.constraint(equalTo: cellContentView.leadingAnchor, constant: leftMargin)
+            // Set the preview view's origin
+            NSLayoutConstraint.activate([
+                leadingOrTrailingConstraint,
+                urlPreviewView.topAnchor.constraint(equalTo: cellContentView.topAnchor, constant: topMargin)
+            ])
         }
-        
-        let topMargin = contentViewPositionY + RoomBubbleCellLayout.urlPreviewViewTopMargin + RoomBubbleCellLayout.reactionsViewTopMargin
-        
-        // Set the preview view's origin
-        NSLayoutConstraint.activate([
-            leadingOrTrailingConstraint,
-            urlPreviewView.topAnchor.constraint(equalTo: cellContentView.topAnchor, constant: topMargin)
-        ])
+    }
+    
+    override func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView,
+                              toCell cell: MXKRoomBubbleTableViewCell,
+                              cellData: RoomBubbleCellData,
+                              contentViewPositionY: CGFloat,
+                              upperDecorationView: UIView?) {
+
+        if let threadSummaryDisplayable = cell as? BubbleCellThreadSummaryDisplayable {
+            threadSummaryDisplayable.addThreadSummaryView(threadSummaryView)
+        } else {
+            
+            cell.addTemporarySubview(threadSummaryView)
+            threadSummaryView.translatesAutoresizingMaskIntoConstraints = false
+
+            let cellContentView = cell.contentView
+
+            cellContentView.addSubview(threadSummaryView)
+            
+            var rightMargin: CGFloat
+            var leftMargin: CGFloat
+            
+            let leadingConstraint: NSLayoutConstraint
+            let trailingConstraint: NSLayoutConstraint
+                        
+            // Incoming message
+            if cellData.isIncoming {
+
+                leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin
+                if cellData.containsBubbleComponentWithEncryptionBadge {
+                    leftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
+                }
+                
+                leftMargin-=5.0
+                
+                rightMargin = RoomBubbleCellLayout.reactionsViewRightMargin
+                
+                leadingConstraint = threadSummaryView.leadingAnchor.constraint(equalTo: cellContentView.leadingAnchor,
+                                                           constant: leftMargin)
+                trailingConstraint = threadSummaryView.trailingAnchor.constraint(lessThanOrEqualTo: cellContentView.trailingAnchor,
+                                                                                 constant: -rightMargin)
+            } else {
+                // Outgoing message
+                
+                // TODO: Use constants
+                leftMargin = 80.0
+                rightMargin = 34.0
+                
+                leadingConstraint = threadSummaryView.leadingAnchor.constraint(greaterThanOrEqualTo: cellContentView.leadingAnchor,
+                                                           constant: leftMargin)
+                trailingConstraint = threadSummaryView.trailingAnchor.constraint(equalTo: cellContentView.trailingAnchor,
+                                                                                 constant: -rightMargin)
+            }
+            
+            let topMargin = RoomBubbleCellLayout.threadSummaryViewTopMargin + 15.0
+            let height = ThreadSummaryView.contentViewHeight(forThread: threadSummaryView.thread,
+                                                             fitting: cellData.maxTextViewWidth)
+
+            // The top constraint may need to include the URL preview view
+            let topConstraint: NSLayoutConstraint
+            if let upperDecorationView = upperDecorationView {
+                topConstraint = threadSummaryView.topAnchor.constraint(equalTo: upperDecorationView.bottomAnchor,
+                                                                       constant: topMargin)
+            } else {
+                topConstraint = threadSummaryView.topAnchor.constraint(equalTo: cellContentView.topAnchor,
+                                                                       constant: contentViewPositionY + topMargin)
+            }
+
+            NSLayoutConstraint.activate([
+                leadingConstraint,
+                trailingConstraint,
+                threadSummaryView.heightAnchor.constraint(equalToConstant: height),
+                topConstraint
+            ])
+        }
     }
     
     // MARK: - Private
     
-    private func createTimestampLabel(cellData: MXKRoomBubbleCellData, bubbleComponent: MXKRoomBubbleComponent, viewTag: Int) -> UILabel {
+    // MARK: Timestamp management
+    
+    private func createTimestampLabel(cellData: MXKRoomBubbleCellData, bubbleComponent: MXKRoomBubbleComponent, viewTag: Int, textColor: UIColor) -> UILabel {
         
         let timeLabel = UILabel()
 
         timeLabel.text = cellData.eventFormatter.timeString(from: bubbleComponent.date)
         timeLabel.textAlignment = .right
-        timeLabel.textColor = ThemeService.shared().theme.textSecondaryColor
-        timeLabel.font = UIFont.systemFont(ofSize: 11, weight: .light)
+        timeLabel.textColor = textColor
+        timeLabel.font = self.theme.fonts.caption2
         timeLabel.adjustsFontSizeToFitWidth = true
         timeLabel.tag = viewTag
         timeLabel.accessibilityIdentifier = "timestampLabel"
         
         return timeLabel
+    }
+    
+    func createTimestampLabel(for cellData: RoomBubbleCellData) -> UILabel? {
+        return self.createTimestampLabel(for: cellData, textColor: self.theme.textSecondaryColor)
+    }
+    
+    private func createTimestampLabel(for cellData: RoomBubbleCellData, textColor: UIColor) -> UILabel? {
+        
+        let componentIndex = cellData.mostRecentComponentIndex
+        
+        guard let bubbleComponents = cellData.bubbleComponents, componentIndex < bubbleComponents.count else {
+            return nil
+        }
+        
+        let component = bubbleComponents[componentIndex]
+
+        return self.createTimestampLabel(cellData: cellData, bubbleComponent: component, viewTag: componentIndex, textColor: textColor)
     }
     
     private func canShowTimestamp(forCellData cellData: MXKRoomBubbleCellData) -> Bool {
@@ -208,12 +333,31 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
             return false
         }
         
+        switch cellData.cellDataTag {
+        case .location:
+            return true
+        case .poll:
+            return true
+        default:
+            break
+        }
+        
+        if let attachmentType = cellData.attachment?.type {
+            switch attachmentType {
+            case .voiceMessage, .audio:
+                return true
+            default:
+                break
+            }
+        }
+        
+        if cellData.isAttachmentWithThumbnail {
+            return true
+        }
+        
         switch firstEvent.eventType {
         case .roomMessage:
-            if let messageTypeString = firstEvent.content["msgtype"] as? String {
-                
-                let messageType = MXMessageType(identifier: messageTypeString)
-                
+            if let messageType = firstEvent.messageType {
                 switch messageType {
                 case .text, .emote, .file:
                     return true
@@ -226,5 +370,27 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
         }
         
         return false
+    }
+    
+    private func addTimestampLabel(_ timestampLabel: UILabel,
+                                   to cell: MXKRoomBubbleTableViewCell,
+                                   on containerView: UIView,
+                                   constrainingView: UIView,
+                                   rightMargin: CGFloat = 8.0,
+                                   bottomMargin: CGFloat = 4.0) {
+        timestampLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        cell.addTemporarySubview(timestampLabel)
+                
+        containerView.addSubview(timestampLabel)
+        
+        let trailingConstraint = timestampLabel.trailingAnchor.constraint(equalTo: constrainingView.trailingAnchor, constant: -rightMargin)
+
+        let bottomConstraint = timestampLabel.bottomAnchor.constraint(equalTo: constrainingView.bottomAnchor, constant: -bottomMargin)
+
+        NSLayoutConstraint.activate([
+            trailingConstraint,
+            bottomConstraint
+        ])
     }
 }

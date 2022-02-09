@@ -241,28 +241,16 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 
 - (NSAttributedString*)attributedTextMessage
 {
-    @synchronized(bubbleComponents)
-    {
-        if (self.hasAttributedTextMessage && !attributedTextMessage.length)
-        {
-            // Attributed text message depends on the room read receipts which must be retrieved on the main thread to prevent us from race conditions.
-            // Check here the current thread, this is just a sanity check because the attributed text message
-            // is requested during the rendering step which takes place on the main thread.
-            if ([NSThread currentThread] != [NSThread mainThread])
-            {
-                MXLogDebug(@"[RoomBubbleCellData] attributedTextMessage called on wrong thread");
-                dispatch_sync(dispatch_get_main_queue(), ^{
-                    self.attributedTextMessage = [self makeAttributedString];
-                });
-            }
-            else
-            {
-                self.attributedTextMessage = [self makeAttributedString];
-            }
-        }
-    }
+    [self buildAttributedStringIfNeeded];
     
     return attributedTextMessage;
+}
+
+- (NSAttributedString*)attributedTextMessageWithoutPositioningSpace
+{
+    [self buildAttributedStringIfNeeded];
+    
+    return attributedTextMessageWithoutPositioningSpace;
 }
 
 - (BOOL)hasNoDisplay
@@ -292,6 +280,23 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     }
     
     return [super hasNoDisplay];
+}
+
+- (BOOL)hasThreadRoot
+{
+    if (!RiotSettings.shared.enableThreads)
+    {
+        //  do not consider this cell data if threads not enabled in the timeline
+        return NO;
+    }
+
+    if (roomDataSource.threadId)
+    {
+        //  do not consider this cell data if in a thread view
+        return NO;
+    }
+    
+    return super.hasThreadRoot;
 }
 
 #pragma mark - Bubble collapsing
@@ -361,17 +366,24 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     [self setNeedsUpdateAdditionalContentHeight];
 }
 
-- (NSAttributedString*)makeAttributedString
+- (void)buildAttributedString
 {
     // CAUTION: This method must be called on the main thread.
 
     // Return the collapsed string only for cells series header
     if (self.collapsed && self.collapsedAttributedTextMessage && self.nextCollapsableCellData)
     {
-        return super.collapsedAttributedTextMessage;
+        NSAttributedString *attributedString = super.collapsedAttributedTextMessage;
+        
+        self.attributedTextMessage = attributedString;
+        self.attributedTextMessageWithoutPositioningSpace = attributedString;
+        
+        return;
     }
 
     NSMutableAttributedString *currentAttributedTextMsg;
+    
+    NSMutableAttributedString *currentAttributedTextMsgWithoutVertSpace = [NSMutableAttributedString new];
     
     NSInteger selectedComponentIndex = self.selectedComponentIndex;
     NSInteger lastMessageIndex = self.containsLastMessage ? self.mostRecentComponentIndex : NSNotFound;
@@ -399,11 +411,15 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             {
                 currentAttributedTextMsg = [[NSMutableAttributedString alloc] initWithAttributedString:[RoomBubbleCellData timestampVerticalWhitespace]];
                 [currentAttributedTextMsg appendAttributedString:componentString];
+                
+                [currentAttributedTextMsgWithoutVertSpace appendAttributedString:componentString];
             }
             else
             {
                 // Init attributed string with the first text component
                 currentAttributedTextMsg = [[NSMutableAttributedString alloc] initWithAttributedString:componentString];
+                
+                [currentAttributedTextMsgWithoutVertSpace appendAttributedString:componentString];
             }
 
             [self addVerticalWhitespaceToString:currentAttributedTextMsg forEvent:component.event.eventId];
@@ -439,10 +455,45 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             [currentAttributedTextMsg appendAttributedString:componentString];
             
             [self addVerticalWhitespaceToString:currentAttributedTextMsg forEvent:component.event.eventId];
+            
+            [currentAttributedTextMsgWithoutVertSpace appendAttributedString:componentString];
         }
     }
     
-    return currentAttributedTextMsg;
+    // With bubbles the text is truncated with quote messages containing vertical border view
+    // Add horizontal space to fix the issue
+    if (self.displayFix & MXKRoomBubbleComponentDisplayFixHtmlBlockquote)
+    {
+        [currentAttributedTextMsgWithoutVertSpace appendString:@"       "];
+    }
+        
+    self.attributedTextMessage = currentAttributedTextMsg;
+    
+    self.attributedTextMessageWithoutPositioningSpace = currentAttributedTextMsgWithoutVertSpace;
+}
+
+- (void)buildAttributedStringIfNeeded
+{
+    @synchronized(bubbleComponents)
+    {
+        if (self.hasAttributedTextMessage && !attributedTextMessage.length)
+        {
+            // Attributed text message depends on the room read receipts which must be retrieved on the main thread to prevent us from race conditions.
+            // Check here the current thread, this is just a sanity check because the attributed text message
+            // is requested during the rendering step which takes place on the main thread.
+            if ([NSThread currentThread] != [NSThread mainThread])
+            {
+                MXLogDebug(@"[RoomBubbleCellData] attributedTextMessage called on wrong thread");
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    [self buildAttributedString];
+                });
+            }
+            else
+            {
+                [self buildAttributedString];
+            }
+        }
+    }
 }
 
 - (NSInteger)firstVisibleComponentIndex
@@ -564,6 +615,10 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     additionalVerticalHeight+= [self urlPreviewHeightForEventId:eventId];
     // Add vertical whitespace in case of reactions.
     additionalVerticalHeight+= [self reactionHeightForEventId:eventId];
+    // Add vertical whitespace in case of a thread root
+    additionalVerticalHeight+= [self threadSummaryViewHeightForEventId:eventId];
+    // Add vertical whitespace in case of from a thread
+    additionalVerticalHeight+= [self fromAThreadViewHeightForEventId:eventId];
     // Add vertical whitespace in case of read receipts.
     additionalVerticalHeight+= [self readReceiptHeightForEventId:eventId];
     
@@ -583,6 +638,8 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         
         height+= [self urlPreviewHeightForEventId:eventId];
         height+= [self reactionHeightForEventId:eventId];
+        height+= [self threadSummaryViewHeightForEventId:eventId];
+        height+= [self fromAThreadViewHeightForEventId:eventId];
         height+= [self readReceiptHeightForEventId:eventId];
     }
     
@@ -619,6 +676,60 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 - (void)setNeedsUpdateAdditionalContentHeight
 {
     self.shouldUpdateAdditionalContentHeight = YES;
+}
+
+- (CGFloat)threadSummaryViewHeightForEventId:(NSString*)eventId
+{
+    if (!RiotSettings.shared.enableThreads)
+    {
+        //  do not show thread summary view if threads not enabled in the timeline
+        return 0;
+    }
+    if (roomDataSource.threadId)
+    {
+        //  do not show thread summary view on threads
+        return 0;
+    }
+    NSInteger index = [self bubbleComponentIndexForEventId:eventId];
+    if (index == NSNotFound)
+    {
+        return 0;
+    }
+    MXKRoomBubbleComponent *component = self.bubbleComponents[index];
+    if (!component.thread)
+    {
+        //  component is not a thread root
+        return 0;
+    }
+    return RoomBubbleCellLayout.threadSummaryViewTopMargin +
+        [ThreadSummaryView contentViewHeightForThread:component.thread fitting:self.maxTextViewWidth];
+}
+
+- (CGFloat)fromAThreadViewHeightForEventId:(NSString*)eventId
+{
+    if (!RiotSettings.shared.enableThreads)
+    {
+        //  do not show from a thread view if threads not enabled
+        return 0;
+    }
+    if (roomDataSource.threadId)
+    {
+        //  do not show from a thread view on threads
+        return 0;
+    }
+    NSInteger index = [self bubbleComponentIndexForEventId:eventId];
+    if (index == NSNotFound)
+    {
+        return 0;
+    }
+    MXKRoomBubbleComponent *component = self.bubbleComponents[index];
+    if (!component.event.isInThread)
+    {
+        //  event is not in a thread
+        return 0;
+    }
+    return RoomBubbleCellLayout.fromAThreadViewTopMargin +
+        [FromAThreadView contentViewHeightForEvent:component.event fitting:self.maxTextViewWidth];
 }
 
 - (CGFloat)urlPreviewHeightForEventId:(NSString*)eventId

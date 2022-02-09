@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Spaces" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VQD-at-CDq">
-                                <rect key="frame" x="16" y="44" width="382" height="21"/>
+                                <rect key="frame" x="16" y="44" width="56.5" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -31,20 +31,25 @@
                                     <outlet property="delegate" destination="V8j-Lb-PgC" id="Dlq-3U-wxg"/>
                                 </connections>
                             </tableView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="uRD-bG-wFr">
+                                <rect key="frame" x="80.5" y="44.5" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="bFg-jh-JZB"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="uRD-bG-wFr" firstAttribute="centerY" secondItem="VQD-at-CDq" secondAttribute="centerY" id="2wK-5R-ksc"/>
                             <constraint firstItem="fr1-tf-eDV" firstAttribute="top" secondItem="VQD-at-CDq" secondAttribute="bottom" constant="16" id="Cgt-Qc-Jro"/>
                             <constraint firstAttribute="trailing" secondItem="fr1-tf-eDV" secondAttribute="trailing" id="F07-Ge-xr5"/>
                             <constraint firstAttribute="bottomMargin" secondItem="fr1-tf-eDV" secondAttribute="bottom" id="FfH-sZ-enc"/>
-                            <constraint firstItem="bFg-jh-JZB" firstAttribute="trailing" secondItem="VQD-at-CDq" secondAttribute="trailing" constant="16" id="Pg7-ae-av6"/>
                             <constraint firstItem="fr1-tf-eDV" firstAttribute="leading" secondItem="EL9-GA-lwo" secondAttribute="leading" id="dPV-AP-ody"/>
                             <constraint firstItem="VQD-at-CDq" firstAttribute="top" secondItem="bFg-jh-JZB" secondAttribute="top" id="g1M-rQ-73b"/>
+                            <constraint firstItem="uRD-bG-wFr" firstAttribute="leading" secondItem="VQD-at-CDq" secondAttribute="trailing" constant="8" symbolic="YES" id="tD6-fY-fcw"/>
                             <constraint firstItem="VQD-at-CDq" firstAttribute="leading" secondItem="bFg-jh-JZB" secondAttribute="leading" constant="16" id="zLQ-Xc-Vqj"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="uRD-bG-wFr" id="Qtb-LH-a9A"/>
                         <outlet property="tableView" destination="fr1-tf-eDV" id="QLT-hP-wCg"/>
                         <outlet property="titleLabel" destination="VQD-at-CDq" id="Sgc-OZ-Ntb"/>
                     </connections>

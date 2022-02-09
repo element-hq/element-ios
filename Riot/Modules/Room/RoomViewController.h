@@ -30,6 +30,7 @@
 @class BadgeLabel;
 @class UniversalLinkParameters;
 @protocol RoomViewControllerDelegate;
+@class RoomDisplayConfiguration;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -73,6 +74,11 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 @property (nonatomic, readonly, nullable) RoomPreviewData *roomPreviewData;
 
 /**
+ Display configuration for the room view controller.
+ */
+@property (nonatomic, readonly) RoomDisplayConfiguration *displayConfiguration;
+
+/**
  Tell whether a badge must be added next to the chevron (back button) showing number of unread rooms.
  YES by default.
  */
@@ -95,11 +101,21 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 - (IBAction)scrollToBottomAction:(id)sender;
 
 /**
+ Highlights an event in the timeline. Does not reload room data source if the event is already loaded. Otherwise, loads a new data source around the given event.
+ 
+ @param eventId Identifier of the event to be highlighted.
+ @param completion Completion block to be called at the end of process. Optional.
+ */
+- (void)highlightAndDisplayEvent:(NSString *)eventId completion:(nullable void (^)(void))completion;
+
+/**
  Creates and returns a new `RoomViewController` object.
+ 
+ @param configuration display configuration for the room view controller.
  
  @return An initialized `RoomViewController` object.
  */
-+ (instancetype)instantiate;
++ (instancetype)instantiateWithConfiguration:(RoomDisplayConfiguration *)configuration;
 
 @end
 
@@ -129,9 +145,11 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
  
  @param roomViewController the `RoomViewController` instance.
  @param roomID the selected roomId
+ @param eventID the selected eventId
  */
 - (void)roomViewController:(RoomViewController *)roomViewController
-            showRoomWithId:(NSString *)roomID;
+            showRoomWithId:(NSString *)roomID
+                   eventId:(nullable NSString *)eventID;
 
 /**
  Tells the delegate that the user wants to start a direct chat with a user.
@@ -200,6 +218,9 @@ handleUniversalLinkWithParameters:(UniversalLinkParameters*)parameters;
 - (void)roomViewController:(RoomViewController *)roomViewController
 didRequestLocationPresentationForEvent:(MXEvent *)event
                 bubbleData:(id<MXKRoomBubbleCellDataStoring>)bubbleData;
+
+- (nullable UIActivityViewController *)roomViewController:(RoomViewController *)roomViewController
+              locationShareActivityViewControllerForEvent:(MXEvent *)event;
 
 - (BOOL)roomViewController:(RoomViewController *)roomViewController
 canEndPollWithEventIdentifier:(NSString *)eventIdentifier;

@@ -13,7 +13,21 @@ env:
   MX_GIT_BRANCH: ${{ github.event.pull_request.head.ref }}
 
 jobs:
+  check-secret:
+    runs-on: macos-11
+    outputs:
+      out-key: ${{ steps.out-key.outputs.defined }}
+    steps:
+        - id: out-key
+          env:
+            P12_KEY: ${{ secrets.ALPHA_CERTIFICATES_P12 }}
+            P12_PASSWORD_KEY: ${{ secrets.ALPHA_CERTIFICATES_P12 }}
+          if: "${{ env.P12_KEY != '' || env.P12_PASSWORD_KEY != '' }}"
+          run: echo "::set-output name=defined::true"
   build:
+    # Run job if secrets are avilable (not avaiable for forks).
+    needs: [check-secret]
+    if: needs.check-secret.outputs.out-key == 'true'
     name: Release
     runs-on: macos-11
     

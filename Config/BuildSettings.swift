@@ -293,9 +293,9 @@ final class BuildSettings: NSObject {
     static let roomScreenAllowFilesAction: Bool = true
     
     // Timeline style
-    static let roomScreenAllowTimelineStyleConfiguration: Bool = false
+    static let roomScreenAllowTimelineStyleConfiguration: Bool = true
     static let roomScreenTimelineDefaultStyleIdentifier: RoomTimelineStyleIdentifier = .plain
-    static var roomScreenEnableMessageBubblesByDefault: Bool {
+    static var isRoomScreenEnableMessageBubblesByDefault: Bool {
         return self.roomScreenTimelineDefaultStyleIdentifier == .bubble
     }
 
@@ -351,6 +351,9 @@ final class BuildSettings: NSObject {
     static let authScreenShowCustomServerOptions = true
     static let authScreenShowSocialLoginSection = true
     
+    // MARK: - Authentication Options
+    static let authEnableRefreshTokens = false
+    
     // MARK: - Unified Search
     static let unifiedSearchScreenShowPublicDirectory = true
     
@@ -369,7 +372,7 @@ final class BuildSettings: NSObject {
     
     // MARK: - Location Sharing
     
-    static let tileServerMapURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx")!
+    static let tileServerMapStyleURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx")!
     
     static var locationSharingEnabled: Bool {
         guard #available(iOS 14, *) else {

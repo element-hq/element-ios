@@ -1130,7 +1130,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         [[NSNotificationCenter defaultCenter] postNotificationName:AppDelegateUniversalLinkDidChangeNotification object:nil];
     }
 
-    if ([self handleServerProvionningLink:webURL])
+    if ([self handleServerProvisioningLink:webURL])
     {
         return YES;
     }
@@ -1252,8 +1252,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     NSString *fragment = universalLinkParameters.fragment;
     NSURL *universalLinkURL = universalLinkParameters.universalLinkURL;
-    ScreenPresentationParameters *screenPresentationParameters = universalLinkParameters.presentationParameters;
-    BOOL restoreInitialDisplay = screenPresentationParameters.restoreInitialDisplay;
+    ScreenPresentationParameters *presentationParameters = universalLinkParameters.presentationParameters;
+    BOOL restoreInitialDisplay = presentationParameters.restoreInitialDisplay;
     
     BOOL continueUserActivity = NO;
     MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
@@ -1355,16 +1355,73 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 
                 if (room.summary.roomType == MXRoomTypeSpace)
                 {
-                    SpaceNavigationParameters *spaceNavigationParameters = [[SpaceNavigationParameters alloc] initWithRoomId:room.roomId mxSession:account.mxSession presentationParameters:screenPresentationParameters];
+                    SpaceNavigationParameters *spaceNavigationParameters = [[SpaceNavigationParameters alloc] initWithRoomId:room.roomId mxSession:account.mxSession presentationParameters:presentationParameters];
                     
                     [self showSpaceWithParameters:spaceNavigationParameters];
                 }
                 else
                 {
                     // Open the room page
-                    RoomNavigationParameters *roomNavigationParameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId eventId:eventId mxSession:account.mxSession presentationParameters: screenPresentationParameters];
-                    
-                    [self showRoomWithParameters:roomNavigationParameters];
+                    if (eventId)
+                    {
+                        __block MXEvent *event = [account.mxSession.store eventWithEventId:eventId inRoom:roomId];
+                        dispatch_group_t eventDispatchGroup = dispatch_group_create();
+                        
+                        if (event == nil)
+                        {
+                            dispatch_group_enter(eventDispatchGroup);
+                            //  event doesn't exist in the store
+                            [account.mxSession eventWithEventId:eventId
+                                                         inRoom:roomId
+                                                        success:^(MXEvent *eventFromServer) {
+                                event = eventFromServer;
+                                dispatch_group_leave(eventDispatchGroup);
+                            } failure:^(NSError *error) {
+                                MXLogError(@"[LegacyAppDelegate] handleUniversalLinkWithParameters: event fetch failed: %@", error);
+                                dispatch_group_leave(eventDispatchGroup);
+                            }];
+                        }
+                        
+                        dispatch_group_notify(eventDispatchGroup, dispatch_get_main_queue(), ^{
+                            if (event == nil)
+                            {
+                                return;
+                            }
+                            
+                            ThreadParameters *threadParameters = nil;
+                            if (RiotSettings.shared.enableThreads)
+                            {
+                                if (event.threadId)
+                                {
+                                    threadParameters = [[ThreadParameters alloc] initWithThreadId:event.threadId
+                                                                                  stackRoomScreen:NO];
+                                }
+                                else if ([account.mxSession.threadingService threadWithId:eventId])
+                                {
+                                    threadParameters = [[ThreadParameters alloc] initWithThreadId:eventId
+                                                                                  stackRoomScreen:NO];
+                                }
+                            }
+                            
+                            RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
+                                                                                                            eventId:eventId
+                                                                                                          mxSession:account.mxSession
+                                                                                                   threadParameters:threadParameters
+                                                                                             presentationParameters:presentationParameters];
+                            [self showRoomWithParameters:parameters];
+                        });
+                    }
+                    else
+                    {
+                        //  open the regular room timeline
+                        RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
+                                                                                                        eventId:eventId
+                                                                                                      mxSession:account.mxSession
+                                                                                               threadParameters:nil
+                                                                                         presentationParameters:presentationParameters];
+                        
+                        [self showRoomWithParameters:parameters];
+                    }
                 }
                 
                 continueUserActivity = YES;
@@ -1412,7 +1469,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                     {
                                         universalLinkFragmentPendingRoomAlias = @{roomId: roomIdOrAlias};
                                         
-                                        UniversalLinkParameters *newParameters = [[UniversalLinkParameters alloc] initWithFragment:newUniversalLinkFragment universalLinkURL:universalLinkURL presentationParameters:screenPresentationParameters];
+                                        UniversalLinkParameters *newParameters = [[UniversalLinkParameters alloc] initWithFragment:newUniversalLinkFragment universalLinkURL:universalLinkURL presentationParameters:presentationParameters];
                                         
                                         [self handleUniversalLinkWithParameters:newParameters];
                                     }
@@ -1471,14 +1528,14 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                 roomPreviewData.viaServers = queryParams[@"via"];
                             }
                             
-                            RoomPreviewNavigationParameters *roomPreviewNavigationParameters = [[RoomPreviewNavigationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:screenPresentationParameters];
+                            RoomPreviewNavigationParameters *roomPreviewNavigationParameters = [[RoomPreviewNavigationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:presentationParameters];
                             
                             [account.mxSession.matrixRestClient roomSummaryWith:roomIdOrAlias via:roomPreviewData.viaServers success:^(MXPublicRoom *room) {
                                 if ([room.roomTypeString isEqualToString:MXRoomTypeStringSpace])
                                 {
                                     [homeViewController stopActivityIndicator];
                                     
-                                    SpacePreviewNavigationParameters *spacePreviewNavigationParameters = [[SpacePreviewNavigationParameters alloc] initWithPublicRoom:room mxSession:account.mxSession presentationParameters:screenPresentationParameters];
+                                    SpacePreviewNavigationParameters *spacePreviewNavigationParameters = [[SpacePreviewNavigationParameters alloc] initWithPublicRoom:room mxSession:account.mxSession presentationParameters:presentationParameters];
                                     
                                     [self showSpacePreviewWithParameters:spacePreviewNavigationParameters];  
                                 }
@@ -1556,7 +1613,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
         // Create the contact related to this member
         MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:userId];
-        [self showContact:contact presentationParameters:screenPresentationParameters];
+        [self showContact:contact presentationParameters:presentationParameters];
 
         continueUserActivity = YES;
     }
@@ -1575,7 +1632,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             }
             
             // Display the group details
-            [self showGroup:group withMatrixSession:account.mxSession presentationParamters:screenPresentationParameters];
+            [self showGroup:group withMatrixSession:account.mxSession presentationParamters:presentationParameters];
             
             continueUserActivity = YES;
         }
@@ -1592,7 +1649,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 // Check that 'fragment' has not been cancelled
                 if ([universalLinkFragmentPending isEqualToString:fragment])
                 {
-                    MXLogDebug(@"[AppDelegate] Universal link:  The user is now logged in. Retry the link");
+                    MXLogDebug(@"[AppDelegate] Universal link: The user is now logged in. Retry the link");
                     [self handleUniversalLinkWithParameters:universalLinkParameters];
                 }
             }];
@@ -1604,7 +1661,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         MXLogDebug(@"[AppDelegate] Universal link with registration parameters");
         continueUserActivity = YES;
         
-        [_masterTabBarController showAuthenticationScreenWithRegistrationParameters:queryParams];
+        [_masterTabBarController showOnboardingFlowWithRegistrationParameters:queryParams];
     }
     else
     {
@@ -1744,33 +1801,36 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     *outQueryParams = queryParams;
 }
 
-
-- (BOOL)handleServerProvionningLink:(NSURL*)link
+/**
+ Parse and handle a server provisioning link. Returns `YES` if a provisioning link was detected and handled.
+ @param link A link such as https://mobile.element.io/?hs_url=matrix.example.com&is_url=identity.example.com
+ */
+- (BOOL)handleServerProvisioningLink:(NSURL*)link
 {
-    MXLogDebug(@"[AppDelegate] handleServerProvionningLink: %@", link);
+    MXLogDebug(@"[AppDelegate] handleServerProvisioningLink: %@", link);
 
     NSString *homeserver, *identityServer;
-    [self parseServerProvionningLink:link homeserver:&homeserver identityServer:&identityServer];
+    [self parseServerProvisioningLink:link homeserver:&homeserver identityServer:&identityServer];
 
     if (homeserver)
     {
         if ([MXKAccountManager sharedManager].activeAccounts.count)
         {
-            [self displayServerProvionningLinkBuyAlreadyLoggedInAlertWithCompletion:^(BOOL logout) {
+            [self displayServerProvisioningLinkBuyAlreadyLoggedInAlertWithCompletion:^(BOOL logout) {
 
-                MXLogDebug(@"[AppDelegate] handleServerProvionningLink: logoutWithConfirmation: logout: %@", @(logout));
+                MXLogDebug(@"[AppDelegate] handleServerProvisioningLink: logoutWithConfirmation: logout: %@", @(logout));
                 if (logout)
                 {
                     [self logoutWithConfirmation:NO completion:^(BOOL isLoggedOut) {
-                        [self handleServerProvionningLink:link];
+                        [self handleServerProvisioningLink:link];
                     }];
                 }
             }];
         }
         else
         {
-            [_masterTabBarController showAuthenticationScreen];
-            [_masterTabBarController.authViewController showCustomHomeserver:homeserver andIdentityServer:identityServer];
+            [_masterTabBarController showOnboardingFlow];
+            [_masterTabBarController.onboardingCoordinatorBridgePresenter updateHomeserver:homeserver andIdentityServer:identityServer];
         }
 
         return YES;
@@ -1779,7 +1839,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     return NO;
 }
 
-- (void)parseServerProvionningLink:(NSURL*)link homeserver:(NSString**)homeserver identityServer:(NSString**)identityServer
+- (void)parseServerProvisioningLink:(NSURL*)link homeserver:(NSString**)homeserver identityServer:(NSString**)identityServer
 {
     if ([link.path isEqualToString:@"/"])
     {
@@ -1799,14 +1859,14 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     else
     {
-        MXLogDebug(@"[AppDelegate] parseServerProvionningLink: Error: Unknown path: %@", link.path);
+        MXLogDebug(@"[AppDelegate] parseServerProvisioningLink: Error: Unknown path: %@", link.path);
     }
 
 
-    MXLogDebug(@"[AppDelegate] parseServerProvionningLink: homeserver: %@ - identityServer: %@", *homeserver, *identityServer);
+    MXLogDebug(@"[AppDelegate] parseServerProvisioningLink: homeserver: %@ - identityServer: %@", *homeserver, *identityServer);
 }
 
-- (void)displayServerProvionningLinkBuyAlreadyLoggedInAlertWithCompletion:(void (^)(BOOL logout))completion
+- (void)displayServerProvisioningLinkBuyAlreadyLoggedInAlertWithCompletion:(void (^)(BOOL logout))completion
 {
     // Ask confirmation
     self.logoutConfirmation = [UIAlertController alertControllerWithTitle:[VectorL10n errorUserAlreadyLoggedIn] message:nil preferredStyle:UIAlertControllerStyleAlert];
@@ -1965,7 +2025,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         [self removeMatrixSession:account.mxSession];
 
         // Return to authentication screen
-        [self.masterTabBarController showAuthenticationScreenAfterSoftLogout:account.mxCredentials];
+        [self.masterTabBarController showSoftLogoutOnboardingFlowWithCredentials:account.mxCredentials];
     }];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionIgnoredUsersDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull notif) {
@@ -2259,7 +2319,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         }
         
         // Return to authentication screen
-        [_masterTabBarController showAuthenticationScreen];
+        [_masterTabBarController showOnboardingFlow];
         
         // Note: Keep App settings
         // But enforce usage of member lazy loading
@@ -2298,7 +2358,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         BOOL isLaunching = NO;
         
-        if (_masterTabBarController.authenticationInProgress)
+        if (_masterTabBarController.isOnboardingInProgress)
         {
             MXLogDebug(@"[AppDelegate] handleAppState: Authentication still in progress");
                   
@@ -2893,7 +2953,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
     
     RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
-                                                                                        eventId:eventId mxSession:mxSession presentationParameters:presentationParameters];
+                                                                                    eventId:eventId
+                                                                                  mxSession:mxSession
+                                                                           threadParameters:nil
+                                                                     presentationParameters:presentationParameters];
     
     [self showRoomWithParameters:parameters];
 }
@@ -3415,7 +3478,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                                      @"party_id": mxSession.myDeviceId
                                                  };
                                                  
-                                                 [mxSession.matrixRestClient sendEventToRoom:event.roomId eventType:kMXEventTypeStringCallReject content:content txnId:nil success:nil failure:^(NSError *error) {
+                                                 [mxSession.matrixRestClient sendEventToRoom:event.roomId threadId:nil eventType:kMXEventTypeStringCallReject content:content txnId:nil success:nil failure:^(NSError *error) {
                                                      MXLogDebug(@"[AppDelegate] enableNoVoIPOnMatrixSession: ERROR: Cannot send m.call.reject event.");
                                                  }];
                                                  
@@ -3854,7 +3917,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         return;
     }
     
-    if (_masterTabBarController.authenticationInProgress)
+    if (_masterTabBarController.isOnboardingInProgress)
     {
         MXLogDebug(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Postpone requests during the authentication process");
         
@@ -4496,15 +4559,15 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (BOOL)continueSSOLoginWithToken:(NSString*)loginToken txnId:(NSString*)txnId
 {
-    AuthenticationViewController *authVC = self.masterTabBarController.authViewController;
+    OnboardingCoordinatorBridgePresenter *bridgePresenter = self.masterTabBarController.onboardingCoordinatorBridgePresenter;
     
-    if (!authVC)
+    if (!bridgePresenter)
     {
         MXLogDebug(@"[AppDelegate] Fail to continue SSO login");
         return NO;
     }
     
-    return [authVC continueSSOLoginWithToken:loginToken txnId:txnId];
+    return [bridgePresenter continueSSOLoginWithToken:loginToken transactionID:txnId];
 }
 
 #pragma mark - Private

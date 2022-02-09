@@ -27,4 +27,6 @@
 
 + (instancetype)instantiate;
 
+- (void)selectEvent:(MXEvent *)event;
+
 @end

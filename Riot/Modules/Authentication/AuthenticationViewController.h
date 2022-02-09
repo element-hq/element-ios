@@ -26,13 +26,6 @@
 // MXKAuthenticationViewController has already a `delegate` member
 @property (nonatomic, weak) id<AuthenticationViewControllerDelegate> authVCDelegate;
 
-@property (weak, nonatomic) IBOutlet UIView *navigationBackView;
-@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
-@property (weak, nonatomic) IBOutlet UIView *navigationBarSeparatorView;
-
-@property (weak, nonatomic) IBOutlet UINavigationItem *mainNavigationItem;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *rightBarButtonItem;
-
 @property (weak, nonatomic) IBOutlet UIView *optionsContainer;
 
 @property (weak, nonatomic) IBOutlet UIButton *skipButton;
