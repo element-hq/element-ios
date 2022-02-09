@@ -110,16 +110,10 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
     private func getIncomingMessageTextViewInsets(from bubbleCell: MXKRoomBubbleTableViewCell) -> UIEdgeInsets {
         
         let bubbleBgRightMargin: CGFloat = 45
-        let messageViewMarginTop: CGFloat
-        let messageViewMarginBottom: CGFloat = -2.0
-        let messageViewMarginLeft: CGFloat = 3.0
+        let messageViewMarginTop: CGFloat = 0
+        let messageViewMarginBottom: CGFloat = -0
+        let messageViewMarginLeft: CGFloat = 0
         let messageViewMarginRight: CGFloat = 80 + bubbleBgRightMargin
-        
-        if bubbleCell.userNameLabel != nil {
-            messageViewMarginTop = 10.0
-        } else {
-            messageViewMarginTop = 0.0
-        }
         
         let messageViewInsets = UIEdgeInsets(top: messageViewMarginTop, left: messageViewMarginLeft, bottom: messageViewMarginBottom, right: messageViewMarginRight)
         
