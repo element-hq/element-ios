@@ -950,101 +950,32 @@ static BOOL _disableLongPressGestureOnEvent;
 {
     [super prepareForReuse];
     
+    bubbleData = nil;
+    delegate = nil;
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    self.readReceiptsAlignment = ReadReceiptAlignmentLeft;
+    
+    _allTextHighlighted = NO;
+    _isAutoAnimatedGif = NO;
+    
+    [self removeHTMLBlockquoteSideBorderViews];
+    [self removeTemporarySubviews];
+    [self cleanAttachmentView];
+    [self clearBubbleInfoContainer];
+    [self clearBubbleOverlayContainer];
+    [self resetConstraintsConstantToDefault];
+    
     [self didEndDisplay];
 }
 
 - (void)didEndDisplay
 {
-    bubbleData = nil;
-
-    for (UIView *sideBorder in htmlBlockquoteSideBorderViews)
-    {
-        [sideBorder removeFromSuperview];
-    }
-    [htmlBlockquoteSideBorderViews removeAllObjects];
-    htmlBlockquoteSideBorderViews = nil;
-
-    if (_attachmentWebView)
-    {
-        [_attachmentWebView removeFromSuperview];
-        _attachmentWebView.navigationDelegate = nil;
-        _attachmentWebView = nil;
-    }
+    [self removeReadMarkerView];
+    [self cleanProgressView];
     
-    if (_readMarkerView)
-    {
-        [_readMarkerView removeFromSuperview];
-        _readMarkerView = nil;
-        _readMarkerViewTopConstraint = nil;
-        _readMarkerViewLeadingConstraint = nil;
-        _readMarkerViewTrailingConstraint = nil;
-        _readMarkerViewHeightConstraint = nil;
-    }
-    
-    if (self.attachmentView)
-    {
-        // Remove all gesture recognizer
-        while (self.attachmentView.gestureRecognizers.count)
-        {
-            [self.attachmentView removeGestureRecognizer:self.attachmentView.gestureRecognizers[0]];
-        }
-        
-        // Prevent the cell from displaying again the image in case of reuse.
-        self.attachmentView.image = nil;
-    }
-    
-    // Remove potential dateTime (or unsent) label(s)
-    if (self.bubbleInfoContainer && self.bubbleInfoContainer.subviews.count > 0)
-    {
-        NSArray* subviews = self.bubbleInfoContainer.subviews;
-             
-        for (UIView *view in subviews)
-        {
-            [view removeFromSuperview];
-        }
-    }
-    self.bubbleInfoContainer.hidden = YES;
-    
-    // Remove temporary subviews
-    for (UIView *view in self.tmpSubviews)
-    {
-        [view removeFromSuperview];
-    }
-    [self.tmpSubviews removeAllObjects];
-    
-    // Remove potential overlay subviews
-    if (self.bubbleOverlayContainer)
-    {
-        NSArray* subviews = self.bubbleOverlayContainer.subviews;
-        
-        for (UIView *view in subviews)
-        {
-            [view removeFromSuperview];
-        }
-        
-        self.bubbleOverlayContainer.hidden = YES;
-    }
-    
-    if (self.progressView)
-    {
-        [self stopProgressUI];
-        
-        // Remove long tap gesture on the progressView
-        while (self.progressView.gestureRecognizers.count)
-        {
-            [self.progressView removeGestureRecognizer:self.progressView.gestureRecognizers[0]];
-        }
-    }
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    delegate = nil;
-    
-    self.readReceiptsAlignment = ReadReceiptAlignmentLeft;
-    _allTextHighlighted = NO;
-    _isAutoAnimatedGif = NO;
-    
-    [self resetConstraintsConstantToDefault];
+    // TODO: Stop gif animation
 }
 
 - (BOOL)shouldInteractWithURL:(NSURL *)URL urlItemInteraction:(UITextItemInteraction)urlItemInteraction associatedEvent:(MXEvent*)associatedEvent
@@ -1133,6 +1064,111 @@ static BOOL _disableLongPressGestureOnEvent;
     }
     
     [self.tmpSubviews addObject:subview];
+}
+
+#pragma mark - Cleaning
+
+- (void)removeHTMLBlockquoteSideBorderViews
+{
+    for (UIView *sideBorder in htmlBlockquoteSideBorderViews)
+    {
+        [sideBorder removeFromSuperview];
+    }
+    [htmlBlockquoteSideBorderViews removeAllObjects];
+    htmlBlockquoteSideBorderViews = nil;
+}
+
+- (void)removeReadMarkerView
+{
+    if (_readMarkerView)
+    {
+        [_readMarkerView removeFromSuperview];
+        _readMarkerView = nil;
+        _readMarkerViewTopConstraint = nil;
+        _readMarkerViewLeadingConstraint = nil;
+        _readMarkerViewTrailingConstraint = nil;
+        _readMarkerViewHeightConstraint = nil;
+    }
+}
+
+- (void)removeTemporarySubviews
+{
+    // Remove temporary subviews
+    for (UIView *view in self.tmpSubviews)
+    {
+        [view removeFromSuperview];
+    }
+    [self.tmpSubviews removeAllObjects];
+}
+
+- (void)cleanAttachmentView
+{
+    if (self.attachmentView)
+    {
+        // Remove all gesture recognizer
+        while (self.attachmentView.gestureRecognizers.count)
+        {
+            [self.attachmentView removeGestureRecognizer:self.attachmentView.gestureRecognizers[0]];
+        }
+        
+        // Prevent the cell from displaying again the image in case of reuse.
+        self.attachmentView.image = nil;
+    }
+}
+
+- (void)clearBubbleInfoContainer
+{
+    // Remove potential dateTime (or unsent) label(s)
+    if (self.bubbleInfoContainer && self.bubbleInfoContainer.subviews.count > 0)
+    {
+        NSArray* subviews = self.bubbleInfoContainer.subviews;
+             
+        for (UIView *view in subviews)
+        {
+            [view removeFromSuperview];
+        }
+    }
+    self.bubbleInfoContainer.hidden = YES;
+}
+
+- (void)clearBubbleOverlayContainer
+{
+    // Remove potential overlay subviews
+    if (self.bubbleOverlayContainer)
+    {
+        NSArray* subviews = self.bubbleOverlayContainer.subviews;
+        
+        for (UIView *view in subviews)
+        {
+            [view removeFromSuperview];
+        }
+        
+        self.bubbleOverlayContainer.hidden = YES;
+    }
+}
+
+- (void)cleanProgressView
+{
+    if (self.progressView)
+    {
+        [self stopProgressUI];
+        
+        // Remove long tap gesture on the progressView
+        while (self.progressView.gestureRecognizers.count)
+        {
+            [self.progressView removeGestureRecognizer:self.progressView.gestureRecognizers[0]];
+        }
+    }
+}
+
+- (void)clearAttachmentWebView
+{
+    if (_attachmentWebView)
+    {
+        [_attachmentWebView removeFromSuperview];
+        _attachmentWebView.navigationDelegate = nil;
+        _attachmentWebView = nil;
+    }
 }
 
 #pragma mark - Attachment progress handling
