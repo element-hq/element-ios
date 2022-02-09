@@ -32,7 +32,7 @@
 /**
  HTTP client dedicated to sending MSISDN token to custom URLs.
  */
-@property (nonatomic, strong) MXHTTPClient *customUrlHttpClient;
+@property (nonatomic, strong) MXHTTPClient *msisdnSubmissionHttpClient;
 
 @end
 
@@ -259,21 +259,21 @@
                                  @"token": token
                                  };
 
-    self.customUrlHttpClient = [[MXHTTPClient alloc] initWithBaseURL:nil andOnUnrecognizedCertificateBlock:nil];
+    self.msisdnSubmissionHttpClient = [[MXHTTPClient alloc] initWithBaseURL:nil andOnUnrecognizedCertificateBlock:nil];
 
     MXWeakify(self);
-    return [self.customUrlHttpClient requestWithMethod:@"POST"
+    return [self.msisdnSubmissionHttpClient requestWithMethod:@"POST"
                                                   path:url
                                             parameters:parameters
                                                success:^(NSDictionary *JSONResponse) {
         success();
         MXStrongifyAndReturnIfNil(self);
-        self.customUrlHttpClient = nil;
+        self.msisdnSubmissionHttpClient = nil;
     }
                                                failure:^(NSError *error) {
         failure(error);
         MXStrongifyAndReturnIfNil(self);
-        self.customUrlHttpClient = nil;
+        self.msisdnSubmissionHttpClient = nil;
     }];
 
 }
