@@ -47,6 +47,11 @@
     NSAttributedString *attributedTextMessage;
     
     /**
+     Same as attributedTextMessage but without vertical positioning vertical spaces.
+     */
+    NSAttributedString *attributedTextMessageWithoutPositioningSpace;
+    
+    /**
      The optional text pattern to be highlighted in the body of the message.
      */
     NSString *highlightedPattern;

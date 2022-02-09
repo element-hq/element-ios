@@ -164,6 +164,10 @@
 @property (nonatomic) NSAttributedString *attributedTextMessage;
 
 /**
+ Same as attributedTextMessage but without vertical positioning blank space
+ */
+@property (nonatomic) NSAttributedString *attributedTextMessageWithoutPositioningSpace;
+/**
  The raw text message (without attributes)
  */
 @property (nonatomic) NSString *textMessage;
