@@ -47,7 +47,7 @@
     NSAttributedString *attributedTextMessage;
     
     /**
-     Same as attributedTextMessage but without vertical positioning vertical spaces.
+     Same as attributedTextMessage but without vertical positioning vertical blank space.
      */
     NSAttributedString *attributedTextMessageWithoutPositioningSpace;
     
