@@ -29,24 +29,19 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
         
     override func addTimestampLabel(toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData) {
         
-        if let timestampDisplayable = cell as? TimestampDisplayable, let timestampLabel = self.createTimestampLabel(for: cellData) {
+        guard let timestampLabel = self.createTimestampLabel(for: cellData) else {
+            super.addTimestampLabel(toCell: cell, cellData: cellData)
+            return
+        }
+        
+        if let timestampDisplayable = cell as? TimestampDisplayable {
             
             timestampDisplayable.addTimestampView(timestampLabel)
-            
-        } else if let bubbleBackgroundView = cell.messageBubbleBackgroundView, bubbleBackgroundView.isHidden == false, let timestampLabel = self.createTimestampLabel(for: cellData) {
-            
-            // If cell contains a bubble background, add the timestamp inside of it
-            
-            self.addTimestampLabel(timestampLabel,
-                                   to: cell,
-                                   on: bubbleBackgroundView,
-                                   constrainingView: bubbleBackgroundView)
             
         } else if cellData.isAttachmentWithThumbnail {
                                                  
             if cellData.attachment?.type == .sticker,
-               let attachmentView = cell.attachmentView,
-                let timestampLabel = self.createTimestampLabel(for: cellData) {
+               let attachmentView = cell.attachmentView {
                 
                 // Prevent overlap with send status icon
                 let bottomMargin: CGFloat = 20.0
@@ -59,8 +54,10 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
                                        rightMargin: rightMargin,
                                        bottomMargin: bottomMargin)
                 
-            } else if let attachmentView = cell.attachmentView, let timestampLabel = self.createTimestampLabel(for: cellData, textColor: self.theme.baseIconPrimaryColor) {
+            } else if let attachmentView = cell.attachmentView {
                 // For media with thumbnail cells, add timestamp inside thumbnail
+                
+                timestampLabel.textColor = self.theme.baseIconPrimaryColor
                 
                 self.addTimestampLabel(timestampLabel,
                                        to: cell,
@@ -70,7 +67,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
             } else {
                 super.addTimestampLabel(toCell: cell, cellData: cellData)
             }
-        } else if let voiceMessageCell = cell as? VoiceMessageBubbleCell, let playbackView = voiceMessageCell.playbackController?.playbackView, let timestampLabel = self.createTimestampLabel(for: cellData) {
+        } else if let voiceMessageCell = cell as? VoiceMessageBubbleCell, let playbackView = voiceMessageCell.playbackController?.playbackView {
             
             // Add timestamp on cell inherting from VoiceMessageBubbleCell
             
@@ -79,7 +76,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
                                    on: cell.contentView,
                                    constrainingView: playbackView)
             
-        } else if let fileWithoutThumbnailCell = cell as? FileWithoutThumbnailBaseBubbleCell, let fileAttachementView = fileWithoutThumbnailCell.fileAttachementView, let timestampLabel = self.createTimestampLabel(for: cellData) {
+        } else if let fileWithoutThumbnailCell = cell as? FileWithoutThumbnailBaseBubbleCell, let fileAttachementView = fileWithoutThumbnailCell.fileAttachementView {
             
             // Add timestamp on cell inherting from VoiceMessageBubbleCell
             
