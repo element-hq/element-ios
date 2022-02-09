@@ -144,25 +144,7 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
     
     // MARK: - Public
     
-    // MARK: - Overrides
-    
-    override func setupViews() {
-        super.setupViews()
-        
-        let showEncryptionStatus = bubbleCellContentView?.showEncryptionStatus ?? false
-        
-        if showEncryptionStatus {
-            self.setupEncryptionStatusViewTapGestureRecognizer()
-        }
-    }
-    
-    override class func defaultReuseIdentifier() -> String! {
-        return String(describing: self)
-    }
-    
-    override func didEndDisplay() {
-        super.didEndDisplay()
-        
+    func removeDecorationViews() {
         if let bubbleCellReadReceiptsDisplayable = self as? BubbleCellReadReceiptsDisplayable {
             bubbleCellReadReceiptsDisplayable.removeReadReceiptsView()
         }
@@ -182,6 +164,28 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
         if let urlPreviewDisplayable = self as? RoomCellURLPreviewDisplayable {
             urlPreviewDisplayable.removeURLPreviewView()
         }
+    }
+    
+    // MARK: - Overrides
+    
+    override func setupViews() {
+        super.setupViews()
+        
+        let showEncryptionStatus = bubbleCellContentView?.showEncryptionStatus ?? false
+        
+        if showEncryptionStatus {
+            self.setupEncryptionStatusViewTapGestureRecognizer()
+        }
+    }
+    
+    override class func defaultReuseIdentifier() -> String! {
+        return String(describing: self)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.removeDecorationViews()
     }
     
     override func render(_ cellData: MXKCellData!) {
