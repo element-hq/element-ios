@@ -564,7 +564,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         
         if (mxRoom.isDirect)
         {
-            sectionAccess.headerTitle = [VectorL10n roomDetailsAccessSectionAnyoneForDm];
+            sectionAccess.headerTitle = [VectorL10n roomDetailsAccessSectionForDm];
         }
         else
         {
