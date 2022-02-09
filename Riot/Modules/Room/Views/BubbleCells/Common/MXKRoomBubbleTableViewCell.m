@@ -30,6 +30,8 @@
 #import "MXKMessageTextView.h"
 #import "UITextView+MatrixKit.h"
 
+#import "GeneratedInterface-Swift.h"
+
 #pragma mark - Constant definitions
 NSString *const kMXKRoomBubbleCellTapOnMessageTextView = @"kMXKRoomBubbleCellTapOnMessageTextView";
 NSString *const kMXKRoomBubbleCellTapOnSenderNameLabel = @"kMXKRoomBubbleCellTapOnSenderNameLabel";
@@ -122,6 +124,7 @@ static BOOL _disableLongPressGestureOnEvent;
     _allTextHighlighted = NO;
     _isAutoAnimatedGif = NO;
     _tmpSubviews = [NSMutableArray array];
+    _isTextViewNeedsPositioningVerticalSpace = YES;
 }
 
 - (void)awakeFromNib
@@ -366,16 +369,21 @@ static BOOL _disableLongPressGestureOnEvent;
     {
         if (_allTextHighlighted)
         {
-            NSMutableAttributedString *highlightedString = [[NSMutableAttributedString alloc] initWithAttributedString:bubbleData.attributedTextMessage];
+            NSMutableAttributedString *highlightedString = [[NSMutableAttributedString alloc] initWithAttributedString:self.suitableAttributedTextMessage];
             UIColor *color = self.tintColor ? self.tintColor : [UIColor lightGrayColor];
             [highlightedString addAttribute:NSBackgroundColorAttributeName value:color range:NSMakeRange(0, highlightedString.length)];
             self.messageTextView.attributedText = highlightedString;
         }
         else
         {
-            self.messageTextView.attributedText = bubbleData.attributedTextMessage;
+            self.messageTextView.attributedText = self.suitableAttributedTextMessage;
         }
     }
+}
+
+- (NSAttributedString *)suitableAttributedTextMessage
+{
+    return self.isTextViewNeedsPositioningVerticalSpace ? bubbleData.attributedTextMessage : bubbleData.attributedTextMessageWithoutPositioningSpace;
 }
 
 - (void)highlightTextMessageForEvent:(NSString*)eventId
@@ -389,7 +397,7 @@ static BOOL _disableLongPressGestureOnEvent;
         else
         {
             // Restore original string
-            self.messageTextView.attributedText = bubbleData.attributedTextMessage;
+            self.messageTextView.attributedText = self.suitableAttributedTextMessage;
         }
     }
 }
@@ -559,14 +567,14 @@ static BOOL _disableLongPressGestureOnEvent;
             // Underline attached file name
             if (self.isBubbleDataContainsFileAttachment)
             {
-                NSMutableAttributedString *updatedText = [[NSMutableAttributedString alloc] initWithAttributedString:bubbleData.attributedTextMessage];
+                NSMutableAttributedString *updatedText = [[NSMutableAttributedString alloc] initWithAttributedString:self.suitableAttributedTextMessage];
                 [updatedText addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(0, updatedText.length)];
                 
                 newText = updatedText;
             }
             else
             {
-                newText = bubbleData.attributedTextMessage;
+                newText = self.suitableAttributedTextMessage;
             }
             
             // update the text only if it is required
@@ -927,8 +935,24 @@ static BOOL _disableLongPressGestureOnEvent;
     }
     else if (cell.messageTextView)
     {
+        CGFloat maxTextViewWidth;
+        
+        RoomTimelineConfiguration *timelineConfiguration = [RoomTimelineConfiguration shared];
+        
+        id<RoomCellLayoutUpdating> cellLayoutUpdater = timelineConfiguration.currentStyle.cellLayoutUpdater;
+        
+        // Handle updated text view layout if needed
+        if (cellLayoutUpdater)
+        {
+            maxTextViewWidth = [cellLayoutUpdater maximumTextViewWidthFor:cell cellData:cellData maximumCellWidth:maxWidth];
+        }
+        else
+        {
+            maxTextViewWidth = maxWidth - (cell.msgTextViewLeadingConstraint.constant + cell.msgTextViewTrailingConstraint.constant);
+        }
+        
         // Update maximum width available for the textview
-        bubbleData.maxTextViewWidth = maxWidth - (cell.msgTextViewLeadingConstraint.constant + cell.msgTextViewTrailingConstraint.constant);
+        bubbleData.maxTextViewWidth = maxTextViewWidth;
         
         // Retrieve the suggested height of the message content
         rowHeight = bubbleData.contentSize.height;

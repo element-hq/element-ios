@@ -240,6 +240,16 @@ extern NSString *const kMXKRoomBubbleCellUrlItemInteraction;
 @property (nonatomic) WKWebView *attachmentWebView;
 
 /**
+ Indicate true if the cell needs vertical space in the text to position UI components.
+ */
+@property (nonatomic, readonly) BOOL isTextViewNeedsPositioningVerticalSpace;
+
+/**
+ Use bubbleData.attributedTextMessage or bubbleData.attributedTextMessageWithoutPositioningSpace according to isTextViewNeedsPositioningVerticalSpace value.
+ */
+@property (nonatomic, readonly) NSAttributedString *suitableAttributedTextMessage;
+
+/**
  Called during the designated initializer of the UITableViewCell class to set the default
  properties values.
  
