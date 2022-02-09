@@ -218,7 +218,7 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
         cell.msgTextViewLeadingConstraint = leftConstraint
         cell.msgTextViewTrailingConstraint = rightConstraint
         
-        cell.msgTextViewBottomConstraint.constant = messageViewMargins.bottom
+        cell.msgTextViewBottomConstraint.constant += messageViewMargins.bottom
     }
     
     // MARK: File attachment
