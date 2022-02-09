@@ -1735,3 +1735,10 @@
 
 // Onboarding
 "onboarding_splash_register_button_title" = "Buat akun";
+"poll_edit_form_poll_type_closed_description" = "Hasil akan ditampilkan ketika Anda mengakhiri poll-nya";
+"poll_edit_form_poll_type_closed" = "Poll tertutup";
+"poll_edit_form_poll_type_open_description" = "Pemberi suara akan melihat hasilnya ketika telah memberikan suara";
+"poll_edit_form_poll_type_open" = "Buka poll";
+"poll_edit_form_update_failure_subtitle" = "Silakan coba lagi";
+"poll_edit_form_update_failure_title" = "Gagal untuk memperbarui poll";
+"poll_edit_form_poll_type" = "Tipe poll";

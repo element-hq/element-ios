@@ -47,10 +47,16 @@
     NSAttributedString *attributedTextMessage;
     
     /**
+     Same as attributedTextMessage but without vertical positioning vertical blank space.
+     */
+    NSAttributedString *attributedTextMessageWithoutPositioningSpace;
+    
+    /**
      The optional text pattern to be highlighted in the body of the message.
      */
     NSString *highlightedPattern;
-    UIColor  *highlightedPatternColor;
+    UIColor  *highlightedPatternForegroundColor;
+    UIColor  *highlightedPatternBackgroundColor;
     UIFont   *highlightedPatternFont;
 }
 
@@ -79,6 +85,11 @@
  Whether there is a link to preview in the components.
  */
 @property (nonatomic, readonly) BOOL hasLink;
+
+/**
+ Whether the data has a thread root in its components.
+ */
+@property (nonatomic, readonly) BOOL hasThreadRoot;
 
 /**
  Event formatter

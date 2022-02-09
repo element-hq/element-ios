@@ -27,4 +27,8 @@ protocol RoomCellLayoutUpdating: Themable {
     func setupLayout(forOutgoingTextMessageCell cell: MXKRoomBubbleTableViewCell)
     
     func setupLayout(forOutgoingFileAttachmentCell cell: MXKRoomBubbleTableViewCell)
+    
+    func updateLayout(forSelectedStickerCell cell: RoomSelectedStickerBubbleCell)
+    
+    func maximumTextViewWidth(for cell: MXKRoomBubbleTableViewCell, cellData: MXKCellData, maximumCellWidth: CGFloat) -> CGFloat
 }

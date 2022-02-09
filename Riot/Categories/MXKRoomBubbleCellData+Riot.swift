@@ -18,16 +18,13 @@ import Foundation
 
 extension MXKRoomBubbleCellData {
     
-    /// Indicate true if the sender is the session user
-    var isSenderCurrentUser: Bool {
-        if let senderId = self.senderId, let currentUserId = self.mxSession.myUserId, senderId == currentUserId {
-            return true
-        }
-        return false
-    }
-    
     // Indicate true if the cell data is collapsable and collapsed
     var isCollapsableAndCollapsed: Bool {
         return self.collapsable && self.collapsed
     }
+    
+    var cellDataTag: RoomBubbleCellDataTag {
+        return RoomBubbleCellDataTag(rawValue: self.tag) ?? .message
+    }
+    
 }

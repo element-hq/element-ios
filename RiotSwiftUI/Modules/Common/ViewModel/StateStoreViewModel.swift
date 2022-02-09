@@ -92,9 +92,9 @@ class StateStoreViewModel<State: BindableState, StateAction, ViewAction> {
     /// Constrained interface for passing to Views.
     var context: Context
     
-    /// State can be read  within the 'ViewModel' but not modified outside of the reducer.
     var state: State {
-        context.viewState
+        get { context.viewState }
+        set { context.viewState = newValue }
     }
     
     // MARK: Setup
@@ -110,12 +110,14 @@ class StateStoreViewModel<State: BindableState, StateAction, ViewAction> {
 
     /// Send state actions to modify the state within the reducer.
     /// - Parameter action: The state action to send to the reducer.
+    @available(*, deprecated, message: "Mutate state directly instead")
     func dispatch(action: StateAction) {
         Self.reducer(state: &context.viewState, action: action)
     }
 
     /// Send state actions from a publisher to modify the state within the reducer.
     /// - Parameter actionPublisher: The publisher that produces actions to be sent to the reducer
+    @available(*, deprecated, message: "Mutate state directly instead")
     func dispatch(actionPublisher: AnyPublisher<StateAction, Never>) {
         actionPublisher.sink { [weak self] action in
             guard let self = self else { return }

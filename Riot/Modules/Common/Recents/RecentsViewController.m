@@ -875,6 +875,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
                                                                                     eventId:nil
                                                                                   mxSession:matrixSession
+                                                                           threadParameters:nil
                                                                      presentationParameters:presentationParameters];
     
     [[AppDelegate theDelegate] showRoomWithParameters:parameters completion:^{
@@ -1005,12 +1006,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
 {
     BOOL cellReloaded = NO;
-    if ([changes isKindOfClass:NSNumber.class])
+    if ([changes isKindOfClass:RecentsSectionUpdate.class])
     {
-        NSInteger section = ((NSNumber *)changes).integerValue;
-        if (section >= 0)
+        RecentsSectionUpdate *update = (RecentsSectionUpdate*)changes;
+        if (update.isValid && !update.totalCountsChanged)
         {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:section];
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:update.sectionIndex];
             UITableViewCell *cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
             if ([cell isKindOfClass:TableViewCellWithCollectionView.class])
             {
@@ -1342,8 +1343,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 {
     if (editedRoomId)
     {
-        __weak typeof(self) weakSelf = self;
-        
         // Check whether the user didn't leave the room
         // TODO: handle multi-account
         MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
@@ -1351,34 +1350,32 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         {
             [self startActivityIndicator];
             
+            MXWeakify(self);
+            
             [room setIsDirect:isDirect withUserId:nil success:^{
                 
-                if (weakSelf)
-                {
-                    typeof(self) self = weakSelf;
-                    [self stopActivityIndicator];
-                    // Leave editing mode
-                    [self cancelEditionMode:isRefreshPending];
-                }
+                MXStrongifyAndReturnIfNil(self);
+                
+                [self stopActivityIndicator];
+                // Leave editing mode
+                [self cancelEditionMode:isRefreshPending];
                 
             } failure:^(NSError *error) {
                 
-                if (weakSelf)
-                {
-                    typeof(self) self = weakSelf;
-                    [self stopActivityIndicator];
-                    
-                    MXLogDebug(@"[RecentsViewController] Failed to update direct tag of the room (%@)", editedRoomId);
-                    
-                    // Notify the end user
-                    NSString *userId = self.mainSession.myUser.userId; // TODO: handle multi-account
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification
-                                                                        object:error
-                                                                      userInfo:userId ? @{kMXKErrorUserIdKey: userId} : nil];
-                    
-                    // Leave editing mode
-                    [self cancelEditionMode:isRefreshPending];
-                }
+                MXStrongifyAndReturnIfNil(self);
+                
+                [self stopActivityIndicator];
+                
+                MXLogDebug(@"[RecentsViewController] Failed to update direct tag of the room (%@)", editedRoomId);
+                
+                // Notify the end user
+                NSString *userId = self.mainSession.myUser.userId; // TODO: handle multi-account
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification
+                                                                    object:error
+                                                                  userInfo:userId ? @{kMXKErrorUserIdKey: userId} : nil];
+                
+                // Leave editing mode
+                [self cancelEditionMode:isRefreshPending];
                 
             }];
         }

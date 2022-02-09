@@ -65,3 +65,5 @@ targets:
     - path: ../Riot/Managers/KeyValueStorage/
     - path: ../Riot/PropertyWrappers/UserDefaultsBackedPropertyWrapper.swift
     - path: ../Riot/Modules/Room/Views/BubbleCells/Styles/RoomTimelineStyleIdentifier.swift
+    - path: ../Riot/Modules/Room/EventMenu/EventMenuBuilder.swift
+    - path: ../Riot/Modules/Room/EventMenu/EventMenuItemType.swift

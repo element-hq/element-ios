@@ -28,7 +28,7 @@
 
 @implementation MXKRoomBubbleCellData
 @synthesize senderId, targetId, roomId, senderDisplayName, senderAvatarUrl, senderAvatarPlaceholder, targetDisplayName, targetAvatarUrl, targetAvatarPlaceholder, isEncryptedRoom, isPaginationFirstBubble, shouldHideSenderInformation, date, isIncoming, isAttachmentWithThumbnail, isAttachmentWithIcon, attachment, senderFlair;
-@synthesize textMessage, attributedTextMessage;
+@synthesize textMessage, attributedTextMessage, attributedTextMessageWithoutPositioningSpace;
 @synthesize shouldHideSenderName, isTyping, showBubbleDateTime, showBubbleReceipts, useCustomDateTimeLabel, useCustomReceipts, useCustomUnsentButton, hasNoDisplay;
 @synthesize tag;
 @synthesize collapsable, collapsed, collapsedAttributedTextMessage, prevCollapsableCellData, nextCollapsableCellData, collapseState;
@@ -370,10 +370,14 @@
     return customAttributedTextMsg;
 }
 
-- (void)highlightPatternInTextMessage:(NSString*)pattern withForegroundColor:(UIColor*)patternColor andFont:(UIFont*)patternFont
+- (void)highlightPatternInTextMessage:(NSString*)pattern
+                  withBackgroundColor:(UIColor *)backgroundColor
+                      foregroundColor:(UIColor*)foregroundColor
+                              andFont:(UIFont*)patternFont
 {
     highlightedPattern = pattern;
-    highlightedPatternColor = patternColor;
+    highlightedPatternBackgroundColor = backgroundColor;
+    highlightedPatternForegroundColor = foregroundColor;
     highlightedPatternFont = patternFont;
     
     // Indicate that the text message layout should be recomputed.
@@ -626,6 +630,22 @@
     return NO;
 }
 
+- (BOOL)hasThreadRoot
+{
+    @synchronized (bubbleComponents)
+    {
+        for (MXKRoomBubbleComponent *component in bubbleComponents)
+        {
+            if (component.thread)
+            {
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
+}
+
 - (MXKRoomBubbleComponentDisplayFix)displayFix
 {
     MXKRoomBubbleComponentDisplayFix displayFix = MXKRoomBubbleComponentDisplayFixNone;
@@ -722,6 +742,27 @@
 {
     // Not supported yet (TODO for audio, file).
     return NO;
+}
+
+- (BOOL)isAttachment
+{
+    if (!self.attachment)
+    {
+        return NO;
+    }
+    
+    if (!attachment.contentURL || !attachment.contentInfo) {
+        return NO;
+    }
+    
+    switch (self.attachment.type) {
+        case MXKAttachmentTypeFile:
+        case MXKAttachmentTypeAudio:
+        case MXKAttachmentTypeVoiceMessage:
+            return YES;
+        default:
+            return NO;
+    }
 }
 
 - (void)setMaxTextViewWidth:(CGFloat)inMaxTextViewWidth
@@ -892,10 +933,16 @@
         
         while (range.location != NSNotFound)
         {
-            if (highlightedPatternColor)
+            if (highlightedPatternBackgroundColor)
+            {
+                // Update background color
+                [customAttributedTextMsg addAttribute:NSBackgroundColorAttributeName value:highlightedPatternBackgroundColor range:range];
+            }
+
+            if (highlightedPatternForegroundColor)
             {
                 // Update text color
-                [customAttributedTextMsg addAttribute:NSForegroundColorAttributeName value:highlightedPatternColor range:range];
+                [customAttributedTextMsg addAttribute:NSForegroundColorAttributeName value:highlightedPatternForegroundColor range:range];
             }
             
             if (highlightedPatternFont)

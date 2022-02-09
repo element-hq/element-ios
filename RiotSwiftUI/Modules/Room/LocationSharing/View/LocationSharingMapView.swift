@@ -68,7 +68,7 @@ class LocationSharingMapViewCoordinator: NSObject, MGLMapViewDelegate {
     
     private let avatarData: AvatarInputProtocol
     private let errorSubject: PassthroughSubject<LocationSharingViewError, Never>
-    @Binding var userLocation: CLLocationCoordinate2D?
+    @Binding private var userLocation: CLLocationCoordinate2D?
     
     init(avatarData: AvatarInputProtocol,
          errorSubject: PassthroughSubject<LocationSharingViewError, Never>,
@@ -89,6 +89,10 @@ class LocationSharingMapViewCoordinator: NSObject, MGLMapViewDelegate {
     }
     
     func mapView(_ mapView: MGLMapView, didFailToLocateUserWithError error: Error) {
+        guard mapView.showsUserLocation else {
+            return
+        }
+        
         errorSubject.send(.failedLocatingUser)
     }
     
@@ -97,11 +101,15 @@ class LocationSharingMapViewCoordinator: NSObject, MGLMapViewDelegate {
     }
     
     func mapView(_ mapView: MGLMapView, didChangeLocationManagerAuthorization manager: MGLLocationManager) {
+        guard mapView.showsUserLocation else {
+            return
+        }
+        
         switch manager.authorizationStatus {
         case .restricted:
             fallthrough
         case .denied:
-            errorSubject.send(.failedLocatingUser)
+            errorSubject.send(.invalidLocationAuthorization)
         default:
             break
         }

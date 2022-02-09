@@ -1148,7 +1148,7 @@
 "create_room_title" = "Uus jututuba";
 "create_room_section_header_name" = "Jututoa nimi";
 "create_room_placeholder_name" = "Nimi";
-"create_room_section_header_topic" = "Jututoa teema (valikuline)";
+"create_room_section_header_topic" = "Jututoa teema (kui soovid lisada)";
 "create_room_placeholder_topic" = "Jututoa teema";
 "create_room_section_header_encryption" = "Krüptimine jututoas";
 "create_room_enable_encryption" = "Võta krüptimine kasutusele";
@@ -1431,7 +1431,7 @@
 "spaces_empty_space_title" = "Selles kogukonnakeskuses pole veel jututube";
 "space_tag" = "kogukonnakeskus";
 "spaces_suggested_room" = "Soovitatud";
-"spaces_explore_rooms" = "Uuri jututubasid";
+"spaces_explore_rooms" = "Tutvu jututubadega";
 "leave_space_and_all_rooms_action" = "Lahku kõikidest jututubadest ja kogukondadest";
 "leave_space_only_action" = "Ära lahku ühestki jututoast";
 "leave_space_message_admin_warning" = "Sa oled selle kogukonnakeskuse haldaja. Enne oma lahkumist palun lisa siia veel vähemalt üks uus haldaja.";
@@ -1556,3 +1556,10 @@
 
 // Onboarding
 "onboarding_splash_register_button_title" = "Loo kasutajakonto";
+"poll_edit_form_poll_type_closed_description" = "Tulemusi kuvame vaid siis, kui küsitlus on lõppenud";
+"poll_edit_form_poll_type_closed" = "Küsitlus on lõppenud";
+"poll_edit_form_poll_type_open_description" = "Osalejad näevad tulemusi peale oma valiku salvestamist";
+"poll_edit_form_poll_type_open" = "Ava küsitlus";
+"poll_edit_form_update_failure_subtitle" = "Palun proovi uuesti";
+"poll_edit_form_update_failure_title" = "Küsitluse muutmine ei õnnestunud";
+"poll_edit_form_poll_type" = "Küsitluse tüüp";

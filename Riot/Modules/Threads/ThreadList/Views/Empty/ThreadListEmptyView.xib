@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina3_5" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ThreadListEmptyView" customModule="Riot" customModuleProvider="target">
+            <connections>
+                <outlet property="iconBackgroundView" destination="TO4-Bz-2iH" id="J0d-n5-T7m"/>
+                <outlet property="iconView" destination="96m-sr-xQJ" id="iKm-fe-wZ5"/>
+                <outlet property="infoLabel" destination="OE7-gq-abZ" id="9QP-LH-Wvh"/>
+                <outlet property="showAllThreadsButton" destination="uTW-xb-Z9y" id="phx-FN-Dn2"/>
+                <outlet property="tipLabel" destination="RyB-Ah-jey" id="Rh7-W2-EDU"/>
+                <outlet property="titleLabel" destination="0q6-zY-VZH" id="RCC-ZR-q4F"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="313" height="540"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="f50-47-PNo">
+                    <rect key="frame" x="20" y="108" width="273" height="324"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lm2-HJ-sTN">
+                            <rect key="frame" x="16.5" y="0.0" width="240" height="1"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="SCQ-dJ-7RE"/>
+                            </constraints>
+                        </view>
+                        <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TO4-Bz-2iH">
+                            <rect key="frame" x="104.5" y="21" width="64" height="64"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="threads_icon" translatesAutoresizingMaskIntoConstraints="NO" id="96m-sr-xQJ">
+                                    <rect key="frame" x="16" y="16" width="32" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="32" id="K7U-U0-prN"/>
+                                        <constraint firstAttribute="width" secondItem="96m-sr-xQJ" secondAttribute="height" multiplier="1:1" id="Pgd-Qw-0Ju"/>
+                                    </constraints>
+                                </imageView>
+                            </subviews>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="64" id="3dO-ZF-YeI"/>
+                                <constraint firstItem="96m-sr-xQJ" firstAttribute="centerY" secondItem="TO4-Bz-2iH" secondAttribute="centerY" id="EEK-EC-o8J"/>
+                                <constraint firstAttribute="height" constant="64" id="iUz-gL-c7h"/>
+                                <constraint firstItem="96m-sr-xQJ" firstAttribute="centerX" secondItem="TO4-Bz-2iH" secondAttribute="centerX" id="yqs-Ua-JWD"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="32"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Keep discussions organised with threads" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0q6-zY-VZH">
+                            <rect key="frame" x="17.5" y="105" width="238" height="43"/>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Threads help keep your conversations on-topic and easy to track." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OE7-gq-abZ">
+                            <rect key="frame" x="4.5" y="168" width="264.5" height="36"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tip: Use “Thread” option when selecting a message." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RyB-Ah-jey">
+                            <rect key="frame" x="20.5" y="224" width="232.5" height="29"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uTW-xb-Z9y">
+                            <rect key="frame" x="80" y="273" width="113" height="30"/>
+                            <state key="normal" title="Show all threads"/>
+                            <connections>
+                                <action selector="showAllThreadsButtonTapped:" destination="-1" eventType="touchUpInside" id="cX4-am-oWF"/>
+                            </connections>
+                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TKE-Zn-n2Q">
+                            <rect key="frame" x="16.5" y="323" width="240" height="1"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="oXf-fF-mRt"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </stackView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="f50-47-PNo" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="GG5-ib-fd0"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="f50-47-PNo" secondAttribute="trailing" constant="20" id="VsT-ay-7ZE"/>
+                <constraint firstItem="f50-47-PNo" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="gnS-Sc-jsF"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-218.4375" y="-10"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="threads_icon" width="32" height="32"/>
+    </resources>
+</document>

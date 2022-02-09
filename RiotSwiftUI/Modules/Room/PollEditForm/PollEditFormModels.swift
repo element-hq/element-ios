@@ -38,12 +38,6 @@ enum PollEditFormMode {
     case editing
 }
 
-enum PollEditFormStateAction {
-    case viewAction(PollEditFormViewAction)
-    case startLoading
-    case stopLoading(PollEditFormErrorAlertInfo.AlertType?)
-}
-
 enum PollEditFormViewAction {
     case addAnswerOption
     case deleteAnswerOption(PollEditFormAnswerOption)

@@ -30,6 +30,8 @@
 #import "MXKMessageTextView.h"
 #import "UITextView+MatrixKit.h"
 
+#import "GeneratedInterface-Swift.h"
+
 #pragma mark - Constant definitions
 NSString *const kMXKRoomBubbleCellTapOnMessageTextView = @"kMXKRoomBubbleCellTapOnMessageTextView";
 NSString *const kMXKRoomBubbleCellTapOnSenderNameLabel = @"kMXKRoomBubbleCellTapOnSenderNameLabel";
@@ -121,6 +123,8 @@ static BOOL _disableLongPressGestureOnEvent;
     self.readReceiptsAlignment = ReadReceiptAlignmentLeft;
     _allTextHighlighted = NO;
     _isAutoAnimatedGif = NO;
+    _tmpSubviews = [NSMutableArray array];
+    _isTextViewNeedsPositioningVerticalSpace = YES;
 }
 
 - (void)awakeFromNib
@@ -365,16 +369,21 @@ static BOOL _disableLongPressGestureOnEvent;
     {
         if (_allTextHighlighted)
         {
-            NSMutableAttributedString *highlightedString = [[NSMutableAttributedString alloc] initWithAttributedString:bubbleData.attributedTextMessage];
+            NSMutableAttributedString *highlightedString = [[NSMutableAttributedString alloc] initWithAttributedString:self.suitableAttributedTextMessage];
             UIColor *color = self.tintColor ? self.tintColor : [UIColor lightGrayColor];
             [highlightedString addAttribute:NSBackgroundColorAttributeName value:color range:NSMakeRange(0, highlightedString.length)];
             self.messageTextView.attributedText = highlightedString;
         }
         else
         {
-            self.messageTextView.attributedText = bubbleData.attributedTextMessage;
+            self.messageTextView.attributedText = self.suitableAttributedTextMessage;
         }
     }
+}
+
+- (NSAttributedString *)suitableAttributedTextMessage
+{
+    return self.isTextViewNeedsPositioningVerticalSpace ? bubbleData.attributedTextMessage : bubbleData.attributedTextMessageWithoutPositioningSpace;
 }
 
 - (void)highlightTextMessageForEvent:(NSString*)eventId
@@ -388,7 +397,7 @@ static BOOL _disableLongPressGestureOnEvent;
         else
         {
             // Restore original string
-            self.messageTextView.attributedText = bubbleData.attributedTextMessage;
+            self.messageTextView.attributedText = self.suitableAttributedTextMessage;
         }
     }
 }
@@ -558,14 +567,14 @@ static BOOL _disableLongPressGestureOnEvent;
             // Underline attached file name
             if (self.isBubbleDataContainsFileAttachment)
             {
-                NSMutableAttributedString *updatedText = [[NSMutableAttributedString alloc] initWithAttributedString:bubbleData.attributedTextMessage];
+                NSMutableAttributedString *updatedText = [[NSMutableAttributedString alloc] initWithAttributedString:self.suitableAttributedTextMessage];
                 [updatedText addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(0, updatedText.length)];
                 
                 newText = updatedText;
             }
             else
             {
-                newText = bubbleData.attributedTextMessage;
+                newText = self.suitableAttributedTextMessage;
             }
             
             // update the text only if it is required
@@ -926,8 +935,24 @@ static BOOL _disableLongPressGestureOnEvent;
     }
     else if (cell.messageTextView)
     {
+        CGFloat maxTextViewWidth;
+        
+        RoomTimelineConfiguration *timelineConfiguration = [RoomTimelineConfiguration shared];
+        
+        id<RoomCellLayoutUpdating> cellLayoutUpdater = timelineConfiguration.currentStyle.cellLayoutUpdater;
+        
+        // Handle updated text view layout if needed
+        if (cellLayoutUpdater)
+        {
+            maxTextViewWidth = [cellLayoutUpdater maximumTextViewWidthFor:cell cellData:cellData maximumCellWidth:maxWidth];
+        }
+        else
+        {
+            maxTextViewWidth = maxWidth - (cell.msgTextViewLeadingConstraint.constant + cell.msgTextViewTrailingConstraint.constant);
+        }
+        
         // Update maximum width available for the textview
-        bubbleData.maxTextViewWidth = maxWidth - (cell.msgTextViewLeadingConstraint.constant + cell.msgTextViewTrailingConstraint.constant);
+        bubbleData.maxTextViewWidth = maxTextViewWidth;
         
         // Retrieve the suggested height of the message content
         rowHeight = bubbleData.contentSize.height;
@@ -949,104 +974,33 @@ static BOOL _disableLongPressGestureOnEvent;
 {
     [super prepareForReuse];
     
+    bubbleData = nil;
+    delegate = nil;
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    self.readReceiptsAlignment = ReadReceiptAlignmentLeft;
+    
+    _allTextHighlighted = NO;
+    _isAutoAnimatedGif = NO;
+    
+    [self removeHTMLBlockquoteSideBorderViews];
+    [self removeTemporarySubviews];
+    [self cleanAttachmentView];
+    [self clearBubbleInfoContainer];
+    [self clearBubbleOverlayContainer];
+    [self resetConstraintsConstantToDefault];
+    [self clearAttachmentWebView];
+    
     [self didEndDisplay];
 }
 
 - (void)didEndDisplay
 {
-    bubbleData = nil;
-
-    for (UIView *sideBorder in htmlBlockquoteSideBorderViews)
-    {
-        [sideBorder removeFromSuperview];
-    }
-    [htmlBlockquoteSideBorderViews removeAllObjects];
-    htmlBlockquoteSideBorderViews = nil;
-
-    if (_attachmentWebView)
-    {
-        [_attachmentWebView removeFromSuperview];
-        _attachmentWebView.navigationDelegate = nil;
-        _attachmentWebView = nil;
-    }
+    [self removeReadMarkerView];
+    [self cleanProgressView];
     
-    if (_readMarkerView)
-    {
-        [_readMarkerView removeFromSuperview];
-        _readMarkerView = nil;
-        _readMarkerViewTopConstraint = nil;
-        _readMarkerViewLeadingConstraint = nil;
-        _readMarkerViewTrailingConstraint = nil;
-        _readMarkerViewHeightConstraint = nil;
-    }
-    
-    if (self.attachmentView)
-    {
-        // Remove all gesture recognizer
-        while (self.attachmentView.gestureRecognizers.count)
-        {
-            [self.attachmentView removeGestureRecognizer:self.attachmentView.gestureRecognizers[0]];
-        }
-        
-        // Prevent the cell from displaying again the image in case of reuse.
-        self.attachmentView.image = nil;
-    }
-    
-    // Remove potential dateTime (or unsent) label(s)
-    if (self.bubbleInfoContainer && self.bubbleInfoContainer.subviews.count > 0)
-    {
-        NSArray* subviews = self.bubbleInfoContainer.subviews;
-             
-        for (UIView *view in subviews)
-        {
-            [view removeFromSuperview];
-        }
-    }
-    self.bubbleInfoContainer.hidden = YES;
-    
-    // Remove temporary subviews
-    if (self.tmpSubviews)
-    {
-        for (UIView *view in self.tmpSubviews)
-        {
-            [view removeFromSuperview];
-        }
-        self.tmpSubviews = nil;
-    }
-    
-    // Remove potential overlay subviews
-    if (self.bubbleOverlayContainer)
-    {
-        NSArray* subviews = self.bubbleOverlayContainer.subviews;
-        
-        for (UIView *view in subviews)
-        {
-            [view removeFromSuperview];
-        }
-        
-        self.bubbleOverlayContainer.hidden = YES;
-    }
-    
-    if (self.progressView)
-    {
-        [self stopProgressUI];
-        
-        // Remove long tap gesture on the progressView
-        while (self.progressView.gestureRecognizers.count)
-        {
-            [self.progressView removeGestureRecognizer:self.progressView.gestureRecognizers[0]];
-        }
-    }
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    delegate = nil;
-    
-    self.readReceiptsAlignment = ReadReceiptAlignmentLeft;
-    _allTextHighlighted = NO;
-    _isAutoAnimatedGif = NO;
-    
-    [self resetConstraintsConstantToDefault];
+    // TODO: Stop gif animation
 }
 
 - (BOOL)shouldInteractWithURL:(NSURL *)URL urlItemInteraction:(UITextItemInteraction)urlItemInteraction associatedEvent:(MXEvent*)associatedEvent
@@ -1071,10 +1025,7 @@ static BOOL _disableLongPressGestureOnEvent;
 
 - (BOOL)isBubbleDataContainsFileAttachment
 {
-    return bubbleData.attachment
-    && (bubbleData.attachment.type == MXKAttachmentTypeFile || bubbleData.attachment.type == MXKAttachmentTypeAudio || bubbleData.attachment.type == MXKAttachmentTypeVoiceMessage)
-    && bubbleData.attachment.contentURL
-    && bubbleData.attachment.contentInfo;
+    return bubbleData.isAttachment;
 }
 
 - (MXKRoomBubbleComponent*)closestBubbleComponentForGestureRecognizer:(UIGestureRecognizer*)gestureRecognizer locationInView:(UIView*)view
@@ -1138,6 +1089,111 @@ static BOOL _disableLongPressGestureOnEvent;
     }
     
     [self.tmpSubviews addObject:subview];
+}
+
+#pragma mark - Cleaning
+
+- (void)removeHTMLBlockquoteSideBorderViews
+{
+    for (UIView *sideBorder in htmlBlockquoteSideBorderViews)
+    {
+        [sideBorder removeFromSuperview];
+    }
+    [htmlBlockquoteSideBorderViews removeAllObjects];
+    htmlBlockquoteSideBorderViews = nil;
+}
+
+- (void)removeReadMarkerView
+{
+    if (_readMarkerView)
+    {
+        [_readMarkerView removeFromSuperview];
+        _readMarkerView = nil;
+        _readMarkerViewTopConstraint = nil;
+        _readMarkerViewLeadingConstraint = nil;
+        _readMarkerViewTrailingConstraint = nil;
+        _readMarkerViewHeightConstraint = nil;
+    }
+}
+
+- (void)removeTemporarySubviews
+{
+    // Remove temporary subviews
+    for (UIView *view in self.tmpSubviews)
+    {
+        [view removeFromSuperview];
+    }
+    [self.tmpSubviews removeAllObjects];
+}
+
+- (void)cleanAttachmentView
+{
+    if (self.attachmentView)
+    {
+        // Remove all gesture recognizer
+        while (self.attachmentView.gestureRecognizers.count)
+        {
+            [self.attachmentView removeGestureRecognizer:self.attachmentView.gestureRecognizers[0]];
+        }
+        
+        // Prevent the cell from displaying again the image in case of reuse.
+        self.attachmentView.image = nil;
+    }
+}
+
+- (void)clearBubbleInfoContainer
+{
+    // Remove potential dateTime (or unsent) label(s)
+    if (self.bubbleInfoContainer && self.bubbleInfoContainer.subviews.count > 0)
+    {
+        NSArray* subviews = self.bubbleInfoContainer.subviews;
+             
+        for (UIView *view in subviews)
+        {
+            [view removeFromSuperview];
+        }
+    }
+    self.bubbleInfoContainer.hidden = YES;
+}
+
+- (void)clearBubbleOverlayContainer
+{
+    // Remove potential overlay subviews
+    if (self.bubbleOverlayContainer)
+    {
+        NSArray* subviews = self.bubbleOverlayContainer.subviews;
+        
+        for (UIView *view in subviews)
+        {
+            [view removeFromSuperview];
+        }
+        
+        self.bubbleOverlayContainer.hidden = YES;
+    }
+}
+
+- (void)cleanProgressView
+{
+    if (self.progressView)
+    {
+        [self stopProgressUI];
+        
+        // Remove long tap gesture on the progressView
+        while (self.progressView.gestureRecognizers.count)
+        {
+            [self.progressView removeGestureRecognizer:self.progressView.gestureRecognizers[0]];
+        }
+    }
+}
+
+- (void)clearAttachmentWebView
+{
+    if (_attachmentWebView)
+    {
+        [_attachmentWebView removeFromSuperview];
+        _attachmentWebView.navigationDelegate = nil;
+        _attachmentWebView = nil;
+    }
 }
 
 #pragma mark - Attachment progress handling

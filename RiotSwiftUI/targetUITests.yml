@@ -51,10 +51,12 @@ targets:
     - path: ../Riot/Categories/Bundle.swift
     - path: ../Riot/Generated/Strings.swift
     - path: ../Riot/Generated/Images.swift
-    - path: ../Riot/Managers/Theme/ThemeIdentifier.swift
+    - path: ../Riot/Managers/Theme/
     - path: ../Riot/Managers/Locale/LocaleProviderType.swift
     - path: ../Riot/Categories/String.swift
     - path: ../Riot/Categories/Character.swift
+    - path: ../Riot/Categories/UIColor.swift
+    - path: ../Riot/Categories/UISearchBar.swift
     - path: ../Riot/Assets/en.lproj/Vector.strings
       buildPhase: resources
     - path: ../Riot/Assets/Images.xcassets

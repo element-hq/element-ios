@@ -146,6 +146,12 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
 {
     [UIScrollView appearance].indicatorStyle = self.theme.scrollBarStyle;
     
+    // Remove the extra height added to section headers in iOS 15
+    if (@available(iOS 15.0, *))
+    {
+        UITableView.appearance.sectionHeaderTopPadding = 0;
+    }
+    
     // Define the navigation bar text color
     [[UINavigationBar appearance] setTintColor:self.theme.tintColor];
     

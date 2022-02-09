@@ -61,21 +61,21 @@ class EmojiServiceTests: XCTestCase {
             let emojiCount: Int
             switch self {
             case .people:
-                emojiCount = 447
+                emojiCount = 483
             case .nature:
-                emojiCount = 113
+                emojiCount = 127
             case .foods:
-                emojiCount = 102
+                emojiCount = 121
             case .activity:
-                emojiCount = 60
+                emojiCount = 79
             case .places:
-                emojiCount = 207
+                emojiCount = 210
             case .objects:
-                emojiCount = 162
+                emojiCount = 233
             case .symbols:
-                emojiCount = 202
+                emojiCount = 214
             case .flags:
-                emojiCount = 266
+                emojiCount = 267
             }
             return emojiCount
         }

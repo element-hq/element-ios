@@ -148,6 +148,11 @@
 @property (nonatomic) BOOL isAttachmentWithIcon;
 
 /**
+ YES when the bubble correspond to an attachment (audio, file...).
+ */
+@property (nonatomic, readonly) BOOL isAttachment;
+
+/**
  Flag that indicates that self.attributedTextMessage will be not nil.
  This avoids the computation of self.attributedTextMessage that can take time.
  */
@@ -158,6 +163,10 @@
  */
 @property (nonatomic) NSAttributedString *attributedTextMessage;
 
+/**
+ Same as attributedTextMessage but without vertical positioning blank space
+ */
+@property (nonatomic) NSAttributedString *attributedTextMessageWithoutPositioningSpace;
 /**
  The raw text message (without attributes)
  */
@@ -269,10 +278,14 @@ Update the event because its sent state changed or it is has been redacted.
  Highlight all the occurrences of a pattern in the resulting message body 'attributedTextMessage'.
  
  @param pattern the text pattern to highlight.
- @param patternColor optional text color (the pattern text color is unchanged if nil).
+ @param backgroundColor optional text background color (the patterns background color is unchanged if nil)
+ @param foregroundColor optional text color (the pattern text color is unchanged if nil).
  @param patternFont optional text font (the pattern font is unchanged if nil).
  */
-- (void)highlightPatternInTextMessage:(NSString*)pattern withForegroundColor:(UIColor*)patternColor andFont:(UIFont*)patternFont;
+- (void)highlightPatternInTextMessage:(NSString*)pattern
+                  withBackgroundColor:(UIColor *)backgroundColor
+                      foregroundColor:(UIColor*)foregroundColor
+                              andFont:(UIFont*)patternFont;
 
 /**
  Refresh the sender flair information

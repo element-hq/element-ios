@@ -168,7 +168,7 @@ extern NSString *const kMXKRoomBubbleCellUrlItemInteraction;
 @property (nonatomic) UIImage *picturePlaceholder;
 
 /**
- The list of the temporary subviews that should be removed before reusing the cell (nil by default).
+ The list of the temporary subviews that should be removed before reusing the cell (empty array by default).
  */
 @property (nonatomic) NSMutableArray<UIView*> *tmpSubviews;
 
@@ -217,6 +217,7 @@ extern NSString *const kMXKRoomBubbleCellUrlItemInteraction;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachViewTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachViewBottomConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachViewLeadingConstraint;
+@property (weak, nonatomic) NSLayoutConstraint *attachViewTrailingConstraint;
 
 /**
  The constraints which defines the relationship between bubbleInfoContainer and its superview
@@ -237,6 +238,16 @@ extern NSString *const kMXKRoomBubbleCellUrlItemInteraction;
  The potential webview used to render an attachment (for example an animated gif).
  */
 @property (nonatomic) WKWebView *attachmentWebView;
+
+/**
+ Indicate true if the cell needs vertical space in the text to position UI components.
+ */
+@property (nonatomic, readonly) BOOL isTextViewNeedsPositioningVerticalSpace;
+
+/**
+ Use bubbleData.attributedTextMessage or bubbleData.attributedTextMessageWithoutPositioningSpace according to isTextViewNeedsPositioningVerticalSpace value.
+ */
+@property (nonatomic, readonly) NSAttributedString *suitableAttributedTextMessage;
 
 /**
  Called during the designated initializer of the UITableViewCell class to set the default
@@ -328,5 +339,8 @@ extern NSString *const kMXKRoomBubbleCellUrlItemInteraction;
 
 /// Add temporary subview to `tmpSubviews` property.
 - (void)addTemporarySubview:(UIView*)subview;
+
+/// Called when content view cell is tapped
+- (IBAction)onContentViewTap:(UITapGestureRecognizer*)sender;
 
 @end
