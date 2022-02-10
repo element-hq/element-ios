@@ -459,7 +459,9 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    return [contactsDataSource viewForHeaderInSection:section withFrame:[tableView rectForHeaderInSection:section]];
+    return [contactsDataSource viewForHeaderInSection:section
+                                            withFrame:[tableView rectForHeaderInSection:section]
+                                          inTableView:tableView];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
