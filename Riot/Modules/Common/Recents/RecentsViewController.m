@@ -30,6 +30,7 @@
 #import "DirectoryRecentTableViewCell.h"
 #import "RoomIdOrAliasTableViewCell.h"
 #import "TableViewCellWithCollectionView.h"
+#import "SectionHeaderView.h"
 
 #import "GeneratedInterface-Swift.h"
 
@@ -145,6 +146,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
     // Register key verification banner cells
     [self.recentsTableView registerNib:CrossSigningSetupBannerCell.nib forCellReuseIdentifier:CrossSigningSetupBannerCell.defaultReuseIdentifier];
+
+    [self.recentsTableView registerClass:SectionHeaderView.class
+      forHeaderFooterViewReuseIdentifier:SectionHeaderView.defaultReuseIdentifier];
     
     // Hide line separators of empty cells
     self.recentsTableView.tableFooterView = [[UIView alloc] init];
@@ -1018,6 +1022,18 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                 TableViewCellWithCollectionView *collectionViewCell = (TableViewCellWithCollectionView *)cell;
                 [collectionViewCell.collectionView reloadData];
                 cellReloaded = YES;
+
+                CGRect headerFrame = [self.recentsTableView rectForHeaderInSection:update.sectionIndex];
+                UIView *headerView = [self.recentsTableView headerViewForSection:update.sectionIndex];
+                UIView *updatedHeaderView = [self.dataSource viewForHeaderInSection:update.sectionIndex withFrame:headerFrame inTableView:self.recentsTableView];
+                if ([headerView isKindOfClass:SectionHeaderView.class]
+                    && [updatedHeaderView isKindOfClass:SectionHeaderView.class])
+                {
+                    SectionHeaderView *sectionHeaderView = (SectionHeaderView *)headerView;
+                    SectionHeaderView *updatedSectionHeaderView = (SectionHeaderView *)updatedHeaderView;
+                    sectionHeaderView.headerLabel = updatedSectionHeaderView.headerLabel;
+                    sectionHeaderView.accessoryView = updatedSectionHeaderView.accessoryView;
+                }
             }
         }
     }

@@ -427,7 +427,9 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     // Let dataSource provide the section header.
-    return [dataSource viewForHeaderInSection:section withFrame:[tableView rectForHeaderInSection:section]];
+    return [dataSource viewForHeaderInSection:section
+                                    withFrame:[tableView rectForHeaderInSection:section]
+                                  inTableView:tableView];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
