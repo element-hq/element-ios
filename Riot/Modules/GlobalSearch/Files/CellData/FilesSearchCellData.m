@@ -132,19 +132,19 @@
     
     if ([msgtype isEqualToString:kMXMessageTypeImage])
     {
-        return [[AssetImages filePhotoIcon] image];
+        return AssetImages.filePhotoIcon.image;
     }
     else if ([msgtype isEqualToString:kMXMessageTypeAudio])
     {
-        return [[AssetImages fileMusicIcon] image];
+        return AssetImages.fileMusicIcon.image;
     }
     else if ([msgtype isEqualToString:kMXMessageTypeVideo])
     {
-        return [[AssetImages fileVideoIcon] image];
+        return AssetImages.fileVideoIcon.image;
     }
     else if ([msgtype isEqualToString:kMXMessageTypeFile])
     {
-        return [[AssetImages fileDocIcon] image];
+        return AssetImages.fileDocIcon.image;
     }
     
     return nil;

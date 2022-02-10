@@ -1093,7 +1093,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }];
     directChatAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *directChatImage = [[AssetImages roomActionDirectChat] image];
+    UIImage *directChatImage = AssetImages.roomActionDirectChat.image;
     directChatImage = [directChatImage vc_tintedImageUsingColor:isDirect ? selectedColor : unselectedColor];
     directChatAction.image = [directChatImage vc_notRenderedImage];
     
@@ -1122,11 +1122,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     UIImage *notificationImage;
     if([BuildSettings showNotificationsV2] && isMuted)
     {
-        notificationImage = [[AssetImages roomActionNotificationMuted] image];
+        notificationImage = AssetImages.roomActionNotificationMuted.image;
     }
     else
     {
-        notificationImage = [[AssetImages roomActionNotification] image];
+        notificationImage = AssetImages.roomActionNotification.image;
     }
 
     notificationImage = [notificationImage vc_tintedImageUsingColor:isMuted ? unselectedColor : selectedColor];
@@ -1157,7 +1157,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }];
     favouriteAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *favouriteImage = [[AssetImages roomActionFavourite] image];
+    UIImage *favouriteImage = AssetImages.roomActionFavourite.image;
     favouriteImage = [favouriteImage vc_tintedImageUsingColor:isFavourite ? selectedColor : unselectedColor];
     favouriteAction.image = [favouriteImage vc_notRenderedImage];
     
@@ -1174,7 +1174,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }];
     priorityAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *priorityImage = isInLowPriority ? [[AssetImages roomActionPriorityHigh] image] : [[AssetImages roomActionPriorityLow] image];
+    UIImage *priorityImage = isInLowPriority ? AssetImages.roomActionPriorityHigh.image : AssetImages.roomActionPriorityLow.image;
     priorityImage = [priorityImage vc_tintedImageUsingColor:unselectedColor];
     priorityAction.image = [priorityImage vc_notRenderedImage];
     
@@ -1188,7 +1188,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }];
     leaveAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *leaveImage = [[AssetImages roomActionLeave] image];
+    UIImage *leaveImage = AssetImages.roomActionLeave.image;
     leaveImage = [leaveImage vc_tintedImageUsingColor:unselectedColor];
     leaveAction.image = [leaveImage vc_notRenderedImage];
         

@@ -222,11 +222,11 @@
     _sendLogs = sendLogs;
     if (_sendLogs)
     {
-        _sendLogsButtonImage.image = [[AssetImages selectionTick] image];
+        _sendLogsButtonImage.image = AssetImages.selectionTick.image;
     }
     else
     {
-        _sendLogsButtonImage.image = [[AssetImages selectionUntick] image];
+        _sendLogsButtonImage.image = AssetImages.selectionUntick.image;
     }
 }
 
@@ -235,11 +235,11 @@
     _sendScreenshot = sendScreenshot;
     if (_sendScreenshot)
     {
-        _sendScreenshotButtonImage.image = [[AssetImages selectionTick] image];
+        _sendScreenshotButtonImage.image = AssetImages.selectionTick.image;
     }
     else
     {
-        _sendScreenshotButtonImage.image = [[AssetImages selectionUntick] image];
+        _sendScreenshotButtonImage.image = AssetImages.selectionUntick.image;
     }
 }
 

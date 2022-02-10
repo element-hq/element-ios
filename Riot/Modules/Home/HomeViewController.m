@@ -89,7 +89,7 @@
     self.recentsTableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     
     // Add the (+) button programmatically
-    plusButtonImageView = [self vc_addFABWithImage:[[AssetImages plusFloatingAction] image]
+    plusButtonImageView = [self vc_addFABWithImage:AssetImages.plusFloatingAction.image
                                             target:self
                                             action:@selector(onPlusButtonPressed)];
     
@@ -416,7 +416,7 @@
             // Update the edition menu content (Use the button tag to store the current value).
             tableViewCell.directChatButton.tag = room.isDirect;
             [tableViewCell.directChatButton addTarget:self action:@selector(onDirectChatButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-            tableViewCell.directChatImageView.image = [[AssetImages roomActionDirectChat] image];
+            tableViewCell.directChatImageView.image = AssetImages.roomActionDirectChat.image;
             tableViewCell.directChatImageView.tintColor = room.isDirect ? selectedColor : unselectedColor;
             
             tableViewCell.notificationsButton.tag = room.isMute || room.isMentionsOnly;
@@ -424,11 +424,11 @@
             
             if ([BuildSettings showNotificationsV2] && tableViewCell.notificationsButton.tag)
             {
-                tableViewCell.notificationsImageView.image = [[AssetImages roomActionNotificationMuted] image];
+                tableViewCell.notificationsImageView.image = AssetImages.roomActionNotificationMuted.image;
             }
             else
             {
-                tableViewCell.notificationsImageView.image = [[AssetImages roomActionNotification] image];
+                tableViewCell.notificationsImageView.image = AssetImages.roomActionNotification.image;
             }
             
             tableViewCell.notificationsImageView.tintColor = tableViewCell.notificationsButton.tag ? unselectedColor : selectedColor;
@@ -446,16 +446,16 @@
             
             tableViewCell.favouriteButton.tag = (currentTag && [kMXRoomTagFavourite isEqualToString:currentTag.name]);
             [tableViewCell.favouriteButton addTarget:self action:@selector(onFavouriteButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-            tableViewCell.favouriteImageView.image = [[AssetImages roomActionFavourite] image];
+            tableViewCell.favouriteImageView.image = AssetImages.roomActionFavourite.image;
             tableViewCell.favouriteImageView.tintColor = tableViewCell.favouriteButton.tag ? selectedColor : unselectedColor;
             
             tableViewCell.priorityButton.tag = (currentTag && [kMXRoomTagLowPriority isEqualToString:currentTag.name]);
             [tableViewCell.priorityButton addTarget:self action:@selector(onPriorityButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-            tableViewCell.priorityImageView.image = tableViewCell.priorityButton.tag ? [[AssetImages roomActionPriorityHigh] image] : [[AssetImages roomActionPriorityLow] image];
+            tableViewCell.priorityImageView.image = tableViewCell.priorityButton.tag ? AssetImages.roomActionPriorityHigh.image : AssetImages.roomActionPriorityLow.image;
             tableViewCell.priorityImageView.tintColor = unselectedColor;
             
             [tableViewCell.leaveButton addTarget:self action:@selector(onLeaveButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-            tableViewCell.leaveImageView.image = [[AssetImages roomActionLeave] image];
+            tableViewCell.leaveImageView.image = AssetImages.roomActionLeave.image;
             tableViewCell.leaveImageView.tintColor = unselectedColor;
         }
     }
@@ -1048,11 +1048,11 @@
 {
     if (ThemeService.shared.isCurrentThemeDark)
     {
-        return [[AssetImages homeEmptyScreenArtworkDark] image];
+        return AssetImages.homeEmptyScreenArtworkDark.image;
     }
     else
     {
-        return [[AssetImages homeEmptyScreenArtwork] image];
+        return AssetImages.homeEmptyScreenArtwork.image;
     }
 }
 

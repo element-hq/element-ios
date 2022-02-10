@@ -155,11 +155,11 @@
 {
     if (ThemeService.shared.isCurrentThemeDark)
     {
-        return [[AssetImages favouritesEmptyScreenArtworkDark] image];
+        return AssetImages.favouritesEmptyScreenArtworkDark.image;
     }
     else
     {
-        return [[AssetImages favouritesEmptyScreenArtwork] image];
+        return AssetImages.favouritesEmptyScreenArtwork.image;
     }
 }
 

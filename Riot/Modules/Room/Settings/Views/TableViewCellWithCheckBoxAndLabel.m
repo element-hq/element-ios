@@ -34,11 +34,11 @@
 {
     if (enabled)
     {
-        _checkBox.image = [[AssetImages selectionTick] image];
+        _checkBox.image = AssetImages.selectionTick.image;
     }
     else
     {
-        _checkBox.image = [[AssetImages selectionUntick] image];
+        _checkBox.image = AssetImages.selectionUntick.image;
     }
     
     _enabled = enabled;

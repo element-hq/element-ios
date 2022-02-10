@@ -279,7 +279,7 @@ internal class ImageAsset: NSObject {
     return result
   }
 
-  init(name: String) {
+  internal init(name: String) {
     self.name = name
   }
 

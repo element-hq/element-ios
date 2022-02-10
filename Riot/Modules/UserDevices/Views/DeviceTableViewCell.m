@@ -55,7 +55,7 @@
         case MXDeviceUnknown:
         case MXDeviceUnverified:
         {
-            self.deviceStatus.image = [[AssetImages e2eWarning] image];
+            self.deviceStatus.image = AssetImages.e2eWarning.image;
             
             [_verifyButton setTitle:[MatrixKitL10n roomEventEncryptionInfoVerify] forState:UIControlStateNormal];
             [_verifyButton setTitle:[MatrixKitL10n roomEventEncryptionInfoVerify] forState:UIControlStateHighlighted];
@@ -65,7 +65,7 @@
         }
         case MXDeviceVerified:
         {
-            self.deviceStatus.image = [[AssetSharedImages e2eVerified] image];
+            self.deviceStatus.image = AssetSharedImages.e2eVerified.image;
             
             [_verifyButton setTitle:[MatrixKitL10n roomEventEncryptionInfoUnverify] forState:UIControlStateNormal];
             [_verifyButton setTitle:[MatrixKitL10n roomEventEncryptionInfoUnverify] forState:UIControlStateHighlighted];
@@ -76,7 +76,7 @@
         }
         case MXDeviceBlocked:
         {
-            self.deviceStatus.image = [[AssetImages e2eBlocked] image];
+            self.deviceStatus.image = AssetImages.e2eBlocked.image;
             
             [_verifyButton setTitle:[MatrixKitL10n roomEventEncryptionInfoVerify] forState:UIControlStateNormal];
             [_verifyButton setTitle:[MatrixKitL10n roomEventEncryptionInfoVerify] forState:UIControlStateHighlighted];

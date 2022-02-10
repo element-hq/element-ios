@@ -1817,7 +1817,7 @@ TableViewSectionsDelegate>
                 newEmailCell.mxkLabel.text = [VectorL10n settingsAddEmailAddress];
                 newEmailCell.mxkTextField.text = nil;
                 newEmailCell.mxkTextField.userInteractionEnabled = NO;
-                newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:[[[AssetImages plusIcon] image] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
+                newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:[AssetImages.plusIcon.image vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
             }
             else
             {
@@ -1852,7 +1852,7 @@ TableViewSectionsDelegate>
                     newEmailTextField = newEmailCell.mxkTextField;
                 }
                 
-                UIImage *accessoryViewImage = [[[AssetImages plusIcon] image] vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
+                UIImage *accessoryViewImage = [AssetImages.plusIcon.image vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
                 newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:accessoryViewImage];
             }
             
@@ -1870,7 +1870,7 @@ TableViewSectionsDelegate>
                 newPhoneCell.mxkLabel.text = [VectorL10n settingsAddPhoneNumber];
                 newPhoneCell.mxkTextField.text = nil;
                 newPhoneCell.mxkTextField.userInteractionEnabled = NO;
-                newPhoneCell.accessoryView = [[UIImageView alloc] initWithImage:[[[AssetImages plusIcon] image] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
+                newPhoneCell.accessoryView = [[UIImageView alloc] initWithImage:[AssetImages.plusIcon.image vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
                 
                 cell = newPhoneCell;
             }
@@ -1932,7 +1932,7 @@ TableViewSectionsDelegate>
                     newPhoneNumberCell = newPhoneCell;
                 }
                 
-                UIImage *accessoryViewImage = [[[AssetImages plusIcon] image] vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
+                UIImage *accessoryViewImage = [AssetImages.plusIcon.image vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
                 newPhoneCell.accessoryView = [[UIImageView alloc] initWithImage:accessoryViewImage];
                 
                 cell = newPhoneCell;

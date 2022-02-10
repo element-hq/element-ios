@@ -268,10 +268,10 @@
             
         }];
         
-        cell.bottomLeftIcon.image = [[AssetImages videoIcon] image];
+        cell.bottomLeftIcon.image = AssetImages.videoIcon.image;
         cell.bottomLeftIcon.hidden = (asset.mediaType == PHAssetMediaTypeImage);
 
-        cell.bottomRightIcon.image = [[AssetImages selectionTick] image];
+        cell.bottomRightIcon.image = AssetImages.selectionTick.image;
         cell.bottomRightIcon.tintColor = ThemeService.shared.theme.tintColor;
         cell.bottomRightIcon.hidden = !selectedAssets || (NSNotFound == [selectedAssets indexOfObject:asset]);
 

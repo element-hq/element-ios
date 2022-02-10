@@ -29,7 +29,7 @@ NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon = @"kRoomEncrypt
         return nil;
     }
     
-    return [[AssetImages encryptionWarning] image];
+    return AssetImages.encryptionWarning.image;
 }
 
 + (void)addEncryptionStatusFromBubbleData:(MXKRoomBubbleCellData *)bubbleData inContainerView:(UIView *)containerView

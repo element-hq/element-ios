@@ -89,7 +89,7 @@ static const CGFloat kButtonSize = 80.0;
         
         UIColor *answerButtonBorderColor = ThemeService.shared.theme.tintColor;
         
-        self.answerButton = [[CircleButton alloc] initWithImage:[[AssetImages voiceCallHangonIcon] image]
+        self.answerButton = [[CircleButton alloc] initWithImage:AssetImages.voiceCallHangonIcon.image
                                                     borderColor:answerButtonBorderColor];
         self.answerButton.defaultBackgroundColor = ThemeService.shared.theme.backgroundColor;
         self.answerButton.tintColor = answerButtonBorderColor;
@@ -103,7 +103,7 @@ static const CGFloat kButtonSize = 80.0;
         
         UIColor *rejectButtonBorderColor = ThemeService.shared.theme.warningColor;
         
-        self.rejectButton = [[CircleButton alloc] initWithImage:[[AssetImages voiceCallHangupIcon] image]
+        self.rejectButton = [[CircleButton alloc] initWithImage:AssetImages.voiceCallHangupIcon.image
                                                     borderColor:rejectButtonBorderColor];
         self.rejectButton.defaultBackgroundColor = ThemeService.shared.theme.backgroundColor;
         self.rejectButton.tintColor = rejectButtonBorderColor;

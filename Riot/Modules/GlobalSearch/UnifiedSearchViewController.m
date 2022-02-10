@@ -251,7 +251,7 @@
         peopleSearchDataSource.showLocalContacts = NO;
         peopleSearchDataSource.areSectionsShrinkable = YES;
         peopleSearchDataSource.displaySearchInputInContactsList = YES;
-        peopleSearchDataSource.contactCellAccessoryImage = [[UIImage imageNamed: @"disclosure_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textSecondaryColor];;
+        peopleSearchDataSource.contactCellAccessoryImage = [AssetImages.disclosureIcon.image vc_tintedImageUsingColor:ThemeService.shared.theme.textSecondaryColor];;
         [peopleSearchViewController displayList:peopleSearchDataSource];
         
         // Check whether there are others sessions

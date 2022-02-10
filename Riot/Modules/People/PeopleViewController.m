@@ -69,7 +69,7 @@
     self.recentsTableView.tag = RecentsDataSourceModePeople;
     
     // Add the (+) button programmatically
-    plusButtonImageView = [self vc_addFABWithImage:[[AssetImages peopleFloatingAction] image]
+    plusButtonImageView = [self vc_addFABWithImage:AssetImages.peopleFloatingAction.image
                                             target:self
                                             action:@selector(onPlusButtonPressed)];
 }
@@ -177,11 +177,11 @@
 {
     if (ThemeService.shared.isCurrentThemeDark)
     {
-        return [[AssetImages peopleEmptyScreenArtworkDark] image];
+        return AssetImages.peopleEmptyScreenArtworkDark.image;
     }
     else
     {
-        return [[AssetImages peopleEmptyScreenArtwork] image];
+        return AssetImages.peopleEmptyScreenArtwork.image;
     }
 }
 

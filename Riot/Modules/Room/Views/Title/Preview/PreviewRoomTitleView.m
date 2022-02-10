@@ -102,7 +102,7 @@
                      andImageOrientation:UIImageOrientationUp
                            toFitViewSize:self.roomAvatar.frame.size
                               withMethod:MXThumbnailingMethodCrop
-                            previewImage:[MXKTools paintImage:[[AssetImages placeholder] image]
+                            previewImage:[MXKTools paintImage:AssetImages.placeholder.image
                                                     withColor:ThemeService.shared.theme.tintColor]
                             mediaManager:self.mxRoom.mxSession.mediaManager];
         }

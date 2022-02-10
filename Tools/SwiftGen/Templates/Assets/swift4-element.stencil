@@ -2,7 +2,7 @@
 // Generated using SwiftGen — https://github.com/SwiftGen/SwiftGen
 
 {% if catalogs %}
-{% set enumName %}{{param.enumName|default:"Asset"}}{% endset %}
+{% set className %}{{param.className|default:"Asset"}}{% endset %}
 {% set arResourceGroupType %}{{param.arResourceGroupTypeName|default:"ARResourceGroupAsset"}}{% endset %}
 {% set colorType %}{{param.colorTypeName|default:"ColorAsset"}}{% endset %}
 {% set dataType %}{{param.dataTypeName|default:"DataAsset"}}{% endset %}
@@ -103,11 +103,11 @@
 {% endmacro %}
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 @objcMembers
-{{accessModifier}} class {{enumName}}: NSObject {
+{{accessModifier}} class {{className}}: NSObject {
   {% if catalogs.count > 1 or param.forceFileNameEnum %}
   {% for catalog in catalogs %}
   @objcMembers
-  @objc({{enumName}}{{catalog.name|swiftIdentifier:"pretty"|escapeReservedKeywords}}) {{accessModifier}} class {{catalog.name|swiftIdentifier:"pretty"|escapeReservedKeywords}}: NSObject {
+  @objc({{className}}{{catalog.name|swiftIdentifier:"pretty"|escapeReservedKeywords}}) {{accessModifier}} class {{catalog.name|swiftIdentifier:"pretty"|escapeReservedKeywords}}: NSObject {
     {% filter indent:2 %}{% call enumBlock catalog.assets %}{% endfilter %}
   }
   {% endfor %}
@@ -250,7 +250,7 @@
     return result
   }
 
-  init(name: String) {
+  {{accessModifier}} init(name: String) {
     self.name = name
   }
 

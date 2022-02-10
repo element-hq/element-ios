@@ -107,19 +107,19 @@
     switch (type)
     {
         case MXKAttachmentTypeImage:
-            image = [[AssetImages filePhotoIcon] image];
+            image = AssetImages.filePhotoIcon.image;
             break;
         case MXKAttachmentTypeAudio:
-            image = [[AssetImages fileMusicIcon] image];
+            image = AssetImages.fileMusicIcon.image;
             break;
         case MXKAttachmentTypeVoiceMessage:
-            image = [[AssetImages fileMusicIcon] image];
+            image = AssetImages.fileMusicIcon.image;
             break;
         case MXKAttachmentTypeVideo:
-            image = [[AssetImages fileVideoIcon] image];
+            image = AssetImages.fileVideoIcon.image;
             break;
         case MXKAttachmentTypeFile:
-            image = [[AssetImages fileDocIcon] image];
+            image = AssetImages.fileDocIcon.image;
             break;
         default:
             break;

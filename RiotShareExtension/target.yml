@@ -60,6 +60,7 @@ targets:
     - path: ../Riot/Modules/Common/Recents/Model/RecentCellData.m
     - path: ../Riot/PropertyWrappers/UserDefaultsBackedPropertyWrapper.swift
     - path: ../Riot/Generated/Strings.swift
+    - path: ../Riot/Generated/Images.swift
     - path: ../Riot/Managers/Locale/LocaleProviderType.swift
     - path: ../Riot/Managers/Locale/LocaleProvider.swift
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.xib

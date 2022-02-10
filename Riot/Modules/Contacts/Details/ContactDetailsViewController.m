@@ -733,7 +733,7 @@
         }
         else
         {
-            roomCell.avatarImageView.image = [[AssetImages startChat] image];
+            roomCell.avatarImageView.image = AssetImages.startChat.image;
             roomCell.avatarImageView.defaultBackgroundColor = [UIColor clearColor];
             roomCell.titleLabel.text = [VectorL10n roomParticipantsActionStartNewChat];
         }
