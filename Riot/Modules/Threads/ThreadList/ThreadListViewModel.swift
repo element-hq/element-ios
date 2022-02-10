@@ -250,23 +250,35 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         if showLoading {
             viewState = .loading
         }
+
+        let onlyParticipated: Bool
         
         switch selectedFilterType {
         case .all:
-            threads = session.threadingService.threads(inRoom: roomId)
+            onlyParticipated = false
         case .myThreads:
-            threads = session.threadingService.participatedThreads(inRoom: roomId)
+            onlyParticipated = true
         }
         
+        session.threadingService.allThreads(inRoom: roomId,
+                                            onlyParticipated: onlyParticipated) { [weak self] response in
+            guard let self = self else { return }
+            switch response {
+            case .success(let threads):
+                self.threads = threads
+                self.threadsLoaded()
+            case .failure(let error):
+                MXLog.error("[ThreadListViewModel] loadData: error: \(error)")
+            }
+        }
+    }
+    
+    private func threadsLoaded() {
         if threads.isEmpty {
             viewState = .empty(emptyViewModel)
             return
         }
-        
-        threadsLoaded()
-    }
-    
-    private func threadsLoaded() {
+
         guard let eventFormatter = session.roomSummaryUpdateDelegate as? MXKEventFormatter,
               let room = session.room(withRoomId: roomId) else {
             //  go into loaded state
