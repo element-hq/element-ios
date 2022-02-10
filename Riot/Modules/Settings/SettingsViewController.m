@@ -1475,9 +1475,8 @@ TableViewSectionsDelegate>
     return [footerText copy];
 }
 
-- (UITableViewCell *)buildMessageBubblesCellForTableView:
-(UITableView*)tableView
-                                atIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell *)buildMessageBubblesCellForTableView:(UITableView*)tableView
+                                             atIndexPath:(NSIndexPath*)indexPath
 {
     MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
     
