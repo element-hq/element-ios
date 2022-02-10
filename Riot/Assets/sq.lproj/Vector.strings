@@ -46,7 +46,7 @@
 "auth_optional_phone_placeholder" = "Numër telefoni (opsionale)";
 "auth_phone_placeholder" = "Numër telefoni";
 "auth_repeat_password_placeholder" = "Rijepeni fjalëkalimin";
-"auth_repeat_new_password_placeholder" = "Ripohoni fjalëkalimin tuaj të ri";
+"auth_repeat_new_password_placeholder" = "Që ta ripohoni, jepni fjalëkalimin e llogarisë tuaj Matrix";
 "auth_home_server_placeholder" = "URL (p.sh., https://matrix.org)";
 "auth_identity_server_placeholder" = "URL (p.sh., https://vector.im)";
 "auth_invalid_login_param" = "Emër përdoruesi dhe/ose fjalëkalim i pasaktë";
@@ -62,12 +62,12 @@
 "auth_untrusted_id_server" = "Shërbyesi i identiteteve s’është i besuar";
 "auth_password_dont_match" = "Fjalëkalimet s’përputhen";
 "auth_username_in_use" = "Emër përdoruesi i përdorur";
-"auth_forgot_password" = "Harruat fjalëkalimin?";
+"auth_forgot_password" = "Harruat fjalëkalimin e llogarisë tuaj Matrix?";
 "auth_email_not_found" = "S’u arrit të dërgohej email: Kjo adresë email s’u gjet";
 "auth_email_validation_message" = "Ju lutemi, që të vazhdojë regjistrimi, kontrolloni email-in tuaj";
 "auth_msisdn_validation_title" = "Verifikim Në Pritje të Miratimit";
 "auth_msisdn_validation_error" = "S’arrihet të verifikohet numër telefoni.";
-"auth_reset_password_message" = "Që të ricaktoni fjalëkalimin, jepni adresën email të lidhur me llogarinë tuaj:";
+"auth_reset_password_message" = "Që të ricaktoni fjalëkalimin e llogarisë tuaj Matrix, jepni adresën email të lidhur me llogarinë tuaj:";
 "auth_reset_password_missing_email" = "Duhet dhënë adresa email e lidhur me llogarinë tuaj.";
 "auth_reset_password_missing_password" = "Duhet dhënë një fjalëkalim i ri.";
 // Chat creation
@@ -180,7 +180,7 @@
 "room_event_action_copy" = "Kopjoje";
 "room_event_action_quote" = "Citim";
 "room_event_action_more" = "Më tepër";
-"room_event_action_permalink" = "Permalidhje";
+"room_event_action_permalink" = "Kopjoje lidhjen te mesazh";
 "room_event_action_view_source" = "Shihini Burimin";
 "room_event_action_report" = "Raportoni lëndë";
 "room_event_action_report_prompt_reason" = "Arsye për raportimin e kësaj lënde";
@@ -257,11 +257,11 @@
 "settings_privacy_policy" = "Rregulla Privatësie";
 "settings_third_party_notices" = "Njoftime Palësh të Treta";
 "settings_clear_cache" = "Pastroje fshehtinën";
-"settings_change_password" = "Ndryshoni fjalëkalimin";
+"settings_change_password" = "Ndryshoni fjalëkalim llogarie Matrix";
 "settings_old_password" = "fjalëkalim i vjetër";
 "settings_new_password" = "fjalëkalim i ri";
 "settings_confirm_password" = "ripohoni fjalëkalimin";
-"settings_password_updated" = "Fjalëkalimi juaj u përditësua";
+"settings_password_updated" = "Fjalëkalimi i llogarisë tuaj Matrix u përditësua";
 "settings_crypto_device_name" = "Emër sesioni: ";
 "settings_crypto_device_id" = "\nID sesioni: ";
 "settings_crypto_device_key" = "\nKyç sesioni:\n";
@@ -426,7 +426,7 @@
 "settings_pin_rooms_with_missed_notif" = "Fikso dhomat me njoftime të humbura";
 "settings_pin_rooms_with_unread" = "Fikso dhomat me mesazhe të palexuar";
 "settings_labs_create_conference_with_jitsi" = "Krijoni thirrje konferencë me Jitsi-n";
-"settings_fail_to_update_password" = "S’arrihet të përditësohet fjalëkalimi";
+"settings_fail_to_update_password" = "S’u arrit të përditësohet fjalëkalimi i llogarisë Matrix";
 "settings_deactivate_my_account" = "Çaktivizoje llogarinë time";
 "room_details_mute_notifs" = "Heshtoji njoftimet";
 "room_details_access_section_no_address_warning" = "Që të lidhni një dhomë, ajo duhet të ketë një adresë";
@@ -464,10 +464,10 @@
 "deactivate_account_forget_messages_information_part2_emphasize" = "Kujdes";
 "deactivate_account_validate_action" = "Çaktivizoje llogarinë";
 "deactivate_account_password_alert_title" = "Çaktivizoni Llogarinë";
-"deactivate_account_password_alert_message" = "Që të vazhdohet, ju lutemi, jepni fjalëkalimin tuaj";
+"deactivate_account_password_alert_message" = "Që të vazhdohet, ju lutemi, jepni fjalëkalimin e llogarisë tuaj Matrix.";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Kërkesa u Dërgua";
-"auth_reset_password_success_message" = "Fjalëkalimi juaj u ri caktua.\n\nËshtë bërë dalja juaj nga llogaria në krejt sesionet dhe s’do të merrni më njoftime push. Për riaktivizim të njoftimeve, ribëni hyrjen në çdo pajisje.";
+"auth_reset_password_success_message" = "Fjalëkalimi i llogarisë tuaj Matrix u ricaktua.\n\nËshtë bërë dalja juaj nga llogaria në krejt sesionet dhe s’do të merrni më njoftime push. Për riaktivizim të njoftimeve, ribëni hyrjen në çdo pajisje.";
 "room_creation_make_public_prompt_msg" = "Jeni i sigurt se doni ta bëni publike këtë fjalosje? Në një të tillë, mesazhet tuaj mund t’i lexojë cilido dhe mund të hyjë në bisedë.";
 "room_creation_wait_for_creation" = "Po krijohet tashmë një dhomë. Ju lutemi, prisni.";
 "contacts_address_book_permission_required" = "Lypset leje për hyrje në kontaktet vendore";
@@ -580,7 +580,7 @@
 "key_backup_setup_intro_title" = "Mos humbni kurrë mesazhe të fshehtëzuar";
 "key_backup_setup_intro_info" = "Mesazhet në dhoma të fshehtëzuara sigurohen me fshehtëzim skaj-më-skaj. Vetëm ju dhe marrësi(t) keni kyçet për leximin e këtyre mesazheve.\n\nBëni një kopjeruajtje të sigurt të kyçeve tuaj, për të shmangur humbjen e tyre.";
 "key_backup_setup_intro_setup_action" = "Rregulloje";
-"key_backup_setup_passphrase_info" = "Do të depozitojmë një kopje të fshehtëzuar të kyçeve tuaj në shërbyesin tonë. Mbrojeni kopjeruajtjen tuaj me një frazë, për ta mbajtur të parrezikuar.\n\nPër maksimumin e sigurisë, ky duhet të jetë i ndryshëm nga fjalëkalimi juaj për llogarinë.";
+"key_backup_setup_passphrase_info" = "Do të depozitojmë një kopje të fshehtëzuar të kyçeve tuaj në shërbyesin tonë. Mbrojeni kopjeruajtjen tuaj me një frazë, për ta mbajtur të parrezikuar.\n\nPër maksimumin e sigurisë, ky duhet të jetë i ndryshëm nga fjalëkalimi juaj për llogarinë Matrix.";
 "key_backup_setup_passphrase_passphrase_title" = "Jepeni";
 "key_backup_setup_passphrase_passphrase_placeholder" = "Jepni frazë";
 "key_backup_setup_passphrase_passphrase_valid" = "Bukur!";
@@ -812,7 +812,7 @@
 "emoji_picker_flags_category" = "Flamuj";
 // MARK: Reaction history
 "reaction_history_title" = "Reagime";
-"auth_forgot_password_error_no_configured_identity_server" = "S’ka shërbyes identitetesh të formësuar: shtoni një të tillë që të ricaktoni fjalëkalimin tuaj.";
+"auth_forgot_password_error_no_configured_identity_server" = "S’ka shërbyes identitetesh të formësuar: shtoni një të tillë që të ricaktoni fjalëkalimin e llogarisë tuaj Matrix.";
 "room_creation_error_invite_user_by_email_without_identity_server" = "S’ka shërbyes identitetesh të formësua, ndaj s’mund të shtoni një pjesëmarrës me një email.";
 "room_participants_start_new_chat_error_using_user_email_without_identity_server" = "S’ka shërbyes identitetesh të formësuar, ndaj s’mund të nisni një fjalosje me një kontakt duke përdorur një email.";
 // Service terms
@@ -839,9 +839,9 @@
 "auth_add_email_message_2" = "Caktoni një email për rimarrje llogarie, dhe që më vonë të jeni (opsionale) i zbulueshëm nga persona që ju njohin.";
 "auth_add_phone_message_2" = "Caktoni një telefon, dhe jini më vonë i zbulueshëm nga persona që ju njohin.";
 "auth_add_email_phone_message_2" = "Caktoni një email për rimarrje llogarie. Përdorni më vonë email ose telefon që të jeni (opsionale) i zbulueshëm nga persona që ju njohin.";
-"auth_email_is_required" = "S’ka të formësuar shërbyes identitetesh, ndaj s’mund të shtoni adresë email që të mund të ricaktoni fjalëkalimin tuaj në të ardhmen.";
-"auth_phone_is_required" = "S’ka të formësuar shërbyes identitetesh, ndaj s’mund të shtoni numër telefoni që të mund të ricaktoni fjalëkalimin tuaj në të ardhmen.";
-"auth_reset_password_error_is_required" = "S’ka të formësuar shërbyes identitetesh: shtoni një të tillë që nga mundësitë rreth shërbyesit, që të ricaktoni fjalëkalimin tuaj.";
+"auth_email_is_required" = "S’ka të formësuar shërbyes identitetesh, ndaj s’mund të shtoni adresë email që të mund të ricaktoni fjalëkalimin e llogarisë tuaj Matrix në të ardhmen.";
+"auth_phone_is_required" = "S’ka të formësuar shërbyes identitetesh, ndaj s’mund të shtoni numër telefoni që të mund të ricaktoni fjalëkalimin e llogarisë tuaj Matrix në të ardhmen.";
+"auth_reset_password_error_is_required" = "S’ka të formësuar shërbyes identitetesh: shtoni një të tillë që nga mundësitë rreth shërbyesit, që të ricaktoni fjalëkalimin e llogarisë tuaj Matrix.";
 "contacts_address_book_no_identity_server" = "S’ka të formësuar shërbyes identitetesh";
 "settings_discovery_settings" = "ZBULIM";
 "settings_identity_server_settings" = "SHËRBYES IDENTITETESH";
@@ -850,7 +850,7 @@
 "settings_three_pids_management_information_part3" = ".";
 "settings_add_3pid_password_title_email" = "Shtoni adresë email";
 "settings_add_3pid_password_title_msidsn" = "Shtoni numër telefoni";
-"settings_add_3pid_password_message" = "Që të vazhdohet, ju lutemi, jepni fjalëkalimin tuaj";
+"settings_add_3pid_password_message" = "Që të vazhdohet, ju lutemi, jepni fjalëkalimin e llogarisë tuaj Matrix.";
 "settings_add_3pid_invalid_password_message" = "Kredenciale të pavlefshme";
 "settings_devices_description" = "Emri publik i një sesioni është i dukshëm për persona me të cilët komunikoni";
 "settings_discovery_no_identity_server" = "S’po përdorni ndonjë shërbyes identitetesh. Që të jeni i zbulueshëm nga kontakte ekzistuese që njihni, shtoni një të tillë.";
@@ -1122,7 +1122,7 @@
 "secrets_setup_recovery_key_storage_alert_message" = "✓ Shtypeni dhe vendoseni diku të parrezik\n✓ Ruajeni në një diskth USB ose në një pajisje kopjeruajtjesh\n✓ Kopjojeni te depoja juaj personale në re";
 "secrets_setup_recovery_passphrase_title" = "Caktoni një Frazë Sigurie";
 "secrets_setup_recovery_passphrase_information" = "Jepni një frazë sigurie që e dini vetëm ju, për ta përdorur për sigurim të fshehtash në shërbyesin tuaj.";
-"secrets_setup_recovery_passphrase_additional_information" = "Mos përdorni fjalëkalimin e llogarisë tuaj.";
+"secrets_setup_recovery_passphrase_additional_information" = "Mos përdorni fjalëkalimin e llogarisë tuaj Matrix.";
 "secrets_setup_recovery_passphrase_validate_action" = "U bë";
 "secrets_setup_recovery_passphrase_confirm_information" = "Që ta ripohoni, rijepeni Frazën e Sigurisë.";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Ripohojeni";
@@ -1132,13 +1132,13 @@
 "security_settings_secure_backup_setup" = "Ujdiseni";
 "security_settings_secure_backup_synchronise" = "Njëkohësoje";
 "security_settings_secure_backup_delete" = "Fshije Kopjeruajtjen";
-"security_settings_user_password_description" = "Ripohoni identitetin tuaj duke dhënë fjalëkalimin e llogarisë tuaj";
+"security_settings_user_password_description" = "Ripohoni identitetin tuaj duke dhënë fjalëkalimin e llogarisë tuaj Matrix";
 "secure_key_backup_setup_existing_backup_error_title" = "Një kopjeruajtje për mesazhe që ekzistojnë tashmë";
 "secure_key_backup_setup_existing_backup_error_info" = "Shkyçeni, që ta ripërdorni te kopjeruajtja e sigurt ose për ta fshirë që të krijoni një kopjeruajtje të re mesazhesh te kopjeruajtja e sigurt.";
 "secure_key_backup_setup_existing_backup_error_unlock_it" = "Shkyçe";
 "secure_key_backup_setup_existing_backup_error_delete_it" = "Fshije";
 "sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Fillo të përdorësh Kojperuajtje të Sigurt";
-"security_settings_crypto_sessions_description_2" = "Nëse nuk njihni një palë kredenciale, ndryshoni fjalëkalimin tuaj dhe riujdisni Kopjeruajtjen e Sigurt.";
+"security_settings_crypto_sessions_description_2" = "Nëse nuk njihni një palë kredenciale, ndryshoni fjalëkalimin tuaj Matrix dhe riujdisni Kopjeruajtjen e Sigurt.";
 "cross_signing_setup_banner_title" = "Ujdisni fshehtëzim";
 "cross_signing_setup_banner_subtitle" = "Verifikoni më me lehtësi pajisje të tjera";
 // Events formatter with you
@@ -1229,7 +1229,7 @@
 "pin_protection_kick_user_alert_message" = "Shumë gabime, u bë nxjerrja juaj jashtë";
 "switch" = "Këmbe";
 "joined" = "Erdhi";
-"secrets_reset_authentication_message" = "Që ta ripohoni, jepni fjalëkalimin e llogarisë tuaj";
+"secrets_reset_authentication_message" = "Që ta ripohoni, jepni fjalëkalimin e llogarisë tuaj Matrix";
 "secrets_reset_reset_action" = "Riktheji";
 "secrets_reset_warning_message" = "Do të filloni pa historik, pa mesazhe, pajisje të besuara ose përdorues të besuar.";
 "secrets_reset_warning_title" = "Nëse ktheni gjithçka te parazgjedhjet";
@@ -1615,3 +1615,35 @@
 "poll_edit_form_update_failure_subtitle" = "Ju lutemi, riprovoni";
 "poll_edit_form_update_failure_title" = "S’u arrit të përditësohet anketimi";
 "poll_edit_form_poll_type" = "Lloj anketimi";
+"location_sharing_post_failure_subtitle" = "%@ s’dërgoi dot vendndodhjen tuaj. Ju lutemi, riprovoni më vonë.";
+"location_sharing_post_failure_title" = "S’dërguam dot vendndodhjen tuaj";
+"home_context_menu_leave" = "Ikni";
+"home_context_menu_normal_priority" = "Përparësi normale";
+"home_context_menu_low_priority" = "Me përparësi të ulët";
+"home_context_menu_unfavourite" = "Hiqe prej të Parapëlqyerish";
+"home_context_menu_favourite" = "Bëje të parapëlqyer";
+"home_context_menu_unmute" = "Ktheji zërin";
+"home_context_menu_mute" = "Heshtoje";
+"home_context_menu_notifications" = "Njoftime";
+"home_context_menu_make_room" = "Shpjere te Dhoma";
+"home_context_menu_make_dm" = "Shpjere te Persona";
+"event_formatter_message_deleted" = "Mesazhi u fshi";
+"settings_labs_enable_threads" = "Mesazhe me rrjedha";
+"message_from_a_thread" = "Nga një rrjedhë";
+"threads_empty_show_all_threads" = "Shfaqi krejt rrjedhat";
+"threads_empty_tip" = "Ndihmëz: Prekni një mesazh dhe përdorni “Rrjedhë”, që të nisni një të re.";
+"threads_empty_info_my" = "Përgjigjuni te një rrjedhë në zhvillim, ose prekni një mesazh dhe përdorni “Rrjedhë”, që të nisni një të re.";
+"threads_empty_info_all" = "Rrjedhat ndihmojnë që të mbahet biseda juaj brenda temës dhe të ndiqet kollaj.";
+"threads_empty_title" = "Mbajini diskutimet të sistemuara në rrjedha";
+"threads_action_my_threads" = "Rrjedhat e mia";
+"threads_action_all_threads" = "Krejt rrjedhat";
+"threads_title" = "Rrjedha";
+"thread_copy_link_to_thread" = "Kopjoje lidhjen te rrjedha";
+
+// MARK: Threads
+"room_thread_title" = "Rrjedhë";
+"room_accessibility_thread_more" = "Më tepër";
+"room_accessibility_threads" = "Rrjedha";
+"room_event_copy_link_info" = "Lidhja u kopjua në të papastër.";
+"room_event_action_reply_in_thread" = "Rrjedhë";
+"room_event_action_view_in_room" = "Shiheni në dhomë";
