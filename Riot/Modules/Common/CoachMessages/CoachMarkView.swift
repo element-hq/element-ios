@@ -23,7 +23,13 @@ class CoachMarkView: UIView, NibLoadable, Themable {
     
     // MARK: Constants
     
-    public static let TopLeftPosition = CGPoint(x: 16, y: 40)
+    public static var TopLeftPosition: CGPoint {
+        if UIDevice.current.orientation.isPortrait {
+            return CGPoint(x: 16, y: 40)
+        } else {
+            return CGPoint(x: 16, y: 32)
+        }
+    }
     
     enum MarkPosition: Int {
         case topLeft

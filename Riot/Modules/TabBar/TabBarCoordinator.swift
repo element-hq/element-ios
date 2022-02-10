@@ -664,7 +664,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                     windowOverlay = WindowOverlayPresenter()
                     let coachMarkView = CoachMarkView.instantiate(
                         text: VectorL10n.sideMenuCoachMessage,
-                        position: CoachMarkView.TopLeftPosition,
+                        from: CoachMarkView.TopLeftPosition,
                         markPosition: .topLeft)
                     windowOverlay?.show(coachMarkView, duration: 4.0)
                 }
