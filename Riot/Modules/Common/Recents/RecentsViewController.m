@@ -30,6 +30,7 @@
 #import "DirectoryRecentTableViewCell.h"
 #import "RoomIdOrAliasTableViewCell.h"
 #import "TableViewCellWithCollectionView.h"
+#import "SectionHeaderView.h"
 
 #import "GeneratedInterface-Swift.h"
 
@@ -145,6 +146,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
     // Register key verification banner cells
     [self.recentsTableView registerNib:CrossSigningSetupBannerCell.nib forCellReuseIdentifier:CrossSigningSetupBannerCell.defaultReuseIdentifier];
+
+    [self.recentsTableView registerClass:SectionHeaderView.class
+      forHeaderFooterViewReuseIdentifier:SectionHeaderView.defaultReuseIdentifier];
     
     // Hide line separators of empty cells
     self.recentsTableView.tableFooterView = [[UIView alloc] init];
