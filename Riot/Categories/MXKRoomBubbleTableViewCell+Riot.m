@@ -697,7 +697,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
     if ([bubbleData isKindOfClass:RoomBubbleCellData.class]
         && ((RoomBubbleCellData*)bubbleData).componentIndexOfSentMessageTick >= 0)
     {
-        UIImage *image = [UIImage imageNamed:@"sent_message_tick"];
+        UIImage *image = AssetImages.sentMessageTick.image;
         image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         tickView = [[UIImageView alloc] initWithImage:image];
         tickView.tintColor = ThemeService.shared.theme.textTertiaryColor;
@@ -733,7 +733,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
                 }
                 else
                 {
-                    UIImage *image = [UIImage imageNamed:@"sending_message_tick"];
+                    UIImage *image = AssetImages.sendingMessageTick.image;
                     image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
                     tickView = [[UIImageView alloc] initWithImage:image];
                     tickView.tintColor = ThemeService.shared.theme.textTertiaryColor;
@@ -746,7 +746,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
         
         if (component.event.sentState == MXEventSentStateFailed)
         {
-            tickView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"error_message_tick"]];
+            tickView = [[UIImageView alloc] initWithImage:AssetImages.errorMessageTick.image];
             [statusViews addObject:tickView];
             [self addTickView:tickView atIndex:index];
         }
@@ -815,7 +815,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
     }
     
     // Define 'Edit' button frame
-    UIImage *editIcon = [UIImage imageNamed:@"edit_icon"];
+    UIImage *editIcon = AssetImages.editIcon.image;
     CGFloat editBtnPosX = self.bubbleInfoContainer.frame.size.width - RoomBubbleCellLayout.timestampLabelWidth - 22 - editIcon.size.width / 2;
     CGFloat editBtnPosY = isFirstDisplayedComponent ? -13 : component.position.y + self.msgTextViewTopConstraint.constant - self.bubbleInfoContainerTopConstraint.constant - 13;
     UIButton *editButton = [[UIButton alloc] initWithFrame:CGRectMake(editBtnPosX, editBtnPosY, 44, 44)];

@@ -136,7 +136,7 @@
 
 - (void)addBackgroundImageViewToView:(UIView*)view
 {
-    UIImage *searchBgImage = [MXKTools paintImage:[UIImage imageNamed:@"search_bg"] withColor:ThemeService.shared.theme.matrixSearchBackgroundImageTintColor];
+    UIImage *searchBgImage = [MXKTools paintImage:AssetImages.searchBg.image withColor:ThemeService.shared.theme.matrixSearchBackgroundImageTintColor];
     UIImageView *backgroundImageView = [[UIImageView alloc] initWithImage:searchBgImage];
     backgroundImageView.translatesAutoresizingMaskIntoConstraints = NO;
 

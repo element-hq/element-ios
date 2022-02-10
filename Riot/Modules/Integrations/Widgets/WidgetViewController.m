@@ -60,7 +60,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     {
         self.navigationItem.title = widget.name ? widget.name : widget.type;
 
-        UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"room_context_menu_more"] style:UIBarButtonItemStylePlain target:self action:@selector(onMenuButtonPressed:)];
+        UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:AssetImages.roomContextMenuMore.image style:UIBarButtonItemStylePlain target:self action:@selector(onMenuButtonPressed:)];
         self.navigationItem.rightBarButtonItem = menuButton;
     }
     
