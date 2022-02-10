@@ -1022,6 +1022,18 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                 TableViewCellWithCollectionView *collectionViewCell = (TableViewCellWithCollectionView *)cell;
                 [collectionViewCell.collectionView reloadData];
                 cellReloaded = YES;
+
+                CGRect headerFrame = [self.recentsTableView rectForHeaderInSection:update.sectionIndex];
+                UIView *headerView = [self.recentsTableView headerViewForSection:update.sectionIndex];
+                UIView *updatedHeaderView = [self.dataSource viewForHeaderInSection:update.sectionIndex withFrame:headerFrame inTableView:self.recentsTableView];
+                if ([headerView isKindOfClass:SectionHeaderView.class]
+                    && [updatedHeaderView isKindOfClass:SectionHeaderView.class])
+                {
+                    SectionHeaderView *sectionHeaderView = (SectionHeaderView *)headerView;
+                    SectionHeaderView *updatedSectionHeaderView = (SectionHeaderView *)updatedHeaderView;
+                    sectionHeaderView.headerLabel = updatedSectionHeaderView.headerLabel;
+                    sectionHeaderView.accessoryView = updatedSectionHeaderView.accessoryView;
+                }
             }
         }
     }
