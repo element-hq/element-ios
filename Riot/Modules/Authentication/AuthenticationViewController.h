@@ -54,9 +54,9 @@
 /// returns YES if the SSO login can be continued.
 - (BOOL)continueSSOLoginWithToken:(NSString*)loginToken txnId:(NSString*)txnId;
 
-/// Hides/shows the custom homeserver field.
-/// @param hidden YES to hide, NO to show.
-- (void)hideCustomServers:(BOOL)hidden;
+/// Show or hide the custom server textfields.
+/// @param isVisible YES to show, NO to hide.
+- (void)setCustomServerFieldsVisible:(BOOL)isVisible;
 
 @end
 

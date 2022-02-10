@@ -132,7 +132,7 @@ class UserSessionsService: NSObject {
         }
         
         // Clear any stored user properties from this session.
-        userSession.properties.delete()
+        userSession.userProperties.delete()
         
         self.userSessions.removeAll { (userSession) -> Bool in
             return userId == userSession.userId

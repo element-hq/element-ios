@@ -160,7 +160,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     }
     self.serverOptionsContainer.hidden = !BuildSettings.authScreenShowCustomServerOptions;
     
-    [self hideCustomServers:YES];
+    [self setCustomServerFieldsVisible:NO];
 
     // Soft logout section
     self.softLogoutClearDataButton.layer.cornerRadius = 5;
@@ -888,7 +888,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 {
     if (sender == self.customServersTickButton)
     {
-        [self hideCustomServers:!self.customServersContainer.hidden];
+        [self setCustomServerFieldsVisible:self.customServersContainer.hidden];
     }
     else if (sender == self.forgotPasswordButton)
     {
@@ -1236,14 +1236,14 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     [self.view layoutIfNeeded];
 }
 
-- (void)hideCustomServers:(BOOL)hidden
+- (void)setCustomServerFieldsVisible:(BOOL)isVisible
 {
-    if (self.customServersContainer.isHidden == hidden)
+    if (self.customServersContainer.isHidden != isVisible)
     {
         return;
     }
     
-    if (hidden)
+    if (!isVisible)
     {
         [self.homeServerTextField resignFirstResponder];
         [self.identityServerTextField resignFirstResponder];
@@ -1361,7 +1361,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     [self.authenticationActivityIndicator startAnimating];
     
     // Hide the custom server details in order to save customized inputs
-    [self hideCustomServers:YES];
+    [self setCustomServerFieldsVisible:NO];
     
     MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:userId];
     MXSession *session = account.mxSession;
@@ -1586,7 +1586,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         {
             // wellKnown matches with application default servers
             // Hide custom servers
-            [self hideCustomServers:YES];
+            [self setCustomServerFieldsVisible:NO];
         }
         else
         {
@@ -1618,7 +1618,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     }
 
     // And show custom servers
-    [self hideCustomServers:NO];
+    [self setCustomServerFieldsVisible:YES];
 }
 
 #pragma mark - KeyVerificationCoordinatorBridgePresenterDelegate

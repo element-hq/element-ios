@@ -21,7 +21,6 @@ class UserSessionProperties: NSObject {
     
     // MARK: - Constants
     private enum Constants {
-        static let suiteName = BuildSettings.baseBundleIdentifier + ".UserSession"
         static let useCaseKey = "useCase"
     }
     
@@ -31,10 +30,16 @@ class UserSessionProperties: NSObject {
     
     /// The user ID for these properties
     private let userId: String
-    /// The underlying dictionary that stores the properties in user defaults.
+    
+    /// The underlying dictionary for this userId from user defaults.
     private var dictionary: [String: Any] {
-        didSet {
-            UserDefaults(suiteName: Constants.suiteName)?.set(dictionary, forKey: userId)
+        get {
+            RiotSettings.shared.userSessionProperties[userId] ?? [:]
+        }
+        set {
+            var sharedProperties = RiotSettings.shared.userSessionProperties
+            sharedProperties[userId] = newValue
+            RiotSettings.shared.userSessionProperties = sharedProperties
         }
     }
     
@@ -65,8 +70,6 @@ class UserSessionProperties: NSObject {
     /// - Parameter userId: The user ID to load properties for.
     init(userId: String) {
         self.userId = userId
-        self.dictionary = UserDefaults(suiteName: Constants.suiteName)?.dictionary(forKey: userId) ?? [:]
-        
         super.init()
     }
     
@@ -75,6 +78,9 @@ class UserSessionProperties: NSObject {
     /// Clear all of the stored properties.
     func delete() {
         dictionary = [:]
-        UserDefaults(suiteName: Constants.suiteName)?.removeObject(forKey: userId)
+        
+        var sharedProperties = RiotSettings.shared.userSessionProperties
+        sharedProperties[userId] = nil
+        RiotSettings.shared.userSessionProperties = sharedProperties
     }
 }

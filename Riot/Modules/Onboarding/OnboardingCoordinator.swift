@@ -138,7 +138,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         
         switch result {
         case .register:
-            showUseCase()
+            showUseCaseSelectionScreen()
         case .login:
             showAuthenticationScreen()
         }
@@ -146,7 +146,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     
     @available(iOS 14.0, *)
     /// Show the use case screen for new users.
-    private func showUseCase() {
+    private func showUseCaseSelectionScreen() {
         let coordinator = OnboardingUseCaseCoordinator()
         coordinator.completion = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
@@ -227,7 +227,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
            let useCaseResult = useCaseResult,
            let userSession = UserSessionsService.shared.mainUserSession {
             // Store the value in the user's session
-            userSession.properties.useCase = useCaseResult.userSessionPropertyValue
+            userSession.userProperties.useCase = useCaseResult.userSessionPropertyValue
         }
     }
 }

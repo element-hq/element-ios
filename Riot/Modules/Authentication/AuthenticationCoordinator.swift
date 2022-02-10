@@ -63,7 +63,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     }
     
     func showCustomServer() {
-        authenticationViewController.hideCustomServers(false)
+        authenticationViewController.setCustomServerFieldsVisible(true)
     }
     
     func update(externalRegistrationParameters: [AnyHashable: Any]) {
