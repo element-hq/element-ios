@@ -26,12 +26,12 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
 
     private let session: MXSession
     private let roomId: String
-    private var threads: [MXThread] = []
+    private var threads: [MXThreadProtocol] = []
     private var eventFormatter: MXKEventFormatter?
     private var roomState: MXRoomState?
     
     private var currentOperation: MXHTTPOperation?
-    private var longPressedThread: MXThread?
+    private var longPressedThread: MXThreadProtocol?
     
     // MARK: Public
 
@@ -144,7 +144,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
     
     // MARK: - Private
     
-    private func model(forThread thread: MXThread) -> ThreadModel {
+    private func model(forThread thread: MXThreadProtocol) -> ThreadModel {
         let rootAvatarViewData: AvatarViewData?
         let rootMessageSender: MXUser?
         let lastAvatarViewData: AvatarViewData?
@@ -199,7 +199,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
                            notificationStatus: notificationStatus)
     }
     
-    private func rootMessageText(forThread thread: MXThread) -> NSAttributedString? {
+    private func rootMessageText(forThread thread: MXThreadProtocol) -> NSAttributedString? {
         guard let eventFormatter = eventFormatter else {
             return nil
         }
@@ -229,7 +229,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
                                                error: formatterError)
     }
     
-    private func lastMessageTextAndTime(forThread thread: MXThread) -> (NSAttributedString?, String?) {
+    private func lastMessageTextAndTime(forThread thread: MXThreadProtocol) -> (NSAttributedString?, String?) {
         guard let eventFormatter = eventFormatter else {
             return (nil, nil)
         }
@@ -323,7 +323,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
     
     private func actionShare() {
         guard let thread = longPressedThread,
-              let index = threads.firstIndex(of: thread) else {
+              let index = threads.firstIndex(where: { thread.id == $0.id }) else {
             return
         }
         if let permalink = MXTools.permalink(toEvent: thread.id, inRoom: thread.roomId),
