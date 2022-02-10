@@ -70,6 +70,7 @@ targets:
       buildPhase: resources
     - path: ../Riot/Modules/MatrixKit
     - path: ../Riot/Modules/Analytics
+    - path: ../Riot/Managers/UserSessions
       excludes:
         - "**/*.md" # excludes all files with the .md extension
     - path: ../Riot/Generated/MatrixKitStrings.swift

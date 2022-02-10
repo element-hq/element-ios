@@ -53,6 +53,10 @@
 /// returns YES if the SSO login can be continued.
 - (BOOL)continueSSOLoginWithToken:(NSString*)loginToken txnId:(NSString*)txnId;
 
+/// Show or hide the custom server textfields.
+/// @param isVisible YES to show, NO to hide.
+- (void)setCustomServerFieldsVisible:(BOOL)isVisible;
+
 @end
 
 
