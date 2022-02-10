@@ -1471,7 +1471,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 - (void)recentsListServiceDidChangeData:(id<RecentsListServiceProtocol>)service
                      totalCountsChanged:(BOOL)totalCountsChanged
 {
-    // no-op
+    [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
 }
 
 - (void)recentsListServiceDidChangeData:(id<RecentsListServiceProtocol>)service
