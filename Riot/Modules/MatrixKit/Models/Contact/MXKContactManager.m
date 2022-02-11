@@ -1873,6 +1873,10 @@ static NSString *contactsBookInfoFile = @"contactsV2";
     if (error == nil)
     {
         [cipher writeToFile:[self dataFilePathForComponent:fileName] atomically:YES];
+        [[NSFileManager defaultManager] excludeItemFromBackupAt:[NSURL fileURLWithPath:fileName] error:&error];
+        if (error) {
+            MXLogDebug(@"[MXKContactManager] Cannot exclude item from backup %@", error.localizedDescription);
+        }
     }
     else
     {

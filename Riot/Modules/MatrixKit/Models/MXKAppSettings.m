@@ -19,6 +19,7 @@
 #import "MXKAppSettings.h"
 
 #import "MXKTools.h"
+@import MatrixSDK;
 
 
 // get ISO country name
@@ -66,11 +67,10 @@ static NSString *const kMXAppGroupID = @"group.org.matrix";
 {
     NSString *cacheFolder;
 
-    // Check for a potential application group id
-    NSString *applicationGroupIdentifier = [MXSDKOptions sharedInstance].applicationGroupIdentifier;
-    if (applicationGroupIdentifier)
+    // Check for a potential application group container
+    NSURL *sharedContainerURL = [[NSFileManager defaultManager] applicationGroupContainerURL];
+    if (sharedContainerURL)
     {
-        NSURL *sharedContainerURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:applicationGroupIdentifier];
         cacheFolder = [sharedContainerURL path];
     }
     else
@@ -86,7 +86,7 @@ static NSString *const kMXAppGroupID = @"group.org.matrix";
     if (cacheFolder && ![[NSFileManager defaultManager] fileExistsAtPath:cacheFolder])
     {
         NSError *error;
-        [[NSFileManager defaultManager] createDirectoryAtPath:cacheFolder withIntermediateDirectories:YES attributes:nil error:&error];
+        [[NSFileManager defaultManager] createDirectoryExcludedFromBackupAtPath:cacheFolder error:&error];
         if (error)
         {
             MXLogDebug(@"[MXKAppSettings] cacheFolder: Error: Cannot create MatrixKit folder at %@. Error: %@", cacheFolder, error);
