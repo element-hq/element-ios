@@ -17,6 +17,7 @@
 
 #import <Contacts/Contacts.h>
 #import "ContactsTableViewController.h"
+#import "SectionHeaderView.h"
 
 #import "UIViewController+RiotSearch.h"
 
@@ -95,6 +96,9 @@
     self.contactsTableView.dataSource = contactsDataSource; // Note: dataSource may be nil here
     
     [self.contactsTableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:ContactTableViewCell.defaultReuseIdentifier];
+
+    [self.contactsTableView registerClass:SectionHeaderView.class
+       forHeaderFooterViewReuseIdentifier:SectionHeaderView.defaultReuseIdentifier];
     
     // Hide line separators of empty cells
     self.contactsTableView.tableFooterView = [[UIView alloc] init];
@@ -455,7 +459,9 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    return [contactsDataSource viewForHeaderInSection:section withFrame:[tableView rectForHeaderInSection:section]];
+    return [contactsDataSource viewForHeaderInSection:section
+                                            withFrame:[tableView rectForHeaderInSection:section]
+                                          inTableView:tableView];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

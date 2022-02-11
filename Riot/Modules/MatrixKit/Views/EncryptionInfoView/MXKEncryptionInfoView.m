@@ -417,7 +417,7 @@ static NSAttributedString *verticalWhitespace = nil;
         [_mxSession.crypto setDeviceVerification:MXDeviceVerified forDevice:_mxDeviceInfo.deviceId ofUser:_mxDeviceInfo.userId success:^{
 
             // Refresh data
-            _mxDeviceInfo = [self.mxSession.crypto eventDeviceInfo:self.mxEvent];
+            self->_mxDeviceInfo = [self.mxSession.crypto eventDeviceInfo:self.mxEvent];
             if (self->_delegate)
             {
                 [self->_delegate encryptionInfoView:self didDeviceInfoVerifiedChange:self.mxDeviceInfo];
@@ -473,7 +473,7 @@ static NSAttributedString *verticalWhitespace = nil;
             [_mxSession.crypto setDeviceVerification:verificationStatus forDevice:_mxDeviceInfo.deviceId ofUser:_mxDeviceInfo.userId success:^{
 
                 // Refresh data
-                _mxDeviceInfo = [self.mxSession.crypto eventDeviceInfo:self.mxEvent];
+                self->_mxDeviceInfo = [self.mxSession.crypto eventDeviceInfo:self.mxEvent];
 
                 if (self->_delegate)
                 {

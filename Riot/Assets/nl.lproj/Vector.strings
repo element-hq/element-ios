@@ -1719,3 +1719,10 @@
 
 // Onboarding
 "onboarding_splash_register_button_title" = "Account aanmaken";
+"poll_edit_form_poll_type_closed_description" = "Resultaten worden pas onthuld als u de poll beëindigt";
+"poll_edit_form_poll_type_closed" = "Gesloten poll";
+"poll_edit_form_poll_type_open_description" = "Kiezers zien resultaten zodra ze hebben gestemd";
+"poll_edit_form_poll_type_open" = "Poll openen";
+"poll_edit_form_update_failure_subtitle" = "Probeer het opnieuw";
+"poll_edit_form_update_failure_title" = "Kan poll niet bijwerken";
+"poll_edit_form_poll_type" = "Poll type";

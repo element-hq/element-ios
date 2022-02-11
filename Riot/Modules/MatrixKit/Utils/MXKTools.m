@@ -1112,7 +1112,7 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
             // Caution: We need here to escape the non-ASCII characters (like '#' in room alias)
             // to convert the link into a legal URL string.
             NSString *link = [attributedString.string substringWithRange:match.range];
-            link = [link stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            link = [link stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
             [*mutableAttributedString addAttribute:NSLinkAttributeName value:link range:match.range];
         }
     }];

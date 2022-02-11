@@ -95,18 +95,20 @@ typedef enum : NSUInteger
  
  @param section the section  index
  @param frame the drawing area for the header of the specified section.
+ @param tableView the table view
  @return the section header.
  */
-- (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame;
+- (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame inTableView:(UITableView *)tableView;
 
 /**
  Get the sticky header view for the specified section.
  
  @param section the section  index
  @param frame the drawing area for the header of the specified section.
+ @param tableView the table view
  @return the sticky header view.
  */
-- (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame;
+- (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame inTableView:(UITableView *)tableView;
 
 /**
  Refresh the contacts data source and notify its delegate.

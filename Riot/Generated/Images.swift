@@ -18,8 +18,10 @@ internal typealias AssetImageTypeAlias = ImageAsset.Image
 // MARK: - Asset Catalogs
 
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
-internal enum Asset {
-  internal enum Images {
+@objcMembers
+internal class Asset: NSObject {
+  @objcMembers
+  @objc(AssetImages) internal class Images: NSObject {
     internal static let analyticsCheckmark = ImageAsset(name: "AnalyticsCheckmark")
     internal static let analyticsLogo = ImageAsset(name: "AnalyticsLogo")
     internal static let socialLoginButtonApple = ImageAsset(name: "social_login_button_apple")
@@ -119,6 +121,13 @@ internal enum Asset {
     internal static let onboardingSplashScreenPage3Dark = ImageAsset(name: "OnboardingSplashScreenPage3Dark")
     internal static let onboardingSplashScreenPage4 = ImageAsset(name: "OnboardingSplashScreenPage4")
     internal static let onboardingSplashScreenPage4Dark = ImageAsset(name: "OnboardingSplashScreenPage4Dark")
+    internal static let onboardingUseCaseCommunity = ImageAsset(name: "onboarding_use_case_community")
+    internal static let onboardingUseCaseCommunityDark = ImageAsset(name: "onboarding_use_case_community_dark")
+    internal static let onboardingUseCaseIcon = ImageAsset(name: "onboarding_use_case_icon")
+    internal static let onboardingUseCasePersonal = ImageAsset(name: "onboarding_use_case_personal")
+    internal static let onboardingUseCasePersonalDark = ImageAsset(name: "onboarding_use_case_personal_dark")
+    internal static let onboardingUseCaseWork = ImageAsset(name: "onboarding_use_case_work")
+    internal static let onboardingUseCaseWorkDark = ImageAsset(name: "onboarding_use_case_work_dark")
     internal static let peopleEmptyScreenArtwork = ImageAsset(name: "people_empty_screen_artwork")
     internal static let peopleEmptyScreenArtworkDark = ImageAsset(name: "people_empty_screen_artwork_dark")
     internal static let peopleFloatingAction = ImageAsset(name: "people_floating_action")
@@ -238,7 +247,8 @@ internal enum Asset {
     internal static let tabRooms = ImageAsset(name: "tab_rooms")
     internal static let launchScreenLogo = ImageAsset(name: "launch_screen_logo")
   }
-  internal enum SharedImages {
+  @objcMembers
+  @objc(AssetSharedImages) internal class SharedImages: NSObject {
     internal static let cancel = ImageAsset(name: "cancel")
     internal static let e2eVerified = ImageAsset(name: "e2e_verified")
     internal static let horizontalLogo = ImageAsset(name: "horizontal_logo")
@@ -250,7 +260,8 @@ internal enum Asset {
 
 // MARK: - Implementation Details
 
-internal struct ImageAsset {
+@objcMembers
+internal class ImageAsset: NSObject {
   internal fileprivate(set) var name: String
 
   #if os(macOS)
@@ -274,6 +285,10 @@ internal struct ImageAsset {
       fatalError("Unable to load image asset named \(name).")
     }
     return result
+  }
+
+  internal init(name: String) {
+    self.name = name
   }
 
   #if os(iOS) || os(tvOS)
@@ -315,3 +330,4 @@ private final class BundleToken {
   }()
 }
 // swiftlint:enable convenience_type
+

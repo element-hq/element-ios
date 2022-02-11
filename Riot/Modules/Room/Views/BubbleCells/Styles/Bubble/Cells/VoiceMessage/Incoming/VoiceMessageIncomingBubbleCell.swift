@@ -16,7 +16,7 @@
 
 import Foundation
 
-class VoiceMessageIncomingBubbleCell: VoiceMessageBubbleCell {
+class VoiceMessageIncomingBubbleCell: VoiceMessageBubbleCell, BubbleIncomingRoomCellProtocol {
         
     override func setupViews() {
         super.setupViews()
@@ -29,7 +29,9 @@ class VoiceMessageIncomingBubbleCell: VoiceMessageBubbleCell {
         bubbleCellContentView?.innerContentViewTrailingConstraint.constant = messageViewMarginRight
         bubbleCellContentView?.innerContentViewLeadingConstraint.constant = messageLeftMargin
         
-        playbackController.playbackView.stackViewTrailingContraint.constant = playbackViewRightMargin        
+        playbackController.playbackView.stackViewTrailingContraint.constant = playbackViewRightMargin
+        
+        self.setupBubbleDecorations()
     }
     
     override func update(theme: Theme) {

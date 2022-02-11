@@ -76,6 +76,8 @@
     // Adjust Top and Bottom constraints to take into account potential navBar and tabBar.
     [NSLayoutConstraint deactivateConstraints:@[_searchSearchBarTopConstraint, _searchTableViewBottomConstraint]];
 
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated"
     _searchSearchBarTopConstraint = [NSLayoutConstraint constraintWithItem:self.topLayoutGuide
                                                                   attribute:NSLayoutAttributeBottom
                                                                   relatedBy:NSLayoutRelationEqual
@@ -91,6 +93,7 @@
                                                                      attribute:NSLayoutAttributeBottom
                                                                     multiplier:1.0f
                                                                       constant:0.0f];
+    #pragma clang diagnostic pop
 
     [NSLayoutConstraint activateConstraints:@[_searchSearchBarTopConstraint, _searchTableViewBottomConstraint]];
 
@@ -140,6 +143,8 @@
     self.keyboardView = _searchSearchBar.inputAccessoryView.superview;
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated"
 - (void)setKeyboardHeight:(CGFloat)keyboardHeight
 {
     // Deduce the bottom constraint for the table view (Don't forget the potential tabBar)
@@ -156,6 +161,7 @@
     // Force layout immediately to take into account new constraint
     [self.view layoutIfNeeded];
 }
+#pragma clang diagnostic pop
 
 - (void)destroy
 {

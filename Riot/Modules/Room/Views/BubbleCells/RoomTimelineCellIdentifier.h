@@ -47,6 +47,34 @@ typedef NS_ENUM(NSUInteger, RoomTimelineCellIdentifier) {
     RoomTimelineCellIdentifierOutgoingTextMessageEncryptedWithoutSenderName,
     RoomTimelineCellIdentifierOutgoingTextMessageEncryptedWithPaginationTitleWithoutSenderName,
     
+    // - Emote
+    // -- Incoming
+    // --- Clear
+    RoomTimelineCellIdentifierIncomingEmote,
+    RoomTimelineCellIdentifierIncomingEmoteWithoutSenderInfo,
+    RoomTimelineCellIdentifierIncomingEmoteWithPaginationTitle,
+    RoomTimelineCellIdentifierIncomingEmoteWithoutSenderName,
+    RoomTimelineCellIdentifierIncomingEmoteWithPaginationTitleWithoutSenderName,
+    // --- Encrypted
+    RoomTimelineCellIdentifierIncomingEmoteEncrypted,
+    RoomTimelineCellIdentifierIncomingEmoteEncryptedWithoutSenderInfo,
+    RoomTimelineCellIdentifierIncomingEmoteEncryptedWithPaginationTitle,
+    RoomTimelineCellIdentifierIncomingEmoteEncryptedWithoutSenderName,
+    RoomTimelineCellIdentifierIncomingEmoteEncryptedWithPaginationTitleWithoutSenderName,
+    // -- Outgoing
+    // --- Clear
+    RoomTimelineCellIdentifierOutgoingEmote,
+    RoomTimelineCellIdentifierOutgoingEmoteWithoutSenderInfo,
+    RoomTimelineCellIdentifierOutgoingEmoteWithPaginationTitle,
+    RoomTimelineCellIdentifierOutgoingEmoteWithoutSenderName,
+    RoomTimelineCellIdentifierOutgoingEmoteWithPaginationTitleWithoutSenderName,
+    // --- Encrypted
+    RoomTimelineCellIdentifierOutgoingEmoteEncrypted,
+    RoomTimelineCellIdentifierOutgoingEmoteEncryptedWithoutSenderInfo,
+    RoomTimelineCellIdentifierOutgoingEmoteEncryptedWithPaginationTitle,
+    RoomTimelineCellIdentifierOutgoingEmoteEncryptedWithoutSenderName,
+    RoomTimelineCellIdentifierOutgoingEmoteEncryptedWithPaginationTitleWithoutSenderName,
+    
     // - Attachment
     // -- Incoming
     // --- Clear

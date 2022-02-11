@@ -22,12 +22,8 @@ class FileWithoutThumbnailBaseBubbleCell: SizableBaseBubbleCell, BubbleCellReact
     
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
-        
-        guard let data = cellData as? RoomBubbleCellData else {
-            return
-        }
-        
-        self.fileAttachementView?.title = data.attributedTextMessage.string
+                
+        self.fileAttachementView?.titleLabel.attributedText = self.suitableAttributedTextMessage
         
         self.update(theme: ThemeService.shared().theme)
     }

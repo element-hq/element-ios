@@ -275,6 +275,13 @@
     NSDictionary *outgoingTextMessageCellsMapping = [self outgoingTextMessageCellsMapping];
     [cellClasses addEntriesFromDictionary:outgoingTextMessageCellsMapping];
     
+    // Emote
+    NSDictionary *incomingEmoteCellsMapping = [self incomingEmoteCellsMapping];
+    [cellClasses addEntriesFromDictionary:incomingEmoteCellsMapping];
+    
+    NSDictionary *outgoingEmoteCellsMapping = [self outgoingEmoteCellsMapping];
+    [cellClasses addEntriesFromDictionary:outgoingEmoteCellsMapping];
+    
     // Attachment
     
     NSDictionary *incomingAttachmentCellsMapping = [self incomingAttachmentCellsMapping];
@@ -357,6 +364,42 @@
         @(RoomTimelineCellIdentifierOutgoingTextMessageEncryptedWithPaginationTitle) : RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.class,
         @(RoomTimelineCellIdentifierOutgoingTextMessageEncryptedWithoutSenderName) : RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.class,
         @(RoomTimelineCellIdentifierOutgoingTextMessageEncryptedWithPaginationTitleWithoutSenderName) : RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class,
+    };
+}
+
+- (NSDictionary<NSNumber*, Class>*)incomingEmoteCellsMapping
+{
+    return @{
+        // Clear
+        @(RoomTimelineCellIdentifierIncomingEmote) : RoomIncomingTextMsgBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingEmoteWithoutSenderInfo) : RoomIncomingTextMsgWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingEmoteWithPaginationTitle) : RoomIncomingTextMsgWithPaginationTitleBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingEmoteWithoutSenderName) : RoomIncomingTextMsgWithoutSenderNameBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingEmoteWithPaginationTitleWithoutSenderName) : RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class,
+        // Encrypted
+        @(RoomTimelineCellIdentifierIncomingEmoteEncrypted) : RoomIncomingEncryptedTextMsgBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingEmoteEncryptedWithoutSenderInfo) : RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingEmoteEncryptedWithPaginationTitle) : RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingEmoteEncryptedWithoutSenderName) : RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingEmoteEncryptedWithPaginationTitleWithoutSenderName) : RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class,
+    };
+}
+
+- (NSDictionary<NSNumber*, Class>*)outgoingEmoteCellsMapping
+{
+    return @{
+        // Clear
+        @(RoomTimelineCellIdentifierOutgoingEmote) : RoomOutgoingTextMsgBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingEmoteWithoutSenderInfo) : RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingEmoteWithPaginationTitle) : RoomOutgoingTextMsgWithPaginationTitleBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingEmoteWithoutSenderName) : RoomOutgoingTextMsgWithoutSenderNameBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingEmoteWithPaginationTitleWithoutSenderName) : RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class,
+        // Encrypted
+        @(RoomTimelineCellIdentifierOutgoingEmoteEncrypted) : RoomOutgoingEncryptedTextMsgBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingEmoteEncryptedWithoutSenderInfo) : RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingEmoteEncryptedWithPaginationTitle) : RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingEmoteEncryptedWithoutSenderName) : RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingEmoteEncryptedWithPaginationTitleWithoutSenderName) : RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class,
     };
 }
 
