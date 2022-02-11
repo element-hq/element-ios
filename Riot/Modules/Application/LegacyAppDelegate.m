@@ -233,6 +233,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 @property (nonatomic, assign, getter=isRoomListDataReady) BOOL roomListDataReady;
 
 /**
+ An observer token for `RecentsViewControllerDataReadyNotification`s notifications.
+ */
+@property (nonatomic, nullable) id roomListDataReadyObserver;
+
+/**
  An optional completion block that will be called when a `RecentsViewControllerDataReadyNotification`
  is observed during app launch.
  */
@@ -423,8 +428,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     [NSBundle mxk_setLanguage:language];
     [NSBundle mxk_setFallbackLanguage:@"en"];
-    
-    [self listenForRoomListDataReady];
 
     mxSessionArray = [NSMutableArray array];
     callEventsListeners = [NSMutableDictionary dictionary];
@@ -2382,6 +2385,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 case MXSessionStateInitialised:
                 case MXSessionStateBackgroundSyncInProgress:
                     self.roomListDataReady = NO;
+                    [self listenForRoomListDataReady];
                     isLaunching = YES;
                     break;
                 case MXSessionStateStoreDataReady:
@@ -2619,13 +2623,22 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)listenForRoomListDataReady
 {
+    if (self.roomListDataReadyObserver)
+    {
+        return;
+    }
+    
+    MXWeakify(self);
     NSNotificationCenter * __weak notificationCenter = [NSNotificationCenter defaultCenter];
-    __block id observer = [[NSNotificationCenter defaultCenter] addObserverForName:RecentsViewControllerDataReadyNotification
+    self.roomListDataReadyObserver = [[NSNotificationCenter defaultCenter] addObserverForName:RecentsViewControllerDataReadyNotification
                                                                             object:nil
                                                                              queue:[NSOperationQueue mainQueue]
                                                                         usingBlock:^(NSNotification * _Nonnull notification) {
-        [notificationCenter removeObserver:observer];
+        MXStrongifyAndReturnIfNil(self);
+        
+        [notificationCenter removeObserver:self.roomListDataReadyObserver];
         self.roomListDataReady = YES;
+        self.roomListDataReadyObserver = nil;
         
         if (self.roomListDataReadyCompletion)
         {
