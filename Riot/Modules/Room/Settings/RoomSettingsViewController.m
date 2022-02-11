@@ -1047,7 +1047,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 {
                     MXKPasteboardManager.shared.pasteboard.URL = url;
                     [self.view vc_toastWithMessage:VectorL10n.roomEventCopyLinkInfo
-                                             image:[UIImage imageNamed:@"link_icon"]
+                                             image:AssetImages.linkIcon.image
                                           duration:2.0
                                           position:ToastPositionBottom
                                   additionalMargin:0.0];
@@ -2640,7 +2640,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             addAddressCell.mxkLabel.text = nil;
             
             addAddressCell.accessoryType = UITableViewCellAccessoryNone;
-            addAddressCell.accessoryView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
+            addAddressCell.accessoryView = [[UIImageView alloc] initWithImage:[AssetImages.plusIcon.image vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
             
             addAddressTextField = addAddressCell.mxkTextField;
             addAddressTextField.placeholder = [VectorL10n roomDetailsNewAddressPlaceholder:self.mainSession.matrixRestClient.homeserverSuffix];
@@ -2717,7 +2717,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 {
                     if ([alias isEqualToString:canonicalAlias])
                     {
-                        addressCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main_alias_icon"]];
+                        addressCell.accessoryView = [[UIImageView alloc] initWithImage:AssetImages.mainAliasIcon.image];
                     }
                 }
             }
@@ -2741,7 +2741,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             addCommunityCell.mxkLabel.text = nil;
 
             addCommunityCell.accessoryType = UITableViewCellAccessoryNone;
-            addCommunityCell.accessoryView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
+            addCommunityCell.accessoryView = [[UIImageView alloc] initWithImage:[AssetImages.plusIcon.image vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
 
             addGroupTextField = addCommunityCell.mxkTextField;
             addGroupTextField.placeholder = [VectorL10n roomDetailsNewFlairPlaceholder:self.mainSession.matrixRestClient.homeserverSuffix];
@@ -3270,7 +3270,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             completionHandler(YES);
         }];
         removeAddressAction.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
-        removeAddressAction.image = [[UIImage imageNamed:@"remove_icon"] vc_notRenderedImage];
+        removeAddressAction.image = [AssetImages.removeIcon.image vc_notRenderedImage];
         
         // Create swipe action configuration
         
@@ -3291,7 +3291,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             completionHandler(YES);
         }];
         removeAddressAction.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
-        removeAddressAction.image = [[UIImage imageNamed:@"remove_icon"] vc_notRenderedImage];
+        removeAddressAction.image = [AssetImages.removeIcon.image vc_notRenderedImage];
         
         // Create swipe action configuration
         

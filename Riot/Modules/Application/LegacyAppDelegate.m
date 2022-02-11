@@ -233,6 +233,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 @property (nonatomic, assign, getter=isRoomListDataReady) BOOL roomListDataReady;
 
 /**
+ An optional completion block that will be called when a `RecentsViewControllerDataReadyNotification`
+ is observed during app launch.
+ */
+@property (nonatomic, copy, nullable) void (^roomListDataReadyCompletion)(void);
+
+/**
  Flag to indicate whether a cache clear is being performed.
  */
 @property (nonatomic, assign, getter=isClearingCache) BOOL clearingCache;
@@ -417,6 +423,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     [NSBundle mxk_setLanguage:language];
     [NSBundle mxk_setFallbackLanguage:@"en"];
+    
+    [self listenForRoomListDataReady];
 
     mxSessionArray = [NSMutableArray array];
     callEventsListeners = [NSMutableDictionary dictionary];
@@ -2411,7 +2419,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             return;
         }
         
-        [self ensureRoomListDataReadyWithCompletion:^{
+        void (^finishAppLaunch)(void) = ^{
             [self hideLaunchAnimation];
             
             if (self.setPinCoordinatorBridgePresenter)
@@ -2443,7 +2451,17 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 // Enable listening of incoming key verification requests
                 [self enableIncomingKeyVerificationObserver:mainSession];
             }
-        }];
+        };
+        
+        if (self.isRoomListDataReady)
+        {
+            finishAppLaunch();
+        }
+        else
+        {
+            // An observer has been set in didFinishLaunching that will call the stored block when ready
+            self.roomListDataReadyCompletion = finishAppLaunch;
+        }
     }
 }
 
@@ -2599,29 +2617,22 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self handleAppState];
 }
 
-/**
- Ensures room list data is ready.
- 
- @param completion Completion block to be called when it's ready. Not dispatched in case the data is already ready.
- */
-- (void)ensureRoomListDataReadyWithCompletion:(void(^)(void))completion
+- (void)listenForRoomListDataReady
 {
-    if (self.isRoomListDataReady)
-    {
-        completion();
-    }
-    else
-    {
-        NSNotificationCenter * __weak notificationCenter = [NSNotificationCenter defaultCenter];
-        __block id observer = [[NSNotificationCenter defaultCenter] addObserverForName:RecentsViewControllerDataReadyNotification
-                                                                                object:nil
-                                                                                 queue:[NSOperationQueue mainQueue]
-                                                                            usingBlock:^(NSNotification * _Nonnull notification) {
-            [notificationCenter removeObserver:observer];
-            self.roomListDataReady = YES;
-            completion();
-        }];
-    }
+    NSNotificationCenter * __weak notificationCenter = [NSNotificationCenter defaultCenter];
+    __block id observer = [[NSNotificationCenter defaultCenter] addObserverForName:RecentsViewControllerDataReadyNotification
+                                                                            object:nil
+                                                                             queue:[NSOperationQueue mainQueue]
+                                                                        usingBlock:^(NSNotification * _Nonnull notification) {
+        [notificationCenter removeObserver:observer];
+        self.roomListDataReady = YES;
+        
+        if (self.roomListDataReadyCompletion)
+        {
+            self.roomListDataReadyCompletion();
+            self.roomListDataReadyCompletion = nil;
+        }
+    }];
 }
 
 #pragma mark -

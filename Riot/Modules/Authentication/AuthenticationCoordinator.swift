@@ -32,7 +32,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    var completion: (() -> Void)?
+    var completion: ((MXKAuthenticationType) -> Void)?
     
     // MARK: - Setup
     
@@ -62,6 +62,10 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         authenticationViewController.authType = authenticationType
     }
     
+    func showCustomServer() {
+        authenticationViewController.setCustomServerFieldsVisible(true)
+    }
+    
     func update(externalRegistrationParameters: [AnyHashable: Any]) {
         authenticationViewController.externalRegistrationParameters = externalRegistrationParameters
     }
@@ -82,6 +86,6 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
 // MARK: - AuthenticationViewControllerDelegate
 extension AuthenticationCoordinator: AuthenticationViewControllerDelegate {
     func authenticationViewControllerDidDismiss(_ authenticationViewController: AuthenticationViewController!) {
-        completion?()
+        completion?(authenticationViewController.authType)
     }
 }
