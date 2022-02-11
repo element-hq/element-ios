@@ -662,7 +662,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                 if spaceService.isInitialised && !spaceService.rootSpaceSummaries.isEmpty {
                     RiotSettings.shared.slideMenuRoomsCoachMessageHasBeenDisplayed = true
                     windowOverlay = WindowOverlayPresenter()
-                    let coachMarkView = CoachMarkView.instantiate(text: VectorL10n.sideMenuCoachMessage, position: .topLeft)
+                    let coachMarkView = CoachMarkView.instantiate(
+                        text: VectorL10n.sideMenuCoachMessage,
+                        from: CoachMarkView.TopLeftPosition,
+                        markPosition: .topLeft)
                     windowOverlay?.show(coachMarkView, duration: 4.0)
                 }
             }
