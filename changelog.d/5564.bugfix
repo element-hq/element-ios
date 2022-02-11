@@ -1,0 +1,1 @@
+Fix for images sometimes being sent unencrypted inside an encrypted room.
