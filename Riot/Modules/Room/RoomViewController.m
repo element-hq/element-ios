@@ -4283,7 +4283,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self updateTitleViewEncryptionDecoration];
 }
 
-- (void)roomDataSource:(RoomDataSource *)roomDataSource didTapThread:(MXThread *)thread
+- (void)roomDataSource:(RoomDataSource *)roomDataSource didTapThread:(id<MXThreadProtocol>)thread
 {
     [self openThreadWithId:thread.id];
 }
