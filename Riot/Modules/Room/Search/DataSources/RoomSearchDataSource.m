@@ -96,6 +96,10 @@
             {
                 continueBlock();
             }
+            else if (result.result.unsignedData.relations.thread)
+            {
+                continueBlock();
+            }
             else
             {
                 [roomDataSource.room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
