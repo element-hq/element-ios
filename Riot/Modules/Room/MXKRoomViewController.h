@@ -444,10 +444,4 @@ typedef NS_ENUM(NSUInteger, MXKRoomViewControllerJoinRoomResult) {
  */
 - (void)handleTypingNotification:(BOOL)typing;
 
-
-/**
- Share encryption keys in this room.
- */
-- (void)shareEncryptionKeys;
-
 @end

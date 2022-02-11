@@ -429,7 +429,6 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
         if (_actionMenuOpened) {
             self.actionsBar.hidden = NO;
             [self.actionsBar animateWithShowIn:_actionMenuOpened completion:nil];
-            [self.delegate roomInputToolbarViewDidOpenActionMenu:self];
         }
         else
         {
