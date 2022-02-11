@@ -478,3 +478,4 @@
 "attachment_unsupported_preview_message" = "Ce type de fichier n’est pas pris en charge.";
 "attachment_unsupported_preview_title" = "Prévisualisation impossible";
 "room_displayname_all_other_members_left" = "%@ (Quitté)";
+"message_reply_to_sender_sent_their_location" = "a partagé sa localisation.";
