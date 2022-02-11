@@ -122,8 +122,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     tableSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     tableSearchBar.showsCancelButton = NO;
     tableSearchBar.placeholder = [VectorL10n searchFilterPlaceholder];
-    UIImage *filterIcon = [UIImage imageNamed:@"filter_off"];
-    [tableSearchBar setImage:filterIcon
+    [tableSearchBar setImage:AssetImages.filterOff.image
             forSearchBarIcon:UISearchBarIconSearch
                        state:UIControlStateNormal];
 
@@ -175,8 +174,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     
     self.recentsSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.recentsSearchBar.placeholder = [VectorL10n searchFilterPlaceholder];
-    UIImage *filterIcon = [UIImage imageNamed:@"filter_off"];
-    [self.recentsSearchBar setImage:filterIcon
+    [self.recentsSearchBar setImage:AssetImages.filterOff.image
                    forSearchBarIcon:UISearchBarIconSearch
                               state:UIControlStateNormal];
 
@@ -2206,16 +2204,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 {
     [super searchBar:searchBar textDidChange:searchText];
 
-    UIImage *filterIcon;
-    if ([searchText length] == 0)
-    {
-        filterIcon = [UIImage imageNamed:@"filter_off"];
-    }
-    else
-    {
-        filterIcon = [UIImage imageNamed:@"threads_filter"];
-    }
-
+    UIImage *filterIcon = searchText.length > 0 ? AssetImages.filterOn.image : AssetImages.filterOff.image;
     [self.recentsSearchBar setImage:filterIcon
                    forSearchBarIcon:UISearchBarIconSearch
                               state:UIControlStateNormal];
