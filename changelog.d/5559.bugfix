@@ -1,0 +1,1 @@
+App Launch: Fix a potential issue where the green spinner is kept on screen when the room lists are ready.
