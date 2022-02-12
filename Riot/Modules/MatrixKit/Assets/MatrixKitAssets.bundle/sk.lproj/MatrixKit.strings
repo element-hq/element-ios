@@ -548,3 +548,6 @@
 "account_linked_emails" = "Prepojené e-maily";
 "room_event_encryption_info_event_fingerprint_key" = "Deklarovaný kľúč odtlačkov prstov Ed25519\n";
 "notification_settings_notify_all_other" = "Oznámiť pre všetky ostatné správy/miestnosti";
+"call_transfer_to_user" = "Presmerovať na používateľa %@";
+"call_more_actions_transfer" = "Presmerovať";
+"login_use_fallback" = "Použiť náhradnú stránku";
