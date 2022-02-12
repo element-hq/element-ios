@@ -22,7 +22,6 @@ import Foundation
 protocol AppNavigatorProtocol {
     
     var sideMenu: SideMenuPresentable { get }
-    var alert: AlertPresentable { get }
     
     /// Navigate to a destination screen or a state
     /// Do not use protocol with associatedtype for the moment like presented here https://www.swiftbysundell.com/articles/navigation-in-swift/#where-to-navigator use a separate enum

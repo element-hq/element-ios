@@ -288,8 +288,6 @@ fileprivate class AppNavigator: AppNavigatorProtocol {
     
     private unowned let appCoordinator: AppCoordinator
     
-    let alert: AlertPresentable
-    
     lazy var sideMenu: SideMenuPresentable = {
         guard let sideMenuCoordinator = appCoordinator.sideMenuCoordinator else {
             fatalError("sideMenuCoordinator is not initialized")
@@ -302,7 +300,6 @@ fileprivate class AppNavigator: AppNavigatorProtocol {
     
     init(appCoordinator: AppCoordinator) {
         self.appCoordinator = appCoordinator
-        self.alert = AppAlertPresenter(legacyAppDelegate: appCoordinator.legacyAppDelegate)
     }
     
     // MARK: - Public

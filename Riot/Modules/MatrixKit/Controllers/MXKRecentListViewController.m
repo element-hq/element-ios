@@ -220,7 +220,7 @@
         if ([MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession].isServerSyncInProgress)
         {
             // sync is in progress for at least one data source, keep running the loading wheel
-            [self.activityIndicator startAnimating];
+            [self startActivityIndicator];
             break;
         }
     }
