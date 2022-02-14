@@ -3259,7 +3259,7 @@ public class VectorL10n: NSObject {
   public static var roomEventActionForward: String { 
     return VectorL10n.tr("Vector", "room_event_action_forward") 
   }
-  /// Reason for kicking this user
+  /// Reason for removing this user
   public static var roomEventActionKickPromptReason: String { 
     return VectorL10n.tr("Vector", "room_event_action_kick_prompt_reason") 
   }

@@ -467,7 +467,7 @@ public class MatrixKitL10n: NSObject {
   public static var inviteUser: String { 
     return MatrixKitL10n.tr("invite_user") 
   }
-  /// Kick
+  /// Remove from chat
   public static var kick: String { 
     return MatrixKitL10n.tr("kick") 
   }
@@ -1059,11 +1059,11 @@ public class MatrixKitL10n: NSObject {
   public static func noticeRoomJoinRulePublicForDm(_ p1: String) -> String {
     return MatrixKitL10n.tr("notice_room_join_rule_public_for_dm", p1)
   }
-  /// %@ kicked %@
+  /// %@ removed %@
   public static func noticeRoomKick(_ p1: String, _ p2: String) -> String {
     return MatrixKitL10n.tr("notice_room_kick", p1, p2)
   }
-  /// You kicked %@
+  /// You removed %@
   public static func noticeRoomKickByYou(_ p1: String) -> String {
     return MatrixKitL10n.tr("notice_room_kick_by_you", p1)
   }
