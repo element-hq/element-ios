@@ -158,7 +158,8 @@ typedef NS_ENUM(NSUInteger, ABOUT)
 typedef NS_ENUM(NSUInteger, LABS_ENABLE)
 {
     LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX = 0,
-    LABS_ENABLE_THREADS_INDEX
+    LABS_ENABLE_THREADS_INDEX,
+    LABS_ENABLE_MESSAGE_BUBBLES_INDEX
 };
 
 typedef NS_ENUM(NSUInteger, SECURITY)
@@ -508,7 +509,9 @@ TableViewSectionsDelegate>
     
     if (BuildSettings.roomScreenAllowTimelineStyleConfiguration)
     {
-        [sectionUserInterface addRowWithTag:USER_INTERFACE_TIMELINE_STYLE_INDEX];
+        // NOTE: Message bubbles are under labs section atm
+        
+//        [sectionUserInterface addRowWithTag:USER_INTERFACE_TIMELINE_STYLE_INDEX];
     }
         
     [tmpSections addObject: sectionUserInterface];
@@ -566,6 +569,7 @@ TableViewSectionsDelegate>
         Section *sectionLabs = [Section sectionWithTag:SECTION_TAG_LABS];
         [sectionLabs addRowWithTag:LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX];
         [sectionLabs addRowWithTag:LABS_ENABLE_THREADS_INDEX];
+        [sectionLabs addRowWithTag:LABS_ENABLE_MESSAGE_BUBBLES_INDEX];
         sectionLabs.headerTitle = [VectorL10n settingsLabs];
         if (sectionLabs.hasAnyRows)
         {
@@ -1469,6 +1473,21 @@ TableViewSectionsDelegate>
     return [footerText copy];
 }
 
+- (UITableViewCell *)buildMessageBubblesCellForTableView:(UITableView*)tableView
+                                             atIndexPath:(NSIndexPath*)indexPath
+{
+    MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+    
+    labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsEnableRoomMessageBubbles];
+    
+    labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.roomScreenEnableMessageBubbles;
+    labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+    labelAndSwitchCell.mxkSwitch.enabled = YES;
+    [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableRoomMessageBubbles:) forControlEvents:UIControlEventTouchUpInside];
+    
+    return labelAndSwitchCell;
+}
+
 #pragma mark - 3Pid Add
 
 - (void)showAuthenticationIfNeededForAdding:(MX3PIDMedium)medium withSession:(MXSession*)session completion:(void (^)(NSDictionary* authParams))completion
@@ -2206,16 +2225,7 @@ TableViewSectionsDelegate>
         }
         else if (row == USER_INTERFACE_TIMELINE_STYLE_INDEX)
         {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-            
-            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsEnableRoomMessageBubbles];
-            
-            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.roomScreenEnableMessageBubbles;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableRoomMessageBubbles:) forControlEvents:UIControlEventTouchUpInside];
-            
-            cell = labelAndSwitchCell;
+            cell = [self buildMessageBubblesCellForTableView:tableView atIndexPath:indexPath];
         }
     }
     else if (section == SECTION_TAG_IGNORED_USERS)
@@ -2445,6 +2455,10 @@ TableViewSectionsDelegate>
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableThreads:) forControlEvents:UIControlEventValueChanged];
             
             cell = labelAndSwitchCell;
+        }
+        else if (row == LABS_ENABLE_MESSAGE_BUBBLES_INDEX)
+        {
+            cell = [self buildMessageBubblesCellForTableView:tableView atIndexPath:indexPath];
         }
     }
     else if (section == SECTION_TAG_FLAIR)
