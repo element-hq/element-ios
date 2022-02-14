@@ -31,7 +31,7 @@ final class FileWithoutThumbnailCellContentView: UIView, NibLoadable {
     // MARK: Outlets
     
     @IBOutlet private weak var iconImageView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private(set) weak var titleLabel: UILabel!
     
     // MARK: Public
     
@@ -41,15 +41,6 @@ final class FileWithoutThumbnailCellContentView: UIView, NibLoadable {
         }
         set {
             self.iconImageView.image = newValue
-        }
-    }
-    
-    var title: String? {
-        get {
-            return self.titleLabel.text
-        }
-        set {
-            self.titleLabel.text = newValue
         }
     }
     
@@ -79,4 +70,3 @@ final class FileWithoutThumbnailCellContentView: UIView, NibLoadable {
         self.titleLabel.textColor = theme.textPrimaryColor
     }
 }
-

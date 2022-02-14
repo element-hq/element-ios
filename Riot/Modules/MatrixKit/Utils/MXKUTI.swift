@@ -20,7 +20,7 @@ import MobileCoreServices
 
 // We do not use the SwiftUTI pod anymore
 // The library is embedded in MatrixKit. See Libs/SwiftUTI/README.md for more details
-//import SwiftUTI
+// import SwiftUTI
 
 /// MXKUTI represents a Universal Type Identifier (e.g. kUTTypePNG).
 /// See https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/understanding_utis/understand_utis_conc/understand_utis_conc.html#//apple_ref/doc/uid/TP40001319-CH202-SW5 for more information.
@@ -134,6 +134,8 @@ extension MXKUTI {
         self.init(rawValue: uti as String)
     }
     
+    // swiftlint:disable unused_optional_binding
+    
     /// Initialize with local file URL.
     /// This method is currently applicable only to URLs for file system resources.
     ///
@@ -152,6 +154,8 @@ extension MXKUTI {
             return nil
         }
     }
+    
+    // swiftlint:enable unused_optional_binding
     
     public convenience init?(localFileURL: URL) {
         self.init(localFileURL: localFileURL, loadResourceValues: true)
@@ -173,6 +177,8 @@ extension MXKUTI {
     }
 }
 
+// swiftlint:disable force_unwrapping
+
 // MARK: - Some system defined UTIs
 extension MXKUTI {
     public static let data = MXKUTI(cfRawValue: kUTTypeData)!
@@ -189,6 +195,8 @@ extension MXKUTI {
     public static let html = MXKUTI(cfRawValue: kUTTypeHTML)!
     public static let xml = MXKUTI(cfRawValue: kUTTypeXML)!
 }
+
+// swiftlint:enable force_unwrapping
 
 // MARK: - Convenience static methods
 extension MXKUTI {

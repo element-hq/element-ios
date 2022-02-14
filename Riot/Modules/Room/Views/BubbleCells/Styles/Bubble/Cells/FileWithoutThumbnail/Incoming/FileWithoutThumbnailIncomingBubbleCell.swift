@@ -16,7 +16,7 @@
 
 import UIKit
 
-class FileWithoutThumbnailIncomingBubbleCell: FileWithoutThumbnailBaseBubbleCell {
+class FileWithoutThumbnailIncomingBubbleCell: FileWithoutThumbnailBaseBubbleCell, BubbleIncomingRoomCellProtocol {
     
     override func setupViews() {
         super.setupViews()
@@ -29,6 +29,8 @@ class FileWithoutThumbnailIncomingBubbleCell: FileWithoutThumbnailBaseBubbleCell
         
         bubbleCellContentView?.innerContentViewTrailingConstraint.constant = messageViewMarginRight
         bubbleCellContentView?.innerContentViewLeadingConstraint.constant = messageLeftMargin
+        
+        self.setupBubbleDecorations()
     }
     
     override func update(theme: Theme) {

@@ -32,8 +32,8 @@ class PlainRoomTimelineStyle: RoomTimelineStyle {
     
     let cellProvider: RoomTimelineCellProvider
     
-    let cellDecorator: RoomTimelineCellDecorator    
- 
+    let cellDecorator: RoomTimelineCellDecorator
+     
     // MARK: - Setup
     
     init(theme: Theme) {

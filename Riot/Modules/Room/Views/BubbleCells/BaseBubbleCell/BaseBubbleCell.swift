@@ -77,7 +77,7 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
     override var pictureView: MXKImageView! {
         get {
             guard let bubbleCellContentView = self.bubbleCellContentView,
-                bubbleCellContentView.showSenderInfo else {
+                bubbleCellContentView.showSenderAvatar else {
                 return nil
             }
             
@@ -93,8 +93,7 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
     
     override var userNameLabel: UILabel! {
         get {
-            guard let bubbleCellContentView = self.bubbleCellContentView,
-                bubbleCellContentView.showSenderInfo else {
+            guard let bubbleCellContentView = self.bubbleCellContentView, bubbleCellContentView.showSenderName  else {
                 return nil
             }
             
@@ -111,7 +110,7 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
     override var userNameTapGestureMaskView: UIView! {
         get {
             guard let bubbleCellContentView = self.bubbleCellContentView,
-                bubbleCellContentView.showSenderInfo else {
+                bubbleCellContentView.showSenderName else {
                 return nil
             }
             
@@ -144,7 +143,33 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
     
     // MARK: - Public
     
+    func removeDecorationViews() {
+        if let bubbleCellReadReceiptsDisplayable = self as? BubbleCellReadReceiptsDisplayable {
+            bubbleCellReadReceiptsDisplayable.removeReadReceiptsView()
+        }
+        
+        if let bubbleCellReactionsDisplayable = self as? BubbleCellReactionsDisplayable {
+            bubbleCellReactionsDisplayable.removeReactionsView()
+        }
+
+        if let bubbleCellThreadSummaryDisplayable = self as? BubbleCellThreadSummaryDisplayable {
+            bubbleCellThreadSummaryDisplayable.removeThreadSummaryView()
+        }
+        
+        if let timestampDisplayable = self as? TimestampDisplayable {
+            timestampDisplayable.removeTimestampView()
+        }
+        
+        if let urlPreviewDisplayable = self as? RoomCellURLPreviewDisplayable {
+            urlPreviewDisplayable.removeURLPreviewView()
+        }
+    }
+    
     // MARK: - Overrides
+    
+    override var isTextViewNeedsPositioningVerticalSpace: Bool {
+        return false
+    }
     
     override func setupViews() {
         super.setupViews()
@@ -160,20 +185,10 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
         return String(describing: self)
     }
     
-    override func didEndDisplay() {
-        super.didEndDisplay()
+    override func prepareForReuse() {
+        super.prepareForReuse()
         
-        if let bubbleCellReadReceiptsDisplayable = self as? BubbleCellReadReceiptsDisplayable {
-            bubbleCellReadReceiptsDisplayable.removeReadReceiptsView()
-        }
-        
-        if let bubbleCellReactionsDisplayable = self as? BubbleCellReactionsDisplayable {
-            bubbleCellReactionsDisplayable.removeReactionsView()
-        }
-
-        if let bubbleCellThreadSummaryDisplayable = self as? BubbleCellThreadSummaryDisplayable {
-            bubbleCellThreadSummaryDisplayable.removeThreadSummaryView()
-        }
+        self.removeDecorationViews()
     }
     
     override func render(_ cellData: MXKCellData!) {
@@ -230,11 +245,28 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
         self.bubbleCellContentView = bubbleCellContentView
     }
     
+    // MARK: - RoomCellURLPreviewDisplayable
+    // Cannot use default implementation with ObjC protocol, if self conforms to BubbleCellReadReceiptsDisplayable method below will be used
+    
+    func addURLPreviewView(_ urlPreviewView: UIView) {
+        self.bubbleCellContentView?.addURLPreviewView(urlPreviewView)
+        
+        // tmpSubviews is used for touch detection in MXKRoomBubbleTableViewCell
+        self.addTemporarySubview(urlPreviewView)
+    }
+    
+    func removeURLPreviewView() {
+        self.bubbleCellContentView?.removeURLPreviewView()
+    }
+    
     // MARK: - BubbleCellReadReceiptsDisplayable
     // Cannot use default implementation with ObjC protocol, if self conforms to BubbleCellReadReceiptsDisplayable method below will be used
     
     func addReadReceiptsView(_ readReceiptsView: UIView) {
         self.bubbleCellContentView?.addReadReceiptsView(readReceiptsView)
+        
+        // tmpSubviews is used for touch detection in MXKRoomBubbleTableViewCell
+        self.addTemporarySubview(readReceiptsView)
     }
     
     func removeReadReceiptsView() {
@@ -246,6 +278,9 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
     
     func addReactionsView(_ reactionsView: UIView) {
         self.bubbleCellContentView?.addReactionsView(reactionsView)
+        
+        // tmpSubviews is used for touch detection in MXKRoomBubbleTableViewCell
+        self.addTemporarySubview(reactionsView)
     }
     
     func removeReactionsView() {
@@ -256,6 +291,9 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
 
     func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView) {
         self.bubbleCellContentView?.addThreadSummaryView(threadSummaryView)
+        
+        // tmpSubviews is used for touch detection in MXKRoomBubbleTableViewCell
+        self.addTemporarySubview(threadSummaryView)
     }
 
     func removeThreadSummaryView() {

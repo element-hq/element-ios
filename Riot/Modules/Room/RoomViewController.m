@@ -90,7 +90,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
 NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTileTappedNotification";
 const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
-@interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
+@interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
     RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, ThreadsCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate>
@@ -442,7 +442,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     if (ThemeService.shared.isCurrentThemeDark)
     {
-        [self.scrollToBottomButton setImage:[UIImage imageNamed:@"scrolldown_dark"] forState:UIControlStateNormal];
+        [self.scrollToBottomButton setImage:AssetImages.scrolldownDark.image forState:UIControlStateNormal];
 
         self.jumpToLastUnreadBanner.backgroundColor = ThemeService.shared.theme.colors.navigation;
         [self.jumpToLastUnreadBanner vc_removeShadow];
@@ -450,7 +450,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     else
     {
-        [self.scrollToBottomButton setImage:[UIImage imageNamed:@"scrolldown"] forState:UIControlStateNormal];
+        [self.scrollToBottomButton setImage:AssetImages.scrolldown.image forState:UIControlStateNormal];
         
         self.jumpToLastUnreadBanner.backgroundColor = ThemeService.shared.theme.colors.background;
         [self.jumpToLastUnreadBanner vc_addShadowWithColor:ThemeService.shared.theme.shadowColor
@@ -1429,7 +1429,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (UIBarButtonItem *)videoCallBarButtonItem
 {
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"video_call"]
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:AssetImages.videoCall.image
                                                              style:UIBarButtonItemStylePlain
                                                             target:self
                                                             action:@selector(onVideoCallPressed:)];
@@ -1440,7 +1440,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (UIBarButtonItem *)threadMoreBarButtonItem
 {
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"room_context_menu_more"]
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:AssetImages.roomContextMenuMore.image
                                                              style:UIBarButtonItemStylePlain
                                                             target:self
                                                             action:@selector(onButtonPressed:)];
@@ -1452,7 +1452,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 - (BadgedBarButtonItem *)threadListBarButtonItem
 {
     UIButton *button = [UIButton new];
-    UIImage *icon = [[UIImage imageNamed:@"threads_icon"] vc_resizedWith:CGSizeMake(21, 21)];
+    UIImage *icon = [AssetImages.threadsIcon.image vc_resizedWith:CGSizeMake(21, 21)];
     button.contentEdgeInsets = UIEdgeInsetsMake(4, 8, 4, 8);
     [button setImage:icon
             forState:UIControlStateNormal];
@@ -1609,7 +1609,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 if (self.roomDataSource.room.summary.membersCount.joined == 2 && self.roomDataSource.room.isDirect)
                 {
                     //  voice call button for Matrix call
-                    UIBarButtonItem *itemVoice = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"voice_call_hangon_icon"]
+                    UIBarButtonItem *itemVoice = [[UIBarButtonItem alloc] initWithImage:AssetImages.voiceCallHangonIcon.image
                                                                                   style:UIBarButtonItemStylePlain
                                                                                  target:self
                                                                                  action:@selector(onVoiceCallPressed:)];
@@ -1638,7 +1638,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                         {
                             //  show Join button
                             CallTileActionButton *button = [CallTileActionButton new];
-                            [button setImage:[UIImage imageNamed:@"call_video_icon"]
+                            [button setImage:AssetImages.callVideoIcon.image
                                     forState:UIControlStateNormal];
                             [button setTitle:[VectorL10n roomJoinGroupCall]
                                     forState:UIControlStateNormal];
@@ -1660,7 +1660,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                         UIBarButtonItem *item = [self videoCallBarButtonItem];
                         if (!self.canEditJitsiWidget)
                         {
-                            item.image = [[UIImage imageNamed:@"video_call"] vc_withAlpha:0.3];
+                            item.image = [AssetImages.videoCall.image vc_withAlpha:0.3];
                         }
                         [rightBarButtonItems addObject:item];
                     }
@@ -1669,7 +1669,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             
             if ([self widgetsCount:NO])
             {
-                UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"integrations_icon"]
+                UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:AssetImages.integrationsIcon.image
                                                                          style:UIBarButtonItemStylePlain
                                                                         target:self
                                                                         action:@selector(onIntegrationsPressed:)];
@@ -1986,7 +1986,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     NSMutableArray *actionItems = [NSMutableArray new];
     if (RiotSettings.shared.roomScreenAllowMediaLibraryAction)
     {
-        [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_media_library"] andAction:^{
+        [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionMediaLibrary.image andAction:^{
             MXStrongifyAndReturnIfNil(self);
             if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
                 ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
@@ -1996,7 +1996,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     if (RiotSettings.shared.roomScreenAllowStickerAction)
     {
-        [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_sticker"] andAction:^{
+        [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionSticker.image andAction:^{
             MXStrongifyAndReturnIfNil(self);
             if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
                 ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
@@ -2006,7 +2006,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     if (RiotSettings.shared.roomScreenAllowFilesAction)
     {
-        [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_file"] andAction:^{
+        [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionFile.image andAction:^{
             MXStrongifyAndReturnIfNil(self);
             if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
                 ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
@@ -2016,7 +2016,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     if (BuildSettings.pollsEnabled && self.displayConfiguration.sendingPollsEnabled)
     {
-        [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_poll"] andAction:^{
+        [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionPoll.image andAction:^{
             MXStrongifyAndReturnIfNil(self);
             if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
                 ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
@@ -2026,7 +2026,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     if (BuildSettings.locationSharingEnabled)
     {
-        [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_location"] andAction:^{
+        [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionLocation.image andAction:^{
             MXStrongifyAndReturnIfNil(self);
             if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
                 ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
@@ -2036,7 +2036,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     if (RiotSettings.shared.roomScreenAllowCameraAction)
     {
-        [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_camera"] andAction:^{
+        [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionCamera.image andAction:^{
             MXStrongifyAndReturnIfNil(self);
             if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
                 ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
@@ -2553,7 +2553,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }
             else
             {
-                previewHeader.roomAvatarPlaceholder = [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
+                previewHeader.roomAvatarPlaceholder = [MXKTools paintImage:AssetImages.placeholder.image
                                                                  withColor:ThemeService.shared.theme.tintColor];
             }
         }
@@ -2585,7 +2585,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             
             self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.adjustedContentInset.top;
             
-            previewHeader.roomAvatar.alpha = 1;
+            self->previewHeader.roomAvatar.alpha = 1;
             
             // Force to render the view
             [self forceLayoutRefresh];
@@ -2749,17 +2749,35 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     else if (bubbleData.tag == RoomBubbleCellDataTagPoll)
     {
-        if (bubbleData.isPaginationFirstBubble)
+        if (bubbleData.isIncoming)
         {
-            cellIdentifier = RoomTimelineCellIdentifierPollWithPaginationTitle;
-        }
-        else if (bubbleData.shouldHideSenderInformation)
-        {
-            cellIdentifier = RoomTimelineCellIdentifierPollWithoutSenderInfo;
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingPollWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingPollWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingPoll;
+            }
         }
         else
         {
-            cellIdentifier = RoomTimelineCellIdentifierPoll;
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingPollWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingPollWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingPoll;
+            }
         }
     }
     else if (bubbleData.tag == RoomBubbleCellDataTagLocation)
@@ -2792,6 +2810,61 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             else
             {
                 cellIdentifier = RoomTimelineCellIdentifierOutgoingLocation;
+            }
+        }
+    }
+    else if (roomBubbleCellData.getFirstBubbleComponentWithDisplay.event.isEmote)
+    {
+        if (bubbleData.isIncoming)
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                if (bubbleData.shouldHideSenderName)
+                {
+                    cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingEmoteEncryptedWithPaginationTitleWithoutSenderName : RoomTimelineCellIdentifierIncomingEmoteWithPaginationTitleWithoutSenderName;
+                }
+                else
+                {
+                    cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingEmoteEncryptedWithPaginationTitle : RoomTimelineCellIdentifierIncomingEmoteWithPaginationTitle;
+                }
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingEmoteEncryptedWithoutSenderInfo : RoomTimelineCellIdentifierIncomingEmoteWithoutSenderInfo;
+            }
+            else if (bubbleData.shouldHideSenderName)
+            {
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingEmoteEncryptedWithoutSenderName : RoomTimelineCellIdentifierIncomingEmoteWithoutSenderName;
+            }
+            else
+            {
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingEmoteEncrypted : RoomTimelineCellIdentifierIncomingEmote;
+            }
+        }
+        else
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                if (bubbleData.shouldHideSenderName)
+                {
+                    cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingEmoteEncryptedWithPaginationTitleWithoutSenderName : RoomTimelineCellIdentifierOutgoingEmoteWithPaginationTitleWithoutSenderName;
+                }
+                else
+                {
+                    cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingEmoteEncryptedWithPaginationTitle : RoomTimelineCellIdentifierOutgoingEmoteWithPaginationTitle;
+                }
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingEmoteEncryptedWithoutSenderInfo : RoomTimelineCellIdentifierOutgoingEmoteWithoutSenderInfo;
+            }
+            else if (bubbleData.shouldHideSenderName)
+            {
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingEmoteEncryptedWithoutSenderName : RoomTimelineCellIdentifierOutgoingEmoteWithoutSenderName;
+            }
+            else
+            {
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingEmoteEncrypted : RoomTimelineCellIdentifierOutgoingEmote;
             }
         }
     }
@@ -3441,9 +3514,15 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 
                 [self cancelEventSelection];
                 
-                NSArray *activityItems = @[selectedComponent.textMessage];
+                UIActivityViewController *activityViewController = nil;
+                if (selectedEvent.location) {
+                    activityViewController = [self.delegate roomViewController:self locationShareActivityViewControllerForEvent:selectedEvent];
+                }
                 
-                UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+                if (activityViewController == nil) {
+                    NSArray *activityItems = @[selectedComponent.textMessage];
+                    activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+                }
                 
                 if (activityViewController)
                 {
@@ -3638,7 +3717,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 {
                     MXKPasteboardManager.shared.pasteboard.URL = url;
                     [self.view vc_toastWithMessage:VectorL10n.roomEventCopyLinkInfo
-                                             image:[UIImage imageNamed:@"link_icon"]
+                                             image:AssetImages.linkIcon.image
                                           duration:2.0
                                           position:ToastPositionBottom
                                   additionalMargin:self.roomInputToolbarContainerHeightConstraint.constant];
@@ -5656,6 +5735,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     self->encryptionInfoView = encryptionInfoView;
     
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated"
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
                                                           attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
@@ -5671,6 +5752,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                                           attribute:NSLayoutAttributeTop
                                                          multiplier:1.0f
                                                            constant:-10.0f]];
+    #pragma clang diagnostic pop
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.view
                                                           attribute:NSLayoutAttributeLeading
@@ -5750,19 +5832,19 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 [UIView animateWithDuration:1.5 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                                  animations:^{
                     
-                    readMarkerTableViewCell.readMarkerViewLeadingConstraint.constant = readMarkerTableViewCell.readMarkerViewTrailingConstraint.constant = readMarkerTableViewCell.bubbleOverlayContainer.frame.size.width / 2;
-                    readMarkerTableViewCell.readMarkerView.alpha = 0;
+                    self->readMarkerTableViewCell.readMarkerViewLeadingConstraint.constant = self->readMarkerTableViewCell.readMarkerViewTrailingConstraint.constant = self->readMarkerTableViewCell.bubbleOverlayContainer.frame.size.width / 2;
+                    self->readMarkerTableViewCell.readMarkerView.alpha = 0;
                     
                     // Force to render the view
-                    [readMarkerTableViewCell.bubbleOverlayContainer layoutIfNeeded];
+                    [self->readMarkerTableViewCell.bubbleOverlayContainer layoutIfNeeded];
                     
                 }
                                  completion:^(BOOL finished){
                     
-                    readMarkerTableViewCell.readMarkerView.hidden = YES;
-                    readMarkerTableViewCell.readMarkerView.alpha = 1;
+                    self->readMarkerTableViewCell.readMarkerView.hidden = YES;
+                    self->readMarkerTableViewCell.readMarkerView.alpha = 1;
                     
-                    readMarkerTableViewCell = nil;
+                    self->readMarkerTableViewCell = nil;
                 }];
                 
             });

@@ -88,13 +88,9 @@ final class EmojiPickerViewModel: EmojiPickerViewModelType {
                     self.emojiStore.set(emojiCategories)
                     
                     let emojiCatagoryViewDataList = self.emojiCatagoryViewDataList(from: emojiCategories)
-                    DispatchQueue.main.async {
-                        self.update(viewState: .loaded(emojiCategories: emojiCatagoryViewDataList))
-                    }
+                    self.update(viewState: .loaded(emojiCategories: emojiCatagoryViewDataList))
                 case .failure(let error):
-                    DispatchQueue.main.async {
-                        self.update(viewState: .error(error))
-                    }
+                    self.update(viewState: .error(error))
                 }
             }
         }

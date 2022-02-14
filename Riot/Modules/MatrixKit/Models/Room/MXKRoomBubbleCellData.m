@@ -28,7 +28,7 @@
 
 @implementation MXKRoomBubbleCellData
 @synthesize senderId, targetId, roomId, senderDisplayName, senderAvatarUrl, senderAvatarPlaceholder, targetDisplayName, targetAvatarUrl, targetAvatarPlaceholder, isEncryptedRoom, isPaginationFirstBubble, shouldHideSenderInformation, date, isIncoming, isAttachmentWithThumbnail, isAttachmentWithIcon, attachment, senderFlair;
-@synthesize textMessage, attributedTextMessage;
+@synthesize textMessage, attributedTextMessage, attributedTextMessageWithoutPositioningSpace;
 @synthesize shouldHideSenderName, isTyping, showBubbleDateTime, showBubbleReceipts, useCustomDateTimeLabel, useCustomReceipts, useCustomUnsentButton, hasNoDisplay;
 @synthesize tag;
 @synthesize collapsable, collapsed, collapsedAttributedTextMessage, prevCollapsableCellData, nextCollapsableCellData, collapseState;

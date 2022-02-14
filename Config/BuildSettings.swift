@@ -146,8 +146,6 @@ final class BuildSettings: NSObject {
     static let stunServerFallbackUrlString: String? = "stun:turn.matrix.org"
     
     // MARK: -  Public rooms Directory
-    #warning("Unused build setting: should this be implemented in ShowDirectory?")
-    static let publicRoomsAllowServerChange: Bool = true
     // List of homeservers for the public rooms directory
     static let publicRoomsDirectoryServers = [
         "matrix.org",
@@ -293,7 +291,7 @@ final class BuildSettings: NSObject {
     static let roomScreenAllowFilesAction: Bool = true
     
     // Timeline style
-    static let roomScreenAllowTimelineStyleConfiguration: Bool = false
+    static let roomScreenAllowTimelineStyleConfiguration: Bool = true
     static let roomScreenTimelineDefaultStyleIdentifier: RoomTimelineStyleIdentifier = .plain
     static var isRoomScreenEnableMessageBubblesByDefault: Bool {
         return self.roomScreenTimelineDefaultStyleIdentifier == .bubble
@@ -372,7 +370,7 @@ final class BuildSettings: NSObject {
     
     // MARK: - Location Sharing
     
-    static let tileServerMapURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx")!
+    static let tileServerMapStyleURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx")!
     
     static var locationSharingEnabled: Bool {
         guard #available(iOS 14, *) else {

@@ -531,7 +531,8 @@
     
     self.addAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         MXStrongifyAndReturnIfNil(self);
-#warning What was this doing? This should probably happen elsewhere
+
+        // What was this doing? This should probably happen elsewhere
         // self.onboardingCoordinatorBridgePresenter = nil;
         
         [[NSNotificationCenter defaultCenter] removeObserver:self.addAccountObserver];
@@ -541,7 +542,8 @@
     self.removeAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         MXStrongifyAndReturnIfNil(self);
         // The user has cleared data for their soft logged out account
-#warning What was this doing? This should probably happen elsewhere
+
+        // What was this doing? This should probably happen elsewhere
         // self.onboardingCoordinatorBridgePresenter = nil;
         
         [[NSNotificationCenter defaultCenter] removeObserver:self.removeAccountObserver];

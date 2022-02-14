@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import UIKit
 
 class RoomMessageBubbleBackgroundView: UIView {
     
@@ -27,6 +28,7 @@ class RoomMessageBubbleBackgroundView: UIView {
     // MARK: - Properties
     
     private var heightConstraint: NSLayoutConstraint?
+    fileprivate weak var timestampView: UIView?
     
     // MARK: - Setup
     
@@ -70,5 +72,38 @@ class RoomMessageBubbleBackgroundView: UIView {
             
             return true
         }
+    }
+}
+
+// MARK: - TimestampDisplayable
+extension RoomMessageBubbleBackgroundView: TimestampDisplayable {
+    
+    func addTimestampView(_ timestampView: UIView) {
+        
+        self.removeTimestampView()
+        
+        self.addTimestampView(timestampView, rightMargin: 8.0, bottomMargin: 4.0)
+        self.timestampView = timestampView
+    }
+    
+    func removeTimestampView() {
+        self.timestampView?.removeFromSuperview()
+    }
+    
+    func addTimestampView(_ timestampView: UIView,
+                          rightMargin: CGFloat,
+                          bottomMargin: CGFloat) {
+        timestampView.translatesAutoresizingMaskIntoConstraints = false
+                
+        self.addSubview(timestampView)
+        
+        let trailingConstraint = timestampView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -rightMargin)
+
+        let bottomConstraint = timestampView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -bottomMargin)
+
+        NSLayoutConstraint.activate([
+            trailingConstraint,
+            bottomConstraint
+        ])
     }
 }

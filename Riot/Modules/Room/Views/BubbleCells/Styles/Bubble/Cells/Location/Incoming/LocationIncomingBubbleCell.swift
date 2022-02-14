@@ -16,7 +16,7 @@
 
 import Foundation
 
-class LocationIncomingBubbleCell: LocationBubbleCell {
+class LocationIncomingBubbleCell: LocationBubbleCell, BubbleIncomingRoomCellProtocol {
             
     override func setupViews() {
         super.setupViews()
@@ -27,5 +27,7 @@ class LocationIncomingBubbleCell: LocationBubbleCell {
         
         bubbleCellContentView?.innerContentViewTrailingConstraint.constant = messageViewMarginRight
         bubbleCellContentView?.innerContentViewLeadingConstraint.constant = messageLeftMargin
+        
+        self.setupBubbleDecorations()
     }
 }

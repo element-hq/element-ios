@@ -64,6 +64,28 @@
     [self registerFileWithoutThumbnailCellsForTableView:tableView];
 }
 
+- (void)registerIncomingTextMessageCellsForTableView:(UITableView*)tableView
+{
+    // Also register legacy cells for notice and emotes
+    [super registerIncomingTextMessageCellsForTableView:tableView];
+    
+    [tableView registerClass:TextMessageIncomingBubbleCell.class forCellReuseIdentifier:TextMessageIncomingBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:TextMessageIncomingWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:TextMessageIncomingWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:TextMessageIncomingWithoutSenderNameBubbleCell.class forCellReuseIdentifier:TextMessageIncomingWithoutSenderNameBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:TextMessageIncomingWithPaginationTitleBubbleCell.class forCellReuseIdentifier:TextMessageIncomingWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:TextMessageIncomingWithPaginationTitleWithoutSenderNameBubbleCell.class forCellReuseIdentifier:TextMessageIncomingWithPaginationTitleWithoutSenderNameBubbleCell.defaultReuseIdentifier];
+}
+
+- (void)registerOutgoingTextMessageCellsForTableView:(UITableView*)tableView
+{
+    // Also register legacy cells for notice and emotes
+    [super registerOutgoingTextMessageCellsForTableView:tableView];
+    
+    [tableView registerClass:TextMessageOutgoingWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:TextMessageOutgoingWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:TextMessageOutgoingWithPaginationTitleBubbleCell.class forCellReuseIdentifier:TextMessageOutgoingWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:TextMessageOutgoingWithPaginationTitleWithoutSenderNameBubbleCell.class forCellReuseIdentifier:TextMessageOutgoingWithPaginationTitleWithoutSenderNameBubbleCell.defaultReuseIdentifier];
+}
+
 - (void)registerVoiceMessageCellsForTableView:(UITableView*)tableView
 {
     // Incoming
@@ -73,6 +95,17 @@
     // Outgoing
     [tableView registerClass:VoiceMessageOutgoingWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:VoiceMessageOutgoingWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
     [tableView registerClass:VoiceMessageOutgoingWithPaginationTitleBubbleCell.class forCellReuseIdentifier:VoiceMessageOutgoingWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+}
+
+- (void)registerPollCellsForTableView:(UITableView *)tableView
+{
+    // Incoming
+    [tableView registerClass:PollIncomingBubbleCell.class forCellReuseIdentifier:PollIncomingBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:PollIncomingWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:PollIncomingWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:PollIncomingWithPaginationTitleBubbleCell.class forCellReuseIdentifier:PollIncomingWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    // Outgoing
+    [tableView registerClass:PollOutgoingWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:PollOutgoingWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:PollOutgoingWithPaginationTitleBubbleCell.class forCellReuseIdentifier:PollOutgoingWithPaginationTitleBubbleCell.defaultReuseIdentifier];
 }
 
 - (void)registerLocationCellsForTableView:(UITableView*)tableView
@@ -101,22 +134,77 @@
 
 #pragma mark - Mapping
 
+- (NSDictionary<NSNumber*, Class>*)incomingTextMessageCellsMapping
+{
+    return @{
+        // Clear
+        @(RoomTimelineCellIdentifierIncomingTextMessage) : TextMessageIncomingBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingTextMessageWithoutSenderInfo) : TextMessageIncomingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingTextMessageWithPaginationTitle) : TextMessageIncomingWithPaginationTitleBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingTextMessageWithoutSenderName) : TextMessageIncomingWithoutSenderNameBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingTextMessageWithPaginationTitleWithoutSenderName) : TextMessageIncomingWithPaginationTitleWithoutSenderNameBubbleCell.class,
+        // Encrypted
+        @(RoomTimelineCellIdentifierIncomingTextMessageEncrypted) : TextMessageIncomingBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingTextMessageEncryptedWithoutSenderInfo) : TextMessageIncomingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingTextMessageEncryptedWithPaginationTitle) : TextMessageIncomingWithPaginationTitleBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingTextMessageEncryptedWithoutSenderName) : TextMessageIncomingWithoutSenderNameBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingTextMessageEncryptedWithPaginationTitleWithoutSenderName) : TextMessageIncomingWithPaginationTitleWithoutSenderNameBubbleCell.class,
+    };
+}
+
 - (NSDictionary<NSNumber*, Class>*)outgoingTextMessageCellsMapping
 {
     // Hide sender info and avatar for bubble outgoing messages
     return @{
         // Clear
-        @(RoomTimelineCellIdentifierOutgoingTextMessage) : RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.class,
-        @(RoomTimelineCellIdentifierOutgoingTextMessageWithoutSenderInfo) : RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.class,
-        @(RoomTimelineCellIdentifierOutgoingTextMessageWithPaginationTitle) : RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class,
-        @(RoomTimelineCellIdentifierOutgoingTextMessageWithoutSenderName) : RoomOutgoingTextMsgWithoutSenderNameBubbleCell.class,
-        @(RoomTimelineCellIdentifierOutgoingTextMessageWithPaginationTitleWithoutSenderName) : RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingTextMessage) : TextMessageOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingTextMessageWithoutSenderInfo) : TextMessageOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingTextMessageWithPaginationTitle) : TextMessageOutgoingWithPaginationTitleBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingTextMessageWithoutSenderName) : TextMessageOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingTextMessageWithPaginationTitleWithoutSenderName) : TextMessageOutgoingWithPaginationTitleWithoutSenderNameBubbleCell.class,
         // Encrypted
-        @(RoomTimelineCellIdentifierOutgoingTextMessageEncrypted) : RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.class,
-        @(RoomTimelineCellIdentifierOutgoingTextMessageEncryptedWithoutSenderInfo) : RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.class,
-        @(RoomTimelineCellIdentifierOutgoingTextMessageEncryptedWithPaginationTitle) : RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class,
-        @(RoomTimelineCellIdentifierOutgoingTextMessageEncryptedWithoutSenderName) : RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.class,
-        @(RoomTimelineCellIdentifierOutgoingTextMessageEncryptedWithPaginationTitleWithoutSenderName) : RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingTextMessageEncrypted) : TextMessageOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingTextMessageEncryptedWithoutSenderInfo) : TextMessageOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingTextMessageEncryptedWithPaginationTitle) : TextMessageOutgoingWithPaginationTitleBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingTextMessageEncryptedWithoutSenderName) : TextMessageOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingTextMessageEncryptedWithPaginationTitleWithoutSenderName) : TextMessageOutgoingWithPaginationTitleWithoutSenderNameBubbleCell.class,
+    };
+}
+
+- (NSDictionary<NSNumber*, Class>*)incomingEmoteCellsMapping
+{
+    return @{
+        // Clear
+        @(RoomTimelineCellIdentifierIncomingEmote) : TextMessageIncomingBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingEmoteWithoutSenderInfo) : TextMessageIncomingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingEmoteWithPaginationTitle) : TextMessageIncomingWithPaginationTitleBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingEmoteWithoutSenderName) : TextMessageIncomingWithoutSenderNameBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingEmoteWithPaginationTitleWithoutSenderName) : TextMessageIncomingWithPaginationTitleWithoutSenderNameBubbleCell.class,
+        // Encrypted
+        @(RoomTimelineCellIdentifierIncomingEmoteEncrypted) : TextMessageIncomingBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingEmoteEncryptedWithoutSenderInfo) : TextMessageIncomingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingEmoteEncryptedWithPaginationTitle) : TextMessageIncomingWithPaginationTitleBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingEmoteEncryptedWithoutSenderName) : TextMessageIncomingWithoutSenderNameBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingEmoteEncryptedWithPaginationTitleWithoutSenderName) : TextMessageIncomingWithPaginationTitleWithoutSenderNameBubbleCell.class,
+    };
+}
+
+- (NSDictionary<NSNumber*, Class>*)outgoingEmoteCellsMapping
+{
+    // Hide sender info and avatar for bubble outgoing messages
+    return @{
+        // Clear
+        @(RoomTimelineCellIdentifierOutgoingEmote) : TextMessageOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingEmoteWithoutSenderInfo) : TextMessageOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingEmoteWithPaginationTitle) : TextMessageOutgoingWithPaginationTitleBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingEmoteWithoutSenderName) : TextMessageOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingEmoteWithPaginationTitleWithoutSenderName) : TextMessageOutgoingWithPaginationTitleBubbleCell.class,
+        // Encrypted
+        @(RoomTimelineCellIdentifierOutgoingEmoteEncrypted) : TextMessageOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingEmoteEncryptedWithoutSenderInfo) : TextMessageOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingEmoteEncryptedWithPaginationTitle) : TextMessageOutgoingWithPaginationTitleBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingEmoteEncryptedWithoutSenderName) : TextMessageOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingEmoteEncryptedWithPaginationTitleWithoutSenderName) : TextMessageOutgoingWithPaginationTitleBubbleCell.class
     };
 }
 
@@ -174,6 +262,20 @@
         @(RoomTimelineCellIdentifierOutgoingVoiceMessage) : VoiceMessageOutgoingWithoutSenderInfoBubbleCell.class,
         @(RoomTimelineCellIdentifierOutgoingVoiceMessageWithoutSenderInfo) : VoiceMessageOutgoingWithoutSenderInfoBubbleCell.class,
         @(RoomTimelineCellIdentifierOutgoingVoiceMessageWithPaginationTitle) : VoiceMessageOutgoingWithPaginationTitleBubbleCell.class,
+    };
+}
+
+- (NSDictionary<NSNumber *,Class> *)pollCellsMapping
+{
+    return @{
+        // Incoming
+        @(RoomTimelineCellIdentifierIncomingPoll) : PollIncomingBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingPollWithoutSenderInfo) : PollIncomingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingPollWithPaginationTitle) : PollIncomingWithPaginationTitleBubbleCell.class,
+        // Outgoing
+        @(RoomTimelineCellIdentifierOutgoingPoll) : PollOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingPollWithoutSenderInfo) : PollOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingPollWithPaginationTitle) : PollOutgoingWithPaginationTitleBubbleCell.class,
     };
 }
 

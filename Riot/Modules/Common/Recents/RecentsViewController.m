@@ -30,12 +30,13 @@
 #import "DirectoryRecentTableViewCell.h"
 #import "RoomIdOrAliasTableViewCell.h"
 #import "TableViewCellWithCollectionView.h"
+#import "SectionHeaderView.h"
 
 #import "GeneratedInterface-Swift.h"
 
 NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewControllerDataReadyNotification";
 
-@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate>
+@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -145,6 +146,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
     // Register key verification banner cells
     [self.recentsTableView registerNib:CrossSigningSetupBannerCell.nib forCellReuseIdentifier:CrossSigningSetupBannerCell.defaultReuseIdentifier];
+
+    [self.recentsTableView registerClass:SectionHeaderView.class
+      forHeaderFooterViewReuseIdentifier:SectionHeaderView.defaultReuseIdentifier];
     
     // Hide line separators of empty cells
     self.recentsTableView.tableFooterView = [[UIView alloc] init];
@@ -1018,6 +1022,18 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                 TableViewCellWithCollectionView *collectionViewCell = (TableViewCellWithCollectionView *)cell;
                 [collectionViewCell.collectionView reloadData];
                 cellReloaded = YES;
+
+                CGRect headerFrame = [self.recentsTableView rectForHeaderInSection:update.sectionIndex];
+                UIView *headerView = [self.recentsTableView headerViewForSection:update.sectionIndex];
+                UIView *updatedHeaderView = [self.dataSource viewForHeaderInSection:update.sectionIndex withFrame:headerFrame inTableView:self.recentsTableView];
+                if ([headerView isKindOfClass:SectionHeaderView.class]
+                    && [updatedHeaderView isKindOfClass:SectionHeaderView.class])
+                {
+                    SectionHeaderView *sectionHeaderView = (SectionHeaderView *)headerView;
+                    SectionHeaderView *updatedSectionHeaderView = (SectionHeaderView *)updatedHeaderView;
+                    sectionHeaderView.headerLabel = updatedSectionHeaderView.headerLabel;
+                    sectionHeaderView.accessoryView = updatedSectionHeaderView.accessoryView;
+                }
             }
         }
     }
@@ -1093,7 +1109,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }];
     directChatAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *directChatImage = [UIImage imageNamed:@"room_action_direct_chat"];
+    UIImage *directChatImage = AssetImages.roomActionDirectChat.image;
     directChatImage = [directChatImage vc_tintedImageUsingColor:isDirect ? selectedColor : unselectedColor];
     directChatAction.image = [directChatImage vc_notRenderedImage];
     
@@ -1120,13 +1136,13 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     muteAction.backgroundColor = actionBackgroundColor;
     
     UIImage *notificationImage;
-    if([BuildSettings showNotificationsV2])
+    if([BuildSettings showNotificationsV2] && isMuted)
     {
-        notificationImage = isMuted ? [UIImage imageNamed:@"room_action_notification_muted"] : [UIImage imageNamed:@"room_action_notification"];
+        notificationImage = AssetImages.roomActionNotificationMuted.image;
     }
     else
     {
-        notificationImage = [UIImage imageNamed:@"room_action_notification"];
+        notificationImage = AssetImages.roomActionNotification.image;
     }
 
     notificationImage = [notificationImage vc_tintedImageUsingColor:isMuted ? unselectedColor : selectedColor];
@@ -1157,7 +1173,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }];
     favouriteAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *favouriteImage = [UIImage imageNamed:@"room_action_favourite"];
+    UIImage *favouriteImage = AssetImages.roomActionFavourite.image;
     favouriteImage = [favouriteImage vc_tintedImageUsingColor:isFavourite ? selectedColor : unselectedColor];
     favouriteAction.image = [favouriteImage vc_notRenderedImage];
     
@@ -1174,7 +1190,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }];
     priorityAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *priorityImage = isInLowPriority ? [UIImage imageNamed:@"room_action_priority_high"] : [UIImage imageNamed:@"room_action_priority_low"];
+    UIImage *priorityImage = isInLowPriority ? AssetImages.roomActionPriorityHigh.image : AssetImages.roomActionPriorityLow.image;
     priorityImage = [priorityImage vc_tintedImageUsingColor:unselectedColor];
     priorityAction.image = [priorityImage vc_notRenderedImage];
     
@@ -1188,7 +1204,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }];
     leaveAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *leaveImage = [UIImage imageNamed:@"room_action_leave"];
+    UIImage *leaveImage = AssetImages.roomActionLeave.image;
     leaveImage = [leaveImage vc_tintedImageUsingColor:unselectedColor];
     leaveAction.image = [leaveImage vc_notRenderedImage];
         
@@ -1292,7 +1308,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                              [self stopActivityIndicator];
                                                                              
                                                                              // Leave editing mode
-                                                                             [self cancelEditionMode:isRefreshPending];
+                                                                             [self cancelEditionMode:self->isRefreshPending];
                                                                          }
                                                                          
                                                                      }];
@@ -1300,7 +1316,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                  else
                                                                  {
                                                                      // Leave editing mode
-                                                                     [self cancelEditionMode:isRefreshPending];
+                                                                     [self cancelEditionMode:self->isRefreshPending];
                                                                  }
                                                              }
                                                              
@@ -1343,8 +1359,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 {
     if (editedRoomId)
     {
-        __weak typeof(self) weakSelf = self;
-        
         // Check whether the user didn't leave the room
         // TODO: handle multi-account
         MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
@@ -1352,34 +1366,32 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         {
             [self startActivityIndicator];
             
+            MXWeakify(self);
+            
             [room setIsDirect:isDirect withUserId:nil success:^{
                 
-                if (weakSelf)
-                {
-                    typeof(self) self = weakSelf;
-                    [self stopActivityIndicator];
-                    // Leave editing mode
-                    [self cancelEditionMode:isRefreshPending];
-                }
+                MXStrongifyAndReturnIfNil(self);
+                
+                [self stopActivityIndicator];
+                // Leave editing mode
+                [self cancelEditionMode:self->isRefreshPending];
                 
             } failure:^(NSError *error) {
                 
-                if (weakSelf)
-                {
-                    typeof(self) self = weakSelf;
-                    [self stopActivityIndicator];
-                    
-                    MXLogDebug(@"[RecentsViewController] Failed to update direct tag of the room (%@)", editedRoomId);
-                    
-                    // Notify the end user
-                    NSString *userId = self.mainSession.myUser.userId; // TODO: handle multi-account
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification
-                                                                        object:error
-                                                                      userInfo:userId ? @{kMXKErrorUserIdKey: userId} : nil];
-                    
-                    // Leave editing mode
-                    [self cancelEditionMode:isRefreshPending];
-                }
+                MXStrongifyAndReturnIfNil(self);
+                
+                [self stopActivityIndicator];
+                
+                MXLogDebug(@"[RecentsViewController] Failed to update direct tag of the room (%@)", self->editedRoomId);
+                
+                // Notify the end user
+                NSString *userId = self.mainSession.myUser.userId; // TODO: handle multi-account
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification
+                                                                    object:error
+                                                                  userInfo:userId ? @{kMXKErrorUserIdKey: userId} : nil];
+                
+                // Leave editing mode
+                [self cancelEditionMode:self->isRefreshPending];
                 
             }];
         }

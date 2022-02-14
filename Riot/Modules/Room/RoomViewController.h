@@ -219,6 +219,9 @@ handleUniversalLinkWithParameters:(UniversalLinkParameters*)parameters;
 didRequestLocationPresentationForEvent:(MXEvent *)event
                 bubbleData:(id<MXKRoomBubbleCellDataStoring>)bubbleData;
 
+- (nullable UIActivityViewController *)roomViewController:(RoomViewController *)roomViewController
+              locationShareActivityViewControllerForEvent:(MXEvent *)event;
+
 - (BOOL)roomViewController:(RoomViewController *)roomViewController
 canEndPollWithEventIdentifier:(NSString *)eventIdentifier;
 

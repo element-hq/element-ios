@@ -33,6 +33,7 @@ class DarkTheme: NSObject, Theme {
 
     var searchBackgroundColor: UIColor = UIColor(rgb: 0x15191E)
     var searchPlaceholderColor: UIColor = UIColor(rgb: 0xA9B2BC)
+    var searchResultHighlightColor: UIColor = UIColor(rgb: 0xFCC639).withAlphaComponent(0.3)
 
     var headerBackgroundColor: UIColor = UIColor(rgb: 0x21262C)
     var headerBorderColor: UIColor  = UIColor(rgb: 0x15191E)
@@ -102,20 +103,50 @@ class DarkTheme: NSObject, Theme {
         tabBar.unselectedItemTintColor = self.tabBarUnselectedItemTintColor
         tabBar.tintColor = self.tintColor
         tabBar.barTintColor = self.baseColor
-        tabBar.isTranslucent = false
+        
+        // Support standard scrollEdgeAppearance iOS 15 without visual issues.
+        if #available(iOS 15.0, *) {
+            tabBar.isTranslucent = true
+        } else {
+            tabBar.isTranslucent = false
+        }
     }
     
-    // Note: We are not using UINavigationBarAppearance on iOS 13+ atm because of UINavigationBar directly include UISearchBar on their titleView that cause crop issues with UINavigationController pop.
+    // Protocols don't support default parameter values and a protocol extension won't work for @objc
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
-        navigationBar.tintColor = self.tintColor
-        navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: self.textPrimaryColor
-        ]
-        navigationBar.barTintColor = self.baseColor
-        navigationBar.shadowImage = UIImage() // Remove bottom shadow
-
-        // The navigation bar needs to be opaque so that its background color is the expected one
-        navigationBar.isTranslucent = false
+        applyStyle(onNavigationBar: navigationBar, withModernScrollEdgesAppearance: false)
+    }
+    
+    // Note: We are not using UINavigationBarAppearance on iOS 13/14 because of UINavigationBar directly including UISearchBar on their titleView that cause crop issues with UINavigationController pop.
+    func applyStyle(onNavigationBar navigationBar: UINavigationBar,
+                    withModernScrollEdgesAppearance modernScrollEdgesAppearance: Bool) {
+        navigationBar.tintColor = tintColor
+        
+        // On iOS 15 use UINavigationBarAppearance to fix visual issues with the scrollEdgeAppearance style.
+        if #available(iOS 15.0, *) {
+            let appearance = UINavigationBarAppearance()
+            
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = baseColor
+            if !modernScrollEdgesAppearance {
+                appearance.shadowColor = nil
+            }
+            appearance.titleTextAttributes = [
+                NSAttributedString.Key.foregroundColor: textPrimaryColor
+            ]
+            
+            navigationBar.standardAppearance = appearance
+            navigationBar.scrollEdgeAppearance = modernScrollEdgesAppearance ? nil : appearance
+        } else {
+            navigationBar.titleTextAttributes = [
+                NSAttributedString.Key.foregroundColor: textPrimaryColor
+            ]
+            navigationBar.barTintColor = baseColor
+            navigationBar.shadowImage = UIImage() // Remove bottom shadow
+            
+            // The navigation bar needs to be opaque so that its background color is the expected one
+            navigationBar.isTranslucent = false
+        }
     }
     
     func applyStyle(onSearchBar searchBar: UISearchBar) {

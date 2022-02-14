@@ -279,9 +279,9 @@
         [self stopActivityIndicator];
         [self dismissViewControllerAnimated:YES completion:nil];
 
-        if (onCompleteBlock)
+        if (self->onCompleteBlock)
         {
-            onCompleteBlock(YES);
+            self->onCompleteBlock(YES);
         }
     }];
 }

@@ -668,6 +668,13 @@ const CGFloat kTypingCellHeight = 24;
         // Make extra cell layout updates if needed
         [self updateCellLayoutIfNeeded:bubbleCell withCellData:cellData];
     }
+    
+    if ([cell conformsToProtocol:@protocol(Themable)])
+    {
+        id<Themable> cellThemable = (id<Themable>)cell;
+
+        [cellThemable updateWithTheme:ThemeService.shared.theme];
+    }
 
     return cell;
 }
@@ -1000,6 +1007,11 @@ const CGFloat kTypingCellHeight = 24;
 
 - (void)newThreadCreated:(NSNotification *)notification
 {
+    if (self.threadId)
+    {
+        //  no need to reload the thread screen
+        return;
+    }
     NSUInteger count = 0;
     @synchronized (bubbles)
     {

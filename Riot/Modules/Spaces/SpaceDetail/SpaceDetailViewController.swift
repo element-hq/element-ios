@@ -219,7 +219,11 @@ class SpaceDetailViewController: UIViewController {
             self.inviterPanelHeight.constant = 0
         }
         
-        let avatarViewData = AvatarViewData(matrixItemId: parameters.spaceId, displayName: parameters.displayName, avatarUrl: parameters.avatarUrl, mediaManager: self.mediaManager, fallbackImage: .matrixItem(parameters.spaceId, parameters.displayName))
+        let avatarViewData = AvatarViewData(matrixItemId: parameters.spaceId,
+                                            displayName: parameters.displayName,
+                                            avatarUrl: parameters.avatarUrl,
+                                            mediaManager: self.mediaManager,
+                                            fallbackImage: .matrixItem(parameters.spaceId, parameters.displayName))
 
         self.titleLabel.text = parameters.displayName
         self.avatarView.fill(with: avatarViewData)

@@ -228,6 +228,8 @@
         [[[self class] nib] instantiateWithOwner:self options:nil];
     }
     
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated"
     // Adjust bottom constraint of the input toolbar container in order to take into account potential tabBar
     _roomInputToolbarContainerBottomConstraint.active = NO;
     _roomInputToolbarContainerBottomConstraint = [NSLayoutConstraint constraintWithItem:self.bottomLayoutGuide
@@ -237,6 +239,8 @@
                                                                               attribute:NSLayoutAttributeBottom
                                                                              multiplier:1.0f
                                                                                constant:0.0f];
+    #pragma clang diagnostic pop
+    
     _roomInputToolbarContainerBottomConstraint.active = YES;
     [self.view setNeedsUpdateConstraints];
     
@@ -419,6 +423,8 @@
     });
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
 // The 2 following methods are deprecated since iOS 8
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
@@ -446,6 +452,7 @@
         self->isSizeTransitionInProgress = NO;
     });
 }
+#pragma clang diagnostic pop
 
 - (void)viewDidLayoutSubviews
 {
@@ -488,6 +495,8 @@
     self.keyboardView = keyboardView;
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated"
 - (void)setKeyboardHeight:(CGFloat)keyboardHeight
 {
     // Deduce the bottom constraint for the input toolbar view (Don't forget the potential tabBar)
@@ -531,6 +540,7 @@
     
     super.keyboardHeight = keyboardHeight;
 }
+#pragma clang diagnostic pop
 
 - (void)destroy
 {
@@ -1046,7 +1056,7 @@
         [titleView destroy];
     }
     
-    titleView = self.navigationItem.titleView = [roomTitleViewClass roomTitleView];
+    self.navigationItem.titleView = titleView = [roomTitleViewClass roomTitleView];
     titleView.delegate = self;
     
     // Define directly the navigation titleView with the custom title view instance. Do not use anymore a container.
@@ -2116,6 +2126,8 @@
     
     self->eventDetailsView = eventDetailsView;
     
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated"
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:eventDetailsView
                                                           attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
@@ -2131,6 +2143,7 @@
                                                           attribute:NSLayoutAttributeTop
                                                          multiplier:1.0f
                                                            constant:-10.0f]];
+    #pragma clang diagnostic pop
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.view
                                                           attribute:NSLayoutAttributeLeading

@@ -34,8 +34,8 @@ enum MockLocationSharingScreenState: MockScreenState, CaseIterable {
             location = CLLocationCoordinate2D(latitude: 51.4932641, longitude: -0.257096)
         }
         
-        let mapURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx")!
-        let viewModel = LocationSharingViewModel(tileServerMapURL: mapURL,
+        let mapStyleURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx")!
+        let viewModel = LocationSharingViewModel(mapStyleURL: mapStyleURL,
                                                  avatarData: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: "Alice"),
                                                  location: location)
         return ([viewModel],

@@ -32,7 +32,7 @@ struct LocationSharingView: View {
     
     var body: some View {
         NavigationView {
-            LocationSharingMapView(tileServerMapURL: context.viewState.tileServerMapURL,
+            LocationSharingMapView(tileServerMapURL: context.viewState.mapStyleURL,
                                    avatarData: context.viewState.avatarData,
                                    location: context.viewState.location,
                                    errorSubject: context.viewState.errorSubject,
@@ -66,6 +66,9 @@ struct LocationSharingView: View {
                     }
                 }
                 .navigationBarTitleDisplayMode(.inline)
+                .introspectNavigationController { navigationController in
+                    ThemeService.shared().theme.applyStyle(onNavigationBar: navigationController.navigationBar)
+                }
                 .ignoresSafeArea()
                 .alert(item: $context.alertInfo) { info in
                     if let secondaryButton = info.secondaryButton {
@@ -88,6 +91,7 @@ struct LocationSharingView: View {
         }
         .accentColor(theme.colors.accent)
         .activityIndicator(show: context.viewState.showLoadingIndicator)
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     @ViewBuilder

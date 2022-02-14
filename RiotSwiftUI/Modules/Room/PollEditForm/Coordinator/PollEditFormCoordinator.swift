@@ -146,15 +146,17 @@ final class PollEditFormCoordinator: Coordinator, Presentable {
     }
     
     private static func pollDetailsTypeToKindKey(_ type: EditFormPollType) -> String {
-        let mapping = [EditFormPollType.disclosed : kMXMessageContentKeyExtensiblePollKindDisclosed,
-                       EditFormPollType.undisclosed : kMXMessageContentKeyExtensiblePollKindUndisclosed]
+        let mapping = [EditFormPollType.disclosed : kMXMessageContentKeyExtensiblePollKindDisclosedMSC3381,
+                       EditFormPollType.undisclosed : kMXMessageContentKeyExtensiblePollKindUndisclosedMSC3381]
         
-        return mapping[type] ?? kMXMessageContentKeyExtensiblePollKindDisclosed
+        return mapping[type] ?? kMXMessageContentKeyExtensiblePollKindDisclosedMSC3381
     }
     
     private static func pollKindKeyToDetailsType(_ key: String) -> EditFormPollType {
         let mapping = [kMXMessageContentKeyExtensiblePollKindDisclosed : EditFormPollType.disclosed,
-                       kMXMessageContentKeyExtensiblePollKindUndisclosed : EditFormPollType.undisclosed]
+                       kMXMessageContentKeyExtensiblePollKindDisclosedMSC3381 : EditFormPollType.disclosed,
+                       kMXMessageContentKeyExtensiblePollKindUndisclosed : EditFormPollType.undisclosed,
+                     kMXMessageContentKeyExtensiblePollKindUndisclosedMSC3381 : EditFormPollType.undisclosed]
         
         return mapping[key] ?? EditFormPollType.disclosed
     }

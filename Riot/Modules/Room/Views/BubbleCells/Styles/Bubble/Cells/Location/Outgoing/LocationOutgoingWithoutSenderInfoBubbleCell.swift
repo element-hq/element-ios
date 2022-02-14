@@ -16,18 +16,17 @@
 
 import Foundation
 
-class LocationOutgoingWithoutSenderInfoBubbleCell: LocationBubbleCell {
+class LocationOutgoingWithoutSenderInfoBubbleCell: LocationBubbleCell, BubbleOutgoingRoomCellProtocol {
+    
     override func setupViews() {
         super.setupViews()
         
         bubbleCellContentView?.showSenderInfo = false
+
+        bubbleCellContentView?.innerContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
+
+        bubbleCellContentView?.innerContentViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left
         
-        // TODO: Use constants
-        // Same as outgoing message
-        let rightMargin: CGFloat = 34.0
-        let leftMargin: CGFloat = 80.0
-        
-        bubbleCellContentView?.innerContentViewTrailingConstraint.constant = rightMargin
-        bubbleCellContentView?.innerContentViewLeadingConstraint.constant = leftMargin
+        self.setupBubbleDecorations()
     }
 }

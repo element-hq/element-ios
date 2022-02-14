@@ -32,7 +32,7 @@ class LocationSharingViewModelTests: XCTestCase {
         XCTAssertTrue(viewModel.context.viewState.shareButtonVisible)
         XCTAssertFalse(viewModel.context.viewState.showLoadingIndicator)
         
-        XCTAssertNotNil(viewModel.context.viewState.tileServerMapURL)
+        XCTAssertNotNil(viewModel.context.viewState.mapStyleURL)
         XCTAssertNotNil(viewModel.context.viewState.avatarData)
         
         XCTAssertNil(viewModel.context.viewState.location)
@@ -121,8 +121,8 @@ class LocationSharingViewModelTests: XCTestCase {
     }
     
     private func buildViewModel(withLocation: Bool) -> LocationSharingViewModel {
-        LocationSharingViewModel(tileServerMapURL: URL(string: "http://empty.com")!,
-                                                 avatarData: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: ""),
-                                                 location: (withLocation ? CLLocationCoordinate2D(latitude: 51.4932641, longitude: -0.257096) : nil))
+        LocationSharingViewModel(mapStyleURL: URL(string: "http://empty.com")!,
+                                 avatarData: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: ""),
+                                 location: (withLocation ? CLLocationCoordinate2D(latitude: 51.4932641, longitude: -0.257096) : nil))
     }
 }

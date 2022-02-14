@@ -1,1 +1,0 @@
-Remove location sharing settings entry and enable it by default.
