@@ -89,6 +89,10 @@
                         {
                             continueBlock();
                         }
+                        else if (result.result.unsignedData.relations.thread)
+                        {
+                            continueBlock();
+                        }
                         else if (room)
                         {
                             [room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
@@ -164,8 +168,9 @@
             {
                 if (cellData.hasThreadRoot)
                 {
-                    MXThread *thread = cellData.bubbleComponents.firstObject.thread;
-                    ThreadSummaryView *threadSummaryView = [[ThreadSummaryView alloc] initWithThread:thread];
+                    id<MXThreadProtocol> thread = cellData.bubbleComponents.firstObject.thread;
+                    ThreadSummaryView *threadSummaryView = [[ThreadSummaryView alloc] initWithThread:thread
+                                                                                             session:self.mxSession];
                     [bubbleCell.tmpSubviews addObject:threadSummaryView];
 
                     threadSummaryView.translatesAutoresizingMaskIntoConstraints = NO;
