@@ -18,6 +18,10 @@ import Foundation
 import AnalyticsEvents
 
 @objc enum AnalyticsScreen: Int {
+    case welcome
+    case login
+    case register
+    case forgotPassword
     case sidebar
     case home
     case favourites
@@ -51,6 +55,14 @@ import AnalyticsEvents
     /// The screen name reported to the AnalyticsEvent.
     var screenName: AnalyticsEvent.Screen.ScreenName {
         switch self {
+        case .welcome:
+            return .Welcome
+        case .login:
+            return .Login
+        case .register:
+            return .Register
+        case .forgotPassword:
+            return .ForgotPassword
         case .sidebar:
             return .MobileSidebar
         case .home:

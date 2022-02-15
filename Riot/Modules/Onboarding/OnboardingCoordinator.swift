@@ -222,12 +222,18 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         completion?()
         isShowingAuthentication = false
         
-        // Handle the chosen use case if appropriate
+        // Handle the chosen use case where applicable
         if authenticationType == MXKAuthenticationTypeRegister,
-           let useCaseResult = useCaseResult,
+           let useCase = useCaseResult?.userSessionPropertyValue,
            let userSession = UserSessionsService.shared.mainUserSession {
             // Store the value in the user's session
-            userSession.userProperties.useCase = useCaseResult.userSessionPropertyValue
+            userSession.userProperties.useCase = useCase
+            
+            // Capture the use case if analytics are running.
+            // Otherwise it will be included when identifying if opted in.
+            if Analytics.shared.isRunning {
+                Analytics.shared.updateUserProperties(ftueUseCase: useCase)
+            }
         }
     }
 }

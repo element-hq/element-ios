@@ -26,7 +26,10 @@ protocol AnalyticsClientProtocol {
     
     /// Associate the client with an ID. This is persisted until `reset` is called.
     /// - Parameter id: The ID to associate with the user.
-    func identify(id: String)
+    /// - Parameter userProperties: Any user properties that should be included.
+    ///
+    /// Only non-nil user properties will be updated when calling this method.
+    func identify(id: String, userProperties: AnalyticsEvent.UserProperties)
     
     /// Reset all stored properties and any event queues on the client. Note that
     /// the client will remain active, but in a fresh unidentified state.
@@ -45,4 +48,10 @@ protocol AnalyticsClientProtocol {
     /// Capture the supplied analytics screen event.
     /// - Parameter event: The screen event to capture.
     func screen(_ event: AnalyticsScreenProtocol)
+    
+    /// Updates any user properties to help with creating cohorts.
+    /// - Parameter userProperties: The user properties to be updated.
+    ///
+    /// Only non-nil properties will be updated when calling this method.
+    func updateUserProperties(_ userProperties: AnalyticsEvent.UserProperties)
 }

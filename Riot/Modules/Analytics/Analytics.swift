@@ -108,6 +108,7 @@ import AnalyticsEvents
             !RiotSettings.shared.isIdentifiedForAnalytics
         else { return }
         
+        let userProperties = makeUserProperties(for: session)
         let service = AnalyticsService(session: session)
         self.service = service
         
@@ -116,7 +117,7 @@ import AnalyticsEvents
             
             switch result {
             case .success(let settings):
-                self.identify(with: settings)
+                self.identify(with: settings, and: userProperties)
                 self.service = nil
             case .failure:
                 MXLog.error("[Analytics] Failed to use analytics settings. Will continue to run without analytics ID.")
@@ -149,15 +150,28 @@ import AnalyticsEvents
     
     /// Identify (pseudonymously) any future events with the ID from the analytics account data settings.
     /// - Parameter settings: The settings to use for identification. The ID must be set *before* calling this method.
-    private func identify(with settings: AnalyticsSettings) {
+    /// - Parameter userProperties: Any user properties that should be set for creating cohorts etc.
+    private func identify(with settings: AnalyticsSettings, and userProperties: AnalyticsEvent.UserProperties) {
         guard let id = settings.id else {
             MXLog.error("[Analytics] identify(with:) called before an ID has been generated.")
             return
         }
         
-        client.identify(id: id)
+        client.identify(id: id, userProperties: userProperties)
         MXLog.debug("[Analytics] Identified.")
         RiotSettings.shared.isIdentifiedForAnalytics = true
+    }
+    
+    /// Returns the user properties for use when identifying a session.
+    /// - Parameter session: The session to gather any user properties from.
+    /// - Returns: The properties to be set.
+    private func makeUserProperties(for session: MXSession) -> AnalyticsEvent.UserProperties {
+        var useCaseSelection: AnalyticsEvent.UserProperties.FtueUseCaseSelection?
+        if let userId = session.credentials.userId, let userSession = UserSessionsService.shared.userSession(withUserId: userId) {
+            useCaseSelection = userSession.userProperties.useCase?.analyticsName
+        }
+        
+        return AnalyticsEvent.UserProperties(ftueUseCaseSelection: useCaseSelection, numSpaces: nil)
     }
     
     /// Capture an event in the `client`.
@@ -171,6 +185,14 @@ import AnalyticsEvents
 // The following methods are exposed for compatibility with Objective-C as
 // the `capture` method and the generated events cannot be bridged from Swift.
 extension Analytics {
+    /// Updates any user properties to help with creating cohorts.
+    /// 
+    /// Only non-nil properties will be updated when calling this method.
+    func updateUserProperties(ftueUseCase: UserSessionProperties.UseCase? = nil) {
+        let userProperties = AnalyticsEvent.UserProperties(ftueUseCaseSelection: ftueUseCase?.analyticsName, numSpaces: nil)
+        client.updateUserProperties(userProperties)
+    }
+    
     /// Track the presentation of a screen
     /// - Parameters:
     ///   - screen: The screen that was shown.
@@ -186,20 +208,21 @@ extension Analytics {
         trackScreen(screen, duration: nil)
     }
     
-    /// Track an element that has been tapped
+    /// Track an element that has been interacted with
     /// - Parameters:
-    ///   - tap: The element that was tapped
+    ///   - uiElement: The element that was interacted with
+    ///   - interactionType: The way in with the element was interacted with
     ///   - index: The index of the element, if it's in a list of elements
-    func trackTap(_ tap: AnalyticsUIElement, index: Int?) {
-        let event = AnalyticsEvent.Click(index: index, name: tap.elementName)
+    func trackInteraction(_ uiElement: AnalyticsUIElement, interactionType: AnalyticsEvent.Interaction.InteractionType, index: Int?) {
+        let event = AnalyticsEvent.Interaction(index: index, interactionType: interactionType, name: uiElement.name)
         client.capture(event)
     }
     
     /// Track an element that has been tapped without including an index
     /// - Parameters:
-    ///   - tap: The element that was tapped
-    func trackTap(_ tap: AnalyticsUIElement) {
-        trackTap(tap, index: nil)
+    ///   - uiElement: The element that was tapped
+    func trackInteraction(_ uiElement: AnalyticsUIElement) {
+        trackInteraction(uiElement, interactionType: .Touch, index: nil)
     }
     
     /// Track an E2EE error that occurred

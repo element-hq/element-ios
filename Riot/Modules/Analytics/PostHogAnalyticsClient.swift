@@ -35,8 +35,9 @@ class PostHogAnalyticsClient: AnalyticsClientProtocol {
         postHog?.enable()
     }
     
-    func identify(id: String) {
-        postHog?.identify(id)
+    func identify(id: String, userProperties: AnalyticsEvent.UserProperties) {
+        // As user properties overwrite old ones, compactMap the dictionary to avoid resetting any missing properties
+        postHog?.identify(id, properties: userProperties.properties.compactMapValues { $0 })
     }
     
     func reset() {
@@ -62,4 +63,8 @@ class PostHogAnalyticsClient: AnalyticsClientProtocol {
         postHog?.screen(event.screenName.rawValue, properties: event.properties)
     }
     
+    func updateUserProperties(_ userProperties: AnalyticsEvent.UserProperties) {
+        // As user properties overwrite old ones via $set, compactMap the dictionary to avoid resetting any missing properties
+        postHog?.capture("$identify", properties: ["$set": userProperties.properties.compactMapValues { $0 }])
+    }
 }
