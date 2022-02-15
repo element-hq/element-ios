@@ -90,7 +90,7 @@ class TabBarRouter: NSObject, TabbedRouterType {
     // MARK: - Public
     
     func presentModule(_ module: Presentable, animated: Bool, completion: (() -> Void)?) {
-        MXLog.debug("[NavigationRouter] Present \(module)")
+        MXLog.debug("[TabBarRouter] Present \(module)")
         tabBarController.present(module.toPresentable(), animated: animated, completion: nil)
     }
     
