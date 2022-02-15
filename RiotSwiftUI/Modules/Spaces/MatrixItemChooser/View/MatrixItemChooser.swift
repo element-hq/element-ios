@@ -46,7 +46,7 @@ struct MatrixItemChooser: View {
 
     @ViewBuilder
     private var listContent: some View {
-        ScrollView{
+        ScrollView {
             headerView
             if viewModel.viewState.items.isEmpty {
                 Text(viewModel.viewState.emptyListMessage)
