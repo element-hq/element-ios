@@ -23,9 +23,8 @@ class LocationOutgoingWithoutSenderInfoBubbleCell: LocationBubbleCell, BubbleOut
         
         bubbleCellContentView?.showSenderInfo = false
 
-        bubbleCellContentView?.innerContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
-
         bubbleCellContentView?.innerContentViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left
+        bubbleCellContentView?.innerContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
         
         self.setupBubbleDecorations()
     }
