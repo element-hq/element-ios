@@ -39,7 +39,7 @@
                 <constraint firstItem="wRb-1K-GDt" firstAttribute="leading" secondItem="8T9-hj-ply" secondAttribute="leading" id="D7Y-mm-KEV"/>
                 <constraint firstAttribute="bottom" secondItem="wRb-1K-GDt" secondAttribute="bottom" id="JmB-yf-eq5"/>
                 <constraint firstItem="wRb-1K-GDt" firstAttribute="top" secondItem="8T9-hj-ply" secondAttribute="top" id="Jmy-ue-Qtg"/>
-                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="wRb-1K-GDt" secondAttribute="trailing" constant="80" id="UwK-6h-MvN"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="wRb-1K-GDt" secondAttribute="trailing" id="UwK-6h-MvN"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>

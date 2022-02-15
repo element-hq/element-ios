@@ -40,15 +40,7 @@ class TextMessageBaseBubbleCell: SizableBaseBubbleCell, RoomCellURLPreviewDispla
             return
         }
         
-        // TODO: Use constants
-        
-        let messageLeftMargin: CGFloat = 48
-        
-        bubbleCellContentView?.innerContentViewLeadingConstraint.constant = messageLeftMargin
-        
-        self.bubbleCellContentView?.innerContentViewBottomContraint.constant = 5.0
-        
-        self.bubbleCellContentView?.innerContentViewTrailingConstraint.constant = 34.0
+        bubbleCellContentView?.innerContentViewBottomContraint.constant = BubbleRoomCellLayoutConstants.innerContentViewMargins.bottom
         
         let textMessageContentView = TextMessageBubbleCellContentView.instantiate()
                 
@@ -63,32 +55,6 @@ class TextMessageBaseBubbleCell: SizableBaseBubbleCell, RoomCellURLPreviewDispla
         if let messageTextView = self.messageTextView {
             messageTextView.tintColor = theme.tintColor
         }
-        
-//        self.setupDebug()
-    }
-    
-    // MARK: - Private
-    
-    private func setupDebug() {
-        
-        self.bubbleCellContentView?.innerContentView.backgroundColor = .yellow
-        
-        self.bubbleCellContentView?.layer.borderWidth = 1.0
-        self.bubbleCellContentView?.layer.borderColor = UIColor.red.cgColor
-        
-        self.textMessageContentView?.layer.borderColor = UIColor.blue.cgColor
-        self.textMessageContentView?.layer.borderWidth = 1.0
-        
-        
-        self.bubbleCellContentView?.readReceiptsContainerView.layer.borderColor = UIColor.yellow.cgColor
-        self.bubbleCellContentView?.readReceiptsContainerView.layer.borderWidth = 1.0
-        
-        self.bubbleCellContentView?.reactionsContainerView.layer.borderColor = UIColor.blue.cgColor
-        self.bubbleCellContentView?.reactionsContainerView.layer.borderWidth = 1.0
-        self.bubbleCellContentView?.reactionsContentView.backgroundColor = .blue
-        
-        self.bubbleCellContentView?.threadSummaryContainerView.layer.borderColor = UIColor.purple.cgColor
-        self.bubbleCellContentView?.threadSummaryContainerView.layer.borderWidth = 1.0
     }
 }
 

@@ -39,6 +39,9 @@ class TextMessageOutgoingWithoutSenderInfoBubbleCell: TextMessageBaseBubbleCell,
     
     private func setupBubbleConstraints() {
         
+        self.bubbleCellContentView?.innerContentViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left
+        self.bubbleCellContentView?.innerContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
+        
         guard let containerView = self.textMessageContentView, let bubbleBackgroundView = containerView.bubbleBackgroundView else {
             return
         }
@@ -57,7 +60,7 @@ class TextMessageOutgoingWithoutSenderInfoBubbleCell: TextMessageBaseBubbleCell,
         
         // Setup new constraints
         
-        let leadingConstraint = bubbleBackgroundView.leadingAnchor.constraint(greaterThanOrEqualTo: containerView.leadingAnchor, constant: BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left)
+        let leadingConstraint = bubbleBackgroundView.leadingAnchor.constraint(greaterThanOrEqualTo: containerView.leadingAnchor)
         
         let trailingConstraint = bubbleBackgroundView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: 0)
                 
