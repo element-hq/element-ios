@@ -4564,6 +4564,15 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self.userSuggestionCoordinator processTextMessage:toolbarView.textMessage];
 }
 
+- (void)roomInputToolbarViewDidOpenActionMenu:(MXKRoomInputToolbarView*)toolbarView
+{
+    // Consider opening the action menu as beginning to type and share encryption keys if requested.
+    if ([MXKAppSettings standardAppSettings].outboundGroupSessionKeyPreSharingStrategy == MXKKeyPreSharingWhenTyping)
+    {
+        [self shareEncryptionKeys];
+    }
+}
+
 #pragma mark - MXKRoomMemberDetailsViewControllerDelegate
 
 - (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController startChatWithMemberId:(NSString *)matrixId completion:(void (^)(void))completion
