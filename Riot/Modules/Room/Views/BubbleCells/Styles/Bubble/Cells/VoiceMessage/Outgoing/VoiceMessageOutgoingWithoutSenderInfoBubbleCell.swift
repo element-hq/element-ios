@@ -22,17 +22,11 @@ class VoiceMessageOutgoingWithoutSenderInfoBubbleCell: VoiceMessageBubbleCell, B
         super.setupViews()
         
         bubbleCellContentView?.showSenderInfo = false
-        
-        // TODO: Use constants
-        // Same as outgoing message
-        let rightMargin: CGFloat = 34.0
-        let leftMargin: CGFloat = 80.0
-        let playbackViewRightMargin: CGFloat = 40
-        
-        bubbleCellContentView?.innerContentViewTrailingConstraint.constant = rightMargin
-        bubbleCellContentView?.innerContentViewLeadingConstraint.constant = leftMargin
+
+        bubbleCellContentView?.innerContentViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left
+        bubbleCellContentView?.innerContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
                 
-        playbackController.playbackView.stackViewTrailingContraint.constant = playbackViewRightMargin
+        playbackController.playbackView.stackViewTrailingContraint.constant = BubbleRoomCellLayoutConstants.voiceMessagePlaybackViewRightMargin
         
         self.setupBubbleDecorations()
     }
