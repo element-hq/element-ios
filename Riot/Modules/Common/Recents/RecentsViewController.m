@@ -80,8 +80,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 @property (nonatomic, strong) RoomNotificationSettingsCoordinatorBridgePresenter *roomNotificationSettingsCoordinatorBridgePresenter;
 
-@property (nonatomic, strong) GlobalActivityCenterPresenter *activityPresenter;
-
 @end
 
 @implementation RecentsViewController
@@ -140,8 +138,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
-    self.activityPresenter = [[GlobalActivityCenterPresenter alloc] init];
     
     self.recentsTableView.accessibilityIdentifier = @"RecentsVCTableView";
     
@@ -2414,15 +2410,23 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 #pragma mark - Activity Indicator
 
 - (BOOL)providesCustomActivityIndicator {
-    return YES;
+    return self.activityPresenter != nil;
 }
 
 - (void)startActivityIndicator {
-    [self.activityPresenter presentActivityIndicatorWithAnimated:YES];
+    if (self.activityPresenter) {
+        [self.activityPresenter presentActivityIndicator];
+    } else {
+        [super startActivityIndicator];
+    }
 }
 
 - (void)stopActivityIndicator {
-    [self.activityPresenter removeCurrentActivityIndicatorWithAnimated:YES completion:nil];
+    if (self.activityPresenter) {
+        [self.activityPresenter removeCurrentActivityIndicatorWithAnimated:YES completion:nil];
+    } else {
+        [super stopActivityIndicator];
+    }
 }
 
 @end

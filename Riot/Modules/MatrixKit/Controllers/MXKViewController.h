@@ -48,10 +48,5 @@
  */
 @property CGFloat keyboardHeight;
 
-/**
- Returns `YES` if any `MXSession` currently requires the display of an activity indicator.
- */
-@property (nonatomic, readonly) BOOL shouldShowActivityIndicator;
-
 @end
 

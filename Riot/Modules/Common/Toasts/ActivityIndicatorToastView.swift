@@ -20,34 +20,27 @@ import DesignKit
 
 class ActivityIndicatorToastView: UIView, Themable {
     private struct Constants {
-        static let padding: UIEdgeInsets = UIEdgeInsets(top: 10, left: 12, bottom: 10, right: 12)
+        static let padding = UIEdgeInsets(top: 10, left: 12, bottom: 10, right: 12)
+        static let shadowOffset = CGSize(width: 0, height: 4)
+        static let shadowRadius = CGFloat(12)
+        static let shadowOpacity = Float(0.1)
     }
     
-    private lazy var stackView: UIStackView = {
+    private let stackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
         stack.spacing = 5
-        
-        addSubview(stack)
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            stack.topAnchor.constraint(equalTo: topAnchor, constant: Constants.padding.top),
-            stack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.padding.bottom),
-            stack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding.left),
-            stack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding.right)
-        ])
-        
         return stack
     }()
     
-    private lazy var activityIndicator: UIActivityIndicatorView = {
+    private let activityIndicator: UIActivityIndicatorView = {
         let view = UIActivityIndicatorView()
         view.transform = .init(scaleX: 0.75, y: 0.75)
         view.startAnimating()
         return view
     }()
     
-    private lazy var label: UILabel = {
+    private let label: UILabel = {
         return UILabel()
     }()
 
@@ -62,18 +55,33 @@ class ActivityIndicatorToastView: UIView, Themable {
 
     private func setup(text: String) {
         setupLayer()
+        setupStackView()
         stackView.addArrangedSubview(activityIndicator)
         stackView.addArrangedSubview(label)
         label.text = text
-        update(theme: ThemeService.shared().theme)
+    }
+    
+    private func setupStackView() {
+        addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.padding.top),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.padding.bottom),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding.left),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding.right)
+        ])
     }
     
     private func setupLayer() {
-        layer.cornerRadius = 20
         layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = .init(width: 0, height: 4)
-        layer.shadowRadius = 12
-        layer.shadowOpacity = 0.1
+        layer.shadowOffset = Constants.shadowOffset
+        layer.shadowRadius = Constants.shadowRadius
+        layer.shadowOpacity = Constants.shadowOpacity
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.cornerRadius = layer.frame.height / 2
     }
     
     func update(theme: Theme) {

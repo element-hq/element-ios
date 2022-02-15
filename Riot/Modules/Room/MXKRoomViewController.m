@@ -154,8 +154,6 @@
  */
 @property (nonatomic, weak) MXKAttachmentsViewController *attachmentsViewer;
 
-@property (nonatomic, strong) GlobalActivityCenterPresenter *activityPresenter;
-
 @end
 
 @implementation MXKRoomViewController
@@ -222,8 +220,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    _activityPresenter = [[GlobalActivityCenterPresenter alloc] init];
     
     // Check whether the view controller has been pushed via storyboard
     if (!_bubblesTableView)
@@ -1776,15 +1772,6 @@
 
 #pragma mark - activity indicator
 
-- (BOOL)providesCustomActivityIndicator {
-    return YES;
-}
-
-- (void)startActivityIndicator
-{
-    [self.activityPresenter presentActivityIndicatorWithAnimated:YES];
-}
-
 - (void)stopActivityIndicator
 {
     // Keep the loading wheel displayed while we are joining the room
@@ -1800,9 +1787,8 @@
         return;
     }
     
-    if (![self shouldShowActivityIndicator]) {
-        [self.activityPresenter removeCurrentActivityIndicatorWithAnimated:YES completion:nil];
-    }
+    // Leave super decide
+    [super stopActivityIndicator];
 }
 
 #pragma mark - Pagination

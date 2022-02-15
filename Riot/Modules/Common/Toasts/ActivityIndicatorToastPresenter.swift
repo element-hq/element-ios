@@ -16,32 +16,38 @@
 
 import Foundation
 import UIKit
+import CommonKit
 
+/// An `ActivityPresenter` responsible for showing / hiding a toast view for activity indicators, and managed by an `Activity`,
+/// meaning the `present` and `dismiss` methods will be called when the parent `Activity` starts or completes.
 class ActivityIndicatorToastPresenter: ActivityPresentable {
+    private let text: String
+    private weak var navigationController: UINavigationController?
     private weak var view: UIView?
     
     init(text: String, navigationController: UINavigationController) {
+        self.text = text
+        self.navigationController = navigationController
+    }
+
+    func present() {
+        guard let navigationController = navigationController else {
+            return
+        }
+        
         let view = ActivityIndicatorToastView(text: text)
+        view.update(theme: ThemeService.shared().theme)
+        self.view = view
         
         view.translatesAutoresizingMaskIntoConstraints = false
         navigationController.view.addSubview(view)
         NSLayoutConstraint.activate([
             view.centerXAnchor.constraint(equalTo: navigationController.navigationBar.centerXAnchor),
-            view.centerYAnchor.constraint(equalTo: navigationController.navigationBar.bottomAnchor)
+            view.topAnchor.constraint(equalTo: navigationController.navigationBar.bottomAnchor)
         ])
         
-        view.isHidden = true
-        self.view = view
-    }
-    
-    func present() {
-        guard let view = view else {
-            return
-        }
-        
         view.alpha = 0
-        view.isHidden = false
-        view.transform = .init(translationX: 0, y: 10)
+        view.transform = .init(translationX: 0, y: 5)
         UIView.animate(withDuration: 0.2) {
             view.alpha = 1
             view.transform = .identity
@@ -60,7 +66,7 @@ class ActivityIndicatorToastPresenter: ActivityPresentable {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.2, delay: 0, options: .beginFromCurrentState) {
                 view.alpha = 0
-                view.transform = .init(translationX: 0, y: -10)
+                view.transform = .init(translationX: 0, y: -5)
             } completion: { _ in
                 view.removeFromSuperview()
                 self.view = nil
