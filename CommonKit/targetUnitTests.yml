@@ -1,0 +1,42 @@
+name: CommonKitUnitTests
+
+schemes:
+  CommonKitUnitTests:
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+    build:
+      targets:
+        CommonKitUnitTests:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Release
+    run:
+      config: Debug
+      disableMainThreadChecker: true
+    test:
+      config: Debug
+      disableMainThreadChecker: true
+      targets:
+      - CommonKitUnitTests
+
+targets:
+  CommonKitUnitTests:
+    type: bundle.unit-test
+    platform: iOS
+
+    dependencies:
+    - target: CommonKit
+
+    configFiles:
+      Debug: Debug.xcconfig
+      Release: Release.xcconfig
+
+    sources:
+    - path: .
+      
