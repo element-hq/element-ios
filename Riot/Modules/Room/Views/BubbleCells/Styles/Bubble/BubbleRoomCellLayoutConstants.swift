@@ -32,6 +32,8 @@ final class BubbleRoomCellLayoutConstants: NSObject {
     
     static let bubbleTextViewInsets: UIEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 45)
     
+    static let bubbleCornerRadius: CGFloat = 12.0
+    
     // Voice message
     
     static let voiceMessagePlaybackViewRightMargin: CGFloat = 40
@@ -42,5 +44,15 @@ final class BubbleRoomCellLayoutConstants: NSObject {
 
     // Decoration margins
     
-    static let threadSummaryViewMargins: UIEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: 0)
+    // Timestamp margins
+    
+    /// Timestamp margins for sticker cell, margin is relative to the image view
+    static let stickerTimestampViewMargins = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: -27) // Right margin is not reliable there, if the text size change this one is not working anymore
+    
+    /// Timestamp margins inside bubble
+    static let bubbleTimestampViewMargins = UIEdgeInsets(top: 0, left: 0, bottom: 4.0, right: 8.0)
+    
+    static let reactionsViewMargins = UIEdgeInsets(top: 4, left: 0, bottom: 0, right: 0)
+        
+    static let threadSummaryViewMargins: UIEdgeInsets = UIEdgeInsets(top: 8.0, left: 0, bottom: 5, right: 0)
 }
