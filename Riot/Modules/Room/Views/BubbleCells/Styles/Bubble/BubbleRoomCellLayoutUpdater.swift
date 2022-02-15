@@ -152,11 +152,10 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
     
     private func getIncomingMessageTextViewInsets(from bubbleCell: MXKRoomBubbleTableViewCell) -> UIEdgeInsets {
         
-        let bubbleBgRightMargin: CGFloat = 45
         let messageViewMarginTop: CGFloat = 0
-        let messageViewMarginBottom: CGFloat = -0
+        let messageViewMarginBottom: CGFloat = 0
         let messageViewMarginLeft: CGFloat = 0
-        let messageViewMarginRight: CGFloat = 80 + bubbleBgRightMargin
+        let messageViewMarginRight: CGFloat = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right + BubbleRoomCellLayoutConstants.bubbleTextViewInsets.right
         
         let messageViewInsets = UIEdgeInsets(top: messageViewMarginTop, left: messageViewMarginLeft, bottom: messageViewMarginBottom, right: messageViewMarginRight)
         
@@ -180,13 +179,12 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
     }
     
     private func getOutgoingMessageTextViewMargins(from bubbleCell: MXKRoomBubbleTableViewCell) -> UIEdgeInsets {
-            
-        let innerContentLeftMargin: CGFloat = 57
         
         let messageViewMarginTop: CGFloat = 0
         let messageViewMarginBottom: CGFloat = 0
-        let messageViewMarginLeft: CGFloat = 80.0 + innerContentLeftMargin
-        let messageViewMarginRight: CGFloat = 78.0
+        let messageViewMarginLeft =
+        BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left + RoomBubbleCellLayout.innerContentViewMargins.left
+        let messageViewMarginRight = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right + BubbleRoomCellLayoutConstants.bubbleTextViewInsets.right
             
         let messageViewInsets = UIEdgeInsets(top: messageViewMarginTop, left: messageViewMarginLeft, bottom: messageViewMarginBottom, right: messageViewMarginRight)
                 
@@ -230,10 +228,8 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
         }
 
         let contentView = cell.contentView
-        
-        // TODO: Use constants
-        // Same as URL preview
-        let rightMargin: CGFloat = 34.0
+                
+        let rightMargin = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
 
         if let attachViewLeadingConstraint = cell.attachViewLeadingConstraint {
             attachViewLeadingConstraint.isActive = false
@@ -263,8 +259,7 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
 
         let contentView = cell.contentView
         
-        // TODO: Use constants
-        let leftMargin: CGFloat = 67
+        let leftMargin: CGFloat = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left
 
         let leftConstraint = attachmentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: -leftMargin)
 
