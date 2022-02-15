@@ -57,10 +57,10 @@ class PollBaseBubbleCell: PollBubbleCell {
     private func addBubbleBackgroundView(_ bubbleBackgroundView: RoomMessageBubbleBackgroundView,
                                          to pollView: UIView) {
         
-        let topMargin: CGFloat = 2.0
-        let leftMargin: CGFloat = 10.0
-        let rightMargin: CGFloat = 10.0 // Add extra space for timestamp
-        let bottomMargin: CGFloat = 0.0 //
+        let topMargin = BubbleRoomCellLayoutConstants.pollBubbleBackgroundInsets.top
+        let leftMargin = BubbleRoomCellLayoutConstants.pollBubbleBackgroundInsets.left
+        let rightMargin = BubbleRoomCellLayoutConstants.pollBubbleBackgroundInsets.right
+        let bottomMargin = BubbleRoomCellLayoutConstants.pollBubbleBackgroundInsets.bottom
         
         let topAnchor = pollView.topAnchor
         let leadingAnchor = pollView.leadingAnchor
