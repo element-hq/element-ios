@@ -37,9 +37,9 @@ struct MatrixItemChooser: View {
         listContent
             .background(Color.clear)
             .modifier(WaitOverlay(isLoading: .constant(viewModel.viewState.loading)))
-            .alert(isPresented: .constant(viewModel.viewState.error != nil), content: {
+            .alert(isPresented: .constant(viewModel.viewState.error != nil)) {
                 Alert(title: Text(MatrixKitL10n.error), message: Text(viewModel.viewState.error ?? ""), dismissButton: .cancel(Text(MatrixKitL10n.ok)))
-            })
+            }
     }
     
     // MARK: Private
