@@ -30,6 +30,14 @@ struct MatrixItemChooser: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
+    private var spacerHeight: CGFloat {
+        if viewModel.viewState.title != nil || viewModel.viewState.message != nil {
+            return 24
+        } else {
+            return 8
+        }
+    }
+
     // MARK: Public
     
     var body: some View {
@@ -93,11 +101,7 @@ struct MatrixItemChooser: View {
                     .padding(.horizontal)
                     .accessibility(identifier: "messageText")
             }
-            if viewModel.viewState.title != nil || viewModel.viewState.message != nil {
-                Spacer().frame(height: 24)
-            } else {
-                Spacer().frame(height: 8)
-            }
+            Spacer().frame(height: spacerHeight)
             SearchBar(placeholder: VectorL10n.searchDefaultPlaceholder, text: $searchText)
                 .onChange(of: searchText) { value in
                     viewModel.send(viewAction: .searchTextChanged(searchText))

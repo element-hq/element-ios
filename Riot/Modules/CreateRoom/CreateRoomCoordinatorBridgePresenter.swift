@@ -20,7 +20,7 @@ import Foundation
 
 @objc protocol CreateRoomCoordinatorBridgePresenterDelegate {
     func createRoomCoordinatorBridgePresenterDelegate(_ coordinatorBridgePresenter: CreateRoomCoordinatorBridgePresenter, didCreateNewRoom room: MXRoom)
-    func createRoomCoordinatorBridgePresenterDelegate(_ coordinatorBridgePresenter: CreateRoomCoordinatorBridgePresenter, didAddRoomsWithId roomIds: [String])
+    func createRoomCoordinatorBridgePresenterDelegate(_ coordinatorBridgePresenter: CreateRoomCoordinatorBridgePresenter, didAddRoomsWithIds roomIds: [String])
     func createRoomCoordinatorBridgePresenterDelegateDidCancel(_ coordinatorBridgePresenter: CreateRoomCoordinatorBridgePresenter)
 }
 
@@ -89,8 +89,8 @@ extension CreateRoomCoordinatorBridgePresenter: CreateRoomCoordinatorDelegate {
         self.delegate?.createRoomCoordinatorBridgePresenterDelegate(self, didCreateNewRoom: room)
     }
     
-    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithId roomIds: [String]) {
-        self.delegate?.createRoomCoordinatorBridgePresenterDelegate(self, didAddRoomsWithId: roomIds)
+    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithIds roomIds: [String]) {
+        self.delegate?.createRoomCoordinatorBridgePresenterDelegate(self, didAddRoomsWithIds: roomIds)
     }
 
     func createRoomCoordinatorDidCancel(_ coordinator: CreateRoomCoordinatorType) {

@@ -458,7 +458,7 @@ extension SideMenuCoordinator: CreateRoomCoordinatorDelegate {
         }
     }
     
-    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithId roomIds: [String]) {
+    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithIds roomIds: [String]) {
         coordinator.toPresentable().dismiss(animated: true) {
             self.createRoomCoordinator = nil
             self.parameters.appNavigator.sideMenu.dismiss(animated: true) {

@@ -2197,7 +2197,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     coordinatorBridgePresenter = nil;
 }
 
-- (void)createRoomCoordinatorBridgePresenterDelegate:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter didAddRoomsWithId:(NSArray<NSString *> *)roomIds
+- (void)createRoomCoordinatorBridgePresenterDelegate:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter didAddRoomsWithIds:(NSArray<NSString *> *)roomIds
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     coordinatorBridgePresenter = nil;

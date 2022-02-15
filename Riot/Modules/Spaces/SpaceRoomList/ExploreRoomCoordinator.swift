@@ -31,7 +31,7 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
     // We need to stack the ID of visited space and subspaces so we know what is the current space ID when navigating to a room
     private var spaceIdStack: [String]
     private weak var roomDetailCoordinator: SpaceChildRoomDetailCoordinator?
-    private weak var currentExploreRoomCoordiantor: SpaceExploreRoomCoordinator?
+    private weak var currentExploreRoomCoordinator: SpaceExploreRoomCoordinator?
 
     private lazy var slidingModalPresenter: SlidingModalPresenter = {
         return SlidingModalPresenter()
@@ -62,7 +62,7 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
         rootCoordinator.start()
 
         self.add(childCoordinator: rootCoordinator)
-        self.currentExploreRoomCoordiantor = rootCoordinator
+        self.currentExploreRoomCoordinator = rootCoordinator
 
         self.navigationRouter.setRootModule(rootCoordinator)
     }
@@ -78,7 +78,7 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
         coordinator.start()
         
         self.add(childCoordinator: coordinator)
-        self.currentExploreRoomCoordiantor = coordinator
+        self.currentExploreRoomCoordinator = coordinator
 
         self.spaceIdStack.append(item.childInfo.childRoomId)
         
@@ -215,15 +215,15 @@ extension ExploreRoomCoordinator: SpaceChildRoomDetailCoordinatorDelegate {
 extension ExploreRoomCoordinator: CreateRoomCoordinatorDelegate {
     
     func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didCreateNewRoom room: MXRoom) {
-        self.currentExploreRoomCoordiantor?.reloadRooms()
+        self.currentExploreRoomCoordinator?.reloadRooms()
         coordinator.toPresentable().dismiss(animated: true) {
             self.remove(childCoordinator: coordinator)
             self.navigateTo(roomWith: room.roomId)
         }
     }
     
-    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithId roomIds: [String]) {
-        self.currentExploreRoomCoordiantor?.reloadRooms()
+    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithIds roomIds: [String]) {
+        self.currentExploreRoomCoordinator?.reloadRooms()
         coordinator.toPresentable().dismiss(animated: true) {
             self.remove(childCoordinator: coordinator)
         }

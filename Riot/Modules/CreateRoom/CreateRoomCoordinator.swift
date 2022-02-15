@@ -67,7 +67,7 @@ final class CreateRoomCoordinator: CreateRoomCoordinatorType {
                 
                 switch result {
                 case .done(let selectedItemIds):
-                    self.delegate?.createRoomCoordinator(self, didAddRoomsWithId: selectedItemIds)
+                    self.delegate?.createRoomCoordinator(self, didAddRoomsWithIds: selectedItemIds)
                 default:
                     self.delegate?.createRoomCoordinatorDidCancel(self)
                 }
