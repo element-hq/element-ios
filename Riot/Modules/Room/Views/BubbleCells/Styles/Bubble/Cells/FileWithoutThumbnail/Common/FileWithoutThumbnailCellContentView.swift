@@ -19,13 +19,6 @@ import Reusable
 
 final class FileWithoutThumbnailCellContentView: UIView, NibLoadable {
     
-    // MARK: - Constants
-    
-    private enum Constants {
-        // TODO: Reuse constants, same as bubble bg
-        static let cornerRadius: CGFloat = 12.0
-    }
-    
     // MARK: - Properties
     
     // MARK: Outlets
@@ -61,7 +54,7 @@ final class FileWithoutThumbnailCellContentView: UIView, NibLoadable {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.layer.cornerRadius = Constants.cornerRadius
+        self.layer.cornerRadius = BubbleRoomCellLayoutConstants.bubbleCornerRadius
     }
     
     // MARK: - Public
