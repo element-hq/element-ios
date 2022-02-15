@@ -44,8 +44,8 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
                let attachmentView = cell.attachmentView {
                 
                 // Prevent overlap with send status icon
-                let bottomMargin: CGFloat = 20.0
-                let rightMargin: CGFloat = -27.0
+                let bottomMargin: CGFloat = BubbleRoomCellLayoutConstants.stickerTimestampViewMargins.bottom
+                let rightMargin: CGFloat = BubbleRoomCellLayoutConstants.stickerTimestampViewMargins.right
                 
                 self.addTimestampLabel(timestampLabel,
                                        to: cell,
@@ -105,43 +105,38 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
         let cellContentView = cell.contentView
         
         cellContentView.addSubview(reactionsView)
-        
-        // TODO: Use constants
-        let topMargin: CGFloat = 4.0
+                
+        let topMargin: CGFloat = RoomBubbleCellLayout.reactionsViewTopMargin
         let leftMargin: CGFloat
         let rightMargin: CGFloat
                 
         // Incoming message
         if cellData.isIncoming {
             
-            var incomingLeftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin
+            var incomingLeftMargin = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left
             
             if cellData.containsBubbleComponentWithEncryptionBadge {
                 incomingLeftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
             }
             
-            leftMargin = incomingLeftMargin - 6.0
+            leftMargin = incomingLeftMargin
             
-            // TODO: Use constants
-            let messageViewMarginRight: CGFloat = 42.0
+            rightMargin = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
             
-            rightMargin = messageViewMarginRight
         } else {
             // Outgoing message
             
             reactionsView.alignment = .right
-            
-            // TODO: Use constants
-            var outgoingLeftMargin: CGFloat = 80.0
+                        
+            var outgoingLeftMargin = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left
             
             if cellData.containsBubbleComponentWithEncryptionBadge {
                 outgoingLeftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
             }
             
             leftMargin = outgoingLeftMargin
-            
-            // TODO: Use constants
-            rightMargin = 33
+                        
+            rightMargin = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
         }
         
         let leadingConstraint = reactionsView.leadingAnchor.constraint(equalTo: cellContentView.leadingAnchor, constant: leftMargin)
@@ -190,14 +185,11 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
                     leftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
                 }
                 
-                leftMargin-=5.0
-                
                 leadingOrTrailingConstraint = urlPreviewView.leadingAnchor.constraint(equalTo: cellContentView.leadingAnchor, constant: leftMargin)
             } else {
                 // Outgoing message
                 
-                // TODO: Use constants
-                let rightMargin: CGFloat = 34.0
+                let rightMargin: CGFloat = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
                 
                 leadingOrTrailingConstraint = urlPreviewView.trailingAnchor.constraint(equalTo: cellContentView.trailingAnchor, constant: -rightMargin)
             }
@@ -238,14 +230,12 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
             // Incoming message
             if cellData.isIncoming {
 
-                leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin
+                leftMargin = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left
                 if cellData.containsBubbleComponentWithEncryptionBadge {
                     leftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
                 }
                 
-                leftMargin-=5.0
-                
-                rightMargin = RoomBubbleCellLayout.reactionsViewRightMargin
+                rightMargin = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
                 
                 leadingConstraint = threadSummaryView.leadingAnchor.constraint(equalTo: cellContentView.leadingAnchor,
                                                            constant: leftMargin)
@@ -253,10 +243,9 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
                                                                                  constant: -rightMargin)
             } else {
                 // Outgoing message
-                
-                // TODO: Use constants
-                leftMargin = 80.0
-                rightMargin = 34.0
+                                
+                leftMargin = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left
+                rightMargin = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
                 
                 leadingConstraint = threadSummaryView.leadingAnchor.constraint(greaterThanOrEqualTo: cellContentView.leadingAnchor,
                                                            constant: leftMargin)
@@ -264,7 +253,8 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
                                                                                  constant: -rightMargin)
             }
             
-            let topMargin = RoomBubbleCellLayout.threadSummaryViewTopMargin + 15.0
+            let topMargin = RoomBubbleCellLayout.threadSummaryViewTopMargin
+            
             let height = ThreadSummaryView.contentViewHeight(forThread: threadSummaryView.thread,
                                                              fitting: cellData.maxTextViewWidth)
 
@@ -376,8 +366,8 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
                                    to cell: MXKRoomBubbleTableViewCell,
                                    on containerView: UIView,
                                    constrainingView: UIView,
-                                   rightMargin: CGFloat = 8.0,
-                                   bottomMargin: CGFloat = 4.0) {
+                                   rightMargin: CGFloat = BubbleRoomCellLayoutConstants.bubbleTimestampViewMargins.right,
+                                   bottomMargin: CGFloat = BubbleRoomCellLayoutConstants.bubbleTimestampViewMargins.bottom) {
         timestampLabel.translatesAutoresizingMaskIntoConstraints = false
 
         cell.addTemporarySubview(timestampLabel)
