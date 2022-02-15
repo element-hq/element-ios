@@ -27,7 +27,6 @@ struct AddRoomSelector: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
 
-    @ViewBuilder
     var body: some View {
         MatrixItemChooser(viewModel: viewModel)
             .background(theme.colors.background)
