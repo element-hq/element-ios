@@ -438,11 +438,12 @@ typedef NS_ENUM(NSUInteger, MXKRoomViewControllerJoinRoomResult) {
 - (void)setBubbleTableViewContentOffset:(CGPoint)contentOffset animated:(BOOL)animated;
 
 /**
- Handle typing notification.
+ Sends a typing notification with the specified timeout.
  
  @param typing Flag indicating whether the user is typing or not.
+ @param notificationTimeoutMS The length of time the typing notification is valid for
  */
-- (void)handleTypingNotification:(BOOL)typing;
+- (void)sendTypingNotification:(BOOL)typing timeout:(NSUInteger)notificationTimeoutMS;
 
 
 /**
