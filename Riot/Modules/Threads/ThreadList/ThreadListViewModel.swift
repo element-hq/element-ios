@@ -269,6 +269,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
                 self.threadsLoaded()
             case .failure(let error):
                 MXLog.error("[ThreadListViewModel] loadData: error: \(error)")
+                self.viewState = .error(error)
             }
         }
     }
