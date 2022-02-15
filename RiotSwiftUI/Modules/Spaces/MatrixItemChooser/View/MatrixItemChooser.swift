@@ -32,7 +32,6 @@ struct MatrixItemChooser: View {
     
     // MARK: Public
     
-    @ViewBuilder
     var body: some View {
         listContent
             .background(Color.clear)
