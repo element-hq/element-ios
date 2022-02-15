@@ -19,12 +19,6 @@ import UIKit
 
 class RoomMessageBubbleBackgroundView: UIView {
     
-    // MARK: - Constant
-    
-    private enum Constants {
-        static let cornerRadius: CGFloat = 12.0
-    }
-    
     // MARK: - Properties
     
     private var heightConstraint: NSLayoutConstraint?
@@ -49,7 +43,7 @@ class RoomMessageBubbleBackgroundView: UIView {
     private func commonInit() {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.layer.masksToBounds = true
-        self.layer.cornerRadius = Constants.cornerRadius
+        self.layer.cornerRadius = BubbleRoomCellLayoutConstants.bubbleCornerRadius
     }
     
     // MARK: - Public
@@ -82,7 +76,7 @@ extension RoomMessageBubbleBackgroundView: TimestampDisplayable {
         
         self.removeTimestampView()
         
-        self.addTimestampView(timestampView, rightMargin: 8.0, bottomMargin: 4.0)
+        self.addTimestampView(timestampView, rightMargin: BubbleRoomCellLayoutConstants.bubbleTimestampViewMargins.right, bottomMargin: BubbleRoomCellLayoutConstants.bubbleTimestampViewMargins.bottom)
         self.timestampView = timestampView
     }
     
