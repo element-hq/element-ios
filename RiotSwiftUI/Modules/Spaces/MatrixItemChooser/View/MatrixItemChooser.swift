@@ -99,9 +99,9 @@ struct MatrixItemChooser: View {
                 Spacer().frame(height: 8)
             }
             SearchBar(placeholder: VectorL10n.searchDefaultPlaceholder, text: $searchText)
-                .onChange(of: searchText, perform: { value in
+                .onChange(of: searchText) { value in
                     viewModel.send(viewAction: .searchTextChanged(searchText))
-                })
+                }
         }
     }
 }
