@@ -816,7 +816,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
     
     // Define 'Edit' button frame
     UIImage *editIcon = AssetImages.editIcon.image;
-    CGFloat editBtnPosX = self.bubbleInfoContainer.frame.size.width - RoomBubbleCellLayout.timestampLabelWidth - 22 - editIcon.size.width / 2;
+    CGFloat editBtnPosX = self.bubbleInfoContainer.frame.size.width - PlainRoomCellLayoutConstants.timestampLabelWidth - 22 - editIcon.size.width / 2;
     CGFloat editBtnPosY = isFirstDisplayedComponent ? -13 : component.position.y + self.msgTextViewTopConstraint.constant - self.bubbleInfoContainerTopConstraint.constant - 13;
     UIButton *editButton = [[UIButton alloc] initWithFrame:CGRectMake(editBtnPosX, editBtnPosY, 44, 44)];
     
