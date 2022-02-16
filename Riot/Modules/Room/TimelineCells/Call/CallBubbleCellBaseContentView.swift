@@ -112,7 +112,7 @@ extension CallBubbleCellBaseContentView: Themable {
     
 }
 
-// MARK: - BubbleCellReadReceiptsDisplayable
+// MARK: - RoomCellReadReceiptsDisplayable
 
 extension CallBubbleCellBaseContentView: RoomCellReadReceiptsDisplayable {
     

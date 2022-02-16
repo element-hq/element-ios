@@ -171,7 +171,7 @@ final class RoomCellContentView: UIView, NibLoadable {
     }
 }
 
-// MARK: - BubbleCellReadReceiptsDisplayable
+// MARK: - RoomCellReadReceiptsDisplayable
 extension RoomCellContentView: RoomCellReadReceiptsDisplayable {
     
     func addReadReceiptsView(_ readReceiptsView: UIView) {
@@ -186,7 +186,7 @@ extension RoomCellContentView: RoomCellReadReceiptsDisplayable {
     }
 }
 
-// MARK: - BubbleCellReactionsDisplayable
+// MARK: - RoomCellReactionsDisplayable
 extension RoomCellContentView: RoomCellReactionsDisplayable {
     
     func addReactionsView(_ reactionsView: UIView) {
@@ -218,7 +218,7 @@ extension RoomCellContentView: RoomCellReactionsDisplayable {
     }
 }
 
-// MARK: - BubbleCellThreadSummaryDisplayable
+// MARK: - RoomCellThreadSummaryDisplayable
 extension RoomCellContentView: RoomCellThreadSummaryDisplayable {
     
     func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView) {
