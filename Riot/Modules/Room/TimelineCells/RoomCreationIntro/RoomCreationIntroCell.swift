@@ -32,7 +32,7 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
     
     // MARK: - Properties
         
-    private weak var bubbleCellContentView: RoomCreationIntroCellContentView?
+    private weak var roomCellContentView: RoomCreationIntroCellContentView?
     
     // MARK: - Setup
     
@@ -57,7 +57,7 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
     // MARK: - Public
     
     func update(theme: Theme) {
-        self.bubbleCellContentView?.update(theme: theme)
+        self.roomCellContentView?.update(theme: theme)
     }
     
     // MARK: - Overrides
@@ -92,7 +92,7 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
         
-        guard let bubbleCellContentView = self.bubbleCellContentView else {
+        guard let roomCellContentView = self.roomCellContentView else {
             MXLog.debug("[RoomCreationIntroCell] Fail to load content view")
             return
         }
@@ -103,7 +103,7 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
             return
         }
         
-        bubbleCellContentView.fill(with: viewData)
+        roomCellContentView.fill(with: viewData)
     }
     
     // MARK: - Private
@@ -140,23 +140,23 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
     }
     
     private func setupContentView() {
-        guard self.bubbleCellContentView == nil else {
+        guard self.roomCellContentView == nil else {
             return
         }
             
-        let bubbleCellContentView = RoomCreationIntroCellContentView.instantiate()
-        self.contentView.vc_addSubViewMatchingParent(bubbleCellContentView)
-        self.bubbleCellContentView = bubbleCellContentView
+        let roomCellContentView = RoomCreationIntroCellContentView.instantiate()
+        self.contentView.vc_addSubViewMatchingParent(roomCellContentView)
+        self.roomCellContentView = roomCellContentView
         
-        bubbleCellContentView.roomAvatarView?.action = { [weak self] in
+        roomCellContentView.roomAvatarView?.action = { [weak self] in
             self?.notifyDelegate(with: RoomCreationIntroCell.tapOnAvatarView)
         }
         
-        bubbleCellContentView.didTapTopic = { [weak self] in
+        roomCellContentView.didTapTopic = { [weak self] in
             self?.notifyDelegate(with: RoomCreationIntroCell.tapOnAddTopic)
         }
         
-        bubbleCellContentView.didTapAddParticipants = { [weak self] in
+        roomCellContentView.didTapAddParticipants = { [weak self] in
             self?.notifyDelegate(with: RoomCreationIntroCell.tapOnAddParticipants)
         }
     }

@@ -21,10 +21,10 @@ class FileWithoutThumbnailOutoingWithoutSenderInfoBubbleCell: FileWithoutThumbna
     override func setupViews() {
         super.setupViews()
         
-        bubbleCellContentView?.showSenderInfo = false
+        roomCellContentView?.showSenderInfo = false
         
-        bubbleCellContentView?.innerContentViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left
-        bubbleCellContentView?.innerContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
+        roomCellContentView?.innerContentViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left
+        roomCellContentView?.innerContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
         
         self.setupBubbleDecorations()
     }

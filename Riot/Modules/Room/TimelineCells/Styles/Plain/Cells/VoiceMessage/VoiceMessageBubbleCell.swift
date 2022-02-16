@@ -41,11 +41,11 @@ class VoiceMessageBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplaya
     override func setupViews() {
         super.setupViews()
         
-        bubbleCellContentView?.backgroundColor = .clear
-        bubbleCellContentView?.showSenderInfo = true
-        bubbleCellContentView?.showPaginationTitle = false
+        roomCellContentView?.backgroundColor = .clear
+        roomCellContentView?.showSenderInfo = true
+        roomCellContentView?.showPaginationTitle = false
         
-        guard let contentView = bubbleCellContentView?.innerContentView else {
+        guard let contentView = roomCellContentView?.innerContentView else {
             return
         }
         

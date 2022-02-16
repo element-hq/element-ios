@@ -24,7 +24,7 @@ extension BubbleIncomingRoomCellProtocol {
     // MARK: - Public
     
     func setupBubbleDecorations() {
-        self.bubbleCellContentView?.decorationViewsAlignment = .left
+        self.roomCellContentView?.decorationViewsAlignment = .left
         self.setupDecorationConstraints()
     }
     
@@ -39,16 +39,16 @@ extension BubbleIncomingRoomCellProtocol {
     
     private func setupReactionsContentViewContraints() {
         
-        self.bubbleCellContentView?.reactionsContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
+        self.roomCellContentView?.reactionsContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
     }
     
     private func setupThreadSummaryViewContentViewContraints() {
-        self.bubbleCellContentView?.threadSummaryContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
+        self.roomCellContentView?.threadSummaryContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
         
-        self.bubbleCellContentView?.threadSummaryContentViewBottomConstraint.constant = BubbleRoomCellLayoutConstants.threadSummaryViewMargins.bottom
+        self.roomCellContentView?.threadSummaryContentViewBottomConstraint.constant = BubbleRoomCellLayoutConstants.threadSummaryViewMargins.bottom
     }
     
     private func setupURLPreviewContentViewContraints() {
-        self.bubbleCellContentView?.urlPreviewContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
+        self.roomCellContentView?.urlPreviewContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
     }
 }

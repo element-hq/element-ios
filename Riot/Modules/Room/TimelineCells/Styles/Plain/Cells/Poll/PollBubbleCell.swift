@@ -25,7 +25,7 @@ class PollBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplayable {
         super.render(cellData)
         
         guard #available(iOS 14.0, *),
-              let contentView = bubbleCellContentView?.innerContentView,
+              let contentView = roomCellContentView?.innerContentView,
               let bubbleData = cellData as? RoomBubbleCellData,
               let event = bubbleData.events.last,
               event.eventType == __MXEventType.pollStart,
@@ -40,9 +40,9 @@ class PollBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplayable {
     override func setupViews() {
         super.setupViews()
         
-        bubbleCellContentView?.backgroundColor = .clear
-        bubbleCellContentView?.showSenderInfo = true
-        bubbleCellContentView?.showPaginationTitle = false
+        roomCellContentView?.backgroundColor = .clear
+        roomCellContentView?.showSenderInfo = true
+        roomCellContentView?.showPaginationTitle = false
     }
     
     // The normal flow for tapping on cell content views doesn't work for bubbles without attributed strings

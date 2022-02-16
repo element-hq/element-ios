@@ -55,12 +55,12 @@ class LocationBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplayable 
     override func setupViews() {
         super.setupViews()
         
-        bubbleCellContentView?.backgroundColor = .clear
-        bubbleCellContentView?.showSenderInfo = true
-        bubbleCellContentView?.showPaginationTitle = false
+        roomCellContentView?.backgroundColor = .clear
+        roomCellContentView?.showSenderInfo = true
+        roomCellContentView?.showPaginationTitle = false
         
         guard #available(iOS 14.0, *),
-              let contentView = bubbleCellContentView?.innerContentView else {
+              let contentView = roomCellContentView?.innerContentView else {
             return
         }
         

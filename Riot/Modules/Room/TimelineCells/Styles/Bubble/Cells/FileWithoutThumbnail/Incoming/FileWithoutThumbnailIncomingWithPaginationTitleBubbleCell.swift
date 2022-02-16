@@ -21,6 +21,6 @@ class FileWithoutThumbnailIncomingWithPaginationTitleBubbleCell: FileWithoutThum
     override func setupViews() {
         super.setupViews()
         
-        bubbleCellContentView?.showPaginationTitle = true
+        roomCellContentView?.showPaginationTitle = true
     }
 }

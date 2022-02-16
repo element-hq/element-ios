@@ -18,7 +18,7 @@ import Foundation
 
 protocol BubbleRoomCellProtocol {
     
-    var bubbleCellContentView: RoomCellContentView? { get }
+    var roomCellContentView: RoomCellContentView? { get }
     
     func setupBubbleDecorations()
 }

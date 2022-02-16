@@ -24,8 +24,8 @@ class PollIncomingBubbleCell: PollBaseBubbleCell, BubbleIncomingRoomCellProtocol
         let leftMargin: CGFloat = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left + BubbleRoomCellLayoutConstants.pollBubbleBackgroundInsets.left
         let rightMargin: CGFloat = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right + BubbleRoomCellLayoutConstants.pollBubbleBackgroundInsets.right
         
-        bubbleCellContentView?.innerContentViewLeadingConstraint.constant = leftMargin
-        bubbleCellContentView?.innerContentViewTrailingConstraint.constant = rightMargin
+        roomCellContentView?.innerContentViewLeadingConstraint.constant = leftMargin
+        roomCellContentView?.innerContentViewTrailingConstraint.constant = rightMargin
         
         self.setupBubbleDecorations()
     }

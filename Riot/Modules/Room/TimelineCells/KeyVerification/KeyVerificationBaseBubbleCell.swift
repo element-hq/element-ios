@@ -31,11 +31,11 @@ class KeyVerificationBaseBubbleCell: MXKRoomBubbleTableViewCell {
     
     weak var keyVerificationCellInnerContentView: KeyVerificationCellInnerContentView?
 
-    weak var bubbleCellContentView: RoomCellContentView?
+    weak var roomCellContentView: RoomCellContentView?
     
     override var bubbleInfoContainer: UIView! {
         get {
-            guard let infoContainer = self.bubbleCellContentView?.bubbleInfoContainer else {
+            guard let infoContainer = self.roomCellContentView?.bubbleInfoContainer else {
                 fatalError("[KeyVerificationBaseBubbleCell] bubbleInfoContainer should not be used before set")
             }
             return infoContainer
@@ -47,7 +47,7 @@ class KeyVerificationBaseBubbleCell: MXKRoomBubbleTableViewCell {
     
     override var bubbleOverlayContainer: UIView! {
         get {
-            guard let overlayContainer = self.bubbleCellContentView?.bubbleOverlayContainer else {
+            guard let overlayContainer = self.roomCellContentView?.bubbleOverlayContainer else {
                 fatalError("[KeyVerificationBaseBubbleCell] bubbleOverlayContainer should not be used before set")
             }
             return overlayContainer
@@ -59,7 +59,7 @@ class KeyVerificationBaseBubbleCell: MXKRoomBubbleTableViewCell {
     
     override var bubbleInfoContainerTopConstraint: NSLayoutConstraint! {
         get {
-            guard let infoContainerTopConstraint = self.bubbleCellContentView?.bubbleInfoContainerTopConstraint else {
+            guard let infoContainerTopConstraint = self.roomCellContentView?.bubbleInfoContainerTopConstraint else {
                 fatalError("[KeyVerificationBaseBubbleCell] bubbleInfoContainerTopConstraint should not be used before set")
             }
             return infoContainerTopConstraint
@@ -92,7 +92,7 @@ class KeyVerificationBaseBubbleCell: MXKRoomBubbleTableViewCell {
     // MARK: - Public
     
     func update(theme: Theme) {
-        self.bubbleCellContentView?.update(theme: theme)
+        self.roomCellContentView?.update(theme: theme)
         self.keyVerificationCellInnerContentView?.update(theme: theme)
     }
     
@@ -190,27 +190,27 @@ class KeyVerificationBaseBubbleCell: MXKRoomBubbleTableViewCell {
         super.render(cellData)
         
         if let bubbleData = self.bubbleData,
-            let bubbleCellContentView = self.bubbleCellContentView,
+            let roomCellContentView = self.roomCellContentView,
             let paginationDate = bubbleData.date,
-            bubbleCellContentView.showPaginationTitle {
-            bubbleCellContentView.paginationLabel.text = bubbleData.eventFormatter.dateString(from: paginationDate, withTime: false)?.uppercased()
+            roomCellContentView.showPaginationTitle {
+            roomCellContentView.paginationLabel.text = bubbleData.eventFormatter.dateString(from: paginationDate, withTime: false)?.uppercased()
         }
     }
     
     // MARK: - Private
     
     private func setupContentView() {
-        if self.bubbleCellContentView == nil {
+        if self.roomCellContentView == nil {
             
-            let bubbleCellContentView = RoomCellContentView.instantiate()
+            let roomCellContentView = RoomCellContentView.instantiate()
             
             let innerContentView = KeyVerificationCellInnerContentView.instantiate()
             
-            bubbleCellContentView.innerContentView.vc_addSubViewMatchingParent(innerContentView)
+            roomCellContentView.innerContentView.vc_addSubViewMatchingParent(innerContentView)
             
-            self.contentView.vc_addSubViewMatchingParent(bubbleCellContentView)
+            self.contentView.vc_addSubViewMatchingParent(roomCellContentView)
             
-            self.bubbleCellContentView = bubbleCellContentView
+            self.roomCellContentView = roomCellContentView
             self.keyVerificationCellInnerContentView = innerContentView
         }
     }
@@ -252,10 +252,10 @@ class KeyVerificationBaseBubbleCell: MXKRoomBubbleTableViewCell {
 extension KeyVerificationBaseBubbleCell: BubbleCellReadReceiptsDisplayable {
     
     func addReadReceiptsView(_ readReceiptsView: UIView) {
-        self.bubbleCellContentView?.addReadReceiptsView(readReceiptsView)
+        self.roomCellContentView?.addReadReceiptsView(readReceiptsView)
     }
     
     func removeReadReceiptsView() {
-        self.bubbleCellContentView?.removeReadReceiptsView()
+        self.roomCellContentView?.removeReadReceiptsView()
     }
 }

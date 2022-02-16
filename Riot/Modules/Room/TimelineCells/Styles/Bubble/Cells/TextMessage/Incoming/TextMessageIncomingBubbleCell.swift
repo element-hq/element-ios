@@ -23,7 +23,7 @@ class TextMessageIncomingBubbleCell: TextMessageBaseBubbleCell, BubbleIncomingRo
     override func setupViews() {
         super.setupViews()
         
-        bubbleCellContentView?.showSenderInfo = true
+        roomCellContentView?.showSenderInfo = true
 
         self.setupBubbleConstraints()
         self.setupBubbleDecorations()
@@ -39,8 +39,8 @@ class TextMessageIncomingBubbleCell: TextMessageBaseBubbleCell, BubbleIncomingRo
     
     private func setupBubbleConstraints() {
         
-        self.bubbleCellContentView?.innerContentViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left
+        self.roomCellContentView?.innerContentViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left
         
-        self.bubbleCellContentView?.innerContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
+        self.roomCellContentView?.innerContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
     }
 }

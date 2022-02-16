@@ -21,8 +21,8 @@ class LocationIncomingBubbleCell: LocationBubbleCell, BubbleIncomingRoomCellProt
     override func setupViews() {
         super.setupViews()
         
-        bubbleCellContentView?.innerContentViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left
-        bubbleCellContentView?.innerContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
+        roomCellContentView?.innerContentViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left
+        roomCellContentView?.innerContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
         
         self.setupBubbleDecorations()
     }
