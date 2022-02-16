@@ -3,3 +3,4 @@
 "NSPhotoLibraryUsageDescription" = "フォトライブラリは、写真や動画の送信に使用されます。";
 "NSMicrophoneUsageDescription" = "マイクは動画撮影や通話に使用されます。";
 "NSContactsUsageDescription" = "連絡先のどれがElementまたはMatrixを既に使用しているかを表示するために、あなたのアドレス帳にあるメールアドレスと電話番号をMatrix Identity Serverに送信することができます。 New Vectorはこのデータを保存したり、他の目的に使用したりしません。 詳細については、アプリケーション設定のプライバシーポリシーページを参照してください。";
+"NSCalendarsUsageDescription" = "予定されている会議をアプリで確認することができます。";
