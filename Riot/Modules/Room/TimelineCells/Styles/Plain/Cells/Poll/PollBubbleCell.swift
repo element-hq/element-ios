@@ -62,4 +62,4 @@ class PollBubbleCell: SizableBaseBubbleCell, RoomCellReactionsDisplayable {
     }
 }
 
-extension PollBubbleCell: BubbleCellThreadSummaryDisplayable {}
+extension PollBubbleCell: RoomCellThreadSummaryDisplayable {}

@@ -219,7 +219,7 @@ extension RoomCellContentView: RoomCellReactionsDisplayable {
 }
 
 // MARK: - BubbleCellThreadSummaryDisplayable
-extension RoomCellContentView: BubbleCellThreadSummaryDisplayable {
+extension RoomCellContentView: RoomCellThreadSummaryDisplayable {
     
     func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView) {
         

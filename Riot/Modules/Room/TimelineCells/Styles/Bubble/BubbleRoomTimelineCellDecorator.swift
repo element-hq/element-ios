@@ -210,7 +210,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
                               contentViewPositionY: CGFloat,
                               upperDecorationView: UIView?) {
 
-        if let threadSummaryDisplayable = cell as? BubbleCellThreadSummaryDisplayable {
+        if let threadSummaryDisplayable = cell as? RoomCellThreadSummaryDisplayable {
             threadSummaryDisplayable.addThreadSummaryView(threadSummaryView)
         } else {
             

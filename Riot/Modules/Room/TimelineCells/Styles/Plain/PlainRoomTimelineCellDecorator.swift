@@ -159,7 +159,7 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
 
         cell.addTemporarySubview(threadSummaryView)
 
-        if let threadSummaryDisplayable = cell as? BubbleCellThreadSummaryDisplayable {
+        if let threadSummaryDisplayable = cell as? RoomCellThreadSummaryDisplayable {
             threadSummaryDisplayable.addThreadSummaryView(threadSummaryView)
         } else {
             threadSummaryView.translatesAutoresizingMaskIntoConstraints = false

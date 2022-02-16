@@ -135,7 +135,7 @@ class SizableBaseBubbleCell: BaseRoomCell, SizableBaseBubbleCellType {
         }
 
         // Add thread summary view height if needed
-        if sizingView is BubbleCellThreadSummaryDisplayable,
+        if sizingView is RoomCellThreadSummaryDisplayable,
            let roomBubbleCellData = cellData as? RoomBubbleCellData,
            roomBubbleCellData.hasThreadRoot {
             
