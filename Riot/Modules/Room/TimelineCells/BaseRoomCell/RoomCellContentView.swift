@@ -172,7 +172,7 @@ final class RoomCellContentView: UIView, NibLoadable {
 }
 
 // MARK: - BubbleCellReadReceiptsDisplayable
-extension RoomCellContentView: BubbleCellReadReceiptsDisplayable {
+extension RoomCellContentView: RoomCellReadReceiptsDisplayable {
     
     func addReadReceiptsView(_ readReceiptsView: UIView) {
         self.readReceiptsContentView.vc_removeAllSubviews()

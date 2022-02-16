@@ -119,7 +119,7 @@ class SizableBaseBubbleCell: BaseRoomCell, SizableBaseBubbleCellType {
         var height = sizingView.systemLayoutSizeFitting(fittingSize).height
         
         // Add read receipt height if needed
-        if let roomBubbleCellData = cellData as? RoomBubbleCellData, let readReceipts = roomBubbleCellData.readReceipts, readReceipts.count > 0, sizingView is BubbleCellReadReceiptsDisplayable {
+        if let roomBubbleCellData = cellData as? RoomBubbleCellData, let readReceipts = roomBubbleCellData.readReceipts, readReceipts.count > 0, sizingView is RoomCellReadReceiptsDisplayable {
             height+=RoomBubbleCellLayout.readReceiptsViewHeight
         }
         

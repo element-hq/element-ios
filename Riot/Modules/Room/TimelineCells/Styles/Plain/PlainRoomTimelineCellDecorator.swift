@@ -118,7 +118,7 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
 
         cell.addTemporarySubview(readReceiptsView)
 
-        if let readReceiptsDisplayable = cell as? BubbleCellReadReceiptsDisplayable {
+        if let readReceiptsDisplayable = cell as? RoomCellReadReceiptsDisplayable {
             readReceiptsDisplayable.addReadReceiptsView(readReceiptsView)
         } else {
 

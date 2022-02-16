@@ -144,7 +144,7 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
     // MARK: - Public
     
     func removeDecorationViews() {
-        if let bubbleCellReadReceiptsDisplayable = self as? BubbleCellReadReceiptsDisplayable {
+        if let bubbleCellReadReceiptsDisplayable = self as? RoomCellReadReceiptsDisplayable {
             bubbleCellReadReceiptsDisplayable.removeReadReceiptsView()
         }
         

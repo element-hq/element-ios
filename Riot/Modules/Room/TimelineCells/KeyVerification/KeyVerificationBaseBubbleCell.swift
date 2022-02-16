@@ -249,7 +249,7 @@ class KeyVerificationBaseBubbleCell: MXKRoomBubbleTableViewCell {
 }
 
 // MARK: - BubbleCellReadReceiptsDisplayable
-extension KeyVerificationBaseBubbleCell: BubbleCellReadReceiptsDisplayable {
+extension KeyVerificationBaseBubbleCell: RoomCellReadReceiptsDisplayable {
     
     func addReadReceiptsView(_ readReceiptsView: UIView) {
         self.roomCellContentView?.addReadReceiptsView(readReceiptsView)
