@@ -16,7 +16,7 @@
 
 import Foundation
 
-class PollBubbleCell: SizableBaseBubbleCell, RoomCellReactionsDisplayable {
+class PollBubbleCell: SizableBaseRoomCell, RoomCellReactionsDisplayable {
     
     private var pollView: UIView?
     private var event: MXEvent?

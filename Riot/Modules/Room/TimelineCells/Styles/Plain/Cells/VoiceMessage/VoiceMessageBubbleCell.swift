@@ -16,7 +16,7 @@
 
 import Foundation
 
-class VoiceMessageBubbleCell: SizableBaseBubbleCell, RoomCellReactionsDisplayable {
+class VoiceMessageBubbleCell: SizableBaseRoomCell, RoomCellReactionsDisplayable {
     
     private(set) var playbackController: VoiceMessagePlaybackController!
     

@@ -17,18 +17,18 @@
 import UIKit
 import MatrixSDK
 
-@objc protocol SizableBaseBubbleCellType: BaseRoomCellProtocol {
+@objc protocol SizableBaseRoomCellType: BaseRoomCellProtocol {
     static func sizingViewHeightHashValue(from bubbleCellData: MXKRoomBubbleCellData) -> Int
 }
 
-/// `SizableBaseBubbleCell` allows a cell using Auto Layout that inherits from this class to automatically return the height of the cell and cache the result.
+/// `SizableBaseRoomCell` allows a cell using Auto Layout that inherits from this class to automatically return the height of the cell and cache the result.
 @objcMembers
-class SizableBaseBubbleCell: BaseRoomCell, SizableBaseBubbleCellType {
+class SizableBaseRoomCell: BaseRoomCell, SizableBaseRoomCellType {
     
     // MARK: - Constants
     
     private static let sizingViewHeightStore = SizingViewHeightStore()
-    private static var sizingViews: [String: SizableBaseBubbleCell] = [:]
+    private static var sizingViews: [String: SizableBaseRoomCell] = [:]
     private static let sizingReactionsView = BubbleReactionsView()
     
     private static let reactionsViewSizer = BubbleReactionsViewSizer()
@@ -36,8 +36,8 @@ class SizableBaseBubbleCell: BaseRoomCell, SizableBaseBubbleCellType {
     
     private static let urlPreviewViewSizer = URLPreviewViewSizer()
 
-    private class var sizingView: SizableBaseBubbleCell {
-        let sizingView: SizableBaseBubbleCell
+    private class var sizingView: SizableBaseRoomCell {
+        let sizingView: SizableBaseRoomCell
         
         let reuseIdentifier: String = self.defaultReuseIdentifier()
 
@@ -64,7 +64,7 @@ class SizableBaseBubbleCell: BaseRoomCell, SizableBaseBubbleCellType {
         return self.height(for: roomBubbleCellData, fitting: maxWidth)
     }
         
-    // MARK - SizableBaseBubbleCellType
+    // MARK - SizableBaseRoomCellType
     
     // Each sublcass should override this method, to indicate a unique identifier for a view height.
     // This means that the value should change if there is some data that modify the cell height.
@@ -77,7 +77,7 @@ class SizableBaseBubbleCell: BaseRoomCell, SizableBaseBubbleCellType {
     
     // MARK: - Private
     
-    class func createSizingView() -> SizableBaseBubbleCell {
+    class func createSizingView() -> SizableBaseRoomCell {
         return self.init(style: .default, reuseIdentifier: self.defaultReuseIdentifier())
     }
     
