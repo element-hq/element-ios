@@ -19,7 +19,7 @@
 #import "MXKEventFormatter.h"
 #import "MXKURLPreviewDataProtocol.h"
 
-@class MXThread;
+@protocol MXThreadProtocol;
 
 /**
  Flags to indicate if a fix is required at the display time.
@@ -108,7 +108,7 @@ typedef enum : NSUInteger {
 /**
  Thread for the bubble component. Should only exist for thread root events.
  */
-@property (nonatomic, readonly) MXThread *thread;
+@property (nonatomic, readonly) id<MXThreadProtocol> thread;
 
 /**
  Create a new `MXKRoomBubbleComponent` object based on a `MXEvent` instance.

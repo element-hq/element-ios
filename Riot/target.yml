@@ -35,6 +35,7 @@ targets:
     - target: SiriIntents
     - target: RiotNSE
     - target: DesignKit
+    - target: CommonKit
     - package: Mapbox
 
     configFiles:

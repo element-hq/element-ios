@@ -16,6 +16,7 @@
 
 import Foundation
 import Intents
+import MatrixSDK
 
 #if DEBUG
 import FLEX
@@ -79,6 +80,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     func start() {
         self.setupLogger()
         self.setupTheme()
+        self.excludeAllItemsFromBackup()
         
         // Setup navigation router store
         _ = NavigationRouterStore.shared
@@ -127,6 +129,17 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
 
             ThemePublisher.shared.republish(themeIdPublisher: themeIdPublisher)
         }
+    }
+    
+    private func excludeAllItemsFromBackup() {
+        let manager = FileManager.default
+        
+        // Individual files and directories created by the application or SDK are excluded case-by-case,
+        // but sometimes the lifecycle of a file is not directly controlled by the app (e.g. plists for
+        // UserDefaults). For that reason the app will always exclude all top-level directories as well
+        // as individual files.
+        manager.excludeAllUserDirectoriesFromBackup()
+        manager.excludeAllAppGroupDirectoriesFromBackup()
     }
     
     private func showAuthentication() {

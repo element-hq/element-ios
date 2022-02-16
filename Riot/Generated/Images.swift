@@ -18,8 +18,10 @@ internal typealias AssetImageTypeAlias = ImageAsset.Image
 // MARK: - Asset Catalogs
 
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
-internal enum Asset {
-  internal enum Images {
+@objcMembers
+internal class Asset: NSObject {
+  @objcMembers
+  @objc(AssetImages) internal class Images: NSObject {
     internal static let analyticsCheckmark = ImageAsset(name: "AnalyticsCheckmark")
     internal static let analyticsLogo = ImageAsset(name: "AnalyticsLogo")
     internal static let socialLoginButtonApple = ImageAsset(name: "social_login_button_apple")
@@ -61,6 +63,8 @@ internal enum Asset {
     internal static let disclosureIcon = ImageAsset(name: "disclosure_icon")
     internal static let errorIcon = ImageAsset(name: "error_icon")
     internal static let faceidIcon = ImageAsset(name: "faceid_icon")
+    internal static let filterOff = ImageAsset(name: "filter_off")
+    internal static let filterOn = ImageAsset(name: "filter_on")
     internal static let group = ImageAsset(name: "group")
     internal static let informationButton = ImageAsset(name: "information_button")
     internal static let monitor = ImageAsset(name: "monitor")
@@ -210,7 +214,6 @@ internal enum Asset {
     internal static let fileMusicIcon = ImageAsset(name: "file_music_icon")
     internal static let filePhotoIcon = ImageAsset(name: "file_photo_icon")
     internal static let fileVideoIcon = ImageAsset(name: "file_video_icon")
-    internal static let searchBg = ImageAsset(name: "search_bg")
     internal static let searchIcon = ImageAsset(name: "search_icon")
     internal static let secretsRecoveryKey = ImageAsset(name: "secrets_recovery_key")
     internal static let secretsRecoveryPassphrase = ImageAsset(name: "secrets_recovery_passphrase")
@@ -244,7 +247,8 @@ internal enum Asset {
     internal static let tabRooms = ImageAsset(name: "tab_rooms")
     internal static let launchScreenLogo = ImageAsset(name: "launch_screen_logo")
   }
-  internal enum SharedImages {
+  @objcMembers
+  @objc(AssetSharedImages) internal class SharedImages: NSObject {
     internal static let cancel = ImageAsset(name: "cancel")
     internal static let e2eVerified = ImageAsset(name: "e2e_verified")
     internal static let horizontalLogo = ImageAsset(name: "horizontal_logo")
@@ -256,7 +260,8 @@ internal enum Asset {
 
 // MARK: - Implementation Details
 
-internal struct ImageAsset {
+@objcMembers
+internal class ImageAsset: NSObject {
   internal fileprivate(set) var name: String
 
   #if os(macOS)
@@ -280,6 +285,10 @@ internal struct ImageAsset {
       fatalError("Unable to load image asset named \(name).")
     }
     return result
+  }
+
+  internal init(name: String) {
+    self.name = name
   }
 
   #if os(iOS) || os(tvOS)
@@ -321,3 +330,4 @@ private final class BundleToken {
   }()
 }
 // swiftlint:enable convenience_type
+

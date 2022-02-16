@@ -73,10 +73,7 @@
     [self initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
     
     [super viewDidLoad];
-    
-    // Add the Riot background image when search bar is empty
-    [self addBackgroundImageViewToView:self.view];
-    
+
     // Initialize here the data sources if a matrix session has been already set.
     [self initializeDataSources];
     
@@ -86,13 +83,6 @@
 - (void)userInterfaceThemeDidChange
 {
     [super userInterfaceThemeDidChange];
-    
-    UIImageView *backgroundImageView = self.backgroundImageView;
-    if (backgroundImageView)
-    {
-        UIImage *image = [MXKTools paintImage:backgroundImageView.image withColor:ThemeService.shared.theme.matrixSearchBackgroundImageTintColor];
-        backgroundImageView.image = image;
-    }
     
     // Match the search bar color to the navigation bar color as it extends slightly outside the frame.
     self.searchBar.backgroundColor = ThemeService.shared.theme.baseColor;
@@ -165,7 +155,7 @@
             threadParameters = [[ThreadParameters alloc] initWithThreadId:event.threadId
                                                           stackRoomScreen:NO];
         }
-        else if ([self.mainSession.threadingService isEventThreadRoot:event])
+        else if (event.unsignedData.relations.thread || [self.mainSession.threadingService isEventThreadRoot:event])
         {
             threadParameters = [[ThreadParameters alloc] initWithThreadId:event.eventId
                                                           stackRoomScreen:NO];
@@ -227,15 +217,6 @@
 
 #pragma mark - Override MXKViewController
 
-- (void)setKeyboardHeight:(CGFloat)keyboardHeight
-{
-    [self setKeyboardHeightForBackgroundImage:keyboardHeight];
-    
-    [super setKeyboardHeight:keyboardHeight];
-    
-    [self checkAndShowBackgroundImage];
-}
-
 - (void)startActivityIndicator
 {
     // Redirect the operation to the currently displayed VC
@@ -283,48 +264,6 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)setKeyboardHeightForBackgroundImage:(CGFloat)keyboardHeight
-{
-    [super setKeyboardHeightForBackgroundImage:keyboardHeight];
-    
-    if (keyboardHeight > 0)
-    {
-        [self checkAndShowBackgroundImage];
-    }
-}
-
-// Check conditions before displaying the background
-- (void)checkAndShowBackgroundImage
-{
-    // Note: This background is hidden when keyboard is dismissed.
-    // The other conditions depend on the current selected view controller.
-    if (self.selectedViewController == messagesSearchViewController)
-    {
-        self.backgroundImageView.hidden = ((messagesSearchDataSource.serverCount != 0) || !messagesSearchViewController.noResultsLabel.isHidden || (self.keyboardHeight == 0));
-    }
-    else if (self.selectedViewController == filesSearchViewController)
-    {
-        self.backgroundImageView.hidden = ((filesSearchDataSource.serverCount != 0) || !filesSearchViewController.noResultsLabel.isHidden || (self.keyboardHeight == 0));
-    }
-    else
-    {
-        self.backgroundImageView.hidden = (self.keyboardHeight == 0);
-    }
-    
-    if (!self.backgroundImageView.hidden)
-    {
-        [self.backgroundImageView layoutIfNeeded];
-        [self.selectedViewController.view layoutIfNeeded];
-        
-        // Check whether there is enough space to display this background
-        // For example, in landscape with the iPhone 5 & 6 screen size, the backgroundImageView must be hidden.
-        if (self.backgroundImageView.frame.origin.y < 0 || (self.selectedViewController.view.frame.size.height - self.backgroundImageViewBottomConstraint.constant) < self.backgroundImageView.frame.size.height)
-        {
-            self.backgroundImageView.hidden = YES;
-        }
-    }
-}
-
 #pragma mark - Override SegmentedViewController
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex
@@ -341,8 +280,6 @@
 {
     if (self.searchBar.text.length)
     {
-        self.backgroundImageView.hidden = YES;
-        
         // Forward the search request to the data source
         if (self.selectedViewController == messagesSearchViewController)
         {
@@ -383,8 +320,6 @@
             [filesSearchDataSource searchMessages:nil force:NO];
         }
     }
-    
-    [self checkAndShowBackgroundImage];
 }
 
 @end

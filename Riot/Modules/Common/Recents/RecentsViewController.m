@@ -121,7 +121,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     tableSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 600, 44)];
     tableSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     tableSearchBar.showsCancelButton = NO;
-    tableSearchBar.placeholder = [VectorL10n searchDefaultPlaceholder];
+    tableSearchBar.placeholder = [VectorL10n searchFilterPlaceholder];
+    [tableSearchBar setImage:AssetImages.filterOff.image
+            forSearchBarIcon:UISearchBarIconSearch
+                       state:UIControlStateNormal];
+
     tableSearchBar.delegate = self;
     
     displayedSectionHeaders = [NSMutableArray array];
@@ -169,8 +173,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }];
     
     self.recentsSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    self.recentsSearchBar.placeholder = [VectorL10n searchDefaultPlaceholder];
-    
+    self.recentsSearchBar.placeholder = [VectorL10n searchFilterPlaceholder];
+    [self.recentsSearchBar setImage:AssetImages.filterOff.image
+                   forSearchBarIcon:UISearchBarIconSearch
+                              state:UIControlStateNormal];
+
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -1109,7 +1116,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }];
     directChatAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *directChatImage = [UIImage imageNamed:@"room_action_direct_chat"];
+    UIImage *directChatImage = AssetImages.roomActionDirectChat.image;
     directChatImage = [directChatImage vc_tintedImageUsingColor:isDirect ? selectedColor : unselectedColor];
     directChatAction.image = [directChatImage vc_notRenderedImage];
     
@@ -1136,13 +1143,13 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     muteAction.backgroundColor = actionBackgroundColor;
     
     UIImage *notificationImage;
-    if([BuildSettings showNotificationsV2])
+    if([BuildSettings showNotificationsV2] && isMuted)
     {
-        notificationImage = isMuted ? [UIImage imageNamed:@"room_action_notification_muted"] : [UIImage imageNamed:@"room_action_notification"];
+        notificationImage = AssetImages.roomActionNotificationMuted.image;
     }
     else
     {
-        notificationImage = [UIImage imageNamed:@"room_action_notification"];
+        notificationImage = AssetImages.roomActionNotification.image;
     }
 
     notificationImage = [notificationImage vc_tintedImageUsingColor:isMuted ? unselectedColor : selectedColor];
@@ -1173,7 +1180,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }];
     favouriteAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *favouriteImage = [UIImage imageNamed:@"room_action_favourite"];
+    UIImage *favouriteImage = AssetImages.roomActionFavourite.image;
     favouriteImage = [favouriteImage vc_tintedImageUsingColor:isFavourite ? selectedColor : unselectedColor];
     favouriteAction.image = [favouriteImage vc_notRenderedImage];
     
@@ -1190,7 +1197,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }];
     priorityAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *priorityImage = isInLowPriority ? [UIImage imageNamed:@"room_action_priority_high"] : [UIImage imageNamed:@"room_action_priority_low"];
+    UIImage *priorityImage = isInLowPriority ? AssetImages.roomActionPriorityHigh.image : AssetImages.roomActionPriorityLow.image;
     priorityImage = [priorityImage vc_tintedImageUsingColor:unselectedColor];
     priorityAction.image = [priorityImage vc_notRenderedImage];
     
@@ -1204,7 +1211,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }];
     leaveAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *leaveImage = [UIImage imageNamed:@"room_action_leave"];
+    UIImage *leaveImage = AssetImages.roomActionLeave.image;
     leaveImage = [leaveImage vc_tintedImageUsingColor:unselectedColor];
     leaveAction.image = [leaveImage vc_notRenderedImage];
         
@@ -2191,6 +2198,16 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
     [self.recentsSearchBar setShowsCancelButton:NO animated:NO];
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    [super searchBar:searchBar textDidChange:searchText];
+
+    UIImage *filterIcon = searchText.length > 0 ? AssetImages.filterOn.image : AssetImages.filterOff.image;
+    [self.recentsSearchBar setImage:filterIcon
+                   forSearchBarIcon:UISearchBarIconSearch
+                              state:UIControlStateNormal];
 }
 
 #pragma mark - CreateRoomCoordinatorBridgePresenterDelegate

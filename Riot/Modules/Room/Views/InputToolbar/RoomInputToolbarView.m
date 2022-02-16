@@ -127,21 +127,21 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
     self.attachMediaButton.accessibilityLabel = [VectorL10n roomAccessibilityUpload];
     
-    UIImage *image = [UIImage imageNamed:@"input_text_background"];
+    UIImage *image = AssetImages.inputTextBackground.image;
     image = [image resizableImageWithCapInsets:UIEdgeInsetsMake(9, 15, 10, 16)];
     self.inputTextBackgroundView.image = image;
     self.inputTextBackgroundView.tintColor = ThemeService.shared.theme.roomInputTextBorder;
     
     if ([ThemeService.shared.themeId isEqualToString:@"light"])
     {
-        [self.attachMediaButton setImage:[UIImage imageNamed:@"upload_icon"] forState:UIControlStateNormal];
+        [self.attachMediaButton setImage:AssetImages.uploadIcon.image forState:UIControlStateNormal];
     }
     else if ([ThemeService.shared.themeId isEqualToString:@"dark"] || [ThemeService.shared.themeId isEqualToString:@"black"])
     {
-        [self.attachMediaButton setImage:[UIImage imageNamed:@"upload_icon_dark"] forState:UIControlStateNormal];
+        [self.attachMediaButton setImage:AssetImages.uploadIconDark.image forState:UIControlStateNormal];
     }
     else if (ThemeService.shared.theme.userInterfaceStyle == UIUserInterfaceStyleDark) {
-        [self.attachMediaButton setImage:[UIImage imageNamed:@"upload_icon_dark"] forState:UIControlStateNormal];
+        [self.attachMediaButton setImage:AssetImages.uploadIconDark.image forState:UIControlStateNormal];
     }
     
     self.inputContextImageView.tintColor = ThemeService.shared.theme.textSecondaryColor;
@@ -192,8 +192,8 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     switch (_sendMode)
     {
         case RoomInputToolbarViewSendModeReply:
-            buttonImage = [UIImage imageNamed:@"send_icon"];
-            self.inputContextImageView.image = [UIImage imageNamed:@"input_reply_icon"];
+            buttonImage = AssetImages.sendIcon.image;
+            self.inputContextImageView.image = AssetImages.inputReplyIcon.image;
             self.inputContextLabel.text = [VectorL10n roomMessageReplyingTo:self.eventSenderDisplayName];
 
             self.inputContextViewHeightConstraint.constant = kContextBarHeight;
@@ -201,8 +201,8 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
             self.textView.maxHeight -= kContextBarHeight;
             break;
         case RoomInputToolbarViewSendModeEdit:
-            buttonImage = [UIImage imageNamed:@"save_icon"];
-            self.inputContextImageView.image = [UIImage imageNamed:@"input_edit_icon"];
+            buttonImage = AssetImages.saveIcon.image;
+            self.inputContextImageView.image = AssetImages.inputEditIcon.image;
             self.inputContextLabel.text = [VectorL10n roomMessageEditing];
 
             self.inputContextViewHeightConstraint.constant = kContextBarHeight;
@@ -210,7 +210,7 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
             self.textView.maxHeight -= kContextBarHeight;
             break;
         default:
-            buttonImage = [UIImage imageNamed:@"send_icon"];
+            buttonImage = AssetImages.sendIcon.image;
 
             if (previousMode != _sendMode)
             {
@@ -429,6 +429,7 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
         if (_actionMenuOpened) {
             self.actionsBar.hidden = NO;
             [self.actionsBar animateWithShowIn:_actionMenuOpened completion:nil];
+            [self.delegate roomInputToolbarViewDidOpenActionMenu:self];
         }
         else
         {

@@ -38,7 +38,8 @@ class ThreadSummaryView: UIView {
     @IBOutlet private weak var lastMessageContentLabel: UILabel!
     
     private var theme: Theme = ThemeService.shared().theme
-    private(set) var thread: MXThread?
+    private(set) var thread: MXThreadProtocol?
+    private weak var session: MXSession?
     
     private lazy var tapGestureRecognizer: UITapGestureRecognizer = {
         return UITapGestureRecognizer(target: self, action: #selector(tapped(_:)))
@@ -48,8 +49,9 @@ class ThreadSummaryView: UIView {
     
     // MARK: - Setup
     
-    init(withThread thread: MXThread) {
+    init(withThread thread: MXThreadProtocol, session: MXSession) {
         self.thread = thread
+        self.session = session
         super.init(frame: CGRect(origin: .zero,
                                  size: CGSize(width: Constants.viewDefaultWidth,
                                               height: RoomBubbleCellLayout.threadSummaryViewHeight)))
@@ -59,7 +61,7 @@ class ThreadSummaryView: UIView {
         translatesAutoresizingMaskIntoConstraints = false
     }
     
-    static func contentViewHeight(forThread thread: MXThread?, fitting maxWidth: CGFloat) -> CGFloat {
+    static func contentViewHeight(forThread thread: MXThreadProtocol?, fitting maxWidth: CGFloat) -> CGFloat {
         return RoomBubbleCellLayout.threadSummaryViewHeight
     }
     
@@ -93,7 +95,7 @@ class ThreadSummaryView: UIView {
         
         guard let thread = thread,
               let lastMessage = thread.lastMessage,
-              let session = thread.session,
+              let session = session,
               let eventFormatter = session.roomSummaryUpdateDelegate as? MXKEventFormatter,
               let room = session.room(withRoomId: lastMessage.roomId) else {
             lastMessageAvatarView.avatarImageView.image = nil

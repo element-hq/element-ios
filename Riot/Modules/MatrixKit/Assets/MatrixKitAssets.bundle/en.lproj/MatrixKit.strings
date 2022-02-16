@@ -367,7 +367,7 @@
 "notice_room_join" = "%@ joined";
 "notice_room_leave" = "%@ left";
 "notice_room_reject" = "%@ rejected the invitation";
-"notice_room_kick" = "%@ kicked %@";
+"notice_room_kick" = "%@ removed %@";
 "notice_room_unban" = "%@ unbanned %@";
 "notice_room_ban" = "%@ banned %@";
 "notice_room_withdraw" = "%@ withdrew %@'s invitation";
@@ -399,7 +399,7 @@
 "notice_room_join_by_you" = "You joined";
 "notice_room_leave_by_you" = "You left";
 "notice_room_reject_by_you" = "You rejected the invitation";
-"notice_room_kick_by_you" = "You kicked %@";
+"notice_room_kick_by_you" = "You removed %@";
 "notice_room_unban_by_you" = "You unbanned %@";
 "notice_room_ban_by_you" = "You banned %@";
 "notice_room_withdraw_by_you" = "You withdrew %@'s invitation";
@@ -479,7 +479,7 @@
 "num_members_one" = "%@ user";
 "num_members_other" = "%@ users";
 "invite" = "Invite";
-"kick" = "Kick";
+"kick" = "Remove from chat";
 "ban" = "Ban";
 "unban" = "Un-ban";
 "message_unsaved_changes" = "There are unsaved changes. Leaving will discard them.";

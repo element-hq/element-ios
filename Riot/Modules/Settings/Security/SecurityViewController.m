@@ -1097,19 +1097,19 @@ TableViewSectionsDelegate>
     {
         if ([deviceId isEqualToString:self.mainSession.myDeviceId])
         {
-            return [UIImage imageNamed:@"encryption_warning"];
+            return AssetImages.encryptionWarning.image;
         }
         else
         {
-            return [UIImage imageNamed:@"encryption_normal"];
+            return AssetImages.encryptionNormal.image;
         }
     }
     
-    UIImage* shieldImageForDevice = [UIImage imageNamed:@"encryption_warning"];
+    UIImage* shieldImageForDevice = AssetImages.encryptionWarning.image;
     MXDeviceInfo *device = [self.mainSession.crypto deviceWithDeviceId:deviceId ofUser:self.mainSession.myUser.userId];
     if (device.trustLevel.isVerified)
     {
-        shieldImageForDevice = [UIImage imageNamed:@"encryption_trusted"];
+        shieldImageForDevice = AssetImages.encryptionTrusted.image;
     }
 
     return shieldImageForDevice;
