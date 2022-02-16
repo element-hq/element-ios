@@ -17,13 +17,13 @@
 import UIKit
 import MatrixSDK
 
-@objc protocol SizableBaseBubbleCellType: BaseBubbleCellType {
+@objc protocol SizableBaseBubbleCellType: BaseRoomCellProtocol {
     static func sizingViewHeightHashValue(from bubbleCellData: MXKRoomBubbleCellData) -> Int
 }
 
 /// `SizableBaseBubbleCell` allows a cell using Auto Layout that inherits from this class to automatically return the height of the cell and cache the result.
 @objcMembers
-class SizableBaseBubbleCell: BaseBubbleCell, SizableBaseBubbleCellType {
+class SizableBaseBubbleCell: BaseRoomCell, SizableBaseBubbleCellType {
     
     // MARK: - Constants
     

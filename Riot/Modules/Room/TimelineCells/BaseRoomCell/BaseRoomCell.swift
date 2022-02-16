@@ -16,13 +16,13 @@ limitations under the License.
 
 import UIKit
 
-@objc protocol BaseBubbleCellType: Themable {
+@objc protocol BaseRoomCellProtocol: Themable {
     var bubbleCellContentView: BubbleCellContentView? { get }
 }
 
-/// `BaseBubbleCell` allows a bubble cell that inherits from this class to embed and manage the default room message outer views and add an inner content view.
+/// `BaseRoomCell` allows a bubble cell that inherits from this class to embed and manage the default room message outer views and add an inner content view.
 @objcMembers
-class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
+class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
     
     // MARK: - Constants
         
@@ -41,7 +41,7 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
     override var bubbleInfoContainer: UIView! {
         get {
             guard let infoContainer = self.bubbleCellContentView?.bubbleInfoContainer else {
-                fatalError("[BaseBubbleCell] bubbleInfoContainer should not be used before set")
+                fatalError("[BaseRoomCell] bubbleInfoContainer should not be used before set")
             }
             return infoContainer
         }
@@ -53,7 +53,7 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
     override var bubbleOverlayContainer: UIView! {
         get {
             guard let overlayContainer = self.bubbleCellContentView?.bubbleOverlayContainer else {
-                fatalError("[BaseBubbleCell] bubbleOverlayContainer should not be used before set")
+                fatalError("[BaseRoomCell] bubbleOverlayContainer should not be used before set")
             }
             return overlayContainer
         }
@@ -65,7 +65,7 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
     override var bubbleInfoContainerTopConstraint: NSLayoutConstraint! {
         get {
             guard let infoContainerTopConstraint = self.bubbleCellContentView?.bubbleInfoContainerTopConstraint else {
-                fatalError("[BaseBubbleCell] bubbleInfoContainerTopConstraint should not be used before set")
+                fatalError("[BaseRoomCell] bubbleInfoContainerTopConstraint should not be used before set")
             }
             return infoContainerTopConstraint
         }
@@ -82,7 +82,7 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
             }
             
             guard let pictureView = self.bubbleCellContentView?.avatarImageView else {
-                fatalError("[BaseBubbleCell] pictureView should not be used before set")
+                fatalError("[BaseRoomCell] pictureView should not be used before set")
             }
             return pictureView
         }
@@ -98,7 +98,7 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
             }
             
             guard let userNameLabel = bubbleCellContentView.userNameLabel else {
-                fatalError("[BaseBubbleCell] userNameLabel should not be used before set")
+                fatalError("[BaseRoomCell] userNameLabel should not be used before set")
             }
             return userNameLabel
         }
@@ -115,7 +115,7 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
             }
             
             guard let userNameTapGestureMaskView = self.bubbleCellContentView?.userNameTouchMaskView else {
-                fatalError("[BaseBubbleCell] userNameTapGestureMaskView should not be used before set")
+                fatalError("[BaseRoomCell] userNameTapGestureMaskView should not be used before set")
             }
             return userNameTapGestureMaskView
         }
