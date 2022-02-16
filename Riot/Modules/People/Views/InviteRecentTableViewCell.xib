@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="L2L-l5-wPx" customClass="InviteRecentTableViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="105"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="125" id="L2L-l5-wPx" customClass="InviteRecentTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="125"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="L2L-l5-wPx" id="aXz-IR-jj5">
-                <rect key="frame" x="0.0" y="0.0" width="600" height="105"/>
+                <rect key="frame" x="0.0" y="0.0" width="600" height="125"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RX5-eD-c3c" userLabel="Room avatar" customClass="MXKImageView">
@@ -46,19 +46,19 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tjf-WP-vTl" userLabel="buttonsContainer">
-                        <rect key="frame" x="68" y="65" width="478" height="30"/>
+                        <rect key="frame" x="93" y="77" width="479" height="38"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fc3-Id-aaG" userLabel="Left Button">
-                                <rect key="frame" x="0.0" y="0.0" width="229.5" height="30"/>
-                                <color key="backgroundColor" red="0.028153735480000001" green="0.82494870580000002" blue="0.051896891280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <rect key="frame" x="0.0" y="0.0" width="230" height="38"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <accessibility key="accessibilityConfiguration" identifier="LeftButton"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <state key="normal" title="Left button">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleColor" red="0.027450980392156862" green="0.82352941176470584" blue="0.050980392156862744" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lGf-lB-FsE" userLabel="Right Button">
-                                <rect key="frame" x="248.5" y="0.0" width="229.5" height="30"/>
+                                <rect key="frame" x="249" y="0.0" width="230" height="38"/>
                                 <color key="backgroundColor" red="0.028153735480000001" green="0.82494870580000002" blue="0.051896891280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <accessibility key="accessibilityConfiguration" identifier="RightButton"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
@@ -67,10 +67,10 @@
                                 </state>
                             </button>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="CzJ-mZ-Ryu">
-                                <rect key="frame" x="104.5" y="5" width="20" height="20"/>
+                                <rect key="frame" x="105" y="9" width="20" height="20"/>
                             </activityIndicatorView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="f3G-yI-qc9">
-                                <rect key="frame" x="353.5" y="5" width="20" height="20"/>
+                                <rect key="frame" x="354" y="9" width="20" height="20"/>
                             </activityIndicatorView>
                         </subviews>
                         <constraints>
@@ -84,28 +84,9 @@
                             <constraint firstItem="lGf-lB-FsE" firstAttribute="top" secondItem="tjf-WP-vTl" secondAttribute="top" id="Zst-Zf-1kd"/>
                             <constraint firstItem="Fc3-Id-aaG" firstAttribute="width" secondItem="tjf-WP-vTl" secondAttribute="width" multiplier="0.48" id="b8E-xg-a44"/>
                             <constraint firstItem="CzJ-mZ-Ryu" firstAttribute="centerX" secondItem="Fc3-Id-aaG" secondAttribute="centerX" id="cAm-MG-goF"/>
-                            <constraint firstAttribute="height" constant="30" id="lTf-u3-Z4R"/>
+                            <constraint firstAttribute="height" constant="38" id="lTf-u3-Z4R"/>
                             <constraint firstItem="f3G-yI-qc9" firstAttribute="centerX" secondItem="lGf-lB-FsE" secondAttribute="centerX" id="oa9-ji-H4n"/>
                             <constraint firstItem="Fc3-Id-aaG" firstAttribute="top" secondItem="tjf-WP-vTl" secondAttribute="top" id="rLo-t4-61H"/>
-                        </constraints>
-                    </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gCG-UR-b2u">
-                        <rect key="frame" x="563" y="14" width="27" height="20"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ztl-w2-d20">
-                                <rect key="frame" x="11" y="1.5" width="5" height="17"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" red="1" green="0.119521145" blue="0.2069467156" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <accessibility key="accessibilityConfiguration" identifier="NoticeBadgeView"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="27" id="1PJ-E8-qkY"/>
-                            <constraint firstItem="Ztl-w2-d20" firstAttribute="centerX" secondItem="gCG-UR-b2u" secondAttribute="centerX" id="jzA-xv-12e"/>
-                            <constraint firstAttribute="height" constant="20" id="l2J-Uf-lxI"/>
-                            <constraint firstItem="Ztl-w2-d20" firstAttribute="centerY" secondItem="gCG-UR-b2u" secondAttribute="centerY" id="nQM-He-36A"/>
                         </constraints>
                     </view>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_verified" translatesAutoresizingMaskIntoConstraints="NO" id="hVY-f3-80Y">
@@ -122,15 +103,12 @@
                     <constraint firstItem="RX5-eD-c3c" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" constant="13" id="3EJ-qT-J8r"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="14" id="Pgp-JM-oQd"/>
                     <constraint firstItem="hVY-f3-80Y" firstAttribute="centerY" secondItem="dQt-mN-T6b" secondAttribute="centerY" id="RM0-3J-ihk"/>
-                    <constraint firstItem="gCG-UR-b2u" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="14" id="Vb6-hc-Bsk"/>
                     <constraint firstItem="dQt-mN-T6b" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="14" id="XFM-LG-4uJ"/>
-                    <constraint firstAttribute="trailing" secondItem="gCG-UR-b2u" secondAttribute="trailing" constant="10" id="Zf3-3f-SWg"/>
-                    <constraint firstItem="gCG-UR-b2u" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Lg1-xQ-AGn" secondAttribute="trailing" constant="4" id="e2Q-RZ-IF2"/>
-                    <constraint firstAttribute="trailing" secondItem="tjf-WP-vTl" secondAttribute="trailing" constant="54" id="kFW-Fa-ibz"/>
+                    <constraint firstAttribute="trailing" secondItem="tjf-WP-vTl" secondAttribute="trailing" constant="28" id="kFW-Fa-ibz"/>
                     <constraint firstItem="hVY-f3-80Y" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" constant="50" id="prx-bM-qUg"/>
                     <constraint firstAttribute="trailing" secondItem="dQt-mN-T6b" secondAttribute="trailing" id="t2m-pb-5zd"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="14" id="tY3-6V-A3B"/>
-                    <constraint firstItem="tjf-WP-vTl" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="13" id="wEB-VM-vz8"/>
+                    <constraint firstItem="tjf-WP-vTl" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="38" id="wEB-VM-vz8"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -144,7 +122,6 @@
                 <outlet property="lastEventDescription" destination="dQt-mN-T6b" id="MSz-h1-cAL"/>
                 <outlet property="leftButton" destination="Fc3-Id-aaG" id="cx4-98-B32"/>
                 <outlet property="leftButtonActivityIndicator" destination="CzJ-mZ-Ryu" id="4Jt-iD-QeD"/>
-                <outlet property="noticeBadgeView" destination="gCG-UR-b2u" id="hTT-qW-DMa"/>
                 <outlet property="rightButton" destination="lGf-lB-FsE" id="DDr-zp-yX9"/>
                 <outlet property="rightButtonActivityIndicator" destination="f3G-yI-qc9" id="4gn-jb-wdm"/>
                 <outlet property="roomAvatar" destination="RX5-eD-c3c" id="dIC-8p-inL"/>
