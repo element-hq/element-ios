@@ -18,10 +18,10 @@ import Foundation
 import Intents
 import MatrixSDK
 import CommonKit
+import UIKit
 
 #if DEBUG
 import FLEX
-import UIKit
 #endif
 
 /// The AppCoordinator is responsible of screen navigation and data injection at root application level. It decides
