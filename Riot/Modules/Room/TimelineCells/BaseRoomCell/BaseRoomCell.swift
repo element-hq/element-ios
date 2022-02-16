@@ -144,16 +144,16 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
     // MARK: - Public
     
     func removeDecorationViews() {
-        if let bubbleCellReadReceiptsDisplayable = self as? RoomCellReadReceiptsDisplayable {
-            bubbleCellReadReceiptsDisplayable.removeReadReceiptsView()
+        if let roomCellReadReceiptsDisplayable = self as? RoomCellReadReceiptsDisplayable {
+            roomCellReadReceiptsDisplayable.removeReadReceiptsView()
         }
         
-        if let bubbleCellReactionsDisplayable = self as? RoomCellReactionsDisplayable {
-            bubbleCellReactionsDisplayable.removeReactionsView()
+        if let roomCellReactionsDisplayable = self as? RoomCellReactionsDisplayable {
+            roomCellReactionsDisplayable.removeReactionsView()
         }
 
-        if let bubbleCellThreadSummaryDisplayable = self as? RoomCellThreadSummaryDisplayable {
-            bubbleCellThreadSummaryDisplayable.removeThreadSummaryView()
+        if let roomCellThreadSummaryDisplayable = self as? RoomCellThreadSummaryDisplayable {
+            roomCellThreadSummaryDisplayable.removeThreadSummaryView()
         }
         
         if let timestampDisplayable = self as? TimestampDisplayable {
@@ -246,7 +246,7 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
     }
     
     // MARK: - RoomCellURLPreviewDisplayable
-    // Cannot use default implementation with ObjC protocol, if self conforms to BubbleCellReadReceiptsDisplayable method below will be used
+    // Cannot use default implementation with ObjC protocol, if self conforms to RoomCellURLPreviewDisplayable method below will be used
     
     func addURLPreviewView(_ urlPreviewView: UIView) {
         self.roomCellContentView?.addURLPreviewView(urlPreviewView)
@@ -259,8 +259,8 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
         self.roomCellContentView?.removeURLPreviewView()
     }
     
-    // MARK: - BubbleCellReadReceiptsDisplayable
-    // Cannot use default implementation with ObjC protocol, if self conforms to BubbleCellReadReceiptsDisplayable method below will be used
+    // MARK: - RoomCellReadReceiptsDisplayable
+    // Cannot use default implementation with ObjC protocol, if self conforms to RoomCellReadReceiptsDisplayable method below will be used
     
     func addReadReceiptsView(_ readReceiptsView: UIView) {
         self.roomCellContentView?.addReadReceiptsView(readReceiptsView)
@@ -273,8 +273,8 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
         self.roomCellContentView?.removeReadReceiptsView()
     }
     
-    // MARK: - BubbleCellReactionsDisplayable
-    // Cannot use default implementation with ObjC protocol, if self conforms to BubbleCellReactionsDisplayable method below will be used
+    // MARK: - RoomCellReactionsDisplayable
+    // Cannot use default implementation with ObjC protocol, if self conforms to RoomCellReactionsDisplayable method below will be used
     
     func addReactionsView(_ reactionsView: UIView) {
         self.roomCellContentView?.addReactionsView(reactionsView)
@@ -287,7 +287,7 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
         self.roomCellContentView?.removeReactionsView()
     }
 
-    // MARK: - BubbleCellThreadSummaryDisplayable
+    // MARK: - RoomCellThreadSummaryDisplayable
 
     func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView) {
         self.roomCellContentView?.addThreadSummaryView(threadSummaryView)
