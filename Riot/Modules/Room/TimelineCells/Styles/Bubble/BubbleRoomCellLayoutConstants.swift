@@ -30,7 +30,7 @@ final class BubbleRoomCellLayoutConstants: NSObject {
 
     static let incomingBubbleBackgroundMargins: UIEdgeInsets = UIEdgeInsets(top: 0, left: 48, bottom: 0, right: 80)
     
-    static let bubbleTextViewInsets: UIEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 45)
+    static let bubbleTextViewInsets: UIEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 12, right: 5)
     
     static let bubbleCornerRadius: CGFloat = 12.0
     
