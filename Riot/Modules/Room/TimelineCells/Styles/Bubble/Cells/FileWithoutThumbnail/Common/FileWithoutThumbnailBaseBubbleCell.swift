@@ -16,7 +16,7 @@
 
 import UIKit
 
-class FileWithoutThumbnailBaseBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplayable {
+class FileWithoutThumbnailBaseBubbleCell: SizableBaseRoomCell, RoomCellReactionsDisplayable {
     
     weak var fileAttachementView: FileWithoutThumbnailCellContentView?
     
@@ -31,9 +31,9 @@ class FileWithoutThumbnailBaseBubbleCell: SizableBaseBubbleCell, BubbleCellReact
     override func setupViews() {
         super.setupViews()
         
-        bubbleCellContentView?.backgroundColor = .clear
+        roomCellContentView?.backgroundColor = .clear
         
-        guard let contentView = bubbleCellContentView?.innerContentView else {
+        guard let contentView = roomCellContentView?.innerContentView else {
             return
         }
         

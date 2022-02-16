@@ -144,7 +144,7 @@ class RoomBaseCallBubbleCell: MXKRoomBubbleTableViewCell {
     
 }
 
-extension RoomBaseCallBubbleCell: BubbleCellReadReceiptsDisplayable {
+extension RoomBaseCallBubbleCell: RoomCellReadReceiptsDisplayable {
     
     func addReadReceiptsView(_ readReceiptsView: UIView) {
         innerContentView.addReadReceiptsView(readReceiptsView)

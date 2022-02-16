@@ -112,9 +112,9 @@ extension CallBubbleCellBaseContentView: Themable {
     
 }
 
-// MARK: - BubbleCellReadReceiptsDisplayable
+// MARK: - RoomCellReadReceiptsDisplayable
 
-extension CallBubbleCellBaseContentView: BubbleCellReadReceiptsDisplayable {
+extension CallBubbleCellBaseContentView: RoomCellReadReceiptsDisplayable {
     
     func addReadReceiptsView(_ readReceiptsView: UIView) {
         self.readReceiptsContentView.vc_removeAllSubviews()

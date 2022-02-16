@@ -21,6 +21,6 @@ class TextMessageIncomingWithPaginationTitleWithoutSenderNameBubbleCell: TextMes
     override func setupViews() {
         super.setupViews()
         
-        bubbleCellContentView?.showSenderName = false
+        roomCellContentView?.showSenderName = false
     }
 }

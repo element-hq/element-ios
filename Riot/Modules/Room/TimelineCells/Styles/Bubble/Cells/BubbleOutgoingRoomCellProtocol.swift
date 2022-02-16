@@ -26,7 +26,7 @@ extension BubbleOutgoingRoomCellProtocol {
     // MARK: - Public
     
     func setupBubbleDecorations() {
-        self.bubbleCellContentView?.decorationViewsAlignment = .right
+        self.roomCellContentView?.decorationViewsAlignment = .right
         self.setupDecorationConstraints()
     }
     
@@ -40,72 +40,72 @@ extension BubbleOutgoingRoomCellProtocol {
     }
     
     private func setupReactionsContentViewContraints() {
-        guard let bubbleCellContentView = self.bubbleCellContentView, let reactionsContentView = bubbleCellContentView.reactionsContentView, let reactionsContainerView = bubbleCellContentView.reactionsContainerView else {
+        guard let roomCellContentView = self.roomCellContentView, let reactionsContentView = roomCellContentView.reactionsContentView, let reactionsContainerView = roomCellContentView.reactionsContainerView else {
             return
         }
         
         // Remove leading constraint
         
-        bubbleCellContentView.reactionsContentViewLeadingConstraint.isActive = false
-        bubbleCellContentView.reactionsContentViewLeadingConstraint = nil
+        roomCellContentView.reactionsContentViewLeadingConstraint.isActive = false
+        roomCellContentView.reactionsContentViewLeadingConstraint = nil
         
         // Setup new leading constraint
         
         let leadingConstraint = self.setupDecorationViewLeadingContraint(containerView: reactionsContainerView, contentView: reactionsContentView)
         
-        bubbleCellContentView.reactionsContentViewLeadingConstraint = leadingConstraint
+        roomCellContentView.reactionsContentViewLeadingConstraint = leadingConstraint
         
         // Update trailing constraint
                                 
-        bubbleCellContentView.reactionsContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
+        roomCellContentView.reactionsContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
     }
     
     private func setupThreadSummaryViewContentViewContraints() {
         
-        guard let bubbleCellContentView = self.bubbleCellContentView, let threadSummaryContentView = bubbleCellContentView.threadSummaryContentView, let threadSummaryContainerView = bubbleCellContentView.threadSummaryContainerView else {
+        guard let roomCellContentView = self.roomCellContentView, let threadSummaryContentView = roomCellContentView.threadSummaryContentView, let threadSummaryContainerView = roomCellContentView.threadSummaryContainerView else {
             return
         }
         
         // Remove leading constraint
                 
-        bubbleCellContentView.threadSummaryContentViewLeadingConstraint.isActive = false
-        bubbleCellContentView.threadSummaryContentViewLeadingConstraint = nil
+        roomCellContentView.threadSummaryContentViewLeadingConstraint.isActive = false
+        roomCellContentView.threadSummaryContentViewLeadingConstraint = nil
         
         // Setup new leading constraint
         
         let leadingConstraint = self.setupDecorationViewLeadingContraint(containerView: threadSummaryContainerView, contentView: threadSummaryContentView)
         
-        bubbleCellContentView.threadSummaryContentViewLeadingConstraint = leadingConstraint
+        roomCellContentView.threadSummaryContentViewLeadingConstraint = leadingConstraint
         
         // Update trailing constraint
                                 
-        bubbleCellContentView.threadSummaryContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
+        roomCellContentView.threadSummaryContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
         
         // Update bottom constraint
                 
-        bubbleCellContentView.threadSummaryContentViewBottomConstraint.constant = BubbleRoomCellLayoutConstants.threadSummaryViewMargins.bottom
+        roomCellContentView.threadSummaryContentViewBottomConstraint.constant = BubbleRoomCellLayoutConstants.threadSummaryViewMargins.bottom
     }
     
     private func setupURLPreviewContentViewContraints() {
         
-        guard let bubbleCellContentView = self.bubbleCellContentView, let contentView = bubbleCellContentView.urlPreviewContentView, let containerView = bubbleCellContentView.urlPreviewContainerView else {
+        guard let roomCellContentView = self.roomCellContentView, let contentView = roomCellContentView.urlPreviewContentView, let containerView = roomCellContentView.urlPreviewContainerView else {
             return
         }
         
         // Remove leading constraint
                 
-        bubbleCellContentView.urlPreviewContentViewLeadingConstraint.isActive = false
-        bubbleCellContentView.urlPreviewContentViewLeadingConstraint = nil
+        roomCellContentView.urlPreviewContentViewLeadingConstraint.isActive = false
+        roomCellContentView.urlPreviewContentViewLeadingConstraint = nil
         
         // Setup new leading constraint
         
         let leadingConstraint = self.setupDecorationViewLeadingContraint(containerView: containerView, contentView: contentView)
         
-        bubbleCellContentView.urlPreviewContentViewLeadingConstraint = leadingConstraint
+        roomCellContentView.urlPreviewContentViewLeadingConstraint = leadingConstraint
         
         // Update trailing constraint
                                 
-        bubbleCellContentView.urlPreviewContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
+        roomCellContentView.urlPreviewContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
     }
     
     private func setupDecorationViewLeadingContraint(containerView: UIView,

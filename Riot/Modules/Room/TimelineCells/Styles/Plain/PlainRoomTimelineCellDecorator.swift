@@ -54,12 +54,12 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
         urlPreviewView.availableWidth = cellData.maxTextViewWidth
         cellContentView.addSubview(urlPreviewView)
 
-        var leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin
+        var leftMargin = PlainRoomCellLayoutConstants.reactionsViewLeftMargin
         if cellData.containsBubbleComponentWithEncryptionBadge {
-            leftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
+            leftMargin += PlainRoomCellLayoutConstants.encryptedContentLeftMargin
         }
         
-        let topMargin = contentViewPositionY + RoomBubbleCellLayout.urlPreviewViewTopMargin + RoomBubbleCellLayout.reactionsViewTopMargin
+        let topMargin = contentViewPositionY + PlainRoomCellLayoutConstants.urlPreviewViewTopMargin + PlainRoomCellLayoutConstants.reactionsViewTopMargin
 
         // Set the preview view's origin
         NSLayoutConstraint.activate([
@@ -76,7 +76,7 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
 
         cell.addTemporarySubview(reactionsView)
 
-        if let reactionsDisplayable = cell as? BubbleCellReactionsDisplayable {
+        if let reactionsDisplayable = cell as? RoomCellReactionsDisplayable {
             reactionsDisplayable.addReactionsView(reactionsView)
         } else {
             reactionsView.translatesAutoresizingMaskIntoConstraints = false
@@ -85,14 +85,14 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
 
             cellContentView.addSubview(reactionsView)
 
-            var leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin
+            var leftMargin = PlainRoomCellLayoutConstants.reactionsViewLeftMargin
 
             if cellData.containsBubbleComponentWithEncryptionBadge {
-                leftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
+                leftMargin += PlainRoomCellLayoutConstants.encryptedContentLeftMargin
             }
             
-            let rightMargin = RoomBubbleCellLayout.reactionsViewRightMargin
-            let topMargin = RoomBubbleCellLayout.reactionsViewTopMargin
+            let rightMargin = PlainRoomCellLayoutConstants.reactionsViewRightMargin
+            let topMargin = PlainRoomCellLayoutConstants.reactionsViewTopMargin
 
             // The top constraint may need to include the URL preview view
             let topConstraint: NSLayoutConstraint
@@ -118,7 +118,7 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
 
         cell.addTemporarySubview(readReceiptsView)
 
-        if let readReceiptsDisplayable = cell as? BubbleCellReadReceiptsDisplayable {
+        if let readReceiptsDisplayable = cell as? RoomCellReadReceiptsDisplayable {
             readReceiptsDisplayable.addReadReceiptsView(readReceiptsView)
         } else {
 
@@ -127,13 +127,13 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
             cellContentView.addSubview(readReceiptsView)
 
             // Force receipts container size
-            let widthConstraint = readReceiptsView.widthAnchor.constraint(equalToConstant: RoomBubbleCellLayout.readReceiptsViewWidth)
-            let heightConstraint = readReceiptsView.heightAnchor.constraint(equalToConstant: RoomBubbleCellLayout.readReceiptsViewHeight)
+            let widthConstraint = readReceiptsView.widthAnchor.constraint(equalToConstant: PlainRoomCellLayoutConstants.readReceiptsViewWidth)
+            let heightConstraint = readReceiptsView.heightAnchor.constraint(equalToConstant: PlainRoomCellLayoutConstants.readReceiptsViewHeight)
 
             // Force receipts container position
-            let trailingConstraint = readReceiptsView.trailingAnchor.constraint(equalTo: cellContentView.trailingAnchor, constant: -RoomBubbleCellLayout.readReceiptsViewRightMargin)
+            let trailingConstraint = readReceiptsView.trailingAnchor.constraint(equalTo: cellContentView.trailingAnchor, constant: -PlainRoomCellLayoutConstants.readReceiptsViewRightMargin)
 
-            let topMargin = RoomBubbleCellLayout.readReceiptsViewTopMargin
+            let topMargin = PlainRoomCellLayoutConstants.readReceiptsViewTopMargin
 
             let topConstraint: NSLayoutConstraint
             if let upperDecorationView = upperDecorationView {
@@ -159,7 +159,7 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
 
         cell.addTemporarySubview(threadSummaryView)
 
-        if let threadSummaryDisplayable = cell as? BubbleCellThreadSummaryDisplayable {
+        if let threadSummaryDisplayable = cell as? RoomCellThreadSummaryDisplayable {
             threadSummaryDisplayable.addThreadSummaryView(threadSummaryView)
         } else {
             threadSummaryView.translatesAutoresizingMaskIntoConstraints = false
@@ -168,14 +168,14 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
 
             cellContentView.addSubview(threadSummaryView)
 
-            var leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin
+            var leftMargin = PlainRoomCellLayoutConstants.reactionsViewLeftMargin
 
             if cellData.containsBubbleComponentWithEncryptionBadge {
-                leftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
+                leftMargin += PlainRoomCellLayoutConstants.encryptedContentLeftMargin
             }
 
-            let rightMargin = RoomBubbleCellLayout.reactionsViewRightMargin
-            let topMargin = RoomBubbleCellLayout.threadSummaryViewTopMargin
+            let rightMargin = PlainRoomCellLayoutConstants.reactionsViewRightMargin
+            let topMargin = PlainRoomCellLayoutConstants.threadSummaryViewTopMargin
             let height = ThreadSummaryView.contentViewHeight(forThread: threadSummaryView.thread,
                                                              fitting: cellData.maxTextViewWidth)
 

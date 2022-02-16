@@ -16,7 +16,7 @@
 
 import UIKit
 
-class TextMessageBaseBubbleCell: SizableBaseBubbleCell, RoomCellURLPreviewDisplayable, BubbleCellReactionsDisplayable, BubbleCellThreadSummaryDisplayable, BubbleCellReadReceiptsDisplayable {
+class TextMessageBaseBubbleCell: SizableBaseRoomCell, RoomCellURLPreviewDisplayable, RoomCellReactionsDisplayable, RoomCellThreadSummaryDisplayable, RoomCellReadReceiptsDisplayable {
     
     // MARK: - Properties
     
@@ -34,13 +34,13 @@ class TextMessageBaseBubbleCell: SizableBaseBubbleCell, RoomCellURLPreviewDispla
     override func setupViews() {
         super.setupViews()
         
-        bubbleCellContentView?.backgroundColor = .clear
+        roomCellContentView?.backgroundColor = .clear
         
-        guard let contentView = bubbleCellContentView?.innerContentView else {
+        guard let contentView = roomCellContentView?.innerContentView else {
             return
         }
         
-        bubbleCellContentView?.innerContentViewBottomContraint.constant = BubbleRoomCellLayoutConstants.innerContentViewMargins.bottom
+        roomCellContentView?.innerContentViewBottomContraint.constant = BubbleRoomCellLayoutConstants.innerContentViewMargins.bottom
         
         let textMessageContentView = TextMessageBubbleCellContentView.instantiate()
                 

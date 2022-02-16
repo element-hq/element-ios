@@ -37,11 +37,11 @@ final class KeyVerificationConclusionWithPaginationTitleBubbleCell: KeyVerificat
     }
     
     private func commonInit() {
-        guard let bubbleCellContentView = self.bubbleCellContentView else {
+        guard let roomCellContentView = self.roomCellContentView else {
             fatalError("[KeyVerificationConclusionWithPaginationTitleBubbleCell] bubbleCellContentView should not be nil")
         }
         
-        bubbleCellContentView.showPaginationTitle = true
+        roomCellContentView.showPaginationTitle = true
     }
     
     // MARK: - Overrides

@@ -16,9 +16,9 @@
 
 import Foundation
 
-/// MXKRoomBubbleTableViewCell layout constants
+/// Plain room cells layout constants
 @objcMembers
-final class RoomBubbleCellLayout: NSObject {
+final class PlainRoomCellLayoutConstants: NSObject {
     
     /// Inner content view margins
     static let innerContentViewMargins: UIEdgeInsets = UIEdgeInsets(top: 0, left: 57, bottom: 0.0, right: 0)

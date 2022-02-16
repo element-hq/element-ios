@@ -17,18 +17,18 @@
 import UIKit
 import MatrixSDK
 
-@objc protocol SizableBaseBubbleCellType: BaseBubbleCellType {
+@objc protocol SizableBaseRoomCellType: BaseRoomCellProtocol {
     static func sizingViewHeightHashValue(from bubbleCellData: MXKRoomBubbleCellData) -> Int
 }
 
-/// `SizableBaseBubbleCell` allows a cell using Auto Layout that inherits from this class to automatically return the height of the cell and cache the result.
+/// `SizableBaseRoomCell` allows a cell using Auto Layout that inherits from this class to automatically return the height of the cell and cache the result.
 @objcMembers
-class SizableBaseBubbleCell: BaseBubbleCell, SizableBaseBubbleCellType {
+class SizableBaseRoomCell: BaseRoomCell, SizableBaseRoomCellType {
     
     // MARK: - Constants
     
     private static let sizingViewHeightStore = SizingViewHeightStore()
-    private static var sizingViews: [String: SizableBaseBubbleCell] = [:]
+    private static var sizingViews: [String: SizableBaseRoomCell] = [:]
     private static let sizingReactionsView = BubbleReactionsView()
     
     private static let reactionsViewSizer = BubbleReactionsViewSizer()
@@ -36,8 +36,8 @@ class SizableBaseBubbleCell: BaseBubbleCell, SizableBaseBubbleCellType {
     
     private static let urlPreviewViewSizer = URLPreviewViewSizer()
 
-    private class var sizingView: SizableBaseBubbleCell {
-        let sizingView: SizableBaseBubbleCell
+    private class var sizingView: SizableBaseRoomCell {
+        let sizingView: SizableBaseRoomCell
         
         let reuseIdentifier: String = self.defaultReuseIdentifier()
 
@@ -64,7 +64,7 @@ class SizableBaseBubbleCell: BaseBubbleCell, SizableBaseBubbleCellType {
         return self.height(for: roomBubbleCellData, fitting: maxWidth)
     }
         
-    // MARK - SizableBaseBubbleCellType
+    // MARK - SizableBaseRoomCellType
     
     // Each sublcass should override this method, to indicate a unique identifier for a view height.
     // This means that the value should change if there is some data that modify the cell height.
@@ -77,7 +77,7 @@ class SizableBaseBubbleCell: BaseBubbleCell, SizableBaseBubbleCellType {
     
     // MARK: - Private
     
-    class func createSizingView() -> SizableBaseBubbleCell {
+    class func createSizingView() -> SizableBaseRoomCell {
         return self.init(style: .default, reuseIdentifier: self.defaultReuseIdentifier())
     }
     
@@ -119,29 +119,29 @@ class SizableBaseBubbleCell: BaseBubbleCell, SizableBaseBubbleCellType {
         var height = sizingView.systemLayoutSizeFitting(fittingSize).height
         
         // Add read receipt height if needed
-        if let roomBubbleCellData = cellData as? RoomBubbleCellData, let readReceipts = roomBubbleCellData.readReceipts, readReceipts.count > 0, sizingView is BubbleCellReadReceiptsDisplayable {
-            height+=RoomBubbleCellLayout.readReceiptsViewHeight
+        if let roomBubbleCellData = cellData as? RoomBubbleCellData, let readReceipts = roomBubbleCellData.readReceipts, readReceipts.count > 0, sizingView is RoomCellReadReceiptsDisplayable {
+            height+=PlainRoomCellLayoutConstants.readReceiptsViewHeight
         }
         
         // Add reactions view height if needed
-        if sizingView is BubbleCellReactionsDisplayable,
+        if sizingView is RoomCellReactionsDisplayable,
             let roomBubbleCellData = cellData as? RoomBubbleCellData,
             let bubbleReactionsViewModel = self.reactionsViewModelBuilder.buildForFirstVisibleComponent(of: roomBubbleCellData) {
             
-            let reactionWidth = sizingView.bubbleCellContentView?.reactionsContentView.frame.width ?? roomBubbleCellData.maxTextViewWidth
+            let reactionWidth = sizingView.roomCellContentView?.reactionsContentView.frame.width ?? roomBubbleCellData.maxTextViewWidth
             
             let reactionsHeight = self.reactionsViewSizer.height(for: bubbleReactionsViewModel, fittingWidth: reactionWidth)
             height+=reactionsHeight
         }
 
         // Add thread summary view height if needed
-        if sizingView is BubbleCellThreadSummaryDisplayable,
+        if sizingView is RoomCellThreadSummaryDisplayable,
            let roomBubbleCellData = cellData as? RoomBubbleCellData,
            roomBubbleCellData.hasThreadRoot {
             
-            let bottomMargin = sizingView.bubbleCellContentView?.threadSummaryContentViewBottomConstraint.constant ?? 0
+            let bottomMargin = sizingView.roomCellContentView?.threadSummaryContentViewBottomConstraint.constant ?? 0
             
-            height += RoomBubbleCellLayout.threadSummaryViewHeight
+            height += PlainRoomCellLayoutConstants.threadSummaryViewHeight
             height += bottomMargin
         }
         
@@ -150,7 +150,7 @@ class SizableBaseBubbleCell: BaseBubbleCell, SizableBaseBubbleCellType {
             let roomBubbleCellData = cellData as? RoomBubbleCellData, let firstBubbleComponent =
             roomBubbleCellData.getFirstBubbleComponentWithDisplay(), firstBubbleComponent.showURLPreview, let urlPreviewData = firstBubbleComponent.urlPreviewData as? URLPreviewData {
             
-            let urlPreviewMaxWidth = sizingView.bubbleCellContentView?.urlPreviewContentView.frame.width ?? roomBubbleCellData.maxTextViewWidth
+            let urlPreviewMaxWidth = sizingView.roomCellContentView?.urlPreviewContentView.frame.width ?? roomBubbleCellData.maxTextViewWidth
             
             let urlPreviewHeight = self.urlPreviewViewSizer.height(for: urlPreviewData, fittingWidth: urlPreviewMaxWidth)
             height+=urlPreviewHeight

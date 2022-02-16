@@ -16,8 +16,8 @@
 
 import Foundation
 
-/// `BubbleCellReadReceiptsDisplayable` is a protocol indicating that a cell support displaying read receipts.
-@objc protocol BubbleCellReadReceiptsDisplayable {
+/// `RoomCellReadReceiptsDisplayable` is a protocol indicating that a cell support displaying read receipts.
+@objc protocol RoomCellReadReceiptsDisplayable {
     func addReadReceiptsView(_ readReceiptsView: UIView)
     func removeReadReceiptsView()
 }

@@ -20,6 +20,6 @@ class VoiceMessageIncomingWithoutSenderInfoBubbleCell: VoiceMessageIncomingBubbl
     override func setupViews() {
         super.setupViews()
         
-        bubbleCellContentView?.showSenderInfo = false
+        roomCellContentView?.showSenderInfo = false
     }
 }

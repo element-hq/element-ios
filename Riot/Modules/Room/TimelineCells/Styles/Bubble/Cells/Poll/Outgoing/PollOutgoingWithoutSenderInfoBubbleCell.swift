@@ -21,13 +21,13 @@ class PollOutgoingWithoutSenderInfoBubbleCell: PollBaseBubbleCell, BubbleOutgoin
     override func setupViews() {
         super.setupViews()
         
-        bubbleCellContentView?.showSenderInfo = false
+        roomCellContentView?.showSenderInfo = false
             
         let leftMargin: CGFloat = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left + BubbleRoomCellLayoutConstants.pollBubbleBackgroundInsets.left
         let rightMargin: CGFloat = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right + BubbleRoomCellLayoutConstants.pollBubbleBackgroundInsets.right
         
-        bubbleCellContentView?.innerContentViewTrailingConstraint.constant = rightMargin
-        bubbleCellContentView?.innerContentViewLeadingConstraint.constant = leftMargin
+        roomCellContentView?.innerContentViewTrailingConstraint.constant = rightMargin
+        roomCellContentView?.innerContentViewLeadingConstraint.constant = leftMargin
         
         self.setupBubbleDecorations()
     }

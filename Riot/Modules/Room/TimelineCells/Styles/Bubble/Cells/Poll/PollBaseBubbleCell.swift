@@ -77,12 +77,12 @@ class PollBaseBubbleCell: PollBubbleCell {
         
     private func setupBubbleBackgroundView() {
         let bubbleBackgroundView = RoomMessageBubbleBackgroundView()
-        self.bubbleCellContentView?.insertSubview(bubbleBackgroundView, at: 0)
+        self.roomCellContentView?.insertSubview(bubbleBackgroundView, at: 0)
     }
     
     // The extension property MXKRoomBubbleTableViewCell.messageBubbleBackgroundView is not working there even by doing recursion
     private func getBubbleBackgroundView() -> RoomMessageBubbleBackgroundView? {
-        guard let contentView = self.bubbleCellContentView else {
+        guard let contentView = self.roomCellContentView else {
             return nil
         }
         

@@ -16,8 +16,8 @@
 
 import Foundation
 
-/// `BubbleCellThreadSummaryDisplayable` is a protocol indicating that a cell support displaying a thread summary.
-@objc protocol BubbleCellThreadSummaryDisplayable {
-    func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView)
-    func removeThreadSummaryView()
+/// RoomCellContentView decoration view items alignment
+enum RoomCellDecorationAlignment {
+    case left
+    case right
 }
