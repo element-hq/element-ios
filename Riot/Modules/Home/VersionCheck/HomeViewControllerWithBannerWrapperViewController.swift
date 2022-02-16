@@ -95,6 +95,10 @@ class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKVi
             homeViewController.activityIndicator = newValue
         }
     }
+    
+    var providesCustomActivityIndicator: Bool {
+        return homeViewController.providesCustomActivityIndicator
+    }
 
     func startActivityIndicator() {
         homeViewController.startActivityIndicator()

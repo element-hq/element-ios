@@ -821,11 +821,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         UIImage *chevron;
         if (shrinkedSectionsBitMask & sectionBitwise)
         {
-            chevron = [UIImage imageNamed:@"disclosure_icon"];
+            chevron = AssetImages.disclosureIcon.image;
         }
         else
         {
-            chevron = [UIImage imageNamed:@"shrink_icon"];
+            chevron = AssetImages.shrinkIcon.image;
         }
         UIImageView *chevronView = [[UIImageView alloc] initWithImage:chevron];
         chevronView.tintColor = ThemeService.shared.theme.textSecondaryColor;

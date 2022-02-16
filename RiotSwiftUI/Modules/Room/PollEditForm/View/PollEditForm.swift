@@ -116,14 +116,14 @@ struct PollEditForm: View {
                         }
                     }
                     .navigationBarTitleDisplayMode(.inline)
+                    .introspectNavigationController { navigationController in
+                        ThemeService.shared().theme.applyStyle(onNavigationBar: navigationController.navigationBar)
+                    }
                 }
             }
         }
         .accentColor(theme.colors.accent)
         .navigationViewStyle(StackNavigationViewStyle())
-        .introspectNavigationController { navigationController in
-            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationController.navigationBar)
-        }
     }
 }
 

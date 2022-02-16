@@ -16,21 +16,14 @@
 
 import Foundation
 
-/// AlertPresentable absracts an alert presenter
-protocol AlertPresentable {
+class ActivityPresenterSpy: ActivityPresentable {
+    var intel = [String]()
     
-    func showError(_ error: Error, animated: Bool, completion: (() -> Void)?)
-    func show(title: String?, message: String?, animated: Bool, completion: (() -> Void)?)
-}
-
-// MARK: Default implementation
-extension AlertPresentable {
-    
-    func showError(_ error: Error) {
-        self.showError(error, animated: true, completion: nil)
+    func present() {
+        intel.append(#function)
     }
     
-    func show(title: String?, message: String?) {
-        self.show(title: title, message: message, animated: true, completion: nil)
+    func dismiss() {
+        intel.append(#function)
     }
 }

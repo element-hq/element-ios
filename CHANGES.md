@@ -1,3 +1,15 @@
+## Changes in 1.8.1 (2022-02-16)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.22.1](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.22.1)).
+
+🐛 Bugfixes
+
+- Settings: Fix a bug where tapping a toggle could change multiple settings. ([#5463](https://github.com/vector-im/element-ios/issues/5463))
+- Fix for images sometimes being sent unencrypted inside an encrypted room. ([#5564](https://github.com/vector-im/element-ios/issues/5564))
+
+
 ## Changes in 1.8.0 (2022-02-09)
 
 ✨ Features

@@ -1838,7 +1838,7 @@ TableViewSectionsDelegate>
                 newEmailCell.mxkLabel.text = [VectorL10n settingsAddEmailAddress];
                 newEmailCell.mxkTextField.text = nil;
                 newEmailCell.mxkTextField.userInteractionEnabled = NO;
-                newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
+                newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:[AssetImages.plusIcon.image vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
             }
             else
             {
@@ -1873,7 +1873,7 @@ TableViewSectionsDelegate>
                     newEmailTextField = newEmailCell.mxkTextField;
                 }
                 
-                UIImage *accessoryViewImage = [[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
+                UIImage *accessoryViewImage = [AssetImages.plusIcon.image vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
                 newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:accessoryViewImage];
             }
             
@@ -1891,7 +1891,7 @@ TableViewSectionsDelegate>
                 newPhoneCell.mxkLabel.text = [VectorL10n settingsAddPhoneNumber];
                 newPhoneCell.mxkTextField.text = nil;
                 newPhoneCell.mxkTextField.userInteractionEnabled = NO;
-                newPhoneCell.accessoryView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
+                newPhoneCell.accessoryView = [[UIImageView alloc] initWithImage:[AssetImages.plusIcon.image vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
                 
                 cell = newPhoneCell;
             }
@@ -1953,7 +1953,7 @@ TableViewSectionsDelegate>
                     newPhoneNumberCell = newPhoneCell;
                 }
                 
-                UIImage *accessoryViewImage = [[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
+                UIImage *accessoryViewImage = [AssetImages.plusIcon.image vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
                 newPhoneCell.accessoryView = [[UIImageView alloc] initWithImage:accessoryViewImage];
                 
                 cell = newPhoneCell;
@@ -1997,7 +1997,7 @@ TableViewSectionsDelegate>
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableURLPreviews:) forControlEvents:UIControlEventValueChanged];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableURLPreviews:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = labelAndSwitchCell;
         }
@@ -2442,7 +2442,7 @@ TableViewSectionsDelegate>
             labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.enableRingingForGroupCalls;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableRingingForGroupCalls:) forControlEvents:UIControlEventValueChanged];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableRingingForGroupCalls:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = labelAndSwitchCell;
         }
@@ -2454,7 +2454,7 @@ TableViewSectionsDelegate>
             labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.enableThreads;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableThreads:) forControlEvents:UIControlEventValueChanged];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableThreads:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = labelAndSwitchCell;
         }
