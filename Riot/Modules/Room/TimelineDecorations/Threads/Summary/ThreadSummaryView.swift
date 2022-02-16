@@ -62,7 +62,7 @@ class ThreadSummaryView: UIView {
     }
     
     static func contentViewHeight(forThread thread: MXThreadProtocol?, fitting maxWidth: CGFloat) -> CGFloat {
-        return RoomBubbleCellLayout.threadSummaryViewHeight
+        return PlainRoomCellLayoutConstants.threadSummaryViewHeight
     }
     
     required init?(coder: NSCoder) {
