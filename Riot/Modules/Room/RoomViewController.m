@@ -4283,7 +4283,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self updateTitleViewEncryptionDecoration];
 }
 
-- (void)roomDataSource:(RoomDataSource *)roomDataSource didTapThread:(MXThread *)thread
+- (void)roomDataSource:(RoomDataSource *)roomDataSource didTapThread:(id<MXThreadProtocol>)thread
 {
     [self openThreadWithId:thread.id];
 }
@@ -4562,6 +4562,15 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 - (void)roomInputToolbarViewDidChangeTextMessage:(MXKRoomInputToolbarView *)toolbarView
 {
     [self.userSuggestionCoordinator processTextMessage:toolbarView.textMessage];
+}
+
+- (void)roomInputToolbarViewDidOpenActionMenu:(MXKRoomInputToolbarView*)toolbarView
+{
+    // Consider opening the action menu as beginning to type and share encryption keys if requested.
+    if ([MXKAppSettings standardAppSettings].outboundGroupSessionKeyPreSharingStrategy == MXKKeyPreSharingWhenTyping)
+    {
+        [self shareEncryptionKeys];
+    }
 }
 
 #pragma mark - MXKRoomMemberDetailsViewControllerDelegate

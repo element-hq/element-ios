@@ -3326,7 +3326,7 @@
         roomDataSource.partialTextMessage = inputToolbarView.textMessage;
     }
     
-    [self handleTypingNotification:typing];
+    [self handleTypingState:typing];
 }
 
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView heightDidChanged:(CGFloat)height completion:(void (^)(BOOL finished))completion
@@ -3447,7 +3447,7 @@
 }
 # pragma mark - Typing notification
 
-- (void)handleTypingNotification:(BOOL)typing
+- (void)handleTypingState:(BOOL)typing
 {
     NSUInteger notificationTimeoutMS = -1;
     if (typing)
@@ -3509,6 +3509,11 @@
         lastTypingDate = nil;
     }
     
+    [self sendTypingNotification:typing timeout:notificationTimeoutMS];
+}
+
+- (void)sendTypingNotification:(BOOL)typing timeout:(NSUInteger)notificationTimeoutMS
+{
     MXWeakify(self);
     
     // Send typing notification to server
@@ -3539,7 +3544,7 @@
     // Check whether a new typing event has been observed
     BOOL typing = (lastTypingDate != nil);
     // Post a new typing notification
-    [self handleTypingNotification:typing];
+    [self handleTypingState:typing];
 }
 
 
