@@ -31,7 +31,7 @@ class KeyVerificationBaseBubbleCell: MXKRoomBubbleTableViewCell {
     
     weak var keyVerificationCellInnerContentView: KeyVerificationCellInnerContentView?
 
-    weak var bubbleCellContentView: BubbleCellContentView?
+    weak var bubbleCellContentView: RoomCellContentView?
     
     override var bubbleInfoContainer: UIView! {
         get {
@@ -202,7 +202,7 @@ class KeyVerificationBaseBubbleCell: MXKRoomBubbleTableViewCell {
     private func setupContentView() {
         if self.bubbleCellContentView == nil {
             
-            let bubbleCellContentView = BubbleCellContentView.instantiate()
+            let bubbleCellContentView = RoomCellContentView.instantiate()
             
             let innerContentView = KeyVerificationCellInnerContentView.instantiate()
             

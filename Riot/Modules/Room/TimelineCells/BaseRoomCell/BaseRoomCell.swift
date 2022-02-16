@@ -17,7 +17,7 @@ limitations under the License.
 import UIKit
 
 @objc protocol BaseRoomCellProtocol: Themable {
-    var bubbleCellContentView: BubbleCellContentView? { get }
+    var bubbleCellContentView: RoomCellContentView? { get }
 }
 
 /// `BaseRoomCell` allows a bubble cell that inherits from this class to embed and manage the default room message outer views and add an inner content view.
@@ -32,7 +32,7 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
     
     // MARK: Public
 
-    weak var bubbleCellContentView: BubbleCellContentView?
+    weak var bubbleCellContentView: RoomCellContentView?
     
     private(set) var theme: Theme?
     
@@ -240,7 +240,7 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
         guard self.bubbleCellContentView == nil else {
             return
         }
-        let bubbleCellContentView = BubbleCellContentView.instantiate()
+        let bubbleCellContentView = RoomCellContentView.instantiate()
         self.contentView.vc_addSubViewMatchingParent(bubbleCellContentView)
         self.bubbleCellContentView = bubbleCellContentView
     }

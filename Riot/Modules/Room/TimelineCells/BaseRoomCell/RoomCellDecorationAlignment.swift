@@ -16,7 +16,7 @@
 
 import Foundation
 
-/// BubbleCellContentView decoration view items alignment
+/// RoomCellContentView decoration view items alignment
 enum RoomCellDecorationAlignment {
     case left
     case right

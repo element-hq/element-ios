@@ -17,9 +17,9 @@
 import UIKit
 import Reusable
 
-/// `BubbleCellContentView` is a container view that display the default room message outer views and enables to manage them. Like pagination title, sender info, read receipts, reactions, encryption status.
+/// `RoomCellContentView` is a container view that display the default room message outer views and enables to manage them. Like pagination title, sender info, read receipts, reactions, encryption status.
 @objcMembers
-final class BubbleCellContentView: UIView, NibLoadable {
+final class RoomCellContentView: UIView, NibLoadable {
     
     // MARK: - Properties
     
@@ -158,8 +158,8 @@ final class BubbleCellContentView: UIView, NibLoadable {
     
     // MARK: - Setup
     
-    class func instantiate() -> BubbleCellContentView {
-        return BubbleCellContentView.loadFromNib()
+    class func instantiate() -> RoomCellContentView {
+        return RoomCellContentView.loadFromNib()
     }
     
     // MARK: - Public
@@ -172,7 +172,7 @@ final class BubbleCellContentView: UIView, NibLoadable {
 }
 
 // MARK: - BubbleCellReadReceiptsDisplayable
-extension BubbleCellContentView: BubbleCellReadReceiptsDisplayable {
+extension RoomCellContentView: BubbleCellReadReceiptsDisplayable {
     
     func addReadReceiptsView(_ readReceiptsView: UIView) {
         self.readReceiptsContentView.vc_removeAllSubviews()
@@ -187,7 +187,7 @@ extension BubbleCellContentView: BubbleCellReadReceiptsDisplayable {
 }
 
 // MARK: - BubbleCellReactionsDisplayable
-extension BubbleCellContentView: BubbleCellReactionsDisplayable {
+extension RoomCellContentView: BubbleCellReactionsDisplayable {
     
     func addReactionsView(_ reactionsView: UIView) {
         self.reactionsContentView.vc_removeAllSubviews()
@@ -219,7 +219,7 @@ extension BubbleCellContentView: BubbleCellReactionsDisplayable {
 }
 
 // MARK: - BubbleCellThreadSummaryDisplayable
-extension BubbleCellContentView: BubbleCellThreadSummaryDisplayable {
+extension RoomCellContentView: BubbleCellThreadSummaryDisplayable {
     
     func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView) {
         
@@ -261,7 +261,7 @@ extension BubbleCellContentView: BubbleCellThreadSummaryDisplayable {
 }
 
 // MARK: - RoomCellURLPreviewDisplayable
-extension BubbleCellContentView: RoomCellURLPreviewDisplayable {
+extension RoomCellContentView: RoomCellURLPreviewDisplayable {
 
     func addURLPreviewView(_ urlPreviewView: UIView) {
         
