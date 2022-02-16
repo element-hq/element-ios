@@ -52,7 +52,7 @@ class ThreadSummaryView: UIView {
         self.thread = thread
         super.init(frame: CGRect(origin: .zero,
                                  size: CGSize(width: Constants.viewDefaultWidth,
-                                              height: RoomBubbleCellLayout.threadSummaryViewHeight)))
+                                              height: PlainRoomCellLayoutConstants.threadSummaryViewHeight)))
         loadNibContent()
         update(theme: ThemeService.shared().theme)
         configure()
@@ -60,7 +60,7 @@ class ThreadSummaryView: UIView {
     }
     
     static func contentViewHeight(forThread thread: MXThread?, fitting maxWidth: CGFloat) -> CGFloat {
-        return RoomBubbleCellLayout.threadSummaryViewHeight
+        return PlainRoomCellLayoutConstants.threadSummaryViewHeight
     }
     
     required init?(coder: NSCoder) {

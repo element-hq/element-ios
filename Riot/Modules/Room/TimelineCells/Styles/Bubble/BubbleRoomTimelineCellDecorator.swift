@@ -106,7 +106,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
         
         cellContentView.addSubview(reactionsView)
                 
-        let topMargin: CGFloat = RoomBubbleCellLayout.reactionsViewTopMargin
+        let topMargin: CGFloat = PlainRoomCellLayoutConstants.reactionsViewTopMargin
         let leftMargin: CGFloat
         let rightMargin: CGFloat
                 
@@ -116,7 +116,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
             var incomingLeftMargin = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left
             
             if cellData.containsBubbleComponentWithEncryptionBadge {
-                incomingLeftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
+                incomingLeftMargin += PlainRoomCellLayoutConstants.encryptedContentLeftMargin
             }
             
             leftMargin = incomingLeftMargin
@@ -131,7 +131,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
             var outgoingLeftMargin = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left
             
             if cellData.containsBubbleComponentWithEncryptionBadge {
-                outgoingLeftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
+                outgoingLeftMargin += PlainRoomCellLayoutConstants.encryptedContentLeftMargin
             }
             
             leftMargin = outgoingLeftMargin
@@ -180,9 +180,9 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
             // Incoming message
             if cellData.isIncoming {
 
-                var leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin
+                var leftMargin = PlainRoomCellLayoutConstants.reactionsViewLeftMargin
                 if cellData.containsBubbleComponentWithEncryptionBadge {
-                    leftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
+                    leftMargin += PlainRoomCellLayoutConstants.encryptedContentLeftMargin
                 }
                 
                 leadingOrTrailingConstraint = urlPreviewView.leadingAnchor.constraint(equalTo: cellContentView.leadingAnchor, constant: leftMargin)
@@ -194,7 +194,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
                 leadingOrTrailingConstraint = urlPreviewView.trailingAnchor.constraint(equalTo: cellContentView.trailingAnchor, constant: -rightMargin)
             }
             
-            let topMargin = contentViewPositionY + RoomBubbleCellLayout.urlPreviewViewTopMargin + RoomBubbleCellLayout.reactionsViewTopMargin
+            let topMargin = contentViewPositionY + PlainRoomCellLayoutConstants.urlPreviewViewTopMargin + PlainRoomCellLayoutConstants.reactionsViewTopMargin
             
             // Set the preview view's origin
             NSLayoutConstraint.activate([
@@ -232,7 +232,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
 
                 leftMargin = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left
                 if cellData.containsBubbleComponentWithEncryptionBadge {
-                    leftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
+                    leftMargin += PlainRoomCellLayoutConstants.encryptedContentLeftMargin
                 }
                 
                 rightMargin = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
@@ -253,7 +253,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
                                                                                  constant: -rightMargin)
             }
             
-            let topMargin = RoomBubbleCellLayout.threadSummaryViewTopMargin
+            let topMargin = PlainRoomCellLayoutConstants.threadSummaryViewTopMargin
             
             let height = ThreadSummaryView.contentViewHeight(forThread: threadSummaryView.thread,
                                                              fitting: cellData.maxTextViewWidth)

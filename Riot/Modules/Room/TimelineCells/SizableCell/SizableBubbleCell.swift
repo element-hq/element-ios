@@ -120,7 +120,7 @@ class SizableBaseBubbleCell: BaseRoomCell, SizableBaseBubbleCellType {
         
         // Add read receipt height if needed
         if let roomBubbleCellData = cellData as? RoomBubbleCellData, let readReceipts = roomBubbleCellData.readReceipts, readReceipts.count > 0, sizingView is RoomCellReadReceiptsDisplayable {
-            height+=RoomBubbleCellLayout.readReceiptsViewHeight
+            height+=PlainRoomCellLayoutConstants.readReceiptsViewHeight
         }
         
         // Add reactions view height if needed
@@ -141,7 +141,7 @@ class SizableBaseBubbleCell: BaseRoomCell, SizableBaseBubbleCellType {
             
             let bottomMargin = sizingView.roomCellContentView?.threadSummaryContentViewBottomConstraint.constant ?? 0
             
-            height += RoomBubbleCellLayout.threadSummaryViewHeight
+            height += PlainRoomCellLayoutConstants.threadSummaryViewHeight
             height += bottomMargin
         }
         

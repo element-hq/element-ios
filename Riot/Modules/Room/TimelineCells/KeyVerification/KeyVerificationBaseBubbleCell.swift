@@ -241,7 +241,7 @@ class KeyVerificationBaseBubbleCell: MXKRoomBubbleTableViewCell {
         var height = sizingView.systemLayoutSizeFitting(fittingSize).height
         
         if let roomBubbleCellData = cellData as? RoomBubbleCellData, let readReceipts = roomBubbleCellData.readReceipts, readReceipts.count > 0 {
-            height+=RoomBubbleCellLayout.readReceiptsViewHeight
+            height+=PlainRoomCellLayoutConstants.readReceiptsViewHeight
         }
         
         return height

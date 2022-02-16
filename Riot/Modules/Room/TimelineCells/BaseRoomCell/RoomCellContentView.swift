@@ -246,7 +246,7 @@ extension RoomCellContentView: RoomCellThreadSummaryDisplayable {
         NSLayoutConstraint.activate([
             leadingConstraint,
             threadSummaryView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            threadSummaryView.heightAnchor.constraint(equalToConstant: RoomBubbleCellLayout.threadSummaryViewHeight),
+            threadSummaryView.heightAnchor.constraint(equalToConstant: PlainRoomCellLayoutConstants.threadSummaryViewHeight),
             threadSummaryView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             trailingConstraint
         ])
