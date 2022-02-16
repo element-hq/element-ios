@@ -128,7 +128,7 @@ class SizableBaseBubbleCell: BaseRoomCell, SizableBaseBubbleCellType {
             let roomBubbleCellData = cellData as? RoomBubbleCellData,
             let bubbleReactionsViewModel = self.reactionsViewModelBuilder.buildForFirstVisibleComponent(of: roomBubbleCellData) {
             
-            let reactionWidth = sizingView.bubbleCellContentView?.reactionsContentView.frame.width ?? roomBubbleCellData.maxTextViewWidth
+            let reactionWidth = sizingView.roomCellContentView?.reactionsContentView.frame.width ?? roomBubbleCellData.maxTextViewWidth
             
             let reactionsHeight = self.reactionsViewSizer.height(for: bubbleReactionsViewModel, fittingWidth: reactionWidth)
             height+=reactionsHeight
@@ -139,7 +139,7 @@ class SizableBaseBubbleCell: BaseRoomCell, SizableBaseBubbleCellType {
            let roomBubbleCellData = cellData as? RoomBubbleCellData,
            roomBubbleCellData.hasThreadRoot {
             
-            let bottomMargin = sizingView.bubbleCellContentView?.threadSummaryContentViewBottomConstraint.constant ?? 0
+            let bottomMargin = sizingView.roomCellContentView?.threadSummaryContentViewBottomConstraint.constant ?? 0
             
             height += RoomBubbleCellLayout.threadSummaryViewHeight
             height += bottomMargin
@@ -150,7 +150,7 @@ class SizableBaseBubbleCell: BaseRoomCell, SizableBaseBubbleCellType {
             let roomBubbleCellData = cellData as? RoomBubbleCellData, let firstBubbleComponent =
             roomBubbleCellData.getFirstBubbleComponentWithDisplay(), firstBubbleComponent.showURLPreview, let urlPreviewData = firstBubbleComponent.urlPreviewData as? URLPreviewData {
             
-            let urlPreviewMaxWidth = sizingView.bubbleCellContentView?.urlPreviewContentView.frame.width ?? roomBubbleCellData.maxTextViewWidth
+            let urlPreviewMaxWidth = sizingView.roomCellContentView?.urlPreviewContentView.frame.width ?? roomBubbleCellData.maxTextViewWidth
             
             let urlPreviewHeight = self.urlPreviewViewSizer.height(for: urlPreviewData, fittingWidth: urlPreviewMaxWidth)
             height+=urlPreviewHeight

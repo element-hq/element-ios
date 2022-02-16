@@ -17,10 +17,10 @@ limitations under the License.
 import UIKit
 
 @objc protocol BaseRoomCellProtocol: Themable {
-    var bubbleCellContentView: RoomCellContentView? { get }
+    var roomCellContentView: RoomCellContentView? { get }
 }
 
-/// `BaseRoomCell` allows a bubble cell that inherits from this class to embed and manage the default room message outer views and add an inner content view.
+/// `BaseRoomCell` allows a room cell that inherits from this class to embed and manage the default room message outer views and add an inner content view.
 @objcMembers
 class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
     
@@ -32,7 +32,7 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
     
     // MARK: Public
 
-    weak var bubbleCellContentView: RoomCellContentView?
+    weak var roomCellContentView: RoomCellContentView?
     
     private(set) var theme: Theme?
     
@@ -40,7 +40,7 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
     
     override var bubbleInfoContainer: UIView! {
         get {
-            guard let infoContainer = self.bubbleCellContentView?.bubbleInfoContainer else {
+            guard let infoContainer = self.roomCellContentView?.bubbleInfoContainer else {
                 fatalError("[BaseRoomCell] bubbleInfoContainer should not be used before set")
             }
             return infoContainer
@@ -52,7 +52,7 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
     
     override var bubbleOverlayContainer: UIView! {
         get {
-            guard let overlayContainer = self.bubbleCellContentView?.bubbleOverlayContainer else {
+            guard let overlayContainer = self.roomCellContentView?.bubbleOverlayContainer else {
                 fatalError("[BaseRoomCell] bubbleOverlayContainer should not be used before set")
             }
             return overlayContainer
@@ -64,7 +64,7 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
     
     override var bubbleInfoContainerTopConstraint: NSLayoutConstraint! {
         get {
-            guard let infoContainerTopConstraint = self.bubbleCellContentView?.bubbleInfoContainerTopConstraint else {
+            guard let infoContainerTopConstraint = self.roomCellContentView?.bubbleInfoContainerTopConstraint else {
                 fatalError("[BaseRoomCell] bubbleInfoContainerTopConstraint should not be used before set")
             }
             return infoContainerTopConstraint
@@ -76,12 +76,12 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
     
     override var pictureView: MXKImageView! {
         get {
-            guard let bubbleCellContentView = self.bubbleCellContentView,
-                bubbleCellContentView.showSenderAvatar else {
+            guard let roomCellContentView = self.roomCellContentView,
+                roomCellContentView.showSenderAvatar else {
                 return nil
             }
             
-            guard let pictureView = self.bubbleCellContentView?.avatarImageView else {
+            guard let pictureView = self.roomCellContentView?.avatarImageView else {
                 fatalError("[BaseRoomCell] pictureView should not be used before set")
             }
             return pictureView
@@ -93,11 +93,11 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
     
     override var userNameLabel: UILabel! {
         get {
-            guard let bubbleCellContentView = self.bubbleCellContentView, bubbleCellContentView.showSenderName  else {
+            guard let roomCellContentView = self.roomCellContentView, roomCellContentView.showSenderName  else {
                 return nil
             }
             
-            guard let userNameLabel = bubbleCellContentView.userNameLabel else {
+            guard let userNameLabel = roomCellContentView.userNameLabel else {
                 fatalError("[BaseRoomCell] userNameLabel should not be used before set")
             }
             return userNameLabel
@@ -109,12 +109,12 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
     
     override var userNameTapGestureMaskView: UIView! {
         get {
-            guard let bubbleCellContentView = self.bubbleCellContentView,
-                bubbleCellContentView.showSenderName else {
+            guard let roomCellContentView = self.roomCellContentView,
+                roomCellContentView.showSenderName else {
                 return nil
             }
             
-            guard let userNameTapGestureMaskView = self.bubbleCellContentView?.userNameTouchMaskView else {
+            guard let userNameTapGestureMaskView = self.roomCellContentView?.userNameTouchMaskView else {
                 fatalError("[BaseRoomCell] userNameTapGestureMaskView should not be used before set")
             }
             return userNameTapGestureMaskView
@@ -174,7 +174,7 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
     override func setupViews() {
         super.setupViews()
         
-        let showEncryptionStatus = bubbleCellContentView?.showEncryptionStatus ?? false
+        let showEncryptionStatus = roomCellContentView?.showEncryptionStatus ?? false
         
         if showEncryptionStatus {
             self.setupEncryptionStatusViewTapGestureRecognizer()
@@ -197,17 +197,17 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
         
         super.render(cellData)
         
-        guard let bubbleCellContentView = self.bubbleCellContentView else {
+        guard let roomCellContentView = self.roomCellContentView else {
             return
         }
         
         if let bubbleData = self.bubbleData,
             let paginationDate = bubbleData.date,
-            bubbleCellContentView.showPaginationTitle {
-            bubbleCellContentView.paginationLabel.text = bubbleData.eventFormatter.dateString(from: paginationDate, withTime: false)?.uppercased()
+            roomCellContentView.showPaginationTitle {
+            roomCellContentView.paginationLabel.text = bubbleData.eventFormatter.dateString(from: paginationDate, withTime: false)?.uppercased()
         }                
         
-        if bubbleCellContentView.showEncryptionStatus {
+        if roomCellContentView.showEncryptionStatus {
             self.updateEncryptionStatusViewImage()
         }
         
@@ -223,7 +223,7 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
     
     func update(theme: Theme) {
         self.theme = theme
-        self.bubbleCellContentView?.update(theme: theme)
+        self.roomCellContentView?.update(theme: theme)
     }
     
     // MARK: - Private
@@ -237,67 +237,67 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
     }
         
     private func setupContentView() {
-        guard self.bubbleCellContentView == nil else {
+        guard self.roomCellContentView == nil else {
             return
         }
-        let bubbleCellContentView = RoomCellContentView.instantiate()
-        self.contentView.vc_addSubViewMatchingParent(bubbleCellContentView)
-        self.bubbleCellContentView = bubbleCellContentView
+        let roomCellContentView = RoomCellContentView.instantiate()
+        self.contentView.vc_addSubViewMatchingParent(roomCellContentView)
+        self.roomCellContentView = roomCellContentView
     }
     
     // MARK: - RoomCellURLPreviewDisplayable
     // Cannot use default implementation with ObjC protocol, if self conforms to BubbleCellReadReceiptsDisplayable method below will be used
     
     func addURLPreviewView(_ urlPreviewView: UIView) {
-        self.bubbleCellContentView?.addURLPreviewView(urlPreviewView)
+        self.roomCellContentView?.addURLPreviewView(urlPreviewView)
         
         // tmpSubviews is used for touch detection in MXKRoomBubbleTableViewCell
         self.addTemporarySubview(urlPreviewView)
     }
     
     func removeURLPreviewView() {
-        self.bubbleCellContentView?.removeURLPreviewView()
+        self.roomCellContentView?.removeURLPreviewView()
     }
     
     // MARK: - BubbleCellReadReceiptsDisplayable
     // Cannot use default implementation with ObjC protocol, if self conforms to BubbleCellReadReceiptsDisplayable method below will be used
     
     func addReadReceiptsView(_ readReceiptsView: UIView) {
-        self.bubbleCellContentView?.addReadReceiptsView(readReceiptsView)
+        self.roomCellContentView?.addReadReceiptsView(readReceiptsView)
         
         // tmpSubviews is used for touch detection in MXKRoomBubbleTableViewCell
         self.addTemporarySubview(readReceiptsView)
     }
     
     func removeReadReceiptsView() {
-        self.bubbleCellContentView?.removeReadReceiptsView()
+        self.roomCellContentView?.removeReadReceiptsView()
     }
     
     // MARK: - BubbleCellReactionsDisplayable
     // Cannot use default implementation with ObjC protocol, if self conforms to BubbleCellReactionsDisplayable method below will be used
     
     func addReactionsView(_ reactionsView: UIView) {
-        self.bubbleCellContentView?.addReactionsView(reactionsView)
+        self.roomCellContentView?.addReactionsView(reactionsView)
         
         // tmpSubviews is used for touch detection in MXKRoomBubbleTableViewCell
         self.addTemporarySubview(reactionsView)
     }
     
     func removeReactionsView() {
-        self.bubbleCellContentView?.removeReactionsView()
+        self.roomCellContentView?.removeReactionsView()
     }
 
     // MARK: - BubbleCellThreadSummaryDisplayable
 
     func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView) {
-        self.bubbleCellContentView?.addThreadSummaryView(threadSummaryView)
+        self.roomCellContentView?.addThreadSummaryView(threadSummaryView)
         
         // tmpSubviews is used for touch detection in MXKRoomBubbleTableViewCell
         self.addTemporarySubview(threadSummaryView)
     }
 
     func removeThreadSummaryView() {
-        self.bubbleCellContentView?.removeThreadSummaryView()
+        self.roomCellContentView?.removeThreadSummaryView()
     }
     
     // Encryption status
@@ -306,13 +306,13 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
         guard let component = self.bubbleData.getFirstBubbleComponentWithDisplay() else {
             return
         }
-        self.bubbleCellContentView?.encryptionImageView.image = RoomEncryptedDataBubbleCell.encryptionIcon(for: component)
+        self.roomCellContentView?.encryptionImageView.image = RoomEncryptedDataBubbleCell.encryptionIcon(for: component)
     }
     
     private func setupEncryptionStatusViewTapGestureRecognizer() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleEncryptionStatusContainerViewTap(_:)))
         tapGestureRecognizer.delegate = self
-        self.bubbleCellContentView?.encryptionImageView.isUserInteractionEnabled = true
+        self.roomCellContentView?.encryptionImageView.isUserInteractionEnabled = true
     }
     
     @objc private func handleEncryptionStatusContainerViewTap(_ gestureRecognizer: UITapGestureRecognizer) {
