@@ -39,10 +39,8 @@ class TextMessageIncomingBubbleCell: TextMessageBaseBubbleCell, BubbleIncomingRo
     
     private func setupBubbleConstraints() {
         
-        self.textMessageContentView?.bubbleBackgroundViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left
+        self.bubbleCellContentView?.innerContentViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left
         
-        let innerContentViewTrailingMargin = self.bubbleCellContentView?.innerContentViewTrailingConstraint.constant ?? 0
-        
-        self.textMessageContentView?.bubbleBackgroundViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right - innerContentViewTrailingMargin
+        self.bubbleCellContentView?.innerContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
     }
 }

@@ -23,13 +23,8 @@ class FileWithoutThumbnailOutoingWithoutSenderInfoBubbleCell: FileWithoutThumbna
         
         bubbleCellContentView?.showSenderInfo = false
         
-        // TODO: Use constants
-        // Same as outgoing message
-        let rightMargin: CGFloat = 34.0
-        let leftMargin: CGFloat = 80.0
-        
-        bubbleCellContentView?.innerContentViewTrailingConstraint.constant = rightMargin
-        bubbleCellContentView?.innerContentViewLeadingConstraint.constant = leftMargin
+        bubbleCellContentView?.innerContentViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left
+        bubbleCellContentView?.innerContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
         
         self.setupBubbleDecorations()
     }

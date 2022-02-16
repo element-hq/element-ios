@@ -20,6 +20,9 @@ import Foundation
 @objcMembers
 final class RoomBubbleCellLayout: NSObject {
     
+    /// Inner content view margins
+    static let innerContentViewMargins: UIEdgeInsets = UIEdgeInsets(top: 0, left: 57, bottom: 0.0, right: 0)
+    
     // Reactions
     
     static let reactionsViewTopMargin: CGFloat = 1.0

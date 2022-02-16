@@ -20,16 +20,11 @@ class VoiceMessageIncomingBubbleCell: VoiceMessageBubbleCell, BubbleIncomingRoom
         
     override func setupViews() {
         super.setupViews()
+                
+        bubbleCellContentView?.innerContentViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left
+        bubbleCellContentView?.innerContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
         
-        // TODO: Use constants
-        let messageViewMarginRight: CGFloat = 80
-        let messageLeftMargin: CGFloat = 48
-        let playbackViewRightMargin: CGFloat = 40
-        
-        bubbleCellContentView?.innerContentViewTrailingConstraint.constant = messageViewMarginRight
-        bubbleCellContentView?.innerContentViewLeadingConstraint.constant = messageLeftMargin
-        
-        playbackController.playbackView.stackViewTrailingContraint.constant = playbackViewRightMargin
+        playbackController.playbackView.stackViewTrailingContraint.constant = BubbleRoomCellLayoutConstants.voiceMessagePlaybackViewRightMargin
         
         self.setupBubbleDecorations()
     }

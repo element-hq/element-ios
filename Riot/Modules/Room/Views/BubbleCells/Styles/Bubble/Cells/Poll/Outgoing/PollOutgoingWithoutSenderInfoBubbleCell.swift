@@ -22,12 +22,9 @@ class PollOutgoingWithoutSenderInfoBubbleCell: PollBaseBubbleCell, BubbleOutgoin
         super.setupViews()
         
         bubbleCellContentView?.showSenderInfo = false
-        
-        // TODO: Use constants
-        // Same as outgoing message
-        let bubbleBackgroundSideMargin: CGFloat = 10
-        let rightMargin: CGFloat = 34.0 + bubbleBackgroundSideMargin
-        let leftMargin: CGFloat = 80.0 + bubbleBackgroundSideMargin
+            
+        let leftMargin: CGFloat = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left + BubbleRoomCellLayoutConstants.pollBubbleBackgroundInsets.left
+        let rightMargin: CGFloat = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right + BubbleRoomCellLayoutConstants.pollBubbleBackgroundInsets.right
         
         bubbleCellContentView?.innerContentViewTrailingConstraint.constant = rightMargin
         bubbleCellContentView?.innerContentViewLeadingConstraint.constant = leftMargin

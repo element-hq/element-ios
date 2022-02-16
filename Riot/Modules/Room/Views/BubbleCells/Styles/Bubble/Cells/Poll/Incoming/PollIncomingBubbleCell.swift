@@ -21,13 +21,11 @@ class PollIncomingBubbleCell: PollBaseBubbleCell, BubbleIncomingRoomCellProtocol
     override func setupViews() {
         super.setupViews()
         
-        // TODO: Use constants
-        let bubbleBackgroundSideMargin: CGFloat = 10
-        let messageViewMarginRight: CGFloat = 80 + bubbleBackgroundSideMargin
-        let messageLeftMargin: CGFloat = 48 + bubbleBackgroundSideMargin
+        let leftMargin: CGFloat = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left + BubbleRoomCellLayoutConstants.pollBubbleBackgroundInsets.left
+        let rightMargin: CGFloat = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right + BubbleRoomCellLayoutConstants.pollBubbleBackgroundInsets.right
         
-        bubbleCellContentView?.innerContentViewTrailingConstraint.constant = messageViewMarginRight
-        bubbleCellContentView?.innerContentViewLeadingConstraint.constant = messageLeftMargin
+        bubbleCellContentView?.innerContentViewLeadingConstraint.constant = leftMargin
+        bubbleCellContentView?.innerContentViewTrailingConstraint.constant = rightMargin
         
         self.setupBubbleDecorations()
     }
