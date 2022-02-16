@@ -214,7 +214,6 @@ internal class Asset: NSObject {
     internal static let fileMusicIcon = ImageAsset(name: "file_music_icon")
     internal static let filePhotoIcon = ImageAsset(name: "file_photo_icon")
     internal static let fileVideoIcon = ImageAsset(name: "file_video_icon")
-    internal static let searchBg = ImageAsset(name: "search_bg")
     internal static let searchIcon = ImageAsset(name: "search_icon")
     internal static let secretsRecoveryKey = ImageAsset(name: "secrets_recovery_key")
     internal static let secretsRecoveryPassphrase = ImageAsset(name: "secrets_recovery_passphrase")
