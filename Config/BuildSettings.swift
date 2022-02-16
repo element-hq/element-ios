@@ -210,6 +210,15 @@ final class BuildSettings: NSObject {
     
     static let allowInviteExernalUsers: Bool = true
     
+    /// Whether a screen uses legacy local activity indicators or improved app-wide indicators
+    static var appActivityIndicators: Bool {
+        #if DEBUG
+        return true
+        #else
+        return false
+        #endif
+    }
+    
     // MARK: - Side Menu
     static let enableSideMenu: Bool = true
     static let sideMenuShowInviteFriends: Bool = true

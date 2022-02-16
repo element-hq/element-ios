@@ -1,1 +1,1 @@
-CommonKit: Create a new framework with common functionality and create Activity and ActivityCenter
+ActivityCenter: Use ActivityCenter to show loading indicators on the home screen (in DEBUG builds only)

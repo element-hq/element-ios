@@ -17,6 +17,8 @@
 import Foundation
 import Intents
 import MatrixSDK
+import CommonKit
+import UIKit
 
 #if DEBUG
 import FLEX
@@ -47,7 +49,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         return AppNavigator(appCoordinator: self)
     }()
     
-    private weak var splitViewCoordinator: SplitViewCoordinatorType?
+    fileprivate weak var splitViewCoordinator: SplitViewCoordinatorType?
     fileprivate weak var sideMenuCoordinator: SideMenuCoordinatorType?
     
     private let userSessionsService: UserSessionsService
@@ -288,8 +290,6 @@ fileprivate class AppNavigator: AppNavigatorProtocol {
     
     private unowned let appCoordinator: AppCoordinator
     
-    let alert: AlertPresentable
-    
     lazy var sideMenu: SideMenuPresentable = {
         guard let sideMenuCoordinator = appCoordinator.sideMenuCoordinator else {
             fatalError("sideMenuCoordinator is not initialized")
@@ -298,16 +298,39 @@ fileprivate class AppNavigator: AppNavigatorProtocol {
         return SideMenuPresenter(sideMenuCoordinator: sideMenuCoordinator)
     }()
     
+    private var appNavigationVC: UINavigationController {
+        guard
+            let splitVC = appCoordinator.splitViewCoordinator?.toPresentable() as? UISplitViewController,
+            // Picking out the first view controller currently works only on iPhones, not iPads
+            let navigationVC = splitVC.viewControllers.first as? UINavigationController
+        else {
+            MXLog.error("[AppNavigator] Missing root split view controller")
+            return UINavigationController()
+        }
+        return navigationVC
+    }
+    
     // MARK: - Setup
     
     init(appCoordinator: AppCoordinator) {
         self.appCoordinator = appCoordinator
-        self.alert = AppAlertPresenter(legacyAppDelegate: appCoordinator.legacyAppDelegate)
     }
     
     // MARK: - Public
     
     func navigate(to destination: AppNavigatorDestination) {
         self.appCoordinator.navigate(to: destination)
+    }
+    
+    func addLoadingActivity() -> Activity {
+        let presenter = ActivityIndicatorToastPresenter(
+            text: VectorL10n.roomParticipantsSecurityLoading,
+            navigationController: appNavigationVC
+        )
+        let request = ActivityRequest(
+            presenter: presenter,
+            dismissal: .manual
+        )
+        return ActivityCenter.shared.add(request)
     }
 }
