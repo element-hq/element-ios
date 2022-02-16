@@ -106,7 +106,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
     
     CGFloat timeLabelPosX;
     CGFloat timeLabelPosY;
-    CGFloat timeLabelHeight = RoomBubbleCellLayout.timestampLabelHeight;
+    CGFloat timeLabelHeight = PlainRoomCellLayoutConstants.timestampLabelHeight;
     CGFloat timeLabelWidth;
     NSTextAlignment timeLabelTextAlignment;
     
@@ -133,7 +133,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
     }
     else
     {
-        timeLabelPosX = self.bubbleInfoContainer.frame.size.width - RoomBubbleCellLayout.timestampLabelWidth;
+        timeLabelPosX = self.bubbleInfoContainer.frame.size.width - PlainRoomCellLayoutConstants.timestampLabelWidth;
         
         if (isFirstDisplayedComponent)
         {
@@ -148,7 +148,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
             timeLabelPosY = component.position.y + self.msgTextViewTopConstraint.constant - timeLabelHeight - self.bubbleInfoContainerTopConstraint.constant;
         }
         
-        timeLabelWidth = RoomBubbleCellLayout.timestampLabelWidth;
+        timeLabelWidth = PlainRoomCellLayoutConstants.timestampLabelWidth;
         timeLabelTextAlignment = NSTextAlignmentRight;
     }
     
@@ -340,7 +340,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
     NSDate *date = bubbleData.date;
     if (date)
     {
-        UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.bubbleInfoContainer.frame.size.width, RoomBubbleCellLayout.timestampLabelHeight)];
+        UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.bubbleInfoContainer.frame.size.width, PlainRoomCellLayoutConstants.timestampLabelHeight)];
         
         timeLabel.text = [bubbleData.eventFormatter dateStringFromDate:date withTime:NO];
         timeLabel.textAlignment = NSTextAlignmentRight;
@@ -387,7 +387,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
                                                                                toItem:nil
                                                                             attribute:NSLayoutAttributeNotAnAttribute
                                                                            multiplier:1.0
-                                                                             constant:RoomBubbleCellLayout.timestampLabelHeight];
+                                                                             constant:PlainRoomCellLayoutConstants.timestampLabelHeight];
         
         // Available on iOS 8 and later
         [NSLayoutConstraint activateConstraints:@[rightConstraint, topConstraint, widthConstraint, heightConstraint]];
@@ -539,7 +539,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
         CGFloat componentBottomY = componentFrameInContentView.origin.y + componentFrameInContentView.size.height;
         
         CGFloat x = 0;
-        CGFloat y = componentFrameInContentView.origin.y - RoomBubbleCellLayout.timestampLabelHeight;
+        CGFloat y = componentFrameInContentView.origin.y - PlainRoomCellLayoutConstants.timestampLabelHeight;
         CGFloat width = roomBubbleTableViewCell.contentView.frame.size.width;
         CGFloat height = componentBottomY - y;
         
@@ -798,7 +798,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
 {
     CGRect componentFrame = [self componentFrameInContentViewForIndex: index];
 
-    tickView.frame = CGRectMake(self.contentView.bounds.size.width - tickView.frame.size.width - 2 * RoomBubbleCellLayout.readReceiptsViewRightMargin, CGRectGetMaxY(componentFrame) - tickView.frame.size.height, tickView.frame.size.width, tickView.frame.size.height);
+    tickView.frame = CGRectMake(self.contentView.bounds.size.width - tickView.frame.size.width - 2 * PlainRoomCellLayoutConstants.readReceiptsViewRightMargin, CGRectGetMaxY(componentFrame) - tickView.frame.size.height, tickView.frame.size.width, tickView.frame.size.height);
 
     [self.contentView addSubview:tickView];
 }
@@ -816,7 +816,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
     
     // Define 'Edit' button frame
     UIImage *editIcon = [UIImage imageNamed:@"edit_icon"];
-    CGFloat editBtnPosX = self.bubbleInfoContainer.frame.size.width - RoomBubbleCellLayout.timestampLabelWidth - 22 - editIcon.size.width / 2;
+    CGFloat editBtnPosX = self.bubbleInfoContainer.frame.size.width - PlainRoomCellLayoutConstants.timestampLabelWidth - 22 - editIcon.size.width / 2;
     CGFloat editBtnPosY = isFirstDisplayedComponent ? -13 : component.position.y + self.msgTextViewTopConstraint.constant - self.bubbleInfoContainerTopConstraint.constant - 13;
     UIButton *editButton = [[UIButton alloc] initWithFrame:CGRectMake(editBtnPosX, editBtnPosY, 44, 44)];
     
