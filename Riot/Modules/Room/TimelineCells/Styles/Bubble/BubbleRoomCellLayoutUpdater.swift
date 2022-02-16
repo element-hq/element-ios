@@ -182,12 +182,8 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
         
         let messageViewMarginTop: CGFloat = 0
         let messageViewMarginBottom: CGFloat = 0
-        let messageViewMarginLeft =
-<<<<<<< HEAD
-        BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left + PlainRoomCellLayoutConstants.innerContentViewMargins.left
-=======
-        BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left + BubbleRoomCellLayoutConstants.bubbleTextViewInsets.left
->>>>>>> develop
+        let messageViewMarginLeft = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left + BubbleRoomCellLayoutConstants.bubbleTextViewInsets.left
+        
         let messageViewMarginRight = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right + BubbleRoomCellLayoutConstants.bubbleTextViewInsets.right
             
         let messageViewInsets = UIEdgeInsets(top: messageViewMarginTop, left: messageViewMarginLeft, bottom: messageViewMarginBottom, right: messageViewMarginRight)
