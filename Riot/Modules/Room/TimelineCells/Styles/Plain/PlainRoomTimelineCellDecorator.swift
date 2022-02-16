@@ -76,7 +76,7 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
 
         cell.addTemporarySubview(reactionsView)
 
-        if let reactionsDisplayable = cell as? BubbleCellReactionsDisplayable {
+        if let reactionsDisplayable = cell as? RoomCellReactionsDisplayable {
             reactionsDisplayable.addReactionsView(reactionsView)
         } else {
             reactionsView.translatesAutoresizingMaskIntoConstraints = false

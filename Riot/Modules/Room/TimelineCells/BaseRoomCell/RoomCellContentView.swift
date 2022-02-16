@@ -187,7 +187,7 @@ extension RoomCellContentView: BubbleCellReadReceiptsDisplayable {
 }
 
 // MARK: - BubbleCellReactionsDisplayable
-extension RoomCellContentView: BubbleCellReactionsDisplayable {
+extension RoomCellContentView: RoomCellReactionsDisplayable {
     
     func addReactionsView(_ reactionsView: UIView) {
         self.reactionsContentView.vc_removeAllSubviews()

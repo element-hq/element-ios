@@ -124,7 +124,7 @@ class SizableBaseBubbleCell: BaseRoomCell, SizableBaseBubbleCellType {
         }
         
         // Add reactions view height if needed
-        if sizingView is BubbleCellReactionsDisplayable,
+        if sizingView is RoomCellReactionsDisplayable,
             let roomBubbleCellData = cellData as? RoomBubbleCellData,
             let bubbleReactionsViewModel = self.reactionsViewModelBuilder.buildForFirstVisibleComponent(of: roomBubbleCellData) {
             

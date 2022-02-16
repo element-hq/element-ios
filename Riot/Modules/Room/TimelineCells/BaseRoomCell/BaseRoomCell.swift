@@ -148,7 +148,7 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
             bubbleCellReadReceiptsDisplayable.removeReadReceiptsView()
         }
         
-        if let bubbleCellReactionsDisplayable = self as? BubbleCellReactionsDisplayable {
+        if let bubbleCellReactionsDisplayable = self as? RoomCellReactionsDisplayable {
             bubbleCellReactionsDisplayable.removeReactionsView()
         }
 
