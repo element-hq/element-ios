@@ -44,8 +44,8 @@ class AddRoomItemsProcessor: MatrixItemChooserProcessorProtocol {
     
     // MARK: Private
     
-    // Add room with roomId from list of room IDs at index to the parentSpace.
-    // Recurse to the next index once done.    
+    /// Add room with roomId from list of room IDs at index to the parentSpace.
+    /// Recurse to the next index once done.    
     func addChild(from roomIds: [String], at index: Int, completion: @escaping (Result<Void, Error>) -> Void) {
         guard index < roomIds.count else {
             // last item has been processed or list is empty --> the recursion has finished
