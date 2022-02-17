@@ -1335,6 +1335,10 @@ public class VectorL10n: NSObject {
   public static var encryptedRoomMessageReplyToPlaceholder: String { 
     return VectorL10n.tr("Vector", "encrypted_room_message_reply_to_placeholder") 
   }
+  /// Error
+  public static var error: String { 
+    return VectorL10n.tr("Vector", "error") 
+  }
   /// Add an identity server in your settings to invite by email.
   public static var errorInvite3pidWithNoIdentityServer: String { 
     return VectorL10n.tr("Vector", "error_invite_3pid_with_no_identity_server") 

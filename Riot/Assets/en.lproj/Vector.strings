@@ -73,6 +73,7 @@
 "existing" = "Existing";
 "add" = "Add";
 "ok" = "OK";
+"error" = "Error";
 
 // Call Bar
 "callbar_only_single_active" = "Tap to return to the call (%@)";
