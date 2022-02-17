@@ -2407,4 +2407,26 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     self.roomNotificationSettingsCoordinatorBridgePresenter = nil;
 }
 
+#pragma mark - Activity Indicator
+
+- (BOOL)providesCustomActivityIndicator {
+    return self.activityPresenter != nil;
+}
+
+- (void)startActivityIndicator {
+    if (self.activityPresenter) {
+        [self.activityPresenter presentActivityIndicator];
+    } else {
+        [super startActivityIndicator];
+    }
+}
+
+- (void)stopActivityIndicator {
+    if (self.activityPresenter) {
+        [self.activityPresenter removeCurrentActivityIndicatorWithAnimated:YES completion:nil];
+    } else {
+        [super stopActivityIndicator];
+    }
+}
+
 @end

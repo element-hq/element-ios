@@ -165,9 +165,6 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     // The pending http operation
     MXHTTPOperation* pendingOperation;
     
-    // the updating spinner
-    UIActivityIndicatorView* updatingSpinner;
-    
     UIAlertController *currentAlert;
     
     // listen to more events than the mother class

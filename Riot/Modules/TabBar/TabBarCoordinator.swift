@@ -227,6 +227,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         homeViewController.tabBarItem.image = homeViewController.tabBarItem.image
         homeViewController.accessibilityLabel = VectorL10n.titleHome
         
+        if BuildSettings.appActivityIndicators {
+            homeViewController.activityPresenter = AppActivityIndicatorPresenter(appNavigator: parameters.appNavigator)
+        }
+        
         let wrapperViewController = HomeViewControllerWithBannerWrapperViewController(viewController: homeViewController)        
         return wrapperViewController
     }

@@ -466,7 +466,8 @@ const CGFloat kTypingCellHeight = 24;
                     //  display thread summary view if the component has a thread in the room timeline
                     if (RiotSettings.shared.enableThreads && component.thread && !self.threadId)
                     {
-                        threadSummaryView = [[ThreadSummaryView alloc] initWithThread:component.thread];
+                        threadSummaryView = [[ThreadSummaryView alloc] initWithThread:component.thread
+                                                                              session:self.mxSession];
                         threadSummaryView.delegate = self;
                         threadSummaryView.tag = index;
                         
@@ -512,7 +513,7 @@ const CGFloat kTypingCellHeight = 24;
                         if (roomMembers.count)
                         {
                             // Define the read receipts container, positioned on the right border of the bubble cell (Note the right margin 6 pts).
-                            avatarsContainer = [[MXKReceiptSendersContainer alloc] initWithFrame:CGRectMake(bubbleCell.frame.size.width - RoomBubbleCellLayout.readReceiptsViewWidth + RoomBubbleCellLayout.readReceiptsViewRightMargin, bottomPositionY + RoomBubbleCellLayout.readReceiptsViewTopMargin, RoomBubbleCellLayout.readReceiptsViewWidth, RoomBubbleCellLayout.readReceiptsViewHeight) andMediaManager:self.mxSession.mediaManager];
+                            avatarsContainer = [[MXKReceiptSendersContainer alloc] initWithFrame:CGRectMake(bubbleCell.frame.size.width - PlainRoomCellLayoutConstants.readReceiptsViewWidth + PlainRoomCellLayoutConstants.readReceiptsViewRightMargin, bottomPositionY + PlainRoomCellLayoutConstants.readReceiptsViewTopMargin, PlainRoomCellLayoutConstants.readReceiptsViewWidth, PlainRoomCellLayoutConstants.readReceiptsViewHeight) andMediaManager:self.mxSession.mediaManager];
                             
                             // Custom avatar display
                             avatarsContainer.maxDisplayedAvatars = 5;
@@ -557,7 +558,7 @@ const CGFloat kTypingCellHeight = 24;
                         
                         if ([componentEventId isEqualToString:self.room.accountData.readMarkerEventId])
                         {
-                            bubbleCell.readMarkerView = [[UIView alloc] initWithFrame:CGRectMake(0, bottomPositionY - RoomBubbleCellLayout.readMarkerViewHeight, bubbleCell.bubbleOverlayContainer.frame.size.width, RoomBubbleCellLayout.readMarkerViewHeight)];
+                            bubbleCell.readMarkerView = [[UIView alloc] initWithFrame:CGRectMake(0, bottomPositionY - PlainRoomCellLayoutConstants.readMarkerViewHeight, bubbleCell.bubbleOverlayContainer.frame.size.width, PlainRoomCellLayoutConstants.readMarkerViewHeight)];
                             bubbleCell.readMarkerView.backgroundColor = ThemeService.shared.theme.tintColor;
                             // Hide by default the marker, it will be shown and animated when the cell will be rendered.
                             bubbleCell.readMarkerView.hidden = YES;
@@ -574,7 +575,7 @@ const CGFloat kTypingCellHeight = 24;
                                                                                                      toItem:bubbleCell.bubbleOverlayContainer
                                                                                                   attribute:NSLayoutAttributeTop
                                                                                                  multiplier:1.0
-                                                                                                   constant:bottomPositionY - RoomBubbleCellLayout.readMarkerViewHeight];
+                                                                                                   constant:bottomPositionY - PlainRoomCellLayoutConstants.readMarkerViewHeight];
                             bubbleCell.readMarkerViewLeadingConstraint = [NSLayoutConstraint constraintWithItem:bubbleCell.readMarkerView
                                                                                                       attribute:NSLayoutAttributeLeading
                                                                                                       relatedBy:NSLayoutRelationEqual
@@ -596,7 +597,7 @@ const CGFloat kTypingCellHeight = 24;
                                                                                                         toItem:nil
                                                                                                      attribute:NSLayoutAttributeNotAnAttribute
                                                                                                     multiplier:1.0
-                                                                                                      constant:RoomBubbleCellLayout.readMarkerViewHeight];
+                                                                                                      constant:PlainRoomCellLayoutConstants.readMarkerViewHeight];
                             
                             [NSLayoutConstraint activateConstraints:@[bubbleCell.readMarkerViewTopConstraint, bubbleCell.readMarkerViewLeadingConstraint, bubbleCell.readMarkerViewTrailingConstraint, bubbleCell.readMarkerViewHeightConstraint]];
                         }
