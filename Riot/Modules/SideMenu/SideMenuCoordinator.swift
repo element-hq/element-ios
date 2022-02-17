@@ -448,6 +448,7 @@ extension SideMenuCoordinator: SpaceMembersCoordinatorDelegate {
 extension SideMenuCoordinator: CreateRoomCoordinatorDelegate {
     func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didCreateNewRoom room: MXRoom) {
         coordinator.toPresentable().dismiss(animated: true) {
+            self.remove(childCoordinator: coordinator)
             self.createRoomCoordinator = nil
             self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
 
@@ -460,6 +461,7 @@ extension SideMenuCoordinator: CreateRoomCoordinatorDelegate {
     
     func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithIds roomIds: [String]) {
         coordinator.toPresentable().dismiss(animated: true) {
+            self.remove(childCoordinator: coordinator)
             self.createRoomCoordinator = nil
             self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
 
@@ -472,6 +474,7 @@ extension SideMenuCoordinator: CreateRoomCoordinatorDelegate {
 
     func createRoomCoordinatorDidCancel(_ coordinator: CreateRoomCoordinatorType) {
         coordinator.toPresentable().dismiss(animated: true) {
+            self.remove(childCoordinator: coordinator)
             self.createRoomCoordinator = nil
         }
     }
