@@ -4,7 +4,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -68,7 +67,7 @@
                             <subviews>
                                 <view clipsSubviews="YES" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="yXz-Za-4yR" customClass="MXKImageView">
                                     <rect key="frame" x="13" y="10" width="30" height="30"/>
-                                    <color key="backgroundColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <accessibility key="accessibilityConfiguration" identifier="PictureView"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="FbD-UB-dqc"/>
@@ -76,7 +75,7 @@
                                     </constraints>
                                 </view>
                             </subviews>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="yXz-Za-4yR" firstAttribute="leading" secondItem="1cK-e6-Mg5" secondAttribute="leading" constant="13" id="UjU-eY-ARJ"/>
                                 <constraint firstItem="yXz-Za-4yR" firstAttribute="top" secondItem="1cK-e6-Mg5" secondAttribute="top" constant="10" id="jlf-dg-fp0"/>
@@ -87,7 +86,7 @@
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ohU-Sc-mgb">
                                     <rect key="frame" x="46" y="4" width="534" height="30"/>
-                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="meG-P8-61b">
                                     <rect key="frame" x="56" y="10" width="524" height="18"/>
@@ -310,8 +309,5 @@
     </objects>
     <resources>
         <image name="encryption_warning" width="12" height="12"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>
