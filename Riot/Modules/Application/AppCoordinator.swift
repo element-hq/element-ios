@@ -322,15 +322,39 @@ fileprivate class AppNavigator: AppNavigatorProtocol {
         self.appCoordinator.navigate(to: destination)
     }
     
-    func addLoadingActivity() -> Activity {
-        let presenter = ActivityIndicatorToastPresenter(
-            text: VectorL10n.roomParticipantsSecurityLoading,
-            navigationController: appNavigationVC
-        )
-        let request = ActivityRequest(
-            presenter: presenter,
-            dismissal: .manual
-        )
+    func addAppActivity(_ type: AppActivityType) -> Activity {
+        let request = activityRequest(for: type)
         return ActivityCenter.shared.add(request)
+    }
+    
+    // MARK: - Private
+    
+    private func activityRequest(for type: AppActivityType) -> ActivityRequest {
+        switch type {
+        case let .loading(label):
+            let presenter = ToastActivityPresenter(
+                viewState: .init(
+                    style: .loading,
+                    label: label
+                ),
+                navigationController: appNavigationVC
+            )
+            return ActivityRequest(
+                presenter: presenter,
+                dismissal: .manual
+            )
+        case let .success(label):
+            let presenter = ToastActivityPresenter(
+                viewState: .init(
+                    style: .success,
+                    label: label
+                ),
+                navigationController: appNavigationVC
+            )
+            return ActivityRequest(
+                presenter: presenter,
+                dismissal: .timeout(1.5)
+            )
+        }
     }
 }

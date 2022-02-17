@@ -18,13 +18,33 @@ import Foundation
 import UIKit
 import DesignKit
 
-class ActivityIndicatorToastView: UIView, Themable {
+class RoundedToastView: UIView, Themable {
     private struct Constants {
         static let padding = UIEdgeInsets(top: 10, left: 12, bottom: 10, right: 12)
+        static let activityIndicatorScale = CGFloat(0.75)
+        static let imageViewSize = CGFloat(15)
         static let shadowOffset = CGSize(width: 0, height: 4)
         static let shadowRadius = CGFloat(12)
         static let shadowOpacity = Float(0.1)
     }
+    
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+        indicator.transform = .init(scaleX: Constants.activityIndicatorScale, y: Constants.activityIndicatorScale)
+        indicator.startAnimating()
+        return indicator
+    }()
+    
+    private lazy var imagView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            imageView.widthAnchor.constraint(equalToConstant: Constants.imageViewSize),
+            imageView.heightAnchor.constraint(equalToConstant: Constants.imageViewSize),
+        ])
+        return imageView
+    }()
     
     private let stackView: UIStackView = {
         let stack = UIStackView()
@@ -33,32 +53,25 @@ class ActivityIndicatorToastView: UIView, Themable {
         return stack
     }()
     
-    private let activityIndicator: UIActivityIndicatorView = {
-        let view = UIActivityIndicatorView()
-        view.transform = .init(scaleX: 0.75, y: 0.75)
-        view.startAnimating()
-        return view
-    }()
-    
     private let label: UILabel = {
         return UILabel()
     }()
 
-    init(text: String) {
+    init(viewState: ViewState) {
         super.init(frame: .zero)
-        setup(text: text)
+        setup(viewState: viewState)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setup(text: String) {
+    private func setup(viewState: ViewState) {
         setupLayer()
         setupStackView()
-        stackView.addArrangedSubview(activityIndicator)
+        stackView.addArrangedSubview(toastView(for: viewState.style))
         stackView.addArrangedSubview(label)
-        label.text = text
+        label.text = viewState.label
     }
     
     private func setupStackView() {
@@ -86,6 +99,29 @@ class ActivityIndicatorToastView: UIView, Themable {
     
     func update(theme: Theme) {
         backgroundColor = UIColor.white
+        stackView.arrangedSubviews.first?.tintColor = theme.colors.primaryContent
         label.font = theme.fonts.subheadline
+        label.textColor = theme.colors.primaryContent
+    }
+    
+    private func toastView(for style: Style) -> UIView {
+        switch style {
+        case .loading:
+            return activityIndicator
+        case .success:
+            imagView.image = Asset.Images.checkmark.image
+            return imagView
+        }
+    }
+}
+
+extension RoundedToastView {
+    enum Style {
+        case loading
+        case success
+    }
+    struct ViewState {
+        let style: Style
+        let label: String
     }
 }

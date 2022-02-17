@@ -1647,6 +1647,10 @@ public class VectorL10n: NSObject {
   public static func homeEmptyViewTitle(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "home_empty_view_title", p1, p2)
   }
+  /// Syncing
+  public static var homeSyncing: String { 
+    return VectorL10n.tr("Vector", "home_syncing") 
+  }
   /// Could not connect to the homeserver.
   public static var homeserverConnectionLost: String { 
     return VectorL10n.tr("Vector", "homeserver_connection_lost") 
@@ -3687,6 +3691,10 @@ public class VectorL10n: NSObject {
   public static var roomParticipantsInvitedSection: String { 
     return VectorL10n.tr("Vector", "room_participants_invited_section") 
   }
+  /// Leaving
+  public static var roomParticipantsLeaveProcessing: String { 
+    return VectorL10n.tr("Vector", "room_participants_leave_processing") 
+  }
   /// Are you sure you want to leave the room?
   public static var roomParticipantsLeavePromptMsg: String { 
     return VectorL10n.tr("Vector", "room_participants_leave_prompt_msg") 
@@ -3702,6 +3710,10 @@ public class VectorL10n: NSObject {
   /// Leave
   public static var roomParticipantsLeavePromptTitleForDm: String { 
     return VectorL10n.tr("Vector", "room_participants_leave_prompt_title_for_dm") 
+  }
+  /// Left room
+  public static var roomParticipantsLeaveSuccess: String { 
+    return VectorL10n.tr("Vector", "room_participants_leave_success") 
   }
   /// %d participants
   public static func roomParticipantsMultiParticipants(_ p1: Int) -> String {

@@ -27,21 +27,36 @@ import CommonKit
 /// written in objective-c.
 @objc final class AppActivityIndicatorPresenter: NSObject, ActivityIndicatorPresenterType {
     private let appNavigator: AppNavigatorProtocol
-    private var activity: Activity?
+    private var loadingActivity: Activity?
+    private var otherActivities = [Activity]()
     
     init(appNavigator: AppNavigatorProtocol) {
         self.appNavigator = appNavigator
     }
-
+    
     @objc func presentActivityIndicator() {
-        activity = appNavigator.addLoadingActivity()
+        presentActivityIndicator(label: VectorL10n.homeSyncing)
+    }
+
+    @objc func presentActivityIndicator(label: String) {
+        guard loadingActivity == nil || loadingActivity?.state == .completed else {
+            // The app is very liberal with calling `presentActivityIndicator` (often not matched by corresponding `removeCurrentActivityIndicator`),
+            // so there is no reason to keep adding new activity indiciators if there is one already showing.
+            return
+        }
+
+        loadingActivity = appNavigator.addAppActivity(.loading(label))
     }
     
     @objc func removeCurrentActivityIndicator(animated: Bool, completion: (() -> Void)?) {
-        activity = nil
+        loadingActivity = nil
     }
     
     func presentActivityIndicator(on view: UIView, animated: Bool, completion: (() -> Void)?) {
         MXLog.error("[AppActivityIndicatorPresenter] Shared activity indicator does not support presenting from custom views")
+    }
+    
+    @objc func presentSuccess(label: String) {
+        appNavigator.addAppActivity(.success(label)).store(in: &otherActivities)
     }
 }

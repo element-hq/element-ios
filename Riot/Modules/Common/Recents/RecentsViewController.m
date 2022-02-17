@@ -1280,8 +1280,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                  MXRoom *room = [self.mainSession roomWithRoomId:currentRoomId];
                                                                  if (room)
                                                                  {
-                                                                     [self startActivityIndicator];
-                                                                     
+                                                                     [self startActivityIndicatorWithLabel:[VectorL10n roomParticipantsLeaveProcessing]];
                                                                      // cancel pending uploads/downloads
                                                                      // they are useless by now
                                                                      [MXMediaManager cancelDownloadsInCacheFolder:room.roomId];
@@ -1296,6 +1295,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                          {
                                                                              typeof(self) self = weakSelf;
                                                                              [self stopActivityIndicator];
+                                                                             [self.activityPresenter presentSuccessWithLabel:[VectorL10n roomParticipantsLeaveSuccess]];
                                                                              // Force table refresh
                                                                              [self cancelEditionMode:YES];
                                                                          }
@@ -2411,6 +2411,14 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (BOOL)providesCustomActivityIndicator {
     return self.activityPresenter != nil;
+}
+
+- (void)startActivityIndicatorWithLabel:(NSString *)label {
+    if (self.activityPresenter) {
+        [self.activityPresenter presentActivityIndicatorWithLabel:label];
+    } else {
+        [super startActivityIndicator];
+    }
 }
 
 - (void)startActivityIndicator {

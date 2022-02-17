@@ -17,6 +17,8 @@
  */
 
 import UIKit
+import CommonKit
+import MatrixSDK
 
 final class RoomInfoListViewController: UIViewController {
     
@@ -38,7 +40,7 @@ final class RoomInfoListViewController: UIViewController {
     private var viewModel: RoomInfoListViewModelType!
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
-    private var activityPresenter: ActivityIndicatorPresenter!
+    private var activityPresenter: ActivityIndicatorPresenterType!
     private var isRoomDirect: Bool = false
     private var screenTimer = AnalyticsScreenTimer(screen: .roomDetails)
     
@@ -114,7 +116,14 @@ final class RoomInfoListViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.setupViews()
-        self.activityPresenter = ActivityIndicatorPresenter()
+        if BuildSettings.appActivityIndicators {
+            self.activityPresenter = FullscreenActivityIndicatorPresenter(
+                label: VectorL10n.roomParticipantsLeaveProcessing,
+                on: self
+            )
+        } else {
+            self.activityPresenter = ActivityIndicatorPresenter()
+        }
         self.errorPresenter = MXKErrorAlertPresentation()
         
         self.registerThemeServiceDidChangeThemeNotification()
@@ -143,6 +152,7 @@ final class RoomInfoListViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         screenTimer.stop()
+        activityPresenter.removeCurrentActivityIndicator(animated: animated)
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

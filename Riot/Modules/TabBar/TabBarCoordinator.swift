@@ -17,6 +17,7 @@
  */
 
 import UIKit
+import CommonKit
 
 @objcMembers
 final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
@@ -53,6 +54,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         return self.navigationRouter.modules.last is MasterTabBarController
     }
     
+    private var activities = [Activity]()
+    
     // MARK: Public
 
     // Must be used only internally
@@ -71,6 +74,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.navigationRouter = NavigationRouter(navigationController: masterNavigationController)
         self.masterNavigationController = masterNavigationController
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
+    }
+    
+    deinit {
+        activities.cancelAll()
     }
     
     // MARK: - Public methods
@@ -702,6 +709,11 @@ extension TabBarCoordinator: RoomCoordinatorDelegate {
     func roomCoordinatorDidLeaveRoom(_ coordinator: RoomCoordinatorProtocol) {
         // For the moment when a room is left, reset the split detail with placeholder
         self.resetSplitViewDetails()
+        if BuildSettings.appActivityIndicators {
+            parameters.appNavigator
+                .addAppActivity(.success(VectorL10n.roomParticipantsLeaveSuccess))
+                .store(in: &activities)
+        }
     }
     
     func roomCoordinatorDidCancelRoomPreview(_ coordinator: RoomCoordinatorProtocol) {

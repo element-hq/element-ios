@@ -26,7 +26,7 @@ import UIKit
 /// A client that requests an activity can specify a default timeout after which the activity is dismissed, or it has to be manually
 /// responsible for dismissing it via `cancel` method, or by deallocating itself.
 public class Activity {
-    enum State {
+    public enum State {
         case pending
         case executing
         case completed
@@ -35,7 +35,7 @@ public class Activity {
     private let request: ActivityRequest
     private let completion: () -> Void
 
-    private(set) var state: State
+    public private(set) var state: State
     
     public init(request: ActivityRequest, completion: @escaping () -> Void) {
         self.request = request
@@ -45,7 +45,7 @@ public class Activity {
     }
     
     deinit {
-        cancel()
+        complete()
     }
     
     internal func start() {
@@ -70,7 +70,7 @@ public class Activity {
     ///
     /// Note: clients can call this method directly, if they have access to the `Activity`.
     /// Once cancelled, `ActivityCenter` will automatically start the next `Activity` in the queue.
-    func cancel() {
+    public func cancel() {
         complete()
     }
     
@@ -90,5 +90,13 @@ public class Activity {
 public extension Activity {
     func store<C>(in collection: inout C) where C: RangeReplaceableCollection, C.Element == Activity {
         collection.append(self)
+    }
+}
+
+public extension Collection where Element == Activity {
+    func cancelAll() {
+        forEach {
+            $0.cancel()
+        }
     }
 }

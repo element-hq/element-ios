@@ -17,7 +17,7 @@
 import Foundation
 import UIKit
 
-class BasicToastView: UIView, Themable {
+class RectangleToastView: UIView, Themable {
     
     private enum Constants {
         static let padding: UIEdgeInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)

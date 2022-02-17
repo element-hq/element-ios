@@ -17,16 +17,17 @@
 import Foundation
 import UIKit
 import CommonKit
+import MatrixSDK
 
-/// An `ActivityPresenter` responsible for showing / hiding a toast view for activity indicators, and managed by an `Activity`,
-/// meaning the `present` and `dismiss` methods will be called when the parent `Activity` starts or completes.
-class ActivityIndicatorToastPresenter: ActivityPresentable {
-    private let text: String
+/// An `ActivityPresenter` responsible for showing / hiding a toast view for activity indicators or success messages.
+/// It is managed by an `Activity`, meaning the `present` and `dismiss` methods will be called when the parent `Activity` starts or completes.
+class ToastActivityPresenter: ActivityPresentable {
+    private let viewState: RoundedToastView.ViewState
     private weak var navigationController: UINavigationController?
     private weak var view: UIView?
     
-    init(text: String, navigationController: UINavigationController) {
-        self.text = text
+    init(viewState: RoundedToastView.ViewState, navigationController: UINavigationController) {
+        self.viewState = viewState
         self.navigationController = navigationController
     }
 
@@ -35,7 +36,7 @@ class ActivityIndicatorToastPresenter: ActivityPresentable {
             return
         }
         
-        let view = ActivityIndicatorToastView(text: text)
+        let view = RoundedToastView(viewState: viewState)
         view.update(theme: ThemeService.shared().theme)
         self.view = view
         
@@ -47,7 +48,9 @@ class ActivityIndicatorToastPresenter: ActivityPresentable {
         ])
         
         view.alpha = 0
+        CATransaction.flush()
         view.transform = .init(translationX: 0, y: 5)
+        
         UIView.animate(withDuration: 0.2) {
             view.alpha = 1
             view.transform = .identity
@@ -59,18 +62,11 @@ class ActivityIndicatorToastPresenter: ActivityPresentable {
             return
         }
         
-        // If `present` and `dismiss` are called right after each other without delay,
-        // the view does not correctly pick up `currentState` of alpha. Dispatching onto
-        // the main queue skips a few run loops, giving the system time to render
-        // current state.
-        DispatchQueue.main.async {
-            UIView.animate(withDuration: 0.2, delay: 0, options: .beginFromCurrentState) {
-                view.alpha = 0
-                view.transform = .init(translationX: 0, y: -5)
-            } completion: { _ in
-                view.removeFromSuperview()
-                self.view = nil
-            }
+        UIView.animate(withDuration: 0.2, delay: 0, options: .beginFromCurrentState) {
+            view.alpha = 0
+            view.transform = .init(translationX: 0, y: -5)
+        } completion: { _ in
+            view.removeFromSuperview()
         }
     }
 }
