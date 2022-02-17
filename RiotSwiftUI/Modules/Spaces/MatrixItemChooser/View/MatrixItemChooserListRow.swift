@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,7 @@
 import SwiftUI
 
 @available(iOS 14.0, *)
-struct SpaceCreationMatrixItemChooserListRow: View {
+struct MatrixItemChooserListRow: View {
 
     // MARK: - Properties
     
@@ -65,7 +65,7 @@ struct SpaceCreationMatrixItemChooserListRow: View {
 // MARK: - Previews
 
 @available(iOS 14.0, *)
-struct SpaceCreationMatrixItemChooserListRow_Previews: PreviewProvider {
+struct MatrixItemChooserListRow_Previews: PreviewProvider {
     static var previews: some View {
         TemplateRoomListRow(avatar: MockAvatarInput.example, displayName: "Alice")
             .addDependency(MockAvatarService.example)

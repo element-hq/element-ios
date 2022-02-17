@@ -1,5 +1,3 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh Spaces/SpaceCreation/SpaceCreationMatrixItemChooser SpaceCreationMatrixItemChooser
 // 
 // Copyright 2021 New Vector Ltd
 //
@@ -18,11 +16,11 @@
 
 import Foundation
 
-protocol SpaceCreationMatrixItemChooserViewModelProtocol {
+protocol MatrixItemChooserViewModelProtocol {
     
-    var callback: ((SpaceCreationMatrixItemListStateActionListViewModelAction) -> Void)? { get set }
+    var completion: ((MatrixItemChooserViewModelResult) -> Void)? { get set }
     @available(iOS 14, *)
-    static func makeSpaceCreationMatrixItemChooserViewModel(spaceCreationMatrixItemChooserService: SpaceCreationMatrixItemChooserServiceProtocol, creationParams: SpaceCreationParameters) -> SpaceCreationMatrixItemChooserViewModelProtocol
+    static func makeMatrixItemChooserViewModel(matrixItemChooserService: MatrixItemChooserServiceProtocol, title: String?, detail: String?) -> MatrixItemChooserViewModelProtocol
     @available(iOS 14, *)
-    var context: SpaceCreationMatrixItemChooserViewModelType.Context { get }
+    var context: MatrixItemChooserViewModelType.Context { get }
 }

@@ -1,5 +1,3 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh Spaces/SpaceCreation/SpaceCreationMatrixItemChooser SpaceCreationMatrixItemChooser
 // 
 // Copyright 2021 New Vector Ltd
 //
@@ -22,7 +20,7 @@ import SwiftUI
 /// Using an enum for the screen allows you define the different state cases with
 /// the relevant associated data for each case.
 @available(iOS 14.0, *)
-enum MockSpaceCreationMatrixItemChooserScreenState: MockScreenState, CaseIterable {
+enum MockMatrixItemChooserScreenState: MockScreenState, CaseIterable {
     // A case for each state you want to represent
     // with specific, minimal associated data that will allow you
     // mock that screen.
@@ -32,27 +30,27 @@ enum MockSpaceCreationMatrixItemChooserScreenState: MockScreenState, CaseIterabl
     
     /// The associated screen
     var screenType: Any.Type {
-        SpaceCreationMatrixItem.self
+        MatrixItemChooserType.self
     }
     
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView) {
-        let service: MockSpaceCreationMatrixItemChooserService
+        let service: MockMatrixItemChooserService
         switch self {
         case .noItems:
-            service = MockSpaceCreationMatrixItemChooserService(type: .room, items: [])
+            service = MockMatrixItemChooserService(type: .room, items: [])
         case .items:
-            service = MockSpaceCreationMatrixItemChooserService()
+            service = MockMatrixItemChooserService()
         case .selectedItems:
-            service = MockSpaceCreationMatrixItemChooserService(type: .room, items: MockSpaceCreationMatrixItemChooserService.mockItems, selectedItemIndexes: [0, 2])
+            service = MockMatrixItemChooserService(type: .room, items: MockMatrixItemChooserService.mockItems, selectedItemIndexes: [0, 2])
         }
-        let viewModel = SpaceCreationMatrixItemChooserViewModel.makeSpaceCreationMatrixItemChooserViewModel(spaceCreationMatrixItemChooserService: service, creationParams: SpaceCreationParameters())
+        let viewModel = MatrixItemChooserViewModel.makeMatrixItemChooserViewModel(matrixItemChooserService: service, title: "Some title", detail: "Detail text describing the current screen")
         
         // can simulate service and viewModel actions here if needs be.
         
         return (
             [service, viewModel],
-            AnyView(SpaceCreationMatrixItemChooser(viewModel: viewModel.context)
+            AnyView(MatrixItemChooser(viewModel: viewModel.context)
                 .addDependency(MockAvatarService.example))
         )
     }

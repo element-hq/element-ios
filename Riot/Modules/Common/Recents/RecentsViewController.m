@@ -1989,7 +1989,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     // Sanity check
     if (self.mainSession)
     {
-        self.createRoomCoordinatorBridgePresenter = [[CreateRoomCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+        CreateRoomCoordinatorParameter *parameters = [[CreateRoomCoordinatorParameter alloc] initWithSession:self.mainSession parentSpace: self.dataSource.currentSpace];
+        self.createRoomCoordinatorBridgePresenter = [[CreateRoomCoordinatorBridgePresenter alloc] initWithParameters:parameters];
         self.createRoomCoordinatorBridgePresenter.delegate = self;
         [self.createRoomCoordinatorBridgePresenter presentFrom:self animated:YES];
     }
@@ -2192,6 +2193,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 }
 
 - (void)createRoomCoordinatorBridgePresenterDelegateDidCancel:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    coordinatorBridgePresenter = nil;
+}
+
+- (void)createRoomCoordinatorBridgePresenterDelegate:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter didAddRoomsWithIds:(NSArray<NSString *> *)roomIds
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     coordinatorBridgePresenter = nil;

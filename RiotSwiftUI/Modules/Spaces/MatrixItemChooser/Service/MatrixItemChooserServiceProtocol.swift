@@ -15,12 +15,16 @@
 //
 
 import Foundation
+import Combine
 
-/// Actions send from the `View` to the `ViewModel`.
-enum SpaceCreationMatrixItemListStateActionListViewAction {
-    case searchTextChanged(String)
-    case itemTapped(_ itemId: String)
-    case done
-    case cancel
-    case back
+@available(iOS 14.0, *)
+protocol MatrixItemChooserServiceProtocol {
+    var type: MatrixItemChooserType { get }
+    var itemsSubject: CurrentValueSubject<[MatrixListItemData], Never> { get }
+    var selectedItemIdsSubject: CurrentValueSubject<Set<String>, Never> { get }
+    var searchText: String { get set }
+
+    func reverseSelectionForItem(withId itemId: String)
+    func processSelection(completion: @escaping (Result<Void, Error>) -> Void)
+    func refresh()
 }

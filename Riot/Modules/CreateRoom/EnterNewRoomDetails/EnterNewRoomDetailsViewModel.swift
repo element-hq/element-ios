@@ -25,6 +25,7 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
     // MARK: Private
 
     private let session: MXSession
+    private let parentSpace: MXSpace?
     private var currentOperation: MXHTTPOperation?
     
     private var mediaUploader: MXMediaLoader?
@@ -41,12 +42,17 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
         }
     }
     
+    var actionType: EnterNewRoomActionType {
+        parentSpace != nil ? .createAndAddToSpace : .createOnly
+    }
+    
     // MARK: - Setup
     
-    init(session: MXSession) {
+    init(session: MXSession, parentSpace: MXSpace?) {
         self.session = session
+        self.parentSpace = parentSpace
         roomCreationParameters.isEncrypted = session.vc_homeserverConfiguration().isE2EEByDefaultEnabled &&  RiotSettings.shared.roomCreationScreenRoomIsEncrypted
-        roomCreationParameters.isPublic = RiotSettings.shared.roomCreationScreenRoomIsPublic
+        roomCreationParameters.joinRule = RiotSettings.shared.roomCreationScreenRoomIsPublic ? .public : .private
         viewState = .loaded
     }
     
@@ -98,33 +104,37 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
     }
     
     private func createRoom() {
-        //  compose room creation parameters in Matrix level
-        let parameters = MXRoomCreationParameters()
-        parameters.name = roomCreationParameters.name
-        parameters.topic = roomCreationParameters.topic
-        parameters.roomAlias = fixRoomAlias(alias: roomCreationParameters.address)
-        
-        if roomCreationParameters.isPublic {
-            parameters.preset = kMXRoomPresetPublicChat
-            if roomCreationParameters.showInDirectory {
-                parameters.visibility = kMXRoomDirectoryVisibilityPublic
-            } else {
-                parameters.visibility = kMXRoomDirectoryVisibilityPrivate
-            }
-        } else {
-            parameters.preset = kMXRoomPresetPrivateChat
-            parameters.visibility = kMXRoomDirectoryVisibilityPrivate
+        guard let roomName = roomCreationParameters.name else {
+            fatalError("[EnterNewRoomDetailsViewModel] createRoom: room name cannot be nil.")
         }
         
-        if roomCreationParameters.isEncrypted {
-            parameters.initialStateEvents = [MXRoomCreationParameters.initialStateEventForEncryption(withAlgorithm: kMXCryptoMegolmAlgorithm)]
-        }
-        
-        viewState = .loading
-        
-        currentOperation = session.createRoom(parameters: parameters) { (response) in
+        currentOperation = session.createRoom(
+            withName: roomName,
+            joinRule: roomCreationParameters.joinRule,
+            topic: roomCreationParameters.topic,
+            parentRoomId: parentSpace?.spaceId,
+            aliasLocalPart: fixRoomAlias(alias: roomCreationParameters.address),
+            isEncrypted: roomCreationParameters.isEncrypted,
+            completion: { response in
+              switch response {
+              case .success(let room):
+                  if let parentSpace = self.parentSpace {
+                      self.add(room, to: parentSpace)
+                  } else {
+                      self.uploadAvatarIfRequired(ofRoom: room)
+                      self.currentOperation = nil
+                  }
+              case .failure(let error):
+                  self.viewState = .error(error)
+                  self.currentOperation = nil
+              }
+          })
+    }
+    
+    private func add(_ room: MXRoom, to space: MXSpace) {
+        currentOperation = space.addChild(roomId: room.roomId, suggested: roomCreationParameters.isRoomSuggested) { response in
             switch response {
-            case .success(let room):
+            case .success:
                 self.uploadAvatarIfRequired(ofRoom: room)
                 self.currentOperation = nil
             case .failure(let error):

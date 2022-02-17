@@ -65,6 +65,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     private var exploreRoomCoordinator: ExploreRoomCoordinator?
     private var membersCoordinator: SpaceMembersCoordinator?
     private var createSpaceCoordinator: SpaceCreationCoordinator?
+    private var createRoomCoordinator: CreateRoomCoordinator?
 
     // MARK: Public
 
@@ -288,6 +289,18 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         self.createSpaceCoordinator = coordinator
     }
     
+    private func showAddRoom(spaceId: String, session: MXSession) {
+        let space = session.spaceService.getSpace(withId: spaceId)
+        let createRoomCoordinator = CreateRoomCoordinator(parameters: CreateRoomCoordinatorParameter(session: session, parentSpace: space))
+        createRoomCoordinator.delegate = self
+        let presentable = createRoomCoordinator.toPresentable()
+        presentable.presentationController?.delegate = self
+        toPresentable().present(presentable, animated: true, completion: nil)
+        createRoomCoordinator.start()
+        self.add(childCoordinator: createRoomCoordinator)
+        self.createRoomCoordinator = createRoomCoordinator
+    }
+    
     // MARK: UserSessions management
     
     private func registerUserSessionsServiceNotifications() {
@@ -380,7 +393,15 @@ extension SideMenuCoordinator: SpaceMenuPresenterDelegate {
             case .exploreMembers:
                 self.showMembers(spaceId: spaceId, session: session)
             case .addRoom:
-                AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.spacesAddRoom, message: VectorL10n.spacesComingSoonDetail(AppInfo.current.displayName))
+                session.spaceService.getSpace(withId: spaceId)?.canAddRoom { canAddRoom in
+                    if canAddRoom {
+                        self.showAddRoom(spaceId: spaceId, session: session)
+                    } else {
+                        let alert = UIAlertController(title: VectorL10n.spacesAddRoom, message: VectorL10n.spacesAddRoomMissingPermissionMessage, preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: VectorL10n.ok, style: .default, handler: nil))
+                        self.toPresentable().present(alert, animated: true, completion: nil)
+                    }
+                }
             case .addSpace:
                 AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.spacesAddSpace, message: VectorL10n.spacesComingSoonDetail(AppInfo.current.displayName))
             case .settings:
@@ -423,6 +444,42 @@ extension SideMenuCoordinator: SpaceMembersCoordinatorDelegate {
     }
 }
 
+// MARK: - CreateRoomCoordinatorDelegate
+extension SideMenuCoordinator: CreateRoomCoordinatorDelegate {
+    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didCreateNewRoom room: MXRoom) {
+        coordinator.toPresentable().dismiss(animated: true) {
+            self.remove(childCoordinator: coordinator)
+            self.createRoomCoordinator = nil
+            self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
+
+            }
+            if let spaceId = coordinator.parentSpace?.spaceId {
+                self.parameters.appNavigator.navigate(to: .space(spaceId))
+            }
+        }
+    }
+    
+    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithIds roomIds: [String]) {
+        coordinator.toPresentable().dismiss(animated: true) {
+            self.remove(childCoordinator: coordinator)
+            self.createRoomCoordinator = nil
+            self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
+
+            }
+            if let spaceId = coordinator.parentSpace?.spaceId {
+                self.parameters.appNavigator.navigate(to: .space(spaceId))
+            }
+        }
+    }
+
+    func createRoomCoordinatorDidCancel(_ coordinator: CreateRoomCoordinatorType) {
+        coordinator.toPresentable().dismiss(animated: true) {
+            self.remove(childCoordinator: coordinator)
+            self.createRoomCoordinator = nil
+        }
+    }
+}
+
 // MARK: - UIAdaptivePresentationControllerDelegate
 extension SideMenuCoordinator: UIAdaptivePresentationControllerDelegate {
     
@@ -430,5 +487,6 @@ extension SideMenuCoordinator: UIAdaptivePresentationControllerDelegate {
         self.exploreRoomCoordinator = nil
         self.membersCoordinator = nil
         self.createSpaceCoordinator = nil
+        self.createRoomCoordinator = nil
     }
 }

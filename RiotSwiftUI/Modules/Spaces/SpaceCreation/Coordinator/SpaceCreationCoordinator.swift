@@ -204,11 +204,18 @@ final class SpaceCreationCoordinator: Coordinator {
         }
         return coordinator
     }
-    
+
     @available(iOS 14.0, *)
-    private func createPeopleChooserCoordinator() -> SpaceCreationMatrixItemChooserCoordinator {
-        let coordinator = SpaceCreationMatrixItemChooserCoordinator(parameters: SpaceCreationMatrixItemChooserCoordinatorParameters(session: parameters.session, type: .people, creationParams: parameters.creationParameters))
-        coordinator.callback = { [weak self] result in
+    private func createPeopleChooserCoordinator() -> MatrixItemChooserCoordinator {
+        let parameters = MatrixItemChooserCoordinatorParameters(
+            session: parameters.session,
+            title: VectorL10n.spacesCreationInviteByUsernameTitle,
+            detail: VectorL10n.spacesCreationInviteByUsernameMessage,
+            selectedItemsIds: parameters.creationParameters.userIdInvites,
+            viewProvider: SpaceCreationMatrixItemChooserViewProvider(),
+            itemsProcessor: SpaceCreationInviteUsersItemsProcessor(creationParams: parameters.creationParameters))
+        let coordinator = MatrixItemChooserCoordinator(parameters: parameters)
+        coordinator.completion = { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .cancel:
@@ -223,9 +230,16 @@ final class SpaceCreationCoordinator: Coordinator {
     }
 
     @available(iOS 14.0, *)
-    private func createRoomChooserCoordinator() -> SpaceCreationMatrixItemChooserCoordinator {
-        let coordinator = SpaceCreationMatrixItemChooserCoordinator(parameters: SpaceCreationMatrixItemChooserCoordinatorParameters(session: parameters.session, type: .room, creationParams: parameters.creationParameters))
-        coordinator.callback = { [weak self] result in
+    private func createRoomChooserCoordinator() -> MatrixItemChooserCoordinator {
+        let parameters = MatrixItemChooserCoordinatorParameters(
+            session: parameters.session,
+            title: VectorL10n.spacesCreationAddRoomsTitle,
+            detail: VectorL10n.spacesCreationAddRoomsMessage,
+            selectedItemsIds: parameters.creationParameters.addedRoomIds ?? [],
+            viewProvider: SpaceCreationMatrixItemChooserViewProvider(),
+            itemsProcessor: SpaceCreationAddRoomsItemsProcessor(creationParams: parameters.creationParameters))
+        let coordinator = MatrixItemChooserCoordinator(parameters: parameters)
+        coordinator.completion = { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .cancel:

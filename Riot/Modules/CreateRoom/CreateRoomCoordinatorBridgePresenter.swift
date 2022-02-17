@@ -20,6 +20,7 @@ import Foundation
 
 @objc protocol CreateRoomCoordinatorBridgePresenterDelegate {
     func createRoomCoordinatorBridgePresenterDelegate(_ coordinatorBridgePresenter: CreateRoomCoordinatorBridgePresenter, didCreateNewRoom room: MXRoom)
+    func createRoomCoordinatorBridgePresenterDelegate(_ coordinatorBridgePresenter: CreateRoomCoordinatorBridgePresenter, didAddRoomsWithIds roomIds: [String])
     func createRoomCoordinatorBridgePresenterDelegateDidCancel(_ coordinatorBridgePresenter: CreateRoomCoordinatorBridgePresenter)
 }
 
@@ -32,7 +33,7 @@ final class CreateRoomCoordinatorBridgePresenter: NSObject {
     
     // MARK: Private
     
-    private let session: MXSession
+    private let parameters: CreateRoomCoordinatorParameter
     private var coordinator: CreateRoomCoordinator?
     
     // MARK: Public
@@ -41,8 +42,8 @@ final class CreateRoomCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Setup
     
-    init(session: MXSession) {
-        self.session = session
+    init(parameters: CreateRoomCoordinatorParameter) {
+        self.parameters = parameters
         super.init()
     }
     
@@ -54,7 +55,7 @@ final class CreateRoomCoordinatorBridgePresenter: NSObject {
     // }
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let createRoomCoordinator = CreateRoomCoordinator(session: self.session)
+        let createRoomCoordinator = CreateRoomCoordinator(parameters: self.parameters)
         createRoomCoordinator.delegate = self
         let presentable = createRoomCoordinator.toPresentable()
         presentable.presentationController?.delegate = self
@@ -86,6 +87,10 @@ extension CreateRoomCoordinatorBridgePresenter: CreateRoomCoordinatorDelegate {
         self.delegate?.createRoomCoordinatorBridgePresenterDelegate(self, didCreateNewRoom: room)
     }
     
+    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithIds roomIds: [String]) {
+        self.delegate?.createRoomCoordinatorBridgePresenterDelegate(self, didAddRoomsWithIds: roomIds)
+    }
+
     func createRoomCoordinatorDidCancel(_ coordinator: CreateRoomCoordinatorType) {
         self.delegate?.createRoomCoordinatorBridgePresenterDelegateDidCancel(self)
     }

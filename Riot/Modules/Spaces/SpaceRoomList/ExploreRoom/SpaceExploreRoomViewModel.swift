@@ -17,6 +17,7 @@
  */
 
 import Foundation
+import MatrixSDK
 
 final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
     
@@ -32,6 +33,11 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
     private var nextBatch: String?
     private var rootSpaceChildInfo: MXSpaceChildInfo?
     
+    private var canJoin: Bool = false {
+        didSet {
+            self.update(viewState: .canJoin(self.canJoin))
+        }
+    }
     private var itemDataList: [SpaceExploreRoomListItemViewData] = [] {
         didSet {
             self.updateFilteredItemList()
@@ -51,22 +57,29 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
                     self.update(viewState: .emptyFilterResult)
                 }
             } else {
-                self.update(viewState: .loaded(self.filteredItemDataList, self.nextBatch != nil && (self.searchKeyword ?? "").isEmpty))
+                self.update(viewState: .loaded(self.filteredItemDataList, self.hasMore))
             }
         }
     }
+    private var hasMore: Bool {
+        self.nextBatch != nil && (self.searchKeyword ?? "").isEmpty
+    }
+    
+    private var spaceGraphObserver: Any?
     
     // MARK: Public
 
     weak var viewDelegate: SpaceExploreRoomViewModelViewDelegate?
     weak var coordinatorDelegate: SpaceExploreRoomViewModelCoordinatorDelegate?
-    
+    private(set) var showCancelMenuItem: Bool
+
     // MARK: - Setup
     
     init(parameters: SpaceExploreRoomCoordinatorParameters) {
         self.session = parameters.session
         self.spaceId = parameters.spaceId
         self.spaceName = parameters.spaceName
+        self.showCancelMenuItem = parameters.showCancelMenuItem
     }
     
     deinit {
@@ -79,6 +92,9 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
         switch viewAction {
         case .loadData:
             self.loadData()
+        case .reloadData:
+            self.nextBatch = nil
+            self.loadData()
         case .complete(let selectedItem, let sourceView):
             self.coordinatorDelegate?.spaceExploreRoomViewModel(self, didSelect: selectedItem, from: sourceView)
         case .cancel:
@@ -86,6 +102,10 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
             self.coordinatorDelegate?.spaceExploreRoomViewModelDidCancel(self)
         case .searchChanged(let newText):
             self.searchKeyword = newText
+        case .addRoom:
+            self.coordinatorDelegate?.spaceExploreRoomViewModelDidAddRoom(self)
+        case .join:
+            self.joinSpace()
         }
     }
     
@@ -104,6 +124,8 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
             self.update(viewState: .loading)
         }
         
+        self.canJoin = self.session.room(withRoomId: spaceId) == nil
+        
         self.currentOperation = self.session.spaceService.getSpaceChildrenForSpace(withId: self.spaceId, suggestedOnly: false, limit: nil, maxDepth: 1, paginationToken: self.nextBatch, completion: { [weak self] response in
             guard let self = self else {
                 return
@@ -111,7 +133,9 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
             
             switch response {
             case .success(let spaceSummary):
+                let appendData = self.nextBatch != nil
                 self.nextBatch = spaceSummary.nextBatch
+                
                 // The MXSpaceChildInfo of the root space is available only in the first batch
                 if let rootSpaceInfo = spaceSummary.spaceInfo {
                     self.rootSpaceChildInfo = rootSpaceInfo
@@ -131,7 +155,12 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
                 }).sorted(by: { item1, item2 in
                     return !item2.childInfo.suggested || item1.childInfo.suggested
                 })
-                self.itemDataList.append(contentsOf: batchedItemDataList)
+                
+                if appendData {
+                    self.itemDataList.append(contentsOf: batchedItemDataList)
+                } else {
+                    self.itemDataList = batchedItemDataList
+                }
             case .failure(let error):
                 self.update(viewState: .error(error))
             }
@@ -146,6 +175,9 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
     
     private func cancelOperations() {
         self.currentOperation?.cancel()
+        if let observer = self.spaceGraphObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
     
     private func updateFilteredItemList() {
@@ -157,5 +189,27 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
         self.filteredItemDataList = self.itemDataList.filter({ itemData in
             return (itemData.childInfo.name?.lowercased().contains(searchKeyword) ?? false) || (itemData.childInfo.topic?.lowercased().contains(searchKeyword) ?? false)
         })
+    }
+    
+    private func joinSpace() {
+        self.update(viewState: .loading)
+        
+        self.currentOperation = session.joinRoom(spaceId) { [weak self] response in
+            switch response {
+            case .success:
+                self?.spaceGraphObserver = NotificationCenter.default.addObserver(forName: MXSpaceService.didBuildSpaceGraph, object: nil, queue: OperationQueue.main, using: { [weak self] notification in
+                    guard let self = self else { return }
+                    
+                    self.currentOperation = nil
+                    if let observer = self.spaceGraphObserver {
+                        NotificationCenter.default.removeObserver(observer)
+                    }
+                    self.canJoin = false
+                    self.update(viewState: .loaded(self.filteredItemDataList, self.hasMore))
+                })
+            case .failure(let error):
+                self?.update(viewState: .error(error))
+            }
+        }
     }
 }

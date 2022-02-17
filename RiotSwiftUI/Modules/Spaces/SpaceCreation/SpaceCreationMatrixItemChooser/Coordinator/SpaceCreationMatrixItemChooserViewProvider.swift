@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +14,11 @@
 // limitations under the License.
 //
 
-import Foundation
+import SwiftUI
 
-/// Actions sent by the`ViewModel` to the `Coordinator`.
-enum SpaceCreationMatrixItemListStateActionListViewModelAction {
-    case done
-    case cancel
-    case back
+class SpaceCreationMatrixItemChooserViewProvider: MatrixItemChooserCoordinatorViewProvider {
+    @available(iOS 14, *)
+    func view(with viewModel: MatrixItemChooserViewModelType.Context) -> AnyView {
+        return AnyView(SpaceCreationMatrixItemChooser(viewModel: viewModel))
+    }
 }

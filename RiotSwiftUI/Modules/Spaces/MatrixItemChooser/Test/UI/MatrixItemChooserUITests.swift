@@ -1,5 +1,3 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh Spaces/SpaceCreation/SpaceCreationMatrixItemChooser SpaceCreationMatrixItemChooser
 //
 // Copyright 2021 New Vector Ltd
 //
@@ -20,18 +18,18 @@ import XCTest
 import RiotSwiftUI
 
 @available(iOS 14.0, *)
-class SpaceCreationMatrixItemChooserUITests: MockScreenTest {
+class MatrixItemChooserUITests: MockScreenTest {
 
     override class var screenType: MockScreenState.Type {
-        return MockSpaceCreationMatrixItemChooserScreenState.self
+        return MockMatrixItemChooserScreenState.self
     }
 
     override class func createTest() -> MockScreenTest {
-        return SpaceCreationMatrixItemChooserUITests(selector: #selector(verifySpaceCreationMatrixItemChooserScreen))
+        return MatrixItemChooserUITests(selector: #selector(verifyMatrixItemChooserScreen))
     }
 
-    func verifySpaceCreationMatrixItemChooserScreen() throws {
-        guard let screenState = screenState as? MockSpaceCreationMatrixItemChooserScreenState else { fatalError("no screen") }
+    func verifyMatrixItemChooserScreen() throws {
+        guard let screenState = screenState as? MockMatrixItemChooserScreenState else { fatalError("no screen") }
         switch screenState {
         case .noItems:
             verifyEmptyScreen()
