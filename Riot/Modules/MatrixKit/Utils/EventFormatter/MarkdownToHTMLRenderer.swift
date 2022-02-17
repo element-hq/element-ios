@@ -38,6 +38,9 @@ extension MarkdownToHTMLRenderer: MarkdownToHTMLRendererProtocol {
     public func renderToHTML(markdown: String) -> String? {
         do {
             let ast = try DownASTRenderer.stringToAST(markdown, options: options)
+            defer {
+                cmark_node_free(ast)
+            }
             ast.repairLinks()
             return try DownHTMLRenderer.astToHTML(ast, options: options)
         } catch {
@@ -81,6 +84,7 @@ private extension CMarkNode {
         var text = ""
         var isInParagraph = false
         var previousNode: CMarkNode?
+        var orphanNodes: [CMarkNode] = []
         var shouldUnlinkFormattingMode = false
         var event: cmark_event_type?
         while event != CMARK_EVENT_DONE {
@@ -124,10 +128,14 @@ private extension CMarkNode {
                             let replacementTextNode = cmark_node_new(CMARK_NODE_TEXT)
                             cmark_node_set_literal(replacementTextNode, nonFormattedText)
                             cmark_node_insert_after(previousNode, replacementTextNode)
+                            // Set child literal to empty string so we dont read it.
+                            // This avoids having to re-create the main
+                            // iterator in the middle of the process.
                             cmark_node_set_literal(node.pointee.first_child, "")
                             let newIterator = cmark_iter_new(node)
                             _ = cmark_iter_next(newIterator)
                             cmark_node_unlink(node)
+                            orphanNodes.append(node)
                             let nextNode = cmark_iter_get_node(newIterator)
                             cmark_node_insert_after(previousNode, nextNode)
                             shouldUnlinkFormattingMode = true
@@ -135,6 +143,7 @@ private extension CMarkNode {
                     } else {
                         if shouldUnlinkFormattingMode {
                             cmark_node_unlink(node)
+                            orphanNodes.append(node)
                             shouldUnlinkFormattingMode = false
                         }
                     }
@@ -143,6 +152,13 @@ private extension CMarkNode {
                 }
             }
             previousNode = node
+        }
+
+        // Free all nodes removed from the AST.
+        // This is done as a last step to avoid messing
+        // up with the main itertor.
+        for orphanNode in orphanNodes {
+            cmark_node_free(orphanNode)
         }
     }
 }
