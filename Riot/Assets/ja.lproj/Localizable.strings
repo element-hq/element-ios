@@ -31,9 +31,9 @@
 /* A user has invited you to a chat */
 "USER_INVITE_TO_CHAT" = "%@ さんがあなたを対話に招待しました";
 /* A user has invited you to an (unamed) group chat */
-"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ さんがあなたを部屋へ招待しました";
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ さんがあなたをルームへ招待しました";
 /* A user has invited you to a named room */
-"USER_INVITE_TO_NAMED_ROOM" = "%@ さんが部屋 %@ へ招待しました";
+"USER_INVITE_TO_NAMED_ROOM" = "%@ さんがルーム %@ へ招待しました";
 /* Incoming one-to-one voice call */
 "VOICE_CALL_FROM_USER" = "%@ さんから通話着信";
 /* Incoming one-to-one video call */
@@ -74,3 +74,6 @@
 
 /* New message indicator on unknown room */
 "MESSAGE" = "メッセージ";
+/** General **/
+
+"NOTIFICATION" = "通知";
