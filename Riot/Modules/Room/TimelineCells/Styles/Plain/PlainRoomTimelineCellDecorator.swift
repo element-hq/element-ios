@@ -148,6 +148,7 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
                 trailingConstraint,
                 topConstraint
             ])
+            
         }
     }
 
@@ -202,5 +203,87 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
 
     func addSendStatusView(toCell cell: MXKRoomBubbleTableViewCell, withFailedEventIds failedEventIds: Set<AnyHashable>) {
         cell.updateTickView(withFailedEventIds: failedEventIds)
+    }
+    
+    func addReadMarkerView(_ readMarkerView: UIView,
+                           toCell cell: MXKRoomBubbleTableViewCell,
+                           cellData: MXKRoomBubbleCellData,
+                           contentViewPositionY: CGFloat) {
+        
+        guard let overlayContainer = cell.bubbleOverlayContainer else {
+            return
+        }
+        
+        // The read marker is added into the overlay container.
+        // CAUTION: Keep disabled the user interaction on this container to not disturb tap gesture handling.
+        overlayContainer.backgroundColor = UIColor.clear
+        overlayContainer.alpha = 1
+        overlayContainer.isUserInteractionEnabled = false
+        overlayContainer.isHidden = false
+        
+        // Add read marker to overlayContainer
+        readMarkerView.translatesAutoresizingMaskIntoConstraints = false
+        overlayContainer.addSubview(readMarkerView)
+        cell.readMarkerView = readMarkerView
+        
+        // Force read marker constraints
+        let topConstraint = readMarkerView.topAnchor.constraint(equalTo: overlayContainer.topAnchor, constant: contentViewPositionY - PlainRoomCellLayoutConstants.readMarkerViewHeight)
+        
+        let leadingConstraint = readMarkerView.leadingAnchor.constraint(equalTo: overlayContainer.leadingAnchor)
+        
+        let trailingConstraint = readMarkerView.trailingAnchor.constraint(equalTo: overlayContainer.trailingAnchor)
+        
+        let heightConstraint = readMarkerView.heightAnchor.constraint(equalToConstant: PlainRoomCellLayoutConstants.readMarkerViewHeight)
+        
+        NSLayoutConstraint.activate([topConstraint,
+                                     leadingConstraint,
+                                     trailingConstraint,
+                                     heightConstraint])
+        
+        cell.readMarkerViewTopConstraint = topConstraint
+        cell.readMarkerViewLeadingConstraint = leadingConstraint
+        cell.readMarkerViewTrailingConstraint = trailingConstraint
+        cell.readMarkerViewHeightConstraint = heightConstraint
+    }
+    
+    func dissmissReadMarkerView(forCell cell: MXKRoomBubbleTableViewCell,
+                                cellData: RoomBubbleCellData,
+                                animated: Bool,
+                                completion: @escaping () -> Void) {
+        
+        guard let readMarkerView = cell.readMarkerView, let readMarkerContainerView = readMarkerView.superview else {
+            return
+        }
+        
+        // Do not display the marker if this is the last message.
+        if animated == false || (cellData.containsLastMessage && readMarkerView.tag == cellData.mostRecentComponentIndex) {
+            readMarkerView.isHidden = true
+            completion()
+        } else {
+            readMarkerView.isHidden = false
+            
+            // Animate the layout to hide the read marker
+            DispatchQueue.main.async {
+                
+                let readMarkerContainerViewHalfWidth = readMarkerContainerView.frame.size.width/2
+                
+                cell.readMarkerViewLeadingConstraint.constant = readMarkerContainerViewHalfWidth
+                cell.readMarkerViewTrailingConstraint.constant = -readMarkerContainerViewHalfWidth
+                                
+                UIView.animate(withDuration: 1.5,
+                               delay: 0.3,
+                               options: [.beginFromCurrentState, .curveEaseIn]) {
+                    
+                    readMarkerView.alpha = 0
+                    readMarkerContainerView.layoutIfNeeded()
+                    
+                } completion: { finished in
+                    readMarkerView.isHidden = true
+                    readMarkerView.alpha = 1
+                    
+                    completion()
+                }
+            }
+        }
     }
 }
