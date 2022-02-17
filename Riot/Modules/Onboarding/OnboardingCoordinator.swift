@@ -229,11 +229,8 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             // Store the value in the user's session
             userSession.userProperties.useCase = useCase
             
-            // Capture the use case if analytics are running.
-            // Otherwise it will be included when identifying if opted in.
-            if Analytics.shared.isRunning {
-                Analytics.shared.updateUserProperties(ftueUseCase: useCase)
-            }
+            // Update the analytics user properties with the use case
+            Analytics.shared.updateUserProperties(ftueUseCase: useCase)
         }
     }
 }

@@ -26,10 +26,7 @@ protocol AnalyticsClientProtocol {
     
     /// Associate the client with an ID. This is persisted until `reset` is called.
     /// - Parameter id: The ID to associate with the user.
-    /// - Parameter userProperties: Any user properties that should be included.
-    ///
-    /// Only non-nil user properties will be updated when calling this method.
-    func identify(id: String, userProperties: AnalyticsEvent.UserProperties)
+    func identify(id: String)
     
     /// Reset all stored properties and any event queues on the client. Note that
     /// the client will remain active, but in a fresh unidentified state.
@@ -52,6 +49,8 @@ protocol AnalyticsClientProtocol {
     /// Updates any user properties to help with creating cohorts.
     /// - Parameter userProperties: The user properties to be updated.
     ///
-    /// Only non-nil properties will be updated when calling this method.
+    /// Only non-nil properties will be updated when calling this method. There might
+    /// be a delay when updating user properties as these are cached to be included
+    /// as part of the next event that gets captured.
     func updateUserProperties(_ userProperties: AnalyticsEvent.UserProperties)
 }

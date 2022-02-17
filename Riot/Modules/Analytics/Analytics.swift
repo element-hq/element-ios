@@ -108,7 +108,6 @@ import AnalyticsEvents
             !RiotSettings.shared.isIdentifiedForAnalytics
         else { return }
         
-        let userProperties = makeUserProperties(for: session)
         let service = AnalyticsService(session: session)
         self.service = service
         
@@ -117,7 +116,7 @@ import AnalyticsEvents
             
             switch result {
             case .success(let settings):
-                self.identify(with: settings, and: userProperties)
+                self.identify(with: settings)
                 self.service = nil
             case .failure:
                 MXLog.error("[Analytics] Failed to use analytics settings. Will continue to run without analytics ID.")
@@ -150,28 +149,15 @@ import AnalyticsEvents
     
     /// Identify (pseudonymously) any future events with the ID from the analytics account data settings.
     /// - Parameter settings: The settings to use for identification. The ID must be set *before* calling this method.
-    /// - Parameter userProperties: Any user properties that should be set for creating cohorts etc.
-    private func identify(with settings: AnalyticsSettings, and userProperties: AnalyticsEvent.UserProperties) {
+    private func identify(with settings: AnalyticsSettings) {
         guard let id = settings.id else {
             MXLog.error("[Analytics] identify(with:) called before an ID has been generated.")
             return
         }
         
-        client.identify(id: id, userProperties: userProperties)
+        client.identify(id: id)
         MXLog.debug("[Analytics] Identified.")
         RiotSettings.shared.isIdentifiedForAnalytics = true
-    }
-    
-    /// Returns the user properties for use when identifying a session.
-    /// - Parameter session: The session to gather any user properties from.
-    /// - Returns: The properties to be set.
-    private func makeUserProperties(for session: MXSession) -> AnalyticsEvent.UserProperties {
-        var useCaseSelection: AnalyticsEvent.UserProperties.FtueUseCaseSelection?
-        if let userId = session.credentials.userId, let userSession = UserSessionsService.shared.userSession(withUserId: userId) {
-            useCaseSelection = userSession.userProperties.useCase?.analyticsName
-        }
-        
-        return AnalyticsEvent.UserProperties(ftueUseCaseSelection: useCaseSelection, numSpaces: nil)
     }
     
     /// Capture an event in the `client`.
