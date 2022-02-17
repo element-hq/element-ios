@@ -741,7 +741,7 @@
 "room_participants_security_loading" = "読み込み中…";
 "room_participants_action_security_status_loading" = "読み込み中…";
 "room_participants_action_security_status_warning" = "警告";
-"room_participants_action_security_status_complete_security" = "完全なセキュリティー";
+"room_participants_action_security_status_complete_security" = "セキュリティを確認する";
 "room_participants_action_security_status_verify" = "検証";
 "room_participants_action_security_status_verified" = "検証済み";
 "room_participants_action_section_security" = "セキュリティー";
