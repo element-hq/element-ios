@@ -19,6 +19,21 @@
 import UIKit
 
 @objcMembers
+class CreateRoomCoordinatorParameter: NSObject {
+    /// Instance of the current MXSession
+    let session: MXSession
+    
+    /// Instance of the parent space. `nil` if home space
+    let parentSpace: MXSpace?
+    
+    init(session: MXSession,
+         parentSpace: MXSpace?) {
+        self.session = session
+        self.parentSpace = parentSpace
+    }
+}
+
+@objcMembers
 final class CreateRoomCoordinator: CreateRoomCoordinatorType {
     
     // MARK: - Properties
@@ -27,8 +42,7 @@ final class CreateRoomCoordinator: CreateRoomCoordinatorType {
     
     private let navigationRouter: NavigationRouterType
     private let tabRouter: TabbedRouterType
-    private let session: MXSession
-    private(set) var parentSpace: MXSpace?
+    private let parameters: CreateRoomCoordinatorParameter
     
     // MARK: Public
 
@@ -37,15 +51,18 @@ final class CreateRoomCoordinator: CreateRoomCoordinatorType {
     
     weak var delegate: CreateRoomCoordinatorDelegate?
     
+    var parentSpace: MXSpace? {
+        parameters.parentSpace
+    }
+    
     // MARK: - Setup
     
-    init(session: MXSession, parentSpace: MXSpace?) {
+    init(parameters: CreateRoomCoordinatorParameter) {
         self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
-        let segmentedController = RiotSegmentedController.instantiate()
+        let segmentedController = SegmentedController.instantiate()
         segmentedController.title = VectorL10n.spacesAddRoom
         self.tabRouter = SegmentedRouter(segmentedController: segmentedController)
-        self.session = session
-        self.parentSpace = parentSpace
+        self.parameters = parameters
     }
     
     // MARK: - Public methods
@@ -91,14 +108,14 @@ final class CreateRoomCoordinator: CreateRoomCoordinatorType {
     // MARK: - Private methods
 
     private func createEnterNewRoomDetailsCoordinator() -> EnterNewRoomDetailsCoordinator {
-        let coordinator = EnterNewRoomDetailsCoordinator(session: self.session, parentSpace: self.parentSpace)
+        let coordinator = EnterNewRoomDetailsCoordinator(session: self.parameters.session, parentSpace: self.parentSpace)
         coordinator.delegate = self
         return coordinator
     }
     
     @available(iOS 14.0, *)
     private func createRoomSelectorCoordinator(parentSpace: MXSpace) -> MatrixItemChooserCoordinator {
-        let paramaters = MatrixItemChooserCoordinatorParameters(session: self.session, viewProvider: AddRoomSelectorViewProvider(), itemsProcessor: AddRoomItemsProcessor(parentSpace: parentSpace))
+        let paramaters = MatrixItemChooserCoordinatorParameters(session: self.parameters.session, viewProvider: AddRoomSelectorViewProvider(), itemsProcessor: AddRoomItemsProcessor(parentSpace: parentSpace))
         let coordinator = MatrixItemChooserCoordinator(parameters: paramaters)
         return coordinator
     }

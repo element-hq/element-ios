@@ -154,7 +154,7 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
     
     private func presentRoomCreation() {
         let space = session.spaceService.getSpace(withId: spaceIdStack.last ?? "")
-        let createRoomCoordinator = CreateRoomCoordinator(session: self.session, parentSpace: space)
+        let createRoomCoordinator = CreateRoomCoordinator(parameters: CreateRoomCoordinatorParameter(session: self.session, parentSpace: space))
         createRoomCoordinator.delegate = self
         let presentable = createRoomCoordinator.toPresentable()
         presentable.presentationController?.delegate = self

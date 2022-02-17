@@ -1989,7 +1989,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     // Sanity check
     if (self.mainSession)
     {
-        self.createRoomCoordinatorBridgePresenter = [[CreateRoomCoordinatorBridgePresenter alloc] initWithSession:self.mainSession parentSpace: self.dataSource.currentSpace];
+        CreateRoomCoordinatorParameter *parameters = [[CreateRoomCoordinatorParameter alloc] initWithSession:self.mainSession parentSpace: self.dataSource.currentSpace];
+        self.createRoomCoordinatorBridgePresenter = [[CreateRoomCoordinatorBridgePresenter alloc] initWithParameters:parameters];
         self.createRoomCoordinatorBridgePresenter.delegate = self;
         [self.createRoomCoordinatorBridgePresenter presentFrom:self animated:YES];
     }

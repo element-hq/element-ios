@@ -23,7 +23,6 @@ class TabBarRouter: NSObject, TabbedRouterType {
     
     // MARK: Private
     
-    private var completions: [UIViewController : () -> Void]
     private let tabBarController: UITabBarController
     
     /// Stores the association between the added Presentable and his view controller.
@@ -66,7 +65,6 @@ class TabBarRouter: NSObject, TabbedRouterType {
     
     init(tabBarController: UITabBarController = UITabBarController(), tabs: [TabbedRouterTab]? = nil) {
         self.tabBarController = tabBarController
-        self.completions = [:]
         super.init()
         self.tabBarController.delegate = self
         

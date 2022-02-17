@@ -16,12 +16,12 @@
 
 import Foundation
 
-struct RiotSegmentedControllerTab {
+struct SegmentedControllerTab {
     let title: String?
     let viewController: UIViewController
 }
 
-class RiotSegmentedController: UIViewController, Themable {
+class SegmentedController: UIViewController, Themable {
     
     // MARK: Outlets
     
@@ -57,7 +57,7 @@ class RiotSegmentedController: UIViewController, Themable {
     
     // MARK: Properties
     
-    var tabs: [RiotSegmentedControllerTab] = [] {
+    var tabs: [SegmentedControllerTab] = [] {
         didSet {
             if isViewLoaded {
                 populateSegmentedControl()
@@ -67,9 +67,9 @@ class RiotSegmentedController: UIViewController, Themable {
     
     // MARK: Setup
     
-    class func instantiate() -> RiotSegmentedController {
-        let storyboard = UIStoryboard(name: "RiotSegmentedController", bundle: nil)
-        let viewController = storyboard.instantiateInitialViewController() as? RiotSegmentedController ?? RiotSegmentedController()
+    class func instantiate() -> SegmentedController {
+        let storyboard = UIStoryboard(name: "SegmentedController", bundle: nil)
+        let viewController = storyboard.instantiateInitialViewController() as? SegmentedController ?? SegmentedController()
         viewController.theme = ThemeService.shared().theme
         return viewController
     }

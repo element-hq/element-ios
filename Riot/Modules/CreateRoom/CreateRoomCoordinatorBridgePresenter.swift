@@ -33,8 +33,7 @@ final class CreateRoomCoordinatorBridgePresenter: NSObject {
     
     // MARK: Private
     
-    private let session: MXSession
-    private let parentSpace: MXSpace?
+    private let parameters: CreateRoomCoordinatorParameter
     private var coordinator: CreateRoomCoordinator?
     
     // MARK: Public
@@ -43,9 +42,8 @@ final class CreateRoomCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Setup
     
-    init(session: MXSession, parentSpace: MXSpace?) {
-        self.session = session
-        self.parentSpace = parentSpace
+    init(parameters: CreateRoomCoordinatorParameter) {
+        self.parameters = parameters
         super.init()
     }
     
@@ -57,7 +55,7 @@ final class CreateRoomCoordinatorBridgePresenter: NSObject {
     // }
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let createRoomCoordinator = CreateRoomCoordinator(session: self.session, parentSpace: self.parentSpace)
+        let createRoomCoordinator = CreateRoomCoordinator(parameters: self.parameters)
         createRoomCoordinator.delegate = self
         let presentable = createRoomCoordinator.toPresentable()
         presentable.presentationController?.delegate = self
