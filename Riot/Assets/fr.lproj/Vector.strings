@@ -1670,3 +1670,5 @@
 "room_event_copy_link_info" = "Lien copié dans le presse-papier.";
 "room_event_action_reply_in_thread" = "Fil";
 "room_event_action_view_in_room" = "Afficher dans le salon";
+"home_context_menu_normal_priority" = "Priorité normale";
+"home_context_menu_low_priority" = "Basse priorité";
