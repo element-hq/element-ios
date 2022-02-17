@@ -29,6 +29,11 @@
 {
     [super viewDidLoad];
     
+    if ([self providesCustomActivityIndicator]) {
+        // If a subclass provides custom activity indicator, the default one will not even be initialized.
+        return;
+    }
+    
     // Add default activity indicator
     activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     activityIndicator.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0];
@@ -56,9 +61,13 @@
 
 #pragma mark - Activity indicator
 
+- (BOOL)providesCustomActivityIndicator {
+    return NO;
+}
+
 - (void)startActivityIndicator
 {
-    if (activityIndicator)
+    if (activityIndicator && ![self providesCustomActivityIndicator])
     {
         [self.view bringSubviewToFront:activityIndicator];
         [activityIndicator startAnimating];
@@ -78,6 +87,5 @@
 {
     [activityIndicator stopAnimating];
 }
-
 
 @end
