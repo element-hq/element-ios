@@ -2267,6 +2267,10 @@ public class VectorL10n: NSObject {
   public static var locationSharingOpenGoogleMaps: String { 
     return VectorL10n.tr("Vector", "location_sharing_open_google_maps") 
   }
+  /// Open in OpenStreetMap
+  public static var locationSharingOpenOpenStreetMaps: String { 
+    return VectorL10n.tr("Vector", "location_sharing_open_open_street_maps") 
+  }
   /// %@ could not send your location. Please try again later.
   public static func locationSharingPostFailureSubtitle(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "location_sharing_post_failure_subtitle", p1)
