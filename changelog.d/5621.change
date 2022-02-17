@@ -1,0 +1,1 @@
+Onboarding: Use a different green spinner during onboarding and use the one presented by the LegacyAppDelegate only when logged in.
