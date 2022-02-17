@@ -223,6 +223,25 @@
                                 <constraint firstAttribute="trailing" secondItem="rQt-NH-Cb0" secondAttribute="trailing" constant="6" id="lq2-AY-Lus"/>
                             </constraints>
                         </view>
+                        <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="253" translatesAutoresizingMaskIntoConstraints="NO" id="2i0-Un-VXa">
+                            <rect key="frame" x="0.0" y="0.0" width="595" height="0.0"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Cq-BI-po5">
+                                    <rect key="frame" x="0.0" y="0.0" width="595" height="0.0"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" priority="250" constant="2" id="3j7-Qe-vYL"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="3Cq-BI-po5" firstAttribute="top" secondItem="2i0-Un-VXa" secondAttribute="top" id="6YG-04-nSb"/>
+                                <constraint firstItem="3Cq-BI-po5" firstAttribute="leading" secondItem="2i0-Un-VXa" secondAttribute="leading" id="CrN-xe-M6m"/>
+                                <constraint firstAttribute="trailing" secondItem="3Cq-BI-po5" secondAttribute="trailing" id="SBL-F4-EJ8"/>
+                                <constraint firstAttribute="bottom" secondItem="3Cq-BI-po5" secondAttribute="bottom" id="r3l-ZY-0kc"/>
+                            </constraints>
+                        </view>
                         <view hidden="YES" clipsSubviews="YES" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="2eB-kB-m20">
                             <rect key="frame" x="0.0" y="0.0" width="595" height="0.0"/>
                             <subviews>
@@ -290,6 +309,8 @@
                 <outlet property="reactionsContentView" destination="SNw-aM-ILI" id="wMe-f0-qhq"/>
                 <outlet property="reactionsContentViewLeadingConstraint" destination="x1n-oT-dez" id="LUh-3Q-SVr"/>
                 <outlet property="reactionsContentViewTrailingConstraint" destination="ynR-d4-6cf" id="Sy0-o9-vAC"/>
+                <outlet property="readMarkerContainerView" destination="2i0-Un-VXa" id="O4q-3S-R5o"/>
+                <outlet property="readMarkerContentView" destination="3Cq-BI-po5" id="Bwr-Sg-sOt"/>
                 <outlet property="readReceiptsContainerView" destination="4zo-V8-CNe" id="7ek-u4-CX8"/>
                 <outlet property="readReceiptsContentView" destination="rQt-NH-Cb0" id="tqw-je-kp9"/>
                 <outlet property="threadSummaryContainerView" destination="2eB-kB-m20" id="0Y4-4E-I9K"/>
