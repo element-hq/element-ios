@@ -147,10 +147,10 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     @available(iOS 14.0, *)
     /// Show the use case screen for new users.
     private func showUseCaseSelectionScreen() {
-        let coordinator = OnboardingUseCaseCoordinator()
+        let coordinator = OnboardingUseCaseSelectionCoordinator()
         coordinator.completion = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
-            self.useCaseCoordinator(coordinator, didCompleteWith: result)
+            self.useCaseSelectionCoordinator(coordinator, didCompleteWith: result)
         }
         
         coordinator.start()
@@ -166,7 +166,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     }
     
     /// Displays the next view in the flow after the use case screen.
-    private func useCaseCoordinator(_ coordinator: OnboardingUseCaseCoordinator, didCompleteWith result: OnboardingUseCaseViewModelResult) {
+    private func useCaseSelectionCoordinator(_ coordinator: OnboardingUseCaseSelectionCoordinator, didCompleteWith result: OnboardingUseCaseViewModelResult) {
         useCaseResult = result
         showAuthenticationScreen()
     }
@@ -222,12 +222,15 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         completion?()
         isShowingAuthentication = false
         
-        // Handle the chosen use case if appropriate
+        // Handle the chosen use case where applicable
         if authenticationType == MXKAuthenticationTypeRegister,
-           let useCaseResult = useCaseResult,
+           let useCase = useCaseResult?.userSessionPropertyValue,
            let userSession = UserSessionsService.shared.mainUserSession {
             // Store the value in the user's session
-            userSession.userProperties.useCase = useCaseResult.userSessionPropertyValue
+            userSession.userProperties.useCase = useCase
+            
+            // Update the analytics user properties with the use case
+            Analytics.shared.updateUserProperties(ftueUseCase: useCase)
         }
     }
 }

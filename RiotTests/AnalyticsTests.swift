@@ -16,6 +16,7 @@
 
 import XCTest
 @testable import Riot
+import AnalyticsEvents
 
 class AnalyticsTests: XCTestCase {
     func testAnalyticsPromptNewUser() {
@@ -69,5 +70,69 @@ class AnalyticsTests: XCTestCase {
         
         // Then no prompt should be shown.
         XCTAssertFalse(showPrompt, "A prompt should not be shown any more.")
+    }
+    
+    func testAddingUserProperties() {
+        // Given a client with no user properties set
+        let client = PostHogAnalyticsClient()
+        XCTAssertNil(client.pendingUserProperties, "No user properties should have been set yet.")
+        
+        // When updating the user properties
+        client.updateUserProperties(AnalyticsEvent.UserProperties(ftueUseCaseSelection: .PersonalMessaging, numSpaces: 5))
+        
+        // Then the properties should be cached
+        XCTAssertNotNil(client.pendingUserProperties, "The user properties should be cached.")
+        XCTAssertEqual(client.pendingUserProperties?.ftueUseCaseSelection, .PersonalMessaging, "The use case selection should match.")
+        XCTAssertEqual(client.pendingUserProperties?.numSpaces, 5, "The number of spaces should match.")
+    }
+    
+    func testMergingUserProperties() {
+        // Given a client with a cached use case user properties
+        let client = PostHogAnalyticsClient()
+        client.updateUserProperties(AnalyticsEvent.UserProperties(ftueUseCaseSelection: .PersonalMessaging, numSpaces: nil))
+        
+        XCTAssertNotNil(client.pendingUserProperties, "The user properties should be cached.")
+        XCTAssertEqual(client.pendingUserProperties?.ftueUseCaseSelection, .PersonalMessaging, "The use case selection should match.")
+        XCTAssertNil(client.pendingUserProperties?.numSpaces, "The number of spaces should not be set.")
+        
+        // When updating the number of spaced
+        client.updateUserProperties(AnalyticsEvent.UserProperties(ftueUseCaseSelection: nil, numSpaces: 5))
+        
+        // Then the new properties should be updated and the existing properties should remain unchanged
+        XCTAssertNotNil(client.pendingUserProperties, "The user properties should be cached.")
+        XCTAssertEqual(client.pendingUserProperties?.ftueUseCaseSelection, .PersonalMessaging, "The use case selection shouldn't have changed.")
+        XCTAssertEqual(client.pendingUserProperties?.numSpaces, 5, "The number of spaces should have been updated.")
+    }
+    
+    func testSendingUserProperties() {
+        // Given a client with user properties set
+        let client = PostHogAnalyticsClient()
+        client.updateUserProperties(AnalyticsEvent.UserProperties(ftueUseCaseSelection: .PersonalMessaging, numSpaces: nil))
+        client.start()
+        
+        XCTAssertNotNil(client.pendingUserProperties, "The user properties should be cached.")
+        XCTAssertEqual(client.pendingUserProperties?.ftueUseCaseSelection, .PersonalMessaging, "The use case selection should match.")
+        
+        // When sending an event (tests run under Debug configuration so this is sent to the development instance)
+        client.screen(AnalyticsEvent.Screen(durationMs: nil, screenName: .Home))
+        
+        // Then the properties should be cleared
+        XCTAssertNil(client.pendingUserProperties, "The user properties should be cleared.")
+    }
+    
+    func testSendingUserPropertiesWithIdentify() {
+        // Given a client with user properties set
+        let client = PostHogAnalyticsClient()
+        client.updateUserProperties(AnalyticsEvent.UserProperties(ftueUseCaseSelection: .PersonalMessaging, numSpaces: nil))
+        client.start()
+        
+        XCTAssertNotNil(client.pendingUserProperties, "The user properties should be cached.")
+        XCTAssertEqual(client.pendingUserProperties?.ftueUseCaseSelection, .PersonalMessaging, "The use case selection should match.")
+        
+        // When calling identify (tests run under Debug configuration so this is sent to the development instance)
+        client.identify(id: UUID().uuidString)
+        
+        // Then the properties should be cleared
+        XCTAssertNil(client.pendingUserProperties, "The user properties should be cleared.")
     }
 }

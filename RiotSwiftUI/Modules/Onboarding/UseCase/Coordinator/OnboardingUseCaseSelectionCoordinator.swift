@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-final class OnboardingUseCaseCoordinator: Coordinator, Presentable {
+final class OnboardingUseCaseSelectionCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties
     
@@ -36,7 +36,7 @@ final class OnboardingUseCaseCoordinator: Coordinator, Presentable {
     @available(iOS 14.0, *)
     init() {
         let viewModel = OnboardingUseCaseViewModel()
-        let view = OnboardingUseCase(viewModel: viewModel.context)
+        let view = OnboardingUseCaseSelectionScreen(viewModel: viewModel.context)
         onboardingUseCaseViewModel = viewModel
         
         let hostingController = VectorHostingController(rootView: view)
@@ -47,9 +47,9 @@ final class OnboardingUseCaseCoordinator: Coordinator, Presentable {
     
     // MARK: - Public
     func start() {
-        MXLog.debug("[OnboardingUseCaseCoordinator] did start.")
+        MXLog.debug("[OnboardingUseCaseSelectionCoordinator] did start.")
         onboardingUseCaseViewModel.completion = { [weak self] result in
-            MXLog.debug("[OnboardingUseCaseCoordinator] OnboardingUseCaseViewModel did complete with result: \(result).")
+            MXLog.debug("[OnboardingUseCaseSelectionCoordinator] OnboardingUseCaseViewModel did complete with result: \(result).")
             guard let self = self else { return }
             self.completion?(result)
         }
