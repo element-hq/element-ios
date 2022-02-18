@@ -1296,7 +1296,7 @@
 "room_intro_cell_information_multiple_dm_sentence2" = "V tejto konverzácii ste len vy, pokiaľ niekto z vás niekoho nepozve, aby sa pripojil.";
 "room_intro_cell_information_dm_sentence2" = "V tejto konverzácii ste len vy dvaja, nikto iný sa nemôže pripojiť.";
 "room_intro_cell_information_room_without_topic_sentence2_part2" = " aby ľudia vedeli, o čom je táto miestnosť.";
-"room_intro_cell_information_room_without_topic_sentence2_part1" = "Pridať tému";
+"room_intro_cell_information_room_without_topic_sentence2_part1" = "Pridajte tému";
 "room_avatar_view_accessibility_hint" = "Zmeniť obrázok miestnosti";
 "invite_friends_share_text" = "Ahoj, ozvi sa mi na %@: %@";
 
@@ -1751,3 +1751,9 @@
 "room_event_action_reply_in_thread" = "Vlákno";
 "settings_calls_stun_server_fallback_button" = "Povoliť náhradnú službu hovorov asistenčného servera";
 "settings_calls_stun_server_fallback_description" = "Povoľte náhradné službu hovorov asistenčného servera %@, keď ho váš domovský server neponúka (vaša IP adresa by bola počas volania zdieľaná).";
+"deactivate_account_informations_part4_emphasize" = "štandardne nespôsobí, že zabudneme na správy, ktoré ste odoslali. ";
+"room_details_fail_to_update_room_join_rule" = "Nepodarí sa aktualizovať pravidlo pripojenia";
+"settings_enable_callkit" = "Integrované volanie";
+"room_resource_usage_limit_reached_message_contact_3" = " aby ste tento limit zvýšili.";
+"room_resource_limit_exceeded_message_contact_3" = " pokračovať v používaní tejto služby.";
+"find_your_contacts_title" = "Začnite so zoznamom vašich kontaktov";
