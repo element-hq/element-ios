@@ -11,7 +11,7 @@
 "continue" = "続く";
 "create" = "作成";
 "start" = "開始";
-"leave" = "保存しない";
+"leave" = "退出";
 "remove" = "削除";
 "invite" = "招待";
 "retry" = "再試行";
@@ -22,7 +22,7 @@
 "join" = "参加";
 "decline" = "断る";
 "accept" = "受諾";
-"preview" = "下見";
+"preview" = "プレビュー";
 "camera" = "カメラ";
 "voice" = "音声";
 "video" = "映像";
@@ -69,7 +69,7 @@
 "auth_phone_in_use" = "この電話番号は既に使用されています";
 "auth_untrusted_id_server" = "この認証サーバは信用されていません";
 "auth_password_dont_match" = "パスワードが一致しません";
-"auth_username_in_use" = "ユーザ名はすでに使用されています";
+"auth_username_in_use" = "ユーザ名は既に使用されています";
 "auth_forgot_password" = "パスワードを忘れましたか？";
 "auth_email_not_found" = "電子メールの送信に失敗しました: メールアドレスが見つかりません";
 "auth_use_server_options" = "接続先サーバを指定する(追加設定)";
@@ -101,7 +101,7 @@
 "room_creation_make_public_prompt_msg" = "このチャットをパブリックしてもよろしいですか？ 誰でもあなたのメッセージを読んでチャットに参加できます。";
 "room_creation_keep_private" = "プライベートに保つ";
 "room_creation_make_private" = "プライベートにする";
-"room_creation_wait_for_creation" = "ルームはすでに作成されています。 お待ちください。";
+"room_creation_wait_for_creation" = "ルームは既に作成されています。 お待ちください。";
 "room_creation_invite_another_user" = "ユーザID, 表示名, 電子メールで検索と招待";
 // Room recents
 "room_recents_directory_section" = "ルーム一覧";
@@ -424,7 +424,7 @@
 "call_incoming_video_prompt" = "%@ さんから映像つき通話の着信中";
 "call_incoming_voice" = "通話着信中…";
 "call_incoming_video" = "ビデオ通話の着信中…";
-"call_already_displayed" = "すでに通話中です。";
+"call_already_displayed" = "既に通話中です。";
 "call_jitsi_error" = "会議通話への参加に失敗しました。";
 // No VoIP support
 "no_voip_title" = "通話着信中";
@@ -634,7 +634,7 @@
 "widget_integration_manager_disabled" = "設定でインテグレーションマネージャーを有効にする必要があります";
 "widget_menu_remove" = "全て取り除く";
 "widget_menu_revoke_permission" = "アクセスを取り消す";
-"widget_menu_open_outside" = "ブラウザを開く";
+"widget_menu_open_outside" = "ブラウザーで開く";
 "widget_menu_refresh" = "リフレッシュ";
 "widget_integrations_server_failed_to_connect" = "インテグレーションサーバーへの説を句が失敗しました";
 
@@ -705,8 +705,8 @@
 "identity_server_settings_place_holder" = "IDサーバーを入力する";
 "identity_server_settings_no_is_description" = "現在、ID サーバーを使用していません。知り合いを発見したり、発見できるようにするには、上記に追加してください。";
 "identity_server_settings_description" = "あなたは%@を使って、あなたの知り合いを発見し、また向こうから発見できるようにしています。";
-"security_settings_complete_security_alert_title" = "完全なセキュリティー";
-"security_settings_crosssigning_complete_security" = "完全なセキュリティー";
+"security_settings_complete_security_alert_title" = "セキュリティーを確認";
+"security_settings_crosssigning_complete_security" = "セキュリティーを確認";
 "security_settings_crosssigning_bootstrap" = "独立したクロス署名";
 "settings_devices_description" = "セッションのパブリックネームはコミュニケーションをとる相手に表示されます";
 "settings_key_backup_delete_confirmation_prompt_title" = "バックアップの削除";
@@ -741,7 +741,7 @@
 "room_participants_security_loading" = "読み込み中…";
 "room_participants_action_security_status_loading" = "読み込み中…";
 "room_participants_action_security_status_warning" = "警告";
-"room_participants_action_security_status_complete_security" = "セキュリティを確認する";
+"room_participants_action_security_status_complete_security" = "セキュリティーを確認";
 "room_participants_action_security_status_verify" = "検証";
 "room_participants_action_security_status_verified" = "検証済み";
 "room_participants_action_section_security" = "セキュリティー";
@@ -1077,7 +1077,7 @@
 
 // MARK: Self verification wait
 
-"device_verification_self_verify_wait_title" = "完全なセキュリティー";
+"device_verification_self_verify_wait_title" = "セキュリティーを確認";
 "location_sharing_open_google_maps" = "Googleマップで開く";
 "location_sharing_settings_toggle_title" = "ロケーションの共有を有効にする";
 "threads_empty_show_all_threads" = "全てのスレッドを表示";
@@ -1097,3 +1097,14 @@
 "settings_room_invitations" = "ルームへの招待";
 "key_backup_setup_success_from_recovery_key_made_copy_action" = "コピーをしました";
 "key_backup_setup_success_from_recovery_key_make_copy_action" = "コピーする";
+"key_backup_setup_success_from_recovery_key_recovery_key_title" = "セキュリティーキー";
+
+// Success from recovery key
+"key_backup_setup_success_from_recovery_key_info" = "あなたの鍵はバックアップされています。\n\nこのセキュリティーキーをコピーして、安全なところに保管してください。";
+"key_backup_setup_success_from_passphrase_done_action" = "完了";
+"room_notifs_settings_cancel_action" = "キャンセル";
+"room_notifs_settings_done_action" = "完了";
+"key_backup_recover_done_action" = "完了";
+"done" = "完了";
+"open" = "開く";
+"enable" = "有効にする";
