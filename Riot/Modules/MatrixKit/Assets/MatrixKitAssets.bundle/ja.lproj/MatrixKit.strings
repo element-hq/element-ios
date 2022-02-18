@@ -2,9 +2,9 @@
 // Login Screen
 "login_create_account" = "アカウント作成:";
 "login_server_url_placeholder" = "URL (例 https://matrix.org)";
-"login_home_server_title" = "接続先サーバURL:";
-"login_home_server_info" = "あなたの接続先サーバは、あなたの全ての会話とアカウント情報を保存します";
-"login_identity_server_title" = "認証サーバURL:";
+"login_home_server_title" = "接続先サーバーURL:";
+"login_home_server_info" = "あなたの接続先サーバーは、あなたの全ての会話とアカウント情報を保存します";
+"login_identity_server_title" = "認証サーバーURL:";
 "login_password_placeholder" = "パスワード";
 "login_email_placeholder" = "メールアドレス";
 // Action
