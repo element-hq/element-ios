@@ -522,8 +522,8 @@
 "room_participants_now" = "sekarang";
 "room_participants_idle" = "Idle";
 "room_participants_unknown" = "Tidak diketahui";
-"room_participants_offline" = "Offline";
-"room_participants_online" = "Online";
+"room_participants_offline" = "Luring";
+"room_participants_online" = "Daring";
 "room_participants_invited_section" = "DIUNDANG";
 "room_participants_invite_prompt_title" = "Konfirmasi";
 "room_participants_remove_prompt_title" = "Konfirmasi";
@@ -667,7 +667,7 @@
 // GDPR
 "gdpr_consent_not_given_alert_message" = "Untuk terus menggunakan homeserver %@, Anda harus menyetujui syarat dan ketentuannya.";
 "share_extension_failed_to_encrypt" = "Gagal untuk mengirim. Periksa di aplikasi utama pengaturan enkripsi untuk ruangan ini";
-"bug_report_logs_description" = "Untuk mendiagnosis masalah, log dari klien ini akan dikirim dengan laporan bug ini. Jika Anda lebih memilih untuk hanya mengirim teks di atas, harap hapus centang:";
+"bug_report_logs_description" = "Untuk mendiagnosis masalah, catat dari klien ini akan dikirim dengan laporan kutu ini. Jika Anda lebih memilih untuk hanya mengirim teks di atas, harap hapus centang:";
 "bug_report_description" = "Harap jelaskan bugnya. Apa yang Anda lakukan? Apa yang Anda harapkan terjadi? Apa yang sebenarnya terjadi?";
 "e2e_key_backup_wrong_version" = "Cadangan kunci pesan aman baru telah terdeteksi.\n\nJika ini bukan Anda, atur Frasa Keamanan baru di Pengaturan.";
 
@@ -680,7 +680,7 @@
 "call_no_stun_server_error_message_1" = "Mohon hubungi administrator homeserver %@ Anda untuk mengatur sebuah server TURN supaya panggilan dapat bekerja dengan handal.";
 "rage_shake_prompt" = "Anda tampaknya menggoyangkan telepon dengan frustrasi. Apakah Anda ingin mengirimkan laporan bug?";
 "bug_report_prompt" = "Aplikasi telah crash terakhir kali. Apakah Anda ingin mengirimkan laporan crash?";
-"room_notifs_settings_encrypted_room_notice" = "Harap dicatat bahwa notifikasi sebutan & keyword tidak tersedia di ruang terenkripsi di ponsel.";
+"room_notifs_settings_encrypted_room_notice" = "Harap dicatat bahwa notifikasi sebutan & kata kunci tidak tersedia di ruang terenkripsi di ponsel.";
 "room_details_addresses_disable_main_address_prompt_msg" = "Anda tidak akan memiliki alamat utama yang ditentukan. Alamat utama default untuk ruangan ini akan dipilih secara acak";
 "room_details_history_section_prompt_msg" = "Perubahan siapa yang dapat membaca riwayat hanya akan berlaku untuk pesan berikutnya di ruang ini. Visibilitas riwayat yang ada tidak akan berubah.";
 "identity_server_settings_alert_error_terms_not_accepted" = "Anda harus menerima syaratnya %@ untuk menyetelnya sebagai server identitas.";
@@ -1438,7 +1438,7 @@
 "settings_ui_theme_picker_message_invert_colours" = "\"Otomatis\" menggunakan pengaturan \"Balikkan Warna\" perangkat Anda";
 "settings_ui_theme_picker_message_match_system_theme" = "\"Otomatis\" mencocokkan dengan tema sistem perangkat Anda";
 "settings_calls_stun_server_fallback_description" = "Izinkan server panggilan %@ cadangan saat server homeserver Anda tidak menawarkannya (alamat IP Anda akan dibagikan selama panggilan).";
-"settings_mentions_and_keywords_encryption_notice" = "Anda tidak akan dapat notifikasi untuk sebutan & keyword di ruangan terenkripsi di ponsel.";
+"settings_mentions_and_keywords_encryption_notice" = "Anda tidak akan dapat notifikasi untuk sebutan & kata kunci di ruangan terenkripsi di ponsel.";
 "settings_notifications_disabled_alert_message" = "Untuk mengaktifkan notifikasi, pergi ke pengaturan perangkat Anda.";
 "settings_global_settings_info" = "Pengaturan notifikasi global tersedia di klien web %@ Anda";
 "settings_confirm_media_size_description" = "Saat ini aktif, Anda akan diminta untuk mengkonfirmasi ukuran gambar dan video yang akan dikirim.";
@@ -1653,11 +1653,11 @@
 "poll_edit_form_create_options" = "Buat opsi";
 "poll_edit_form_input_placeholder" = "Tulis sesuatu";
 "poll_edit_form_question_or_topic" = "Pertanyaan atau topik";
-"poll_edit_form_poll_question_or_topic" = "Pertanyaan atau topik poll";
+"poll_edit_form_poll_question_or_topic" = "Pertanyaan atau topik pemungutan suara";
 
 // Mark: - Polls
 
-"poll_edit_form_create_poll" = "Buat poll";
+"poll_edit_form_create_poll" = "Buat pemungutan suara";
 "share_extension_send_now" = "Kirim sekarang";
 "share_extension_low_quality_video_message" = "Kirim dalam %@ untuk kualitas yang lebih baik, atau kirim dengan kualitas rendah di bawah.";
 "share_extension_low_quality_video_title" = "Video akan dikirim dalam kualitas rendah";
@@ -1665,7 +1665,7 @@
 "settings_about" = "TENTANG";
 "poll_timeline_not_closed_action" = "OK";
 "poll_timeline_not_closed_subtitle" = "Mohon coba lagi";
-"poll_timeline_not_closed_title" = "Gagal untuk mengakhiri poll";
+"poll_timeline_not_closed_title" = "Gagal untuk mengakhiri pemungutan suara";
 "poll_timeline_vote_not_registered_action" = "OK";
 "poll_timeline_vote_not_registered_subtitle" = "Maaf, suara Anda tidak diberikan, mohon coba lagi";
 "poll_timeline_vote_not_registered_title" = "Suara tidak diberikan";
@@ -1680,10 +1680,10 @@
 "poll_timeline_one_vote" = "1 suara";
 "poll_edit_form_post_failure_action" = "OK";
 "poll_edit_form_post_failure_subtitle" = "Silakan coba lagi";
-"poll_edit_form_post_failure_title" = "Gagal untuk mengirim poll";
+"poll_edit_form_post_failure_title" = "Gagal untuk mengirim pemungutan suara";
 "settings_labs_enabled_polls" = "Poll";
-"room_event_action_end_poll" = "Akhiri poll";
-"room_event_action_remove_poll" = "Hapus poll";
+"room_event_action_end_poll" = "Akhiri pemungutan suara";
+"room_event_action_remove_poll" = "Hapus pemungutan suara";
 "analytics_prompt_stop" = "Berhenti membagikan";
 "analytics_prompt_yes" = "Iya, saya tidak keberatan";
 "analytics_prompt_not_now" = "Jangan sekarang";
@@ -1735,13 +1735,13 @@
 
 // Onboarding
 "onboarding_splash_register_button_title" = "Buat akun";
-"poll_edit_form_poll_type_closed_description" = "Hasil akan ditampilkan ketika Anda mengakhiri poll-nya";
+"poll_edit_form_poll_type_closed_description" = "Hasil akan ditampilkan ketika Anda mengakhiri pemungutan suara";
 "poll_edit_form_poll_type_closed" = "Poll tertutup";
 "poll_edit_form_poll_type_open_description" = "Pemberi suara akan melihat hasilnya ketika telah memberikan suara";
-"poll_edit_form_poll_type_open" = "Buka poll";
+"poll_edit_form_poll_type_open" = "Buka pemungutan suara";
 "poll_edit_form_update_failure_subtitle" = "Silakan coba lagi";
-"poll_edit_form_update_failure_title" = "Gagal untuk memperbarui poll";
-"poll_edit_form_poll_type" = "Tipe poll";
+"poll_edit_form_update_failure_title" = "Gagal untuk memperbarui pemungutan suara";
+"poll_edit_form_poll_type" = "Tipe pemungutan suara";
 "location_sharing_post_failure_subtitle" = "%@ tidak dapat mengirimkan lokasi Anda. Silakan coba lagi nanti.";
 "location_sharing_post_failure_title" = "Kami tidak dapat mengirimkan lokasi Anda";
 "home_context_menu_leave" = "Tinggalkan";
