@@ -337,11 +337,32 @@ extern NSString *const kMXKRoomBubbleCellUrlItemInteraction;
  */
 - (void)setupViews;
 
+/// Setup sender name label if needed
+- (void)setupSenderNameLabel;
+
+/// Setup avatar view if needed
+- (void)setupAvatarView;
+
+/// Setup message text view if needed
+- (void)setupMessageTextView;
+
+/// Setup message text view long press gesture if needed
+- (void)setupMessageTextViewLongPressGesture;
+
 /// Add temporary subview to `tmpSubviews` property.
 - (void)addTemporarySubview:(UIView*)subview;
 
 /// Called when content view cell is tapped
 - (IBAction)onContentViewTap:(UITapGestureRecognizer*)sender;
+
+/// Called when sender name is tapped
+- (IBAction)onSenderNameTap:(UITapGestureRecognizer*)sender;
+
+/// Called when avatar view is tapped
+- (IBAction)onAvatarTap:(UITapGestureRecognizer*)sender;
+
+/// Called when a UI component is long pressed
+- (IBAction)onLongPressGesture:(UILongPressGestureRecognizer*)longPressGestureRecognizer;
 
 /// Remove marker view if present
 - (void)removeReadMarkerView;

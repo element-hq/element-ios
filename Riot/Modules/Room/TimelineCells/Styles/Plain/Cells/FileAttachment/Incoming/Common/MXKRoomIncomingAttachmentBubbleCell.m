@@ -15,7 +15,17 @@
  */
 
 #import "MXKRoomIncomingAttachmentBubbleCell.h"
+#import "GeneratedInterface-Swift.h"
 
 @implementation MXKRoomIncomingAttachmentBubbleCell
+
+- (void)setupViews
+{
+    [super setupViews];
+    
+    RoomTimelineConfiguration *timelineConfiguration = [RoomTimelineConfiguration shared];
+        
+    [timelineConfiguration.currentStyle.cellLayoutUpdater setupLayoutForIncomingFileAttachmentCell:self];
+}
 
 @end

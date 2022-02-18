@@ -261,7 +261,7 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
         
         let leftMargin: CGFloat = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left
 
-        let leftConstraint = attachmentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: -leftMargin)
+        let leftConstraint = attachmentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: leftMargin)
 
         NSLayoutConstraint.activate([
             leftConstraint
