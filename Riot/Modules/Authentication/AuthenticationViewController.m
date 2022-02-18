@@ -28,7 +28,7 @@
 
 static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
-@interface AuthenticationViewController () <AuthFallBackViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, SetPinCoordinatorBridgePresenterDelegate,
+@interface AuthenticationViewController () <AuthFallBackViewControllerDelegate, SetPinCoordinatorBridgePresenterDelegate,
     SocialLoginListViewDelegate,
     SSOAuthenticationPresenterDelegate
 >
@@ -63,7 +63,6 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 }
 
 @property (nonatomic, readonly) BOOL isIdentityServerConfigured;
-@property (nonatomic, strong) KeyVerificationCoordinatorBridgePresenter *keyVerificationCoordinatorBridgePresenter;
 @property (nonatomic, strong) SetPinCoordinatorBridgePresenter *setPinCoordinatorBridgePresenter;
 @property (nonatomic, strong) KeyboardAvoider *keyboardAvoider;
 
@@ -77,8 +76,6 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
 // Current SSO transaction id used to identify and validate the SSO authentication callback
 @property (nonatomic, strong) NSString *ssoCallbackTxnId;
-
-@property (nonatomic, strong) CrossSigningService *crossSigningService;
 
 @property (nonatomic, getter = isFirstViewAppearing) BOOL firstViewAppearing;
 
@@ -118,7 +115,6 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     
     _firstViewAppearing = YES;
     
-    self.crossSigningService = [CrossSigningService new];
     self.errorPresenter = [MXKErrorAlertPresentation new];
 }
 
@@ -318,11 +314,6 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     {
         self.firstViewAppearing = NO;
     }
-    
-    if (self.keyVerificationCoordinatorBridgePresenter)
-    {
-        return;
-    }        
 
     // Verify that the app does not show the authentication screen whereas
     // the user has already logged in.
@@ -379,7 +370,6 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     [self.authenticationActivityIndicator removeObserver:self forKeyPath:@"hidden"];
 
     autoDiscovery = nil;
-    _keyVerificationCoordinatorBridgePresenter = nil;
     _keyboardAvoider = nil;
 }
 
@@ -554,30 +544,6 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
             // The right bar button is used to return to login.
             self.navigationItem.rightBarButtonItem.title = [VectorL10n cancel];
         }
-    }
-}
-
-- (void)presentCompleteSecurityWithSession:(MXSession*)session
-{
-    KeyVerificationCoordinatorBridgePresenter *keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:session];
-    keyVerificationCoordinatorBridgePresenter.delegate = self;
-    
-    [keyVerificationCoordinatorBridgePresenter presentCompleteSecurityFrom:self isNewSignIn:YES animated:YES];
-    
-    self.keyVerificationCoordinatorBridgePresenter = keyVerificationCoordinatorBridgePresenter;
-}
-
-- (void)dismiss
-{
-    self.userInteractionEnabled = YES;
-    [self.authenticationActivityIndicator stopAnimating];
-    
-    // Dismiss (key verification) on successful login
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-    
-    if (self.authVCDelegate)
-    {
-        [self.authVCDelegate authenticationViewControllerDidDismiss:self];
     }
 }
 
@@ -1377,119 +1343,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         }];
     }
     
-    // Wait for session change to present complete security screen if needed
-    [self registerSessionStateChangeNotificationForSession:session];
-}
-
-- (void)registerSessionStateChangeNotificationForSession:(MXSession*)session
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionStateDidChangeNotification:) name:kMXSessionStateDidChangeNotification object:session];
-}
-
-- (void)unregisterSessionStateChangeNotification
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionStateDidChangeNotification object:nil];
-}
-                                  
-- (void)sessionStateDidChangeNotification:(NSNotification*)notification
-{
-    MXSession *session = (MXSession*)notification.object;
-
-    if (session.state == MXSessionStateStoreDataReady)
-    {
-        if (session.crypto.crossSigning)
-        {
-            // Do not make key share requests while the "Complete security" is not complete.
-            // If the device is self-verified, the SDK will restore the existing key backup.
-            // Then, it  will re-enable outgoing key share requests
-            [session.crypto setOutgoingKeyRequestsEnabled:NO onComplete:nil];
-        }
-    }
-    else if (session.state == MXSessionStateRunning)
-    {
-        [self unregisterSessionStateChangeNotification];
-        
-        if (session.crypto.crossSigning)
-        {
-            [session.crypto.crossSigning refreshStateWithSuccess:^(BOOL stateUpdated) {
-
-                MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: crossSigning.state: %@", @(session.crypto.crossSigning.state));
-
-                switch (session.crypto.crossSigning.state)
-                {
-                    case MXCrossSigningStateNotBootstrapped:
-                    {
-                        // TODO: This is still not sure we want to disable the automatic cross-signing bootstrap
-                        // if the admin disabled e2e by default.
-                        // Do like riot-web for the moment
-                        if ([session vc_homeserverConfiguration].isE2EEByDefaultEnabled)
-                        {
-                            // Bootstrap cross-signing on user's account
-                            // We do it for both registration and new login as long as cross-signing does not exist yet
-                            if (self.authInputsView.password.length)
-                            {
-                                MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: Bootstrap with password");
-                                
-                                [session.crypto.crossSigning setupWithPassword:self.authInputsView.password success:^{
-                                    MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: Bootstrap succeeded");
-                                    [self dismiss];
-                                } failure:^(NSError * _Nonnull error) {
-                                    MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: Bootstrap failed. Error: %@", error);
-                                    [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
-                                    [self dismiss];
-                                }];
-                            }
-                            else
-                            {
-                                // Try to setup cross-signing without authentication parameters in case if a grace period is enabled
-                                [self.crossSigningService setupCrossSigningWithoutAuthenticationFor:session success:^{
-                                    MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: Bootstrap succeeded without credentials");
-                                    [self dismiss];
-                                } failure:^(NSError * _Nonnull error) {
-                                    MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: Do not know how to bootstrap cross-signing. Skip it.");
-                                    [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
-                                    [self dismiss];
-                                }];
-                            }
-                        }
-                        else
-                        {
-                            [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
-                            [self dismiss];
-                        }
-                        break;
-                    }
-                    case MXCrossSigningStateCrossSigningExists:
-                    {
-                        MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: Complete security");
-                        
-                        // Ask the user to verify this session
-                        self.userInteractionEnabled = YES;
-                        [self.authenticationActivityIndicator stopAnimating];
-                        
-                        [self presentCompleteSecurityWithSession:session];
-                        break;
-                    }
-                        
-                    default:
-                        MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: Nothing to do");
-                        
-                        [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
-                        [self dismiss];
-                        break;
-                }
-                
-            } failure:^(NSError * _Nonnull error) {
-                MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: Fail to refresh crypto state with error: %@", error);
-                [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
-                [self dismiss];
-            }];
-        }
-        else
-        {
-            [self dismiss];
-        }
-    }
+    // Ask the coordinator to show the loading spinner whilst waiting.
+    [self.authVCDelegate authenticationViewController:self didLoginWithSession:session andPassword:self.authInputsView.password];
 }
 
 #pragma mark - MXKAuthInputsViewDelegate
@@ -1619,24 +1474,6 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
     // And show custom servers
     [self setCustomServerFieldsVisible:YES];
-}
-
-#pragma mark - KeyVerificationCoordinatorBridgePresenterDelegate
-
-- (void)keyVerificationCoordinatorBridgePresenterDelegateDidComplete:(KeyVerificationCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
-{
-    MXCrypto *crypto = coordinatorBridgePresenter.session.crypto;
-    if (!crypto.backup.hasPrivateKeyInCryptoStore || !crypto.backup.enabled)
-    {
-        MXLogDebug(@"[AuthenticationVC][MXKeyVerification] requestAllPrivateKeys: Request key backup private keys");
-        [crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
-    }
-    [self dismiss];
-}
-
-- (void)keyVerificationCoordinatorBridgePresenterDelegateDidCancel:(KeyVerificationCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
-{
-    [self dismiss];
 }
 
 #pragma mark - SetPinCoordinatorBridgePresenterDelegate

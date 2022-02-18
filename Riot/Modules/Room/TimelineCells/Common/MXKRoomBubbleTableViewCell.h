@@ -364,4 +364,7 @@ extern NSString *const kMXKRoomBubbleCellUrlItemInteraction;
 /// Called when a UI component is long pressed
 - (IBAction)onLongPressGesture:(UILongPressGestureRecognizer*)longPressGestureRecognizer;
 
+/// Remove marker view if present
+- (void)removeReadMarkerView;
+
 @end

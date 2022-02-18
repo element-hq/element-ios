@@ -16,7 +16,7 @@
 
 import UIKit
 
-class TextMessageBaseBubbleCell: SizableBaseRoomCell, RoomCellURLPreviewDisplayable, RoomCellReactionsDisplayable, RoomCellThreadSummaryDisplayable, RoomCellReadReceiptsDisplayable {
+class TextMessageBaseBubbleCell: SizableBaseRoomCell, RoomCellURLPreviewDisplayable, RoomCellReactionsDisplayable, RoomCellThreadSummaryDisplayable, RoomCellReadReceiptsDisplayable, RoomCellReadMarkerDisplayable {
     
     // MARK: - Properties
     

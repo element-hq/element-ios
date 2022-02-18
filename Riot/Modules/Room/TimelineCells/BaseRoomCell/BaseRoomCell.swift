@@ -124,6 +124,40 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
         }
     }
     
+    override var readMarkerViewLeadingConstraint: NSLayoutConstraint! {
+        get {
+            if self is RoomCellReadMarkerDisplayable {
+                return self.roomCellContentView?.readMarkerViewLeadingConstraint
+            } else {
+                return super.readMarkerViewLeadingConstraint
+            }
+        }
+        set {
+            if self is RoomCellReadMarkerDisplayable {
+                self.roomCellContentView?.readMarkerViewLeadingConstraint = newValue
+            } else {
+                super.readMarkerViewLeadingConstraint = newValue
+            }
+        }
+    }
+    
+    override var readMarkerViewTrailingConstraint: NSLayoutConstraint! {
+        get {
+            if self is RoomCellReadMarkerDisplayable {
+                return self.roomCellContentView?.readMarkerViewTrailingConstraint
+            } else {
+                return super.readMarkerViewTrailingConstraint
+            }
+        }
+        set {
+            if self is RoomCellReadMarkerDisplayable {
+                self.roomCellContentView?.readMarkerViewTrailingConstraint = newValue
+            } else {
+                super.readMarkerViewTrailingConstraint = newValue
+            }
+        }
+    }
+    
     // MARK: - Setup
             
     required override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -334,6 +368,19 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
 
     func removeThreadSummaryView() {
         self.roomCellContentView?.removeThreadSummaryView()
+    }
+    
+    // MARK: - RoomCellReadMarkerDisplayable
+            
+    func addReadMarkerView(_ readMarkerView: UIView) {
+        self.roomCellContentView?.addReadMarkerView(readMarkerView)
+        self.readMarkerView = readMarkerView
+    }
+    
+    override func removeReadMarkerView() {
+        self.roomCellContentView?.removeReadMarkerView()
+        
+        super.removeReadMarkerView()
     }
     
     // Encryption status

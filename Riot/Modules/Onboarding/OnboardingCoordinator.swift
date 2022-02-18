@@ -54,8 +54,8 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     private var navigationRouter: NavigationRouterType {
         parameters.router
     }
-    // Keep a strong ref as we need to init authVC early to preload its view (it is *really* slow to do in realtime)
-    private var authenticationCoordinator: AuthenticationCoordinatorProtocol = AuthenticationCoordinator()
+    // Keep a strong ref as we need to init authVC early to preload its view
+    private let authenticationCoordinator: AuthenticationCoordinatorProtocol
     private var isShowingAuthentication = false
     
     // MARK: Screen results
@@ -72,6 +72,11 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     
     init(parameters: OnboardingCoordinatorParameters) {
         self.parameters = parameters
+        
+        // Preload the authVC (it is *really* slow to load in realtime)
+        let authenticationParameters = AuthenticationCoordinatorParameters(navigationRouter: parameters.router)
+        authenticationCoordinator = AuthenticationCoordinator(parameters: authenticationParameters)
+        
         super.init()
     }    
     
@@ -147,10 +152,10 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     @available(iOS 14.0, *)
     /// Show the use case screen for new users.
     private func showUseCaseSelectionScreen() {
-        let coordinator = OnboardingUseCaseCoordinator()
+        let coordinator = OnboardingUseCaseSelectionCoordinator()
         coordinator.completion = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
-            self.useCaseCoordinator(coordinator, didCompleteWith: result)
+            self.useCaseSelectionCoordinator(coordinator, didCompleteWith: result)
         }
         
         coordinator.start()
@@ -166,7 +171,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     }
     
     /// Displays the next view in the flow after the use case screen.
-    private func useCaseCoordinator(_ coordinator: OnboardingUseCaseCoordinator, didCompleteWith result: OnboardingUseCaseViewModelResult) {
+    private func useCaseSelectionCoordinator(_ coordinator: OnboardingUseCaseSelectionCoordinator, didCompleteWith result: OnboardingUseCaseViewModelResult) {
         useCaseResult = result
         showAuthenticationScreen()
     }
@@ -178,9 +183,16 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         MXLog.debug("[OnboardingCoordinator] showAuthenticationScreen")
         
         let coordinator = authenticationCoordinator
-        coordinator.completion = { [weak self, weak coordinator] authenticationType in
+        coordinator.completion = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
-            self.authenticationCoordinator(coordinator, didCompleteWith: authenticationType)
+            
+            switch result {
+            case .didLogin(let session):
+                self.authenticationCoordinator(coordinator, didLoginWith: session)
+            case .didComplete(let authenticationType):
+                self.authenticationCoordinator(coordinator, didCompleteWith: authenticationType)
+            }
+            
         }
         
         // Due to needing to preload the authVC, this breaks the Coordinator init/start pattern.
@@ -200,7 +212,6 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         
         coordinator.start()
         add(childCoordinator: coordinator)
-        authenticationCoordinator = coordinator
         
         if customHomeserver != nil || customIdentityServer != nil {
             coordinator.updateHomeserver(customHomeserver, andIdentityServer: customIdentityServer)
@@ -217,17 +228,25 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         isShowingAuthentication = true
     }
     
+    private func authenticationCoordinator(_ coordinator: AuthenticationCoordinatorProtocol, didLoginWith session: MXSession) {
+        // TODO: Show next screens whilst waiting for the everything to load.
+        // May need to move the spinner and key verification up to here in order to coordinate properly.
+    }
+    
     /// Displays the next view in the flow after the authentication screen.
     private func authenticationCoordinator(_ coordinator: AuthenticationCoordinatorProtocol, didCompleteWith authenticationType: MXKAuthenticationType) {
         completion?()
         isShowingAuthentication = false
         
-        // Handle the chosen use case if appropriate
+        // Handle the chosen use case where applicable
         if authenticationType == MXKAuthenticationTypeRegister,
-           let useCaseResult = useCaseResult,
+           let useCase = useCaseResult?.userSessionPropertyValue,
            let userSession = UserSessionsService.shared.mainUserSession {
             // Store the value in the user's session
-            userSession.userProperties.useCase = useCaseResult.userSessionPropertyValue
+            userSession.userProperties.useCase = useCase
+            
+            // Update the analytics user properties with the use case
+            Analytics.shared.updateUserProperties(ftueUseCase: useCase)
         }
     }
 }
