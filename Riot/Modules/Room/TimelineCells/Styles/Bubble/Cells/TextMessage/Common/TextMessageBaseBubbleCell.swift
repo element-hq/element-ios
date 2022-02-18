@@ -40,6 +40,8 @@ class TextMessageBaseBubbleCell: SizableBaseRoomCell, RoomCellURLPreviewDisplaya
             return
         }
         
+        roomCellContentView?.userNameLabelBottomConstraint.constant = BubbleRoomCellLayoutConstants.senderNameLabelMargins.bottom
+        
         roomCellContentView?.innerContentViewBottomContraint.constant = BubbleRoomCellLayoutConstants.innerContentViewMargins.bottom
         
         let textMessageContentView = TextMessageBubbleCellContentView.instantiate()
