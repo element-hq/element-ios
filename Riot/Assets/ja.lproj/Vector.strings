@@ -82,7 +82,7 @@
 "auth_reset_password_missing_email" = "あなたのアカウントに登録された電子メールアドレスの入力が必要です.";
 "auth_reset_password_missing_password" = "新しいパスワードの入力が必要です.";
 "auth_reset_password_email_validation_message" = "%@ へ電子メールが送信されました. リンクをたどったら以下をクリックしてください.";
-"auth_reset_password_next_step_button" = "自分用電子メールアドレスで認証をします";
+"auth_reset_password_next_step_button" = "メールアドレスを認証しました";
 "auth_reset_password_error_unauthorized" = "電子メールアドレスの確認に失敗しました: 電子メールのリンクをクリックしたことを確認してください";
 "auth_reset_password_error_not_found" = "あなたの電子メールアドレスは、接続先サーバ上のMatrix IDと関連付けられていないようです。";
 "auth_reset_password_success_message" = "あなたのパスワードは初期化されました.\n\nあなたは全てのセッションから切断しており、プッシュ通知を受け取ることはありません。通知を再度有効にするには、各端末に再度ログインします。";
@@ -115,7 +115,7 @@
 "room_recents_create_empty_room" = "ルームを作成";
 "room_recents_join_room" = "ルームへ参加";
 "room_recents_join_room_title" = "ルームへ参加";
-"room_recents_join_room_prompt" = "ルームIDまたはルームのエイリアスを入力します";
+"room_recents_join_room_prompt" = "ルームIDまたはルームのエイリアスを入力";
 // People tab
 "people_invites_section" = "招待中";
 "people_conversation_section" = "会話";
@@ -176,11 +176,11 @@
 "room_participants_action_section_other" = "オプション";
 "room_participants_action_invite" = "招待";
 "room_participants_action_leave" = "このルームを出る";
-"room_participants_action_remove" = "このルームから退室させる";
-"room_participants_action_ban" = "このルームからブロックする";
+"room_participants_action_remove" = "このルームから削除";
+"room_participants_action_ban" = "このルームからブロック";
 "room_participants_action_unban" = "ブロック解除";
 "room_participants_action_ignore" = "この参加者の発言を全て非表示にする";
-"room_participants_action_unignore" = "この参加者の発言を全て表示する";
+"room_participants_action_unignore" = "この参加者の発言を全て表示";
 "room_participants_action_set_default_power_level" = "権限を一般参加者へ変更";
 "room_participants_action_set_moderator" = "権限を司会者へ変更";
 "room_participants_action_set_admin" = "権限を管理者へ変更";
@@ -876,7 +876,7 @@
 "settings_security" = "セキュリティー";
 "settings_three_pids_management_information_part3" = "";
 "settings_three_pids_management_information_part2" = "ディスカバリー";
-"store_full_description" = "Elementはまったく新しいメッセンジャーアプリです。\n\n1. あなた自身がプライバシーをコントロールすることを可能にします。\n2. Matrixネットワークにいる誰とでも通信できることはもちろん、Slackなどのアプリとの連携によって他のネットワークとも通信ができます。\n3. 広告、データ収集、バックドア、ユーザーの囲い込みから逃れることができます。\n4. エンドツーエンド暗号化とクロス署名によってあなたを保護します。\n\nElementは分散型（非中央集権型）でオープンソースであるため、他のメッセンジャーアプリと完全に異なっています。\n\nElementはあなた自身でサーバーをホストすることも、サーバーを選ぶこともできます。これによってあなたのデータと会話に関するプライバシーや所有権はあなた自身で管理できるようになります。さらに、あなたは他のElementユーザーと話せるだけでなくオープンネットワークへのアクセスも可能です。\n\nElementは、オープンな分散型通信の標準規格であるMatrixで動作するため、これら全てを実現することができています。\n\nどのサーバーがホストするか決めることができます。さまざまな方法で選択できます。\n\n1. 開発者がホストするmatrix.orgの公開サーバーで無料のアカウントを取得します。\n2. あなた自身がサーバーを動かし、アカウントを管理します。\n3. Element Matrix Servicesのホスティングプラットフォームに登録することで、カスタムサーバー上のアカウントを取得できます。\n\nなぜElementを選ぶべきなのか？\n\nデータを所有する: 自分でデータやメッセージを保管する場所を決めることができます。あなたが所有権を持ってコントロールすることで、第三者にあなたのデータを渡したり、ビッグデータを収集する巨大テック企業に依存する必要がなくなります。\n\n開かれたネットワークと共同作業: Matrixネットワーク内の他の誰とでも、あるいはElementや他のMatrixアプリを使っているかどうかに関わらず、またSlack、IRC、XMPPのような他のメッセージングシステムを使っているかどうかに関わらず、チャットすることができます。\n\nとても安全: 本物のエンドツーエンド暗号化（会話に参加している者のみがメッセージを読める）と会話参加者の真正性を確認するためクロス署名によって。\n\n完全なるコミュニケーションの訪れ: テキスト、音声通話、ビデオ通話、ファイル共有、画面共有、連携機能、ボット、ウィジェットなどのコミュニケーションに必要な機能の全てが実装されています。ルームやコミュニティーを立ち上げて連絡を取り合い、物事をスムーズに成し遂げることができます。\n\nいつでもどこにいても: 全てのデバイスとウェブでメッセージの履歴が同期されるため、どこにいても連絡を取ることができます。https://app.element.io";
+"store_full_description" = "Elementはまったく新しいメッセンジャーアプリです。\n\n1. あなた自身がプライバシーをコントロールすることを可能にします。\n2. Matrixネットワークにいる誰とでも通信できることはもちろん、Slackなどのアプリとの連携によって他のネットワークとも通信ができます。\n3. 広告、データマイニング、バックドア、ウォールドガーデンから、あなたを守ります。\n4. エンドツーエンド暗号化とクロス署名によってあなたを保護します。\n\nElementは分散型（非中央集権型）でオープンソースであるため、他のメッセンジャーアプリと完全に異なっています。\n\nElementでは、あなた自身がサーバーを運営することも、サーバーを選ぶこともできます。これによってあなたのデータと会話に関するプライバシーや所有権はあなた自身で管理できるようになります。さらに、Elementは開かれたネットワークにアクセスするので、Elementのユーザー以外とも話すことができます。しかもきわめて安全です。\n\nElementはMatrixーーオープンな分散型通信の標準規格ーーで動作するため、これら全てを実現することができています。\n\nElementでは、どのサーバーを使うかを、ご自身で決めることができます。\n1. 開発者がホストする matrix.org のパブリックサーバーで無料アカウントを取得する。\n2. あなた自身がサーバーを運営し、アカウントを管理する。\n3. Element Matrix Servicesのホスティングプラットフォームに加入し、カスタムサーバー上でアカウントを作る。\n\nなぜElementを選ぶべきなのか？\n\n自分のデータを、自分で所有: データやメッセージを保管する場所を自分で決めることができます。データを所有しコントロールするのは、あなた自身です。データを解析したり第三者にデータを渡したりする巨大IT企業ではありません。\n\nオープンなメッセージングとコラボレーション: Matrixネットワーク上の誰とでも、相手がElementや他のMatrixアプリを使っているか、さらにはSlack、IRC、XMPPのような他のメッセージングシステムを使っているかに関わらず、チャットをすることができます。\n\n非常に安全: 本物のエンド・ツー・エンドの暗号化（会話に参加している人だけがメッセージを復号化できる）と、会話参加者の真正性を確認するための相互署名を行います。\n\n包括的なコミュニケーション: メッセージング、音声およびビデオ通話、ファイル共有、画面共有、その他多くのインテグレーション、ボット、ウィジェットを提供します。ルームやコミュニティーを立ち上げて連絡を取り合い、物事をスムーズに成し遂げることができます。\n\nいつでも、どこにいても: 全てのデバイスとウェブ（https://app.element.io）でメッセージの履歴が同期されるため、どこにいても連絡を取ることができます。";
 "user_verification_session_details_additional_information_untrusted_other_user" = "ユーザーがこのセッションを信頼するまでは、セッションとの間で送受信されるメッセージには警告が表示されます。また、手動で検証することもできます。";
 "user_verification_session_details_information_untrusted_other_user" = " 新しいセッションを使ってサインインしました:";
 "user_verification_session_details_information_untrusted_current_user" = "このセッションを検証することで、信頼できるものとしてマークし、暗号化されたメッセージへのアクセスを許可します。";
