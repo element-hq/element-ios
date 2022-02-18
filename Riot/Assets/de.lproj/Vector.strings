@@ -1476,7 +1476,7 @@
 "spaces_empty_space_title" = "Dieser Space hat (noch) keine Räume";
 "spaces_explore_rooms" = "Räume erkunden";
 "leave_space_and_all_rooms_action" = "Alle Räume und Spaces verlassen";
-"leave_space_only_action" = "Keine Räume verlassen";
+"leave_space_only_action" = "Keine Räume und Subspaces verlassen";
 "spaces_left_panel_title" = "Spaces";
 "room_recents_suggested_rooms_section" = "VORGESCHLAGENE RÄUME";
 "spaces_home_space_title" = "Start";
