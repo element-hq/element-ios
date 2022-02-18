@@ -14,19 +14,20 @@
 // limitations under the License.
 //
 
+import Foundation
 import AnalyticsEvents
 
-/// A tappable UI element that can be tracked in Analytics.
-@objc enum AnalyticsUIElement: Int {
-    case removeMe
-    
-    /// The element name reported to the AnalyticsEvent.
-    var name: AnalyticsEvent.Interaction.Name {
+extension UserSessionProperties.UseCase {
+    var analyticsName: AnalyticsEvent.UserProperties.FtueUseCaseSelection {
         switch self {
-        // Note: This is a test element that doesn't need to be captured.
-        // It can be removed when some elements are added that relate to mobile.
-        case .removeMe:
-            return .WebRoomSettingsLeaveButton
+        case .personalMessaging:
+            return .PersonalMessaging
+        case .workMessaging:
+            return .WorkMessaging
+        case .communityMessaging:
+            return .CommunityMessaging
+        case .skipped:
+            return .Skip
         }
     }
 }
