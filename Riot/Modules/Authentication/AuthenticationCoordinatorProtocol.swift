@@ -18,9 +18,21 @@
 
 import Foundation
 
+struct AuthenticationCoordinatorParameters {
+    let navigationRouter: NavigationRouterType
+}
+
+enum AuthenticationCoordinatorResult {
+    /// The user has authenticated but key verification is yet to happen. The session value is
+    /// for a fresh session that still needs to load, sync etc before being ready.
+    case didLogin(MXSession)
+    /// All of the required authentication steps including key verification is complete.
+    case didComplete(MXKAuthenticationType)
+}
+
 /// `AuthenticationCoordinatorProtocol` is a protocol describing a Coordinator that handle's the authentication navigation flow.
 protocol AuthenticationCoordinatorProtocol: Coordinator, Presentable {
-    var completion: ((MXKAuthenticationType) -> Void)? { get set }
+    var completion: ((AuthenticationCoordinatorResult) -> Void)? { get set }
     
     /// Update the screen to display registration or login.
     func update(authenticationType: MXKAuthenticationType)

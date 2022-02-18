@@ -16,7 +16,6 @@
  limitations under the License.
  */
 
-import Foundation
 import UIKit
 
 /// A coordinator that handles authentication, verification and setting a PIN.
@@ -26,17 +25,27 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     // MARK: Private
     
+    private let navigationRouter: NavigationRouterType
+    
     private let authenticationViewController: AuthenticationViewController
+    private let crossSigningService = CrossSigningService()
+    
+    /// The password entered, for use when setting up cross-signing.
+    private var password: String?
+    /// The session created when successfully authenticated.
+    private var session: MXSession?
     
     // MARK: Public
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    var completion: ((MXKAuthenticationType) -> Void)?
+    var completion: ((AuthenticationCoordinatorResult) -> Void)?
     
     // MARK: - Setup
     
-    override init() {
+    init(parameters: AuthenticationCoordinatorParameters) {
+        self.navigationRouter = parameters.navigationRouter
+        
         let authenticationViewController = AuthenticationViewController()
         self.authenticationViewController = authenticationViewController
         
@@ -81,11 +90,157 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     func continueSSOLogin(withToken loginToken: String, transactionID: String) -> Bool {
         authenticationViewController.continueSSOLogin(withToken: loginToken, txnId: transactionID)
     }
+    
+    // MARK: - Private
+    
+    private func showLoadingAnimation() {
+        let loadingViewController = LaunchLoadingViewController()
+        loadingViewController.modalPresentationStyle = .fullScreen
+        
+        // Replace the navigation stack with the loading animation
+        // as there is nothing to navigate back to.
+        navigationRouter.setRootModule(loadingViewController)
+    }
+    
+    private func presentCompleteSecurity(with session: MXSession) {
+        let isNewSignIn = true
+        let keyVerificationCoordinator = KeyVerificationCoordinator(session: session, flow: .completeSecurity(isNewSignIn))
+        
+        keyVerificationCoordinator.delegate = self
+        let presentable = keyVerificationCoordinator.toPresentable()
+        presentable.presentationController?.delegate = self
+        navigationRouter.present(presentable, animated: true)
+        keyVerificationCoordinator.start()
+        add(childCoordinator: keyVerificationCoordinator)
+    }
+    
+    private func authenticationDidComplete() {
+        completion?(.didComplete(authenticationViewController.authType))
+    }
+    
+    private func registerSessionStateChangeNotification(for session: MXSession) {
+        NotificationCenter.default.addObserver(self, selector: #selector(sessionStateDidChange), name: .mxSessionStateDidChange, object: session)
+    }
+
+    private func unregisterSessionStateChangeNotification() {
+        NotificationCenter.default.removeObserver(self, name: .mxSessionStateDidChange, object: nil)
+    }
+                                      
+    @objc private func sessionStateDidChange(_ notification: Notification) {
+        guard let session = notification.object as? MXSession else {
+            MXLog.error("[AuthenticationCoordinator] sessionStateDidChange: Missing session in the notification")
+            return
+        }
+
+        if session.state == .storeDataReady {
+            if let crypto = session.crypto, crypto.crossSigning != nil {
+                // Do not make key share requests while the "Complete security" is not complete.
+                // If the device is self-verified, the SDK will restore the existing key backup.
+                // Then, it  will re-enable outgoing key share requests
+                crypto.setOutgoingKeyRequestsEnabled(false, onComplete: nil)
+            }
+        } else if session.state == .running {
+            unregisterSessionStateChangeNotification()
+            
+            if let crypto = session.crypto, let crossSigning = crypto.crossSigning {
+                crossSigning.refreshState { [weak self] stateUpdated in
+                    guard let self = self else { return }
+                    
+                    MXLog.debug("[AuthenticationCoordinator] sessionStateDidChange: crossSigning.state: \(crossSigning.state)")
+                    
+                    switch crossSigning.state {
+                    case .notBootstrapped:
+                        // TODO: This is still not sure we want to disable the automatic cross-signing bootstrap
+                        // if the admin disabled e2e by default.
+                        // Do like riot-web for the moment
+                        if session.vc_homeserverConfiguration().isE2EEByDefaultEnabled {
+                            // Bootstrap cross-signing on user's account
+                            // We do it for both registration and new login as long as cross-signing does not exist yet
+                            if let password = self.password, !password.isEmpty {
+                                MXLog.debug("[AuthenticationCoordinator] sessionStateDidChange: Bootstrap with password")
+                                
+                                crossSigning.setup(withPassword: password) {
+                                    MXLog.debug("[AuthenticationCoordinator] sessionStateDidChange: Bootstrap succeeded")
+                                    self.authenticationDidComplete()
+                                } failure: { error in
+                                    MXLog.error("[AuthenticationCoordinator] sessionStateDidChange: Bootstrap failed. Error: \(error)")
+                                    crypto.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
+                                    self.authenticationDidComplete()
+                                }
+                            } else {
+                                // Try to setup cross-signing without authentication parameters in case if a grace period is enabled
+                                self.crossSigningService.setupCrossSigningWithoutAuthentication(for: session) {
+                                    MXLog.debug("[AuthenticationCoordinator] sessionStateDidChange: Bootstrap succeeded without credentials")
+                                    self.authenticationDidComplete()
+                                } failure: { error in
+                                    MXLog.error("[AuthenticationCoordinator] sessionStateDidChange: Do not know how to bootstrap cross-signing. Skip it.")
+                                    crypto.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
+                                    self.authenticationDidComplete()
+                                }
+                            }
+                        } else {
+                            crypto.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
+                            self.authenticationDidComplete()
+                        }
+                    case .crossSigningExists:
+                        MXLog.debug("[AuthenticationCoordinator] sessionStateDidChange: Complete security")
+                        self.presentCompleteSecurity(with: session)
+                    default:
+                        MXLog.debug("[AuthenticationCoordinator] sessionStateDidChange: Nothing to do")
+                        
+                        crypto.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
+                        self.authenticationDidComplete()
+                    }
+                } failure: { [weak self] error in
+                    MXLog.error("[AuthenticationCoordinator] sessionStateDidChange: Fail to refresh crypto state with error: \(error)")
+                    crypto.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
+                    self?.authenticationDidComplete()
+                }
+            } else {
+                authenticationDidComplete()
+            }
+        }
+    }
 }
 
 // MARK: - AuthenticationViewControllerDelegate
 extension AuthenticationCoordinator: AuthenticationViewControllerDelegate {
-    func authenticationViewControllerDidDismiss(_ authenticationViewController: AuthenticationViewController!) {
-        completion?(authenticationViewController.authType)
+    func authenticationViewController(_ authenticationViewController: AuthenticationViewController!, didLoginWith session: MXSession!, andPassword password: String!) {
+        registerSessionStateChangeNotification(for: session)
+        
+        self.session = session
+        self.password = password
+        
+        self.showLoadingAnimation()
+        completion?(.didLogin(session))
+    }
+}
+
+// MARK: - KeyVerificationCoordinatorDelegate
+extension AuthenticationCoordinator: KeyVerificationCoordinatorDelegate {
+    func keyVerificationCoordinatorDidComplete(_ coordinator: KeyVerificationCoordinatorType, otherUserId: String, otherDeviceId: String) {
+        if let crypto = session?.crypto,
+           !crypto.backup.hasPrivateKeyInCryptoStore || !crypto.backup.enabled {
+            MXLog.debug("[AuthenticationCoordinator][MXKeyVerification] requestAllPrivateKeys: Request key backup private keys")
+            crypto.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
+        }
+        
+        navigationRouter.dismissModule(animated: true) { [weak self] in
+            self?.authenticationDidComplete()
+        }
+    }
+    
+    func keyVerificationCoordinatorDidCancel(_ coordinator: KeyVerificationCoordinatorType) {
+        navigationRouter.dismissModule(animated: true) { [weak self] in
+            self?.authenticationDidComplete()
+        }
+    }
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+extension AuthenticationCoordinator: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
+        // Prevent Key Verification from using swipe to dismiss
+        return false
     }
 }
