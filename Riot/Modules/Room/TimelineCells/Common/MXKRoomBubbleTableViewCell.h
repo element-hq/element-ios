@@ -343,4 +343,7 @@ extern NSString *const kMXKRoomBubbleCellUrlItemInteraction;
 /// Called when content view cell is tapped
 - (IBAction)onContentViewTap:(UITapGestureRecognizer*)sender;
 
+/// Remove marker view if present
+- (void)removeReadMarkerView;
+
 @end

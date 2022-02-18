@@ -558,48 +558,17 @@ const CGFloat kTypingCellHeight = 24;
                         
                         if ([componentEventId isEqualToString:self.room.accountData.readMarkerEventId])
                         {
-                            bubbleCell.readMarkerView = [[UIView alloc] initWithFrame:CGRectMake(0, bottomPositionY - PlainRoomCellLayoutConstants.readMarkerViewHeight, bubbleCell.bubbleOverlayContainer.frame.size.width, PlainRoomCellLayoutConstants.readMarkerViewHeight)];
-                            bubbleCell.readMarkerView.backgroundColor = ThemeService.shared.theme.tintColor;
+                            UIView *readMarkerView = [[UIView alloc] initWithFrame:CGRectMake(0, bottomPositionY - PlainRoomCellLayoutConstants.readMarkerViewHeight, bubbleCell.bubbleOverlayContainer.frame.size.width, PlainRoomCellLayoutConstants.readMarkerViewHeight)];
+                            readMarkerView.backgroundColor = ThemeService.shared.theme.tintColor;
                             // Hide by default the marker, it will be shown and animated when the cell will be rendered.
-                            bubbleCell.readMarkerView.hidden = YES;
-                            bubbleCell.readMarkerView.tag = index;
+                            readMarkerView.hidden = YES;
+                            readMarkerView.tag = index;
+                            readMarkerView.accessibilityIdentifier = @"readMarker";
                             
-                            bubbleCell.readMarkerView.translatesAutoresizingMaskIntoConstraints = NO;
-                            bubbleCell.readMarkerView.accessibilityIdentifier = @"readMarker";
-                            [bubbleCell.bubbleOverlayContainer addSubview:bubbleCell.readMarkerView];
-                            
-                            // Force read marker constraints
-                            bubbleCell.readMarkerViewTopConstraint = [NSLayoutConstraint constraintWithItem:bubbleCell.readMarkerView
-                                                                                                  attribute:NSLayoutAttributeTop
-                                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                                     toItem:bubbleCell.bubbleOverlayContainer
-                                                                                                  attribute:NSLayoutAttributeTop
-                                                                                                 multiplier:1.0
-                                                                                                   constant:bottomPositionY - PlainRoomCellLayoutConstants.readMarkerViewHeight];
-                            bubbleCell.readMarkerViewLeadingConstraint = [NSLayoutConstraint constraintWithItem:bubbleCell.readMarkerView
-                                                                                                      attribute:NSLayoutAttributeLeading
-                                                                                                      relatedBy:NSLayoutRelationEqual
-                                                                                                         toItem:bubbleCell.bubbleOverlayContainer
-                                                                                                      attribute:NSLayoutAttributeLeading
-                                                                                                     multiplier:1.0
-                                                                                                       constant:0];
-                            bubbleCell.readMarkerViewTrailingConstraint = [NSLayoutConstraint constraintWithItem:bubbleCell.bubbleOverlayContainer
-                                                                                                       attribute:NSLayoutAttributeTrailing
-                                                                                                       relatedBy:NSLayoutRelationEqual
-                                                                                                          toItem:bubbleCell.readMarkerView
-                                                                                                       attribute:NSLayoutAttributeTrailing
-                                                                                                      multiplier:1.0
-                                                                                                        constant:0];
-                            
-                            bubbleCell.readMarkerViewHeightConstraint = [NSLayoutConstraint constraintWithItem:bubbleCell.readMarkerView
-                                                                                                     attribute:NSLayoutAttributeHeight
-                                                                                                     relatedBy:NSLayoutRelationEqual
-                                                                                                        toItem:nil
-                                                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                                                    multiplier:1.0
-                                                                                                      constant:PlainRoomCellLayoutConstants.readMarkerViewHeight];
-                            
-                            [NSLayoutConstraint activateConstraints:@[bubbleCell.readMarkerViewTopConstraint, bubbleCell.readMarkerViewLeadingConstraint, bubbleCell.readMarkerViewTrailingConstraint, bubbleCell.readMarkerViewHeightConstraint]];
+                            [cellDecorator addReadMarkerView:readMarkerView
+                                                      toCell:bubbleCell
+                                                    cellData:cellData
+                                        contentViewPositionY:bottomPositionY];
                         }
                     }
                 }

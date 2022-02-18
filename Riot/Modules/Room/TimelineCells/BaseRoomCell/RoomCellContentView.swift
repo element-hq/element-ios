@@ -56,6 +56,12 @@ final class RoomCellContentView: UIView, NibLoadable {
     @IBOutlet weak var readReceiptsContainerView: UIView!
     @IBOutlet weak var readReceiptsContentView: UIView!
     
+    @IBOutlet weak var readMarkerContainerView: UIView!
+    @IBOutlet weak var readMarkerContentView: UIView!
+    
+    var readMarkerViewLeadingConstraint: NSLayoutConstraint?
+    var readMarkerViewTrailingConstraint: NSLayoutConstraint?
+    
     @IBOutlet weak var reactionsContainerView: UIView!
     @IBOutlet weak var reactionsContentView: UIView!
     @IBOutlet weak var reactionsContentViewLeadingConstraint: NSLayoutConstraint!
@@ -151,6 +157,15 @@ final class RoomCellContentView: UIView, NibLoadable {
         }
         set {
             self.encryptionStatusContainerView.isHidden = !newValue
+        }
+    }
+    
+    var showReadMarker: Bool {
+        get {
+            return !self.readMarkerContainerView.isHidden
+        }
+        set {
+            self.readMarkerContainerView.isHidden = !newValue
         }
     }
     
@@ -302,5 +317,48 @@ extension RoomCellContentView: RoomCellURLPreviewDisplayable {
     func removeURLPreviewView() {
         self.showURLPreview = false
         self.urlPreviewContentView.vc_removeAllSubviews()
+    }
+}
+
+// MARK: - RoomCellReadMarkerDisplayable
+extension RoomCellContentView: RoomCellReadMarkerDisplayable {
+    
+    func addReadMarkerView(_ readMarkerView: UIView) {
+        guard let containerView = self.readMarkerContainerView else {
+            return
+        }
+        
+        self.readMarkerContentView.vc_removeAllSubviews()
+        
+        readMarkerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.readMarkerContentView.addSubview(readMarkerView)
+        
+        // Force read marker constraints
+        let topConstraint = readMarkerView.topAnchor.constraint(equalTo: containerView.topAnchor)
+        
+        let leadingConstraint = readMarkerView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor)
+        
+        let trailingConstraint = readMarkerView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
+        
+        let heightConstraint = readMarkerView.heightAnchor.constraint(equalToConstant: PlainRoomCellLayoutConstants.readMarkerViewHeight)
+        
+        let bottomContraint = readMarkerView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+        
+        NSLayoutConstraint.activate([topConstraint,
+                                     leadingConstraint,
+                                     trailingConstraint,
+                                     heightConstraint,
+                                     bottomContraint])
+        
+        self.readMarkerViewLeadingConstraint = leadingConstraint
+        self.readMarkerViewTrailingConstraint = trailingConstraint
+        
+        self.showReadMarker = true
+    }
+    
+    func removeReadMarkerView() {
+        self.showReadMarker = false
+        self.readMarkerContentView.vc_removeAllSubviews()
     }
 }
