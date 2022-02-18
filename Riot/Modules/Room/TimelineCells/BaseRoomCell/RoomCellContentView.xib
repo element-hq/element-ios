@@ -300,6 +300,7 @@
                 <outlet property="innerContentView" destination="oeI-eO-mFK" id="ap1-He-C6g"/>
                 <outlet property="innerContentViewBottomContraint" destination="8M5-uW-82s" id="Vn0-6C-LSW"/>
                 <outlet property="innerContentViewLeadingConstraint" destination="0Fr-0L-9tU" id="ByY-oe-d8Y"/>
+                <outlet property="innerContentViewTopConstraint" destination="uZZ-I6-Xtq" id="HqY-G8-Od7"/>
                 <outlet property="innerContentViewTrailingConstraint" destination="Pbe-4d-q6Y" id="24b-AS-hX4"/>
                 <outlet property="paginationLabel" destination="r7y-FK-GWS" id="R9V-ix-mDu"/>
                 <outlet property="paginationSeparatorView" destination="ytv-tA-NmI" id="sgk-n1-KQi"/>
@@ -323,6 +324,8 @@
                 <outlet property="urlPreviewContentViewTrailingConstraint" destination="ZmA-Ns-chh" id="EXg-Rr-cuJ"/>
                 <outlet property="userNameContainerView" destination="w0C-6a-f5M" id="fZE-vY-0nR"/>
                 <outlet property="userNameLabel" destination="meG-P8-61b" id="ETK-ag-WYR"/>
+                <outlet property="userNameLabelBottomConstraint" destination="HDT-eS-UWo" id="zTQ-5g-SAo"/>
+                <outlet property="userNameLabelTopConstraint" destination="baE-tR-0Ck" id="myA-Gm-17A"/>
                 <outlet property="userNameTouchMaskView" destination="ohU-Sc-mgb" id="FwW-aL-kc5"/>
             </connections>
             <point key="canvasLocation" x="-1092" y="-1332"/>

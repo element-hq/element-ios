@@ -33,11 +33,15 @@ final class RoomCellContentView: UIView, NibLoadable {
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var userNameTouchMaskView: UIView!
     
+    @IBOutlet weak var userNameLabelTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var userNameLabelBottomConstraint: NSLayoutConstraint!
+    
     @IBOutlet weak var avatarContainerView: UIView!
     @IBOutlet weak var avatarImageView: MXKImageView!
     
     @IBOutlet weak var innerContentView: UIView!
     
+    @IBOutlet weak var innerContentViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var innerContentViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var innerContentViewTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var innerContentViewBottomContraint: NSLayoutConstraint!

@@ -24,6 +24,10 @@ final class BubbleRoomCellLayoutConstants: NSObject {
     /// Inner content view margins
     static let innerContentViewMargins: UIEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 5.0, right: 0)
     
+    // Sender name margins
+    
+    static let senderNameLabelMargins: UIEdgeInsets = UIEdgeInsets(top: 10, left: 0, bottom: 0.0, right: 0)
+    
     // Text message bubbles margins from cell content view
     
     static let outgoingBubbleBackgroundMargins: UIEdgeInsets = UIEdgeInsets(top: 0, left: 80, bottom: 0, right: 34)

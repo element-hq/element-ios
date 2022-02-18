@@ -36,9 +36,10 @@ class TextMessageBaseBubbleCell: SizableBaseRoomCell, RoomCellURLPreviewDisplaya
         roomCellContentView?.backgroundColor = .clear
         
         roomCellContentView?.innerContentViewBottomContraint.constant = BubbleRoomCellLayoutConstants.innerContentViewMargins.bottom
-        
+        roomCellContentView?.userNameLabelBottomConstraint.constant = BubbleRoomCellLayoutConstants.senderNameLabelMargins.bottom
+
         let textMessageContentView = TextMessageBubbleCellContentView.instantiate()
-                
+
         roomCellContentView?.innerContentView.vc_addSubViewMatchingParent(textMessageContentView)
         
         self.textMessageContentView = textMessageContentView
