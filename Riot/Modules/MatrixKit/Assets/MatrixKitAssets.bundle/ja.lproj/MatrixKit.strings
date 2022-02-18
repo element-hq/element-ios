@@ -56,7 +56,7 @@
 "set_default_power_level" = "権限レベルをリセット";
 "set_moderator" = "モデレーターを設定";
 "set_admin" = "管理者を設定";
-"start_chat" = "チャットを始める";
+"start_chat" = "チャットを開始";
 "start_voice_call" = "音声通話を開始";
 "start_video_call" = "ビデオ通話を開始";
 "mention" = "記載";
@@ -72,7 +72,7 @@
 "end_call" = "通話終了";
 "ignore" = "無視";
 // Events formatter
-"notice_avatar_changed_too" = "(アバターも変わった)";
+"notice_avatar_changed_too" = "（アバターも変更されました）";
 "notice_room_name_removed" = "%@はルーム名を削除しました";
 "notice_room_topic_removed" = "%@はトピックを削除しました";
 "notice_event_redacted" = "<編集された%@>";
@@ -147,7 +147,7 @@
 "room_event_encryption_info_device_verified" = "検証済み";
 "room_event_encryption_info_device_not_verified" = "検証されていない";
 "room_event_encryption_info_device_blocked" = "ブラックリストに載せた";
-"room_event_encryption_info_verify" = "検証中...";
+"room_event_encryption_info_verify" = "検証しています…";
 "room_event_encryption_info_unverify" = "未検証";
 "room_event_encryption_info_block" = "ブラックリスト";
 "room_event_encryption_info_unblock" = "ブラックでないリスト";
@@ -220,7 +220,7 @@
 "group_section" = "グループ";
 // Search
 "search_no_results" = "結果がありません";
-"search_searching" = "検索中...";
+"search_searching" = "検索しています…";
 // Time
 "format_time_s" = "秒";
 "format_time_m" = "分";
