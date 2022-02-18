@@ -31,6 +31,8 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         static let roomNameMaximumNumberOfChars = 50
         static let roomAddressMaximumNumberOfChars = 50
         static let roomTopicMaximumNumberOfChars = 250
+        static let chooseAvatarTableViewCellHeight: CGFloat = 140
+        static let textViewTableViewCellHeight: CGFloat = 150
     }
     
     // MARK: - Properties
@@ -481,9 +483,9 @@ extension EnterNewRoomDetailsViewController: UITableViewDelegate {
         
         switch row.type {
         case .avatar:
-            return 140
+            return Constants.chooseAvatarTableViewCellHeight
         case .textView:
-            return 150
+            return Constants.textViewTableViewCellHeight
         default:
             return UITableView.automaticDimension
         }
