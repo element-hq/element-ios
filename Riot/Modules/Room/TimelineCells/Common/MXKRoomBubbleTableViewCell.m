@@ -247,32 +247,34 @@ static BOOL _disableLongPressGestureOnEvent;
 
 - (void)setupMessageTextViewLongPressGesture
 {
-    if (_disableLongPressGestureOnEvent == NO)
+    if (_disableLongPressGestureOnEvent)
     {
-        // Add a long gesture recognizer on text view (in order to display for example the event details)
-        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPressGesture:)];
-        longPress.delegate = self;
+        return;
+    }
+    
+    // Add a long gesture recognizer on text view (in order to display for example the event details)
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPressGesture:)];
+    longPress.delegate = self;
+    
+    // MXKMessageTextView does not catch touches outside of links. Add a background view to handle long touch.
+    if ([self.messageTextView isKindOfClass:[MXKMessageTextView class]])
+    {
+        UIView *messageTextBackgroundView = [[UIView alloc] initWithFrame:self.messageTextView.frame];
+        messageTextBackgroundView.backgroundColor = [UIColor clearColor];
+        [self.contentView insertSubview:messageTextBackgroundView belowSubview:self.messageTextView];
+        messageTextBackgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+        [messageTextBackgroundView.leftAnchor constraintEqualToAnchor:self.messageTextView.leftAnchor].active = YES;
+        [messageTextBackgroundView.rightAnchor constraintEqualToAnchor:self.messageTextView.rightAnchor].active = YES;
+        [messageTextBackgroundView.topAnchor constraintEqualToAnchor:self.messageTextView.topAnchor].active = YES;
+        [messageTextBackgroundView.bottomAnchor constraintEqualToAnchor:self.messageTextView.bottomAnchor].active = YES;
         
-        // MXKMessageTextView does not catch touches outside of links. Add a background view to handle long touch.
-        if ([self.messageTextView isKindOfClass:[MXKMessageTextView class]])
-        {
-            UIView *messageTextBackgroundView = [[UIView alloc] initWithFrame:self.messageTextView.frame];
-            messageTextBackgroundView.backgroundColor = [UIColor clearColor];
-            [self.contentView insertSubview:messageTextBackgroundView belowSubview:self.messageTextView];
-            messageTextBackgroundView.translatesAutoresizingMaskIntoConstraints = NO;
-            [messageTextBackgroundView.leftAnchor constraintEqualToAnchor:self.messageTextView.leftAnchor].active = YES;
-            [messageTextBackgroundView.rightAnchor constraintEqualToAnchor:self.messageTextView.rightAnchor].active = YES;
-            [messageTextBackgroundView.topAnchor constraintEqualToAnchor:self.messageTextView.topAnchor].active = YES;
-            [messageTextBackgroundView.bottomAnchor constraintEqualToAnchor:self.messageTextView.bottomAnchor].active = YES;
-            
-            [messageTextBackgroundView addGestureRecognizer:longPress];
-            
-            self.messageTextBackgroundView = messageTextBackgroundView;
-        }
-        else
-        {
-            [self.messageTextView addGestureRecognizer:longPress];
-        }
+        [messageTextBackgroundView addGestureRecognizer:longPress];
+        
+        self.messageTextBackgroundView = messageTextBackgroundView;
+    }
+    else
+    {
+        [self.messageTextView addGestureRecognizer:longPress];
     }
 }
 
