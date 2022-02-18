@@ -422,7 +422,7 @@
 // Call
 "call_incoming_voice_prompt" = "%@ さんから通話の着信中";
 "call_incoming_video_prompt" = "%@ さんから映像つき通話の着信中";
-"call_incoming_voice" = "通話着信中…";
+"call_incoming_voice" = "着信中…";
 "call_incoming_video" = "ビデオ通話の着信中…";
 "call_already_displayed" = "既に通話中です。";
 "call_jitsi_error" = "会議通話への参加に失敗しました。";
