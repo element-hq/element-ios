@@ -32,7 +32,6 @@ class ChooseAvatarTableViewCell: UITableViewCell {
     @IBOutlet private weak var chooseAvatarButton: UIButton!
     @IBOutlet private weak var removeAvatarButton: UIButton! {
         didSet {
-            removeAvatarButton.layer.cornerRadius = removeAvatarButton.frame.width/2
             removeAvatarButton.imageView?.contentMode = .scaleAspectFit
         }
     }
