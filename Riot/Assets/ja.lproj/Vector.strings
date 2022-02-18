@@ -130,14 +130,14 @@
 "search_default_placeholder" = "検索";
 "search_people_placeholder" = "ユーザID, 表示名, 電子メールで検索";
 "search_no_result" = "結果なし";
-"search_in_progress" = "検索中…";
+"search_in_progress" = "検索しています…";
 // Directory
 "directory_cell_title" = "ルーム一覧を見る";
 "directory_cell_description" = "%tu ルーム";
 "directory_search_results_title" = "ルーム一覧検索結果";
 "directory_search_results" = "%tu 件の検索結果 for %@";
 "directory_search_results_more_than" = ">%tu 件の検索結果 for %@";
-"directory_searching_title" = "ルーム一覧を検索中…";
+"directory_searching_title" = "ルーム一覧を検索しています…";
 "directory_search_fail" = "一覧を取得できませんでした";
 // Contacts
 "contacts_address_book_section" = "端末の電話帳";
@@ -714,7 +714,7 @@
 "settings_key_backup_info_algorithm" = "アルゴリズム: %@";
 "settings_key_backup_info_version" = "キーのバックアップバージョン: %@";
 "settings_key_backup_info_none" = "あなたのキーはこのセッションからバックアップされていません。";
-"settings_key_backup_info_checking" = "確認中…";
+"settings_key_backup_info_checking" = "確認しています…";
 "settings_add_3pid_password_message" = "続けるにはパスワードを入力してください";
 "settings_add_3pid_invalid_password_message" = "無効な認証情報";
 "settings_add_3pid_password_title_email" = "メールアドレスを追加する";
@@ -738,8 +738,8 @@
 "room_member_power_level_short_admin" = "管理者";
 "room_member_power_level_moderator_in" = "モデレーターは%@";
 "room_member_power_level_admin_in" = "管理者は%@";
-"room_participants_security_loading" = "読み込み中…";
-"room_participants_action_security_status_loading" = "読み込み中…";
+"room_participants_security_loading" = "読み込んでいます…";
+"room_participants_action_security_status_loading" = "読み込んでいます…";
 "room_participants_action_security_status_warning" = "警告";
 "room_participants_action_security_status_complete_security" = "セキュリティーを確認";
 "room_participants_action_security_status_verify" = "検証";
@@ -831,8 +831,8 @@
 "security_settings_secure_backup_setup" = "セットアップ";
 "security_settings_secure_backup_description" = "暗号化キーをサーバーにバックアップすることにより、暗号化されたメッセージとデータへのアクセスが失われるのを防ぎます。";
 "security_settings_secure_backup" = "安全なバックアップ";
-"security_settings_crypto_sessions_description_2" = "ログインが認識されない場合は、パスワードを変更してバックアップをリセットしてください。";
-"security_settings_crypto_sessions_loading" = "セッションを読み込み中…";
+"security_settings_crypto_sessions_description_2" = "見覚えのないログインがある場合は、Matrixアカウントのパスワードを変更し、バックアップをリセットしてください。";
+"security_settings_crypto_sessions_loading" = "セッションを読み込んでいます…";
 "security_settings_crypto_sessions" = "セッション";
 
 // Security settings
@@ -1108,5 +1108,9 @@
 "done" = "完了";
 "open" = "開く";
 "enable" = "有効にする";
-"key_backup_recover_from_passphrase_passphrase_placeholder" = "パスフレーズを入力する";
+"key_backup_recover_from_passphrase_passphrase_placeholder" = "パスフレーズを入力";
 "key_backup_recover_from_passphrase_passphrase_title" = "入力";
+"analytics_prompt_terms_link_new_user" = "ここ";
+"secrets_setup_recovery_key_done_action" = "完了";
+"secrets_setup_recovery_passphrase_validate_action" = "完了";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_backup_action" = "バックアップ";
