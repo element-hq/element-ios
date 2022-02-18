@@ -1095,7 +1095,7 @@
 "settings_messages_by_a_bot" = "ボットによるメッセージ";
 "settings_call_invitations" = "通話への招待";
 "settings_room_invitations" = "ルームへの招待";
-"key_backup_setup_success_from_recovery_key_made_copy_action" = "コピーをしました";
+"key_backup_setup_success_from_recovery_key_made_copy_action" = "コピーしました";
 "key_backup_setup_success_from_recovery_key_make_copy_action" = "コピーする";
 "key_backup_setup_success_from_recovery_key_recovery_key_title" = "セキュリティーキー";
 
