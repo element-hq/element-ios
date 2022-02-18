@@ -136,86 +136,11 @@ static BOOL _disableLongPressGestureOnEvent;
 
 - (void)setupViews
 {
-    if (self.userNameLabel)
-    {
-        // Listen to name tap
-        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onSenderNameTap:)];
-        [tapGesture setNumberOfTouchesRequired:1];
-        [tapGesture setNumberOfTapsRequired:1];
-        [tapGesture setDelegate:self];
-        
-        if (self.userNameTapGestureMaskView)
-        {
-            [self.userNameTapGestureMaskView addGestureRecognizer:tapGesture];
-        }
-        else
-        {
-            [self.userNameLabel addGestureRecognizer:tapGesture];
-            self.userNameLabel.userInteractionEnabled = YES;
-        }
-    }
+    [self setupSenderNameLabel];
     
-    if (self.pictureView)
-    {
-        self.pictureView.mediaFolder = kMXMediaManagerAvatarThumbnailFolder;
-        
-        // Listen to avatar tap
-        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onAvatarTap:)];
-        [tapGesture setNumberOfTouchesRequired:1];
-        [tapGesture setNumberOfTapsRequired:1];
-        [tapGesture setDelegate:self];
-        [self.pictureView addGestureRecognizer:tapGesture];
-        self.pictureView.userInteractionEnabled = YES;
-        
-        // Add a long gesture recognizer on avatar (in order to display for example the member details)
-        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPressGesture:)];
-        [self.pictureView addGestureRecognizer:longPress];
-    }
+    [self setupAvatarView];
     
-    if (self.messageTextView)
-    {
-        // Listen to textView tap
-        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onMessageTap:)];
-        [tapGesture setNumberOfTouchesRequired:1];
-        [tapGesture setNumberOfTapsRequired:1];
-        [tapGesture setDelegate:self];
-        [self.messageTextView addGestureRecognizer:tapGesture];
-        self.messageTextView.userInteractionEnabled = YES;
-
-        // Recognise and make tappable phone numbers, address, etc.
-        self.messageTextView.dataDetectorTypes = UIDataDetectorTypeAll;
-
-        // Listen to link click
-        self.messageTextView.delegate = self;
-        
-        if (_disableLongPressGestureOnEvent == NO)
-        {
-            // Add a long gesture recognizer on text view (in order to display for example the event details)
-            UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPressGesture:)];
-            longPress.delegate = self;
-            
-            // MXKMessageTextView does not catch touches outside of links. Add a background view to handle long touch.
-            if ([self.messageTextView isKindOfClass:[MXKMessageTextView class]])
-            {
-                UIView *messageTextBackgroundView = [[UIView alloc] initWithFrame:self.messageTextView.frame];
-                messageTextBackgroundView.backgroundColor = [UIColor clearColor];
-                [self.contentView insertSubview:messageTextBackgroundView belowSubview:self.messageTextView];
-                messageTextBackgroundView.translatesAutoresizingMaskIntoConstraints = NO;
-                [messageTextBackgroundView.leftAnchor constraintEqualToAnchor:self.messageTextView.leftAnchor].active = YES;
-                [messageTextBackgroundView.rightAnchor constraintEqualToAnchor:self.messageTextView.rightAnchor].active = YES;
-                [messageTextBackgroundView.topAnchor constraintEqualToAnchor:self.messageTextView.topAnchor].active = YES;
-                [messageTextBackgroundView.bottomAnchor constraintEqualToAnchor:self.messageTextView.bottomAnchor].active = YES;
-                
-                [messageTextBackgroundView addGestureRecognizer:longPress];
-                
-                self.messageTextBackgroundView = messageTextBackgroundView;
-            }
-            else
-            {
-                [self.messageTextView addGestureRecognizer:longPress];
-            }
-        }
-    }
+    [self setupMessageTextView];
     
     if (self.playIconView)
     {
@@ -248,6 +173,109 @@ static BOOL _disableLongPressGestureOnEvent;
     }
     
     [self setupConstraintsConstantDefaultValues];
+}
+
+- (void)setupSenderNameLabel
+{
+    if (!self.userNameLabel)
+    {
+        return;
+    }
+    
+    // Listen to name tap
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onSenderNameTap:)];
+    [tapGesture setNumberOfTouchesRequired:1];
+    [tapGesture setNumberOfTapsRequired:1];
+    [tapGesture setDelegate:self];
+    
+    if (self.userNameTapGestureMaskView)
+    {
+        [self.userNameTapGestureMaskView addGestureRecognizer:tapGesture];
+    }
+    else
+    {
+        [self.userNameLabel addGestureRecognizer:tapGesture];
+        self.userNameLabel.userInteractionEnabled = YES;
+    }
+}
+
+- (void)setupAvatarView
+{
+    if (!self.pictureView)
+    {
+        return;
+    }
+    
+    self.pictureView.mediaFolder = kMXMediaManagerAvatarThumbnailFolder;
+    
+    // Listen to avatar tap
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onAvatarTap:)];
+    [tapGesture setNumberOfTouchesRequired:1];
+    [tapGesture setNumberOfTapsRequired:1];
+    [tapGesture setDelegate:self];
+    [self.pictureView addGestureRecognizer:tapGesture];
+    self.pictureView.userInteractionEnabled = YES;
+    
+    // Add a long gesture recognizer on avatar (in order to display for example the member details)
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPressGesture:)];
+    [self.pictureView addGestureRecognizer:longPress];
+}
+
+- (void)setupMessageTextView
+{
+    if (!self.messageTextView)
+    {
+        return;
+    }
+    
+    // Listen to textView tap
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onMessageTap:)];
+    [tapGesture setNumberOfTouchesRequired:1];
+    [tapGesture setNumberOfTapsRequired:1];
+    [tapGesture setDelegate:self];
+    [self.messageTextView addGestureRecognizer:tapGesture];
+    self.messageTextView.userInteractionEnabled = YES;
+    
+    // Recognise and make tappable phone numbers, address, etc.
+    self.messageTextView.dataDetectorTypes = UIDataDetectorTypeAll;
+    
+    // Listen to link click
+    self.messageTextView.delegate = self;
+    
+    [self setupMessageTextViewLongPressGesture];
+}
+
+- (void)setupMessageTextViewLongPressGesture
+{
+    if (_disableLongPressGestureOnEvent)
+    {
+        return;
+    }
+    
+    // Add a long gesture recognizer on text view (in order to display for example the event details)
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPressGesture:)];
+    longPress.delegate = self;
+    
+    // MXKMessageTextView does not catch touches outside of links. Add a background view to handle long touch.
+    if ([self.messageTextView isKindOfClass:[MXKMessageTextView class]])
+    {
+        UIView *messageTextBackgroundView = [[UIView alloc] initWithFrame:self.messageTextView.frame];
+        messageTextBackgroundView.backgroundColor = [UIColor clearColor];
+        [self.contentView insertSubview:messageTextBackgroundView belowSubview:self.messageTextView];
+        messageTextBackgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+        [messageTextBackgroundView.leftAnchor constraintEqualToAnchor:self.messageTextView.leftAnchor].active = YES;
+        [messageTextBackgroundView.rightAnchor constraintEqualToAnchor:self.messageTextView.rightAnchor].active = YES;
+        [messageTextBackgroundView.topAnchor constraintEqualToAnchor:self.messageTextView.topAnchor].active = YES;
+        [messageTextBackgroundView.bottomAnchor constraintEqualToAnchor:self.messageTextView.bottomAnchor].active = YES;
+        
+        [messageTextBackgroundView addGestureRecognizer:longPress];
+        
+        self.messageTextBackgroundView = messageTextBackgroundView;
+    }
+    else
+    {
+        [self.messageTextView addGestureRecognizer:longPress];
+    }
 }
 
 - (void)customizeTableViewCellRendering
