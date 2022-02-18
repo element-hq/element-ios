@@ -1108,3 +1108,5 @@
 "done" = "完了";
 "open" = "開く";
 "enable" = "有効にする";
+"key_backup_recover_from_passphrase_passphrase_placeholder" = "パスフレーズを入力する";
+"key_backup_recover_from_passphrase_passphrase_title" = "入力";
