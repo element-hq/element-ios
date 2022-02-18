@@ -171,6 +171,14 @@ import AnalyticsEvents
 // The following methods are exposed for compatibility with Objective-C as
 // the `capture` method and the generated events cannot be bridged from Swift.
 extension Analytics {
+    /// Updates any user properties to help with creating cohorts.
+    /// 
+    /// Only non-nil properties will be updated when calling this method.
+    func updateUserProperties(ftueUseCase: UserSessionProperties.UseCase? = nil) {
+        let userProperties = AnalyticsEvent.UserProperties(ftueUseCaseSelection: ftueUseCase?.analyticsName, numSpaces: nil)
+        client.updateUserProperties(userProperties)
+    }
+    
     /// Track the presentation of a screen
     /// - Parameters:
     ///   - screen: The screen that was shown.
@@ -186,20 +194,21 @@ extension Analytics {
         trackScreen(screen, duration: nil)
     }
     
-    /// Track an element that has been tapped
+    /// Track an element that has been interacted with
     /// - Parameters:
-    ///   - tap: The element that was tapped
+    ///   - uiElement: The element that was interacted with
+    ///   - interactionType: The way in with the element was interacted with
     ///   - index: The index of the element, if it's in a list of elements
-    func trackTap(_ tap: AnalyticsUIElement, index: Int?) {
-        let event = AnalyticsEvent.Click(index: index, name: tap.elementName)
+    func trackInteraction(_ uiElement: AnalyticsUIElement, interactionType: AnalyticsEvent.Interaction.InteractionType, index: Int?) {
+        let event = AnalyticsEvent.Interaction(index: index, interactionType: interactionType, name: uiElement.name)
         client.capture(event)
     }
     
     /// Track an element that has been tapped without including an index
     /// - Parameters:
-    ///   - tap: The element that was tapped
-    func trackTap(_ tap: AnalyticsUIElement) {
-        trackTap(tap, index: nil)
+    ///   - uiElement: The element that was tapped
+    func trackInteraction(_ uiElement: AnalyticsUIElement) {
+        trackInteraction(uiElement, interactionType: .Touch, index: nil)
     }
     
     /// Track an E2EE error that occurred

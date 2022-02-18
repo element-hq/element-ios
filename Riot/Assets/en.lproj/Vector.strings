@@ -1945,6 +1945,8 @@ Tap the + to start adding people.";
 
 "location_sharing_open_google_maps" = "Open in Google Maps";
 
+"location_sharing_open_open_street_maps" = "Open in OpenStreetMap";
+
 "location_sharing_settings_header" = "Location sharing";
 
 "location_sharing_settings_toggle_title" = "Enable location sharing";
