@@ -122,7 +122,7 @@
 "device_details_title" = "セッション情報\n";
 "device_details_name" = "名前\n";
 "device_details_identifier" = "ID\n";
-"device_details_last_seen" = "ラストシーン\n";
+"device_details_last_seen" = "最終接続日\n";
 "device_details_last_seen_format" = "%@ @ %@\n";
 "device_details_rename_prompt_message" = "端末名:";
 "device_details_delete_prompt_title" = "認証";
@@ -178,7 +178,7 @@
 "room_creation_alias_placeholder" = "(例 #foo:example.org)";
 "room_creation_alias_placeholder_with_homeserver" = "(例 #foo%@)";
 "room_creation_participants_title" = "参加者:";
-"room_creation_participants_placeholder" = "(例 @bob:homeserver1; @john:homeserver2...)";
+"room_creation_participants_placeholder" = "(例 @bob:homeserver1; @john:homeserver2…)";
 // Room
 "room_please_select" = "ルームを選択してください";
 "room_error_join_failed_title" = "ルームに参加できませんでした";
@@ -211,7 +211,7 @@
 "attachment_multiselection_size_prompt" = "画像を次のように送信しますか:";
 "attachment_multiselection_original" = "実際のサイズ";
 "attachment_e2e_keys_file_prompt" = "このファイルには、Matrixクライアントからエクスポートされた暗号化キーが含まれています。\nファイルの内容を表示するか、ファイルの内容をインポートしますか？";
-"attachment_e2e_keys_import" = "インポート...";
+"attachment_e2e_keys_import" = "インポート…";
 // Contacts
 "contact_mx_users" = "Matrixユーザー";
 "contact_local_contacts" = "ローカルの連絡先";
@@ -350,7 +350,7 @@
 "notification_settings_people_join_leave_rooms" = "誰かがルームに参加もしくは退出したときに通知";
 "notification_settings_receive_a_call" = "通話を受信したときに通知";
 "notification_settings_suppress_from_bots" = "ボットからの通知を抑制";
-"notification_settings_by_default" = "既定値では...";
+"notification_settings_by_default" = "既定値では…";
 "notification_settings_notify_all_other" = "他の全てのメッセージ/ルームについて通知";
 // gcm section 
 "settings_config_home_server" = "ホームサーバー: %@";
@@ -358,7 +358,7 @@
 "settings_config_user_id" = "ユーザーID: %@";
 // call string
 "call_waiting" = "待機中...";
-"call_connecting" = "通話接続中...";
+"call_connecting" = "通話接続中…";
 "call_ended" = "通話終了";
 "call_ring" = "呼び出し中...";
 "incoming_video_call" = "着信ビデオ通話";
@@ -407,4 +407,4 @@
 "notice_encryption_enabled_ok_by_you" = "あなたはエンドツーエンド暗号化をオンにしました。";
 "notice_encryption_enabled_unknown_algorithm_by_you" = "あなたはエンドツーエンド暗号化をオンにしました (不明なアルゴリズム %2$@)。";
 "notice_redaction_by_you" = "イベントを編集しました (id: %@)";
-"auth_username_in_use" = "ユーザ名は既に使用されています";
+"auth_username_in_use" = "ユーザー名は既に使用されています";
