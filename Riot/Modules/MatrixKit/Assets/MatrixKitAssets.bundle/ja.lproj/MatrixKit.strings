@@ -63,7 +63,7 @@
 "select_account" = "アカウントを選択";
 "attach_media" = "ライブラリからメディアを添付";
 "capture_media" = "写真/ビデオを撮る";
-"invite_user" = "matrixユーザーを招待";
+"invite_user" = "Matrixユーザーを招待";
 "reset_to_default" = "デフォルトにリセット";
 "cancel_upload" = "アップロードをキャンセル";
 "cancel_download" = "ダウンロードをキャンセル";
@@ -100,7 +100,7 @@
 "notice_error_unsupported_event" = "サポートされていないイベント";
 "notice_error_unexpected_event" = "予期しないイベント";
 "notice_error_unknown_event_type" = "不明なイベントタイプ";
-"notice_room_history_visible_to_anyone" = "%@ 誰でも将来のルーム履歴を表示されます。";
+"notice_room_history_visible_to_anyone" = "%@は、今後のルーム履歴を誰でも見えるように設定しました。";
 "notice_room_history_visible_to_members" = "%@ ルームメンバー全員に将来のルーム履歴を表示されます。";
 "notice_room_history_visible_to_members_from_invited_point" = "%@ ルームメンバー全員に招待した時点からのルーム履歴を表示されます。";
 "notice_room_history_visible_to_members_from_joined_point" = "%@ ルームメンバー全員に参加した時点からのルーム履歴を表示されます。";
@@ -124,7 +124,7 @@
 "device_details_identifier" = "ID\n";
 "device_details_last_seen" = "最終接続日\n";
 "device_details_last_seen_format" = "%@ @ %@\n";
-"device_details_rename_prompt_message" = "端末名:";
+"device_details_rename_prompt_message" = "セッションの公開名は、あなたとやり取りする人々に対して表示されます";
 "device_details_delete_prompt_title" = "認証";
 "device_details_delete_prompt_message" = "この操作には、追加の認証が必要です。\n続行するには、パスワードを入力してください。";
 // Encryption information
@@ -144,7 +144,7 @@
 "room_event_encryption_info_device_id" = "ID\n";
 "room_event_encryption_info_device_verification" = "検証\n";
 "room_event_encryption_info_device_fingerprint" = "Ed25519 fingerprint\n";
-"room_event_encryption_info_device_verified" = "検証済み";
+"room_event_encryption_info_device_verified" = "検証済";
 "room_event_encryption_info_device_not_verified" = "検証されていない";
 "room_event_encryption_info_device_blocked" = "ブラックリストに載せた";
 "room_event_encryption_info_verify" = "検証しています…";
@@ -247,7 +247,7 @@
 "error_common_message" = "エラーが発生しました。 後でもう一度お試しください。";
 "not_supported_yet" = "まだサポートされていません";
 "default" = "既定";
-"private" = "プライベート";
+"private" = "非公開";
 "public" = "公開";
 "power_level" = "権限レベル";
 "network_error_not_reachable" = "ネットワーク接続を確認してください";
@@ -317,7 +317,7 @@
 "unban" = "ブロック解除";
 "message_unsaved_changes" = "保存されていない変更があります。 退出すると変更は取り消されます。";
 // Login Screen 
-"login_error_already_logged_in" = "ログイン済み";
+"login_error_already_logged_in" = "ログイン済";
 "login_error_must_start_http" = "URLは http[s]:// で始まる必要があります";
 // room details dialog screen
 "room_details_title" = "ルームの詳細";
@@ -408,3 +408,4 @@
 "notice_encryption_enabled_unknown_algorithm_by_you" = "あなたはエンドツーエンド暗号化をオンにしました (不明なアルゴリズム %2$@)。";
 "notice_redaction_by_you" = "イベントを編集しました (id: %@)";
 "auth_username_in_use" = "ユーザー名は既に使用されています";
+"resume_call" = "再開";
