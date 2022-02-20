@@ -105,7 +105,7 @@
 "notice_room_history_visible_to_members_from_invited_point" = "%@ ルームメンバー全員に招待した時点からのルーム履歴を表示されます。";
 "notice_room_history_visible_to_members_from_joined_point" = "%@ ルームメンバー全員に参加した時点からのルーム履歴を表示されます。";
 "notice_crypto_unable_to_decrypt" = "** 復号化できません: %@ **";
-"notice_crypto_error_unknown_inbound_session_id" = "送信者のセッションからこのメッセージのキーが送信されていません。";
+"notice_crypto_error_unknown_inbound_session_id" = "送信者のセッションからこのメッセージ用の鍵が送信されていません。";
 "notice_sticker" = "ステッカー";
 "notice_in_reply_to" = "に返信";
 // room display name
@@ -131,8 +131,8 @@
 "room_event_encryption_info_title" = "エンドツーエンド暗号化情報\n\n";
 "room_event_encryption_info_event" = "イベント情報\n";
 "room_event_encryption_info_event_user_id" = "ユーザーID\n";
-"room_event_encryption_info_event_identity_key" = "Curve25519 identity key\n";
-"room_event_encryption_info_event_fingerprint_key" = "クレームされたEd25519指紋キー\n";
+"room_event_encryption_info_event_identity_key" = "Curve25519 固有鍵\n";
+"room_event_encryption_info_event_fingerprint_key" = "要求されたフィンガープリントキー Ed25519\n";
 "room_event_encryption_info_event_algorithm" = "アルゴリズム\n";
 "room_event_encryption_info_event_session_id" = "セッションID\n";
 "room_event_encryption_info_event_decryption_error" = "復号化エラー\n";
@@ -152,16 +152,16 @@
 "room_event_encryption_info_block" = "ブラックリスト";
 "room_event_encryption_info_unblock" = "ブラックでないリスト";
 "room_event_encryption_verify_title" = "セッション検証\n\n";
-"room_event_encryption_verify_message" = "このセッションが信頼できることを確認するには、他の方法（個人や電話など）で所有者に連絡し、セッションのユーザー設定で表示される鍵が以下のキーと一致するかどうかを尋ねます。\n\nセッション名: %@\nセッションID: %@\nセッションkey: %@\n\n一致する場合は、下の確認ボタンを押します。 それ以外の人がこのセッションを傍受している場合は、代わりにブラックリストボタンを押してください。\n\n将来この検証プロセスはより洗練されたものになります。";
+"room_event_encryption_verify_message" = "このセッションが信頼できることを確認するには、他の方法（対面や電話など）で所有者に連絡し、セッションのユーザー設定で表示される鍵が以下の鍵と一致するかどうかを訪ねてください。\n\nセッション名: %@\nセッションID: %@\nセッションキー: %@\n\n一致する場合は、下の確認ボタンを押します。 それ以外の人がこのセッションを傍受している場合は、代わりにブラックリストボタンを押してください。\n\n将来この検証プロセスはより洗練されたものになります。";
 "room_event_encryption_verify_ok" = "検証";
 // Account
 "account_save_changes" = "変更を保存";
 "account_link_email" = "リンクメール";
 "account_linked_emails" = "リンクされたメール";
-"account_email_validation_title" = "検証保留中";
+"account_email_validation_title" = "認証の保留中";
 "account_email_validation_message" = "メールをチェックし、それに含まれているリンクをクリックしてください。 これが完了したら、[続行]をクリックします。";
 "account_email_validation_error" = "メールアドレスを確認できません。 あなたのメールをチェックし、それに含まれているリンクをクリックしてください。 これが完了したら、[続行]をクリックします";
-"account_msisdn_validation_title" = "検証保留中";
+"account_msisdn_validation_title" = "認証の保留中";
 "account_msisdn_validation_message" = "アクティベーションコード付きのSMSを送信しました。 以下にこのコードを入力してください。";
 "account_msisdn_validation_error" = "電話番号を確認できません。";
 "account_error_display_name_change_failed" = "表示名の変更に失敗しました";
@@ -210,7 +210,7 @@
 "attachment_cancel_upload" = "アップロードをキャンセルしますか?";
 "attachment_multiselection_size_prompt" = "画像を次のように送信しますか:";
 "attachment_multiselection_original" = "実際のサイズ";
-"attachment_e2e_keys_file_prompt" = "このファイルには、Matrixクライアントからエクスポートされた暗号化キーが含まれています。\nファイルの内容を表示するか、ファイルの内容をインポートしますか？";
+"attachment_e2e_keys_file_prompt" = "このファイルには、Matrixクライアントからエクスポートされた暗号鍵が含まれています。\nファイルの内容を表示するか、ファイル内の鍵をインポートしますか？";
 "attachment_e2e_keys_import" = "インポート…";
 // Contacts
 "contact_mx_users" = "Matrixユーザー";
@@ -227,13 +227,13 @@
 "format_time_h" = "時";
 "format_time_d" = "日";
 // E2E import
-"e2e_import_room_keys" = "ルームキーをインポート";
-"e2e_import_prompt" = "このプロセスでは、以前に別のMatrixクライアントからエクスポートした暗号化キーをインポートできます。 これにより、他のクライアントが解読できる全てのメッセージを解読することができます。\nエクスポートファイルはパスフレーズで保護されています。 ファイルを解読するには、パスフレーズをここに入力する必要があります。";
+"e2e_import_room_keys" = "ルームの暗号鍵をインポート";
+"e2e_import_prompt" = "このプロセスでは、以前に別のMatrixクライアントからエクスポートした暗号鍵をインポートできます。 これにより、他のクライアントが解読できる全てのメッセージを解読することができます。\nエクスポートした暗号鍵のファイルは、パスフレーズで保護されています。 ファイルを復号化するには、パスフレーズをここに入力する必要があります。";
 "e2e_import" = "インポート";
 "e2e_passphrase_enter" = "パスフレーズを入力";
 // E2E export
-"e2e_export_room_keys" = "ルームキーのエクスポート";
-"e2e_export_prompt" = "このプロセスでは、暗号化されたルームで受信したメッセージのキーをローカルファイルにエクスポートできます。 その後、クライアントがこれらのメッセージを復号化できるように、ファイルを別のMatrixクライアントにインポートすることができます。\nエクスポートされたファイルは、誰でも閲覧できる暗号化されたメッセージを復号化することができるので、安全に保つように注意する必要があります。";
+"e2e_export_room_keys" = "ルームの暗号鍵をエクスポート";
+"e2e_export_prompt" = "このプロセスでは、暗号化されたルームで受信したメッセージの鍵をローカルファイルにエクスポートできます。 そのファイルを別のMatrixクライアントにインポートすると、クライアントはこれらのメッセージを復号化することができます。\nエクスポートしたファイルを使えば、誰でも暗号化されたメッセージを復号化できるので、ファイルを安全に保つように注意する必要があります。";
 "e2e_export" = "エクスポート";
 "e2e_passphrase_confirm" = "パスフレーズを確認";
 "e2e_passphrase_empty" = "パスフレーズは空であってはいけません";
@@ -283,8 +283,8 @@
 "notice_room_name_changed" = "%@はルーム名を次のように変更しました: %@";
 "notice_placed_voice_call" = "%@は電話をかけました";
 "notice_placed_video_call" = "%@はビデオ電話をかけました";
-"notice_answered_video_call" = "%@は通話に応答しました";
-"notice_ended_video_call" = "%@は通話を終了しました";
+"notice_answered_video_call" = "%@が電話に出ました";
+"notice_ended_video_call" = "%@が通話を終了しました";
 "notice_conference_call_request" = "%@はVoIP会議をリクエストしました";
 "notice_conference_call_started" = "VoIP会議が開始されました";
 "notice_conference_call_finished" = "VoIP会議が終了しました";
