@@ -73,13 +73,13 @@
 "ignore" = "無視";
 // Events formatter
 "notice_avatar_changed_too" = "（アバターも変更されました）";
-"notice_room_name_removed" = "%@はルーム名を削除しました";
-"notice_room_topic_removed" = "%@はトピックを削除しました";
+"notice_room_name_removed" = "%@がルーム名を削除しました";
+"notice_room_topic_removed" = "%@がトピックを削除しました";
 "notice_event_redacted" = "<編集された%@>";
 "notice_event_redacted_by" = " %@により";
 "notice_event_redacted_reason" = " [理由: %@]";
-"notice_profile_change_redacted" = "%@は彼らのプロフィール %@を更新しました";
-"notice_room_created" = "%@はルームを作成しました";
+"notice_profile_change_redacted" = "%@が彼らのプロフィール %@を更新しました";
+"notice_room_created" = "%@がルームを作成しました";
 "notice_room_join_rule" = "結合ルールは次のとおり: %@";
 "notice_room_power_level_intro" = "ルームメンバーの権限レベル:";
 "notice_room_power_level_acting_requirement" = "アクション前にユーザーの必要な最小権限レベル:";
@@ -264,29 +264,29 @@
 // Language picker
 "language_picker_title" = "言語を選択";
 "language_picker_default_language" = "既定値 (%@)";
-"notice_room_invite" = "%@は%@を招待しました";
-"notice_room_third_party_invite" = "%@は%@にルームへの招待状を送りました";
-"notice_room_third_party_registered_invite" = "%@は%@の招待を受け入れました";
-"notice_room_join" = "%@ は参加しました";
-"notice_room_leave" = "%@ は退出しました";
-"notice_room_reject" = "%@は招待を拒否しました";
-"notice_room_kick" = "%@は%@を追い出しました";
-"notice_room_unban" = "%@は%@を追放解除した";
-"notice_room_ban" = "%@は%@を追放した";
-"notice_room_withdraw" = "%@は%@の招待を辞退しました";
+"notice_room_invite" = "%@が%@を招待しました";
+"notice_room_third_party_invite" = "%@が%@にルームへの招待状を送りました";
+"notice_room_third_party_registered_invite" = "%@が%@の招待を受け入れました";
+"notice_room_join" = "%@が参加しました";
+"notice_room_leave" = "%@が退出しました";
+"notice_room_reject" = "%@が招待を拒否しました";
+"notice_room_kick" = "%@が%@を追い出しました";
+"notice_room_unban" = "%@が%@を追放解除しました";
+"notice_room_ban" = "%@が%@を追放しました";
+"notice_room_withdraw" = "%@が%@の招待を辞退しました";
 "notice_room_reason" = ". 理由: %@";
-"notice_avatar_url_changed" = "%@はアバターを変更しました";
-"notice_display_name_set" = "%@は表示名を%@に設定しました";
-"notice_display_name_changed_from" = "%@は表示名を%@から%@に変更しました";
-"notice_display_name_removed" = "%@は表示名を削除しました";
-"notice_topic_changed" = "%@はトピックを次のように変更しました: %@";
-"notice_room_name_changed" = "%@はルーム名を次のように変更しました: %@";
-"notice_placed_voice_call" = "%@は電話をかけました";
-"notice_placed_video_call" = "%@はビデオ電話をかけました";
+"notice_avatar_url_changed" = "%@がアバターを変更しました";
+"notice_display_name_set" = "%@が表示名を%@に設定しました";
+"notice_display_name_changed_from" = "%@が表示名を%@から%@に変更しました";
+"notice_display_name_removed" = "%@が表示名を削除しました";
+"notice_topic_changed" = "%@がトピックを次のように変更しました：%@";
+"notice_room_name_changed" = "%@がルーム名を次のように変更しました：%@";
+"notice_placed_voice_call" = "%@が電話をかけました";
+"notice_placed_video_call" = "%@がビデオ電話をかけました";
 "notice_answered_video_call" = "%@が電話に出ました";
 "notice_ended_video_call" = "%@が通話を終了しました";
-"notice_conference_call_request" = "%@はVoIP会議をリクエストしました";
-"notice_conference_call_started" = "VoIP会議が開始されました";
+"notice_conference_call_request" = "%@がVoIP会議をリクエストしました";
+"notice_conference_call_started" = "VoIP会議が開始しました";
 "notice_conference_call_finished" = "VoIP会議が終了しました";
 // button names 
 "ok" = "OK";
@@ -380,7 +380,7 @@
 "notice_encryption_enabled_unknown_algorithm" = "%1$@ がエンドツーエンド暗号化をオンにしました (不明なアルゴリズム %2$@)。";
 "device_details_rename_prompt_title" = "セッション名";
 "account_error_push_not_allowed" = "通知は許可されていません";
-"notice_room_third_party_revoked_invite" = "%@ は %@ のルームへの招待を取り消しました";
+"notice_room_third_party_revoked_invite" = "%@が%@のルームへの招待を取り消しました";
 // Notice Events with "You"
 "notice_room_invite_by_you" = "%@を招待しました";
 "notice_room_invite_you" = "%@があなたを招待しました";
