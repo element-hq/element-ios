@@ -433,7 +433,7 @@
 "google_analytics_use_prompt" = "匿名の誤動作報告と使用状況データを自動的に報告して%@の改善に役立てますか？";
 // Crypto
 "e2e_enabling_on_app_update" = "Elementはエンドツーエンド暗号化をサポートするようになりましたが、有効にするには再びログインする必要があります。\n\nアプリの設定から再ログインできます。今すぐ、または後からでも構いません。";
-"e2e_need_log_in_again" = "再度ログインして、このセッションのエンドツーエンドの暗号化キーを生成し、公開鍵をホームサーバーに送信する必要があります。\nご迷惑をおかけしますが、ご了承ください。";
+"e2e_need_log_in_again" = "再度ログインして、このセッションのエンドツーエンド暗号鍵を生成し、公開鍵をホームサーバーに送信する必要があります。\nご迷惑をおかけしますが、ご了承ください。";
 // Bug report
 "bug_report_title" = "バグレポート";
 "bug_report_description" = "誤動作の内容と状況の説明をお願い致します。あなたは何をしましたか？何が起こると思いますか？実際何が起こったのですか？";
@@ -523,15 +523,15 @@
 "group_participants_invited_section" = "招待中";
 // Group rooms
 "group_rooms_filter_rooms" = "コミュニティールームをフィルタリング";
-"event_formatter_rerequest_keys_part1_link" = "暗号鍵の再要求";
-"event_formatter_rerequest_keys_part2" = " あなたの他のセッションから。";
+"event_formatter_rerequest_keys_part1_link" = "暗号鍵を再要求";
+"event_formatter_rerequest_keys_part2" = " あなたの他のセッションに。";
 "homeserver_connection_lost" = "ホームサーバーに接続できませんでした。";
 "widget_sticker_picker_no_stickerpacks_alert" = "現在、ステッカーパックを有効にしていません。";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "今すぐ追加しますか？";
 // Room key request dialog
-"e2e_room_key_request_title" = "暗号化キー要求";
-"e2e_room_key_request_message_new_device" = "暗号化キーを要求している新しい端末 '%@' を追加しました。";
-"e2e_room_key_request_message" = "検証されていない端末 '%@' が暗号化キーを要求しています。";
+"e2e_room_key_request_title" = "暗号鍵の要求";
+"e2e_room_key_request_message_new_device" = "暗号鍵を要求している新しい端末 '%@' を追加しました。";
+"e2e_room_key_request_message" = "検証されていない端末 '%@' が暗号鍵を要求しています。";
 "e2e_room_key_request_start_verification" = "検証を始めます…";
 "e2e_room_key_request_share_without_verifying" = "検証せずに共有";
 "e2e_room_key_request_ignore_request" = "要求を無視";
@@ -551,8 +551,8 @@
 "deactivate_account_password_alert_title" = "無効なアカウント";
 "deactivate_account_password_alert_message" = "続行するには、パスワードを入力してください";
 // Re-request confirmation dialog
-"rerequest_keys_alert_title" = "リクエスト送信";
-"rerequest_keys_alert_message" = "この端末にキーを送信できるように、メッセージを復号化できる別の端末でElementを起動してください。";
+"rerequest_keys_alert_title" = "要求が送信されました";
+"rerequest_keys_alert_message" = "鍵をこのセッションに送信できるように、メッセージを復号化できる他の端末で%@を起動してください。";
 "room_event_action_ban_prompt_reason" = "このユーザーをブロックする理由";
 "room_resource_limit_exceeded_message_contact_1" = " お願い ";
 "settings_ui_theme_black" = "Black";
@@ -643,10 +643,10 @@
 "bug_report_background_mode" = "バックグラウンドで継続";
 "e2e_key_backup_wrong_version_button_wasme" = "これはわたしです";
 "e2e_key_backup_wrong_version_button_settings" = "設定";
-"e2e_key_backup_wrong_version" = "新しいメッセージキーのバックアップが検出されました。\n\nこれがあなたによるものでばい場合は、設定から新しいパスフレーズを設定してください。";
+"e2e_key_backup_wrong_version" = "メッセージの鍵の新しい安全なバックアップが検出されました。\n\nこれがあなたによるものではない場合は、設定から新しいパスフレーズを設定してください。";
 
 // Key backup wrong version
-"e2e_key_backup_wrong_version_title" = "新しいキーのバックアップ";
+"e2e_key_backup_wrong_version_title" = "新しい鍵のバックアップ";
 "call_no_stun_server_error_use_fallback_button" = "%@を使ってみてください";
 "call_actions_unhold" = "やり直す";
 "call_no_stun_server_error_message_2" = "代わりに、%@のパブリックサーバーを使用することもできますが、これは信頼性が低くあなたのIPアドレスがそのサーバーと共有されてしまいます。これは、設定から管理することができます";
@@ -858,7 +858,7 @@
 "settings_key_backup_delete_confirmation_prompt_msg" = "よろしいですか？鍵が適切にバックアップされていないと、暗号化されたメッセージを失うことがあります。";
 "settings_key_backup_button_connect" = "このセッションを鍵のバックアップに接続";
 "settings_key_backup_button_delete" = "バックアップの削除";
-"settings_key_backup_button_restore" = "バックアップからの復旧";
+"settings_key_backup_button_restore" = "バックアップによる復元";
 "settings_key_backup_button_create" = "鍵のバックアップを使用開始";
 "settings_key_backup_info_trust_signature_invalid_device_unverified" = "バックアップには%@による無効な署名があります";
 "settings_key_backup_info_trust_signature_invalid_device_verified" = "バックアップには%@による無効な署名があります";
@@ -925,20 +925,20 @@
 "key_verification_verify_qr_code_other_scan_my_code_title" = "相手がQRコードを読み取ってくれましたか？";
 "key_verification_verify_qr_code_start_emoji_action" = "絵文字による検証";
 "key_verification_verify_qr_code_cannot_scan_action" = "スキャンできませんか？";
-"key_verification_verify_qr_code_scan_code_action" = "コードを読み取る";
-"key_verification_verify_qr_code_emoji_information" = "ユニークな絵文字を比較して検証します。";
+"key_verification_verify_qr_code_scan_code_action" = "コードをスキャン";
+"key_verification_verify_qr_code_emoji_information" = "絵文字の並びを比較して検証。";
 "key_verification_verify_qr_code_information_other_device" = "以下のコードをスキャンして確認してください:";
 "key_verification_verify_qr_code_information" = "コードをスキャンして、お互いをしっかりと確認します。";
 
 // MARK: QR code
 
-"key_verification_verify_qr_code_title" = "スキャンして確認";
+"key_verification_verify_qr_code_title" = "スキャンして検証";
 
 // Incoming key verification request
 
 "key_verification_incoming_request_incoming_alert_message" = "%@は検証を求めています";
 "key_verification_tile_conclusion_warning_title" = "信頼されていないサインイン";
-"key_verification_tile_conclusion_done_title" = "検証済";
+"key_verification_tile_conclusion_done_title" = "認証済";
 "key_verification_tile_request_incoming_approval_decline" = "却下";
 "key_verification_tile_request_incoming_approval_accept" = "承認";
 "key_verification_tile_request_status_accepted" = "あなたは承認しました";
@@ -947,11 +947,11 @@
 "key_verification_tile_request_status_expired" = "期限切れ";
 "key_verification_tile_request_status_waiting" = "お待ちください…";
 "key_verification_tile_request_status_data_loading" = "日時を読み込み…";
-"key_verification_tile_request_outgoing_title" = "検証の送信";
+"key_verification_tile_request_outgoing_title" = "認証を送信済";
 
 // Tiles
 
-"key_verification_tile_request_incoming_title" = "検証リクエスト";
+"key_verification_tile_request_incoming_title" = "認証の要求";
 "key_verification_bootstrap_not_setup_message" = "まずはクロス署名を行う必要があります。";
 
 // MARK: - Key Verification
@@ -1052,7 +1052,7 @@
 "pin_protection_settings_enable_pin" = "PINを有効にする";
 "pin_protection_settings_section_header_with_biometrics" = "PINと%@";
 "pin_protection_settings_section_header" = "PIN";
-"settings_mentions_and_keywords_encryption_notice" = "モバイルでは、暗号化されたルームでのメンションとキーワードの通知は受信できません。";
+"settings_mentions_and_keywords_encryption_notice" = "携帯端末では、暗号化されたルームでのメンションとキーワードの通知は受信できません。";
 "settings_new_keyword" = "キーワードを追加";
 "settings_your_keywords" = "以下でキーワードを指定できます";
 "settings_mentions_and_keywords" = "メンションとキーワード";
@@ -1096,7 +1096,7 @@
 "settings_call_invitations" = "通話への招待";
 "settings_room_invitations" = "ルームへの招待";
 "key_backup_setup_success_from_recovery_key_made_copy_action" = "コピーしました";
-"key_backup_setup_success_from_recovery_key_make_copy_action" = "コピー";
+"key_backup_setup_success_from_recovery_key_make_copy_action" = "コピーする";
 "key_backup_setup_success_from_recovery_key_recovery_key_title" = "セキュリティーキー";
 
 // Success from recovery key
@@ -1124,3 +1124,24 @@
 "space_participants_action_remove" = "このスペースから削除";
 "accessibility_button_label" = "ボタン";
 "ok" = "OK";
+"spaces_empty_space_detail" = "非公開で招待が必要なルームは表示されていません。";
+"spaces_empty_space_title" = "このスペースには（まだ）ルームがありません";
+
+// MARK: - Favourites
+
+"favourites_empty_view_title" = "お気に入りのルームと連絡先";
+"call_transfer_dialpad" = "ダイヤルパッド";
+
+// MARK: - Home
+
+"home_empty_view_title" = "%@へようこそ、\n%@";
+"threads_empty_tip" = "ヒント：メッセージをタップして「スレッド」を選択し、開始。";
+"threads_empty_info_all" = "スレッドを用いると、会話のテーマを保ったり、会話を追跡したりするのが容易になります。";
+"threads_empty_title" = "スレッドでディスカッションを整理して管理";
+"secure_key_backup_setup_intro_use_security_key_title" = "セキュリティーキーを使用";
+
+// MARK: Secure backup setup
+
+// Intro
+
+"secure_key_backup_setup_intro_title" = "セキュアバックアップ";
