@@ -98,7 +98,7 @@ class RoundedToastView: UIView, Themable {
     }
     
     func update(theme: Theme) {
-        backgroundColor = UIColor.white
+        backgroundColor = theme.colors.background
         stackView.arrangedSubviews.first?.tintColor = theme.colors.primaryContent
         label.font = theme.fonts.subheadline
         label.textColor = theme.colors.primaryContent
