@@ -21,33 +21,5 @@ import Combine
 
 @available(iOS 14.0, *)
 class RoomAccessTypeChooserViewModelTests: XCTestCase {
-    private enum Constants {
-    }
-    var service: MockRoomAccessTypeChooserService!
-    var viewModel: RoomAccessTypeChooserViewModel!
-    var context: RoomAccessTypeChooserViewModel.Context!
-    var cancellables = Set<AnyCancellable>()
-    
-    override func setUpWithError() throws {
-        service = MockRoomAccessTypeChooserService()
-        viewModel = RoomAccessTypeChooserViewModel(roomAccessTypeChooserService: service)
-        context = viewModel.context
-    }
-    
-    func testInitialState() {
-        XCTAssertEqual(context.viewState.rooms, MockRoomAccessTypeChooserService.mockRooms)
-    }
 
-    func testFirstValueReceived() throws {
-        let roomsPublisher = context.$viewState.map(\.rooms).removeDuplicates().collect(1).first()
-        XCTAssertEqual(try xcAwait(roomsPublisher), [MockRoomAccessTypeChooserService.mockRooms])
-    }
-    
-    func testUpdatesReceived() throws {
-        let updatedRooms = Array(MockRoomAccessTypeChooserService.mockRooms.dropLast())
-        let roomsPublisher = context.$viewState.map(\.rooms).removeDuplicates().collect(2).first()
-        let awaitDeferred = xcAwaitDeferred(roomsPublisher)
-        service.simulateUpdate(rooms:  updatedRooms)
-        XCTAssertEqual(try awaitDeferred(), [MockRoomAccessTypeChooserService.mockRooms, updatedRooms])
-    }
 }
