@@ -23,7 +23,7 @@ import SwiftUI
 @available(iOS 14.0, *)
 public struct FontSwiftUI: Fonts {
     
-    public let uiFonts: ElementFonts
+    public let uiFonts: FontsUIKit
     
     public var largeTitle: Font
     
@@ -66,27 +66,27 @@ public struct FontSwiftUI: Fonts {
     public var caption2SB: Font
     
     public init(values: ElementFonts) {
-        self.uiFonts = values
+        self.uiFonts = FontsUIKit(values: values)
         
-        self.largeTitle = Font(values.largeTitle)
-        self.largeTitleB = Font(values.largeTitleB)
-        self.title1 = Font(values.title1)
-        self.title1B = Font(values.title1B)
-        self.title2 = Font(values.title2)
-        self.title2B = Font(values.title2B)
-        self.title3 = Font(values.title3)
-        self.title3SB = Font(values.title3SB)
-        self.headline = Font(values.headline)
-        self.subheadline = Font(values.subheadline)
-        self.body = Font(values.body)
-        self.bodySB = Font(values.bodySB)
-        self.callout = Font(values.callout)
-        self.calloutSB = Font(values.calloutSB)
-        self.footnote = Font(values.footnote)
-        self.footnoteSB = Font(values.footnoteSB)
-        self.caption1 = Font(values.caption1)
-        self.caption1SB = Font(values.caption1SB)
-        self.caption2 = Font(values.caption2)
-        self.caption2SB = Font(values.caption2SB)
+        self.largeTitle = values.largeTitle.font
+        self.largeTitleB = values.largeTitleB.font
+        self.title1 = values.title1.font
+        self.title1B = values.title1B.font
+        self.title2 = values.title2.font
+        self.title2B = values.title2B.font
+        self.title3 = values.title3.font
+        self.title3SB = values.title3SB.font
+        self.headline = values.headline.font
+        self.subheadline = values.subheadline.font
+        self.body = values.body.font
+        self.bodySB = values.bodySB.font
+        self.callout = values.callout.font
+        self.calloutSB = values.calloutSB.font
+        self.footnote = values.footnote.font
+        self.footnoteSB = values.footnoteSB.font
+        self.caption1 = values.caption1.font
+        self.caption1SB = values.caption1SB.font
+        self.caption2 = values.caption2.font
+        self.caption2SB = values.caption2SB.font
     }
 }
