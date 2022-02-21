@@ -1076,8 +1076,8 @@
 "key_verification_manually_verify_device_additional_information" = "Falls sie nicht übereinstimmen, wurde die Kommunikation vielleicht kompromittiert.";
 "key_verification_verified_new_session_title" = "Neue Sitzung verifiziert!";
 "key_verification_verified_other_session_information" = "Du kannst nun sichere Nachrichten in deiner anderen Sitzung lesen. Andere Benutzer wissen, dass sie ihr vertrauen können.";
-"key_verification_verified_new_session_information" = "Du kannst nun sichere Nachrichten auf deinem neuen Gerät lesen. Andere Benutzer wissen, dass sie es vertrauen können.";
-"key_verification_verified_this_session_information" = "Du kannst nun sichere Nachrichten auf diesem Gerät lesen. Andere Benutzer wissen, dass sie es vertrauen können.";
+"key_verification_verified_new_session_information" = "Du kannst nun sichere Nachrichten auf deinem neuen Gerät lesen. Andere Benutzer wissen, dass sie ihm vertrauen können.";
+"key_verification_verified_this_session_information" = "Du kannst nun sichere Nachrichten auf diesem Gerät lesen. Andere Benutzer wissen, dass sie ihm vertrauen können.";
 "key_verification_verified_user_information" = "Nachrichten mit diesem Gegenüber sind Ende-zu-Ende verschlüsselt und können nicht von Dritten gelesen werden.";
 "key_verification_bootstrap_not_setup_title" = "Fehler";
 "key_verification_bootstrap_not_setup_message" = "Du musst erst die Quersignatur einrichten.";
