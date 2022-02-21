@@ -215,6 +215,8 @@
     // and report the inputAccessoryView.superview of the firstResponder in self.keyboardView.
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated"
 - (void)setKeyboardHeight:(CGFloat)keyboardHeight
 {
     // Deduce the bottom inset for the scroll view (Don't forget the potential tabBar)
@@ -229,6 +231,7 @@
     insets.bottom = scrollViewInsetBottom;
     self.authenticationScrollView.contentInset = insets;
 }
+#pragma clang diagnostic pop
 
 - (void)destroy
 {
@@ -981,7 +984,10 @@
                     {
                         // Trigger here a register request in order to associate the filled userId and password to the current session id
                         // This will check the availability of the userId at the same time
-                        NSDictionary *parameters = @{@"auth": @{},
+                        NSDictionary *parameters = @{@"auth": @{
+                                                        @"session": self.authInputsView.authSession.session,
+                                                        @"type": kMXLoginFlowTypeDummy
+                                                     },
                                                      @"username": self.authInputsView.userId,
                                                      @"password": self.authInputsView.password,
                                                      @"bind_email": @(NO),

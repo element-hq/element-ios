@@ -30,12 +30,13 @@
 #import "DirectoryRecentTableViewCell.h"
 #import "RoomIdOrAliasTableViewCell.h"
 #import "TableViewCellWithCollectionView.h"
+#import "SectionHeaderView.h"
 
 #import "GeneratedInterface-Swift.h"
 
 NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewControllerDataReadyNotification";
 
-@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate>
+@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -120,7 +121,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     tableSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 600, 44)];
     tableSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     tableSearchBar.showsCancelButton = NO;
-    tableSearchBar.placeholder = [VectorL10n searchDefaultPlaceholder];
+    tableSearchBar.placeholder = [VectorL10n searchFilterPlaceholder];
+    [tableSearchBar setImage:AssetImages.filterOff.image
+            forSearchBarIcon:UISearchBarIconSearch
+                       state:UIControlStateNormal];
+
     tableSearchBar.delegate = self;
     
     displayedSectionHeaders = [NSMutableArray array];
@@ -145,6 +150,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
     // Register key verification banner cells
     [self.recentsTableView registerNib:CrossSigningSetupBannerCell.nib forCellReuseIdentifier:CrossSigningSetupBannerCell.defaultReuseIdentifier];
+
+    [self.recentsTableView registerClass:SectionHeaderView.class
+      forHeaderFooterViewReuseIdentifier:SectionHeaderView.defaultReuseIdentifier];
     
     // Hide line separators of empty cells
     self.recentsTableView.tableFooterView = [[UIView alloc] init];
@@ -165,8 +173,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }];
     
     self.recentsSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    self.recentsSearchBar.placeholder = [VectorL10n searchDefaultPlaceholder];
-    
+    self.recentsSearchBar.placeholder = [VectorL10n searchFilterPlaceholder];
+    [self.recentsSearchBar setImage:AssetImages.filterOff.image
+                   forSearchBarIcon:UISearchBarIconSearch
+                              state:UIControlStateNormal];
+
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -1018,6 +1029,18 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                 TableViewCellWithCollectionView *collectionViewCell = (TableViewCellWithCollectionView *)cell;
                 [collectionViewCell.collectionView reloadData];
                 cellReloaded = YES;
+
+                CGRect headerFrame = [self.recentsTableView rectForHeaderInSection:update.sectionIndex];
+                UIView *headerView = [self.recentsTableView headerViewForSection:update.sectionIndex];
+                UIView *updatedHeaderView = [self.dataSource viewForHeaderInSection:update.sectionIndex withFrame:headerFrame inTableView:self.recentsTableView];
+                if ([headerView isKindOfClass:SectionHeaderView.class]
+                    && [updatedHeaderView isKindOfClass:SectionHeaderView.class])
+                {
+                    SectionHeaderView *sectionHeaderView = (SectionHeaderView *)headerView;
+                    SectionHeaderView *updatedSectionHeaderView = (SectionHeaderView *)updatedHeaderView;
+                    sectionHeaderView.headerLabel = updatedSectionHeaderView.headerLabel;
+                    sectionHeaderView.accessoryView = updatedSectionHeaderView.accessoryView;
+                }
             }
         }
     }
@@ -1093,7 +1116,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }];
     directChatAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *directChatImage = [UIImage imageNamed:@"room_action_direct_chat"];
+    UIImage *directChatImage = AssetImages.roomActionDirectChat.image;
     directChatImage = [directChatImage vc_tintedImageUsingColor:isDirect ? selectedColor : unselectedColor];
     directChatAction.image = [directChatImage vc_notRenderedImage];
     
@@ -1120,13 +1143,13 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     muteAction.backgroundColor = actionBackgroundColor;
     
     UIImage *notificationImage;
-    if([BuildSettings showNotificationsV2])
+    if([BuildSettings showNotificationsV2] && isMuted)
     {
-        notificationImage = isMuted ? [UIImage imageNamed:@"room_action_notification_muted"] : [UIImage imageNamed:@"room_action_notification"];
+        notificationImage = AssetImages.roomActionNotificationMuted.image;
     }
     else
     {
-        notificationImage = [UIImage imageNamed:@"room_action_notification"];
+        notificationImage = AssetImages.roomActionNotification.image;
     }
 
     notificationImage = [notificationImage vc_tintedImageUsingColor:isMuted ? unselectedColor : selectedColor];
@@ -1157,7 +1180,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }];
     favouriteAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *favouriteImage = [UIImage imageNamed:@"room_action_favourite"];
+    UIImage *favouriteImage = AssetImages.roomActionFavourite.image;
     favouriteImage = [favouriteImage vc_tintedImageUsingColor:isFavourite ? selectedColor : unselectedColor];
     favouriteAction.image = [favouriteImage vc_notRenderedImage];
     
@@ -1174,7 +1197,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }];
     priorityAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *priorityImage = isInLowPriority ? [UIImage imageNamed:@"room_action_priority_high"] : [UIImage imageNamed:@"room_action_priority_low"];
+    UIImage *priorityImage = isInLowPriority ? AssetImages.roomActionPriorityHigh.image : AssetImages.roomActionPriorityLow.image;
     priorityImage = [priorityImage vc_tintedImageUsingColor:unselectedColor];
     priorityAction.image = [priorityImage vc_notRenderedImage];
     
@@ -1188,7 +1211,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }];
     leaveAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *leaveImage = [UIImage imageNamed:@"room_action_leave"];
+    UIImage *leaveImage = AssetImages.roomActionLeave.image;
     leaveImage = [leaveImage vc_tintedImageUsingColor:unselectedColor];
     leaveAction.image = [leaveImage vc_notRenderedImage];
         
@@ -1292,7 +1315,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                              [self stopActivityIndicator];
                                                                              
                                                                              // Leave editing mode
-                                                                             [self cancelEditionMode:isRefreshPending];
+                                                                             [self cancelEditionMode:self->isRefreshPending];
                                                                          }
                                                                          
                                                                      }];
@@ -1300,7 +1323,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                  else
                                                                  {
                                                                      // Leave editing mode
-                                                                     [self cancelEditionMode:isRefreshPending];
+                                                                     [self cancelEditionMode:self->isRefreshPending];
                                                                  }
                                                              }
                                                              
@@ -1358,7 +1381,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                 
                 [self stopActivityIndicator];
                 // Leave editing mode
-                [self cancelEditionMode:isRefreshPending];
+                [self cancelEditionMode:self->isRefreshPending];
                 
             } failure:^(NSError *error) {
                 
@@ -1366,7 +1389,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                 
                 [self stopActivityIndicator];
                 
-                MXLogDebug(@"[RecentsViewController] Failed to update direct tag of the room (%@)", editedRoomId);
+                MXLogDebug(@"[RecentsViewController] Failed to update direct tag of the room (%@)", self->editedRoomId);
                 
                 // Notify the end user
                 NSString *userId = self.mainSession.myUser.userId; // TODO: handle multi-account
@@ -1375,7 +1398,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                   userInfo:userId ? @{kMXKErrorUserIdKey: userId} : nil];
                 
                 // Leave editing mode
-                [self cancelEditionMode:isRefreshPending];
+                [self cancelEditionMode:self->isRefreshPending];
                 
             }];
         }
@@ -2182,6 +2205,16 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     [self.recentsSearchBar setShowsCancelButton:NO animated:NO];
 }
 
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    [super searchBar:searchBar textDidChange:searchText];
+
+    UIImage *filterIcon = searchText.length > 0 ? AssetImages.filterOn.image : AssetImages.filterOff.image;
+    [self.recentsSearchBar setImage:filterIcon
+                   forSearchBarIcon:UISearchBarIconSearch
+                              state:UIControlStateNormal];
+}
+
 #pragma mark - CreateRoomCoordinatorBridgePresenterDelegate
 
 - (void)createRoomCoordinatorBridgePresenterDelegate:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter didCreateNewRoom:(MXRoom *)room
@@ -2383,6 +2416,28 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.roomNotificationSettingsCoordinatorBridgePresenter = nil;
+}
+
+#pragma mark - Activity Indicator
+
+- (BOOL)providesCustomActivityIndicator {
+    return self.activityPresenter != nil;
+}
+
+- (void)startActivityIndicator {
+    if (self.activityPresenter) {
+        [self.activityPresenter presentActivityIndicator];
+    } else {
+        [super startActivityIndicator];
+    }
+}
+
+- (void)stopActivityIndicator {
+    if (self.activityPresenter) {
+        [self.activityPresenter removeCurrentActivityIndicatorWithAnimated:YES completion:nil];
+    } else {
+        [super stopActivityIndicator];
+    }
 }
 
 @end

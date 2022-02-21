@@ -5,3 +5,4 @@
 "NSContactsUsageDescription" = "Element покажет ваши контакты, чтобы вы могли пригласить их в чат.";
 "NSCalendarsUsageDescription" = "Просматривайте запланированные встречи в приложении.";
 "NSFaceIDUsageDescription" = "Face ID используется для доступа к вашему приложению.";
+"NSLocationWhenInUseUsageDescription" = "Когда вы делитесь с людьми своим местоположением, Element необходим доступ, чтобы показать им карту.";

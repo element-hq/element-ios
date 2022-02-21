@@ -38,10 +38,6 @@
 @property (nonatomic) UIBarButtonItem *backupLeftBarButtonItem;
 @property (nonatomic) UIBarButtonItem *backupRightBarButtonItem;
 
-// The Riot empty search background image (champagne bubbles)
-@property (nonatomic) UIImageView *backgroundImageView;
-@property (nonatomic) NSLayoutConstraint *backgroundImageViewBottomConstraint;
-
 @end
 
 @implementation UIViewControllerRiotSearchInternals
@@ -68,16 +64,6 @@
 - (BOOL)searchBarHidden
 {
     return self.searchInternals.searchBarHidden;
-}
-
-- (UIImageView*)backgroundImageView
-{
-    return self.searchInternals.backgroundImageView;
-}
-
-- (NSLayoutConstraint *)backgroundImageViewBottomConstraint
-{
-    return self.searchInternals.backgroundImageViewBottomConstraint;
 }
 
 - (void)showSearch:(BOOL)animated
@@ -131,80 +117,6 @@
         self.navigationItem.rightBarButtonItem = self.searchInternals.backupRightBarButtonItem;
         
         self.searchInternals.searchBarHidden = YES;
-    }
-}
-
-- (void)addBackgroundImageViewToView:(UIView*)view
-{
-    UIImage *searchBgImage = [MXKTools paintImage:[UIImage imageNamed:@"search_bg"] withColor:ThemeService.shared.theme.matrixSearchBackgroundImageTintColor];
-    UIImageView *backgroundImageView = [[UIImageView alloc] initWithImage:searchBgImage];
-    backgroundImageView.translatesAutoresizingMaskIntoConstraints = NO;
-
-    [view addSubview:backgroundImageView];
-
-    // Keep it at left
-    NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:view
-                                                                      attribute:NSLayoutAttributeLeading
-                                                                      relatedBy:NSLayoutRelationEqual
-                                                                         toItem:backgroundImageView
-                                                                      attribute:NSLayoutAttributeLeading
-                                                                     multiplier:1.0
-                                                                     constant:0];
-    // Same width as parent
-    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:view
-                                                                       attribute:NSLayoutAttributeWidth
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:backgroundImageView
-                                                                       attribute:NSLayoutAttributeWidth
-                                                                      multiplier:1.0f
-                                                                        constant:0.0f];
-
-    // Keep the image aspect ratio
-    NSLayoutConstraint *aspectRatioConstraint = [NSLayoutConstraint
-                                                  constraintWithItem:backgroundImageView
-                                                  attribute:NSLayoutAttributeHeight
-                                                  relatedBy:NSLayoutRelationEqual
-                                                  toItem:backgroundImageView
-                                                  attribute:NSLayoutAttributeWidth
-                                                  multiplier:(backgroundImageView.frame.size.height / backgroundImageView.frame.size.width)
-                                                  constant:0];
-
-    // Set its position according to its bottom
-    NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:view
-                                                                        attribute:NSLayoutAttributeBottom
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:backgroundImageView
-                                                                        attribute:NSLayoutAttributeBottom
-                                                                       multiplier:1.0f
-                                                                         constant:216];
-
-    [NSLayoutConstraint activateConstraints:@[leftConstraint,
-                                              widthConstraint,
-                                              aspectRatioConstraint,
-                                              bottomConstraint
-                                              ]];
-
-    self.searchInternals.backgroundImageView = backgroundImageView;
-    self.searchInternals.backgroundImageViewBottomConstraint = bottomConstraint;
-
-    // It will be showed once the keyboard appears
-    backgroundImageView.hidden = YES;
-}
-
-- (void)setKeyboardHeightForBackgroundImage:(CGFloat)keyboardHeight
-{
-    // keyboardHeight = 0 means no keyboard
-    if (keyboardHeight > 0)
-    {
-        self.searchInternals.backgroundImageView.hidden = NO;
-
-        // 60 = 18 + 42 from the Riot design
-        self.searchInternals.backgroundImageViewBottomConstraint.constant = keyboardHeight - 60;
-    }
-    else
-    {
-        // Hide the search
-        self.searchInternals.backgroundImageView.hidden = YES;
     }
 }
 

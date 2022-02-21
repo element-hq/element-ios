@@ -63,7 +63,7 @@
         [self.iconImageView setImageURI:iconURL
                                withType:nil
                     andImageOrientation:UIImageOrientationUp
-                           previewImage:[MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
+                           previewImage:[MXKTools paintImage:AssetImages.placeholder.image
                                                    withColor:ThemeService.shared.theme.tintColor]
                            mediaManager:cellData.mediaManager];
     }

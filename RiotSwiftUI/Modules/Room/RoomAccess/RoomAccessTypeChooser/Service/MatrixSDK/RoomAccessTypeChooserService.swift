@@ -16,6 +16,7 @@
 
 import Foundation
 import Combine
+import MatrixSDK
 
 @available(iOS 14.0, *)
 class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
@@ -25,7 +26,7 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
     // MARK: Private
     
     private let roomId: String
-    private let session:MXSession
+    private let session: MXSession
     private var replacementRoom: MXRoom?
     private var didBuildSpaceGraphObserver: Any?
     private var accessItems: [RoomAccessTypeChooserAccessItem] = []
@@ -66,7 +67,7 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
         self.roomId = roomId
         self.session = session
         self.currentRoomId = roomId
-        restrictedVersionOverride = session.homeserverCapabilities.versionOverrideForFeature(.restricted)
+        restrictedVersionOverride = session.homeserverCapabilitiesService.versionOverrideForFeature(.restricted)
         
         roomUpgradeRequiredSubject = CurrentValueSubject(false)
         waitingMessageSubject = CurrentValueSubject(nil)
@@ -193,7 +194,7 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
         room.state { [weak self] state in
             guard let self = self else { return }
             
-            if let roomVersion = state?.stateEvents(with: .roomCreate)?.last?.wireContent["room_version"] as? String, let homeserverCapabilitiesService = self.session.homeserverCapabilities {
+            if let roomVersion = state?.stateEvents(with: .roomCreate)?.last?.wireContent["room_version"] as? String, let homeserverCapabilitiesService = self.session.homeserverCapabilitiesService {
                 self.roomUpgradeRequired = self.restrictedVersionOverride != nil && !homeserverCapabilitiesService.isFeatureSupported(.restricted, by: roomVersion)
             }
             

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,39 +18,45 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cxa-zY-I2z">
-                        <rect key="frame" x="137.5" y="20" width="60" height="60"/>
+                        <rect key="frame" x="127.5" y="10" width="80" height="80"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jO2-1T-e01">
-                                <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="capture_avatar" translatesAutoresizingMaskIntoConstraints="NO" id="jO2-1T-e01">
+                                <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="capture_avatar" translatesAutoresizingMaskIntoConstraints="NO" id="DmM-HO-d5u">
-                                <rect key="frame" x="36" y="36" width="24" height="24"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="24" id="CfH-3G-sp2"/>
-                                    <constraint firstAttribute="height" constant="24" id="LAj-br-cZn"/>
-                                </constraints>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qhc-S1-fNz">
-                                <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qhc-S1-fNz">
+                                <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                 <connections>
                                     <action selector="chooseAvatarButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Tr5-En-JRL"/>
+                                </connections>
+                            </button>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iIl-kw-RZv">
+                                <rect key="frame" x="54" y="-2" width="28" height="28"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="28" id="4Am-qG-3D9"/>
+                                    <constraint firstAttribute="height" constant="28" id="oQv-hx-8EU"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="2" minY="2" maxX="2" maxY="2"/>
+                                <state key="normal" image="delete_avatar"/>
+                                <connections>
+                                    <action selector="removeAvatarButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="y2E-VN-UPj"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="jO2-1T-e01" firstAttribute="top" secondItem="cxa-zY-I2z" secondAttribute="top" id="4vV-IL-HBT"/>
+                            <constraint firstItem="iIl-kw-RZv" firstAttribute="top" secondItem="cxa-zY-I2z" secondAttribute="top" constant="-2" id="DvR-vg-oHr"/>
                             <constraint firstItem="jO2-1T-e01" firstAttribute="leading" secondItem="cxa-zY-I2z" secondAttribute="leading" id="EHU-dt-Wct"/>
                             <constraint firstItem="Qhc-S1-fNz" firstAttribute="leading" secondItem="cxa-zY-I2z" secondAttribute="leading" id="EXo-Xj-gmU"/>
                             <constraint firstAttribute="trailing" secondItem="jO2-1T-e01" secondAttribute="trailing" id="Jl4-Km-Skg"/>
-                            <constraint firstAttribute="width" constant="60" id="UGR-4m-Wbs"/>
-                            <constraint firstAttribute="trailing" secondItem="DmM-HO-d5u" secondAttribute="trailing" id="ULE-c0-OVB"/>
+                            <constraint firstAttribute="width" constant="80" id="UGR-4m-Wbs"/>
                             <constraint firstItem="Qhc-S1-fNz" firstAttribute="top" secondItem="cxa-zY-I2z" secondAttribute="top" id="Vmh-gb-pTd"/>
-                            <constraint firstAttribute="height" constant="60" id="XgW-eP-Ej1"/>
+                            <constraint firstAttribute="height" constant="80" id="XgW-eP-Ej1"/>
+                            <constraint firstAttribute="trailing" secondItem="iIl-kw-RZv" secondAttribute="trailing" constant="-2" id="bGH-xx-660"/>
                             <constraint firstAttribute="bottom" secondItem="jO2-1T-e01" secondAttribute="bottom" id="k80-e4-Sir"/>
                             <constraint firstAttribute="trailing" secondItem="Qhc-S1-fNz" secondAttribute="trailing" id="mmu-lZ-hA2"/>
-                            <constraint firstAttribute="bottom" secondItem="DmM-HO-d5u" secondAttribute="bottom" id="qH0-4k-fJI"/>
                             <constraint firstAttribute="bottom" secondItem="Qhc-S1-fNz" secondAttribute="bottom" id="xzy-TW-HzO"/>
                         </constraints>
                     </view>
@@ -64,11 +70,13 @@
             <connections>
                 <outlet property="avatarImageView" destination="jO2-1T-e01" id="LDf-AD-Ubx"/>
                 <outlet property="chooseAvatarButton" destination="Qhc-S1-fNz" id="37s-Cp-Uwf"/>
+                <outlet property="removeAvatarButton" destination="iIl-kw-RZv" id="9F9-6A-ulx"/>
             </connections>
             <point key="canvasLocation" x="63.04347826086957" y="89.0625"/>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="capture_avatar" width="25" height="25"/>
+        <image name="capture_avatar" width="80" height="80"/>
+        <image name="delete_avatar" width="29" height="29"/>
     </resources>
 </document>

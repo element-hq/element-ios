@@ -130,6 +130,6 @@
  @param roomDataSource room data source instance
  */
 - (void)roomDataSource:(RoomDataSource * _Nonnull)roomDataSource
-          didTapThread:(MXThread * _Nonnull)thread;
+          didTapThread:(id<MXThreadProtocol> _Nonnull)thread;
 
 @end

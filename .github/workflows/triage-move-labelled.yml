@@ -191,7 +191,7 @@ jobs:
           PROJECT_ID: "PN_kwDOAM0swc3m-g"
           GITHUB_TOKEN: ${{ secrets.ELEMENT_BOT_TOKEN }}
 
-move_FTUE_issues:
+  move_FTUE_issues:
     name: Z-FTUE to FTUE board
     runs-on: ubuntu-latest
     if: >
@@ -214,7 +214,7 @@ move_FTUE_issues:
           PROJECT_ID: "PN_kwDOAM0swc4AAqVx"
           GITHUB_TOKEN: ${{ secrets.ELEMENT_BOT_TOKEN }}
           
-move_WTF_issues:
+  move_WTF_issues:
     name: Z-WTF to WTF board
     runs-on: ubuntu-latest
     if: >

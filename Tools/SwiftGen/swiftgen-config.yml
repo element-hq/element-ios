@@ -28,7 +28,7 @@ xcassets:
     - Assets/Images.xcassets
     - Assets/SharedImages.xcassets
   outputs:
-    templateName: swift4
+    templatePath: Templates/Assets/swift4-element.stencil
     output: Images.swift
 plist:
   inputs: Assets/Riot-Defaults.plist

@@ -955,7 +955,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
             }
             if (event.content[@"kick"])
             {
-                displayText = [NSString stringWithFormat:@"%@\n\u2022 kick: %@", displayText, event.content[@"kick"]];
+                displayText = [NSString stringWithFormat:@"%@\n\u2022 remove: %@", displayText, event.content[@"kick"]];
             }
             if (event.content[@"redact"])
             {

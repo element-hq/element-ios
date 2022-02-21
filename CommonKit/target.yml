@@ -1,0 +1,40 @@
+name: CommonKit
+
+schemes:
+  CommonKit:
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+    build:
+      targets:
+        CommonKit:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Release
+    run:
+      config: Debug
+      disableMainThreadChecker: true
+    test:
+      config: Debug
+      disableMainThreadChecker: true
+      targets:
+      - CommonKitUnitTests
+
+targets:
+  CommonKit:
+    type: framework
+    platform: iOS
+    
+    configFiles:
+      Debug: Debug.xcconfig
+      Release: Release.xcconfig
+
+    sources:
+      - path: .
+        excludes:
+        - "**/Tests/**"

@@ -845,7 +845,7 @@
 "room_accessibility_upload" = "Fazer upload";
 "room_accessibility_hangup" = "Desligar";
 "media_type_accessibility_image" = "Imagem";
-"media_type_accessibility_location" = "Local";
+"media_type_accessibility_location" = "Localização";
 "external_link_confirmation_title" = "Cheque duplamente este link";
 "external_link_confirmation_message" = "O link %@ vai levar você para um outro site: %@↵\n↵\nVocê tem certeza que você quer continuar?";
 "settings_discovery_settings" = "DESCOBERTA";
@@ -1558,14 +1558,14 @@
 "settings_analytics_and_crash_data" = "Enviar dados de crash e analítica";
 "accessibility_button_label" = "botão";
 "enable" = "Habilitar";
-"location_sharing_settings_toggle_title" = "Habilitar compartilhamento de local";
-"location_sharing_settings_header" = "Compartilhamento de local";
-"location_sharing_invalid_authorization_error_title" = "%@ não tem permissão para acessar seu local. Você pode habilitar acesso em Ajustes > Local";
-"location_sharing_locating_user_error_title" = "%@ não pôde acessar seu local. Por favor tente de novo mais tarde.";
+"location_sharing_settings_toggle_title" = "Habilitar compartilhamento de localização";
+"location_sharing_settings_header" = "Compartilhamento de localização";
+"location_sharing_invalid_authorization_error_title" = "%@ não tem permissão para acessar sua localização. Você pode habilitar acesso em Ajustes > Localização";
+"location_sharing_locating_user_error_title" = "%@ não pôde acessar sua localização. Por favor tente de novo mais tarde.";
 
 // MARK: - Location sharing
 
-"location_sharing_title" = "Local";
+"location_sharing_title" = "Localização";
 "location_sharing_open_google_maps" = "Abrir em Google Maps";
 "location_sharing_open_apple_maps" = "Abrir em Apple Mapas";
 "location_sharing_invalid_authorization_settings" = "Ajustes";
@@ -1576,7 +1576,7 @@
 "ok" = "OK";
 "onboarding_splash_page_1_message" = "Comunicação segura e independente que lhe dá o mesmo nível de privacidade que uma conversa face-a-face em sua própria casa.";
 "settings_enable_room_message_bubbles" = "Bolhas de mensagem";
-"onboarding_splash_page_4_message" = "Elemente também é ótimo para o lugar de trabalho. É confiado pelas organizações mais seguras do mundo.";
+"onboarding_splash_page_4_message" = "Element também é ótimo para o lugar de trabalho. É confiado pelas organizações mais seguras do mundo.";
 "onboarding_splash_page_4_title_no_pun" = "Mensageria para seu time.";
 "onboarding_splash_page_3_message" = "Encriptado ponta-a-ponta e nenhum número de telefone requerido. Sem publicidade ou datamining.";
 "onboarding_splash_page_3_title" = "Mensageria segura.";
@@ -1587,3 +1587,10 @@
 
 // Onboarding
 "onboarding_splash_register_button_title" = "Criar conta";
+"poll_edit_form_poll_type_closed_description" = "Resultados são somente revelados quando você termina a sondagem";
+"poll_edit_form_poll_type_open" = "Sondagem aberta";
+"poll_edit_form_poll_type_closed" = "Sondagem fechada";
+"poll_edit_form_poll_type_open_description" = "Votantes veem resultados assim que elas(es) têm votado";
+"poll_edit_form_update_failure_subtitle" = "Por favor tente de novo";
+"poll_edit_form_update_failure_title" = "Falha para atualizar sondagem";
+"poll_edit_form_poll_type" = "Tipo de sondagem";

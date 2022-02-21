@@ -22,7 +22,7 @@
 
 @interface MXKRoomBubbleComponent ()
 
-@property (nonatomic, readwrite) MXThread *thread;
+@property (nonatomic, readwrite) id<MXThreadProtocol> thread;
 
 @end
 
@@ -69,8 +69,17 @@
         _showEncryptionBadge = [self shouldShowWarningBadgeForEvent:event roomState:(MXRoomState*)roomState session:session];
         
         [self updateLinkWithRoomState:roomState];
-        
-        self.thread = [session.threadingService threadWithId:event.eventId];
+
+        if (event.unsignedData.relations.thread)
+        {
+            self.thread = [[MXThreadModel alloc] initWithRootEvent:event
+                                                 notificationCount:0
+                                                    highlightCount:0];
+        }
+        else
+        {
+            self.thread = [session.threadingService threadWithId:event.eventId];
+        }
     }
     return self;
 }

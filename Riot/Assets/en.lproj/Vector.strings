@@ -100,6 +100,17 @@
 "onboarding_splash_page_4_title_no_pun" = "Messaging for your team.";
 "onboarding_splash_page_4_message" = "Element is also great for the workplace. It’s trusted by the world’s most secure organisations.";
 
+"onboarding_use_case_title" = "Who will you chat to the most?";
+"onboarding_use_case_message" = "We’ll help you get connected.";
+"onboarding_use_case_personal_messaging" = "Friends and family";
+"onboarding_use_case_work_messaging" = "Teams";
+"onboarding_use_case_community_messaging" = "Communities";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "Not sure yet? You can %@";
+"onboarding_use_case_skip_button" = "skip this question";
+"onboarding_use_case_existing_server_message" = "Looking to join an existing server?";
+"onboarding_use_case_existing_server_button" = "Connect to server";
+
 // Authentication
 "auth_login" = "Log in";
 "auth_register" = "Register";
@@ -117,7 +128,7 @@
 "auth_optional_phone_placeholder" = "Phone number (optional)";
 "auth_phone_placeholder" = "Phone number";
 "auth_repeat_password_placeholder" = "Repeat password";
-"auth_repeat_new_password_placeholder" = "Confirm your new password";
+"auth_repeat_new_password_placeholder" = "Confirm your new Matrix account password";
 "auth_home_server_placeholder" = "URL (e.g. https://matrix.org)";
 "auth_identity_server_placeholder" = "URL (e.g. https://vector.im)";
 "auth_invalid_login_param" = "Incorrect username and/or password";
@@ -134,13 +145,13 @@
 "auth_missing_email_or_phone" = "Missing email address or phone number";
 "auth_email_in_use" = "This email address is already in use";
 "auth_phone_in_use" = "This phone number is already in use";
-"auth_email_is_required" = "No identity server is configured so you cannot add an email address in order to reset your password in the future.";
-"auth_phone_is_required" = "No identity server is configured so you cannot add a phone number in order to reset your password in the future.";
+"auth_email_is_required" = "No identity server is configured so you cannot add an email address in order to reset your Matrix account password in the future.";
+"auth_phone_is_required" = "No identity server is configured so you cannot add a phone number in order to reset your Matrix account password in the future.";
 "auth_untrusted_id_server" = "The identity server is not trusted";
 "auth_password_dont_match" = "Passwords don't match";
 "auth_username_in_use" = "Username in use";
-"auth_forgot_password" = "Forgot password?";
-"auth_forgot_password_error_no_configured_identity_server" = "No identity server is configured: add one to reset your password.";
+"auth_forgot_password" = "Forgot Matrix account password?";
+"auth_forgot_password_error_no_configured_identity_server" = "No identity server is configured: add one to reset your Matrix account password.";
 "auth_email_not_found" = "Failed to send email: This email address was not found";
 "auth_use_server_options" = "Use custom server options (advanced)";
 "auth_email_validation_message" = "Please check your email to continue registration";
@@ -148,15 +159,15 @@
 "auth_msisdn_validation_message" = "We\'ve sent an SMS with an activation code. Please enter this code below.";
 "auth_msisdn_validation_error" = "Unable to verify phone number.";
 "auth_recaptcha_message" = "This homeserver would like to make sure you are not a robot";
-"auth_reset_password_message" = "To reset your password, enter the email address linked to your account:";
+"auth_reset_password_message" = "To reset your Matrix account password, enter the email address linked to your account:";
 "auth_reset_password_missing_email" = "The email address linked to your account must be entered.";
 "auth_reset_password_missing_password" = "A new password must be entered.";
 "auth_reset_password_email_validation_message" = "An email has been sent to %@. Once you've followed the link it contains, click below.";
 "auth_reset_password_next_step_button" = "I have verified my email address";
 "auth_reset_password_error_unauthorized" = "Failed to verify email address: make sure you clicked the link in the email";
 "auth_reset_password_error_not_found" = "Your email address does not appear to be associated with a Matrix ID on this homeserver.";
-"auth_reset_password_error_is_required" = "No identity server is configured: add one in server options to reset your password.";
-"auth_reset_password_success_message" = "Your password has been reset.\n\nYou have been logged out of all sessions and will no longer receive push notifications. To re-enable notifications, re-log in on each device.";
+"auth_reset_password_error_is_required" = "No identity server is configured: add one in server options to reset your Matrix account password.";
+"auth_reset_password_success_message" = "Your Matrix account password has been reset.\n\nYou have been logged out of all sessions and will no longer receive push notifications. To re-enable notifications, re-log in on each device.";
 "auth_add_email_and_phone_warning" = "Registration with email and phone number at once is not supported yet until the api exists. Only the phone number will be taken into account. You may add your email to your profile in settings.";
 "auth_accept_policies" = "Please review and accept the policies of this homeserver:";
 "auth_autodiscover_invalid_response" = "Invalid homeserver discovery response";
@@ -246,6 +257,7 @@ Tap the + to start adding people.";
 "search_people" = "People";
 "search_files" = "Files";
 "search_default_placeholder" = "Search";
+"search_filter_placeholder" = "Filter";
 "search_people_placeholder" = "Search by User ID, Name or email";
 "search_no_result" = "No results";
 "search_in_progress" = "Searching…";
@@ -393,7 +405,7 @@ Tap the + to start adding people.";
 "room_event_action_view_decrypted_source" = "View Decrypted Source";
 "room_event_action_report" = "Report content";
 "room_event_action_report_prompt_reason" = "Reason for reporting this content";
-"room_event_action_kick_prompt_reason" = "Reason for kicking this user";
+"room_event_action_kick_prompt_reason" = "Reason for removing this user";
 "room_event_action_ban_prompt_reason" = "Reason for banning this user";
 "room_event_action_report_prompt_ignore_user" = "Do you want to hide all messages from this user?";
 "room_event_action_save" = "Save";
@@ -539,7 +551,7 @@ Tap the + to start adding people.";
 "settings_add_email_address" = "Add email address";
 "settings_phone_number" = "Phone";
 "settings_add_phone_number" = "Add phone number";
-"settings_change_password" = "Change password";
+"settings_change_password" = "Change Matrix account password";
 "settings_night_mode" = "Night Mode";
 "settings_fail_to_update_profile" = "Fail to update profile";
 "settings_three_pids_management_information_part1" = "Manage which email addresses or phone numbers you can use to log in or recover your account here. Control who can find you in ";
@@ -624,16 +636,16 @@ Tap the + to start adding people.";
 "settings_enable_rageshake" = "Rage shake to report bug";
 "settings_clear_cache" = "Clear cache";
 
-"settings_change_password" = "Change password";
+"settings_change_password" = "Change Matrix account password";
 "settings_old_password" = "old password";
 "settings_new_password" = "new password";
 "settings_confirm_password" = "confirm password";
-"settings_fail_to_update_password" = "Fail to update password";
-"settings_password_updated" = "Your password has been updated";
+"settings_fail_to_update_password" = "Fail to update Matrix account password";
+"settings_password_updated" = "Your Matrix account password has been updated";
 
 "settings_add_3pid_password_title_email" = "Add email address";
 "settings_add_3pid_password_title_msidsn" = "Add phone number";
-"settings_add_3pid_password_message" = "To continue, please enter your password";
+"settings_add_3pid_password_message" = "To continue, please enter your Matrix account password";
 "settings_add_3pid_invalid_password_message" = "Invalid credentials";
 
 "settings_crypto_device_name" = "Session name: ";
@@ -701,7 +713,7 @@ Tap the + to start adding people.";
 "security_settings_title" = "Security";
 "security_settings_crypto_sessions" = "MY SESSIONS";
 "security_settings_crypto_sessions_loading" = "Loading sessions…";
-"security_settings_crypto_sessions_description_2" = "If you don’t recognise a login, change your password and reset Secure Backup.";
+"security_settings_crypto_sessions_description_2" = "If you don’t recognise a login, change your Matrix account password and reset Secure Backup.";
 
 "security_settings_secure_backup" = "SECURE BACKUP";
 "security_settings_secure_backup_description" =  "Back up your encryption keys with your account data in case you lose access to your sessions. Your keys will be secured with a unique Security Key.";
@@ -734,7 +746,7 @@ Tap the + to start adding people.";
 "security_settings_complete_security_alert_message" = "You should complete security on your current session first.";
 
 "security_settings_coming_soon" = "Sorry. This action is not available on %@ iOS yet. Please use another Matrix client to set it up. %@ iOS will use it.";
-"security_settings_user_password_description" = "Confirm your identity by entering your account password";
+"security_settings_user_password_description" = "Confirm your identity by entering your Matrix account password";
 
 // Manage session
 "manage_session_title" = "Manage session";
@@ -1161,7 +1173,7 @@ Tap the + to start adding people.";
 "deactivate_account_validate_action" = "Deactivate account";
 
 "deactivate_account_password_alert_title" = "Deactivate Account";
-"deactivate_account_password_alert_message" = "To continue, please enter your password";
+"deactivate_account_password_alert_message" = "To continue, please enter your Matrix account password";
 
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Request Sent";
@@ -1217,7 +1229,7 @@ Tap the + to start adding people.";
 // Passphrase
 
 "key_backup_setup_passphrase_title" = "Secure your backup with a Security Phrase";
-"key_backup_setup_passphrase_info" = "We'll store an encrypted copy of your keys on our server. Protect your backup with a phrase to keep it secure.\n\nFor maximum security, this should be different from your account password.";
+"key_backup_setup_passphrase_info" = "We'll store an encrypted copy of your keys on our server. Protect your backup with a phrase to keep it secure.\n\nFor maximum security, this should be different from your Matrix account password.";
 "key_backup_setup_passphrase_passphrase_title" = "Enter";
 "key_backup_setup_passphrase_passphrase_placeholder" = "Enter phrase";
 "key_backup_setup_passphrase_passphrase_valid" = "Great!";
@@ -1636,7 +1648,7 @@ Tap the + to start adding people.";
 
 "secrets_setup_recovery_passphrase_title" = "Set a Security Phrase";
 "secrets_setup_recovery_passphrase_information" = "Enter a security phrase only you know, used to secure secrets on your server.";
-"secrets_setup_recovery_passphrase_additional_information" = "Don't use your account password.";
+"secrets_setup_recovery_passphrase_additional_information" = "Don't use your Matrix account password.";
 "secrets_setup_recovery_passphrase_validate_action" = "Done";
 
 "secrets_setup_recovery_passphrase_confirm_information" = "Enter your Security Phrase again to confirm it.";
@@ -1656,7 +1668,7 @@ Tap the + to start adding people.";
 "secrets_reset_warning_title" = "If you reset everything";
 "secrets_reset_warning_message" = "You will restart with no history, no messages, trusted devices or trusted users.";
 "secrets_reset_reset_action" = "Reset";
-"secrets_reset_authentication_message" = "Enter your account password to confirm";
+"secrets_reset_authentication_message" = "Enter your Matrix account password to confirm";
 
 // MARK: - Cross-signing
 
@@ -2061,6 +2073,8 @@ Tap the + to start adding people.";
 "location_sharing_open_apple_maps" = "Open in Apple Maps";
 
 "location_sharing_open_google_maps" = "Open in Google Maps";
+
+"location_sharing_open_open_street_maps" = "Open in OpenStreetMap";
 
 "location_sharing_settings_header" = "Location sharing";
 
