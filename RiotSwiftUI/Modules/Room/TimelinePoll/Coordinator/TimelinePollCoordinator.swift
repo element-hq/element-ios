@@ -96,8 +96,7 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
     }
     
     func canEditPoll() -> Bool {
-        return false // Intentionally disabled until platform parity.
-        // return pollAggregator.poll.isClosed == false && pollAggregator.poll.totalAnswerCount == 0
+        return pollAggregator.poll.isClosed == false && pollAggregator.poll.totalAnswerCount == 0
     }
     
     func endPoll() {
