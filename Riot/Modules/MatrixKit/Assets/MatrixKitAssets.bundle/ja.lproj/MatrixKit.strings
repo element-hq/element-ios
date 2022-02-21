@@ -100,14 +100,14 @@
 "notice_error_unsupported_event" = "サポートされていないイベント";
 "notice_error_unexpected_event" = "予期しないイベント";
 "notice_error_unknown_event_type" = "不明なイベントタイプ";
-"notice_room_history_visible_to_anyone" = "%@は、今後のルーム履歴を誰でも見えるように設定しました。";
-"notice_room_history_visible_to_members" = "%@ ルームメンバー全員に将来のルーム履歴を表示されます。";
-"notice_room_history_visible_to_members_from_invited_point" = "%@ ルームメンバー全員に招待した時点からのルーム履歴を表示されます。";
-"notice_room_history_visible_to_members_from_joined_point" = "%@ ルームメンバー全員に参加した時点からのルーム履歴を表示されます。";
+"notice_room_history_visible_to_anyone" = "%@が今後のルーム履歴を「誰でも」閲覧可能に設定しました。";
+"notice_room_history_visible_to_members" = "%@が今後のルーム履歴を「メンバーのみ」閲覧可能に設定しました。";
+"notice_room_history_visible_to_members_from_invited_point" = "%@が今後のルーム履歴を「メンバーのみ （招待された時点以降）」閲覧可能に設定しました。";
+"notice_room_history_visible_to_members_from_joined_point" = "%@が今後のルーム履歴を「メンバーのみ （参加した時点以降）」閲覧可能に設定しました。";
 "notice_crypto_unable_to_decrypt" = "** 復号化できません: %@ **";
 "notice_crypto_error_unknown_inbound_session_id" = "送信者のセッションからこのメッセージ用の鍵が送信されていません。";
 "notice_sticker" = "ステッカー";
-"notice_in_reply_to" = "に返信";
+"notice_in_reply_to" = "返信先";
 // room display name
 "room_displayname_empty_room" = "空のルーム";
 "room_displayname_two_members" = "%@ と %@";
@@ -162,7 +162,7 @@
 "account_email_validation_message" = "メールをチェックし、それに含まれているリンクをクリックしてください。 これが完了したら、[続行]をクリックします。";
 "account_email_validation_error" = "メールアドレスを確認できません。 あなたのメールをチェックし、それに含まれているリンクをクリックしてください。 これが完了したら、[続行]をクリックします";
 "account_msisdn_validation_title" = "認証の保留中";
-"account_msisdn_validation_message" = "アクティベーションコード付きのSMSを送信しました。 以下にこのコードを入力してください。";
+"account_msisdn_validation_message" = "SMSで認証番号を送りました。以下にその番号を入力してください。";
 "account_msisdn_validation_error" = "電話番号を確認できません。";
 "account_error_display_name_change_failed" = "表示名の変更に失敗しました";
 "account_error_picture_change_failed" = "画像の変更に失敗しました";
@@ -376,8 +376,8 @@
 "ssl_expected_existing_expl" = "証明書が以前に信頼されたものから信頼されていないものに変更されました。 サーバーが証明書を更新した可能性があります。 予想される指紋については、サーバー管理者にお問い合わせください。";
 "ssl_only_accept" = "サーバー管理者が上記のものと一致する指紋を発行した場合にのみ、証明書を受け入れてください。";
 "unignore" = "無視しない";
-"notice_encryption_enabled_ok" = "%@ がエンドツーエンド暗号化をオンにしました。";
-"notice_encryption_enabled_unknown_algorithm" = "%1$@ がエンドツーエンド暗号化をオンにしました (不明なアルゴリズム %2$@)。";
+"notice_encryption_enabled_ok" = "%@がエンドツーエンド暗号化をオンにしました。";
+"notice_encryption_enabled_unknown_algorithm" = "%1$@がエンドツーエンド暗号化をオンにしました（不明なアルゴリズム %2$@）。";
 "device_details_rename_prompt_title" = "セッション名";
 "account_error_push_not_allowed" = "通知は許可されていません";
 "notice_room_third_party_revoked_invite" = "%@が%@のルームへの招待を取り消しました";
@@ -387,8 +387,8 @@
 "notice_room_join_by_you" = "参加しました";
 "notice_room_leave_by_you" = "退出しました";
 "notice_room_kick_by_you" = "%@をキックしました";
-"notice_room_unban_by_you" = "%@をBANしました";
-"notice_room_ban_by_you" = "%@をBANしました";
+"notice_room_unban_by_you" = "%@のブロックを解除しました";
+"notice_room_ban_by_you" = "%@をブロックしました";
 "notice_avatar_url_changed_by_you" = "アバターを変更しました";
 "notice_display_name_set_by_you" = "表示名を%@に変更しました";
 "notice_display_name_changed_from_by_you" = "表示名を%@から%@に変更しました";
@@ -409,3 +409,6 @@
 "notice_redaction_by_you" = "イベントを編集しました (id: %@)";
 "auth_username_in_use" = "ユーザー名は既に使用されています";
 "resume_call" = "再開";
+"notice_room_history_visible_to_members_from_joined_point_for_dm" = "%@が今後のメッセージを「全員 （参加した時点以降）」閲覧可能に設定しました。";
+"notice_room_history_visible_to_members_from_invited_point_for_dm" = "%@が今後のメッセージを「メンバーのみ （招待された時点以降）」閲覧可能に設定しました。";
+"notice_room_history_visible_to_members_for_dm" = "%@が今後のメッセージを「メンバーのみ」閲覧可能に設定しました。";
