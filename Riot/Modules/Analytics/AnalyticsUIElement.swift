@@ -16,17 +16,17 @@
 
 import AnalyticsEvents
 
-/// A tappable UI element that can be tracked in Analytics.
+/// A tappable UI element that can be track in Analytics.
 @objc enum AnalyticsUIElement: Int {
-    case removeMe
+    case sendMessageButton
     
     /// The element name reported to the AnalyticsEvent.
-    var name: AnalyticsEvent.Interaction.Name {
+    var elementName: AnalyticsEvent.Click.Name {
         switch self {
         // Note: This is a test element that doesn't need to be captured.
-        // It can be removed when some elements are added that relate to mobile.
-        case .removeMe:
-            return .WebRoomSettingsLeaveButton
+        // It will likely be removed when the AnalyticsEvent.Click is updated.
+        case .sendMessageButton:
+            return .SendMessageButton
         }
     }
 }

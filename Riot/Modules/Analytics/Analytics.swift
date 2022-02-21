@@ -186,23 +186,22 @@ extension Analytics {
         trackScreen(screen, duration: nil)
     }
     
-    /// Track an element that has been interacted with
+    /// Track an element that has been tapped
     /// - Parameters:
-    ///   - uiElement: The element that was interacted with
-    ///   - interactionType: The way in with the element was interacted with
+    ///   - tap: The element that was tapped
     ///   - index: The index of the element, if it's in a list of elements
-    func trackInteraction(_ uiElement: AnalyticsUIElement, interactionType: AnalyticsEvent.Interaction.InteractionType, index: Int?) {
-        let event = AnalyticsEvent.Interaction(index: index, interactionType: interactionType, name: uiElement.name)
+    func trackTap(_ tap: AnalyticsUIElement, index: Int?) {
+        let event = AnalyticsEvent.Click(index: index, name: tap.elementName)
         client.capture(event)
     }
     
     /// Track an element that has been tapped without including an index
     /// - Parameters:
-    ///   - uiElement: The element that was tapped
-    func trackInteraction(_ uiElement: AnalyticsUIElement) {
-        trackInteraction(uiElement, interactionType: .Touch, index: nil)
+    ///   - tap: The element that was tapped
+    func trackTap(_ tap: AnalyticsUIElement) {
+        trackTap(tap, index: nil)
     }
-
+    
     /// Track an E2EE error that occurred
     /// - Parameters:
     ///   - reason: The error that occurred.
