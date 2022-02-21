@@ -20,7 +20,7 @@ import Foundation
 
 protocol CreateRoomCoordinatorDelegate: AnyObject {
     func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didCreateNewRoom room: MXRoom)
-    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithId roomIds: [String])
+    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithIds roomIds: [String])
     func createRoomCoordinatorDidCancel(_ coordinator: CreateRoomCoordinatorType)
 }
 

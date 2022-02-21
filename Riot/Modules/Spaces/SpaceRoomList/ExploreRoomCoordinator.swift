@@ -32,7 +32,6 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
     private var spaceIdStack: [String]
     private weak var roomDetailCoordinator: SpaceChildRoomDetailCoordinator?
     private weak var currentExploreRoomCoordinator: SpaceExploreRoomCoordinator?
-
     private var pollEditFormCoordinator: PollEditFormCoordinator?
 
     private lazy var slidingModalPresenter: SlidingModalPresenter = {
@@ -158,7 +157,7 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
     
     private func presentRoomCreation() {
         let space = session.spaceService.getSpace(withId: spaceIdStack.last ?? "")
-        let createRoomCoordinator = CreateRoomCoordinator(session: self.session, parentSpace: space)
+        let createRoomCoordinator = CreateRoomCoordinator(parameters: CreateRoomCoordinatorParameter(session: self.session, parentSpace: space))
         createRoomCoordinator.delegate = self
         let presentable = createRoomCoordinator.toPresentable()
         presentable.presentationController?.delegate = self
@@ -257,7 +256,7 @@ extension ExploreRoomCoordinator: CreateRoomCoordinatorDelegate {
         }
     }
     
-    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithId roomIds: [String]) {
+    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithIds roomIds: [String]) {
         self.currentExploreRoomCoordinator?.reloadRooms()
         coordinator.toPresentable().dismiss(animated: true) {
             self.remove(childCoordinator: coordinator)

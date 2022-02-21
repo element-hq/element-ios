@@ -57,9 +57,12 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
                     self.update(viewState: .emptyFilterResult)
                 }
             } else {
-                self.update(viewState: .loaded(self.filteredItemDataList, self.nextBatch != nil && (self.searchKeyword ?? "").isEmpty))
+                self.update(viewState: .loaded(self.filteredItemDataList, self.hasMore))
             }
         }
+    }
+    private var hasMore: Bool {
+        self.nextBatch != nil && (self.searchKeyword ?? "").isEmpty
     }
     
     private var spaceGraphObserver: Any?
@@ -81,7 +84,6 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
     
     deinit {
         self.cancelOperations()
-
     }
     
     // MARK: - Public
@@ -203,7 +205,7 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
                         NotificationCenter.default.removeObserver(observer)
                     }
                     self.canJoin = false
-                    self.update(viewState: .loaded(self.filteredItemDataList, self.nextBatch != nil && (self.searchKeyword ?? "").isEmpty))
+                    self.update(viewState: .loaded(self.filteredItemDataList, self.hasMore))
                 })
             case .failure(let error):
                 self?.update(viewState: .error(error))

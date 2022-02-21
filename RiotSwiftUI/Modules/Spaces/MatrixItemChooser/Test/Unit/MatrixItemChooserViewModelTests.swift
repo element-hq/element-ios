@@ -28,16 +28,15 @@ class MatrixItemChooserViewModelTests: XCTestCase {
     
     override func setUpWithError() throws {
         service = MockMatrixItemChooserService(type: .room)
-        viewModel = MatrixItemChooserViewModel.makeMatrixItemChooserViewModel(matrixItemChooserService: service, creationParams: creationParameters)
+        viewModel = MatrixItemChooserViewModel.makeMatrixItemChooserViewModel(matrixItemChooserService: service, title: VectorL10n.spacesCreationAddRoomsTitle, detail: VectorL10n.spacesCreationAddRoomsMessage)
         context = viewModel.context
     }
     
     func testInitialState() {
-        XCTAssertEqual(context.viewState.navTitle, creationParameters.isPublic ? VectorL10n.spacesCreationPublicSpaceTitle : VectorL10n.spacesCreationPrivateSpaceTitle)
         XCTAssertEqual(context.viewState.emptyListMessage, VectorL10n.spacesNoResultFoundTitle)
         XCTAssertEqual(context.viewState.title, VectorL10n.spacesCreationAddRoomsTitle)
         XCTAssertEqual(context.viewState.message, VectorL10n.spacesCreationAddRoomsMessage)
-        XCTAssertEqual(context.viewState.items, MockSpaceCreationMatrixItemChooserService.mockItems)
+        XCTAssertEqual(context.viewState.items, MockMatrixItemChooserService.mockItems)
         XCTAssertEqual(context.viewState.selectedItemIds.count, 0)
     }
 
@@ -45,6 +44,6 @@ class MatrixItemChooserViewModelTests: XCTestCase {
         XCTAssertEqual(context.viewState.selectedItemIds.count, 0)
         service.simulateSelectionForItem(at: 0)
         XCTAssertEqual(context.viewState.selectedItemIds.count, 1)
-        XCTAssertEqual(context.viewState.selectedItemIds.first, MockSpaceCreationMatrixItemChooserService.mockItems[0].id)
+        XCTAssertEqual(context.viewState.selectedItemIds.first, MockMatrixItemChooserService.mockItems[0].id)
     }
 }

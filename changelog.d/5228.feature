@@ -1,0 +1,1 @@
+Let people know when rooms have moved.
