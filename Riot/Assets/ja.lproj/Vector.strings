@@ -78,7 +78,7 @@
 "auth_msisdn_validation_message" = "SMSで認証番号を送りました。以下にその番号を入力してください。";
 "auth_msisdn_validation_error" = "電話番号を認証できません。";
 "auth_recaptcha_message" = "接続先サーバー側が、機械による自動登録ではなく、あなたが人間であることを確認したいとのことです";
-"auth_reset_password_message" = "パスワードを初期化するには、アカウントに登録されているメールアドレスを入力してください:";
+"auth_reset_password_message" = "Matrixのアカウントのパスワードを初期化するには、アカウントに登録されているメールアドレスを入力してください：";
 "auth_reset_password_missing_email" = "あなたのアカウントに登録されたメールアドレスの入力が必要です。";
 "auth_reset_password_missing_password" = "新しいパスワードの入力が必要です。";
 "auth_reset_password_email_validation_message" = "%@ へ電子メールが送信されました。リンクをたどったら以下をクリックしてください。";
@@ -288,7 +288,7 @@
 "settings_enable_push_notif" = "この端末での通知";
 "settings_show_decrypted_content" = "復号化された文章を表示";
 "settings_global_settings_info" = "あなたの%@ webクライアント上で、全体の通知設定が可能です";
-"settings_pin_rooms_with_missed_notif" = "逃した通知があるルームをピン止め";
+"settings_pin_rooms_with_missed_notif" = "逃した通知があるルームを固定";
 "settings_callkit_info" = "画面がロックされているときに着信がありました。Elementの着信はシステムの通話履歴で確認できます。iCloudが有効になっている場合、この通話履歴はAppleと共有されます。";
 "settings_ui_language" = "言語";
 "settings_ui_theme" = "外観";
@@ -464,7 +464,7 @@
 "share_extension_failed_to_encrypt" = "送信に失敗しました。このルームの暗号設定をメインの端末で確認して下さい";
 "room_details_advanced_e2e_encryption_prompt_message" = "End-to-end暗号化は実験的なものであり、信頼性が低い場合があります。\n\n発言を保護するためにはまだそれを信用すべきではありません。\n\n端末は、まだ参加する前の発言履歴を復号化することはできません。\n\n部屋の暗号化が今から有効になったら、もう無効にすることはできません。\n\n暗号化された発言は、まだ暗号化を実装していないアプリでは表示されません。";
 "settings_enable_callkit" = "呼び出しの統合";
-"settings_pin_rooms_with_unread" = "未読のあるルームをピン止め";
+"settings_pin_rooms_with_unread" = "未読のあるルームを固定";
 "title_groups" = "コミュニティー";
 "room_recents_server_notice_section" = "システムアラート";
 // Groups tab
