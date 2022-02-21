@@ -81,11 +81,8 @@ class TimelinePollViewModel: TimelinePollViewModelType, TimelinePollViewModelPro
         state.poll.answerOptions.updateEach { answerOption in
             if answerOption.selected {
                 answerOption.selected = false
-                
-                if(state.poll.answerOptions.count > 0) {
-                    answerOption.count = answerOption.count - 1
-                    state.poll.totalAnswerCount -= 1
-                }
+                answerOption.count = UInt(max(0, Int(answerOption.count) - 1))
+                state.poll.totalAnswerCount = UInt(max(0, Int(state.poll.totalAnswerCount) - 1))
             }
             
             if answerOption.id == selectedAnswerIdentifier {
@@ -114,8 +111,8 @@ class TimelinePollViewModel: TimelinePollViewModelType, TimelinePollViewModelPro
             
             if answerOption.selected {
                 answerOption.selected = false
-                answerOption.count -= 1
-                state.poll.totalAnswerCount -= 1
+                answerOption.count = UInt(max(0, Int(answerOption.count) - 1))
+                state.poll.totalAnswerCount = UInt(max(0, Int(state.poll.totalAnswerCount) - 1))
             } else {
                 answerOption.selected = true
                 answerOption.count += 1
