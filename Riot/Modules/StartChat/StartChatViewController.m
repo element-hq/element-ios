@@ -105,7 +105,7 @@
     dataSource.forceMatrixIdInDisplayName = YES;
     // Add a plus icon to the contact cell when a search session is in progress,
     // in order to make it more understandable for the end user.
-    dataSource.contactCellAccessoryImage = [[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor];
+    dataSource.contactCellAccessoryImage = [AssetImages.plusIcon.image vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor];
 
     [self displayList:dataSource];
 

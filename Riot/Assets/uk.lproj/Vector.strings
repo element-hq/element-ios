@@ -1731,3 +1731,10 @@
 
 // Onboarding
 "onboarding_splash_register_button_title" = "Створити обліковий запис";
+"poll_edit_form_poll_type_open_description" = "Усі, хто проголосує, побачать результати одразу після голосування";
+"poll_edit_form_poll_type_closed_description" = "Результати можна переглянути лише після завершення опитування";
+"poll_edit_form_poll_type_closed" = "Закрите опитування";
+"poll_edit_form_poll_type_open" = "Відкрити опитування";
+"poll_edit_form_update_failure_subtitle" = "Повторіть спробу";
+"poll_edit_form_update_failure_title" = "Не вдалося оновити опитування";
+"poll_edit_form_poll_type" = "Тип опитування";

@@ -160,7 +160,7 @@
             threadParameters = [[ThreadParameters alloc] initWithThreadId:event.threadId
                                                           stackRoomScreen:NO];
         }
-        else if ([self.mainSession.threadingService isEventThreadRoot:event])
+        else if (event.unsignedData.relations.thread || [self.mainSession.threadingService isEventThreadRoot:event])
         {
             threadParameters = [[ThreadParameters alloc] initWithThreadId:event.eventId
                                                           stackRoomScreen:NO];

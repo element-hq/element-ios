@@ -68,7 +68,7 @@
     // This will be used by the shared RecentsDataSource instance for sanity checks (see UITableViewDataSource methods).
     self.recentsTableView.tag = RecentsDataSourceModePeople;
     
-    UIImage *fabImage = self.dataSource.currentSpace == nil ? [UIImage imageNamed:@"people_floating_action"] : [UIImage imageNamed:@"add_member_floating_action"];
+    UIImage *fabImage = self.dataSource.currentSpace == nil ? AssetImages.peopleFloatingAction.image : AssetImages.addMemberFloatingAction.image;
     // Add the (+) button programmatically
     plusButtonImageView = [self vc_addFABWithImage:fabImage
                                             target:self
@@ -178,11 +178,11 @@
 {
     if (ThemeService.shared.isCurrentThemeDark)
     {
-        return [UIImage imageNamed:@"people_empty_screen_artwork_dark"];
+        return AssetImages.peopleEmptyScreenArtworkDark.image;
     }
     else
     {
-        return [UIImage imageNamed:@"people_empty_screen_artwork"];
+        return AssetImages.peopleEmptyScreenArtwork.image;
     }
 }
 

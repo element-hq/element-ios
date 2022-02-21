@@ -146,8 +146,6 @@ final class BuildSettings: NSObject {
     static let stunServerFallbackUrlString: String? = "stun:turn.matrix.org"
     
     // MARK: -  Public rooms Directory
-    #warning("Unused build setting: should this be implemented in ShowDirectory?")
-    static let publicRoomsAllowServerChange: Bool = true
     // List of homeservers for the public rooms directory
     static let publicRoomsDirectoryServers = [
         "matrix.org",
@@ -211,6 +209,15 @@ final class BuildSettings: NSObject {
     static let allowLocalContactsAccess: Bool = true
     
     static let allowInviteExernalUsers: Bool = true
+    
+    /// Whether a screen uses legacy local activity indicators or improved app-wide indicators
+    static var appActivityIndicators: Bool {
+        #if DEBUG
+        return false
+        #else
+        return false
+        #endif
+    }
     
     // MARK: - Side Menu
     static let enableSideMenu: Bool = true
@@ -293,7 +300,7 @@ final class BuildSettings: NSObject {
     static let roomScreenAllowFilesAction: Bool = true
     
     // Timeline style
-    static let roomScreenAllowTimelineStyleConfiguration: Bool = false
+    static let roomScreenAllowTimelineStyleConfiguration: Bool = true
     static let roomScreenTimelineDefaultStyleIdentifier: RoomTimelineStyleIdentifier = .plain
     static var isRoomScreenEnableMessageBubblesByDefault: Bool {
         return self.roomScreenTimelineDefaultStyleIdentifier == .bubble

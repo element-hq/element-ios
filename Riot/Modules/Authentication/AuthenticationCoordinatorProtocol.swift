@@ -18,12 +18,27 @@
 
 import Foundation
 
+struct AuthenticationCoordinatorParameters {
+    let navigationRouter: NavigationRouterType
+}
+
+enum AuthenticationCoordinatorResult {
+    /// The user has authenticated but key verification is yet to happen. The session value is
+    /// for a fresh session that still needs to load, sync etc before being ready.
+    case didLogin(MXSession)
+    /// All of the required authentication steps including key verification is complete.
+    case didComplete(MXKAuthenticationType)
+}
+
 /// `AuthenticationCoordinatorProtocol` is a protocol describing a Coordinator that handle's the authentication navigation flow.
 protocol AuthenticationCoordinatorProtocol: Coordinator, Presentable {
-    var completion: (() -> Void)? { get set }
+    var completion: ((AuthenticationCoordinatorResult) -> Void)? { get set }
     
     /// Update the screen to display registration or login.
     func update(authenticationType: MXKAuthenticationType)
+    
+    /// Enable the custom server checkbox to allow the user to enter a homeserver URL.
+    func showCustomServer()
     
     /// Force a registration process based on a predefined set of parameters from a server provisioning link.
     /// For more information see `AuthenticationViewController.externalRegistrationParameters`.

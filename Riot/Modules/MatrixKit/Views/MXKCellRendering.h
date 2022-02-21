@@ -75,11 +75,9 @@
 - (MXKCellData*)renderedCellData;
 
 /**
- Reset the cell.
+ Stop processes no more needed when cell is not visible.
 
- The cell is no more displayed. This is time to release resources and removing listeners.
- In case of UITableViewCell or UIContentViewCell object, the cell must reset in a state
- that it can be reusable.
+ The cell is no more displayed but still recycled. This is time to stop animation.
  */
 - (void)didEndDisplay;
 

@@ -1608,3 +1608,10 @@
 
 // Onboarding
 "onboarding_splash_register_button_title" = "Krijoni llogari";
+"poll_edit_form_poll_type_open" = "Anketim i hapur";
+"poll_edit_form_poll_type_closed_description" = "Përfundimet shfaqen vetëm kur përfundoni anketimin";
+"poll_edit_form_poll_type_closed" = "Anketim i mbyllur";
+"poll_edit_form_poll_type_open_description" = "Votuesit do të shohin përfundime sapo të kenë votuar";
+"poll_edit_form_update_failure_subtitle" = "Ju lutemi, riprovoni";
+"poll_edit_form_update_failure_title" = "S’u arrit të përditësohet anketimi";
+"poll_edit_form_poll_type" = "Lloj anketimi";

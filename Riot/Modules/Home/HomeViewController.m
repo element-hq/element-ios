@@ -89,7 +89,7 @@
     self.recentsTableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     
     // Add the (+) button programmatically
-    plusButtonImageView = [self vc_addFABWithImage:[UIImage imageNamed:@"plus_floating_action"]
+    plusButtonImageView = [self vc_addFABWithImage:AssetImages.plusFloatingAction.image
                                             target:self
                                             action:@selector(onPlusButtonPressed)];
     
@@ -380,19 +380,19 @@
             // Update the edition menu content (Use the button tag to store the current value).
             tableViewCell.directChatButton.tag = room.isDirect;
             [tableViewCell.directChatButton addTarget:self action:@selector(onDirectChatButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-            tableViewCell.directChatImageView.image = [UIImage imageNamed:@"room_action_direct_chat"];
+            tableViewCell.directChatImageView.image = AssetImages.roomActionDirectChat.image;
             tableViewCell.directChatImageView.tintColor = room.isDirect ? selectedColor : unselectedColor;
             
             tableViewCell.notificationsButton.tag = room.isMute || room.isMentionsOnly;
             [tableViewCell.notificationsButton addTarget:self action:@selector(onNotificationsButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
             
-            if ([BuildSettings showNotificationsV2])
+            if ([BuildSettings showNotificationsV2] && tableViewCell.notificationsButton.tag)
             {
-                tableViewCell.notificationsImageView.image = tableViewCell.notificationsButton.tag ? [UIImage imageNamed:@"room_action_notification_muted"] : [UIImage imageNamed:@"room_action_notification"];
+                tableViewCell.notificationsImageView.image = AssetImages.roomActionNotificationMuted.image;
             }
             else
             {
-                tableViewCell.notificationsImageView.image = [UIImage imageNamed:@"room_action_notification"];
+                tableViewCell.notificationsImageView.image = AssetImages.roomActionNotification.image;
             }
             
             tableViewCell.notificationsImageView.tintColor = tableViewCell.notificationsButton.tag ? unselectedColor : selectedColor;
@@ -410,16 +410,16 @@
             
             tableViewCell.favouriteButton.tag = (currentTag && [kMXRoomTagFavourite isEqualToString:currentTag.name]);
             [tableViewCell.favouriteButton addTarget:self action:@selector(onFavouriteButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-            tableViewCell.favouriteImageView.image = [UIImage imageNamed:@"room_action_favourite"];
+            tableViewCell.favouriteImageView.image = AssetImages.roomActionFavourite.image;
             tableViewCell.favouriteImageView.tintColor = tableViewCell.favouriteButton.tag ? selectedColor : unselectedColor;
             
             tableViewCell.priorityButton.tag = (currentTag && [kMXRoomTagLowPriority isEqualToString:currentTag.name]);
             [tableViewCell.priorityButton addTarget:self action:@selector(onPriorityButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-            tableViewCell.priorityImageView.image = tableViewCell.priorityButton.tag ? [UIImage imageNamed:@"room_action_priority_high"] : [UIImage imageNamed:@"room_action_priority_low"];
+            tableViewCell.priorityImageView.image = tableViewCell.priorityButton.tag ? AssetImages.roomActionPriorityHigh.image : AssetImages.roomActionPriorityLow.image;
             tableViewCell.priorityImageView.tintColor = unselectedColor;
             
             [tableViewCell.leaveButton addTarget:self action:@selector(onLeaveButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-            tableViewCell.leaveImageView.image = [UIImage imageNamed:@"room_action_leave"];
+            tableViewCell.leaveImageView.image = AssetImages.roomActionLeave.image;
             tableViewCell.leaveImageView.tintColor = unselectedColor;
         }
     }
@@ -1012,11 +1012,11 @@
 {
     if (ThemeService.shared.isCurrentThemeDark)
     {
-        return [UIImage imageNamed:@"home_empty_screen_artwork_dark"];
+        return AssetImages.homeEmptyScreenArtworkDark.image;
     }
     else
     {
-        return [UIImage imageNamed:@"home_empty_screen_artwork"];
+        return AssetImages.homeEmptyScreenArtwork.image;
     }
 }
 

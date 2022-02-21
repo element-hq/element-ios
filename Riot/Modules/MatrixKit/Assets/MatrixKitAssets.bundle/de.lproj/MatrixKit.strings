@@ -125,7 +125,7 @@
 "notice_room_history_visible_to_members_from_joined_point" = "%@ hat den zukünftigen Raumverlauf für alle Raumteilnehmer ab deren Einladung sichtbar gemacht.";
 "notice_room_history_visible_to_members_from_joined_point_for_dm" = "%@ hat den zukünftigen Verlauf für alle Raumteilnehmer ab deren Einladung sichtbar gemacht.";
 "notice_crypto_unable_to_decrypt" = "** Entschlüsselung nicht möglich: %@ **";
-"notice_crypto_error_unknown_inbound_session_id" = "Die Sitzung des Absenders hat uns keine Schlüssel für diese Nachricht gesendet.";
+"notice_crypto_error_unknown_inbound_session_id" = "Die absendende Sitzung hat uns keine Schlüssel für diese Nachricht gesendet.";
 "notice_sticker" = "Aufkleber";
 "notice_in_reply_to" = "Als Antwort auf";
 // room display name

@@ -133,6 +133,9 @@ NSString *const kMXKWebViewViewControllerJavaScriptEnableLog =
                                                                       multiplier:1.0
                                                                         constant:0];
     // Force webview in full height
+    
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated"
     NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:webView
                                                                      attribute:NSLayoutAttributeTop
                                                                      relatedBy:NSLayoutRelationEqual
@@ -147,6 +150,7 @@ NSString *const kMXKWebViewViewControllerJavaScriptEnableLog =
                                                                         attribute:NSLayoutAttributeTop
                                                                        multiplier:1.0
                                                                          constant:0];
+    #pragma clang diagnostic pop
     
     [NSLayoutConstraint activateConstraints:@[leftConstraint, rightConstraint, topConstraint, bottomConstraint]];
     

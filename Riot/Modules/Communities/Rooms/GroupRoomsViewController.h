@@ -63,9 +63,6 @@
 /**
  Set the group for which the rooms are listed.
  Provide the related matrix session.
- 
- @param group
- @param mxSession
  */
 - (void)setGroup:(MXGroup*)group withMatrixSession:(MXSession*)mxSession;
 

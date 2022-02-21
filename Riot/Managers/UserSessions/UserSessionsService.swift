@@ -131,6 +131,9 @@ class UserSessionsService: NSObject {
             NotificationCenter.default.post(name: UserSessionsService.willRemoveUserSession, object: self, userInfo: [NotificationUserInfoKey.userSession: userSession])
         }
         
+        // Clear any stored user properties from this session.
+        userSession.userProperties.delete()
+        
         self.userSessions.removeAll { (userSession) -> Bool in
             return userId == userSession.userId
         }

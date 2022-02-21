@@ -476,3 +476,6 @@
 "auth_username_in_use" = "Имя пользователя занято";
 "rename" = "Переименовать";
 "room_displayname_all_other_members_left" = "%@ (Вышел)";
+"attachment_unsupported_preview_message" = "Этот тип файла не поддерживается.";
+"attachment_unsupported_preview_title" = "Не удалось показать предварительный просмотр";
+"message_reply_to_sender_sent_their_location" = "поделились своим местоположением.";

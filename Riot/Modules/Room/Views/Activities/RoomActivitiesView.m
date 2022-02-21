@@ -124,7 +124,7 @@
     [self.resendButton setTitle:[VectorL10n retry] forState:UIControlStateNormal];
     self.resendButton.backgroundColor = ThemeService.shared.theme.tintColor;
     
-    UIImage *image = [[UIImage imageNamed:@"room_context_menu_delete"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *image = [AssetImages.roomContextMenuDelete.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.deleteButton setImage:image forState:UIControlStateNormal];
     self.deleteButton.tintColor = ThemeService.shared.theme.warningColor;
     
@@ -174,7 +174,7 @@
     
     if (labelText.length)
     {
-        self.iconImageView.image = [UIImage imageNamed:@"error"];
+        self.iconImageView.image = AssetImages.error.image;
         self.iconImageView.tintColor = ThemeService.shared.theme.noticeColor;
         self.messageLabel.text = labelText;
         self.messageLabel.textColor = ThemeService.shared.theme.warningColor;
@@ -192,7 +192,7 @@
     
     if (labelText.length)
     {
-        self.iconImageView.image = [UIImage imageNamed:@"typing"];
+        self.iconImageView.image = AssetImages.typing.image;
         self.iconImageView.tintColor = ThemeService.shared.theme.tintColor;
         self.messageLabel.text = labelText;
         
@@ -309,7 +309,7 @@
     self.messageTextView.hidden = NO;
     self.messageTextView.backgroundColor = [UIColor clearColor];
     
-    self.iconImageView.image = [UIImage imageNamed:@"error"];
+    self.iconImageView.image = AssetImages.error.image;
     self.iconImageView.tintColor = ThemeService.shared.theme.noticeColor;
     self.iconImageView.hidden = NO;
     
@@ -484,6 +484,8 @@
 
 #pragma mark - UITextViewDelegate
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
 {
     if ([[URL absoluteString] isEqualToString:@"onResendLink"])
@@ -559,6 +561,7 @@
     
     return YES;
 }
+#pragma clang diagnostic pop
 
 #pragma mark - UIGestureRecognizerDelegate
 
