@@ -5,4 +5,4 @@
 "NSContactsUsageDescription" = "Elementは、あなたが連絡先をチャットに招待できるように、連絡先を表示します。";
 "NSCalendarsUsageDescription" = "予定されているミーティングをアプリで確認することができます。";
 "NSFaceIDUsageDescription" = "Face IDはアプリへのアクセスに使用されます。";
-"NSLocationWhenInUseUsageDescription" = "ロケーションを共有する際には、地図を表示するためのアクセスをElementに付与する必要があります。";
+"NSLocationWhenInUseUsageDescription" = "位置情報を共有する際には、地図を表示するためのアクセスをElementに付与する必要があります。";
