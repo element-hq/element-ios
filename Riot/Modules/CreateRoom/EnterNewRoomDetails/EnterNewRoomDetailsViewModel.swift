@@ -62,6 +62,8 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
             self.loadData()
         case .chooseAvatar(let sourceView):
             self.chooseAvatar(sourceView: sourceView)
+        case .removeAvatar:
+            self.removeAvatar()
         case .cancel:
             self.cancelOperations()
             self.coordinatorDelegate?.enterNewRoomDetailsViewModelDidCancel(self)
@@ -78,6 +80,11 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
     
     private func chooseAvatar(sourceView: UIView) {
         self.coordinatorDelegate?.enterNewRoomDetailsViewModel(self, didTapChooseAvatar: sourceView)
+    }
+
+    private func removeAvatar() {
+        self.roomCreationParameters.userSelectedAvatar = nil
+        self.process(viewAction: .loadData)
     }
     
     private func fixRoomAlias(alias: String?) -> String? {
