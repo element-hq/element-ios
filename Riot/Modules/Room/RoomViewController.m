@@ -5821,44 +5821,23 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 - (void)animateReadMarkerView
 {
     // Check whether the cell with the read marker is known and if the marker is not animated yet.
-    if (readMarkerTableViewCell && readMarkerTableViewCell.readMarkerView.isHidden)
+    
+    if (!readMarkerTableViewCell || readMarkerTableViewCell.readMarkerView.isHidden == NO)
     {
-        RoomBubbleCellData *cellData = (RoomBubbleCellData*)readMarkerTableViewCell.bubbleData;
-        
-        // Do not display the marker if this is the last message.
-        if (cellData.containsLastMessage && readMarkerTableViewCell.readMarkerView.tag == cellData.mostRecentComponentIndex)
-        {
-            readMarkerTableViewCell.readMarkerView.hidden = YES;
-            readMarkerTableViewCell = nil;
-        }
-        else
-        {
-            readMarkerTableViewCell.readMarkerView.hidden = NO;
-            
-            // Animate the layout to hide the read marker
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                
-                [UIView animateWithDuration:1.5 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
-                                 animations:^{
-                    
-                    self->readMarkerTableViewCell.readMarkerViewLeadingConstraint.constant = self->readMarkerTableViewCell.readMarkerViewTrailingConstraint.constant = self->readMarkerTableViewCell.bubbleOverlayContainer.frame.size.width / 2;
-                    self->readMarkerTableViewCell.readMarkerView.alpha = 0;
-                    
-                    // Force to render the view
-                    [self->readMarkerTableViewCell.bubbleOverlayContainer layoutIfNeeded];
-                    
-                }
-                                 completion:^(BOOL finished){
-                    
-                    self->readMarkerTableViewCell.readMarkerView.hidden = YES;
-                    self->readMarkerTableViewCell.readMarkerView.alpha = 1;
-                    
-                    self->readMarkerTableViewCell = nil;
-                }];
-                
-            });
-        }
+        return;
     }
+        
+    RoomBubbleCellData *cellData = (RoomBubbleCellData*)readMarkerTableViewCell.bubbleData;
+    
+    id<RoomTimelineCellDecorator> cellDecorator = [RoomTimelineConfiguration shared].currentStyle.cellDecorator;
+    
+    [cellDecorator dissmissReadMarkerViewForCell:readMarkerTableViewCell
+                                        cellData:cellData
+                                        animated:YES
+                                      completion:^{
+       
+        self->readMarkerTableViewCell = nil;
+    }];
 }
 
 - (void)refreshRemoveJitsiWidgetView

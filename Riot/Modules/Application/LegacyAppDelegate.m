@@ -2410,6 +2410,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         
         MXLogDebug(@"[AppDelegate] handleAppState: isLaunching: %@", isLaunching ? @"YES" : @"NO");
         
+        if (self.masterTabBarController.isOnboardingInProgress)
+        {
+            MXLogDebug(@"[AppDelegate] handleAppState: Skipping LaunchLoadingView due to Onboarding.");
+            return;
+        }
+        
         if (isLaunching)
         {
             MXLogDebug(@"[AppDelegate] handleAppState: LaunchLoadingView");

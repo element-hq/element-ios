@@ -14,11 +14,41 @@
 // limitations under the License.
 //
 
-import UIKit
+import SwiftUI
 
 /// Fonts at  https://www.figma.com/file/X4XTH9iS2KGJ2wFKDqkyed/Compound?node-id=1362%3A0
 @objcMembers
 public class ElementFonts {
+    
+    // MARK: - Types
+    
+    /// A wrapper to provide both a `UIFont` and a SwiftUI `Font` in the same type.
+    /// The need for this comes from `Font` not adapting for dynamic type until the app
+    /// is restarted (or working at all in Xcode Previews) when initialised from a `UIFont`
+    /// (even if that font was created with the appropriate metrics).
+    public struct SharedFont {
+        public let uiFont: UIFont
+        /// The underlying font for the `font` property. This is stored
+        /// as an optional `Any` due to unavailability on iOS 12.
+        private let _font: Any?
+        
+        @available(iOS 13.0, *)
+        public var font: Font {
+            _font as! Font
+        }
+        
+        @available(iOS, deprecated: 13.0, message: "Use init(uiFont:font:) instead and remove this initialiser.")
+        init(uiFont: UIFont) {
+            self.uiFont = uiFont
+            self._font = nil
+        }
+        
+        @available(iOS 13.0, *)
+        init(uiFont: UIFont, font: Font) {
+            self.uiFont = uiFont
+            self._font = font
+        }
+    }
     
     // MARK: - Setup
     
@@ -35,85 +65,217 @@ public class ElementFonts {
 }
 
 // MARK: - Fonts protocol
-extension ElementFonts: Fonts {    
+extension ElementFonts: Fonts {
     
-    public var largeTitle: UIFont {
-        return self.font(forTextStyle: .largeTitle)
+    public var largeTitle: SharedFont {
+        let uiFont = self.font(forTextStyle: .largeTitle)
+        
+        if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: .largeTitle)
+        } else {
+            return SharedFont(uiFont: uiFont)
+        }
     }
     
-    public var largeTitleB: UIFont {
-        return self.largeTitle.vc_bold
+    public var largeTitleB: SharedFont {
+        let uiFont = self.largeTitle.uiFont.vc_bold
+        
+        if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: .largeTitle.bold())
+        } else {
+            return SharedFont(uiFont: uiFont)
+        }
     }
             
-    public var title1: UIFont {
-        return self.font(forTextStyle: .title1)
+    public var title1: SharedFont {
+        let uiFont = self.font(forTextStyle: .title1)
+        
+        if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: .title)
+        } else {
+            return SharedFont(uiFont: uiFont)
+        }
     }
     
-    public var title1B: UIFont {
-        return self.title1.vc_bold
+    public var title1B: SharedFont {
+        let uiFont = self.title1.uiFont.vc_bold
+        
+        if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: .title.bold())
+        } else {
+            return SharedFont(uiFont: uiFont)
+        }
     }
     
-    public var title2: UIFont {
-        return self.font(forTextStyle: .title2)
+    public var title2: SharedFont {
+        let uiFont = self.font(forTextStyle: .title2)
+        
+        if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: Font(uiFont))
+        } else if #available(iOS 14.0, *) {
+            return SharedFont(uiFont: uiFont, font: .title2)
+        } else {
+            return SharedFont(uiFont: uiFont)
+        }
     }
     
-    public var title2B: UIFont {
-        return self.title2.vc_bold
+    public var title2B: SharedFont {
+        let uiFont = self.title2.uiFont.vc_bold
+        
+        if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: Font(uiFont))
+        } else if #available(iOS 14.0, *) {
+            return SharedFont(uiFont: uiFont, font: .title2.bold())
+        } else {
+            return SharedFont(uiFont: uiFont)
+        }
     }
     
-    public var title3: UIFont {
-        return self.font(forTextStyle: .title3)
+    public var title3: SharedFont {
+        let uiFont = self.font(forTextStyle: .title3)
+        
+        if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: Font(uiFont))
+        } else if #available(iOS 14.0, *) {
+            return SharedFont(uiFont: uiFont, font: .title3)
+        } else {
+            return SharedFont(uiFont: uiFont)
+        }
     }
     
-    public var title3SB: UIFont {
-        return self.title3.vc_semiBold
+    public var title3SB: SharedFont {
+        let uiFont = self.title3.uiFont.vc_semiBold
+        
+        if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: Font(uiFont))
+        } else if #available(iOS 14.0, *) {
+            return SharedFont(uiFont: uiFont, font: .title3.weight(.semibold))
+        } else {
+            return SharedFont(uiFont: uiFont)
+        }
     }
     
-    public var headline: UIFont {
-        return self.font(forTextStyle: .headline)
+    public var headline: SharedFont {
+        let uiFont = self.font(forTextStyle: .headline)
+        
+        if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: .headline)
+        } else {
+            return SharedFont(uiFont: uiFont)
+        }
     }
     
-    public var subheadline: UIFont {
-        return self.font(forTextStyle: .subheadline)
+    public var subheadline: SharedFont {
+        let uiFont = self.font(forTextStyle: .subheadline)
+        
+        if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: .subheadline)
+        } else {
+            return SharedFont(uiFont: uiFont)
+        }
     }
     
-    public var body: UIFont {
-        return self.font(forTextStyle: .body)
+    public var body: SharedFont {
+        let uiFont = self.font(forTextStyle: .body)
+        
+        if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: .body)
+        } else {
+            return SharedFont(uiFont: uiFont)
+        }
     }
     
-    public var bodySB: UIFont {
-        return self.body.vc_semiBold
+    public var bodySB: SharedFont {
+        let uiFont = self.body.uiFont.vc_semiBold
+        
+        if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: .body.weight(.semibold))
+        } else {
+            return SharedFont(uiFont: uiFont)
+        }
     }
     
-    public var callout: UIFont {
-        return self.font(forTextStyle: .callout)
+    public var callout: SharedFont {
+        let uiFont = self.font(forTextStyle: .callout)
+        
+        if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: .callout)
+        } else {
+            return SharedFont(uiFont: uiFont)
+        }
     }
     
-    public var calloutSB: UIFont {
-        return self.callout.vc_semiBold
+    public var calloutSB: SharedFont {
+        let uiFont = self.callout.uiFont.vc_semiBold
+        
+        if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: .callout.weight(.semibold))
+        } else {
+            return SharedFont(uiFont: uiFont)
+        }
     }
     
-    public var footnote: UIFont {
-        return self.font(forTextStyle: .footnote)
+    public var footnote: SharedFont {
+        let uiFont = self.font(forTextStyle: .footnote)
+        
+        if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: .footnote)
+        } else {
+            return SharedFont(uiFont: uiFont)
+        }
     }
     
-    public var footnoteSB: UIFont {
-        return self.footnote.vc_semiBold
+    public var footnoteSB: SharedFont {
+        let uiFont = self.footnote.uiFont.vc_semiBold
+        
+        if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: .footnote.weight(.semibold))
+        } else {
+            return SharedFont(uiFont: uiFont)
+        }
     }
     
-    public var caption1: UIFont {
-        return self.font(forTextStyle: .caption1)
+    public var caption1: SharedFont {
+        let uiFont = self.font(forTextStyle: .caption1)
+        
+        if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: .caption)
+        } else {
+            return SharedFont(uiFont: uiFont)
+        }
     }
     
-    public var caption1SB: UIFont {
-        return self.caption1.vc_semiBold
+    public var caption1SB: SharedFont {
+        let uiFont = self.caption1.uiFont.vc_semiBold
+        
+        if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: .caption.weight(.semibold))
+        } else {
+            return SharedFont(uiFont: uiFont)
+        }
     }
     
-    public var caption2: UIFont {
-        return self.font(forTextStyle: .caption2)
+    public var caption2: SharedFont {
+        let uiFont = self.font(forTextStyle: .caption2)
+        
+        if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: Font(uiFont))
+        } else if #available(iOS 14.0, *) {
+            return SharedFont(uiFont: uiFont, font: .caption2)
+        } else {
+            return SharedFont(uiFont: uiFont)
+        }
     }
     
-    public var caption2SB: UIFont {
-        return self.caption2.vc_semiBold
+    public var caption2SB: SharedFont {
+        let uiFont = self.caption2.uiFont.vc_semiBold
+        
+        if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: Font(uiFont))
+        } else if #available(iOS 14.0, *) {
+            return SharedFont(uiFont: uiFont, font: .caption2.weight(.semibold))
+        } else {
+            return SharedFont(uiFont: uiFont)
+        }
     }
 }

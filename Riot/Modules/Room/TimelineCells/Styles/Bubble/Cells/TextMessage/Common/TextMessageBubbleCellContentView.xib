@@ -14,12 +14,15 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wRb-1K-GDt" customClass="RoomMessageBubbleBackgroundView" customModule="Riot" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="0.0" width="152" height="82"/>
+                    <rect key="frame" x="0.0" y="0.0" width="112" height="82"/>
                     <subviews>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="text message" translatesAutoresizingMaskIntoConstraints="NO" id="1WT-up-UFQ" customClass="MXKMessageTextView">
-                            <rect key="frame" x="5" y="5" width="102" height="72"/>
+                            <rect key="frame" x="5" y="5" width="102" height="65"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <accessibility key="accessibilityConfiguration" identifier="MessageTextView"/>
+                            <constraints>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="9XG-hw-QF9"/>
+                            </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             <dataDetectorType key="dataDetectorTypes" link="YES"/>
@@ -27,10 +30,10 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="bottom" secondItem="1WT-up-UFQ" secondAttribute="bottom" constant="5" id="EMT-p9-z4L"/>
+                        <constraint firstAttribute="bottom" secondItem="1WT-up-UFQ" secondAttribute="bottom" constant="12" id="EMT-p9-z4L"/>
                         <constraint firstItem="1WT-up-UFQ" firstAttribute="leading" secondItem="wRb-1K-GDt" secondAttribute="leading" constant="5" id="GhZ-J0-v1m"/>
                         <constraint firstItem="1WT-up-UFQ" firstAttribute="top" secondItem="wRb-1K-GDt" secondAttribute="top" constant="5" id="OpF-jQ-D8Q"/>
-                        <constraint firstAttribute="trailing" secondItem="1WT-up-UFQ" secondAttribute="trailing" constant="45" id="Y8T-HE-6NX"/>
+                        <constraint firstAttribute="trailing" secondItem="1WT-up-UFQ" secondAttribute="trailing" constant="5" id="Y8T-HE-6NX"/>
                     </constraints>
                 </view>
             </subviews>

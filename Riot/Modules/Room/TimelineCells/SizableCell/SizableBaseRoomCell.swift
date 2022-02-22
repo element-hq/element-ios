@@ -156,6 +156,16 @@ class SizableBaseRoomCell: BaseRoomCell, SizableBaseRoomCellType {
             height+=urlPreviewHeight
         }
         
+        // Add read marker view height if needed
+        // Note: We cannot check if readMarkerView property is set here. Extra non needed height can be added
+        if sizingView is RoomCellReadMarkerDisplayable,
+            let roomBubbleCellData = cellData as? RoomBubbleCellData, let firstBubbleComponent =
+            roomBubbleCellData.getFirstBubbleComponentWithDisplay(),
+           let eventId = firstBubbleComponent.event.eventId, let room = roomBubbleCellData.mxSession.room(withRoomId: roomBubbleCellData.roomId), let readMarkerEventId = room.accountData.readMarkerEventId, eventId == readMarkerEventId {
+            
+            height+=PlainRoomCellLayoutConstants.readMarkerViewHeight
+        }
+        
         return height
     }         
 }
