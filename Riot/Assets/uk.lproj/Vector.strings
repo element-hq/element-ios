@@ -1770,3 +1770,15 @@
 "room_event_copy_link_info" = "Посилання скопійовано до буфера обміну.";
 "room_event_action_reply_in_thread" = "Тред";
 "room_event_action_view_in_room" = "Переглянути у кімнаті";
+"location_sharing_open_open_street_maps" = "Відкрити у OpenStreetMap";
+"search_filter_placeholder" = "Фільтр";
+"onboarding_use_case_existing_server_button" = "Під'єднатися до сервера";
+"onboarding_use_case_existing_server_message" = "Бажаєте приєднатися до наявного сервера?";
+"onboarding_use_case_skip_button" = "пропустити це запитання";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "Ще не впевнені? Ви можете %@";
+"onboarding_use_case_community_messaging" = "Спільноти";
+"onboarding_use_case_work_messaging" = "Команди";
+"onboarding_use_case_personal_messaging" = "Друзі й родина";
+"onboarding_use_case_message" = "Ми допоможемо вам залишатися на зв'язку.";
+"onboarding_use_case_title" = "З ким ви спілкуватиметеся найчастіше?";
