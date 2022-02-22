@@ -24,8 +24,8 @@ protocol ThreadListViewModelViewDelegate: AnyObject {
 
 protocol ThreadListViewModelCoordinatorDelegate: AnyObject {
     func threadListViewModelDidLoadThreads(_ viewModel: ThreadListViewModelProtocol)
-    func threadListViewModelDidSelectThread(_ viewModel: ThreadListViewModelProtocol, thread: MXThread)
-    func threadListViewModelDidSelectThreadViewInRoom(_ viewModel: ThreadListViewModelProtocol, thread: MXThread)
+    func threadListViewModelDidSelectThread(_ viewModel: ThreadListViewModelProtocol, thread: MXThreadProtocol)
+    func threadListViewModelDidSelectThreadViewInRoom(_ viewModel: ThreadListViewModelProtocol, thread: MXThreadProtocol)
     func threadListViewModelDidCancel(_ viewModel: ThreadListViewModelProtocol)
 }
 

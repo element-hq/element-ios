@@ -3,7 +3,7 @@
 "auth_invalid_login_param" = "Nama pengguna dan/atau kata sandi tidak benar";
 "auth_identity_server_placeholder" = "URL (contoh https://vector.im)";
 "auth_home_server_placeholder" = "URL (contoh https://matrix.org)";
-"auth_repeat_new_password_placeholder" = "Konfirmasi kata sandi baru Anda";
+"auth_repeat_new_password_placeholder" = "Konfirmasi kata sandi akun Matrix baru Anda";
 "auth_repeat_password_placeholder" = "Ulangi kata sandi";
 "auth_phone_placeholder" = "Nomor telepon";
 "auth_optional_phone_placeholder" = "Nomor telepon (opsional)";
@@ -73,13 +73,13 @@
 "auth_email_validation_message" = "Silakan periksa surel Anda untuk melanjutkan pendaftaran";
 "auth_use_server_options" = "Gunakan opsi server khusus (lanjutan)";
 "auth_email_not_found" = "Gagal mengirim surel: Alamat email ini tidak ditemukan";
-"auth_forgot_password_error_no_configured_identity_server" = "Tidak ada server identitas yang dikonfigurasikan: tambahkan satu untuk mengatur ulang kata sandi Anda.";
-"auth_forgot_password" = "Lupa kata sandi?";
+"auth_forgot_password_error_no_configured_identity_server" = "Tidak ada server identitas yang dikonfigurasikan: tambahkan satu untuk mengatur ulang kata sandi akun Matrix Anda.";
+"auth_forgot_password" = "Lupa kata sandi akun Matrix?";
 "auth_username_in_use" = "Nama pengguna telah dipakai";
 "auth_password_dont_match" = "Kata sandi tidak cocok";
 "auth_untrusted_id_server" = "Server identitas tidak dipercaya";
-"auth_phone_is_required" = "Tidak ada server identitas yang dikonfigurasi sehingga Anda tidak dapat menambahkan nomor telepon untuk mengatur ulang kata sandi Anda di masa depan.";
-"auth_email_is_required" = "Tidak ada server identitas yang dikonfigurasi sehingga Anda tidak dapat menambahkan alamat email untuk mengatur ulang kata sandi Anda di masa depan.";
+"auth_phone_is_required" = "Tidak ada server identitas yang dikonfigurasi sehingga Anda tidak dapat menambahkan nomor telepon untuk mengatur ulang kata sandi akun Matrix Anda di masa depan.";
+"auth_email_is_required" = "Tidak ada server identitas yang dikonfigurasi sehingga Anda tidak dapat menambahkan alamat email untuk mengatur ulang kata sandi akun Matrix Anda di masa depan.";
 "auth_phone_in_use" = "Nomor telepon ini sudah dipakai";
 "auth_email_in_use" = "Surel ini sudah dipakai";
 "auth_missing_email_or_phone" = "Tidak ada surel atau nomor telepon";
@@ -133,7 +133,7 @@
 "settings_integrations_allow_button" = "Kelola integrasi";
 "settings_enable_callkit" = "Panggilan yang diintegrasi";
 "settings_night_mode" = "Mode Malam";
-"settings_change_password" = "Ubah kata sandi";
+"settings_change_password" = "Ubah kata sandi akun Matrix";
 "settings_first_name" = "Nama Depan";
 "settings_display_name" = "Nama Tampilan";
 "settings_profile_picture" = "Gambar Profil";
@@ -498,7 +498,7 @@
 "room_event_action_delete" = "Hapus";
 "room_event_action_resend" = "Kirim Ulang";
 "room_event_action_save" = "Simpan";
-"room_event_action_permalink" = "Tautan";
+"room_event_action_permalink" = "Salin tautan ke pesan";
 "room_event_action_share" = "Bagikan";
 "room_event_action_more" = "Lainnya";
 "room_event_action_redact" = "Hapus";
@@ -522,8 +522,8 @@
 "room_participants_now" = "sekarang";
 "room_participants_idle" = "Idle";
 "room_participants_unknown" = "Tidak diketahui";
-"room_participants_offline" = "Offline";
-"room_participants_online" = "Online";
+"room_participants_offline" = "Luring";
+"room_participants_online" = "Daring";
 "room_participants_invited_section" = "DIUNDANG";
 "room_participants_invite_prompt_title" = "Konfirmasi";
 "room_participants_remove_prompt_title" = "Konfirmasi";
@@ -595,14 +595,14 @@
 "room_creation_account" = "Akun";
 "social_login_list_title_sign_up" = "Atau";
 "social_login_list_title_sign_in" = "Atau";
-"auth_reset_password_error_is_required" = "Tidak ada server identitas yang diatur: tambahkan di pengaturan server untuk mengatur ulang kata sandi Anda.";
+"auth_reset_password_error_is_required" = "Tidak ada server identitas yang diatur: tambahkan di pengaturan server untuk mengatur ulang kata sandi akun Matrix Anda.";
 "auth_reset_password_error_not_found" = "Alamat email Anda terlihat tidak diasosiasikan dengan sebuah ID Matrix di homeserver ini.";
 "auth_reset_password_error_unauthorized" = "Gagal untuk memverifikasi alamat email: pastikan Anda membuka tautan yang ada di email";
 "auth_reset_password_next_step_button" = "Saya telah memverifikasi alamat email saya";
 "auth_reset_password_email_validation_message" = "Sebuah email telah dikirim ke %@. Setelah Anda membuka tautan yang ada, klik di bawah.";
 "auth_reset_password_missing_password" = "Sebuah kata sandi baru harus dimasukkan.";
 "auth_reset_password_missing_email" = "Alamat email yang tertaut dengan akun Anda harus dimasukkan.";
-"auth_reset_password_message" = "Untuk mengatur ulang kata sandi Anda, masukkan alamat email yang tertaut ke akun Anda:";
+"auth_reset_password_message" = "Untuk mengatur ulang kata sandi akun Matrix Anda, masukkan alamat email yang tertaut ke akun Anda:";
 "auth_recaptcha_message" = "Homeserver ini ingin memastikan bahwa Anda bukan sebuah robot";
 "auth_msisdn_validation_error" = "Tidak dapat memverifikasi nomor telepon.";
 "auth_msisdn_validation_message" = "Kami telah mengirim sebuah SMS dengan kode aktivasi. Silakan masukkan kodenya di bawah.";
@@ -667,7 +667,7 @@
 // GDPR
 "gdpr_consent_not_given_alert_message" = "Untuk terus menggunakan homeserver %@, Anda harus menyetujui syarat dan ketentuannya.";
 "share_extension_failed_to_encrypt" = "Gagal untuk mengirim. Periksa di aplikasi utama pengaturan enkripsi untuk ruangan ini";
-"bug_report_logs_description" = "Untuk mendiagnosis masalah, log dari klien ini akan dikirim dengan laporan bug ini. Jika Anda lebih memilih untuk hanya mengirim teks di atas, harap hapus centang:";
+"bug_report_logs_description" = "Untuk mendiagnosis masalah, catat dari klien ini akan dikirim dengan laporan kutu ini. Jika Anda lebih memilih untuk hanya mengirim teks di atas, harap hapus centang:";
 "bug_report_description" = "Harap jelaskan bugnya. Apa yang Anda lakukan? Apa yang Anda harapkan terjadi? Apa yang sebenarnya terjadi?";
 "e2e_key_backup_wrong_version" = "Cadangan kunci pesan aman baru telah terdeteksi.\n\nJika ini bukan Anda, atur Frasa Keamanan baru di Pengaturan.";
 
@@ -680,7 +680,7 @@
 "call_no_stun_server_error_message_1" = "Mohon hubungi administrator homeserver %@ Anda untuk mengatur sebuah server TURN supaya panggilan dapat bekerja dengan handal.";
 "rage_shake_prompt" = "Anda tampaknya menggoyangkan telepon dengan frustrasi. Apakah Anda ingin mengirimkan laporan bug?";
 "bug_report_prompt" = "Aplikasi telah crash terakhir kali. Apakah Anda ingin mengirimkan laporan crash?";
-"room_notifs_settings_encrypted_room_notice" = "Harap dicatat bahwa notifikasi sebutan & keyword tidak tersedia di ruang terenkripsi di ponsel.";
+"room_notifs_settings_encrypted_room_notice" = "Harap dicatat bahwa notifikasi sebutan & kata kunci tidak tersedia di ruang terenkripsi di ponsel.";
 "room_details_addresses_disable_main_address_prompt_msg" = "Anda tidak akan memiliki alamat utama yang ditentukan. Alamat utama default untuk ruangan ini akan dipilih secara acak";
 "room_details_history_section_prompt_msg" = "Perubahan siapa yang dapat membaca riwayat hanya akan berlaku untuk pesan berikutnya di ruang ini. Visibilitas riwayat yang ada tidak akan berubah.";
 "identity_server_settings_alert_error_terms_not_accepted" = "Anda harus menerima syaratnya %@ untuk menyetelnya sebagai server identitas.";
@@ -696,7 +696,7 @@
 "security_settings_blacklist_unverified_devices_description" = "Verifikasi semua sesi pengguna untuk menandainya sebagai terpercaya dan kirim pesan ke mereka.";
 "security_settings_crosssigning_info_exists" = "Akun Anda memiliki identitas penandatanganan silang, tetapi belum dipercayai oleh sesi ini. Selesaikan keamanan sesi ini.";
 "security_settings_secure_backup_description" = "Cadangkan kunci enkripsi Anda dengan data akun Anda untuk berjaga-jaga jika Anda kehilangan akses ke sesi Anda. Kunci Anda akan diamankan dengan Kunci Keamanan yang unik.";
-"security_settings_crypto_sessions_description_2" = "Jika Anda tidak tahu sebuah login, ubah kata sandi Anda dan atur ulang Cadangan Aman.";
+"security_settings_crypto_sessions_description_2" = "Jika Anda tidak tahu sebuah login, ubah kata sandi akun Matrix Anda dan atur ulang Cadangan Aman.";
 "settings_identity_server_no_is_description" = "Anda saat ini tidak menggunakan sebuah server identitas. Untuk menemukan dan dapat ditemukan oleh kontak yang Anda tahu, tambahkan satu di atas.";
 "settings_identity_server_description" = "Dengan menggunakan set server identitas di atas, Anda dapat menemukan dan dapat ditemukan oleh kontak yang ada yang Anda kenal.";
 "settings_discovery_three_pid_details_information_phone_number" = "Kelola preferensi untuk nomor telepon ini, yang dapat digunakan pengguna lain untuk menemukan Anda dan digunakan untuk mengundang Anda ke ruangan. Tambahkan atau hapus nomor telepon di Akun.";
@@ -823,7 +823,7 @@
 "room_details_access_section_anyone_apart_from_guest_for_dm" = "Siapa saja yang tahu linknya, selain dari tamu";
 "identity_server_settings_alert_error_invalid_identity_server" = "%@ bukan server identitas yang valid.";
 "identity_server_settings_alert_no_terms_title" = "Server identitas tidak mempunyai kebijakan layanan";
-"security_settings_user_password_description" = "Konfirmasi identitas Anda dengan memasukkan kata sandi akun Anda";
+"security_settings_user_password_description" = "Konfirmasi identitas Anda dengan memasukkan kata sandi akun Matrix Anda";
 "security_settings_secure_backup_info_valid" = "Sesi ini mencadangkan kunci Anda.";
 "version_check_modal_title_deprecated" = "Kami tidak mendukung iOS %@ lagi";
 "version_check_modal_title_supported" = "Kami mengakhiri dukungan untuk iOS %@";
@@ -838,7 +838,7 @@
 "voice_message_release_to_send" = "Tahan untuk merekam, lepaskan untuk mengirim";
 "spaces_empty_space_title" = "Space ini belum ada ruangan";
 "create_room_show_in_directory" = "Tampilkan ruangan di direktori";
-"secrets_reset_authentication_message" = "Masukkan kata sandi akun Anda untuk mengkonfirmasi";
+"secrets_reset_authentication_message" = "Masukkan kata sandi akun Matrix Anda untuk mengkonfirmasi";
 "secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Masukkan Kunci Keamanan Anda untuk melanjutkan.";
 "secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Masukkan Frasa Keamanan Anda untuk melanjutkan.";
 
@@ -988,7 +988,7 @@
 "settings_key_backup_info_progress_done" = "Semua kunci telah dicadangkan";
 "settings_key_backup_info_progress" = "Mencadangkan %@ kunci…";
 "settings_key_backup_info_version" = "Versi Cadangan Kunci: %@";
-"settings_fail_to_update_password" = "Gagal untuk memperbarui kata sandi";
+"settings_fail_to_update_password" = "Gagal untuk memperbarui kata sandi akun Matrix";
 "settings_labs_enable_ringing_for_group_calls" = "Dering untuk panggilan grup";
 "settings_enable_push_notif" = "Notifikasi di perangkat ini";
 "settings_fail_to_update_profile" = "Gagal untuk memperbarui profil";
@@ -1418,7 +1418,7 @@
 
 // Bug report
 "bug_report_title" = "Laporan Bug";
-"deactivate_account_password_alert_message" = "Untuk melanjutkan, mohon masukkan kata sandi Anda";
+"deactivate_account_password_alert_message" = "Untuk melanjutkan, mohon masukkan kata sandi akun Matrix Anda";
 "widget_integration_must_be_in_room" = "Anda tidak berada di ruangan ini.";
 "settings_devices_description" = "Nama publik sesi dapat dilihat oleh orang yang berkomunikasi dengan Anda";
 "settings_key_backup_delete_confirmation_prompt_msg" = "Apakah Anda yakin? Anda akan kehilangan pesan terenkripsi jika kunci Anda tidak dicadangkan secara benar.";
@@ -1438,7 +1438,7 @@
 "settings_ui_theme_picker_message_invert_colours" = "\"Otomatis\" menggunakan pengaturan \"Balikkan Warna\" perangkat Anda";
 "settings_ui_theme_picker_message_match_system_theme" = "\"Otomatis\" mencocokkan dengan tema sistem perangkat Anda";
 "settings_calls_stun_server_fallback_description" = "Izinkan server panggilan %@ cadangan saat server homeserver Anda tidak menawarkannya (alamat IP Anda akan dibagikan selama panggilan).";
-"settings_mentions_and_keywords_encryption_notice" = "Anda tidak akan dapat notifikasi untuk sebutan & keyword di ruangan terenkripsi di ponsel.";
+"settings_mentions_and_keywords_encryption_notice" = "Anda tidak akan dapat notifikasi untuk sebutan & kata kunci di ruangan terenkripsi di ponsel.";
 "settings_notifications_disabled_alert_message" = "Untuk mengaktifkan notifikasi, pergi ke pengaturan perangkat Anda.";
 "settings_global_settings_info" = "Pengaturan notifikasi global tersedia di klien web %@ Anda";
 "settings_confirm_media_size_description" = "Saat ini aktif, Anda akan diminta untuk mengkonfirmasi ukuran gambar dan video yang akan dikirim.";
@@ -1523,7 +1523,7 @@
 "security_settings_crosssigning_info_not_bootstrapped" = "Penandatanganan silang belum disiapkan.";
 "settings_key_backup_button_connect" = "Hubungkan sesi ini ke Cadangan Kunci";
 "settings_key_backup_info_trust_signature_valid_device_unverified" = "Cadangan memiliki tanda tangan dari %@";
-"settings_add_3pid_password_message" = "Untuk melanjutkan, mohon masukkan kata sandi Anda";
+"settings_add_3pid_password_message" = "Untuk melanjutkan, mohon masukkan kata sandi akun Matrix Anda";
 "settings_send_crash_report" = "Kirim crash & data penggunaan anonim";
 "secure_key_backup_setup_cancel_alert_message" = "Jika Anda membatalkan sekarang, Anda mungkin kehilangan pesan & data terenkripsi jika Anda kehilangan akses ke login Anda.\n\nAnda juga dapat mengatur Cadangan Aman & kelola kunci Anda di Pengaturan.";
 "room_participants_security_information_room_encrypted" = "Pesan di ruangan ini dienkripsi secara ujung-ke-ujung.\n\nPesan Anda diamankan dengan kunci dan hanya Anda dan penerima punya kunci uniknya untuk membukanya.";
@@ -1539,7 +1539,7 @@
 
 // Success from passphrase
 "key_backup_setup_success_from_passphrase_info" = "Kunci Anda sedang dicadangkan.\n\nKunci Keamanan Anda adalah jaring pengaman — Anda dapat menggunakannya untuk memulihkan akses ke pesan terenkripsi jika Anda lupa frasa sandi.\n\nSimpan Kunci Keamanan Anda di suatu tempat yang sangat aman, seperti pengelola kata sandi (atau brankas).";
-"key_backup_setup_passphrase_info" = "Kami akan menyimpan salinan terenkripsi dari kunci Anda di server kami. Lindungi cadangan Anda dengan frasa agar tetap aman.\n\nUntuk keamanan maksimum, ini harus berbeda dari kata sandi akun Anda.";
+"key_backup_setup_passphrase_info" = "Kami akan menyimpan salinan terenkripsi dari kunci Anda di server kami. Lindungi cadangan Anda dengan frasa agar tetap aman.\n\nUntuk keamanan maksimum, ini harus berbeda dari kata sandi akun Matrix Anda.";
 "key_backup_setup_intro_info" = "Pesan di ruang terenkripsi diamankan dengan enkripsi ujung-ke-ujung. Hanya Anda dan penerima yang memiliki kunci untuk membaca pesan ini.\n\nCadangkan kunci Anda dengan aman untuk menghindari kehilangannya.";
 "deactivate_account_informations_part5" = "Jika Anda ingin kami melupakan pesan Anda, silakan centang kotak di bawah ini\n\nVisibilitas pesan di Matrix mirip dengan email. Kami melupakan pesan Anda berarti bahwa pesan yang telah Anda kirim tidak akan dibagikan dengan pengguna baru atau tidak terdaftar, tetapi pengguna terdaftar yang sudah memiliki akses ke pesan ini akan tetap memiliki akses ke salinannya.";
 "deactivate_account_informations_part1" = "Ini akan membuat akun Anda tidak dapat digunakan secara permanen. Anda tidak akan dapat masuk, dan tidak seorang pun dapat mendaftarkan ulang ID pengguna yang sama. Ini akan menyebabkan akun Anda meninggalkan semua ruangan yang diikutinya, dan akan menghapus detail akun Anda dari server identitas Anda. ";
@@ -1552,7 +1552,7 @@
 "unknown_devices_alert" = "Ruangan ini berisi sesi tidak dikenal yang belum diverifikasi.\nIni berarti tidak ada jaminan bahwa sesi tersebut adalah milik pengguna yang mereka klaim.\nKami menyarankan Anda memverifikasinya untuk setiap sesi sebelum melanjutkan, tetapi Anda dapat mengirim ulang pesan tanpa memverifikasi jika Anda mau.";
 "room_warning_about_encryption" = "Enkripsi ujung-ke-ujung masih dalam beta dan mungkin tidak dapat dihandalkan.\n\nAnda seharusnya tidak mempercayainya dulu untuk mengamankan data.\n\nPerangkat masih belum dapat mendekripsi riwayat sebelum mereka bergabung ke ruangannya.\n\nPesan terenkripsi masih belum terlihat di client yang belum mengimplementasikan enkripsi.";
 "auth_add_email_and_phone_warning" = "Pendaftaran dengan email dan nomor telepon sekaligus belum didukung sampai API-nya sudah ada. Hanya nomor telepon yang akan diperhitungkan. Anda dapat menambahkan email Anda di profil Anda di pengaturan.";
-"auth_reset_password_success_message" = "Kata sandi Anda telah diatur ulang.\n\nAnda telah dikeluarkan dari semua sesi dan tidak akan menerima lagi notifikasi push. Untuk mengaktifkan ulang notifikasi, masuk ulang di setiap perangkat.";
+"auth_reset_password_success_message" = "Kata sandi akun Matrix Anda telah diatur ulang.\n\nAnda telah dikeluarkan dari semua sesi dan tidak akan menerima lagi notifikasi push. Untuk mengaktifkan ulang notifikasi, masuk ulang di setiap perangkat.";
 "spaces_add_rooms_coming_soon_title" = "Penambahan ruangan akan segera datang";
 "leave_space_and_all_rooms_action" = "Tinggalkan semua ruangan dan space";
 "space_beta_announce_subtitle" = "Versi baru dari komunitas";
@@ -1562,7 +1562,7 @@
 "pin_protection_confirm_pin_to_disable" = "Konfirmasi PIN untuk menonaktifkan PIN";
 "pin_protection_choose_pin" = "Buat sebuah PIN untuk keamanan";
 "cross_signing_setup_banner_subtitle" = "Verifikasi perangkat Anda yang lain dengan mudah";
-"secrets_setup_recovery_passphrase_additional_information" = "Jangan menggunakan kata sandi akun Anda.";
+"secrets_setup_recovery_passphrase_additional_information" = "Jangan menggunakan kata sandi akun Matrix Anda.";
 "secrets_recovery_with_key_invalid_recovery_key_title" = "Tidak dapat mengakses penyimpanan rahasia";
 "secrets_recovery_with_passphrase_invalid_passphrase_title" = "Tidak dapat mengakses penyimpanan rahasia";
 
@@ -1616,7 +1616,7 @@
 "security_settings_crosssigning_info_ok" = "Penandatanganan silang siap dipakai.";
 "settings_discovery_error_message" = "Sebuah kesalahan terjadi. Mohon coba lagi.";
 "settings_crypto_blacklist_unverified_devices" = "Enkripsi ke sesi terverifikasi saja";
-"settings_password_updated" = "Kata sandi Anda telah diperbarui";
+"settings_password_updated" = "Kata sandi akun Matrix Anda telah diperbarui";
 "settings_enable_rageshake" = "Rage shake untuk melaporkan bug";
 
 // No VoIP support
@@ -1653,11 +1653,11 @@
 "poll_edit_form_create_options" = "Buat opsi";
 "poll_edit_form_input_placeholder" = "Tulis sesuatu";
 "poll_edit_form_question_or_topic" = "Pertanyaan atau topik";
-"poll_edit_form_poll_question_or_topic" = "Pertanyaan atau topik poll";
+"poll_edit_form_poll_question_or_topic" = "Pertanyaan atau topik pemungutan suara";
 
 // Mark: - Polls
 
-"poll_edit_form_create_poll" = "Buat poll";
+"poll_edit_form_create_poll" = "Buat pemungutan suara";
 "share_extension_send_now" = "Kirim sekarang";
 "share_extension_low_quality_video_message" = "Kirim dalam %@ untuk kualitas yang lebih baik, atau kirim dengan kualitas rendah di bawah.";
 "share_extension_low_quality_video_title" = "Video akan dikirim dalam kualitas rendah";
@@ -1665,7 +1665,7 @@
 "settings_about" = "TENTANG";
 "poll_timeline_not_closed_action" = "OK";
 "poll_timeline_not_closed_subtitle" = "Mohon coba lagi";
-"poll_timeline_not_closed_title" = "Gagal untuk mengakhiri poll";
+"poll_timeline_not_closed_title" = "Gagal untuk mengakhiri pemungutan suara";
 "poll_timeline_vote_not_registered_action" = "OK";
 "poll_timeline_vote_not_registered_subtitle" = "Maaf, suara Anda tidak diberikan, mohon coba lagi";
 "poll_timeline_vote_not_registered_title" = "Suara tidak diberikan";
@@ -1680,10 +1680,10 @@
 "poll_timeline_one_vote" = "1 suara";
 "poll_edit_form_post_failure_action" = "OK";
 "poll_edit_form_post_failure_subtitle" = "Silakan coba lagi";
-"poll_edit_form_post_failure_title" = "Gagal untuk mengirim poll";
+"poll_edit_form_post_failure_title" = "Gagal untuk mengirim pemungutan suara";
 "settings_labs_enabled_polls" = "Poll";
-"room_event_action_end_poll" = "Akhiri poll";
-"room_event_action_remove_poll" = "Hapus poll";
+"room_event_action_end_poll" = "Akhiri pemungutan suara";
+"room_event_action_remove_poll" = "Hapus pemungutan suara";
 "analytics_prompt_stop" = "Berhenti membagikan";
 "analytics_prompt_yes" = "Iya, saya tidak keberatan";
 "analytics_prompt_not_now" = "Jangan sekarang";
@@ -1735,10 +1735,42 @@
 
 // Onboarding
 "onboarding_splash_register_button_title" = "Buat akun";
-"poll_edit_form_poll_type_closed_description" = "Hasil akan ditampilkan ketika Anda mengakhiri poll-nya";
+"poll_edit_form_poll_type_closed_description" = "Hasil akan ditampilkan ketika Anda mengakhiri pemungutan suara";
 "poll_edit_form_poll_type_closed" = "Poll tertutup";
 "poll_edit_form_poll_type_open_description" = "Pemberi suara akan melihat hasilnya ketika telah memberikan suara";
-"poll_edit_form_poll_type_open" = "Buka poll";
+"poll_edit_form_poll_type_open" = "Buka pemungutan suara";
 "poll_edit_form_update_failure_subtitle" = "Silakan coba lagi";
-"poll_edit_form_update_failure_title" = "Gagal untuk memperbarui poll";
-"poll_edit_form_poll_type" = "Tipe poll";
+"poll_edit_form_update_failure_title" = "Gagal untuk memperbarui pemungutan suara";
+"poll_edit_form_poll_type" = "Tipe pemungutan suara";
+"location_sharing_post_failure_subtitle" = "%@ tidak dapat mengirimkan lokasi Anda. Silakan coba lagi nanti.";
+"location_sharing_post_failure_title" = "Kami tidak dapat mengirimkan lokasi Anda";
+"home_context_menu_leave" = "Tinggalkan";
+"home_context_menu_normal_priority" = "Prioritas normal";
+"home_context_menu_low_priority" = "Prioritas rendah";
+"home_context_menu_unfavourite" = "Hilangkan dari Favorit";
+"home_context_menu_favourite" = "Favorit";
+"home_context_menu_unmute" = "Hilangkan bisuan";
+"home_context_menu_mute" = "Bisukan";
+"home_context_menu_notifications" = "Notifikasi";
+"home_context_menu_make_room" = "Pindah ke Ruangan";
+"home_context_menu_make_dm" = "Pindah ke Orang";
+"event_formatter_message_deleted" = "Pesan dihapus";
+"settings_labs_enable_threads" = "Perpesanan utasan";
+"message_from_a_thread" = "Dari sebuah utasan";
+"threads_empty_show_all_threads" = "Tampilkan semua utasan";
+"threads_empty_tip" = "Tip: Ketuk pada sebuah pesan dan gunakan “Utasan” untuk memulai yang baru.";
+"threads_empty_info_my" = "Balas ke utasan yang sedang terjadi atau ketuk pada sebuah pesan dan gunakan “Utasan” untuk memulai yang baru.";
+"threads_empty_info_all" = "Utasan membantu membuat obrolan sesuai topik dan mudah untuk dilacak.";
+"threads_empty_title" = "Buat diskusi tetap teratur dengan utasan";
+"threads_action_my_threads" = "Utasan saya";
+"threads_action_all_threads" = "Semua utasan";
+"threads_title" = "Utasan";
+"thread_copy_link_to_thread" = "Salin tautan ke utasan";
+
+// MARK: Threads
+"room_thread_title" = "Utasan";
+"room_accessibility_thread_more" = "Lainnya";
+"room_accessibility_threads" = "Utasan";
+"room_event_copy_link_info" = "Tautan disalin ke papan klip.";
+"room_event_action_reply_in_thread" = "Utasan";
+"room_event_action_view_in_room" = "Tampilkan di ruangan";

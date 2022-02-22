@@ -153,7 +153,7 @@ extension ThreadsCoordinator: ThreadListCoordinatorDelegate {
         
     }
     
-    func threadListCoordinatorDidSelectThread(_ coordinator: ThreadListCoordinatorProtocol, thread: MXThread) {
+    func threadListCoordinatorDidSelectThread(_ coordinator: ThreadListCoordinatorProtocol, thread: MXThreadProtocol) {
         let roomCoordinator = createThreadCoordinator(forThreadId: thread.id)
         selectedThreadCoordinator = roomCoordinator
         roomCoordinator.start()

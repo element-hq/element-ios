@@ -56,7 +56,7 @@
 
 #pragma mark - Override MXKRecentsDataSource
 
-- (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
+- (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame inTableView:(UITableView*)tableView
 {
     UIView *sectionHeader = nil;
     

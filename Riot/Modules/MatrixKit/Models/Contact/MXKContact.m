@@ -40,6 +40,8 @@ NSString *const kMXKContactDefaultContactPrefixId = @"Default_";
 @implementation MXKContact
 @synthesize isMatrixContact, isThirdPartyInvite;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 + (NSString*)contactID:(ABRecordRef)record
 {
     return [NSString stringWithFormat:@"%@%d", kMXKContactLocalContactPrefixId, ABRecordGetRecordID(record)];
@@ -217,6 +219,7 @@ NSString *const kMXKContactDefaultContactPrefixId = @"Default_";
     }
     return self;
 }
+#pragma clang diagnostic pop
 
 - (id)initMatrixContactWithDisplayName:(NSString*)displayName andMatrixID:(NSString*)matrixID
 {

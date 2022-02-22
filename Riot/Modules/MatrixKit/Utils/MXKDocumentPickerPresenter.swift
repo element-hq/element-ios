@@ -24,7 +24,8 @@ import MobileCoreServices
 
 /// MXKDocumentPickerPresenter presents a controller that provides access to documents or destinations outside the app’s sandbox.
 /// Internally presents a UIDocumentPickerViewController in UIDocumentPickerMode.import.
-/// Note: You must turn on the iCloud Documents capabilities in Xcode (see https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/DocumentPickerProgrammingGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40014451)
+/// Note: You must turn on the iCloud Documents capabilities in Xcode
+/// (see https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/DocumentPickerProgrammingGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40014451)
 @objcMembers
 public class MXKDocumentPickerPresenter: NSObject {
     

@@ -88,9 +88,10 @@
  
  @param section the section  index
  @param frame the drawing area for the header of the specified section.
+ @param tableView the table view
  @return the section header.
  */
-- (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame;
+- (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame inTableView:(UITableView*)tableView;
 
 /**
  Get the data for the cell at the given index path.

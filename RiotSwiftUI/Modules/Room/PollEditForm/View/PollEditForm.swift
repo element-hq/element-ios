@@ -35,8 +35,7 @@ struct PollEditForm: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 32.0) {
                         
-                        // Intentionally disabled until platform parity.
-                        // PollEditFormTypePicker(selectedType: $viewModel.type)
+                        PollEditFormTypePicker(selectedType: $viewModel.type)
                         
                         VStack(alignment: .leading, spacing: 16.0) {
                             Text(VectorL10n.pollEditFormPollQuestionOrTopic)
@@ -116,14 +115,14 @@ struct PollEditForm: View {
                         }
                     }
                     .navigationBarTitleDisplayMode(.inline)
+                    .introspectNavigationController { navigationController in
+                        ThemeService.shared().theme.applyStyle(onNavigationBar: navigationController.navigationBar)
+                    }
                 }
             }
         }
         .accentColor(theme.colors.accent)
         .navigationViewStyle(StackNavigationViewStyle())
-        .introspectNavigationController { navigationController in
-            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationController.navigationBar)
-        }
     }
 }
 

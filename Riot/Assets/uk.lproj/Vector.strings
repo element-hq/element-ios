@@ -50,7 +50,7 @@
 "auth_optional_phone_placeholder" = "Номер телефону (необов'язково)";
 "auth_phone_placeholder" = "Номер телефону";
 "auth_repeat_password_placeholder" = "Повторіть пароль";
-"auth_repeat_new_password_placeholder" = "Підтвердьте новий пароль";
+"auth_repeat_new_password_placeholder" = "Підтвердьте новий пароль облікового запису Matrix";
 "auth_home_server_placeholder" = "URL (наприклад, https://matrix.org)";
 "auth_identity_server_placeholder" = "URL (наприклад, https://vector.im)";
 "auth_invalid_login_param" = "Неправильне ім'я користувача або пароль";
@@ -71,7 +71,7 @@
 "auth_untrusted_id_server" = "Сервер облікових даних не довірений";
 "auth_password_dont_match" = "Паролі не збігаються";
 "auth_username_in_use" = "Ім'я користувача зайняте";
-"auth_forgot_password" = "Забули пароль?";
+"auth_forgot_password" = "Забули пароль облікового запису Matrix?";
 "auth_email_not_found" = "Не вдалося надіслати лист: Таку адресу е-пошти не знайдено";
 "auth_use_server_options" = "Власні налаштування сервера";
 "auth_email_validation_message" = "Перевірте свою пошту для продовження реєстрації";
@@ -79,7 +79,7 @@
 "auth_msisdn_validation_message" = "Ми надіслали СМС із кодом активації. Введіть цей код унизу.";
 "auth_msisdn_validation_error" = "Не вдалося перевірити номер телефону.";
 "auth_recaptcha_message" = "Цей домашній сервер бажає переконатися, що ви не робот";
-"auth_reset_password_message" = "Щоб відновити пароль, введіть адресу е-пошти, пов'язану з вашим обліковим записом:";
+"auth_reset_password_message" = "Щоб відновити пароль облікового запису Matrix, введіть адресу е-пошти, пов'язану з вашим обліковим записом:";
 "auth_reset_password_missing_email" = "Необхідно ввести адресу е-пошти, пов'язану з вашим обліковим записом.";
 // String for App Store
 "store_short_description" = "Захищений, децентралізований чат/VoIP";
@@ -89,16 +89,16 @@
 "auth_add_email_message_2" = "Вкажіть е-пошту для відновлення облікового запису, а також для можливості знаходження вас іншими користувачами.";
 "auth_add_phone_message_2" = "Вкажіть номер телефону для можливості знаходження вас іншими користувачами.";
 "auth_add_email_phone_message_2" = "Вкажіть е-пошту для відновлення облікового запису. Використовуйте електронну пошту чи номер телефону для можливості знаходження вас іншими користувачами.";
-"auth_email_is_required" = "Ідентифікаційний сервер не налаштовано, тому ви не можете додати адресу електронної пошти, щоб мати можливість відновити пароль в майбутньому.";
-"auth_phone_is_required" = "Ідентифікаційний сервер не налаштовано, тому ви не можете додати номер телефону, щоб мати можливість відновити пароль в майбутньому.";
-"auth_forgot_password_error_no_configured_identity_server" = "Ідентифікаційний сервер не налаштовано: додайте його, щоб мати можливість відновити пароль в майбутньому.";
+"auth_email_is_required" = "Сервер ідентифікації не налаштовано, тому ви не можете додати адресу електронної пошти, щоб мати можливість відновити пароль облікового запису Matrix у майбутньому.";
+"auth_phone_is_required" = "Сервер ідентифікації не налаштовано, тому ви не можете додати номер телефону, щоб мати можливість відновити пароль облікового запису Matrix у майбутньому.";
+"auth_forgot_password_error_no_configured_identity_server" = "Сервер ідентифікації не налаштовано: додайте його, щоб мати можливість відновити пароль облікового запису Matrix у майбутньому.";
 "auth_reset_password_missing_password" = "Необхідно ввести новий пароль.";
 "auth_reset_password_email_validation_message" = "На адресу %@ надіслано лист. Після переходу за посиланням в листі, натисніть внизу.";
 "auth_reset_password_next_step_button" = "Я підтверджую свою адресу е-пошти";
 "auth_reset_password_error_unauthorized" = "Не вдалося перевірити е-пошту: переконайтеся, що ви перейшли за посиланням у листі";
 "auth_reset_password_error_not_found" = "Схоже, ваша адреса електронної пошти не пов'язана з жодним Matrix ID на цьому домашньому сервері.";
-"auth_reset_password_error_is_required" = "Ідентифікаційний сервер не налаштовано: додайте його в параметрах сервера, щоб мати можливість відновити пароль в майбутньому.";
-"auth_reset_password_success_message" = "Ваш пароль було скинуто.\n\nСеанс входу завершено на всіх сесіях і припинено отримання push-сповіщень. Щоб активувати сповіщення, виконайте вхід з новим паролем на кожному пристрої.";
+"auth_reset_password_error_is_required" = "Сервер ідентифікації не налаштовано: додайте його у параметрах сервера, щоб мати можливість відновити пароль облікового запису Matrix у майбутньому.";
+"auth_reset_password_success_message" = "Ваш пароль облікового запису Matrix було скинуто.\n\nСеанс входу завершено у всіх сеансах і припинено отримання push-сповіщень. Щоб активувати сповіщення, увійдіть з новим паролем на кожному пристрої.";
 "auth_add_email_and_phone_warning" = "Реєстрація за допомогою електронної пошти і номера телефону водночас не підтримується, доки немає API. Лише номер телефону буде додано до облікового запису. Ви можете додати електронну пошту до свого профілю в налаштуваннях.";
 "auth_accept_policies" = "Ознайомтесь та прийміть правила цього домашнього сервера:";
 "auth_softlogout_signed_out" = "Ви вийшли";
@@ -231,7 +231,7 @@
 "settings_enable_push_notif" = "Сповіщення на цьому пристрої";
 "settings_fail_to_update_profile" = "Не вдалося оновити профіль";
 "settings_night_mode" = "Нічний режим";
-"settings_change_password" = "Змінити пароль";
+"settings_change_password" = "Змінити пароль облікового запису Matrix";
 "settings_add_phone_number" = "Додати номер телефону";
 "settings_phone_number" = "Телефон";
 "settings_add_email_address" = "Додати адресу е-пошти";
@@ -832,8 +832,8 @@
 "settings_add_3pid_password_title_msidsn" = "Додати номер телефону";
 "settings_device_notifications" = "Сповіщення пристрою";
 "settings_add_3pid_password_title_email" = "Додати адресу е-пошти";
-"settings_password_updated" = "Пароль оновлено";
-"settings_fail_to_update_password" = "Не вдалося оновити пароль";
+"settings_password_updated" = "Пароль облікового запису Matrix оновлено";
+"settings_fail_to_update_password" = "Не вдалося оновити пароль облікового запису Matrix";
 "settings_confirm_password" = "підтвердити пароль";
 "settings_new_password" = "новий пароль";
 "settings_old_password" = "старий пароль";
@@ -862,8 +862,8 @@
 "settings_crypto_device_id" = "\nID сеансу: ";
 "settings_crypto_device_name" = "Назва сеансу: ";
 "settings_add_3pid_invalid_password_message" = "Хибні облікові дані";
-"settings_add_3pid_password_message" = "Щоб продовжити, введіть пароль";
-"deactivate_account_password_alert_message" = "Щоб продовжити, введіть пароль";
+"settings_add_3pid_password_message" = "Щоб продовжити, введіть пароль облікового запису Matrix";
+"deactivate_account_password_alert_message" = "Щоб продовжити, введіть пароль облікового запису Matrix";
 
 // Deactivate account
 
@@ -970,7 +970,7 @@
 "room_event_action_report" = "Поскаржитися на вміст";
 "room_event_action_view_decrypted_source" = "Переглянути розшифроване джерело";
 "room_event_action_view_source" = "Переглянути джерело";
-"room_event_action_permalink" = "Постійне посилання";
+"room_event_action_permalink" = "Скопіювати посилання на повідомлення";
 "room_event_action_forward" = "Переслати";
 "room_resend_unsent_messages" = "Повторно надіслати не надіслані повідомлення";
 "room_prompt_cancel" = "скасувати всі";
@@ -1034,7 +1034,7 @@
 
 // AuthenticatedSessionViewControllerFactory
 "authenticated_session_flow_not_supported" = "Цей застосунок не підтримує способу входу, доступного на вашому домашньому сервері.";
-"security_settings_user_password_description" = "Підтвердьте свою особу, ввівши пароль свого облікового запису";
+"security_settings_user_password_description" = "Підтвердьте свою особу, ввівши пароль свого облікового запису Matrix";
 "security_settings_coming_soon" = "Вибачте, ця дія ще не доступна в %@ iOS. Якщо налаштуєте це іншим клієнтом Matrix, %@ iOS зможе також це використати.";
 "security_settings_complete_security_alert_message" = "Спершу слід доповнити захист вашого поточного сеансу.";
 "security_settings_blacklist_unverified_devices_description" = "Звірте всі сеанси користувача, щоб позначити його довіреним і надіслати йому повідомлення.";
@@ -1043,7 +1043,7 @@
 "security_settings_crosssigning_info_trusted" = "Перехресне підписування увімкнено. Ви можете робити інших користувачів і свої інші сеанси довіреними на підставі перехресного підпису, але ви не можете перехресно підписувати цим сеансом, бо в нього ще нема закритих ключів перехресного підписування. Доповніть захист цього сеансу.";
 "security_settings_crosssigning_info_exists" = "Ваш обліковий запис має ідентичність перехресного підписування, але вона ще не довірена цим сеансом. Доповніть захист цього сеансу.";
 "security_settings_secure_backup_description" = "Зробіть резервну копію своїх ключів шифрування й даних облікового запису на випадок втрати доступу до своїх сеансів. Ваші ключі будуть захищені унікальним ключем безпеки.";
-"security_settings_crypto_sessions_description_2" = "Якщо не впізнаєте вхід, скиньте пароль і налаштування безпечного резервного копіювання.";
+"security_settings_crypto_sessions_description_2" = "Якщо не впізнаєте сеанс, скиньте пароль облікового запису Matrix і налаштування безпечного резервного копіювання.";
 "settings_identity_server_no_is_description" = "Зараз ви не використовуєте сервер ідентифікації. Щоб знаходити наявні контакти й вони знаходили вас, додайте сервер угорі.";
 "settings_identity_server_description" = "Налаштований угорі сервер ідентифікації дає вам змогу знаходити людей за наявними контактами, а їм знаходити вас.";
 "settings_discovery_three_pid_details_information_phone_number" = "Керуйте параметрами для цього номера телефону, за яким інші користувачі можуть вас знаходити й запрошувати до кімнат. Додавайте й видаляйте номери в Облікових записах.";
@@ -1109,7 +1109,7 @@
 // Banner
 
 "cross_signing_setup_banner_title" = "Налаштування шифрування";
-"secrets_reset_authentication_message" = "Введіть пароль свого облікового запису, щоб продовжити";
+"secrets_reset_authentication_message" = "Введіть пароль свого облікового запису Matrix, щоб продовжити";
 "security_settings_blacklist_unverified_devices" = "Ніколи не надсилати повідомлення не довіреним сеансам";
 "security_settings_advanced" = "ДОДАТКОВО";
 "security_settings_export_keys_manually" = "Експорт ключів вручну";
@@ -1357,7 +1357,7 @@
 
 "secrets_setup_recovery_passphrase_title" = "Встановіть фразу безпеки";
 "secrets_setup_recovery_passphrase_information" = "Введіть відому лише вам фразу безпеки для захисту таємниць на вашому сервері.";
-"secrets_setup_recovery_passphrase_additional_information" = "Не застосовуйте пароль облікового запису повторно.";
+"secrets_setup_recovery_passphrase_additional_information" = "Не застосовуйте пароль облікового запису Matrix повторно.";
 "secrets_setup_recovery_passphrase_confirm_information" = "Для підтвердження введіть таємну фразу ще раз.";
 "secure_key_backup_setup_existing_backup_error_title" = "Резервна копія повідомлень уже існує";
 "secure_key_backup_setup_existing_backup_error_info" = "Розблокуйте її, щоб продовжити попереднє захищене резервне копіювання, або видаліть її, щоб почати захищене резервне копіювання повідомлень заново.";
@@ -1590,7 +1590,7 @@
 
 "key_backup_setup_intro_title" = "Ніколи не втрачайте зашифровані повідомлення";
 "key_backup_setup_intro_info" = "Повідомлення в зашифрованих кімнатах захищені наскрізним шифруванням. Тільки ви та одержувачі маєте ключі для читання цих повідомлень.\n\nСтворіть захищену резервну копію ключів, щоб їх не втратити.";
-"key_backup_setup_passphrase_info" = "Ми збережемо зашифровану копію ваших ключів на нашому сервері. Захистіть свою резервну копію парольною фразою.\n\nДля максимальної безпеки фраза повинна відрізнятися від пароля вашого облікового запису.";
+"key_backup_setup_passphrase_info" = "Ми збережемо зашифровану копію ваших ключів на нашому сервері. Захистіть свою резервну копію парольною фразою.\n\nДля максимальної безпеки фраза повинна відрізнятися від пароля вашого облікового запису Matrix.";
 "key_backup_setup_passphrase_set_passphrase_action" = "Встановити фразу";
 
 // MARK: Key backup recover
@@ -1738,3 +1738,35 @@
 "poll_edit_form_update_failure_subtitle" = "Повторіть спробу";
 "poll_edit_form_update_failure_title" = "Не вдалося оновити опитування";
 "poll_edit_form_poll_type" = "Тип опитування";
+"location_sharing_post_failure_subtitle" = "%@ не може отримати доступ до вашого місцеперебування. Повторіть спробу пізніше.";
+"location_sharing_post_failure_title" = "Ми не можемо надіслати дані про ваше місцеперебування";
+"home_context_menu_leave" = "Вийти";
+"home_context_menu_normal_priority" = "Звичайна пріоритетність";
+"home_context_menu_low_priority" = "Неважливі";
+"home_context_menu_unfavourite" = "Вилучити з улюблених";
+"home_context_menu_favourite" = "Улюблені";
+"home_context_menu_unmute" = "Увімкнути звук";
+"home_context_menu_mute" = "Без звуку";
+"home_context_menu_notifications" = "Сповіщення";
+"home_context_menu_make_room" = "Перемістити на вкладку «Кімнати»";
+"home_context_menu_make_dm" = "Перемістити на вкладку «Люди»";
+"event_formatter_message_deleted" = "Повідомлення видалено";
+"settings_labs_enable_threads" = "Треди спілкування";
+"message_from_a_thread" = "З треду";
+"threads_empty_show_all_threads" = "Показати всі треди";
+"threads_empty_tip" = "Порада: Торкніться повідомлення та натисніть «Тред», щоб розпочати його.";
+"threads_empty_info_my" = "Відповідайте у поточний тред або торкніться повідомлення та натисніть «Тред», щоб почати новий.";
+"threads_empty_info_all" = "Треди допомагають підтримувати розмови за темою та за ними легко стежити.";
+"threads_empty_title" = "Спілкуйтеся за темою в тредах";
+"threads_action_my_threads" = "Мої треди";
+"threads_action_all_threads" = "Усі треди";
+"threads_title" = "Треди";
+"thread_copy_link_to_thread" = "Копіювати посилання на тред";
+
+// MARK: Threads
+"room_thread_title" = "Тред";
+"room_accessibility_thread_more" = "Більше";
+"room_accessibility_threads" = "Треди";
+"room_event_copy_link_info" = "Посилання скопійовано до буфера обміну.";
+"room_event_action_reply_in_thread" = "Тред";
+"room_event_action_view_in_room" = "Переглянути у кімнаті";

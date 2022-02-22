@@ -396,7 +396,7 @@ class NotificationService: UNNotificationServiceExtension {
                                 }
                                 
                                 if !isHighlighted {
-                                    #warning("In practice, this only hides the notification's content. An empty notification may be less useful in this instance?")
+                                    // In practice, this only hides the notification's content. An empty notification may be less useful in this instance?
                                     // Ignore this notif.
                                     MXLog.debug("[NotificationService] notificationContentForEvent: Ignore non highlighted notif in mentions only room")
                                     onComplete(nil, false)

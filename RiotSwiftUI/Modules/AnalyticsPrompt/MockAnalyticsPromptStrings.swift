@@ -17,13 +17,8 @@
 import UIKit
 
 struct MockAnalyticsPromptStrings: AnalyticsPromptStringsProtocol {
-    var appDisplayName = "Element"
-    
     let point1: NSAttributedString
     let point2: NSAttributedString
-    
-    let termsNewUser: NSAttributedString
-    let termsUpgrade: NSAttributedString
     
     let shortString = NSAttributedString(string: "This is a short string.")
     let longString = NSAttributedString(string: "This is a very long string that will be used to test the layout over multiple lines of text to ensure everything is correct.")
@@ -38,15 +33,5 @@ struct MockAnalyticsPromptStrings: AnalyticsPromptStringsProtocol {
         point2.append(NSAttributedString(string: "don't", attributes: [.font: UIFont.boldSystemFont(ofSize: UIFont.systemFontSize)]))
         point2.append(NSAttributedString(string: " share information with third parties"))
         self.point2 = point2
-        
-        let termsNewUser = NSMutableAttributedString(string: "You can read all our terms ")
-        termsNewUser.append(NSAttributedString(string: "here", attributes: [.link: URL(string: "https://element.io/cookie-policy")!]))
-        termsNewUser.append(NSAttributedString(string: "."))
-        self.termsNewUser = termsNewUser
-        
-        let termsUpgrade = NSMutableAttributedString(string: "Read all our terms ")
-        termsUpgrade.append(NSAttributedString(string: "here", attributes: [.link: URL(string: "https://element.io/cookie-policy")!]))
-        termsUpgrade.append(NSAttributedString(string: ". Is that OK?"))
-        self.termsUpgrade = termsUpgrade
     }
 }

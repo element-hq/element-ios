@@ -54,12 +54,13 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     private var navigationRouter: NavigationRouterType {
         parameters.router
     }
-    // Keep a strong ref as we need to init authVC early to preload its view (it is *really* slow to do in realtime)
-    private var authenticationCoordinator: AuthenticationCoordinatorProtocol = AuthenticationCoordinator()
+    // Keep a strong ref as we need to init authVC early to preload its view
+    private let authenticationCoordinator: AuthenticationCoordinatorProtocol
     private var isShowingAuthentication = false
     
     // MARK: Screen results
     private var splashScreenResult: OnboardingSplashScreenViewModelResult?
+    private var useCaseResult: OnboardingUseCaseViewModelResult?
     
     // MARK: Public
 
@@ -71,6 +72,11 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     
     init(parameters: OnboardingCoordinatorParameters) {
         self.parameters = parameters
+        
+        // Preload the authVC (it is *really* slow to load in realtime)
+        let authenticationParameters = AuthenticationCoordinatorParameters(navigationRouter: parameters.router)
+        authenticationCoordinator = AuthenticationCoordinator(parameters: authenticationParameters)
+        
         super.init()
     }    
     
@@ -126,9 +132,47 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         self.navigationRouter.setRootModule(coordinator, popCompletion: nil)
     }
     
+    @available(iOS 14.0, *)
     /// Displays the next view in the flow after the splash screen.
     private func splashScreenCoordinator(_ coordinator: OnboardingSplashScreenCoordinator, didCompleteWith result: OnboardingSplashScreenViewModelResult) {
         splashScreenResult = result
+        
+        // Set the auth type early to allow network requests to finish during display of the use case screen.
+        let mxkAuthenticationType = splashScreenResult == .register ? MXKAuthenticationTypeRegister : MXKAuthenticationTypeLogin
+        authenticationCoordinator.update(authenticationType: mxkAuthenticationType)
+        
+        switch result {
+        case .register:
+            showUseCaseSelectionScreen()
+        case .login:
+            showAuthenticationScreen()
+        }
+    }
+    
+    @available(iOS 14.0, *)
+    /// Show the use case screen for new users.
+    private func showUseCaseSelectionScreen() {
+        let coordinator = OnboardingUseCaseSelectionCoordinator()
+        coordinator.completion = { [weak self, weak coordinator] result in
+            guard let self = self, let coordinator = coordinator else { return }
+            self.useCaseSelectionCoordinator(coordinator, didCompleteWith: result)
+        }
+        
+        coordinator.start()
+        add(childCoordinator: coordinator)
+        
+        if self.navigationRouter.modules.isEmpty {
+            self.navigationRouter.setRootModule(coordinator, popCompletion: nil)
+        } else {
+            self.navigationRouter.push(coordinator, animated: true) { [weak self] in
+                self?.remove(childCoordinator: coordinator)
+            }
+        }
+    }
+    
+    /// Displays the next view in the flow after the use case screen.
+    private func useCaseSelectionCoordinator(_ coordinator: OnboardingUseCaseSelectionCoordinator, didCompleteWith result: OnboardingUseCaseViewModelResult) {
+        useCaseResult = result
         showAuthenticationScreen()
     }
     
@@ -139,28 +183,35 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         MXLog.debug("[OnboardingCoordinator] showAuthenticationScreen")
         
         let coordinator = authenticationCoordinator
-        coordinator.completion = { [weak self, weak coordinator] in
+        coordinator.completion = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
-            self.authenticationCoordinatorDidComplete(coordinator)
+            
+            switch result {
+            case .didLogin(let session):
+                self.authenticationCoordinator(coordinator, didLoginWith: session)
+            case .didComplete(let authenticationType):
+                self.authenticationCoordinator(coordinator, didCompleteWith: authenticationType)
+            }
+            
         }
         
         // Due to needing to preload the authVC, this breaks the Coordinator init/start pattern.
         // This can be re-assessed once we re-write a native flow for authentication.
         
-        // Set authType first as registration parameters or soft logout credentials will modify this.
-        let mxkAuthenticationType = splashScreenResult == .register ? MXKAuthenticationTypeRegister : MXKAuthenticationTypeLogin
-        coordinator.update(authenticationType: mxkAuthenticationType)
-        
         if let externalRegistrationParameters = externalRegistrationParameters {
             coordinator.update(externalRegistrationParameters: externalRegistrationParameters)
         }
+        
+        if useCaseResult == .customServer {
+            coordinator.showCustomServer()
+        }
+        
         if let softLogoutCredentials = parameters.softLogoutCredentials {
             coordinator.update(softLogoutCredentials: softLogoutCredentials)
         }
         
         coordinator.start()
         add(childCoordinator: coordinator)
-        authenticationCoordinator = coordinator
         
         if customHomeserver != nil || customIdentityServer != nil {
             coordinator.updateHomeserver(customHomeserver, andIdentityServer: customIdentityServer)
@@ -177,9 +228,43 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         isShowingAuthentication = true
     }
     
+    private func authenticationCoordinator(_ coordinator: AuthenticationCoordinatorProtocol, didLoginWith session: MXSession) {
+        // TODO: Show next screens whilst waiting for the everything to load.
+        // May need to move the spinner and key verification up to here in order to coordinate properly.
+    }
+    
     /// Displays the next view in the flow after the authentication screen.
-    private func authenticationCoordinatorDidComplete(_ coordinator: AuthenticationCoordinatorProtocol) {
+    private func authenticationCoordinator(_ coordinator: AuthenticationCoordinatorProtocol, didCompleteWith authenticationType: MXKAuthenticationType) {
         completion?()
         isShowingAuthentication = false
+        
+        // Handle the chosen use case where applicable
+        if authenticationType == MXKAuthenticationTypeRegister,
+           let useCase = useCaseResult?.userSessionPropertyValue,
+           let userSession = UserSessionsService.shared.mainUserSession {
+            // Store the value in the user's session
+            userSession.userProperties.useCase = useCase
+            
+            // Update the analytics user properties with the use case
+            Analytics.shared.updateUserProperties(ftueUseCase: useCase)
+        }
+    }
+}
+
+extension OnboardingUseCaseViewModelResult {
+    /// The result converted into the type stored in the user session.
+    var userSessionPropertyValue: UserSessionProperties.UseCase? {
+        switch self {
+        case .personalMessaging:
+            return .personalMessaging
+        case .workMessaging:
+            return .workMessaging
+        case .communityMessaging:
+            return .communityMessaging
+        case .skipped:
+            return .skipped
+        case .customServer:
+            return nil
+        }
     }
 }

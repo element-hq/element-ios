@@ -93,6 +93,17 @@
 "onboarding_splash_page_4_title_no_pun" = "Messaging for your team.";
 "onboarding_splash_page_4_message" = "Element is also great for the workplace. It’s trusted by the world’s most secure organisations.";
 
+"onboarding_use_case_title" = "Who will you chat to the most?";
+"onboarding_use_case_message" = "We’ll help you get connected.";
+"onboarding_use_case_personal_messaging" = "Friends and family";
+"onboarding_use_case_work_messaging" = "Teams";
+"onboarding_use_case_community_messaging" = "Communities";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "Not sure yet? You can %@";
+"onboarding_use_case_skip_button" = "skip this question";
+"onboarding_use_case_existing_server_message" = "Looking to join an existing server?";
+"onboarding_use_case_existing_server_button" = "Connect to server";
+
 // Authentication
 "auth_login" = "Log in";
 "auth_register" = "Register";
@@ -239,6 +250,7 @@ Tap the + to start adding people.";
 "search_people" = "People";
 "search_files" = "Files";
 "search_default_placeholder" = "Search";
+"search_filter_placeholder" = "Filter";
 "search_people_placeholder" = "Search by User ID, Name or email";
 "search_no_result" = "No results";
 "search_in_progress" = "Searching…";
@@ -385,7 +397,7 @@ Tap the + to start adding people.";
 "room_event_action_view_decrypted_source" = "View Decrypted Source";
 "room_event_action_report" = "Report content";
 "room_event_action_report_prompt_reason" = "Reason for reporting this content";
-"room_event_action_kick_prompt_reason" = "Reason for kicking this user";
+"room_event_action_kick_prompt_reason" = "Reason for removing this user";
 "room_event_action_ban_prompt_reason" = "Reason for banning this user";
 "room_event_action_report_prompt_ignore_user" = "Do you want to hide all messages from this user?";
 "room_event_action_save" = "Save";
@@ -1932,6 +1944,8 @@ Tap the + to start adding people.";
 "location_sharing_open_apple_maps" = "Open in Apple Maps";
 
 "location_sharing_open_google_maps" = "Open in Google Maps";
+
+"location_sharing_open_open_street_maps" = "Open in OpenStreetMap";
 
 "location_sharing_settings_header" = "Location sharing";
 

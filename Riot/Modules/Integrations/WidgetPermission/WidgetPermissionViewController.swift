@@ -218,8 +218,6 @@ extension WidgetPermissionViewController: SlidingModalPresentable {
             let widthConstraint = sizingViewContollerView.widthAnchor.constraint(equalToConstant: width)
             widthConstraint.isActive = true
             WidgetPermissionViewController.Sizing.widthConstraint = widthConstraint
-
-            sizingViewContollerView.heightAnchor.constraint(equalToConstant: 0)
         }
         
         sizingViewContollerView.layoutIfNeeded()

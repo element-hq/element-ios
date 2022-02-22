@@ -164,7 +164,7 @@ final class EmojiPickerViewController: UIViewController {
     
     private func setupSearchController() {
         let searchController = UISearchController(searchResultsController: nil)
-        searchController.dimsBackgroundDuringPresentation = false
+        searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchResultsUpdater = self
         searchController.searchBar.placeholder = VectorL10n.searchDefaultPlaceholder
         searchController.hidesNavigationBarDuringPresentation = false

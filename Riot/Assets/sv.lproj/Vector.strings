@@ -47,7 +47,7 @@
 "auth_optional_phone_placeholder" = "Telefonnummer (valfritt)";
 "auth_phone_placeholder" = "Telefonnummer";
 "auth_repeat_password_placeholder" = "Upprepa lösenord";
-"auth_repeat_new_password_placeholder" = "Bekräfta ditt lösenord";
+"auth_repeat_new_password_placeholder" = "Bekräfta ditt nya Matrixkontolösenord";
 "auth_identity_server_placeholder" = "URL (t.ex. https://vector.im)";
 "auth_invalid_login_param" = "Felaktigt användarnamn och/eller lösenord";
 "auth_invalid_password" = "Lösenordet är för kort (minst 6 tecken)";
@@ -59,17 +59,17 @@
 "auth_missing_email_or_phone" = "E-postadress eller telefonnummer saknas";
 "auth_email_in_use" = "Den här e-postadressen är upptagen";
 "auth_phone_in_use" = "Det här telefonnumret är upptaget";
-"auth_email_is_required" = "Ingen identitetsserver är konfigurerad, så du kan inte lägga till en e-postadress för att återställa ditt lösenord i framtiden.";
-"auth_phone_is_required" = "Ingen identitetsserver är konfigurerad, så du kan inte lägga till ett telefonnummer för att återställa ditt lösenord i framtiden.";
+"auth_email_is_required" = "Ingen identitetsserver är konfigurerad, så du kan inte lägga till en e-postadress för att återställa ditt Matrixkontolösenord i framtiden.";
+"auth_phone_is_required" = "Ingen identitetsserver är konfigurerad, så du kan inte lägga till ett telefonnummer för att återställa ditt Matrixkontolösenord i framtiden.";
 "auth_password_dont_match" = "Lösenorden matchar inte";
 "auth_username_in_use" = "Användarnamn upptaget";
-"auth_forgot_password" = "Glömt lösenordet?";
+"auth_forgot_password" = "Glömt Matrixkontolösenordet?";
 "auth_email_not_found" = "Misslyckades att skicka e-post: Den här e-postadressen hittades inte";
 "auth_use_server_options" = "Använd anpassade serveralternativ (avancerat)";
 "auth_email_validation_message" = "Kolla din e-post för att fortsätta registreringen";
 "auth_msisdn_validation_message" = "Vi har skickat ett SMS med en aktiveringskod. Ange den koden nedan.";
 "auth_msisdn_validation_error" = "Kunde inte verifiera telefonnummer.";
-"auth_reset_password_message" = "För att återställa ditt lösenord, ange e-postadressen som är länkad till ditt konto:";
+"auth_reset_password_message" = "För att återställa ditt Matrixkontolösenord, ange e-postadressen som är länkad till ditt konto:";
 "auth_reset_password_missing_email" = "Du måste ange e-postadressen som är länkad till ditt konto.";
 "auth_reset_password_missing_password" = "Ett nytt lösenord måste anges.";
 "auth_reset_password_email_validation_message" = "Ett e-brev har skickats till %@. När du har följt länken i det, tryck nedan.";
@@ -204,7 +204,7 @@
 "room_event_action_redact" = "Ta bort";
 "room_event_action_more" = "Mer";
 "room_event_action_share" = "Dela";
-"room_event_action_permalink" = "Permalänk";
+"room_event_action_permalink" = "Kopiera länk till meddelande";
 "room_event_action_view_source" = "Visa källa";
 "room_event_action_view_decrypted_source" = "Visa avkrypterad källa";
 "room_event_action_report" = "Rapportera innehåll";
@@ -297,7 +297,7 @@
 "settings_add_email_address" = "Lägg till e-postadress";
 "settings_phone_number" = "Telefon";
 "settings_add_phone_number" = "Lägg till telefonnummer";
-"settings_change_password" = "Ändra lösenord";
+"settings_change_password" = "Byt Matrixkontolösenord";
 "settings_night_mode" = "Nattläge";
 "settings_fail_to_update_profile" = "Misslyckades att uppdatera profil";
 "settings_three_pids_management_information_part1" = "Hantera vilka e-postadresser eller telefonnummer som du kan använda för att logga in eller återfå ditt konto här. Kontrollera vilka som kan hitta dig i ";
@@ -331,11 +331,11 @@
 "settings_old_password" = "gammalt lösenord";
 "settings_new_password" = "nytt lösenord";
 "settings_confirm_password" = "bekräfta lösenord";
-"settings_fail_to_update_password" = "Misslyckades att uppdatera lösenord";
-"settings_password_updated" = "Ditt lösenord har uppdaterats";
+"settings_fail_to_update_password" = "Misslyckades att uppdatera Matrixkontolösenord";
+"settings_password_updated" = "Ditt Matrixkontolösenord har uppdaterats";
 "settings_add_3pid_password_title_email" = "Lägg till e-postadress";
 "settings_add_3pid_password_title_msidsn" = "Lägg till telefonnummer";
-"settings_add_3pid_password_message" = "För att fortsätta, ange ditt lösenord";
+"settings_add_3pid_password_message" = "För att fortsätta, ange ditt Matrixkontolösenord";
 "settings_add_3pid_invalid_password_message" = "Ogiltiga uppgifter";
 "settings_crypto_export" = "Exportera nycklar";
 "settings_crypto_blacklist_unverified_devices" = "Kryptera endast till verifierade sessioner";
@@ -379,7 +379,7 @@
 "security_settings_advanced" = "AVANCERAT";
 "security_settings_blacklist_unverified_devices" = "Skicka aldrig meddelanden till obetrodda sessioner";
 "security_settings_blacklist_unverified_devices_description" = "Verifiera en användares alla sessioner för att markera den som betrodd och skicka meddelanden till den.";
-"security_settings_user_password_description" = "Bekräfta din identitet genom att ange ditt kontolösenord";
+"security_settings_user_password_description" = "Bekräfta din identitet genom att ange ditt Matrixkontolösenord";
 // Manage session
 "manage_session_title" = "Hantera session";
 "manage_session_info" = "SESSIONSINFO";
@@ -406,11 +406,11 @@
 "auth_home_server_placeholder" = "URL (t.ex. https://matrix.org)";
 "auth_invalid_user_name" = "Användarnamn får endast innehålla bokstäver, siffror, punkter, bindestreck och understreck";
 "auth_add_email_message_2" = "Ställ in en e-postadress för kontoåterställning, och senare för att valfritt bli upptäckbar av personer som känner dig.";
-"auth_forgot_password_error_no_configured_identity_server" = "Ingen identitetsserver är konfigurerad: lägg till en för att återställa ditt lösenord.";
+"auth_forgot_password_error_no_configured_identity_server" = "Ingen identitetsserver är konfigurerad: lägg till en för att återställa ditt Matrixkontolösenord.";
 "auth_msisdn_validation_title" = "Avvaktar verifiering";
 "auth_recaptcha_message" = "Den här hemservern vill kontrollera att du inte är en robot";
-"auth_reset_password_error_is_required" = "Ingen identitetsserver är konfigurerad: lägg till en i serveralternativen för att återställa ditt lösenord.";
-"auth_reset_password_success_message" = "Ditt lösenord har återställts.\n\nDu har loggats ut från alla sessioner och kommer inte längre att ta emot pushnotiser. För att återaktivera pushnotiser, logga in igen på varje enhet.";
+"auth_reset_password_error_is_required" = "Ingen identitetsserver är konfigurerad: lägg till en i serveralternativen för att återställa ditt Matrixkontolösenord.";
+"auth_reset_password_success_message" = "Ditt Matrixkontolösenord har återställts.\n\nDu har loggats ut från alla sessioner och kommer inte längre att ta emot pushnotiser. För att återaktivera pushnotiser, logga in igen på varje enhet.";
 "auth_accept_policies" = "Granska och acceptera villkoren för denna hemserver:";
 "auth_softlogout_reason" = "Admin hos din hemserver (%1$@) har loggat ut dig från ditt konto %2$@ (%3$@).";
 "auth_softlogout_clear_data" = "Rensa personlig data";
@@ -653,7 +653,7 @@
 "settings_discovery_three_pids_management_information_part3" = ".";
 "settings_identity_server_description" = "Med hjälp av identitetsservern som anges ovan kan du upptäcka och upptäckas av befintliga kontakter du känner.";
 "settings_identity_server_no_is_description" = "Du använder för närvarande inte en identitetsserver. För att upptäcka och bli upptäckt av befintliga kontakter du känner, lägg till en ovan.";
-"security_settings_crypto_sessions_description_2" = "Om du inte känner igen en inloggning, ändra ditt lösenord och återställ säker säkerhetskopiering.";
+"security_settings_crypto_sessions_description_2" = "Om du inte känner igen en inloggning, byt ditt Matrixkontolösenord och återställ säker säkerhetskopiering.";
 "security_settings_secure_backup" = "SÄKER SÄKERHETSKOPIERING";
 "security_settings_secure_backup_description" = "Säkerhetskopiera dina nycklar med din kontodata ifall du förlorar åtkomst till dina sessioner. Dina nycklar kommer att säkras med en unik säkerhetsnyckel.";
 "security_settings_backup" = "MEDDELANDESÄKERHETSKOPIERING";
@@ -751,7 +751,7 @@
 "deactivate_account_forget_messages_information_part3" = ": detta leder till att framtida användare kommer att se en ofullständig bild av konversationer)";
 "deactivate_account_validate_action" = "Inaktivera konto";
 "deactivate_account_password_alert_title" = "Inaktivera konto";
-"deactivate_account_password_alert_message" = "För att fortsätta, ange ditt lösenord";
+"deactivate_account_password_alert_message" = "För att fortsätta, ange ditt Matrixkontolösenord";
 "rerequest_keys_alert_message" = "Starta %@ på en annan enhet som dekryptera meddelandet så att den kan skicka nycklarna till den här sessionen.";
 "secure_key_backup_setup_intro_use_security_key_title" = "Använd en säkerhetsnyckel";
 "secure_key_backup_setup_intro_use_security_key_info" = "Generera en säkerhetsnyckel att lagra på en säker plats, exempelvis i en lösenordshanterare eller ett kassaskåp.";
@@ -860,7 +860,7 @@
 "key_backup_setup_intro_title" = "Bli aldrig av med krypterade meddelanden";
 "key_backup_setup_intro_setup_action_without_existing_backup" = "Börja använda nyckelsäkerhetskopiering";
 "key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Anslut den här enheten till nyckelsäkerhetskopiering";
-"key_backup_setup_passphrase_info" = "Vi kommer lagra en krypterad kopia av dina nycklar på vår server. Skydda din säkerhetskopia med en fras för att hålla den säker.\n\nFör maximal säkerhet bör denna skilja sig från ditt kontolösenord.";
+"key_backup_setup_passphrase_info" = "Vi kommer lagra en krypterad kopia av dina nycklar på vår server. Skydda din säkerhetskopia med en fras för att hålla den säker.\n\nFör maximal säkerhet bör denna skilja sig från ditt Matrixkontokontolösenord.";
 "key_backup_setup_passphrase_setup_recovery_key_info" = "Eller säkra din säkerhetskopia med en säkerhetsnyckel och spara den någonstans säkert.";
 "key_backup_recover_invalid_passphrase" = "Säkerhetskopian kunde inte avkrypteras med den här frasen: vänligen kontrollera att du angav rätt säkerhetsfras.";
 "key_backup_recover_invalid_recovery_key_title" = "Säkerhetsnyckeln matchade inte";
@@ -1093,7 +1093,7 @@
 "secrets_setup_recovery_key_storage_alert_message" = "✓ Skriv ut den och förvara den säkert\n✓ Spara den på ett USB-minne eller säkerhetskopieringsenhet\n✓ Kopiera den till din personliga molnlagring";
 "secrets_setup_recovery_passphrase_title" = "Sätt en säkerhetsfras";
 "secrets_setup_recovery_passphrase_information" = "Ange en säkerhetsfras endast du känner till vilken används för att säkra hemligheter på din server.";
-"secrets_setup_recovery_passphrase_additional_information" = "Använd inte ditt kontolösenord.";
+"secrets_setup_recovery_passphrase_additional_information" = "Använd inte ditt Matrixkontolösenord.";
 "secrets_setup_recovery_passphrase_validate_action" = "Klart";
 "secrets_setup_recovery_passphrase_confirm_information" = "Ange din säkerhetsfras igen för att bekräfta den.";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Bekräfta";
@@ -1180,7 +1180,7 @@
 "room_info_list_one_member" = "1 medlem";
 "room_info_list_several_members" = "%@ medlemmar";
 "room_info_list_section_other" = "Andra";
-"secrets_reset_authentication_message" = "Ange ditt kontolösenord för att bekräfta";
+"secrets_reset_authentication_message" = "Ange ditt Matrixkontolösenord för att bekräfta";
 "secrets_reset_reset_action" = "Återställ";
 "secrets_reset_warning_message" = "så kommer du att börja om utan historik, meddelanden, betrodda enheter eller betrodda användare.";
 "secrets_reset_information" = "Gör bara detta om du inte har någon annan enhet att verifiera den här enheten med.";
@@ -1217,7 +1217,7 @@
 
 "invite_friends_action" = "Bjud in vänner till %@";
 "pin_protection_settings_change_pin" = "Byt PIN-kod";
-"pin_protection_confirm_pin_to_change" = "Bekräfta PIN-kod för att fortsätta";
+"pin_protection_confirm_pin_to_change" = "Bekräfta PIN-kod för att byta PIN-kod";
 "bug_report_background_mode" = "Fortsätt i bakgrunden";
 "social_login_button_title_sign_up" = "Skapa konto med %@";
 "social_login_button_title_sign_in" = "Logga in med %@";
@@ -1468,3 +1468,126 @@
 "leave_space_only_action" = "Lämna inga rum";
 "leave_space_message_admin_warning" = "Du är admin för det här utrymmet, försäkra att du har överfört adminrättigheter till en annan medlem innan du lämnar.";
 "leave_space_message" = "Är du säker på att du vill lämna %@? Vill du även lämna alla rum och utrymmen i det här utrymmet?";
+"location_sharing_settings_toggle_title" = "Aktivera platsdelning";
+"location_sharing_settings_header" = "Platsdelning";
+"location_sharing_open_google_maps" = "Öppna i Google Maps";
+"location_sharing_open_apple_maps" = "Öppna i Apple Maps";
+"location_sharing_invalid_authorization_settings" = "Inställningar";
+"location_sharing_invalid_authorization_not_now" = "Inte nu";
+"location_sharing_invalid_authorization_error_title" = "%@ är inte behörig att komma åt din plats. Du kan aktivera åtkomst i Inställningar > Plats";
+"location_sharing_locating_user_error_title" = "%@ kunde inte komma åt din plats. Vänligen pröva igen senare.";
+"location_sharing_loading_map_error_title" = "%@ kunde inte ladda kartan. Vänligen pröva igen senare.";
+"location_sharing_post_failure_subtitle" = "%@ kunde inte skicka din plats. Vänligen pröva igen senare.";
+"location_sharing_post_failure_title" = "Vi kunde inte skicka din plats";
+"location_sharing_share_action" = "Dela";
+"location_sharing_close_action" = "Stäng";
+
+// MARK: - Location sharing
+
+"location_sharing_title" = "Plats";
+"poll_timeline_not_closed_subtitle" = "Vänligen pröva igen";
+"poll_timeline_not_closed_title" = "Misslyckades att avsluta omröstning";
+"poll_timeline_vote_not_registered_subtitle" = "Tyvärr registrerades inte din röst, vänligen pröva igen";
+"poll_timeline_vote_not_registered_title" = "Röst registrerades inte";
+"poll_timeline_total_final_results" = "Slutgiltigt resultat baserat på %lu röst";
+"poll_timeline_total_final_results_one_vote" = "Slutgiltigt resultat baserat på 1 röst";
+"poll_timeline_total_votes_not_voted" = "%lu röster avgivna. Rösta för att se resultatet";
+"poll_timeline_total_one_vote_not_voted" = "1 röst avgiven. Rösta för att se resultatet";
+"poll_timeline_total_votes" = "%lu röster avgivna";
+"poll_timeline_total_one_vote" = "1 röst avgiven";
+"poll_timeline_total_no_votes" = "Inga röster avgivna";
+"poll_timeline_votes_count" = "%lu röster";
+"poll_timeline_one_vote" = "1 röst";
+"poll_edit_form_poll_type_closed_description" = "Resultat avslöjas när du avslutar omröstningen";
+"poll_edit_form_poll_type_closed" = "Sluten omröstning";
+"poll_edit_form_poll_type_open_description" = "Röstare ser resultat så fort de har röstat";
+"poll_edit_form_poll_type_open" = "Öppna omröstning";
+"poll_edit_form_update_failure_subtitle" = "Vänligen pröva igen";
+"poll_edit_form_update_failure_title" = "Misslyckades att uppdatera omröstning";
+"poll_edit_form_post_failure_subtitle" = "Vänligen pröva igen";
+"poll_edit_form_post_failure_title" = "Misslyckades att lägga upp omröstning";
+"poll_edit_form_add_option" = "Lägg till alternativ";
+"poll_edit_form_option_number" = "Alternativ %lu";
+"poll_edit_form_create_options" = "Skapa alternativ";
+"poll_edit_form_input_placeholder" = "Skriv något";
+"poll_edit_form_question_or_topic" = "Fråga eller ämne";
+"poll_edit_form_poll_question_or_topic" = "Omröstningens fråga eller ämne";
+"poll_edit_form_poll_type" = "Omröstningstyp";
+
+// Mark: - Polls
+
+"poll_edit_form_create_poll" = "Skapa omröstning";
+"home_context_menu_leave" = "Lämna";
+"home_context_menu_normal_priority" = "Normal prioritet";
+"home_context_menu_low_priority" = "Låg prioritet";
+"home_context_menu_unfavourite" = "Ta bort från favoriter";
+"home_context_menu_favourite" = "Favoritmarkera";
+"home_context_menu_unmute" = "Avtysta";
+"home_context_menu_mute" = "Tysta";
+"home_context_menu_notifications" = "Aviseringar";
+"home_context_menu_make_room" = "Flytta till rum";
+"home_context_menu_make_dm" = "Flytta till personer";
+"share_extension_send_now" = "Skicka nu";
+"share_extension_low_quality_video_message" = "Skicka i %@ för bättre kvalité, eller skicka i låg kvalité nedan.";
+"share_extension_low_quality_video_title" = "Video kommer skickas i låg kvalité";
+"analytics_prompt_stop" = "Sluta dela";
+"analytics_prompt_yes" = "Ja, det är okej";
+"analytics_prompt_not_now" = "Inte ny";
+"analytics_prompt_point_3" = "Du kan stänga av det här när som helst i inställningarna";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "Vi delar <b>inte</b> någon information med tredje parter";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "Vi spelar <b>inte</b> in eller profilerar någon kontodata";
+"analytics_prompt_terms_link_upgrade" = "här";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "Läs alla våra villkor %@. Är det OK?";
+"analytics_prompt_terms_link_new_user" = "här";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "Du kan läsa alla våra villkor %@.";
+"analytics_prompt_message_upgrade" = "Du har tidigare gått med på att dela anonym användningsdata med oss. Nu, för att hjälpa oss att förstå hur folk använder multipla enheter, så kommer vi att generera en slumpmässig identifierare som delas mellan dina enheter.";
+"analytics_prompt_message_new_user" = "Hjälp oss att identifiera problem och förbättra %@ genom att dela anonym användningsdata. För att förstå hur personer använder multipla enheter så kommer vi att generera en slumpmässig identifierare som delas mellan dina enheter.";
+
+// Analytics
+"analytics_prompt_title" = "Hjälp till att förbättra %@";
+"event_formatter_message_deleted" = "Meddelande raderat";
+"settings_enable_room_message_bubbles" = "Meddelandebubblor";
+"settings_discovery_accept_terms" = "Acceptera identitetsserverns villkor";
+"settings_analytics_and_crash_data" = "Skicka krasch- och analysdata";
+"settings_labs_enable_threads" = "Trådade meddelanden";
+"settings_labs_enabled_polls" = "Omröstningar";
+"settings_about" = "OM";
+"message_from_a_thread" = "Från en tråd";
+"threads_empty_show_all_threads" = "Visa alla trådar";
+"threads_empty_tip" = "Tips: Tryck på ett meddelande och använd “Tråd” för att starta en.";
+"threads_empty_info_my" = "Svara på en pågående tråd eller tryck på ett meddelande och använd “Tråd” för att starta en ny.";
+"threads_empty_info_all" = "Trådar hjälper till att hålla dina konversationer till ämnet och lätta att följa.";
+"threads_empty_title" = "Håll diskussioner organiserade med trådar";
+"threads_action_my_threads" = "Mina trådar";
+"threads_action_all_threads" = "Alla trådar";
+"threads_title" = "Trådar";
+"thread_copy_link_to_thread" = "Kopiera länk till tråd";
+
+// MARK: Threads
+"room_thread_title" = "Tråd";
+"room_accessibility_thread_more" = "Mer";
+"room_accessibility_threads" = "Trådar";
+"room_event_copy_link_info" = "Länk kopierad till klippbordet.";
+"room_event_action_reply_in_thread" = "Tråd";
+"room_event_action_view_in_room" = "Visa i rum";
+"room_event_action_end_poll" = "Avsluta omröstning";
+"room_event_action_remove_poll" = "Ta bort omröstning";
+"onboarding_splash_page_4_message" = "Element är också bra för arbetsplatser. Den är betrodd av världens säkraste organisationer.";
+"onboarding_splash_page_4_title_no_pun" = "Meddelanden för ditt team.";
+"onboarding_splash_page_3_message" = "Totalsträckskrypterad och inget telefonnummer krävs. Ingen reklam eller datainsamling.";
+"onboarding_splash_page_3_title" = "Säkra meddelanden.";
+"onboarding_splash_page_2_message" = "Välj vart dina konversationer lagras, vilket ger dig kontroll och självständighet. Ansluter via Matrix.";
+"onboarding_splash_page_2_title" = "Du har kontrollen.";
+"onboarding_splash_page_1_message" = "Säker och oberoende kommunikation som ger dig samma sekretessnivå som en personlig konversation i dit eget hem.";
+"onboarding_splash_page_1_title" = "Äg dina konversationer.";
+"onboarding_splash_login_button_title" = "Jag har redan ett konto";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Skapa konto";
+"accessibility_button_label" = "knapp";
+"ok" = "OK";
+"enable" = "Aktivera";

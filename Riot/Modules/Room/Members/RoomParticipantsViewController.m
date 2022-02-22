@@ -102,6 +102,8 @@
     // Adjust Top and Bottom constraints to take into account potential navBar and tabBar.
     [NSLayoutConstraint deactivateConstraints:@[_searchBarTopConstraint]];
     
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated"
     _searchBarTopConstraint = [NSLayoutConstraint constraintWithItem:self.topLayoutGuide
                                                            attribute:NSLayoutAttributeBottom
                                                            relatedBy:NSLayoutRelationEqual
@@ -109,6 +111,7 @@
                                                            attribute:NSLayoutAttributeTop
                                                           multiplier:1.0f
                                                             constant:0.0f];
+    #pragma clang diagnostic pop
     
     [NSLayoutConstraint activateConstraints:@[_searchBarTopConstraint]];
     
@@ -142,7 +145,7 @@
     
     
     // Add invite members button programmatically
-    [self vc_addFABWithImage:[UIImage imageNamed:@"add_member_floating_action"]
+    [self vc_addFABWithImage:AssetImages.addMemberFloatingAction.image
                       target:self
                       action:@selector(onAddParticipantButtonPressed)];
     
@@ -559,7 +562,7 @@
     contactsDataSource.displaySearchInputInContactsList = YES;
     contactsDataSource.forceMatrixIdInDisplayName = YES;
     // Add a plus icon to the contact cell in the contacts picker, in order to make it more understandable for the end user.
-    contactsDataSource.contactCellAccessoryImage = [[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor];
+    contactsDataSource.contactCellAccessoryImage = [AssetImages.plusIcon.image vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor];
     
     // List all the participants matrix user id to ignore them during the contacts search.
     for (Contact *contact in actualParticipants)
@@ -850,7 +853,7 @@
     pendingMaskSpinnerView.alpha = 0;
     [UIView animateWithDuration:0.3 delay:0.3 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         
-        pendingMaskSpinnerView.alpha = 1;
+        self->pendingMaskSpinnerView.alpha = 1;
         
     } completion:^(BOOL finished) {
     }];

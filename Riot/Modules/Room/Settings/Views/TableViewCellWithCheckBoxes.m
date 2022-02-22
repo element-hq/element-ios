@@ -131,7 +131,7 @@
         [checkboxContainer addSubview:checkbox];
         
         // Store the new check box unselected by default
-        checkbox.image = [UIImage imageNamed:@"selection_untick"];
+        checkbox.image = AssetImages.selectionUntick.image;
         checkbox.tintColor = ThemeService.shared.theme.tintColor;
         checkbox.tag = 0;
         [checkBoxesArray addObject:checkbox];
@@ -263,7 +263,7 @@
         
         if (isSelected && !checkBox.tag)
         {
-            checkBox.image = [UIImage imageNamed:@"selection_tick"];
+            checkBox.image = AssetImages.selectionTick.image;
             checkBox.tag = 1;
             
             if (!self.allowsMultipleSelection)
@@ -276,7 +276,7 @@
                         checkBox = checkBoxesArray[k];
                         if (checkBox.tag)
                         {
-                            checkBox.image = [UIImage imageNamed:@"selection_untick"];
+                            checkBox.image = AssetImages.selectionUntick.image;
                             checkBox.tag = 0;
                         }
                     }
@@ -285,7 +285,7 @@
         }
         else if (!isSelected && checkBox.tag)
         {
-            checkBox.image = [UIImage imageNamed:@"selection_untick"];
+            checkBox.image = AssetImages.selectionUntick.image;
             checkBox.tag = 0;
         }
     }

@@ -338,7 +338,6 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
  Check user's power for widgets management in a room.
  
  @param room the room to check.
- @return an NSError if the user cannot act on widgets in this room. Else, nil.
  */
 - (void)checkWidgetPermissionInRoom:(MXRoom *)room success:(dispatch_block_t)success  failure:(void (^)(NSError *))failure
 {
@@ -742,6 +741,8 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     return configs[mxSession.myUser.userId].scalarToken;
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated"
 - (void)loadConfigs
 {
     NSUserDefaults *userDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
@@ -787,6 +788,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     [userDefaults setObject:[NSKeyedArchiver archivedDataWithRootObject:configs]
                      forKey:@"integrationManagerConfigs"];
 }
+#pragma clang diagnostic pop
 
 
 #pragma mark - Errors
