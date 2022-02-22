@@ -52,7 +52,7 @@
 "auth_optional_phone_placeholder" = "Telefonszám (nem kötelező)";
 "auth_phone_placeholder" = "Telefonszám";
 "auth_repeat_password_placeholder" = "Jelszó megerősítés";
-"auth_repeat_new_password_placeholder" = "Új jelszó megerősítés";
+"auth_repeat_new_password_placeholder" = "Új Matrix fiók jelszó megerősítés";
 "auth_home_server_placeholder" = "URL (pl. https://matrix.org)";
 "auth_identity_server_placeholder" = "URL (pl. https://vector.im)";
 "auth_invalid_login_param" = "Hibás felhasználói név és/vagy jelszó";
@@ -73,7 +73,7 @@
 "auth_untrusted_id_server" = "Az azonosító szerver megbízhatatlan";
 "auth_password_dont_match" = "A jelszavak nem egyeznek meg";
 "auth_username_in_use" = "A felhasználónév foglalt";
-"auth_forgot_password" = "Elfelejtetted a jelszót?";
+"auth_forgot_password" = "Elfelejtetted a Matrix fiók jelszót?";
 "auth_email_not_found" = "E-mail küldési hiba: Az e-mail cím nem található";
 "auth_use_server_options" = "Egyedi szerver beállítások használata (haladó)";
 "auth_email_validation_message" = "Ellenőrizd az e-mailedet a regisztráció folytatásához";
@@ -81,14 +81,14 @@
 "auth_msisdn_validation_message" = "Elküldtük az SMS aktivációs kódot. Írd be a kódot ide.";
 "auth_msisdn_validation_error" = "Nem sikerült ellenőrizni a telefonszámot.";
 "auth_recaptcha_message" = "Ez a Matrix szerver szeretne megbizonyosodni arról, hogy nem vagy robot";
-"auth_reset_password_message" = "A jelszó visszaállításához add meg az e-mail címet amit a felhasználói fiókhoz kötöttél:";
+"auth_reset_password_message" = "A Matrix fiók jelszó visszaállításához add meg az e-mail címet amit a felhasználói fiókhoz kötöttél:";
 "auth_reset_password_missing_email" = "A felhasználói fiókodhoz kötött jelszót kell megadni.";
 "auth_reset_password_missing_password" = "Add meg az új jelszót.";
 "auth_reset_password_email_validation_message" = "Az e-mailt elküldtük a %@ címre. Ha rákattintottál a linkre ami benne van utána kattints ide.";
 "auth_reset_password_next_step_button" = "Ellenőriztem az e-mail címet";
 "auth_reset_password_error_unauthorized" = "E-mail cím ellenőrzése nem sikerült: bizonyosodj meg róla, hogy az e-mailben lévő linkre rákattintottál";
 "auth_reset_password_error_not_found" = "Úgy tűnik az e-mail címed nincs összekötve a Matrix azonosítóddal a Matrix szerveren.";
-"auth_reset_password_success_message" = "Visszaállítottuk a jelszavad.\n\nKijelentkeztettünk minden munkamenetedből és nem kapsz értesítéseket sem. Az értesítések újra engedélyezéséhez jelentkezz be újra az eszközökön.";
+"auth_reset_password_success_message" = "Visszaállítottuk a Matrix fiók jelszavad.\n\nKijelentkeztettünk minden munkamenetedből és nem kapsz értesítéseket sem. Az értesítések újra engedélyezéséhez jelentkezz be újra az eszközökön.";
 // Chat creation
 "room_creation_title" = "Új csevegés";
 "room_creation_account" = "Fiók";
@@ -224,7 +224,7 @@
 "room_event_action_redact" = "Töröl";
 "room_event_action_more" = "További";
 "room_event_action_share" = "Megosztás";
-"room_event_action_permalink" = "Állandó hivatkozás";
+"room_event_action_permalink" = "Üzenet hivatkozás másolása";
 "room_event_action_view_source" = "Forrás megjelenítése";
 "room_event_action_view_decrypted_source" = "Visszafejtett forrás megjelenítése";
 "room_event_action_report" = "Tartalom bejelentése";
@@ -338,12 +338,12 @@
 "settings_send_crash_report" = "Személytelen összeomlás és felhasználási adatok küldése";
 "settings_enable_rageshake" = "Eszköz megrázása a hiba bejelentéséhez";
 "settings_clear_cache" = "Gyorsítótár kiürítése";
-"settings_change_password" = "Jelszó megváltoztatása";
+"settings_change_password" = "Matrix fiók jelszó megváltoztatása";
 "settings_old_password" = "régi jelszó";
 "settings_new_password" = "új jelszó";
 "settings_confirm_password" = "jelszó megerősítése";
-"settings_fail_to_update_password" = "A jelszó frissítése nem sikerült";
-"settings_password_updated" = "A jelszavad frissítve";
+"settings_fail_to_update_password" = "A Matrix fiók jelszó frissítése nem sikerült";
+"settings_password_updated" = "A Matrix fiók jelszavad frissítve";
 "settings_crypto_device_name" = "Munkamenet neve: ";
 "settings_crypto_device_id" = "\nMunkamenet azonosítója: ";
 "settings_crypto_device_key" = "\nMunkamenet kulcsa:\n";
@@ -543,7 +543,7 @@
 "deactivate_account_forget_messages_information_part3" = ": ezzel a jövőben a felhasználók hiányos csevegést fognak csak látni)";
 "deactivate_account_validate_action" = "Felhasználói fiók felfüggesztése";
 "deactivate_account_password_alert_title" = "Felhasználói fiók felfüggesztése";
-"deactivate_account_password_alert_message" = "A folytatáshoz add meg a jelszavadat";
+"deactivate_account_password_alert_message" = "A folytatáshoz add meg a Matrix fiók jelszavadat";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Kérés elküldve";
 "rerequest_keys_alert_message" = "Kérlek indítsd el a %@et egy másik eszközödön amelyik vissza tudja fejteni az üzenetet, hogy el tudja küldeni a kulcsokat ennek a munkamenetnek.";
@@ -589,7 +589,7 @@
 "key_backup_setup_intro_title" = "Soha ne veszítsd el a titkosított üzeneteidet";
 "key_backup_setup_intro_info" = "Titkosított szobákban az üzenetek végponttól-végpontig vannak titkosítva. Csak te és a címzettek rendelkeznek a kulcsokkal az üzenetek visszafejtéséhez.\n\nMentsd el megfelelően a kulcsaidat, hogy ne veszítsd el őket.";
 "key_backup_setup_intro_setup_action" = "Beállítás";
-"key_backup_setup_passphrase_info" = "A kulcsaid titkosított másolatát elmentjük a szerverünkre. Védd a mentést jelmondattal.\n\nA maximális biztonság érdekében ez a jelmondat különbözzön a felhasználói fiókhoz használttól.";
+"key_backup_setup_passphrase_info" = "A kulcsaid titkosított másolatát elmentjük a szerverünkre. Védd a mentést jelmondattal.\n\nA maximális biztonság érdekében ez a jelmondat különbözzön a felhasználói Matrix fiókhoz használttól.";
 "key_backup_setup_passphrase_passphrase_title" = "Bead";
 "key_backup_setup_passphrase_passphrase_placeholder" = "Jelmondat bevitele";
 "key_backup_setup_passphrase_passphrase_valid" = "Szuper!";
@@ -813,7 +813,7 @@
 "room_event_action_reaction_history" = "Reakciók története";
 // MARK: Reaction history
 "reaction_history_title" = "Reakciók";
-"auth_forgot_password_error_no_configured_identity_server" = "Azonosítási szerver nincs beállítva: a jelszó visszaállításhoz adj hozzá egyet.";
+"auth_forgot_password_error_no_configured_identity_server" = "Azonosítási szerver nincs beállítva: a Matrix fiók jelszó visszaállításhoz adj hozzá egyet.";
 "room_creation_error_invite_user_by_email_without_identity_server" = "Azonosítási szerver nincs beállítva, így e-mail cím alapján nem tudsz hozzáadni résztvevőt.";
 "room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Azonosítási szerver nincs beállítva, így e-mail cím alapján nem tudsz beszélgetést kezdeményezni.";
 "room_action_camera" = "Fotó vagy videó készítése";
@@ -850,9 +850,9 @@
 "auth_add_email_message_2" = "E-mail cím beállítása fiók visszaállításhoz és, hogy később az ismerősök megtalálhassanak.";
 "auth_add_phone_message_2" = "Telefonszám beállítása, hogy később az ismerősök megtalálhassanak.";
 "auth_add_email_phone_message_2" = "E-mail cím beállítása fiók visszaállításhoz. Használj később e-mail címet vagy telefonszámot, hogy az ismerősök megtalálhassanak.";
-"auth_email_is_required" = "Azonosítási szerver nincs beállítva, így nem tudsz hozzáadni e-mail címet amivel vissza lehetne állítani a jelszót a későbbiekben.";
-"auth_phone_is_required" = "Azonosítási szerver nincs beállítva, így nem tudsz hozzáadni telefonszámot, hogy vissza lehetne állítani a jelszót a későbbiekben.";
-"auth_reset_password_error_is_required" = "Azonosítási szerver nincs beállítva: adj hozzá egyet a szerver beállításoknál, hogy a jelszót vissza lehessen állítani.";
+"auth_email_is_required" = "Azonosítási szerver nincs beállítva, így nem tudsz hozzáadni e-mail címet amivel vissza lehetne állítani a Matrix fiók jelszót a későbbiekben.";
+"auth_phone_is_required" = "Azonosítási szerver nincs beállítva, így nem tudsz hozzáadni telefonszámot, hogy vissza lehetne állítani a Matrix fiók jelszót a későbbiekben.";
+"auth_reset_password_error_is_required" = "Azonosítási szerver nincs beállítva: adj hozzá egyet a szerver beállításoknál, hogy a Matrix fiók jelszót vissza lehessen állítani.";
 "contacts_address_book_no_identity_server" = "Azonosítási szerver nincs beállítva";
 "settings_discovery_settings" = "FELDERÍTÉS";
 "settings_identity_server_settings" = "AZONOSÍTÁSI SZERVER";
@@ -913,7 +913,7 @@
 "service_terms_modal_message_identity_server" = "Az azonosítási szerver (%@) felhasználási feltételeit el kell fogadnod, hogy ismerősöket kereshess.";
 "settings_add_3pid_password_title_email" = "E-mail cím hozzáadása";
 "settings_add_3pid_password_title_msidsn" = "Telefonszám hozzáadása";
-"settings_add_3pid_password_message" = "A folytatáshoz add meg a jelszavadat";
+"settings_add_3pid_password_message" = "A folytatáshoz add meg a Matrix fiók jelszavadat";
 "settings_add_3pid_invalid_password_message" = "Érvénytelen jelszó";
 "error_not_supported_on_mobile" = "%@ mobilról ezt nem teheted meg.";
 "widget_menu_refresh" = "Frissítés";
@@ -1119,7 +1119,7 @@
 "security_settings_secure_backup_setup" = "Beállítás";
 "security_settings_secure_backup_synchronise" = "Szinkronizál";
 "security_settings_secure_backup_delete" = "Mentés törlése";
-"security_settings_user_password_description" = "A fiók jelszó megadásával erősítsd meg a személyazonosságodat";
+"security_settings_user_password_description" = "A Matrix fiók jelszó megadásával erősítsd meg a személyazonosságodat";
 "secure_key_backup_setup_intro_title" = "Biztonsági Mentés";
 "secure_key_backup_setup_intro_info" = "A titkosított üzenetekhez és adatokhoz való hozzáférés elvesztése esetén használható biztonsági tartalék a titkosított kulcsok a szerveredre való elmentésével.";
 "secure_key_backup_setup_intro_use_security_key_title" = "Használd a Biztonsági Kulcsot";
@@ -1139,14 +1139,14 @@
 "secrets_setup_recovery_key_done_action" = "Kész";
 "secrets_setup_recovery_key_storage_alert_title" = "Tartsd biztonságban";
 "secrets_setup_recovery_passphrase_title" = "Biztonsági Jelmondat beállítása";
-"secrets_setup_recovery_passphrase_additional_information" = "Ne a fiók jelszavadat használd.";
+"secrets_setup_recovery_passphrase_additional_information" = "Ne a Matrix fiók jelszavadat használd.";
 "secrets_setup_recovery_passphrase_validate_action" = "Kész";
 "secrets_setup_recovery_passphrase_confirm_information" = "A megerősítéshez add meg újra a Biztonsági Jelmondatot.";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Megerősítés";
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Jelmondat megerősítése";
 "cross_signing_setup_banner_title" = "Titkosítás beállítása";
 "cross_signing_setup_banner_subtitle" = "A többi eszközödet ellenőrizd egyszerűen";
-"security_settings_crypto_sessions_description_2" = "Ha ez a bejelentkezés nem ismerős, akkor változtasd meg a jelszavad és újra állítsd be a Biztonsági Mentést.";
+"security_settings_crypto_sessions_description_2" = "Ha ez a bejelentkezés nem ismerős, akkor változtasd meg a Matrix fiók jelszavad és újra állítsd be a Biztonsági Mentést.";
 "security_settings_secure_backup_description" = "Mentsd el a titkosítási kulcsokat a fiókadatokkal arra az esetre ha elvesztenéd a hozzáférést a munkameneteidhez. A kulcsok egy egyedi Biztonsági Kulccsal lesznek védve.";
 // AuthenticatedSessionViewControllerFactory
 "authenticated_session_flow_not_supported" = "Ez az alkalmazás nem támogatja a matrix szervered azonosítási mechanizmusát.";
@@ -1244,7 +1244,7 @@
 "room_info_list_one_member" = "1 tag";
 "room_info_list_several_members" = "%@ tag";
 "room_info_list_section_other" = "Más";
-"secrets_reset_authentication_message" = "A fiók jelszavaddal erősítsd meg";
+"secrets_reset_authentication_message" = "A Matrix fiók jelszavaddal erősítsd meg";
 "secrets_reset_reset_action" = "Visszaállít";
 "secrets_reset_warning_message" = "Tiszta lappal indulsz, üzenetek, megbízható eszközök és felhasználók nélkül.";
 "secrets_reset_warning_title" = "Ha mindent visszaállítasz";
@@ -1626,3 +1626,35 @@
 "poll_edit_form_update_failure_subtitle" = "Kérlek próbáld újra";
 "poll_edit_form_update_failure_title" = "A szavazást nem sikerült frissíteni";
 "poll_edit_form_poll_type" = "Szavazás típusa";
+"location_sharing_post_failure_subtitle" = "%@ a helyadatodat nem lehet elküldeni. Próbáld újra később.";
+"location_sharing_post_failure_title" = "A földrajzi helyzetét nem lehet elküldeni";
+"home_context_menu_leave" = "Elhagyás";
+"home_context_menu_normal_priority" = "Normál prioritás";
+"home_context_menu_low_priority" = "Alacsony prioritás";
+"home_context_menu_unfavourite" = "Törlés a kedvencekből";
+"home_context_menu_favourite" = "Kedvencek";
+"home_context_menu_unmute" = "Némítás kikapcsolása";
+"home_context_menu_mute" = "Némítás";
+"home_context_menu_notifications" = "Értesítések";
+"home_context_menu_make_room" = "Szobák közé mozgatás";
+"home_context_menu_make_dm" = "Közvetlen beszélgetések közé helyezés";
+"event_formatter_message_deleted" = "Üzenet törölve";
+"settings_labs_enable_threads" = "Üzenetszálas beszélgetés";
+"message_from_a_thread" = "Az üzenetszálból";
+"threads_empty_show_all_threads" = "Minden üzenetszál megjelenítése";
+"threads_empty_tip" = "Tipp: Koppints az üzenetre és használd az „Üzenetszál”-at új indításhoz.";
+"threads_empty_info_my" = "Válaszolj egy már meglévő üzenetszálba vagy koppints az üzenetre és használd az „Üzenetszál”-at új indításhoz.";
+"threads_empty_info_all" = "Az üzenetszálak segítenek a különböző témájú beszélgetések figyelemmel kísérésében.";
+"threads_empty_title" = "Beszélgetések üzenetszálakba rendezése";
+"threads_action_my_threads" = "Üzenetszálaim";
+"threads_action_all_threads" = "Minden üzenetszál";
+"threads_title" = "Üzenetszálak";
+"thread_copy_link_to_thread" = "Üzenetszálra mutató hivatkozás másolása";
+
+// MARK: Threads
+"room_thread_title" = "Üzenetszál";
+"room_accessibility_thread_more" = "Több";
+"room_accessibility_threads" = "Üzenetszálak";
+"room_event_copy_link_info" = "Hivatkozás a vágólapra másolva.";
+"room_event_action_reply_in_thread" = "Üzenetszál";
+"room_event_action_view_in_room" = "Megjelenítés szobában";
