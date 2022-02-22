@@ -34,7 +34,7 @@
 #import "MXKSendReplyEventStringLocalizer.h"
 #import "MXKSlashCommands.h"
 
-const BOOL USE_THREAD_TIMELINE = NO;
+const BOOL USE_THREAD_TIMELINE = YES;
 
 #pragma mark - Constant definitions
 
