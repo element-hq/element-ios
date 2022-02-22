@@ -78,7 +78,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         
         [self resetSectionIndexes];
         
-        _areSectionsShrinkable = NO;
+        _areSectionsShrinkable = YES;
         shrinkedSectionsBitMask = 0;
         
         roomTagsListenerByUserId = [[NSMutableDictionary alloc] init];
@@ -1507,6 +1507,50 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     RecentsSectionUpdate *update = [[RecentsSectionUpdate alloc] initWithSectionIndex:sectionIndex
                                                                    totalCountsChanged:totalCountsChanged];
     [self.delegate dataSource:self didCellChange:update];
+}
+
+#pragma mark - Shrinkable
+- (BOOL)isSectionShrinkedAt:(NSInteger)section
+{
+    if (_areSectionsShrinkable == NO)
+    {
+        return NO;
+    }
+    else if (section == favoritesSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_FAVORITES))
+    {
+        return YES;
+    }
+    else if (section == peopleSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_PEOPLE))
+    {
+        return YES;
+    }
+    else if (section == conversationSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_CONVERSATIONS))
+    {
+        return YES;
+    }
+    else if (section == directorySection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
+    {
+        return YES;
+    }
+    else if (section == lowPrioritySection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_LOWPRIORITY))
+    {
+        return YES;
+    }
+    else if (section == serverNoticeSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_SERVERNOTICE))
+    {
+        return YES;
+    }
+    else if (section == invitesSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_INVITES))
+    {
+        return YES;
+    }
+    else if (section == suggestedRoomsSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_SUGGESTED))
+    {
+        return YES;
+    }
+    else {
+        return NO;
+    }
 }
 
 @end

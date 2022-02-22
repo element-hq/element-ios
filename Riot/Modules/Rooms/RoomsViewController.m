@@ -74,7 +74,7 @@
     {
         // Take the lead on the shared data source.
         recentsDataSource = (RecentsDataSource*)self.dataSource;
-        recentsDataSource.areSectionsShrinkable = NO;
+        recentsDataSource.areSectionsShrinkable = YES;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeRooms];
     }
 }
