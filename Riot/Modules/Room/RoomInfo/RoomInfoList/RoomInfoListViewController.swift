@@ -116,10 +116,10 @@ final class RoomInfoListViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.setupViews()
-        if BuildSettings.appActivityIndicators {
+        if BuildSettings.useAppUserIndicators {
             self.activityPresenter = FullscreenActivityIndicatorPresenter(
                 label: VectorL10n.roomParticipantsLeaveProcessing,
-                on: self
+                viewController: self
             )
         } else {
             self.activityPresenter = ActivityIndicatorPresenter()

@@ -19,11 +19,11 @@ import XCTest
 
 class UserIndicatorQueueTests: XCTestCase {
     var indicators: [UserIndicator]!
-    var center: UserIndicatorQueue!
+    var queue: UserIndicatorQueue!
     
     override func setUp() {
         indicators = []
-        center = UserIndicatorQueue()
+        queue = UserIndicatorQueue()
     }
     
     func makeRequest() -> UserIndicatorRequest {
@@ -34,19 +34,19 @@ class UserIndicatorQueueTests: XCTestCase {
     }
     
     func testStartsIndicatorWhenAdded() {
-        let indicator = center.add(makeRequest())
+        let indicator = queue.add(makeRequest())
         XCTAssertEqual(indicator.state, .executing)
     }
     
     func testSecondIndicatorIsPending() {
-        center.add(makeRequest()).store(in: &indicators)
-        let indicator = center.add(makeRequest())
+        queue.add(makeRequest()).store(in: &indicators)
+        let indicator = queue.add(makeRequest())
         XCTAssertEqual(indicator.state, .pending)
     }
     
     func testSecondIndicatorIsExecutingWhenFirstCompleted() {
-        let first = center.add(makeRequest())
-        let second = center.add(makeRequest())
+        let first = queue.add(makeRequest())
+        let second = queue.add(makeRequest())
         
         first.cancel()
         

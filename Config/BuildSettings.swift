@@ -211,7 +211,7 @@ final class BuildSettings: NSObject {
     static let allowInviteExernalUsers: Bool = true
     
     /// Whether a screen uses legacy local activity indicators or improved app-wide indicators
-    static var appActivityIndicators: Bool {
+    static var useAppUserIndicators: Bool {
         #if DEBUG
         return true
         #else

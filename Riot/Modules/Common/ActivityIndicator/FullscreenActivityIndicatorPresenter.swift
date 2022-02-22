@@ -29,18 +29,18 @@ import UIKit
     private weak var viewController: UIViewController?
     private var indicator: UserIndicator?
     
-    init(label: String, on viewController: UIViewController) {
+    init(label: String, viewController: UIViewController) {
         self.label = label
         self.viewController = viewController
     }
     
     func presentActivityIndicator(on view: UIView, animated: Bool, completion: (() -> Void)?) {
-        guard let vc = viewController else {
+        guard let viewController = viewController else {
             return
         }
         
         let request = UserIndicatorRequest(
-            presenter: FullscreenLoadingIndicatorPresenter(label: label, on: vc),
+            presenter: FullscreenLoadingIndicatorPresenter(label: label, viewController: viewController),
             dismissal: .manual
         )
         

@@ -25,18 +25,18 @@ class FullscreenLoadingIndicatorPresenter: UserIndicatorPresentable {
     private weak var viewController: UIViewController?
     private weak var view: UIView?
     
-    init(label: String, on viewController: UIViewController) {
+    init(label: String, viewController: UIViewController) {
         self.label = label
         self.viewController = viewController
     }
 
     func present() {
         // Find the current top navigation controller
-        var vc: UIViewController? = viewController
-        while vc?.navigationController != nil {
-            vc = vc?.navigationController
+        var presentingController: UIViewController? = viewController
+        while presentingController?.navigationController != nil {
+            presentingController = presentingController?.navigationController
         }
-        guard let presentingVC = vc else {
+        guard let presentingController = presentingController else {
             return
         }
         
@@ -45,12 +45,12 @@ class FullscreenLoadingIndicatorPresenter: UserIndicatorPresentable {
         self.view = view
         
         view.translatesAutoresizingMaskIntoConstraints = false
-        presentingVC.view.addSubview(view)
+        presentingController.view.addSubview(view)
         NSLayoutConstraint.activate([
-            view.topAnchor.constraint(equalTo: presentingVC.view.topAnchor),
-            view.bottomAnchor.constraint(equalTo: presentingVC.view.bottomAnchor),
-            view.leadingAnchor.constraint(equalTo: presentingVC.view.leadingAnchor),
-            view.trailingAnchor.constraint(equalTo: presentingVC.view.trailingAnchor)
+            view.topAnchor.constraint(equalTo: presentingController.view.topAnchor),
+            view.bottomAnchor.constraint(equalTo: presentingController.view.bottomAnchor),
+            view.leadingAnchor.constraint(equalTo: presentingController.view.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: presentingController.view.trailingAnchor)
         ])
         
         view.alpha = 0

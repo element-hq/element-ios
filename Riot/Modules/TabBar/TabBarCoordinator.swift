@@ -76,10 +76,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
     }
     
-    deinit {
-        indicators.cancelAll()
-    }
-    
     // MARK: - Public methods
     
     func start() {
@@ -234,7 +230,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         homeViewController.tabBarItem.image = homeViewController.tabBarItem.image
         homeViewController.accessibilityLabel = VectorL10n.titleHome
         
-        if BuildSettings.appActivityIndicators {
+        if BuildSettings.useAppUserIndicators {
             homeViewController.userIndicatorPresenter = AppUserIndicatorPresenter(appNavigator: parameters.appNavigator)
         }
         
@@ -709,7 +705,7 @@ extension TabBarCoordinator: RoomCoordinatorDelegate {
     func roomCoordinatorDidLeaveRoom(_ coordinator: RoomCoordinatorProtocol) {
         // For the moment when a room is left, reset the split detail with placeholder
         self.resetSplitViewDetails()
-        if BuildSettings.appActivityIndicators {
+        if BuildSettings.useAppUserIndicators {
             parameters.appNavigator
                 .addUserIndicator(.success(VectorL10n.roomParticipantsLeaveSuccess))
                 .store(in: &indicators)
