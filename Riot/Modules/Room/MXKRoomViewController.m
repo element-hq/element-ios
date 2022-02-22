@@ -2348,6 +2348,12 @@
     {
         // Do a full reload
         [_bubblesTableView reloadData];
+        if (shouldScrollToBottom) {
+            // If we need to scroll to the bottom after the reload, layout refresh needs to be triggered,
+            // otherwise contentSize of the table view will not be up-to-date
+            // e.g. https://stackoverflow.com/a/31324129
+            [_bubblesTableView layoutIfNeeded];
+        }
     }
     
     if (shouldScrollToBottom)

@@ -50,7 +50,7 @@
 "auth_optional_phone_placeholder" = "Número de telefone (opcional)";
 "auth_phone_placeholder" = "Número de telefone";
 "auth_repeat_password_placeholder" = "Repetir senha";
-"auth_repeat_new_password_placeholder" = "Confirmar sua nova senha";
+"auth_repeat_new_password_placeholder" = "Confirme a nova senha de sua conta Matrix";
 "auth_home_server_placeholder" = "URL (e.g. https://matrix.org)";
 "auth_identity_server_placeholder" = "URL (e.g. https://vector.im)";
 "auth_invalid_login_param" = "Nome de usuária(o) e/ou senha incorretos";
@@ -71,7 +71,7 @@
 "auth_untrusted_id_server" = "O servidor de identidade não é confiado";
 "auth_password_dont_match" = "Senhas não correspondem";
 "auth_username_in_use" = "Nome de usuária(o) em uso";
-"auth_forgot_password" = "Esqueceu senha?";
+"auth_forgot_password" = "Esqueceu senha de conta Matrix?";
 "auth_email_not_found" = "Falha para enviar email: Este endereço de email não foi encontrado";
 "auth_use_server_options" = "Usar opções de servidor personalizadas (avançado)";
 "auth_email_validation_message" = "Por favor cheque seu email para continuar registro";
@@ -79,14 +79,14 @@
 "auth_msisdn_validation_message" = "Nós temos enviado um SMS com um código de ativação. Por favor entre este código abaixo.";
 "auth_msisdn_validation_error" = "Incapaz de verificar número de telefone.";
 "auth_recaptcha_message" = "Este servidorcasa gostaria de assegurar que você não é um robô";
-"auth_reset_password_message" = "Para resettar sua senha, entre o endereço de email linkado a sua conta:";
+"auth_reset_password_message" = "Para resettar a senha de sua conta Matrix, entre o endereço de email linkado a sua conta:";
 "auth_reset_password_missing_email" = "O email linkado à sua conta deve ser entrado.";
 "auth_reset_password_missing_password" = "Uma nova senha deve ser entrada.";
 "auth_reset_password_email_validation_message" = "Um email tem sido enviado para %@. Uma vez que você tenha seguido o link que ele contém, clique abaixo.";
 "auth_reset_password_next_step_button" = "Eu tenho verificado meu endereço de email";
 "auth_reset_password_error_unauthorized" = "Falha para verificar endereço de email: assegure que você clicou no link no email";
 "auth_reset_password_error_not_found" = "Seu endereço de email não parece estar associado com uma ID Matrix neste servidorcasa.";
-"auth_reset_password_success_message" = "Sua senha tem sido resettada.\n\nVocê tem sido feito logout de todas as sessões e não vai mais receber notificações push. Para re-habilitar notificações, refaça login em cada dispositivo.";
+"auth_reset_password_success_message" = "A senha de sua conta Matrix tem sido resettada.\n\nVocê tem sido feito logout de todas as sessões e não vai mais receber notificações push. Para re-habilitar notificações, refaça login em cada dispositivo.";
 "auth_add_email_and_phone_warning" = "Registro com email e número de telefone ao mesmo tempo não é suportado ainda até que a api exista. Somente o número de telefone vai ser levado em conta. Você pode adicionar seu email a seu perfil em ajustes.";
 "room_creation_appearance" = "Aparência";
 "room_creation_appearance_name" = "Nome";
@@ -105,7 +105,7 @@
 "room_recents_people_section" = "PESSOAS";
 "room_recents_conversations_section" = "SALAS";
 "room_recents_no_conversation" = "Nenhuma sala";
-"room_recents_low_priority_section" = "BAIXA PRIORIDADE";
+"room_recents_low_priority_section" = "PRIORIDADE BAIXA";
 "room_recents_invites_section" = "CONVITES";
 "room_recents_start_chat_with" = "Começar chat";
 "room_recents_create_empty_room" = "Criar sala";
@@ -224,7 +224,7 @@
 "room_event_action_redact" = "Remover";
 "room_event_action_more" = "Mais";
 "room_event_action_share" = "Compartilhar";
-"room_event_action_permalink" = "Permalink";
+"room_event_action_permalink" = "Copiar link para mensagem";
 "room_event_action_view_source" = "Visualizar Fonte";
 "room_event_action_view_decrypted_source" = "Visualizar Fonte Decriptada";
 "room_event_action_report" = "Reportar conteúdo";
@@ -347,12 +347,12 @@
 "settings_send_crash_report" = "Enviar dados de cash & uso anon";
 "settings_enable_rageshake" = "Agitar com raiva para reportar bug";
 "settings_clear_cache" = "Limpar cache";
-"settings_change_password" = "Mudar senha";
+"settings_change_password" = "Mudar senha de conta Matrix";
 "settings_old_password" = "senha antiga";
 "settings_new_password" = "senha nova";
 "settings_confirm_password" = "confirmar senha";
-"settings_fail_to_update_password" = "Falha para atualizar senha";
-"settings_password_updated" = "Sua senha tem sido atualizada";
+"settings_fail_to_update_password" = "Falha para atualizar senha de conta Matrix";
+"settings_password_updated" = "A senha de sua conta Matrix tem sido atualizada";
 "settings_crypto_device_name" = "Nome de sessão: ";
 "settings_crypto_device_id" = "\nID de sessão: ";
 "settings_crypto_device_key" = "\nChave de sessão:\n";
@@ -366,7 +366,7 @@
 "room_details_room_name" = "Nome de Sala";
 "room_details_topic" = "Tópico";
 "room_details_favourite_tag" = "Favoritar";
-"room_details_low_priority_tag" = "Baixa prioridade";
+"room_details_low_priority_tag" = "Prioridade baixa";
 "room_details_mute_notifs" = "Mutar notificações";
 "room_details_direct_chat" = "Chat Direto";
 "room_details_access_section" = "Quem pode acessar esta sala?";
@@ -550,7 +550,7 @@
 "deactivate_account_forget_messages_information_part3" = ": isto vai causar usuárias/os futuras/os terem uma visualização incompleta de conversas)";
 "deactivate_account_validate_action" = "Desativar conta";
 "deactivate_account_password_alert_title" = "Desativar Conta";
-"deactivate_account_password_alert_message" = "Para continuar, por favor entre sua senha";
+"deactivate_account_password_alert_message" = "Para continuar, por favor entre a senha de sua conta Matrix";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Requisição Enviada";
 "rerequest_keys_alert_message" = "Por favor lance %@ num outro dispositivo que possa decriptar a mensagem para que ele possa enviar as chaves para esta sessão.";
@@ -600,7 +600,7 @@
 "key_backup_setup_intro_manual_export_info" = "(Avançada)";
 "key_backup_setup_intro_manual_export_action" = "Exportar chaves manualmente";
 "key_backup_setup_passphrase_title" = "Assegure seu backup com uma Frase de Segurança";
-"key_backup_setup_passphrase_info" = "Nós vamos armazenar uma cópia encriptada de suas chaves em nosso servidor. Proteja seu backup com uma frase para mantê-lo seguro.\n\nPara segurança máxima, esta deveria ser diferente da senha de sua conta.";
+"key_backup_setup_passphrase_info" = "Nós vamos armazenar uma cópia encriptada de suas chaves em nosso servidor. Proteja seu backup com uma frase para mantê-lo seguro.\n\nPara segurança máxima, esta deveria ser diferente da senha de sua conta Matrix.";
 "key_backup_setup_passphrase_passphrase_title" = "Entrar";
 "key_backup_setup_passphrase_passphrase_placeholder" = "Entrar frase";
 "key_backup_setup_passphrase_passphrase_valid" = "Ótimo!";
@@ -667,7 +667,7 @@
 "settings_calls_stun_server_fallback_description" = "Permitir servidor fallback de assistência de chamadas %@ quando seu servidorcasa não oferece um (seu endereço de IP seria compartilhado durante uma chamada).";
 "security_settings_blacklist_unverified_devices" = "Nunca enviar mensagens para sessões não-confiadas";
 "security_settings_blacklist_unverified_devices_description" = "Verificar todas as sessões de um/uma usuário(a) para marcá-las como confiadas e enviar mensagens para ele/ela.";
-"security_settings_user_password_description" = "Confirme sua identidade ao entrar a senha de sua conta";
+"security_settings_user_password_description" = "Confirme sua identidade ao entrar a senha de sua conta Matrix";
 // Manage session
 "manage_session_title" = "Gerenciar sessão";
 "manage_session_name" = "Nome de sessão";
@@ -740,7 +740,7 @@
 "key_verification_scan_confirmation_scanning_device_waiting_other" = "Esperando por outro dispositivo…";
 "user_verification_start_waiting_partner" = "Esperando por %@…";
 "settings_devices_description" = "O nome público de uma sessão é visível para pessoas com quem você se comunica";
-"security_settings_crypto_sessions_description_2" = "Se você não reconhece um login, mude sua senha e resette Backup Seguro.";
+"security_settings_crypto_sessions_description_2" = "Se você não reconhece um login, mude a senha de sua conta Matrix e resette Backup Seguro.";
 "security_settings_export_keys_manually" = "Exportar chaves manualmente";
 "identity_server_settings_change" = "Mudar";
 "identity_server_settings_alert_change_title" = "Mudar servidor de identidade";
@@ -771,7 +771,7 @@
 "user_verification_session_details_verify_action_current_user_manually" = "Verificar Manualmente por Texto";
 "user_verification_session_details_verify_action_other_user" = "Verificar manualmente";
 "auth_add_email_phone_message_2" = "Defina um email para recuperação de conta. Use depois email ou telefone para ser opcionalmente descobertável por pessoas que conhecem você.";
-"auth_email_is_required" = "Nenhum servidor de identidade está configurado então você não pode adicionar um endereço de email a fim de resettar sua senha no futuro.";
+"auth_email_is_required" = "Nenhum servidor de identidade está configurado então você não pode adicionar um endereço de email a fim de resettar a senha de sua conta Matrix no futuro.";
 "auth_softlogout_clear_data_message_1" = "Aviso: Seus dados pessoais (incluindo chaves de encriptação) ainda estão armazenados neste dispositivo.";
 "auth_softlogout_clear_data_sign_out" = "Fazer signout";
 "room_creation_error_invite_user_by_email_without_identity_server" = "Nenhum servidor de identidade está configurado então você não pode adicionar um/uma participante com um email.";
@@ -818,9 +818,9 @@
 // Accessibility
 "accessibility_checkbox_label" = "checkbox";
 "auth_add_phone_message_2" = "Defina um número de telefone, e depois para ser opcionalmente descobertável por pessoas que conhecem você.";
-"auth_phone_is_required" = "Nenhum servidor de identidade está configurado então você não pode adicionar um número de telefone a fim de resettar sua senha no futuro.";
-"auth_forgot_password_error_no_configured_identity_server" = "Nenhum servidor de identidade está configurado: adicione um para resettar sua senha.";
-"auth_reset_password_error_is_required" = "Nenhum servidor de identidade está configurado: adicione um em opções de servidor para resettar sua senha.";
+"auth_phone_is_required" = "Nenhum servidor de identidade está configurado então você não pode adicionar um número de telefone a fim de resettar a senha de sua conta Matrix no futuro.";
+"auth_forgot_password_error_no_configured_identity_server" = "Nenhum servidor de identidade está configurado: adicione um para resettar a senha de sua conta Matrix.";
+"auth_reset_password_error_is_required" = "Nenhum servidor de identidade está configurado: adicione um em opções de servidor para resettar a senha de sua conta Matrix.";
 "auth_softlogout_signed_out" = "Você está com signout feito";
 "auth_softlogout_sign_in" = "Fazer Signin";
 "auth_softlogout_recover_encryption_keys" = "Faça signin para recuperar chaves de encriptação armazenadas exclusivamente neste dispositivo. Você precisa delas para ler todas suas mensagens seguras em qualquer dispositivo.";
@@ -853,7 +853,7 @@
 "settings_three_pids_management_information_part2" = "Descoberta";
 "settings_labs_message_reaction" = "Reagir a mensagens com emoji";
 "settings_add_3pid_password_title_msidsn" = "Adicionar número de telefone";
-"settings_add_3pid_password_message" = "Para continuar, por favor entre sua senha";
+"settings_add_3pid_password_message" = "Para continuar, por favor entre a senha de sua conta Matrix";
 "settings_add_3pid_invalid_password_message" = "Credenciais inválidas";
 "settings_key_backup_button_connect" = "Conectar esta sessão a Backup de Chave";
 "settings_discovery_no_identity_server" = "Você não está atualmente usando um servidor de identidade. Para ser descobertável por contatos existentes, adicione um.";
@@ -1121,7 +1121,7 @@
 "secrets_setup_recovery_key_storage_alert_message" = "✓ Imprima-a e armazene-a em algum lugar seguro\n✓ Salve-a em uma chave USB ou drive de backup \n✓ Copie-a para seu armazenamento nuvem pessoal";
 "secrets_setup_recovery_passphrase_title" = "Definir uma Frase de Segurança";
 "secrets_setup_recovery_passphrase_information" = "Entre uma frase de segurança que só você conheça, usada para assegurar segredos em seu servidor.";
-"secrets_setup_recovery_passphrase_additional_information" = "Não use a senha de sua conta.";
+"secrets_setup_recovery_passphrase_additional_information" = "Não use a senha de sua conta Matrix.";
 "secrets_setup_recovery_passphrase_confirm_information" = "Entre sua Frase de Segurança de novo para confirmá-la.";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Confirmar";
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Confirmar frase";
@@ -1212,7 +1212,7 @@
 "more" = "Mais";
 "switch" = "Trocar";
 "joined" = "Juntou-Se";
-"secrets_reset_authentication_message" = "Entre a senha de sua conta para confirmar";
+"secrets_reset_authentication_message" = "Entre a senha de sua conta Matrix para confirmar";
 "secrets_reset_reset_action" = "Resettar";
 "secrets_reset_warning_message" = "Você vai recomeçar com nada de histórico, mensagens, dispositivos confiados ou usuárias(os) confiadas(os).";
 "secrets_reset_warning_title" = "Se você resettar tudo";
@@ -1594,3 +1594,35 @@
 "poll_edit_form_update_failure_subtitle" = "Por favor tente de novo";
 "poll_edit_form_update_failure_title" = "Falha para atualizar sondagem";
 "poll_edit_form_poll_type" = "Tipo de sondagem";
+"location_sharing_post_failure_subtitle" = "%@ não conseguiu enviar sua localização. Por favor tente de novo mais tarde.";
+"location_sharing_post_failure_title" = "Nós não conseguimos enviar sua localização";
+"home_context_menu_leave" = "Sair";
+"home_context_menu_normal_priority" = "Prioridade normal";
+"home_context_menu_low_priority" = "Prioridade baixa";
+"home_context_menu_unfavourite" = "Remover de Favoritos";
+"home_context_menu_favourite" = "Favoritar";
+"home_context_menu_unmute" = "Desmutar";
+"home_context_menu_mute" = "Mutar";
+"home_context_menu_notifications" = "Notificações";
+"home_context_menu_make_room" = "Mover para Salas";
+"home_context_menu_make_dm" = "Mover para Pessoas";
+"event_formatter_message_deleted" = "Mensagem deletada";
+"settings_labs_enable_threads" = "Mensageria com threads";
+"message_from_a_thread" = "De uma thread";
+"threads_empty_show_all_threads" = "Mostrar todas as threads";
+"threads_empty_tip" = "Dica: Toque numa mensagem e use “Thread” para começar uma.";
+"threads_empty_info_my" = "Responda a uma thread acontecendo ou toque numa mensagem e use “Thread” para começar uma nova.";
+"threads_empty_info_all" = "Threads ajudam manter suas conversas em-tópico e fáceis de rastrear.";
+"threads_empty_title" = "Mantenha discussões organizadas com threads";
+"threads_action_my_threads" = "Minhas threads";
+"threads_action_all_threads" = "Todas as threads";
+"threads_title" = "Threads";
+"thread_copy_link_to_thread" = "Copiar link para thread";
+
+// MARK: Threads
+"room_thread_title" = "Thread";
+"room_accessibility_thread_more" = "Mais";
+"room_accessibility_threads" = "Threads";
+"room_event_copy_link_info" = "Link copiado para clipboard.";
+"room_event_action_reply_in_thread" = "Thread";
+"room_event_action_view_in_room" = "Visualizar em sala";

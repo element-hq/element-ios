@@ -50,4 +50,14 @@ protocol RoomTimelineCellDecorator {
     
     func addSendStatusView(toCell cell: MXKRoomBubbleTableViewCell,
                            withFailedEventIds failedEventIds: Set<AnyHashable>)
+    
+    func addReadMarkerView(_ readMarkerView: UIView,
+                           toCell cell: MXKRoomBubbleTableViewCell,
+                           cellData: MXKRoomBubbleCellData,
+                           contentViewPositionY: CGFloat)
+    
+    func dissmissReadMarkerView(forCell cell: MXKRoomBubbleTableViewCell,
+                                cellData: RoomBubbleCellData,
+                                animated: Bool,
+                                completion: @escaping () -> Void)
 }

@@ -62,7 +62,7 @@
 "auth_optional_phone_placeholder" = "Telefoonnummer (optioneel)";
 "auth_phone_placeholder" = "Telefoonnummer";
 "auth_repeat_password_placeholder" = "Wachtwoord herhalen";
-"auth_repeat_new_password_placeholder" = "Bevestig uw nieuwe wachtwoord";
+"auth_repeat_new_password_placeholder" = "Bevestig uw nieuwe Matrix account wachtwoord";
 "auth_invalid_login_param" = "Onjuiste gebruikersnaam en/of wachtwoord";
 "auth_invalid_user_name" = "Inlognamen mogen alleen letters, cijfers, punten, koppeltekens en onderstrepingstekens bevatten";
 "auth_invalid_password" = "Het wachtwoord is te kort (min 6)";
@@ -78,21 +78,21 @@
 "auth_missing_email_or_phone" = "E-mailadres of telefoonnummer ontbreekt";
 "auth_password_dont_match" = "De wachtwoorden komen niet overeen";
 "auth_username_in_use" = "Inlognaam al in gebruik";
-"auth_forgot_password" = "Wachtwoord vergeten?";
+"auth_forgot_password" = "Matrix account wachtwoord vergeten?";
 "auth_use_server_options" = "Aangepaste serverinstellingen gebruiken (geavanceerd)";
 "auth_email_validation_message" = "Bekijk uw e-mail om verder te gaan met de registratie";
 "auth_msisdn_validation_title" = "Verificatie in afwachting";
 "auth_msisdn_validation_message" = "We hebben een sms met een activatiecode gestuurd. Voer deze code hieronder in.";
 "auth_msisdn_validation_error" = "Kan het telefoonnummer niet verifiëren.";
 "auth_recaptcha_message" = "Deze server wil er graag zeker van zijn dat u geen robot bent";
-"auth_reset_password_message" = "Voer het e-mailadres dat met uw account verbonden is in om uw wachtwoord opnieuw in te stellen:";
+"auth_reset_password_message" = "Voer het e-mailadres dat met uw account verbonden is in om uw Matrix account wachtwoord opnieuw in te stellen:";
 "auth_reset_password_missing_email" = "Het e-mailadres dat met uw account verbonden is moet ingevoerd worden.";
 "auth_reset_password_missing_password" = "Er moet een nieuw wachtwoord ingevoerd worden.";
 "auth_reset_password_email_validation_message" = "Er is een e-mail naar %@ gestuurd. Klik hieronder zodra u de koppeling erin hebt gevolgd.";
 "auth_reset_password_next_step_button" = "Ik heb mijn e-mailadres geverifieerd";
 "auth_reset_password_error_unauthorized" = "Verifiëren van e-mailadres is mislukt: wees er zeker van dat u op de koppeling in de e-mail hebt getikt";
 "auth_reset_password_error_not_found" = "Het ziet er niet naar uit dat uw e-mailadres met een Matrix-ID is verbonden op deze server.";
-"auth_reset_password_success_message" = "Uw wachtwoord is opnieuw ingesteld.\n\nU bent op alle apparaten afgemeld en u zult geen pushmeldingen meer ontvangen. Om meldingen weer in te schakelen, meldt u zich op elk apparaat opnieuw aan.";
+"auth_reset_password_success_message" = "Uw Matrix account wachtwoord is opnieuw ingesteld.\n\nU bent op alle apparaten afgemeld en u zult geen pushmeldingen meer ontvangen. Om meldingen weer in te schakelen, meldt u zich op elk apparaat opnieuw aan.";
 "auth_add_email_and_phone_warning" = "Registratie met e-mailadres en telefoonnummer tegelijkertijd wordt, totdat de API bestaat, nog niet ondersteund. Alleen het telefoonnummer zal worden gebruikt. U kunt uw e-mailadres later aan uw profiel in de instellingen toevoegen.";
 // Chat creation
 "room_creation_title" = "Nieuwe chat";
@@ -215,7 +215,7 @@
 "room_event_action_redact" = "Verwijderen";
 "room_event_action_more" = "Meer";
 "room_event_action_share" = "Delen";
-"room_event_action_permalink" = "Permalink";
+"room_event_action_permalink" = "Kopieer link naar bericht";
 "room_event_action_view_source" = "Bron weergeven";
 "room_event_action_report" = "Inhoud melden";
 "room_event_action_report_prompt_reason" = "Reden voor het melden van deze inhoud";
@@ -310,12 +310,12 @@
 "settings_third_party_notices" = "Derdepartijmeldingen";
 "settings_send_crash_report" = "Anonieme crash- en gebruiksgegevens versturen";
 "settings_clear_cache" = "Cache verwijderen";
-"settings_change_password" = "Wachtwoord veranderen";
+"settings_change_password" = "Matrix account wachtwoord veranderen";
 "settings_old_password" = "oud wachtwoord";
 "settings_new_password" = "nieuw wachtwoord";
 "settings_confirm_password" = "wachtwoord bevestigen";
-"settings_fail_to_update_password" = "Bijwerken van wachtwoord is mislukt";
-"settings_password_updated" = "Uw wachtwoord is bijgewerkt";
+"settings_fail_to_update_password" = "Bijwerken van Matrix account wachtwoord is mislukt";
+"settings_password_updated" = "Uw Matrix account wachtwoord is bijgewerkt";
 "settings_crypto_device_name" = "Apparaatnaam: ";
 "settings_crypto_device_id" = "\nApparaats-ID: ";
 "settings_crypto_device_key" = "\nApparaatssleutel:\n";
@@ -557,7 +557,7 @@
 "deactivate_account_forget_messages_information_part3" = ": dit zal er voor zorgen dat toekomstige gebruikers een onvolledig beeld krijgen van gesprekken)";
 "deactivate_account_validate_action" = "Account deactiveren";
 "deactivate_account_password_alert_title" = "Account deactiveren";
-"deactivate_account_password_alert_message" = "Voer uw wachtwoord in om verder te gaan";
+"deactivate_account_password_alert_message" = "Voer uw Matrix account wachtwoord in om verder te gaan";
 "room_event_action_view_decrypted_source" = "Ontsleutelde bron weergeven";
 "room_message_reply_to_placeholder" = "Stuur een antwoord (onversleuteld)…";
 "encrypted_room_message_reply_to_placeholder" = "Stuur een versleuteld antwoord…";
@@ -622,7 +622,7 @@
 "key_backup_setup_intro_manual_export_info" = "(Geavanceerd)";
 "key_backup_setup_intro_manual_export_action" = "Sleutels handmatig exporteren";
 "key_backup_setup_passphrase_title" = "Beveilig uw back-up met een veiligheidswachtwoord";
-"key_backup_setup_passphrase_info" = "We bewaren een versleutelde kopie van uw sleutels op onze server. Bescherm uw back-up met een veiligheidswachtwoord om deze veilig te houden.\n\nVoor maximale beveiliging zou dit moeten verschillen van uw accountwachtwoord.";
+"key_backup_setup_passphrase_info" = "We bewaren een versleutelde kopie van uw sleutels op onze server. Bescherm uw back-up met een veiligheidswachtwoord om deze veilig te houden.\n\nVoor maximale beveiliging zou dit moeten verschillen van uw Matrix account wachtwoord.";
 "key_backup_setup_passphrase_passphrase_title" = "Invoeren";
 "key_backup_setup_passphrase_passphrase_placeholder" = "Wachtwoord invoeren";
 "key_backup_setup_passphrase_passphrase_valid" = "Top!";
@@ -824,7 +824,7 @@
 "emoji_picker_flags_category" = "Vlaggen";
 // MARK: Reaction history
 "reaction_history_title" = "Reacties";
-"auth_forgot_password_error_no_configured_identity_server" = "Er is geen identiteitsserver geconfigureerd: voeg er een toe om uw wachtwoord opnieuw in te stellen.";
+"auth_forgot_password_error_no_configured_identity_server" = "Er is geen identiteitsserver geconfigureerd: voeg er een toe om uw Matrix account wachtwoord opnieuw in te stellen.";
 "room_creation_error_invite_user_by_email_without_identity_server" = "Er is geen identiteitsserver geconfigureerd, dus u kunt geen deelnemers toevoegen via e-mail.";
 "room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Er is geen identiteitsserver geconfigureerd, dus u kunt geen gesprek beginnen met een contact via e-mail.";
 // Service terms
@@ -856,9 +856,9 @@
 "auth_add_email_message_2" = "Stel een e-mailadres in voor accountherstel en om later optioneel vindbaar te zijn voor mensen die u kennen.";
 "auth_add_phone_message_2" = "Stel een telefoon in om later optioneel vindbaar te zijn voor mensen die u kennen.";
 "auth_add_email_phone_message_2" = "Stel een e-mailadres in voor accountherstel. Gebruik later e-mail of telefoon om optioneel vindbaar te zijn voor mensen die u kennen.";
-"auth_email_is_required" = "Er is geen identiteitsserver geconfigureerd, dus u kunt geen e-mailadres toevoegen om uw wachtwoord in de toekomst opnieuw in te stellen.";
-"auth_phone_is_required" = "Er is geen identiteitsserver geconfigureerd, dus u kunt geen telefoonnummer toevoegen om uw wachtwoord in de toekomst opnieuw in te stellen.";
-"auth_reset_password_error_is_required" = "Geen identiteitsserver ingesteld: voeg er één toe bij server opties om uw wachtwoord te wijzigen.";
+"auth_email_is_required" = "Er is geen identiteitsserver geconfigureerd, dus u kunt geen e-mailadres toevoegen om uw Matrix account wachtwoord in de toekomst opnieuw in te stellen.";
+"auth_phone_is_required" = "Er is geen identiteitsserver geconfigureerd, dus u kunt geen telefoonnummer toevoegen om uw Matrix account wachtwoord in de toekomst opnieuw in te stellen.";
+"auth_reset_password_error_is_required" = "Geen identiteitsserver ingesteld: voeg er één toe bij server opties om uw Matrix account wachtwoord te wijzigen.";
 
 // MARK: - Secrets set up
 
@@ -1009,7 +1009,7 @@
 // Banner
 
 "cross_signing_setup_banner_title" = "Versleuteling instellen";
-"secrets_reset_authentication_message" = "Geef het wachtwoord van uw account om te bevestigen";
+"secrets_reset_authentication_message" = "Geef het Matrix account wachtwoord in om te bevestigen";
 "secrets_reset_reset_action" = "Opnieuw instellen";
 "secrets_reset_warning_message" = "U zult opnieuw starten zonder geschiedenis, berichten, vertrouwde apparaten en vertrouwde gebruikers.";
 "secrets_reset_warning_title" = "Als u alles terugzet";
@@ -1021,7 +1021,7 @@
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Wachtwoord bevestigen";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Bevestigen";
 "secrets_setup_recovery_passphrase_validate_action" = "Klaar";
-"secrets_setup_recovery_passphrase_additional_information" = "Gebruik niet het wachtwoord van uw account.";
+"secrets_setup_recovery_passphrase_additional_information" = "Gebruik niet het Matrix account wachtwoord.";
 "secrets_setup_recovery_key_storage_alert_title" = "Bewaar hem op een veilige plaats";
 "secrets_setup_recovery_key_done_action" = "Klaar";
 "secrets_setup_recovery_key_export_action" = "Opslaan";
@@ -1326,7 +1326,7 @@
 
 // Manage session
 "manage_session_title" = "Beheer sessie";
-"security_settings_user_password_description" = "Bevestig uw identiteit door uw accountwachtwoord in te voeren";
+"security_settings_user_password_description" = "Bevestig uw identiteit door uw Matrix account wachtwoord in te voeren";
 "security_settings_coming_soon" = "Sorry. Deze actie is nog niet beschikbaar in %@ iOS. Gebruik een andere Matrix-app om het in te stellen. %@ iOS zal het dan wel gebruiken.";
 "security_settings_complete_security_alert_message" = "U moet de beveiliging van uw huidige sessie nog afronden.";
 "security_settings_complete_security_alert_title" = "Beveiliging afronden";
@@ -1349,7 +1349,7 @@
 "security_settings_secure_backup_setup" = "Instellen";
 "security_settings_secure_backup_description" = "Maak een back-up van uw versleutelingssleutel bij uw account data voor het geval u toegang verliest tot uw sessies. Uw sleutels zullen worden beveiligd met een unieke veiligheidssleutel.";
 "security_settings_secure_backup" = "VEILIGE BACK-UP";
-"security_settings_crypto_sessions_description_2" = "Als u deze inlog niet herkent, verander uw wachtwoord en reset uw Veilige Back-up.";
+"security_settings_crypto_sessions_description_2" = "Als u deze inlog niet herkent, verander uw Matrix account wachtwoord en reset uw Veilige Back-up.";
 "security_settings_crypto_sessions_loading" = "Sessies laden…";
 "security_settings_crypto_sessions" = "MIJN SESSIES";
 
@@ -1375,7 +1375,7 @@
 "settings_discovery_no_identity_server" = "U gebruikt momenteel geen identiteitsserver. Om door de u bekende contacten vindbaar te zijn, voeg er een toe.";
 "settings_devices_description" = "De publieke naam van een sessie is zichtbaar voor de personen waarmee u communiceert";
 "settings_add_3pid_invalid_password_message" = "Ongeldig wachtwoord";
-"settings_add_3pid_password_message" = "Geef uw wachtwoord om verder te gaan";
+"settings_add_3pid_password_message" = "Geef uw Matrix account wachtwoord om verder te gaan";
 "settings_add_3pid_password_title_msidsn" = "Telefoonnummer toevoegen";
 "settings_add_3pid_password_title_email" = "E-mailadres toevoegen";
 "settings_integrations_allow_description" = "Gebruik een integratiebeheerder om bots, bruggen, widgets en stickerpakketten te beheren.\n\nIntegratiebeheerders ontvangen configuratiedata en kunnen widgets aanpassen, kameruitnodigingen versturen en bestuursniveaus instellen namens u.";
@@ -1726,3 +1726,35 @@
 "poll_edit_form_update_failure_subtitle" = "Probeer het opnieuw";
 "poll_edit_form_update_failure_title" = "Kan poll niet bijwerken";
 "poll_edit_form_poll_type" = "Poll type";
+"location_sharing_post_failure_subtitle" = "%@ kan uw locatie niet verzenden. Probeer het later opnieuw.";
+"location_sharing_post_failure_title" = "We konden uw locatie niet verzenden";
+"home_context_menu_leave" = "Verlaten";
+"home_context_menu_normal_priority" = "Normale prioriteit";
+"home_context_menu_low_priority" = "Lage prioriteit";
+"home_context_menu_unfavourite" = "Verwijder uit favorieten";
+"home_context_menu_favourite" = "Favoriet";
+"home_context_menu_unmute" = "Dempen opheffen";
+"home_context_menu_mute" = "Dempen";
+"home_context_menu_notifications" = "Meldingen";
+"home_context_menu_make_room" = "Verplaatsen naar kamers";
+"home_context_menu_make_dm" = "Verplaatsen naar personen";
+"event_formatter_message_deleted" = "Bericht verwijderd";
+"settings_labs_enable_threads" = "Berichten met discussielijnen";
+"message_from_a_thread" = "Van een discussie";
+"threads_empty_show_all_threads" = "Toon alle discussies";
+"threads_empty_tip" = "Tip: Tik op een bericht en gebruik “Discussie” om er een te starten.";
+"threads_empty_info_my" = "Reageer op een lopende discussie of tik op een bericht en gebruik “Discussie” om een nieuwe te starten.";
+"threads_empty_info_all" = "Discussies helpen u gesprekken on-topic te houden en gemakkelijk bij te houden.";
+"threads_empty_title" = "Houd discussies georganiseerd met discussielijnen";
+"threads_action_my_threads" = "Mijn discussies";
+"threads_action_all_threads" = "Alle discussies";
+"threads_title" = "Discussies";
+"thread_copy_link_to_thread" = "Kopieer link naar discussie";
+
+// MARK: Threads
+"room_thread_title" = "Discussies";
+"room_accessibility_thread_more" = "Meer";
+"room_accessibility_threads" = "Discussies";
+"room_event_copy_link_info" = "Link gekopieerd naar klembord.";
+"room_event_action_reply_in_thread" = "Discussie";
+"room_event_action_view_in_room" = "Bekijk in kamer";

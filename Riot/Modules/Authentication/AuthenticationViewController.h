@@ -62,6 +62,8 @@
 
 @protocol AuthenticationViewControllerDelegate <NSObject>
 
-- (void)authenticationViewControllerDidDismiss:(AuthenticationViewController *)authenticationViewController;
+- (void)authenticationViewController:(AuthenticationViewController *)authenticationViewController
+                 didLoginWithSession:(MXSession *)session
+                         andPassword:(NSString *)password;
 
 @end;

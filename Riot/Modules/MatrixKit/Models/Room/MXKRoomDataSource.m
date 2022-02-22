@@ -34,7 +34,7 @@
 #import "MXKSendReplyEventStringLocalizer.h"
 #import "MXKSlashCommands.h"
 
-const BOOL USE_THREAD_TIMELINE = NO;
+const BOOL USE_THREAD_TIMELINE = YES;
 
 #pragma mark - Constant definitions
 
@@ -1446,6 +1446,16 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         if (self.shouldStopBackPagination)
         {
             return NO;
+        }
+    }
+
+    if (!USE_THREAD_TIMELINE && direction == MXTimelineDirectionBackwards && self.threadId)
+    {
+        //  when not using a thread timeline, data source will desperately fill the screen  with events by filtering them locally.
+        //  we can stop when we see the thread root event when paginating backwards
+        if ([event.eventId isEqualToString:self.threadId])
+        {
+            self.shouldStopBackPagination = YES;
         }
     }
     

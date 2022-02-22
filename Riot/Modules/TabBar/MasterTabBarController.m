@@ -119,9 +119,9 @@
     
     self.delegate = self;
     
-    _isOnboardingInProgress = NO;
+    self.isOnboardingInProgress = NO;
     
-    // Note: UITabBarViewController shoud not be embed in a UINavigationController (https://github.com/vector-im/riot-ios/issues/3086)
+    // Note: UITabBarViewController should not be embed in a UINavigationController (https://github.com/vector-im/riot-ios/issues/3086)
     [self vc_removeBackTitle];
     
     [self setupTitleView];
@@ -520,7 +520,7 @@
         [self.onboardingCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
         self.onboardingCoordinatorBridgePresenter = nil;
         
-        self.isOnboardingInProgress = NO;
+        self.isOnboardingInProgress = NO;   // Must be set before calling didCompleteAuthentication
         [self.masterTabBarDelegate masterTabBarControllerDidCompleteAuthentication:self];
     };
     

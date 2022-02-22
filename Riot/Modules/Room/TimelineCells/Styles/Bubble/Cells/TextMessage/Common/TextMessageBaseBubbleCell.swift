@@ -16,7 +16,7 @@
 
 import UIKit
 
-class TextMessageBaseBubbleCell: SizableBaseRoomCell, RoomCellURLPreviewDisplayable, RoomCellReactionsDisplayable, RoomCellThreadSummaryDisplayable, RoomCellReadReceiptsDisplayable {
+class TextMessageBaseBubbleCell: SizableBaseRoomCell, RoomCellURLPreviewDisplayable, RoomCellReactionsDisplayable, RoomCellThreadSummaryDisplayable, RoomCellReadReceiptsDisplayable, RoomCellReadMarkerDisplayable {
     
     // MARK: - Properties
     
@@ -32,21 +32,24 @@ class TextMessageBaseBubbleCell: SizableBaseRoomCell, RoomCellURLPreviewDisplaya
     // MARK: - Overrides
     
     override func setupViews() {
-        super.setupViews()
         
         roomCellContentView?.backgroundColor = .clear
         
-        guard let contentView = roomCellContentView?.innerContentView else {
-            return
-        }
-        
         roomCellContentView?.innerContentViewBottomContraint.constant = BubbleRoomCellLayoutConstants.innerContentViewMargins.bottom
-        
+        roomCellContentView?.userNameLabelBottomConstraint.constant = BubbleRoomCellLayoutConstants.senderNameLabelMargins.bottom
+
         let textMessageContentView = TextMessageBubbleCellContentView.instantiate()
-                
-        contentView.vc_addSubViewMatchingParent(textMessageContentView)
+
+        roomCellContentView?.innerContentView.vc_addSubViewMatchingParent(textMessageContentView)
         
         self.textMessageContentView = textMessageContentView
+        
+        // Setup messageTextView property first before running `setupMessageTextView` method
+        super.setupViews()
+    }
+    
+    override func setupMessageTextViewLongPressGesture() {
+        // Do nothing, otherwise default setup prevent link tap
     }
     
     override func update(theme: Theme) {

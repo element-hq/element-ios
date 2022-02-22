@@ -31,6 +31,8 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         static let roomNameMaximumNumberOfChars = 50
         static let roomAddressMaximumNumberOfChars = 50
         static let roomTopicMaximumNumberOfChars = 250
+        static let chooseAvatarTableViewCellHeight: CGFloat = 140
+        static let textViewTableViewCellHeight: CGFloat = 150
     }
     
     // MARK: - Properties
@@ -481,9 +483,9 @@ extension EnterNewRoomDetailsViewController: UITableViewDelegate {
         
         switch row.type {
         case .avatar:
-            return 100
+            return Constants.chooseAvatarTableViewCellHeight
         case .textView:
-            return 150
+            return Constants.textViewTableViewCellHeight
         default:
             return UITableView.automaticDimension
         }
@@ -512,7 +514,11 @@ extension EnterNewRoomDetailsViewController: ChooseAvatarTableViewCellDelegate {
     func chooseAvatarTableViewCellDidTapChooseAvatar(_ cell: ChooseAvatarTableViewCell, sourceView: UIView) {
         viewModel.process(viewAction: .chooseAvatar(sourceView: sourceView))
     }
-    
+
+    func chooseAvatarTableViewCellDidTapRemoveAvatar(_ cell: ChooseAvatarTableViewCell) {
+        viewModel.process(viewAction: .removeAvatar)
+    }
+
 }
 
 // MARK: - EnterNewRoomDetailsViewModelViewDelegate
@@ -532,14 +538,6 @@ extension EnterNewRoomDetailsViewController: UITextFieldDelegate {
         switch textField.tag {
         case Constants.roomNameTextFieldTag:
             viewModel.roomCreationParameters.name = textField.text
-            if viewModel.roomCreationParameters.userSelectedAvatar == nil {
-                //  if no image selected by the user, set initials as image
-                let avatar = AvatarGenerator.generateAvatar(forMatrixItem: nil,
-                                                            withDisplayName: textField.text,
-                                                            size: 60,
-                                                            andFontSize: 30)
-                viewModel.roomCreationParameters.initialsAvatar = avatar
-            }
         case Constants.roomAddressTextFieldTag:
             viewModel.roomCreationParameters.address = textField.text
         default:

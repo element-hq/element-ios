@@ -112,15 +112,15 @@
 "auth_reset_password_email_validation_message" = "Na adresu %s bola odoslaná správa. Po kliknutí na odkaz, ktorý obsahuje, kliknite nižšie.";
 "auth_reset_password_missing_password" = "Musíte zadať nové heslo.";
 "auth_reset_password_missing_email" = "Musíte zadať emailovú adresu prepojenú s vašim účtom.";
-"auth_reset_password_message" = "Ak chcete obnoviť vaše heslo, zadajte emailovú adresu prepojenú s vašim účtom:";
+"auth_reset_password_message" = "Ak chcete obnoviť vaše heslo k účtu Matrix, zadajte emailovú adresu prepojenú s vašim účtom:";
 "auth_recaptcha_message" = "Tento domovský server by sa rád uistil, že nie ste robot";
 "auth_msisdn_validation_error" = "Nie je možné overiť telefónne číslo.";
 "auth_msisdn_validation_message" = "Odoslali sme vám SMS správu, ktorá obsahuje overovací kód. Prosím, zadajte ho nižšie.";
 "auth_msisdn_validation_title" = "Čaká sa na overenie";
 "auth_use_server_options" = "Použiť vlastné možnosti servera (pre pokročilých)";
 "auth_email_not_found" = "Nepodarilo sa odoslať e-mail: Táto e-mailová adresa nebola nájdená";
-"auth_forgot_password_error_no_configured_identity_server" = "Nie je nastavený žiadny server identity: pridajte ho na obnovenie hesla.";
-"auth_forgot_password" = "Zabudli ste heslo?";
+"auth_forgot_password_error_no_configured_identity_server" = "Nie je nastavený žiadny server identity: pridajte ho na obnovenie hesla k účtu Matrix.";
+"auth_forgot_password" = "Zabudli ste heslo k účtu Matrix?";
 "auth_username_in_use" = "Používateľské meno sa už používa";
 "auth_password_dont_match" = "Heslá sa nezhodujú";
 "auth_phone_in_use" = "Toto telefónne číslo sa už používa";
@@ -138,7 +138,7 @@
 "auth_invalid_login_param" = "Nesprávne používateľské meno a/alebo heslo";
 "auth_identity_server_placeholder" = "URL (napr. https://vector.im)";
 "auth_home_server_placeholder" = "URL (napr. https://matrix.org)";
-"auth_repeat_new_password_placeholder" = "Potvrďte svoje nové heslo";
+"auth_repeat_new_password_placeholder" = "Potvrďte svoje nové heslo k účtu Matrix";
 "auth_repeat_password_placeholder" = "Zopakovať heslo";
 "auth_phone_placeholder" = "Telefónne číslo";
 "auth_optional_phone_placeholder" = "Telefónne číslo (nepovinné)";
@@ -189,7 +189,7 @@
 "settings_notifications_disabled_alert_title" = "Oznámenia vypnuté";
 "settings_device_notifications" = "Oznámenia zariadenia";
 "settings_night_mode" = "Nočný režim";
-"settings_change_password" = "Zmeniť heslo";
+"settings_change_password" = "Zmeniť heslo k účtu Matrix";
 "settings_first_name" = "Krstné meno";
 "settings_display_name" = "Zobrazované meno";
 "settings_profile_picture" = "Profilový obrázok";
@@ -506,7 +506,7 @@
 "room_event_action_delete" = "Vymazať";
 "room_event_action_resend" = "Znovu odoslať";
 "room_event_action_save" = "Uložiť";
-"room_event_action_permalink" = "Trvalý odkaz";
+"room_event_action_permalink" = "Kopírovať odkaz do správy";
 "room_event_action_forward" = "Preposlať";
 "room_event_action_share" = "Zdieľať";
 "room_event_action_more" = "Viac";
@@ -533,10 +533,10 @@
 "room_member_power_level_custom_in" = "Vlastné (%@) v %@";
 "room_member_power_level_moderator_in" = "Moderátor v %@";
 "room_member_power_level_admin_in" = "Správca v %@";
-"room_participants_security_information_room_encrypted_for_dm" = "Správy sú tu šifrované end-to-end.\n\nVaše správy sú zabezpečené zámkami a jedinečné kľúče na ich odomknutie máte len vy a príjemca.";
-"room_participants_security_information_room_encrypted" = "Správy v tejto miestnosti sú šifrované end-to-end.\n\nVaše správy sú zabezpečené zámkami a jedinečné kľúče na ich odomknutie máte len vy a príjemca.";
-"room_participants_security_information_room_not_encrypted" = "Správy v tejto miestnosti nie sú šifrované end-to-end (od vás až k príjemcovi).";
-"room_participants_security_information_room_not_encrypted_for_dm" = "Správy tu nie sú šifrované end-to-end (od vás až k príjemcovi).";
+"room_participants_security_information_room_encrypted_for_dm" = "Správy sú tu end-to-end šifrované.\n\nVaše správy sú zabezpečené zámkami a jedinečné kľúče na ich odomknutie máte len vy a príjemca.";
+"room_participants_security_information_room_encrypted" = "Správy v tejto miestnosti sú end-to-end šifrované.\n\nVaše správy sú zabezpečené zámkami a jedinečné kľúče na ich odomknutie máte len vy a príjemca.";
+"room_participants_security_information_room_not_encrypted" = "Správy v tejto miestnosti nie sú end-to-end šifrované (od vás až k príjemcovi).";
+"room_participants_security_information_room_not_encrypted_for_dm" = "Správy tu nie sú end-to-end šifrované (od vás až k príjemcovi).";
 "room_participants_security_loading" = "Načítavanie…";
 "room_participants_action_security_status_loading" = "Načítavanie…";
 "room_participants_action_security_status_warning" = "Upozornenie";
@@ -584,7 +584,7 @@
 "directory_cell_title" = "Prezrieť priečinok";
 "receipt_status_read" = "Prečítané: ";
 "room_details_files" = "Nahrané súbory";
-"settings_ui_theme_auto" = "Automaticky";
+"settings_ui_theme_auto" = "Automatický";
 
 // Success from passphrase
 "key_backup_setup_success_from_passphrase_info" = "Vaše kľúče sa zálohujú.\n\nVáš bezpečnostný kľúč je bezpečnostná sieť - môžete ho použiť na obnovenie prístupu k zašifrovaným správam, ak zabudnete svoju prístupovú frázu.\n\nBezpečnostný kľúč uchovávajte na veľmi bezpečnom mieste, napríklad v správcovi hesiel (alebo v trezore).";
@@ -619,7 +619,7 @@
 "event_formatter_call_has_ended" = "Hovor ukončený";
 
 // Image picker
-"image_picker_action_camera" = "Urobiť fotografiu";
+"image_picker_action_camera" = "Spraviť fotku";
 "group_participants_invite_malformed_id_title" = "Chyba pozvania";
 "group_participants_leave_prompt_title" = "Opustiť skupinu";
 
@@ -729,7 +729,7 @@
 
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Žiadosť odoslaná";
-"deactivate_account_password_alert_message" = "Aby ste mohli pokračovať, prosím zadajte svoje heslo";
+"deactivate_account_password_alert_message" = "Aby ste mohli pokračovať, prosím zadajte svoje heslo k účtu Matrix";
 "deactivate_account_password_alert_title" = "Deaktivovať účet";
 "deactivate_account_validate_action" = "Deaktivovať účet";
 "deactivate_account_informations_part2_emphasize" = "Táto akcia je nezvratná.";
@@ -901,13 +901,13 @@
 "room_creation_wait_for_creation" = "Miestnosť sa už vytvára. Počkajte, prosím.";
 "room_creation_make_public_prompt_msg" = "Ste si istí, že chcete túto konverzáciu zverejniť? Ktokoľvek si môže prečítať vaše správy a pripojiť sa ku konverzácii.";
 "social_login_button_title_sign_in" = "Prihlásiť sa s %@";
-"auth_reset_password_error_is_required" = "Nie je nastavený žiadny server identity: pridajte ho v možnostiach servera a obnovte heslo.";
+"auth_reset_password_error_is_required" = "Nie je nastavený žiadny server identity: pridajte ho v možnostiach servera a obnovte heslo k účtu Matrix.";
 "security_settings_crosssigning_info_trusted" = "Krížové podpisovanie je povolené. Na základe krížového podpisovania môžete dôverovať iným používateľom a ostatným reláciám, ale nemôžete krížovo podpisovať z tejto relácie, pretože nemá súkromné kľúče na krížové podpisovanie. Dokončite zabezpečenie tejto relácie.";
 "manage_session_sign_out" = "Odhlásiť sa z tejto relácie";
 "security_settings_crosssigning_info_ok" = "Krížové podpisovanie je pripravené na použitie.";
 "settings_discovery_error_message" = "Vyskytla sa chyba. Prosím, skúste to znova.";
 "settings_crypto_blacklist_unverified_devices" = "Šifrovať len overeným reláciám";
-"settings_password_updated" = "Vaše heslo bolo aktualizované";
+"settings_password_updated" = "Vaše heslo k účtu Matrix bolo aktualizované";
 "settings_notifications_disabled_alert_message" = "Ak chcete povoliť upozornenia, prejdite do nastavení zariadenia.";
 "settings_enable_push_notif" = "Oznámenia na tomto zariadení";
 "auth_autodiscover_invalid_response" = "Neplatná odpoveď pri zisťovaní domovského servera";
@@ -1156,7 +1156,7 @@
 "identity_server_settings_alert_disconnect_still_sharing_3pid" = "Svoje osobné údaje stále zdieľate na serveri totožností %@.\n\nOdporúčame vám, aby ste pred odpojením odstránili svoje e-mailové adresy a telefónne čísla zo servera totožností.";
 "identity_server_settings_disconnect_info" = "Odpojenie od servera totožností bude znamenať, že vás nebudú môcť objaviť iní používatelia a že nebudete môcť pozývať ostatných prostredníctvom e-mailu alebo telefónu.";
 "identity_server_settings_description" = "V súčasnosti používate %@ na objavovanie existujúcich kontaktov, ktoré poznáte, a na to, aby vás mohli objaviť.";
-"security_settings_crypto_sessions_description_2" = "Ak nespoznávate prihlásenie, zmeňte si heslo a vykonajte obnovenie funkcie Zabezpečené zálohovanie.";
+"security_settings_crypto_sessions_description_2" = "Ak nespoznávate prihlásenie, zmeňte si heslo k účtu Matrix a obnovte Zabezpečenú zálohu.";
 "settings_identity_server_no_is_description" = "Momentálne nepoužívate žiadny server totožností. Ak chcete objaviť existujúce kontakty, ktoré poznáte, a byť nimi objaviteľní, pridajte jeden vyššie.";
 "settings_analytics_and_crash_data" = "Odoslať údaje o páde a analytické údaje";
 "settings_labs_create_conference_with_jitsi" = "Vytvárajte konferenčné hovory pomocou aplikácie jitsi";
@@ -1251,7 +1251,7 @@
 "settings_discovery_three_pids_management_information_part1" = "Spravujte, ktoré e-mailové adresy alebo telefónne čísla môžu ostatní používatelia použiť na vaše objavenie a pozvanie do miestností. E-mailové adresy alebo telefónne čísla môžete pridávať alebo odstraňovať z tohto zoznamu v ";
 "settings_discovery_terms_not_signed" = "Musíte súhlasiť s podmienkami služby servera totožnosti (%@), aby vás mohli nájsť podľa e-mailovej adresy alebo telefónneho čísla.";
 "settings_key_backup_button_connect" = "Pripojiť túto reláciu k zálohovaniu kľúčov";
-"settings_fail_to_update_password" = "Nepodarilo sa aktualizovať heslo";
+"settings_fail_to_update_password" = "Nepodarilo sa aktualizovať heslo k účtu Matrix";
 "settings_labs_enable_ringing_for_group_calls" = "Zvonenie pre skupinové hovory";
 "widget_integration_positive_power_level" = "Úroveň oprávnenia musí byť kladné celé číslo.";
 "settings_integrations_allow_description" = "Použite správcu integrácií (%@) na spravovanie botov, premostení, widgetov a balíčkov s nálepkami. \n\nSprávcovia integrácie dostávajú konfiguračné údaje a môžu vo vašom mene upravovať widgety, posielať pozvánky do miestnosti a nastavovať úrovne oprávnení.";
@@ -1262,7 +1262,7 @@
 "settings_room_invitations" = "Pozvánky do miestnosti";
 "settings_global_settings_info" = "Všeobecné nastavenia oznámení sú k dispozícii vo webovom klientovi %@";
 "settings_confirm_media_size_description" = "Keď je táto funkcia zapnutá, budete vyzvaní, aby ste potvrdili, v akej veľkosti sa budú obrázky a videá odosielať.";
-"settings_three_pids_management_information_part1" = "Tu môžete spravovať e-mailové adresy alebo telefónne čísla, ktoré môžete použiť na prihlásenie alebo obnovenie účtu. Ovládajte, kto vás môže nájsť v ";
+"settings_three_pids_management_information_part1" = "Tu môžete spravovať e-mailové adresy alebo telefónne čísla, ktoré môžete použiť na prihlásenie alebo obnovenie účtu. Ovládajte, kto vás môže nájsť v sekcii ";
 "settings_fail_to_update_profile" = "Nepodarilo sa aktualizovať profil";
 "settings_email_address_placeholder" = "Zadajte svoju e-mailovú adresu";
 "settings_remove_phone_prompt_msg" = "Určite chcete odstrániť telefónne číslo %@?";
@@ -1283,10 +1283,10 @@
 "auth_softlogout_recover_encryption_keys" = "Prihláste sa, aby ste obnovili šifrovacie kľúče uložené výlučne v tomto zariadení. Potrebujete ich na čítanie všetkých svojich zabezpečených správ na akomkoľvek zariadení.";
 "auth_softlogout_reason" = "Váš správca domovského servera (%1$@) vás odhlásil z vášho účtu %2$@ (%3$@).";
 "auth_add_email_and_phone_warning" = "Registrácia pomocou e-mailu a telefónneho čísla naraz zatiaľ nie je podporovaná, kým nebude existovať api. Do úvahy sa bude brať iba telefónne číslo. Svoj e-mail môžete pridať do svojho profilu v nastaveniach.";
-"auth_reset_password_success_message" = "Vaše heslo bolo obnovené.\n\nBoli ste odhlásení zo všetkých relácií a už nebudete dostávať push oznámenia. Ak chcete opätovne povoliť oznámenia, znovu sa prihláste na každom zariadení.";
+"auth_reset_password_success_message" = "Vaše heslo k účtu Matrix bolo obnovené.\n\nBoli ste odhlásení zo všetkých relácií a už nebudete dostávať push oznámenia. Ak chcete opätovne povoliť oznámenia, znovu sa prihláste na každom zariadení.";
 "auth_untrusted_id_server" = "Server totožností nie je dôveryhodný";
-"auth_phone_is_required" = "Nie je nastavený žiadny server totožností, takže nemôžete pridať e-telefónne číslo, aby ste mohli v budúcnosti obnoviť svoje heslo.";
-"auth_email_is_required" = "Nie je nastavený žiadny server totožností, takže nemôžete pridať e-mailovú adresu, aby ste mohli v budúcnosti obnoviť svoje heslo.";
+"auth_phone_is_required" = "Nie je nastavený žiadny server totožností, takže nemôžete pridať e-telefónne číslo, aby ste mohli v budúcnosti obnoviť svoje heslo k účtu Matrix.";
+"auth_email_is_required" = "Nie je nastavený žiadny server totožností, takže nemôžete pridať e-mailovú adresu, aby ste mohli v budúcnosti obnoviť svoje heslo k účtu Matrix.";
 "auth_add_email_phone_message_2" = "Nastavte si e-mail na obnovenie účtu. Neskôr môžete voliteľne použiť e-mail alebo telefón, aby vás mohli nájsť ľudia, ktorí vás poznajú.";
 "cross_signing_setup_banner_subtitle" = "Jednoduchšie overenie ostatných zariadení";
 "room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Šifrovať len overeným reláciám";
@@ -1296,9 +1296,9 @@
 "room_intro_cell_information_multiple_dm_sentence2" = "V tejto konverzácii ste len vy, pokiaľ niekto z vás niekoho nepozve, aby sa pripojil.";
 "room_intro_cell_information_dm_sentence2" = "V tejto konverzácii ste len vy dvaja, nikto iný sa nemôže pripojiť.";
 "room_intro_cell_information_room_without_topic_sentence2_part2" = " aby ľudia vedeli, o čom je táto miestnosť.";
-"room_intro_cell_information_room_without_topic_sentence2_part1" = "Pridať tému";
+"room_intro_cell_information_room_without_topic_sentence2_part1" = "Pridajte tému";
 "room_avatar_view_accessibility_hint" = "Zmeniť obrázok miestnosti";
-"invite_friends_share_text" = "Hej, ozvi sa mi na %@: %@";
+"invite_friends_share_text" = "Ahoj, ozvi sa mi na %@: %@";
 
 // MARK: - Invite friends
 
@@ -1338,11 +1338,11 @@
 // Banner
 
 "cross_signing_setup_banner_title" = "Nastaviť šifrovanie";
-"secrets_reset_authentication_message" = "Zadajte heslo svojho účtu pre potvrdenie";
+"secrets_reset_authentication_message" = "Zadajte heslo svojho účtu Matrix pre potvrdenie";
 "secrets_setup_recovery_passphrase_summary_information" = "Zapamätajte si bezpečnostnú frázu. Môžete ju použiť na odomknutie zašifrovaných správ a údajov.";
 "secrets_setup_recovery_passphrase_summary_title" = "Uložte si bezpečnostnú frázu";
 "secrets_setup_recovery_passphrase_confirm_information" = "Opätovne zadajte bezpečnostnú frázu a potvrďte ju.";
-"secrets_setup_recovery_passphrase_additional_information" = "Nepoužívajte heslo k svojmu účtu.";
+"secrets_setup_recovery_passphrase_additional_information" = "Nepoužívajte heslo k svojmu účtu Matrix.";
 "secrets_setup_recovery_passphrase_information" = "Zadajte bezpečnostnú frázu, ktorú poznáte len vy a ktorá sa používa na zabezpečenie tajomstiev na vašom serveri.";
 "secrets_recovery_with_key_recovery_key_title" = "Zadajte";
 "secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Ak chcete pokračovať, zadajte bezpečnostný kľúč.";
@@ -1449,7 +1449,7 @@
 // Success from recovery key
 "key_backup_setup_success_from_recovery_key_info" = "Vaše kľúče sa zálohujú.\n\nVytvorte si kópiu tohto bezpečnostného kľúča a uschovajte ho na bezpečnom mieste.";
 "key_backup_setup_passphrase_passphrase_invalid" = "Skúste pridať slovo";
-"key_backup_setup_passphrase_info" = "Šifrovanú kópiu vašich kľúčov uložíme na našom serveri. Chráňte svoju zálohu frázou, aby bola bezpečná.\n\nV záujme maximálneho zabezpečenia by sa mala líšiť od hesla k vášmu účtu.";
+"key_backup_setup_passphrase_info" = "Šifrovanú kópiu vašich kľúčov uložíme na našom serveri. Chráňte svoju zálohu frázou, aby bola bezpečná.\n\nV záujme maximálneho zabezpečenia by sa mala líšiť od hesla k vášmu účtu Matrix.";
 "key_backup_setup_intro_info" = "Správy v šifrovaných miestnostiach sú zabezpečené end-to-end šifrovaním. Kľúče na čítanie týchto správ máte len vy a príjemca (príjemcovia).\n\nKľúče si bezpečne zálohujte, aby ste ich nestratili.";
 "secure_key_backup_setup_existing_backup_error_delete_it" = "Vymazať";
 "secure_key_backup_setup_existing_backup_error_unlock_it" = "Odomknúť";
@@ -1572,7 +1572,7 @@
 "room_details_access_section_anyone_apart_from_guest_for_dm" = "Ktokoľvek, kto pozná odkaz, okrem hostí";
 "room_details_access_section_anyone" = "Ktokoľvek, kto pozná odkaz na miestnosť, vrátane hostí";
 "room_details_access_section_invited_only" = "Iba ľudia, ktorí boli pozvaní";
-"room_details_access_section_for_dm" = "Kto má k tomuto prístup?";
+"room_details_access_section_for_dm" = "Kto má sem prístup?";
 "room_details_access_section" = "Kto má prístup do tejto miestnosti?";
 "identity_server_settings_alert_error_invalid_identity_server" = "%@ nie je platný server totožností.";
 "identity_server_settings_alert_disconnect" = "Odpojiť sa od servera totožností %@?";
@@ -1580,13 +1580,13 @@
 
 // AuthenticatedSessionViewControllerFactory
 "authenticated_session_flow_not_supported" = "Táto aplikácia nepodporuje mechanizmus overovania na vašom domovskom serveri.";
-"security_settings_user_password_description" = "Potvrďte svoju totožnosť zadaním hesla k účtu";
+"security_settings_user_password_description" = "Potvrďte svoju totožnosť zadaním hesla k účtu Matrix";
 "security_settings_coming_soon" = "Prepáčte. Táto akcia zatiaľ nie je dostupná v systéme %@ iOS. Na jej nastavenie použite iného klienta Matrix. Systém %@ iOS to bude používať.";
 "security_settings_complete_security_alert_title" = "Dokončiť zabezpečenie";
 "security_settings_complete_security_alert_message" = "Najprv by ste mali dokončiť zabezpečenie aktuálnej relácie.";
 "security_settings_blacklist_unverified_devices_description" = "Overte všetky relácie používateľov, aby ste ich mohli označiť za dôveryhodné a odosielať im správy.";
 "security_settings_secure_backup_info_valid" = "Táto relácia zálohuje vaše kľúče.";
-"settings_show_NSFW_public_rooms" = "Zobraziť verejné miestnosti nevhodné do práce";
+"settings_show_NSFW_public_rooms" = "Zobraziť aj verejné miestnosti nevhodné do práce";
 "settings_identity_server_no_is" = "Nebol nastavený server totožností";
 "settings_discovery_three_pid_details_enter_sms_code_action" = "Zadajte aktivačný kód SMS";
 "settings_discovery_three_pid_details_information_email" = "Spravujte predvoľby pre túto e-mailovú adresu, ktorú môžu ostatní používatelia použiť na vaše objavenie a pozvanie do miestností. Pridávajte alebo odstraňujte e-mailové adresy v časti Účty.";
@@ -1610,7 +1610,7 @@
 "settings_key_backup_info_signout_warning" = "Zálohujte si šifrovacie kľúče pred odhlásením, aby ste o ne neprišli.";
 "settings_key_backup_info_none" = "Vaše kľúče sa z tejto relácie nezálohujú.";
 "settings_key_backup_info" = "Šifrované správy sú zabezpečené end-to-end šifrovaním. Kľúče na čítanie týchto správ máte len vy a príjemca (príjemcovia).";
-"settings_add_3pid_password_message" = "Aby ste mohli pokračovať, prosím zadajte svoje heslo";
+"settings_add_3pid_password_message" = "Aby ste mohli pokračovať, prosím zadajte svoje heslo k účtu Matrix";
 "settings_labs_message_reaction" = "Reagujte na správy pomocou emoji";
 "settings_labs_e2e_encryption_prompt_message" = "Ak chcete dokončiť nastavenie šifrovania, musíte sa znova prihlásiť.";
 "settings_contacts_enable_sync_description" = "Na prepojenie s vašimi kontaktmi sa použije váš server totožností a pomôže im vás nájsť.";
@@ -1627,7 +1627,7 @@
 "rage_shake_prompt" = "Zdá sa, že rozčúlene trasiete telefónom. Chceli by ste odoslať hlásenie o chybe?";
 "room_details_addresses_disable_main_address_prompt_msg" = "Nebudete mať zadanú žiadnu hlavnú adresu. Predvolená hlavná adresa pre túto miestnosť sa vyberie náhodne";
 "settings_enable_rageshake" = "Zúrivo potraste pre nahlásenie chyby";
-"settings_ui_theme_picker_message_match_system_theme" = "\"Auto\" zodpovedá systémovej téme vášho zariadenia";
+"settings_ui_theme_picker_message_match_system_theme" = "\"Automatický\" zodpovedá systémovej téme vášho zariadenia";
 "settings_pin_rooms_with_unread" = "Pripnúť miestnosti s neprečítanými správami";
 "settings_pin_rooms_with_missed_notif" = "Pripnúť miestnosti so zmeškanými oznámeniami";
 "settings_confirm_media_size" = "Potvrdiť veľkosť pri odosielaní";
@@ -1688,7 +1688,7 @@
 "poll_timeline_total_one_vote" = "1 odovzdaný hlas";
 "poll_edit_form_poll_type_closed" = "Uzavretá anketa";
 "poll_edit_form_post_failure_title" = "Nepodarilo sa odoslať anketu";
-"call_transfer_error_message" = "Prenos hovoru zlyhal";
+"call_transfer_error_message" = "Presmerovanie hovoru zlyhalo";
 "user_verification_session_details_information_untrusted_other_user" = " sa prihlásil pomocou novej relácie:";
 "key_verification_bootstrap_not_setup_message" = "Najprv musíte zaviesť krížové podpisovanie.";
 "device_verification_emoji_pin" = "Špendlík";
@@ -1706,6 +1706,54 @@
 "room_details_addresses_disable_main_address_prompt_title" = "Upozornenie na hlavnú adresu";
 "manage_session_trusted" = "Dôveryhodný pre vás";
 "settings_contacts_phonebook_country" = "Krajina telefónneho zoznamu";
-"settings_ui_theme_picker_message_invert_colours" = "\"Auto\" používa nastavenia \"Invertovať farby\" vášho zariadenia";
+"settings_ui_theme_picker_message_invert_colours" = "\"Automatický\" používa nastavenia \"Invertovať farby\" vášho zariadenia";
 "external_link_confirmation_title" = "Prekontrolujte tento odkaz";
 "callbar_only_single_active_group" = "Ťuknutím sa pripojíte k skupinovému hovoru (%@)";
+
+// MARK: - Call Transfer
+"call_transfer_title" = "Presmerovať";
+
+// Events formatter
+"event_formatter_member_updates" = "%tu zmeny členstva";
+"location_sharing_post_failure_subtitle" = "%@ sa nepodarilo odoslať vašu polohu. Skúste to prosím neskôr.";
+"location_sharing_post_failure_title" = "Nepodarilo sa nám odoslať vašu polohu";
+"space_tag" = "priestor";
+"home_context_menu_leave" = "Opustiť";
+"home_context_menu_normal_priority" = "Normálna priorita";
+"home_context_menu_low_priority" = "Nízka priorita";
+"home_context_menu_unfavourite" = "Odstrániť z obľúbených";
+"home_context_menu_favourite" = "Obľúbené";
+"home_context_menu_unmute" = "Zrušiť stlmenie";
+"home_context_menu_mute" = "Stlmiť";
+"home_context_menu_notifications" = "Oznámenia";
+"home_context_menu_make_dm" = "Presunúť do Ľudí";
+"bug_report_progress_uploading" = "Nahrávanie záznamu";
+"event_formatter_message_deleted" = "Správa vymazaná";
+"room_event_copy_link_info" = "Odkaz skopírovaný do schránky.";
+"room_event_action_view_in_room" = "Zobraziť v miestnosti";
+"home_context_menu_make_room" = "Presunúť do miestností";
+"settings_labs_enable_threads" = "Správy vo vláknach";
+"message_from_a_thread" = "Z vlákna";
+"threads_empty_show_all_threads" = "Zobraziť všetky vlákna";
+"threads_empty_tip" = "Tip: Ťuknite na správu a použite \"Vlákno\" pre začatie nového.";
+"threads_empty_info_my" = "Odpovedzte na prebiehajúce vlákno alebo ťuknite na správu a použite \"Vlákno\" pre začatie nového.";
+"threads_empty_info_all" = "Vlákna pomáhajú udržiavať konverzácie v téme a ľahké sledovanie.";
+"threads_empty_title" = "Udržujte diskusie organizované pomocou vlákien";
+"threads_action_my_threads" = "Moje vlákna";
+"threads_action_all_threads" = "Všetky vlákna";
+"threads_title" = "Vlákna";
+"thread_copy_link_to_thread" = "Kopírovať odkaz na vlákno";
+
+// MARK: Threads
+"room_thread_title" = "Vlákno";
+"room_accessibility_thread_more" = "Viac";
+"room_accessibility_threads" = "Vlákna";
+"room_event_action_reply_in_thread" = "Vlákno";
+"settings_calls_stun_server_fallback_button" = "Povoliť náhradnú službu hovorov asistenčného servera";
+"settings_calls_stun_server_fallback_description" = "Povoľte náhradné službu hovorov asistenčného servera %@, keď ho váš domovský server neponúka (vaša IP adresa by bola počas volania zdieľaná).";
+"deactivate_account_informations_part4_emphasize" = "štandardne nespôsobí, že zabudneme na správy, ktoré ste odoslali. ";
+"room_details_fail_to_update_room_join_rule" = "Nepodarí sa aktualizovať pravidlo pripojenia";
+"settings_enable_callkit" = "Integrované volanie";
+"room_resource_usage_limit_reached_message_contact_3" = " aby ste tento limit zvýšili.";
+"room_resource_limit_exceeded_message_contact_3" = " pokračovať v používaní tejto služby.";
+"find_your_contacts_title" = "Začnite so zoznamom vašich kontaktov";

@@ -16,7 +16,7 @@
 
 import UIKit
 
-class FileWithoutThumbnailBaseBubbleCell: SizableBaseRoomCell, RoomCellReactionsDisplayable {
+class FileWithoutThumbnailBaseBubbleCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable {
     
     weak var fileAttachementView: FileWithoutThumbnailCellContentView?
     

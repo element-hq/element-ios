@@ -83,6 +83,7 @@ internal class Asset: NSObject {
     internal static let removeIconBlue = ImageAsset(name: "remove_icon_blue")
     internal static let findYourContactsFacepile = ImageAsset(name: "find_your_contacts_facepile")
     internal static let captureAvatar = ImageAsset(name: "capture_avatar")
+    internal static let deleteAvatar = ImageAsset(name: "delete_avatar")
     internal static let e2eBlocked = ImageAsset(name: "e2e_blocked")
     internal static let e2eUnencrypted = ImageAsset(name: "e2e_unencrypted")
     internal static let e2eWarning = ImageAsset(name: "e2e_warning")

@@ -124,6 +124,40 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
         }
     }
     
+    override var readMarkerViewLeadingConstraint: NSLayoutConstraint! {
+        get {
+            if self is RoomCellReadMarkerDisplayable {
+                return self.roomCellContentView?.readMarkerViewLeadingConstraint
+            } else {
+                return super.readMarkerViewLeadingConstraint
+            }
+        }
+        set {
+            if self is RoomCellReadMarkerDisplayable {
+                self.roomCellContentView?.readMarkerViewLeadingConstraint = newValue
+            } else {
+                super.readMarkerViewLeadingConstraint = newValue
+            }
+        }
+    }
+    
+    override var readMarkerViewTrailingConstraint: NSLayoutConstraint! {
+        get {
+            if self is RoomCellReadMarkerDisplayable {
+                return self.roomCellContentView?.readMarkerViewTrailingConstraint
+            } else {
+                return super.readMarkerViewTrailingConstraint
+            }
+        }
+        set {
+            if self is RoomCellReadMarkerDisplayable {
+                self.roomCellContentView?.readMarkerViewTrailingConstraint = newValue
+            } else {
+                super.readMarkerViewTrailingConstraint = newValue
+            }
+        }
+    }
+    
     // MARK: - Setup
             
     required override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -133,6 +167,7 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        self.commonInit()
     }
     
     private func commonInit() {
@@ -179,6 +214,41 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
         if showEncryptionStatus {
             self.setupEncryptionStatusViewTapGestureRecognizer()
         }
+    }
+    
+    override func setupSenderNameLabel() {
+        
+        guard let userNameTouchMaskView = self.roomCellContentView?.userNameTouchMaskView else {
+            return
+        }
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onSenderNameTap(_:)))
+        tapGesture.numberOfTouchesRequired = 1
+        tapGesture.numberOfTapsRequired = 1
+        tapGesture.delegate = self
+
+        userNameTouchMaskView.addGestureRecognizer(tapGesture)
+    }
+    
+    override func setupAvatarView() {
+        
+        guard let avatarImageView = self.roomCellContentView?.avatarImageView else {
+            return
+        }
+        
+        avatarImageView.mediaFolder = kMXMediaManagerAvatarThumbnailFolder
+
+        // Listen to avatar tap
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onAvatarTap(_:)))
+        tapGesture.numberOfTouchesRequired = 1
+        tapGesture.numberOfTapsRequired = 1
+        tapGesture.delegate = self
+        avatarImageView.addGestureRecognizer(tapGesture)
+        avatarImageView.isUserInteractionEnabled = true
+
+        // Add a long gesture recognizer on avatar (in order to display for example the member details)
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(onLongPressGesture(_:)))
+        avatarImageView.addGestureRecognizer(longPress)
     }
     
     override class func defaultReuseIdentifier() -> String! {
@@ -298,6 +368,19 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
 
     func removeThreadSummaryView() {
         self.roomCellContentView?.removeThreadSummaryView()
+    }
+    
+    // MARK: - RoomCellReadMarkerDisplayable
+            
+    func addReadMarkerView(_ readMarkerView: UIView) {
+        self.roomCellContentView?.addReadMarkerView(readMarkerView)
+        self.readMarkerView = readMarkerView
+    }
+    
+    override func removeReadMarkerView() {
+        self.roomCellContentView?.removeReadMarkerView()
+        
+        super.removeReadMarkerView()
     }
     
     // Encryption status
