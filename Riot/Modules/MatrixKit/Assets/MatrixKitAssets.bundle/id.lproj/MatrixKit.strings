@@ -209,7 +209,7 @@
 "message_unsaved_changes" = "Ada perubahan yang belum disimpan. Meninggalkannya akan membuang mereka.";
 "unban" = "Hilangkan Cekalan";
 "ban" = "Cekal";
-"kick" = "Keluarkan";
+"kick" = "Keluarkan dari obrolan";
 "num_members_other" = "%@ pengguna";
 "num_members_one" = "%@ pengguna";
 "membership_ban" = "Dicekal";
