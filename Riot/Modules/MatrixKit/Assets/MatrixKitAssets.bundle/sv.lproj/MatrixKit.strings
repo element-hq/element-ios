@@ -74,7 +74,7 @@
 "ignore" = "Ignorera";
 "unignore" = "Avignorera";
 // Events formatter
-"notice_avatar_changed_too" = "(avataren ändrades också)";
+"notice_avatar_changed_too" = "(avataren byttes också)";
 "notice_room_name_removed" = "%@ tog bort rumsnamnet";
 "notice_room_topic_removed" = "%@ tog bort ämnet";
 "notice_event_redacted" = "<dold%@>";
@@ -307,7 +307,7 @@
 "notice_room_unban_by_you" = "Du avbannade %@";
 "notice_room_ban_by_you" = "Du bannade %@";
 "notice_room_withdraw_by_you" = "Du drog tillbaka inbjudan för %@";
-"notice_avatar_url_changed_by_you" = "Du ändrade din avatar";
+"notice_avatar_url_changed_by_you" = "Du bytte din avatar";
 "notice_display_name_set_by_you" = "Du bytte ditt visningsnamn till %@";
 "notice_display_name_changed_from_by_you" = "Du bytte ditt visningsnamn från %@ till %@";
 "notice_display_name_removed_by_you" = "Du tog bort ditt visningsnamn";

@@ -14,7 +14,7 @@
 "account_save_changes" = "Uložiť zmeny";
 "room_event_encryption_verify_title" = "Overiť reláciu\n\n";
 "room_event_encryption_info_device_not_verified" = "Neoverené";
-"room_event_encryption_info_device_fingerprint" = "Ed25519 odtlačok prsta\n";
+"room_event_encryption_info_device_fingerprint" = "Odtlačok Ed25519\n";
 "room_event_encryption_info_device_name" = "Verejný názov\n";
 "room_event_encryption_info_device_unknown" = "neznáma relácia\n";
 "room_event_encryption_info_event_decryption_error" = "Chyba dešifrovania\n";
@@ -439,16 +439,16 @@
 "notice_room_power_level_event_requirement" = "Minimálne úrovne oprávnenia súvisiace s udalosťami sú:";
 "notice_room_join_rule_public_for_dm" = "%@ ju zverejnil/a.";
 "notice_room_join_rule_public" = "%@ zverejnil/a túto miestnosť.";
-"notice_room_join_rule_invite_by_you_for_dm" = "Ste ju vytvorili len na pozvanie.";
-"notice_room_join_rule_invite_for_dm" = "%@ ju vytvoril len na pozvanie.";
+"notice_room_join_rule_invite_by_you_for_dm" = "Ste ju nastavili len na pozvanie.";
+"notice_room_join_rule_invite_for_dm" = "%@ ju nastavil/a len na pozvanie.";
 "notice_event_redacted" = "<redigované%@>";
 "capture_media" = "Spraviť fotografiu/video";
 "auth_reset_password_error_unauthorized" = "Neoprávnené";
 "auth_invalid_user_name" = "Neplatné používateľské meno";
-"ssl_only_accept" = "Certifikát akceptujte IBA vtedy, ak správca servera zverejnil odtlačok prsta, ktorý sa zhoduje s vyššie uvedeným.";
+"ssl_only_accept" = "Certifikát akceptujte IBA vtedy, ak správca servera zverejnil odtlačok, ktorý sa zhoduje s vyššie uvedeným.";
 "ssl_expected_existing_expl" = "Certifikát sa zmenil z predtým dôveryhodného na nedôveryhodný. Server mohol obnoviť svoj certifikát. Obráťte sa na správcu servera, aby vám poskytol očakávaný odtlačok.";
 "ssl_unexpected_existing_expl" = "Certifikát sa zmenil na iný, ktorému dôveroval váš telefón. To je VEĽMI NEOBVYKLÉ. Odporúča sa, aby ste tento nový certifikát NEPRIJALI.";
-"ssl_cert_new_account_expl" = "Ak správca servera uviedol, že sa to očakáva, skontrolujte, či sa odtlačok prsta uvedený nižšie zhoduje s odtlačkom prsta, ktorý poskytol.";
+"ssl_cert_new_account_expl" = "Ak správca servera uviedol, že sa to očakáva, skontrolujte, či sa odtlačok uvedený nižšie zhoduje s odtlačkom, ktorý poskytol.";
 "ssl_cert_not_trust" = "Môže to znamenať, že niekto úmyselne zachytáva vašu komunikáciu alebo že váš telefón nedôveruje certifikátu, ktorý poskytol vzdialený server.";
 "ssl_could_not_verify" = "Nepodarilo sa overiť identitu vzdialeného servera.";
 
@@ -488,9 +488,9 @@
 "settings_enter_validation_token_for" = "Zadajte overovací token pre %@:";
 "notice_error_unexpected_event" = "Neočakávaná udalosť";
 "notice_error_unsupported_event" = "Nepodporovaná udalosť";
-"notice_room_join_rule_invite_by_you" = "Urobili ste miestnosť len pre pozvaných.";
+"notice_room_join_rule_invite_by_you" = "Nastavili ste miestnosť len pre pozvaných.";
 //  New
-"notice_room_join_rule_invite" = "%@ vytvoril miestnosť len na pozvanie.";
+"notice_room_join_rule_invite" = "%@ nastavil/a miestnosť len na pozvanie.";
 //  Old
 "notice_room_join_rule" = "Pravidlo pripojenia je: %@";
 "notice_room_created" = "%@ vytvoril a nastavil miestnosť.";
@@ -546,5 +546,12 @@
 "message_reply_to_sender_sent_their_location" = "zdieľal/a svoju polohu.";
 "account_link_email" = "Prepojený email";
 "account_linked_emails" = "Prepojené e-maily";
-"room_event_encryption_info_event_fingerprint_key" = "Deklarovaný kľúč odtlačkov prstov Ed25519\n";
+"room_event_encryption_info_event_fingerprint_key" = "Deklarovaný kľúč odtlačku Ed25519\n";
 "notification_settings_notify_all_other" = "Oznámiť pre všetky ostatné správy/miestnosti";
+"call_transfer_to_user" = "Presmerovať na používateľa %@";
+"call_more_actions_transfer" = "Presmerovať";
+"login_use_fallback" = "Použiť náhradnú stránku";
+"call_consulting_with_user" = "Konzultácia s %@";
+"notification_settings_per_sender_notifications" = "Oznámenia na odosielateľa";
+"notification_settings_per_room_notifications" = "Oznámenia na miestnosti";
+"notification_settings_per_word_notifications" = "Oznámenia na slovo";
