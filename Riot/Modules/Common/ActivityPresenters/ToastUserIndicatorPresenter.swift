@@ -48,9 +48,7 @@ class ToastUserIndicatorPresenter: UserIndicatorPresentable {
         ])
         
         view.alpha = 0
-        CATransaction.flush()
         view.transform = .init(translationX: 0, y: 5)
-        
         UIView.animate(withDuration: 0.2) {
             view.alpha = 1
             view.transform = .identity
@@ -62,11 +60,17 @@ class ToastUserIndicatorPresenter: UserIndicatorPresentable {
             return
         }
         
-        UIView.animate(withDuration: 0.2, delay: 0, options: .beginFromCurrentState) {
-            view.alpha = 0
-            view.transform = .init(translationX: 0, y: -5)
-        } completion: { _ in
-            view.removeFromSuperview()
+        // If `present` and `dismiss` are called right after each other without delay,
+        // the view does not correctly pick up `currentState` of alpha. Dispatching onto
+        // the main queue skips a few run loops, giving the system time to render
+        // current state.
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.2, delay: 0, options: .beginFromCurrentState) {
+                view.alpha = 0
+                view.transform = .init(translationX: 0, y: -5)
+            } completion: { _ in
+                view.removeFromSuperview()
+            }
         }
     }
 }
