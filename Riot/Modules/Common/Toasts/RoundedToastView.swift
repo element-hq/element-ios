@@ -49,6 +49,7 @@ class RoundedToastView: UIView, Themable {
     private let stackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
+        stack.alignment = .center
         stack.spacing = 5
         return stack
     }()

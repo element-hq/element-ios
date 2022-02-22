@@ -43,8 +43,8 @@ class ToastUserIndicatorPresenter: UserIndicatorPresentable {
         view.translatesAutoresizingMaskIntoConstraints = false
         navigationController.view.addSubview(view)
         NSLayoutConstraint.activate([
-            view.centerXAnchor.constraint(equalTo: navigationController.navigationBar.centerXAnchor),
-            view.topAnchor.constraint(equalTo: navigationController.navigationBar.bottomAnchor)
+            view.centerXAnchor.constraint(equalTo: navigationController.view.centerXAnchor),
+            view.topAnchor.constraint(equalTo: navigationController.navigationBar.safeAreaLayoutGuide.bottomAnchor)
         ])
         
         view.alpha = 0

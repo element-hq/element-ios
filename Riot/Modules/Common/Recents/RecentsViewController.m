@@ -314,6 +314,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         [[NSNotificationCenter defaultCenter] removeObserver:kMXNotificationCenterDidUpdateRulesObserver];
         kMXNotificationCenterDidUpdateRulesObserver = nil;
     }
+    
+    [self stopActivityIndicator];
 }
 
 - (void)viewDidAppear:(BOOL)animated
