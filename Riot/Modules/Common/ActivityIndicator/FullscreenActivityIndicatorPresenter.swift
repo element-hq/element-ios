@@ -21,7 +21,7 @@ import UIKit
 /// Presenter which displays fullscreen loading spinners, and conforming to legacy `ActivityIndicatorPresenterType`,
 /// but interally wrapping an `UserIndicatorPresenter` which is used in conjuction with `UserIndicator` and `UserIndicatorQueue`.
 ///
-/// Note: clients can skip using `FullscreenActivityIndicatorPresenter` and instead coordiinate with `AppNavigatorProtocol` directly.
+/// Note: clients can skip using `FullscreenActivityIndicatorPresenter` and instead coordinate with `AppNavigatorProtocol` directly.
 /// The presenter exists mostly as a transition for view controllers already using `ActivityIndicatorPresenterType` and / or view controllers
 /// written in objective-c.
 @objc final class FullscreenActivityIndicatorPresenter: NSObject, ActivityIndicatorPresenterType {

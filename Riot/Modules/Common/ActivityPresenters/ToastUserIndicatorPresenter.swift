@@ -22,11 +22,11 @@ import MatrixSDK
 /// A `UserIndicatorPresentable` responsible for showing / hiding a toast view for loading spinners or success messages.
 /// It is managed by an `UserIndicator`, meaning the `present` and `dismiss` methods will be called when the parent `UserIndicator` starts or completes.
 class ToastUserIndicatorPresenter: UserIndicatorPresentable {
-    private let viewState: RoundedToastView.ViewState
+    private let viewState: ToastViewState
     private weak var navigationController: UINavigationController?
     private weak var view: UIView?
     
-    init(viewState: RoundedToastView.ViewState, navigationController: UINavigationController) {
+    init(viewState: ToastViewState, navigationController: UINavigationController) {
         self.viewState = viewState
         self.navigationController = navigationController
     }

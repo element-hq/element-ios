@@ -35,13 +35,13 @@ class RoundedToastView: UIView, Themable {
         return indicator
     }()
     
-    private lazy var imagView: UIImageView = {
+    private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             imageView.widthAnchor.constraint(equalToConstant: Constants.imageViewSize),
-            imageView.heightAnchor.constraint(equalToConstant: Constants.imageViewSize),
+            imageView.heightAnchor.constraint(equalToConstant: Constants.imageViewSize)
         ])
         return imageView
     }()
@@ -57,7 +57,7 @@ class RoundedToastView: UIView, Themable {
         return UILabel()
     }()
 
-    init(viewState: ViewState) {
+    init(viewState: ToastViewState) {
         super.init(frame: .zero)
         setup(viewState: viewState)
     }
@@ -66,7 +66,7 @@ class RoundedToastView: UIView, Themable {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setup(viewState: ViewState) {
+    private func setup(viewState: ToastViewState) {
         setupLayer()
         setupStackView()
         stackView.addArrangedSubview(toastView(for: viewState.style))
@@ -104,24 +104,13 @@ class RoundedToastView: UIView, Themable {
         label.textColor = theme.colors.primaryContent
     }
     
-    private func toastView(for style: Style) -> UIView {
+    private func toastView(for style: ToastViewState.Style) -> UIView {
         switch style {
         case .loading:
             return activityIndicator
         case .success:
-            imagView.image = Asset.Images.checkmark.image
-            return imagView
+            imageView.image = Asset.Images.checkmark.image
+            return imageView
         }
-    }
-}
-
-extension RoundedToastView {
-    enum Style {
-        case loading
-        case success
-    }
-    struct ViewState {
-        let style: Style
-        let label: String
     }
 }
