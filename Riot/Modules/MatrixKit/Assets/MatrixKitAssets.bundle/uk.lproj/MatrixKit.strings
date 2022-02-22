@@ -16,7 +16,7 @@
 "retry" = "Повторити";
 "unban" = "Розблокувати";
 "ban" = "Заблокувати";
-"kick" = "Викинути";
+"kick" = "Вилучити з бесіди";
 "invite" = "Запросити";
 "leave" = "Вийти";
 "discard" = "Відхилити";
@@ -179,7 +179,7 @@
 "notice_declined_video_call_by_you" = "Ви відхилили виклик";
 "notice_ended_video_call_by_you" = "Ви завершили виклик";
 "notice_avatar_url_changed_by_you" = "Ви змінили свій аватар";
-"notice_room_kick_by_you" = "Ви викинули %@";
+"notice_room_kick_by_you" = "Ви вилучили %@";
 "notice_room_invite_you" = "%@ запрошує вас";
 
 // Notice Events with "You"
@@ -371,7 +371,7 @@
 "notice_display_name_changed_from" = "%@ змінює своє показуване ім'я з %@ на %@";
 "notice_display_name_set" = "%@ встановлює своїм показуваним іменем %@";
 "notice_room_withdraw" = "%@ анульовує запрошення для %@";
-"notice_room_kick" = "%@ викидає %@";
+"notice_room_kick" = "%@ вилучає %@";
 "notice_room_reject" = "%@ відхиляє запрошення";
 "notice_room_leave" = "%@ виходить";
 "notice_room_join" = "%@ приєднується";
