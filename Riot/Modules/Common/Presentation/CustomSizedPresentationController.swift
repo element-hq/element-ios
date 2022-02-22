@@ -86,7 +86,7 @@ class CustomSizedPresentationController: UIPresentationController {
             // effect calls for only the top two corners to be rounded we size
             // the view such that the bottom CORNER_RADIUS points lie below
             // the bottom edge of the screen.
-            let cornerViewRect = presentationWrapperView.bounds//.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: -cornerRadius, right: 0))
+            let cornerViewRect = presentationWrapperView.bounds// .inset(by: UIEdgeInsets(top: 0, left: 0, bottom: -cornerRadius, right: 0))
             
             let presentationRoundedCornerView = UIView(frame: cornerViewRect)
             presentationRoundedCornerView.autoresizingMask = [.flexibleWidth, .flexibleHeight]

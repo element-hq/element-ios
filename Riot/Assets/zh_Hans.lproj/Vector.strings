@@ -251,7 +251,7 @@
 "settings_labs" = "实验室";
 "settings_devices" = "会话";
 "settings_cryptography" = "加密";
-"settings_sign_out" = "离开";
+"settings_sign_out" = "退出登陆";
 "settings_sign_out_confirmation" = "你确定？";
 "settings_sign_out_e2e_warn" = "您将丢失所有端对端加密密钥。这意味着在此设备上您将再也无法阅读已加密聊天室里的旧消息。";
 "settings_profile_picture" = "档案图片";
@@ -1605,3 +1605,8 @@
 "settings_analytics_and_crash_data" = "发送崩溃和分析数据";
 "accessibility_button_label" = "按钮";
 "enable" = "启用";
+"onboarding_splash_page_1_message" = "独立安全的通信，为您提供与家中面谈相同的私密性。";
+"onboarding_splash_page_1_title" = "掌控你的对话。";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "注册";

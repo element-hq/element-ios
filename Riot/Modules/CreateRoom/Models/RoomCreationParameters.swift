@@ -21,7 +21,7 @@ struct RoomCreationParameters {
     var topic: String?
     var address: String?
     var avatarImage: UIImage? {
-        return userSelectedAvatar ?? initialsAvatar
+        return userSelectedAvatar
     }
     var isEncrypted: Bool = false
     var isPublic: Bool = false {
@@ -36,5 +36,4 @@ struct RoomCreationParameters {
     var showInDirectory: Bool = false
     
     var userSelectedAvatar: UIImage?
-    var initialsAvatar: UIImage?
 }

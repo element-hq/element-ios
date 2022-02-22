@@ -32,7 +32,7 @@ enum ThreadNotificationStatus {
     case notified
     case highlighted
 
-    init(withThread thread: MXThread) {
+    init(withThread thread: MXThreadProtocol) {
         if thread.highlightCount > 0 {
             self = .highlighted
         } else if thread.isParticipated && thread.notificationCount > 0 {

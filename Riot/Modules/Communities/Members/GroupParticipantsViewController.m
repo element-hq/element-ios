@@ -93,6 +93,8 @@
     // Adjust Top and Bottom constraints to take into account potential navBar and tabBar.
     [NSLayoutConstraint deactivateConstraints:@[_searchBarTopConstraint, _tableViewBottomConstraint]];
     
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated"
     _searchBarTopConstraint = [NSLayoutConstraint constraintWithItem:self.topLayoutGuide
                                                            attribute:NSLayoutAttributeBottom
                                                            relatedBy:NSLayoutRelationEqual
@@ -108,6 +110,7 @@
                                                               attribute:NSLayoutAttributeBottom
                                                              multiplier:1.0f
                                                                constant:0.0f];
+    #pragma clang diagnostic pop
     
     [NSLayoutConstraint activateConstraints:@[_searchBarTopConstraint, _tableViewBottomConstraint]];
     
@@ -239,18 +242,18 @@
         // Indeed the group update notifications are triggered by the matrix session only for the user's groups.
         void (^success)(void) = ^void(void)
         {
-            [self refreshDisplayWithGroup:_group];
+            [self refreshDisplayWithGroup:self->_group];
         };
         
         // Trigger a refresh on the group members and the invited users.
         [self.mxSession updateGroupUsers:_group success:(isPreview ? success : nil) failure:^(NSError *error) {
             
-            MXLogDebug(@"[GroupParticipantsViewController] viewWillAppear: group members update failed %@", _group.groupId);
+            MXLogDebug(@"[GroupParticipantsViewController] viewWillAppear: group members update failed %@", self->_group.groupId);
             
         }];
         [self.mxSession updateGroupInvitedUsers:_group success:(isPreview ? success : nil) failure:^(NSError *error) {
             
-            MXLogDebug(@"[GroupParticipantsViewController] viewWillAppear: invited users update failed %@", _group.groupId);
+            MXLogDebug(@"[GroupParticipantsViewController] viewWillAppear: invited users update failed %@", self->_group.groupId);
             
         }];
     }
@@ -305,7 +308,7 @@
             [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                              animations:^{
                                  
-                                 tableViewMaskLayer.bounds = newBounds;
+                                 self->tableViewMaskLayer.bounds = newBounds;
                                  
                              }
                              completion:^(BOOL finished){
@@ -421,7 +424,7 @@
     [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                      animations:^{
                          
-                         addParticipantButtonImageViewBottomConstraint.constant = keyboardHeight + 9;
+                         self->addParticipantButtonImageViewBottomConstraint.constant = keyboardHeight + 9;
                          
                          // Force to render the view
                          [self.view layoutIfNeeded];
@@ -472,7 +475,7 @@
     
     addParticipantButtonImageView.backgroundColor = [UIColor clearColor];
     addParticipantButtonImageView.contentMode = UIViewContentModeCenter;
-    addParticipantButtonImageView.image = [UIImage imageNamed:@"add_group_participant"];
+    addParticipantButtonImageView.image = AssetImages.addGroupParticipant.image;
     
     CGFloat side = 78.0f;
     NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:addParticipantButtonImageView
@@ -534,7 +537,7 @@
     contactsDataSource.displaySearchInputInContactsList = YES;
     contactsDataSource.forceMatrixIdInDisplayName = YES;
     // Add a plus icon to the contact cell in the contacts picker, in order to make it more understandable for the end user.
-    contactsDataSource.contactCellAccessoryImage = [[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor];
+    contactsDataSource.contactCellAccessoryImage = [AssetImages.plusIcon.image vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor];
     
     // List all the participants matrix user id to ignore them during the contacts search.
     for (Contact *contact in actualParticipants)
@@ -653,7 +656,7 @@
     pendingMaskSpinnerView.alpha = 0;
     [UIView animateWithDuration:0.3 delay:0.3 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         
-        pendingMaskSpinnerView.alpha = 1;
+        self->pendingMaskSpinnerView.alpha = 1;
         
     } completion:^(BOOL finished) {
     }];
@@ -1075,14 +1078,14 @@
                                                                    self->currentAlert = nil;
                                                                    
                                                                    [self addPendingActionMask];
-                                                                   [self.mxSession leaveGroup:_group.groupId success:^{
+                                                                   [self.mxSession leaveGroup:self->_group.groupId success:^{
                                                                        
                                                                        [self withdrawViewControllerAnimated:YES completion:nil];
                                                                        
                                                                    } failure:^(NSError *error) {
                                                                        
                                                                        [self removePendingActionMask];
-                                                                       MXLogDebug(@"[GroupParticipantsVC] Leave group %@ failed", _group.groupId);
+                                                                       MXLogDebug(@"[GroupParticipantsVC] Leave group %@ failed", self->_group.groupId);
                                                                        // Alert user
                                                                        [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                                        

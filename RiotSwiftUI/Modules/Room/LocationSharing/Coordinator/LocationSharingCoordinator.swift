@@ -97,7 +97,8 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
     static func shareLocationActivityController(_ location: CLLocationCoordinate2D) -> UIActivityViewController {
         return UIActivityViewController(activityItems: [ShareToMapsAppActivity.urlForMapsAppType(.apple, location: location)],
                                         applicationActivities: [ShareToMapsAppActivity(type: .apple, location: location),
-                                                                ShareToMapsAppActivity(type: .google, location: location)])
+                                                                ShareToMapsAppActivity(type: .google, location: location),
+                                                                ShareToMapsAppActivity(type: .osm, location: location)])
     }
     
     // MARK: - Presentable

@@ -701,7 +701,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         //  component is not a thread root
         return 0;
     }
-    return RoomBubbleCellLayout.threadSummaryViewTopMargin +
+    return PlainRoomCellLayoutConstants.threadSummaryViewTopMargin +
         [ThreadSummaryView contentViewHeightForThread:component.thread fitting:self.maxTextViewWidth];
 }
 
@@ -728,7 +728,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         //  event is not in a thread
         return 0;
     }
-    return RoomBubbleCellLayout.fromAThreadViewTopMargin +
+    return PlainRoomCellLayoutConstants.fromAThreadViewTopMargin +
         [FromAThreadView contentViewHeightForEvent:component.event fitting:self.maxTextViewWidth];
 }
 
@@ -740,7 +740,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         return 0;
     }
     
-    return RoomBubbleCellLayout.urlPreviewViewTopMargin + [URLPreviewView contentViewHeightFor:component.urlPreviewData
+    return PlainRoomCellLayoutConstants.urlPreviewViewTopMargin + [URLPreviewView contentViewHeightFor:component.urlPreviewData
                                                                                        fitting:self.maxTextViewWidth];
 }
 
@@ -765,7 +765,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 
         BOOL showAllReactions = [self.eventsToShowAllReactions containsObject:eventId];
         BubbleReactionsViewModel *viewModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:aggregatedReactions eventId:eventId showAll:showAllReactions];
-        height = [bubbleReactionsViewSizer heightForViewModel:viewModel fittingWidth:bubbleReactionsViewWidth] + RoomBubbleCellLayout.reactionsViewTopMargin;
+        height = [bubbleReactionsViewSizer heightForViewModel:viewModel fittingWidth:bubbleReactionsViewWidth] + PlainRoomCellLayoutConstants.reactionsViewTopMargin;
     }
     
     return height;
@@ -777,7 +777,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     
     if (self.readReceipts[eventId].count)
     {
-        height = RoomBubbleCellLayout.readReceiptsViewHeight + RoomBubbleCellLayout.readReceiptsViewTopMargin;
+        height = PlainRoomCellLayoutConstants.readReceiptsViewHeight + PlainRoomCellLayoutConstants.readReceiptsViewTopMargin;
     }
     
     return height;

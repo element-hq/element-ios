@@ -89,6 +89,10 @@
                         {
                             continueBlock();
                         }
+                        else if (result.result.unsignedData.relations.thread)
+                        {
+                            continueBlock();
+                        }
                         else if (room)
                         {
                             [room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
@@ -164,14 +168,15 @@
             {
                 if (cellData.hasThreadRoot)
                 {
-                    MXThread *thread = cellData.bubbleComponents.firstObject.thread;
-                    ThreadSummaryView *threadSummaryView = [[ThreadSummaryView alloc] initWithThread:thread];
+                    id<MXThreadProtocol> thread = cellData.bubbleComponents.firstObject.thread;
+                    ThreadSummaryView *threadSummaryView = [[ThreadSummaryView alloc] initWithThread:thread
+                                                                                             session:self.mxSession];
                     [bubbleCell.tmpSubviews addObject:threadSummaryView];
 
                     threadSummaryView.translatesAutoresizingMaskIntoConstraints = NO;
                     [bubbleCell.contentView addSubview:threadSummaryView];
 
-                    CGFloat leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin;
+                    CGFloat leftMargin = PlainRoomCellLayoutConstants.reactionsViewLeftMargin;
                     CGFloat height = [ThreadSummaryView contentViewHeightForThread:thread fitting:cellData.maxTextViewWidth];
 
                     CGRect bubbleComponentFrame = [bubbleCell componentFrameInContentViewForIndex:0];
@@ -182,9 +187,9 @@
                         [threadSummaryView.leadingAnchor constraintEqualToAnchor:threadSummaryView.superview.leadingAnchor
                                                                         constant:leftMargin],
                         [threadSummaryView.topAnchor constraintEqualToAnchor:threadSummaryView.superview.topAnchor
-                                                                    constant:bottomPositionY + RoomBubbleCellLayout.threadSummaryViewTopMargin],
+                                                                    constant:bottomPositionY + PlainRoomCellLayoutConstants.threadSummaryViewTopMargin],
                         [threadSummaryView.heightAnchor constraintEqualToConstant:height],
-                        [threadSummaryView.trailingAnchor constraintLessThanOrEqualToAnchor:threadSummaryView.superview.trailingAnchor constant:-RoomBubbleCellLayout.reactionsViewRightMargin]
+                        [threadSummaryView.trailingAnchor constraintLessThanOrEqualToAnchor:threadSummaryView.superview.trailingAnchor constant:-PlainRoomCellLayoutConstants.reactionsViewRightMargin]
                     ]];
                 }
                 else if (event.isInThread)
@@ -195,7 +200,7 @@
                     fromAThreadView.translatesAutoresizingMaskIntoConstraints = NO;
                     [bubbleCell.contentView addSubview:fromAThreadView];
                     
-                    CGFloat leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin;
+                    CGFloat leftMargin = PlainRoomCellLayoutConstants.reactionsViewLeftMargin;
                     CGFloat height = [FromAThreadView contentViewHeightForEvent:event fitting:cellData.maxTextViewWidth];
 
                     CGRect bubbleComponentFrame = [bubbleCell componentFrameInContentViewForIndex:0];
@@ -206,9 +211,9 @@
                         [fromAThreadView.leadingAnchor constraintEqualToAnchor:fromAThreadView.superview.leadingAnchor
                                                                       constant:leftMargin],
                         [fromAThreadView.topAnchor constraintEqualToAnchor:fromAThreadView.superview.topAnchor
-                                                                  constant:bottomPositionY + RoomBubbleCellLayout.fromAThreadViewTopMargin],
+                                                                  constant:bottomPositionY + PlainRoomCellLayoutConstants.fromAThreadViewTopMargin],
                         [fromAThreadView.heightAnchor constraintEqualToConstant:height],
-                        [fromAThreadView.trailingAnchor constraintLessThanOrEqualToAnchor:fromAThreadView.superview.trailingAnchor constant:-RoomBubbleCellLayout.reactionsViewRightMargin]
+                        [fromAThreadView.trailingAnchor constraintLessThanOrEqualToAnchor:fromAThreadView.superview.trailingAnchor constant:-PlainRoomCellLayoutConstants.reactionsViewRightMargin]
                     ]];
                 }
             }

@@ -45,7 +45,6 @@ PODS:
     - GBDeviceInfo/Core (= 6.6.0)
   - GBDeviceInfo/Core (6.6.0)
   - GZIP (1.3.0)
-  - HPGrowingTextView (1.1)
   - Introspect (0.1.3)
   - JitsiMeetSDK (3.10.2)
   - KeychainAccess (4.2.2)
@@ -57,16 +56,16 @@ PODS:
   - LoggerAPI (1.9.200):
     - Logging (~> 1.1)
   - Logging (1.4.0)
-  - MatrixSDK (0.22.1):
-    - MatrixSDK/Core (= 0.22.1)
-  - MatrixSDK/Core (0.22.1):
+  - MatrixSDK (0.22.2):
+    - MatrixSDK/Core (= 0.22.2)
+  - MatrixSDK/Core (0.22.2):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.3.0)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.2.5)
     - Realm (= 10.16.0)
     - SwiftyBeaver (= 1.9.5)
-  - MatrixSDK/JingleCallStack (0.22.1):
+  - MatrixSDK/JingleCallStack (0.22.2):
     - JitsiMeetSDK (= 3.10.2)
     - MatrixSDK/Core
   - OLMKit (3.2.5):
@@ -112,13 +111,12 @@ DEPENDENCIES:
   - FLEX (~> 4.5.0)
   - FlowCommoniOS (~> 1.12.0)
   - GBDeviceInfo (~> 6.6.0)
-  - HPGrowingTextView (~> 1.1)
   - Introspect (~> 0.1)
   - KeychainAccess (~> 4.2.2)
   - KTCenterFlowLayout (~> 1.3.1)
   - libPhoneNumber-iOS (~> 0.9.13)
-  - MatrixSDK (= 0.22.1)
-  - MatrixSDK/JingleCallStack (= 0.22.1)
+  - MatrixSDK (= 0.22.2)
+  - MatrixSDK/JingleCallStack (= 0.22.2)
   - OLMKit
   - PostHog (~> 1.4.4)
   - ReadMoreTextView (~> 3.0.1)
@@ -149,7 +147,6 @@ SPEC REPOS:
     - FlowCommoniOS
     - GBDeviceInfo
     - GZIP
-    - HPGrowingTextView
     - Introspect
     - JitsiMeetSDK
     - KeychainAccess
@@ -183,7 +180,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   AnalyticsEvents:
-    :commit: 8058dc6ec07ce0acfe5fdb19eb7e309b0c13845c
+    :commit: 53844e3f6f9fefa88384a996b2bf5e60bb301b94
     :git: https://github.com/matrix-org/matrix-analytics-events.git
 
 SPEC CHECKSUMS:
@@ -202,7 +199,6 @@ SPEC CHECKSUMS:
   FlowCommoniOS: ca92071ab526dc89905495a37844fd7e78d1a7f2
   GBDeviceInfo: ed0db16230d2fa280e1cbb39a5a7f60f6946aaec
   GZIP: 416858efbe66b41b206895ac6dfd5493200d95b3
-  HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   Introspect: 2be020f30f084ada52bb4387fff83fa52c5c400e
   JitsiMeetSDK: 2f118fa770f23e518f3560fc224fae3ac7062223
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
@@ -212,7 +208,7 @@ SPEC CHECKSUMS:
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
-  MatrixSDK: 12c1a56e037f629e493cbcd615fd13cfc58cee3a
+  MatrixSDK: 4e7c8f0cfff3553e8dd60d97eef6b31653408ae7
   OLMKit: 9fb4799c4a044dd2c06bda31ec31a12191ad30b5
   PostHog: 4b6321b521569092d4ef3a02238d9435dbaeb99f
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
@@ -229,6 +225,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: ae70a46e98aae87f130ad3d246711fc6b6ae7286
+PODFILE CHECKSUM: 093d29092285618a84be5d5abb772c15cb7dcba5
 
 COCOAPODS: 1.11.2

@@ -58,7 +58,6 @@ final class EditHistoryCoordinatorBridgePresenter: NSObject {
     func present(from viewController: UIViewController, animated: Bool) {
 
         guard let formatter = self.createEventFormatter(session: self.session) else {
-            //s das
             return
         }
 

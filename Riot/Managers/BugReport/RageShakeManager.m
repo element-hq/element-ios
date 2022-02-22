@@ -200,7 +200,7 @@ static RageShakeManager* sharedInstance = nil;
     
     UIImage *image;
     
-    AppDelegate* theDelegate = [AppDelegate theDelegate];
+    LegacyAppDelegate* theDelegate = [AppDelegate theDelegate];
     UIGraphicsBeginImageContextWithOptions(theDelegate.window.bounds.size, NO, [UIScreen mainScreen].scale);
     
     // Iterate over every window from back to front

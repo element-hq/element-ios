@@ -2267,6 +2267,10 @@ public class VectorL10n: NSObject {
   public static var locationSharingOpenGoogleMaps: String { 
     return VectorL10n.tr("Vector", "location_sharing_open_google_maps") 
   }
+  /// Open in OpenStreetMap
+  public static var locationSharingOpenOpenStreetMaps: String { 
+    return VectorL10n.tr("Vector", "location_sharing_open_open_street_maps") 
+  }
   /// %@ could not send your location. Please try again later.
   public static func locationSharingPostFailureSubtitle(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "location_sharing_post_failure_subtitle", p1)
@@ -2442,6 +2446,42 @@ public class VectorL10n: NSObject {
   /// Create account
   public static var onboardingSplashRegisterButtonTitle: String { 
     return VectorL10n.tr("Vector", "onboarding_splash_register_button_title") 
+  }
+  /// Communities
+  public static var onboardingUseCaseCommunityMessaging: String { 
+    return VectorL10n.tr("Vector", "onboarding_use_case_community_messaging") 
+  }
+  /// Connect to server
+  public static var onboardingUseCaseExistingServerButton: String { 
+    return VectorL10n.tr("Vector", "onboarding_use_case_existing_server_button") 
+  }
+  /// Looking to join an existing server?
+  public static var onboardingUseCaseExistingServerMessage: String { 
+    return VectorL10n.tr("Vector", "onboarding_use_case_existing_server_message") 
+  }
+  /// We’ll help you get connected.
+  public static var onboardingUseCaseMessage: String { 
+    return VectorL10n.tr("Vector", "onboarding_use_case_message") 
+  }
+  /// Not sure yet? You can %@
+  public static func onboardingUseCaseNotSureYet(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "onboarding_use_case_not_sure_yet", p1)
+  }
+  /// Friends and family
+  public static var onboardingUseCasePersonalMessaging: String { 
+    return VectorL10n.tr("Vector", "onboarding_use_case_personal_messaging") 
+  }
+  /// skip this question
+  public static var onboardingUseCaseSkipButton: String { 
+    return VectorL10n.tr("Vector", "onboarding_use_case_skip_button") 
+  }
+  /// Who will you chat to the most?
+  public static var onboardingUseCaseTitle: String { 
+    return VectorL10n.tr("Vector", "onboarding_use_case_title") 
+  }
+  /// Teams
+  public static var onboardingUseCaseWorkMessaging: String { 
+    return VectorL10n.tr("Vector", "onboarding_use_case_work_messaging") 
   }
   /// Open
   public static var `open`: String { 
@@ -3223,7 +3263,7 @@ public class VectorL10n: NSObject {
   public static var roomEventActionForward: String { 
     return VectorL10n.tr("Vector", "room_event_action_forward") 
   }
-  /// Reason for kicking this user
+  /// Reason for removing this user
   public static var roomEventActionKickPromptReason: String { 
     return VectorL10n.tr("Vector", "room_event_action_kick_prompt_reason") 
   }
@@ -3986,6 +4026,10 @@ public class VectorL10n: NSObject {
   /// Files
   public static var searchFiles: String { 
     return VectorL10n.tr("Vector", "search_files") 
+  }
+  /// Filter
+  public static var searchFilterPlaceholder: String { 
+    return VectorL10n.tr("Vector", "search_filter_placeholder") 
   }
   /// Searching…
   public static var searchInProgress: String { 

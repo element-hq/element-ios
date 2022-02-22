@@ -157,7 +157,7 @@ NSString *FallBackViewControllerJavascriptOnLogin = @"window.matrixLogin.onLogin
     if ([urlString hasPrefix:@"js:"])
     {
         // Listen only to scheme of the JS-WKWebView bridge
-        NSString *jsonString = [[[urlString componentsSeparatedByString:@"js:"] lastObject]  stringByReplacingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
+        NSString *jsonString = [[[urlString componentsSeparatedByString:@"js:"] lastObject]  stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
 
         NSError *error;

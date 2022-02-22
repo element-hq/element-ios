@@ -52,9 +52,9 @@ final class AnalyticsPromptCoordinator: Coordinator, Presentable {
         let promptType: AnalyticsPromptType
         
         if Analytics.shared.promptShouldDisplayUpgradeMessage {
-            promptType = .upgrade(termsString: strings.termsUpgrade)
+            promptType = .upgrade
         } else {
-            promptType = .newUser(termsString: strings.termsNewUser)
+            promptType = .newUser
         }
         
         let viewModel = AnalyticsPromptViewModel(promptType: promptType, strings: strings, termsURL: BuildSettings.analyticsTermsURL)

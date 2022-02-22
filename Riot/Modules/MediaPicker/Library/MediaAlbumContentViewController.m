@@ -268,10 +268,10 @@
             
         }];
         
-        cell.bottomLeftIcon.image = [UIImage imageNamed:@"video_icon"];
+        cell.bottomLeftIcon.image = AssetImages.videoIcon.image;
         cell.bottomLeftIcon.hidden = (asset.mediaType == PHAssetMediaTypeImage);
 
-        cell.bottomRightIcon.image = [UIImage imageNamed:@"selection_tick"];
+        cell.bottomRightIcon.image = AssetImages.selectionTick.image;
         cell.bottomRightIcon.tintColor = ThemeService.shared.theme.tintColor;
         cell.bottomRightIcon.hidden = !selectedAssets || (NSNotFound == [selectedAssets indexOfObject:asset]);
 

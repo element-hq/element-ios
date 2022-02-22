@@ -35,18 +35,6 @@
 
 @implementation UnifiedSearchRecentsDataSource
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self)
-    {
-        searchedRoomIdOrAliasSection = -1;
-        
-        _hideRecents = NO;
-    }
-    return self;
-}
-
 #pragma mark -
 
 - (void)setPublicRoomsDirectoryDataSource:(PublicRoomsDirectoryDataSource *)publicRoomsDirectoryDataSource
@@ -148,13 +136,13 @@
     return count;
 }
 
-- (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
+- (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame inTableView:(UITableView*)tableView
 {
     UIView *sectionHeader = nil;
     
     if (section != searchedRoomIdOrAliasSection)
     {
-        sectionHeader = [super viewForHeaderInSection:section withFrame:frame];
+        sectionHeader = [super viewForHeaderInSection:section withFrame:frame inTableView:tableView];
     }
     
     return sectionHeader;

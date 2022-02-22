@@ -104,6 +104,8 @@ NSString *const MXKAccountManagerDataType = @"org.matrix.kit.MXKAccountManagerDa
     }
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated"
 - (void)saveAccounts
 {
     NSDate *startDate = [NSDate date];
@@ -123,6 +125,7 @@ NSString *const MXKAccountManagerDataType = @"org.matrix.kit.MXKAccountManagerDa
 
     MXLogDebug(@"[MXKAccountManager] saveAccounts. Done (result: %@) in %.0fms", @(result), [[NSDate date] timeIntervalSinceDate:startDate] * 1000);
 }
+#pragma clang diagnostic pop
 
 - (void)addAccount:(MXKAccount *)account andOpenSession:(BOOL)openSession
 {
@@ -608,6 +611,8 @@ NSString *const MXKAccountManagerDataType = @"org.matrix.kit.MXKAccountManagerDa
     return [matrixKitCacheFolder stringByAppendingPathComponent:kMXKAccountsKey];
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated"
 - (void)loadAccounts
 {
     MXLogDebug(@"[MXKAccountManager] loadAccounts");
@@ -675,6 +680,7 @@ NSString *const MXKAccountManagerDataType = @"org.matrix.kit.MXKAccountManagerDa
         mxAccounts = [NSMutableArray array];
     }
 }
+#pragma clang diagnostic pop
 
 - (NSData*)encryptData:(NSData*)data
 {
@@ -708,6 +714,8 @@ NSString *const MXKAccountManagerDataType = @"org.matrix.kit.MXKAccountManagerDa
     return data;
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated"
 - (void)migrateAccounts
 {
     NSString *pathOld = [[MXKAppSettings cacheFolder] stringByAppendingPathComponent:kMXKAccountsKeyOld];
@@ -727,6 +735,7 @@ NSString *const MXKAccountManagerDataType = @"org.matrix.kit.MXKAccountManagerDa
         [fileManager removeItemAtPath:pathOld error:nil];
     }
 }
+#pragma clang diagnostic pop
 
 - (void)readAndWriteCredentials:(void (^)(NSArray<MXCredentials*> * _Nullable readData,  void (^completion)(BOOL didUpdateCredentials)))readAnWriteHandler
 {
