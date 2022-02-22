@@ -2682,7 +2682,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             TitleAndRightDetailTableViewCell *roomSuggestionCell = [tableView dequeueReusableCellWithIdentifier:[TitleAndRightDetailTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
                         
             roomSuggestionCell.titleLabel.text = [VectorL10n roomDetailsPromoteRoomSuggestTitle];
-            roomSuggestionCell.detailLabel.text = [self.mainSession.spaceService directParentIdsOfRoomWithId:self.roomId isRoomSuggested:YES].count ? [VectorL10n on] : [VectorL10n off];
+            roomSuggestionCell.detailLabel.text = [self.mainSession.spaceService directParentIdsOfRoomWithId:self.roomId whereRoomIsSuggested:YES].count ? [VectorL10n on] : [VectorL10n off];
 
             // Check whether the user can change this option
             roomSuggestionCell.userInteractionEnabled = (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomJoinRules]);
