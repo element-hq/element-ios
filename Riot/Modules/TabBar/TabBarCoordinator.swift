@@ -54,7 +54,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         return self.navigationRouter.modules.last is MasterTabBarController
     }
     
-    private var activities = [Activity]()
+    private var indicators = [UserIndicator]()
     
     // MARK: Public
 
@@ -77,7 +77,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     }
     
     deinit {
-        activities.cancelAll()
+        indicators.cancelAll()
     }
     
     // MARK: - Public methods
@@ -235,7 +235,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         homeViewController.accessibilityLabel = VectorL10n.titleHome
         
         if BuildSettings.appActivityIndicators {
-            homeViewController.activityPresenter = AppActivityIndicatorPresenter(appNavigator: parameters.appNavigator)
+            homeViewController.userIndicatorPresenter = AppUserIndicatorPresenter(appNavigator: parameters.appNavigator)
         }
         
         let wrapperViewController = HomeViewControllerWithBannerWrapperViewController(viewController: homeViewController)        
@@ -711,8 +711,8 @@ extension TabBarCoordinator: RoomCoordinatorDelegate {
         self.resetSplitViewDetails()
         if BuildSettings.appActivityIndicators {
             parameters.appNavigator
-                .addAppActivity(.success(VectorL10n.roomParticipantsLeaveSuccess))
-                .store(in: &activities)
+                .addUserIndicator(.success(VectorL10n.roomParticipantsLeaveSuccess))
+                .store(in: &indicators)
         }
     }
     

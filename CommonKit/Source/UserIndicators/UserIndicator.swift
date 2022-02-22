@@ -17,27 +17,27 @@
 import Foundation
 import UIKit
 
-/// An `Activity` represents the state of a temporary visual indicator, such as activity indicator, success notification or an error message. It does not directly manage the UI, instead it delegates to a `presenter`
+/// A `UserIndicator` represents the state of a temporary visual indicator, such as loading spinner, success notification or an error message. It does not directly manage the UI, instead it delegates to a `presenter`
 /// whenever the UI should be shown or hidden.
 ///
-/// More than one `Activity` may be requested by the system at the same time (e.g. global syncing vs local refresh),
-/// and the `ActivityCenter` will ensure that only one activity is shown at a given time, putting the other in a pending queue.
+/// More than one `UserIndicator` may be requested by the system at the same time (e.g. global syncing vs local refresh),
+/// and the `UserIndicatorQueue` will ensure that only one indicator is shown at a given time, putting the other in a pending queue.
 ///
-/// A client that requests an activity can specify a default timeout after which the activity is dismissed, or it has to be manually
+/// A client that requests an indicator can specify a default timeout after which the indicator is dismissed, or it has to be manually
 /// responsible for dismissing it via `cancel` method, or by deallocating itself.
-public class Activity {
+public class UserIndicator {
     public enum State {
         case pending
         case executing
         case completed
     }
     
-    private let request: ActivityRequest
+    private let request: UserIndicatorRequest
     private let completion: () -> Void
 
     public private(set) var state: State
     
-    public init(request: ActivityRequest, completion: @escaping () -> Void) {
+    public init(request: UserIndicatorRequest, completion: @escaping () -> Void) {
         self.request = request
         self.completion = completion
         
@@ -66,10 +66,10 @@ public class Activity {
         }
     }
     
-    /// Cancel the activity, triggering any dismissal action / animation
+    /// Cancel the indicator, triggering any dismissal action / animation
     ///
-    /// Note: clients can call this method directly, if they have access to the `Activity`.
-    /// Once cancelled, `ActivityCenter` will automatically start the next `Activity` in the queue.
+    /// Note: clients can call this method directly, if they have access to the `UserIndicator`.
+    /// Once cancelled, `UserIndicatorQueue` will automatically start the next `UserIndicator` in the queue.
     public func cancel() {
         complete()
     }
@@ -87,13 +87,13 @@ public class Activity {
     }
 }
 
-public extension Activity {
-    func store<C>(in collection: inout C) where C: RangeReplaceableCollection, C.Element == Activity {
+public extension UserIndicator {
+    func store<C>(in collection: inout C) where C: RangeReplaceableCollection, C.Element == UserIndicator {
         collection.append(self)
     }
 }
 
-public extension Collection where Element == Activity {
+public extension Collection where Element == UserIndicator {
     func cancelAll() {
         forEach {
             $0.cancel()

@@ -19,9 +19,9 @@ import UIKit
 import CommonKit
 import MatrixSDK
 
-/// An `ActivityPresenter` responsible for showing / hiding a toast view for activity indicators or success messages.
-/// It is managed by an `Activity`, meaning the `present` and `dismiss` methods will be called when the parent `Activity` starts or completes.
-class ToastActivityPresenter: ActivityPresentable {
+/// A `UserIndicatorPresentable` responsible for showing / hiding a toast view for loading spinners or success messages.
+/// It is managed by an `UserIndicator`, meaning the `present` and `dismiss` methods will be called when the parent `UserIndicator` starts or completes.
+class ToastUserIndicatorPresenter: UserIndicatorPresentable {
     private let viewState: RoundedToastView.ViewState
     private weak var navigationController: UINavigationController?
     private weak var view: UIView?

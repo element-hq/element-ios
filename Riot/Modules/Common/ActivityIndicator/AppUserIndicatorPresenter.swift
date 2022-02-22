@@ -19,16 +19,16 @@ import UIKit
 import MatrixSDK
 import CommonKit
 
-/// Presenter which displays activity / loading indicators using app-wide `AppNavigator`, thus displaying them in a unified way,
-/// and `ActivityCenter`/`Activity`, which ensures that only one activity is shown at a given time.
+/// Presenter which displays loading spinners using app-wide `AppNavigator`, thus displaying them in a unified way,
+/// and `UserIndicatorCenter`/`UserIndicator`, which ensures that only one indicator is shown at a given time.
 ///
-/// Note: clients can skip using `AppActivityIndicatorPresenter` and instead coordiinate with `AppNavigatorProtocol` directly.
+/// Note: clients can skip using `AppUserIndicatorPresenter` and instead coordinate with `AppNavigatorProtocol` directly.
 /// The presenter exists mostly as a transition for view controllers already using `ActivityIndicatorPresenterType` and / or view controllers
 /// written in objective-c.
-@objc final class AppActivityIndicatorPresenter: NSObject, ActivityIndicatorPresenterType {
+@objc final class AppUserIndicatorPresenter: NSObject, ActivityIndicatorPresenterType {
     private let appNavigator: AppNavigatorProtocol
-    private var loadingActivity: Activity?
-    private var otherActivities = [Activity]()
+    private var loadingIndicator: UserIndicator?
+    private var otherIndicators = [UserIndicator]()
     
     init(appNavigator: AppNavigatorProtocol) {
         self.appNavigator = appNavigator
@@ -39,24 +39,24 @@ import CommonKit
     }
 
     @objc func presentActivityIndicator(label: String) {
-        guard loadingActivity == nil || loadingActivity?.state == .completed else {
+        guard loadingIndicator == nil || loadingIndicator?.state == .completed else {
             // The app is very liberal with calling `presentActivityIndicator` (often not matched by corresponding `removeCurrentActivityIndicator`),
-            // so there is no reason to keep adding new activity indiciators if there is one already showing.
+            // so there is no reason to keep adding new indiciators if there is one already showing.
             return
         }
 
-        loadingActivity = appNavigator.addAppActivity(.loading(label))
+        loadingIndicator = appNavigator.addUserIndicator(.loading(label))
     }
     
     @objc func removeCurrentActivityIndicator(animated: Bool, completion: (() -> Void)?) {
-        loadingActivity = nil
+        loadingIndicator = nil
     }
     
     func presentActivityIndicator(on view: UIView, animated: Bool, completion: (() -> Void)?) {
-        MXLog.error("[AppActivityIndicatorPresenter] Shared activity indicator does not support presenting from custom views")
+        MXLog.error("[AppUserIndicatorPresenter] Shared indicator presenter does not support presenting from custom views")
     }
     
     @objc func presentSuccess(label: String) {
-        appNavigator.addAppActivity(.success(label)).store(in: &otherActivities)
+        appNavigator.addUserIndicator(.success(label)).store(in: &otherIndicators)
     }
 }

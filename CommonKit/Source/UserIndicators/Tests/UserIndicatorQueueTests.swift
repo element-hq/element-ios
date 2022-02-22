@@ -17,34 +17,34 @@
 import Foundation
 import XCTest
 
-class ActivityCenterTests: XCTestCase {
-    var activities: [Activity]!
-    var center: ActivityCenter!
+class UserIndicatorQueueTests: XCTestCase {
+    var indicators: [UserIndicator]!
+    var center: UserIndicatorQueue!
     
     override func setUp() {
-        activities = []
-        center = ActivityCenter()
+        indicators = []
+        center = UserIndicatorQueue()
     }
     
-    func makeRequest() -> ActivityRequest {
-        return ActivityRequest(
-            presenter: ActivityPresenterSpy(),
+    func makeRequest() -> UserIndicatorRequest {
+        return UserIndicatorRequest(
+            presenter: UserIndicatorPresenterSpy(),
             dismissal: .manual
         )
     }
     
-    func testStartsActivityWhenAdded() {
-        let activity = center.add(makeRequest())
-        XCTAssertEqual(activity.state, .executing)
+    func testStartsIndicatorWhenAdded() {
+        let indicator = center.add(makeRequest())
+        XCTAssertEqual(indicator.state, .executing)
     }
     
-    func testSecondActivityIsPending() {
-        center.add(makeRequest()).store(in: &activities)
-        let activity = center.add(makeRequest())
-        XCTAssertEqual(activity.state, .pending)
+    func testSecondIndicatorIsPending() {
+        center.add(makeRequest()).store(in: &indicators)
+        let indicator = center.add(makeRequest())
+        XCTAssertEqual(indicator.state, .pending)
     }
     
-    func testSecondActivityIsExecutingWhenFirstCompleted() {
+    func testSecondIndicatorIsExecutingWhenFirstCompleted() {
         let first = center.add(makeRequest())
         let second = center.add(makeRequest())
         

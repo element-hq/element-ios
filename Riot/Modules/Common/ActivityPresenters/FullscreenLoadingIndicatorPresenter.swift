@@ -18,9 +18,9 @@ import Foundation
 import CommonKit
 import UIKit
 
-/// An `ActivityPresenter` responsible for showing / hiding a full-screen loading view that obscures (and thus disables) all other controls.
-/// It is managed by an `Activity`, meaning the `present` and `dismiss` methods will be called when the parent `Activity` starts or completes.
-class FullscreenLoadingActivityPresenter: ActivityPresentable {
+/// A `UserIndicatorPresentable` responsible for showing / hiding a full-screen loading view that obscures (and thus disables) all other controls.
+/// It is managed by a `UserIndicator`, meaning the `present` and `dismiss` methods will be called when the parent `UserIndicator` starts or completes.
+class FullscreenLoadingIndicatorPresenter: UserIndicatorPresentable {
     private let label: String
     private weak var viewController: UIViewController?
     private weak var view: UIView?

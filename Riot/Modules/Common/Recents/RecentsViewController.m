@@ -1295,7 +1295,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                          {
                                                                              typeof(self) self = weakSelf;
                                                                              [self stopActivityIndicator];
-                                                                             [self.activityPresenter presentSuccessWithLabel:[VectorL10n roomParticipantsLeaveSuccess]];
+                                                                             [self.userIndicatorPresenter presentSuccessWithLabel:[VectorL10n roomParticipantsLeaveSuccess]];
                                                                              // Force table refresh
                                                                              [self cancelEditionMode:YES];
                                                                          }
@@ -2410,28 +2410,28 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 #pragma mark - Activity Indicator
 
 - (BOOL)providesCustomActivityIndicator {
-    return self.activityPresenter != nil;
+    return self.userIndicatorPresenter != nil;
 }
 
 - (void)startActivityIndicatorWithLabel:(NSString *)label {
-    if (self.activityPresenter) {
-        [self.activityPresenter presentActivityIndicatorWithLabel:label];
+    if (self.userIndicatorPresenter) {
+        [self.userIndicatorPresenter presentActivityIndicatorWithLabel:label];
     } else {
         [super startActivityIndicator];
     }
 }
 
 - (void)startActivityIndicator {
-    if (self.activityPresenter) {
-        [self.activityPresenter presentActivityIndicator];
+    if (self.userIndicatorPresenter) {
+        [self.userIndicatorPresenter presentActivityIndicator];
     } else {
         [super startActivityIndicator];
     }
 }
 
 - (void)stopActivityIndicator {
-    if (self.activityPresenter) {
-        [self.activityPresenter removeCurrentActivityIndicatorWithAnimated:YES completion:nil];
+    if (self.userIndicatorPresenter) {
+        [self.userIndicatorPresenter removeCurrentActivityIndicatorWithAnimated:YES completion:nil];
     } else {
         [super stopActivityIndicator];
     }

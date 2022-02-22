@@ -18,8 +18,8 @@ import Foundation
 import CommonKit
 import UIKit
 
-/// Presenter which displays fullscreen activity / loading indicators, and conforming to legacy `ActivityIndicatorPresenterType`,
-/// but interally wrapping an `ActivityPresenter` which is used in conjuction to `Activity` and `ActivityCenter`.
+/// Presenter which displays fullscreen loading spinners, and conforming to legacy `ActivityIndicatorPresenterType`,
+/// but interally wrapping an `UserIndicatorPresenter` which is used in conjuction with `UserIndicator` and `UserIndicatorQueue`.
 ///
 /// Note: clients can skip using `FullscreenActivityIndicatorPresenter` and instead coordiinate with `AppNavigatorProtocol` directly.
 /// The presenter exists mostly as a transition for view controllers already using `ActivityIndicatorPresenterType` and / or view controllers
@@ -27,7 +27,7 @@ import UIKit
 @objc final class FullscreenActivityIndicatorPresenter: NSObject, ActivityIndicatorPresenterType {
     private let label: String
     private weak var viewController: UIViewController?
-    private var activity: Activity?
+    private var indicator: UserIndicator?
     
     init(label: String, on viewController: UIViewController) {
         self.label = label
@@ -39,15 +39,15 @@ import UIKit
             return
         }
         
-        let request = ActivityRequest(
-            presenter: FullscreenLoadingActivityPresenter(label: label, on: vc),
+        let request = UserIndicatorRequest(
+            presenter: FullscreenLoadingIndicatorPresenter(label: label, on: vc),
             dismissal: .manual
         )
         
-        activity = ActivityCenter.shared.add(request)
+        indicator = UserIndicatorQueue.shared.add(request)
     }
     
     @objc func removeCurrentActivityIndicator(animated: Bool, completion: (() -> Void)?) {
-        activity?.cancel()
+        indicator?.cancel()
     }
 }

@@ -17,20 +17,20 @@
 import Foundation
 import XCTest
 
-class ActivityTests: XCTestCase {
-    var presenter: ActivityPresenterSpy!
+class UserIndicatorTests: XCTestCase {
+    var presenter: UserIndicatorPresenterSpy!
     
     override func setUp() {
         super.setUp()
-        presenter = ActivityPresenterSpy()
+        presenter = UserIndicatorPresenterSpy()
     }
     
-    func makeActivity(dismissal: ActivityDismissal = .manual, callback: @escaping () -> Void = {}) -> Activity {
-        let request = ActivityRequest(
+    func makeIndicator(dismissal: UserIndicatorDismissal = .manual, callback: @escaping () -> Void = {}) -> UserIndicator {
+        let request = UserIndicatorRequest(
             presenter: presenter,
             dismissal: dismissal
         )
-        return Activity(
+        return UserIndicator(
             request: request,
             completion: callback
         )
@@ -38,58 +38,58 @@ class ActivityTests: XCTestCase {
     
     // MARK: - State
     
-    func testNewActivityIsPending() {
-        let activity = makeActivity()
-        XCTAssertEqual(activity.state, .pending)
+    func testNewIndicatorIsPending() {
+        let indicator = makeIndicator()
+        XCTAssertEqual(indicator.state, .pending)
     }
     
-    func testStartedActivityIsExecuting() {
-        let activity = makeActivity()
-        activity.start()
-        XCTAssertEqual(activity.state, .executing)
+    func testStartedIndicatorIsExecuting() {
+        let indicator = makeIndicator()
+        indicator.start()
+        XCTAssertEqual(indicator.state, .executing)
     }
     
-    func testCancelledActivityIsCompleted() {
-        let activity = makeActivity()
-        activity.cancel()
-        XCTAssertEqual(activity.state, .completed)
+    func testCancelledIndicatorIsCompleted() {
+        let indicator = makeIndicator()
+        indicator.cancel()
+        XCTAssertEqual(indicator.state, .completed)
     }
     
     // MARK: - Presenter
     
-    func testStartingActivityPresentsUI() {
-        let activity = makeActivity()
-        activity.start()
+    func testStartingIndicatorPresentsUI() {
+        let indicator = makeIndicator()
+        indicator.start()
         XCTAssertEqual(presenter.intel, ["present()"])
     }
     
     func testAllowStartingOnlyOnce() {
-        let activity = makeActivity()
-        activity.start()
+        let indicator = makeIndicator()
+        indicator.start()
         presenter.intel = []
         
-        activity.start()
+        indicator.start()
         
         XCTAssertEqual(presenter.intel, [])
     }
     
-    func testCancellingActivityDismissesUI() {
-        let activity = makeActivity()
-        activity.start()
+    func testCancellingIndicatorDismissesUI() {
+        let indicator = makeIndicator()
+        indicator.start()
         presenter.intel = []
         
-        activity.cancel()
+        indicator.cancel()
         
         XCTAssertEqual(presenter.intel, ["dismiss()"])
     }
     
     func testAllowCancellingOnlyOnce() {
-        let activity = makeActivity()
-        activity.start()
-        activity.cancel()
+        let indicator = makeIndicator()
+        indicator.start()
+        indicator.cancel()
         presenter.intel = []
         
-        activity.cancel()
+        indicator.cancel()
         
         XCTAssertEqual(presenter.intel, [])
     }
@@ -98,9 +98,9 @@ class ActivityTests: XCTestCase {
     
     func testDismissAfterTimeout() {
         let interval: TimeInterval = 0.01
-        let activity = makeActivity(dismissal: .timeout(interval))
+        let indicator = makeIndicator(dismissal: .timeout(interval))
         
-        activity.start()
+        indicator.start()
         
         let exp = expectation(description: "")
         DispatchQueue.main.asyncAfter(deadline: .now() + interval) {
@@ -108,19 +108,19 @@ class ActivityTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
         
-        XCTAssertEqual(activity.state, .completed)
+        XCTAssertEqual(indicator.state, .completed)
     }
     
     // MARK: - Completion callback
     
     func testTriggersCallbackWhenCompleted() {
         var didComplete = false
-        let activity = makeActivity {
+        let indicator = makeIndicator {
             didComplete = true
         }
-        activity.start()
+        indicator.start()
         
-        activity.cancel()
+        indicator.cancel()
         
         XCTAssertTrue(didComplete)
     }

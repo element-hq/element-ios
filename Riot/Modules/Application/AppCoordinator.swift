@@ -322,39 +322,40 @@ fileprivate class AppNavigator: AppNavigatorProtocol {
         self.appCoordinator.navigate(to: destination)
     }
     
-    func addAppActivity(_ type: AppActivityType) -> Activity {
-        let request = activityRequest(for: type)
-        return ActivityCenter.shared.add(request)
+    func addUserIndicator(_ type: AppUserIndicatorType) -> UserIndicator {
+        let request = userIndicatorRequest(for: type)
+        return UserIndicatorQueue.shared.add(request)
     }
     
     // MARK: - Private
     
-    private func activityRequest(for type: AppActivityType) -> ActivityRequest {
+    private func userIndicatorRequest(for type: AppUserIndicatorType) -> UserIndicatorRequest {
         switch type {
         case let .loading(label):
-            let presenter = ToastActivityPresenter(
+            let presenter = ToastUserIndicatorPresenter(
                 viewState: .init(
                     style: .loading,
                     label: label
                 ),
                 navigationController: appNavigationVC
             )
-            return ActivityRequest(
+            return UserIndicatorRequest(
                 presenter: presenter,
                 dismissal: .manual
             )
         case let .success(label):
-            let presenter = ToastActivityPresenter(
+            let presenter = ToastUserIndicatorPresenter(
                 viewState: .init(
                     style: .success,
                     label: label
                 ),
                 navigationController: appNavigationVC
             )
-            return ActivityRequest(
+            return UserIndicatorRequest(
                 presenter: presenter,
                 dismissal: .timeout(1.5)
             )
         }
     }
 }
+
