@@ -12,7 +12,7 @@
 "yes" = "はい";
 "back" = "戻る";
 "close" = "閉じる";
-"continue" = "続く";
+"continue" = "続ける";
 "sign_up" = "登録";
 "resend_message" = "メッセージを再送信";
 "select_all" = "全て選択";
@@ -59,7 +59,7 @@
 "start_chat" = "チャットを開始";
 "start_voice_call" = "音声通話を開始";
 "start_video_call" = "ビデオ通話を開始";
-"mention" = "記載";
+"mention" = "メンション";
 "select_account" = "アカウントを選択";
 "attach_media" = "ライブラリからメディアを添付";
 "capture_media" = "写真/ビデオを撮る";
@@ -159,8 +159,8 @@
 "account_link_email" = "リンクメール";
 "account_linked_emails" = "リンクされたメール";
 "account_email_validation_title" = "認証の保留中";
-"account_email_validation_message" = "メールをチェックし、それに含まれているリンクをクリックしてください。 これが完了したら、[続行]をクリックします。";
-"account_email_validation_error" = "メールアドレスを確認できません。 あなたのメールをチェックし、それに含まれているリンクをクリックしてください。 これが完了したら、[続行]をクリックします";
+"account_email_validation_message" = "電子メールを確認して、本文中のURLをクリックしてください。完了したら「続行する」をクリックしてください。";
+"account_email_validation_error" = "メールアドレスを認証できません。メールを確認して、記載されているリンクをクリックしてください。その後、「続行する」をクリックしてください";
 "account_msisdn_validation_title" = "認証の保留中";
 "account_msisdn_validation_message" = "SMSで認証番号を送りました。以下にその番号を入力してください。";
 "account_msisdn_validation_error" = "電話番号を確認できません。";
@@ -168,9 +168,9 @@
 "account_error_picture_change_failed" = "画像の変更に失敗しました";
 "account_error_matrix_session_is_not_opened" = "Matrixセッションが開かれていません";
 "account_error_email_wrong_title" = "無効な電子メールアドレス";
-"account_error_email_wrong_description" = "これは有効なメールアドレスではないようです";
+"account_error_email_wrong_description" = "メールアドレスの形式が正しくありません";
 "account_error_msisdn_wrong_title" = "無効な電話番号";
-"account_error_msisdn_wrong_description" = "これは有効な電話番号ではないようです";
+"account_error_msisdn_wrong_description" = "電話番号の形式が正しくありません";
 // Room creation
 "room_creation_name_title" = "ルーム名:";
 "room_creation_name_placeholder" = "(例 ランチグループ)";
