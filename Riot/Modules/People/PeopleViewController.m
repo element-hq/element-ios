@@ -98,16 +98,6 @@
 
 #pragma mark - UITableView delegate
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 0.0;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return nil;
-}
-
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([super respondsToSelector:@selector(tableView:willDisplayCell:forRowAtIndexPath:)])
