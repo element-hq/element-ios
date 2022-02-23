@@ -24,6 +24,7 @@ static UIColor* kMoreLabelDefaultcolor;
 @interface MXKReceiptSendersContainer ()
 
 @property (nonatomic, readwrite) NSArray <MXRoomMember *> *roomMembers;
+@property (nonatomic, readwrite) NSArray <MXUser *> *nonRoomMembers;
 @property (nonatomic, readwrite) NSArray <UIImage *> *placeholders;
 @property (nonatomic) MXMediaManager *mediaManager;
 
@@ -54,10 +55,12 @@ static UIColor* kMoreLabelDefaultcolor;
     return self;
 }
 
-- (void)refreshReceiptSenders:(NSArray<MXRoomMember*>*)roomMembers withPlaceHolders:(NSArray<UIImage*>*)placeHolders andAlignment:(ReadReceiptsAlignment)alignment
+- (void)refreshReceiptSenders:(NSArray<MXRoomMember*>*)roomMembers nonRoomMembersReceiptSenders: (NSArray<MXUser*>*)nonRoomMembers withPlaceHolders:(NSArray<UIImage*>*)placeHolders andAlignment:(ReadReceiptsAlignment)alignment
 {
     // Store the room members and placeholders for showing in the details view controller
     self.roomMembers = roomMembers;
+    
+    self.nonRoomMembers = nonRoomMembers;
     self.placeholders = placeHolders;
     
     // Remove all previous content
@@ -78,9 +81,9 @@ static UIColor* kMoreLabelDefaultcolor;
     unsigned long maxDisplayableItems = (int)((globalFrame.size.width - defaultMoreLabelWidth - _avatarMargin) / (side + _avatarMargin));
     
     maxDisplayableItems = MIN(maxDisplayableItems, _maxDisplayedAvatars);
-    count = MIN(roomMembers.count, maxDisplayableItems);
+    count = MIN(roomMembers.count + nonRoomMembers.count, maxDisplayableItems);
     
-    int index;
+    int combinedIndex;
     
     CGFloat xOff = 0;
     
@@ -89,10 +92,16 @@ static UIColor* kMoreLabelDefaultcolor;
         xOff = globalFrame.size.width - (side + _avatarMargin);
     }
     
-    for (index = 0; index < count; index++)
+    for (combinedIndex = 0; combinedIndex < count; combinedIndex++)
     {
-        MXRoomMember *roomMember = [roomMembers objectAtIndex:index];
-        UIImage *preview = index < placeHolders.count ? placeHolders[index] : nil;
+        NSString *avatarUrl;
+        if (combinedIndex < roomMembers.count) {
+            avatarUrl = [roomMembers objectAtIndex:combinedIndex].avatarUrl;
+        } else {
+            NSUInteger nonRoomMemberIndex = combinedIndex - roomMembers.count;
+            avatarUrl = [nonRoomMembers objectAtIndex:nonRoomMemberIndex].avatarUrl;
+        }
+        UIImage *preview = combinedIndex < placeHolders.count ? placeHolders[combinedIndex] : nil;
         
         MXKImageView *imageView = [[MXKImageView alloc] initWithFrame:CGRectMake(xOff, 0, side, side)];
         imageView.defaultBackgroundColor = [UIColor clearColor];
@@ -110,7 +119,7 @@ static UIColor* kMoreLabelDefaultcolor;
         [self addSubview:imageView];
         imageView.enableInMemoryCache = YES;
         
-        [imageView setImageURI:roomMember.avatarUrl
+        [imageView setImageURI:avatarUrl
                       withType:nil
            andImageOrientation:UIImageOrientationUp
                  toFitViewSize:CGSizeMake(side, side)

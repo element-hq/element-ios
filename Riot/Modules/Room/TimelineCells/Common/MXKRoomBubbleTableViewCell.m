@@ -706,9 +706,11 @@ static BOOL _disableLongPressGestureOnEvent;
                             timeLabelOffset += 15;
                         }
                         
+                        MXKReceiptSendersContainer* avatarsContainer = nil;
                         if (bubbleData.showBubbleReceipts && !bubbleData.useCustomReceipts)
                         {
                             NSMutableArray* roomMembers = nil;
+                            NSMutableArray *nonRoomMembers = nil;
                             NSMutableArray* placeholders = nil;
                             NSArray<MXReceiptData*> *receipts = bubbleData.readReceipts[component.event.eventId];
                             
@@ -720,7 +722,10 @@ static BOOL _disableLongPressGestureOnEvent;
                                 {
                                     // Retrieve the corresponding room members
                                     roomMembers = [[NSMutableArray alloc] initWithCapacity:receipts.count];
+                                    nonRoomMembers = [[NSMutableArray alloc] initWithCapacity:receipts.count];
                                     placeholders = [[NSMutableArray alloc] initWithCapacity:receipts.count];
+                                    
+                                    avatarsContainer = [[MXKReceiptSendersContainer alloc] initWithFrame:CGRectMake(0, component.position.y + timeLabelOffset, self.bubbleInfoContainer.frame.size.width , 15) andMediaManager:bubbleData.mxSession.mediaManager];
 
                                     MXRoomMembers *stateRoomMembers = room.dangerousSyncState.members;
                                     for (MXReceiptData* data in receipts)
@@ -730,6 +735,17 @@ static BOOL _disableLongPressGestureOnEvent;
                                         {
                                             [roomMembers addObject:roomMember];
                                             [placeholders addObject:self.picturePlaceholder];
+                                        } else {
+                                            MXUser *user = [[MXUser alloc] initWithUserId:data.userId];
+                                            [nonRoomMembers addObject:user];
+                                            [placeholders addObject:[AvatarGenerator generateAvatarForMatrixItem:roomMember.userId withDisplayName:@" "]];
+                                            [user updateFromHomeserverOfMatrixSession:bubbleData.mxSession success:^{
+                                                if (avatarsContainer != nil) {
+                                                    [avatarsContainer refreshReceiptSenders:roomMembers nonRoomMembersReceiptSenders: nonRoomMembers withPlaceHolders:placeholders andAlignment:ReadReceiptAlignmentRight];
+                                                }
+                                            } failure:^(NSError *error) {
+                                                ;
+                                            }];
                                         }
                                     }
                                 }
@@ -737,9 +753,7 @@ static BOOL _disableLongPressGestureOnEvent;
                             
                             if (roomMembers.count)
                             {
-                                MXKReceiptSendersContainer* avatarsContainer = [[MXKReceiptSendersContainer alloc] initWithFrame:CGRectMake(0, component.position.y + timeLabelOffset, self.bubbleInfoContainer.frame.size.width , 15) andMediaManager:bubbleData.mxSession.mediaManager];
-                                
-                                [avatarsContainer refreshReceiptSenders:roomMembers withPlaceHolders:placeholders andAlignment:self.readReceiptsAlignment];
+                                [avatarsContainer refreshReceiptSenders:roomMembers nonRoomMembersReceiptSenders:nonRoomMembers withPlaceHolders:placeholders andAlignment:ReadReceiptAlignmentRight];
                                 
                                 [self.bubbleInfoContainer addSubview:avatarsContainer];
                                 

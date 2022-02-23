@@ -1,0 +1,1 @@
+Rooms: Display avatars for m.read events even if account who sent the read event is not a channel member

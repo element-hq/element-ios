@@ -481,7 +481,7 @@ const CGFloat kTypingCellHeight = 24;
                                         upperDecorationView:upperDecorationView];
                     }
                     
-                    MXKReceiptSendersContainer* avatarsContainer;
+                    MXKReceiptSendersContainer* avatarsContainer = nil;
                     
                     // Handle read receipts (if any)
                     if (self.showBubbleReceipts && cellData.readReceipts.count && !isCollapsableCellCollapsed)
@@ -489,6 +489,7 @@ const CGFloat kTypingCellHeight = 24;
                         // Get the events receipts by ignoring the current user receipt.
                         NSArray* receipts =  cellData.readReceipts[component.event.eventId];
                         NSMutableArray *roomMembers;
+                        NSMutableArray *nonRoomMembers;
                         NSMutableArray *placeholders;
                         
                         // Check whether some receipts are found
@@ -496,7 +497,10 @@ const CGFloat kTypingCellHeight = 24;
                         {
                             // Retrieve the corresponding room members
                             roomMembers = [[NSMutableArray alloc] initWithCapacity:receipts.count];
+                            nonRoomMembers = [[NSMutableArray alloc] initWithCapacity:receipts.count];
                             placeholders = [[NSMutableArray alloc] initWithCapacity:receipts.count];
+                            
+                            avatarsContainer = [[MXKReceiptSendersContainer alloc] initWithFrame:CGRectMake(bubbleCell.frame.size.width - PlainRoomCellLayoutConstants.readReceiptsViewWidth + PlainRoomCellLayoutConstants.readReceiptsViewRightMargin, bottomPositionY + PlainRoomCellLayoutConstants.readReceiptsViewTopMargin, PlainRoomCellLayoutConstants.readReceiptsViewWidth, PlainRoomCellLayoutConstants.readReceiptsViewHeight) andMediaManager:self.mxSession.mediaManager];
                             
                             for (MXReceiptData* data in receipts)
                             {
@@ -505,15 +509,25 @@ const CGFloat kTypingCellHeight = 24;
                                 {
                                     [roomMembers addObject:roomMember];
                                     [placeholders addObject:[AvatarGenerator generateAvatarForMatrixItem:roomMember.userId withDisplayName:roomMember.displayname]];
+                                } else {
+                                    MXUser *user = [[MXUser alloc] initWithUserId:data.userId];
+                                    [nonRoomMembers addObject:user];
+                                    [placeholders addObject:[AvatarGenerator generateAvatarForMatrixItem:roomMember.userId withDisplayName:@" "]];
+                                    [user updateFromHomeserverOfMatrixSession:self.mxSession success:^{
+                                        if (avatarsContainer != nil) {
+                                            [avatarsContainer refreshReceiptSenders:roomMembers nonRoomMembersReceiptSenders: nonRoomMembers withPlaceHolders:placeholders andAlignment:ReadReceiptAlignmentRight];
+                                        }
+                                    } failure:^(NSError *error) {
+                                        ;
+                                    }];
                                 }
                             }
                         }
                         
                         // Check whether some receipts are found
-                        if (roomMembers.count)
+                        if (roomMembers.count || nonRoomMembers.count)
                         {
                             // Define the read receipts container, positioned on the right border of the bubble cell (Note the right margin 6 pts).
-                            avatarsContainer = [[MXKReceiptSendersContainer alloc] initWithFrame:CGRectMake(bubbleCell.frame.size.width - PlainRoomCellLayoutConstants.readReceiptsViewWidth + PlainRoomCellLayoutConstants.readReceiptsViewRightMargin, bottomPositionY + PlainRoomCellLayoutConstants.readReceiptsViewTopMargin, PlainRoomCellLayoutConstants.readReceiptsViewWidth, PlainRoomCellLayoutConstants.readReceiptsViewHeight) andMediaManager:self.mxSession.mediaManager];
                             
                             // Custom avatar display
                             avatarsContainer.maxDisplayedAvatars = 5;
@@ -524,7 +538,7 @@ const CGFloat kTypingCellHeight = 24;
                             
                             avatarsContainer.moreLabelTextColor = ThemeService.shared.theme.textPrimaryColor;
                             
-                            [avatarsContainer refreshReceiptSenders:roomMembers withPlaceHolders:placeholders andAlignment:ReadReceiptAlignmentRight];
+                            [avatarsContainer refreshReceiptSenders:roomMembers nonRoomMembersReceiptSenders: nonRoomMembers withPlaceHolders:placeholders andAlignment:ReadReceiptAlignmentRight];
                             avatarsContainer.readReceipts = receipts;
                             UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:cell action:@selector(onReceiptContainerTap:)];
                             [tapRecognizer setNumberOfTapsRequired:1];

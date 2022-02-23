@@ -71,6 +71,11 @@ typedef NS_ENUM(NSInteger, ReadReceiptsAlignment)
 @property (nonatomic, readonly) NSArray <MXRoomMember *> *roomMembers;
 
 /*
+ The array of the users that will have details displayed although they aren't a room member
+ */
+@property (nonatomic, readonly) NSArray <MXUser *> *nonRoomMembers;
+
+/*
  The placeholders of the room members that will be shown if the users don't have avatars
  */
 @property (nonatomic, readonly) NSArray <UIImage *> *placeholders;
@@ -93,7 +98,7 @@ typedef NS_ENUM(NSInteger, ReadReceiptsAlignment)
  @param placeHolders list of placeholders, one by room member. Used when url is nil, or during avatar download.
  @param alignment (see ReadReceiptsAlignment).
  */
-- (void)refreshReceiptSenders:(NSArray<MXRoomMember*>*)roomMembers withPlaceHolders:(NSArray<UIImage*>*)placeHolders andAlignment:(ReadReceiptsAlignment)alignment;
+- (void)refreshReceiptSenders:(NSArray<MXRoomMember*>*)roomMembers nonRoomMembersReceiptSenders: (NSArray<MXUser*>*)nonRoomMembers withPlaceHolders:(NSArray<UIImage*>*)placeHolders andAlignment:(ReadReceiptsAlignment)alignment;
 
 @end
 
