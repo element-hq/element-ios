@@ -1757,3 +1757,16 @@
 "room_resource_usage_limit_reached_message_contact_3" = " aby ste tento limit zvýšili.";
 "room_resource_limit_exceeded_message_contact_3" = " pokračovať v používaní tejto služby.";
 "find_your_contacts_title" = "Začnite so zoznamom vašich kontaktov";
+"you" = "Vy";
+"location_sharing_open_open_street_maps" = "Otvoriť v OpenStreetMap";
+"search_filter_placeholder" = "Filter";
+"onboarding_use_case_existing_server_button" = "Pripojiť sa k serveru";
+"onboarding_use_case_existing_server_message" = "Chcete sa pripojiť k existujúcemu serveru?";
+"onboarding_use_case_skip_button" = "preskočiť túto otázku";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "Ešte si nie ste istí? Môžete %@";
+"onboarding_use_case_community_messaging" = "Komunity";
+"onboarding_use_case_work_messaging" = "Tímy";
+"onboarding_use_case_personal_messaging" = "Priatelia a rodina";
+"onboarding_use_case_message" = "Pomôžeme vám nadviazať kontakty.";
+"onboarding_use_case_title" = "S kým budete komunikovať najčastejšie?";
