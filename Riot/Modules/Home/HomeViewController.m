@@ -103,8 +103,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titleHome];
 
     [ThemeService.shared.theme applyStyleOnNavigationBar:[AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar];
 
