@@ -1,0 +1,1 @@
+Fixed crashes on implicitly unwrapped optionals in the PlainRoomTimelineCellDecorator.

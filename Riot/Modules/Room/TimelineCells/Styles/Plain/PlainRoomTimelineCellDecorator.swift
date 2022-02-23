@@ -273,8 +273,8 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
                 
                 let readMarkerContainerViewHalfWidth = readMarkerContainerView.frame.size.width/2
                 
-                cell.readMarkerViewLeadingConstraint.constant = readMarkerContainerViewHalfWidth
-                cell.readMarkerViewTrailingConstraint.constant = -readMarkerContainerViewHalfWidth
+                cell.readMarkerViewLeadingConstraint?.constant = readMarkerContainerViewHalfWidth
+                cell.readMarkerViewTrailingConstraint?.constant = -readMarkerContainerViewHalfWidth
                                 
                 UIView.animate(withDuration: 1.5,
                                delay: 0.3,
