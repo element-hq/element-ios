@@ -138,7 +138,6 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         return result
     }
 
-    // TODO: lookup this for invitation sections
     private var hideInvitedSection: Bool {
         return MXSDKOptions.sharedInstance().autoAcceptRoomInvites
     }
