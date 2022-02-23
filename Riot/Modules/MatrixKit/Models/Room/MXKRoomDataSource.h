@@ -454,12 +454,14 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
  
  @param eventIdToReply the id of event to reply.
  @param text the text to send.
+ @param actualData the data source actually. It's use to retrieve event to reply.
  @param success A block object called when the operation succeeds. It returns
  the event id of the event generated on the homeserver
  @param failure A block object called when the operation fails.
  */
 - (void)sendReplyToEventWithId:(NSString*)eventIdToReply
                withTextMessage:(NSString *)text
+          actualRoomDataSource:(MXKRoomDataSource *)actualData
                        success:(void (^)(NSString *))success
                        failure:(void (^)(NSError *))failure;
 
@@ -797,12 +799,14 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
 
  @param eventId The eventId of event to replace.
  @param text The new message text.
+ @param actualData the data source actually. It's use to retrieve event to replace.
  @param success A block object called when the operation succeeds. It returns
  the event id of the event generated on the homeserver.
  @param failure A block object called when the operation fails.
  */
 - (void)replaceTextMessageForEventWithId:(NSString *)eventId
                          withTextMessage:(NSString *)text
+                    actualRoomDataSource:(MXKRoomDataSource *)actualData
                                  success:(void (^)(NSString *eventId))success
                                  failure:(void (^)(NSError *error))failure;
 

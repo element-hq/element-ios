@@ -1254,16 +1254,23 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)sendTextMessage:(NSString*)msgTxt
 {
+    // If the event occur on timeline not live, use the live data source to resolve event
+    BOOL isLive = self.roomDataSource.isLive;
+    if (isLive == NO) {
+        [self setupRoomDataSourceLive];
+    }
+    MXKRoomDataSource *roomDataSource = isLive ? self.roomDataSource : self.roomDataSourceLive;
+    
     if (self.inputToolBarSendMode == RoomInputToolbarViewSendModeReply && customizedRoomDataSource.selectedEventId)
     {
-        [self.roomDataSource sendReplyToEventWithId:customizedRoomDataSource.selectedEventId withTextMessage:msgTxt success:nil failure:^(NSError *error) {
+        [roomDataSource sendReplyToEventWithId:customizedRoomDataSource.selectedEventId withTextMessage:msgTxt actualRoomDataSource:self.roomDataSource success:nil failure:^(NSError *error) {
             // Just log the error. The message will be displayed in red in the room history
             MXLogDebug(@"[MXKRoomViewController] sendTextMessage failed.");
         }];
     }
     else if (self.inputToolBarSendMode == RoomInputToolbarViewSendModeEdit && customizedRoomDataSource.selectedEventId)
     {
-        [self.roomDataSource replaceTextMessageForEventWithId:customizedRoomDataSource.selectedEventId withTextMessage:msgTxt success:nil failure:^(NSError *error) {
+        [roomDataSource replaceTextMessageForEventWithId:customizedRoomDataSource.selectedEventId withTextMessage:msgTxt actualRoomDataSource:self.roomDataSource success:nil failure:^(NSError *error) {
             // Just log the error. The message will be displayed in red
             MXLogDebug(@"[MXKRoomViewController] sendTextMessage failed.");
         }];
@@ -1271,7 +1278,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     else
     {
         // Let the datasource send it and manage the local echo
-        [self.roomDataSource sendTextMessage:msgTxt success:nil failure:^(NSError *error)
+        [roomDataSource sendTextMessage:msgTxt success:nil failure:^(NSError *error)
          {
             // Just log the error. The message will be displayed in red in the room history
             MXLogDebug(@"[MXKRoomViewController] sendTextMessage failed.");
@@ -2301,6 +2308,18 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                               [suggestionsViewController.view.bottomAnchor constraintEqualToAnchor:self.userSuggestionContainerView.bottomAnchor],]];
     
     [suggestionsViewController didMoveToParentViewController:self];
+}
+
+- (void)setupRoomDataSourceLive
+{
+    MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
+
+    [roomDataSourceManager roomDataSourceForRoom:self.roomDataSource.roomId
+                                          create:YES
+                                      onComplete:^(MXKRoomDataSource *roomDataSource) {
+        self.roomDataSourceLive = roomDataSource;
+        [self.roomDataSourceLive finalizeInitialization];
+    }];
 }
 
 #pragma mark - Jitsi

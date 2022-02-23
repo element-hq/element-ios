@@ -1872,10 +1872,11 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 - (void)sendReplyToEventWithId:(NSString*)eventIdToReply
                withTextMessage:(NSString *)text
+          actualRoomDataSource:(MXKRoomDataSource *)actualData
                        success:(void (^)(NSString *))success
                        failure:(void (^)(NSError *))failure
 {
-    MXEvent *eventToReply = [self eventWithEventId:eventIdToReply];
+    MXEvent *eventToReply = [actualData eventWithEventId:eventIdToReply];
     
     __block MXEvent *localEchoEvent = nil;
     
@@ -4285,11 +4286,12 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 }
 
 - (void)replaceTextMessageForEventWithId:(NSString*)eventId
-                         withTextMessage:(NSString *)text                           
+                         withTextMessage:(NSString *)text
+                    actualRoomDataSource:(MXKRoomDataSource *)actualData
                                  success:(void (^)(NSString *))success
                                  failure:(void (^)(NSError *))failure
 {
-    MXEvent *event = [self eventWithEventId:eventId];
+    MXEvent *event = [actualData eventWithEventId:eventId];
     
     NSString *sanitizedText = [self sanitizedMessageText:text];
     NSString *formattedText = [self htmlMessageFromSanitizedText:sanitizedText];
