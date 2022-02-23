@@ -570,6 +570,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     isAppeared = NO;
     
     [VoiceMessageMediaServiceProvider.sharedProvider pauseAllServices];
+    [self stopActivityIndicator];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -931,6 +932,18 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     self.updateRoomReadMarker = NO;
 }
 
+- (BOOL)providesCustomActivityIndicator {
+    return [self.delegate roomViewControllerCanDelegateUserIndicators:self];
+}
+
+- (void)startActivityIndicator {
+    if ([self providesCustomActivityIndicator]) {
+        [self.delegate roomViewControllerDidStartLoading:self];
+    } else {
+        [super startActivityIndicator];
+    }
+}
+
 - (void)stopActivityIndicator
 {
     if (notificationTaskProfile)
@@ -939,8 +952,13 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [MXSDKOptions.sharedInstance.profiler stopMeasuringTaskWithProfile:notificationTaskProfile];
         notificationTaskProfile = nil;
     }
-    
-    [super stopActivityIndicator];
+    if ([self providesCustomActivityIndicator]) {
+        if ([self canStopActivityIndicator]) {
+            [self.delegate roomViewControllerDidStopLoading:self];
+        }
+    } else {
+        [super stopActivityIndicator];
+    }
 }
 
 - (void)displayRoom:(MXKRoomDataSource *)dataSource

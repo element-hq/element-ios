@@ -28,8 +28,11 @@ public class UserIndicatorQueue {
         }
     }
     
-    public static let shared = UserIndicatorQueue()
-    private var queue = [Weak<UserIndicator>]()
+    private var queue: [Weak<UserIndicator>]
+    
+    public init() {
+        queue = []
+    }
     
     /// Add a new indicator to the queue by providing a request.
     ///
