@@ -228,11 +228,11 @@ extern NSString *const kMXKRoomBubbleCellUrlItemInteraction;
 /**
  The read marker view and its layout constraints (nil by default).
  */
-@property (nonatomic) UIView *readMarkerView;
-@property (nonatomic) NSLayoutConstraint *readMarkerViewTopConstraint;
-@property (nonatomic) NSLayoutConstraint *readMarkerViewLeadingConstraint;
-@property (nonatomic) NSLayoutConstraint *readMarkerViewTrailingConstraint;
-@property (nonatomic) NSLayoutConstraint *readMarkerViewHeightConstraint;
+@property (nonatomic, nullable) UIView *readMarkerView;
+@property (nonatomic, nullable) NSLayoutConstraint *readMarkerViewTopConstraint;
+@property (nonatomic, nullable) NSLayoutConstraint *readMarkerViewLeadingConstraint;
+@property (nonatomic, nullable) NSLayoutConstraint *readMarkerViewTrailingConstraint;
+@property (nonatomic, nullable) NSLayoutConstraint *readMarkerViewHeightConstraint;
 
 /**
  The potential webview used to render an attachment (for example an animated gif).
