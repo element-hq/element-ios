@@ -30,7 +30,7 @@
 "auth_email_not_found" = "فَشَلَ إرسَالُ البَريد الإلِكتُرونيّ: لَم يَتِمّ العُثُور عَلَى عُنوان البَريد الإلِكتُرونيّ هَذَا";
 "auth_forgot_password_error_no_configured_identity_server" = "لَم يَتِمّ ضَبط خادِم هُويَّة: أضِف وَاحِدًا لإعادَة تَعيِين كَلِمَة المُرُور الخَاصَّة بِكَ.";
 "auth_forgot_password" = "هَل نَسِيتَ كَلِمَة المُرُور؟";
-"auth_username_in_use" = "اِسم مُستَخدِم مُستَخدَم";
+"auth_username_in_use" = "اسم المُستخدم مأخوذ";
 "auth_password_dont_match" = "كَلِمَةُ المُرُورِ لَا تَتَطَابَق";
 "auth_untrusted_id_server" = "خادِمُ الهُويَّة غَيرُ مَوثُوقٍ بِه";
 "auth_phone_is_required" = "لَم يَتِمّ ضَبط خادِم هُويَّة لِذَلِك لا يُمكِنُكَ إضافَة رَقم هَاتِف لإعادَة تَعيِين كَلِمَة المُرُور الخَاصَّة بِكَ فِي المُستَقبَل.";
@@ -69,7 +69,7 @@
 "auth_login" = "تَسجيلُ الدُّخُول";
 
 // Call Bar
-"callbar_only_single_active" = "مُكالَمَة نَشِطَة (%@)";
+"callbar_only_single_active" = "اضَغَطَ للعَوْدة إلى المُكالَمَة (%@)";
 "less" = "أقَلّ";
 "more" = "المَزيد";
 "switch" = "تَبدِيل";
@@ -79,7 +79,7 @@
 "sending" = "يَجري الإرسَال";
 "send_to" = "إرسَال إلى %@";
 "collapse" = "تضييق";
-"rename" = "إعادَة التَّسميَة";
+"rename" = "إعَادة التسمية";
 "later" = "لاَحِقًا";
 "active_call_details" = "مُكالَمَة نَشِطَة (%@)";
 "active_call" = "مُكالَمَة نَشِطَة";
@@ -346,3 +346,34 @@
 "room_participants_action_ignore" = "إخفَاءُ جَمِيعِ الرَّسائِلِ مِن هَذَا المُستَخدِم";
 "room_recents_unknown_room_error_message" = "يَتَعَذَّر العُثُور عَلَى هَذِهِ الغُرفَة. تأكَّد مِن وجودِهَا";
 "room_creation_dm_error" = "يَتَعَذَّرُ عَلينَا إنشَاء المُحادَثَة المُباشِرَة الخَّاصَةِ بِك. يُرجَى التَّحَقُقُ مِنَ المُستَخدِمِيَنَ اللَّذِينَ تُريدُ دَعوَتَهُم ثُمَّ المُحاوَلَةُ مَرةً أُخرَى.";
+"onboarding_use_case_existing_server_button" = "اتَّصَلَ بالخادِم";
+"onboarding_use_case_existing_server_message" = "هَل تَتَطلَّع إلى الانْضِمام إلى الخادِم المَوجود؟";
+"onboarding_use_case_skip_button" = "تَخَطي هَذا السُؤال";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "لَستَ مٌتَأكداً بَعدَ؟ يُمَكَّنَك %@";
+"onboarding_use_case_community_messaging" = "المُجتَمَعَات";
+"onboarding_use_case_work_messaging" = "الفَرِقَ";
+"onboarding_use_case_personal_messaging" = "الأصَدقاء والعائِلة";
+"onboarding_use_case_message" = "سنساعَدَك على الاتصال.";
+"onboarding_use_case_title" = "مَنْ الذي ستَتَحَدَّثَ إليه أكْثَر؟";
+"onboarding_splash_page_4_message" = "Element رائِع أيضاً لمَكان العَمِلَ. تَثِقُ به أكثر المٌؤسَسات أمانًا في العالم.";
+"onboarding_splash_page_4_title_no_pun" = "مُراسَلة لفَريقك.";
+"onboarding_splash_page_3_message" = "مشفرة من النِّهايَة-إلى-النِّهايَة بين الطَرفين ولا حَاجة إلى رَقم الهَاتِف. لا توجَد إعْلانات أو التَنقيب في البَيانات.";
+"onboarding_splash_page_3_title" = "رسائل آمِنة.";
+"onboarding_splash_page_2_message" = "اختارَ المَكان الَّذي يَتُمَ فيه الاحتِفاظ بمُحادثاتك، مَمّا يمنَحَكَ التَحكَم والاسْتِقلاليّة. مُتَّصل عبر Matrix.";
+"onboarding_splash_page_2_title" = "أَنت المُتَحكِم.";
+"onboarding_splash_page_1_message" = "اتصال آمِن ومُسْتَقِلّ يمنَحك نَفْس مُسْتَوى الخٌصوصيّة مِثْل مُحادثة وجهاً لوَجه في مَنْزِلك.";
+"onboarding_splash_page_1_title" = "امْتَلَكَ مُحادَثَاتك.";
+"onboarding_splash_login_button_title" = "لَدَّي حِساب بالفِعْل";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "إنشاء حِساب";
+"accessibility_button_label" = "زِرّ";
+"done" = "تَم";
+"open" = "فَتح";
+"enable" = "تَفعِيل";
+
+
+// Room Details
+"room_details_title" = "تَفاصيلُ الغُرفَة";
+"ok" = "حَسَناً";
