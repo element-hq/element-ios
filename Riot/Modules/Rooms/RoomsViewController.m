@@ -20,7 +20,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface RoomsViewController ()
+@interface RoomsViewController () <MasterTabBarItemDisplayProtocol>
 {
     RecentsDataSource *recentsDataSource;
 }
@@ -66,8 +66,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titleRooms];
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
     if ([self.dataSource isKindOfClass:RecentsDataSource.class])
@@ -163,6 +161,13 @@
     {
         return AssetImages.roomsEmptyScreenArtwork.image;
     }
+}
+
+#pragma mark - MasterTabBarItemDisplayProtocol
+
+- (NSString *)masterTabBarItemTitle
+{
+    return [VectorL10n titleRooms];
 }
 
 @end

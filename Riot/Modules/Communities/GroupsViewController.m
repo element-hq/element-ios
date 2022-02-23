@@ -21,7 +21,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface GroupsViewController ()
+@interface GroupsViewController () <MasterTabBarItemDisplayProtocol>
 {
     // Tell whether a groups refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -224,8 +224,6 @@
         [self scrollToTop:YES];
         
     }];
-    
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titleGroups];
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;        
 }
 
@@ -642,6 +640,13 @@
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
     [self.groupsSearchBar setShowsCancelButton:NO animated:NO];
+}
+
+#pragma mark - MasterTabBarItemDisplayProtocol
+
+- (NSString *)masterTabBarItemTitle
+{
+    return [VectorL10n titleGroups];
 }
 
 @end
