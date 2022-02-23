@@ -832,14 +832,14 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         chevronView.contentMode = UIViewContentModeCenter;
         sectionHeader.accessoryView = chevronView;
     }
-    else if (_recentsDataSourceMode == RecentsDataSourceModeHome)
+    if (_recentsDataSourceMode == RecentsDataSourceModeHome)
     {
         // Add a badge to display the total of missed notifications by section.
         UIView *badgeView = [self badgeViewForHeaderTitleInHomeSection:section];
         
         if (badgeView)
         {
-            sectionHeader.accessoryView = badgeView;
+            sectionHeader.rightAccessoryView = badgeView;
         }
     }
     

@@ -85,6 +85,19 @@ static const CGFloat kInterItemsSpaceHorizontal = 8.0;
     [self setNeedsLayout];
 }
 
+- (void)setRightAccessoryView:(UIView *)rightAccessoryView
+{
+    //  remove old one
+    [_rightAccessoryView removeFromSuperview];
+    _rightAccessoryView = rightAccessoryView;
+    if (_rightAccessoryView)
+    {
+        //  add new one
+        [self.contentView addSubview:_rightAccessoryView];
+    }
+    [self setNeedsLayout];
+}
+
 - (void)setBottomView:(UIView *)bottomView
 {
     //  remove old one
@@ -169,6 +182,10 @@ static const CGFloat kInterItemsSpaceHorizontal = 8.0;
         {
             rightMargin += _accessoryView.frame.size.width + kInterItemsSpaceHorizontal;
         }
+        if (_rightAccessoryView)
+        {
+            rightMargin += _rightAccessoryView.frame.size.width + kInterItemsSpaceHorizontal;
+        }
         if (_bottomView)
         {
             //  set header label top
@@ -179,7 +196,8 @@ static const CGFloat kInterItemsSpaceHorizontal = 8.0;
             //  center header label vertically
             frame.origin.y = MAX(0, (self.contentView.bounds.size.height - frame.size.height)/2);
         }
-        frame.size.width = self.contentView.bounds.size.width - leftMargin - rightMargin;
+        frame.size.width = MIN(self.contentView.bounds.size.width - leftMargin - rightMargin,
+                               [_headerLabel sizeThatFits:self.frame.size].width);
         _headerLabel.frame = frame;
     }
 
@@ -190,9 +208,28 @@ static const CGFloat kInterItemsSpaceHorizontal = 8.0;
         rightMargin = MAX(_rightInset, 20);
 
         CGRect frame = _accessoryView.frame;
-        frame.origin.x = self.contentView.bounds.size.width - frame.size.width - rightMargin;
+        if(_headerLabel)
+        {
+            frame.origin.x = leftMargin + _headerLabel.frame.size.width + kInterItemsSpaceHorizontal;
+        }
+        else
+        {
+            frame.origin.x = leftMargin;
+        }
         frame.origin.y = MAX(0, (_topViewHeight - frame.size.height)/2);
         _accessoryView.frame = frame;
+    }
+
+    if (_rightAccessoryView)
+    {
+        //  reset margins
+        leftMargin = MAX(_leftInset, 20);
+        rightMargin = MAX(_rightInset, 20);
+
+        CGRect frame = _rightAccessoryView.frame;
+        frame.origin.x = self.contentView.bounds.size.width - frame.size.width - rightMargin;
+        frame.origin.y = MAX(0, (_topViewHeight - frame.size.height)/2);
+        _rightAccessoryView.frame = frame;
     }
 
     if (_bottomView)
