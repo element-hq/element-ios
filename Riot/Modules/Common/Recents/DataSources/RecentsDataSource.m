@@ -683,7 +683,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     return sectionTitle;
 }
 
-- (UIView *)badgeViewForHeaderTitleInHomeSection:(NSInteger)section
+- (UIView *)badgeViewForHeaderTitleInSection:(NSInteger)section
 {
     // Prepare a badge to display the total of missed notifications in this section.
     id<MXRoomListDataCounts> counts = nil;
@@ -832,10 +832,12 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         chevronView.contentMode = UIViewContentModeCenter;
         sectionHeader.accessoryView = chevronView;
     }
-    if (_recentsDataSourceMode == RecentsDataSourceModeHome)
+    if (_recentsDataSourceMode == RecentsDataSourceModeHome
+        || _recentsDataSourceMode == RecentsDataSourceModePeople
+        || _recentsDataSourceMode == RecentsDataSourceModeRooms)
     {
         // Add a badge to display the total of missed notifications by section.
-        UIView *badgeView = [self badgeViewForHeaderTitleInHomeSection:section];
+        UIView *badgeView = [self badgeViewForHeaderTitleInSection:section];
         
         if (badgeView)
         {
