@@ -35,6 +35,18 @@
 
 @implementation UnifiedSearchRecentsDataSource
 
+- (instancetype)initWithMatrixSession:(MXSession *)mxSession recentsListService:(id<RecentsListServiceProtocol>)recentsListService
+{
+    self = [super initWithMatrixSession:mxSession recentsListService:recentsListService];
+    if (self)
+    {
+        searchedRoomIdOrAliasSection = -1;
+        
+        _hideRecents = NO;
+    }
+    return self;
+}
+
 #pragma mark -
 
 - (void)setPublicRoomsDirectoryDataSource:(PublicRoomsDirectoryDataSource *)publicRoomsDirectoryDataSource
