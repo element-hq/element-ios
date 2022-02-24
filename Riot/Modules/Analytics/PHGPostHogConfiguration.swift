@@ -18,11 +18,12 @@ import PostHog
 
 extension PHGPostHogConfiguration {
     static var standard: PHGPostHogConfiguration? {
-        guard let apiKey = BuildSettings.analyticsKey, let host = BuildSettings.analyticsHost else { return nil }
+        let analyticsConfiguration = BuildSettings.analyticsConfiguration
+        guard analyticsConfiguration.isEnabled else { return nil }
         
-        let configuration = PHGPostHogConfiguration(apiKey: apiKey, host: host)
-        configuration.shouldSendDeviceID = false
+        let postHogConfiguration = PHGPostHogConfiguration(apiKey: analyticsConfiguration.apiKey, host: analyticsConfiguration.host)
+        postHogConfiguration.shouldSendDeviceID = false
         
-        return configuration
+        return postHogConfiguration
     }
 }
