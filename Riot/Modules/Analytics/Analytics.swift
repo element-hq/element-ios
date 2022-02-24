@@ -50,8 +50,8 @@ import AnalyticsEvents
     
     /// Whether to show the user the analytics opt in prompt.
     var shouldShowAnalyticsPrompt: Bool {
-        // Only show the prompt once, and when analytics are configured in BuildSettings.
-        !RiotSettings.shared.hasSeenAnalyticsPrompt && PHGPostHogConfiguration.standard != nil
+        // Only show the prompt once, and when analytics are enabled in BuildSettings.
+        !RiotSettings.shared.hasSeenAnalyticsPrompt && BuildSettings.analyticsConfiguration.isEnabled
     }
     
     /// Indicates whether the user previously accepted Matomo analytics and should be shown the upgrade prompt.
