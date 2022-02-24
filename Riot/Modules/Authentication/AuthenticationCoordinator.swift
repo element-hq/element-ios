@@ -28,6 +28,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     private let navigationRouter: NavigationRouterType
     
     private let authenticationViewController: AuthenticationViewController
+    private var canPresentAdditionalScreens: Bool
+    private var isWaitingToPresentCompleteSecurity = false
     private let crossSigningService = CrossSigningService()
     
     /// The password entered, for use when setting up cross-signing.
@@ -45,6 +47,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     init(parameters: AuthenticationCoordinatorParameters) {
         self.navigationRouter = parameters.navigationRouter
+        self.canPresentAdditionalScreens = parameters.canPresentAdditionalScreens
         
         let authenticationViewController = AuthenticationViewController()
         self.authenticationViewController = authenticationViewController
@@ -91,6 +94,17 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         authenticationViewController.continueSSOLogin(withToken: loginToken, txnId: transactionID)
     }
     
+    func allowScreenPresentation() {
+        canPresentAdditionalScreens = true
+        
+        showLoadingAnimation()
+        
+        if isWaitingToPresentCompleteSecurity {
+            isWaitingToPresentCompleteSecurity = false
+            presentCompleteSecurity()
+        }
+    }
+    
     // MARK: - Private
     
     private func showLoadingAnimation() {
@@ -102,7 +116,13 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         navigationRouter.setRootModule(loadingViewController)
     }
     
-    private func presentCompleteSecurity(with session: MXSession) {
+    private func presentCompleteSecurity() {
+        guard let session = session else {
+            MXLog.error("[AuthenticationCoordinator] presentCompleteSecurity: Unable to present security due to missing session.")
+            authenticationDidComplete()
+            return
+        }
+        
         let isNewSignIn = true
         let keyVerificationCoordinator = KeyVerificationCoordinator(session: session, flow: .completeSecurity(isNewSignIn))
         
@@ -115,7 +135,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     }
     
     private func authenticationDidComplete() {
-        completion?(.didComplete(authenticationViewController.authType))
+        completion?(.didComplete)
     }
     
     private func registerSessionStateChangeNotification(for session: MXSession) {
@@ -183,8 +203,14 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
                             self.authenticationDidComplete()
                         }
                     case .crossSigningExists:
+                        guard self.canPresentAdditionalScreens else {
+                            MXLog.debug("[AuthenticationCoordinator] sessionStateDidChange: Delaying presentCompleteSecurity during onboarding.")
+                            self.isWaitingToPresentCompleteSecurity = true
+                            return
+                        }
+                        
                         MXLog.debug("[AuthenticationCoordinator] sessionStateDidChange: Complete security")
-                        self.presentCompleteSecurity(with: session)
+                        self.presentCompleteSecurity()
                     default:
                         MXLog.debug("[AuthenticationCoordinator] sessionStateDidChange: Nothing to do")
                         
@@ -211,8 +237,10 @@ extension AuthenticationCoordinator: AuthenticationViewControllerDelegate {
         self.session = session
         self.password = password
         
-        self.showLoadingAnimation()
-        completion?(.didLogin(session))
+        if canPresentAdditionalScreens {
+            showLoadingAnimation()
+        }
+        completion?(.didLogin(session: session, authenticationType: authenticationViewController.authType))
     }
 }
 
