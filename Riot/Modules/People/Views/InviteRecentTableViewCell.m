@@ -42,12 +42,12 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
     
     [self.leftButton.layer setCornerRadius:5];
     self.leftButton.clipsToBounds = YES;
-    [self.leftButton setTitle:VectorL10n.decline.uppercaseString forState:UIControlStateNormal];
+    [self.leftButton setTitle:[VectorL10n decline] forState:UIControlStateNormal];
     [self.leftButton addTarget:self action:@selector(onDeclinePressed:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.rightButton.layer setCornerRadius:5];
     self.rightButton.clipsToBounds = YES;
-    [self.rightButton setTitle:VectorL10n.accept.uppercaseString forState:UIControlStateNormal];
+    [self.rightButton setTitle:[VectorL10n accept] forState:UIControlStateNormal];
     [self.rightButton addTarget:self action:@selector(onRightButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 
     self.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -56,9 +56,8 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
 - (void)customizeTableViewCellRendering
 {
     [super customizeTableViewCellRendering];
-
-    [self.leftButton setTitleColor:ThemeService.shared.theme.tintColor
-                          forState:UIControlStateNormal];
+    
+    self.leftButton.backgroundColor = ThemeService.shared.theme.tintColor;
     self.rightButton.backgroundColor = ThemeService.shared.theme.tintColor;
 }
 
@@ -106,12 +105,12 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
     
     if (!showPreviewButton)
     {
-        rightButtonTitle = VectorL10n.accept.uppercaseString;
+        rightButtonTitle = [VectorL10n accept];
         [self vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
     }
     else
     {
-        rightButtonTitle = VectorL10n.preview.uppercaseString;
+        rightButtonTitle = [VectorL10n preview];
         self.accessoryView = nil;
     }
     
@@ -123,7 +122,7 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
 {
     // The height is fixed
-    return 125;
+    return 105;
 }
 
 @end
