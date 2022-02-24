@@ -1518,41 +1518,48 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         return NO;
     }
-    else if (section == favoritesSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_FAVORITES))
+
+    if (section == favoritesSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_FAVORITES))
     {
         return YES;
     }
-    else if (section == peopleSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_PEOPLE))
+
+    if (section == peopleSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_PEOPLE))
     {
         return YES;
     }
-    else if (section == conversationSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_CONVERSATIONS))
+
+    if (section == conversationSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_CONVERSATIONS))
     {
         return YES;
     }
-    else if (section == directorySection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
+
+    if (section == directorySection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
     {
         return YES;
     }
-    else if (section == lowPrioritySection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_LOWPRIORITY))
+
+    if (section == lowPrioritySection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_LOWPRIORITY))
     {
         return YES;
     }
-    else if (section == serverNoticeSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_SERVERNOTICE))
+
+    if (section == serverNoticeSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_SERVERNOTICE))
     {
         return YES;
     }
-    else if (section == invitesSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_INVITES))
+
+    if (section == invitesSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_INVITES))
     {
         return YES;
     }
-    else if (section == suggestedRoomsSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_SUGGESTED))
+
+    if (section == suggestedRoomsSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_SUGGESTED))
     {
         return YES;
     }
-    else {
-        return NO;
-    }
+
+    return NO;
 }
 
 @end

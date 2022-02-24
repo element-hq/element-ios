@@ -15,7 +15,6 @@
 //
 
 import Foundation
-import MatrixSDK
 
 @objcMembers
 public class RecentsListService: NSObject, RecentsListServiceProtocol {
