@@ -16,10 +16,13 @@
 
 import Foundation
 
-/// A presenter associated with and called by an `Activity`, and responsible for the underlying view shown on the screen.
-public protocol ActivityPresentable {
-    /// Called when the `Activity` is started (manually or by the `ActivityCenter`)
-    func present()
-    /// Called when the `Activity` is manually cancelled or completed
-    func dismiss()
+/// A request used to create an underlying `UserIndicator`, allowing clients to only specify the visual aspects of an indicator.
+public struct UserIndicatorRequest {
+    internal let presenter: UserIndicatorPresentable
+    internal let dismissal: UserIndicatorDismissal
+    
+    public init(presenter: UserIndicatorPresentable, dismissal: UserIndicatorDismissal) {
+        self.presenter = presenter
+        self.dismissal = dismissal
+    }
 }

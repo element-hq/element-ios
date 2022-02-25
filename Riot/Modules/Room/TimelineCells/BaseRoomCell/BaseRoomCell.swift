@@ -124,7 +124,7 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
         }
     }
     
-    override var readMarkerViewLeadingConstraint: NSLayoutConstraint! {
+    override var readMarkerViewLeadingConstraint: NSLayoutConstraint? {
         get {
             if self is RoomCellReadMarkerDisplayable {
                 return self.roomCellContentView?.readMarkerViewLeadingConstraint
@@ -141,7 +141,7 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
         }
     }
     
-    override var readMarkerViewTrailingConstraint: NSLayoutConstraint! {
+    override var readMarkerViewTrailingConstraint: NSLayoutConstraint? {
         get {
             if self is RoomCellReadMarkerDisplayable {
                 return self.roomCellContentView?.readMarkerViewTrailingConstraint

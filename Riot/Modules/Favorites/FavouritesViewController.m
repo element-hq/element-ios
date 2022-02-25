@@ -19,7 +19,7 @@
 #import "RecentsDataSource.h"
 #import "GeneratedInterface-Swift.h"
 
-@interface FavouritesViewController ()
+@interface FavouritesViewController () <MasterTabBarItemDisplayProtocol>
 {    
     RecentsDataSource *recentsDataSource;
 }
@@ -62,8 +62,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titleFavourites];
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
     if (recentsDataSource)
@@ -160,6 +158,13 @@
     {
         return AssetImages.favouritesEmptyScreenArtwork.image;
     }
+}
+
+#pragma mark - MasterTabBarItemDisplayProtocol
+
+- (NSString *)masterTabBarItemTitle
+{
+    return [VectorL10n titleFavourites];
 }
 
 @end

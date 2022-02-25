@@ -16,7 +16,7 @@
 
 import Foundation
 
-class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKViewControllerActivityHandling, BannerPresentationProtocol {
+class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKViewControllerActivityHandling, BannerPresentationProtocol, MasterTabBarItemDisplayProtocol {
     
     @objc let homeViewController: HomeViewController
     private var bannerContainerView: UIView!
@@ -106,5 +106,11 @@ class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKVi
 
     func stopActivityIndicator() {
         homeViewController.stopActivityIndicator()
+    }
+    
+    // MARK: - MasterTabBarItemDisplayProtocol
+    
+    var masterTabBarItemTitle: String {
+        return VectorL10n.titleHome
     }
 }

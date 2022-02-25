@@ -26,7 +26,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface PeopleViewController () <SpaceMembersCoordinatorBridgePresenterDelegate>
+@interface PeopleViewController () <SpaceMembersCoordinatorBridgePresenterDelegate, MasterTabBarItemDisplayProtocol>
 {
     NSInteger          directRoomsSectionNumber;
     RecentsDataSource *recentsDataSource;
@@ -83,8 +83,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titlePeople];
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
     if ([self.dataSource isKindOfClass:RecentsDataSource.class])
@@ -181,6 +179,13 @@
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
         self.spaceMembersCoordinatorBridgePresenter = nil;
     }];
+}
+
+#pragma mark - MasterTabBarItemDisplayProtocol
+
+- (NSString *)masterTabBarItemTitle
+{
+    return [VectorL10n titlePeople];
 }
 
 @end

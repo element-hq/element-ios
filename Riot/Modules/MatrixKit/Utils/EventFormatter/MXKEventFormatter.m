@@ -1361,7 +1361,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
 
                         // For replies, look for the end of the parent message
                         // This helps us insert the emote prefix in the right place
-                        if (event.relatesTo.inReplyTo || (event.isInThread && !RiotSettings.shared.enableThreads))
+                        if (event.relatesTo.inReplyTo || (!RiotSettings.shared.enableThreads && event.isInThread))
                         {
                             [attributedDisplayText enumerateAttribute:kMXKToolsBlockquoteMarkAttribute
                                                               inRange:NSMakeRange(0, attributedDisplayText.length)
@@ -1704,7 +1704,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     NSString *html = htmlString;
 
     // Special treatment for "In reply to" message
-    if (event.isReplyEvent || (event.isInThread && !RiotSettings.shared.enableThreads))
+    if (event.isReplyEvent || (!RiotSettings.shared.enableThreads && event.isInThread))
     {
         html = [self renderReplyTo:html withRoomState:roomState];
     }
@@ -2030,7 +2030,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
         textColor = _errorTextColor;
     }
     // Check whether the message is highlighted.
-    else if (event.mxkIsHighlighted || (event.isInThread && !RiotSettings.shared.enableThreads && ![event.sender isEqualToString:mxSession.myUserId]))
+    else if (event.mxkIsHighlighted || (!RiotSettings.shared.enableThreads && event.isInThread && [event shouldBeHighlightedInSession:mxSession]))
     {
         textColor = _bingTextColor;
     }
@@ -2094,7 +2094,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     {
         font = _callNoticesTextFont;
     }
-    else if (event.mxkIsHighlighted || (event.isInThread && !RiotSettings.shared.enableThreads && ![event.sender isEqualToString:mxSession.myUserId]))
+    else if (event.mxkIsHighlighted || (!RiotSettings.shared.enableThreads && event.isInThread && [event shouldBeHighlightedInSession:mxSession]))
     {
         font = _bingTextFont;
     }

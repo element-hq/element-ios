@@ -14,16 +14,14 @@
 // limitations under the License.
 //
 
-import PostHog
+import Foundation
 
-extension PHGPostHogConfiguration {
-    static var standard: PHGPostHogConfiguration? {
-        let analyticsConfiguration = BuildSettings.analyticsConfiguration
-        guard analyticsConfiguration.isEnabled else { return nil }
-        
-        let postHogConfiguration = PHGPostHogConfiguration(apiKey: analyticsConfiguration.apiKey, host: analyticsConfiguration.host)
-        postHogConfiguration.shouldSendDeviceID = false
-        
-        return postHogConfiguration
+struct ToastViewState {
+    enum Style {
+        case loading
+        case success
     }
+    
+    let style: Style
+    let label: String
 }
