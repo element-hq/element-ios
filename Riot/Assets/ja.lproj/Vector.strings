@@ -725,7 +725,7 @@
 "settings_integrations" = "インテグレーション";
 "settings_discovery_settings" = "ディスカバリー";
 "room_multiple_typing_notification" = "%@とその他のユーザーが入力中です";
-"external_link_confirmation_message" = "リンク%@は別のサイトに移動します：%@\n\n本当に続けますか？";
+"external_link_confirmation_message" = "リンク %@ は別のサイトに移動します：%@\n\n続行してよろしいですか？";
 "room_event_action_delete_confirmation_title" = "未送信メッセージを削除";
 "room_unsent_messages_cancel_message" = "このルームにある未送信のメッセージを全て削除してもよろしいですか？";
 "room_unsent_messages_cancel_title" = "未送信メッセージを削除";
