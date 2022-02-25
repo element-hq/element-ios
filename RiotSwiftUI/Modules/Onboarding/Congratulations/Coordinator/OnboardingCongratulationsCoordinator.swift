@@ -43,7 +43,7 @@ final class OnboardingCongratulationsCoordinator: Coordinator, Presentable {
         self.parameters = parameters
         
         let viewModel = OnboardingCongratulationsViewModel(userId: parameters.userId)
-        let view = OnboardingCongratulations(viewModel: viewModel.context)
+        let view = OnboardingCongratulationsScreen(viewModel: viewModel.context)
         onboardingCongratulationsViewModel = viewModel
         onboardingCongratulationsHostingController = VectorHostingController(rootView: view)
     }

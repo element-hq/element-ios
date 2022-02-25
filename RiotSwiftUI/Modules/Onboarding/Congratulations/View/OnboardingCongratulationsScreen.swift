@@ -64,6 +64,7 @@ struct OnboardingCongratulationsScreen: View {
     var mainContent: some View {
         VStack(spacing: 62) {
             Image(Asset.Images.onboardingCongratulationsIcon.name)
+                .accessibilityHidden(true)
             
             VStack(spacing: 8) {
                 Text(VectorL10n.onboardingCongratulationsTitle)
