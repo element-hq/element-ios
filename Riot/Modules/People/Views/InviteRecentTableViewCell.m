@@ -49,9 +49,7 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
     self.rightButton.clipsToBounds = YES;
     [self.rightButton setTitle:[VectorL10n accept] forState:UIControlStateNormal];
     [self.rightButton addTarget:self action:@selector(onRightButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.noticeBadgeView.layer setCornerRadius:10];
-    
+
     self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
@@ -61,8 +59,6 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
     
     self.leftButton.backgroundColor = ThemeService.shared.theme.tintColor;
     self.rightButton.backgroundColor = ThemeService.shared.theme.tintColor;
-    
-    self.noticeBadgeView.backgroundColor = ThemeService.shared.theme.noticeColor;
 }
 
 - (void)prepareForReuse

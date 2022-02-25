@@ -17,36 +17,36 @@
 import Foundation
 import XCTest
 
-class ActivityCenterTests: XCTestCase {
-    var activities: [Activity]!
-    var center: ActivityCenter!
+class UserIndicatorQueueTests: XCTestCase {
+    var indicators: [UserIndicator]!
+    var queue: UserIndicatorQueue!
     
     override func setUp() {
-        activities = []
-        center = ActivityCenter()
+        indicators = []
+        queue = UserIndicatorQueue()
     }
     
-    func makeRequest() -> ActivityRequest {
-        return ActivityRequest(
-            presenter: ActivityPresenterSpy(),
+    func makeRequest() -> UserIndicatorRequest {
+        return UserIndicatorRequest(
+            presenter: UserIndicatorPresenterSpy(),
             dismissal: .manual
         )
     }
     
-    func testStartsActivityWhenAdded() {
-        let activity = center.add(makeRequest())
-        XCTAssertEqual(activity.state, .executing)
+    func testStartsIndicatorWhenAdded() {
+        let indicator = queue.add(makeRequest())
+        XCTAssertEqual(indicator.state, .executing)
     }
     
-    func testSecondActivityIsPending() {
-        center.add(makeRequest()).store(in: &activities)
-        let activity = center.add(makeRequest())
-        XCTAssertEqual(activity.state, .pending)
+    func testSecondIndicatorIsPending() {
+        queue.add(makeRequest()).store(in: &indicators)
+        let indicator = queue.add(makeRequest())
+        XCTAssertEqual(indicator.state, .pending)
     }
     
-    func testSecondActivityIsExecutingWhenFirstCompleted() {
-        let first = center.add(makeRequest())
-        let second = center.add(makeRequest())
+    func testSecondIndicatorIsExecutingWhenFirstCompleted() {
+        let first = queue.add(makeRequest())
+        let second = queue.add(makeRequest())
         
         first.cancel()
         

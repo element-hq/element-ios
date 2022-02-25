@@ -19,7 +19,7 @@
 
 @class RootTabEmptyView;
 @class AnalyticsScreenTimer;
-@class AppActivityIndicatorPresenter;
+@class AppUserIndicatorPresenter;
 
 /**
  Notification to be posted when recents data is ready. Notification object will be the RecentsViewController instance.
@@ -98,9 +98,9 @@ FOUNDATION_EXPORT NSString *const RecentsViewControllerDataReadyNotification;
 @property (nonatomic) AnalyticsScreenTimer *screenTimer;
 
 /**
- Presenter for displaying app-wide activity / loading indicators. If not set, the view controller will use legacy activity indicators
+ Presenter for displaying app-wide user indicators. If not set, the view controller will use legacy activity indicators
  */
-@property (nonatomic, strong) AppActivityIndicatorPresenter *activityPresenter;
+@property (nonatomic, strong) AppUserIndicatorPresenter *userIndicatorPresenter;
 
 /**
  Return the sticky header for the specified section of the table view

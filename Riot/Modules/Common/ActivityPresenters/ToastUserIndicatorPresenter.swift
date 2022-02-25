@@ -17,16 +17,17 @@
 import Foundation
 import UIKit
 import CommonKit
+import MatrixSDK
 
-/// An `ActivityPresenter` responsible for showing / hiding a toast view for activity indicators, and managed by an `Activity`,
-/// meaning the `present` and `dismiss` methods will be called when the parent `Activity` starts or completes.
-class ActivityIndicatorToastPresenter: ActivityPresentable {
-    private let text: String
+/// A `UserIndicatorPresentable` responsible for showing / hiding a toast view for loading spinners or success messages.
+/// It is managed by an `UserIndicator`, meaning the `present` and `dismiss` methods will be called when the parent `UserIndicator` starts or completes.
+class ToastUserIndicatorPresenter: UserIndicatorPresentable {
+    private let viewState: ToastViewState
     private weak var navigationController: UINavigationController?
     private weak var view: UIView?
     
-    init(text: String, navigationController: UINavigationController) {
-        self.text = text
+    init(viewState: ToastViewState, navigationController: UINavigationController) {
+        self.viewState = viewState
         self.navigationController = navigationController
     }
 
@@ -35,15 +36,15 @@ class ActivityIndicatorToastPresenter: ActivityPresentable {
             return
         }
         
-        let view = ActivityIndicatorToastView(text: text)
+        let view = RoundedToastView(viewState: viewState)
         view.update(theme: ThemeService.shared().theme)
         self.view = view
         
         view.translatesAutoresizingMaskIntoConstraints = false
         navigationController.view.addSubview(view)
         NSLayoutConstraint.activate([
-            view.centerXAnchor.constraint(equalTo: navigationController.navigationBar.centerXAnchor),
-            view.topAnchor.constraint(equalTo: navigationController.navigationBar.bottomAnchor)
+            view.centerXAnchor.constraint(equalTo: navigationController.view.centerXAnchor),
+            view.topAnchor.constraint(equalTo: navigationController.navigationBar.safeAreaLayoutGuide.bottomAnchor)
         ])
         
         view.alpha = 0
@@ -69,7 +70,6 @@ class ActivityIndicatorToastPresenter: ActivityPresentable {
                 view.transform = .init(translationX: 0, y: -5)
             } completion: { _ in
                 view.removeFromSuperview()
-                self.view = nil
             }
         }
     }

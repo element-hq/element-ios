@@ -14,16 +14,8 @@
 // limitations under the License.
 //
 
-import PostHog
+import Foundation
 
-extension PHGPostHogConfiguration {
-    static var standard: PHGPostHogConfiguration? {
-        let analyticsConfiguration = BuildSettings.analyticsConfiguration
-        guard analyticsConfiguration.isEnabled else { return nil }
-        
-        let postHogConfiguration = PHGPostHogConfiguration(apiKey: analyticsConfiguration.apiKey, host: analyticsConfiguration.host)
-        postHogConfiguration.shouldSendDeviceID = false
-        
-        return postHogConfiguration
-    }
+@objc protocol MasterTabBarItemDisplayProtocol {
+    var masterTabBarItemTitle: String { get }
 }

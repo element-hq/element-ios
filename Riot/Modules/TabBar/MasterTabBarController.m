@@ -316,7 +316,7 @@
         }
     }
     
-    titleView.titleLabel.text = self.selectedViewController.accessibilityLabel;
+    titleView.titleLabel.text = [self getTitleForItemViewController:self.selectedViewController];
     
     // Need to be called in case of the controllers have been replaced
     [self.selectedViewController viewDidAppear:NO];
@@ -336,6 +336,8 @@
 {
     NSInteger index = [self indexOfTabItemWithTag:tabBarIndex];
     self.selectedIndex = index;
+    
+    titleView.titleLabel.text = [self getTitleForItemViewController:self.selectedViewController];
 }
 
 #pragma mark -
@@ -825,6 +827,17 @@
     self.navigationController.navigationBar.hidden = hidden;
 }
 
+- (NSString*)getTitleForItemViewController:(UIViewController*)itemViewController
+{
+    if ([itemViewController conformsToProtocol:@protocol(MasterTabBarItemDisplayProtocol)])
+    {
+        UIViewController<MasterTabBarItemDisplayProtocol> *masterTabBarItem = (UIViewController<MasterTabBarItemDisplayProtocol>*)itemViewController;
+        return masterTabBarItem.masterTabBarItemTitle;
+    }
+        
+    return nil;
+}
+
 #pragma mark -
 
 - (void)refreshTabBarBadges
@@ -1115,7 +1128,7 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
-    titleView.titleLabel.text = viewController.accessibilityLabel;
+    titleView.titleLabel.text = [self getTitleForItemViewController:viewController];
 }
 
 @end
