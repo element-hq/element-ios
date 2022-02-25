@@ -16,13 +16,14 @@
 
 import Foundation
 
-/// A request used to create an underlying `Activity`, allowing clients to only specify the visual aspects of an activity.
-public struct ActivityRequest {
-    internal let presenter: ActivityPresentable
-    internal let dismissal: ActivityDismissal
+class UserIndicatorPresenterSpy: UserIndicatorPresentable {
+    var intel = [String]()
     
-    public init(presenter: ActivityPresentable, dismissal: ActivityDismissal) {
-        self.presenter = presenter
-        self.dismissal = dismissal
+    func present() {
+        intel.append(#function)
+    }
+    
+    func dismiss() {
+        intel.append(#function)
     }
 }

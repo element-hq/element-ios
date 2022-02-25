@@ -16,11 +16,11 @@
 
 import Foundation
 
-/// A shared activity center with a single FIFO queue which will ensure only one activity is shown at a given time.
+/// A FIFO queue which will ensure only one user indicator is shown at a given time.
 ///
-/// `ActivityCenter` offers a `shared` center that can be used by any clients, but clients are also allowed
-/// to create local `ActivityCenter` if the context requres multiple simultaneous activities.
-public class ActivityCenter {
+/// `UserIndicatorQueue` offers a `shared` queue that can be used by any clients app-wide, but clients are also allowed
+/// to create local `UserIndicatorQueue` if the context requres multiple simultaneous indicators.
+public class UserIndicatorQueue {
     private class Weak<T: AnyObject> {
         weak var element: T?
         init(_ element: T) {
@@ -28,27 +28,27 @@ public class ActivityCenter {
         }
     }
     
-    public static let shared = ActivityCenter()
-    private var queue = [Weak<Activity>]()
+    public static let shared = UserIndicatorQueue()
+    private var queue = [Weak<UserIndicator>]()
     
-    /// Add a new activity to the queue by providing a request.
+    /// Add a new indicator to the queue by providing a request.
     ///
-    /// The queue will start the activity right away, if there are no currently running activities,
-    /// otherwise the activity will be put on hold.
-    public func add(_ request: ActivityRequest) -> Activity {
-        let activity = Activity(request: request) { [weak self] in
+    /// The queue will start the indicator right away, if there are no currently running indicators,
+    /// otherwise the indicator will be put on hold.
+    public func add(_ request: UserIndicatorRequest) -> UserIndicator {
+        let indicator = UserIndicator(request: request) { [weak self] in
             self?.startNextIfIdle()
         }
         
-        queue.append(Weak(activity))
+        queue.append(Weak(indicator))
         startNextIfIdle()
-        return activity
+        return indicator
     }
     
     private func startNextIfIdle() {
         cleanup()
-        if let activity = queue.first?.element, activity.state == .pending {
-            activity.start()
+        if let indicator = queue.first?.element, indicator.state == .pending {
+            indicator.start()
         }
     }
     

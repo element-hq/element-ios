@@ -17,6 +17,7 @@
  */
 
 import UIKit
+import CommonKit
 
 @objcMembers
 final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
@@ -52,6 +53,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private var isTabBarControllerTopMostController: Bool {
         return self.navigationRouter.modules.last is MasterTabBarController
     }
+    
+    private var indicators = [UserIndicator]()
     
     // MARK: Public
 
@@ -227,8 +230,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         homeViewController.tabBarItem.image = homeViewController.tabBarItem.image
         homeViewController.accessibilityLabel = VectorL10n.titleHome
         
-        if BuildSettings.appActivityIndicators {
-            homeViewController.activityPresenter = AppActivityIndicatorPresenter(appNavigator: parameters.appNavigator)
+        if BuildSettings.useAppUserIndicators {
+            homeViewController.userIndicatorPresenter = AppUserIndicatorPresenter(appNavigator: parameters.appNavigator)
         }
         
         let wrapperViewController = HomeViewControllerWithBannerWrapperViewController(viewController: homeViewController)        
@@ -702,6 +705,11 @@ extension TabBarCoordinator: RoomCoordinatorDelegate {
     func roomCoordinatorDidLeaveRoom(_ coordinator: RoomCoordinatorProtocol) {
         // For the moment when a room is left, reset the split detail with placeholder
         self.resetSplitViewDetails()
+        if BuildSettings.useAppUserIndicators {
+            parameters.appNavigator
+                .addUserIndicator(.success(VectorL10n.roomParticipantsLeaveSuccess))
+                .store(in: &indicators)
+        }
     }
     
     func roomCoordinatorDidCancelRoomPreview(_ coordinator: RoomCoordinatorProtocol) {

@@ -1066,15 +1066,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     self.jumpToLastUnreadBannerContainer.hidden = YES;
     
     [super leaveRoomOnEvent:event];
-    
-    if (self.delegate)
-    {
-        [self.delegate roomViewControllerDidLeaveRoom:self];
-    }
-    else
-    {
-        [[AppDelegate theDelegate] restoreInitialDisplay:nil];
-    }
+    [self notifyDelegateOnLeaveRoomIfNecessary];
 }
 
 // Set the input toolbar according to the current display
@@ -2192,16 +2184,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self.roomDataSource.room leave:^{
         
         [self stopActivityIndicator];
-        
-        // We remove the current view controller.
-        if (self.delegate)
-        {
-            [self.delegate roomViewControllerDidLeaveRoom:self];
-        }
-        else
-        {
-            [[AppDelegate theDelegate] restoreInitialDisplay:^{}];
-        }
+        [self notifyDelegateOnLeaveRoomIfNecessary];
         
     } failure:^(NSError *error) {
         
@@ -2209,6 +2192,22 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         MXLogDebug(@"[RoomVC] Failed to reject an invited room (%@) failed", self.roomDataSource.room.roomId);
         
     }];
+}
+
+- (void)notifyDelegateOnLeaveRoomIfNecessary {
+    if (self.delegate)
+    {
+        // Leaving room often triggers multiple events, incl local delegate callbacks as well as global notifications,
+        // which may lead to multiple identical UI changes (navigating to home, displaying notification etc).
+        // To avoid this, as soon as we notify the delegate the first time, we nilify it, preventing future messages
+        // from being passed along, assuming that after leaving a room there is nothing else to communicate to the delegate.
+        [self.delegate roomViewControllerDidLeaveRoom:self];
+        self.delegate = nil;
+    }
+    else
+    {
+        [[AppDelegate theDelegate] restoreInitialDisplay:^{}];
+    }
 }
 
 - (void)roomPreviewDidTapCancelAction
@@ -7031,14 +7030,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)roomInfoCoordinatorBridgePresenterDelegateDidLeaveRoom:(RoomInfoCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
-    if (self.delegate)
-    {
-        [self.delegate roomViewControllerDidLeaveRoom:self];
-    }
-    else
-    {
-        [[AppDelegate theDelegate] restoreInitialDisplay:nil];
-    }
+    [self notifyDelegateOnLeaveRoomIfNecessary];
 }
 
 #pragma mark - RemoveJitsiWidgetViewDelegate

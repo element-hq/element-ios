@@ -16,14 +16,10 @@
 
 import Foundation
 
-class ActivityPresenterSpy: ActivityPresentable {
-    var intel = [String]()
-    
-    func present() {
-        intel.append(#function)
-    }
-    
-    func dismiss() {
-        intel.append(#function)
-    }
+/// A presenter associated with and called by a `UserIndicator`, and responsible for the underlying view shown on the screen.
+public protocol UserIndicatorPresentable {
+    /// Called when the `UserIndicator` is started (manually or by the `UserIndicatorQueue`)
+    func present()
+    /// Called when the `UserIndicator` is manually cancelled or completed
+    func dismiss()
 }
