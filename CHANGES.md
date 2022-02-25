@@ -1,3 +1,17 @@
+## Changes in 1.8.3 (2022-02-25)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.22.4](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.22.4)).
+
+🐛 Bugfixes
+
+- Unified Search: Fix a bug where the room directory wasn't working. ([#5672](https://github.com/vector-im/element-ios/issues/5672))
+- Fixed crashes on implicitly unwrapped optionals in the PlainRoomTimelineCellDecorator. ([#5673](https://github.com/vector-im/element-ios/issues/5673))
+- L10n: Fix defaulting to English language ([#5674](https://github.com/vector-im/element-ios/issues/5674))
+- RoomDataSource: Do not reload room data source on back pagination for new threads. ([#5694](https://github.com/vector-im/element-ios/issues/5694))
+
+
 ## Changes in 1.8.2 (2022-02-22)
 
 ✨ Features
