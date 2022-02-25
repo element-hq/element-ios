@@ -228,7 +228,7 @@ final class BuildSettings: NSObject {
     /// Whether a screen uses legacy local activity indicators or improved app-wide indicators
     static var useAppUserIndicators: Bool {
         #if DEBUG
-        return false
+        return true
         #else
         return false
         #endif

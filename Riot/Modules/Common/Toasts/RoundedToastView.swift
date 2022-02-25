@@ -19,13 +19,18 @@ import UIKit
 import DesignKit
 
 class RoundedToastView: UIView, Themable {
+    private struct ShadowStyle {
+        let offset: CGSize
+        let radius: CGFloat
+        let opacity: Float
+    }
+    
     private struct Constants {
         static let padding = UIEdgeInsets(top: 10, left: 12, bottom: 10, right: 12)
         static let activityIndicatorScale = CGFloat(0.75)
         static let imageViewSize = CGFloat(15)
-        static let shadowOffset = CGSize(width: 0, height: 4)
-        static let shadowRadius = CGFloat(12)
-        static let shadowOpacity = Float(0.1)
+        static let lightShadow = ShadowStyle(offset: .init(width: 0, height: 4), radius: 12, opacity: 0.1)
+        static let darkShadow = ShadowStyle(offset: .init(width: 0, height: 4), radius: 4, opacity: 0.2)
     }
     
     private lazy var activityIndicator: UIActivityIndicatorView = {
@@ -49,6 +54,7 @@ class RoundedToastView: UIView, Themable {
     private let stackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
+        stack.alignment = .center
         stack.spacing = 5
         return stack
     }()
@@ -67,7 +73,6 @@ class RoundedToastView: UIView, Themable {
     }
 
     private func setup(viewState: ToastViewState) {
-        setupLayer()
         setupStackView()
         stackView.addArrangedSubview(toastView(for: viewState.style))
         stackView.addArrangedSubview(label)
@@ -85,13 +90,6 @@ class RoundedToastView: UIView, Themable {
         ])
     }
     
-    private func setupLayer() {
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = Constants.shadowOffset
-        layer.shadowRadius = Constants.shadowRadius
-        layer.shadowOpacity = Constants.shadowOpacity
-    }
-    
     override func layoutSubviews() {
         super.layoutSubviews()
         layer.cornerRadius = layer.frame.height / 2
@@ -102,6 +100,12 @@ class RoundedToastView: UIView, Themable {
         stackView.arrangedSubviews.first?.tintColor = theme.colors.primaryContent
         label.font = theme.fonts.subheadline
         label.textColor = theme.colors.primaryContent
+        
+        let shadowStyle = theme.identifier == ThemeIdentifier.dark.rawValue ? Constants.darkShadow : Constants.lightShadow
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOffset = shadowStyle.offset
+        layer.shadowRadius = shadowStyle.radius
+        layer.shadowOpacity = shadowStyle.opacity
     }
     
     private func toastView(for style: ToastViewState.Style) -> UIView {
