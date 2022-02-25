@@ -660,7 +660,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         title = [VectorL10n roomRecentsSuggestedRoomsSection];
     }
     
-    if (count)
+    if (count && !(section == invitesSection))
     {
         NSString *roomCount = [NSString stringWithFormat:@"   %tu", count];
         
@@ -688,7 +688,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     // Prepare a badge to display the total of missed notifications in this section.
     id<MXRoomListDataCounts> counts = nil;
     UIView *missedNotifAndUnreadBadgeBgView = nil;
-    
+
+    if (section == invitesSection)
+    {
+        counts = self.recentsListService.invitedRoomListData.counts;
+    }
     if (section == favoritesSection)
     {
         counts = self.recentsListService.favoritedRoomListData.counts;
@@ -714,8 +718,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         counts = self.recentsListService.suggestedRoomListData.counts;
     }
 
-    NSUInteger numberOfNotifications = counts.total.numberOfNotifications;
-    NSUInteger numberOfHighlights = counts.total.numberOfHighlights;
+    NSUInteger numberOfNotifications = counts.total.numberOfNotifications + counts.total.numberOfInvitedRooms;
+    NSUInteger numberOfHighlights = counts.total.numberOfHighlights + counts.total.numberOfInvitedRooms;
     
     if (numberOfNotifications)
     {
