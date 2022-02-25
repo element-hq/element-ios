@@ -107,7 +107,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                 }
                 else
                 {
-                    self.tag = RoomBubbleCellDataTagRoomCreateConfiguration;
+                    self.tag = RoomBubbleCellDataTagRoomCreationIntro;
                 }
                 
                 // Membership events can be collapsed together
