@@ -29,7 +29,7 @@
 
 const CGFloat kTypingCellHeight = 24;
 
-@interface RoomDataSource() <BubbleReactionsViewModelDelegate, URLPreviewViewDelegate, ThreadSummaryViewDelegate>
+@interface RoomDataSource() <BubbleReactionsViewModelDelegate, URLPreviewViewDelegate, ThreadSummaryViewDelegate, MXThreadingServiceDelegate>
 {
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
@@ -92,12 +92,9 @@ const CGFloat kTypingCellHeight = 24;
             [self reload];
             
         }];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(newThreadCreated:)
-                                                     name:MXThreadingService.newThreadCreated
-                                                   object:nil];
-        
+
+        [matrixSession.threadingService addDelegate:self];
+
         [self registerKeyVerificationRequestNotification];
         [self registerKeyVerificationTransactionNotification];
         [self registerTrustLevelDidChangeNotifications];
@@ -177,6 +174,8 @@ const CGFloat kTypingCellHeight = 24;
     {
         [[NSNotificationCenter defaultCenter] removeObserver:self.keyVerificationTransactionDidChangeNotificationObserver];
     }
+
+    [self.mxSession.threadingService removeDelegate:self];
     
     [super destroy];
 }
@@ -973,13 +972,18 @@ const CGFloat kTypingCellHeight = 24;
     cell.attachmentView.accessibilityLabel = nil;
 }
 
-#pragma mark - Threads
+#pragma mark - MXThreadingServiceDelegate
 
-- (void)newThreadCreated:(NSNotification *)notification
+- (void)threadingService:(MXThreadingService *)service didCreateNewThread:(MXThread *)thread direction:(MXTimelineDirection)direction
 {
     if (self.threadId)
     {
         //  no need to reload the thread screen
+        return;
+    }
+    if (direction == MXTimelineDirectionBackwards)
+    {
+        //  no need to reload when paginating back
         return;
     }
     NSUInteger count = 0;
