@@ -1249,6 +1249,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     // The event modified is always fetch from the actual data source
     MXEvent *eventModified = [self.roomDataSource eventWithEventId:customizedRoomDataSource.selectedEventId];
     
+    // In the case the event is a reply or and edit, and it's done on a non-live timeline
+    // we have to fetch live timeline in order to display the event properly
     [self setupRoomDataSourceToResolveEvent:^(MXKRoomDataSource *roomDataSource) {
         if (self.inputToolBarSendMode == RoomInputToolbarViewSendModeReply && eventModified)
         {
