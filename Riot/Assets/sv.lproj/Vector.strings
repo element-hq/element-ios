@@ -1591,3 +1591,10 @@
 "accessibility_button_label" = "knapp";
 "ok" = "OK";
 "enable" = "Aktivera";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "Inte säker än? Du kan %@";
+"onboarding_use_case_community_messaging" = "Gemenskaper";
+"onboarding_use_case_work_messaging" = "Team";
+"onboarding_use_case_personal_messaging" = "Vänner och familj";
+"onboarding_use_case_message" = "Vi kommer hjälpa dig att få kontakt.";
+"onboarding_use_case_title" = "Vem vill du chatta med mest?";
