@@ -1246,33 +1246,69 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)sendTextMessage:(NSString*)msgTxt
 {
-    if (self.inputToolBarSendMode == RoomInputToolbarViewSendModeReply && customizedRoomDataSource.selectedEventId)
+    // The event modified is always fetch from the actual data source
+    MXEvent *eventModified = [self.roomDataSource eventWithEventId:customizedRoomDataSource.selectedEventId];
+    
+    // In the case the event is a reply or and edit, and it's done on a non-live timeline
+    // we have to fetch live timeline in order to display the event properly
+    [self setupRoomDataSourceToResolveEvent:^(MXKRoomDataSource *roomDataSource) {
+        if (self.inputToolBarSendMode == RoomInputToolbarViewSendModeReply && eventModified)
+        {
+            [roomDataSource sendReplyToEvent:eventModified withTextMessage:msgTxt success:nil failure:^(NSError *error) {
+                // Just log the error. The message will be displayed in red in the room history
+                MXLogDebug(@"[MXKRoomViewController] sendTextMessage failed.");
+            }];
+        }
+        else if (self.inputToolBarSendMode == RoomInputToolbarViewSendModeEdit && eventModified)
+        {
+            [roomDataSource replaceTextMessageForEvent:eventModified withTextMessage:msgTxt success:nil failure:^(NSError *error) {
+                // Just log the error. The message will be displayed in red
+                MXLogDebug(@"[MXKRoomViewController] sendTextMessage failed.");
+            }];
+        }
+        else
+        {
+            // Let the datasource send it and manage the local echo
+            [roomDataSource sendTextMessage:msgTxt success:nil failure:^(NSError *error)
+             {
+                // Just log the error. The message will be displayed in red in the room history
+                MXLogDebug(@"[MXKRoomViewController] sendTextMessage failed.");
+            }];
+        }
+        
+        if (self->customizedRoomDataSource.selectedEventId)
+        {
+            [self cancelEventSelection];
+        }
+    }];
+}
+
+- (void)setupRoomDataSourceToResolveEvent: (void (^)(MXKRoomDataSource *roomDataSource))onComplete
+{
+    // If the event occur on timeline not live, use the live data source to resolve event
+    BOOL isLive = self.roomDataSource.isLive;
+    if (!isLive)
     {
-        [self.roomDataSource sendReplyToEventWithId:customizedRoomDataSource.selectedEventId withTextMessage:msgTxt success:nil failure:^(NSError *error) {
-            // Just log the error. The message will be displayed in red in the room history
-            MXLogDebug(@"[MXKRoomViewController] sendTextMessage failed.");
-        }];
-    }
-    else if (self.inputToolBarSendMode == RoomInputToolbarViewSendModeEdit && customizedRoomDataSource.selectedEventId)
-    {
-        [self.roomDataSource replaceTextMessageForEventWithId:customizedRoomDataSource.selectedEventId withTextMessage:msgTxt success:nil failure:^(NSError *error) {
-            // Just log the error. The message will be displayed in red
-            MXLogDebug(@"[MXKRoomViewController] sendTextMessage failed.");
-        }];
+        if (self.roomDataSourceLive == nil)
+        {
+            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
+
+            [roomDataSourceManager roomDataSourceForRoom:self.roomDataSource.roomId
+                                                  create:YES
+                                              onComplete:^(MXKRoomDataSource *roomDataSource) {
+                self.roomDataSourceLive = roomDataSource;
+                [self.roomDataSourceLive finalizeInitialization];
+                onComplete(self.roomDataSourceLive);
+            }];
+        }
+        else
+        {
+            onComplete(self.roomDataSourceLive);
+        }
     }
     else
     {
-        // Let the datasource send it and manage the local echo
-        [self.roomDataSource sendTextMessage:msgTxt success:nil failure:^(NSError *error)
-         {
-            // Just log the error. The message will be displayed in red in the room history
-            MXLogDebug(@"[MXKRoomViewController] sendTextMessage failed.");
-        }];
-    }
-    
-    if (customizedRoomDataSource.selectedEventId)
-    {
-        [self cancelEventSelection];
+        onComplete(self.roomDataSource);
     }
 }
 
