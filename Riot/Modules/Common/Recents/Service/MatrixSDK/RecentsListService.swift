@@ -220,20 +220,20 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         guard let totalCounts = favoritedRoomListDataFetcher?.data?.counts.total else {
             return .zero
         }
-        return DiscussionsCount(withRoomListDataCounts: totalCounts)
+        return DiscussionsCount(withRoomListDataCounts: [totalCounts])
     }
     
     public var peopleMissedDiscussionsCount: DiscussionsCount {
-        guard let totalCounts = directRoomListDataFetcherForPeople?.data?.counts.total else {
-            return .zero
-        }
+        let invitesCount = invitedRoomListDataFetcherForPeople?.data?.counts.total
+        let directCount = directRoomListDataFetcherForPeople?.data?.counts.total
+        let totalCounts = [invitesCount, directCount].compactMap { $0 }
         return DiscussionsCount(withRoomListDataCounts: totalCounts)
     }
     
     public var conversationMissedDiscussionsCount: DiscussionsCount {
-        guard let totalCounts = conversationRoomListDataFetcherForRooms?.data?.counts.total else {
-            return .zero
-        }
+        let invitesCount = invitedRoomListDataFetcherForRooms?.data?.counts.total
+        let conversationCount = conversationRoomListDataFetcherForRooms?.data?.counts.total
+        let totalCounts = [invitesCount, conversationCount].compactMap { $0 }
         return DiscussionsCount(withRoomListDataCounts: totalCounts)
     }
     
