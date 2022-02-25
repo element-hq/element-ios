@@ -291,7 +291,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     
     private func showAddRoom(spaceId: String, session: MXSession) {
         let space = session.spaceService.getSpace(withId: spaceId)
-        let createRoomCoordinator = CreateRoomCoordinator(session: session, parentSpace: space)
+        let createRoomCoordinator = CreateRoomCoordinator(parameters: CreateRoomCoordinatorParameter(session: session, parentSpace: space))
         createRoomCoordinator.delegate = self
         let presentable = createRoomCoordinator.toPresentable()
         presentable.presentationController?.delegate = self
@@ -448,6 +448,7 @@ extension SideMenuCoordinator: SpaceMembersCoordinatorDelegate {
 extension SideMenuCoordinator: CreateRoomCoordinatorDelegate {
     func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didCreateNewRoom room: MXRoom) {
         coordinator.toPresentable().dismiss(animated: true) {
+            self.remove(childCoordinator: coordinator)
             self.createRoomCoordinator = nil
             self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
 
@@ -458,8 +459,9 @@ extension SideMenuCoordinator: CreateRoomCoordinatorDelegate {
         }
     }
     
-    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithId roomIds: [String]) {
+    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithIds roomIds: [String]) {
         coordinator.toPresentable().dismiss(animated: true) {
+            self.remove(childCoordinator: coordinator)
             self.createRoomCoordinator = nil
             self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
 
@@ -472,6 +474,7 @@ extension SideMenuCoordinator: CreateRoomCoordinatorDelegate {
 
     func createRoomCoordinatorDidCancel(_ coordinator: CreateRoomCoordinatorType) {
         coordinator.toPresentable().dismiss(animated: true) {
+            self.remove(childCoordinator: coordinator)
             self.createRoomCoordinator = nil
         }
     }

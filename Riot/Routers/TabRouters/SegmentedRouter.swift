@@ -20,7 +20,7 @@ class SegmentedRouter: NSObject, TabbedRouterType {
     
     // MARK: - Private
     
-    let segmentedController: RiotSegmentedController
+    let segmentedController: SegmentedController
     
     /// Returns the presentables associated to each view controller
     var tabs: [TabbedRouterTab] = [] {
@@ -32,12 +32,12 @@ class SegmentedRouter: NSObject, TabbedRouterType {
                     return nil
                 }
                 
-                return RiotSegmentedControllerTab(title: tab.title, viewController: viewController)
+                return SegmentedControllerTab(title: tab.title, viewController: viewController)
             })
         }
     }
     
-    init(segmentedController: RiotSegmentedController = RiotSegmentedController.instantiate()) {
+    init(segmentedController: SegmentedController = SegmentedController.instantiate()) {
         self.segmentedController = segmentedController
     }
 

@@ -227,6 +227,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         homeViewController.tabBarItem.image = homeViewController.tabBarItem.image
         homeViewController.accessibilityLabel = VectorL10n.titleHome
         
+        if BuildSettings.appActivityIndicators {
+            homeViewController.activityPresenter = AppActivityIndicatorPresenter(appNavigator: parameters.appNavigator)
+        }
+        
         let wrapperViewController = HomeViewControllerWithBannerWrapperViewController(viewController: homeViewController)        
         return wrapperViewController
     }
@@ -664,7 +668,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                 if spaceService.isInitialised && !spaceService.rootSpaceSummaries.isEmpty {
                     RiotSettings.shared.slideMenuRoomsCoachMessageHasBeenDisplayed = true
                     windowOverlay = WindowOverlayPresenter()
-                    let coachMarkView = CoachMarkView.instantiate(text: VectorL10n.sideMenuCoachMessage, position: .topLeft)
+                    let coachMarkView = CoachMarkView.instantiate(
+                        text: VectorL10n.sideMenuCoachMessage,
+                        from: CoachMarkView.TopLeftPosition,
+                        markPosition: .topLeft)
                     windowOverlay?.show(coachMarkView, duration: 4.0)
                 }
             }

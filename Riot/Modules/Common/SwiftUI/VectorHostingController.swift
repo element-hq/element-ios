@@ -30,6 +30,10 @@ class VectorHostingController: UIHostingController<AnyView> {
     var hidesBackTitleWhenPushed: Bool = false
     private var theme: Theme
     
+    // MARK: Public
+    
+    var enableNavigationBarScrollEdgesAppearance = false
+    
     init<Content>(rootView: Content) where Content: View {
         self.theme = ThemeService.shared().theme
         super.init(rootView: AnyView(rootView.vectorContent()))
@@ -89,7 +93,7 @@ class VectorHostingController: UIHostingController<AnyView> {
     
     private func update(theme: Theme) {
         if let navigationBar = self.navigationController?.navigationBar {
-            theme.applyStyle(onNavigationBar: navigationBar)
+            theme.applyStyle(onNavigationBar: navigationBar, withModernScrollEdgesAppearance: enableNavigationBarScrollEdgesAppearance)
         }
     }
 }

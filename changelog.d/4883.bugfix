@@ -1,1 +1,0 @@
-Fix bugs when building with Xcode 13: bar appearance / header padding / space avatar content size. Additionally, use UIKit context menus on the home screen.

@@ -31,23 +31,30 @@ struct MatrixItemChooser: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
+    private var spacerHeight: CGFloat {
+        if viewModel.viewState.title != nil || viewModel.viewState.message != nil {
+            return 24
+        } else {
+            return 8
+        }
+    }
+
     // MARK: Public
     
-    @ViewBuilder
     var body: some View {
         listContent
             .background(Color.clear)
-            .modifier(WaitOverlay(allowUserInteraction: false, message: .constant(viewModel.viewState.loadingText), isLoading: .constant(viewModel.viewState.loading)))
-            .alert(isPresented: .constant(viewModel.viewState.error != nil), content: {
-                Alert(title: Text(MatrixKitL10n.error), message: Text(viewModel.viewState.error ?? ""), dismissButton: .cancel(Text(MatrixKitL10n.ok)))
-            })
+            .modifier(WaitOverlay(isLoading: .constant(viewModel.viewState.loading)))
+            .alert(isPresented: .constant(viewModel.viewState.error != nil)) {
+                Alert(title: Text(VectorL10n.error), message: Text(viewModel.viewState.error ?? ""), dismissButton: .cancel(Text(VectorL10n.ok)))
+            }
     }
     
     // MARK: Private
 
     @ViewBuilder
     private var listContent: some View {
-        ScrollView{
+        ScrollView {
             headerView
             LazyVStack(spacing: 0) {
                 ForEach(viewModel.viewState.sections) { section in
@@ -104,15 +111,11 @@ struct MatrixItemChooser: View {
                     .padding(.horizontal)
                     .accessibility(identifier: "messageText")
             }
-            if viewModel.viewState.title != nil || viewModel.viewState.message != nil {
-                Spacer().frame(height: 24)
-            } else {
-                Spacer().frame(height: 8)
-            }
+            Spacer().frame(height: spacerHeight)
             SearchBar(placeholder: VectorL10n.searchDefaultPlaceholder, text: $searchText)
-                .onChange(of: searchText, perform: { value in
+                .onChange(of: searchText) { value in
                     viewModel.send(viewAction: .searchTextChanged(searchText))
-                })
+                }
         }
     }
 }

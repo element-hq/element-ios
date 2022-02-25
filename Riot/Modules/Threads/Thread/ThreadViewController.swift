@@ -70,8 +70,8 @@ class ThreadViewController: RoomViewController {
         super.onButtonPressed(sender)
     }
     
-    override func handleTypingNotification(_ typing: Bool) {
-        //  no-op
+    override func sendTypingNotification(_ typing: Bool, timeout notificationTimeoutMS: UInt) {
+        // no-op
     }
 
     private func showThreadActions() {

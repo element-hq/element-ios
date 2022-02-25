@@ -21,7 +21,7 @@ struct RoomCreationParameters {
     var topic: String?
     var address: String?
     var avatarImage: UIImage? {
-        return userSelectedAvatar ?? initialsAvatar
+        return userSelectedAvatar
     }
     var isEncrypted: Bool = false
     var joinRule: MXRoomJoinRule = .private {
@@ -42,5 +42,4 @@ struct RoomCreationParameters {
     var isRoomSuggested: Bool = false
     
     var userSelectedAvatar: UIImage?
-    var initialsAvatar: UIImage?
 }

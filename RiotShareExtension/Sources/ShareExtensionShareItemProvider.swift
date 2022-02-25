@@ -27,7 +27,9 @@ private class ShareExtensionItem: ShareItemProtocol {
     }
     
     var type: ShareItemType {
-        if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.image.rawValue) {
+        if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.image.rawValue)
+            || itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.jpeg.rawValue)
+            || itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.png.rawValue) {
             return .image
         } else if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.video.rawValue) {
             return .video

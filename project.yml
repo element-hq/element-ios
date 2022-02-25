@@ -35,6 +35,8 @@ include:
   - path: RiotSwiftUI/target.yml
   - path: RiotSwiftUI/targetUnitTests.yml
   - path: RiotSwiftUI/targetUITests.yml
+  - path: CommonKit/target.yml
+  - path: CommonKit/targetUnitTests.yml
 
 packages:
   Mapbox:

@@ -119,7 +119,7 @@ public class VectorL10n: NSObject {
   public static var authEmailInUse: String { 
     return VectorL10n.tr("Vector", "auth_email_in_use") 
   }
-  /// No identity server is configured so you cannot add an email address in order to reset your password in the future.
+  /// No identity server is configured so you cannot add an email address in order to reset your Matrix account password in the future.
   public static var authEmailIsRequired: String { 
     return VectorL10n.tr("Vector", "auth_email_is_required") 
   }
@@ -135,11 +135,11 @@ public class VectorL10n: NSObject {
   public static var authEmailValidationMessage: String { 
     return VectorL10n.tr("Vector", "auth_email_validation_message") 
   }
-  /// Forgot password?
+  /// Forgot Matrix account password?
   public static var authForgotPassword: String { 
     return VectorL10n.tr("Vector", "auth_forgot_password") 
   }
-  /// No identity server is configured: add one to reset your password.
+  /// No identity server is configured: add one to reset your Matrix account password.
   public static var authForgotPasswordErrorNoConfiguredIdentityServer: String { 
     return VectorL10n.tr("Vector", "auth_forgot_password_error_no_configured_identity_server") 
   }
@@ -231,7 +231,7 @@ public class VectorL10n: NSObject {
   public static var authPhoneInUse: String { 
     return VectorL10n.tr("Vector", "auth_phone_in_use") 
   }
-  /// No identity server is configured so you cannot add a phone number in order to reset your password in the future.
+  /// No identity server is configured so you cannot add a phone number in order to reset your Matrix account password in the future.
   public static var authPhoneIsRequired: String { 
     return VectorL10n.tr("Vector", "auth_phone_is_required") 
   }
@@ -247,7 +247,7 @@ public class VectorL10n: NSObject {
   public static var authRegister: String { 
     return VectorL10n.tr("Vector", "auth_register") 
   }
-  /// Confirm your new password
+  /// Confirm your new Matrix account password
   public static var authRepeatNewPasswordPlaceholder: String { 
     return VectorL10n.tr("Vector", "auth_repeat_new_password_placeholder") 
   }
@@ -259,7 +259,7 @@ public class VectorL10n: NSObject {
   public static func authResetPasswordEmailValidationMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "auth_reset_password_email_validation_message", p1)
   }
-  /// No identity server is configured: add one in server options to reset your password.
+  /// No identity server is configured: add one in server options to reset your Matrix account password.
   public static var authResetPasswordErrorIsRequired: String { 
     return VectorL10n.tr("Vector", "auth_reset_password_error_is_required") 
   }
@@ -271,7 +271,7 @@ public class VectorL10n: NSObject {
   public static var authResetPasswordErrorUnauthorized: String { 
     return VectorL10n.tr("Vector", "auth_reset_password_error_unauthorized") 
   }
-  /// To reset your password, enter the email address linked to your account:
+  /// To reset your Matrix account password, enter the email address linked to your account:
   public static var authResetPasswordMessage: String { 
     return VectorL10n.tr("Vector", "auth_reset_password_message") 
   }
@@ -287,7 +287,7 @@ public class VectorL10n: NSObject {
   public static var authResetPasswordNextStepButton: String { 
     return VectorL10n.tr("Vector", "auth_reset_password_next_step_button") 
   }
-  /// Your password has been reset.\n\nYou have been logged out of all sessions and will no longer receive push notifications. To re-enable notifications, re-log in on each device.
+  /// Your Matrix account password has been reset.\n\nYou have been logged out of all sessions and will no longer receive push notifications. To re-enable notifications, re-log in on each device.
   public static var authResetPasswordSuccessMessage: String { 
     return VectorL10n.tr("Vector", "auth_reset_password_success_message") 
   }
@@ -779,7 +779,7 @@ public class VectorL10n: NSObject {
   public static var deactivateAccountInformationsPart5: String { 
     return VectorL10n.tr("Vector", "deactivate_account_informations_part5") 
   }
-  /// To continue, please enter your password
+  /// To continue, please enter your Matrix account password
   public static var deactivateAccountPasswordAlertMessage: String { 
     return VectorL10n.tr("Vector", "deactivate_account_password_alert_message") 
   }
@@ -1334,6 +1334,10 @@ public class VectorL10n: NSObject {
   /// Send an encrypted reply…
   public static var encryptedRoomMessageReplyToPlaceholder: String { 
     return VectorL10n.tr("Vector", "encrypted_room_message_reply_to_placeholder") 
+  }
+  /// Error
+  public static var error: String { 
+    return VectorL10n.tr("Vector", "error") 
   }
   /// Add an identity server in your settings to invite by email.
   public static var errorInvite3pidWithNoIdentityServer: String { 
@@ -1911,7 +1915,7 @@ public class VectorL10n: NSObject {
   public static var keyBackupSetupPassphraseConfirmPassphraseValid: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_passphrase_confirm_passphrase_valid") 
   }
-  /// We'll store an encrypted copy of your keys on our server. Protect your backup with a phrase to keep it secure.\n\nFor maximum security, this should be different from your account password.
+  /// We'll store an encrypted copy of your keys on our server. Protect your backup with a phrase to keep it secure.\n\nFor maximum security, this should be different from your Matrix account password.
   public static var keyBackupSetupPassphraseInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_passphrase_info") 
   }
@@ -2303,6 +2307,10 @@ public class VectorL10n: NSObject {
   public static var locationSharingOpenGoogleMaps: String { 
     return VectorL10n.tr("Vector", "location_sharing_open_google_maps") 
   }
+  /// Open in OpenStreetMap
+  public static var locationSharingOpenOpenStreetMaps: String { 
+    return VectorL10n.tr("Vector", "location_sharing_open_open_street_maps") 
+  }
   /// %@ could not send your location. Please try again later.
   public static func locationSharingPostFailureSubtitle(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "location_sharing_post_failure_subtitle", p1)
@@ -2482,6 +2490,42 @@ public class VectorL10n: NSObject {
   /// Create account
   public static var onboardingSplashRegisterButtonTitle: String { 
     return VectorL10n.tr("Vector", "onboarding_splash_register_button_title") 
+  }
+  /// Communities
+  public static var onboardingUseCaseCommunityMessaging: String { 
+    return VectorL10n.tr("Vector", "onboarding_use_case_community_messaging") 
+  }
+  /// Connect to server
+  public static var onboardingUseCaseExistingServerButton: String { 
+    return VectorL10n.tr("Vector", "onboarding_use_case_existing_server_button") 
+  }
+  /// Looking to join an existing server?
+  public static var onboardingUseCaseExistingServerMessage: String { 
+    return VectorL10n.tr("Vector", "onboarding_use_case_existing_server_message") 
+  }
+  /// We’ll help you get connected.
+  public static var onboardingUseCaseMessage: String { 
+    return VectorL10n.tr("Vector", "onboarding_use_case_message") 
+  }
+  /// Not sure yet? You can %@
+  public static func onboardingUseCaseNotSureYet(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "onboarding_use_case_not_sure_yet", p1)
+  }
+  /// Friends and family
+  public static var onboardingUseCasePersonalMessaging: String { 
+    return VectorL10n.tr("Vector", "onboarding_use_case_personal_messaging") 
+  }
+  /// skip this question
+  public static var onboardingUseCaseSkipButton: String { 
+    return VectorL10n.tr("Vector", "onboarding_use_case_skip_button") 
+  }
+  /// Who will you chat to the most?
+  public static var onboardingUseCaseTitle: String { 
+    return VectorL10n.tr("Vector", "onboarding_use_case_title") 
+  }
+  /// Teams
+  public static var onboardingUseCaseWorkMessaging: String { 
+    return VectorL10n.tr("Vector", "onboarding_use_case_work_messaging") 
   }
   /// Open
   public static var `open`: String { 
@@ -3351,7 +3395,7 @@ public class VectorL10n: NSObject {
   public static var roomEventActionForward: String { 
     return VectorL10n.tr("Vector", "room_event_action_forward") 
   }
-  /// Reason for kicking this user
+  /// Reason for removing this user
   public static var roomEventActionKickPromptReason: String { 
     return VectorL10n.tr("Vector", "room_event_action_kick_prompt_reason") 
   }
@@ -4151,6 +4195,10 @@ public class VectorL10n: NSObject {
   public static var searchFiles: String { 
     return VectorL10n.tr("Vector", "search_files") 
   }
+  /// Filter
+  public static var searchFilterPlaceholder: String { 
+    return VectorL10n.tr("Vector", "search_filter_placeholder") 
+  }
   /// Searching…
   public static var searchInProgress: String { 
     return VectorL10n.tr("Vector", "search_in_progress") 
@@ -4279,7 +4327,7 @@ public class VectorL10n: NSObject {
   public static var secretsRecoveryWithPassphraseTitle: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_title") 
   }
-  /// Enter your account password to confirm
+  /// Enter your Matrix account password to confirm
   public static var secretsResetAuthenticationMessage: String { 
     return VectorL10n.tr("Vector", "secrets_reset_authentication_message") 
   }
@@ -4331,7 +4379,7 @@ public class VectorL10n: NSObject {
   public static var secretsSetupRecoveryKeyTitle: String { 
     return VectorL10n.tr("Vector", "secrets_setup_recovery_key_title") 
   }
-  /// Don't use your account password.
+  /// Don't use your Matrix account password.
   public static var secretsSetupRecoveryPassphraseAdditionalInformation: String { 
     return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_additional_information") 
   }
@@ -4487,7 +4535,7 @@ public class VectorL10n: NSObject {
   public static var securitySettingsCryptoSessions: String { 
     return VectorL10n.tr("Vector", "security_settings_crypto_sessions") 
   }
-  /// If you don’t recognise a login, change your password and reset Secure Backup.
+  /// If you don’t recognise a login, change your Matrix account password and reset Secure Backup.
   public static var securitySettingsCryptoSessionsDescription2: String { 
     return VectorL10n.tr("Vector", "security_settings_crypto_sessions_description_2") 
   }
@@ -4539,7 +4587,7 @@ public class VectorL10n: NSObject {
   public static var securitySettingsTitle: String { 
     return VectorL10n.tr("Vector", "security_settings_title") 
   }
-  /// Confirm your identity by entering your account password
+  /// Confirm your identity by entering your Matrix account password
   public static var securitySettingsUserPasswordDescription: String { 
     return VectorL10n.tr("Vector", "security_settings_user_password_description") 
   }
@@ -4611,7 +4659,7 @@ public class VectorL10n: NSObject {
   public static var settingsAdd3pidInvalidPasswordMessage: String { 
     return VectorL10n.tr("Vector", "settings_add_3pid_invalid_password_message") 
   }
-  /// To continue, please enter your password
+  /// To continue, please enter your Matrix account password
   public static var settingsAdd3pidPasswordMessage: String { 
     return VectorL10n.tr("Vector", "settings_add_3pid_password_message") 
   }
@@ -4659,7 +4707,7 @@ public class VectorL10n: NSObject {
   public static func settingsCallsStunServerFallbackDescription(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_calls_stun_server_fallback_description", p1)
   }
-  /// Change password
+  /// Change Matrix account password
   public static var settingsChangePassword: String { 
     return VectorL10n.tr("Vector", "settings_change_password") 
   }
@@ -4863,7 +4911,7 @@ public class VectorL10n: NSObject {
   public static var settingsEncryptedGroupMessages: String { 
     return VectorL10n.tr("Vector", "settings_encrypted_group_messages") 
   }
-  /// Fail to update password
+  /// Fail to update Matrix account password
   public static var settingsFailToUpdatePassword: String { 
     return VectorL10n.tr("Vector", "settings_fail_to_update_password") 
   }
@@ -5119,7 +5167,7 @@ public class VectorL10n: NSObject {
   public static var settingsOther: String { 
     return VectorL10n.tr("Vector", "settings_other") 
   }
-  /// Your password has been updated
+  /// Your Matrix account password has been updated
   public static var settingsPasswordUpdated: String { 
     return VectorL10n.tr("Vector", "settings_password_updated") 
   }

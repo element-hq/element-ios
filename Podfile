@@ -13,7 +13,7 @@ use_frameworks!
 # - `{ :specHash => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for MatrixSDK repo. Used by Fastfile during CI
 #
 # Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
-$matrixSDKVersion = '= 0.21.0'
+$matrixSDKVersion = '= 0.22.1'
 # $matrixSDKVersion = :local
 # $matrixSDKVersion = { :branch => 'develop'}
 # $matrixSDKVersion = { :specHash => { git: 'https://git.io/fork123', branch: 'fix' } }
@@ -49,7 +49,6 @@ end
 ########################################
 
 def import_MatrixKit_pods
-  pod 'HPGrowingTextView', '~> 1.1'  
   pod 'libPhoneNumber-iOS', '~> 0.9.13'  
   pod 'DTCoreText', '~> 1.6.25'
   #pod 'DTCoreText/Extension', '~> 1.6.25'
@@ -98,7 +97,7 @@ abstract_target 'RiotPods' do
     pod 'DSWaveformImage', '~> 6.1.1'
     pod 'ffmpeg-kit-ios-audio', '4.5.1'
     
-    pod 'FLEX', '~> 4.5.0', :configurations => ['Debug']
+    pod 'FLEX', '~> 4.5.0', :configurations => ['Debug'], :inhibit_warnings => true
 
     target 'RiotTests' do
       inherit! :search_paths
@@ -149,6 +148,10 @@ post_install do |installer|
 
       # Stop Xcode 12 complaining about old IPHONEOS_DEPLOYMENT_TARGET from pods
       config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
+
+      # Disable nullability checks
+      config.build_settings['WARNING_CFLAGS'] ||= ['$(inherited)','-Wno-nullability-completeness']
+      config.build_settings['OTHER_SWIFT_FLAGS'] ||= ['$(inherited)', '-Xcc', '-Wno-nullability-completeness']
     end
   end
 end

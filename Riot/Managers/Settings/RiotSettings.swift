@@ -99,7 +99,7 @@ final class RiotSettings: NSObject {
     @UserDefault<String?>(key: "userInterfaceTheme", defaultValue: nil, storage: defaults)
     var userInterfaceTheme
     
-    // MARK: Other
+    // MARK: Analytics & Rageshakes
     
     /// Whether the user was previously shown the Matomo analytics prompt.
     var hasSeenAnalyticsPrompt: Bool {
@@ -129,6 +129,12 @@ final class RiotSettings: NSObject {
     
     @UserDefault(key: "enableRageShake", defaultValue: false, storage: defaults)
     var enableRageShake
+    
+    // MARK: User
+    
+    /// A dictionary of dictionaries keyed by user ID for storage of the `UserSessionProperties` from any active `UserSession`s.
+    @UserDefault(key: "userSessionProperties", defaultValue: [:], storage: defaults)
+    var userSessionProperties: [String: [String: Any]]
     
     // MARK: Labs
     

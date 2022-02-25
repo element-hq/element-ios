@@ -119,9 +119,9 @@
     
     self.delegate = self;
     
-    _isOnboardingInProgress = NO;
+    self.isOnboardingInProgress = NO;
     
-    // Note: UITabBarViewController shoud not be embed in a UINavigationController (https://github.com/vector-im/riot-ios/issues/3086)
+    // Note: UITabBarViewController should not be embed in a UINavigationController (https://github.com/vector-im/riot-ios/issues/3086)
     [self vc_removeBackTitle];
     
     [self setupTitleView];
@@ -520,7 +520,7 @@
         [self.onboardingCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
         self.onboardingCoordinatorBridgePresenter = nil;
         
-        self.isOnboardingInProgress = NO;
+        self.isOnboardingInProgress = NO;   // Must be set before calling didCompleteAuthentication
         [self.masterTabBarDelegate masterTabBarControllerDidCompleteAuthentication:self];
     };
     
@@ -531,7 +531,8 @@
     
     self.addAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         MXStrongifyAndReturnIfNil(self);
-#warning What was this doing? This should probably happen elsewhere
+
+        // What was this doing? This should probably happen elsewhere
         // self.onboardingCoordinatorBridgePresenter = nil;
         
         [[NSNotificationCenter defaultCenter] removeObserver:self.addAccountObserver];
@@ -541,7 +542,8 @@
     self.removeAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         MXStrongifyAndReturnIfNil(self);
         // The user has cleared data for their soft logged out account
-#warning What was this doing? This should probably happen elsewhere
+
+        // What was this doing? This should probably happen elsewhere
         // self.onboardingCoordinatorBridgePresenter = nil;
         
         [[NSNotificationCenter defaultCenter] removeObserver:self.removeAccountObserver];

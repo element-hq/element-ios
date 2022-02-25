@@ -23,7 +23,6 @@ class TabBarRouter: NSObject, TabbedRouterType {
     
     // MARK: Private
     
-    private var completions: [UIViewController : () -> Void]
     private let tabBarController: UITabBarController
     
     /// Stores the association between the added Presentable and his view controller.
@@ -66,31 +65,18 @@ class TabBarRouter: NSObject, TabbedRouterType {
     
     init(tabBarController: UITabBarController = UITabBarController(), tabs: [TabbedRouterTab]? = nil) {
         self.tabBarController = tabBarController
-        self.completions = [:]
         super.init()
         self.tabBarController.delegate = self
         
         if let tabs = tabs {
             self.tabs = tabs
         }
+    }
         
-        // Post local notification on NavigationRouter creation
-//        let userInfo: [String: Any] = [NavigationRouter.NotificationUserInfoKey.navigationRouter: self,
-//                        NavigationRouter.NotificationUserInfoKey.navigationController: navigationController]
-//        NotificationCenter.default.post(name: NavigationRouter.didCreate, object: self, userInfo: userInfo)
-    }
-    
-    deinit {
-        // Post local notification on NavigationRouter deinit
-//        let userInfo: [String: Any] = [NavigationRouter.NotificationUserInfoKey.navigationRouter: self,
-//                        NavigationRouter.NotificationUserInfoKey.navigationController: navigationController]
-//        NotificationCenter.default.post(name: NavigationRouter.willDestroy, object: self, userInfo: userInfo)
-    }
-    
     // MARK: - Public
     
     func presentModule(_ module: Presentable, animated: Bool, completion: (() -> Void)?) {
-        MXLog.debug("[NavigationRouter] Present \(module)")
+        MXLog.debug("[TabBarRouter] Present \(module)")
         tabBarController.present(module.toPresentable(), animated: animated, completion: nil)
     }
     

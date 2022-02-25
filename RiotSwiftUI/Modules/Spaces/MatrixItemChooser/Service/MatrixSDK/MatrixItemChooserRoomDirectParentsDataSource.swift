@@ -40,7 +40,7 @@ class MatrixItemChooserRoomDirectParentsDataSource: MatrixItemChooserDataSource 
         case .none:
             preselectedItemIds = nil
         case .suggestedRoom:
-            preselectedItemIds = session.spaceService.directParentIds(ofRoomWithId: roomId, isRoomSuggested: true)
+            preselectedItemIds = session.spaceService.directParentIds(ofRoomWithId: roomId, whereRoomIsSuggested: true)
         }
         
         completion(Result(catching: {

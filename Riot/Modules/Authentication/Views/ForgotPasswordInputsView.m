@@ -219,7 +219,7 @@
                                                             style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {
                                                               
-                                                              inputsAlert = nil;
+                                                              self->inputsAlert = nil;
                                                               
                                                           }]];
             

@@ -73,7 +73,8 @@ class RoomCoordinatorBridgePresenterParameters: NSObject {
 
 /// RoomCoordinatorBridgePresenter enables to start RoomCoordinator from a view controller.
 /// This bridge is used while waiting for global usage of coordinator pattern.
-/// **WARNING**: This class breaks the Coordinator abstraction and it has been introduced for **Objective-C compatibility only** (mainly for integration in legacy view controllers). Each bridge should be removed once the underlying Coordinator has been integrated by another Coordinator.
+/// **WARNING**: This class breaks the Coordinator abstraction and it has been introduced for **Objective-C compatibility only** (mainly for integration in legacy view controllers). Each bridge should be removed
+/// once the underlying Coordinator has been integrated by another Coordinator.
 @objcMembers
 final class RoomCoordinatorBridgePresenter: NSObject {
     

@@ -18,16 +18,7 @@ import Foundation
 
 @available(iOS 14.0, *)
 struct AnalyticsPromptStrings: AnalyticsPromptStringsProtocol {
-    let appDisplayName = AppInfo.current.displayName
-    
     let point1 = HTMLFormatter().formatHTML(VectorL10n.analyticsPromptPoint1, withAllowedTags: ["b", "p"], fontSize: UIFont.systemFontSize)
     let point2 = HTMLFormatter().formatHTML(VectorL10n.analyticsPromptPoint2, withAllowedTags: ["b", "p"], fontSize: UIFont.systemFontSize)
-    
-    let termsNewUser = HTMLFormatter().format(VectorL10n.analyticsPromptTermsNewUser("%@"),
-                                              with: VectorL10n.analyticsPromptTermsLinkNewUser,
-                                              using: BuildSettings.analyticsTermsURL)
-    let termsUpgrade = HTMLFormatter().format(VectorL10n.analyticsPromptTermsUpgrade("%@"),
-                                              with: VectorL10n.analyticsPromptTermsLinkUpgrade,
-                                              using: BuildSettings.analyticsTermsURL)
 }
 

@@ -104,6 +104,8 @@
     // Adjust Top and Bottom constraints to take into account potential navBar and tabBar.
     [NSLayoutConstraint deactivateConstraints:@[_searchBarTopConstraint]];
     
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated"
     _searchBarTopConstraint = [NSLayoutConstraint constraintWithItem:self.topLayoutGuide
                                                            attribute:NSLayoutAttributeBottom
                                                            relatedBy:NSLayoutRelationEqual
@@ -111,6 +113,7 @@
                                                            attribute:NSLayoutAttributeTop
                                                           multiplier:1.0f
                                                             constant:0.0f];
+    #pragma clang diagnostic pop
     
     [NSLayoutConstraint activateConstraints:@[_searchBarTopConstraint]];
     
@@ -145,7 +148,7 @@
     if (_showInviteUserFab)
     {
         // Add invite members button programmatically
-        [self vc_addFABWithImage:[UIImage imageNamed:@"add_member_floating_action"]
+        [self vc_addFABWithImage:AssetImages.addMemberFloatingAction.image
                           target:self
                           action:@selector(onAddParticipantButtonPressed)];
     }
@@ -807,7 +810,7 @@
     pendingMaskSpinnerView.alpha = 0;
     [UIView animateWithDuration:0.3 delay:0.3 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         
-        pendingMaskSpinnerView.alpha = 1;
+        self->pendingMaskSpinnerView.alpha = 1;
         
     } completion:^(BOOL finished) {
     }];
