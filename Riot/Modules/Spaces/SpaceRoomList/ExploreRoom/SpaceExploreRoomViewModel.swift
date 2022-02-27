@@ -35,7 +35,7 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
     
     private var spaceRoom: MXRoom?
     private var powerLevels: MXRoomPowerLevels?
-    private var oneSelfPowerLevel: Int?
+    private var powerLevelOfCurrentUser: Int?
 
     private var canJoin: Bool = false {
         didSet {
@@ -127,9 +127,9 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
     @available(iOS 13.0, *)
     func contextMenu(for itemData: SpaceExploreRoomListItemViewData) -> UIMenu {
         let canSendSpaceStateEvents: Bool
-        if let powerLevels = self.powerLevels, let oneSelfPowerLevel = self.oneSelfPowerLevel {
+        if let powerLevels = self.powerLevels, let powerLevelOfCurrentUser = self.powerLevelOfCurrentUser {
             let minimumPowerLevel = powerLevels.minimumPowerLevel(forNotifications: kMXEventTypeStringRoomJoinRules, defaultPower: powerLevels.stateDefault)
-            canSendSpaceStateEvents = oneSelfPowerLevel >= minimumPowerLevel
+            canSendSpaceStateEvents = powerLevelOfCurrentUser >= minimumPowerLevel
         } else {
             canSendSpaceStateEvents = false
         }
@@ -163,7 +163,7 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
         if let spaceRoom = self.spaceRoom {
             spaceRoom.state { roomState in
                 self.powerLevels = roomState?.powerLevels
-                self.oneSelfPowerLevel = self.powerLevels?.powerLevelOfUser(withUserID: self.session.myUserId)
+                self.powerLevelOfCurrentUser = self.powerLevels?.powerLevelOfUser(withUserID: self.session.myUserId)
                 
             }
         }
@@ -266,7 +266,7 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
                         childrenIds: item.childInfo.childrenIds)
                     return SpaceExploreRoomListItemViewData(childInfo: childInfo, avatarViewData: item.avatarViewData)
                 })
-                self.update(viewState: .loaded(self.filteredItemDataList, self.nextBatch != nil && (self.searchKeyword ?? "").isEmpty))
+                self.update(viewState: .loaded(self.filteredItemDataList, self.hasMore))
             case .failure(let error):
                 self.update(viewState: .error(error))
             }
@@ -285,7 +285,7 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
             switch response {
             case .success:
                 self.itemDataList = self.itemDataList.filter { $0.childInfo.childRoomId != roomId }
-                self.update(viewState: .loaded(self.filteredItemDataList, self.nextBatch != nil && (self.searchKeyword ?? "").isEmpty))
+                self.update(viewState: .loaded(self.filteredItemDataList, self.hasMore))
             case .failure(let error):
                 self.update(viewState: .error(error))
             }
@@ -298,7 +298,7 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
             guard let self = self else { return }
             switch response {
             case .success:
-                self.update(viewState: .loaded(self.filteredItemDataList, self.nextBatch != nil && (self.searchKeyword ?? "").isEmpty))
+                self.update(viewState: .loaded(self.filteredItemDataList, self.hasMore))
             case .failure(let error):
                 self.update(viewState: .error(error))
             }
@@ -323,7 +323,7 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
         return UIMenu(children: [
             inviteAction(for: itemData, isJoined: isJoined),
             suggestAction(for: itemData, canSendSpaceStateEvents: canSendSpaceStateEvents),
-            isJoined ? settingsAction(for: itemData, isJoined: isJoined) :joinAction(for: itemData, isJoined: isJoined),
+            isJoined ? settingsAction(for: itemData, isJoined: isJoined) : joinAction(for: itemData, isJoined: isJoined),
             removeAction(for: itemData, canSendSpaceStateEvents: canSendSpaceStateEvents)
         ])
     }
