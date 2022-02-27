@@ -313,7 +313,7 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
         return UIMenu(children: [
             inviteAction(for: itemData, isJoined: isJoined),
             suggestAction(for: itemData, canSendSpaceStateEvents: canSendSpaceStateEvents),
-            isJoined ? settingsAction(for: itemData, isJoined: isJoined) :joinAction(for: itemData, isJoined: isJoined),
+            isJoined ? settingsAction(for: itemData, isJoined: isJoined) : joinAction(for: itemData, isJoined: isJoined),
             removeAction(for: itemData, canSendSpaceStateEvents: canSendSpaceStateEvents)
         ])
     }
