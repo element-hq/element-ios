@@ -1042,6 +1042,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                     SectionHeaderView *updatedSectionHeaderView = (SectionHeaderView *)updatedHeaderView;
                     sectionHeaderView.headerLabel = updatedSectionHeaderView.headerLabel;
                     sectionHeaderView.accessoryView = updatedSectionHeaderView.accessoryView;
+                    sectionHeaderView.rightAccessoryView = updatedSectionHeaderView.rightAccessoryView;
                 }
             }
         }
