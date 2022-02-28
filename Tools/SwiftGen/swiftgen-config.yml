@@ -16,6 +16,13 @@ strings:
       params:
         className: VectorL10n
         publicAccess: true
+  - inputs: Assets/en.lproj/Untranslated.strings
+    outputs:
+      templatePath: Templates/Strings/flat-swift4-vector-untranslated.stencil
+      output: UntranslatedStrings.swift
+      params:
+        className: VectorL10n
+        publicAccess: true
   - inputs: Modules/MatrixKit/Assets/MatrixKitAssets.bundle/en.lproj/MatrixKit.strings
     outputs:
       templatePath: Templates/Strings/matrixkit-flat-swift4-vector.stencil

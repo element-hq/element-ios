@@ -52,8 +52,8 @@ final class TemplateSimpleScreenCoordinator: Coordinator, Presentable {
     func start() {
         MXLog.debug("[TemplateSimpleScreenCoordinator] did start.")
         templateSimpleScreenViewModel.completion = { [weak self] result in
-            MXLog.debug("[TemplateSimpleScreenCoordinator] TemplateSimpleScreenViewModel did complete with result: \(result).")
             guard let self = self else { return }
+            MXLog.debug("[TemplateSimpleScreenCoordinator] TemplateSimpleScreenViewModel did complete with result: \(result).")
             self.completion?(result)
         }
     }
