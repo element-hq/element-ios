@@ -17,7 +17,7 @@
 import UIKit
 
 @objcMembers
-class RoomTypingBubbleCell: MXKTableViewCell, Themable {
+class MessageTypingCell: MXKTableViewCell, Themable {
     // MARK: - Constants
     
     private enum Constants {

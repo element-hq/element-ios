@@ -119,7 +119,7 @@
     
     [tableView registerClass:RoomCreationIntroCell.class forCellReuseIdentifier:RoomCreationIntroCell.defaultReuseIdentifier];
     
-    [tableView registerNib:RoomTypingBubbleCell.nib forCellReuseIdentifier:RoomTypingBubbleCell.defaultReuseIdentifier];
+    [tableView registerNib:MessageTypingCell.nib forCellReuseIdentifier:MessageTypingCell.defaultReuseIdentifier];
 }
 
 - (Class<MXKCellRendering>)cellViewClassForCellIdentifier:(RoomTimelineCellIdentifier)identifier
@@ -324,7 +324,7 @@
         @(RoomTimelineCellIdentifierSelectedSticker) : RoomSelectedStickerBubbleCell.class,
         @(RoomTimelineCellIdentifierRoomPredecessor) : RoomPredecessorBubbleCell.class,
         @(RoomTimelineCellIdentifierRoomCreationIntro) : RoomCreationIntroCell.class,
-        @(RoomTimelineCellIdentifierTyping) : RoomTypingBubbleCell.class,
+        @(RoomTimelineCellIdentifierTyping) : MessageTypingCell.class,
     };
     [cellClasses addEntriesFromDictionary:othersCells];
 

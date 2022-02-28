@@ -348,7 +348,7 @@ const CGFloat kTypingCellHeight = 24;
 {
     if (indexPath.row == self.typingCellIndex)
     {
-        RoomTypingBubbleCell *cell = [tableView dequeueReusableCellWithIdentifier:RoomTypingBubbleCell.defaultReuseIdentifier forIndexPath:indexPath];
+        MessageTypingCell *cell = [tableView dequeueReusableCellWithIdentifier:MessageTypingCell.defaultReuseIdentifier forIndexPath:indexPath];
         [cell updateWithTheme:ThemeService.shared.theme];
         [cell updateTypingUsers:_currentTypingUsers mediaManager:self.mxSession.mediaManager];
         return cell;
