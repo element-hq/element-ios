@@ -17,10 +17,10 @@
 import UIKit
 import Reusable
 
-class RoomBaseCallBubbleCell: MXKRoomBubbleTableViewCell {
+class RoomCallBaseCell: MXKRoomBubbleTableViewCell {
     
-    lazy var innerContentView: CallBubbleCellBaseContentView = {
-        return CallBubbleCellBaseContentView.loadFromNib()
+    lazy var innerContentView: CallCellContentView = {
+        return CallCellContentView.loadFromNib()
     }()
     
     override required init!(style: UITableViewCell.CellStyle, reuseIdentifier: String!) {
@@ -65,7 +65,7 @@ class RoomBaseCallBubbleCell: MXKRoomBubbleTableViewCell {
         innerContentView.bottomContainerView.vc_addSubViewMatchingParent(bottomContentView)
     }
     
-    class func createSizingView() -> RoomBaseCallBubbleCell {
+    class func createSizingView() -> RoomCallBaseCell {
         return self.init(style: .default, reuseIdentifier: self.defaultReuseIdentifier())
     }
     
@@ -144,7 +144,7 @@ class RoomBaseCallBubbleCell: MXKRoomBubbleTableViewCell {
     
 }
 
-extension RoomBaseCallBubbleCell: RoomCellReadReceiptsDisplayable {
+extension RoomCallBaseCell: RoomCellReadReceiptsDisplayable {
     
     func addReadReceiptsView(_ readReceiptsView: UIView) {
         innerContentView.addReadReceiptsView(readReceiptsView)
@@ -156,7 +156,7 @@ extension RoomBaseCallBubbleCell: RoomCellReadReceiptsDisplayable {
     
 }
 
-extension RoomBaseCallBubbleCell: Themable {
+extension RoomCallBaseCell: Themable {
     
     func update(theme: Theme) {
         innerContentView.update(theme: theme)
@@ -167,6 +167,6 @@ extension RoomBaseCallBubbleCell: Themable {
     
 }
 
-extension RoomBaseCallBubbleCell: NibReusable {
+extension RoomCallBaseCell: NibReusable {
     
 }

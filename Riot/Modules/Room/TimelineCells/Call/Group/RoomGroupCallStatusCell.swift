@@ -20,7 +20,7 @@ import UIKit
 private let MSEC_PER_SEC: TimeInterval = 1000
 
 @objcMembers
-class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
+class RoomGroupCallStatusCell: RoomCallBaseCell {
     
     private static var className: String {
         return String(describing: self)
@@ -335,7 +335,7 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
             return ""
         }
         
-        return RoomGroupCallStatusBubbleCell.callDurationFormatter.string(from: duration) ?? ""
+        return RoomGroupCallStatusCell.callDurationFormatter.string(from: duration) ?? ""
     }
 
 }

@@ -17,7 +17,7 @@
 import UIKit
 import Reusable
 
-class CallBubbleCellBaseContentView: UIView {
+class CallCellContentView: UIView {
     
     private enum Constants {
         static let callSummaryWithBottomViewHeight: CGFloat = 20
@@ -88,11 +88,11 @@ class CallBubbleCellBaseContentView: UIView {
 
 }
 
-extension CallBubbleCellBaseContentView: NibLoadable {
+extension CallCellContentView: NibLoadable {
     
 }
 
-extension CallBubbleCellBaseContentView: Themable {
+extension CallCellContentView: Themable {
     
     func update(theme: Theme) {
         self.theme = theme
@@ -114,7 +114,7 @@ extension CallBubbleCellBaseContentView: Themable {
 
 // MARK: - RoomCellReadReceiptsDisplayable
 
-extension CallBubbleCellBaseContentView: RoomCellReadReceiptsDisplayable {
+extension CallCellContentView: RoomCellReadReceiptsDisplayable {
     
     func addReadReceiptsView(_ readReceiptsView: UIView) {
         self.readReceiptsContentView.vc_removeAllSubviews()

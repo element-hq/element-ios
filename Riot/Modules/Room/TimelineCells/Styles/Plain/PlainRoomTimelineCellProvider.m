@@ -236,8 +236,8 @@
 
 - (void)registerCallCellsForTableView:(UITableView*)tableView
 {
-    [tableView registerClass:RoomDirectCallStatusBubbleCell.class forCellReuseIdentifier:RoomDirectCallStatusBubbleCell.defaultReuseIdentifier];
-    [tableView registerClass:RoomGroupCallStatusBubbleCell.class forCellReuseIdentifier:RoomGroupCallStatusBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:RoomDirectCallStatusCell.class forCellReuseIdentifier:RoomDirectCallStatusCell.defaultReuseIdentifier];
+    [tableView registerClass:RoomGroupCallStatusCell.class forCellReuseIdentifier:RoomGroupCallStatusCell.defaultReuseIdentifier];
 }
 
 - (void)registerVoiceMessageCellsForTableView:(UITableView*)tableView
@@ -494,8 +494,8 @@
 - (NSDictionary<NSNumber*, Class>*)callCellsMapping
 {
     return @{
-        @(RoomTimelineCellIdentifierDirectCallStatus) : RoomDirectCallStatusBubbleCell.class,
-        @(RoomTimelineCellIdentifierGroupCallStatus) : RoomGroupCallStatusBubbleCell.class,
+        @(RoomTimelineCellIdentifierDirectCallStatus) : RoomDirectCallStatusCell.class,
+        @(RoomTimelineCellIdentifierGroupCallStatus) : RoomGroupCallStatusCell.class,
     };
 }
 
