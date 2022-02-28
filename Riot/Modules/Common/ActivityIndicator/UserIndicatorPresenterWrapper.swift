@@ -19,7 +19,7 @@ import CommonKit
 
 /// A convenience objc-compatible wrapper around `UserIndicatorTypePresenterProtocol`.
 ///
-/// This class wraps swift-only protocol by exponsing multiple methods instead of accepting struct types
+/// This class wraps swift-only protocol by exposing multiple methods instead of accepting struct types
 /// and it keeps a track of `UserIndicator`s instead of returning them to the caller.
 @objc final class UserIndicatorPresenterWrapper: NSObject {
     private let presenter: UserIndicatorTypePresenterProtocol

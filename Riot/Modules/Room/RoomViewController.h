@@ -243,7 +243,7 @@ didRequestEditForPollWithStartEvent:(MXEvent *)startEvent;
 - (BOOL)roomViewControllerCanDelegateUserIndicators:(RoomViewController *)roomViewController;
 
 /**
- Indicate to the delegate that loading should begin
+ Indicate to the delegate that loading should start
  
  Note: Only called if the controller can delegate user indicators rather than managing
  loading indicators internally

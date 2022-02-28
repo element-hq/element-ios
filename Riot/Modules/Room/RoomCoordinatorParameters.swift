@@ -28,7 +28,7 @@ struct RoomCoordinatorParameters {
     /// `navigationRouter` property takes priority on `navigationRouterStore`
     let navigationRouterStore: NavigationRouterStoreProtocol?
     
-    /// Presenter for displaying loading indicators, success messages
+    /// Presenter for displaying loading indicators, success messages and other user indicators
     let userIndicatorPresenter: UserIndicatorTypePresenterProtocol?
     
     /// The matrix session in which the room should be available.

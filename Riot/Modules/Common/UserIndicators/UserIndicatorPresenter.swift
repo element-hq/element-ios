@@ -34,9 +34,9 @@ protocol UserIndicatorTypePresenterProtocol {
     /// of other indicators.
     ///
     /// If the queue is empty, the indicator will be displayed immediately, otherwise it will be pending
-    /// until the previously added indicator have completed / been cancelled.
+    /// until the previously added indicators have completed / been cancelled.
     ///
-    /// To remove an indicator, cancel or deallocate the returned `UserIndicator`
+    /// To remove an indicator, `cancel` or deallocate the returned `UserIndicator`
     func present(_ type: UserIndicatorType) -> UserIndicator
     
     /// The queue of user indicators owned by the presenter
