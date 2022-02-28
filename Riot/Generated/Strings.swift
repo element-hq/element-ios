@@ -2407,22 +2407,6 @@ public class VectorL10n: NSObject {
   public static var on: String { 
     return VectorL10n.tr("Vector", "on") 
   }
-  /// Take me home
-  public static var onboardingCongratulationsHomeButton: String { 
-    return VectorL10n.tr("Vector", "onboarding_congratulations_home_button") 
-  }
-  /// Your account\n%@\nhas been created.
-  public static func onboardingCongratulationsMessage(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "onboarding_congratulations_message", p1)
-  }
-  /// Personalise profile
-  public static var onboardingCongratulationsPersonaliseButton: String { 
-    return VectorL10n.tr("Vector", "onboarding_congratulations_personalise_button") 
-  }
-  /// Congratulations!
-  public static var onboardingCongratulationsTitle: String { 
-    return VectorL10n.tr("Vector", "onboarding_congratulations_title") 
-  }
   /// I already have an account
   public static var onboardingSplashLoginButtonTitle: String { 
     return VectorL10n.tr("Vector", "onboarding_splash_login_button_title") 

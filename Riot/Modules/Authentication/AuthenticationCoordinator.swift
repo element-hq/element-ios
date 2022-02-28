@@ -94,7 +94,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         authenticationViewController.continueSSOLogin(withToken: loginToken, txnId: transactionID)
     }
     
-    func allowScreenPresentation() {
+    func presentPendingScreensIfNecessary() {
         canPresentAdditionalScreens = true
         
         showLoadingAnimation()

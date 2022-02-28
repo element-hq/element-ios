@@ -56,6 +56,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     }
     // Keep a strong ref as we need to init authVC early to preload its view
     private let authenticationCoordinator: AuthenticationCoordinatorProtocol
+    /// A boolean to prevent authentication being shown when already in progress.
     private var isShowingAuthentication = false
     
     // MARK: Screen results
@@ -65,9 +66,9 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     private var session: MXSession?
     
     /// Whether all of the onboarding steps have been completed or not. `false` if there are more screens to be shown.
-    private var onboardingIsFinished = false
-    /// Whether the main app is ready to be shown or not. `true` once authenticated, verified and the store/data sources are ready.
-    private var appIsReady = false
+    private var onboardingFinished = false
+    /// Whether authentication is complete. `true` once authenticated, verified and the app is ready to be shown.
+    private var authenticationFinished = false
     
     // MARK: Public
 
@@ -262,7 +263,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         }
         
         // Otherwise onboarding is finished.
-        onboardingIsFinished = true
+        onboardingFinished = true
         completeIfReady()
     }
     
@@ -282,7 +283,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         }
         
         // This method is only called when the app is ready so we can complete if finished
-        appIsReady = true
+        authenticationFinished = true
         completeIfReady()
     }
     
@@ -327,7 +328,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             }
         }
         
-        onboardingIsFinished = true
+        onboardingFinished = true
         completeIfReady()
     }
     
@@ -353,21 +354,21 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     }
     
     private func analyticsPromptCoordinatorDidComplete(_ coordinator: AnalyticsPromptCoordinator) {
-        onboardingIsFinished = true
+        onboardingFinished = true
         completeIfReady()
     }
     
     // MARK: - Finished
     
     private func completeIfReady() {
-        guard onboardingIsFinished else {
+        guard onboardingFinished else {
             MXLog.debug("[OnboardingCoordinator] Delaying onboarding completion until all screens have been shown.")
             return
         }
         
-        guard appIsReady else {
+        guard authenticationFinished else {
             MXLog.debug("[OnboardingCoordinator] Allowing AuthenticationCoordinator to display any remaining screens.")
-            authenticationCoordinator.allowScreenPresentation()
+            authenticationCoordinator.presentPendingScreensIfNecessary()
             return
         }
         

@@ -104,11 +104,6 @@
 "onboarding_use_case_existing_server_message" = "Looking to join an existing server?";
 "onboarding_use_case_existing_server_button" = "Connect to server";
 
-"onboarding_congratulations_title" = "Congratulations!";
-"onboarding_congratulations_message" = "Your account\n%@\nhas been created.";
-"onboarding_congratulations_personalise_button" = "Personalise profile";
-"onboarding_congratulations_home_button" = "Take me home";
-
 // Authentication
 "auth_login" = "Log in";
 "auth_register" = "Register";

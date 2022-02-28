@@ -52,8 +52,8 @@ final class OnboardingCongratulationsCoordinator: Coordinator, Presentable {
     func start() {
         MXLog.debug("[OnboardingCongratulationsCoordinator] did start.")
         onboardingCongratulationsViewModel.completion = { [weak self] result in
-            MXLog.debug("[OnboardingCongratulationsCoordinator] OnboardingCongratulationsViewModel did complete with result: \(result).")
             guard let self = self else { return }
+            MXLog.debug("[OnboardingCongratulationsCoordinator] OnboardingCongratulationsViewModel did complete with result: \(result).")
             self.completion?(result)
         }
     }

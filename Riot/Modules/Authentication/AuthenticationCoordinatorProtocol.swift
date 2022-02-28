@@ -57,5 +57,5 @@ protocol AuthenticationCoordinatorProtocol: Coordinator, Presentable {
     
     /// Indicates to the coordinator to display any pending screens if it was created with
     /// the `canPresentAdditionalScreens` parameter set to `false`
-    func allowScreenPresentation()
+    func presentPendingScreensIfNecessary()
 }

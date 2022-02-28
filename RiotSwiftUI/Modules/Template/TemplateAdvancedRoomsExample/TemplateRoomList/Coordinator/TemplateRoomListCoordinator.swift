@@ -53,8 +53,8 @@ final class TemplateRoomListCoordinator: Coordinator, Presentable {
     func start() {
         MXLog.debug("[TemplateRoomListCoordinator] did start.")
         templateRoomListViewModel.callback = { [weak self] result in
-            MXLog.debug("[TemplateRoomListCoordinator] TemplateRoomListViewModel did complete with result \(result).")
             guard let self = self else { return }
+            MXLog.debug("[TemplateRoomListCoordinator] TemplateRoomListViewModel did complete with result \(result).")
             switch result {
             case .didSelectRoom(let roomId):
                 self.callback?(.didSelectRoom(roomId))
