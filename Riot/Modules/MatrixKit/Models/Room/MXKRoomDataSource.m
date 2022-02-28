@@ -1870,13 +1870,11 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     }
 }
 
-- (void)sendReplyToEventWithId:(NSString*)eventIdToReply
-               withTextMessage:(NSString *)text
-                       success:(void (^)(NSString *))success
-                       failure:(void (^)(NSError *))failure
+- (void)sendReplyToEvent:(MXEvent*)eventToReply
+         withTextMessage:(NSString *)text
+                 success:(void (^)(NSString *))success
+                 failure:(void (^)(NSError *))failure
 {
-    MXEvent *eventToReply = [self eventWithEventId:eventIdToReply];
-    
     __block MXEvent *localEchoEvent = nil;
     
     NSString *sanitizedText = [self sanitizedMessageText:text];
@@ -4284,13 +4282,11 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     return hasChanged;
 }
 
-- (void)replaceTextMessageForEventWithId:(NSString*)eventId
-                         withTextMessage:(NSString *)text                           
-                                 success:(void (^)(NSString *))success
-                                 failure:(void (^)(NSError *))failure
+- (void)replaceTextMessageForEvent:(MXEvent*)event
+                   withTextMessage:(NSString *)text
+                           success:(void (^)(NSString *))success
+                           failure:(void (^)(NSError *))failure
 {
-    MXEvent *event = [self eventWithEventId:eventId];
-    
     NSString *sanitizedText = [self sanitizedMessageText:text];
     NSString *formattedText = [self htmlMessageFromSanitizedText:sanitizedText];
     
