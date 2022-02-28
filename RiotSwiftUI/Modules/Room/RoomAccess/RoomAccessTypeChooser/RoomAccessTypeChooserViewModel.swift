@@ -107,7 +107,7 @@ class RoomAccessTypeChooserViewModel: RoomAccessTypeChooserViewModelType, RoomAc
     
     private func upgradeRoom() {
         guard let versionOverride = roomAccessTypeChooserService.versionOverride else {
-            MXLog.error("[RoomAccessTypeChooserViewModel] upgradeRoom: versionOverride not found")
+            UILog.error("[RoomAccessTypeChooserViewModel] upgradeRoom: versionOverride not found")
             return
         }
         

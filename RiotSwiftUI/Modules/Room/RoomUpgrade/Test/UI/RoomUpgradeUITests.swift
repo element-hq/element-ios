@@ -30,24 +30,6 @@ class RoomUpgradeUITests: MockScreenTest {
 
     func verifyRoomUpgradeScreen() throws {
         guard let screenState = screenState as? MockRoomUpgradeScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .presence(let presence):
-            verifyRoomUpgradePresence(presence: presence)
-        case .longDisplayName(let name):
-            verifyRoomUpgradeLongName(name: name)
-        }
-    }
-
-    func verifyRoomUpgradePresence(presence: RoomUpgradePresence) {
-        let presenceText = app.staticTexts["presenceText"]
-        XCTAssert(presenceText.exists)
-        XCTAssertEqual(presenceText.label, presence.title)
-    }
-
-    func verifyRoomUpgradeLongName(name: String) {
-        let displayNameText = app.staticTexts["displayNameText"]
-        XCTAssert(displayNameText.exists)
-        XCTAssertEqual(displayNameText.label, name)
     }
 
 }

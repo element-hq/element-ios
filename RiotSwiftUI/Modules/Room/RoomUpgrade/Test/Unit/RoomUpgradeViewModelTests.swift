@@ -21,37 +21,11 @@ import Combine
 
 @available(iOS 14.0, *)
 class RoomUpgradeViewModelTests: XCTestCase {
-    private enum Constants {
-        static let presenceInitialValue: RoomUpgradePresence = .offline
-        static let displayName = "Alice"
-    }
     var service: MockRoomUpgradeService!
     var viewModel: RoomUpgradeViewModelProtocol!
     var context: RoomUpgradeViewModelType.Context!
-    var cancellables = Set<AnyCancellable>()
+
     override func setUpWithError() throws {
-        service = MockRoomUpgradeService(displayName: Constants.displayName, presence: Constants.presenceInitialValue)
-        viewModel = RoomUpgradeViewModel.makeRoomUpgradeViewModel(roomUpgradeService: service)
-        context = viewModel.context
     }
 
-    func testInitialState() {
-        XCTAssertEqual(context.viewState.displayName, Constants.displayName)
-        XCTAssertEqual(context.viewState.presence, Constants.presenceInitialValue)
-    }
-
-    func testFirstPresenceReceived() throws {
-        let presencePublisher = context.$viewState.map(\.presence).removeDuplicates().collect(1).first()
-        XCTAssertEqual(try xcAwait(presencePublisher), [Constants.presenceInitialValue])
-    }
-
-    func testPresenceUpdatesReceived() throws {
-        let presencePublisher = context.$viewState.map(\.presence).removeDuplicates().collect(3).first()
-        let awaitDeferred = xcAwaitDeferred(presencePublisher)
-        let newPresenceValue1: RoomUpgradePresence = .online
-        let newPresenceValue2: RoomUpgradePresence = .idle
-        service.simulateUpdate(presence: newPresenceValue1)
-        service.simulateUpdate(presence: newPresenceValue2)
-        XCTAssertEqual(try awaitDeferred(), [Constants.presenceInitialValue, newPresenceValue1, newPresenceValue2])
-    }
 }
