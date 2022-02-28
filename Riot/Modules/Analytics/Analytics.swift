@@ -292,4 +292,13 @@ extension Analytics: MXAnalyticsDelegate {
     func trackContactsAccessGranted(_ granted: Bool) {
         // Do we still want to track this?
     }
+
+    func trackEventComposed(inThread: Bool, isEditing: Bool, isReply: Bool, startsThread: Bool) {
+        let event = AnalyticsEvent.Composer(inThread: inThread,
+                                            isEditing: isEditing,
+                                            isReply: isReply,
+                                            startsThread: startsThread)
+        capture(event: event)
+    }
+
 }

@@ -51,6 +51,7 @@ import AnalyticsEvents
     case group
     case myGroups
     case inviteFriends
+    case threadList
     
     /// The screen name reported to the AnalyticsEvent.
     var screenName: AnalyticsEvent.MobileScreen.ScreenName {
@@ -121,6 +122,8 @@ import AnalyticsEvents
             return .MyGroups
         case .inviteFriends:
             return .InviteFriends
+        case .threadList:
+            return .ThreadList
         }
     }
 }
