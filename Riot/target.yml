@@ -90,6 +90,7 @@ targets:
     - path: Assets/en.lproj/InfoPlist.strings
     - path: Assets/en.lproj/Localizable.strings
     - path: Assets/en.lproj/Vector.strings
+    - path: Assets/en.lproj/Untranslated.strings
     - path: Assets/eo.lproj/InfoPlist.strings
     - path: Assets/eo.lproj/Localizable.strings
     - path: Assets/eo.lproj/Vector.strings
