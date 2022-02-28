@@ -17,12 +17,12 @@
 import UIKit
 
 @objcMembers
-class KeyVerificationRequestStatusBubbleCell: KeyVerificationBaseBubbleCell {
+class KeyVerificationRequestStatusCell: KeyVerificationBaseCell {
 
     // MARK: - Constants
     
     private enum Sizing {
-        static let view = KeyVerificationRequestStatusBubbleCell(style: .default, reuseIdentifier: nil)
+        static let view = KeyVerificationRequestStatusCell(style: .default, reuseIdentifier: nil)
     }
     
     // MARK: - Setup
@@ -63,7 +63,7 @@ class KeyVerificationRequestStatusBubbleCell: KeyVerificationBaseBubbleCell {
         keyVerificationCellInnerContentView.requestStatusText = viewData.statusText
     }
     
-    override class func sizingView() -> KeyVerificationBaseBubbleCell {
+    override class func sizingView() -> KeyVerificationBaseCell {
         return self.Sizing.view
     }
     

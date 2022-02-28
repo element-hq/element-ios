@@ -17,12 +17,12 @@
 import UIKit
 
 @objcMembers
-final class KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell: KeyVerificationIncomingRequestApprovalBubbleCell {
+final class KeyVerificationConclusionWithPaginationTitleCell: KeyVerificationConclusionCell {
     
     // MARK: - Constants
     
     private enum Sizing {
-        static let view = KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell(style: .default, reuseIdentifier: nil)
+        static let view = KeyVerificationConclusionWithPaginationTitleCell(style: .default, reuseIdentifier: nil)
     }
     
     // MARK: - Setup
@@ -38,7 +38,7 @@ final class KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell:
     
     private func commonInit() {
         guard let roomCellContentView = self.roomCellContentView else {
-            fatalError("[KeyVerificationRequestStatusWithPaginationTitleBubbleCell] bubbleCellContentView should not be nil")
+            fatalError("[KeyVerificationConclusionWithPaginationTitleCell] bubbleCellContentView should not be nil")
         }
         
         roomCellContentView.showPaginationTitle = true
@@ -46,7 +46,7 @@ final class KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell:
     
     // MARK: - Overrides
     
-    override class func sizingView() -> KeyVerificationBaseBubbleCell {
+    override class func sizingView() -> KeyVerificationBaseCell {
         return self.Sizing.view
     }
 }

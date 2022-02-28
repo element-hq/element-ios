@@ -220,12 +220,12 @@
 
 - (void)registerKeyVerificationCellsForTableView:(UITableView*)tableView
 {
-    [tableView registerClass:KeyVerificationIncomingRequestApprovalBubbleCell.class forCellReuseIdentifier:KeyVerificationIncomingRequestApprovalBubbleCell.defaultReuseIdentifier];
-    [tableView registerClass:KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell.class forCellReuseIdentifier:KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell.defaultReuseIdentifier];
-    [tableView registerClass:KeyVerificationRequestStatusBubbleCell.class forCellReuseIdentifier:KeyVerificationRequestStatusBubbleCell.defaultReuseIdentifier];
-    [tableView registerClass:KeyVerificationRequestStatusWithPaginationTitleBubbleCell.class forCellReuseIdentifier:KeyVerificationRequestStatusWithPaginationTitleBubbleCell.defaultReuseIdentifier];
-    [tableView registerClass:KeyVerificationConclusionBubbleCell.class forCellReuseIdentifier:KeyVerificationConclusionBubbleCell.defaultReuseIdentifier];
-    [tableView registerClass:KeyVerificationConclusionWithPaginationTitleBubbleCell.class forCellReuseIdentifier:KeyVerificationConclusionWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:KeyVerificationIncomingRequestApprovalCell.class forCellReuseIdentifier:KeyVerificationIncomingRequestApprovalCell.defaultReuseIdentifier];
+    [tableView registerClass:KeyVerificationIncomingRequestApprovalWithPaginationTitleCell.class forCellReuseIdentifier:KeyVerificationIncomingRequestApprovalWithPaginationTitleCell.defaultReuseIdentifier];
+    [tableView registerClass:KeyVerificationRequestStatusCell.class forCellReuseIdentifier:KeyVerificationRequestStatusCell.defaultReuseIdentifier];
+    [tableView registerClass:KeyVerificationRequestStatusWithPaginationTitleCell.class forCellReuseIdentifier:KeyVerificationRequestStatusWithPaginationTitleCell.defaultReuseIdentifier];
+    [tableView registerClass:KeyVerificationConclusionCell.class forCellReuseIdentifier:KeyVerificationConclusionCell.defaultReuseIdentifier];
+    [tableView registerClass:KeyVerificationConclusionWithPaginationTitleCell.class forCellReuseIdentifier:KeyVerificationConclusionWithPaginationTitleCell.defaultReuseIdentifier];
 }
 
 - (void)registerRoomCreationCellsForTableView:(UITableView*)tableView
@@ -474,12 +474,12 @@
 - (NSDictionary<NSNumber*, Class>*)keyVerificationCellsMapping
 {
     return @{
-        @(RoomTimelineCellIdentifierKeyVerificationIncomingRequestApproval) : KeyVerificationIncomingRequestApprovalBubbleCell.class,
-        @(RoomTimelineCellIdentifierKeyVerificationIncomingRequestApprovalWithPaginationTitle) : KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell.class,
-        @(RoomTimelineCellIdentifierKeyVerificationRequestStatus) : KeyVerificationRequestStatusBubbleCell.class,
-        @(RoomTimelineCellIdentifierKeyVerificationRequestStatusWithPaginationTitle) : KeyVerificationRequestStatusWithPaginationTitleBubbleCell.class,
-        @(RoomTimelineCellIdentifierKeyVerificationConclusion) : KeyVerificationConclusionBubbleCell.class,
-        @(RoomTimelineCellIdentifierKeyVerificationConclusionWithPaginationTitle) : KeyVerificationConclusionWithPaginationTitleBubbleCell.class,
+        @(RoomTimelineCellIdentifierKeyVerificationIncomingRequestApproval) : KeyVerificationIncomingRequestApprovalCell.class,
+        @(RoomTimelineCellIdentifierKeyVerificationIncomingRequestApprovalWithPaginationTitle) : KeyVerificationIncomingRequestApprovalWithPaginationTitleCell.class,
+        @(RoomTimelineCellIdentifierKeyVerificationRequestStatus) : KeyVerificationRequestStatusCell.class,
+        @(RoomTimelineCellIdentifierKeyVerificationRequestStatusWithPaginationTitle) : KeyVerificationRequestStatusWithPaginationTitleCell.class,
+        @(RoomTimelineCellIdentifierKeyVerificationConclusion) : KeyVerificationConclusionCell.class,
+        @(RoomTimelineCellIdentifierKeyVerificationConclusionWithPaginationTitle) : KeyVerificationConclusionWithPaginationTitleCell.class,
     };
 }
 

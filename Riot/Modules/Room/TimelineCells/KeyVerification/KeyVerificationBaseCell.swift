@@ -17,7 +17,7 @@
 import Foundation
 
 @objcMembers
-class KeyVerificationBaseBubbleCell: MXKRoomBubbleTableViewCell {
+class KeyVerificationBaseCell: MXKRoomBubbleTableViewCell {
     
     // MARK: - Constants
     
@@ -121,7 +121,7 @@ class KeyVerificationBaseBubbleCell: MXKRoomBubbleTableViewCell {
         return senderDisplayName
     }
     
-    class func sizingView() -> KeyVerificationBaseBubbleCell {
+    class func sizingView() -> KeyVerificationBaseCell {
         fatalError("[KeyVerificationBaseBubbleCell] Subclass should implement this method")       
     }
     
@@ -249,7 +249,7 @@ class KeyVerificationBaseBubbleCell: MXKRoomBubbleTableViewCell {
 }
 
 // MARK: - RoomCellReadReceiptsDisplayable
-extension KeyVerificationBaseBubbleCell: RoomCellReadReceiptsDisplayable {
+extension KeyVerificationBaseCell: RoomCellReadReceiptsDisplayable {
     
     func addReadReceiptsView(_ readReceiptsView: UIView) {
         self.roomCellContentView?.addReadReceiptsView(readReceiptsView)
