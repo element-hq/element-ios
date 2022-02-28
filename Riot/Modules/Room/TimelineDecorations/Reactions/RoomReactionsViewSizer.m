@@ -14,33 +14,33 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#import "BubbleReactionsViewSizer.h"
+#import "RoomReactionsViewSizer.h"
 #import <MatrixSDK/MatrixSDK.h>
 
 #import "GeneratedInterface-Swift.h"
 
-@implementation BubbleReactionsViewSizer
+@implementation RoomReactionsViewSizer
 
-- (CGFloat)heightForViewModel:(BubbleReactionsViewModel*)viewModel
+- (CGFloat)heightForViewModel:(RoomReactionsViewModel*)viewModel
                  fittingWidth:(CGFloat)fittingWidth
 {
                             
     CGSize fittingSize = UILayoutFittingCompressedSize;
     fittingSize.width = fittingWidth;
     
-    static BubbleReactionsView *bubbleReactionsView;
+    static RoomReactionsView *reactionsView;
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        bubbleReactionsView = [BubbleReactionsView new];
+        reactionsView = [RoomReactionsView new];
     });
     
-    bubbleReactionsView.frame = CGRectMake(0, 0, fittingWidth, 1.0);
-    bubbleReactionsView.viewModel = viewModel;
-    [bubbleReactionsView setNeedsLayout];
-    [bubbleReactionsView layoutIfNeeded];
+    reactionsView.frame = CGRectMake(0, 0, fittingWidth, 1.0);
+    reactionsView.viewModel = viewModel;
+    [reactionsView setNeedsLayout];
+    [reactionsView layoutIfNeeded];
             
-    return [bubbleReactionsView systemLayoutSizeFittingSize:fittingSize withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:UILayoutPriorityFittingSizeLevel].height;        
+    return [reactionsView systemLayoutSizeFittingSize:fittingSize withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:UILayoutPriorityFittingSizeLevel].height;
 }
 
 @end

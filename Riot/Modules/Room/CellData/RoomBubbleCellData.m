@@ -21,7 +21,7 @@
 
 #import "AvatarGenerator.h"
 #import "Tools.h"
-#import "BubbleReactionsViewSizer.h"
+#import "RoomReactionsViewSizer.h"
 
 #import "GeneratedInterface-Swift.h"
 
@@ -754,18 +754,18 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     
     if (reactionCount)
     {
-        CGFloat bubbleReactionsViewWidth = self.maxTextViewWidth - 4;
+        CGFloat reactionsViewWidth = self.maxTextViewWidth - 4;
         
-        static BubbleReactionsViewSizer *bubbleReactionsViewSizer;
+        static RoomReactionsViewSizer *reactionsViewSizer;
         
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
-            bubbleReactionsViewSizer = [BubbleReactionsViewSizer new];
+            reactionsViewSizer = [RoomReactionsViewSizer new];
         });
 
         BOOL showAllReactions = [self.eventsToShowAllReactions containsObject:eventId];
-        BubbleReactionsViewModel *viewModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:aggregatedReactions eventId:eventId showAll:showAllReactions];
-        height = [bubbleReactionsViewSizer heightForViewModel:viewModel fittingWidth:bubbleReactionsViewWidth] + PlainRoomCellLayoutConstants.reactionsViewTopMargin;
+        RoomReactionsViewModel *viewModel = [[RoomReactionsViewModel alloc] initWithAggregatedReactions:aggregatedReactions eventId:eventId showAll:showAllReactions];
+        height = [reactionsViewSizer heightForViewModel:viewModel fittingWidth:reactionsViewWidth] + PlainRoomCellLayoutConstants.reactionsViewTopMargin;
     }
     
     return height;

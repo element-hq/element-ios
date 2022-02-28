@@ -21,14 +21,14 @@ import DGCollectionViewLeftAlignFlowLayout
 import UIKit
 import UICollectionViewRightAlignedLayout
 
-/// BubbleReactionsView items alignment
-enum BubbleReactionsViewAlignment {
+/// RoomReactionsView items alignment
+enum RoomReactionsViewAlignment {
     case left
     case right
 }
 
 @objcMembers
-final class BubbleReactionsView: UIView, NibOwnerLoadable {
+final class RoomReactionsView: UIView, NibOwnerLoadable {
     
     // MARK: - Constants
     
@@ -45,21 +45,21 @@ final class BubbleReactionsView: UIView, NibOwnerLoadable {
     
     // MARK: Private
     
-    private var reactionsViewData: [BubbleReactionViewData] = []
-    private var showAllButtonState: BubbleReactionsViewState.ShowAllButtonState = .none
+    private var reactionsViewData: [RoomReactionViewData] = []
+    private var showAllButtonState: RoomReactionsViewState.ShowAllButtonState = .none
     private var theme: Theme?
     
     // MARK: Public
     
-    // Do not use `BubbleReactionsViewModelType` here due to Objective-C incompatibily
-    var viewModel: BubbleReactionsViewModel? {
+    // Do not use `RoomReactionsViewModelType` here due to Objective-C incompatibily
+    var viewModel: RoomReactionsViewModel? {
         didSet {
             self.viewModel?.viewDelegate = self
             self.viewModel?.process(viewAction: .loadData)
         }
     }
     
-    var alignment: BubbleReactionsViewAlignment = .left {
+    var alignment: RoomReactionsViewAlignment = .left {
         didSet {
             self.updateCollectionViewLayout(for: alignment)
         }
@@ -103,12 +103,12 @@ final class BubbleReactionsView: UIView, NibOwnerLoadable {
         self.collectionView.dataSource = self
         self.alignment = .left
         
-        self.collectionView.register(cellType: BubbleReactionViewCell.self)
-        self.collectionView.register(cellType: BubbleReactionActionViewCell.self)
+        self.collectionView.register(cellType: RoomReactionViewCell.self)
+        self.collectionView.register(cellType: RoomReactionActionViewCell.self)
         self.collectionView.reloadData()
     }
     
-    private func updateCollectionViewLayout(for alignment: BubbleReactionsViewAlignment) {
+    private func updateCollectionViewLayout(for alignment: RoomReactionsViewAlignment) {
         
         let collectionViewLayout = self.collectionViewLayout(for: alignment)
         
@@ -124,7 +124,7 @@ final class BubbleReactionsView: UIView, NibOwnerLoadable {
         self.collectionView.collectionViewLayout.invalidateLayout()
     }
     
-    private func collectionViewLayout(for alignment: BubbleReactionsViewAlignment) -> UICollectionViewLayout {
+    private func collectionViewLayout(for alignment: RoomReactionsViewAlignment) -> UICollectionViewLayout {
         
         let collectionViewLayout: UICollectionViewLayout
         
@@ -151,7 +151,7 @@ final class BubbleReactionsView: UIView, NibOwnerLoadable {
         self.viewModel?.process(viewAction: .longPress)
     }
     
-    private func fill(reactionsViewData: [BubbleReactionViewData], showAllButtonState: BubbleReactionsViewState.ShowAllButtonState) {
+    private func fill(reactionsViewData: [RoomReactionViewData], showAllButtonState: RoomReactionsViewState.ShowAllButtonState) {
         self.reactionsViewData = reactionsViewData
         self.showAllButtonState = showAllButtonState
         self.collectionView.reloadData()
@@ -174,7 +174,7 @@ final class BubbleReactionsView: UIView, NibOwnerLoadable {
 }
 
 // MARK: - UICollectionViewDataSource
-extension BubbleReactionsView: UICollectionViewDataSource {
+extension RoomReactionsView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // "Show all" or "Show less" is a cell in the same section as reactions cells
@@ -185,7 +185,7 @@ extension BubbleReactionsView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row < self.reactionsViewData.count {
-            let cell: BubbleReactionViewCell = collectionView.dequeueReusableCell(for: indexPath)
+            let cell: RoomReactionViewCell = collectionView.dequeueReusableCell(for: indexPath)
 
             if let theme = self.theme {
                 cell.update(theme: theme)
@@ -196,7 +196,7 @@ extension BubbleReactionsView: UICollectionViewDataSource {
 
             return cell
         } else {
-            let cell: BubbleReactionActionViewCell = collectionView.dequeueReusableCell(for: indexPath)
+            let cell: RoomReactionActionViewCell = collectionView.dequeueReusableCell(for: indexPath)
 
             if let theme = self.theme {
                 cell.update(theme: theme)
@@ -211,7 +211,7 @@ extension BubbleReactionsView: UICollectionViewDataSource {
 }
 
 // MARK: - UICollectionViewDelegate
-extension BubbleReactionsView: UICollectionViewDelegate {
+extension RoomReactionsView: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row < self.reactionsViewData.count {
@@ -229,10 +229,10 @@ extension BubbleReactionsView: UICollectionViewDelegate {
     }
 }
 
-// MARK: - BubbleReactionsViewModelViewDelegate
-extension BubbleReactionsView: BubbleReactionsViewModelViewDelegate {
+// MARK: - RoomReactionsViewModelViewDelegate
+extension RoomReactionsView: RoomReactionsViewModelViewDelegate {
     
-    func bubbleReactionsViewModel(_ viewModel: BubbleReactionsViewModel, didUpdateViewState viewState: BubbleReactionsViewState) {
+    func roomReactionsViewModel(_ viewModel: RoomReactionsViewModel, didUpdateViewState viewState: RoomReactionsViewState) {
         switch viewState {
         case .loaded(reactionsViewData: let reactionsViewData, showAllButtonState: let showAllButtonState):
             self.fill(reactionsViewData: reactionsViewData, showAllButtonState: showAllButtonState)

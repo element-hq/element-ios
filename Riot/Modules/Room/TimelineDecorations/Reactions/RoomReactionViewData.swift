@@ -16,7 +16,7 @@
 
 import Foundation
 
-struct BubbleReactionViewData {
+struct RoomReactionViewData {
     let emoji: String
     let countString: String
     let isCurrentUserReacted: Bool

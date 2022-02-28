@@ -90,7 +90,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
         }
     }
     
-    override func addReactionView(_ reactionsView: BubbleReactionsView,
+    override func addReactionView(_ reactionsView: RoomReactionsView,
                                   toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData, contentViewPositionY: CGFloat, upperDecorationView: UIView?) {
         
         if let reactionsDisplayable = cell as? RoomCellReactionsDisplayable {

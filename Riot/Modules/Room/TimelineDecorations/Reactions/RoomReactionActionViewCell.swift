@@ -17,21 +17,15 @@
 import UIKit
 import Reusable
 
-final class BubbleReactionViewCell: UICollectionViewCell, NibReusable, Themable {
+final class RoomReactionActionViewCell: UICollectionViewCell, NibReusable, Themable {
     
     // MARK: - Constants
-    
-    private enum Constants {
-        static let selectedBorderWidth: CGFloat = 1.0
-    }
-    
+
     // MARK: - Properties
     
     // MARK: Outlets
 
-    @IBOutlet private weak var reactionBackgroundView: UIView!
-    @IBOutlet private weak var emojiLabel: UILabel!
-    @IBOutlet private weak var countLabel: UILabel!
+    @IBOutlet private weak var actionLabel: UILabel!
     
     // MARK: Private
     
@@ -39,22 +33,7 @@ final class BubbleReactionViewCell: UICollectionViewCell, NibReusable, Themable 
     
     // MARK: Public
     
-    private var isReactionSelected: Bool = false
-    
     // MARK: - Life cycle
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-        
-        self.reactionBackgroundView.layer.masksToBounds = true
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        self.reactionBackgroundView.layer.cornerRadius = self.reactionBackgroundView.frame.size.height/2.0
-    }
     
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         /*
@@ -64,44 +43,25 @@ final class BubbleReactionViewCell: UICollectionViewCell, NibReusable, Themable 
          If you need to support live constraint changes, call updateConstraintsIfNeeded() before calling systemLayoutSizeFitting(_:)."
          */
         self.updateConstraintsIfNeeded()
-
+        
         return super.preferredLayoutAttributesFitting(layoutAttributes)
     }
     
     // MARK: - Public
     
-    func fill(viewData: BubbleReactionViewData) {
-        self.emojiLabel.text = viewData.emoji
-        self.countLabel.text = viewData.countString
-        self.isReactionSelected = viewData.isCurrentUserReacted
-        
+    func fill(actionString: String) {
+        self.actionLabel.text = actionString
         self.updateViews()
     }
     
     func update(theme: Theme) {
         self.theme = theme
-        self.reactionBackgroundView.layer.borderColor = theme.tintColor.cgColor
-        self.emojiLabel.textColor = theme.textPrimaryColor
-        self.countLabel.textColor = theme.textPrimaryColor
         self.updateViews()
     }
     
     // MARK: - Private
     
     private func updateViews() {
-        
-        let reactionBackgroundColor: UIColor?
-        let reactionBackgroundBorderWidth: CGFloat
-        
-        if self.isReactionSelected {
-            reactionBackgroundColor = self.theme?.tintBackgroundColor
-            reactionBackgroundBorderWidth = Constants.selectedBorderWidth
-        } else {
-            reactionBackgroundColor = self.theme?.headerBackgroundColor
-            reactionBackgroundBorderWidth = 0.0
-        }
-        
-        self.reactionBackgroundView.layer.borderWidth = reactionBackgroundBorderWidth
-        self.reactionBackgroundView.backgroundColor = reactionBackgroundColor
+        self.actionLabel.textColor = self.theme?.tintColor
     }
 }

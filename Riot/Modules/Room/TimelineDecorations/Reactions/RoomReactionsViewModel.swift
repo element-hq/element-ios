@@ -16,7 +16,7 @@
 
 import Foundation
 
-@objc final class BubbleReactionsViewModel: NSObject, BubbleReactionsViewModelType {
+@objc final class RoomReactionsViewModel: NSObject, RoomReactionsViewModelType {
 
     // MARK: - Constants
 
@@ -34,8 +34,8 @@ import Foundation
     
     // MARK: Public
     
-    @objc weak var viewModelDelegate: BubbleReactionsViewModelDelegate?
-    weak var viewDelegate: BubbleReactionsViewModelViewDelegate?
+    @objc weak var viewModelDelegate: RoomReactionsViewModelDelegate?
+    weak var viewDelegate: RoomReactionsViewModelViewDelegate?
     
     // MARK: - Setup
     
@@ -49,7 +49,7 @@ import Foundation
     
     // MARK: - Public
     
-    func process(viewAction: BubbleReactionsViewAction) {
+    func process(viewAction: RoomReactionsViewAction) {
         switch viewAction {
         case .loadData:
             self.loadData()
@@ -59,24 +59,24 @@ import Foundation
             }
             let reactionCount = self.aggregatedReactions.reactions[index]
             if reactionCount.myUserHasReacted {
-                self.viewModelDelegate?.bubbleReactionsViewModel(self, didRemoveReaction: reactionCount, forEventId: self.eventId)
+                self.viewModelDelegate?.roomReactionsViewModel(self, didRemoveReaction: reactionCount, forEventId: self.eventId)
             } else {
-                self.viewModelDelegate?.bubbleReactionsViewModel(self, didAddReaction: reactionCount, forEventId: self.eventId)
+                self.viewModelDelegate?.roomReactionsViewModel(self, didAddReaction: reactionCount, forEventId: self.eventId)
             }
         case .addNewReaction:
             break
         case .tapShowAction(.showAll):
-            self.viewModelDelegate?.bubbleReactionsViewModel(self, didShowAllTappedForEventId: self.eventId)
+            self.viewModelDelegate?.roomReactionsViewModel(self, didShowAllTappedForEventId: self.eventId)
         case .tapShowAction(.showLess):
-            self.viewModelDelegate?.bubbleReactionsViewModel(self, didShowLessTappedForEventId: self.eventId)
+            self.viewModelDelegate?.roomReactionsViewModel(self, didShowLessTappedForEventId: self.eventId)
         case .longPress:
-            self.viewModelDelegate?.bubbleReactionsViewModel(self, didLongPressForEventId: self.eventId)
+            self.viewModelDelegate?.roomReactionsViewModel(self, didLongPressForEventId: self.eventId)
         }
     }
 
     func loadData() {
         var reactions = self.aggregatedReactions.reactions
-        var showAllButtonState: BubbleReactionsViewState.ShowAllButtonState = .none
+        var showAllButtonState: RoomReactionsViewState.ShowAllButtonState = .none
 
         // Limit displayed reactions if required
         if reactions.count > Constants.maxItemsWhenLimited {
@@ -88,11 +88,11 @@ import Foundation
             }
         }
 
-        let reactionsViewData = reactions.map { (reactionCount) -> BubbleReactionViewData in
-            return BubbleReactionViewData(emoji: reactionCount.reaction, countString: "\(reactionCount.count)", isCurrentUserReacted: reactionCount.myUserHasReacted)
+        let reactionsViewData = reactions.map { (reactionCount) -> RoomReactionViewData in
+            return RoomReactionViewData(emoji: reactionCount.reaction, countString: "\(reactionCount.count)", isCurrentUserReacted: reactionCount.myUserHasReacted)
         }
 
-        self.viewDelegate?.bubbleReactionsViewModel(self, didUpdateViewState: .loaded(reactionsViewData: reactionsViewData, showAllButtonState: showAllButtonState))
+        self.viewDelegate?.roomReactionsViewModel(self, didUpdateViewState: .loaded(reactionsViewData: reactionsViewData, showAllButtonState: showAllButtonState))
     }
         
     // MARK: - Hashable

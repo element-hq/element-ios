@@ -16,11 +16,11 @@ limitations under the License.
 
 import Foundation
 
-/// `BubbleReactionsViewModelBuilder` enables to build a BubbleReactionsViewModel for a given `RoomBubbleCellData` and `MXKRoomBubbleComponent` index.
+/// `RoomReactionsViewModelBuilder` enables to build a RoomReactionsViewModel for a given `RoomBubbleCellData` and `MXKRoomBubbleComponent` index.
 @objcMembers
-final class BubbleReactionsViewModelBuilder: NSObject {
+final class RoomReactionsViewModelBuilder: NSObject {
     
-    func buildForFirstVisibleComponent(of roomBubbleCellData: RoomBubbleCellData) -> BubbleReactionsViewModel? {
+    func buildForFirstVisibleComponent(of roomBubbleCellData: RoomBubbleCellData) -> RoomReactionsViewModel? {
         
         guard roomBubbleCellData.firstVisibleComponentIndex() != NSNotFound else {
             return nil
@@ -29,7 +29,7 @@ final class BubbleReactionsViewModelBuilder: NSObject {
         return self.build(from: roomBubbleCellData, componentIndex: roomBubbleCellData.firstVisibleComponentIndex())
     }
     
-    func build(from roomBubbleCellData: RoomBubbleCellData, componentIndex: Int) -> BubbleReactionsViewModel? {
+    func build(from roomBubbleCellData: RoomBubbleCellData, componentIndex: Int) -> RoomReactionsViewModel? {
         
         let isCollapsableCellCollapsed = roomBubbleCellData.collapsable && roomBubbleCellData.collapsed
         
@@ -53,7 +53,7 @@ final class BubbleReactionsViewModelBuilder: NSObject {
         }
         
         let showAllReactions = roomBubbleCellData.showAllReactions(forEvent: componentEventId)
-        return BubbleReactionsViewModel(aggregatedReactions: aggregatedReactions,
+        return RoomReactionsViewModel(aggregatedReactions: aggregatedReactions,
                                         eventId: componentEventId,
                                         showAll: showAllReactions)
     }

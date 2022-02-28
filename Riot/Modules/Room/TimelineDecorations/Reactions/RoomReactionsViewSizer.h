@@ -17,15 +17,15 @@ limitations under the License.
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@class BubbleReactionsViewModel;
+@class RoomReactionsViewModel;
 
 NS_ASSUME_NONNULL_BEGIN
 
-// `BubbleReactionsViewSizer` allows to determine reactions view height for a given viewModel and width.
-@interface BubbleReactionsViewSizer : NSObject
+// `RoomReactionsViewSizer` allows to determine reactions view height for a given viewModel and width.
+@interface RoomReactionsViewSizer : NSObject
 
 // Use Objective-C as workaround as there is an issue affecting UICollectionView sizing. See https://developer.apple.com/forums/thread/105523 for more information.
-- (CGFloat)heightForViewModel:(BubbleReactionsViewModel*)viewModel
+- (CGFloat)heightForViewModel:(RoomReactionsViewModel*)viewModel
                  fittingWidth:(CGFloat)fittingWidth;
 
 @end
