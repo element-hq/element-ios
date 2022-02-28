@@ -16,7 +16,7 @@
 
 import Foundation
 
-class LocationBubbleCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable {
+class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable {
     
     private var locationView: RoomTimelineLocationView!
     

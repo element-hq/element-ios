@@ -16,7 +16,7 @@
 
 import Foundation
 
-class LocationWithPaginationTitleBubbleCell: LocationBubbleCell {
+class LocationWithPaginationTitlePlainCell: LocationPlainCell {
     override func setupViews() {
         super.setupViews()
         

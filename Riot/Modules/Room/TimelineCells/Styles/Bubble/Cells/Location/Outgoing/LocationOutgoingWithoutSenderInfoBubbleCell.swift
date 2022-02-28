@@ -16,7 +16,7 @@
 
 import Foundation
 
-class LocationOutgoingWithoutSenderInfoBubbleCell: LocationBubbleCell, BubbleOutgoingRoomCellProtocol {
+class LocationOutgoingWithoutSenderInfoBubbleCell: LocationPlainCell, BubbleOutgoingRoomCellProtocol {
     
     override func setupViews() {
         super.setupViews()

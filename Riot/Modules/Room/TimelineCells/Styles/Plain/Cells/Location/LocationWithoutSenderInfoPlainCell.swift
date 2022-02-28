@@ -16,7 +16,7 @@
 
 import Foundation
 
-class LocationWithoutSenderInfoBubbleCell: LocationBubbleCell {
+class LocationWithoutSenderInfoPlainCell: LocationPlainCell {
     override func setupViews() {
         super.setupViews()
         
