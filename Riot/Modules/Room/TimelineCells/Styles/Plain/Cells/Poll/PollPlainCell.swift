@@ -16,7 +16,7 @@
 
 import Foundation
 
-class PollBubbleCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable {
+class PollPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable {
     
     private var pollView: UIView?
     private var event: MXEvent?
@@ -62,4 +62,4 @@ class PollBubbleCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCel
     }
 }
 
-extension PollBubbleCell: RoomCellThreadSummaryDisplayable {}
+extension PollPlainCell: RoomCellThreadSummaryDisplayable {}

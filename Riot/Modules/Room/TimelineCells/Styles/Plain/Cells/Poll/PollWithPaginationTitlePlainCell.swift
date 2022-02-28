@@ -16,12 +16,12 @@
 
 import Foundation
 
-class PollWithoutSenderInfoBubbleCell: PollBubbleCell {
+class PollWithPaginationTitlePlainCell: PollPlainCell {
     
     override func setupViews() {
         super.setupViews()
         
-        roomCellContentView?.showSenderInfo = false
+        roomCellContentView?.showPaginationTitle = true
     }
     
 }
