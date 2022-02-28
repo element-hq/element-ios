@@ -111,7 +111,6 @@
     if (recentsDataSource)
     {
         // Take the lead on the shared data source.
-        recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeHome];
     }        
 
@@ -371,9 +370,16 @@
 {
     // Edit the potential selected room (see `onCollectionViewCellLongPress`).
     editedRoomId = selectedRoomId;
-    
-    // Each rooms section is represented by only one collection view.
-    return 1;
+
+    if ([recentsDataSource isSectionShrinkedAt:section])
+    {
+        return 0;
+    }
+    else
+    {
+        // Each rooms section is represented by only one collection view.
+        return 1;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

@@ -72,7 +72,6 @@
     {
         // Take the lead on the shared data source.
         recentsDataSource = (RecentsDataSource*)self.dataSource;
-        recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeRooms];
     }
 }
@@ -101,17 +100,6 @@
 }
 
 #pragma mark - UITableView delegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if ([tableView numberOfSections] <= 1)
-    {
-        // Hide the header to merge Invites and Rooms into a single list.
-        return 0.0;
-    }
-    
-    return [super tableView:tableView heightForHeaderInSection:section];
-}
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
