@@ -16,7 +16,7 @@
 
 import Foundation
 
-class VoiceMessageWithoutSenderInfoBubbleCell: VoiceMessageBubbleCell {
+class VoiceMessageWithoutSenderInfoPlainCell: VoiceMessagePlainCell {
     override func setupViews() {
         super.setupViews()
         

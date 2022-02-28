@@ -242,9 +242,9 @@
 
 - (void)registerVoiceMessageCellsForTableView:(UITableView*)tableView
 {
-    [tableView registerClass:VoiceMessageBubbleCell.class forCellReuseIdentifier:VoiceMessageBubbleCell.defaultReuseIdentifier];
-    [tableView registerClass:VoiceMessageWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:VoiceMessageWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
-    [tableView registerClass:VoiceMessageWithPaginationTitleBubbleCell.class forCellReuseIdentifier:VoiceMessageWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceMessagePlainCell.class forCellReuseIdentifier:VoiceMessagePlainCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceMessageWithoutSenderInfoPlainCell.class forCellReuseIdentifier:VoiceMessageWithoutSenderInfoPlainCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceMessageWithPaginationTitlePlainCell.class forCellReuseIdentifier:VoiceMessageWithPaginationTitlePlainCell.defaultReuseIdentifier];
 }
 
 - (void)registerPollCellsForTableView:(UITableView*)tableView
@@ -503,13 +503,13 @@
 {
     return @{
         // Incoming
-        @(RoomTimelineCellIdentifierIncomingVoiceMessage) : VoiceMessageBubbleCell.class,
-        @(RoomTimelineCellIdentifierIncomingVoiceMessageWithoutSenderInfo) : VoiceMessageWithoutSenderInfoBubbleCell.class,
-        @(RoomTimelineCellIdentifierIncomingVoiceMessageWithPaginationTitle) : VoiceMessageWithPaginationTitleBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingVoiceMessage) : VoiceMessagePlainCell.class,
+        @(RoomTimelineCellIdentifierIncomingVoiceMessageWithoutSenderInfo) : VoiceMessageWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierIncomingVoiceMessageWithPaginationTitle) : VoiceMessageWithPaginationTitlePlainCell.class,
         // Outoing
-        @(RoomTimelineCellIdentifierOutgoingVoiceMessage) : VoiceMessageBubbleCell.class,
-        @(RoomTimelineCellIdentifierOutgoingVoiceMessageWithoutSenderInfo) : VoiceMessageWithoutSenderInfoBubbleCell.class,
-        @(RoomTimelineCellIdentifierOutgoingVoiceMessageWithPaginationTitle) : VoiceMessageWithPaginationTitleBubbleCell.class
+        @(RoomTimelineCellIdentifierOutgoingVoiceMessage) : VoiceMessagePlainCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceMessageWithoutSenderInfo) : VoiceMessageWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceMessageWithPaginationTitle) : VoiceMessageWithPaginationTitlePlainCell.class
     };
 }
 

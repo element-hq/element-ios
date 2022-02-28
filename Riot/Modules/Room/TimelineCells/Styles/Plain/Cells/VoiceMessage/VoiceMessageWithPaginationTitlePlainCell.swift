@@ -16,7 +16,7 @@
 
 import Foundation
 
-class VoiceMessageWithPaginationTitleBubbleCell: VoiceMessageBubbleCell {
+class VoiceMessageWithPaginationTitlePlainCell: VoiceMessagePlainCell {
     override func setupViews() {
         super.setupViews()
         

@@ -67,7 +67,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
             } else {
                 super.addTimestampLabel(toCell: cell, cellData: cellData)
             }
-        } else if let voiceMessageCell = cell as? VoiceMessageBubbleCell, let playbackView = voiceMessageCell.playbackController?.playbackView {
+        } else if let voiceMessageCell = cell as? VoiceMessagePlainCell, let playbackView = voiceMessageCell.playbackController?.playbackView {
             
             // Add timestamp on cell inherting from VoiceMessageBubbleCell
             
