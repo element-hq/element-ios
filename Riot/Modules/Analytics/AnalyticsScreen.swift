@@ -53,7 +53,7 @@ import AnalyticsEvents
     case inviteFriends
     
     /// The screen name reported to the AnalyticsEvent.
-    var screenName: AnalyticsEvent.Screen.ScreenName {
+    var screenName: AnalyticsEvent.MobileScreen.ScreenName {
         switch self {
         case .welcome:
             return .Welcome
@@ -64,23 +64,23 @@ import AnalyticsEvents
         case .forgotPassword:
             return .ForgotPassword
         case .sidebar:
-            return .MobileSidebar
+            return .Sidebar
         case .home:
             return .Home
         case .favourites:
-            return .MobileFavourites
+            return .Favourites
         case .people:
-            return .MobilePeople
+            return .People
         case .rooms:
-            return .MobileRooms
+            return .Rooms
         case .searchRooms:
-            return .MobileSearchRooms
+            return .SearchRooms
         case .searchMessages:
-            return .MobileSearchMessages
+            return .SearchMessages
         case .searchPeople:
-            return .MobileSearchPeople
+            return .SearchPeople
         case .searchFiles:
-            return .MobileSearchFiles
+            return .SearchFiles
         case .room:
             return .Room
         case .roomDetails:
@@ -100,7 +100,7 @@ import AnalyticsEvents
         case .roomDirectory:
             return .RoomDirectory
         case .switchDirectory:
-            return .MobileSwitchDirectory
+            return .SwitchDirectory
         case .startChat:
             return .StartChat
         case .createRoom:
@@ -120,7 +120,7 @@ import AnalyticsEvents
         case .myGroups:
             return .MyGroups
         case .inviteFriends:
-            return .MobileInviteFriends
+            return .InviteFriends
         }
     }
 }

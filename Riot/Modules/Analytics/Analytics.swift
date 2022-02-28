@@ -175,7 +175,9 @@ extension Analytics {
     /// 
     /// Only non-nil properties will be updated when calling this method.
     func updateUserProperties(ftueUseCase: UserSessionProperties.UseCase? = nil) {
-        let userProperties = AnalyticsEvent.UserProperties(ftueUseCaseSelection: ftueUseCase?.analyticsName, numSpaces: nil)
+        let userProperties = AnalyticsEvent.UserProperties(ftueUseCaseSelection: ftueUseCase?.analyticsName,
+                                                           numFavouriteRooms: nil,
+                                                           numSpaces: nil)
         client.updateUserProperties(userProperties)
     }
     
@@ -184,7 +186,7 @@ extension Analytics {
     ///   - screen: The screen that was shown.
     ///   - milliseconds: An optional value representing how long the screen was shown for in milliseconds.
     func trackScreen(_ screen: AnalyticsScreen, duration milliseconds: Int?) {
-        let event = AnalyticsEvent.Screen(durationMs: milliseconds, screenName: screen.screenName)
+        let event = AnalyticsEvent.MobileScreen(durationMs: milliseconds, screenName: screen.screenName)
         client.screen(event)
     }
     
@@ -276,13 +278,13 @@ extension Analytics: MXAnalyticsDelegate {
         capture(event: event)
     }
     
-    func trackJoinedRoom(asDM isDM: Bool, memberCount: UInt) {
+    func trackJoinedRoom(asDM isDM: Bool, isSpace: Bool, memberCount: UInt) {
         guard let roomSize = AnalyticsEvent.JoinedRoom.RoomSize(memberCount: memberCount) else {
             MXLog.warning("[Analytics] Attempt to capture joined room with invalid member count: \(memberCount)")
             return
         }
         
-        let event = AnalyticsEvent.JoinedRoom(isDM: isDM, roomSize: roomSize)
+        let event = AnalyticsEvent.JoinedRoom(isDM: isDM, isSpace: isSpace, roomSize: roomSize, trigger: nil)
         capture(event: event)
     }
     
