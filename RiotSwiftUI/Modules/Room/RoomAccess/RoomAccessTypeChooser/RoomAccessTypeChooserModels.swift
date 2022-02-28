@@ -35,6 +35,7 @@ struct RoomAccessTypeChooserAccessItem: Identifiable, Equatable {
 /// Actions returned by the coordinator callback
 enum RoomAccessTypeChooserCoordinatorAction {
     case spaceSelection(String, RoomAccessTypeChooserAccessType)
+    case roomUpgradeNeeded(String, String)
     case done(String)
     case cancel(String)
 }
@@ -51,6 +52,7 @@ enum RoomAccessTypeChooserStateAction {
 /// Actions sent by the`ViewModel` to the `Coordinator`.
 enum RoomAccessTypeChooserViewModelAction {
     case spaceSelection(String, RoomAccessTypeChooserAccessType)
+    case roomUpgradeNeeded(String, String)
     case done(String)
     case cancel(String)
 }
@@ -74,6 +76,4 @@ enum RoomAccessTypeChooserViewAction {
     case cancel
     case done
     case didSelectAccessType(RoomAccessTypeChooserAccessType)
-    case didCancelRoomUpgrade
-    case didAcceptRoomUpgrade(Bool)
 }

@@ -33,18 +33,21 @@ struct RoomRestrictedAccessSpaceChooserSelector: View {
         MatrixItemChooser(viewModel: viewModel, listBottomPadding: nil)
             .background(theme.colors.background)
             .navigationTitle(VectorL10n.roomAccessSettingsScreenNavTitle)
-//            .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(VectorL10n.cancel) {
                         viewModel.send(viewAction: .cancel)
                     }
+                    .foregroundColor(viewModel.viewState.loading ? theme.colors.quarterlyContent : theme.colors.accent)
+                    .opacity(viewModel.viewState.loading ? 0.7 : 1)
                     .disabled(viewModel.viewState.loading)
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button(VectorL10n.done) {
                         viewModel.send(viewAction: .done)
                     }
+                    .foregroundColor(viewModel.viewState.selectedItemIds.isEmpty || viewModel.viewState.loading ? theme.colors.quarterlyContent : theme.colors.accent)
+                    .opacity(viewModel.viewState.selectedItemIds.isEmpty || viewModel.viewState.loading ? 0.7 : 1)
                     .disabled(viewModel.viewState.selectedItemIds.isEmpty || viewModel.viewState.loading)
                 }
             }

@@ -7050,11 +7050,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
 }
 
-- (void)roomInfoCoordinatorBridgePresenter:(RoomInfoCoordinatorBridgePresenter *)coordinatorBridgePresenter didMoveToRoomWithId:(NSString *)roomId
+- (void)roomInfoCoordinatorBridgePresenter:(RoomInfoCoordinatorBridgePresenter *)coordinatorBridgePresenter didReplaceRoomWithReplacementId:(NSString *)roomId
 {
     if (self.delegate)
     {
-        [self.delegate roomViewController:self moveToRoomWithId:roomId];
+        [self.delegate roomViewController:self didReplaceRoomWithReplacementId:roomId];
     }
     else
     {

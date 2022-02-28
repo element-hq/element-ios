@@ -16,10 +16,11 @@
 
 import Foundation
 
-protocol RoomAccessTypeChooserViewModelProtocol {
-    var callback: ((RoomAccessTypeChooserViewModelAction) -> Void)? { get set }
-    @available(iOS 14, *)
-    var context: RoomAccessTypeChooserViewModelType.Context { get }
+protocol RoomUpgradeViewModelProtocol {
     
-    func handleRoomUpgradeResult(_ result: RoomUpgradeCoordinatorResult)
+    var completion: ((RoomUpgradeViewModelResult) -> Void)? { get set }
+    @available(iOS 14, *)
+    static func makeRoomUpgradeViewModel(roomUpgradeService: RoomUpgradeServiceProtocol) -> RoomUpgradeViewModelProtocol
+    @available(iOS 14, *)
+    var context: RoomUpgradeViewModelType.Context { get }
 }

@@ -38,36 +38,10 @@ class RoomAncestorSelectorItemsProcessor: MatrixItemChooserProcessorProtocol {
     }
     
     func computeSelection(withIds itemsIds: [String], completion: @escaping (Result<Void, Error>) -> Void) {
-//        addChild(from: itemsIds, at: 0, completion: completion)
         completion(Result.success(()))
     }
     
     func isItemIncluded(_ item: (MatrixListItemData)) -> Bool {
         return true
     }
-    
-    // MARK: Private
-    
-//    func addChild(from roomIds: [String], at index: Int, completion: @escaping (Result<Void, Error>) -> Void) {
-//        guard index < roomIds.count else {
-//            completion(Result.success(()))
-//            return
-//        }
-//
-//        let roomId = roomIds[index]
-//
-//        guard !parentSpace.isRoomAChild(roomId: roomId) else {
-//            addChild(from: roomIds, at: index + 1, completion: completion)
-//            return
-//        }
-//
-//        parentSpace.addChild(roomId: roomIds[index]) { [weak self] response in
-//            switch response {
-//            case .success:
-//                self?.addChild(from: roomIds, at: index + 1, completion: completion)
-//            case .failure(let error):
-//                completion(Result.failure(error))
-//            }
-//        }
-//    }
 }

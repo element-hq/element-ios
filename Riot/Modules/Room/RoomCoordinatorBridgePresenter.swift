@@ -21,7 +21,7 @@ import Foundation
     func roomCoordinatorBridgePresenter(_ bridgePresenter: RoomCoordinatorBridgePresenter,
                                         didSelectRoomWithId roomId: String,
                                         eventId: String?)
-    func roomCoordinatorBridgePresenter(_ bridgePresenter: RoomCoordinatorBridgePresenter, moveToRoomWithId roomId: String)
+    func roomCoordinatorBridgePresenter(_ bridgePresenter: RoomCoordinatorBridgePresenter, didReplaceRoomWithReplacementId roomId: String)
     func roomCoordinatorBridgePresenterDidDismissInteractively(_ bridgePresenter: RoomCoordinatorBridgePresenter)
 }
 
@@ -180,8 +180,8 @@ extension RoomCoordinatorBridgePresenter: RoomCoordinatorDelegate {
         self.delegate?.roomCoordinatorBridgePresenter(self, didSelectRoomWithId: roomId, eventId: eventId)
     }
     
-    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, moveToRoomWithId roomId: String) {
-        self.delegate?.roomCoordinatorBridgePresenter(self, moveToRoomWithId: roomId)
+    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didReplaceRoomWithReplacementId roomId: String) {
+        self.delegate?.roomCoordinatorBridgePresenter(self, didReplaceRoomWithReplacementId: roomId)
     }
     
     func roomCoordinatorDidLeaveRoom(_ coordinator: RoomCoordinatorProtocol) {

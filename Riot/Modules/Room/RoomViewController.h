@@ -162,13 +162,13 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
                    eventId:(nullable NSString *)eventID;
 
 /**
- Tells the delegate that the room has been moved to a new room.
+ Tells the delegate that the room has replaced by a room with a specific replacement room ID.
  
  @param roomViewController the `RoomViewController` instance.
  @param roomID the replacement roomId
  */
 - (void)roomViewController:(RoomViewController *)roomViewController
-          moveToRoomWithId:(NSString *)roomID;
+didReplaceRoomWithReplacementId:(NSString *)roomID;
 
 /**
  Tells the delegate that the user wants to start a direct chat with a user.

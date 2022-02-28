@@ -40,10 +40,6 @@ class RoomRestrictedAccessSpaceChooserItemsProcessor: MatrixItemChooserProcessor
     }
     
     func computeSelection(withIds itemsIds: [String], completion: @escaping (Result<Void, Error>) -> Void) {
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//            completion(.success(()))
-//        }
-
         session.matrixRestClient.setRoomJoinRule(.restricted, forRoomWithId: roomId, allowedParentIds: itemsIds) { response in
             switch response {
             case .failure(let error):

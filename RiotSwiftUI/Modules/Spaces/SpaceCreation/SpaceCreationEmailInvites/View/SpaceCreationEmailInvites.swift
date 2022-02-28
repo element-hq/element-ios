@@ -41,7 +41,7 @@ struct SpaceCreationEmailInvites: View {
             }
             mainView
                 .animation(.easeInOut(duration: 0.2), value: viewModel.viewState.loading)
-                .modifier(WaitOverlay(isLoading: .constant(viewModel.viewState.loading)))
+                .waitOverlay(show: viewModel.viewState.loading)
         }
         .background(theme.colors.background)
         .navigationBarHidden(true)

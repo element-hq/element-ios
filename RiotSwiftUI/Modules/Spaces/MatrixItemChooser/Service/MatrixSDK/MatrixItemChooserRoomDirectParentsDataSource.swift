@@ -34,7 +34,7 @@ class MatrixItemChooserRoomDirectParentsDataSource: MatrixItemChooserDataSource 
     }
     
     func sections(with session: MXSession, completion: @escaping (Result<[MatrixListItemSectionData], Error>) -> Void) {
-        let ancestorsId = session.spaceService.directParentIds(ofRoomWithId: roomId)
+        let ancestorsIds = session.spaceService.directParentIds(ofRoomWithId: roomId)
 
         switch preselectionMode {
         case .none:
@@ -45,7 +45,7 @@ class MatrixItemChooserRoomDirectParentsDataSource: MatrixItemChooserDataSource 
         
         completion(Result(catching: {
             return [
-                MatrixListItemSectionData(title: VectorL10n.roomAccessSpaceChooserKnownSpacesSection(session.room(withRoomId: roomId)?.displayName ?? ""), infoText: nil, items: ancestorsId.compactMap { spaceId in
+                MatrixListItemSectionData(title: VectorL10n.roomAccessSpaceChooserKnownSpacesSection(session.room(withRoomId: roomId)?.displayName ?? ""), infoText: nil, items: ancestorsIds.compactMap { spaceId in
                     guard let space = session.spaceService.getSpace(withId: spaceId) else {
                         return nil
                     }

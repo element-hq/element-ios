@@ -16,6 +16,32 @@
 
 import SwiftUI
 
+@available(iOS 14.0, *)
+/// A modifier for showing the wait overlay view over a view.
+struct WaitOverlayModifier: ViewModifier {
+    
+    var allowUserInteraction: Bool
+    var show: Bool
+    var message: String?
+    
+    @ViewBuilder
+    func body(content: Content) -> some View {
+        content
+            .modifier(WaitOverlay(
+                        allowUserInteraction: allowUserInteraction,
+                        message: message,
+                        isLoading: show))
+    }
+}
+
+@available(iOS 14.0, *)
+extension View {
+    @available(iOS 14.0, *)
+    func waitOverlay(show: Bool, message: String? = nil, allowUserInteraction: Bool = true) -> some View {
+        self.modifier(WaitOverlayModifier(allowUserInteraction: allowUserInteraction, show: show, message: message))
+    }
+}
+
 /// `WaitOverlay` allows to easily add an overlay that covers the entire with an `ActivityIndicator` at the center
 @available(iOS 14.0, *)
 struct WaitOverlay: ViewModifier {
@@ -23,9 +49,9 @@ struct WaitOverlay: ViewModifier {
     
     var alignment: Alignment = .center
     var allowUserInteraction: Bool = true
-    @Binding var message: String?
-    @Binding var isLoading: Bool
-    
+    var message: String?
+    var isLoading: Bool
+
     // MARK: - Private
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
@@ -34,14 +60,14 @@ struct WaitOverlay: ViewModifier {
     
     init(alignment: Alignment = .center,
          allowUserInteraction: Bool = true,
-         message: Binding<String?> = .constant(nil),
-         isLoading: Binding<Bool>) {
-        _message = message
-        _isLoading = isLoading
+         message: String? = nil,
+         isLoading: Bool) {
+        self.message = message
+        self.isLoading = isLoading
         self.alignment = alignment
         self.allowUserInteraction = allowUserInteraction
     }
-    
+
     // MARK: - Public
     
     public func body(content: Content) -> some View
@@ -78,7 +104,7 @@ struct WaitOverlay: ViewModifier {
 }
 
 @available(iOS 14.0, *)
-struct WaitView_Previews: PreviewProvider {
+struct WaitOverlay_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             VStack {
@@ -87,14 +113,14 @@ struct WaitView_Previews: PreviewProvider {
                 ThemableNavigationBar(title: nil, showBackButton: false, backAction: {}, closeAction: {})
                 ThemableNavigationBar(title: "Some Title", showBackButton: false, backAction: {}, closeAction: {})
             }
-            .modifier(WaitOverlay(isLoading: .constant(true)))
+            .modifier(WaitOverlay(isLoading: true))
             VStack {
                 ThemableNavigationBar(title: nil, showBackButton: true, backAction: {}, closeAction: {})
                 ThemableNavigationBar(title: "Some Title", showBackButton: true, backAction: {}, closeAction: {})
                 ThemableNavigationBar(title: nil, showBackButton: false, backAction: {}, closeAction: {})
                 ThemableNavigationBar(title: "Some Title", showBackButton: false, backAction: {}, closeAction: {})
             }
-            .modifier(WaitOverlay(alignment:.topLeading, isLoading:  .constant(true)))
+            .modifier(WaitOverlay(alignment:.topLeading, isLoading:  true))
             VStack {
                 ThemableNavigationBar(title: nil, showBackButton: true, backAction: {}, closeAction: {}).theme(.dark)
                 ThemableNavigationBar(title: "Some Title", showBackButton: true, backAction: {}, closeAction: {}).theme(.dark)
@@ -102,7 +128,7 @@ struct WaitView_Previews: PreviewProvider {
                 ThemableNavigationBar(title: "Some Title", showBackButton: false, backAction: {}, closeAction: {}).theme(.dark)
             }
             
-            .modifier(WaitOverlay(isLoading:  .constant(true))).theme(.dark)
+            .modifier(WaitOverlay(isLoading: true)).theme(.dark)
             .preferredColorScheme(.dark)
         }
         .padding()

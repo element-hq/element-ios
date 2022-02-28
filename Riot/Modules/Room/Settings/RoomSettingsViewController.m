@@ -4209,7 +4209,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 {
     if (![roomId isEqualToString: self.roomId]) {
         // Room Access Coordinator upgraded the actual room -> Need to move to replacement room
-        [self.delegate roomSettingsViewController:self didMoveRoomTo:roomId];
+        [self.delegate roomSettingsViewController:self didReplaceRoomWithReplacementId:roomId];
     }
 
     MXWeakify(self);
@@ -4223,7 +4223,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 {
     if (![roomId isEqualToString: self.roomId]) {
         // Room Access Coordinator upgraded the actual room -> Need to move to replacement room
-        [self.delegate roomSettingsViewController:self didMoveRoomTo:roomId];
+        [self.delegate roomSettingsViewController:self didReplaceRoomWithReplacementId:roomId];
     }
 
     MXWeakify(self);
@@ -4243,7 +4243,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
 - (void)roomSuggestionCoordinatorBridgePresenterDelegateDidComplete:(RoomSuggestionCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
+    MXWeakify(self);
     [roomSuggestionPresenter dismissWithAnimated:YES completion:^{
+        MXStrongifyAndReturnIfNil(self);
         self->roomSuggestionPresenter = nil;
         [self refreshRoomSettings];
     }];

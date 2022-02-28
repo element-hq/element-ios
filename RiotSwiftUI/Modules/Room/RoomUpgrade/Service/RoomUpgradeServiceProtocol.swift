@@ -15,11 +15,13 @@
 //
 
 import Foundation
+import Combine
 
-protocol RoomAccessTypeChooserViewModelProtocol {
-    var callback: ((RoomAccessTypeChooserViewModelAction) -> Void)? { get set }
-    @available(iOS 14, *)
-    var context: RoomAccessTypeChooserViewModelType.Context { get }
+@available(iOS 14.0, *)
+protocol RoomUpgradeServiceProtocol {
+    var currentRoomId: String { get }
+    var upgradingSubject: CurrentValueSubject<Bool, Never> { get }
+    var errorSubject: CurrentValueSubject<Error?, Never> { get }
     
-    func handleRoomUpgradeResult(_ result: RoomUpgradeCoordinatorResult)
+    func upgradeRoom(autoInviteUsers: Bool, completion: @escaping (Bool, String) -> Void)
 }

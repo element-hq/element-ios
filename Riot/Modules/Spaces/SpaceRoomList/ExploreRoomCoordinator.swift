@@ -296,7 +296,7 @@ extension ExploreRoomCoordinator: RoomViewControllerDelegate {
         self.navigateTo(roomWith: roomID)
     }
     
-    func roomViewController(_ roomViewController: RoomViewController, moveToRoomWithId roomID: String) {
+    func roomViewController(_ roomViewController: RoomViewController, didReplaceRoomWithReplacementId roomID: String) {
         self.currentExploreRoomCoordinator?.reloadRooms()
         self.popToLastSpaceScreen(animated: false)
         self.navigateTo(roomWith: roomID, showSettingsInitially: true, animated: false)

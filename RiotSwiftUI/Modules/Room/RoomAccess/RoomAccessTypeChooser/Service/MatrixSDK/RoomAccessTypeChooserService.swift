@@ -50,7 +50,6 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
     }
     private var roomJoinRule: MXRoomJoinRule = .private
     private var currentOperation: MXHTTPOperation?
-    private let restrictedVersionOverride: String?
     
     // MARK: Public
     
@@ -60,6 +59,7 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
     private(set) var errorSubject: CurrentValueSubject<Error?, Never>
 
     private(set) var currentRoomId: String
+    private(set) var versionOverride: String?
 
     // MARK: - Setup
     
@@ -67,7 +67,7 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
         self.roomId = roomId
         self.session = session
         self.currentRoomId = roomId
-        restrictedVersionOverride = session.homeserverCapabilitiesService.versionOverrideForFeature(.restricted)
+        self.versionOverride = session.homeserverCapabilitiesService.versionOverrideForFeature(.restricted)
         
         roomUpgradeRequiredSubject = CurrentValueSubject(false)
         waitingMessageSubject = CurrentValueSubject(nil)
@@ -85,6 +85,8 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
         }
     }
     
+    // MARK: - Public
+    
     func updateSelection(with selectedType: RoomAccessTypeChooserAccessType) {
         self.selectedType = selectedType
         
@@ -97,7 +99,8 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
     
     func applySelection(completion: @escaping () -> Void) {
         guard let room = session.room(withRoomId: currentRoomId) else {
-            fatalError("[RoomAccessTypeChooserService] applySelection: room with ID \(currentRoomId) not found")
+            MXLog.error("[RoomAccessTypeChooserService] applySelection: room with ID \(currentRoomId) not found")
+            return
         }
         
         let _joinRule: MXRoomJoinRule?
@@ -117,6 +120,7 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
         }
         
         if let joinRule = _joinRule {
+            self.waitingMessageSubject.send(VectorL10n.roomAccessSettingsScreenSettingRoomAccess)
             
             room.setJoinRule(joinRule) { [weak self] response in
                 guard let self = self else { return }
@@ -132,38 +136,9 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
         }
     }
     
-    func upgradeRoom(accepted: Bool, autoInviteUsers: Bool, completion: @escaping (Bool, String) -> Void) {
-        roomUpgradeRequiredSubject.send(false)
-
-        guard let restrictedVersionOverride = restrictedVersionOverride, accepted else {
-            setupDefaultSelectionType()
-            completion(false, currentRoomId)
-            return
-        }
-        
-        waitingMessageSubject.send(VectorL10n.roomAccessSettingsScreenUpgradeAlertUpgrading)
-        
-        if autoInviteUsers, let room = session.room(withRoomId: self.currentRoomId) {
-            self.currentOperation = room.members { [weak self] response in
-                guard let self = self else { return }
-                switch response {
-                case .success(let members):
-                    let memberIds: [String] = members?.members.compactMap({ member in
-                        guard member.membership == .join, member.userId != self.session.myUserId else {
-                            return nil
-                        }
-
-                        return member.userId
-                    }) ?? []
-                    self.upgradeRoom(to: restrictedVersionOverride, inviteUsers: memberIds, completion: completion)
-                case .failure(let error):
-                    self.waitingMessageSubject.send(nil)
-                    self.errorSubject.send(error)
-                }
-            }
-        } else {
-            self.upgradeRoom(to: restrictedVersionOverride, inviteUsers: [], completion: completion)
-        }
+    func updateRoomId(with roomId: String) {
+        self.currentRoomId = roomId
+        readRoomState()
     }
     
     // MARK: - Private
@@ -188,21 +163,22 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
     
     private func readRoomState() {
         guard let room = session.room(withRoomId: currentRoomId) else {
-            fatalError("[RoomAccessTypeChooserService] readRoomState: room with ID \(currentRoomId) not found")
+            MXLog.error("[RoomAccessTypeChooserService] readRoomState: room with ID \(currentRoomId) not found")
+            return
         }
         
         room.state { [weak self] state in
             guard let self = self else { return }
             
             if let roomVersion = state?.stateEvents(with: .roomCreate)?.last?.wireContent["room_version"] as? String, let homeserverCapabilitiesService = self.session.homeserverCapabilitiesService {
-                self.roomUpgradeRequired = self.restrictedVersionOverride != nil && !homeserverCapabilitiesService.isFeatureSupported(.restricted, by: roomVersion)
+                self.roomUpgradeRequired = self.versionOverride != nil && !homeserverCapabilitiesService.isFeatureSupported(.restricted, by: roomVersion)
             }
             
             self.roomJoinRule = state?.joinRule ?? .private
             self.setupDefaultSelectionType()
         }
     }
-
+    
     private func setupDefaultSelectionType() {
         switch roomJoinRule {
         case .restricted:
@@ -212,82 +188,9 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
         default:
             selectedType = .private
         }
-    }
-    
-    private func upgradeRoom(to restrictedVersionOverride: String, inviteUsers userIds: [String], completion: @escaping (Bool, String) -> Void) {
-        // Need to disable graph update during this process as a lot of syncs will occure
-        session.spaceService.graphUpdateEnabled = false
-        currentOperation = session.matrixRestClient.upgradeRoom(withId: self.currentRoomId, to: restrictedVersionOverride) { [weak self] response in
-            guard let self = self else { return }
-            
-            switch response {
-            case .success(let replacementRoomId):
-                let oldRoomId = self.currentRoomId
-                self.roomUpgradeRequired = false
-                self.currentRoomId = replacementRoomId
-                let parentSpaces = self.session.spaceService.directParentIds(ofRoomWithId: oldRoomId)
-                self.moveRoom(from: oldRoomId, to: replacementRoomId, within: Array(parentSpaces), at: 0) {
-                    self.session.spaceService.graphUpdateEnabled = true
-                    self.didBuildSpaceGraphObserver = NotificationCenter.default.addObserver(forName: MXSpaceService.didBuildSpaceGraph, object: nil, queue: OperationQueue.main) { [weak self] notification in
-                        guard let self = self else { return }
-                        
-                        if let observer = self.didBuildSpaceGraphObserver {
-                            NotificationCenter.default.removeObserver(observer)
-                            self.didBuildSpaceGraphObserver = nil
-                        }
-                        
-                        DispatchQueue.main.async {
-                            self.inviteUser(from: userIds, at: 0, completion: completion)
-                        }
-                    }
-                }
-            case .failure(let error):
-                self.session.spaceService.graphUpdateEnabled = true
-                self.waitingMessageSubject.send(nil)
-                self.errorSubject.send(error)
-            }
-        }
-    }
-    
-    private func moveRoom(from roomId: String, to newRoomId: String, within parentIds: [String], at index: Int, completion: @escaping () -> Void) {
-        guard index < parentIds.count else {
-            completion()
-            return
-        }
         
-        guard let space = session.spaceService.getSpace(withId: parentIds[index]) else {
-            MXLog.warning("[RoomAccessTypeChooserService] moveRoom \(roomId) to \(newRoomId) within \(parentIds[index]): space not found")
-            moveRoom(from: roomId, to: newRoomId, within: parentIds, at: index + 1, completion: completion)
-            return
-        }
-        
-        space.moveChild(withRoomId: roomId, to: newRoomId) { [weak self] response in
-            guard let self = self else  { return }
-            
-            if let error = response.error {
-                MXLog.warning("[RoomAccessTypeChooserService] moveRoom \(roomId) to \(newRoomId) within \(space.spaceId): failed due to error: \(error)")
-            }
-            
-            self.moveRoom(from: roomId, to: newRoomId, within: parentIds, at: index + 1, completion: completion)
-        }
-    }
-    
-    private func inviteUser(from userIds: [String], at index: Int, completion: @escaping (Bool, String) -> Void) {
-        guard index < userIds.count else {
-            self.waitingMessageSubject.send(nil)
-            completion(true, currentRoomId)
-            return
-        }
-        
-        currentOperation = session.matrixRestClient.invite(.userId(userIds[index]), toRoom: currentRoomId) { [weak self] response in
-            guard let self = self else  { return }
-            
-            self.currentOperation = nil
-            if let error = response.error {
-                MXLog.warning("[RoomAccessTypeChooserService] inviteUser: failed to invite \(userIds[index]) to \(self.currentRoomId) due to error: \(error)")
-            }
-            
-            self.inviteUser(from: userIds, at: index + 1, completion: completion)
+        if selectedType != .restricted {
+            roomUpgradeRequiredSubject.send(false)
         }
     }
 }

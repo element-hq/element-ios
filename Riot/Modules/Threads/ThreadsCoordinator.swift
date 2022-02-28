@@ -191,7 +191,7 @@ extension ThreadsCoordinator: RoomCoordinatorDelegate {
         
     }
     
-    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, moveToRoomWithId roomId: String) {
+    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didReplaceRoomWithReplacementId roomId: String) {
         
     }
 

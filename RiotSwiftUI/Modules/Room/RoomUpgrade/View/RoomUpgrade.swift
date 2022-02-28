@@ -17,27 +17,27 @@
 import SwiftUI
 
 @available(iOS 14.0, *)
-struct RoomAccessTypeChooserUpgradeRoomAlert: View {    
-    
+struct RoomUpgrade: View {
+
     // MARK: - Properties
     
-    @ObservedObject var viewModel: RoomAccessTypeChooserViewModelType.Context
     @State var autoInviteUsers: Bool = true
     
-    // MARK: - Private
+    // MARK: Private
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
-
+    
+    // MARK: Public
+    
+    @ObservedObject var viewModel: RoomUpgradeViewModel.Context
+    
     // MARK: - Public
     
     var body: some View {
         ZStack {
             Color.black.opacity(0.6)
             alertContent
-                .modifier(WaitOverlay(
-                            allowUserInteraction: false,
-                            message: $viewModel.waitingMessage,
-                            isLoading: $viewModel.isLoading))
+                .waitOverlay(show: viewModel.isLoading, message: viewModel.waitingMessage, allowUserInteraction: false)
         }
         .edgesIgnoringSafeArea(.all)
     }
@@ -58,17 +58,17 @@ struct RoomAccessTypeChooserUpgradeRoomAlert: View {
                 .foregroundColor(theme.colors.secondaryContent)
                 .padding(.bottom, 35)
                 .padding(.horizontal, 12)
-            Toggle(isOn: $autoInviteUsers, label: {
+            Toggle(isOn: $autoInviteUsers) {
                 Text(VectorL10n.roomAccessSettingsScreenUpgradeAlertAutoInviteSwitch)
                     .font(theme.fonts.body)
                     .foregroundColor(theme.colors.secondaryContent)
-            })
+            }
             .toggleStyle(SwitchToggleStyle(tint: theme.colors.accent))
             .padding(.horizontal, 28)
             Divider()
                 .padding(.horizontal, 28)
             Button {
-                viewModel.send(viewAction: .didAcceptRoomUpgrade(autoInviteUsers))
+                viewModel.send(viewAction: .done(autoInviteUsers))
             } label: {
                 Text(VectorL10n.roomAccessSettingsScreenUpgradeAlertUpgradeButton)
             }
@@ -77,7 +77,7 @@ struct RoomAccessTypeChooserUpgradeRoomAlert: View {
             .padding(.horizontal, 24)
             .padding(.top, 16)
             Button {
-                viewModel.send(viewAction: .didCancelRoomUpgrade)
+                viewModel.send(viewAction: .cancel)
             } label: {
                 Text(VectorL10n.cancel)
             }
@@ -92,3 +92,12 @@ struct RoomAccessTypeChooserUpgradeRoomAlert: View {
     }
 }
 
+// MARK: - Previews
+
+@available(iOS 14.0, *)
+struct RoomUpgrade_Previews: PreviewProvider {
+    static let stateRenderer = MockRoomUpgradeScreenState.stateRenderer
+    static var previews: some View {
+        stateRenderer.screenGroup()
+    }
+}

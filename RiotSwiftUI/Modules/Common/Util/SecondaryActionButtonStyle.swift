@@ -48,44 +48,31 @@ struct SecondaryActionButtonStyle: ButtonStyle {
 struct SecondaryActionButtonStyle_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            VStack {
-                Button("Enabled") { }
-                    .buttonStyle(SecondaryActionButtonStyle())
-                
-                Button("Disabled") { }
-                    .buttonStyle(SecondaryActionButtonStyle())
-                    .disabled(true)
-                
-                Button { } label: {
-                    Text("Clear BG")
-                        .foregroundColor(.red)
-                }
-                .buttonStyle(SecondaryActionButtonStyle(customColor: .clear))
-                
-                Button("Red BG") { }
-                .buttonStyle(SecondaryActionButtonStyle(customColor: .red))
-            }
-            .padding()
+            buttonGroup
         }.theme(.light).preferredColorScheme(.light)
         Group {
-            VStack {
-                Button("Enabled") { }
-                    .buttonStyle(SecondaryActionButtonStyle())
-                
-                Button("Disabled") { }
-                    .buttonStyle(SecondaryActionButtonStyle())
-                    .disabled(true)
-                
-                Button { } label: {
-                    Text("Clear BG")
-                        .foregroundColor(.red)
-                }
-                .buttonStyle(SecondaryActionButtonStyle(customColor: .clear))
-                
-                Button("Red BG") { }
-                .buttonStyle(SecondaryActionButtonStyle(customColor: .red))
-            }
-            .padding()
+            buttonGroup
         }.theme(.dark).preferredColorScheme(.dark)
+    }
+    
+    static var buttonGroup: some View {
+        VStack {
+            Button("Enabled") { }
+                .buttonStyle(SecondaryActionButtonStyle())
+            
+            Button("Disabled") { }
+                .buttonStyle(SecondaryActionButtonStyle())
+                .disabled(true)
+            
+            Button { } label: {
+                Text("Clear BG")
+                    .foregroundColor(.red)
+            }
+            .buttonStyle(SecondaryActionButtonStyle(customColor: .clear))
+            
+            Button("Red BG") { }
+            .buttonStyle(SecondaryActionButtonStyle(customColor: .red))
+        }
+        .padding()
     }
 }

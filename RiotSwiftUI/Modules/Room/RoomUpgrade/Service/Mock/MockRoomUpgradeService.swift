@@ -15,11 +15,21 @@
 //
 
 import Foundation
+import Combine
 
-protocol RoomAccessTypeChooserViewModelProtocol {
-    var callback: ((RoomAccessTypeChooserViewModelAction) -> Void)? { get set }
-    @available(iOS 14, *)
-    var context: RoomAccessTypeChooserViewModelType.Context { get }
+@available(iOS 14.0, *)
+class MockRoomUpgradeService: RoomUpgradeServiceProtocol {
+    var currentRoomId: String = "!sfdlksjdflkfjds:matrix.org"
     
-    func handleRoomUpgradeResult(_ result: RoomUpgradeCoordinatorResult)
+    var errorSubject: CurrentValueSubject<Error?, Never>
+    var upgradingSubject: CurrentValueSubject<Bool, Never>
+    
+    init() {
+        self.errorSubject = CurrentValueSubject(nil)
+        self.upgradingSubject = CurrentValueSubject(false)
+    }
+    
+    func upgradeRoom(autoInviteUsers: Bool, completion: @escaping (Bool, String) -> Void) {
+        
+    }
 }

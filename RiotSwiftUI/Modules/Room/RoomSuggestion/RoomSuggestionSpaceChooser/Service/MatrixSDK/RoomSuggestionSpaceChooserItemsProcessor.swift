@@ -99,6 +99,8 @@ class RoomSuggestionSpaceChooserItemsProcessor: MatrixItemChooserProcessorProtoc
     
     // MARK: - Private
     
+    /// (Un)suggest room for spaces which ID is in `parentIds`.
+    /// Recurse to the next index once done.
     private func setRoom(suggested: Bool, forParentsWithId parentIds: [String], at index: Int = 0, completion: @escaping () -> Void) {
         guard index < parentIds.count else {
             completion()

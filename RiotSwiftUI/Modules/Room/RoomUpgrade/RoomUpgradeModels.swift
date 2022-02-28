@@ -16,10 +16,32 @@
 
 import Foundation
 
-protocol RoomAccessTypeChooserViewModelProtocol {
-    var callback: ((RoomAccessTypeChooserViewModelAction) -> Void)? { get set }
-    @available(iOS 14, *)
-    var context: RoomAccessTypeChooserViewModelType.Context { get }
-    
-    func handleRoomUpgradeResult(_ result: RoomUpgradeCoordinatorResult)
+// MARK: - Coordinator
+
+enum RoomUpgradeCoordinatorResult {
+    case cancel(_ roomId: String)
+    case done(_ roomId: String)
+}
+
+// MARK: View model
+
+enum RoomUpgradeViewModelResult {
+    case cancel(_ roomId: String)
+    case done(_ roomId: String)
+}
+
+// MARK: View
+
+struct RoomUpgradeViewState: BindableState {
+    var bindings: RoomUpgradeViewModelBindings
+}
+
+struct RoomUpgradeViewModelBindings {
+    var waitingMessage: String?
+    var isLoading: Bool
+}
+
+enum RoomUpgradeViewAction {
+    case cancel
+    case done(_ autoInviteUsers: Bool)
 }

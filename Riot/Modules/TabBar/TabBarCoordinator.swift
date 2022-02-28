@@ -743,7 +743,7 @@ extension TabBarCoordinator: RoomCoordinatorDelegate {
         self.showRoom(withId: roomId, eventId: eventId)
     }
     
-    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, moveToRoomWithId roomId: String) {
+    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didReplaceRoomWithReplacementId roomId: String) {
         guard let matrixSession = self.parameters.userSessionsService.mainUserSession?.matrixSession else {
             return
         }

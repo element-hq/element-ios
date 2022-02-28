@@ -349,8 +349,8 @@ extension RoomCoordinator: RoomViewControllerDelegate {
         self.delegate?.roomCoordinator(self, didSelectRoomWithId: roomID, eventId: eventID)
     }
     
-    func roomViewController(_ roomViewController: RoomViewController, moveToRoomWithId roomID: String) {
-        self.delegate?.roomCoordinator(self, moveToRoomWithId: roomID)
+    func roomViewController(_ roomViewController: RoomViewController, didReplaceRoomWithReplacementId roomID: String) {
+        self.delegate?.roomCoordinator(self, didReplaceRoomWithReplacementId: roomID)
     }
     
     func roomViewController(_ roomViewController: RoomViewController, showMemberDetails roomMember: MXRoomMember) {
