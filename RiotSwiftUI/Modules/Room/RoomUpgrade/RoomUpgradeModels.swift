@@ -33,10 +33,6 @@ enum RoomUpgradeViewModelResult {
 // MARK: View
 
 struct RoomUpgradeViewState: BindableState {
-    var bindings: RoomUpgradeViewModelBindings
-}
-
-struct RoomUpgradeViewModelBindings {
     var waitingMessage: String?
     var isLoading: Bool
 }

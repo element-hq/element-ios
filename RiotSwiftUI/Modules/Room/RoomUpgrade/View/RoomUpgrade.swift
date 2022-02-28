@@ -37,7 +37,7 @@ struct RoomUpgrade: View {
         ZStack {
             Color.black.opacity(0.6)
             alertContent
-                .waitOverlay(show: viewModel.isLoading, message: viewModel.waitingMessage, allowUserInteraction: false)
+                .waitOverlay(show: viewModel.viewState.isLoading, message: viewModel.viewState.waitingMessage, allowUserInteraction: false)
         }
         .edgesIgnoringSafeArea(.all)
     }

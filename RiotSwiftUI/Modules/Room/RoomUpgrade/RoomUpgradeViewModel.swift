@@ -47,15 +47,15 @@ class RoomUpgradeViewModel: RoomUpgradeViewModelType, RoomUpgradeViewModelProtoc
     }
 
     private static func defaultState(roomUpgradeService: RoomUpgradeServiceProtocol) -> RoomUpgradeViewState {
-        let bindings = RoomUpgradeViewModelBindings(waitingMessage: nil, isLoading: false)
-        return RoomUpgradeViewState(bindings: bindings)
+        return RoomUpgradeViewState(waitingMessage: nil, isLoading: false)
     }
     
     private func setupObservers() {
         roomUpgradeService
             .upgradingSubject
             .sink { [weak self] isUpgrading in
-                self?.state.bindings = RoomUpgradeViewModelBindings(waitingMessage: isUpgrading ? VectorL10n.roomAccessSettingsScreenUpgradeAlertUpgrading: nil, isLoading: isUpgrading)
+                self?.state.isLoading = isUpgrading
+                self?.state.waitingMessage = isUpgrading ? VectorL10n.roomAccessSettingsScreenUpgradeAlertUpgrading: nil
             }
             .store(in: &cancellables)
     }
