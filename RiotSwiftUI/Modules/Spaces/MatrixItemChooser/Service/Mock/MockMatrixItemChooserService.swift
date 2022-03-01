@@ -20,37 +20,47 @@ import Combine
 @available(iOS 14.0, *)
 class MockMatrixItemChooserService: MatrixItemChooserServiceProtocol {
     
-    static let mockItems = [
-        MatrixListItemData(id: "!aaabaa:matrix.org", avatar: MockAvatarInput.example, displayName: "Matrix Discussion", detailText: "Descripton of this room"),
-        MatrixListItemData(id: "!zzasds:matrix.org", avatar: MockAvatarInput.example, displayName: "Element Mobile", detailText: "Descripton of this room"),
-        MatrixListItemData(id: "!scthve:matrix.org", avatar: MockAvatarInput.example, displayName: "Alice Personal", detailText: "Descripton of this room")
+    static let mockSections = [
+        MatrixListItemSectionData(title: "Section 1", infoText: "This is the first section with a very long description in order to check multi line description", items: [
+            MatrixListItemData(id: "!aaabaa:matrix.org", type: .room, avatar: MockAvatarInput.example, displayName: "Item #1 section #1", detailText: "Descripton of this room"),
+            MatrixListItemData(id: "!zzasds:matrix.org", type: .room, avatar: MockAvatarInput.example, displayName: "Item #2 section #1", detailText: "Descripton of this room"),
+            MatrixListItemData(id: "!scthve:matrix.org", type: .room, avatar: MockAvatarInput.example, displayName: "Item #3 section #1", detailText: "Descripton of this room")
+        ]),
+        MatrixListItemSectionData(title: "Section 2", infoText: nil, items: [
+            MatrixListItemData(id: "!asdasd:matrix.org", type: .room, avatar: MockAvatarInput.example, displayName: "Item #1 section #2", detailText: "Descripton of this room"),
+            MatrixListItemData(id: "!lkjlkjl:matrix.org", type: .room, avatar: MockAvatarInput.example, displayName: "Item #2 section #2", detailText: "Descripton of this room"),
+            MatrixListItemData(id: "!vvlkvjlk:matrix.org", type: .room, avatar: MockAvatarInput.example, displayName: "Item #3 section #2", detailText: "Descripton of this room")
+        ])
     ]
-    var itemsSubject: CurrentValueSubject<[MatrixListItemData], Never>
+    var sectionsSubject: CurrentValueSubject<[MatrixListItemSectionData], Never>
     var selectedItemIdsSubject: CurrentValueSubject<Set<String>, Never>
     var searchText: String = ""
-    var type: MatrixItemChooserType = .room
     var selectedItemIds: Set<String> = Set()
+    var loadingText: String? {
+        nil
+    }
 
-    init(type: MatrixItemChooserType = .room, items: [MatrixListItemData] = mockItems, selectedItemIndexes: [Int] = []) {
-        itemsSubject = CurrentValueSubject(items)
+    init(type: MatrixItemChooserType = .room, sections: [MatrixListItemSectionData] = mockSections, selectedItemIndexPaths: [IndexPath] = []) {
+        sectionsSubject = CurrentValueSubject(sections)
         var selectedItemIds = Set<String>()
-        for index in selectedItemIndexes {
-            if index >= items.count {
+        for indexPath in selectedItemIndexPaths {
+            guard indexPath.section < sections.count, indexPath.row < sections[indexPath.section].items.count else {
                 continue
             }
             
-            selectedItemIds.insert(items[index].id)
+            selectedItemIds.insert(sections[indexPath.section].items[indexPath.row].id)
         }
         selectedItemIdsSubject = CurrentValueSubject(selectedItemIds)
         self.selectedItemIds = selectedItemIds
     }
     
-    func simulateSelectionForItem(at index: Int) {
-        guard index < itemsSubject.value.count else {
+    func simulateSelectionForItem(at indexPath: IndexPath) {
+        guard indexPath.section < sectionsSubject.value.count, indexPath.row < sectionsSubject.value[indexPath.section].items.count else {
             return
         }
         
-        reverseSelectionForItem(withId: itemsSubject.value[index].id)
+        selectedItemIds.insert(sectionsSubject.value[indexPath.section].items[indexPath.row].id)
+        selectedItemIdsSubject.send(selectedItemIds)
     }
     
     func reverseSelectionForItem(withId itemId: String) {

@@ -28,6 +28,7 @@ struct MatrixItemChooserListRow: View {
     // MARK: Public
     
     let avatar: AvatarInputProtocol
+    let type: MatrixListItemDataType
     let displayName: String?
     let detailText: String?
     let isSelected: Bool
@@ -35,7 +36,11 @@ struct MatrixItemChooserListRow: View {
     @ViewBuilder
     var body: some View {
         HStack{
-            AvatarImage(avatarData: avatar, size: .small)
+            if type == .space {
+                SpaceAvatarImage(avatarData: avatar, size: .small)
+            } else {
+                AvatarImage(avatarData: avatar, size: .small)
+            }
             VStack(alignment: .leading) {
                 Text(displayName ?? "")
                     .foregroundColor(theme.colors.primaryContent)

@@ -21,6 +21,7 @@ import Foundation
     func roomCoordinatorBridgePresenter(_ bridgePresenter: RoomCoordinatorBridgePresenter,
                                         didSelectRoomWithId roomId: String,
                                         eventId: String?)
+    func roomCoordinatorBridgePresenter(_ bridgePresenter: RoomCoordinatorBridgePresenter, didReplaceRoomWithReplacementId roomId: String)
     func roomCoordinatorBridgePresenterDidDismissInteractively(_ bridgePresenter: RoomCoordinatorBridgePresenter)
 }
 
@@ -48,13 +49,17 @@ class RoomCoordinatorBridgePresenterParameters: NSObject {
     /// The data for the room preview.
     let previewData: RoomPreviewData?
     
+    /// If `true`, the room settings screen will be initially displayed. Default `false`
+    let showSettingsInitially: Bool
+    
     init(session: MXSession,
          roomId: String,
          parentSpaceId: String?,
          eventId: String?,
          threadId: String?,
          displayConfiguration: RoomDisplayConfiguration,
-         previewData: RoomPreviewData?) {
+         previewData: RoomPreviewData?,
+         showSettingsInitially: Bool) {
         self.session = session
         self.roomId = roomId
         self.parentSpaceId = parentSpaceId
@@ -62,6 +67,7 @@ class RoomCoordinatorBridgePresenterParameters: NSObject {
         self.threadId = threadId
         self.displayConfiguration = displayConfiguration
         self.previewData = previewData
+        self.showSettingsInitially = showSettingsInitially
     }
 }
 
@@ -159,6 +165,7 @@ final class RoomCoordinatorBridgePresenter: NSObject {
                                                                roomId: self.bridgeParameters.roomId,
                                                                eventId: self.bridgeParameters.eventId,
                                                                threadId: self.bridgeParameters.threadId,
+                                                               showSettingsInitially: self.bridgeParameters.showSettingsInitially,
                                                                displayConfiguration: self.bridgeParameters.displayConfiguration)
         }
         
@@ -171,6 +178,10 @@ extension RoomCoordinatorBridgePresenter: RoomCoordinatorDelegate {
     
     func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didSelectRoomWithId roomId: String, eventId: String?) {
         self.delegate?.roomCoordinatorBridgePresenter(self, didSelectRoomWithId: roomId, eventId: eventId)
+    }
+    
+    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didReplaceRoomWithReplacementId roomId: String) {
+        self.delegate?.roomCoordinatorBridgePresenter(self, didReplaceRoomWithReplacementId: roomId)
     }
     
     func roomCoordinatorDidLeaveRoom(_ coordinator: RoomCoordinatorProtocol) {

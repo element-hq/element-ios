@@ -32,6 +32,7 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
     private var spaceIdStack: [String]
     private weak var roomDetailCoordinator: SpaceChildRoomDetailCoordinator?
     private weak var currentExploreRoomCoordinator: SpaceExploreRoomCoordinator?
+    private var pollEditFormCoordinator: PollEditFormCoordinator?
 
     private lazy var slidingModalPresenter: SlidingModalPresenter = {
         return SlidingModalPresenter()
@@ -135,7 +136,7 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
         return coordinator
     }
     
-    private func navigateTo(roomWith roomId: String) {
+    private func navigateTo(roomWith roomId: String, showSettingsInitially: Bool = false, animated: Bool = true) {
         let roomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.session)
         roomDataSourceManager?.roomDataSource(forRoom: roomId, create: true, onComplete: { [weak self] roomDataSource in
             
@@ -144,11 +145,13 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
                 return
             }
             
-            self?.navigationRouter.push(roomViewController, animated: true, popCompletion: nil)
+            self?.navigationRouter.push(roomViewController, animated: animated, popCompletion: nil)
             roomViewController.parentSpaceId = self?.spaceIdStack.last
+            roomViewController.showSettingsInitially = showSettingsInitially
             roomViewController.displayRoom(roomDataSource)
             roomViewController.navigationItem.leftItemsSupplementBackButton = true
             roomViewController.showMissedDiscussionsBadge = false
+            roomViewController.delegate = self
         })
     }
     
@@ -161,6 +164,37 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
         toPresentable().present(presentable, animated: true, completion: nil)
         createRoomCoordinator.start()
         self.add(childCoordinator: createRoomCoordinator)
+    }
+    
+    private func popToLastSpaceScreen(animated: Bool) {
+        if let lastSpaceScreen = self.currentExploreRoomCoordinator?.toPresentable() {
+            self.navigationRouter.popToModule(lastSpaceScreen, animated: animated)
+        } else {
+            self.navigationRouter.popToRootModule(animated: animated)
+        }
+    }
+    
+    private func startEditPollCoordinator(room: MXRoom, startEvent: MXEvent? = nil) {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+        
+        let parameters = PollEditFormCoordinatorParameters(room: room, pollStartEvent: startEvent)
+        let coordinator = PollEditFormCoordinator(parameters: parameters)
+        
+        coordinator.completion = { [weak self, weak coordinator] in
+            guard let self = self, let coordinator = coordinator else {
+                return
+            }
+            
+            self.navigationRouter.dismissModule(animated: true, completion: nil)
+            self.remove(childCoordinator: coordinator)
+        }
+        
+        add(childCoordinator: coordinator)
+        
+        navigationRouter.present(coordinator, animated: true)
+        coordinator.start()
     }
 }
 
@@ -245,6 +279,96 @@ extension ExploreRoomCoordinator: UIAdaptivePresentationControllerDelegate {
             return
         }
         self.remove(childCoordinator: lastCoordinator)
+    }
+    
+}
+
+extension ExploreRoomCoordinator: RoomViewControllerDelegate {
+    func roomViewControllerShowRoomDetails(_ roomViewController: RoomViewController) {
+        // TODO:
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, showMemberDetails roomMember: MXRoomMember) {
+        // TODO:
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, showRoomWithId roomID: String, eventId eventID: String?) {
+        self.navigateTo(roomWith: roomID)
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, didReplaceRoomWithReplacementId roomID: String) {
+        self.currentExploreRoomCoordinator?.reloadRooms()
+        self.popToLastSpaceScreen(animated: false)
+        self.navigateTo(roomWith: roomID, showSettingsInitially: true, animated: false)
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, startChatWithUserId userId: String, completion: @escaping () -> Void) {
+        // TODO:
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, showCompleteSecurityFor session: MXSession) {
+        // TODO:
+    }
+    
+    func roomViewControllerDidLeaveRoom(_ roomViewController: RoomViewController) {
+        self.popToLastSpaceScreen(animated: true)
+    }
+    
+    func roomViewControllerPreviewDidTapCancel(_ roomViewController: RoomViewController) {
+        // TODO:
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, handleUniversalLinkWith parameters: UniversalLinkParameters) -> Bool {
+        // TODO:
+        return true
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, didRequestEditForPollWithStart startEvent: MXEvent) {
+        startEditPollCoordinator(room: roomViewController.roomDataSource.room, startEvent: startEvent)
+    }
+    
+    func roomViewControllerDidRequestLocationSharingFormPresentation(_ roomViewController: RoomViewController) {
+        // TODO:
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, didRequestLocationPresentationFor event: MXEvent, bubbleData: MXKRoomBubbleCellDataStoring) {
+        // TODO:
+    }
+
+    func roomViewController(_ roomViewController: RoomViewController, locationShareActivityViewControllerFor event: MXEvent) -> UIActivityViewController? {
+        guard let location = event.location else {
+            return nil
+        }
+        
+        return LocationSharingCoordinator.shareLocationActivityController(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
+    }
+
+    func roomViewController(_ roomViewController: RoomViewController, canEditPollWithEventIdentifier eventIdentifier: String) -> Bool {
+        guard #available(iOS 14.0, *) else {
+            return false
+        }
+        
+        return TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.canEditPoll() ?? false
+    }
+
+    func roomViewController(_ roomViewController: RoomViewController, endPollWithEventIdentifier eventIdentifier: String) {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+        
+        TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.endPoll()
+    }
+    
+    func roomViewControllerDidRequestPollCreationFormPresentation(_ roomViewController: RoomViewController) {
+        startEditPollCoordinator(room: roomViewController.roomDataSource.room)
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, canEndPollWithEventIdentifier eventIdentifier: String) -> Bool {
+        guard #available(iOS 14.0, *) else {
+            return false
+        }
+        
+        return TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.canEndPoll() ?? false
     }
     
 }

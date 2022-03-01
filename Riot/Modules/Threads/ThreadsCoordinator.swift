@@ -133,6 +133,7 @@ final class ThreadsCoordinator: NSObject, ThreadsCoordinatorProtocol {
                                                    roomId: parameters.roomId,
                                                    eventId: nil,
                                                    threadId: threadId,
+                                                   showSettingsInitially: false,
                                                    displayConfiguration: .forThreads)
         let coordinator = RoomCoordinator(parameters: parameters)
         coordinator.delegate = self
@@ -190,4 +191,8 @@ extension ThreadsCoordinator: RoomCoordinatorDelegate {
         
     }
     
+    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didReplaceRoomWithReplacementId roomId: String) {
+        
+    }
+
 }

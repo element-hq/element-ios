@@ -30,10 +30,10 @@ struct AddRoomSelector: View {
     // MARK: Setup
     
     var body: some View {
-        MatrixItemChooser(viewModel: viewModel)
+        MatrixItemChooser(viewModel: viewModel, listBottomPadding: nil)
             .background(theme.colors.background)
-            .navigationBarItems(leading: cancelButton,
-            trailing: doneButton)
+            .navigationBarItems(leading: cancelButton, trailing: doneButton)
+            .accentColor(theme.colors.accent)
     }
 
     // MARK: Private
@@ -43,7 +43,6 @@ struct AddRoomSelector: View {
             viewModel.send(viewAction: .cancel)
         })
         .font(theme.fonts.body)
-        .foregroundColor(theme.colors.accent)
     }
     
     private var doneButton: some View {
@@ -51,7 +50,6 @@ struct AddRoomSelector: View {
             viewModel.send(viewAction: .done)
         })
         .font(theme.fonts.body)
-        .foregroundColor(viewModel.viewState.selectedItemIds.isEmpty ? theme.colors.quarterlyContent : theme.colors.accent)
         .opacity(viewModel.viewState.selectedItemIds.isEmpty ? 0.7 : 1)
         .disabled(viewModel.viewState.selectedItemIds.isEmpty)
     }

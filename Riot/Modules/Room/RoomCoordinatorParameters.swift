@@ -49,6 +49,9 @@ struct RoomCoordinatorParameters {
     /// The data for the room preview.
     let previewData: RoomPreviewData?
     
+    /// If `true`, the room settings screen will be initially displayed. Default `false`
+    let showSettingsInitially: Bool
+    
     // MARK: - Setup
     
     private init(navigationRouter: NavigationRouterType?,
@@ -59,7 +62,8 @@ struct RoomCoordinatorParameters {
                  eventId: String?,
                  threadId: String?,
                  displayConfiguration: RoomDisplayConfiguration,
-                 previewData: RoomPreviewData?) {
+                 previewData: RoomPreviewData?,
+                 showSettingsInitially: Bool) {
         self.navigationRouter = navigationRouter
         self.navigationRouterStore = navigationRouterStore
         self.session = session
@@ -69,6 +73,7 @@ struct RoomCoordinatorParameters {
         self.threadId = threadId
         self.displayConfiguration = displayConfiguration
         self.previewData = previewData
+        self.showSettingsInitially = showSettingsInitially
     }
     
     /// Init to present a joined room
@@ -79,6 +84,7 @@ struct RoomCoordinatorParameters {
          roomId: String,
          eventId: String? = nil,
          threadId: String? = nil,
+         showSettingsInitially: Bool,
          displayConfiguration: RoomDisplayConfiguration = .default) {
         
         self.init(navigationRouter: navigationRouter,
@@ -89,7 +95,8 @@ struct RoomCoordinatorParameters {
                   eventId: eventId,
                   threadId: threadId,
                   displayConfiguration: displayConfiguration,
-                  previewData: nil)
+                  previewData: nil,
+                  showSettingsInitially: showSettingsInitially)
     }
     
     /// Init to present a room preview
@@ -106,6 +113,7 @@ struct RoomCoordinatorParameters {
                   eventId: nil,
                   threadId: nil,
                   displayConfiguration: .default,
-                  previewData: previewData)
+                  previewData: previewData,
+                  showSettingsInitially: false)
     }
 }

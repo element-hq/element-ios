@@ -36,14 +36,14 @@ class MatrixItemChooserViewModelTests: XCTestCase {
         XCTAssertEqual(context.viewState.emptyListMessage, VectorL10n.spacesNoResultFoundTitle)
         XCTAssertEqual(context.viewState.title, VectorL10n.spacesCreationAddRoomsTitle)
         XCTAssertEqual(context.viewState.message, VectorL10n.spacesCreationAddRoomsMessage)
-        XCTAssertEqual(context.viewState.items, MockMatrixItemChooserService.mockItems)
+        XCTAssertEqual(context.viewState.sections, MockMatrixItemChooserService.mockSections)
         XCTAssertEqual(context.viewState.selectedItemIds.count, 0)
     }
 
     func testItemSelection() throws {
         XCTAssertEqual(context.viewState.selectedItemIds.count, 0)
-        service.simulateSelectionForItem(at: 0)
+        service.simulateSelectionForItem(at: IndexPath(row: 0, section: 0))
         XCTAssertEqual(context.viewState.selectedItemIds.count, 1)
-        XCTAssertEqual(context.viewState.selectedItemIds.first, MockMatrixItemChooserService.mockItems[0].id)
+        XCTAssertEqual(context.viewState.selectedItemIds.first, MockMatrixItemChooserService.mockSections[0].items[0].id)
     }
 }

@@ -30,8 +30,10 @@ class SpaceCreationInviteUsersItemsProcessor: MatrixItemChooserProcessorProtocol
     
     // MARK: MatrixItemChooserSelectionProcessorProtocol
     
-    var dataType: MatrixItemChooserType {
-        .people
+    private(set) var dataSource: MatrixItemChooserDataSource = MatrixItemChooserUsersDataSource()
+    
+    var loadingText: String? {
+        nil
     }
 
     func computeSelection(withIds itemsIds: [String], completion: @escaping (Result<Void, Error>) -> Void) {

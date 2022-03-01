@@ -415,7 +415,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                                                                       roomId: roomNavigationParameters.roomId,
                                                                       eventId: roomNavigationParameters.eventId,
                                                                       threadId: threadId,
-                                                                      displayConfiguration: displayConfig)
+                                                                      showSettingsInitially: roomNavigationParameters.showSettingsInitially, displayConfiguration: displayConfig)
             
             self.showRoom(with: roomCoordinatorParameters,
                           stackOnSplitViewDetail: roomNavigationParameters.presentationParameters.stackAboveVisibleViews,
@@ -428,7 +428,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         // RoomCoordinator will be presented by the split view.
         // As we don't know which navigation controller instance will be used,
         // give the NavigationRouterStore instance and let it find the associated navigation controller
-        let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared, session: matrixSession, parentSpaceId: self.currentSpaceId, roomId: roomId, eventId: eventId)
+        let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared, session: matrixSession, parentSpaceId: self.currentSpaceId, roomId: roomId, eventId: eventId, showSettingsInitially: false)
         
         self.showRoom(with: roomCoordinatorParameters, completion: completion)
     }
@@ -498,7 +498,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                                                                   parentSpaceId: self.currentSpaceId,
                                                                   roomId: roomNavigationParameters.roomId,
                                                                   eventId: nil,
-                                                                  threadId: nil)
+                                                                  threadId: nil,
+                                                                  showSettingsInitially: false)
 
         dispatchGroup.enter()
         let roomCoordinator = RoomCoordinator(parameters: roomCoordinatorParameters)
@@ -515,6 +516,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                                                                     roomId: roomNavigationParameters.roomId,
                                                                     eventId: roomNavigationParameters.eventId,
                                                                     threadId: roomNavigationParameters.threadParameters?.threadId,
+                                                                    showSettingsInitially: false,
                                                                     displayConfiguration: .forThreads)
 
         dispatchGroup.enter()
@@ -741,6 +743,21 @@ extension TabBarCoordinator: RoomCoordinatorDelegate {
         self.showRoom(withId: roomId, eventId: eventId)
     }
     
+    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didReplaceRoomWithReplacementId roomId: String) {
+        guard let matrixSession = self.parameters.userSessionsService.mainUserSession?.matrixSession else {
+            return
+        }
+
+        let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
+                                                                  session: matrixSession,
+                                                                  parentSpaceId: self.currentSpaceId,
+                                                                  roomId: roomId,
+                                                                  eventId: nil,
+                                                                  showSettingsInitially: true)
+        
+        self.showRoom(with: roomCoordinatorParameters,
+                      stackOnSplitViewDetail: false)
+    }
 }
 
 // MARK: - UIGestureRecognizerDelegate
