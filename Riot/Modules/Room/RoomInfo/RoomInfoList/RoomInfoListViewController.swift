@@ -40,7 +40,6 @@ final class RoomInfoListViewController: UIViewController {
     private var viewModel: RoomInfoListViewModelType!
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
-    private var activityPresenter: ActivityIndicatorPresenterType!
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol!
     private var loadingIndicator: UserIndicator?
     private var isRoomDirect: Bool = false
@@ -119,7 +118,6 @@ final class RoomInfoListViewController: UIViewController {
         
         self.setupViews()
         
-        self.activityPresenter = ActivityIndicatorPresenter()
         self.indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: self)
     
         self.errorPresenter = MXKErrorAlertPresentation()
@@ -270,16 +268,12 @@ final class RoomInfoListViewController: UIViewController {
     }
     
     private func renderLoading() {
-        if BuildSettings.useAppUserIndicators {
-            loadingIndicator = indicatorPresenter.present(
-                .loading(
-                    label: VectorL10n.roomParticipantsLeaveProcessing,
-                    isInteractionBlocking: true
-                )
+        loadingIndicator = indicatorPresenter.present(
+            .loading(
+                label: VectorL10n.roomParticipantsLeaveProcessing,
+                isInteractionBlocking: true
             )
-        } else {
-            activityPresenter.presentActivityIndicator(on: self.view, animated: true)
-        }
+        )
     }
     
     private func renderLoaded(viewData: RoomInfoListViewData) {
@@ -293,11 +287,7 @@ final class RoomInfoListViewController: UIViewController {
     }
     
     private func stopLoading() {
-        if BuildSettings.useAppUserIndicators {
-            loadingIndicator?.cancel()
-        } else {
-            activityPresenter.removeCurrentActivityIndicator(animated: true)
-        }
+        loadingIndicator?.cancel()
     }
     
     // MARK: - Actions
