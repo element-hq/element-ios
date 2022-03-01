@@ -103,6 +103,11 @@ typedef NS_ENUM(NSUInteger, MXKRoomViewControllerJoinRoomResult) {
 @property (nonatomic, readonly) MXKRoomDataSource *roomDataSource;
 
 /**
+  The data source associated to live timeline, in the case the view controller show timeline not live.
+ */
+@property (nonatomic) MXKRoomDataSource *roomDataSourceLive;
+
+/**
  Flag indicating if this instance has the memory ownership of its `roomDataSource`.
  If YES, it will release it on [self destroy] call;
  Default is NO.

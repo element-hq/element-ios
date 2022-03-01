@@ -125,6 +125,8 @@ struct AnalyticsPrompt: View {
             .background(theme.colors.background.ignoresSafeArea())
             .accentColor(theme.colors.accent)
         }
+        .navigationBarHidden(true)
+        .navigationBarBackButtonHidden(true)
     }
 }
 

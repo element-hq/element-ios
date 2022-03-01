@@ -124,6 +124,7 @@ internal class Asset: NSObject {
     internal static let onboardingSplashScreenPage3Dark = ImageAsset(name: "OnboardingSplashScreenPage3Dark")
     internal static let onboardingSplashScreenPage4 = ImageAsset(name: "OnboardingSplashScreenPage4")
     internal static let onboardingSplashScreenPage4Dark = ImageAsset(name: "OnboardingSplashScreenPage4Dark")
+    internal static let onboardingCongratulationsIcon = ImageAsset(name: "onboarding_congratulations_icon")
     internal static let onboardingUseCaseCommunity = ImageAsset(name: "onboarding_use_case_community")
     internal static let onboardingUseCaseCommunityDark = ImageAsset(name: "onboarding_use_case_community_dark")
     internal static let onboardingUseCaseIcon = ImageAsset(name: "onboarding_use_case_icon")

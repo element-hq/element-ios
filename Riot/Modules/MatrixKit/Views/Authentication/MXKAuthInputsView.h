@@ -25,7 +25,7 @@ extern NSString *const MXKAuthErrorDomain;
 /**
  Authentication types
  */
-typedef enum {
+typedef NS_ENUM(NSUInteger, MXKAuthenticationType) {
     /**
      Type used to sign up.
      */
@@ -39,7 +39,7 @@ typedef enum {
      */
     MXKAuthenticationTypeForgotPassword
     
-} MXKAuthenticationType;
+};
 
 @class MXKAuthInputsView;
 

@@ -17,6 +17,7 @@
  */
 
 import UIKit
+import CommonKit
 
 @objcMembers
 final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
@@ -52,6 +53,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private var isTabBarControllerTopMostController: Bool {
         return self.navigationRouter.modules.last is MasterTabBarController
     }
+    
+    private var indicators = [UserIndicator]()
     
     // MARK: Public
 
@@ -227,8 +230,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         homeViewController.tabBarItem.image = homeViewController.tabBarItem.image
         homeViewController.accessibilityLabel = VectorL10n.titleHome
         
-        if BuildSettings.appActivityIndicators {
-            homeViewController.activityPresenter = AppActivityIndicatorPresenter(appNavigator: parameters.appNavigator)
+        if BuildSettings.useAppUserIndicators {
+            homeViewController.userIndicatorPresenter = AppUserIndicatorPresenter(appNavigator: parameters.appNavigator)
         }
         
         let wrapperViewController = HomeViewControllerWithBannerWrapperViewController(viewController: homeViewController)        
@@ -580,24 +583,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.splitViewMasterPresentableDelegate?.splitViewMasterPresentableWantsToResetDetail(self)
     }
     
-    @available(iOS 14.0, *)
-    private func presentAnalyticsPrompt(with session: MXSession) {
-        let parameters = AnalyticsPromptCoordinatorParameters(session: session)
-        let coordinator = AnalyticsPromptCoordinator(parameters: parameters)
-        
-        coordinator.completion = { [weak self, weak coordinator] in
-            guard let self = self, let coordinator = coordinator else { return }
-            
-            self.navigationRouter.dismissModule(animated: true, completion: nil)
-            self.remove(childCoordinator: coordinator)
-        }
-        
-        add(childCoordinator: coordinator)
-        
-        navigationRouter.present(coordinator, animated: true)
-        coordinator.start()
-    }
-    
     // MARK: UserSessions management
     
     private func registerUserSessionsServiceNotifications() {
@@ -715,12 +700,6 @@ extension TabBarCoordinator: MasterTabBarControllerDelegate {
         
         self.masterTabBarController.navigationItem.leftBarButtonItem = sideMenuBarButtonItem
     }
-    
-    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, shouldPresentAnalyticsPromptForMatrixSession matrixSession: MXSession!) {
-        if #available(iOS 14.0, *) {
-            presentAnalyticsPrompt(with: matrixSession)
-        }
-    }
 }
 
 // MARK: - RoomCoordinatorDelegate
@@ -733,6 +712,11 @@ extension TabBarCoordinator: RoomCoordinatorDelegate {
     func roomCoordinatorDidLeaveRoom(_ coordinator: RoomCoordinatorProtocol) {
         // For the moment when a room is left, reset the split detail with placeholder
         self.resetSplitViewDetails()
+        if BuildSettings.useAppUserIndicators {
+            parameters.appNavigator
+                .addUserIndicator(.success(VectorL10n.roomParticipantsLeaveSuccess))
+                .store(in: &indicators)
+        }
     }
     
     func roomCoordinatorDidCancelRoomPreview(_ coordinator: RoomCoordinatorProtocol) {

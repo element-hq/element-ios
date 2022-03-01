@@ -52,8 +52,8 @@ final class TemplateRoomChatCoordinator: Coordinator, Presentable {
     func start() {
         MXLog.debug("[TemplateRoomChatCoordinator] did start.")
         templateRoomChatViewModel.callback = { [weak self] result in
-            MXLog.debug("[TemplateRoomChatCoordinator] TemplateRoomChatViewModel did complete with result: \(result).")
             guard let self = self else { return }
+            MXLog.debug("[TemplateRoomChatCoordinator] TemplateRoomChatViewModel did complete with result: \(result).")
             switch result {
             case .done:
                 self.callback?()

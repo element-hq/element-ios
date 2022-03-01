@@ -1,1 +1,0 @@
-Fix registration to be compliant with the Matrix specification. This allows registering for accounts on Conduit servers. Contributed by @aaronraimist.

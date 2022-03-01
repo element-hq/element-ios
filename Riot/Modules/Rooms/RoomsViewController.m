@@ -20,7 +20,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface RoomsViewController ()
+@interface RoomsViewController () <MasterTabBarItemDisplayProtocol>
 {
     RecentsDataSource *recentsDataSource;
 }
@@ -66,15 +66,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titleRooms];
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
     if ([self.dataSource isKindOfClass:RecentsDataSource.class])
     {
         // Take the lead on the shared data source.
         recentsDataSource = (RecentsDataSource*)self.dataSource;
-        recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeRooms];
     }
 }
@@ -103,17 +100,6 @@
 }
 
 #pragma mark - UITableView delegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if ([tableView numberOfSections] <= 1)
-    {
-        // Hide the header to merge Invites and Rooms into a single list.
-        return 0.0;
-    }
-    
-    return [super tableView:tableView heightForHeaderInSection:section];
-}
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -163,6 +149,13 @@
     {
         return AssetImages.roomsEmptyScreenArtwork.image;
     }
+}
+
+#pragma mark - MasterTabBarItemDisplayProtocol
+
+- (NSString *)masterTabBarItemTitle
+{
+    return [VectorL10n titleRooms];
 }
 
 @end

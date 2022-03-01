@@ -17,6 +17,15 @@
 import Foundation
 import CommonKit
 
+/// Type of indicator to be shown in the app navigator
+enum AppUserIndicatorType {
+    /// Loading toast with custom label
+    case loading(String)
+    
+    /// Success toast with custom label
+    case success(String)
+}
+
 /// AppNavigatorProtocol abstract a navigator at app level.
 /// It enables to perform the navigation within the global app scope (open the side menu, open a room and so on)
 /// Note: Presentation of the pattern here https://www.swiftbysundell.com/articles/navigation-in-swift/#where-to-navigator
@@ -28,11 +37,11 @@ protocol AppNavigatorProtocol {
     /// Do not use protocol with associatedtype for the moment like presented here https://www.swiftbysundell.com/articles/navigation-in-swift/#where-to-navigator use a separate enum
     func navigate(to destination: AppNavigatorDestination)
     
-    /// Add loading activity to an app-wide queue of other activitie
+    /// Add new indicator, such as loading spinner or a success message, to an app-wide queue of other indicators
     ///
-    /// If the queue is empty, the activity will be displayed immediately, otherwise it will be pending
-    /// until the previously added activities have completed / been cancelled.
+    /// If the queue is empty, the indicator will be displayed immediately, otherwise it will be pending
+    /// until the previously added indicator have completed / been cancelled.
     ///
-    /// To remove an activity indicator, cancel or deallocate the returned `Activity`
-    func addLoadingActivity() -> Activity
+    /// To remove an indicator, cancel or deallocate the returned `UserIndicator`
+    func addUserIndicator(_ type: AppUserIndicatorType) -> UserIndicator
 }

@@ -63,25 +63,25 @@ import UIKit
     public var caption2SB: UIFont
     
     public init(values: ElementFonts) {
-        self.largeTitle = values.largeTitle
-        self.largeTitleB = values.largeTitleB
-        self.title1 = values.title1
-        self.title1B = values.title1B
-        self.title2 = values.title2
-        self.title2B = values.title2B
-        self.title3 = values.title3
-        self.title3SB = values.title3SB
-        self.headline = values.headline
-        self.subheadline = values.subheadline
-        self.body = values.body
-        self.bodySB = values.bodySB
-        self.callout = values.callout
-        self.calloutSB = values.calloutSB
-        self.footnote = values.footnote
-        self.footnoteSB = values.footnoteSB
-        self.caption1 = values.caption1
-        self.caption1SB = values.caption1SB
-        self.caption2 = values.caption2
-        self.caption2SB = values.caption2SB
+        self.largeTitle = values.largeTitle.uiFont
+        self.largeTitleB = values.largeTitleB.uiFont
+        self.title1 = values.title1.uiFont
+        self.title1B = values.title1B.uiFont
+        self.title2 = values.title2.uiFont
+        self.title2B = values.title2B.uiFont
+        self.title3 = values.title3.uiFont
+        self.title3SB = values.title3SB.uiFont
+        self.headline = values.headline.uiFont
+        self.subheadline = values.subheadline.uiFont
+        self.body = values.body.uiFont
+        self.bodySB = values.bodySB.uiFont
+        self.callout = values.callout.uiFont
+        self.calloutSB = values.calloutSB.uiFont
+        self.footnote = values.footnote.uiFont
+        self.footnoteSB = values.footnoteSB.uiFont
+        self.caption1 = values.caption1.uiFont
+        self.caption1SB = values.caption1SB.uiFont
+        self.caption2 = values.caption2.uiFont
+        self.caption2SB = values.caption2SB.uiFont
     }
 }

@@ -53,7 +53,4 @@ extern NSString *const kInviteRecentTableViewCellRoomKey;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *leftButtonActivityIndicator;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *rightButtonActivityIndicator;
 
-@property (weak, nonatomic) IBOutlet UIView  *noticeBadgeView;
-
-
 @end

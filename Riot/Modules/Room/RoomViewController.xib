@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -189,7 +189,7 @@
                 <constraint firstAttribute="bottom" secondItem="BGD-sd-SQR" secondAttribute="bottom" constant="41" id="1SD-y2-oTg"/>
                 <constraint firstItem="Xt7-83-dQh" firstAttribute="leading" secondItem="QpJ-1u-4ii" secondAttribute="leading" id="6lr-Tx-pEb"/>
                 <constraint firstItem="QpJ-1u-4ii" firstAttribute="trailing" secondItem="Ih9-EU-BOU" secondAttribute="trailing" constant="16" id="6rq-lR-0sB"/>
-                <constraint firstItem="54r-18-K1g" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="7Ft-EV-Br0"/>
+                <constraint firstItem="54r-18-K1g" firstAttribute="top" secondItem="QpJ-1u-4ii" secondAttribute="top" id="7Ft-EV-Br0"/>
                 <constraint firstItem="gt1-EO-UVY" firstAttribute="leading" secondItem="QpJ-1u-4ii" secondAttribute="leading" id="8Ff-Ot-h3F"/>
                 <constraint firstItem="Xt7-83-dQh" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="9g2-wm-4M9"/>
                 <constraint firstItem="fmF-ad-erE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="DtG-PR-F24"/>

@@ -680,9 +680,9 @@
     
     if (dataSource)
     {
-        if (!dataSource.isLive || dataSource.isPeeking)
+        if (dataSource.isPeeking)
         {
-            // Remove the input toolbar if the displayed timeline is not a live one or in case of peeking.
+            // Remove the input toolbar in case of peeking.
             // We do not let the user type message in this case.
             [self setRoomInputToolbarViewClass:nil];
         }
@@ -1085,9 +1085,9 @@
         inputToolbarView = nil;
     }
     
-    if (roomDataSource && (!roomDataSource.isLive || roomDataSource.isPeeking))
+    if (roomDataSource && roomDataSource.isPeeking)
     {
-        // Do not show the input toolbar if the displayed timeline is not a live one, or in case of peeking.
+        // Do not show the input toolbar if the displayed timeline in case of peeking.
         // We do not let the user type message in this case.
         roomInputToolbarViewClass = nil;
     }
@@ -2348,6 +2348,12 @@
     {
         // Do a full reload
         [_bubblesTableView reloadData];
+        if (shouldScrollToBottom) {
+            // If we need to scroll to the bottom after the reload, layout refresh needs to be triggered,
+            // otherwise contentSize of the table view will not be up-to-date
+            // e.g. https://stackoverflow.com/a/31324129
+            [_bubblesTableView layoutIfNeeded];
+        }
     }
     
     if (shouldScrollToBottom)

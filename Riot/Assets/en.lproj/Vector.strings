@@ -298,6 +298,8 @@ Tap the + to start adding people.";
 "room_participants_leave_prompt_title_for_dm" = "Leave";
 "room_participants_leave_prompt_msg" = "Are you sure you want to leave the room?";
 "room_participants_leave_prompt_msg_for_dm" = "Are you sure you want to leave?";
+"room_participants_leave_processing" = "Leaving";
+"room_participants_leave_success" = "Left room";
 "room_participants_remove_prompt_title" = "Confirmation";
 "room_participants_remove_prompt_msg" = "Are you sure you want to remove %@ from this chat?";
 "room_participants_remove_third_party_invite_prompt_msg" = "Are you sure you want to revoke this invite?";
@@ -1792,6 +1794,7 @@ Tap the + to start adding people.";
 "home_context_menu_low_priority" = "Low priority";
 "home_context_menu_normal_priority" = "Normal priority";
 "home_context_menu_leave" = "Leave";
+"home_syncing" = "Syncing";
 
 // MARK: - Favourites
 

@@ -53,7 +53,7 @@
 "auth_optional_phone_placeholder" = "Telefoninumber (kui soovid)";
 "auth_phone_placeholder" = "Telefoninumber";
 "auth_repeat_password_placeholder" = "Korda salasõna";
-"auth_repeat_new_password_placeholder" = "Korda uut salasõna";
+"auth_repeat_new_password_placeholder" = "Korda uut Matrix'i konto salasõna";
 "auth_home_server_placeholder" = "URL (näiteks https://matrix.org)";
 "auth_identity_server_placeholder" = "URL (näiteks https://vector.im)";
 "auth_invalid_login_param" = "Vigane kasutajanimi ja/või salasõna";
@@ -70,13 +70,13 @@
 "auth_missing_email_or_phone" = "E-posti aadress või telefoninumber on puudu";
 "auth_email_in_use" = "See e-posti aadress on juba kasutusel";
 "auth_phone_in_use" = "See telefoninumber on juba kasutusel";
-"auth_email_is_required" = "Ühtegi isikutuvastusserverit pole seadistatud ning sul ei ole võimalik lisada oma e-posti aadressi hilisemaks võimalikuks salasõna muutmiseks.";
-"auth_phone_is_required" = "Ühtegi isikutuvastusserverit pole seadistatud ning sul ei ole võimalik lisada oma telefoninumbrit hilisemaks võimalikuks salasõna muutmiseks.";
+"auth_email_is_required" = "Ühtegi isikutuvastusserverit pole seadistatud ning sul ei ole võimalik lisada oma e-posti aadressi hilisemaks võimalikuks Matrix'i konto salasõna muutmiseks.";
+"auth_phone_is_required" = "Ühtegi isikutuvastusserverit pole seadistatud ning sul ei ole võimalik lisada oma telefoninumbrit hilisemaks võimalikuks Matrix'i konto salasõna muutmiseks.";
 "auth_untrusted_id_server" = "See isikutuvastusserver pole usaldusväärne";
 "auth_password_dont_match" = "Salasõnad ei klapi omavahel";
 "auth_username_in_use" = "Selline kasutajanimi on juba olemas";
-"auth_forgot_password" = "Kas unustasid oma salasõna?";
-"auth_forgot_password_error_no_configured_identity_server" = "Ühtegi isikutuvastusserverit pole seadistatud: salasõna taastamiseks määra see.";
+"auth_forgot_password" = "Kas unustasid oma Matrix'i konto salasõna?";
+"auth_forgot_password_error_no_configured_identity_server" = "Ühtegi isikutuvastusserverit pole seadistatud: Matrix'i konto salasõna taastamiseks määra see.";
 "auth_email_not_found" = "E-kirja saatmine ei õnnestunud: sellist e-posti aadressi ei leidu";
 "auth_use_server_options" = "Kohandatud serveriseadistused";
 "auth_email_validation_message" = "Registreerimise jätkamiseks palun vaata oma e-posti";
@@ -84,15 +84,15 @@
 "auth_msisdn_validation_message" = "Me oleme SMS'iga saatnud aktiveerimiskoodi. Palun sisesta see kood siia.";
 "auth_msisdn_validation_error" = "Telefoninumbri verifitseerimine ei õnnestunud.";
 "auth_recaptcha_message" = "See server soovib kindlaks teha, et sa ei ole robot";
-"auth_reset_password_message" = "Salasõna taastamiseks sisesta sinu kontoga seotud e-posti aadress:";
+"auth_reset_password_message" = "Matrix'i konto salasõna taastamiseks sisesta sinu kontoga seotud e-posti aadress:";
 "auth_reset_password_missing_email" = "Sa pead sisestama oma kontoga seotud e-posti aadressi.";
 "auth_reset_password_missing_password" = "Palun sisesta uus salasõna.";
 "auth_reset_password_email_validation_message" = "Saatsime e-kirja %@ aadressile. Kui oled avanud selles kirjas leidunud lingi, siis palun vajuta järgnevat nuppu.";
 "auth_reset_password_next_step_button" = "Ma olen teinud läbi oma e-posti aadressi kontrolli";
 "auth_reset_password_error_unauthorized" = "E-posti aadressi kontrollimine ei õnnestunud: palun vaata, et sa kindlasti klõpsisid saabunud kirjas olnud viidet";
 "auth_reset_password_error_not_found" = "Sinu e-posti aadress ei tundu olema selles koduserveris seotud Matrixi kasutajatunnusega.";
-"auth_reset_password_error_is_required" = "Ühtegi isikutuvastusserverit pole seadistatud: salasõna taastamiseks määra see serveri sätetes.";
-"auth_reset_password_success_message" = "Sinu salasõna on vahetatud. \n \nSa oled välja logitud kõikidest oma seni kasutusel olnud sessioonidest ega saa enam teateid ega sõnumeid. Nende uuesti lugemiseks palun logi igas seadmes tagasi Matrix'i võrku.";
+"auth_reset_password_error_is_required" = "Ühtegi isikutuvastusserverit pole seadistatud: Matrix'i konto salasõna taastamiseks määra see serveri sätetes.";
+"auth_reset_password_success_message" = "Sinu Matrix'i konto salasõna on vahetatud. \n \nSa oled välja logitud kõikidest oma seni kasutusel olnud sessioonidest ega saa enam teateid ega sõnumeid. Nende uuesti lugemiseks palun logi igas seadmes tagasi Matrix'i võrku.";
 "auth_add_email_and_phone_warning" = "Registreerimine kasutades korraga nii e-posti aadressi kui ka telefoninumbrit ei ole senise API versiooni puhul veel võimalik. Hetkel läheb arvesse vaid telefoninumber. Sa võid hiljem lisada e-posti aadressi oma kasutajaprofiili seadetest.";
 "auth_accept_policies" = "Palun vaata üle kõik selle koduserveri kasutustingimused ja nõustu nendega:";
 "auth_autodiscover_invalid_response" = "Vigane koduserveri tuvastamise päringu vastus";
@@ -209,7 +209,7 @@
 "deactivate_account_forget_messages_information_part2_emphasize" = "Hoiatus";
 "deactivate_account_validate_action" = "Kas eemaldame selle konto kasutusest";
 "deactivate_account_password_alert_title" = "Eemalda konto";
-"deactivate_account_password_alert_message" = "Jätkamiseks palun sisesta oma salasõna";
+"deactivate_account_password_alert_message" = "Jätkamiseks palun sisesta oma Matrix'i konto salasõna";
 "auth_login_single_sign_on" = "Logi sisse";
 // Room recents
 "room_recents_directory_section" = "JUTUTUBADE LOEND";
@@ -251,7 +251,7 @@
 "room_event_action_redact" = "Eemalda";
 "room_event_action_more" = "Veel";
 "room_event_action_share" = "Jaga";
-"room_event_action_permalink" = "Püsiviide";
+"room_event_action_permalink" = "Kopeeri link sõnumisse";
 "room_event_action_view_source" = "Vaata lähtekoodi";
 "room_event_action_view_decrypted_source" = "Näita dekrüptitud lähtekoodi";
 "room_event_action_report" = "Teata kahtlasest sisust";
@@ -487,7 +487,7 @@
 "settings_add_email_address" = "Lisa e-posti aadress";
 "settings_phone_number" = "Telefon";
 "settings_add_phone_number" = "Lisa telefoninumber";
-"settings_change_password" = "Muuda salasõna";
+"settings_change_password" = "Muuda Matrix'i konto salasõna";
 "settings_fail_to_update_profile" = "Profiili uuendamine ei õnnestunud";
 "settings_global_settings_info" = "Üldised teavituste seadistused leiduvad sinu %@ veebikliendis";
 "settings_pin_rooms_with_missed_notif" = "Klammerda jututoad, kus leidub lugemata teavitusi";
@@ -524,11 +524,11 @@
 "settings_old_password" = "vana salasõna";
 "settings_new_password" = "uus salasõna";
 "settings_confirm_password" = "korda uut salasõna";
-"settings_fail_to_update_password" = "Salasõna uuendamine ei õnnestunud";
-"settings_password_updated" = "Sinu salasõna on muudetud";
+"settings_fail_to_update_password" = "Matrix'i konto salasõna uuendamine ei õnnestunud";
+"settings_password_updated" = "Sinu Matrix'i konto salasõna on muudetud";
 "settings_add_3pid_password_title_email" = "Lisa e-posti aadress";
 "settings_add_3pid_password_title_msidsn" = "Lisa telefoninumber";
-"settings_add_3pid_password_message" = "Jätkamiseks palun sisesta oma salasõna";
+"settings_add_3pid_password_message" = "Jätkamiseks palun sisesta oma Matrix'i konto salasõna";
 "settings_add_3pid_invalid_password_message" = "Vigane kasutajanimi või salasõna";
 "settings_crypto_device_name" = "Sessiooni nimi: ";
 "settings_crypto_device_id" = "\nSessiooni tunnus: ";
@@ -537,7 +537,7 @@
 "settings_crypto_blacklist_unverified_devices" = "Kasuta krüptimist vaid verifitseeritud sessioonides";
 "settings_deactivate_my_account" = "Eemalda minu konto kasutusest";
 "security_settings_crypto_sessions_loading" = "Laadin sessioone…";
-"security_settings_user_password_description" = "Tuvasta oma isik sisestades salasõna";
+"security_settings_user_password_description" = "Tuvasta oma isik sisestades Matrix'i konto salasõna";
 // Manage session
 "manage_session_title" = "Halda sessiooni";
 "manage_session_info" = "SESSIOONI TEAVE";
@@ -766,7 +766,7 @@
 // Security settings
 "security_settings_title" = "Turvalisus";
 "security_settings_crypto_sessions" = "MINU SESSIOONID";
-"security_settings_crypto_sessions_description_2" = "Kui sa ei tunne ära mõnda oma sisselogimissessiooni, siis muuda ära oma salasõna ja tee võtmetest uus turvaline varukoopia.";
+"security_settings_crypto_sessions_description_2" = "Kui sa ei tunne ära mõnda oma sisselogimissessiooni, siis muuda ära oma Matrix'i konto salasõna ja tee võtmetest uus turvaline varukoopia.";
 "security_settings_secure_backup" = "TURVALINE VARUNDUS";
 "security_settings_secure_backup_description" = "Selleks puhuks, kui sa kaotad ligipääsu kõikidele oma sessioonidele, tee varukoopia oma krüptovõtmetest ja kasutajakonto seadistustest. Unikaalse turvavõtmega tagad selle, et sinu varukoopia on kaitstud.";
 "security_settings_secure_backup_setup" = "Võta kasutusele";
@@ -794,7 +794,7 @@
 "key_backup_setup_intro_manual_export_info" = "(Lisaseadistused)";
 "key_backup_setup_intro_manual_export_action" = "Ekspordi võtmed käsitsi";
 "key_backup_setup_passphrase_title" = "Krüpti oma varukoopia turvafraasiga";
-"key_backup_setup_passphrase_info" = "Me salvestame krüptitud varukoopia sinu krüptovõtmetest meie serveris. Tagamaks, et keegi ei saa seda kasutada, krüpti varukoopia paroolifraasiga.\n\n Parima turvalisuse jaoks peaks paroolifraas olema erinev sinu konto salasõnast.";
+"key_backup_setup_passphrase_info" = "Me salvestame krüptitud varukoopia sinu krüptovõtmetest meie serveris. Tagamaks, et keegi ei saa seda kasutada, krüpti varukoopia paroolifraasiga.\n\n Parima turvalisuse jaoks peaks paroolifraas olema erinev sinu Matrix'i konto salasõnast.";
 "key_backup_setup_passphrase_passphrase_title" = "Sisesta";
 "key_backup_setup_passphrase_passphrase_placeholder" = "Sisesta paroolifraas";
 "key_backup_setup_passphrase_passphrase_valid" = "Tore!";
@@ -1057,7 +1057,7 @@
 "secrets_setup_recovery_key_storage_alert_message" = "✓ Trüki välja ja hoia turvalises kohas\n✓ Salvesta ta mälupulgale või välisele kõvakattale\n✓ Kopeeri ta sinu isiklikku salvestusruumi mõnes andmepilves";
 "secrets_setup_recovery_passphrase_title" = "Määra turvafraas";
 "secrets_setup_recovery_passphrase_information" = "Andmete kaitsmiseks sinu koduserveris sisesta turvafraas, mida vaid sina tead.";
-"secrets_setup_recovery_passphrase_additional_information" = "Palun ära kasuta selleks oma tavalist konto salasõna.";
+"secrets_setup_recovery_passphrase_additional_information" = "Palun ära kasuta selleks oma Matrix'i konto salasõna.";
 "secrets_setup_recovery_passphrase_validate_action" = "Valmis";
 "secrets_setup_recovery_passphrase_confirm_information" = "Kinnituseks sisesta turvafraas uuesti.";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Kinnita";
@@ -1181,7 +1181,7 @@
 "room_details_advanced_e2e_encryption_enabled_for_dm" = "Krüptimine on selles jututoas kasutusel";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "Krüptimine ei ole selles jututoas kasutusel.";
 "pin_protection_kick_user_alert_message" = "Liiga palju vigu PIN-koodi sisestamisel ning sa oled nüüd välja logitud";
-"secrets_reset_authentication_message" = "Kinnitamaks seda muudatust, sisesta oma konto salasõna";
+"secrets_reset_authentication_message" = "Kinnitamaks seda muudatust, sisesta oma Matrix'i konto salasõna";
 "secrets_reset_reset_action" = "Taasta algolek";
 "secrets_reset_warning_message" = "Siis alustad nii, et kadunud on ajalugu, sõnumid ning usaldatud seadmed ja kasutajad.";
 "secrets_reset_warning_title" = "Kui sa alustad kõigega algusest";
@@ -1563,3 +1563,35 @@
 "poll_edit_form_update_failure_subtitle" = "Palun proovi uuesti";
 "poll_edit_form_update_failure_title" = "Küsitluse muutmine ei õnnestunud";
 "poll_edit_form_poll_type" = "Küsitluse tüüp";
+"location_sharing_post_failure_subtitle" = "%@ ei saanud sinu asukohta edastada. Palun proovi hiljem uuesti.";
+"location_sharing_post_failure_title" = "Sinu asukoha saatmine ei õnnestunud";
+"home_context_menu_leave" = "Lahku";
+"home_context_menu_normal_priority" = "Tavalise tähtsusega";
+"home_context_menu_low_priority" = "Vähetähtis";
+"home_context_menu_unfavourite" = "Eemalda lemmikute hulgast";
+"home_context_menu_favourite" = "Lemmik";
+"home_context_menu_unmute" = "Eemalda summutamine";
+"home_context_menu_mute" = "Summuta";
+"home_context_menu_notifications" = "Teavitused";
+"home_context_menu_make_dm" = "Tõsta otsevestluste alla";
+"home_context_menu_make_room" = "Tõsta jututubade alla";
+"event_formatter_message_deleted" = "Sõnum on kustutatud";
+"settings_labs_enable_threads" = "Sõnumid jutulõngana";
+"message_from_a_thread" = "Jutulõngast";
+"threads_empty_show_all_threads" = "Näita kõiki jutulõngasid";
+"threads_empty_tip" = "Soovitus: uue jutulõnga alustamiseks klõpsi sõnumit ja vali „Jutulõng“.";
+"threads_empty_info_my" = "Vasta olemasolevasse jutulõnga või uue jutulõnga alustamiseks klõpsi sõnumit ja vali „Jutulõng“.";
+"threads_empty_info_all" = "Jutulõngad aitavad hoida vestlused teemakohastena ning mugavalt loetavatena.";
+"threads_empty_title" = "Halda vestlusi jutulõngadena";
+"threads_action_my_threads" = "Minu jutulõngad";
+"threads_action_all_threads" = "Kõik jutulõngad";
+"threads_title" = "Jutulõngad";
+"thread_copy_link_to_thread" = "Kopeeri jutulõnga link";
+
+// MARK: Threads
+"room_thread_title" = "Jutulõng";
+"room_accessibility_thread_more" = "Veel";
+"room_accessibility_threads" = "Jutulõngad";
+"room_event_copy_link_info" = "Link on kopeeritud lõikelauale.";
+"room_event_action_reply_in_thread" = "Jutulõng";
+"room_event_action_view_in_room" = "Vaata jututoas";

@@ -51,10 +51,10 @@ public class DiscussionsCount: NSObject {
         super.init()
     }
     
-    public init(withRoomListDataCounts counts: MXRoomListDataCounts) {
-        self.numberOfNotified = counts.numberOfNotifiedRooms
-        self.numberOfHighlighted = counts.numberOfHighlightedRooms + counts.numberOfInvitedRooms
-        self.numberOfUnsent = counts.numberOfUnsentRooms
+    public init(withRoomListDataCounts counts: [MXRoomListDataCounts]) {
+        self.numberOfNotified = counts.reduce(0, { $0 + $1.numberOfNotifiedRooms })
+        self.numberOfHighlighted = counts.reduce(0, { $0 + $1.numberOfHighlightedRooms + $1.numberOfInvitedRooms })
+        self.numberOfUnsent = counts.reduce(0, { $0 + $1.numberOfUnsentRooms })
         super.init()
     }
 }
