@@ -209,7 +209,7 @@
 "room_event_action_view_decrypted_source" = "Visa avkrypterad källa";
 "room_event_action_report" = "Rapportera innehåll";
 "room_event_action_report_prompt_reason" = "Anledning för att rapportera det här innehållet";
-"room_event_action_kick_prompt_reason" = "Skäl till att kicka den här användaren";
+"room_event_action_kick_prompt_reason" = "Skäl till att ta bort den här användaren";
 "room_event_action_ban_prompt_reason" = "Skäl till att banna den här användaren";
 "room_event_action_report_prompt_ignore_user" = "Vill du dölja alla meddelanden från den här användaren?";
 "room_event_action_save" = "Spara";
@@ -1598,3 +1598,8 @@
 "onboarding_use_case_personal_messaging" = "Vänner och familj";
 "onboarding_use_case_message" = "Vi kommer hjälpa dig att få kontakt.";
 "onboarding_use_case_title" = "Vem vill du chatta med mest?";
+"onboarding_use_case_existing_server_message" = "Vill du gå med i en existerande server?";
+"onboarding_use_case_existing_server_button" = "Anslut till server";
+"search_filter_placeholder" = "Filter";
+"location_sharing_open_open_street_maps" = "Öppna i OpenStreetMap";
+"onboarding_use_case_skip_button" = "hoppa över den här frågan";
