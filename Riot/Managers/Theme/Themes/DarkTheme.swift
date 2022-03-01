@@ -117,13 +117,12 @@ class DarkTheme: NSObject, Theme {
         applyStyle(onNavigationBar: navigationBar, withModernScrollEdgesAppearance: false)
     }
     
-    // Note: We are not using UINavigationBarAppearance on iOS 13/14 because of UINavigationBar directly including UISearchBar on their titleView that cause crop issues with UINavigationController pop.
     func applyStyle(onNavigationBar navigationBar: UINavigationBar,
                     withModernScrollEdgesAppearance modernScrollEdgesAppearance: Bool) {
         navigationBar.tintColor = tintColor
         
         // On iOS 15 use UINavigationBarAppearance to fix visual issues with the scrollEdgeAppearance style.
-        if #available(iOS 15.0, *) {
+        if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
             
             appearance.configureWithOpaqueBackground()
