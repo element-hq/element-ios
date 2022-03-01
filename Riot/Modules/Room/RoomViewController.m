@@ -4321,6 +4321,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 - (void)roomDataSource:(RoomDataSource *)roomDataSource didTapThread:(id<MXThreadProtocol>)thread
 {
     [self openThreadWithId:thread.id];
+
+    [Analytics.shared trackInteraction:AnalyticsUIElementRoomThreadSummaryItem];
 }
 
 #pragma mark - Segues
@@ -4646,6 +4648,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                                                                     threadId:nil];
     self.threadsBridgePresenter.delegate = self;
     [self.threadsBridgePresenter pushFrom:self.navigationController animated:YES];
+
+    [Analytics.shared trackInteraction:AnalyticsUIElementRoomThreadListButton];
 }
 
 - (IBAction)onIntegrationsPressed:(id)sender
