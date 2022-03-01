@@ -1660,10 +1660,13 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:string];
 
     NSRange wholeString = NSMakeRange(0, str.length);
+    UIFont *fontForWholeString = [self fontForEvent:event string:string];
 
     // Apply color and font corresponding to the event state
     [str addAttribute:NSForegroundColorAttributeName value:[self textColorForEvent:event] range:wholeString];
-    [str addAttribute:NSFontAttributeName value:[self fontForEvent:event] range:wholeString];
+    [str addAttribute:NSFontAttributeName
+                value:fontForWholeString
+                range:wholeString];
 
     // If enabled, make links clickable
     if (!([[_settings httpLinkScheme] isEqualToString: @"http"] &&
@@ -1695,8 +1698,26 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
         }
     }
 
-    // Apply additional treatments
-    return [self postRenderAttributedString:str];
+    UIFont *fontForBody = [self fontForEvent:event string:nil];
+    if ([fontForWholeString isEqual:fontForBody])
+    {
+        //  body font is the same with the whole string font, no need to change body font
+        //  apply additional treatments
+        return [self postRenderAttributedString:str];
+    }
+
+    NSRange bodyRange = [str.string rangeOfString:event.content[kMXMessageBodyKey]];
+    if (bodyRange.location == NSNotFound)
+    {
+        //  body not found in the whole string
+        //  apply additional treatments
+        return [self postRenderAttributedString:str];
+    }
+
+    NSMutableAttributedString *mutableStr = [str mutableCopy];
+    [mutableStr addAttribute:NSFontAttributeName value:fontForBody range:bodyRange];
+    //  apply additional treatments
+    return [self postRenderAttributedString:mutableStr];
 }
 
 - (NSAttributedString*)renderHTMLString:(NSString*)htmlString forEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState
@@ -1710,20 +1731,20 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     }
 
     // Apply the css style that corresponds to the event state
-    UIFont *font = [self fontForEvent:event];
+    UIFont *fontForWholeString = [self fontForEvent:event string:htmlString];
     
     // Do some sanitisation before finalizing the string
     MXWeakify(self);
     DTHTMLAttributedStringBuilderWillFlushCallback sanitizeCallback = ^(DTHTMLElement *element) {
         MXStrongifyAndReturnIfNil(self);
-        [element sanitizeWith:self.allowedHTMLTags bodyFont:font imageHandler:self.htmlImageHandler];
+        [element sanitizeWith:self.allowedHTMLTags bodyFont:fontForWholeString imageHandler:self.htmlImageHandler];
     };
 
     NSDictionary *options = @{
                               DTUseiOS6Attributes: @(YES),              // Enable it to be able to display the attributed string in a UITextView
-                              DTDefaultFontFamily: font.familyName,
-                              DTDefaultFontName: font.fontName,
-                              DTDefaultFontSize: @(font.pointSize),
+                              DTDefaultFontFamily: fontForWholeString.familyName,
+                              DTDefaultFontName: fontForWholeString.fontName,
+                              DTDefaultFontSize: @(fontForWholeString.pointSize),
                               DTDefaultTextColor: [self textColorForEvent:event],
                               DTDefaultLinkDecoration: @(NO),
                               DTDefaultStyleSheet: dtCSS,
@@ -1748,7 +1769,23 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     // Finalize HTML blockquote blocks marking
     str = [MXKTools removeMarkedBlockquotesArtifacts:str];
 
-    return str;
+    UIFont *fontForBody = [self fontForEvent:event string:nil];
+    if ([fontForWholeString isEqual:fontForBody])
+    {
+        //  body font is the same with the whole string font, no need to change body font
+        return str;
+    }
+
+    NSRange bodyRange = [str.string rangeOfString:event.content[kMXMessageBodyKey]];
+    if (bodyRange.location == NSNotFound)
+    {
+        //  body not found in the whole string
+        return str;
+    }
+
+    NSMutableAttributedString *mutableStr = [str mutableCopy];
+    [mutableStr addAttribute:NSFontAttributeName value:fontForBody range:bodyRange];
+    return mutableStr;
 }
 
 /**
@@ -2080,9 +2117,10 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
  Get the text font to use according to the event state.
 
  @param event the event.
+ @param string the string to be rendered for the event. It may be different from event.content.body. Pass nil to get font just according to event.content.body.
  @return the text font.
  */
-- (UIFont*)fontForEvent:(MXEvent*)event
+- (UIFont*)fontForEvent:(MXEvent*)event string:(NSString*)string
 {
     // Select text font
     UIFont *font = _defaultTextFont;
@@ -2102,7 +2140,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     {
         font = _encryptedMessagesTextFont;
     }
-    else if (!_isForSubtitle && event.eventType == MXEventTypeRoomMessage && (_emojiOnlyTextFont || _singleEmojiTextFont))
+    else if (!_isForSubtitle && !string && event.eventType == MXEventTypeRoomMessage && (_emojiOnlyTextFont || _singleEmojiTextFont))
     {
         NSString *message;
         MXJSONModelSetString(message, event.content[kMXMessageBodyKey]);
