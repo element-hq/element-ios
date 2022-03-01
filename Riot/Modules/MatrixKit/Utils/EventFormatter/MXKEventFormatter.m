@@ -2080,9 +2080,10 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
  Get the text font to use according to the event state.
 
  @param event the event.
+ @param string the string for the event. It may be different from event.content.body. Pass nil to get font just according to event.content.body.
  @return the text font.
  */
-- (UIFont*)fontForEvent:(MXEvent*)event
+- (UIFont*)fontForEvent:(MXEvent*)event string:(NSString*)string
 {
     // Select text font
     UIFont *font = _defaultTextFont;
@@ -2102,7 +2103,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     {
         font = _encryptedMessagesTextFont;
     }
-    else if (!_isForSubtitle && event.eventType == MXEventTypeRoomMessage && (_emojiOnlyTextFont || _singleEmojiTextFont))
+    else if (!_isForSubtitle && !string && event.eventType == MXEventTypeRoomMessage && (_emojiOnlyTextFont || _singleEmojiTextFont))
     {
         NSString *message;
         MXJSONModelSetString(message, event.content[kMXMessageBodyKey]);
