@@ -16,14 +16,10 @@
 
 import Foundation
 
-class LocationIncomingBubbleCell: LocationPlainCell, BubbleIncomingRoomCellProtocol {
-            
+class VoiceMessageWithPaginationTitlePlainCell: VoiceMessagePlainCell {
     override func setupViews() {
         super.setupViews()
         
-        roomCellContentView?.innerContentViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left
-        roomCellContentView?.innerContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
-        
-        self.setupBubbleDecorations()
+        roomCellContentView?.showPaginationTitle = true
     }
 }

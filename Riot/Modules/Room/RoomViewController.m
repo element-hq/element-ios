@@ -3260,14 +3260,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 [self showReactionHistoryForEventId:tappedEventId animated:YES];
             }
         }
-        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusBubbleCell.callBackAction])
+        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.callBackAction])
         {
             MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
             MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
             
             [self placeCallWithVideo2:eventContent.isVideoCall];
         }
-        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusBubbleCell.declineAction])
+        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.declineAction])
         {
             MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
             MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
@@ -3275,7 +3275,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             MXCall *call = [self.mainSession.callManager callWithCallId:eventContent.callId];
             [call hangup];
         }
-        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusBubbleCell.answerAction])
+        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.answerAction])
         {
             MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
             MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
@@ -3283,7 +3283,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             MXCall *call = [self.mainSession.callManager callWithCallId:eventContent.callId];
             [call answer];
         }
-        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusBubbleCell.endCallAction])
+        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.endCallAction])
         {
             MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
             MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
@@ -3291,8 +3291,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             MXCall *call = [self.mainSession.callManager callWithCallId:eventContent.callId];
             [call hangup];
         }
-        else if ([actionIdentifier isEqualToString:RoomGroupCallStatusBubbleCell.joinAction] ||
-                 [actionIdentifier isEqualToString:RoomGroupCallStatusBubbleCell.answerAction])
+        else if ([actionIdentifier isEqualToString:RoomGroupCallStatusCell.joinAction] ||
+                 [actionIdentifier isEqualToString:RoomGroupCallStatusCell.answerAction])
         {
             MXWeakify(self);
 
@@ -3323,12 +3323,12 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                                  inMatrixSession:customizedRoomDataSource.mxSession];
             [[JitsiService shared] resetDeclineForWidgetWithId:widget.widgetId];
         }
-        else if ([actionIdentifier isEqualToString:RoomGroupCallStatusBubbleCell.leaveAction])
+        else if ([actionIdentifier isEqualToString:RoomGroupCallStatusCell.leaveAction])
         {
             [self endActiveJitsiCall];
             [self reloadBubblesTable:YES];
         }
-        else if ([actionIdentifier isEqualToString:RoomGroupCallStatusBubbleCell.declineAction])
+        else if ([actionIdentifier isEqualToString:RoomGroupCallStatusCell.declineAction])
         {
             MXEvent *widgetEvent = userInfo[kMXKRoomBubbleCellEventKey];
             Widget *widget = [[Widget alloc] initWithWidgetEvent:widgetEvent

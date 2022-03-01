@@ -16,14 +16,12 @@
 
 import Foundation
 
-class LocationIncomingBubbleCell: LocationPlainCell, BubbleIncomingRoomCellProtocol {
-            
+class PollWithoutSenderInfoPlainCell: PollPlainCell {
+    
     override func setupViews() {
         super.setupViews()
         
-        roomCellContentView?.innerContentViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left
-        roomCellContentView?.innerContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
-        
-        self.setupBubbleDecorations()
+        roomCellContentView?.showSenderInfo = false
     }
+    
 }

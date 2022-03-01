@@ -67,7 +67,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
             } else {
                 super.addTimestampLabel(toCell: cell, cellData: cellData)
             }
-        } else if let voiceMessageCell = cell as? VoiceMessageBubbleCell, let playbackView = voiceMessageCell.playbackController?.playbackView {
+        } else if let voiceMessageCell = cell as? VoiceMessagePlainCell, let playbackView = voiceMessageCell.playbackController?.playbackView {
             
             // Add timestamp on cell inherting from VoiceMessageBubbleCell
             
@@ -90,7 +90,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
         }
     }
     
-    override func addReactionView(_ reactionsView: BubbleReactionsView,
+    override func addReactionView(_ reactionsView: RoomReactionsView,
                                   toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData, contentViewPositionY: CGFloat, upperDecorationView: UIView?) {
         
         if let reactionsDisplayable = cell as? RoomCellReactionsDisplayable {
