@@ -1772,23 +1772,21 @@
 
 #pragma mark - activity indicator
 
-- (void)stopActivityIndicator
-{
+- (BOOL)canStopActivityIndicator {
     // Keep the loading wheel displayed while we are joining the room
     if (joinRoomRequest)
     {
-        return;
+        return NO;
     }
     
     // Check internal processes before stopping the loading wheel
     if (isPaginationInProgress || isInputToolbarProcessing)
     {
         // Keep activity indicator running
-        return;
+        return NO;
     }
     
-    // Leave super decide
-    [super stopActivityIndicator];
+    return [super canStopActivityIndicator];
 }
 
 #pragma mark - Pagination

@@ -21,6 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MXKActivityHandlingViewController : UIViewController<MXKViewControllerActivityHandling>
 
+/// A subclass can override this method to block `stopActivityIndicator` if there are still activities in progress
+- (BOOL)canStopActivityIndicator;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -297,19 +297,7 @@ fileprivate class AppNavigator: AppNavigatorProtocol {
         
         return SideMenuPresenter(sideMenuCoordinator: sideMenuCoordinator)
     }()
-    
-    private var appNavigationVC: UINavigationController {
-        guard
-            let splitVC = appCoordinator.splitViewCoordinator?.toPresentable() as? UISplitViewController,
-            // Picking out the first view controller currently works only on iPhones, not iPads
-            let navigationVC = splitVC.viewControllers.first as? UINavigationController
-        else {
-            MXLog.error("[AppNavigator] Missing root split view controller")
-            return UINavigationController()
-        }
-        return navigationVC
-    }
-    
+
     // MARK: - Setup
     
     init(appCoordinator: AppCoordinator) {
@@ -321,41 +309,4 @@ fileprivate class AppNavigator: AppNavigatorProtocol {
     func navigate(to destination: AppNavigatorDestination) {
         self.appCoordinator.navigate(to: destination)
     }
-    
-    func addUserIndicator(_ type: AppUserIndicatorType) -> UserIndicator {
-        let request = userIndicatorRequest(for: type)
-        return UserIndicatorQueue.shared.add(request)
-    }
-    
-    // MARK: - Private
-    
-    private func userIndicatorRequest(for type: AppUserIndicatorType) -> UserIndicatorRequest {
-        switch type {
-        case let .loading(label):
-            let presenter = ToastUserIndicatorPresenter(
-                viewState: .init(
-                    style: .loading,
-                    label: label
-                ),
-                navigationController: appNavigationVC
-            )
-            return UserIndicatorRequest(
-                presenter: presenter,
-                dismissal: .manual
-            )
-        case let .success(label):
-            let presenter = ToastUserIndicatorPresenter(
-                viewState: .init(
-                    style: .success,
-                    label: label
-                ),
-                navigationController: appNavigationVC
-            )
-            return UserIndicatorRequest(
-                presenter: presenter,
-                dismissal: .timeout(1.5)
-            )
-        }
-    }
 }
-

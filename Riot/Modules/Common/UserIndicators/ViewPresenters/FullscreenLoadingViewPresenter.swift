@@ -18,16 +18,17 @@ import Foundation
 import CommonKit
 import UIKit
 
-/// A `UserIndicatorPresentable` responsible for showing / hiding a full-screen loading view that obscures (and thus disables) all other controls.
+/// A presenter responsible for showing / hiding a full-screen loading view that obscures (and thus disables) all other controls.
 /// It is managed by a `UserIndicator`, meaning the `present` and `dismiss` methods will be called when the parent `UserIndicator` starts or completes.
-class FullscreenLoadingIndicatorPresenter: UserIndicatorPresentable {
+class FullscreenLoadingViewPresenter: UserIndicatorViewPresentable {
     private let label: String
     private weak var viewController: UIViewController?
     private weak var view: UIView?
+    private var animator: UIViewPropertyAnimator?
     
-    init(label: String, viewController: UIViewController) {
+    init(label: String, presentingViewController: UIViewController) {
         self.label = label
-        self.viewController = viewController
+        self.viewController = presentingViewController
     }
 
     func present() {
@@ -54,9 +55,10 @@ class FullscreenLoadingIndicatorPresenter: UserIndicatorPresentable {
         ])
         
         view.alpha = 0
-        UIView.animate(withDuration: 0.2) {
+        animator = UIViewPropertyAnimator(duration: 0.2, curve: .easeOut) {
             view.alpha = 1
         }
+        animator?.startAnimation()
     }
     
     func dismiss() {
@@ -64,16 +66,13 @@ class FullscreenLoadingIndicatorPresenter: UserIndicatorPresentable {
             return
         }
         
-        // If `present` and `dismiss` are called right after each other without delay,
-        // the view does not correctly pick up `currentState` of alpha. Dispatching onto
-        // the main queue skips a few run loops, giving the system time to render
-        // current state.
-        DispatchQueue.main.async {
-            UIView.animate(withDuration: 0.2, delay: 0, options: .beginFromCurrentState) {
-                view.alpha = 0
-            } completion: { _ in
-                view.removeFromSuperview()
-            }
+        animator?.stopAnimation(true)
+        animator = UIViewPropertyAnimator(duration: 0.2, curve: .easeIn) {
+            view.alpha = 0
         }
+        animator?.addCompletion { _ in
+            view.removeFromSuperview()
+        }
+        animator?.startAnimation()
     }
 }

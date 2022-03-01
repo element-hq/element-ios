@@ -18,6 +18,9 @@ import UIKit
 
 protocol SplitViewMasterPresentableDelegate: AnyObject {
     
+    /// Navigation router for the split view detail
+    var detailNavigationRouter: NavigationRouterType? { get }
+    
     /// Detail items from the split view
     var detailModules: [Presentable] { get }
     

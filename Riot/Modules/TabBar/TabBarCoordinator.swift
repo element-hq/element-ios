@@ -28,6 +28,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     private let parameters: TabBarCoordinatorParameters
     private let activityIndicatorPresenter: ActivityIndicatorPresenterType
+    private let indicatorPresenter: UserIndicatorTypePresenterProtocol
     
     // Indicate if the Coordinator has started once
     private var hasStartedOnce: Bool {
@@ -74,6 +75,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.navigationRouter = NavigationRouter(navigationController: masterNavigationController)
         self.masterNavigationController = masterNavigationController
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
+        self.indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: masterNavigationController)
     }
     
     // MARK: - Public methods
@@ -231,7 +233,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         homeViewController.accessibilityLabel = VectorL10n.titleHome
         
         if BuildSettings.useAppUserIndicators {
-            homeViewController.userIndicatorPresenter = AppUserIndicatorPresenter(appNavigator: parameters.appNavigator)
+            homeViewController.indicatorPresenter = UserIndicatorPresenterWrapper(presenter: indicatorPresenter)
         }
         
         let wrapperViewController = HomeViewControllerWithBannerWrapperViewController(viewController: homeViewController)        
@@ -412,7 +414,14 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             } else {
                 displayConfig = .default
             }
+            
+            var indicatorPresenter: UserIndicatorTypePresenterProtocol?
+            if BuildSettings.useAppUserIndicators, let detailNavigation = splitViewMasterPresentableDelegate?.detailNavigationRouter?.toPresentable() {
+                indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: detailNavigation)
+            }
+            
             let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
+                                                                      userIndicatorPresenter: indicatorPresenter,
                                                                       session: roomNavigationParameters.mxSession,
                                                                       roomId: roomNavigationParameters.roomId,
                                                                       eventId: roomNavigationParameters.eventId,
@@ -682,8 +691,8 @@ extension TabBarCoordinator: RoomCoordinatorDelegate {
         // For the moment when a room is left, reset the split detail with placeholder
         self.resetSplitViewDetails()
         if BuildSettings.useAppUserIndicators {
-            parameters.appNavigator
-                .addUserIndicator(.success(VectorL10n.roomParticipantsLeaveSuccess))
+            indicatorPresenter
+                .present(.success(label: VectorL10n.roomParticipantsLeaveSuccess))
                 .store(in: &indicators)
         }
     }
