@@ -67,7 +67,6 @@
     if (recentsDataSource)
     {
         // Take the lead on the shared data source.
-        recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeFavourites];
     }
 }
