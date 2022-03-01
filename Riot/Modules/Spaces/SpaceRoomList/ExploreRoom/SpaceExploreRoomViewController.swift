@@ -150,7 +150,7 @@ final class SpaceExploreRoomViewController: UIViewController {
     private func setupJoinButton(canJoin: Bool) {
         if canJoin {
             let joinButtonItem = MXKBarButtonItem(title: VectorL10n.join, style: .done) { [weak self] in
-                self?.viewModel.process(viewAction: .join)
+                self?.viewModel.process(viewAction: .joinOpenedSpace)
             }
             
             self.navigationItem.rightBarButtonItem = joinButtonItem
@@ -270,6 +270,16 @@ extension SpaceExploreRoomViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if self.hasMore && indexPath.row >= self.itemDataList.count {
             self.viewModel.process(viewAction: .loadData)
+        }
+    }
+    
+    @available(iOS 13.0, *)
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let viewData = self.itemDataList[indexPath.row]
+        return UIContextMenuConfiguration(identifier: nil) {
+            return SpaceRoomPreviewViewController.instantiate(with: viewData.childInfo, avatarViewData: viewData.avatarViewData)
+        } actionProvider: { suggestedActions in
+            return self.viewModel.contextMenu(for: self.itemDataList[indexPath.row])
         }
     }
 }

@@ -174,6 +174,18 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
         }
     }
     
+    private func pushInviteScreen(forRoomWithId roomId: String) {
+        guard let room = session.room(withRoomId: roomId) else {
+            MXLog.error("[ExploreRoomCoordinator] pushInviteScreen: room not found.")
+            return
+        }
+        
+        let coordinator = ContactsPickerCoordinator(session: session, room: room, initialSearchText: nil, actualParticipants: nil, invitedParticipants: nil, userParticipant: nil, navigationRouter: navigationRouter)
+        coordinator.delegate = self
+        coordinator.start()
+        childCoordinators.append(coordinator)
+    }
+
     private func startEditPollCoordinator(room: MXRoom, startEvent: MXEvent? = nil) {
         guard #available(iOS 14.0, *) else {
             return
@@ -214,6 +226,14 @@ extension ExploreRoomCoordinator: SpaceExploreRoomCoordinatorDelegate {
     
     func spaceExploreRoomCoordinatorDidAddRoom(_ coordinator: SpaceExploreRoomCoordinatorType) {
         self.presentRoomCreation()
+    }
+    
+    func spaceExploreRoomCoordinator(_ coordinator: SpaceExploreRoomCoordinatorType, openSettingsOf item: SpaceExploreRoomListItemViewData) {
+        self.navigateTo(roomWith: item.childInfo.childRoomId, showSettingsInitially: true, animated: true)
+    }
+    
+    func spaceExploreRoomCoordinator(_ coordinator: SpaceExploreRoomCoordinatorType, inviteTo item: SpaceExploreRoomListItemViewData) {
+        self.pushInviteScreen(forRoomWithId: item.childInfo.childRoomId)
     }
 }
 
@@ -283,6 +303,7 @@ extension ExploreRoomCoordinator: UIAdaptivePresentationControllerDelegate {
     
 }
 
+// MARK: - RoomViewControllerDelegate
 extension ExploreRoomCoordinator: RoomViewControllerDelegate {
     func roomViewControllerShowRoomDetails(_ roomViewController: RoomViewController) {
         // TODO:
@@ -369,6 +390,20 @@ extension ExploreRoomCoordinator: RoomViewControllerDelegate {
         }
         
         return TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.canEndPoll() ?? false
+    }
+    
+}
+
+// MARK: - ContactsPickerCoordinatorDelegate
+extension ExploreRoomCoordinator: ContactsPickerCoordinatorDelegate {
+    func contactsPickerCoordinatorDidStartLoading(_ coordinator: ContactsPickerCoordinatorProtocol) {
+    }
+    
+    func contactsPickerCoordinatorDidEndLoading(_ coordinator: ContactsPickerCoordinatorProtocol) {
+    }
+    
+    func contactsPickerCoordinatorDidClose(_ coordinator: ContactsPickerCoordinatorProtocol) {
+        childCoordinators.removeLast()
     }
     
 }

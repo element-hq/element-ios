@@ -24,7 +24,12 @@ enum SpaceExploreRoomViewAction {
     case loadData
     case complete(_ selectedItem: SpaceExploreRoomListItemViewData, _ sourceView: UIView?)
     case searchChanged(_ text: String?)
-    case join
+    case joinOpenedSpace
     case cancel
     case addRoom
+    case inviteTo(_ item: SpaceExploreRoomListItemViewData)
+    case revertSuggestion(_ item: SpaceExploreRoomListItemViewData)
+    case settings(_ item: SpaceExploreRoomListItemViewData)
+    case removeChild(_ item: SpaceExploreRoomListItemViewData)
+    case join(_ item: SpaceExploreRoomListItemViewData)
 }
