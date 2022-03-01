@@ -231,10 +231,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         homeViewController.tabBarItem.tag = Int(TABBAR_HOME_INDEX)
         homeViewController.tabBarItem.image = homeViewController.tabBarItem.image
         homeViewController.accessibilityLabel = VectorL10n.titleHome
-        
-        if BuildSettings.useAppUserIndicators {
-            homeViewController.indicatorPresenter = UserIndicatorPresenterWrapper(presenter: indicatorPresenter)
-        }
+        homeViewController.indicatorPresenter = UserIndicatorPresenterWrapper(presenter: indicatorPresenter)
         
         let wrapperViewController = HomeViewControllerWithBannerWrapperViewController(viewController: homeViewController)        
         return wrapperViewController
@@ -416,7 +413,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             }
             
             var indicatorPresenter: UserIndicatorTypePresenterProtocol?
-            if BuildSettings.useAppUserIndicators, let detailNavigation = splitViewMasterPresentableDelegate?.detailNavigationRouter?.toPresentable() {
+            if let detailNavigation = splitViewMasterPresentableDelegate?.detailNavigationRouter?.toPresentable() {
                 indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: detailNavigation)
             }
             
@@ -690,11 +687,9 @@ extension TabBarCoordinator: RoomCoordinatorDelegate {
     func roomCoordinatorDidLeaveRoom(_ coordinator: RoomCoordinatorProtocol) {
         // For the moment when a room is left, reset the split detail with placeholder
         self.resetSplitViewDetails()
-        if BuildSettings.useAppUserIndicators {
-            indicatorPresenter
-                .present(.success(label: VectorL10n.roomParticipantsLeaveSuccess))
-                .store(in: &indicators)
-        }
+        indicatorPresenter
+            .present(.success(label: VectorL10n.roomParticipantsLeaveSuccess))
+            .store(in: &indicators)
     }
     
     func roomCoordinatorDidCancelRoomPreview(_ coordinator: RoomCoordinatorProtocol) {

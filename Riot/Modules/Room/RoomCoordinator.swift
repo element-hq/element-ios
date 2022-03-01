@@ -317,7 +317,9 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     
     private func startLoading() {
         if let presenter = parameters.userIndicatorPresenter {
-            loadingIndicator = presenter.present(.loading(label: VectorL10n.homeSyncing, isInteractionBlocking: false))
+            if loadingIndicator == nil {
+                loadingIndicator = presenter.present(.loading(label: VectorL10n.homeSyncing, isInteractionBlocking: false))
+            }
         } else {
             activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: true)
         }
@@ -438,7 +440,7 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     }
     
     func roomViewControllerCanDelegateUserIndicators(_ roomViewController: RoomViewController) -> Bool {
-        return BuildSettings.useAppUserIndicators
+        return parameters.userIndicatorPresenter != nil
     }
     
     func roomViewControllerDidStartLoading(_ roomViewController: RoomViewController) {
