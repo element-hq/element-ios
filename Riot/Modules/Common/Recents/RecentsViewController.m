@@ -1059,10 +1059,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
     }
     
-    if (changes == nil)
-    {
-        [self showEmptyViewIfNeeded];
-    }
+    [self showEmptyViewIfNeeded];
     
     if (dataSource.state == MXKDataSourceStateReady)
     {
