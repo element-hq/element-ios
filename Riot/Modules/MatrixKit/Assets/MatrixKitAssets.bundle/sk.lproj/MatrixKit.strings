@@ -556,3 +556,4 @@
 "notification_settings_per_room_notifications" = "Oznámenia na miestnosti";
 "notification_settings_per_word_notifications" = "Oznámenia na slovo";
 "notification_settings_word_to_match" = "slovo vyhovujúce zhode";
+"notice_event_redacted_by_you" = " vami";
