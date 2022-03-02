@@ -277,7 +277,7 @@
 "notice_room_join" = "%@ si è unito al canale";
 "notice_room_leave" = "%@ ha lasciato il canale";
 "notice_room_reject" = "%@ ha rifiutato l'invito";
-"notice_room_kick" = "%@ ha espulso %@";
+"notice_room_kick" = "%@ ha rimosso %@";
 "notice_room_unban" = "%@ ha revocato il divieto di accesso a %@";
 "notice_room_ban" = "%@ ha vietato l'accesso a %@";
 "notice_room_withdraw" = "%@ ha ritirato l'invito di %@";
@@ -318,7 +318,7 @@
 "num_members_one" = "%@ utente";
 "num_members_other" = "%@ utenti";
 "invite" = "Invita";
-"kick" = "Espelli";
+"kick" = "Rimuovi dalla chat";
 "ban" = "Vieta accesso";
 "unban" = "Consenti accesso";
 "message_unsaved_changes" = "Ci sono modifiche non salvate. Uscendo saranno perse.";
@@ -390,7 +390,7 @@
 "notice_room_join_by_you" = "Sei entrato";
 "notice_room_leave_by_you" = "Sei uscito";
 "notice_room_reject_by_you" = "Hai rifiutato l'invito";
-"notice_room_kick_by_you" = "Hai buttato fuori %@";
+"notice_room_kick_by_you" = "Hai rimosso %@";
 "notice_room_unban_by_you" = "Hai riammesso %@";
 "notice_room_ban_by_you" = "Hai bandito %@";
 "notice_room_withdraw_by_you" = "Hai ritirato l'invito di %@";

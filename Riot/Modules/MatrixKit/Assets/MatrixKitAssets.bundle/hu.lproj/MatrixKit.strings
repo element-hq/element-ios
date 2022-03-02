@@ -264,7 +264,7 @@
 "notice_room_join" = "%@ csatlakozott";
 "notice_room_leave" = "%@ távozott";
 "notice_room_reject" = "%@ elutasította a meghívást";
-"notice_room_kick" = "%@ kirúgta: %@";
+"notice_room_kick" = "%@ eltávolította: %@";
 "notice_room_unban" = "%@ visszaengedte: %@";
 "notice_room_ban" = "%@ kitiltotta: %@";
 "notice_room_withdraw" = "%@ visszavonta %@ meghívóját";
@@ -303,7 +303,7 @@
 "membership_ban" = "Kitiltva";
 "num_members_one" = "%@ felhasználó";
 "num_members_other" = "%@ felhasználó";
-"kick" = "Elküld";
+"kick" = "Eltávolítás";
 "ban" = "Kitilt";
 "unban" = "Visszaenged";
 "message_unsaved_changes" = "Mentetlen beállítások vannak. Ha kilépsz a beállítások elvesznek.";
@@ -390,7 +390,7 @@
 "notice_room_join_by_you" = "Beléptél";
 "notice_room_leave_by_you" = "Távoztál";
 "notice_room_reject_by_you" = "A meghívót elutasítottad";
-"notice_room_kick_by_you" = "Kirúgtad őt: %@";
+"notice_room_kick_by_you" = "Eltávolítottad őt: %@";
 "notice_room_unban_by_you" = "Visszaengedted őt: %@";
 "notice_room_ban_by_you" = "Kitiltottad őt: %@";
 "notice_room_withdraw_by_you" = "%@ meghívóját visszavontad";

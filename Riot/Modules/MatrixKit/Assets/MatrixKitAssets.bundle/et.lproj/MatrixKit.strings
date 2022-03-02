@@ -84,7 +84,7 @@
 "num_members_one" = "%@ kasutaja";
 "num_members_other" = "%@ kasutajat";
 "invite" = "Kutsu";
-"kick" = "Müksa välja";
+"kick" = "Eemalda kasutaja vestlusest";
 "unban" = "Eemalda suhtluskeeld";
 "login_error_must_start_http" = "Serveri aadressi alguses peab olema http[s]://";
 // room details dialog screen
@@ -277,7 +277,7 @@
 "notice_room_join" = "%@ liitus";
 "notice_room_leave" = "%@ lahkus";
 "notice_room_reject" = "%@ lükkas tagasi kutse";
-"notice_room_kick" = "%@ müksas kasutajat %@";
+"notice_room_kick" = "%@ eemaldas kasutaja %@";
 "notice_room_unban" = "%@ taastas %@ ligipääsu";
 "notice_room_ban" = "%@ keelas %@ ligipääsu";
 "notice_room_withdraw" = "%@ võttis tagasi kutse kasutajale %@";
@@ -304,7 +304,7 @@
 "notice_room_join_by_you" = "Sina liitusid";
 "notice_room_leave_by_you" = "Sina lahkusid";
 "notice_room_reject_by_you" = "Sa lükkasid kutse tagasi";
-"notice_room_kick_by_you" = "Sina müksasid %@ välja";
+"notice_room_kick_by_you" = "Sina eemaldasid kasutaja %@";
 "notice_room_unban_by_you" = "Sina taastasid %@ ligipääsu";
 "notice_room_ban_by_you" = "Sina keelasid %@ ligipääsu";
 "notice_room_withdraw_by_you" = "Sina võtsid tagasi %@ kutse";
