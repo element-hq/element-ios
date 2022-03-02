@@ -166,6 +166,8 @@ class SpaceCreationSettingsViewModel: SpaceCreationSettingsViewModelType, SpaceC
         switch validationStatus {
         case .none(let fullAddress):
             return VectorL10n.spacesCreationAddressDefaultMessage(fullAddress)
+        case .current(let fullAddress):
+            return VectorL10n.spacesCreationAddressDefaultMessage(fullAddress)
         case .valid(let fullAddress):
             return VectorL10n.spacesCreationAddressDefaultMessage(fullAddress)
         case .alreadyExists(let fullAddress):
@@ -177,7 +179,7 @@ class SpaceCreationSettingsViewModel: SpaceCreationSettingsViewModelType, SpaceC
     
     private static func isAddressValid(with validationStatus: SpaceCreationSettingsAddressValidationStatus) -> Bool {
         switch validationStatus {
-        case .none, .valid:
+        case .none, .current, .valid:
             return true
         default:
             return false

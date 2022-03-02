@@ -30,24 +30,6 @@ class SpaceSettingsUITests: MockScreenTest {
 
     func verifySpaceSettingsScreen() throws {
         guard let screenState = screenState as? MockSpaceSettingsScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .presence(let presence):
-            verifySpaceSettingsPresence(presence: presence)
-        case .longDisplayName(let name):
-            verifySpaceSettingsLongName(name: name)
-        }
-    }
-
-    func verifySpaceSettingsPresence(presence: SpaceSettingsPresence) {
-        let presenceText = app.staticTexts["presenceText"]
-        XCTAssert(presenceText.exists)
-        XCTAssertEqual(presenceText.label, presence.title)
-    }
-
-    func verifySpaceSettingsLongName(name: String) {
-        let displayNameText = app.staticTexts["displayNameText"]
-        XCTAssert(displayNameText.exists)
-        XCTAssertEqual(displayNameText.label, name)
     }
 
 }

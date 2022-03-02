@@ -1890,6 +1890,7 @@ Tap the + to start adding people.";
 
 "space_settings_access_section"="Who can access this space?";
 "space_settings_update_failed_message"="Failed to update space settings. Do you want to retry?";
+"space_settings_current_address_message" = "Your space is viewable at\n%@";
 
 // Mark: - Space Creation
 

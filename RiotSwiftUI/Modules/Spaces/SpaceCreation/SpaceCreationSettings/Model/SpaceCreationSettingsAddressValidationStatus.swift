@@ -18,6 +18,7 @@ import Foundation
 
 enum SpaceCreationSettingsAddressValidationStatus {
     case none(_ address: String)
+    case current(_ address: String)
     case valid(_ address: String)
     case alreadyExists(_ address: String)
     case invalidCharacters(_ address: String)

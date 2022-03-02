@@ -27,6 +27,7 @@ class MockSpaceSettingsService: SpaceSettingsServiceProtocol {
     var roomPropertiesSubject: CurrentValueSubject<SpaceSettingsRoomProperties?, Never>
     private(set) var isLoadingSubject: CurrentValueSubject<Bool, Never>
     private(set) var showPostProcessAlert: CurrentValueSubject<Bool, Never>
+    private(set) var addressValidationSubject: CurrentValueSubject<SpaceCreationSettingsAddressValidationStatus, Never>
 
     init(spaceId: String = "!\(UUID().uuidString):matrix.org",
          roomProperties: SpaceSettingsRoomProperties? = nil,
@@ -39,8 +40,17 @@ class MockSpaceSettingsService: SpaceSettingsServiceProtocol {
         self.isLoadingSubject = CurrentValueSubject(isLoading)
         self.showPostProcessAlert = CurrentValueSubject(showPostProcessAlert)
         self.roomPropertiesSubject = CurrentValueSubject(roomProperties)
+        self.addressValidationSubject = CurrentValueSubject(.none(spaceId))
     }
 
     func update(roomName: String, topic: String, address: String, avatar: UIImage?, completion: ((SpaceSettingsServiceCompletionResult) -> Void)?) {
+    }
+    
+    func addressDidChange(_ newValue: String) {
+        
+    }
+    
+    func simulateUpdate(addressValidationStatus: SpaceCreationSettingsAddressValidationStatus) {
+        self.addressValidationSubject.value = addressValidationStatus
     }
 }

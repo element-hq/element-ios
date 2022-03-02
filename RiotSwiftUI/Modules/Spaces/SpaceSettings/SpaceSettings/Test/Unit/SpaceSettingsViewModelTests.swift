@@ -21,37 +21,40 @@ import Combine
 
 @available(iOS 14.0, *)
 class SpaceSettingsViewModelTests: XCTestCase {
-    private enum Constants {
-        static let presenceInitialValue: SpaceSettingsPresence = .offline
-        static let displayName = "Alice"
-    }
+    let creationParameters = SpaceCreationParameters()
     var service: MockSpaceSettingsService!
     var viewModel: SpaceSettingsViewModelProtocol!
     var context: SpaceSettingsViewModelType.Context!
     var cancellables = Set<AnyCancellable>()
+    
     override func setUpWithError() throws {
-        service = MockSpaceSettingsService(displayName: Constants.displayName, presence: Constants.presenceInitialValue)
-        viewModel = SpaceSettingsViewModel.makeSpaceSettingsViewModel(spaceSettingsService: service)
+        let roomProperties = SpaceSettingsRoomProperties(
+            name: "Space Name",
+            topic: "Sapce topic",
+            address: "#fake:matrix.org",
+            avatarUrl: nil,
+            visibility: .public,
+            allowedParentIds: [],
+            isAvatarEditable: true,
+            isNameEditable: true,
+            isTopicEditable: true,
+            isAddressEditable: true,
+            isAccessEditable: true)
+
+        service = MockSpaceSettingsService(roomProperties: roomProperties, displayName: roomProperties.name, isLoading: false, showPostProcessAlert: false)
+        viewModel = SpaceSettingsViewModel.makeSpaceSettingsViewModel(service: service)
         context = viewModel.context
     }
-
-    func testInitialState() {
-        XCTAssertEqual(context.viewState.displayName, Constants.displayName)
-        XCTAssertEqual(context.viewState.presence, Constants.presenceInitialValue)
+    
+    func testAddressAlready() throws {
+        service.simulateUpdate(addressValidationStatus: .alreadyExists("#fake:matrix.org"))
+        XCTAssertEqual(context.viewState.isAddressValid, false)
+        XCTAssertEqual(context.viewState.addressMessage, VectorL10n.spacesCreationAddressAlreadyExists("#fake:matrix.org"))
     }
-
-    func testFirstPresenceReceived() throws {
-        let presencePublisher = context.$viewState.map(\.presence).removeDuplicates().collect(1).first()
-        XCTAssertEqual(try xcAwait(presencePublisher), [Constants.presenceInitialValue])
-    }
-
-    func testPresenceUpdatesReceived() throws {
-        let presencePublisher = context.$viewState.map(\.presence).removeDuplicates().collect(3).first()
-        let awaitDeferred = xcAwaitDeferred(presencePublisher)
-        let newPresenceValue1: SpaceSettingsPresence = .online
-        let newPresenceValue2: SpaceSettingsPresence = .idle
-        service.simulateUpdate(presence: newPresenceValue1)
-        service.simulateUpdate(presence: newPresenceValue2)
-        XCTAssertEqual(try awaitDeferred(), [Constants.presenceInitialValue, newPresenceValue1, newPresenceValue2])
+    
+    func testInvalidAddress() throws {
+        service.simulateUpdate(addressValidationStatus: .invalidCharacters("#fake:matrix.org"))
+        XCTAssertEqual(context.viewState.isAddressValid, false)
+        XCTAssertEqual(context.viewState.addressMessage, VectorL10n.spacesCreationAddressInvalidCharacters("#fake:matrix.org"))
     }
 }

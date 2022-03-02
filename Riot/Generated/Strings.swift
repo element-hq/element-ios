@@ -5547,6 +5547,10 @@ public class VectorL10n: NSObject {
   public static var spaceSettingsAccessSection: String { 
     return VectorL10n.tr("Vector", "space_settings_access_section") 
   }
+  /// Your space is viewable at\n%@
+  public static func spaceSettingsCurrentAddressMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "space_settings_current_address_message", p1)
+  }
   /// Failed to update space settings. Do you want to retry?
   public static var spaceSettingsUpdateFailedMessage: String { 
     return VectorL10n.tr("Vector", "space_settings_update_failed_message") 

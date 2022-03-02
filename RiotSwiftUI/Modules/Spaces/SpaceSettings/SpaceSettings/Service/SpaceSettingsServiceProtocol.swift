@@ -30,8 +30,10 @@ protocol SpaceSettingsServiceProtocol: Avatarable {
     var isLoadingSubject: CurrentValueSubject<Bool, Never> { get }
     var roomPropertiesSubject: CurrentValueSubject<SpaceSettingsRoomProperties?, Never> { get }
     var showPostProcessAlert: CurrentValueSubject<Bool, Never> { get }
+    var addressValidationSubject: CurrentValueSubject<SpaceCreationSettingsAddressValidationStatus, Never> { get }
 
     func update(roomName: String, topic: String, address: String, avatar: UIImage?, completion: ((_ result: SpaceSettingsServiceCompletionResult) -> Void)?)
+    func addressDidChange(_ newValue: String)
 }
 
 // MARK: Avatarable

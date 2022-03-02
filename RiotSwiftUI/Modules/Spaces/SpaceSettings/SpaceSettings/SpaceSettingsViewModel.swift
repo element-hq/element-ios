@@ -19,7 +19,7 @@ import Combine
 
 @available(iOS 14, *)
 typealias SpaceSettingsViewModelType = StateStoreViewModel<SpaceSettingsViewState,
-                                                                 SpaceSettingsStateAction,
+                                                                 Never,
                                                                  SpaceSettingsViewAction>
 @available(iOS 14, *)
 class SpaceSettingsViewModel: SpaceSettingsViewModelType, SpaceSettingsViewModelProtocol {
@@ -47,11 +47,11 @@ class SpaceSettingsViewModel: SpaceSettingsViewModelType, SpaceSettingsViewModel
 
     private init(service: SpaceSettingsServiceProtocol) {
         self.service = service
-        super.init(initialViewState: Self.defaultState(with: service))
+        super.init(initialViewState: Self.defaultState(with: service, validationStatus: service.addressValidationSubject.value))
         setupObservers()
     }
 
-    private static func defaultState(with service: SpaceSettingsServiceProtocol) -> SpaceSettingsViewState {
+    private static func defaultState(with service: SpaceSettingsServiceProtocol, validationStatus: SpaceCreationSettingsAddressValidationStatus) -> SpaceSettingsViewState {
         let bindings = SpaceSettingsViewModelBindings(
             name: service.roomProperties?.name ?? "",
             topic: service.roomProperties?.topic ?? "",
@@ -59,14 +59,14 @@ class SpaceSettingsViewModel: SpaceSettingsViewModelType, SpaceSettingsViewModel
             showPostProcessAlert: service.showPostProcessAlert.value)
         
         return SpaceSettingsViewState(
-            defaultAddress: service.roomProperties?.name?.toValidAliasLocalPart() ?? "",
+            defaultAddress: service.roomProperties?.address ?? "",
             avatar: AvatarInput(mxContentUri: service.mxContentUri, matrixItemId: service.matrixItemId, displayName: service.displayName),
             roomProperties: service.roomProperties,
             userSelectedAvatar: nil,
             showRoomAddress: service.roomProperties?.visibility == .public,
             roomNameError: nil,
-            addressMessage: nil,
-            isAddressValid: true,
+            addressMessage: addressMessage(with: validationStatus),
+            isAddressValid: isAddressValid(with: validationStatus),
             isLoading: service.isLoadingSubject.value,
             visibilityString: visibilityString(with: service.roomProperties?.visibility ?? .private),
             options: options,
@@ -85,18 +85,30 @@ class SpaceSettingsViewModel: SpaceSettingsViewModelType, SpaceSettingsViewModel
     }
 
     private func setupObservers() {
-        let loadingPublisher = service.isLoadingSubject
-            .map(SpaceSettingsStateAction.updateLoading)
-            .eraseToAnyPublisher()
-        dispatch(actionPublisher: loadingPublisher)
-        let showAlertPublisher = service.showPostProcessAlert
-            .map(SpaceSettingsStateAction.updateShowPostProcessAlert)
-            .eraseToAnyPublisher()
-        dispatch(actionPublisher: showAlertPublisher)
-        let roomPropertiesPublisher = service.roomPropertiesSubject
-            .map(SpaceSettingsStateAction.updateRoomProperties)
-            .eraseToAnyPublisher()
-        dispatch(actionPublisher: roomPropertiesPublisher)
+        service.isLoadingSubject.sink { [weak self] isLoading in
+                self?.state.isLoading = isLoading
+        }
+        .store(in: &cancellables)
+        
+        service.showPostProcessAlert.sink { [weak self] showPostProcessAlert in
+            self?.state.bindings.showPostProcessAlert = showPostProcessAlert
+        }
+        .store(in: &cancellables)
+        
+        service.roomPropertiesSubject.sink { [weak self] roomProperties in
+            guard let roomProperties = roomProperties, let self = self else {
+                return
+            }
+            
+            self.propertiesUpdated(roomProperties)
+        }
+        .store(in: &cancellables)
+        
+        service.addressValidationSubject.sink { [weak self] validationStatus in
+            self?.state.addressMessage = Self.addressMessage(with: validationStatus)
+            self?.state.isAddressValid = Self.isAddressValid(with: validationStatus)
+        }
+        .store(in: &cancellables)
     }
 
     // MARK: - Public
@@ -120,43 +132,28 @@ class SpaceSettingsViewModel: SpaceSettingsViewModelType, SpaceSettingsViewModel
                     break
                 }
             }
+        case .addressChanged(let newValue):
+            service.addressDidChange(newValue)
         }
     }
 
     func updateAvatarImage(with image: UIImage?) {
-        dispatch(action: .updateAvatarImage(image))
+        state.userSelectedAvatar = image
     }
     
-    override class func reducer(state: inout SpaceSettingsViewState, action: SpaceSettingsStateAction) {
-        UILog.debug("[SpaceSettingsViewModel] reducer with action \(action) produced state: \(state)")
-
-        switch action {
-        case .updateLoading(let isLoading):
-            state.isLoading = isLoading
-        case .updateAvatarImage(let image):
-            state.userSelectedAvatar = image
-        case .updateShowPostProcessAlert(let show):
-            state.bindings.showPostProcessAlert = show
-        case .updateRoomProperties(let roomProperties):
-            guard let roomProperties = roomProperties else {
-                return
-            }
-            
-            UILog.debug("[TOTO] reducer \(roomProperties.visibility)")
-
-            state.roomProperties = roomProperties
-            if !state.isRoomNameModified {
-                state.bindings.name = roomProperties.name ?? ""
-            }
-            if !state.isTopicModified {
-                state.bindings.topic = roomProperties.topic ?? ""
-            }
-            if !state.isAddressModified {
-                state.bindings.address = roomProperties.address ?? ""
-            }
-            state.visibilityString = visibilityString(with: roomProperties.visibility)
-            state.showRoomAddress = roomProperties.visibility == .public
+    private func propertiesUpdated(_ roomProperties: SpaceSettingsRoomProperties) {
+        state.roomProperties = roomProperties
+        if !state.isRoomNameModified {
+            state.bindings.name = roomProperties.name ?? ""
         }
+        if !state.isTopicModified {
+            state.bindings.topic = roomProperties.topic ?? ""
+        }
+        if !state.isAddressModified {
+            state.bindings.address = roomProperties.address ?? ""
+        }
+        state.visibilityString = Self.visibilityString(with: roomProperties.visibility)
+        state.showRoomAddress = roomProperties.visibility == .public
     }
 
     private func done() {
@@ -165,5 +162,29 @@ class SpaceSettingsViewModel: SpaceSettingsViewModelType, SpaceSettingsViewModel
 
     private func cancel() {
         completion?(.cancel)
+    }
+    
+    private static func addressMessage(with validationStatus: SpaceCreationSettingsAddressValidationStatus) -> String {
+        switch validationStatus {
+        case .none(let fullAddress):
+            return VectorL10n.spacesCreationAddressDefaultMessage(fullAddress)
+        case .current(let fullAddress):
+            return VectorL10n.spaceSettingsCurrentAddressMessage(fullAddress)
+        case .valid(let fullAddress):
+            return VectorL10n.spacesCreationAddressDefaultMessage(fullAddress)
+        case .alreadyExists(let fullAddress):
+            return VectorL10n.spacesCreationAddressAlreadyExists(fullAddress)
+        case .invalidCharacters(let fullAddress):
+            return VectorL10n.spacesCreationAddressInvalidCharacters(fullAddress)
+        }
+    }
+    
+    private static func isAddressValid(with validationStatus: SpaceCreationSettingsAddressValidationStatus) -> Bool {
+        switch validationStatus {
+        case .none, .current, .valid:
+            return true
+        default:
+            return false
+        }
     }
 }

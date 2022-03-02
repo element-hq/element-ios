@@ -50,7 +50,7 @@ struct SpaceSettings: View {
                 Button(VectorL10n.done) {
                     updateSpace()
                 }
-                .disabled(!viewModel.viewState.isModified)
+                .disabled(!viewModel.viewState.isModified || !viewModel.viewState.isAddressValid)
             }
             ToolbarItem(placement: .cancellationAction) {
                 Button(VectorL10n.cancel) {
@@ -134,7 +134,10 @@ struct SpaceSettings: View {
                     isEnabled: viewModel.viewState.roomProperties?.isAddressEditable == true,
                     footerText: .constant(viewModel.viewState.addressMessage),
                     isError: .constant(!viewModel.viewState.isAddressValid),
-                    configuration: UIKitTextInputConfiguration(keyboardType: .URL, returnKeyType: .done, autocapitalizationType: .none))
+                    configuration: UIKitTextInputConfiguration(keyboardType: .URL, returnKeyType: .done, autocapitalizationType: .none), onTextChanged:  {
+                        newText in
+                        viewModel.send(viewAction: .addressChanged(newText))
+                    })
                     .padding(.horizontal, 2)
                     .padding(.bottom, 3)
                     .accessibility(identifier: "addressTextField")

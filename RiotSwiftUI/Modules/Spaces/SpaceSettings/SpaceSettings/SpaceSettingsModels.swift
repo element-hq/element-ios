@@ -26,13 +26,6 @@ enum SpaceSettingsCoordinatorResult {
 
 // MARK: View model
 
-enum SpaceSettingsStateAction {
-    case updateLoading(Bool)
-    case updateRoomProperties(SpaceSettingsRoomProperties?)
-    case updateShowPostProcessAlert(Bool)
-    case updateAvatarImage(UIImage?)
-}
-
 enum SpaceSettingsViewModelResult {
     case cancel
     case done
@@ -69,8 +62,8 @@ struct SpaceSettingsViewState: BindableState {
     var userSelectedAvatar: UIImage?
     var showRoomAddress: Bool
     let roomNameError: String?
-    let addressMessage: String?
-    let isAddressValid: Bool
+    var addressMessage: String?
+    var isAddressValid: Bool
     var isLoading: Bool
     var visibilityString: String
     var options: [SpaceSettingsOption]
@@ -115,4 +108,5 @@ enum SpaceSettingsViewAction {
     case cancel
     case pickImage(_ sourceRect: CGRect)
     case optionSelected(_ optionType: SpaceSettingsOptionType)
+    case addressChanged(_ newValue: String)
 }

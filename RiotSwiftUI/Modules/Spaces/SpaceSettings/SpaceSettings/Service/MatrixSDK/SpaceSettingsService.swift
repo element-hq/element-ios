@@ -22,6 +22,12 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
 
     // MARK: - Properties
     
+    var userDefinedAddress: String? {
+        didSet {
+            validateAddress()
+        }
+    }
+
     // MARK: Private
     
     private let session: MXSession
@@ -33,6 +39,18 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
     private let room: MXRoom?
     private var roomEventListener: Any?
     
+    private var publicAddress: String? {
+        didSet {
+            validateAddress()
+        }
+    }
+    
+    private var defaultAddress: String {
+        didSet {
+            validateAddress()
+        }
+    }
+
     // MARK: Public
     
     var displayName: String? {
@@ -49,8 +67,19 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
     private(set) var isLoadingSubject: CurrentValueSubject<Bool, Never>
     private(set) var roomPropertiesSubject: CurrentValueSubject<SpaceSettingsRoomProperties?, Never>
     private(set) var showPostProcessAlert: CurrentValueSubject<Bool, Never>
+    
+    private(set) var addressValidationSubject: CurrentValueSubject<SpaceCreationSettingsAddressValidationStatus, Never>
+    var isAddressValid: Bool {
+        switch addressValidationSubject.value {
+        case .none, .valid:
+            return true
+        default:
+            return false
+        }
+    }
 
     private var currentOperation: MXHTTPOperation?
+    private var addressValidationOperation: MXHTTPOperation?
     
     private lazy var mediaUploader: MXMediaLoader = {
         return MXMediaManager.prepareUploader(withMatrixSession: session, initialRange: 0, andRange: 1.0)
@@ -65,6 +94,9 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
         self.isLoadingSubject = CurrentValueSubject(false)
         self.showPostProcessAlert = CurrentValueSubject(false)
         self.roomPropertiesSubject = CurrentValueSubject(self.roomProperties)
+        self.addressValidationSubject = CurrentValueSubject(.none("#"))
+        self.defaultAddress = ""
+        
         readRoomState()
     }
     
@@ -74,6 +106,13 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
         }
         
         currentOperation?.cancel()
+        addressValidationOperation?.cancel()
+    }
+    
+    // MARK: - Public
+    
+    func addressDidChange(_ newValue: String) {
+        userDefinedAddress = newValue
     }
     
     // MARK: - Private
@@ -127,15 +166,64 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
         return userPowerLevel >= powerLevels.minimumPowerLevel(forNotifications: notification, defaultPower: powerLevels.stateDefault)
     }
     
+    private func validateAddress() {
+        addressValidationOperation?.cancel()
+        addressValidationOperation = nil
+
+        guard let userDefinedAddress = self.userDefinedAddress, !userDefinedAddress.isEmpty else {
+            let fullAddress = defaultAddress.fullLocalAlias(with: session)
+
+            if let publicAddress = self.publicAddress, !publicAddress.isEmpty {
+                addressValidationSubject.send(.current(fullAddress))
+            } else if defaultAddress.isEmpty {
+                addressValidationSubject.send(.none(fullAddress))
+            } else {
+                validate(defaultAddress)
+            }
+            return
+        }
+
+        validate(userDefinedAddress)
+    }
+    
+    private func validate(_ aliasLocalPart: String) {
+        let fullAddress = aliasLocalPart.fullLocalAlias(with: session)
+
+        if let publicAddress = self.publicAddress, publicAddress == aliasLocalPart {
+            self.addressValidationSubject.send(.current(fullAddress))
+            return
+        }
+        
+        addressValidationOperation = MXRoomAliasAvailabilityChecker.validate(aliasLocalPart: aliasLocalPart, with: session) { [weak self] result in
+            guard let self = self else { return }
+            
+            self.addressValidationOperation = nil
+            
+            switch result {
+            case .available:
+                self.addressValidationSubject.send(.valid(fullAddress))
+            case .invalid:
+                self.addressValidationSubject.send(.invalidCharacters(fullAddress))
+            case .notAvailable:
+                self.addressValidationSubject.send(.alreadyExists(fullAddress))
+            case .serverError:
+                self.addressValidationSubject.send(.none(fullAddress))
+            }
+        }
+    }
+
     private func updateRoomProperties() {
         guard let roomState = roomState else {
             return
         }
         
+        self.publicAddress = roomState.canonicalAlias?.extractLocalAliasPart()
+        self.defaultAddress = self.publicAddress ?? roomState.name.toValidAliasLocalPart()
+        
         self.roomProperties = SpaceSettingsRoomProperties(
             name: roomState.name,
             topic: roomState.topic,
-            address: roomState.canonicalAlias?.extractLocalAliasPart(),
+            address: self.defaultAddress,
             avatarUrl: roomState.avatar,
             visibility: visibility(with: roomState),
             allowedParentIds: allowedParentIds(with: roomState),
@@ -293,7 +381,30 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
     private func update(canonicalAlias: String) {
         updateCurrentTaskState(with: .started)
         
-        currentOperation = room?.setCanonicalAlias(canonicalAlias, completion: { [weak self] response in
+        currentOperation = room?.addAlias(canonicalAlias.fullLocalAlias(with: session), completion: { [weak self] response in
+            guard let self = self else { return }
+            
+            switch response {
+            case .success:
+                if let publicAddress = self.publicAddress {
+                    self.currentOperation = self.room?.removeAlias(publicAddress.fullLocalAlias(with: self.session), completion: { [weak self] response in
+                        guard let self = self else { return }
+
+                        self.setup(canonicalAlias: canonicalAlias)
+                    })
+                } else {
+                    self.setup(canonicalAlias: canonicalAlias)
+                }
+            case .failure(let error):
+                self.lastError = error
+                self.updateCurrentTaskState(with: .failure)
+                self.runNextTask()
+            }
+        })
+    }
+    
+    private func setup(canonicalAlias: String) {
+        currentOperation = room?.setCanonicalAlias(canonicalAlias.fullLocalAlias(with: session), completion: { [weak self] response in
             guard let self = self else { return }
             
             switch response {
