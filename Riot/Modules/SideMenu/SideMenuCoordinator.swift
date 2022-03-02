@@ -428,7 +428,7 @@ extension SideMenuCoordinator: SpaceMenuPresenterDelegate {
                 if #available(iOS 14.0, *) {
                     self.showSpaceSettings(spaceId: spaceId, session: session)
                 } else {
-                    // TODO: show an alert
+                    AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.settingsTitle, message: VectorL10n.spacesComingSoonDetail(AppInfo.current.displayName))
                 }
             }
         }
