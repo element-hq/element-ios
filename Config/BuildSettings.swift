@@ -397,4 +397,17 @@ final class BuildSettings: NSObject {
         
         return true
     }
+    
+    static var liveLocationSharingEnabled: Bool {
+        guard #available(iOS 14, *) else {
+            return false
+        }
+        
+        guard self.locationSharingEnabled else {
+            return false
+        }
+        
+        // Do not enable live location sharing atm
+        return false
+    }
 }
