@@ -276,7 +276,7 @@
 "notice_room_join" = "%@ gick med";
 "notice_room_leave" = "%@ lämnade";
 "notice_room_reject" = "%@ avvisade inbjudan";
-"notice_room_kick" = "%@ kickade %@";
+"notice_room_kick" = "%@ tog bort %@";
 "notice_room_unban" = "%@ avbannade %@";
 "notice_room_ban" = "%@ bannade %@";
 "notice_room_withdraw" = "%@ drog tillbaka inbjudan för %@";
@@ -303,7 +303,7 @@
 "notice_room_join_by_you" = "Du gick med";
 "notice_room_leave_by_you" = "Du lämnade";
 "notice_room_reject_by_you" = "Du avvisade inbjudan";
-"notice_room_kick_by_you" = "Du kickade %@";
+"notice_room_kick_by_you" = "Du tog bort %@";
 "notice_room_unban_by_you" = "Du avbannade %@";
 "notice_room_ban_by_you" = "Du bannade %@";
 "notice_room_withdraw_by_you" = "Du drog tillbaka inbjudan för %@";
@@ -353,7 +353,7 @@
 "num_members_one" = "%@ användare";
 "num_members_other" = "%@ användare";
 "invite" = "Bjud in";
-"kick" = "Kicka";
+"kick" = "Ta bort från chatten";
 "ban" = "Banna";
 "unban" = "Avbanna";
 "message_unsaved_changes" = "Det finns osparade ändringar. Att lämna kommer att slänga dem.";

@@ -209,7 +209,7 @@
 "notice_room_join" = "%@ u bë pjesë";
 "notice_room_leave" = "%@ doli";
 "notice_room_reject" = "%@ hodhi tej ftesën";
-"notice_room_kick" = "%@ përzuri %@";
+"notice_room_kick" = "%@ hoqi %@";
 "notice_room_ban" = "%@ dëboi %@";
 "notice_room_withdraw" = "%@ e tërhoqi ftesën për %@";
 "notice_room_reason" = ". Arsye: %@";
@@ -248,7 +248,7 @@
 "num_members_one" = "%@ përdorues";
 "num_members_other" = "%@ përdorues";
 "invite" = "Ftoje";
-"kick" = "Përzëre";
+"kick" = "Hiqe nga fjalosja";
 "ban" = "Dëboje";
 "unban" = "Hiqja dëbimin";
 "message_unsaved_changes" = "Ka ndryshime të paruajtura. Ikja do të shkaktojë hedhjen tej të tyre.";
@@ -390,7 +390,7 @@
 "notice_room_join_by_you" = "Erdhët";
 "notice_room_leave_by_you" = "Ikët";
 "notice_room_reject_by_you" = "Hodhët poshtë ftesën";
-"notice_room_kick_by_you" = "Përzutë %@";
+"notice_room_kick_by_you" = "Hoqët %@";
 "notice_room_unban_by_you" = "Hoqët dëbimin për %@";
 "notice_room_ban_by_you" = "Dëbuat %@";
 "notice_room_withdraw_by_you" = "Tërhoqët mbrapsht ftesën për %@";

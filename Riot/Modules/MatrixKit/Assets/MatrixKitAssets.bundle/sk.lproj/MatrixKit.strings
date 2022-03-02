@@ -145,7 +145,7 @@
 "settings_title_config" = "Nastavenie";
 "unban" = "Zrušiť zákaz";
 "ban" = "Zakázať";
-"kick" = "Vylúčiť";
+"kick" = "Odstrániť z konverzácie";
 "invite" = "Pozvať";
 "membership_ban" = "Vylúčený";
 "membership_invite" = "Pozvaní";
@@ -283,7 +283,7 @@
 "notice_room_withdraw_by_you" = "Odvolali ste pozvánku pre %@";
 "notice_room_ban_by_you" = "Zakázali ste používateľa %@";
 "notice_room_unban_by_you" = "Zrušili ste zákaz pre %@";
-"notice_room_kick_by_you" = "Vylúčili ste používateľa %@";
+"notice_room_kick_by_you" = "Odstránili ste používateľa %@";
 "notice_room_reject_by_you" = "Odmietli ste pozvanie";
 "notice_room_third_party_revoked_invite_by_you_for_dm" = "Odvolali ste pozvánku pre %@";
 "notice_room_third_party_revoked_invite_by_you" = "Odvolali ste pozvánku pre %@ do miestnosti";
@@ -478,7 +478,7 @@
 "message_unsaved_changes" = "Máte neuložené zmeny. Opustením sa zrušia.";
 "membership_leave" = "Odišiel";
 "notice_room_history_visible_to_members_from_joined_point_by_you_for_dm" = "Zviditeľnili ste budúce správy pre všetkých, od okamihu pripojenia.";
-"notice_room_kick" = "%@ vylúčil %@";
+"notice_room_kick" = "%@ odstránil používateľa %@";
 "attachment_medium" = "Stredná (~%@)";
 "attachment_small" = "Malá (~%@)";
 "room_no_conference_call_in_encrypted_rooms" = "Konferenčné hovory nie sú podporované v šifrovaných miestnostiach";
@@ -555,3 +555,5 @@
 "notification_settings_per_sender_notifications" = "Oznámenia na odosielateľa";
 "notification_settings_per_room_notifications" = "Oznámenia na miestnosti";
 "notification_settings_per_word_notifications" = "Oznámenia na slovo";
+"notification_settings_word_to_match" = "slovo vyhovujúce zhode";
+"notice_event_redacted_by_you" = " vami";

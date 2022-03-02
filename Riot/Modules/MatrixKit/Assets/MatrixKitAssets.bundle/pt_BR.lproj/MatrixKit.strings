@@ -277,7 +277,7 @@
 "notice_room_join" = "%@ juntou-se";
 "notice_room_leave" = "%@ saiu";
 "notice_room_reject" = "%@ rejeitou o convite";
-"notice_room_kick" = "%@ expulsou %@";
+"notice_room_kick" = "%@ removeu %@";
 "notice_room_unban" = "%@ desbaniu %@";
 "notice_room_ban" = "%@ baniu %@";
 "notice_room_withdraw" = "%@ retirou o convite de %@";
@@ -313,7 +313,7 @@
 "membership_ban" = "Banida(o)";
 "num_members_one" = "%@ usuária(o)";
 "num_members_other" = "%@ usuárias(os)";
-"kick" = "Expulsar";
+"kick" = "Remover de chat";
 "ban" = "Banir";
 "unban" = "Des-banir";
 "message_unsaved_changes" = "Existem mudanças não-salvas. Sair vai descartá-las.";
@@ -390,7 +390,7 @@
 "notice_room_join_by_you" = "Você juntou-se";
 "notice_room_leave_by_you" = "Você saiu";
 "notice_room_reject_by_you" = "Você rejeitou o convite";
-"notice_room_kick_by_you" = "Você expulsou %@";
+"notice_room_kick_by_you" = "Você removeu %@";
 "notice_room_unban_by_you" = "Você desbaniu %@";
 "notice_room_ban_by_you" = "Você baniu %@";
 "notice_room_withdraw_by_you" = "Você retirou o convite de %@";
