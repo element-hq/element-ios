@@ -6519,6 +6519,10 @@ public class VectorL10n: NSObject {
   public static var settingsLabsMessageReaction: String { 
     return VectorL10n.tr("Vector", "settings_labs_message_reaction") 
   }
+  /// Use only latest profiles
+  public static var settingsLabsUseOnlyLatestProfiles: String { 
+    return VectorL10n.tr("Vector", "settings_labs_use_only_latest_profiles") 
+  }
   /// LINKS
   public static var settingsLinks: String { 
     return VectorL10n.tr("Vector", "settings_links") 

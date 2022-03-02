@@ -16,6 +16,8 @@
 
 #import "MXKRoomBubbleCellDataWithAppendingMode.h"
 
+#import "GeneratedInterface-Swift.h"
+
 static NSAttributedString *messageSeparator = nil;
 
 @implementation MXKRoomBubbleCellDataWithAppendingMode
@@ -46,8 +48,9 @@ static NSAttributedString *messageSeparator = nil;
         }
         
         // Check sender information
-        NSString *eventSenderName = [roomDataSource.eventFormatter senderDisplayNameForEvent:event withRoomState:roomState];
-        NSString *eventSenderAvatar = [roomDataSource.eventFormatter senderAvatarUrlForEvent:event withRoomState:roomState];
+        MXRoomState *profileRoomState = RiotSettings.shared.roomScreenUseOnlyLatestProfiles ? roomDataSource.roomState : roomState;
+        NSString *eventSenderName = [roomDataSource.eventFormatter senderDisplayNameForEvent:event withRoomState:profileRoomState];
+        NSString *eventSenderAvatar = [roomDataSource.eventFormatter senderAvatarUrlForEvent:event withRoomState:profileRoomState];
         if ((self.senderDisplayName || eventSenderName) &&
             ([self.senderDisplayName isEqualToString:eventSenderName] == NO))
         {
