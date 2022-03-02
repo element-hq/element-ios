@@ -107,6 +107,18 @@
     bubbleComponents = nil;
 }
 
+- (void)refreshProfileWithRoomDataSource:(MXKRoomDataSource *)roomDataSource2
+{
+    if (self.events.firstObject)
+    {
+        MXEvent* firstEvent = self.events.firstObject;
+        senderDisplayName = [roomDataSource.eventFormatter senderDisplayNameForEvent:firstEvent
+                                                                       withRoomState:roomDataSource2.roomState];
+        senderAvatarUrl = [roomDataSource.eventFormatter senderAvatarUrlForEvent:firstEvent
+                                                                   withRoomState:roomDataSource2.roomState];
+    }
+}
+
 - (NSUInteger)updateEvent:(NSString *)eventId withEvent:(MXEvent *)event
 {
     NSUInteger count = 0;
