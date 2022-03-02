@@ -1463,11 +1463,9 @@
 // room info dialog Screen
 
 // room details dialog screen
-"room_details_title" = "Talqayt n texxamt";
 "login_error_must_start_http" = "Ilaq ad yebdu URL s http[s]://";
 "ban" = "Agi";
 "kick" = "Suffeɣ";
-"invite" = "Nced";
 "membership_leave" = "Azelmaḍ";
 "membership_invite" = "Yettwancad";
 "create_account" = "Rnu amiḍan";
@@ -1476,16 +1474,12 @@
 
 // actions 
 "action_logout" = "Tuffɣa";
-"view" = "Wali";
 "delete" = "Kkes";
 "share" = "Bḍu";
 "redact" = "Sfeḍ";
 "resend" = "Ɛawed azen";
 "copy_button_name" = "Nɣel";
 "send" = "Azen";
-"leave" = "Ffeɣ";
-"save" = "Sekles";
-"cancel" = "Sefsex";
 
 // Room Screen 
 
@@ -1543,10 +1537,8 @@
 
 // Time
 "format_time_s" = "s";
-"group_section" = "Igrawen";
 
 // Groups
-"group_invite_section" = "Inced-d";
 "attachment_cancel_upload" = "Sefsex asali?";
 "attachment_cancel_download" = "Sefsex asider?";
 "room_member_power_level_prompt" = "Ur tettizmireḍ ara ad tesfesxeḍ asnifel-a acku tessebɣaseḍ aseqdac ad yesɛu aswir n tezmert am kečč·kemm.\nTebɣiḍ s tidet?";
@@ -1593,12 +1585,8 @@
 "start_voice_call" = "Yebda usiwel s taɣect";
 "submit" = "Azen";
 "sign_up" = "Jerred";
-"retry" = "Ɛreḍ tikkelt-nniḍen";
 "dismiss" = "Agi";
 "discard" = "Ignorer";
-"continue" = "Kemmel";
-"close" = "Mdel";
-"back" = "Uɣal ɣer deffir";
 "abort" = "Sefsex";
 "yes" = "Ih";
 
@@ -1644,7 +1632,6 @@
 
 // call string
 "call_waiting" = "Yettraǧu...";
-"settings_config_user_id" = "Asulay n useqdac:%@";
 "notification_settings_other_alerts" = "Ilɣuten-nniḍen";
 "notification_settings_select_room" = "Fren taxxamt";
 "notification_settings_sender_hint" = "@user:domain.com";
@@ -1796,10 +1783,8 @@
 "room_error_timeline_event_not_found" = "Asnas yettaεraḍ ad d-isali kra n wagazen ufrinen deg tesnakudt n texxamt, maca ur tt-yifi ara";
 "room_event_encryption_verify_message" = "I usenqed n tɣimit-a ma tzemreḍ ad tettekleḍ fell-as, ttxil-k·m nermes bab-is s useqdec s ubrid-nniḍen (am. s timmad-is neɣ s usiwel) syen steqsi-t ma yella tasarut i yettwali deg yiɣewwaren-is n useqdac n tɣimit-a temṣada d tsarut yellan ddaw:\n\n Isem n tɣimit: %@\n Asulay n texxamt: %@\n Tasarut n texxamt: %@\n\nMa yella mṣadant, sit ɣef tqeffalt n usenqed ddaw. Ma yella ur mṣadant ara, ihi yella win i yettεekkiṛen tiɣimit-a, neɣ ahat tebɣiḍ ad tsiteḍ ɣef tqeffalt n tebdart taberkant deg ubdel.\n\nΓer sdat, akala-a n usenqed-a ad yuɣal yemmed ugar.";
 "call_connecting" = "Asiwel iteddu...";
-"settings_config_identity_server" = "Aqeddac n timagit: %@";
 
 // gcm section 
-"settings_config_home_server" = "Aqeddac agejdan: %@";
 "notification_settings_by_default" = "S umezwer...";
 "notification_settings_suppress_from_bots" = "Kkes ilɣa n yiṛubuten";
 "notification_settings_receive_a_call" = "Lɣu-yi-d mi ara yi-d-yaweḍ usiwel";

@@ -1693,12 +1693,8 @@
 "no" = "Jo";
 "yes" = "Po";
 "abort" = "Ndërprite";
-"back" = "Mbrapsht";
-"close" = "Mbylle";
-"continue" = "Vazhdo";
 "discard" = "Hidhe Tej";
 "dismiss" = "Mos e merr parasysh";
-"retry" = "Riprovo";
 "sign_up" = "Regjistrohuni";
 "submit" = "Parashtroje";
 "set_default_power_level" = "Rikthe Shkallët e Pushtetit Te Parazgjedhja";
@@ -1832,8 +1828,6 @@
 "contact_mx_users" = "Përdorues të Matrix-it";
 "contact_local_contacts" = "Kontakte Vendore";
 // Groups
-"group_invite_section" = "Ftesa";
-"group_section" = "Grupe";
 // Search
 "search_no_results" = "S’ka Përfundime";
 "search_searching" = "Kërkim në ecuri e sipër…";
@@ -1893,16 +1887,11 @@
 "notice_conference_call_started" = "Konferenca VoIP filloi";
 "notice_conference_call_finished" = "Konferenca VoIP përfundoi";
 // button names 
-"ok" = "OK";
-"cancel" = "Anuloje";
-"save" = "Ruaje";
-"leave" = "Dilni";
 "send" = "Dërgoje";
 "copy_button_name" = "Kopjoje";
 "resend" = "Ridërgoje";
 "set_power_level" = "Caktoni Shkallë Pushteti";
 "delete" = "Fshije";
-"view" = "Shiheni";
 // actions 
 "action_logout" = "Dalje";
 "create_room" = "Krijo Dhomë";
@@ -1913,7 +1902,6 @@
 "membership_ban" = "I dëbuar";
 "num_members_one" = "%@ përdorues";
 "num_members_other" = "%@ përdorues";
-"invite" = "Ftoje";
 "kick" = "Hiqe nga fjalosja";
 "ban" = "Dëboje";
 "unban" = "Hiqja dëbimin";
@@ -1922,7 +1910,6 @@
 "login_error_already_logged_in" = "Tashmë i futur";
 "login_error_must_start_http" = "URL-ja duhet të fillojë me http[s]://";
 // room details dialog screen
-"room_details_title" = "Hollësi Dhome";
 // Settings screen 
 "settings_title_config" = "Formësim";
 "settings_title_notifications" = "Njoftime";
@@ -1945,9 +1932,6 @@
 "notification_settings_by_default" = "Si parazgjedhje…";
 "notification_settings_notify_all_other" = "Njoftim për krejt mesazhet/dhomat e tjera";
 // gcm section 
-"settings_config_home_server" = "Shërbyes home: %@";
-"settings_config_identity_server" = "Shërbyes identitetesh: %@";
-"settings_config_user_id" = "ID Përdoruesi: %@";
 // call string
 "call_waiting" = "Po pritet…";
 "call_ended" = "Thirrja përfundoi";
@@ -2136,11 +2120,6 @@
 "attachment_small_with_resolution" = "E vogël %@ (~%@)";
 "attachment_size_prompt_message" = "Këtë mund ta çaktivizoni te rregullimet.";
 "attachment_size_prompt_title" = "Ripohoni madhësi për dërgim";
-"auth_reset_password_error_not_found" = "S’u gjet";
-"auth_reset_password_error_unauthorized" = "I paautorizuar";
-"auth_username_in_use" = "Emër përdoruesi i përdorur";
-"auth_invalid_user_name" = "Emër i pavlefshëm përdoruesi";
-"rename" = "Riemërtojeni";
 "attachment_unsupported_preview_message" = "Ky lloj kartele nuk mbulohet.";
 "attachment_unsupported_preview_title" = "S’arrihet të bëhet paraparje";
 "room_displayname_all_other_members_left" = "%@ (Iku)";

@@ -1550,12 +1550,8 @@
 "no" = "Нет";
 "yes" = "Да";
 "abort" = "Отменить";
-"back" = "Назад";
-"close" = "Закрыть";
-"continue" = "Продолжить";
 "discard" = "Отказаться";
 "dismiss" = "Отклонить";
-"retry" = "Попробовать снова";
 "sign_up" = "Зарегистрироваться";
 "submit" = "Отправить";
 "submit_code" = "Отправить код";
@@ -1674,9 +1670,6 @@
 "notice_conference_call_finished" = "голосовая конференция завершилась";
 // button names 
 "ok" = "OK";
-"cancel" = "Отмена";
-"save" = "Сохранить";
-"leave" = "Покинуть";
 "send" = "Отправить";
 "copy_button_name" = "Скопировать";
 "resend" = "Переотправить";
@@ -1694,7 +1687,6 @@
 "membership_ban" = "Заблокирован";
 "num_members_one" = "%@ пользователь";
 "num_members_other" = "%@ пользователей";
-"invite" = "Пригласить";
 "kick" = "Выкинуть";
 "ban" = "Заблокировать";
 "unban" = "Разблокировать";
@@ -1812,13 +1804,11 @@
 "notice_room_aliases" = "Псевдонимы комнаты: %@";
 "private" = "Приватный";
 "public" = "Публичный";
-"view" = "Просмотр";
 "message_unsaved_changes" = "Имеются несохраненные изменения. Они будут потеряны.";
 // Login Screen 
 "login_error_already_logged_in" = "Уже вошли";
 "login_error_must_start_http" = "URL-адрес должен начинаться с http[s]://";
 // room details dialog screen
-"room_details_title" = "Информация о комнате";
 // contacts list screen 
 "invitation_message" = "Я бы хотел поговорить с вами в Matrix. Пожалуйста, посетите веб-сайт https://matrix.org для получения дополнительной информации.";
 // Settings screen 
@@ -1846,9 +1836,6 @@
 "notification_settings_by_default" = "По умолчанию...";
 "notification_settings_notify_all_other" = "Уведомлять о всех других сообщениях/комнатах";
 // gcm section 
-"settings_config_home_server" = "Домашний сервер: %@";
-"settings_config_identity_server" = "Сервер идентификации: %@";
-"settings_config_user_id" = "Идентификатор пользователя: %@";
 // call string
 "call_waiting" = "Ожидание...";
 "call_connecting" = "Соединение…";
@@ -1879,8 +1866,6 @@
 "login_desktop_device" = "Компьютер";
 "notice_room_related_groups" = "Группы, связанные с этой комнатой: %@";
 // Groups
-"group_invite_section" = "Приглашения";
-"group_section" = "Группы";
 "notice_sticker" = "стикер";
 "notice_in_reply_to" = "В ответ на";
 "error_common_message" = "Произошла ошибка. Пожалуйста, повторите попытку позже.";
@@ -1990,11 +1975,6 @@
 "attachment_small_with_resolution" = "Маленький %@ (~%@)";
 "attachment_size_prompt_message" = "Это можно отключить в настройках.";
 "attachment_size_prompt_title" = "Подтвердите размер для отправки";
-"auth_reset_password_error_not_found" = "Не найдено";
-"auth_reset_password_error_unauthorized" = "Неавторизованный";
-"auth_invalid_user_name" = "Недопустимое имя пользователя";
-"auth_username_in_use" = "Имя пользователя занято";
-"rename" = "Переименовать";
 "room_displayname_all_other_members_left" = "%@ (Вышел)";
 "attachment_unsupported_preview_message" = "Этот тип файла не поддерживается.";
 "attachment_unsupported_preview_title" = "Не удалось показать предварительный просмотр";

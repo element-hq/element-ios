@@ -1692,12 +1692,8 @@
 "no" = "No";
 "yes" = "Si";
 "abort" = "Annulla";
-"back" = "Indietro";
-"close" = "Chiudi";
-"continue" = "Continua";
 "discard" = "Annulla";
 "dismiss" = "Annulla";
-"retry" = "Riprova";
 "sign_up" = "Registrati";
 "submit" = "Invia";
 "submit_code" = "Invia codice";
@@ -1870,8 +1866,6 @@
 "contact_mx_users" = "Utenti Matrix";
 "contact_local_contacts" = "Contatti locali";
 // Groups
-"group_invite_section" = "Inviti";
-"group_section" = "Gruppi";
 // Search
 "search_no_results" = "Nessun risultato";
 "search_searching" = "Ricerca in corso...";
@@ -1944,17 +1938,12 @@
 "notice_conference_call_started" = "Conferenza VoIP iniziata";
 "notice_conference_call_finished" = "Conferenza VoIP terminata";
 // button names 
-"ok" = "OK";
-"cancel" = "Annulla";
-"save" = "Salva";
-"leave" = "Esci";
 "send" = "Invia";
 "copy_button_name" = "Copia";
 "resend" = "Invia di nuovo";
 "redact" = "Cancella";
 "share" = "Condividi";
 "delete" = "Elimina";
-"view" = "Visualizza";
 // actions 
 "action_logout" = "Esci";
 "create_room" = "Crea un canale";
@@ -1965,7 +1954,6 @@
 "membership_ban" = "Espulso";
 "num_members_one" = "%@ utente";
 "num_members_other" = "%@ utenti";
-"invite" = "Invita";
 "kick" = "Rimuovi dalla chat";
 "ban" = "Vieta accesso";
 "unban" = "Consenti accesso";
@@ -1974,7 +1962,6 @@
 "login_error_already_logged_in" = "Accesso già effettuato";
 "login_error_must_start_http" = "l'URL deve iniziare con http[s]://";
 // room details dialog screen
-"room_details_title" = "Dettagli stanza";
 // Settings screen 
 "settings_title_config" = "Configurazione";
 "settings_title_notifications" = "Notifiche";
@@ -2005,9 +1992,6 @@
 "notification_settings_by_default" = "Come predefinito...";
 "notification_settings_notify_all_other" = "Notifica tutti gli altri messaggi/canali";
 // gcm section 
-"settings_config_home_server" = "Homeserver: %@";
-"settings_config_identity_server" = "Server d'identità: %@";
-"settings_config_user_id" = "ID utente: %@";
 // call string
 "call_waiting" = "Attendere...";
 "call_connecting" = "In connessione…";
@@ -2118,12 +2102,7 @@
 "attachment_small_with_resolution" = "Piccolo %@ (~%@)";
 "attachment_size_prompt_message" = "Puoi disattivarlo nelle impostazioni.";
 "attachment_size_prompt_title" = "Conferma dimensione da inviare";
-"auth_reset_password_error_not_found" = "Non trovato";
-"auth_reset_password_error_unauthorized" = "Non autorizzato";
-"auth_invalid_user_name" = "Nome utente non valido";
 "room_displayname_all_other_members_left" = "%@ (Uscito)";
-"auth_username_in_use" = "Nome utente in uso";
-"rename" = "Rinomina";
 "attachment_unsupported_preview_message" = "Questo tipo di file non è supportato.";
 "attachment_unsupported_preview_title" = "Anteprima non disponibile";
 "message_reply_to_sender_sent_their_location" = "ha condiviso la sua posizione.";

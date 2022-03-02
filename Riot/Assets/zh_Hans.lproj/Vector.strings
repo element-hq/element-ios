@@ -1615,16 +1615,7 @@
 // MARK: - MatrixKit
 
 
-"view" = "视图";
-"back" = "返回";
-"continue" = "继续";
-"leave" = "离开";
-"invite" = "邀请";
-"retry" = "重试";
-"cancel" = "取消";
-"save" = "保存";
 // room details dialog screen
-"room_details_title" = "聊天室详情";
 "matrix" = "Matrix";
 // Login Screen
 "login_create_account" = "创建账户：";
@@ -1657,7 +1648,6 @@
 "no" = "否";
 "yes" = "是";
 "abort" = "中止";
-"close" = "关闭";
 "discard" = "放弃";
 "dismiss" = "无视";
 "sign_up" = "注册";
@@ -1876,8 +1866,6 @@
 "contact_mx_users" = "Matrix 用户";
 "contact_local_contacts" = "本地联系人";
 // Groups
-"group_invite_section" = "邀请";
-"group_section" = "群组";
 "e2e_passphrase_confirm" = "确认密码";
 "notification_settings_enable_notifications" = "启用通知";
 // Notification settings screen 
@@ -1887,9 +1875,6 @@
 "notification_settings_select_room" = "选择一个聊天室";
 "notification_settings_other_alerts" = "其他警报";
 // gcm section 
-"settings_config_home_server" = "主服务器：%@";
-"settings_config_identity_server" = "身份认证服务器：%@";
-"settings_config_user_id" = "用户 ID：%@";
 "call_ended" = "通话结束";
 // unrecognized SSL certificate
 "ssl_trust" = "信任";
@@ -2089,11 +2074,6 @@
 "attachment_size_prompt_message" = "你可以在设置中关闭这个。";
 "attachment_size_prompt_title" = "确认要发送的大小";
 "room_displayname_all_other_participants_left" = "%@ (离开)";
-"auth_reset_password_error_not_found" = "未找到";
-"auth_reset_password_error_unauthorized" = "未经授权";
-"auth_invalid_user_name" = "用户名无效";
 "room_displayname_all_other_members_left" = "%@ (离开)";
-"auth_username_in_use" = "用户名被占用";
-"rename" = "重命名";
 "attachment_unsupported_preview_message" = "文件类型不受支持。";
 "attachment_unsupported_preview_title" = "无法预览";

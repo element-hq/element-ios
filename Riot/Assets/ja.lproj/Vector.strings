@@ -1166,9 +1166,6 @@
 // Action
 "no" = "いいえ";
 "yes" = "はい";
-"back" = "戻る";
-"close" = "閉じる";
-"continue" = "続ける";
 "sign_up" = "登録";
 "resend_message" = "メッセージを再送信";
 "select_all" = "全て選択";
@@ -1206,7 +1203,6 @@
 "abort" = "中断";
 "discard" = "破棄";
 "dismiss" = "却下";
-"retry" = "再試行";
 "submit" = "提出";
 "submit_code" = "コードを送信";
 "set_default_power_level" = "権限レベルをリセット";
@@ -1266,8 +1262,6 @@
 "notice_in_reply_to" = "返信先";
 // room display name
 "room_displayname_empty_room" = "空のルーム";
-"room_displayname_two_members" = "%@ と %@";
-"room_displayname_more_than_two_members" = "%@ と %@ 他";
 // Settings
 "settings" = "設定";
 "settings_enable_inapp_notifications" = "アプリ内通知を有効にする";
@@ -1372,8 +1366,6 @@
 "contact_mx_users" = "Matrixユーザー";
 "contact_local_contacts" = "ローカルの連絡先";
 // Groups
-"group_invite_section" = "招待";
-"group_section" = "グループ";
 // Search
 "search_no_results" = "結果がありません";
 "search_searching" = "検索しています…";
@@ -1445,10 +1437,6 @@
 "notice_conference_call_started" = "VoIP会議が開始しました";
 "notice_conference_call_finished" = "VoIP会議が終了しました";
 // button names 
-"ok" = "OK";
-"cancel" = "キャンセル";
-"save" = "保存";
-"leave" = "退出";
 "send" = "送信";
 "copy_button_name" = "コピー";
 "resend" = "再送信";
@@ -1456,7 +1444,6 @@
 "share" = "共有";
 "set_power_level" = "権限レベル";
 "delete" = "削除";
-"view" = "表示";
 // actions 
 "action_logout" = "ログアウト";
 "create_room" = "ルームを作る";
@@ -1467,7 +1454,6 @@
 "membership_ban" = "ブロックしました";
 "num_members_one" = "%@ ユーザー";
 "num_members_other" = "%@ ユーザー";
-"invite" = "招待";
 "kick" = "キック";
 "ban" = "ブロック";
 "unban" = "ブロック解除";
@@ -1476,7 +1462,6 @@
 "login_error_already_logged_in" = "ログイン済";
 "login_error_must_start_http" = "URLは http[s]:// で始まる必要があります";
 // room details dialog screen
-"room_details_title" = "ルームの詳細";
 // contacts list screen 
 "invitation_message" = "私はmatrixであなたとチャットしたい。 詳細はウェブサイトhttp://matrix.orgをお尋ねください。";
 // Settings screen 
@@ -1509,9 +1494,6 @@
 "notification_settings_by_default" = "既定値では…";
 "notification_settings_notify_all_other" = "他の全てのメッセージ/ルームについて通知";
 // gcm section 
-"settings_config_home_server" = "ホームサーバー: %@";
-"settings_config_identity_server" = "IDサーバー: %@";
-"settings_config_user_id" = "ユーザーID: %@";
 // call string
 "call_waiting" = "待機中...";
 "call_connecting" = "通話接続中…";
@@ -1563,7 +1545,6 @@
 "notice_encryption_enabled_ok_by_you" = "あなたはエンドツーエンド暗号化をオンにしました。";
 "notice_encryption_enabled_unknown_algorithm_by_you" = "あなたはエンドツーエンド暗号化をオンにしました (不明なアルゴリズム %2$@)。";
 "notice_redaction_by_you" = "イベントを編集しました (id: %@)";
-"auth_username_in_use" = "ユーザー名は既に使用されています";
 "resume_call" = "再開";
 "notice_room_history_visible_to_members_from_joined_point_for_dm" = "%@が今後のメッセージを「全員 （参加した時点以降）」閲覧可能に設定しました。";
 "notice_room_history_visible_to_members_from_invited_point_for_dm" = "%@が今後のメッセージを「メンバーのみ （招待された時点以降）」閲覧可能に設定しました。";

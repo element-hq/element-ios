@@ -1538,15 +1538,6 @@
 "settings" = "Agordoj";
 "message_reply_to_message_to_reply_to_prefix" = "Respondanta al";
 "room_event_encryption_verify_title" = "Kontroli salutaĵon\n\n";
-"back" = "Reiri";
-"close" = "Fermi";
-"continue" = "Daŭrigi";
-"retry" = "Reprovi";
-"cancel" = "Nuligi";
-"save" = "Konservi";
-"leave" = "Forlasi";
-"view" = "Vidi";
-"invite" = "Inviti";
 
 // members list Screen 
 
@@ -1561,7 +1552,6 @@
 // room info dialog Screen
 
 // room details dialog screen
-"room_details_title" = "Detaloj pri ĉambro";
 "register_error_title" = "Registriĝo malsukcesis";
 "login_invalid_param" = "Nevalida parametro";
 "login_leave_fallback" = "Nuligi";
@@ -1642,11 +1632,8 @@
 
 // call string
 "call_connecting" = "Konektante…";
-"settings_config_user_id" = "Identigilo de uzanto: %@";
-"settings_config_identity_server" = "Identiga servilo: %@";
 
 // gcm section 
-"settings_config_home_server" = "Hejmservilo: %@";
 "notification_settings_notify_all_other" = "Sciigi por ĉiuj aliaj mesaĝoj/ĉambroj";
 "notification_settings_by_default" = "Implicite…";
 "notification_settings_suppress_from_bots" = "Forteni sciigojn de robotoj";
@@ -1865,10 +1852,8 @@
 
 // Search
 "search_no_results" = "Neniuj rezultoj";
-"group_section" = "Grupoj";
 
 // Groups
-"group_invite_section" = "Invitoj";
 "contact_local_contacts" = "Lokaj kontaktoj";
 
 // Contacts

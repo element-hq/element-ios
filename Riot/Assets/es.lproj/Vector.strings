@@ -697,12 +697,8 @@
 "no" = "No";
 "yes" = "Sí";
 "abort" = "Anular";
-"back" = "Atrás";
-"close" = "Cerrar";
-"continue" = "Continuar";
 "discard" = "Descartar";
 "dismiss" = "Ignorar";
-"retry" = "Re-intentar";
 "sign_up" = "Registrarse";
 "submit" = "Enviar";
 "submit_code" = "Enviar código";
@@ -872,8 +868,6 @@
 "contact_mx_users" = "Usuarios de Matrix";
 "contact_local_contacts" = "Contactos Locales";
 // Groups
-"group_invite_section" = "Invitaciones";
-"group_section" = "Grupos";
 // Search
 "search_no_results" = "No Hay Resultados";
 "search_searching" = "Búsqueda en curso...";
@@ -943,9 +937,6 @@
 "notice_conference_call_finished" = "conferencia de vozIP finalizada";
 // button names 
 "ok" = "Correcto";
-"cancel" = "Cancelar";
-"save" = "Guardar";
-"leave" = "Salir";
 "send" = "Enviar";
 "copy_button_name" = "Copiar";
 "resend" = "Reenviar";
@@ -953,7 +944,6 @@
 "share" = "Compartir";
 "set_power_level" = "Establecer nivel de permisos";
 "delete" = "Eliminar";
-"view" = "Ver";
 // actions 
 "action_logout" = "Cerrar Sesión";
 "create_room" = "Crear Sala";
@@ -964,7 +954,6 @@
 "membership_ban" = "Vetado";
 "num_members_one" = "%@ usuario";
 "num_members_other" = "%@ usuarios";
-"invite" = "Invitar";
 "kick" = "Echar";
 "ban" = "Vetar";
 "unban" = "Quitar Veto";
@@ -973,7 +962,6 @@
 "login_error_already_logged_in" = "Ya ha iniciado sesión";
 "login_error_must_start_http" = "La URL debe comenzar con http[s]://";
 // room details dialog screen
-"room_details_title" = "Detalles de Sala";
 // contacts list screen 
 "invitation_message" = "Me gustaría chatear contigo vía Matrix. Por favor, visita la página http://matrix.org para obtener más información.";
 // Settings screen 
@@ -1006,9 +994,6 @@
 "notification_settings_by_default" = "Por defecto...";
 "notification_settings_notify_all_other" = "Notificar por todos los demás mensajes/salas";
 // gcm section 
-"settings_config_home_server" = "Servidor local: %@";
-"settings_config_identity_server" = "Servidor de identidad: %@";
-"settings_config_user_id" = "ID de Usuario: %@";
 // call string
 "call_waiting" = "Esperando...";
 "call_connecting" = "Conectando llamada...";

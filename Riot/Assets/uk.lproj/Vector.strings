@@ -1797,22 +1797,13 @@
 "send" = "Надіслати";
 "register_error_title" = "Поле реєстрації";
 "login_invalid_param" = "Недійсний параметр";
-"save" = "Зберегти";
 "login_leave_fallback" = "Скасувати";
-"cancel" = "Скасувати";
 "submit" = "Надіслати";
 "sign_up" = "Зареєструватися";
-"retry" = "Повторити";
 "unban" = "Розблокувати";
 "ban" = "Заблокувати";
 "kick" = "Вилучити з бесіди";
-"invite" = "Запросити";
-"leave" = "Вийти";
 "discard" = "Відхилити";
-"continue" = "Продовжити";
-"close" = "Закрити";
-"back" = "Назад";
-"view" = "Вигляд";
 "login_server_url_placeholder" = "URL (наприклад, https://matrix.org)";
 
 // Login Screen
@@ -1926,7 +1917,6 @@
 // room info dialog Screen
 
 // room details dialog screen
-"room_details_title" = "Подробиці про кімнату";
 "login_error_must_start_http" = "URL-адреса повинна починатися з http[s]://";
 "num_members_other" = "%@ користувачів";
 "num_members_one" = "%@ користувач";
@@ -1964,7 +1954,6 @@
 // titles 
 
 // button names 
-"ok" = "Гаразд";
 "notice_declined_video_call_by_you" = "Ви відхилили виклик";
 "notice_ended_video_call_by_you" = "Ви завершили виклик";
 "notice_avatar_url_changed_by_you" = "Ви змінили свій аватар";
@@ -2011,11 +2000,8 @@
 
 // call string
 "call_connecting" = "З'єднання…";
-"settings_config_user_id" = "ID користувача: %@";
-"settings_config_identity_server" = "Сервер ідентифікації: %@";
 
 // gcm section 
-"settings_config_home_server" = "Домашній сервер: %@";
 "notification_settings_other_alerts" = "Інші попередження";
 "notification_settings_select_room" = "Вибрати кімнату";
 "notification_settings_sender_hint" = "@user:domain.com";
@@ -2056,10 +2042,8 @@
 
 // Search
 "search_no_results" = "Немає результатів";
-"group_section" = "Групи";
 
 // Groups
-"group_invite_section" = "Запрошення";
 "contact_local_contacts" = "Локальні контакти";
 
 // Contacts
@@ -2304,13 +2288,8 @@
 "room_creation_alias_placeholder" = "(напр. #foo:example.org)";
 "account_email_validation_message" = "Перевірте свою електронну пошту та натисніть на посилання у ній. Після цього натисніть кнопку Продовжити.";
 "room_displayname_all_other_members_left" = "%@ (виходять)";
-"auth_username_in_use" = "Ім'я користувача зайняте";
-"rename" = "Перейменувати";
 "room_creation_alias_title" = "Псевдоніми кімнати:";
 "account_email_validation_error" = "Не вдалося перевірити адресу електронної пошти. Перевірте свою електронну пошту та натисніть на посилання в ній. Після цього натисніть продовжити";
-"auth_reset_password_error_not_found" = "Не знайдено";
-"auth_reset_password_error_unauthorized" = "Не авторизовано";
-"auth_invalid_user_name" = "Хибне імʼя користувача";
 "ssl_could_not_verify" = "Не вдалося перевірити справжність сервера ідентифікації.";
 "call_consulting_with_user" = "Консультація з %@";
 "local_contacts_access_discovery_warning_title" = "Виявлення користувачів";

@@ -1182,7 +1182,6 @@
 "pin_protection_settings_section_footer" = "A PIN újbóli beállításához újra be kell lépjél és létre kell hozni egy újat.";
 "pin_protection_settings_enabled_forced" = "PIN engedélyezve";
 "pin_protection_settings_enable_pin" = "PIN engedélyezése";
-"pin_protection_settings_section_header" = "PIN";
 "pin_protection_settings_section_header_with_biometrics" = "PIN & %@";
 "biometrics_mode_touch_id" = "Érintéses azonosítás";
 "biometrics_mode_face_id" = "Arc felismerés";
@@ -1680,11 +1679,6 @@
 "login_create_account" = "Fiók létrehozása:";
 "login_server_url_placeholder" = "URL (például https://matrix.org)";
 "login_home_server_title" = "Matrix szerver URL:";
-"view" = "Megtekintés";
-"back" = "Vissza";
-"continue" = "Folytatás";
-"leave" = "Elhagyás";
-"invite" = "Meghívás";
 "login_home_server_info" = "A matrix szerver tárolja minden beszélgetésedet és felhasználói fiók adatodat";
 "login_identity_server_title" = "Azonosítási szerver URL:";
 "login_identity_server_info" = "Matrix biztosít egy azonosító szerver ami nyilvántartja, hogy melyik matrix azonosítóhoz milyen e-mail cím, stb. tartozik. Jelenleg csak a https://matrix.org az egyetlen ilyen szerver.";
@@ -1718,10 +1712,8 @@
 "no" = "Nem";
 "yes" = "Igen";
 "abort" = "Megszakítás";
-"close" = "Bezár";
 "discard" = "Elvetés";
 "dismiss" = "Elutasítás";
-"retry" = "Újra";
 "sign_up" = "Regisztráció";
 "submit" = "Elküldés";
 "submit_code" = "Kód küldése";
@@ -1888,8 +1880,6 @@
 "contact_mx_users" = "Matrix felhasználók";
 "contact_local_contacts" = "Helyi névjegyek";
 // Groups
-"group_invite_section" = "Meghívók";
-"group_section" = "Csoportok";
 // Search
 "search_no_results" = "Nincs találat";
 "search_searching" = "Keresés folyamatban...";
@@ -1960,9 +1950,6 @@
 "notice_conference_call_started" = "VoIP konferencia indult";
 "notice_conference_call_finished" = "VoIP konferencia befejeződött";
 // button names 
-"ok" = "OK";
-"cancel" = "Mégse";
-"save" = "Ment";
 "send" = "Küld";
 "copy_button_name" = "Másol";
 "resend" = "Újraküld";
@@ -1988,7 +1975,6 @@
 "login_error_already_logged_in" = "Már bejelentkeztél";
 "login_error_must_start_http" = "Az URL-nek http[s]:// -sel kell kezdődnie";
 // room details dialog screen
-"room_details_title" = "Szoba adatai";
 // contacts list screen 
 "invitation_message" = "Szeretnék veled beszélgetni a Matrix-szal. További információkért látogasd meg a http://matrix.org weboldalt.";
 // Settings screen 
@@ -2021,9 +2007,6 @@
 "notification_settings_by_default" = "Alapértelmezetten...";
 "notification_settings_notify_all_other" = "Értesítés minden egyéb üzenethez/szobához";
 // gcm section 
-"settings_config_home_server" = "Matrix szerver: %@";
-"settings_config_identity_server" = "Azonosítási szerver: %@";
-"settings_config_user_id" = "Felhasználói azonosító: %@";
 // call string
 "call_waiting" = "Vár...";
 "call_connecting" = "Kapcsolás…";
@@ -2050,8 +2033,6 @@
 "login_error_resource_limit_exceeded_contact_button" = "Adminisztrátor kapcsolatfelvétel";
 // room display name
 "room_displayname_empty_room" = "Üres szoba";
-"room_displayname_two_members" = "%@ és %@";
-"room_displayname_more_than_two_members" = "%@ és %@ mások";
 "e2e_passphrase_create" = "Jelmondat készítés";
 "account_error_push_not_allowed" = "Értesítések nincsenek engedélyezve";
 "notice_room_third_party_revoked_invite" = "%@ visszavonta a a meghívót ehhez a szobához: %@";
@@ -2148,11 +2129,6 @@
 "attachment_size_prompt_message" = "Ezt a beállításokban kikapcsolhatod.";
 "attachment_size_prompt_title" = "Méret megerősítése küldéshez";
 "room_displayname_all_other_participants_left" = "%@ (Bal)";
-"auth_reset_password_error_not_found" = "Nem található";
-"auth_reset_password_error_unauthorized" = "Nem engedélyezett";
-"auth_username_in_use" = "A felhasználónév foglalt";
-"auth_invalid_user_name" = "Érvénytelen felhasználónév";
-"rename" = "Átnevez";
 "room_displayname_all_other_members_left" = "%@ (Bal)";
 "attachment_unsupported_preview_message" = "Ez a fájl típus nem támogatott.";
 "attachment_unsupported_preview_title" = "Az előnézetet nem lehet megjeleníteni";

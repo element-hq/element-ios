@@ -1134,14 +1134,6 @@
 // MARK: - MatrixKit
 
 
-"view" = "보기";
-"back" = "돌아가기";
-"continue" = "계속";
-"leave" = "떠나기";
-"invite" = "초대";
-"retry" = "다시 시도";
-"cancel" = "취소";
-"save" = "저장";
 "matrix" = "Matrix";
 // Login Screen
 "login_create_account" = "계정 만들기:";
@@ -1167,7 +1159,6 @@
 // Action
 "no" = "아니요";
 "yes" = "네";
-"close" = "닫기";
 "sign_up" = "등록하기";
 "submit" = "제출";
 "submit_code" = "코드 제출";
@@ -1372,8 +1363,6 @@
 "contact_mx_users" = "Matrix 사용자";
 "contact_local_contacts" = "로컬 연락처";
 // Groups
-"group_invite_section" = "초대";
-"group_section" = "그룹";
 // Search
 "search_no_results" = "결과 없음";
 "search_searching" = "검색 중...";
@@ -1458,7 +1447,6 @@
 "login_error_already_logged_in" = "이미 로그인됨";
 "login_error_must_start_http" = "URL은 http[s]://로 시작해야 함";
 // room details dialog screen
-"room_details_title" = "방 세부 사항";
 // contacts list screen 
 "invitation_message" = "저는 Matrix로 당신과 대화하고 싶습니다. 자세한 정보는 웹사이트 http://martix.org에 방문해주세요.";
 // Settings screen 
@@ -1491,9 +1479,6 @@
 "notification_settings_by_default" = "기본으로 되돌리기...";
 "notification_settings_notify_all_other" = "모든 다른 메시지/방의 알림";
 // gcm section 
-"settings_config_home_server" = "홈서버: %@";
-"settings_config_identity_server" = "ID 서버: %@";
-"settings_config_user_id" = "사용자 ID: %@";
 // call string
 "call_waiting" = "대기 중...";
 "call_connecting" = "전화 연결 중...";

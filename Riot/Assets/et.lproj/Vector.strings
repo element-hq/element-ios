@@ -1623,10 +1623,6 @@
 "login_optional_field" = "kui soovid";
 "login_display_name_placeholder" = "Kuvatav nimi (näiteks Kadri Maasikas)";
 "login_email_placeholder" = "E-posti aadress";
-"back" = "Tagasi";
-"close" = "Sulge";
-"continue" = "Jätka";
-"retry" = "Proovi uuesti";
 // Settings
 "settings" = "Seadistused";
 "settings_enable_inapp_notifications" = "Võta kasutusele rakenduse-sisesed teavitused";
@@ -1665,8 +1661,6 @@
 "contact_mx_users" = "Matrix'i kasutajad";
 "contact_local_contacts" = "Kohalikud kasutajad";
 // Groups
-"group_invite_section" = "Kutsed";
-"group_section" = "Grupid";
 // Search
 "search_no_results" = "Tulemusi ei ole";
 "search_searching" = "Otsing on pooleli...";
@@ -1681,14 +1675,10 @@
 "not_supported_yet" = "Pole veel toetatud";
 "default" = "vaikimisi";
 "public" = "Avalik";
-"cancel" = "Loobu";
-"save" = "Salvesta";
-"leave" = "Lahku";
 "resend" = "Saada uuesti";
 "redact" = "Eemalda";
 "share" = "Jaga";
 "delete" = "Kustuta";
-"view" = "Näita";
 // actions 
 "action_logout" = "Logi välja";
 "create_room" = "Loo jututuba";
@@ -1697,12 +1687,10 @@
 "membership_invite" = "Kutsutud";
 "num_members_one" = "%@ kasutaja";
 "num_members_other" = "%@ kasutajat";
-"invite" = "Kutsu";
 "kick" = "Eemalda kasutaja vestlusest";
 "unban" = "Eemalda suhtluskeeld";
 "login_error_must_start_http" = "Serveri aadressi alguses peab olema http[s]://";
 // room details dialog screen
-"room_details_title" = "Jututoa üksikasjad";
 "settings_title_notifications" = "Teavitused";
 // Notification settings screen 
 "notification_settings_disable_all" = "Lülita kõik teavitused välja";
@@ -1946,7 +1934,6 @@
 "notice_room_history_visible_to_members_from_invited_point_by_you" = "Sina muutsid jututoa tulevase ajaloo loetavaks kõikidele jututoa liikmetele sellest hetkest, kui nad on kutse saanud.";
 "notice_room_history_visible_to_members_from_joined_point_by_you" = "Sina muutsid jututoa tulevase ajaloo loetavaks kõikidele jututoa liikmetele sellest hetkest, kui nad liitusid jututoaga.";
 // button names 
-"ok" = "Sobib";
 "send" = "Saada";
 "copy_button_name" = "Kopeeri";
 "membership_leave" = "Lahkus";
@@ -1978,9 +1965,6 @@
 "notification_settings_by_default" = "Vaikimisi...";
 "notification_settings_notify_all_other" = "Teavita mind kõikide muude sõnumite ja jututubade puhul";
 // gcm section 
-"settings_config_home_server" = "Koduserver: %@";
-"settings_config_identity_server" = "Isikutuvastusserver: %@";
-"settings_config_user_id" = "Kasutajatunnus: %@";
 // call string
 "call_waiting" = "Ootan...";
 "call_connecting" = "Kõne on ühendamisel…";
@@ -2084,11 +2068,6 @@
 "attachment_size_prompt_message" = "Seadistustest saad määrata, et see funktsionaalsus pole kasutusel.";
 "attachment_size_prompt_title" = "Saatmiseks kinnita meedia suurus";
 "room_displayname_all_other_participants_left" = "%@ (lahkus(id))";
-"auth_reset_password_error_not_found" = "Pole leitav";
-"auth_reset_password_error_unauthorized" = "Tegevus pole lubatud";
-"auth_username_in_use" = "Selline kasutajanimi on juba olemas";
-"auth_invalid_user_name" = "Vigane kasutajanimi";
-"rename" = "Muuda nime";
 "room_displayname_all_other_members_left" = "%@ (lahkus(id))";
 "attachment_unsupported_preview_message" = "See failitüüp ei ole toetatud.";
 "attachment_unsupported_preview_title" = "Eelvaate kuvamine ei õnnestu";

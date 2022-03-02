@@ -56,14 +56,6 @@
 "login_home_server_title" = "Mājas serveria URL:";
 "login_home_server_info" = "Tavs mājas serveris glabā visas sarunas un konta datus";
 "login_identity_server_title" = "Identifikācijas servera URL:";
-"view" = "Skatīt";
-"back" = "Atpakaļ";
-"continue" = "Turpināt";
-"leave" = "Atstāt";
-"invite" = "Uzaicināt";
-"retry" = "Atgriezties";
-"cancel" = "Atcelt";
-"save" = "Saglabāt";
 "login_password_placeholder" = "Parole";
 "login_display_name_placeholder" = "Displeja vārds (piem. Bob Obson)";
 "login_email_placeholder" = "Epasta adrese";
@@ -78,7 +70,6 @@
 "register_error_title" = "Reģistrācija neizdevās";
 "login_error_resource_limit_exceeded_title" = "Resursu Limits Pārsniegts";
 "yes" = "Jā";
-"close" = "Aizvērt";
 "sign_up" = "Pieteikties";
 "start_chat" = "Sākt čatu";
 "start_voice_call" = "Sākt Balss Zvanu";

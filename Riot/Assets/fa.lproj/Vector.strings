@@ -776,7 +776,6 @@
 
 // call string
 "call_waiting" = "در انتظار...";
-"settings_config_user_id" = "شناسه کاربری: %@";
 "settings_config_identity_server" = "سرور هویت‌سنجی: %@";
 
 // gcm section 
@@ -876,12 +875,8 @@
 "submit_code" = "ارسال کد";
 "submit" = "ارسال";
 "sign_up" = "ثبت نام";
-"retry" = "تلاش مجدد";
 "dismiss" = "رد";
 "discard" = "رها کردن";
-"continue" = "ادامه";
-"close" = "بستن";
-"back" = "بازگشت";
 "abort" = "لغو";
 "yes" = "بله";
 
@@ -954,7 +949,6 @@
 // room info dialog Screen
 
 // room details dialog screen
-"room_details_title" = "جزئیات اتاق";
 "login_error_must_start_http" = "آدرس باید با http[s]:// شروع شود";
 
 // Login Screen 
@@ -963,7 +957,6 @@
 "unban" = "لغو تحریم";
 "ban" = "تحریم";
 "kick" = "اخراج";
-"invite" = "دعوت";
 "num_members_other" = "%@ کاربر";
 "num_members_one" = "%@ کاربر";
 "membership_ban" = "تحریم";
@@ -975,16 +968,12 @@
 
 // actions 
 "action_logout" = "خروج";
-"view" = "مشاهده";
 "delete" = "حذف";
 "share" = "اشتراک گذاری";
 "redact" = "حذف";
 "resend" = "ارسال مجدد";
 "copy_button_name" = "کپی";
 "send" = "ارسال";
-"leave" = "ترک";
-"save" = "ذخیره";
-"cancel" = "لغو";
 
 // Room Screen 
 
@@ -1147,7 +1136,6 @@
 "group_section" = "گروه‌ها";
 
 // Groups
-"group_invite_section" = "دعوت‌ها";
 "contact_local_contacts" = "مخاطبین محلی";
 
 // Contacts

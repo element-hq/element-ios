@@ -62,14 +62,6 @@
 "login_server_url_placeholder" = "URL (esim. https://matrix.org)";
 "login_home_server_title" = "Kotipalvelin:";
 "login_identity_server_title" = "Identiteettipalvelin:";
-"view" = "Näytä";
-"back" = "Takaisin";
-"continue" = "Jatka";
-"leave" = "Poistu";
-"invite" = "Kutsu";
-"retry" = "Yritä uudelleen";
-"cancel" = "Peruuta";
-"save" = "Tallenna";
 "login_password_placeholder" = "Salasana";
 "login_optional_field" = "valinnainen";
 "login_home_server_info" = "Kotipalvelin tallentaa kaikki keskustelu- ja tilitietosi";
@@ -174,7 +166,6 @@
 // Login Screen 
 "login_error_already_logged_in" = "Jo sisäänkirjautuneena";
 // room details dialog screen
-"room_details_title" = "Huoneen tiedot";
 "settings_title_notifications" = "Ilmoitukset";
 // Notification settings screen 
 "notification_settings_disable_all" = "Poista käytöstä kaikki ilmoitukset";

@@ -1399,16 +1399,7 @@
 // MARK: - MatrixKit
 
 
-"view" = "Виж";
-"back" = "Назад";
-"continue" = "Продължи";
-"leave" = "Напусни";
-"invite" = "Покани";
-"retry" = "Опитай отново";
-"cancel" = "Отказ";
-"save" = "Запази";
 // room details dialog screen
-"room_details_title" = "Информация";
 "matrix" = "Matrix";
 // Login Screen
 "login_create_account" = "Регистрация:";
@@ -1447,7 +1438,6 @@
 "no" = "Не";
 "yes" = "Да";
 "abort" = "Прекрати";
-"close" = "Затвори";
 "discard" = "Откажи";
 "dismiss" = "Затвори";
 "sign_up" = "Регистрация";
@@ -1611,8 +1601,6 @@
 "contact_mx_users" = "Matrix потребители";
 "contact_local_contacts" = "Локални контакти";
 // Groups
-"group_invite_section" = "Покани";
-"group_section" = "Групи";
 // Search
 "search_no_results" = "Няма резултати";
 "search_searching" = "В процес на търсене...";
@@ -1635,7 +1623,6 @@
 "e2e_passphrase_not_match" = "Паролите трябва да съвпадат";
 // Others
 "user_id_title" = "ID на потребител:";
-"settings_config_user_id" = "ID на потребител: %@";
 "offline" = "офлайн";
 "unsent" = "Неизпратено";
 "error" = "Грешка";
@@ -1738,8 +1725,6 @@
 "notification_settings_notify_all_other" = "Известявай ме за всички други съобщения/стаи";
 "notification_settings_per_word_notifications" = "Известия за конкретна дума";
 // gcm section 
-"settings_config_home_server" = "Home сървър: %@";
-"settings_config_identity_server" = "Сървър за самоличност: %@";
 // call string
 "call_waiting" = "Изчакване...";
 "call_connecting" = "Свързване…";

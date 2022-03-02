@@ -309,8 +309,6 @@
 "settings_privacy_policy" = "Privacybeleid";
 "settings_third_party_notices" = "Derdepartijmeldingen";
 "settings_send_crash_report" = "Anonieme crash- en gebruiksgegevens versturen";
-"settings_clear_cache" = "Cache verwijderen";
-"settings_change_password" = "Matrix account wachtwoord veranderen";
 "settings_old_password" = "oud wachtwoord";
 "settings_new_password" = "nieuw wachtwoord";
 "settings_confirm_password" = "wachtwoord bevestigen";
@@ -1818,12 +1816,8 @@
 "no" = "Nee";
 "yes" = "Ja";
 "abort" = "Afbreken";
-"back" = "Terug";
-"close" = "Sluiten";
-"continue" = "Verdergaan";
 "discard" = "Verwerpen";
 "dismiss" = "Sluiten";
-"retry" = "Opnieuw proberen";
 "sign_up" = "Aanmelden";
 "submit" = "Versturen";
 "submit_code" = "Code versturen";
@@ -2076,17 +2070,12 @@
 // titles 
 
 // button names 
-"ok" = "OK";
-"cancel" = "Annuleren";
-"save" = "Opslaan";
-"leave" = "Verlaten";
 "send" = "Versturen";
 "copy_button_name" = "Kopiëren";
 "resend" = "Opnieuw versturen";
 "redact" = "Verwijderen";
 "share" = "Delen";
 "delete" = "Verwijderen";
-"view" = "Bekijken";
 // actions 
 "action_logout" = "Afmelden";
 "create_room" = "Gesprek aanmaken";
@@ -2097,7 +2086,6 @@
 "membership_ban" = "Verbannen";
 "num_members_one" = "%@ gebruiker";
 "num_members_other" = "%@ gebruikers";
-"invite" = "Uitnodigen";
 "kick" = "Er uit zetten";
 "ban" = "Verbannen";
 "unban" = "Ontbannen";
@@ -2118,7 +2106,6 @@
 // room info dialog Screen
 
 // room details dialog screen
-"room_details_title" = "Kamerdetails";
 // contacts list screen 
 "invitation_message" = "Ik wil graag praten via Matrix. Bezoek de website https://matrix.org voor meer informatie.";
 // Settings screen 
@@ -2151,9 +2138,6 @@
 "notification_settings_by_default" = "Standaard…";
 "notification_settings_notify_all_other" = "Melden voor alle andere berichten/gesprekken";
 // gcm section 
-"settings_config_home_server" = "Thuisserver: %@";
-"settings_config_identity_server" = "Identiteitsserver: %@";
-"settings_config_user_id" = "Gebruikers-ID: %@";
 // Settings keys 
 
 // call string
@@ -2184,8 +2168,6 @@
 "login_desktop_device" = "Desktop";
 "notice_room_related_groups" = "De groepen die geassocieerd zijn met dit gesprek zijn: %@";
 // Groups
-"group_invite_section" = "Uitnodigingen";
-"group_section" = "Groepen";
 "notice_sticker" = "sticker";
 "notice_in_reply_to" = "In antwoord op";
 "error_common_message" = "Er is een fout opgetreden. Probeer het later opnieuw.";
@@ -2297,12 +2279,7 @@
 "attachment_size_prompt_message" = "U kunt dit uitzetten in uw instellingen.";
 "attachment_size_prompt_title" = "Bevestig de afmeting om te versturen";
 "room_displayname_all_other_participants_left" = "%@ (vertrok)";
-"auth_reset_password_error_not_found" = "Niet gevonden";
-"auth_reset_password_error_unauthorized" = "Niet toegestaan";
-"auth_invalid_user_name" = "Ongeldige inlognaam";
 "attachment_unsupported_preview_message" = "Dit bestandstype wordt niet ondersteund.";
 "attachment_unsupported_preview_title" = "Kan geen voorbeeld geven";
 "room_displayname_all_other_members_left" = "%@ (Vertrok)";
-"auth_username_in_use" = "Inlognaam al in gebruik";
-"rename" = "Hernoemen";
 "message_reply_to_sender_sent_their_location" = "deelde hun locatie.";

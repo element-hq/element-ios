@@ -453,12 +453,8 @@
 "submit_code" = "تَسلِيم الرَّمز";
 "submit" = "التَّسلِيم";
 "sign_up" = "الاِشتِراك";
-"retry" = "إعادَةُ المُحاوَلة";
 "dismiss" = "إبعَاد";
 "discard" = "اِستِبعاد";
-"continue" = "الاِستِمرار";
-"close" = "إغلاق";
-"back" = "الرُّجُوع";
 "abort" = "إِجهَاض";
 "yes" = "نَعَم";
 
@@ -718,10 +714,8 @@
 
 // Search
 "search_no_results" = "لَا تُوجَدُ نَتائِج";
-"group_section" = "المَجمُوعات";
 
 // Groups
-"group_invite_section" = "الدَّعَوات";
 "contact_local_contacts" = "جِهاتُ الاِتِّصالِ المَحَلِّيَّة";
 
 // Contacts
@@ -817,7 +811,6 @@
 "unban" = "رَفع-الحَظْر";
 "ban" = "حَظْر";
 "kick" = "طَرد من المحادثة";
-"invite" = "اُدعُ";
 "num_members_other" = "عَدَد %@ مُستَخدِم";
 "num_members_one" = "عَدَد %@ مُستَخدِم";
 "membership_ban" = "حَظْر";
@@ -829,16 +822,12 @@
 
 // actions 
 "action_logout" = "تَسجِيلُ الخُرُوج";
-"view" = "الاِطِّلاع";
 "delete" = "حَذف";
 "share" = "مُشارَكَة";
 "redact" = "إزالَة";
 "resend" = "إعادَة الإرسَال";
 "copy_button_name" = "نَسخ";
 "send" = "إرسَال";
-"leave" = "المُغادَرَة";
-"save" = "حِفظ";
-"cancel" = "إلغَاء";
 
 // Room Screen 
 
@@ -977,11 +966,6 @@
 "e2e_passphrase_too_short" = "عِبارَة المُرُور قَصِيرَةٌ جِدًا (يَجِبُ ألَّا يَقِلَّ طُولهَا عَن %d أحرف)";
 "microphone_access_not_granted_for_voice_message" = "الرَسائِلُ الصَوتيَّةُ تتطَلَبُ الوصُولَ إلَى المِيكرُوفُون لَكِنَ %@ ليسَ لَديهِ إذنٌ لِاستِخدَامِه";
 "message_reply_to_sender_sent_a_voice_message" = "أرسَلَ رِسَالَةً صَوتيَّة.";
-"auth_reset_password_error_not_found" = "لَم يَتُمَ العثور عليه";
-"auth_reset_password_error_unauthorized" = "غَير مُصَرح بِه";
-"auth_username_in_use" = "اسم المُستخدم مأخوذ";
-"auth_invalid_user_name" = "اسم مُستخدِم غَير صَالح";
-"rename" = "إعَادة التسمية";
 "attachment_unsupported_preview_message" = "هذا النوع من المَلَفّ غير مَدعُوم.";
 "attachment_unsupported_preview_title" = "غَير قادر على المُعايَنَة";
 "attachment_large_with_resolution" = "كَبير %@ (~%@)";

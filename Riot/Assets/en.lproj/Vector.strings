@@ -628,9 +628,7 @@ Tap the + to start adding people.";
 "settings_third_party_notices" = "Third-party Notices";
 "settings_analytics_and_crash_data" = "Send crash and analytics data";
 "settings_enable_rageshake" = "Rage shake to report bug";
-"settings_clear_cache" = "Clear cache";
 
-"settings_change_password" = "Change Matrix account password";
 "settings_old_password" = "old password";
 "settings_new_password" = "new password";
 "settings_confirm_password" = "confirm password";
@@ -1620,8 +1618,6 @@ Tap the + to start adding people.";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Confirm";
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Confirm phrase";
 
-"key_backup_setup_passphrase_confirm_passphrase_valid" = "Great!";
-"key_backup_setup_passphrase_confirm_passphrase_invalid" = "Phrase doesn’t match";
 
 "secrets_setup_recovery_passphrase_summary_title" = "Save your Security Phrase";
 "secrets_setup_recovery_passphrase_summary_information" = "Remember your Security Phrase. It can be used to unlock your encrypted messages & data.";
@@ -1958,23 +1954,6 @@ Tap the + to start adding people.";
 // MARK: - MatrixKit
 
 
-/*
- Copyright 2015 OpenMarket Ltd
- Copyright 2017 Vector Creations Ltd
- 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.apache.org/licenses/LICENSE-2.0
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
-
 /* *********************** */
 /*      iOS specific       */
 /* *********************** */
@@ -2024,12 +2003,8 @@ Tap the + to start adding people.";
 "no" = "No";
 "yes" = "Yes";
 "abort" = "Abort";
-"back" = "Back";
-"close" = "Close";
-"continue" = "Continue";
 "discard" = "Discard";
 "dismiss" = "Dismiss";
-"retry" = "Retry";
 "sign_up" = "Sign up";
 "submit" = "Submit";
 "submit_code" = "Submit code";
@@ -2250,8 +2225,6 @@ Tap the + to start adding people.";
 "contact_local_contacts" = "Local Contacts";
 
 // Groups
-"group_invite_section" = "Invites";
-"group_section" = "Groups";
 
 // Search
 "search_no_results" = "No Results";
@@ -2415,18 +2388,12 @@ Tap the + to start adding people.";
 // titles 
 
 // button names 
-"ok" = "OK";
-"cancel" = "Cancel";
-"save" = "Save";
-"leave" = "Leave";
 "send" = "Send";
 "copy_button_name" = "Copy";
 "resend" = "Resend";
 "redact" = "Remove";
 "share" = "Share";
 "delete" = "Delete";
-"view" = "View";
-"rename" = "Rename";
 
 // actions 
 "action_logout" = "Logout";
@@ -2438,7 +2405,6 @@ Tap the + to start adding people.";
 "membership_ban" = "Banned";
 "num_members_one" = "%@ user";
 "num_members_other" = "%@ users";
-"invite" = "Invite";
 "kick" = "Remove from chat";
 "ban" = "Ban";
 "unban" = "Un-ban";
@@ -2461,7 +2427,6 @@ Tap the + to start adding people.";
 // room info dialog Screen
 
 // room details dialog screen
-"room_details_title" = "Room Details";
 
 // contacts list screen 
 "invitation_message" = "I\'d like to chat with you with matrix. Please, visit the website http://matrix.org to have more information.";
@@ -2498,9 +2463,7 @@ Tap the + to start adding people.";
 "notification_settings_notify_all_other" = "Notify for all other messages/rooms";
 
 // gcm section 
-"settings_config_home_server" = "Homeserver: %@";
 "settings_config_identity_server" = "Identity server: %@";
-"settings_config_user_id" = "User ID: %@";
 
 // Settings keys 
 
@@ -2536,7 +2499,3 @@ Tap the + to start adding people.";
 "ssl_expected_existing_expl" = "The certificate has changed from a previously trusted one to one that is not trusted. The server may have renewed its certificate. Contact the server administrator for the expected fingerprint.";
 "ssl_only_accept" = "ONLY accept the certificate if the server administrator has published a fingerprint that matches the one above.";
 
-"auth_invalid_user_name" = "Invalid username";
-"auth_username_in_use" = "Username in use";
-"auth_reset_password_error_unauthorized" = "Unauthorized";
-"auth_reset_password_error_not_found" = "Not found";

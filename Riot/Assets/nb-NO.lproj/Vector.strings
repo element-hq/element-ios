@@ -1545,12 +1545,8 @@
 "submit_code" = "Send inn kode";
 "submit" = "Send inn";
 "sign_up" = "Meld deg på";
-"retry" = "Prøv på nytt";
 "dismiss" = "Ignorer";
 "discard" = "Forkast";
-"continue" = "Fortsett";
-"close" = "Lukk";
-"back" = "Tilbake";
 "abort" = "Avbryt";
 "yes" = "Ja";
 
@@ -1736,7 +1732,6 @@
 "room_error_name_edition_not_authorized" = "Du har ikke autorisasjon til å redigere dette romnavnet";
 
 // Groups
-"group_invite_section" = "Invitasjoner";
 "contact_local_contacts" = "Lokale kontakter";
 
 // Contacts
@@ -1758,7 +1753,6 @@
 
 // Search
 "search_no_results" = "Ingen resultater";
-"group_section" = "Grupper";
 "format_time_h" = "t";
 "format_time_m" = "m";
 
@@ -1878,15 +1872,11 @@
 
 // actions 
 "action_logout" = "Logg ut";
-"view" = "Visning";
 "delete" = "Slett";
 "share" = "Del";
 "redact" = "Fjern";
 "copy_button_name" = "Kopier";
 "send" = "Send";
-"leave" = "Forlat";
-"save" = "Lagre";
-"cancel" = "Avbryt";
 
 // Room Screen 
 
@@ -1929,7 +1919,6 @@
 "notice_room_name_removed_by_you" = "Du fjernet romnavnet";
 "notice_conference_call_request_by_you" = "Du ba om en VoIP-konferanse";
 "kick" = "Utvis";
-"invite" = "Inviter";
 "num_members_other" = "%@ brukere";
 "num_members_one" = "%@ bruker";
 "membership_ban" = "Utestengt";
@@ -1963,7 +1952,6 @@
 // room info dialog Screen
 
 // room details dialog screen
-"room_details_title" = "Romdetaljer";
 "login_error_must_start_http" = "URL må starte med http[s]://";
 
 // Login Screen 
@@ -2000,11 +1988,8 @@
 
 // call string
 "call_connecting" = "Kobler til…";
-"settings_config_user_id" = "Bruker-ID: %@";
-"settings_config_identity_server" = "Identitetsserver: %@";
 
 // gcm section 
-"settings_config_home_server" = "Hjemmeserver: %@";
 "incoming_voice_call" = "Innkommende taleanrop";
 "call_invite_expired" = "Anropsinvitasjon utløpt";
 

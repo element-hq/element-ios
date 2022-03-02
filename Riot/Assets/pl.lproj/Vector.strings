@@ -1619,11 +1619,7 @@
 // Action
 "no" = "Nie";
 "yes" = "Tak";
-"back" = "Powrót";
-"close" = "Zamknij";
-"continue" = "Kontynuuj";
 "dismiss" = "Zamknij";
-"retry" = "Ponów";
 "submit" = "Wyślij";
 "login_home_server_title" = "URL serwera domowego:";
 "login_display_name_placeholder" = "Wyświetlana nazwa (np. Bob Obson)";
@@ -1665,10 +1661,7 @@
 "call_ring" = "Dzwonię…";
 "call_ended" = "Zakończono połączenie";
 "call_connecting" = "Łączenie…";
-"settings_config_user_id" = "ID użytkownika: %@";
-"settings_config_identity_server" = "Serwer tożsamości: %@";
 // gcm section 
-"settings_config_home_server" = "Serwer Domowy: %@";
 "notification_settings_notify_all_other" = "Powiadamiaj o wszystkich innych wiadomośsciach/pokojach";
 "notification_settings_select_room" = "Wybierz pokój";
 "notification_settings_sender_hint" = "@user:domain.com";
@@ -1677,7 +1670,6 @@
 "notification_settings_disable_all" = "Wyłącz wszystkie powiadomienia";
 "settings_title_notifications" = "Powiadomienia";
 // room details dialog screen
-"room_details_title" = "Szczegóły pokoju";
 "login_error_must_start_http" = "URL musi zaczynać się od http[s]://";
 "select_account" = "Wybierz konto";
 "show_details" = "Pokaż szczegóły";
@@ -1735,14 +1727,12 @@
 "ban" = "Zbanuj";
 "unban" = "Odbanuj";
 "kick" = "Wyproś";
-"invite" = "Zaproś";
 "num_members_other" = "%@ użytkowników";
 "num_members_one" = "%@ użytkownik";
 "create_account" = "Stwórz konto";
 "create_room" = "Utwórz pokój";
 // actions 
 "action_logout" = "Wyloguj";
-"view" = "Podgląd";
 "delete" = "Usuń";
 "set_power_level" = "Ustaw poziom uprawnień";
 "share" = "Udostępnij";
@@ -1750,11 +1740,7 @@
 "resend" = "Wyślij ponownie";
 "copy_button_name" = "Kopiuj";
 "send" = "Wyślij";
-"leave" = "Opuść";
-"save" = "Zapisz";
-"cancel" = "Anuluj";
 // button names 
-"ok" = "OK";
 "notice_conference_call_finished" = "Zakończono konferencję VoIP";
 "notice_conference_call_started" = "Rozpoczęto konferencję VoIP";
 "notice_conference_call_request" = "%@ zaprasza do konferencji VoIP";
@@ -1772,10 +1758,8 @@
 
 // Search
 "search_no_results" = "Brak wyników";
-"group_section" = "Grupy";
 
 // Groups
-"group_invite_section" = "Zaproszenia";
 "attachment_e2e_keys_import" = "Importuj...";
 "attachment_multiselection_original" = "Rzeczywisty rozmiar";
 "attachment_multiselection_size_prompt" = "Czy chcesz wysłać obrazy jako:";
@@ -2093,12 +2077,7 @@
 "attachment_small_with_resolution" = "Mały %@ (~%@)";
 "attachment_size_prompt_message" = "Możesz to wyłączyć w ustawieniach.";
 "attachment_size_prompt_title" = "Potwierdź rozmiar, który chcesz wysłać";
-"auth_reset_password_error_not_found" = "Nie znaleziono";
-"auth_reset_password_error_unauthorized" = "Brak autoryzacji";
-"auth_invalid_user_name" = "Niepoprawna nazwa użytkownika";
 "attachment_unsupported_preview_message" = "Ten format pliku nie jest obsługiwany.";
 "attachment_unsupported_preview_title" = "Brak podglądu";
 "message_reply_to_sender_sent_their_location" = "udostępnił(-a) swoją lokację.";
 "room_displayname_all_other_members_left" = "%@ (Opuścił-a)";
-"auth_username_in_use" = "Nazwa użytkownika jest już używana";
-"rename" = "Zmień nazwę";

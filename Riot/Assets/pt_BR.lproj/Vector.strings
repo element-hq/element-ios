@@ -1660,15 +1660,7 @@
 "login_prompt_email_token" = "Por favor entre seu token de validação de email:";
 "login_error_title" = "Login Falhou";
 "login_error_no_login_flow" = "Nós falhamos para recuperar informação de autenticação deste servidorcasa";
-"view" = "Visualizar";
 "login_error_do_not_support_login_flows" = "Atualmente nós não suportamos qualquer ou todos os fluxos de login definidos por este servidorcasa";
-"back" = "Voltar";
-"continue" = "Continuar";
-"leave" = "Sair";
-"invite" = "Convidar";
-"retry" = "Retentar";
-"cancel" = "Cancelar";
-"save" = "Salvar";
 "login_error_registration_is_not_supported" = "Registro não é suportado atualmente";
 "login_error_forbidden" = "Nome de usuária(o)/senha inválidos";
 "login_error_unknown_token" = "O token de acesso especificado não foi reconhecido";
@@ -1681,7 +1673,6 @@
 "no" = "Não";
 "yes" = "Sim";
 "abort" = "Abortar";
-"close" = "Fechar";
 "discard" = "Descartar";
 "dismiss" = "Dispensar";
 "sign_up" = "Fazer signup";
@@ -1869,8 +1860,6 @@
 "contact_mx_users" = "Usuárias(os) Matrix";
 "contact_local_contacts" = "Contatos Locais";
 // Groups
-"group_invite_section" = "Convites";
-"group_section" = "Grupos";
 // Search
 "search_no_results" = "Nenhum Resultado";
 "search_searching" = "Pesquisa em Progresso...";
@@ -1941,7 +1930,6 @@
 "notice_conference_call_started" = "Conferência de VoIP começada";
 "notice_conference_call_finished" = "Conferência de VoIP terminada";
 // button names 
-"ok" = "OK";
 "send" = "Enviar";
 "copy_button_name" = "Copiar";
 "resend" = "Reenviar";
@@ -1966,7 +1954,6 @@
 "login_error_already_logged_in" = "Login já feito";
 "login_error_must_start_http" = "URL deve começar com http[s]://";
 // room details dialog screen
-"room_details_title" = "Detalhes de Sala";
 // contacts list screen 
 "invitation_message" = "Eu gostaria de conversar com você com matrix. Por favor, visite o website http://matrix.org para ter mais informação.";
 // Settings screen 
@@ -1999,9 +1986,6 @@
 "notification_settings_by_default" = "Por default...";
 "notification_settings_notify_all_other" = "Notificar para todas as outras mensagens/salas";
 // gcm section 
-"settings_config_home_server" = "Servidorcasa: %@";
-"settings_config_identity_server" = "Servidor de identidade: %@";
-"settings_config_user_id" = "ID de usuária(o): %@";
 // call string
 "call_waiting" = "Aguardando...";
 "call_connecting" = "Conectando…";
@@ -2116,11 +2100,6 @@
 "attachment_size_prompt_message" = "Você pode desligar isto em ajustes.";
 "attachment_size_prompt_title" = "Confirmar tamanho para enviar";
 "room_displayname_all_other_participants_left" = "%@ (Saiu)";
-"auth_reset_password_error_not_found" = "Não encontrado";
-"auth_reset_password_error_unauthorized" = "Não-autorizada(o)";
-"auth_username_in_use" = "Nome de usuária(o) em uso";
-"auth_invalid_user_name" = "Nome de usuária(o) inválido";
-"rename" = "Renomear";
 "room_displayname_all_other_members_left" = "%@ (Saiu)";
 "attachment_unsupported_preview_message" = "Este tipo de arquivo não é suportado.";
 "attachment_unsupported_preview_title" = "Incapaz de previsualizar";

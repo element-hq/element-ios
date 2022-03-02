@@ -1671,12 +1671,8 @@
 "no" = "Không";
 "yes" = "Có";
 "abort" = "Huỷ bỏ";
-"back" = "Trở về";
-"close" = "Đóng";
-"continue" = "Tiếp tục";
 "discard" = "Huỷ bỏ";
 "dismiss" = "Bỏ qua";
-"retry" = "Thử lại";
 "sign_up" = "Đăng kí";
 "submit" = "Gửi đi";
 "submit_code" = "Gửi mã lên";
@@ -1907,9 +1903,6 @@
 "notice_conference_call_finished" = "Cuộc gọi hội nghị VoIP đã kết thúc";
 // button names 
 "ok" = "OK";
-"cancel" = "Huỷ";
-"save" = "Lưu";
-"leave" = "Rời khỏi";
 "send" = "Gửi";
 "copy_button_name" = "Sao chép";
 "resend" = "Gửi lại";
@@ -1917,7 +1910,6 @@
 "share" = "Chia sẻ";
 "set_power_level" = "Độ nhiệt huyết";
 "delete" = "Xoá";
-"view" = "Xem";
 // actions 
 "action_logout" = "Đăng xuất";
 "create_room" = "Tạo phòng";
@@ -1928,7 +1920,6 @@
 "membership_ban" = "Bị cấm";
 "num_members_one" = "%@ người dùng";
 "num_members_other" = "%@ người dùng";
-"invite" = "Mời";
 "kick" = "Đá";
 "ban" = "Cấm";
 "unban" = "Huỷ cấm";
@@ -1937,7 +1928,6 @@
 "login_error_already_logged_in" = "Đã đăng nhập";
 "login_error_must_start_http" = "URL phải bắt đầu với http[s]://";
 // room details dialog screen
-"room_details_title" = "Chi tiết phòng chat";
 // contacts list screen 
 "invitation_message" = "Tôi muốn trò chuyện với bạn với matrix. Vui lòng truy cập trang web http://matrix.org để biết thêm thông tin.";
 // Settings screen 
@@ -1970,9 +1960,6 @@
 "notification_settings_by_default" = "Theo mặc định...";
 "notification_settings_notify_all_other" = "Thông báo cho tất cả tin nhắn/phòng";
 // gcm section 
-"settings_config_home_server" = "Home server: %@";
-"settings_config_identity_server" = "Máy chủ xác thực: %@";
-"settings_config_user_id" = "ID Người dùng: %@";
 // call string
 "call_waiting" = "Đang đợi...";
 "call_connecting" = "Đang kết nối cuộc gọi...";

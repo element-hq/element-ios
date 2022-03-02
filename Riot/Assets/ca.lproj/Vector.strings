@@ -569,14 +569,6 @@
 "login_password_placeholder" = "Contrasenya";
 "login_optional_field" = "opcional";
 "login_email_placeholder" = "Adreça de correu electrònic";
-"view" = "Veure";
-"back" = "Torna";
-"continue" = "Continua";
-"leave" = "Sortir";
-"invite" = "Convida";
-"retry" = "Torna a provar";
-"cancel" = "Cancel·lar";
-"save" = "Desar";
 // Login Screen
 "login_create_account" = "Crear compte:";
 "login_server_url_placeholder" = "URL (ex. https://matrix.org)";
@@ -587,7 +579,6 @@
 "login_user_id_placeholder" = "ID a Matrix (ex @bob:matrix.org o bob)";
 "login_display_name_placeholder" = "Mostra nom (ex. Bob Obson)";
 // room details dialog screen
-"room_details_title" = "Detalls de la sala";
 "login_email_info" = "Especificar una adreça de correu electrònic permet que altres usuaris et trobin més fàcilment a Matrix i et proporcionarà una manera de restablir la teva contrasenya en el futur.";
 "login_prompt_email_token" = "Introduïu el teu codi de validació de correu electrònic:";
 "login_error_title" = "Error d'inici de sessió";
@@ -613,7 +604,6 @@
 "no" = "No";
 "yes" = "Sí";
 "abort" = "Avortar";
-"close" = "Tanca";
 "discard" = "Descarta";
 "dismiss" = "Omet";
 "sign_up" = "Registre";
@@ -778,8 +768,6 @@
 "contact_mx_users" = "Usuaris de Matrix";
 "contact_local_contacts" = "Contactes locals";
 // Groups
-"group_invite_section" = "Convits";
-"group_section" = "Grups";
 // Search
 "search_no_results" = "Sense resultats";
 "search_searching" = "Cercant...";
@@ -906,9 +894,6 @@
 "notification_settings_by_default" = "Per defecte...";
 "notification_settings_notify_all_other" = "Notifica tots els altres missatges/sales";
 // gcm section 
-"settings_config_home_server" = "Servidor hoste: %@";
-"settings_config_identity_server" = "Servidor d'identitat: %@";
-"settings_config_user_id" = "ID d'usuari: %@";
 // call string
 "call_waiting" = "Esperant...";
 "call_connecting" = "Establint la trucada...";

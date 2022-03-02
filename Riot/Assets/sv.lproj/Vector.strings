@@ -1651,12 +1651,8 @@
 "no" = "Nej";
 "yes" = "Ja";
 "abort" = "Avbryt";
-"back" = "Tillbaka";
-"close" = "Stäng";
-"continue" = "Fortsätt";
 "discard" = "Släng";
 "dismiss" = "Avvisa";
-"retry" = "Försök igen";
 "sign_up" = "Bli medlem";
 "submit" = "Skicka";
 "submit_code" = "Skicka kod";
@@ -1831,8 +1827,6 @@
 "contact_mx_users" = "Matrixanvändare";
 "contact_local_contacts" = "Lokala kontakter";
 // Groups
-"group_invite_section" = "Inbjudningar";
-"group_section" = "Grupper";
 // Search
 "search_no_results" = "Inga resultat";
 "search_searching" = "Sökning pågår…";
@@ -1941,17 +1935,12 @@
 "notice_room_history_visible_to_members_from_invited_point_by_you" = "Du gjorde framtida rumshistorik synlig för alla rumsmedlemmar från när de bjöds in.";
 "notice_room_history_visible_to_members_from_joined_point_by_you" = "Du gjorde framtida rumshistorik synlig för alla rumsmedlemmar från när de gick med.";
 // button names 
-"ok" = "OK";
-"cancel" = "Avbryt";
-"save" = "Spara";
-"leave" = "Lämna";
 "send" = "Skicka";
 "copy_button_name" = "Kopiera";
 "resend" = "Skicka igen";
 "redact" = "Ta bort";
 "share" = "Dela";
 "delete" = "Radera";
-"view" = "Visa";
 // actions 
 "action_logout" = "Logga ut";
 "create_room" = "Skapa rum";
@@ -1962,7 +1951,6 @@
 "membership_ban" = "Bannade";
 "num_members_one" = "%@ användare";
 "num_members_other" = "%@ användare";
-"invite" = "Bjud in";
 "kick" = "Ta bort från chatten";
 "ban" = "Banna";
 "unban" = "Avbanna";
@@ -1971,7 +1959,6 @@
 "login_error_already_logged_in" = "Redan inloggad";
 "login_error_must_start_http" = "URL:en måste börja på http[s]://";
 // room details dialog screen
-"room_details_title" = "Rumsdetaljer";
 // contacts list screen 
 "invitation_message" = "Jag vill chatta med dig på Matrix. Besök sidan https://matrix.org för mer information.";
 // Settings screen 
@@ -2004,9 +1991,6 @@
 "notification_settings_by_default" = "Som förval…";
 "notification_settings_notify_all_other" = "Avisera för alla andra meddelanden/rum";
 // gcm section 
-"settings_config_home_server" = "Hemserver: %@";
-"settings_config_identity_server" = "Identitetsserver: %@";
-"settings_config_user_id" = "Användar-ID: %@";
 // call string
 "call_waiting" = "Väntar…";
 "call_connecting" = "Ansluter…";
@@ -2080,11 +2064,6 @@
 "attachment_size_prompt_message" = "Du kan stänga av detta i inställningarna.";
 "attachment_size_prompt_title" = "Bekräfta storlek att skicka";
 "room_displayname_all_other_participants_left" = "%@ (Kvar)";
-"auth_reset_password_error_not_found" = "Hittades inte";
-"auth_reset_password_error_unauthorized" = "Obehörig";
-"auth_username_in_use" = "Användarnamn upptaget";
-"auth_invalid_user_name" = "Ogiltigt användarnamn";
-"rename" = "Döp om";
 "attachment_unsupported_preview_message" = "Den här filtypen stöds inte.";
 "attachment_unsupported_preview_title" = "Kunde inte förhandsgranska";
 "room_displayname_all_other_members_left" = "%@ (Kvar)";

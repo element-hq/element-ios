@@ -1793,13 +1793,6 @@
 
 
 
-"auth_username_in_use" = "Nama pengguna telah dipakai";
-"invite" = "Undang";
-"rename" = "Ubah Nama";
-"view" = "Tampilkan";
-"cancel" = "Batalkan";
-"leave" = "Tinggalkan";
-"save" = "Simpan";
 "notice_room_power_level_intro_for_dm" = "Level kekuatan anggota pesan langsung adalah:";
 "notice_room_power_level_intro" = "Level kekuatan anggota ruangan adalah:";
 "notice_room_join_rule_public_by_you_for_dm" = "Anda membuat pesan langsung ini publik.";
@@ -1852,12 +1845,8 @@
 "submit_code" = "Kirim kode";
 "submit" = "Kirim";
 "sign_up" = "Daftar";
-"retry" = "Coba Lagi";
 "dismiss" = "Lupakan";
 "discard" = "Buang";
-"continue" = "Lanjutkan";
-"close" = "Tutup";
-"back" = "Kembali";
 "abort" = "Batalkan";
 "yes" = "Ya";
 
@@ -1907,9 +1896,6 @@
 /* *********************** */
 
 "matrix" = "Matrix";
-"auth_reset_password_error_not_found" = "Tidak ditemukan";
-"auth_reset_password_error_unauthorized" = "Tidak diotorisasi";
-"auth_invalid_user_name" = "Nama pengguna tidak valid";
 "ssl_only_accept" = "HANYA terima sertifikat jika administrator server telah mempublikasikan sidik jari yang cocok dengan sidik jari di atas.";
 "ssl_expected_existing_expl" = "Sertifikat ini telah berubah dari yang sebelumnya tepercaya menjadi yang tidak tepercaya. Servernya mungkin telah memperbarui sertifikatnya. Hubungi administrator server untuk sidik jari yang diharapkan.";
 "ssl_unexpected_existing_expl" = "Sertifikat ini telah berubah dari yang dipercaya oleh ponsel Anda. Ini SANGAT TIDAK BIASA. Anda disarankan untuk TIDAK MENERIMA sertifikat baru ini.";
@@ -1944,11 +1930,8 @@
 
 // call string
 "call_connecting" = "Menghubungkan…";
-"settings_config_user_id" = "ID Pengguna: %@";
-"settings_config_identity_server" = "Server identitas: %@";
 
 // gcm section 
-"settings_config_home_server" = "Homeserver: %@";
 "notification_settings_notify_all_other" = "Beritahu untuk semua pesan/ruangan lainnya";
 "notification_settings_by_default" = "Secara default...";
 "notification_settings_suppress_from_bots" = "Jangan beritahu saya tentang notifikasi dari bot";
@@ -1994,7 +1977,6 @@
 // room info dialog Screen
 
 // room details dialog screen
-"room_details_title" = "Detail Ruangan";
 "login_error_must_start_http" = "URL harus dimulai dengan http[s]://";
 
 // Login Screen 
@@ -2042,7 +2024,6 @@
 // titles 
 
 // button names 
-"ok" = "OKE";
 "notice_room_history_visible_to_members_from_joined_point_by_you_for_dm" = "Anda membuat sejarah pesan di masa mendatang dapat dilihat oleh semuanya, sejak mereka bergabung.";
 "notice_room_history_visible_to_members_from_joined_point_by_you" = "Anda membuat sejarah ruangan di masa mendatang dapat dilihat oleh semua anggota ruang, sejak mereka bergabung.";
 "notice_encryption_enabled_unknown_algorithm_by_you" = "Anda mengaktifkan enkripsi ujung-ke-ujung (algoritma %@ tidak dikenal).";
@@ -2186,10 +2167,8 @@
 
 // Search
 "search_no_results" = "Tidak Ada Hasil";
-"group_section" = "Grup";
 
 // Groups
-"group_invite_section" = "Undangan";
 "contact_local_contacts" = "Kontak Local";
 
 // Contacts

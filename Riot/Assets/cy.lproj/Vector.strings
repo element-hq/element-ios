@@ -1054,12 +1054,8 @@
 "no" = "Na";
 "yes" = "Ie";
 "abort" = "Cefnu";
-"back" = "Yn ôl";
-"close" = "Cau";
-"continue" = "Parhau";
 "discard" = "Taflu";
 "dismiss" = "Wfftio";
-"retry" = "Ailgynnig";
 "sign_up" = "Cofrestri";
 "submit" = "Anfon";
 "submit_code" = "Anfon côd";
@@ -1233,8 +1229,6 @@
 "contact_mx_users" = "Defnyddwyr Matrix";
 "contact_local_contacts" = "Cysylltiadau Lleol";
 // Groups
-"group_invite_section" = "Gwahoddiadau";
-"group_section" = "Grwpiau";
 // Search
 "search_no_results" = "Dum Canluniadau";
 "search_searching" = "Chwilio ar y gweill...";
@@ -1308,16 +1302,12 @@
 "notice_conference_call_finished" = "Gorffenwyd cynhadledd VoIP";
 // button names 
 "ok" = "Iawn";
-"cancel" = "Canslo";
-"save" = "Cadw";
-"leave" = "Gadael";
 "send" = "Anfon";
 "copy_button_name" = "Copi";
 "resend" = "Ail-anfon";
 "redact" = "Tynnu";
 "share" = "Rhannu";
 "delete" = "Dileu";
-"view" = "Gweld";
 // actions 
 "action_logout" = "Allgofnodi";
 "create_room" = "Creu Ystafell";
@@ -1328,7 +1318,6 @@
 "membership_ban" = "Gwaharddedig";
 "num_members_one" = "%@ defnyddiwr";
 "num_members_other" = "%@ defnyddiwr";
-"invite" = "Gwahodd";
 "kick" = "Cic";
 "ban" = "Gwahardd";
 "unban" = "Dad-wahardd";
@@ -1337,7 +1326,6 @@
 "login_error_already_logged_in" = "Wedi mewngofnodi eisoes";
 "login_error_must_start_http" = "Rhaid i URL ddechrau â http[s]://";
 // room details dialog screen
-"room_details_title" = "Manylion Ystafell";
 // contacts list screen 
 "invitation_message" = "Hoffwn sgwrsio â chi gyda Matrix. Os gwelwch yn dda, ewch i'r wefan https://matrix.org i gael mwy o wybodaeth.";
 // Settings screen 
@@ -1370,9 +1358,6 @@
 "notification_settings_by_default" = "Yn ddiofyn...";
 "notification_settings_notify_all_other" = "Hysbysu am yr holl negeseuon / ystafelloedd eraill";
 // gcm section 
-"settings_config_home_server" = "Hafanweinydd: %@";
-"settings_config_identity_server" = "Gweinydd adnabod: %@";
-"settings_config_user_id" = "ID Defnyddiwr: %@";
 // call string
 "call_waiting" = "Aros...";
 "call_connecting" = "Cysylltu galwad...";

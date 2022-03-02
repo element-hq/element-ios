@@ -1695,12 +1695,8 @@
 "no" = "Nein";
 "yes" = "Ja";
 "abort" = "Abbrechen";
-"back" = "Zurück";
-"close" = "Schließen";
-"continue" = "Fortsetzen";
 "discard" = "Verwerfen";
 "dismiss" = "Ablehnen";
-"retry" = "Wiederholen";
 "sign_up" = "Registrieren";
 "submit" = "Absenden";
 "submit_code" = "Code übermitteln";
@@ -1893,8 +1889,6 @@
 "contact_mx_users" = "Matrixbenutzer";
 "contact_local_contacts" = "Lokale Kontakte";
 // Groups
-"group_invite_section" = "Einladungen";
-"group_section" = "Gruppen";
 // Search
 "search_no_results" = "Nichts gefunden";
 "search_searching" = "Suche wird durchgeführt...";
@@ -2026,18 +2020,12 @@
 // titles
 
 // button names
-"ok" = "OK";
-"cancel" = "Abbruch";
-"save" = "Speichern";
-"leave" = "Verlassen";
 "send" = "Senden";
 "copy_button_name" = "Kopieren";
 "resend" = "Erneut senden";
 "redact" = "Entfernen";
 "share" = "Teilen";
-"set_power_level" = "Berechtigungslevel";
 "delete" = "Löschen";
-"view" = "Ansehen";
 // actions
 "action_logout" = "Abmelden";
 "create_room" = "Erstelle Raum";
@@ -2048,7 +2036,6 @@
 "membership_ban" = "Gesperrt";
 "num_members_one" = "%@ Benutzer";
 "num_members_other" = "%@ Benutzer";
-"invite" = "Einladen";
 "kick" = "Entfernen";
 "ban" = "Sperren";
 "unban" = "Entsperren";
@@ -2069,7 +2056,6 @@
 // room info dialog Screen
 
 // room details dialog screen
-"room_details_title" = "Raumdetails";
 // contacts list screen
 "invitation_message" = "Ich würde gerne über Matrix mit dir chatten. Du kannst dich auf https://matrix.org darüber informieren.";
 // Settings screen
@@ -2102,9 +2088,6 @@
 "notification_settings_by_default" = "Als Standard...";
 "notification_settings_notify_all_other" = "Benachrichtige für alle andereren Nachrichten/Räume";
 // gcm section
-"settings_config_home_server" = "Heimserver: %@";
-"settings_config_identity_server" = "Identitätsserver: %@";
-"settings_config_user_id" = "Benutzer-ID: %@";
 // Settings keys
 
 // call string
@@ -2151,12 +2134,7 @@
 "attachment_medium_with_resolution" = "Mittel %@ (~%@)";
 "attachment_small_with_resolution" = "Klein %@ (~%@)";
 "attachment_size_prompt_message" = "Dies kannst du in den Einstellungen abschalten.";
-"auth_reset_password_error_not_found" = "Nicht gefunden";
-"auth_username_in_use" = "Benutzername bereits verwendet";
-"auth_invalid_user_name" = "Ungültiger Benutzername";
-"rename" = "Umbenennen";
 "attachment_unsupported_preview_message" = "Dieser Dateityp wird nicht unterstützt.";
 "attachment_unsupported_preview_title" = "Vorschau kann nicht angezeigt werden";
-"auth_reset_password_error_unauthorized" = "Nicht Authorisiert";
 "message_reply_to_sender_sent_their_location" = "hat den eigenen Standort geteilt.";
 "room_displayname_all_other_members_left" = "%@ (Verlassen)";

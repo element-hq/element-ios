@@ -1119,9 +1119,6 @@
 "settings" = "Ezarpenak";
 // button names 
 "ok" = "Ados";
-"cancel" = "Utzi";
-"save" = "Gorde";
-"leave" = "Atera";
 "send" = "Bidali";
 "copy_button_name" = "Kopiatu";
 "resend" = "Birbidali";
@@ -1130,8 +1127,6 @@
 "delete" = "Ezabatu";
 "room_no_power_to_create_conference_call" = "Gonbidatzeko baimena behar duzu gela honetan konferentzia bat hasteko";
 "room_no_conference_call_in_encrypted_rooms" = "Konferentzia deiak ez daude onartuta zifratutako geletan";
-"invite" = "Gonbidatu";
-"close" = "Itxi";
 "start_voice_call" = "Hasi ahots deia";
 "start_video_call" = "Hasi bideo deia";
 "submit" = "Bidali";
@@ -1151,7 +1146,6 @@
 "call_ended" = "Deia amaitu da";
 "incoming_video_call" = "Bideo-deia jasotzen";
 "incoming_voice_call" = "Ahots-deia jasotzen";
-"continue" = "Jarraitu";
 // Time
 "format_time_s" = "s";
 "format_time_m" = "m";
@@ -1171,7 +1165,6 @@
 "ssl_expected_existing_expl" = "Ziurtagiria aldatu da, onartutako batetik onartu gabeko batera. Agian Zerbitzariak ziurtagiria berriztu du. Jarri kontaktuan zerbitzariaren kudeatzailearekin hatz-marka eskatzeko.";
 "ssl_only_accept" = "SOILIK onartu ziurtagiria zerbitzariaren kudeatzaileak goikoarekin bat datorren hatz-marka bat argitaratu badu.";
 // room details dialog screen
-"room_details_title" = "Gelaren xehetasunak";
 "cancel_upload" = "Utzi igoera";
 "cancel_download" = "Utzi deskarga";
 "settings_title_notifications" = "Jakinarazpenak";
@@ -1200,9 +1193,6 @@
 "room_event_encryption_info_unverify" = "Kendu egiaztaketa";
 "room_event_encryption_info_block" = "Blokeatu";
 "room_event_encryption_info_unblock" = "Desblokeatu";
-"view" = "Ikusi";
-"back" = "Atzera";
-"retry" = "Saiatu berriro";
 "dismiss" = "Baztertu";
 "start_chat" = "Hasi txata";
 "room_event_encryption_info_event_unencrypted" = "zifratu gabe";
@@ -1445,9 +1435,6 @@
 "notification_settings_by_default" = "Lehenetsita…";
 "notification_settings_notify_all_other" = "Jakinarazi beste mezu/gela guztietarako";
 // gcm section 
-"settings_config_home_server" = "Hasiera-zerbitzaria: %@";
-"settings_config_identity_server" = "Identitate zerbitzaria: %@";
-"settings_config_user_id" = "Erabiltzaile ID-a: %@";
 // call string
 "call_waiting" = "Itxaroten…";
 "call_connecting" = "Deia konektatzen…";
@@ -1464,8 +1451,6 @@
 "notification_settings_per_word_info" = "Hitzak ez dituzte bereizten maiuskula eta minuskulak, eta * komodina izan dezakete. Beraz:\nmar bat dator mar katearekin hitz mugatzaileez inguratuta dagoenean (adib. puntuazioa, zuriunea, lerro hasiera edo bukaera).\nmar* bat dator mar-ez hasten den edozein hitzekin.\n*mar* bat dator edozein posiziotan mar duten hitzekin.";
 "notice_room_related_groups" = "Gela honekin lotura duten taldeak hauek dira: %@";
 // Groups
-"group_invite_section" = "Gonbidapenak";
-"group_section" = "Taldeak";
 "notice_sticker" = "eranskailua";
 "notice_in_reply_to" = "Honi erantzunez";
 "error_common_message" = "Errore bat gertatu da. Saiatu berriro geroago.";

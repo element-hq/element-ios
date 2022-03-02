@@ -1689,16 +1689,7 @@
 // MARK: - MatrixKit
 
 
-"view" = "Afficher";
-"back" = "Retour";
-"continue" = "Continuer";
-"leave" = "Quitter";
-"invite" = "Inviter";
-"retry" = "Réessayer";
-"cancel" = "Annuler";
-"save" = "Enregistrer";
 // room details dialog screen
-"room_details_title" = "Détails du salon";
 "matrix" = "Matrix";
 // Login Screen
 "login_create_account" = "Créer un compte :";
@@ -1734,7 +1725,6 @@
 "no" = "Non";
 "yes" = "Oui";
 "abort" = "Abandonner";
-"close" = "Fermer";
 "discard" = "Abandonner";
 "dismiss" = "Ignorer";
 "sign_up" = "S’inscrire";
@@ -1898,8 +1888,6 @@
 "contact_mx_users" = "Utilisateurs Matrix";
 "contact_local_contacts" = "Contacts locaux";
 // Groups
-"group_invite_section" = "Invitations";
-"group_section" = "Groupes";
 // Search
 "search_no_results" = "Aucun résultat";
 "search_searching" = "Recherche en cours…";
@@ -1966,7 +1954,6 @@
 "notice_conference_call_started" = "Téléconférence en VoIP démarrée";
 "notice_conference_call_finished" = "Téléconférence en VoIP terminée";
 // button names 
-"ok" = "Ok";
 "send" = "Envoyer";
 "copy_button_name" = "Copier";
 "resend" = "Renvoyer";
@@ -2023,9 +2010,6 @@
 "notification_settings_by_default" = "Par défaut…";
 "notification_settings_notify_all_other" = "Notifier pour tous les autres messages ou salons";
 // gcm section 
-"settings_config_home_server" = "Serveur d’accueil : %@";
-"settings_config_identity_server" = "Serveur d’identité : %@";
-"settings_config_user_id" = "Identifiant utilisateur : %@";
 // call string
 "call_waiting" = "En attente…";
 "call_connecting" = "Connexion…";
@@ -2161,11 +2145,6 @@
 "attachment_small_with_resolution" = "Petit %@ (~%@)";
 "attachment_size_prompt_message" = "Vous pouvez désactiver ceci dans les paramètres.";
 "attachment_size_prompt_title" = "Préciser la taille pour l’envoi";
-"auth_username_in_use" = "Nom d’utilisateur déjà pris";
-"auth_invalid_user_name" = "Nom d’utilisateur invalide";
-"rename" = "Renommer";
-"auth_reset_password_error_not_found" = "Non trouvé";
-"auth_reset_password_error_unauthorized" = "Non autorisé";
 "attachment_unsupported_preview_message" = "Ce type de fichier n’est pas pris en charge.";
 "attachment_unsupported_preview_title" = "Prévisualisation impossible";
 "room_displayname_all_other_members_left" = "%@ (Quitté)";

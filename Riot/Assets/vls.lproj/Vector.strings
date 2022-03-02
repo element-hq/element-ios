@@ -116,7 +116,6 @@
 "login_prompt_email_token" = "Gif jen e-mailadressevalidoatiebewys in:";
 "login_error_title" = "Anmeldn mislukt";
 "login_error_no_login_flow" = "Iphoaln van de authenticoatie-informoatie van dezen thuusserver is mislukt";
-"view" = "Toogn";
 "login_identity_server_info" = "Matrix verstrekt identiteitsservers vo t’achterhoaln wukke e-mailadressn e.d.m. dat der by wukke Matrix-ID’s hoorn. Tot nu toe bestoat alleene mo https://matrix.org.";
 "login_error_do_not_support_login_flows" = "Vo de moment biedn we geen oundersteunienge vo sommigste of alle anmeldiengsmethoodn van dezen thuusserver";
 "login_error_registration_is_not_supported" = "Registroasje wor vo de moment nie oundersteund";
@@ -144,12 +143,8 @@
 "no" = "Nee";
 "yes" = "Ja";
 "abort" = "Afbreekn";
-"back" = "Weere";
-"close" = "Sluutn";
-"continue" = "Verdergoan";
 "discard" = "Verwerpn";
 "dismiss" = "Sluutn";
-"retry" = "Herprobeern";
 "sign_up" = "Anmeldn";
 "submit" = "Indienn";
 "submit_code" = "Code indienn";
@@ -206,10 +201,6 @@
 "notice_error_unexpected_event" = "Ounverwachte gebeurtenisse";
 "notice_error_unknown_event_type" = "Ounbekend gebeurtenistype";
 "notice_room_history_visible_to_anyone" = "%@ èt de toekomstige gesprekgeschiedenisse voor iedereen zichtboar gemakt.";
-"cancel" = "Annuleern";
-"save" = "Ipsloan";
-"leave" = "Verloatn";
-"invite" = "Uutnodign";
 "notice_room_history_visible_to_members" = "%@ èt de toekomstige gespreksgeschiedenisse voor alle gespreksleedn zichtboar gemakt ghed.";
 "notice_crypto_unable_to_decrypt" = "** Kostege nie ountsleutern: %@ **";
 "notice_crypto_error_unknown_inbound_session_id" = "’t Toestel van den afzender èt uus geen sleuters vo da bericht hier gestuurd ghed.";

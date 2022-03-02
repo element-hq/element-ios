@@ -1854,7 +1854,6 @@
 // titles 
 
 // button names 
-"ok" = "OK";
 "login_error_title" = "Prihlásenie zlyhalo";
 "login_prompt_email_token" = "Zadajte svoj e-mailový overovací token:";
 "login_email_info" = "Zadanie e-mailovej adresy umožní ostatným používateľom ľahšie vás nájsť v službe Matrix a umožní vám v budúcnosti obnoviť heslo.";
@@ -1867,7 +1866,6 @@
 "call_ended" = "Hovor ukončený";
 
 // gcm section 
-"settings_config_home_server" = "Domovský server: %@";
 "notification_settings_custom_sound" = "Vlastný zvuk";
 "notification_settings_always_notify" = "Vždy oznamovať";
 "notification_settings_never_notify" = "Nikdy neoznamovať";
@@ -1885,7 +1883,6 @@
 // room info dialog Screen
 
 // room details dialog screen
-"room_details_title" = "Podrobnosti o miestnosti";
 "num_members_other" = "%@ používatelia";
 "num_members_one" = "%@ používateľ";
 "create_account" = "Vytvoriť účet";
@@ -1927,24 +1924,18 @@
 "unban" = "Zrušiť zákaz";
 "ban" = "Zakázať";
 "kick" = "Odstrániť z konverzácie";
-"invite" = "Pozvať";
 "membership_ban" = "Vylúčený";
 "membership_invite" = "Pozvaní";
 "login" = "Prihlásiť sa";
 
 // actions 
 "action_logout" = "Odhlásiť sa";
-"rename" = "Premenovať";
-"view" = "Zobraziť";
 "delete" = "Vymazať";
 "share" = "Zdieľať";
 "redact" = "Odstrániť";
 "resend" = "Odoslať znovu";
 "copy_button_name" = "Kopírovať";
 "send" = "Odoslať";
-"leave" = "Opustiť";
-"save" = "Uložiť";
-"cancel" = "Zrušiť";
 "private" = "Súkromné";
 "public" = "Verejné";
 "default" = "predvolené";
@@ -1959,10 +1950,8 @@
 
 // Time
 "format_time_s" = "s";
-"group_section" = "Skupiny";
 
 // Groups
-"group_invite_section" = "Pozvánky";
 "attachment_e2e_keys_import" = "Importovať...";
 "room_creation_participants_title" = "Účastníci:";
 "room_event_encryption_verify_ok" = "Overiť";
@@ -1985,10 +1974,6 @@
 "ignore" = "Ignorovať";
 "mention" = "Zmieniť sa";
 "submit" = "Odoslať";
-"retry" = "Skúsiť znovu";
-"continue" = "Pokračovať";
-"close" = "Zavrieť";
-"back" = "Späť";
 "abort" = "Prerušiť";
 "yes" = "Áno";
 
@@ -2019,9 +2004,7 @@
 "notification_settings_disable_all" = "Zakázať všetky oznámenia";
 "settings_title_notifications" = "Oznámenia";
 "notification_settings_room_rule_title" = "Miestnosť: '%@'";
-"auth_username_in_use" = "Používateľské meno sa už používa";
 "login_error_must_start_http" = "URL adresa musí začínať http[s]://";
-"auth_reset_password_error_not_found" = "Nenájdené";
 "notice_unsupported_attachment" = "Nepodporovaná príloha: %@";
 "notice_encryption_enabled_unknown_algorithm" = "%1$@ zapol end-to-end šifrovanie (nerozpoznaný algoritmus %2$@).";
 "notice_encryption_enabled_ok" = "%@ zapol end-to-end šifrovanie.";
@@ -2224,8 +2207,6 @@
 "notice_room_join_rule_invite_for_dm" = "%@ ju nastavil/a len na pozvanie.";
 "notice_event_redacted" = "<redigované%@>";
 "capture_media" = "Spraviť fotografiu/video";
-"auth_reset_password_error_unauthorized" = "Neoprávnené";
-"auth_invalid_user_name" = "Neplatné používateľské meno";
 "ssl_only_accept" = "Certifikát akceptujte IBA vtedy, ak správca servera zverejnil odtlačok, ktorý sa zhoduje s vyššie uvedeným.";
 "ssl_expected_existing_expl" = "Certifikát sa zmenil z predtým dôveryhodného na nedôveryhodný. Server mohol obnoviť svoj certifikát. Obráťte sa na správcu servera, aby vám poskytol očakávaný odtlačok.";
 "ssl_unexpected_existing_expl" = "Certifikát sa zmenil na iný, ktorému dôveroval váš telefón. To je VEĽMI NEOBVYKLÉ. Odporúča sa, aby ste tento nový certifikát NEPRIJALI.";
@@ -2243,7 +2224,6 @@
 "call_remote_holded" = "%@ podržal hovor";
 "incoming_voice_call" = "Prichádzajúci hlasový hovor";
 "incoming_video_call" = "Prichádzajúci videohovor";
-"settings_config_user_id" = "ID používateľa: %@";
 "settings_config_identity_server" = "Server totožností: %@";
 "notification_settings_suppress_from_bots" = "Stlmiť oznámenia od botov";
 "notification_settings_receive_a_call" = "Upozorniť ma, keď mi niekto zavolá";
