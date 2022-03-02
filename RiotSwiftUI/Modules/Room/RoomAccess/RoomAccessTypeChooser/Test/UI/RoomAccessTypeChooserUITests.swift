@@ -30,23 +30,6 @@ class RoomAccessTypeChooserUITests: MockScreenTest {
     
     func verifyRoomAccessTypeChooserScreen() throws {
         guard let screenState = screenState as? MockRoomAccessTypeChooserScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .noRooms:
-            verifyRoomAccessTypeChooserNoRooms()
-        case .rooms:
-            verifyRoomAccessTypeChooserRooms()
-        }
     }
     
-    func verifyRoomAccessTypeChooserNoRooms() {
-        let errorMessage = app.staticTexts["errorMessage"]
-        XCTAssert(errorMessage.exists)
-        XCTAssert(errorMessage.label == "No Rooms")
-    }
-    
-    func verifyRoomAccessTypeChooserRooms() {
-        let displayNameCount = app.buttons.matching(identifier:"roomNameText").count
-        XCTAssertEqual(displayNameCount, 3)
-    }
-
 }

@@ -54,10 +54,14 @@ class RoomAccessTypeChooserViewModel: RoomAccessTypeChooserViewModelType, RoomAc
             .map(RoomAccessTypeChooserStateAction.updateAccessItems)
             .eraseToAnyPublisher()
         dispatch(actionPublisher: accessTypePublisher)
-        let showUpgradeRoomAlertPublisher = roomAccessTypeChooserService.roomUpgradeRequiredSubject
-            .map(RoomAccessTypeChooserStateAction.updateShowUpgradeRoomAlert)
-            .eraseToAnyPublisher()
-        dispatch(actionPublisher: showUpgradeRoomAlertPublisher)
+        roomAccessTypeChooserService
+            .roomUpgradeRequiredSubject
+            .sink { [weak self] isUpgradeRequired in
+                if isUpgradeRequired {
+                    self?.upgradeRoom()
+                }
+            }
+            .store(in: &cancellables)
         let waitingMessagePublisher = roomAccessTypeChooserService.waitingMessageSubject
             .map(RoomAccessTypeChooserStateAction.updateWaitingMessage)
             .eraseToAnyPublisher()
@@ -74,14 +78,6 @@ class RoomAccessTypeChooserViewModel: RoomAccessTypeChooserViewModelType, RoomAc
             done()
         case .cancel:
             cancel()
-        case .didCancelRoomUpgrade:
-            roomAccessTypeChooserService.upgradeRoom(accepted: false, autoInviteUsers: false) { _, _ in }
-        case .didAcceptRoomUpgrade(let autoInviteUsers):
-            roomAccessTypeChooserService.upgradeRoom(accepted: true, autoInviteUsers: autoInviteUsers) { [weak self] upgradeFinished, roomId in
-                if upgradeFinished {
-                    self?.callback?(.spaceSelection(roomId, .restricted))
-                }
-            }
         }
     }
     
@@ -97,7 +93,26 @@ class RoomAccessTypeChooserViewModel: RoomAccessTypeChooserViewModelType, RoomAc
         }
     }
     
+    func handleRoomUpgradeResult(_ result: RoomUpgradeCoordinatorResult) {
+        switch result {
+        case .cancel(let roomId):
+            roomAccessTypeChooserService.updateRoomId(with: roomId)
+        case .done(let roomId):
+            roomAccessTypeChooserService.updateRoomId(with: roomId)
+            callback?(.spaceSelection(roomId, .restricted))
+        }
+    }
+    
     // MARK: - Private
+    
+    private func upgradeRoom() {
+        guard let versionOverride = roomAccessTypeChooserService.versionOverride else {
+            UILog.error("[RoomAccessTypeChooserViewModel] upgradeRoom: versionOverride not found")
+            return
+        }
+        
+        callback?(.roomUpgradeNeeded(roomAccessTypeChooserService.currentRoomId, versionOverride))
+    }
     
     private func done() {
         roomAccessTypeChooserService.applySelection { [weak self] in

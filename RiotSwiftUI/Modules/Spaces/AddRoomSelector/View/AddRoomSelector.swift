@@ -27,22 +27,30 @@ struct AddRoomSelector: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
 
-    @ViewBuilder
+    // MARK: Setup
+    
     var body: some View {
-        MatrixItemChooser(viewModel: viewModel)
+        MatrixItemChooser(viewModel: viewModel, listBottomPadding: nil)
             .background(theme.colors.background)
-            .navigationBarItems(leading: Button(VectorL10n.cancel, action: {
-                viewModel.send(viewAction: .cancel)
-            })
-            .font(theme.fonts.body)
-            .foregroundColor(theme.colors.accent),
-            trailing: Button(VectorL10n.add, action: {
-                viewModel.send(viewAction: .done)
-            })
-            .font(theme.fonts.body)
-            .foregroundColor(viewModel.viewState.selectedItemIds.isEmpty ? theme.colors.quarterlyContent : theme.colors.accent)
-            .opacity(viewModel.viewState.selectedItemIds.isEmpty ? 0.7 : 1)
-            .disabled(viewModel.viewState.selectedItemIds.isEmpty))
+            .navigationBarItems(leading: cancelButton, trailing: doneButton)
+            .accentColor(theme.colors.accent)
     }
 
+    // MARK: Private
+    
+    private var cancelButton: some View {
+        Button(VectorL10n.cancel, action: {
+            viewModel.send(viewAction: .cancel)
+        })
+        .font(theme.fonts.body)
+    }
+    
+    private var doneButton: some View {
+        Button(VectorL10n.add, action: {
+            viewModel.send(viewAction: .done)
+        })
+        .font(theme.fonts.body)
+        .opacity(viewModel.viewState.selectedItemIds.isEmpty ? 0.7 : 1)
+        .disabled(viewModel.viewState.selectedItemIds.isEmpty)
+    }
 }

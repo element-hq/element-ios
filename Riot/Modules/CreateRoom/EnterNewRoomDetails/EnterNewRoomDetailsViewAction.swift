@@ -16,12 +16,13 @@
  limitations under the License.
  */
 
-import Foundation
+import UIKit
 
 /// EnterNewRoomDetailsViewController view actions exposed to view model
 enum EnterNewRoomDetailsViewAction {
     case loadData
     case chooseAvatar(sourceView: UIView)
+    case removeAvatar
     case cancel
     case create
 }

@@ -73,20 +73,20 @@ CallAudioRouteMenuViewDelegate>
     
     // Back button
     
-    UIImage *backButtonImage = [UIImage imageNamed:@"back_icon"];
+    UIImage *backButtonImage = AssetImages.backIcon.image;
     [self.backToAppButton setImage:backButtonImage forState:UIControlStateNormal];
     [self.backToAppButton setImage:backButtonImage forState:UIControlStateHighlighted];
     
     // Camera switch
     
-    UIImage *cameraSwitchButtonImage = [UIImage imageNamed:@"camera_switch"];
+    UIImage *cameraSwitchButtonImage = AssetImages.cameraSwitch.image;
     [self.cameraSwitchButton setImage:cameraSwitchButtonImage forState:UIControlStateNormal];
     [self.cameraSwitchButton setImage:cameraSwitchButtonImage forState:UIControlStateHighlighted];
     
     // Audio mute
     
-    UIImage *audioMuteOffButtonImage = [UIImage imageNamed:@"call_audio_mute_off_icon"];
-    UIImage *audioMuteOnButtonImage = [UIImage imageNamed:@"call_audio_mute_on_icon"];
+    UIImage *audioMuteOffButtonImage = AssetImages.callAudioMuteOffIcon.image;
+    UIImage *audioMuteOnButtonImage = AssetImages.callAudioMuteOnIcon.image;
     
     [self.audioMuteButton setImage:audioMuteOffButtonImage forState:UIControlStateNormal];
     [self.audioMuteButton setImage:audioMuteOffButtonImage forState:UIControlStateHighlighted];
@@ -94,8 +94,8 @@ CallAudioRouteMenuViewDelegate>
     
     // Video mute
     
-    UIImage *videoOffButtonImage = [UIImage imageNamed:@"call_video_mute_off_icon"];
-    UIImage *videoOnButtonImage = [UIImage imageNamed:@"call_video_mute_on_icon"];
+    UIImage *videoOffButtonImage = AssetImages.callVideoMuteOffIcon.image;
+    UIImage *videoOnButtonImage = AssetImages.callVideoMuteOnIcon.image;
     
     [self.videoMuteButton setImage:videoOffButtonImage forState:UIControlStateNormal];
     [self.videoMuteButton setImage:videoOffButtonImage forState:UIControlStateHighlighted];
@@ -103,14 +103,14 @@ CallAudioRouteMenuViewDelegate>
     
     //  More
     
-    UIImage *moreButtonImage = [UIImage imageNamed:@"call_more_icon"];
+    UIImage *moreButtonImage = AssetImages.callMoreIcon.image;
     
     [self.moreButtonForVoice setImage:moreButtonImage forState:UIControlStateNormal];
     [self.moreButtonForVideo setImage:moreButtonImage forState:UIControlStateNormal];
     
     // Hang up
     
-    UIImage *hangUpButtonImage = [UIImage imageNamed:@"call_hangup_large"];
+    UIImage *hangUpButtonImage = AssetImages.callHangupLarge.image;
     
     [self.endCallButton setTitle:nil forState:UIControlStateNormal];
     [self.endCallButton setTitle:nil forState:UIControlStateHighlighted];
@@ -269,17 +269,17 @@ CallAudioRouteMenuViewDelegate>
     switch (self.mxCall.audioOutputRouter.currentRoute.routeType)
     {
         case MXiOSAudioOutputRouteTypeBuiltIn:
-            [self.speakerButton setImage:[UIImage imageNamed:@"call_speaker_off_icon"]
+            [self.speakerButton setImage:AssetImages.callSpeakerOffIcon.image
                                 forState:UIControlStateNormal];
             break;
         case MXiOSAudioOutputRouteTypeLoudSpeakers:
-            [self.speakerButton setImage:[UIImage imageNamed:@"call_speaker_on_icon"]
+            [self.speakerButton setImage:AssetImages.callSpeakerOnIcon.image
                                 forState:UIControlStateNormal];
             break;
         case MXiOSAudioOutputRouteTypeExternalWired:
         case MXiOSAudioOutputRouteTypeExternalBluetooth:
         case MXiOSAudioOutputRouteTypeExternalCar:
-            [self.speakerButton setImage:[UIImage imageNamed:@"call_speaker_external_icon"]
+            [self.speakerButton setImage:AssetImages.callSpeakerExternalIcon.image
                                 forState:UIControlStateNormal];
             break;
     }
@@ -484,7 +484,7 @@ CallAudioRouteMenuViewDelegate>
                                                 andFontSize:fontSize];
     }
     
-    return [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
+    return [MXKTools paintImage:AssetImages.placeholder.image
                       withColor:self.overriddenTheme.tintColor];
 }
 
@@ -645,8 +645,8 @@ CallAudioRouteMenuViewDelegate>
 {
     CallTransferMainViewController *controller = [CallTransferMainViewController instantiateWithSession:self.mainSession ignoredUserIds:@[self.peer.userId]];
     controller.delegate = self;
-    
     UINavigationController *navController = [[RiotNavigationController alloc] initWithRootViewController:controller];
+    [self.mxCall hold:YES];
     [self presentViewController:navController animated:YES completion:nil];
 }
 
@@ -721,7 +721,9 @@ CallAudioRouteMenuViewDelegate>
     {
         MXWeakify(self);
         [self.mainSession.callManager getThirdPartyUserFrom:phoneNumber success:^(MXThirdPartyUserInstance * _Nonnull user) {
-            MXStrongifyAndReturnIfNil(self);
+            if (weakself == nil) {
+                return;
+            }
             
             continueBlock(user.userId);
         } failure:^(NSError * _Nullable error) {
@@ -732,6 +734,7 @@ CallAudioRouteMenuViewDelegate>
 
 - (void)callTransferMainViewControllerDidCancel:(CallTransferMainViewController *)viewController
 {
+    [self.mxCall hold:NO];
     [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 

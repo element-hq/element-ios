@@ -149,14 +149,30 @@
 }
 
 - (void)showRoomWithId:(NSString*)roomId
-            andEventId:(NSString*)eventId
+              andEvent:(MXEvent*)event
        inMatrixSession:(MXSession*)session
 {
+    ThreadParameters *threadParameters = nil;
+    if (RiotSettings.shared.enableThreads)
+    {
+        if (event.threadId)
+        {
+            threadParameters = [[ThreadParameters alloc] initWithThreadId:event.threadId
+                                                          stackRoomScreen:NO];
+        }
+        else if (event.unsignedData.relations.thread || [self.mainSession.threadingService isEventThreadRoot:event])
+        {
+            threadParameters = [[ThreadParameters alloc] initWithThreadId:event.eventId
+                                                          stackRoomScreen:NO];
+        }
+    }
+
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
     
     RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
-                                                                                    eventId:eventId
+                                                                                    eventId:event.eventId
                                                                                   mxSession:session
+                                                                           threadParameters:threadParameters
                                                                      presentationParameters:presentationParameters];
     
     [[AppDelegate theDelegate] showRoomWithParameters:parameters];
@@ -212,7 +228,7 @@
 
     // Make the master tabBar view controller open the RoomViewController
     [self showRoomWithId:cellData.roomId
-              andEventId:_selectedEvent.eventId
+                andEvent:_selectedEvent
          inMatrixSession:self.mainSession];
 
     // Reset the selected event. HomeViewController got it when here

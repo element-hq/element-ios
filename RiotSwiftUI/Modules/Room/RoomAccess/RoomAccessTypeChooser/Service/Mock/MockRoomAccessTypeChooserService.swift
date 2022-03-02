@@ -32,10 +32,11 @@ class MockRoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
     private(set) var errorSubject: CurrentValueSubject<Error?, Never>
 
     private(set) var selectedType: RoomAccessTypeChooserAccessType = .private
-    var currentRoomId: String {
-        return "sldkfjsdljf:,atrix.org"
+    var currentRoomId: String = "!aaabaa:matrix.org"
+    var versionOverride: String? {
+        return "9"
     }
-
+    
     init(accessItems: [RoomAccessTypeChooserAccessItem] = mockAccessItems) {
         accessItemsSubject = CurrentValueSubject(accessItems)
         roomUpgradeRequiredSubject = CurrentValueSubject(false)
@@ -51,8 +52,8 @@ class MockRoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
         
     }
     
-    func upgradeRoom(accepted: Bool, autoInviteUsers: Bool, completion: @escaping (Bool, String) -> Void) {
-
+    func updateRoomId(with roomId: String) {
+        currentRoomId = roomId
     }
     
     func applySelection(completion: @escaping () -> Void) {

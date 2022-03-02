@@ -51,7 +51,12 @@ targets:
     - path: ../Riot/Managers/Locale/LocaleProviderType.swift
     - path: ../Riot/Managers/Locale/LocaleProvider.swift
     - path: ../Riot/Modules/MatrixKit
+    - path: ../Riot/Modules/Analytics
+    - path: ../Riot/Managers/UserSessions
+    - path: ../Riot/Managers/AppInfo/
+    - path: ../Riot/Managers/Locale/LocaleProviderType.swift
+    - path: ../Riot/Generated/Strings.swift
       excludes:
         - "**/*.md" # excludes all files with the .md extension
     - path: ../Riot/Generated/MatrixKitStrings.swift
-    - path: ../Riot/Modules/Room/Views/BubbleCells/Styles/RoomTimelineStyleIdentifier.swift
+    - path: ../Riot/Modules/Room/TimelineCells/Styles/RoomTimelineStyleIdentifier.swift

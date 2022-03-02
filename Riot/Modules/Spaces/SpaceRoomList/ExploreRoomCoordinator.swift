@@ -28,10 +28,10 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
     private let spaceId: String
+    // We need to stack the ID of visited space and subspaces so we know what is the current space ID when navigating to a room
     private var spaceIdStack: [String]
     private weak var roomDetailCoordinator: SpaceChildRoomDetailCoordinator?
     private weak var currentExploreRoomCoordinator: SpaceExploreRoomCoordinator?
-
     private var pollEditFormCoordinator: PollEditFormCoordinator?
 
     private lazy var slidingModalPresenter: SlidingModalPresenter = {
@@ -168,7 +168,7 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
     
     private func presentRoomCreation() {
         let space = session.spaceService.getSpace(withId: spaceIdStack.last ?? "")
-        let createRoomCoordinator = CreateRoomCoordinator(session: self.session, parentSpace: space)
+        let createRoomCoordinator = CreateRoomCoordinator(parameters: CreateRoomCoordinatorParameter(session: self.session, parentSpace: space))
         createRoomCoordinator.delegate = self
         let presentable = createRoomCoordinator.toPresentable()
         presentable.presentationController?.delegate = self
@@ -191,7 +191,7 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
             return
         }
         
-        let coordinator = ContactsPickerCoordinator(session: session, room: room, currentSearchText: nil, actualParticipants: nil, invitedParticipants: nil, userParticipant: nil)
+        let coordinator = ContactsPickerCoordinator(session: session, room: room, initialSearchText: nil, actualParticipants: nil, invitedParticipants: nil, userParticipant: nil, navigationRouter: navigationRouter)
         coordinator.delegate = self
         coordinator.start()
         self.add(childCoordinator: coordinator)
@@ -233,6 +233,29 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
         self.navigationRouter.present(coordinator.toPresentable(), animated: true)
         return true
     }
+
+    private func startEditPollCoordinator(room: MXRoom, startEvent: MXEvent? = nil) {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+        
+        let parameters = PollEditFormCoordinatorParameters(room: room, pollStartEvent: startEvent)
+        let coordinator = PollEditFormCoordinator(parameters: parameters)
+        
+        coordinator.completion = { [weak self, weak coordinator] in
+            guard let self = self, let coordinator = coordinator else {
+                return
+            }
+            
+            self.navigationRouter.dismissModule(animated: true, completion: nil)
+            self.remove(childCoordinator: coordinator)
+        }
+        
+        add(childCoordinator: coordinator)
+        
+        navigationRouter.present(coordinator, animated: true)
+        coordinator.start()
+    }
 }
 
 // MARK: - ShowSpaceExploreRoomCoordinatorDelegate
@@ -253,7 +276,7 @@ extension ExploreRoomCoordinator: SpaceExploreRoomCoordinatorDelegate {
         self.presentRoomCreation()
     }
     
-    func spaceExploreRoomCoordinatorDidAddRoom(_ viewModel: SpaceExploreRoomCoordinatorType, openSettingsOf item: SpaceExploreRoomListItemViewData) {
+    func spaceExploreRoomCoordinator(_ coordinator: SpaceExploreRoomCoordinatorType, openSettingsOf item: SpaceExploreRoomListItemViewData) {
         if item.childInfo.roomType == .space {
             if #available(iOS 14, *) {
                 self.showSpaceSettings(of: item.childInfo)
@@ -265,7 +288,7 @@ extension ExploreRoomCoordinator: SpaceExploreRoomCoordinatorDelegate {
         }
     }
     
-    func spaceExploreRoomCoordinatorDidAddRoom(_ viewModel: SpaceExploreRoomCoordinatorType, inviteTo item: SpaceExploreRoomListItemViewData) {
+    func spaceExploreRoomCoordinator(_ coordinator: SpaceExploreRoomCoordinatorType, inviteTo item: SpaceExploreRoomListItemViewData) {
         self.presentInviteScreen(forRoomWithId: item.childInfo.childRoomId)
     }
 }
@@ -309,7 +332,7 @@ extension ExploreRoomCoordinator: CreateRoomCoordinatorDelegate {
         }
     }
     
-    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithId roomIds: [String]) {
+    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithIds roomIds: [String]) {
         self.currentExploreRoomCoordinator?.reloadRooms()
         coordinator.toPresentable().dismiss(animated: true) {
             self.remove(childCoordinator: coordinator)
@@ -346,11 +369,11 @@ extension ExploreRoomCoordinator: RoomViewControllerDelegate {
         // TODO:
     }
     
-    func roomViewController(_ roomViewController: RoomViewController, showRoomWithId roomID: String) {
+    func roomViewController(_ roomViewController: RoomViewController, showRoomWithId roomID: String, eventId eventID: String?) {
         self.navigateTo(roomWith: roomID)
     }
     
-    func roomViewController(_ roomViewController: RoomViewController, moveToRoomWithId roomID: String) {
+    func roomViewController(_ roomViewController: RoomViewController, didReplaceRoomWithReplacementId roomID: String) {
         self.currentExploreRoomCoordinator?.reloadRooms()
         self.popToLastSpaceScreen(animated: false)
         self.navigateTo(roomWith: roomID, showSettingsInitially: true, animated: false)
@@ -377,27 +400,8 @@ extension ExploreRoomCoordinator: RoomViewControllerDelegate {
         return true
     }
     
-    func roomViewControllerDidRequestPollCreationFormPresentation(_ roomViewController: RoomViewController) {
-        guard #available(iOS 14.0, *) else {
-            return
-        }
-        
-        let parameters = PollEditFormCoordinatorParameters(room: roomViewController.roomDataSource.room)
-        let coordinator = PollEditFormCoordinator(parameters: parameters)
-        
-        coordinator.completion = { [weak self, weak coordinator] in
-            guard let self = self, let coordinator = coordinator else {
-                return
-            }
-            
-            self.navigationRouter.dismissModule(animated: true, completion: nil)
-            self.remove(childCoordinator: coordinator)
-        }
-        
-        add(childCoordinator: coordinator)
-        
-        navigationRouter.present(coordinator, animated: true)
-        coordinator.start()
+    func roomViewController(_ roomViewController: RoomViewController, didRequestEditForPollWithStart startEvent: MXEvent) {
+        startEditPollCoordinator(room: roomViewController.roomDataSource.room, startEvent: startEvent)
     }
     
     func roomViewControllerDidRequestLocationSharingFormPresentation(_ roomViewController: RoomViewController) {
@@ -408,33 +412,53 @@ extension ExploreRoomCoordinator: RoomViewControllerDelegate {
         // TODO:
     }
 
-    func roomViewController(_ roomViewController: RoomViewController, canEndPollWithEventIdentifier eventIdentifier: String) -> Bool {
+    func roomViewController(_ roomViewController: RoomViewController, locationShareActivityViewControllerFor event: MXEvent) -> UIActivityViewController? {
+        guard let location = event.location else {
+            return nil
+        }
+        
+        return LocationSharingCoordinator.shareLocationActivityController(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
+    }
+
+    func roomViewController(_ roomViewController: RoomViewController, canEditPollWithEventIdentifier eventIdentifier: String) -> Bool {
         guard #available(iOS 14.0, *) else {
             return false
         }
         
-        return PollTimelineProvider.shared.pollTimelineCoordinatorForEventIdentifier(eventIdentifier)?.canEndPoll() ?? false
+        return TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.canEditPoll() ?? false
     }
-    
+
     func roomViewController(_ roomViewController: RoomViewController, endPollWithEventIdentifier eventIdentifier: String) {
         guard #available(iOS 14.0, *) else {
             return
         }
         
-        PollTimelineProvider.shared.pollTimelineCoordinatorForEventIdentifier(eventIdentifier)?.endPoll()
+        TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.endPoll()
+    }
+    
+    func roomViewControllerDidRequestPollCreationFormPresentation(_ roomViewController: RoomViewController) {
+        startEditPollCoordinator(room: roomViewController.roomDataSource.room)
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, canEndPollWithEventIdentifier eventIdentifier: String) -> Bool {
+        guard #available(iOS 14.0, *) else {
+            return false
+        }
+        
+        return TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.canEndPoll() ?? false
     }
     
 }
 
 // MARK: - ContactsPickerCoordinatorDelegate
 extension ExploreRoomCoordinator: ContactsPickerCoordinatorDelegate {
-    func contactsPickerCoordinatorDidStartLoading(_ coordinator: ContactsPickerCoordinatorType) {
+    func contactsPickerCoordinatorDidStartLoading(_ coordinator: ContactsPickerCoordinatorProtocol) {
     }
     
-    func contactsPickerCoordinatorDidEndLoading(_ coordinator: ContactsPickerCoordinatorType) {
+    func contactsPickerCoordinatorDidEndLoading(_ coordinator: ContactsPickerCoordinatorProtocol) {
     }
     
-    func contactsPickerCoordinatorDidClose(_ coordinator: ContactsPickerCoordinatorType) {
+    func contactsPickerCoordinatorDidClose(_ coordinator: ContactsPickerCoordinatorProtocol) {
         childCoordinators.removeLast()
     }
     
@@ -460,7 +484,7 @@ extension ExploreRoomCoordinator: RoomInfoCoordinatorDelegate {
         }
     }
     
-    func roomInfoCoordinator(_ coordinator: RoomInfoCoordinatorType, didMoveToRoomWithId roomId: String) {
+    func roomInfoCoordinator(_ coordinator: RoomInfoCoordinatorType, didReplaceRoomWithReplacementId roomId: String) {
         self.currentExploreRoomCoordinator?.reloadRooms()
         
         self.navigationRouter.dismissModule(animated: true) {

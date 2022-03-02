@@ -186,7 +186,7 @@ class SpaceDetailViewController: UIViewController {
     private func setup(button: UIButton, withTitle title: String) {
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 8.0
-        button.setTitle(title.uppercased(), for: .normal)
+        button.setTitle(title, for: .normal)
     }
     
     private func render(viewState: SpaceDetailViewState) {
@@ -219,7 +219,11 @@ class SpaceDetailViewController: UIViewController {
             self.inviterPanelHeight.constant = 0
         }
         
-        let avatarViewData = AvatarViewData(matrixItemId: parameters.spaceId, displayName: parameters.displayName, avatarUrl: parameters.avatarUrl, mediaManager: self.mediaManager, fallbackImage: .matrixItem(parameters.spaceId, parameters.displayName))
+        let avatarViewData = AvatarViewData(matrixItemId: parameters.spaceId,
+                                            displayName: parameters.displayName,
+                                            avatarUrl: parameters.avatarUrl,
+                                            mediaManager: self.mediaManager,
+                                            fallbackImage: .matrixItem(parameters.spaceId, parameters.displayName))
 
         self.titleLabel.text = parameters.displayName
         self.avatarView.fill(with: avatarViewData)

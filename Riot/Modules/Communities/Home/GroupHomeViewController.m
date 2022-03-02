@@ -40,7 +40,7 @@
     
     // The options used to load long description html content.
     NSDictionary *options;
-    NSString *groupLongDescription;
+    NSString *groupLongDescriptionString;
     
     // The current pushed view controller
     UIViewController *pushedViewController;
@@ -229,25 +229,25 @@
         // Indeed the group update notifications are triggered by the matrix session only for the user's groups.
         void (^success)(void) = ^void(void)
         {
-            [self refreshDisplayWithGroup:_group];
+            [self refreshDisplayWithGroup:self->_group];
         };
         
         // Trigger a refresh on the group summary.
-        [self.mxSession updateGroupSummary:_group success:(isPreview ? success : nil) failure:^(NSError *error) {
+        [self.mxSession updateGroupSummary:self->_group success:(isPreview ? success : nil) failure:^(NSError *error) {
             
-            MXLogDebug(@"[GroupHomeViewController] viewWillAppear: group summary update failed %@", _group.groupId);
+            MXLogDebug(@"[GroupHomeViewController] viewWillAppear: group summary update failed %@", self->_group.groupId);
             
         }];
         // Trigger a refresh on the group members (ignore here the invited users).
-        [self.mxSession updateGroupUsers:_group success:(isPreview ? success : nil) failure:^(NSError *error) {
+        [self.mxSession updateGroupUsers:self->_group success:(isPreview ? success : nil) failure:^(NSError *error) {
             
-            MXLogDebug(@"[GroupHomeViewController] viewWillAppear: group members update failed %@", _group.groupId);
+            MXLogDebug(@"[GroupHomeViewController] viewWillAppear: group members update failed %@", self->_group.groupId);
             
         }];
         // Trigger a refresh on the group rooms.
-        [self.mxSession updateGroupRooms:_group success:(isPreview ? success : nil) failure:^(NSError *error) {
+        [self.mxSession updateGroupRooms:self->_group success:(isPreview ? success : nil) failure:^(NSError *error) {
             
-            MXLogDebug(@"[GroupHomeViewController] viewWillAppear: group rooms update failed %@", _group.groupId);
+            MXLogDebug(@"[GroupHomeViewController] viewWillAppear: group rooms update failed %@", self->_group.groupId);
             
         }];
     }
@@ -523,11 +523,11 @@
 {
     if (_group.summary.profile.longDescription.length)
     {
-        groupLongDescription = _group.summary.profile.longDescription;
+        groupLongDescriptionString = _group.summary.profile.longDescription;
     }
     else
     {
-        groupLongDescription = nil;
+        groupLongDescriptionString = nil;
     }
     
     [self renderGroupLongDescription];
@@ -535,13 +535,13 @@
 
 - (void)renderGroupLongDescription
 {
-    if (groupLongDescription)
+    if (groupLongDescriptionString)
     {
         // Using DTCoreText, which renders static string, helps to avoid code injection attacks
         // that could happen with the default HTML renderer of NSAttributedString which is a
         // webview.
         // The supplied options include a callback to sanitize html tags and load image data.
-        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithHTMLData:[groupLongDescription dataUsingEncoding:NSUTF8StringEncoding] options:options documentAttributes:NULL];
+        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithHTMLData:[groupLongDescriptionString dataUsingEncoding:NSUTF8StringEncoding] options:options documentAttributes:NULL];
         
         // Apply additional treatments
         NSInteger mxIdsBitMask = (MXKTOOLS_USER_IDENTIFIER_BITWISE | MXKTOOLS_ROOM_IDENTIFIER_BITWISE | MXKTOOLS_ROOM_ALIAS_BITWISE | MXKTOOLS_EVENT_IDENTIFIER_BITWISE | MXKTOOLS_GROUP_IDENTIFIER_BITWISE);
@@ -694,12 +694,12 @@
                     self->currentRequest = nil;
                     [self stopActivityIndicator];
                     
-                    [self refreshDisplayWithGroup:[_mxSession groupWithGroupId:_group.groupId]];
+                    [self refreshDisplayWithGroup:[self->_mxSession groupWithGroupId:self->_group.groupId]];
                 }
                 
             } failure:^(NSError *error) {
                 
-                MXLogDebug(@"[GroupDetailsViewController] join group (%@) failed", _group.groupId);
+                MXLogDebug(@"[GroupDetailsViewController] join group (%@) failed", self->_group.groupId);
                 
                 if (weakSelf)
                 {
@@ -732,7 +732,7 @@
                 
             } failure:^(NSError *error) {
                 
-                MXLogDebug(@"[GroupDetailsViewController] leave group (%@) failed", _group.groupId);
+                MXLogDebug(@"[GroupDetailsViewController] leave group (%@) failed", self->_group.groupId);
                 
                 if (weakSelf)
                 {
@@ -802,6 +802,8 @@
 
 #pragma mark - UITextView delegate
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
 {
     BOOL shouldInteractWithURL = YES;
@@ -903,5 +905,6 @@
     
     return shouldInteractWithURL;
 }
+#pragma clang diagnostic pop
 
 @end

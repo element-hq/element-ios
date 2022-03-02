@@ -149,3 +149,6 @@
 /** General **/
 
 "NOTIFICATION" = "Meldingen";
+
+/* New file message from a specific person, not referencing a room. */
+"LOCATION_FROM_USER" = "%@ deelde hun locatie";

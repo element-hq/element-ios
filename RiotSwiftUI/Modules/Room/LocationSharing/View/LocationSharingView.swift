@@ -32,59 +32,74 @@ struct LocationSharingView: View {
     
     var body: some View {
         NavigationView {
-            LocationSharingMapView(tileServerMapURL: context.viewState.tileServerMapURL,
-                                   avatarData: context.viewState.avatarData,
-                                   location: context.viewState.location,
-                                   errorSubject: context.viewState.errorSubject,
-                                   userLocation: $context.userLocation)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(VectorL10n.cancel, action: {
-                            context.send(viewAction: .cancel)
-                        })
-                    }
-                    ToolbarItem(placement: .principal) {
-                        Text(VectorL10n.locationSharingTitle)
-                            .font(.headline)
-                            .foregroundColor(theme.colors.primaryContent)
-                    }
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        if context.viewState.location != nil {
-                            Button {
-                                context.send(viewAction: .share)
-                            } label: {
-                                Image(uiImage: Asset.Images.locationShareIcon.image)
-                            }
-                            .disabled(!context.viewState.shareButtonEnabled)
-                        } else {
-                            Button(VectorL10n.locationSharingShareAction, action: {
-                                context.send(viewAction: .share)
-                            })
-                            .disabled(!context.viewState.shareButtonEnabled)
+            ZStack(alignment: .bottom) {
+                LocationSharingMapView(tileServerMapURL: context.viewState.mapStyleURL,
+                                       avatarData: context.viewState.avatarData,
+                                       location: context.viewState.location,
+                                       errorSubject: context.viewState.errorSubject,
+                                       userLocation: $context.userLocation)
+                    .ignoresSafeArea()
+                
+                HStack {
+                    Link("© MapTiler", destination: URL(string: "https://www.maptiler.com/copyright/")!)
+                    Link("© OpenStreetMap contributors", destination: URL(string: "https://www.openstreetmap.org/copyright")!)
+                }
+                .font(theme.fonts.caption1)
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(VectorL10n.cancel, action: {
+                        context.send(viewAction: .cancel)
+                    })
+                }
+                ToolbarItem(placement: .principal) {
+                    Text(VectorL10n.locationSharingTitle)
+                        .font(.headline)
+                        .foregroundColor(theme.colors.primaryContent)
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    if context.viewState.location != nil {
+                        Button {
+                            context.send(viewAction: .share)
+                        } label: {
+                            Image(uiImage: Asset.Images.locationShareIcon.image)
+                                .accessibilityIdentifier("LocationSharingView.shareButton")
                         }
-                    }
-                }
-                .navigationBarTitleDisplayMode(.inline)
-                .ignoresSafeArea()
-                .alert(item: $context.alertInfo) { info in
-                    if let secondaryButton = info.secondaryButton {
-                        return Alert(title: Text(info.title),
-                                     primaryButton: .default(Text(info.primaryButton.title)) {
-                                        info.primaryButton.action?()
-                                     },
-                                     secondaryButton: .default(Text(secondaryButton.title)) {
-                                        secondaryButton.action?()
-                                     })
+                        .disabled(!context.viewState.shareButtonEnabled)
                     } else {
-                        return Alert(title: Text(info.title),
-                                     dismissButton: .default(Text(info.primaryButton.title)) {
-                                        info.primaryButton.action?()
-                                     })
+                        Button(VectorL10n.locationSharingShareAction, action: {
+                            context.send(viewAction: .share)
+                        })
+                            .disabled(!context.viewState.shareButtonEnabled)
                     }
                 }
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .introspectNavigationController { navigationController in
+                ThemeService.shared().theme.applyStyle(onNavigationBar: navigationController.navigationBar)
+            }
+            .alert(item: $context.alertInfo) { info in
+                if let secondaryButton = info.secondaryButton {
+                    return Alert(title: Text(info.title),
+                                 message: subtitleTextForAlertInfo(info),
+                                 primaryButton: .default(Text(info.primaryButton.title)) {
+                        info.primaryButton.action?()
+                    },
+                                 secondaryButton: .default(Text(secondaryButton.title)) {
+                        secondaryButton.action?()
+                    })
+                } else {
+                    return Alert(title: Text(info.title),
+                                 message: subtitleTextForAlertInfo(info),
+                                 dismissButton: .default(Text(info.primaryButton.title)) {
+                        info.primaryButton.action?()
+                    })
+                }
+            }
         }
         .accentColor(theme.colors.accent)
         .activityIndicator(show: context.viewState.showLoadingIndicator)
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     @ViewBuilder
@@ -92,6 +107,14 @@ struct LocationSharingView: View {
         if context.viewState.showLoadingIndicator {
             ActivityIndicator()
         }
+    }
+    
+    private func subtitleTextForAlertInfo(_ alertInfo: LocationSharingErrorAlertInfo) -> Text? {
+        guard let subtitle = alertInfo.subtitle else {
+            return nil
+        }
+        
+        return Text(subtitle)
     }
 }
 

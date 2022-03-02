@@ -47,6 +47,13 @@ typedef enum : NSUInteger
  */
 - (void)roomInputToolbarViewDidChangeTextMessage:(MXKRoomInputToolbarView*)toolbarView;
 
+/**
+ Inform the delegate that the action menu was opened.
+ 
+ @param toolbarView the room input toolbar view
+ */
+- (void)roomInputToolbarViewDidOpenActionMenu:(MXKRoomInputToolbarView*)toolbarView;
+
 @end
 
 /**

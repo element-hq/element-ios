@@ -193,8 +193,11 @@
 
 /**
  Handle supported flows and associated information returned by the homeserver.
+ @param authSession The session to be handled.
+ @param fallbackSSOFlow A fallback SSO flow to be shown when the session has none
+ e.g. A login SSO flow that can be shown for a registration session.
  */
-- (void)handleAuthenticationSession:(MXAuthenticationSession *)authSession;
+- (void)handleAuthenticationSession:(MXAuthenticationSession *)authSession withFallbackSSOFlow:(MXLoginSSOFlow *)fallbackSSOFlow;
 
 /**
  Customize the MXHTTPClientOnUnrecognizedCertificate block that will be used to handle unrecognized certificate observed during authentication challenge from a server.
@@ -218,6 +221,11 @@
                  It provides a MXError to check to verify if the user can be registered.
  */
 - (void)testUserRegistration:(void (^)(MXError *mxError))callback;
+
+/**
+ Searches an array of `MXLoginFlow` returning the first valid `MXLoginSSOFlow` found.
+ */
+- (MXLoginSSOFlow*)loginSSOFlowWithProvidersFromFlows:(NSArray<MXLoginFlow*>*)loginFlows;
 
 /**
  Action registered on the following events:

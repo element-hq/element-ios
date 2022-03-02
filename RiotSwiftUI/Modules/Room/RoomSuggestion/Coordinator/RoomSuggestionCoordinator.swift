@@ -23,6 +23,7 @@ enum RoomSuggestionCoordinatorCoordinatorAction {
 }
 
 @objcMembers
+@available(iOS 14.0, *)
 final class RoomSuggestionCoordinator: Coordinator {
     
     // MARK: - Properties
@@ -52,21 +53,19 @@ final class RoomSuggestionCoordinator: Coordinator {
     
     
     func start() {
-        if #available(iOS 14.0, *) {
-            MXLog.debug("[RoomAccessCoordinator] did start.")
-            let rootCoordinator = self.createRoomSuggestionSpaceChooser()
-            rootCoordinator.start()
-            
-            self.add(childCoordinator: rootCoordinator)
-            
-            if self.navigationRouter.modules.isEmpty == false {
-                self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
-                    self?.remove(childCoordinator: rootCoordinator)
-                })
-            } else {
-                self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
-                    self?.remove(childCoordinator: rootCoordinator)
-                }
+        MXLog.debug("[RoomSuggestionCoordinator] did start.")
+        let rootCoordinator = self.createRoomSuggestionSpaceChooser()
+        rootCoordinator.start()
+        
+        self.add(childCoordinator: rootCoordinator)
+        
+        if self.navigationRouter.modules.isEmpty == false {
+            self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
+                self?.remove(childCoordinator: rootCoordinator)
+            })
+        } else {
+            self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
+                self?.remove(childCoordinator: rootCoordinator)
             }
         }
     }
@@ -77,7 +76,6 @@ final class RoomSuggestionCoordinator: Coordinator {
     
     // MARK: - Private
     
-    @available(iOS 14.0, *)
     func pushScreen(with coordinator: Coordinator & Presentable) {
         add(childCoordinator: coordinator)
         
@@ -88,7 +86,6 @@ final class RoomSuggestionCoordinator: Coordinator {
         coordinator.start()
     }
     
-    @available(iOS 14.0, *)
     private func createRoomSuggestionSpaceChooser() -> MatrixItemChooserCoordinator {
         let paramaters = MatrixItemChooserCoordinatorParameters(
             session: parameters.room.mxSession,

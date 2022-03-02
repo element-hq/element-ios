@@ -30,8 +30,8 @@ extern NSString *const kMXKRecentCellIdentifier;
 
 /**
  The recents data source based on a unique matrix session.
+ Deprecated: Please see MXSession.roomListDataManager
  */
-MXK_DEPRECATED_ATTRIBUTE_WITH_MSG("See MXSession.roomListDataManager")
 @interface MXKSessionRecentsDataSource : MXKDataSource {
 
 @protected

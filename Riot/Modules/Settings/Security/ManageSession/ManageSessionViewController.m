@@ -383,12 +383,12 @@ enum {
     if (deviceInfo.trustLevel.isVerified)
     {
         cell.textLabel.text = [VectorL10n manageSessionTrusted];
-        cell.imageView.image = [UIImage imageNamed:@"encryption_trusted"];
+        cell.imageView.image = AssetImages.encryptionTrusted.image;
     }
     else
     {
         cell.textLabel.text = [VectorL10n manageSessionNotTrusted];
-        cell.imageView.image = [UIImage imageNamed:@"encryption_warning"];
+        cell.imageView.image = AssetImages.encryptionWarning.image;
     }
 
     return cell;

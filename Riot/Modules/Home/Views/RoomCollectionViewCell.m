@@ -52,6 +52,8 @@
     [path closePath]; // arrow top side
     arrowMaskLayer.path = path.CGPath;
     self.editionArrowView.layer.mask = arrowMaskLayer;
+    
+    self.isAccessibilityElement = YES;
 }
 
 - (void)customizeCollectionViewCellRendering
@@ -86,6 +88,8 @@
         self.roomTitle1.hidden = YES;
         self.roomTitle2.hidden = YES;
         
+        NSMutableString *accessibilityLabel = [self.roomTitle.text mutableCopy];
+        
         // Check whether the room display name is an alias to keep visible the HS.
         if ([MXTools isMatrixRoomAlias:roomCellData.roomDisplayname])
         {
@@ -97,6 +101,7 @@
                 self.roomTitle1.text = [roomCellData.roomDisplayname substringToIndex:range.location + 1];
                 self.roomTitle2.hidden = NO;
                 self.roomTitle2.text = [roomCellData.roomDisplayname substringFromIndex:range.location + 1];
+                accessibilityLabel = [[NSString stringWithFormat:@"%@, %@", self.roomTitle1.text, self.roomTitle2.text] mutableCopy];
             }
         }
         
@@ -118,6 +123,10 @@
                 self.badgeLabel.hidden = NO;
                 self.badgeLabel.badgeColor = roomCellData.highlightCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor;
                 self.badgeLabel.text = roomCellData.notificationCountStringValue;
+                
+                NSUInteger count = roomCellData.notificationCount;
+                NSString *newMessagesLabel = count == 1 ? [VectorL10n roomNewMessageNotification:count] : [VectorL10n roomNewMessagesNotification:count];
+                [accessibilityLabel appendFormat:@", %@", newMessagesLabel];
             }
             
             // Use bold font for the room title
@@ -129,6 +138,8 @@
             self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightMedium];
             
         }
+        
+        self.accessibilityLabel = accessibilityLabel;
         
         [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.avatarUrl
                                             roomId:roomCellData.roomIdentifier

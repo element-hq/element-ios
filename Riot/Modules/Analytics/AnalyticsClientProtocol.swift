@@ -45,4 +45,12 @@ protocol AnalyticsClientProtocol {
     /// Capture the supplied analytics screen event.
     /// - Parameter event: The screen event to capture.
     func screen(_ event: AnalyticsScreenProtocol)
+    
+    /// Updates any user properties to help with creating cohorts.
+    /// - Parameter userProperties: The user properties to be updated.
+    ///
+    /// Only non-nil properties will be updated when calling this method. There might
+    /// be a delay when updating user properties as these are cached to be included
+    /// as part of the next event that gets captured.
+    func updateUserProperties(_ userProperties: AnalyticsEvent.UserProperties)
 }

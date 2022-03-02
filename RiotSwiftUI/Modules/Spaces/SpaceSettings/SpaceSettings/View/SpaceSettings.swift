@@ -40,7 +40,7 @@ struct SpaceSettings: View {
             }
         }
         .background(theme.colors.navigation)
-        .modifier(WaitOverlay(allowUserInteraction: false, isLoading: .constant(viewModel.viewState.isLoading)))
+        .waitOverlay(show: viewModel.viewState.isLoading, allowUserInteraction: false)
         .ignoresSafeArea(.container, edges: .bottom)
         .frame(maxHeight: .infinity)
         .navigationBarBackButtonHidden(true)

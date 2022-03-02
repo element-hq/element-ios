@@ -17,7 +17,6 @@
 import UIKit
 import Reusable
 import Mapbox
-import Keys
 
 class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegate {
 
@@ -25,7 +24,6 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     
     private struct Constants {
         static let mapHeight: CGFloat = 300.0
-        static let mapTilerKey = RiotKeys().mapTilerAPIKey
         static let mapZoomLevel = 15.0
         static let cellBorderRadius: CGFloat = 1.0
         static let cellCornerRadius: CGFloat = 8.0
@@ -36,9 +34,11 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     
     @IBOutlet private var descriptionContainerView: UIView!
     @IBOutlet private var descriptionLabel: UILabel!
+    @IBOutlet private var descriptionIcon: UIImageView!
+    @IBOutlet private var attributionLabel: UILabel!
     
     private var mapView: MGLMapView!
-    private var annotationView: LocationUserMarkerView?
+    private var annotationView: LocationMarkerView?
     
     // MARK: Public
     
@@ -55,7 +55,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        mapView = MGLMapView(frame: .zero, styleURL: BuildSettings.tileServerMapURL)
+        mapView = MGLMapView(frame: .zero)
         mapView.delegate = self
         mapView.logoView.isHidden = true
         mapView.attributionButton.isHidden = true
@@ -74,18 +74,16 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     // MARK: - Public
     
     public func displayLocation(_ location: CLLocationCoordinate2D,
-                              userIdentifier: String,
-                              userDisplayName: String,
-                              userAvatarURLString: String?,
-                              mediaManager: MXMediaManager) {
-
-        annotationView = LocationUserMarkerView.loadFromNib()
+                                userAvatarData: AvatarViewData? = nil,
+                                mapStyleURL: URL) {
         
-        annotationView?.setAvatarData(AvatarViewData(matrixItemId: userIdentifier,
-                                                     displayName: userDisplayName,
-                                                     avatarUrl: userAvatarURLString,
-                                                     mediaManager: mediaManager,
-                                                     fallbackImage: .matrixItem(userIdentifier, userDisplayName)))
+        mapView.styleURL = mapStyleURL
+        
+        annotationView = LocationMarkerView.loadFromNib()
+        
+        if let userAvatarData = userAvatarData {
+            annotationView?.setAvatarData(userAvatarData)
+        }
         
         if let annotations = mapView.annotations {
             mapView.removeAnnotations(annotations)
@@ -103,6 +101,8 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     func update(theme: Theme) {
         descriptionLabel.textColor = theme.colors.primaryContent
         descriptionLabel.font = theme.fonts.footnote
+        descriptionIcon.tintColor = theme.colors.accent
+        attributionLabel.textColor = theme.colors.accent
         layer.borderColor = theme.colors.quinaryContent.cgColor
     }
     

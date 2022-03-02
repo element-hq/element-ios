@@ -69,7 +69,7 @@ typedef enum : NSUInteger {
 
 @protocol RoomSettingsViewControllerDelegate <NSObject>
 
-- (void)roomSettingsViewController:(RoomSettingsViewController *)controller didMoveRoomTo:(NSString *)newRoomId;
+- (void)roomSettingsViewController:(RoomSettingsViewController *)controller didReplaceRoomWithReplacementId:(NSString *)newRoomId;
 
 - (void)roomSettingsViewControllerDidCancel:(RoomSettingsViewController *)controller;
 

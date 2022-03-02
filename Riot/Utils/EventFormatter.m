@@ -65,6 +65,38 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 
 - (NSAttributedString *)attributedStringFromEvent:(MXEvent *)event withRoomState:(MXRoomState *)roomState error:(MXKEventFormatterError *)error
 {
+    if (event.isRedactedEvent)
+    {
+        // Check whether the event is a thread root or redacted information is required
+        if ((RiotSettings.shared.enableThreads && [mxSession.threadingService isEventThreadRoot:event])
+            || self.settings.showRedactionsInRoomHistory)
+        {
+            UIFont *font = self.defaultTextFont;
+            UIColor *color = ThemeService.shared.theme.colors.secondaryContent;
+            NSString *string = [NSString stringWithFormat:@" %@", VectorL10n.eventFormatterMessageDeleted];
+            NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:string
+                                                                             attributes:@{
+                                                                                 NSFontAttributeName: font,
+                                                                                 NSForegroundColorAttributeName: color
+                                                                             }];
+            
+            CGSize imageSize = CGSizeMake(20, 20);
+            NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
+            attachment.image = [[AssetImages.roomContextMenuDelete.image vc_resizedWith:imageSize] vc_tintedImageUsingColor:color];
+            attachment.bounds = CGRectMake(0, font.descender, imageSize.width, imageSize.height);
+            NSAttributedString *imageString = [NSAttributedString attributedStringWithAttachment:attachment];
+            
+            NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithAttributedString:imageString];
+            [result appendAttributedString:attrString];
+            
+            if (error)
+            {
+                *error = MXKEventFormatterErrorNone;
+            }
+            
+            return result;
+        }
+    }
     BOOL isEventSenderMyUser = [event.sender isEqualToString:mxSession.myUserId];
     
     // Build strings for widget events
@@ -215,7 +247,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     {
         // Track e2e failures
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[DecryptionFailureTracker sharedInstance] reportUnableToDecryptErrorForEvent:event withRoomState:roomState myUser:mxSession.myUser.userId];
+            [[DecryptionFailureTracker sharedInstance] reportUnableToDecryptErrorForEvent:event withRoomState:roomState myUser:self->mxSession.myUser.userId];
         });
 
         if (event.decryptionError.code == MXDecryptingErrorUnknownInboundSessionIdCode)

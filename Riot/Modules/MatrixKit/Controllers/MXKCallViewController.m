@@ -1197,7 +1197,7 @@ static const CGFloat kLocalPreviewMargin = 20;
     if (roomListener && mxCall.room)
     {
         MXWeakify(self);
-        [mxCall.room liveTimeline:^(MXEventTimeline *liveTimeline) {
+        [mxCall.room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
             MXStrongifyAndReturnIfNil(self);
 
             [liveTimeline removeListener:self->roomListener];
@@ -1422,29 +1422,31 @@ static const CGFloat kLocalPreviewMargin = 20;
     }
 }
 
-- (void)updateProximityAndSleep
-{
-    BOOL inCall = (mxCall.state == MXCallStateConnected || mxCall.state == MXCallStateRinging || mxCall.state == MXCallStateInviteSent || mxCall.state == MXCallStateConnecting || mxCall.state == MXCallStateCreateOffer || mxCall.state == MXCallStateCreateAnswer);
-    
-    if (inCall)
-    {
-        BOOL isBuiltInReceiverUsed = self.isBuiltInReceiverAudioOuput;
-        
-        // Enable the proximity monitoring when the built in receiver is used as the audio output.
-        BOOL enableProxMonitoring = isBuiltInReceiverUsed;
-        [[UIDevice currentDevice] setProximityMonitoringEnabled:enableProxMonitoring];
-        
-        // Disable the idle timer during a video call, or during a voice call which is performed with the built-in receiver.
-        // Note: if the device is locked, VoIP calling get dropped if an incoming GSM call is received.
-        BOOL disableIdleTimer = mxCall.isVideoCall || isBuiltInReceiverUsed;
-        
-        UIApplication *sharedApplication = [UIApplication performSelector:@selector(sharedApplication)];
-        if (sharedApplication)
-        {
-            sharedApplication.idleTimerDisabled = disableIdleTimer;
-        }
-    }
-}
+ - (void)updateProximityAndSleep
+ {
+     BOOL inCall = (mxCall.state == MXCallStateConnected || mxCall.state == MXCallStateRinging || mxCall.state == MXCallStateInviteSent || mxCall.state == MXCallStateConnecting || mxCall.state == MXCallStateCreateOffer || mxCall.state == MXCallStateCreateAnswer);
+
+     BOOL isBuiltInReceiverUsed = self.isBuiltInReceiverAudioOuput;
+     
+     // Enable the proximity monitoring when the built in receiver is used as the audio output.
+     BOOL enableProxMonitoring = inCall && isBuiltInReceiverUsed;
+     
+     UIDevice *device = [UIDevice currentDevice];
+     if (device && device.isProximityMonitoringEnabled != enableProxMonitoring)
+     {
+         [device setProximityMonitoringEnabled:enableProxMonitoring];
+     }
+
+     // Disable the idle timer during a video call, or during a voice call which is performed with the built-in receiver.
+     // Note: if the device is locked, VoIP calling get dropped if an incoming GSM call is received.
+     BOOL disableIdleTimer = inCall && (mxCall.isVideoCall || isBuiltInReceiverUsed);
+     
+     UIApplication *sharedApplication = [UIApplication performSelector:@selector(sharedApplication)];
+     if (sharedApplication && sharedApplication.isIdleTimerDisabled != disableIdleTimer)
+     {
+         sharedApplication.idleTimerDisabled = disableIdleTimer;
+     }
+ }
 
 - (UIView *)createIncomingCallView
 {

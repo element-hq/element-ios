@@ -32,16 +32,7 @@ struct RoomAccessTypeChooser: View {
     
     var body: some View {
         listContent
-            .modifier(WaitOverlay(
-                        allowUserInteraction: false,
-                        message: $viewModel.waitingMessage,
-                        isLoading: $viewModel.isLoading))
-            .modal(withStyle: .overFullScreen,
-                   modalTransitionStyle: .crossDissolve,
-                   id: "RoomAccessTypeChooser-RoomAccessTypeChooserUpgradeRoomAlert",
-                   isPresented: $viewModel.showUpgradeRoomAlert) {
-                RoomAccessTypeChooserUpgradeRoomAlert(viewModel: viewModel)
-            }
+            .waitOverlay(show: viewModel.isLoading, message: viewModel.waitingMessage, allowUserInteraction: false)
             .navigationTitle(VectorL10n.roomAccessSettingsScreenNavTitle)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -57,6 +48,7 @@ struct RoomAccessTypeChooser: View {
                     .disabled(viewModel.isLoading)
                 }
             }
+            .accentColor(theme.colors.accent)
     }
     
     // MARK: Private

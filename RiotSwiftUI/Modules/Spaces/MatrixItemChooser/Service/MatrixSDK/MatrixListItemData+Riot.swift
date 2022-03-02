@@ -23,13 +23,13 @@ extension MatrixListItemData {
     }
     
     init(mxRoom: MXRoom, spaceService: MXSpaceService) {
-        let parentSapceIds = mxRoom.summary.parentSpaceIds ?? Set()
+        let parentSpaceIds = mxRoom.summary.parentSpaceIds ?? Set()
         let detailText: String?
-        if parentSapceIds.isEmpty {
+        if parentSpaceIds.isEmpty {
             detailText = nil
         } else {
-            if let spaceName = spaceService.getSpace(withId: parentSapceIds.first ?? "")?.summary?.displayname {
-                let count = parentSapceIds.count - 1
+            if let spaceName = spaceService.getSpace(withId: parentSpaceIds.first ?? "")?.summary?.displayname {
+                let count = parentSpaceIds.count - 1
                 switch count {
                 case 0:
                     detailText = VectorL10n.spacesCreationInSpacename(spaceName)
@@ -39,8 +39,8 @@ extension MatrixListItemData {
                     detailText = VectorL10n.spacesCreationInSpacenamePlusMany(spaceName, "\(count)")
                 }
             } else {
-                if parentSapceIds.count > 1 {
-                    detailText = VectorL10n.spacesCreationInManySpaces("\(parentSapceIds.count)")
+                if parentSpaceIds.count > 1 {
+                    detailText = VectorL10n.spacesCreationInManySpaces("\(parentSpaceIds.count)")
                 } else {
                     detailText = VectorL10n.spacesCreationInOneSpace
                 }

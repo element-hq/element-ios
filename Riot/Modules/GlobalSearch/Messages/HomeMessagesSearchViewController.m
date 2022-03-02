@@ -156,17 +156,32 @@
 }
 
 - (void)showRoomWithId:(NSString*)roomId
-            andEventId:(NSString*)eventId
+              andEvent:(MXEvent*)event
        inMatrixSession:(MXSession*)session
 {
-    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
-    
+    ThreadParameters *threadParameters = nil;
+    if (RiotSettings.shared.enableThreads)
+    {
+        if (event.threadId)
+        {
+            threadParameters = [[ThreadParameters alloc] initWithThreadId:event.threadId
+                                                          stackRoomScreen:NO];
+        }
+        else if (event.unsignedData.relations.thread || [self.mainSession.threadingService isEventThreadRoot:event])
+        {
+            threadParameters = [[ThreadParameters alloc] initWithThreadId:event.eventId
+                                                          stackRoomScreen:NO];
+        }
+    }
+
+    ScreenPresentationParameters *screenParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
+
     RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
-                                                                                    eventId:eventId
-                                                                                  mxSession:session
-                                                                     presentationParameters:presentationParameters];
-    
-    [[AppDelegate theDelegate] showRoomWithParameters:parameters];
+                                                                                    eventId:event.eventId
+                                                                                  mxSession:self.mainSession
+                                                                           threadParameters:threadParameters
+                                                                     presentationParameters:screenParameters];
+    [[LegacyAppDelegate theDelegate] showRoomWithParameters:parameters];
 }
 
 #pragma mark - MXKDataSourceDelegate
@@ -263,7 +278,7 @@
 
     // Make the master tabBar view controller open the RoomViewController
     [self showRoomWithId:cellData.roomId
-              andEventId:_selectedEvent.eventId
+                andEvent:_selectedEvent
          inMatrixSession:cellData.mxSession];
     
     // Reset the selected event. HomeViewController got it when here

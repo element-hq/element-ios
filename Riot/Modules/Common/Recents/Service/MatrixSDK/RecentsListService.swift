@@ -245,7 +245,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         if let fetcher = favoritedRoomListDataFetcher {
             updateFavoritedFetcher(fetcher, for: mode)
         }
-        allFetchers.forEach({ notifyDataChange(on: $0) })
+        allFetchers.forEach({ notifyDataChange(on: $0, totalCountsChanged: true) })
     }
     
     public func updateQuery(_ query: String?) {
@@ -558,11 +558,14 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         }
     }
     
-    private func notifyDataChange(on fetcher: MXRoomListDataFetcher) {
+    private func notifyDataChange(on fetcher: MXRoomListDataFetcher, totalCountsChanged: Bool) {
         if let section = section(forFetcher: fetcher) {
-            multicastDelegate.invoke { $0.recentsListServiceDidChangeData?(self, forSection: section) }
+            multicastDelegate.invoke { $0.recentsListServiceDidChangeData?(self,
+                                                                           forSection: section,
+                                                                           totalCountsChanged: totalCountsChanged) }
         }
-        multicastDelegate.invoke { $0.recentsListServiceDidChangeData?(self) }
+        multicastDelegate.invoke { $0.recentsListServiceDidChangeData?(self,
+                                                                       totalCountsChanged: totalCountsChanged) }
     }
     
     deinit {
@@ -575,8 +578,8 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
 
 extension RecentsListService: MXRoomListDataFetcherDelegate {
     
-    public func fetcherDidChangeData(_ fetcher: MXRoomListDataFetcher) {
-        notifyDataChange(on: fetcher)
+    public func fetcherDidChangeData(_ fetcher: MXRoomListDataFetcher, totalCountsChanged: Bool) {
+        notifyDataChange(on: fetcher, totalCountsChanged: totalCountsChanged)
     }
     
 }

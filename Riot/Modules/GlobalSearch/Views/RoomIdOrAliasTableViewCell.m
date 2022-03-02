@@ -49,7 +49,7 @@
     }
     else
     {
-        self.avatarImageView.image = [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
+        self.avatarImageView.image = [MXKTools paintImage:AssetImages.placeholder.image
                                                 withColor:ThemeService.shared.theme.tintColor];
     }
     

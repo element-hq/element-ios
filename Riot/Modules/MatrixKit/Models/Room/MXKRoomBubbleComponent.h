@@ -19,6 +19,8 @@
 #import "MXKEventFormatter.h"
 #import "MXKURLPreviewDataProtocol.h"
 
+@protocol MXThreadProtocol;
+
 /**
  Flags to indicate if a fix is required at the display time.
  */
@@ -102,6 +104,11 @@ typedef enum : NSUInteger {
  Indicate if an encryption badge should be shown.
  */
 @property (nonatomic, readonly) BOOL showEncryptionBadge;
+
+/**
+ Thread for the bubble component. Should only exist for thread root events.
+ */
+@property (nonatomic, readonly) id<MXThreadProtocol> thread;
 
 /**
  Create a new `MXKRoomBubbleComponent` object based on a `MXEvent` instance.

@@ -23,6 +23,7 @@ enum SpaceSettingsModalCoordinatorCoordinatorAction {
 }
 
 @objcMembers
+@available(iOS 14.0, *)
 final class SpaceSettingsModalCoordinator: Coordinator {
     
     // MARK: - Properties
@@ -56,21 +57,19 @@ final class SpaceSettingsModalCoordinator: Coordinator {
     
     
     func start() {
-        if #available(iOS 14.0, *) {
-            MXLog.debug("[SpaceSettingsModalCoordinator] did start.")
-            let rootCoordinator = self.createSpaceSettingsCoordinator()
-            rootCoordinator.start()
-            
-            self.add(childCoordinator: rootCoordinator)
-            
-            if self.navigationRouter.modules.isEmpty == false {
-                self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
-                    self?.remove(childCoordinator: rootCoordinator)
-                })
-            } else {
-                self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
-                    self?.remove(childCoordinator: rootCoordinator)
-                }
+        MXLog.debug("[SpaceSettingsModalCoordinator] did start.")
+        let rootCoordinator = self.createSpaceSettingsCoordinator()
+        rootCoordinator.start()
+        
+        self.add(childCoordinator: rootCoordinator)
+        
+        if self.navigationRouter.modules.isEmpty == false {
+            self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
+                self?.remove(childCoordinator: rootCoordinator)
+            })
+        } else {
+            self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
+                self?.remove(childCoordinator: rootCoordinator)
             }
         }
     }
@@ -92,7 +91,6 @@ final class SpaceSettingsModalCoordinator: Coordinator {
         coordinator.start()
     }
 
-    @available(iOS 14.0, *)
     private func createSpaceSettingsCoordinator() -> SpaceSettingsCoordinator {
         let coordinator = SpaceSettingsCoordinator(parameters: SpaceSettingsCoordinatorParameters(session: parameters.session, spaceId: parameters.spaceId))
         coordinator.completion = { [weak self] result in
@@ -110,7 +108,6 @@ final class SpaceSettingsModalCoordinator: Coordinator {
         return coordinator
     }
 
-    @available(iOS 14.0, *)
     private func pushOptionScreen(ofType optionType: SpaceSettingsOptionType) {
         switch optionType {
         case .rooms:
@@ -168,6 +165,7 @@ final class SpaceSettingsModalCoordinator: Coordinator {
 }
 
 // MARK: - ExploreRoomCoordinatorDelegate
+@available(iOS 14.0, *)
 extension SpaceSettingsModalCoordinator: ExploreRoomCoordinatorDelegate {
     func exploreRoomCoordinatorDidComplete(_ coordinator: ExploreRoomCoordinatorType) {
         self.navigationRouter.dismissModule(animated: true, completion: {
@@ -177,6 +175,7 @@ extension SpaceSettingsModalCoordinator: ExploreRoomCoordinatorDelegate {
 }
 
 // MARK: - SpaceMembersCoordinatorDelegate
+@available(iOS 14.0, *)
 extension SpaceSettingsModalCoordinator: SpaceMembersCoordinatorDelegate {
     func spaceMembersCoordinatorDidCancel(_ coordinator: SpaceMembersCoordinatorType) {
         self.navigationRouter.dismissModule(animated: true, completion: {

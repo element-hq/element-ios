@@ -145,16 +145,13 @@
     // Force UI refresh according to selected  media types - Set default media type if none.
     self.mediaTypes = _mediaTypes ? _mediaTypes : @[(NSString *)kUTTypeImage];
     
-    // Check photo library access
-    [self checkPhotoLibraryAuthorizationStatus];
     
     // Observe UIApplicationWillEnterForegroundNotification to refresh captures collection when app leaves the background state.
     UIApplicationWillEnterForegroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXStrongifyAndReturnIfNil(self);
 
-        [self reloadRecentCapturesCollection];
-        [self reloadUserLibraryAlbums];
+        [self checkPhotoLibraryAuthorizationStatusAndReload];
 
     }];
 
@@ -218,8 +215,7 @@
         userAlbumsQueue = dispatch_queue_create("media.picker.user.albums", DISPATCH_QUEUE_SERIAL);
     }
     
-    [self reloadRecentCapturesCollection];
-    [self reloadUserLibraryAlbums];
+    [self checkPhotoLibraryAuthorizationStatusAndReload];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
@@ -231,29 +227,28 @@
         [self updateRecentCapturesCollectionViewHeightIfNeeded];
     });
 }
-
-- (void)checkPhotoLibraryAuthorizationStatus
+    
+- (void)checkPhotoLibraryAuthorizationStatusAndReload
 {
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
         
         switch (status) {
-            case PHAuthorizationStatusAuthorized:
+            case PHAuthorizationStatusAuthorized: {
                 // Load recent captures if this is not already done
-                if (!self->recentCaptures.count)
-                {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        
-                        [self reloadRecentCapturesCollection];
-                        [self reloadUserLibraryAlbums];
-                        
-                    });
-                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    [self reloadRecentCapturesCollection];
+                    [self reloadUserLibraryAlbums];
+                    
+                });
                 break;
-            default:
+            }
+            default:{
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self presentPermissionDeniedAlert];
                 });
                 break;
+            }
         }
     }];
 }
@@ -302,8 +297,7 @@
     {
         _mediaTypes = mediaTypes;
         
-        [self reloadRecentCapturesCollection];
-        [self reloadUserLibraryAlbums];
+        [self checkPhotoLibraryAuthorizationStatusAndReload];
     }
 }
 
@@ -735,8 +729,8 @@
     videoPlayerControl = [UIButton buttonWithType:UIButtonTypeCustom];
     [videoPlayerControl addTarget:self action:@selector(controlVideoPlayer) forControlEvents:UIControlEventTouchUpInside];
     videoPlayerControl.frame = CGRectMake(0, 0, 44, 44);
-    [videoPlayerControl setImage:[UIImage imageNamed:@"camera_play"] forState:UIControlStateNormal];
-    [videoPlayerControl setImage:[UIImage imageNamed:@"camera_play"] forState:UIControlStateHighlighted];
+    [videoPlayerControl setImage:AssetImages.cameraPlay.image forState:UIControlStateNormal];
+    [videoPlayerControl setImage:AssetImages.cameraPlay.image forState:UIControlStateHighlighted];
     [validationView addSubview:videoPlayerControl];
     videoPlayerControl.center = validationView.imageView.center;
 
@@ -802,8 +796,8 @@
         [videoPlayer.player seekToTime:kCMTimeZero];
         [videoPlayer.view removeFromSuperview];
         
-        [videoPlayerControl setImage:[UIImage imageNamed:@"camera_play"] forState:UIControlStateNormal];
-        [videoPlayerControl setImage:[UIImage imageNamed:@"camera_play"] forState:UIControlStateHighlighted];
+        [videoPlayerControl setImage:AssetImages.cameraPlay.image forState:UIControlStateNormal];
+        [videoPlayerControl setImage:AssetImages.cameraPlay.image forState:UIControlStateHighlighted];
     }
     else
     {
@@ -821,8 +815,8 @@
         
         [videoPlayer.player play];
         
-        [videoPlayerControl setImage:[UIImage imageNamed:@"camera_stop"] forState:UIControlStateNormal];
-        [videoPlayerControl setImage:[UIImage imageNamed:@"camera_stop"] forState:UIControlStateHighlighted];
+        [videoPlayerControl setImage:AssetImages.cameraStop.image forState:UIControlStateNormal];
+        [videoPlayerControl setImage:AssetImages.cameraStop.image forState:UIControlStateHighlighted];
         [validationView bringSubviewToFront:videoPlayerControl];
     }
 }
@@ -866,7 +860,7 @@
             
         }];
         
-        cell.bottomLeftIcon.image = [UIImage imageNamed:@"video_icon"];
+        cell.bottomLeftIcon.image = AssetImages.videoIcon.image;
         cell.bottomLeftIcon.hidden = (asset.mediaType == PHAssetMediaTypeImage);
         
         // Disable user interaction in mxkImageView, in order to let collection handle user selection
@@ -974,7 +968,7 @@
                 
                 if (collection.assetCollectionSubtype == PHAssetCollectionSubtypeSmartAlbumVideos)
                 {
-                    cell.bottomLeftIcon.image = [UIImage imageNamed:@"video_icon"];
+                    cell.bottomLeftIcon.image = AssetImages.videoIcon.image;
                     cell.bottomLeftIcon.hidden = NO;
                 }
                 else

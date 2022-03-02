@@ -48,7 +48,7 @@ struct SpaceCreationMatrixItemChooser: View {
     @ViewBuilder
     private var mainView: some View {
         ZStack(alignment: .bottom) {
-            MatrixItemChooser(viewModel: viewModel)
+            MatrixItemChooser(viewModel: viewModel, listBottomPadding: 72)
             footerView
         }
     }

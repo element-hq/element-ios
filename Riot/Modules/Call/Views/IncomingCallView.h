@@ -43,9 +43,6 @@ typedef void (^IncomingCallViewAction)(void);
  
  @param mxcAvatarURI the Matrix Content URI of the caller avatar.
  @param mediaManager the media manager used to download this avatar if it is not cached yet.
- @param placeholderImage
- @param callerName
- @param callInfo
  */
 - (instancetype)initWithCallerAvatar:(NSString *)mxcAvatarURI
                         mediaManager:(MXMediaManager *)mediaManager

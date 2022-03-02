@@ -266,7 +266,8 @@ extension SplitViewCoordinator: UISplitViewControllerDelegate {
     func splitViewController(_ splitViewController: UISplitViewController, separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
         
         // If the primary root controller of the UISplitViewController is a UINavigationController,
-        // it's possible to have nested navigation controllers due to private property `_allowNestedNavigationControllers` set to true (https://blog.malcolmhall.com/2017/01/27/default-behaviour-of-uisplitviewcontroller-collapsesecondaryviewcontroller/).
+        // it's possible to have nested navigation controllers due to private property `_allowNestedNavigationControllers` set to true
+        // (https://blog.malcolmhall.com/2017/01/27/default-behaviour-of-uisplitviewcontroller-collapsesecondaryviewcontroller/).
         // So if the top view controller of the primary navigation controller is a navigation controller and it corresponds to the existing `detailNavigationController` instance.
         // Return `detailNavigationController` as is, it will be used as the secondary view of the split view controller.
         if let topMostNavigationController = self.selectedNavigationRouter?.modules.last as? UINavigationController, topMostNavigationController == self.detailNavigationController {
@@ -302,7 +303,8 @@ extension SplitViewCoordinator: UISplitViewControllerDelegate {
         
         // Return false to let the split view controller try to incorporate the secondary view controller's content into the collapsed interface.
         // If the primary root controller of a UISplitViewController is a UINavigationController,
-        // it's possible to have nested navigation controllers due to private property `_allowNestedNavigationControllers` set to true (https://blog.malcolmhall.com/2017/01/27/default-behaviour-of-uisplitviewcontroller-collapsesecondaryviewcontroller/).
+        // it's possible to have nested navigation controllers due to private property `_allowNestedNavigationControllers` set to true
+        // (https://blog.malcolmhall.com/2017/01/27/default-behaviour-of-uisplitviewcontroller-collapsesecondaryviewcontroller/).
         // So in this case returning false here will push the `detailNavigationController` on top of the `primaryNavigationController`.
         // Sample primary view stack:
         // primaryNavigationController[
@@ -344,7 +346,8 @@ extension SplitViewCoordinator: SplitViewMasterPresentableDelegate {
         // - If the split view controller is collpased (one column visible):
         // The `detailNavigationController` will be pushed on top of the primary navigation controller.
         // In fact if the primary root controller of a UISplitViewController is a UINavigationController,
-        // it's possible to have nested navigation controllers due to private property `_allowNestedNavigationControllers` set to true (https://blog.malcolmhall.com/2017/01/27/default-behaviour-of-uisplitviewcontroller-collapsesecondaryviewcontroller/).
+        // it's possible to have nested navigation controllers due to private property `_allowNestedNavigationControllers` set to true
+        // (https://blog.malcolmhall.com/2017/01/27/default-behaviour-of-uisplitviewcontroller-collapsesecondaryviewcontroller/).
         // - Else if the split view controller is not collpased (two column visible)
         // It will set the `detailNavigationController` as the secondary view of the split view controller
         self.splitViewController.showDetailViewController(detailNavigationController, sender: nil)
@@ -361,6 +364,30 @@ extension SplitViewCoordinator: SplitViewMasterPresentableDelegate {
         }
         
         detailNavigationRouter.push(detailPresentable, animated: true, popCompletion: popCompletion)
+    }
+    
+    func splitViewMasterPresentable(_ presentable: Presentable, wantsToReplaceDetailsWith modules: [NavigationModule]) {
+        MXLog.debug("[SplitViewCoordinator] splitViewMasterPresentable: \(presentable) wantsToReplaceDetailsWith modules: \(modules)")
+        
+        self.detailNavigationRouter?.setModules(modules, animated: true)
+    }
+    
+    func splitViewMasterPresentable(_ presentable: Presentable, wantsToStack modules: [NavigationModule]) {
+        guard let detailNavigationRouter = self.detailNavigationRouter else {
+            MXLog.warning("[SplitViewCoordinator] Failed to stack \(modules) because detailNavigationRouter is nil")
+            return
+        }
+        
+        detailNavigationRouter.push(modules, animated: true)
+    }
+    
+    func splitViewMasterPresentable(_ presentable: Presentable, wantsToPopTo module: Presentable) {
+        guard let detailNavigationRouter = self.detailNavigationRouter else {
+            MXLog.warning("[SplitViewCoordinator] Failed to pop to \(module) because detailNavigationRouter is nil")
+            return
+        }
+        
+        detailNavigationRouter.popToModule(module, animated: true)
     }
     
     func splitViewMasterPresentableWantsToResetDetail(_ presentable: Presentable) {

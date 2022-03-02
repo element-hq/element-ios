@@ -1,5 +1,3 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh AnalyticsPrompt AnalyticsPrompt
 // 
 // Copyright 2021 New Vector Ltd
 //
@@ -17,9 +15,6 @@
 //
 
 import Foundation
-
-// The state is never modified so this is unnecessary.
-enum AnalyticsPromptStateAction { }
 
 enum AnalyticsPromptViewAction {
     /// Enable analytics.
@@ -47,18 +42,13 @@ struct AnalyticsPromptViewState: BindableState {
 /// A collection of strings for the UI that need to be created in
 /// the coordinator or mocked in the RiotSwiftUI target.
 protocol AnalyticsPromptStringsProtocol {
-    var appDisplayName: String { get }
-    
     var point1: NSAttributedString { get }
     var point2: NSAttributedString { get }
-    
-    var termsNewUser: NSAttributedString { get }
-    var termsUpgrade: NSAttributedString { get }
 }
 
 enum AnalyticsPromptType {
-    case newUser(termsString: NSAttributedString)
-    case upgrade(termsString: NSAttributedString)
+    case newUser
+    case upgrade
 }
 
 extension AnalyticsPromptType {
@@ -72,11 +62,23 @@ extension AnalyticsPromptType {
         }
     }
     
-    /// The terms string that should be displayed.
-    var termsStrings: NSAttributedString {
+    /// The main part of the terms string that should be displayed.
+    var mainTermsString: String {
         switch self {
-        case .newUser(let termsString), .upgrade(let termsString):
-            return termsString
+        case .newUser:
+            return VectorL10n.analyticsPromptTermsNewUser("%@")
+        case .upgrade:
+            return VectorL10n.analyticsPromptTermsUpgrade("%@")
+        }
+    }
+    
+    /// The tappable part of the terms string that should be displayed.
+    var termsLinkString: String {
+        switch self {
+        case .newUser:
+            return VectorL10n.analyticsPromptTermsLinkNewUser
+        case .upgrade:
+            return VectorL10n.analyticsPromptTermsLinkUpgrade
         }
     }
     
@@ -101,15 +103,7 @@ extension AnalyticsPromptType {
     }
 }
 
-extension AnalyticsPromptType: CaseIterable {
-    static var allCases: [AnalyticsPromptType] {
-        let strings = MockAnalyticsPromptStrings()
-        return [
-            .newUser(termsString: strings.termsNewUser),
-            .upgrade(termsString: strings.termsUpgrade)
-        ]
-    }
-}
+extension AnalyticsPromptType: CaseIterable { }
 
 extension AnalyticsPromptType: Identifiable {
     var id: String {

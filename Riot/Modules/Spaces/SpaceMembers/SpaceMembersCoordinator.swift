@@ -156,24 +156,41 @@ extension SpaceMembersCoordinator: SpaceMemberListCoordinatorDelegate {
             return
         }
         
-        let coordinator = ContactsPickerCoordinator(session: parameters.session, room: spaceRoom, currentSearchText: nil, actualParticipants: nil, invitedParticipants: nil, userParticipant: nil)
-        coordinator.delegate = self
-        coordinator.start()
-        childCoordinators.append(coordinator)
-        self.navigationRouter.present(coordinator.toPresentable(), animated: true)
+        spaceRoom.state { [weak self] roomState in
+            guard let self = self else { return }
+            
+            guard let powerLevels = roomState?.powerLevels, let userId = self.parameters.session.myUserId else {
+                MXLog.error("[SpaceMembersCoordinator] spaceMemberListCoordinatorShowInvite: failed to find powerLevels for room")
+                return
+            }
+            let userPowerLevel = powerLevels.powerLevelOfUser(withUserID: userId)
+            
+            guard userPowerLevel >= powerLevels.invite else {
+                let alert = UIAlertController(title: VectorL10n.spacesInvitePeople, message: VectorL10n.spaceInviteNotEnoughPermission, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: VectorL10n.ok, style: .default, handler: nil))
+                self.navigationRouter.present(alert, animated: true)
+                return
+            }
+            
+            let coordinator = ContactsPickerCoordinator(session: self.parameters.session, room: spaceRoom, initialSearchText: nil, actualParticipants: nil, invitedParticipants: nil, userParticipant: nil, navigationRouter: self.navigationRouter)
+            coordinator.delegate = self
+            coordinator.start()
+            self.childCoordinators.append(coordinator)
+            self.navigationRouter.present(coordinator.toPresentable(), animated: true)
+        }
     }
 }
 
 // MARK: - ContactsPickerCoordinatorDelegate
 extension SpaceMembersCoordinator: ContactsPickerCoordinatorDelegate {
-    func contactsPickerCoordinatorDidStartLoading(_ coordinator: ContactsPickerCoordinatorType) {
+    func contactsPickerCoordinatorDidStartLoading(_ coordinator: ContactsPickerCoordinatorProtocol) {
     }
     
-    func contactsPickerCoordinatorDidEndLoading(_ coordinator: ContactsPickerCoordinatorType) {
+    func contactsPickerCoordinatorDidEndLoading(_ coordinator: ContactsPickerCoordinatorProtocol) {
     }
     
-    func contactsPickerCoordinatorDidClose(_ coordinator: ContactsPickerCoordinatorType) {
-        childCoordinators.removeLast()
+    func contactsPickerCoordinatorDidClose(_ coordinator: ContactsPickerCoordinatorProtocol) {
+        remove(childCoordinator: coordinator)
     }
 }
 

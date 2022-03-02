@@ -5,3 +5,4 @@
 "NSContactsUsageDescription" = "Element megmutatja a névjegyzéket, hogy beszélgetésbe meghívhasd őket.";
 "NSCalendarsUsageDescription" = "Nézd meg a találkozóidat az alkalmazásban.";
 "NSFaceIDUsageDescription" = "Arc felismerés használata az alkalmazás eléréséhez.";
+"NSLocationWhenInUseUsageDescription" = "Ha megosztod másokkal a földrajzi helyzetedet, akkor az Elementnek hozzáférésre van szüksége a térképen való megjelenítéshez.";

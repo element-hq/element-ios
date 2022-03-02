@@ -119,7 +119,7 @@ public class VectorL10n: NSObject {
   public static var authEmailInUse: String { 
     return VectorL10n.tr("Vector", "auth_email_in_use") 
   }
-  /// No identity server is configured so you cannot add an email address in order to reset your password in the future.
+  /// No identity server is configured so you cannot add an email address in order to reset your Matrix account password in the future.
   public static var authEmailIsRequired: String { 
     return VectorL10n.tr("Vector", "auth_email_is_required") 
   }
@@ -135,11 +135,11 @@ public class VectorL10n: NSObject {
   public static var authEmailValidationMessage: String { 
     return VectorL10n.tr("Vector", "auth_email_validation_message") 
   }
-  /// Forgot password?
+  /// Forgot Matrix account password?
   public static var authForgotPassword: String { 
     return VectorL10n.tr("Vector", "auth_forgot_password") 
   }
-  /// No identity server is configured: add one to reset your password.
+  /// No identity server is configured: add one to reset your Matrix account password.
   public static var authForgotPasswordErrorNoConfiguredIdentityServer: String { 
     return VectorL10n.tr("Vector", "auth_forgot_password_error_no_configured_identity_server") 
   }
@@ -231,7 +231,7 @@ public class VectorL10n: NSObject {
   public static var authPhoneInUse: String { 
     return VectorL10n.tr("Vector", "auth_phone_in_use") 
   }
-  /// No identity server is configured so you cannot add a phone number in order to reset your password in the future.
+  /// No identity server is configured so you cannot add a phone number in order to reset your Matrix account password in the future.
   public static var authPhoneIsRequired: String { 
     return VectorL10n.tr("Vector", "auth_phone_is_required") 
   }
@@ -247,7 +247,7 @@ public class VectorL10n: NSObject {
   public static var authRegister: String { 
     return VectorL10n.tr("Vector", "auth_register") 
   }
-  /// Confirm your new password
+  /// Confirm your new Matrix account password
   public static var authRepeatNewPasswordPlaceholder: String { 
     return VectorL10n.tr("Vector", "auth_repeat_new_password_placeholder") 
   }
@@ -259,7 +259,7 @@ public class VectorL10n: NSObject {
   public static func authResetPasswordEmailValidationMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "auth_reset_password_email_validation_message", p1)
   }
-  /// No identity server is configured: add one in server options to reset your password.
+  /// No identity server is configured: add one in server options to reset your Matrix account password.
   public static var authResetPasswordErrorIsRequired: String { 
     return VectorL10n.tr("Vector", "auth_reset_password_error_is_required") 
   }
@@ -271,7 +271,7 @@ public class VectorL10n: NSObject {
   public static var authResetPasswordErrorUnauthorized: String { 
     return VectorL10n.tr("Vector", "auth_reset_password_error_unauthorized") 
   }
-  /// To reset your password, enter the email address linked to your account:
+  /// To reset your Matrix account password, enter the email address linked to your account:
   public static var authResetPasswordMessage: String { 
     return VectorL10n.tr("Vector", "auth_reset_password_message") 
   }
@@ -287,7 +287,7 @@ public class VectorL10n: NSObject {
   public static var authResetPasswordNextStepButton: String { 
     return VectorL10n.tr("Vector", "auth_reset_password_next_step_button") 
   }
-  /// Your password has been reset.\n\nYou have been logged out of all sessions and will no longer receive push notifications. To re-enable notifications, re-log in on each device.
+  /// Your Matrix account password has been reset.\n\nYou have been logged out of all sessions and will no longer receive push notifications. To re-enable notifications, re-log in on each device.
   public static var authResetPasswordSuccessMessage: String { 
     return VectorL10n.tr("Vector", "auth_reset_password_success_message") 
   }
@@ -779,7 +779,7 @@ public class VectorL10n: NSObject {
   public static var deactivateAccountInformationsPart5: String { 
     return VectorL10n.tr("Vector", "deactivate_account_informations_part5") 
   }
-  /// To continue, please enter your password
+  /// To continue, please enter your Matrix account password
   public static var deactivateAccountPasswordAlertMessage: String { 
     return VectorL10n.tr("Vector", "deactivate_account_password_alert_message") 
   }
@@ -1335,6 +1335,10 @@ public class VectorL10n: NSObject {
   public static var encryptedRoomMessageReplyToPlaceholder: String { 
     return VectorL10n.tr("Vector", "encrypted_room_message_reply_to_placeholder") 
   }
+  /// Error
+  public static var error: String { 
+    return VectorL10n.tr("Vector", "error") 
+  }
   /// Add an identity server in your settings to invite by email.
   public static var errorInvite3pidWithNoIdentityServer: String { 
     return VectorL10n.tr("Vector", "error_invite_3pid_with_no_identity_server") 
@@ -1450,6 +1454,10 @@ public class VectorL10n: NSObject {
   /// %tu membership changes
   public static func eventFormatterMemberUpdates(_ p1: Int) -> String {
     return VectorL10n.tr("Vector", "event_formatter_member_updates", p1)
+  }
+  /// Message deleted
+  public static var eventFormatterMessageDeleted: String { 
+    return VectorL10n.tr("Vector", "event_formatter_message_deleted") 
   }
   /// (edited)
   public static var eventFormatterMessageEditedMention: String { 
@@ -1630,6 +1638,46 @@ public class VectorL10n: NSObject {
   /// COMMUNITIES
   public static var groupSection: String { 
     return VectorL10n.tr("Vector", "group_section") 
+  }
+  /// Favourite
+  public static var homeContextMenuFavourite: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_favourite") 
+  }
+  /// Leave
+  public static var homeContextMenuLeave: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_leave") 
+  }
+  /// Low priority
+  public static var homeContextMenuLowPriority: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_low_priority") 
+  }
+  /// Move to People
+  public static var homeContextMenuMakeDm: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_make_dm") 
+  }
+  /// Move to Rooms
+  public static var homeContextMenuMakeRoom: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_make_room") 
+  }
+  /// Mute
+  public static var homeContextMenuMute: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_mute") 
+  }
+  /// Normal priority
+  public static var homeContextMenuNormalPriority: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_normal_priority") 
+  }
+  /// Notifications
+  public static var homeContextMenuNotifications: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_notifications") 
+  }
+  /// Remove from Favourites
+  public static var homeContextMenuUnfavourite: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_unfavourite") 
+  }
+  /// Unmute
+  public static var homeContextMenuUnmute: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_unmute") 
   }
   /// The all-in-one secure chat app for teams, friends and organisations. Tap the + button below to add people and rooms.
   public static var homeEmptyViewInformation: String { 
@@ -1867,7 +1915,7 @@ public class VectorL10n: NSObject {
   public static var keyBackupSetupPassphraseConfirmPassphraseValid: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_passphrase_confirm_passphrase_valid") 
   }
-  /// We'll store an encrypted copy of your keys on our server. Protect your backup with a phrase to keep it secure.\n\nFor maximum security, this should be different from your account password.
+  /// We'll store an encrypted copy of your keys on our server. Protect your backup with a phrase to keep it secure.\n\nFor maximum security, this should be different from your Matrix account password.
   public static var keyBackupSetupPassphraseInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_passphrase_info") 
   }
@@ -2259,6 +2307,18 @@ public class VectorL10n: NSObject {
   public static var locationSharingOpenGoogleMaps: String { 
     return VectorL10n.tr("Vector", "location_sharing_open_google_maps") 
   }
+  /// Open in OpenStreetMap
+  public static var locationSharingOpenOpenStreetMaps: String { 
+    return VectorL10n.tr("Vector", "location_sharing_open_open_street_maps") 
+  }
+  /// %@ could not send your location. Please try again later.
+  public static func locationSharingPostFailureSubtitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "location_sharing_post_failure_subtitle", p1)
+  }
+  /// We couldn’t send your location
+  public static var locationSharingPostFailureTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_post_failure_title") 
+  }
   /// Location sharing
   public static var locationSharingSettingsHeader: String { 
     return VectorL10n.tr("Vector", "location_sharing_settings_header") 
@@ -2351,6 +2411,10 @@ public class VectorL10n: NSObject {
   public static var mediaTypeAccessibilityVideo: String { 
     return VectorL10n.tr("Vector", "media_type_accessibility_video") 
   }
+  /// From a thread
+  public static var messageFromAThread: String { 
+    return VectorL10n.tr("Vector", "message_from_a_thread") 
+  }
   /// More
   public static var more: String { 
     return VectorL10n.tr("Vector", "more") 
@@ -2426,6 +2490,42 @@ public class VectorL10n: NSObject {
   /// Create account
   public static var onboardingSplashRegisterButtonTitle: String { 
     return VectorL10n.tr("Vector", "onboarding_splash_register_button_title") 
+  }
+  /// Communities
+  public static var onboardingUseCaseCommunityMessaging: String { 
+    return VectorL10n.tr("Vector", "onboarding_use_case_community_messaging") 
+  }
+  /// Connect to server
+  public static var onboardingUseCaseExistingServerButton: String { 
+    return VectorL10n.tr("Vector", "onboarding_use_case_existing_server_button") 
+  }
+  /// Looking to join an existing server?
+  public static var onboardingUseCaseExistingServerMessage: String { 
+    return VectorL10n.tr("Vector", "onboarding_use_case_existing_server_message") 
+  }
+  /// We’ll help you get connected.
+  public static var onboardingUseCaseMessage: String { 
+    return VectorL10n.tr("Vector", "onboarding_use_case_message") 
+  }
+  /// Not sure yet? You can %@
+  public static func onboardingUseCaseNotSureYet(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "onboarding_use_case_not_sure_yet", p1)
+  }
+  /// Friends and family
+  public static var onboardingUseCasePersonalMessaging: String { 
+    return VectorL10n.tr("Vector", "onboarding_use_case_personal_messaging") 
+  }
+  /// skip this question
+  public static var onboardingUseCaseSkipButton: String { 
+    return VectorL10n.tr("Vector", "onboarding_use_case_skip_button") 
+  }
+  /// Who will you chat to the most?
+  public static var onboardingUseCaseTitle: String { 
+    return VectorL10n.tr("Vector", "onboarding_use_case_title") 
+  }
+  /// Teams
+  public static var onboardingUseCaseWorkMessaging: String { 
+    return VectorL10n.tr("Vector", "onboarding_use_case_work_messaging") 
   }
   /// Open
   public static var `open`: String { 
@@ -2575,6 +2675,26 @@ public class VectorL10n: NSObject {
   public static var pollEditFormPollQuestionOrTopic: String { 
     return VectorL10n.tr("Vector", "poll_edit_form_poll_question_or_topic") 
   }
+  /// Poll type
+  public static var pollEditFormPollType: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_poll_type") 
+  }
+  /// Closed poll
+  public static var pollEditFormPollTypeClosed: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_poll_type_closed") 
+  }
+  /// Results are only revealed when you end the poll
+  public static var pollEditFormPollTypeClosedDescription: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_poll_type_closed_description") 
+  }
+  /// Open poll
+  public static var pollEditFormPollTypeOpen: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_poll_type_open") 
+  }
+  /// Voters see results as soon as they have voted
+  public static var pollEditFormPollTypeOpenDescription: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_poll_type_open_description") 
+  }
   /// Please try again
   public static var pollEditFormPostFailureSubtitle: String { 
     return VectorL10n.tr("Vector", "poll_edit_form_post_failure_subtitle") 
@@ -2586,6 +2706,14 @@ public class VectorL10n: NSObject {
   /// Question or topic
   public static var pollEditFormQuestionOrTopic: String { 
     return VectorL10n.tr("Vector", "poll_edit_form_question_or_topic") 
+  }
+  /// Please try again
+  public static var pollEditFormUpdateFailureSubtitle: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_update_failure_subtitle") 
+  }
+  /// Failed to update poll
+  public static var pollEditFormUpdateFailureTitle: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_update_failure_title") 
   }
   /// Please try again
   public static var pollTimelineNotClosedSubtitle: String { 
@@ -2774,6 +2902,14 @@ public class VectorL10n: NSObject {
   /// Search
   public static var roomAccessibilitySearch: String { 
     return VectorL10n.tr("Vector", "room_accessibility_search") 
+  }
+  /// More
+  public static var roomAccessibilityThreadMore: String { 
+    return VectorL10n.tr("Vector", "room_accessibility_thread_more") 
+  }
+  /// Threads
+  public static var roomAccessibilityThreads: String { 
+    return VectorL10n.tr("Vector", "room_accessibility_threads") 
   }
   /// Upload
   public static var roomAccessibilityUpload: String { 
@@ -3259,7 +3395,7 @@ public class VectorL10n: NSObject {
   public static var roomEventActionForward: String { 
     return VectorL10n.tr("Vector", "room_event_action_forward") 
   }
-  /// Reason for kicking this user
+  /// Reason for removing this user
   public static var roomEventActionKickPromptReason: String { 
     return VectorL10n.tr("Vector", "room_event_action_kick_prompt_reason") 
   }
@@ -3267,7 +3403,7 @@ public class VectorL10n: NSObject {
   public static var roomEventActionMore: String { 
     return VectorL10n.tr("Vector", "room_event_action_more") 
   }
-  /// Permalink
+  /// Copy link to message
   public static var roomEventActionPermalink: String { 
     return VectorL10n.tr("Vector", "room_event_action_permalink") 
   }
@@ -3298,6 +3434,10 @@ public class VectorL10n: NSObject {
   /// Reply
   public static var roomEventActionReply: String { 
     return VectorL10n.tr("Vector", "room_event_action_reply") 
+  }
+  /// Thread
+  public static var roomEventActionReplyInThread: String { 
+    return VectorL10n.tr("Vector", "room_event_action_reply_in_thread") 
   }
   /// Report content
   public static var roomEventActionReport: String { 
@@ -3331,9 +3471,17 @@ public class VectorL10n: NSObject {
   public static var roomEventActionViewEncryption: String { 
     return VectorL10n.tr("Vector", "room_event_action_view_encryption") 
   }
+  /// View in room
+  public static var roomEventActionViewInRoom: String { 
+    return VectorL10n.tr("Vector", "room_event_action_view_in_room") 
+  }
   /// View Source
   public static var roomEventActionViewSource: String { 
     return VectorL10n.tr("Vector", "room_event_action_view_source") 
+  }
+  /// Link copied to clipboard.
+  public static var roomEventCopyLinkInfo: String { 
+    return VectorL10n.tr("Vector", "room_event_copy_link_info") 
   }
   /// Failed to send
   public static var roomEventFailedToSend: String { 
@@ -3390,6 +3538,10 @@ public class VectorL10n: NSObject {
   ///  to let people know what this room is about.
   public static var roomIntroCellInformationRoomWithoutTopicSentence2Part2: String { 
     return VectorL10n.tr("Vector", "room_intro_cell_information_room_without_topic_sentence2_part2") 
+  }
+  /// You do not have permission to invite people to this room
+  public static var roomInviteNotEnoughPermission: String { 
+    return VectorL10n.tr("Vector", "room_invite_not_enough_permission") 
   }
   /// They won’t be a part of %@.
   public static func roomInviteToRoomOptionDetail(_ p1: String) -> String {
@@ -3931,6 +4083,10 @@ public class VectorL10n: NSObject {
   public static var roomSuggestionSettingsScreenTitle: String { 
     return VectorL10n.tr("Vector", "room_suggestion_settings_screen_title") 
   }
+  /// Thread
+  public static var roomThreadTitle: String { 
+    return VectorL10n.tr("Vector", "room_thread_title") 
+  }
   /// Invite members
   public static var roomTitleInviteMembers: String { 
     return VectorL10n.tr("Vector", "room_title_invite_members") 
@@ -4038,6 +4194,10 @@ public class VectorL10n: NSObject {
   /// Files
   public static var searchFiles: String { 
     return VectorL10n.tr("Vector", "search_files") 
+  }
+  /// Filter
+  public static var searchFilterPlaceholder: String { 
+    return VectorL10n.tr("Vector", "search_filter_placeholder") 
   }
   /// Searching…
   public static var searchInProgress: String { 
@@ -4167,7 +4327,7 @@ public class VectorL10n: NSObject {
   public static var secretsRecoveryWithPassphraseTitle: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_title") 
   }
-  /// Enter your account password to confirm
+  /// Enter your Matrix account password to confirm
   public static var secretsResetAuthenticationMessage: String { 
     return VectorL10n.tr("Vector", "secrets_reset_authentication_message") 
   }
@@ -4219,7 +4379,7 @@ public class VectorL10n: NSObject {
   public static var secretsSetupRecoveryKeyTitle: String { 
     return VectorL10n.tr("Vector", "secrets_setup_recovery_key_title") 
   }
-  /// Don't use your account password.
+  /// Don't use your Matrix account password.
   public static var secretsSetupRecoveryPassphraseAdditionalInformation: String { 
     return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_additional_information") 
   }
@@ -4375,7 +4535,7 @@ public class VectorL10n: NSObject {
   public static var securitySettingsCryptoSessions: String { 
     return VectorL10n.tr("Vector", "security_settings_crypto_sessions") 
   }
-  /// If you don’t recognise a login, change your password and reset Secure Backup.
+  /// If you don’t recognise a login, change your Matrix account password and reset Secure Backup.
   public static var securitySettingsCryptoSessionsDescription2: String { 
     return VectorL10n.tr("Vector", "security_settings_crypto_sessions_description_2") 
   }
@@ -4427,7 +4587,7 @@ public class VectorL10n: NSObject {
   public static var securitySettingsTitle: String { 
     return VectorL10n.tr("Vector", "security_settings_title") 
   }
-  /// Confirm your identity by entering your account password
+  /// Confirm your identity by entering your Matrix account password
   public static var securitySettingsUserPasswordDescription: String { 
     return VectorL10n.tr("Vector", "security_settings_user_password_description") 
   }
@@ -4499,7 +4659,7 @@ public class VectorL10n: NSObject {
   public static var settingsAdd3pidInvalidPasswordMessage: String { 
     return VectorL10n.tr("Vector", "settings_add_3pid_invalid_password_message") 
   }
-  /// To continue, please enter your password
+  /// To continue, please enter your Matrix account password
   public static var settingsAdd3pidPasswordMessage: String { 
     return VectorL10n.tr("Vector", "settings_add_3pid_password_message") 
   }
@@ -4547,7 +4707,7 @@ public class VectorL10n: NSObject {
   public static func settingsCallsStunServerFallbackDescription(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_calls_stun_server_fallback_description", p1)
   }
-  /// Change password
+  /// Change Matrix account password
   public static var settingsChangePassword: String { 
     return VectorL10n.tr("Vector", "settings_change_password") 
   }
@@ -4751,7 +4911,7 @@ public class VectorL10n: NSObject {
   public static var settingsEncryptedGroupMessages: String { 
     return VectorL10n.tr("Vector", "settings_encrypted_group_messages") 
   }
-  /// Fail to update password
+  /// Fail to update Matrix account password
   public static var settingsFailToUpdatePassword: String { 
     return VectorL10n.tr("Vector", "settings_fail_to_update_password") 
   }
@@ -4919,6 +5079,10 @@ public class VectorL10n: NSObject {
   public static var settingsLabsEnableRingingForGroupCalls: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_ringing_for_group_calls") 
   }
+  /// Threaded messaging
+  public static var settingsLabsEnableThreads: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enable_threads") 
+  }
   /// Polls
   public static var settingsLabsEnabledPolls: String { 
     return VectorL10n.tr("Vector", "settings_labs_enabled_polls") 
@@ -5003,7 +5167,7 @@ public class VectorL10n: NSObject {
   public static var settingsOther: String { 
     return VectorL10n.tr("Vector", "settings_other") 
   }
-  /// Your password has been updated
+  /// Your Matrix account password has been updated
   public static var settingsPasswordUpdated: String { 
     return VectorL10n.tr("Vector", "settings_password_updated") 
   }
@@ -5351,6 +5515,10 @@ public class VectorL10n: NSObject {
   public static var spaceHomeShowAllRooms: String { 
     return VectorL10n.tr("Vector", "space_home_show_all_rooms") 
   }
+  /// You do not have permission to invite people to this space
+  public static var spaceInviteNotEnoughPermission: String { 
+    return VectorL10n.tr("Vector", "space_invite_not_enough_permission") 
+  }
   /// Ban from this space
   public static var spaceParticipantsActionBan: String { 
     return VectorL10n.tr("Vector", "space_participants_action_ban") 
@@ -5394,6 +5562,10 @@ public class VectorL10n: NSObject {
   /// Add room
   public static var spacesAddRoom: String { 
     return VectorL10n.tr("Vector", "spaces_add_room") 
+  }
+  /// You do not have permissions to add rooms to this space.
+  public static var spacesAddRoomMissingPermissionMessage: String { 
+    return VectorL10n.tr("Vector", "spaces_add_room_missing_permission_message") 
   }
   /// Adding rooms coming soon
   public static var spacesAddRoomsComingSoonTitle: String { 
@@ -5678,6 +5850,42 @@ public class VectorL10n: NSObject {
   /// Switch
   public static var `switch`: String { 
     return VectorL10n.tr("Vector", "switch") 
+  }
+  /// Copy link to thread
+  public static var threadCopyLinkToThread: String { 
+    return VectorL10n.tr("Vector", "thread_copy_link_to_thread") 
+  }
+  /// All threads
+  public static var threadsActionAllThreads: String { 
+    return VectorL10n.tr("Vector", "threads_action_all_threads") 
+  }
+  /// My threads
+  public static var threadsActionMyThreads: String { 
+    return VectorL10n.tr("Vector", "threads_action_my_threads") 
+  }
+  /// Threads help keep your conversations on-topic and easy to track.
+  public static var threadsEmptyInfoAll: String { 
+    return VectorL10n.tr("Vector", "threads_empty_info_all") 
+  }
+  /// Reply to an ongoing thread or tap a message and use “Thread” to start a new one.
+  public static var threadsEmptyInfoMy: String { 
+    return VectorL10n.tr("Vector", "threads_empty_info_my") 
+  }
+  /// Show all threads
+  public static var threadsEmptyShowAllThreads: String { 
+    return VectorL10n.tr("Vector", "threads_empty_show_all_threads") 
+  }
+  /// Tip: Tap a message and use “Thread” to start one.
+  public static var threadsEmptyTip: String { 
+    return VectorL10n.tr("Vector", "threads_empty_tip") 
+  }
+  /// Keep discussions organised with threads
+  public static var threadsEmptyTitle: String { 
+    return VectorL10n.tr("Vector", "threads_empty_title") 
+  }
+  /// Threads
+  public static var threadsTitle: String { 
+    return VectorL10n.tr("Vector", "threads_title") 
   }
   /// Favourites
   public static var titleFavourites: String { 

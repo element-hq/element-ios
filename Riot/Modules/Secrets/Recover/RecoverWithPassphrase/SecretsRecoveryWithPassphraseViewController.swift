@@ -106,7 +106,7 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
         switch self.viewModel.recoveryGoal {
         case .default, .keyBackup, .restoreSecureBackup:
             informationText = VectorL10n.secretsRecoveryWithPassphraseInformationDefault
-        case .unlockSecureBackup(_):
+        case .unlockSecureBackup:
             informationText = VectorL10n.secretsRecoveryWithKeyInformationUnlockSecureBackupWithPhrase
         case .verifyDevice:
             informationText = VectorL10n.secretsRecoveryWithPassphraseInformationVerifyDevice

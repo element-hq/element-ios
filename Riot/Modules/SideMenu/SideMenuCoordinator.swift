@@ -66,7 +66,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     private var membersCoordinator: SpaceMembersCoordinator?
     private var createSpaceCoordinator: SpaceCreationCoordinator?
     private var createRoomCoordinator: CreateRoomCoordinator?
-    private var spaceSettingsCoordinator: SpaceSettingsModalCoordinator?
+    private var spaceSettingsCoordinator: Coordinator?
 
     // MARK: Public
 
@@ -292,7 +292,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     
     private func showAddRoom(spaceId: String, session: MXSession) {
         let space = session.spaceService.getSpace(withId: spaceId)
-        let createRoomCoordinator = CreateRoomCoordinator(session: session, parentSpace: space)
+        let createRoomCoordinator = CreateRoomCoordinator(parameters: CreateRoomCoordinatorParameter(session: session, parentSpace: space))
         createRoomCoordinator.delegate = self
         let presentable = createRoomCoordinator.toPresentable()
         presentable.presentationController?.delegate = self
@@ -308,7 +308,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         coordinator.callback = { [weak self] result in
             guard let self = self else { return }
             
-            self.spaceSettingsCoordinator?.toPresentable().dismiss(animated: true) {
+            coordinator.toPresentable().dismiss(animated: true) {
                 self.spaceSettingsCoordinator = nil
             }
         }
@@ -413,7 +413,15 @@ extension SideMenuCoordinator: SpaceMenuPresenterDelegate {
             case .exploreMembers:
                 self.showMembers(spaceId: spaceId, session: session)
             case .addRoom:
-                self.showAddRoom(spaceId: spaceId, session: session)
+                session.spaceService.getSpace(withId: spaceId)?.canAddRoom { canAddRoom in
+                    if canAddRoom {
+                        self.showAddRoom(spaceId: spaceId, session: session)
+                    } else {
+                        let alert = UIAlertController(title: VectorL10n.spacesAddRoom, message: VectorL10n.spacesAddRoomMissingPermissionMessage, preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: VectorL10n.ok, style: .default, handler: nil))
+                        self.toPresentable().present(alert, animated: true, completion: nil)
+                    }
+                }
             case .addSpace:
                 AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.spacesAddSpace, message: VectorL10n.spacesComingSoonDetail(AppInfo.current.displayName))
             case .settings:
@@ -464,6 +472,7 @@ extension SideMenuCoordinator: SpaceMembersCoordinatorDelegate {
 extension SideMenuCoordinator: CreateRoomCoordinatorDelegate {
     func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didCreateNewRoom room: MXRoom) {
         coordinator.toPresentable().dismiss(animated: true) {
+            self.remove(childCoordinator: coordinator)
             self.createRoomCoordinator = nil
             self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
 
@@ -474,8 +483,9 @@ extension SideMenuCoordinator: CreateRoomCoordinatorDelegate {
         }
     }
     
-    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithId roomIds: [String]) {
+    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithIds roomIds: [String]) {
         coordinator.toPresentable().dismiss(animated: true) {
+            self.remove(childCoordinator: coordinator)
             self.createRoomCoordinator = nil
             self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
 
@@ -488,6 +498,7 @@ extension SideMenuCoordinator: CreateRoomCoordinatorDelegate {
 
     func createRoomCoordinatorDidCancel(_ coordinator: CreateRoomCoordinatorType) {
         coordinator.toPresentable().dismiss(animated: true) {
+            self.remove(childCoordinator: coordinator)
             self.createRoomCoordinator = nil
         }
     }

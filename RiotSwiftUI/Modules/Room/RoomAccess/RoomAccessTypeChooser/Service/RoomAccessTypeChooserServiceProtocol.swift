@@ -26,8 +26,9 @@ protocol RoomAccessTypeChooserServiceProtocol {
     
     var selectedType: RoomAccessTypeChooserAccessType { get }
     var currentRoomId: String { get }
+    var versionOverride: String? { get }
 
     func updateSelection(with selectedType: RoomAccessTypeChooserAccessType)
     func applySelection(completion: @escaping () -> Void)
-    func upgradeRoom(accepted: Bool, autoInviteUsers: Bool, completion: @escaping (Bool, String) -> Void)
+    func updateRoomId(with roomId: String)
 }

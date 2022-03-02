@@ -99,7 +99,7 @@ final class RiotSettings: NSObject {
     @UserDefault<String?>(key: "userInterfaceTheme", defaultValue: nil, storage: defaults)
     var userInterfaceTheme
     
-    // MARK: Other
+    // MARK: Analytics & Rageshakes
     
     /// Whether the user was previously shown the Matomo analytics prompt.
     var hasSeenAnalyticsPrompt: Bool {
@@ -130,11 +130,21 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "enableRageShake", defaultValue: false, storage: defaults)
     var enableRageShake
     
+    // MARK: User
+    
+    /// A dictionary of dictionaries keyed by user ID for storage of the `UserSessionProperties` from any active `UserSession`s.
+    @UserDefault(key: "userSessionProperties", defaultValue: [:], storage: defaults)
+    var userSessionProperties: [String: [String: Any]]
+    
     // MARK: Labs
     
     /// Indicates if CallKit ringing is enabled for group calls. This setting does not disable the CallKit integration for group calls, only relates to ringing.
     @UserDefault(key: "enableRingingForGroupCalls", defaultValue: false, storage: defaults)
     var enableRingingForGroupCalls
+    
+    /// Indicates if threads enabled in the timeline.
+    @UserDefault(key: "enableThreads", defaultValue: false, storage: defaults)
+    var enableThreads
     
     // MARK: Calls
     
@@ -184,18 +194,16 @@ final class RiotSettings: NSObject {
     
     @UserDefault(key: "roomScreenAllowFilesAction", defaultValue: BuildSettings.roomScreenAllowFilesAction, storage: defaults)
     var roomScreenAllowFilesAction
-    
-    @UserDefault(key: "roomScreenAllowPollsAction", defaultValue: false, storage: defaults)
-    var roomScreenAllowPollsAction
-    
-    @UserDefault(key: "roomScreenAllowLocationAction", defaultValue: false, storage: defaults)
-    var roomScreenAllowLocationAction
         
     @UserDefault(key: "roomScreenShowsURLPreviews", defaultValue: true, storage: defaults)
     var roomScreenShowsURLPreviews
     
-    @UserDefault(key: "roomScreenEnableMessageBubbles", defaultValue: BuildSettings.roomScreenEnableMessageBubblesByDefault, storage: defaults)
+    @UserDefault(key: "roomScreenEnableMessageBubbles", defaultValue: BuildSettings.isRoomScreenEnableMessageBubblesByDefault, storage: defaults)
     var roomScreenEnableMessageBubbles
+    
+    var roomTimelineStyleIdentifier: RoomTimelineStyleIdentifier {
+        return self.roomScreenEnableMessageBubbles ? .bubble : .plain
+    }
     
     // MARK: - Room Contextual Menu
     

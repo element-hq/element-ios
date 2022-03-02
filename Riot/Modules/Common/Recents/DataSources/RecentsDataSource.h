@@ -142,9 +142,10 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
  
  @param section the section  index
  @param frame the drawing area for the header of the specified section.
+ @param tableView the table view
  @return the sticky header view.
  */
-- (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame;
+- (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame inTableView:(UITableView*)tableView;
 
 /**
  Get the height of the section header view.

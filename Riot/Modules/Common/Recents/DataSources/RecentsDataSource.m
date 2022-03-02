@@ -199,7 +199,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     [self.recentsListService updateSpace:currentSpace];
 }
 
-- (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
+- (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame inTableView:(UITableView*)tableView
 {
     UIView *stickyHeader;
 
@@ -210,7 +210,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         shrinkedSectionsBitMask = RECENTSDATASOURCE_SECTION_DIRECTORY;
     }
 
-    stickyHeader = [self viewForHeaderInSection:section withFrame:frame];
+    stickyHeader = [self viewForHeaderInSection:section withFrame:frame inTableView:tableView];
 
     shrinkedSectionsBitMask = savedShrinkedSectionsBitMask;
 
@@ -753,7 +753,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     return missedNotifAndUnreadBadgeBgView;
 }
 
-- (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
+- (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame inTableView:(UITableView*)tableView
 {
     // No header view in key backup banner section
     if (section == self.secureBackupBannerSection || section == self.crossSigningBannerSection)
@@ -761,8 +761,14 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         return nil;
     }
     
-    SectionHeaderView *sectionHeader = [[SectionHeaderView alloc] initWithFrame:frame];
-    sectionHeader.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    SectionHeaderView *sectionHeader = [tableView dequeueReusableHeaderFooterViewWithIdentifier:SectionHeaderView.defaultReuseIdentifier];
+    if (sectionHeader == nil)
+    {
+        sectionHeader = [[SectionHeaderView alloc] initWithReuseIdentifier:SectionHeaderView.defaultReuseIdentifier];
+    }
+    sectionHeader.backgroundView = [UIView new];
+    sectionHeader.frame = frame;
+    sectionHeader.backgroundView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     sectionHeader.topViewHeight = RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT;
     NSInteger sectionBitwise = 0;
 
@@ -809,7 +815,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         shrinkButton.backgroundColor = [UIColor clearColor];
         [shrinkButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         shrinkButton.tag = sectionBitwise;
-        [sectionHeader addSubview:shrinkButton];
         sectionHeader.topSpanningView = shrinkButton;
         sectionHeader.userInteractionEnabled = YES;
         
@@ -817,16 +822,15 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         UIImage *chevron;
         if (shrinkedSectionsBitMask & sectionBitwise)
         {
-            chevron = [UIImage imageNamed:@"disclosure_icon"];
+            chevron = AssetImages.disclosureIcon.image;
         }
         else
         {
-            chevron = [UIImage imageNamed:@"shrink_icon"];
+            chevron = AssetImages.shrinkIcon.image;
         }
         UIImageView *chevronView = [[UIImageView alloc] initWithImage:chevron];
         chevronView.tintColor = ThemeService.shared.theme.textSecondaryColor;
         chevronView.contentMode = UIViewContentModeCenter;
-        [sectionHeader addSubview:chevronView];
         sectionHeader.accessoryView = chevronView;
     }
     else if (_recentsDataSourceMode == RecentsDataSourceModeHome)
@@ -836,7 +840,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         
         if (badgeView)
         {
-            [sectionHeader addSubview:badgeView];
             sectionHeader.accessoryView = badgeView;
         }
     }
@@ -846,7 +849,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
     headerLabel.backgroundColor = [UIColor clearColor];
     headerLabel.attributedText = [self attributedStringForHeaderTitleInSection:section];
-    [sectionHeader addSubview:headerLabel];
     sectionHeader.headerLabel = headerLabel;
 
     return sectionHeader;
@@ -1468,12 +1470,14 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 #pragma mark - RecentsListServiceDelegate
 
 - (void)recentsListServiceDidChangeData:(id<RecentsListServiceProtocol>)service
+                     totalCountsChanged:(BOOL)totalCountsChanged
 {
-    // no-op
+    [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
 }
 
 - (void)recentsListServiceDidChangeData:(id<RecentsListServiceProtocol>)service
                              forSection:(RecentsListServiceSection)section
+                     totalCountsChanged:(BOOL)totalCountsChanged
 {
     NSInteger sectionIndex = -1;
     switch (section)
@@ -1500,8 +1504,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             sectionIndex = suggestedRoomsSection;
             break;
     }
-    
-    [self.delegate dataSource:self didCellChange:@(sectionIndex)];
+
+    RecentsSectionUpdate *update = [[RecentsSectionUpdate alloc] initWithSectionIndex:sectionIndex
+                                                                   totalCountsChanged:totalCountsChanged];
+    [self.delegate dataSource:self didCellChange:update];
 }
 
 @end

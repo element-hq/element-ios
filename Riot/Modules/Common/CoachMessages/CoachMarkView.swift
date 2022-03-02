@@ -23,38 +23,43 @@ class CoachMarkView: UIView, NibLoadable, Themable {
     
     // MARK: Constants
     
-    @objc enum MarkPosition: Int, RawRepresentable {
-        case topLeft
-        case zero
-        
-        public var origin: CGPoint {
-            switch self {
-            case .topLeft:
-                return CGPoint(x: 16, y: 40)
-            case .zero:
-                return .zero
-            }
+    public static var TopLeftPosition: CGPoint {
+        if UIDevice.current.orientation.isPortrait {
+            return CGPoint(x: 16, y: 40)
+        } else {
+            return CGPoint(x: 16, y: 32)
         }
+    }
+    
+    enum MarkPosition: Int {
+        case topLeft
+        case topRight
+        case bottomLeft
+        case bottomRight
     }
     
     // MARK: Private
     
     @IBOutlet private weak var backgroundView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
+    @IBOutlet private weak var textLabelTopMargin: NSLayoutConstraint!
+    @IBOutlet private weak var textLabelBottomMargin: NSLayoutConstraint!
 
     private var text: String? {
         didSet {
             textLabel.text = text
         }
     }
-    private var position: MarkPosition = .zero
+    private var markPosition: MarkPosition = .topLeft
+    private var position: CGPoint!
     
     // MARK: Setup
     
-    class func instantiate(text: String?, position: MarkPosition) -> Self {
+    class func instantiate(text: String?, from position: CGPoint, markPosition: MarkPosition) -> Self {
         let view = Self.loadFromNib()
         view.text = text
         view.position = position
+        view.markPosition = markPosition
         return view
     }
         
@@ -76,11 +81,10 @@ class CoachMarkView: UIView, NibLoadable, Themable {
             return
         }
         
-        let origin = position.origin
         let layoutGuide = superview.safeAreaLayoutGuide
         translatesAutoresizingMaskIntoConstraints = false
-        leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor, constant: origin.x).isActive = true
-        topAnchor.constraint(equalTo: layoutGuide.topAnchor, constant: origin.y).isActive = true
+        leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor, constant: position.x).isActive = true
+        topAnchor.constraint(equalTo: layoutGuide.topAnchor, constant: position.y).isActive = true
     }
     
     // MARK: Themable
@@ -94,10 +98,31 @@ class CoachMarkView: UIView, NibLoadable, Themable {
     // MARK: Private
     
     private func setupView() {
-        let imageSize = Asset.Images.coachMark.image.size
+        let image: UIImage = Asset.Images.coachMark.image
+        let imageSize = image.size
         let center = CGPoint(x: ceil(imageSize.width / 2), y: ceil(imageSize.height / 2))
-        backgroundView.image = Asset.Images.coachMark.image.resizableImage(withCapInsets: .init(top: center.y - 1, left: center.x - 1, bottom: center.y + 1, right: center.x + 1), resizingMode: .stretch)
+        
+        backgroundView.image = image.resizableImage(withCapInsets: .init(top: center.y - 1, left: center.x - 1, bottom: center.y + 1, right: center.x + 1), resizingMode: .stretch)
+        
+        switch markPosition {
+        case .topLeft:
+            backgroundView.transform = .identity
+        case .topRight:
+            backgroundView.transform = .init(scaleX: -1, y: 1)
+        case .bottomLeft:
+            backgroundView.transform = .init(scaleX: 1, y: -1)
+            invertVerticalMargins()
+        case .bottomRight:
+            backgroundView.transform = .init(scaleX: -1, y: -1)
+            invertVerticalMargins()
+        }
         
         textLabel.text = text
+    }
+    
+    private func invertVerticalMargins() {
+        let temp = self.textLabelTopMargin.constant
+        self.textLabelTopMargin.constant = self.textLabelBottomMargin.constant
+        self.textLabelBottomMargin.constant = temp
     }
 }

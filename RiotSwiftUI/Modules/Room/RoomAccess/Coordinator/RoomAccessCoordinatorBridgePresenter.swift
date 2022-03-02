@@ -15,6 +15,7 @@
 //
 import UIKit
 
+@available(iOS 14.0, *)
 @objc protocol RoomAccessCoordinatorBridgePresenterDelegate {
     func roomAccessCoordinatorBridgePresenterDelegate(_ coordinatorBridgePresenter: RoomAccessCoordinatorBridgePresenter, didCancelRoomWithId roomId: String)
     func roomAccessCoordinatorBridgePresenterDelegate(_ coordinatorBridgePresenter: RoomAccessCoordinatorBridgePresenter, didCompleteRoomWithId roomId: String)
@@ -25,6 +26,7 @@ import UIKit
 /// It breaks the Coordinator abstraction and it has been introduced for Objective-C compatibility (mainly for integration in legacy view controllers).
 /// Each bridge should be removed once the underlying Coordinator has been integrated by another Coordinator.
 @objcMembers
+@available(iOS 14.0, *)
 final class RoomAccessCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Properties
@@ -92,6 +94,7 @@ final class RoomAccessCoordinatorBridgePresenter: NSObject {
 
 // MARK: - UIAdaptivePresentationControllerDelegate
 
+@available(iOS 14.0, *)
 extension RoomAccessCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
     
     func roomNotificationSettingsCoordinatorDidComplete(_ presentationController: UIPresentationController) {

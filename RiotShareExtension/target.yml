@@ -60,6 +60,7 @@ targets:
     - path: ../Riot/Modules/Common/Recents/Model/RecentCellData.m
     - path: ../Riot/PropertyWrappers/UserDefaultsBackedPropertyWrapper.swift
     - path: ../Riot/Generated/Strings.swift
+    - path: ../Riot/Generated/Images.swift
     - path: ../Riot/Managers/Locale/LocaleProviderType.swift
     - path: ../Riot/Managers/Locale/LocaleProvider.swift
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.xib
@@ -69,7 +70,9 @@ targets:
     - path: ../Riot/Assets/SharedImages.xcassets
       buildPhase: resources
     - path: ../Riot/Modules/MatrixKit
+    - path: ../Riot/Modules/Analytics
+    - path: ../Riot/Managers/UserSessions
       excludes:
         - "**/*.md" # excludes all files with the .md extension
     - path: ../Riot/Generated/MatrixKitStrings.swift
-    - path: ../Riot/Modules/Room/Views/BubbleCells/Styles/RoomTimelineStyleIdentifier.swift
+    - path: ../Riot/Modules/Room/TimelineCells/Styles/RoomTimelineStyleIdentifier.swift

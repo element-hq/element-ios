@@ -72,7 +72,7 @@ struct SpaceCreationPostProcess: View {
     @ViewBuilder
     private var buttonsPanel: some View {
         HStack {
-            ThemableButton(icon: nil, title: VectorL10n.done) {
+            ThemableButton(icon: nil, title: VectorL10n.cancel) {
                 viewModel.send(viewAction: .cancel)
             }
             ThemableButton(icon: nil, title: VectorL10n.retry) {

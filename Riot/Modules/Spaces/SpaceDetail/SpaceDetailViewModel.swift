@@ -27,6 +27,7 @@ class SpaceDetailViewModel: SpaceDetailViewModelType {
     private let session: MXSession
     private let spaceId: String
     private let publicRoom: MXPublicRoom?
+    private var spaceGraphObserver: Any?
     
     // MARK: - Setup
     
@@ -40,6 +41,12 @@ class SpaceDetailViewModel: SpaceDetailViewModelType {
         self.session = session
         self.publicRoom = publicRoom
         self.spaceId = publicRoom.roomId
+    }
+    
+    deinit {
+        if let spaceGraphObserver = spaceGraphObserver {
+            NotificationCenter.default.removeObserver(spaceGraphObserver)
+        }
     }
     
     // MARK: - Public
@@ -69,14 +76,30 @@ class SpaceDetailViewModel: SpaceDetailViewModelType {
     
     private func loadData() {
         if let publicRoom = self.publicRoom {
-            self.update(viewState: .loaded(SpaceDetailLoadedParameters(spaceId: publicRoom.roomId, displayName: publicRoom.displayname(), topic: publicRoom.topic, avatarUrl: publicRoom.avatarUrl, joinRule: publicRoom.worldReadable ? .public : .private, membership: .unknown, inviterId: nil, inviter: nil, membersCount: UInt(publicRoom.numJoinedMembers))))
+            self.update(viewState: .loaded(SpaceDetailLoadedParameters(spaceId: publicRoom.roomId,
+                                                                       displayName: publicRoom.displayname(),
+                                                                       topic: publicRoom.topic,
+                                                                       avatarUrl: publicRoom.avatarUrl,
+                                                                       joinRule: publicRoom.worldReadable ? .public : .private,
+                                                                       membership: .unknown,
+                                                                       inviterId: nil,
+                                                                       inviter: nil,
+                                                                       membersCount: UInt(publicRoom.numJoinedMembers))))
         } else {
             guard let space = self.session.spaceService.getSpace(withId: self.spaceId), let summary = space.summary else {
                 MXLog.error("[SpaceDetailViewModel] setupViews: no space found")
                 return
             }
             
-            let parameters = SpaceDetailLoadedParameters(spaceId: space.spaceId, displayName: summary.displayname, topic: summary.topic, avatarUrl: summary.avatar, joinRule: nil, membership: summary.membership, inviterId: nil, inviter: nil, membersCount: 0)
+            let parameters = SpaceDetailLoadedParameters(spaceId: space.spaceId,
+                                                         displayName: summary.displayname,
+                                                         topic: summary.topic,
+                                                         avatarUrl: summary.avatar,
+                                                         joinRule: nil,
+                                                         membership: summary.membership,
+                                                         inviterId: nil,
+                                                         inviter: nil,
+                                                         membersCount: 0)
             self.update(viewState: .loaded(parameters))
             
             self.update(viewState: .loading)
@@ -96,7 +119,15 @@ class SpaceDetailViewModel: SpaceDetailViewModelType {
                     }
                 })
                 
-                let parameters = SpaceDetailLoadedParameters(spaceId: space.spaceId, displayName: summary.displayname, topic: summary.topic, avatarUrl: summary.avatar, joinRule: joinRule, membership: summary.membership, inviterId: inviterId, inviter: inviter, membersCount: membersCount)
+                let parameters = SpaceDetailLoadedParameters(spaceId: space.spaceId,
+                                                             displayName: summary.displayname,
+                                                             topic: summary.topic,
+                                                             avatarUrl: summary.avatar,
+                                                             joinRule: joinRule,
+                                                             membership: summary.membership,
+                                                             inviterId: inviterId,
+                                                             inviter: inviter,
+                                                             membersCount: membersCount)
                 self.update(viewState: .loaded(parameters))
             }
         }
@@ -108,7 +139,14 @@ class SpaceDetailViewModel: SpaceDetailViewModelType {
             guard let self = self else { return }
             switch response {
             case .success:
-                self.coordinatorDelegate?.spaceDetailViewModelDidJoin(self)
+                self.spaceGraphObserver = NotificationCenter.default.addObserver(forName: MXSpaceService.didBuildSpaceGraph, object: nil, queue: OperationQueue.main) { [weak self] notification in
+                    guard let self = self else { return }
+                    
+                    if let spaceGraphObserver = self.spaceGraphObserver {
+                        NotificationCenter.default.removeObserver(spaceGraphObserver)
+                    }
+                    self.coordinatorDelegate?.spaceDetailViewModelDidJoin(self)
+                }
             case .failure(let error):
                 self.update(viewState: .error(error))
             }

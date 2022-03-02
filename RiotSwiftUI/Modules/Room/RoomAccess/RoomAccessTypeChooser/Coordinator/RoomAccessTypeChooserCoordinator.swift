@@ -64,11 +64,17 @@ final class RoomAccessTypeChooserCoordinator: Coordinator, Presentable {
                 self.callback?(.done(roomId))
             case .cancel(let roomId):
                 self.callback?(.cancel(roomId))
+            case .roomUpgradeNeeded(let roomId, let versionOverride):
+                self.callback?(.roomUpgradeNeeded(roomId, versionOverride))
             }
         }
     }
     
     func toPresentable() -> UIViewController {
         return self.roomAccessTypeChooserHostingController
+    }
+    
+    func handleRoomUpgradeResult(_ result: RoomUpgradeCoordinatorResult) {
+        self.roomAccessTypeChooserViewModel.handleRoomUpgradeResult(result)
     }
 }

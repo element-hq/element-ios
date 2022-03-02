@@ -21,4 +21,6 @@
 
 #import "MatrixKit-Bridging-Header.h"
 
+#import "BuildInfo.h"
+
 #endif /* RiotNSE_Bridging_Header_h */
