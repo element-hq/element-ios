@@ -123,7 +123,7 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
         }
         
         roomEventListener = self.room?.listen(toEvents: { [weak self] event, direction, state in
-            self?.room?.state({ [weak self]  roomState in
+            self?.room?.state({ [weak self] roomState in
                 self?.roomState = roomState
             })
         })
