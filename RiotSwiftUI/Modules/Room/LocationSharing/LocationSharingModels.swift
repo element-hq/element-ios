@@ -58,21 +58,13 @@ struct LocationSharingViewState: BindableState {
 }
 
 struct LocationSharingViewStateBindings {
-    var alertInfo: LocationSharingErrorAlertInfo?
+    var alertInfo: ErrorAlertInfo<LocationSharingAlertType>?
     var userLocation: CLLocationCoordinate2D?
 }
 
-struct LocationSharingErrorAlertInfo: Identifiable {
-    enum AlertType {
-        case mapLoadingError
-        case userLocatingError
-        case authorizationError
-        case locationSharingError
-    }
-    
-    let id: AlertType
-    let title: String
-    var subtitle: String? = nil
-    let primaryButton: (title: String, action: (() -> Void)?)
-    var secondaryButton: (title: String, action: (() -> Void)?)? = nil
+enum LocationSharingAlertType {
+    case mapLoadingError
+    case userLocatingError
+    case authorizationError
+    case locationSharingError
 }
