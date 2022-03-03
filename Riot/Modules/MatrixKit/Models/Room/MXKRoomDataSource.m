@@ -1012,7 +1012,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             
             MXStrongifyAndReturnIfNil(self);
 
-            if (RiotSettings.shared.roomScreenUseOnlyLatestProfiles && event.eventType == MXEventTypeRoomMember && event.isUserProfileChange)
+            if (event.eventType == MXEventTypeRoomMember && event.isUserProfileChange)
             {
                 [self refreshProfilesIfNeeded];
             }
