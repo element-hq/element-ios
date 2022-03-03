@@ -27,7 +27,7 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
     
     private let roomId: String
     private let allowsRoomUpgrade: Bool
-    private let session:MXSession
+    private let session: MXSession
     private var replacementRoom: MXRoom?
     private var didBuildSpaceGraphObserver: Any?
     private var accessItems: [RoomAccessTypeChooserAccessItem] = []
