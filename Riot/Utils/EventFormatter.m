@@ -430,7 +430,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     if (membership && [membership isEqualToString:@"join"] && [eventAvatarUrl length] && ![eventAvatarUrl isEqualToString:prevEventAvatarUrl])
     {
         // Use the actual avatar
-        senderAvatarUrl = event.content[@"avatar_url"];
+        senderAvatarUrl = eventAvatarUrl;
     }
     
     // We ignore non mxc avatar url (The identicons are removed here).
