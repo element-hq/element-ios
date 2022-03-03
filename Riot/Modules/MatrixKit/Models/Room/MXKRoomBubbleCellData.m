@@ -59,12 +59,12 @@
             roomId = roomDataSource.roomId;
 
             MXRoomState *profileRoomState = RiotSettings.shared.roomScreenUseOnlyLatestProfiles ? roomDataSource.roomState : roomState;
-            senderDisplayName = [roomDataSource.eventFormatter senderDisplayNameForEvent:event withRoomState:profileRoomState];
-            senderAvatarUrl = [roomDataSource.eventFormatter senderAvatarUrlForEvent:event withRoomState:profileRoomState];
+            [self setRoomState:profileRoomState];
             senderAvatarPlaceholder = nil;
-            targetDisplayName = [roomDataSource.eventFormatter targetDisplayNameForEvent:event withRoomState:profileRoomState];
-            targetAvatarUrl = [roomDataSource.eventFormatter targetAvatarUrlForEvent:event withRoomState:profileRoomState];
             targetAvatarPlaceholder = nil;
+
+            // Encryption status should always rely on the `MXRoomState`
+            // from the event rather than the latest.
             isEncryptedRoom = roomState.isEncrypted;
             isIncoming = ([event.sender isEqualToString:roomDataSource.mxSession.myUser.userId] == NO);
             
@@ -107,9 +107,8 @@
     bubbleComponents = nil;
 }
 
-- (void)refreshProfile
+- (void)setRoomState:(MXRoomState *)roomState;
 {
-    MXRoomState *roomState = roomDataSource.roomState;
     MXEvent* firstEvent = self.events.firstObject;
 
     if (firstEvent == nil || roomState == nil)

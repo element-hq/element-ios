@@ -4341,7 +4341,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         @synchronized (bubbles) {
             for (id<MXKRoomBubbleCellDataStoring> bubble in bubbles)
             {
-                [bubble refreshProfile];
+                [bubble setRoomState:self.roomState];
             }
         }
     }
