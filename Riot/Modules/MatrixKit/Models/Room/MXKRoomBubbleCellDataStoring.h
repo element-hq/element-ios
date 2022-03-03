@@ -233,10 +233,8 @@
 
 /**
  Refreshes the avatar and display name if needed. Should be used only if `roomScreenUseOnlyLatestProfiles` is enabled.
-
- @param roomDataSource the `MXKRoomDataSource` object that will use this instance.
  */
-- (void)refreshProfileWithRoomDataSource:(MXKRoomDataSource*)roomDataSource;
+- (void)refreshProfile;
 
 /**
 Update the event because its sent state changed or it is has been redacted.

@@ -37,12 +37,12 @@
 
 #pragma mark - MXKRoomBubbleCellDataStoring
 
-- (instancetype)initWithEvent:(MXEvent *)event andRoomState:(MXRoomState *)roomState andRoomDataSource:(MXKRoomDataSource *)roomDataSource2
+- (instancetype)initWithEvent:(MXEvent *)event andRoomState:(MXRoomState *)roomState andRoomDataSource:(MXKRoomDataSource *)roomDataSource
 {
     self = [self init];
     if (self)
     {
-        roomDataSource = roomDataSource2;
+        self->roomDataSource = roomDataSource;
 
         // Initialize read receipts
         self.readReceipts = [NSMutableDictionary dictionary];
@@ -58,12 +58,12 @@
             targetId = [event.type isEqualToString:kMXEventTypeStringRoomMember] ? event.stateKey : nil;
             roomId = roomDataSource.roomId;
 
-            MXRoomState *profileRoomState = RiotSettings.shared.roomScreenUseOnlyLatestProfiles ? roomDataSource2.roomState : roomState;
+            MXRoomState *profileRoomState = RiotSettings.shared.roomScreenUseOnlyLatestProfiles ? roomDataSource.roomState : roomState;
             senderDisplayName = [roomDataSource.eventFormatter senderDisplayNameForEvent:event withRoomState:profileRoomState];
             senderAvatarUrl = [roomDataSource.eventFormatter senderAvatarUrlForEvent:event withRoomState:profileRoomState];
             senderAvatarPlaceholder = nil;
-            targetDisplayName = [roomDataSource.eventFormatter targetDisplayNameForEvent:event withRoomState:roomState];
-            targetAvatarUrl = [roomDataSource.eventFormatter targetAvatarUrlForEvent:event withRoomState:roomState];
+            targetDisplayName = [roomDataSource.eventFormatter targetDisplayNameForEvent:event withRoomState:profileRoomState];
+            targetAvatarUrl = [roomDataSource.eventFormatter targetAvatarUrlForEvent:event withRoomState:profileRoomState];
             targetAvatarPlaceholder = nil;
             isEncryptedRoom = roomState.isEncrypted;
             isIncoming = ([event.sender isEqualToString:roomDataSource.mxSession.myUser.userId] == NO);
@@ -107,16 +107,24 @@
     bubbleComponents = nil;
 }
 
-- (void)refreshProfileWithRoomDataSource:(MXKRoomDataSource *)roomDataSource2
+- (void)refreshProfile
 {
-    if (self.events.firstObject)
+    MXRoomState *roomState = roomDataSource.roomState;
+    MXEvent* firstEvent = self.events.firstObject;
+
+    if (firstEvent == nil || roomState == nil)
     {
-        MXEvent* firstEvent = self.events.firstObject;
-        senderDisplayName = [roomDataSource.eventFormatter senderDisplayNameForEvent:firstEvent
-                                                                       withRoomState:roomDataSource2.roomState];
-        senderAvatarUrl = [roomDataSource.eventFormatter senderAvatarUrlForEvent:firstEvent
-                                                                   withRoomState:roomDataSource2.roomState];
+        return;
     }
+
+    senderDisplayName = [roomDataSource.eventFormatter senderDisplayNameForEvent:firstEvent
+                                                                   withRoomState:roomState];
+    senderAvatarUrl = [roomDataSource.eventFormatter senderAvatarUrlForEvent:firstEvent
+                                                               withRoomState:roomState];
+    targetDisplayName = [roomDataSource.eventFormatter targetDisplayNameForEvent:firstEvent
+                                                                   withRoomState:roomState];
+    targetAvatarUrl = [roomDataSource.eventFormatter targetAvatarUrlForEvent:firstEvent
+                                                               withRoomState:roomState];
 }
 
 - (NSUInteger)updateEvent:(NSString *)eventId withEvent:(MXEvent *)event

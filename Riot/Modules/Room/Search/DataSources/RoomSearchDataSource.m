@@ -33,12 +33,12 @@
 
 @implementation RoomSearchDataSource
 
-- (instancetype)initWithRoomDataSource:(MXKRoomDataSource *)roomDataSource2
+- (instancetype)initWithRoomDataSource:(MXKRoomDataSource *)roomDataSource
 {
-    self = [super initWithMatrixSession:roomDataSource2.mxSession];
+    self = [super initWithMatrixSession:roomDataSource.mxSession];
     if (self)
     {
-        roomDataSource = roomDataSource2;
+        self->roomDataSource = roomDataSource;
         
         // The messages search is limited to the room data.
         self.roomEventFilter.rooms = @[roomDataSource.roomId];
