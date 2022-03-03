@@ -20,7 +20,7 @@ protocol LocationSharingViewModelProtocol {
     var completion: ((LocationSharingViewModelResult) -> Void)? { get set }
     
     func startLoading()
-    func stopLoading(error: LocationSharingErrorAlertInfo.AlertType?)
+    func stopLoading(error: LocationSharingAlertType?)
 }
 
 extension LocationSharingViewModelProtocol {

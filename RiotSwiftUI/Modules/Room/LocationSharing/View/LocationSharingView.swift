@@ -81,7 +81,7 @@ struct LocationSharingView: View {
             .alert(item: $context.alertInfo) { info in
                 if let secondaryButton = info.secondaryButton {
                     return Alert(title: Text(info.title),
-                                 message: subtitleTextForAlertInfo(info),
+                                 message: info.messageText,
                                  primaryButton: .default(Text(info.primaryButton.title)) {
                         info.primaryButton.action?()
                     },
@@ -90,7 +90,7 @@ struct LocationSharingView: View {
                     })
                 } else {
                     return Alert(title: Text(info.title),
-                                 message: subtitleTextForAlertInfo(info),
+                                 message: info.messageText,
                                  dismissButton: .default(Text(info.primaryButton.title)) {
                         info.primaryButton.action?()
                     })
@@ -107,14 +107,6 @@ struct LocationSharingView: View {
         if context.viewState.showLoadingIndicator {
             ActivityIndicator()
         }
-    }
-    
-    private func subtitleTextForAlertInfo(_ alertInfo: LocationSharingErrorAlertInfo) -> Text? {
-        guard let subtitle = alertInfo.subtitle else {
-            return nil
-        }
-        
-        return Text(subtitle)
     }
 }
 
