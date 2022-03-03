@@ -478,7 +478,7 @@
 "room_event_action_kick_prompt_reason" = "このユーザーを追放する理由";
 "room_action_send_photo_or_video" = "写真か動画を送る";
 "room_action_send_sticker" = "スタンプ送信";
-"room_replacement_information" = "このルームは交換されており、使用されていません。";
+"room_replacement_information" = "このルームは置き換えられており、アクティブではありません。";
 "room_replacement_link" = "こちらから継続中の会話を確認する。";
 "room_predecessor_information" = "このルームは別の会話の続きです。";
 "room_predecessor_link" = "以前のメッセージを見るには、ここをタップしてください。";
@@ -1559,3 +1559,31 @@
 "settings_ui_theme_picker_message_match_system_theme" = "「自動」は端末と同じ外観を自動で使用します";
 "space_home_show_all_rooms" = "全てのルームを表示";
 "room_notifs_settings_all_messages" = "全てのメッセージ";
+
+// MARK: - Location sharing
+
+"location_sharing_title" = "位置情報";
+"poll_timeline_not_closed_subtitle" = "もう一度やり直してください";
+"poll_timeline_not_closed_title" = "アンケートの終了に失敗しました";
+"poll_timeline_total_no_votes" = "投票がありません";
+"poll_timeline_votes_count" = "%lu個の投票";
+"poll_timeline_one_vote" = "1個の投票";
+"poll_edit_form_poll_type_closed_description" = "結果はアンケートを終了した後でのみ明らかにされます";
+"poll_edit_form_poll_type_closed" = "アンケートの終了後に結果を公開";
+"poll_edit_form_poll_type_open_description" = "投票した人には、投票の際に即座に結果が表示されます";
+"poll_edit_form_poll_type_open" = "投票の際に結果を公開";
+"poll_edit_form_update_failure_subtitle" = "もう一度やり直してください";
+"poll_edit_form_update_failure_title" = "アンケートの更新に失敗しました";
+"poll_edit_form_post_failure_subtitle" = "もう一度やり直してください";
+"poll_edit_form_post_failure_title" = "アンケートの作成に失敗しました";
+"poll_edit_form_add_option" = "選択肢を追加";
+"poll_edit_form_option_number" = "選択肢%lu";
+"poll_edit_form_create_options" = "選択肢を作成";
+"poll_edit_form_input_placeholder" = "記入してください";
+"poll_edit_form_question_or_topic" = "質問あるいはトピック";
+"poll_edit_form_poll_question_or_topic" = "アンケートの質問あるいはトピック";
+"poll_edit_form_poll_type" = "アンケートの種類";
+
+// Mark: - Polls
+
+"poll_edit_form_create_poll" = "アンケートを作成";
