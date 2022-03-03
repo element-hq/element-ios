@@ -81,9 +81,7 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
     private var currentOperation: MXHTTPOperation?
     private var addressValidationOperation: MXHTTPOperation?
     
-    private lazy var mediaUploader: MXMediaLoader = {
-        return MXMediaManager.prepareUploader(withMatrixSession: session, initialRange: 0, andRange: 1.0)
-    }()
+    private lazy var mediaUploader: MXMediaLoader = MXMediaManager.prepareUploader(withMatrixSession: session, initialRange: 0, andRange: 1.0)
     
     // MARK: - Setup
     
