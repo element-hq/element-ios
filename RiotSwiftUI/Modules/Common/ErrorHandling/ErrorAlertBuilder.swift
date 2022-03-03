@@ -43,8 +43,23 @@ extension ErrorAlertInfo where T == Int {
 
 @available(iOS 13.0, *)
 extension ErrorAlertInfo {
-    var messageText: Text? {
+    private var messageText: Text? {
         guard let message = message else { return nil }
         return Text(message)
+    }
+    
+    /// Returns a SwiftUI `Alert` created from this alert info, using default button
+    /// styles for both primary and (if set) secondary buttons.
+    var alert: Alert {
+        if let secondaryButton = secondaryButton {
+            return Alert(title: Text(title),
+                         message: messageText,
+                         primaryButton: .default(Text(primaryButton.title), action: primaryButton.action),
+                         secondaryButton: .default(Text(secondaryButton.title), action: secondaryButton.action))
+        } else {
+            return Alert(title: Text(title),
+                         message: messageText,
+                         dismissButton: .default(Text(primaryButton.title), action: primaryButton.action))
+        }
     }
 }
