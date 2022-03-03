@@ -167,7 +167,7 @@ struct SpaceSettings: View {
     
     @ViewBuilder
     private var options: some View {
-        VStack(alignment:.leading, spacing:1) {
+        VStack(alignment: .leading, spacing: 1) {
             Spacer().frame(height: 50)
             Text(VectorL10n.settingsTitle.uppercased())
                 .font(theme.fonts.footnote)
