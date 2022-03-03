@@ -145,7 +145,7 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
     private func allowedParentIds(with roomState: MXRoomState) -> [String] {
         var allowedParentIds: [String] = []
         if roomState.joinRule == .restricted, let joinRuleEvent = roomState.stateEvents(with: .roomJoinRules)?.last {
-            let allowContent: [[String:String]] = joinRuleEvent.wireContent["allow"] as? [[String:String]] ?? []
+            let allowContent: [[String: String]] = joinRuleEvent.wireContent["allow"] as? [[String: String]] ?? []
             allowedParentIds = allowContent.compactMap { allowDictionnary in
                 guard let type = allowDictionnary["type"], type == "m.room_membership" else {
                     return nil
