@@ -698,7 +698,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
                       }]];
 
     MXWeakify(self);
-    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action)
                       {
@@ -860,10 +860,10 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     {
         if (!self.isIdentityServerConfigured)
         {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n error]
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[VectorL10n error]
                                                                            message:[VectorL10n authForgotPasswordErrorNoConfiguredIdentityServer]
                                                                     preferredStyle:UIAlertControllerStyleAlert];
-            [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok] style:UIAlertActionStyleDefault handler:nil]];
+            [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok] style:UIAlertActionStyleDefault handler:nil]];
             [self presentViewController:alert animated:YES completion:nil];
             
             return;
@@ -1077,7 +1077,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
             
             alert = [UIAlertController alertControllerWithTitle:[VectorL10n warning] message:[VectorL10n authAddEmailAndPhoneWarning] preferredStyle:UIAlertControllerStyleAlert];
             
-            [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+            [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                                                                
@@ -1396,7 +1396,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
                                                                   message:nil
                                                            preferredStyle:UIAlertControllerStyleAlert];
 
-                [self->alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+                [self->alert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                                 style:UIAlertActionStyleDefault
                                                               handler:^(UIAlertAction * action) {
 

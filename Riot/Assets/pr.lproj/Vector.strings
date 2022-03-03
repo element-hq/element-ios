@@ -402,9 +402,7 @@
 "settings_third_party_notices" = "Third-party اطلاعیه های";
 "settings_send_crash_report" = "ارسال اطلاعات توقف و یا داده ها";
 "settings_enable_rageshake" = "تکان دادن برای ارسال گزارش";
-"settings_clear_cache" = "پاک کردن کش";
 
-"settings_change_password" = "تعویض گذرواژه";
 "settings_old_password" = "گذرواژه قدیمی";
 "settings_new_password" = "گذرواژه جدید";
 "settings_confirm_password" = "تایید گذرواژه";

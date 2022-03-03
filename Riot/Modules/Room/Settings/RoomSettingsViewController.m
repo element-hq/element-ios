@@ -851,7 +851,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                        message:[VectorL10n roomDetailsSaveChangesPrompt]
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n no]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n no]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -867,7 +867,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                        
                                                    }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n yes]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n yes]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -918,7 +918,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                            
                                                        }]];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                          style:UIAlertActionStyleCancel
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -1059,7 +1059,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         
         // The user can only delete alias they has created, even if the Admin has set it as canonical.
         // So, let the server answer if it's possible to delete an alias.
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n delete]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n delete]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
 
@@ -1073,7 +1073,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
                                                        }]];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                          style:UIAlertActionStyleCancel
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -1403,7 +1403,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     currentAlert = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -3317,7 +3317,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                        message:[VectorL10n roomDetailsHistorySectionPromptMsg]
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -3329,7 +3329,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                        
                                                    }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n continue]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n continue]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -3405,7 +3405,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                        message:[VectorL10n roomDetailsAddressesDisableMainAddressPromptMsg]
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -3417,7 +3417,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                        
                                                    }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n continue]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n continue]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -3484,7 +3484,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                        message:message
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -3868,7 +3868,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                        message:alertMsg
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -3933,7 +3933,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                        message:alertMsg
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        

@@ -88,7 +88,7 @@
         self.roomTitleLabel.text = roomCellData.roomDisplayname;
         if (!self.roomTitleLabel.text.length)
         {
-            self.roomTitleLabel.text = [MatrixKitL10n roomDisplaynameEmptyRoom];
+            self.roomTitleLabel.text = [VectorL10n roomDisplaynameEmptyRoom];
         }  
         
         self.encryptedRoomIcon.hidden = YES;

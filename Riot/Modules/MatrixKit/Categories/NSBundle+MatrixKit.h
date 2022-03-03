@@ -38,22 +38,6 @@
 + (NSURL *)mxk_audioURLFromMXKAssetsBundleWithName:(NSString *)name;
 
 /**
- Customize the table used to retrieve the localized version of a string during [mxk_localizedStringForKey:] call.
- If the key is not defined in this table, the localized string is retrieved from the default table "MatrixKit.strings".
- 
- @param tableName the name of the table containing the key-value pairs. Also, the suffix for the strings file (a file with the .strings extension) to store the localized string.
- */
-+ (void)mxk_customizeLocalizedStringTableName:(NSString*)tableName;
-
-/**
- Retrieve localized string from the customized table. If none, MatrixKit Assets bundle is used.
- 
- @param key The string key.
- @return The localized string.
- */
-+ (NSString *)mxk_localizedStringForKey:(NSString *)key;
-
-/**
  An AppExtension-compatible wrapper for bundleForClass.
  */
 + (NSBundle *)mxk_bundleForClass:(Class)aClass;

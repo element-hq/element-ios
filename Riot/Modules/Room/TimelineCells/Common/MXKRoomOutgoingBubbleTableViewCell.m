@@ -41,8 +41,8 @@
                 {
                     UIButton *unsentButton = [[UIButton alloc] initWithFrame:CGRectMake(0, component.position.y, 58 , 20)];
                     
-                    [unsentButton setTitle:[MatrixKitL10n unsent] forState:UIControlStateNormal];
-                    [unsentButton setTitle:[MatrixKitL10n unsent] forState:UIControlStateSelected];
+                    [unsentButton setTitle:[VectorL10n unsent] forState:UIControlStateNormal];
+                    [unsentButton setTitle:[VectorL10n unsent] forState:UIControlStateSelected];
                     [unsentButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
                     [unsentButton setTitleColor:[UIColor redColor] forState:UIControlStateSelected];
                     

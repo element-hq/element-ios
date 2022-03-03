@@ -71,7 +71,7 @@
             MXRoom *room = [_mxSession roomWithRoomId:mxPushRule.ruleId];
             if (room)
             {
-                description = [MatrixKitL10n notificationSettingsRoomRuleTitle:room.summary.displayname];
+                description = [VectorL10n notificationSettingsRoomRuleTitle:room.summary.displayname];
             }
             break;
         }
@@ -115,20 +115,20 @@
         {
             if (ruleAction.actionType == MXPushRuleActionTypeDontNotify)
             {
-                notify = [MatrixKitL10n notificationSettingsNeverNotify];
+                notify = [VectorL10n notificationSettingsNeverNotify];
                 sound = @"";
                 highlight = @"";
                 break;
             }
             else if (ruleAction.actionType == MXPushRuleActionTypeNotify || ruleAction.actionType == MXPushRuleActionTypeCoalesce)
             {
-                notify = [MatrixKitL10n notificationSettingsAlwaysNotify];
+                notify = [VectorL10n notificationSettingsAlwaysNotify];
             }
             else if (ruleAction.actionType == MXPushRuleActionTypeSetTweak)
             {
                 if ([ruleAction.parameters[@"set_tweak"] isEqualToString:@"sound"])
                 {
-                    sound = [NSString stringWithFormat:@", %@", [MatrixKitL10n notificationSettingsCustomSound]];
+                    sound = [NSString stringWithFormat:@", %@", [VectorL10n notificationSettingsCustomSound]];
                 }
                 else if ([ruleAction.parameters[@"set_tweak"] isEqualToString:@"highlight"])
                 {
@@ -136,7 +136,7 @@
                     // If not present, highlight. Else check its value before highlighting
                     if (nil == ruleAction.parameters[@"value"] || YES == [ruleAction.parameters[@"value"] boolValue])
                     {
-                        highlight = [NSString stringWithFormat:@", %@", [MatrixKitL10n notificationSettingsHighlight]];
+                        highlight = [NSString stringWithFormat:@", %@", [VectorL10n notificationSettingsHighlight]];
                     }
                 }
             }

@@ -75,18 +75,18 @@
     _participantsTextField.inputAccessoryView = inputAccessoryView;
     
     // Localize strings
-    _roomNameLabel.text = [MatrixKitL10n roomCreationNameTitle];
-    _roomNameTextField.placeholder = [MatrixKitL10n roomCreationNamePlaceholder];
-    _roomAliasLabel.text = [MatrixKitL10n roomCreationAliasTitle];
-    _roomAliasTextField.placeholder = [MatrixKitL10n roomCreationAliasPlaceholder];
-    _participantsLabel.text = [MatrixKitL10n roomCreationParticipantsTitle];
-    _participantsTextField.placeholder = [MatrixKitL10n roomCreationParticipantsPlaceholder];
+    _roomNameLabel.text = [VectorL10n roomCreationNameTitle];
+    _roomNameTextField.placeholder = [VectorL10n roomCreationNamePlaceholder];
+    _roomAliasLabel.text = [VectorL10n roomCreationAliasTitle];
+    _roomAliasTextField.placeholder = [VectorL10n roomCreationAliasPlaceholder];
+    _participantsLabel.text = [VectorL10n roomCreationParticipantsTitle];
+    _participantsTextField.placeholder = [VectorL10n roomCreationParticipantsPlaceholder];
     
-    [_roomVisibilityControl setTitle:[MatrixKitL10n public] forSegmentAtIndex:0];
-    [_roomVisibilityControl setTitle:[MatrixKitL10n private] forSegmentAtIndex:1];
+    [_roomVisibilityControl setTitle:[VectorL10n public] forSegmentAtIndex:0];
+    [_roomVisibilityControl setTitle:[VectorL10n private] forSegmentAtIndex:1];
     
-    [_createRoomBtn setTitle:[MatrixKitL10n createRoom] forState:UIControlStateNormal];
-    [_createRoomBtn setTitle:[MatrixKitL10n createRoom] forState:UIControlStateHighlighted];
+    [_createRoomBtn setTitle:[VectorL10n createRoom] forState:UIControlStateNormal];
+    [_createRoomBtn setTitle:[VectorL10n createRoom] forState:UIControlStateHighlighted];
 }
 
 - (void)dealloc
@@ -180,11 +180,11 @@
     // Update alias placeholder in room creation section
     if (homeServerSuffixArray.count == 1)
     {
-        _roomAliasTextField.placeholder = [MatrixKitL10n roomCreationAliasPlaceholderWithHomeserver:homeServerSuffixArray.firstObject];
+        _roomAliasTextField.placeholder = [VectorL10n roomCreationAliasPlaceholderWithHomeserver:homeServerSuffixArray.firstObject];
     }
     else
     {
-        _roomAliasTextField.placeholder = [MatrixKitL10n roomCreationAliasPlaceholder];
+        _roomAliasTextField.placeholder = [VectorL10n roomCreationAliasPlaceholder];
     }
 }
 
@@ -320,7 +320,7 @@
             [mxSessionPicker dismissViewControllerAnimated:NO completion:nil];
         }
         
-        mxSessionPicker = [UIAlertController alertControllerWithTitle:[MatrixKitL10n selectAccount] message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        mxSessionPicker = [UIAlertController alertControllerWithTitle:[VectorL10n selectAccount] message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         
         __weak typeof(self) weakSelf = self;
         
@@ -344,7 +344,7 @@
                                                               }]];
         }
         
-        [mxSessionPicker addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+        [mxSessionPicker addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                             style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {
                                                               

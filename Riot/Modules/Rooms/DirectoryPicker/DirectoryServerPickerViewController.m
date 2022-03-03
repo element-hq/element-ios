@@ -308,7 +308,7 @@
         textField.keyboardType = UIKeyboardTypeDefault;
     }];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -320,7 +320,7 @@
                                                        
                                                    }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        

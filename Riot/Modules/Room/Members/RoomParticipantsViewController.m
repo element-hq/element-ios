@@ -1311,7 +1311,7 @@
                                                                message:message
                                                         preferredStyle:UIAlertControllerStyleAlert];
             
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                              style:UIAlertActionStyleCancel
                                                            handler:^(UIAlertAction * action) {
                                                                
@@ -1396,7 +1396,7 @@
                                                                        message:promptMsg
                                                                 preferredStyle:UIAlertControllerStyleAlert];
                     
-                    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+                    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                                      style:UIAlertActionStyleCancel
                                                                    handler:^(UIAlertAction * action) {
                                                                        
@@ -1445,7 +1445,7 @@
                                                                        message:[VectorL10n roomParticipantsRemoveThirdPartyInvitePromptMsg]
                                                                 preferredStyle:UIAlertControllerStyleAlert];
                     
-                    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+                    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                                      style:UIAlertActionStyleCancel
                                                                    handler:^(UIAlertAction * action) {
                                                                        
@@ -1517,7 +1517,7 @@
                                                        message:promptMsg
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        

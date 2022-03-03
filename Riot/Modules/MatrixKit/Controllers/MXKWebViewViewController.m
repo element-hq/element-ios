@@ -154,7 +154,7 @@ NSString *const kMXKWebViewViewControllerJavaScriptEnableLog =
     
     [NSLayoutConstraint activateConstraints:@[leftConstraint, rightConstraint, topConstraint, bottomConstraint]];
     
-    backButton = [[UIBarButtonItem alloc] initWithTitle:[MatrixKitL10n back] style:UIBarButtonItemStylePlain target:self action:@selector(goBack)];
+    backButton = [[UIBarButtonItem alloc] initWithTitle:[VectorL10n back] style:UIBarButtonItemStylePlain target:self action:@selector(goBack)];
     
     if (_URL.length)
     {

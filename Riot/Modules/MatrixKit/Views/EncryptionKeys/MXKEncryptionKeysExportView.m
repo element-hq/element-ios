@@ -41,7 +41,7 @@
         mxSession = matrixSession;
         _passphraseMinLength = 1;
         
-        _alertController = [UIAlertController alertControllerWithTitle:[MatrixKitL10n e2eExportRoomKeys] message:[MatrixKitL10n e2eExportPrompt] preferredStyle:UIAlertControllerStyleAlert];
+        _alertController = [UIAlertController alertControllerWithTitle:[VectorL10n e2eExportRoomKeys] message:[VectorL10n e2eExportPrompt] preferredStyle:UIAlertControllerStyleAlert];
     }
     return self;
 }
@@ -72,18 +72,18 @@
     [_alertController addTextFieldWithConfigurationHandler:^(UITextField *textField)
      {
          textField.secureTextEntry = YES;
-        textField.placeholder = [MatrixKitL10n e2ePassphraseCreate];
+        textField.placeholder = [VectorL10n e2ePassphraseCreate];
          [textField resignFirstResponder];
      }];
 
     [_alertController addTextFieldWithConfigurationHandler:^(UITextField *textField)
      {
          textField.secureTextEntry = YES;
-         textField.placeholder = [MatrixKitL10n e2ePassphraseConfirm];
+         textField.placeholder = [VectorL10n e2ePassphraseConfirm];
          [textField resignFirstResponder];
      }];
 
-    [_alertController addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [_alertController addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
 
@@ -94,7 +94,7 @@
 
                                                        }]];
 
-    [_alertController addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n e2eExport]
+    [_alertController addAction:[UIAlertAction actionWithTitle:[VectorL10n e2eExport]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
 
@@ -115,20 +115,20 @@
                                                                    NSString *error;
                                                                    if (!password.length)
                                                                    {
-                                                                       error = [MatrixKitL10n e2ePassphraseEmpty];
+                                                                       error = [VectorL10n e2ePassphraseEmpty];
                                                                    }
                                                                    else if (password.length < self.passphraseMinLength)
                                                                    {
-                                                                       error = [MatrixKitL10n e2ePassphraseTooShort:self.passphraseMinLength];
+                                                                       error = [VectorL10n e2ePassphraseTooShort:self.passphraseMinLength];
                                                                    }
                                                                    else
                                                                    {
-                                                                       error = [MatrixKitL10n e2ePassphraseNotMatch];
+                                                                       error = [VectorL10n e2ePassphraseNotMatch];
                                                                    }
 
-                                                                   UIAlertController *otherAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n error] message:error preferredStyle:UIAlertControllerStyleAlert];
+                                                                   UIAlertController *otherAlert = [UIAlertController alertControllerWithTitle:[VectorL10n error] message:error preferredStyle:UIAlertControllerStyleAlert];
 
-                                                                   [otherAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                   [otherAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
 
                                                                        if (weakSelf)
                                                                        {
@@ -162,9 +162,9 @@
                                                                            onLoading(NO);
 
                                                                            // TODO: i18n the error
-                                                                           UIAlertController *otherAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n error] message:error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
+                                                                           UIAlertController *otherAlert = [UIAlertController alertControllerWithTitle:[VectorL10n error] message:error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
 
-                                                                           [otherAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                           [otherAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
 
                                                                                if (weakSelf)
                                                                                {

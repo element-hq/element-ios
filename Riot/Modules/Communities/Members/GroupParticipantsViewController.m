@@ -1056,7 +1056,7 @@
                                                                message:[VectorL10n groupParticipantsLeavePromptMsg]
                                                         preferredStyle:UIAlertControllerStyleAlert];
             
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                                                                
@@ -1107,7 +1107,7 @@
                                                                message:promptMsg
                                                         preferredStyle:UIAlertControllerStyleAlert];
             
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                                                                
@@ -1130,7 +1130,7 @@
                                                                    
                                                                    MXLogDebug(@"[GroupParticipantsVC] Kick %@ failed", memberUserId);
                                                                    // Alert user
-                                                                   [[AppDelegate theDelegate] showErrorAsAlert:[NSError errorWithDomain:@"GroupDomain" code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n notSupportedYet]}]];
+                                                                   [[AppDelegate theDelegate] showErrorAsAlert:[NSError errorWithDomain:@"GroupDomain" code:0 userInfo:@{NSLocalizedDescriptionKey:[VectorL10n notSupportedYet]}]];
                                                                }
                                                                
                                                            }]];
@@ -1159,7 +1159,7 @@
                                                        message:promptMsg
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -1188,7 +1188,7 @@
                                                                participantId = identifiers.firstObject;
                                                                
                                                                MXLogDebug(@"[GroupParticipantsVC] Invite %@ failed", participantId);
-                                                               [[AppDelegate theDelegate] showErrorAsAlert:[NSError errorWithDomain:@"GroupDomain" code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n notSupportedYet]}]];
+                                                               [[AppDelegate theDelegate] showErrorAsAlert:[NSError errorWithDomain:@"GroupDomain" code:0 userInfo:@{NSLocalizedDescriptionKey:[VectorL10n notSupportedYet]}]];
                                                            }
                                                        }
                                                        

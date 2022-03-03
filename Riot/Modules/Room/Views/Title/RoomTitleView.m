@@ -112,7 +112,7 @@
         self.displayNameTextField.text = self.mxRoom.summary.displayname;
         if (!self.displayNameTextField.text.length)
         {
-            self.displayNameTextField.text = [MatrixKitL10n roomDisplaynameEmptyRoom];
+            self.displayNameTextField.text = [VectorL10n roomDisplaynameEmptyRoom];
             self.displayNameTextField.textColor = ThemeService.shared.theme.textSecondaryColor;
         }
         else

@@ -516,10 +516,10 @@
     }
     
     // Ask for userId to invite
-    currentAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n userIdTitle] message:nil preferredStyle:UIAlertControllerStyleAlert];
+    currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n userIdTitle] message:nil preferredStyle:UIAlertControllerStyleAlert];
     
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -535,10 +535,10 @@
     [currentAlert addTextFieldWithConfigurationHandler:^(UITextField *textField)
     {
         textField.secureTextEntry = NO;
-        textField.placeholder = [MatrixKitL10n userIdPlaceholder];
+        textField.placeholder = [VectorL10n userIdPlaceholder];
     }];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n invite]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n invite]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        

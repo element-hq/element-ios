@@ -116,7 +116,7 @@
         if (memberCellData.roomMember.membership == MXMembershipLeave || memberCellData.roomMember.membership == MXMembershipBan)
         {
             self.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0];
-            presenceText = (memberCellData.roomMember.membership == MXMembershipLeave) ? [MatrixKitL10n membershipLeave] : [MatrixKitL10n membershipBan];
+            presenceText = (memberCellData.roomMember.membership == MXMembershipLeave) ? [VectorL10n membershipLeave] : [VectorL10n membershipBan];
         }
         else
         {
@@ -126,7 +126,7 @@
             if (memberCellData.roomMember.membership == MXMembershipInvite)
             {
                 thumbnailBorderColor = [UIColor lightGrayColor];
-                presenceText = [MatrixKitL10n membershipInvite];
+                presenceText = [VectorL10n membershipInvite];
             }
             else
             {
@@ -218,7 +218,7 @@
         {
             case MXPresenceOffline:
             {
-                lastActiveTime = [MatrixKitL10n offline];
+                lastActiveTime = [VectorL10n offline];
                 break;
             }
             case MXPresenceUnknown:

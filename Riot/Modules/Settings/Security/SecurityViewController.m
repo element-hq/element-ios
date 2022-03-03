@@ -829,7 +829,7 @@ TableViewSectionsDelegate>
                                     [self setupCrossSigning:nil];
                                 }]];
     
-    [alertController addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [alertController addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                                 style:UIAlertActionStyleCancel
                                                               handler:nil]];
     
@@ -1416,7 +1416,7 @@ TableViewSectionsDelegate>
                                                                              message:[VectorL10n securitySettingsCompleteSecurityAlertMessage]
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     
-    [alertController addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+    [alertController addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
                                                     [self presentCompleteSecurity];
@@ -1612,7 +1612,7 @@ TableViewSectionsDelegate>
                                         message:[VectorL10n settingsKeyBackupDeleteConfirmationPromptMsg]
                                  preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
@@ -1741,7 +1741,7 @@ TableViewSectionsDelegate>
                                         message:[VectorL10n  settingsKeyBackupDeleteConfirmationPromptMsg]
                                  preferredStyle:UIAlertControllerStyleAlert];
 
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        MXStrongifyAndReturnIfNil(self);

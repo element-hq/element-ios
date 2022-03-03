@@ -152,8 +152,8 @@
         cell.mxkLabel.text = @"";
     }
     
-    [cell.mxkButton setTitle:[MatrixKitL10n startChat] forState:UIControlStateNormal];
-    [cell.mxkButton setTitle:[MatrixKitL10n startChat] forState:UIControlStateHighlighted];
+    [cell.mxkButton setTitle:[VectorL10n startChat] forState:UIControlStateNormal];
+    [cell.mxkButton setTitle:[VectorL10n startChat] forState:UIControlStateHighlighted];
     cell.mxkButton.tag = row;
     [cell.mxkButton addTarget:self action:@selector(startChat:) forControlEvents:UIControlEventTouchUpInside];
     

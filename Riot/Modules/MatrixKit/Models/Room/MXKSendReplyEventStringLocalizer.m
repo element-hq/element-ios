@@ -22,37 +22,37 @@
 
 - (NSString *)senderSentAnImage
 {
-    return [MatrixKitL10n messageReplyToSenderSentAnImage];
+    return [VectorL10n messageReplyToSenderSentAnImage];
 }
 
 - (NSString *)senderSentAVideo
 {
-    return [MatrixKitL10n messageReplyToSenderSentAVideo];
+    return [VectorL10n messageReplyToSenderSentAVideo];
 }
 
 - (NSString *)senderSentAnAudioFile
 {
-    return [MatrixKitL10n messageReplyToSenderSentAnAudioFile];
+    return [VectorL10n messageReplyToSenderSentAnAudioFile];
 }
 
 - (NSString *)senderSentAVoiceMessage
 {
-    return [MatrixKitL10n messageReplyToSenderSentAVoiceMessage];
+    return [VectorL10n messageReplyToSenderSentAVoiceMessage];
 }
 
 - (NSString *)senderSentAFile
 {
-    return [MatrixKitL10n messageReplyToSenderSentAFile];
+    return [VectorL10n messageReplyToSenderSentAFile];
 }
 
 - (NSString *)senderSentTheirLocation
 {
-    return [MatrixKitL10n messageReplyToSenderSentTheirLocation];
+    return [VectorL10n messageReplyToSenderSentTheirLocation];
 }
 
 - (NSString *)messageToReplyToPrefix
 {
-    return [MatrixKitL10n messageReplyToMessageToReplyToPrefix];
+    return [VectorL10n messageReplyToMessageToReplyToPrefix];
 }
 
 @end

@@ -726,7 +726,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
                                                                    message:message
                                                             preferredStyle:UIAlertControllerStyleAlert];
 
-    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
                                                 [self withdrawViewControllerAnimated:YES completion:nil];

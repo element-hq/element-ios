@@ -84,7 +84,7 @@ NSString* const kMXKLanguagePickerCellDataKeyLanguage = @"language";
     // Populate cellDataArray
     // Start by the default language chosen by the OS
     NSString *defaultLanguage = [MXKLanguagePickerViewController defaultLanguage];
-    NSString *languageDescription = [MatrixKitL10n languagePickerDefaultLanguage:[MXKLanguagePickerViewController languageDescription:defaultLanguage]];
+    NSString *languageDescription = [VectorL10n languagePickerDefaultLanguage:[MXKLanguagePickerViewController languageDescription:defaultLanguage]];
 
     [cellDataArray addObject:@{
                                kMXKLanguagePickerCellDataKeyText:languageDescription
@@ -143,7 +143,7 @@ NSString* const kMXKLanguagePickerCellDataKeyLanguage = @"language";
 
     [self setupSearchController];
 
-    self.navigationItem.title = [MatrixKitL10n languagePickerTitle];
+    self.navigationItem.title = [VectorL10n languagePickerTitle];
         
 }
 

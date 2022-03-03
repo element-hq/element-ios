@@ -29,10 +29,10 @@ final class CameraAccessAlertPresenter {
         
         let alert = UIAlertController(title: VectorL10n.camera, message: VectorL10n.cameraAccessNotGranted(appDisplayName), preferredStyle: .alert)
         
-        let cancelActionTitle = MatrixKitL10n.ok
+        let cancelActionTitle = VectorL10n.ok
         let cancelAction = UIAlertAction(title: cancelActionTitle, style: .cancel)
         
-        let settingsActionTitle = MatrixKitL10n.settings
+        let settingsActionTitle = VectorL10n.settings
         let settingsAction = UIAlertAction(title: settingsActionTitle, style: .default, handler: { _ in
             UIApplication.shared.open(settingsURL, options: [:], completionHandler: { (succeed) in
                 if !succeed {

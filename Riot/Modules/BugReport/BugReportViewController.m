@@ -92,8 +92,8 @@
         _descriptionLabel.text = [VectorL10n bugReportDescription];
     }
     
-    [_cancelButton setTitle:[MatrixKitL10n cancel] forState:UIControlStateNormal];
-    [_cancelButton setTitle:[MatrixKitL10n cancel] forState:UIControlStateHighlighted];
+    [_cancelButton setTitle:[VectorL10n cancel] forState:UIControlStateNormal];
+    [_cancelButton setTitle:[VectorL10n cancel] forState:UIControlStateHighlighted];
     [_sendButton setTitle:[VectorL10n bugReportSend] forState:UIControlStateNormal];
     [_sendButton setTitle:[VectorL10n bugReportSend] forState:UIControlStateHighlighted];
     [_backgroundButton setTitle:[VectorL10n bugReportBackgroundMode] forState:UIControlStateNormal];
