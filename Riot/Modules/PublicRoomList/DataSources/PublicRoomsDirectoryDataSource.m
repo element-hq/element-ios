@@ -83,7 +83,7 @@ static NSString *const kNSFWKeyword = @"nsfw";
         else
         {
             // We display only Matrix rooms of the user's HS
-            directoryServerDisplayname = [MatrixKitL10n matrix];
+            directoryServerDisplayname = [VectorL10n matrix];
         }
     }
 

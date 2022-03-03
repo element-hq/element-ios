@@ -625,7 +625,7 @@
             if (indexPath.section == filteredMatrixContactsSection &&
                 (_userDirectoryState == ContactsDataSourceUserDirectoryStateLoading || _userDirectoryState == ContactsDataSourceUserDirectoryStateOfflineLoading))
             {
-                tableViewCell.textLabel.text = [MatrixKitL10n searchSearching];
+                tableViewCell.textLabel.text = [VectorL10n searchSearching];
             }
             else
             {

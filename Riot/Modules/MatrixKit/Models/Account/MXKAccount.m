@@ -346,7 +346,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                                                  code:0
                                              userInfo:@{
                                                         NSLocalizedDescriptionKey:
-                                                            [MatrixKitL10n accountErrorPushNotAllowed]
+                                                            [VectorL10n accountErrorPushNotAllowed]
                                                         }];
             if (failure)
             {
@@ -423,7 +423,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                                                  code:0
                                              userInfo:@{
                                                         NSLocalizedDescriptionKey:
-                                                            [MatrixKitL10n accountErrorPushNotAllowed]
+                                                            [VectorL10n accountErrorPushNotAllowed]
                                                         }];
             failure (error);
         }
@@ -558,7 +558,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     }
     else if (failure)
     {
-        failure ([NSError errorWithDomain:kMXKAccountErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: [MatrixKitL10n accountErrorMatrixSessionIsNotOpened]}]);
+        failure ([NSError errorWithDomain:kMXKAccountErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: [VectorL10n accountErrorMatrixSessionIsNotOpened]}]);
     }
 }
 
@@ -578,7 +578,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     }
     else if (failure)
     {
-        failure ([NSError errorWithDomain:kMXKAccountErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: [MatrixKitL10n accountErrorMatrixSessionIsNotOpened]}]);
+        failure ([NSError errorWithDomain:kMXKAccountErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: [VectorL10n accountErrorMatrixSessionIsNotOpened]}]);
     }
 }
 
@@ -599,7 +599,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     }
     else if (failure)
     {
-        failure ([NSError errorWithDomain:kMXKAccountErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: [MatrixKitL10n accountErrorMatrixSessionIsNotOpened]}]);
+        failure ([NSError errorWithDomain:kMXKAccountErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: [VectorL10n accountErrorMatrixSessionIsNotOpened]}]);
     }
 }
 

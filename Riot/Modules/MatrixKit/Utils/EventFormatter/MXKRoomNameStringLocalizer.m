@@ -21,22 +21,22 @@
 
 - (NSString *)emptyRoom
 {
-    return [MatrixKitL10n roomDisplaynameEmptyRoom];
+    return [VectorL10n roomDisplaynameEmptyRoom];
 }
 
 - (NSString *)twoMembers:(NSString *)firstMember second:(NSString *)secondMember
 {
-    return [MatrixKitL10n roomDisplaynameTwoMembers:firstMember :secondMember];
+    return [VectorL10n roomDisplaynameTwoMembers:firstMember :secondMember];
 }
 
 - (NSString *)moreThanTwoMembers:(NSString *)firstMember count:(NSNumber *)memberCount
 {
-    return [MatrixKitL10n roomDisplaynameMoreThanTwoMembers:firstMember :memberCount.stringValue];
+    return [VectorL10n roomDisplaynameMoreThanTwoMembers:firstMember :memberCount.stringValue];
 }
 
 - (NSString *)allOtherMembersLeft:(NSString *)member
 {
-    return [MatrixKitL10n roomDisplaynameAllOtherMembersLeft:member];
+    return [VectorL10n roomDisplaynameAllOtherMembersLeft:member];
 }
 
 @end

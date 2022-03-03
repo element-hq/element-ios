@@ -263,7 +263,7 @@
                                                                    message:message
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
-    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                               style:UIAlertActionStyleCancel
                                             handler:^(UIAlertAction * action) {
                                                 [self.delegate mediaPickerControllerDidCancel:self];
@@ -271,7 +271,7 @@
     
     NSURL *settingsURL = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
     
-    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n settings]
+    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n settings]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
                                                 [UIApplication.sharedApplication openURL:settingsURL options:@{} completionHandler:^(BOOL success) {
@@ -645,7 +645,7 @@
     validationView.stretchable = YES;
     
     // the user validates the image
-    [validationView setRightButtonTitle:[MatrixKitL10n ok] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+    [validationView setRightButtonTitle:[VectorL10n ok] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         
         // Dismiss the image view
@@ -655,7 +655,7 @@
     }];
     
     // the user wants to use an other image
-    [validationView setLeftButtonTitle:[MatrixKitL10n cancel] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+    [validationView setLeftButtonTitle:[VectorL10n cancel] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         
         // dismiss the image view
@@ -684,7 +684,7 @@
     validationView.stretchable = NO;
     
     // the user validates the image
-    [validationView setRightButtonTitle:[MatrixKitL10n ok] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+    [validationView setRightButtonTitle:[VectorL10n ok] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         
         // Dismiss the image view
@@ -694,7 +694,7 @@
     }];
     
     // the user wants to use an other image
-    [validationView setLeftButtonTitle:[MatrixKitL10n cancel] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+    [validationView setLeftButtonTitle:[VectorL10n cancel] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         
         // dismiss the image view

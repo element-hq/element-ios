@@ -574,7 +574,7 @@
                                                                                      message:nil
                                                                               preferredStyle:UIAlertControllerStyleAlert];
             
-            [alertController addAction:[UIAlertAction actionWithTitle:MatrixKitL10n.ok
+            [alertController addAction:[UIAlertAction actionWithTitle:VectorL10n.ok
                                                                 style:UIAlertActionStyleDefault
                                                               handler:nil]];
             

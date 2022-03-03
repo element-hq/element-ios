@@ -117,8 +117,8 @@
     }
     
     // Localize string
-    [_contactsControls setTitle:[MatrixKitL10n contactMxUsers] forSegmentAtIndex:0];
-    [_contactsControls setTitle:[MatrixKitL10n contactLocalContacts] forSegmentAtIndex:1];
+    [_contactsControls setTitle:[VectorL10n contactMxUsers] forSegmentAtIndex:0];
+    [_contactsControls setTitle:[VectorL10n contactLocalContacts] forSegmentAtIndex:1];
     
     // Apply search option in navigation bar
     self.enableBarButtonSearch = _enableBarButtonSearch;

@@ -147,8 +147,8 @@
     self.containerView.layer.cornerRadius = 20;
     self.titleLabel.text = [VectorL10n readReceiptsList];
     
-    [_closeButton setTitle:[MatrixKitL10n close] forState:UIControlStateNormal];
-    [_closeButton setTitle:[MatrixKitL10n close] forState:UIControlStateHighlighted];
+    [_closeButton setTitle:[VectorL10n close] forState:UIControlStateNormal];
+    [_closeButton setTitle:[VectorL10n close] forState:UIControlStateHighlighted];
 }
 
 - (void)configureReceiptsTableView

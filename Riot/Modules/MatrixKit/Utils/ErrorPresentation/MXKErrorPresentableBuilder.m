@@ -36,12 +36,12 @@
     
     if (!title)
     {
-        title = [MatrixKitL10n error];
+        title = [VectorL10n error];
     }
     
     if (!message)
     {
-        message = [MatrixKitL10n errorCommonMessage];
+        message = [VectorL10n errorCommonMessage];
     }
     
     return  [[MXKErrorViewModel alloc] initWithTitle:title message:message];
@@ -49,8 +49,8 @@
 
 - (id <MXKErrorPresentable>)commonErrorPresentable
 {
-    return  [[MXKErrorViewModel alloc] initWithTitle:[MatrixKitL10n error]
-                                             message:[MatrixKitL10n errorCommonMessage]];
+    return  [[MXKErrorViewModel alloc] initWithTitle:[VectorL10n error]
+                                             message:[VectorL10n errorCommonMessage]];
 }
 
 @end
