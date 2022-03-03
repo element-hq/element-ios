@@ -802,7 +802,6 @@
 // room info dialog Screen
 
 // room details dialog screen
-"room_details_title" = "تَفاصيلُ الغُرفَة";
 "login_error_must_start_http" = "عُنوانُ URL يَجِبُ أن يَبدَأ بِبروتوكل //:[s]http";
 
 // Login Screen 
@@ -850,7 +849,6 @@
 // titles 
 
 // button names 
-"ok" = "حَسَناً";
 "notice_room_history_visible_to_members_from_joined_point_by_you_for_dm" = "أنتَ قَد جَعَلتَ الرَّسائِلَ المُستَقبَليَّة مَرئيَّة لِلجَميع، مُنذُ أنِ اِنضَمُّوا.";
 "notice_room_history_visible_to_members_from_joined_point_by_you" = "أنتَ قَد جَعَلتَ تَأريخَ الغُرفَةِ المُستَقبَليّ مَرئيٌّ لِجَميعِ أعضاءِ الغُرفَة، مِن النُّقطَة الَّتي اِنضَمُّوا فِيهَا.";
 "notice_room_history_visible_to_members_from_invited_point_by_you_for_dm" = "أنتَ قَد جَعَلتَ الرَّسائِلَ المُستَقبَليَّة مَرئيَّة لِلجَميع، مُنذُ أن تَمَّت دَعوَتُهُم.";

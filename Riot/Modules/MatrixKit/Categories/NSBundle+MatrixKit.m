@@ -20,8 +20,6 @@
 
 @implementation NSBundle (MatrixKit)
 
-static NSString *customLocalizedStringTableName = nil;
-
 + (NSBundle*)mxk_assetsBundle
 {
     // Get the bundle within MatrixKit
@@ -29,35 +27,6 @@ static NSString *customLocalizedStringTableName = nil;
     NSURL *assetsBundleURL = [bundle URLForResource:@"MatrixKitAssets" withExtension:@"bundle"];
 
     return [NSBundle bundleWithURL:assetsBundleURL];
-}
-
-+ (NSBundle*)mxk_languageBundle
-{
-    NSString *language = [NSBundle mxk_language];
-    NSBundle *bundle = [NSBundle mxk_assetsBundle];
-
-    // If there is a runtime language (different from the legacy language chose by the OS),
-    // return the sub bundle for this language
-    if (language)
-    {
-        bundle =  [NSBundle bundleWithPath:[bundle pathForResource:[NSBundle mxk_language] ofType:@"lproj"]];
-    }
-
-    return bundle;
-}
-
-+ (NSBundle*)mxk_fallbackLanguageBundle
-{
-    NSString *fallbackLanguage = [NSBundle mxk_fallbackLanguage];
-    NSBundle *bundle = [NSBundle mxk_assetsBundle];
-
-    // Return the sub bundle of the fallback language if any
-    if (fallbackLanguage)
-    {
-        bundle =  [NSBundle bundleWithPath:[bundle pathForResource:fallbackLanguage ofType:@"lproj"]];
-    }
-
-    return bundle;
 }
 
 // use a cache to avoid loading images from file system.
@@ -90,50 +59,6 @@ static MXLRUCache *imagesResourceCache = nil;
 + (NSURL*)mxk_audioURLFromMXKAssetsBundleWithName:(NSString *)name
 {
     return [NSURL fileURLWithPath:[[NSBundle mxk_assetsBundle] pathForResource:name ofType:@"mp3" inDirectory:@"Sounds"]];
-}
-
-+ (void)mxk_customizeLocalizedStringTableName:(NSString*)tableName
-{
-    customLocalizedStringTableName = tableName;
-}
-
-+ (NSString *)mxk_localizedStringForKey:(NSString *)key
-{
-    NSString *localizedString;
-    
-    // Check first customized table
-    // Use "_", a string that does not worth to be translated, as default value to mark
-    // a key that does not have a value in the customized table.
-    if (customLocalizedStringTableName)
-    {
-        localizedString = NSLocalizedStringWithDefaultValue(key, customLocalizedStringTableName, [NSBundle mainBundle], @"_", nil);
-    }
-
-    if (!localizedString || (localizedString.length == 1 && [localizedString isEqualToString:@"_"]))
-    {
-        // Check if we need to manage a fallback language
-        // as we do in NSBundle+MXKLanguage
-        NSString *language = [NSBundle mxk_language];
-        NSString *fallbackLanguage = [NSBundle mxk_fallbackLanguage];
-
-        BOOL manageFallbackLanguage = fallbackLanguage && ![fallbackLanguage isEqualToString:language];
-
-        localizedString = NSLocalizedStringWithDefaultValue(key, @"MatrixKit",
-                                                            [NSBundle mxk_languageBundle],
-                                                            manageFallbackLanguage ? @"_" : nil,
-                                                            nil);
-
-        if (manageFallbackLanguage
-            && (!localizedString || (localizedString.length == 1 && [localizedString isEqualToString:@"_"])))
-        {
-            // The translation is not available, use the fallback language
-            localizedString = NSLocalizedStringFromTableInBundle(key, @"MatrixKit",
-                                                                 [NSBundle mxk_fallbackLanguageBundle],
-                                                                 nil);
-        }
-    }
-    
-    return localizedString;
 }
 
 + (NSBundle *)mxk_bundleForClass:(Class)aClass
