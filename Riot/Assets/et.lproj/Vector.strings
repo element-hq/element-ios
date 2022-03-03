@@ -465,7 +465,7 @@
 "room_message_unable_open_link_error_message" = "Lingi avamine ei õnnestu.";
 "room_do_not_have_permission_to_post" = "Sul ei ole õigusi siia jututuppa kirjutamiseks";
 "room_event_action_report_prompt_reason" = "Sellest sisust teatamise põhjus";
-"room_event_action_kick_prompt_reason" = "Selle kasutaja välja müksamise põhjus";
+"room_event_action_kick_prompt_reason" = "Selle kasutaja eemaldamise põhjus";
 "room_event_action_ban_prompt_reason" = "Sellele kasutajale suhtluskeelu seadmise põhjus";
 "room_event_action_report_prompt_ignore_user" = "Kas sa soovid peita kõik sõnumid selle kasutaja eest?";
 "room_event_action_save" = "Salvesta";
@@ -1595,3 +1595,15 @@
 "room_event_copy_link_info" = "Link on kopeeritud lõikelauale.";
 "room_event_action_reply_in_thread" = "Jutulõng";
 "room_event_action_view_in_room" = "Vaata jututoas";
+"location_sharing_open_open_street_maps" = "Ava OpenStreetMap'is";
+"search_filter_placeholder" = "Filtreeri";
+"onboarding_use_case_existing_server_button" = "Alusta koduserveri kasutamist";
+"onboarding_use_case_existing_server_message" = "Tahad kasutada mõnda olemasolevat koduserverit?";
+"onboarding_use_case_skip_button" = "jätta selle küsimuse vahele";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "Sa pole veel otsustanud? Sa võid %@";
+"onboarding_use_case_community_messaging" = "Kogukonnad";
+"onboarding_use_case_work_messaging" = "Töökaaslased";
+"onboarding_use_case_personal_messaging" = "Perekond ja sõbrad";
+"onboarding_use_case_message" = "Me aitame sind Matrix'i võrgu kasutamisel.";
+"onboarding_use_case_title" = "Kellega sa kõige rohkem vestled?";

@@ -1,1 +1,46 @@
 
+
+
+// Call Bar
+"callbar_only_single_active" = "(%@) לחץ לחזרה לשיחה";
+"ok" = "או קיי";
+"done" = "סיימת";
+"open" = "פתח";
+"less" = "פחות";
+"more" = "יותר";
+"switch" = "החלף";
+"joined" = "הצטרף";
+"skip" = "דלג";
+"close" = "סגור";
+"sending" = "שולח";
+"send_to" = "%@ שלח אל";
+"collapse" = "צמצם";
+"rename" = "שנה שם";
+"later" = "מאוחר יותר";
+"active_call_details" = "(%@) שיחה פעילה";
+"active_call" = "שיחה פעילה";
+"video" = "וידאו";
+"voice" = "קול";
+"camera" = "מצלמה";
+"preview" = "תצוגה מקדימה";
+"accept" = "אשר";
+"decline" = "בטל";
+"join" = "הצטרף";
+"save" = "שמור";
+"cancel" = "בטל/י";
+"retry" = "נסה שוב";
+"invite" = "הזמן";
+"remove" = "הסר";
+"leave" = "צא";
+"start" = "התחל";
+"create" = "צור";
+"continue" = "המשך";
+"back" = "אחורה";
+"next" = "הבא";
+
+// Actions
+"view" = "הצג";
+"warning" = "אזהרה";
+"title_groups" = "קהילות";
+"title_rooms" = "חדרים";
+"title_people" = "אנשים";

@@ -1635,3 +1635,15 @@
 "room_event_copy_link_info" = "Link in die Zwischenablage kopiert.";
 "room_event_action_reply_in_thread" = "Thread";
 "room_event_action_view_in_room" = "Im Raum anzeigen";
+"location_sharing_open_open_street_maps" = "In OpenStreetMap öffnen";
+"onboarding_use_case_title" = "Mit wem wirst du am meisten chatten?";
+"onboarding_use_case_message" = "Wir helfen dir, dich zu verbinden.";
+"onboarding_use_case_personal_messaging" = "Freunde und Familie";
+"onboarding_use_case_work_messaging" = "Teams";
+"onboarding_use_case_community_messaging" = "Gemeinschaften";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "Noch nicht sicher? Du kannst";
+"onboarding_use_case_skip_button" = "diese Frage überspringen";
+"onboarding_use_case_existing_server_message" = "Willst du einen existierenden Server beitreten?";
+"onboarding_use_case_existing_server_button" = "MIt Server verbinden";
+"search_filter_placeholder" = "Filtern";

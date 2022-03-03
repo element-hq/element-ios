@@ -30,7 +30,7 @@
 "active_call_details" = "通話開始（%@）";
 "later" = "後で";
 "rename" = "名前変更";
-"collapse" = "たたむ";
+"collapse" = "折りたたむ";
 "send_to" = "%@さんへ送信";
 "sending" = "送信中";
 // Authentication
@@ -95,7 +95,7 @@
 "room_creation_appearance_picture" = "チャット画像（任意）";
 "room_creation_privacy" = "個人情報保護";
 "room_creation_private_room" = "この会話は非公開です";
-"room_creation_public_room" = "この会話は公開されます";
+"room_creation_public_room" = "この会話は公開されています";
 "room_creation_make_public" = "公開";
 "room_creation_make_public_prompt_title" = "このチャットを公開しますか？";
 "room_creation_make_public_prompt_msg" = "このチャットを公開してもよろしいですか？誰でもあなたのメッセージを読んでチャットに参加できます。";
@@ -725,7 +725,7 @@
 "settings_integrations" = "インテグレーション";
 "settings_discovery_settings" = "ディスカバリー";
 "room_multiple_typing_notification" = "%@とその他のユーザーが入力中です";
-"external_link_confirmation_message" = "リンク%@は別のサイトに移動します：%@\n\n本当に続けますか？";
+"external_link_confirmation_message" = "リンク %@ は別のサイトに移動します：%@\n\n続行してよろしいですか？";
 "room_event_action_delete_confirmation_title" = "未送信メッセージを削除";
 "room_unsent_messages_cancel_message" = "このルームにある未送信のメッセージを全て削除してもよろしいですか？";
 "room_unsent_messages_cancel_title" = "未送信メッセージを削除";
@@ -778,7 +778,7 @@
 "callbar_only_multiple_paused" = "一時停止した%@の通話";
 "callbar_only_single_paused" = "通話の一時停止";
 "store_promotional_text" = "オープンネットワーク上でプライバシーを保護したチャットアプリ。あなた自身でコントロールできるように非中央集権化（分散化）されています。データマイニング、バックドア、サードパーティによるアクセスはありません。";
-"auth_softlogout_clear_data" = "個人データをクリア";
+"auth_softlogout_clear_data" = "個人データを消去";
 "auth_softlogout_recover_encryption_keys" = "暗号化されたメッセージがどの端末でも読めるように、サインインしてこの端末にのみ保存されている暗号鍵を取り戻してください。";
 "auth_softlogout_reason" = "ホームサーバー(%1$@)の管理者が%2$@(%3$@)からサインアウトさせました。";
 "auth_softlogout_sign_in" = "サインイン";

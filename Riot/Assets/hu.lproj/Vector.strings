@@ -229,7 +229,7 @@
 "room_event_action_view_decrypted_source" = "Visszafejtett forrás megjelenítése";
 "room_event_action_report" = "Tartalom bejelentése";
 "room_event_action_report_prompt_reason" = "Ok amiért a tartalmat bejelented";
-"room_event_action_kick_prompt_reason" = "Ok amiér kirúgod ezt a felhasználót";
+"room_event_action_kick_prompt_reason" = "Ok amiért eltávolítod ezt a felhasználót";
 "room_event_action_ban_prompt_reason" = "Ok amiért kitiltod ezt a felhasználót";
 "room_event_action_report_prompt_ignore_user" = "El akarod rejteni az összes üzenetet ettől a felhasználótól?";
 "room_event_action_save" = "Mentés";
@@ -1658,3 +1658,15 @@
 "room_event_copy_link_info" = "Hivatkozás a vágólapra másolva.";
 "room_event_action_reply_in_thread" = "Üzenetszál";
 "room_event_action_view_in_room" = "Megjelenítés szobában";
+"location_sharing_open_open_street_maps" = "OpenStreetMapon való megnyitás";
+"search_filter_placeholder" = "Szűrés";
+"onboarding_use_case_existing_server_button" = "Szerverhez csatlakozás";
+"onboarding_use_case_existing_server_message" = "Csatlakoznál egy már meglévő szerverhez?";
+"onboarding_use_case_skip_button" = "kérdés kihagyása";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "Még nem vagy biztos? Tudhatsz ilyent: %@";
+"onboarding_use_case_community_messaging" = "Közösségek";
+"onboarding_use_case_work_messaging" = "Csoportok";
+"onboarding_use_case_personal_messaging" = "Barátok és család";
+"onboarding_use_case_message" = "Segítünk a kapcsolatteremétésben.";
+"onboarding_use_case_title" = "Kivel beszélgetnék leginkább?";

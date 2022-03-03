@@ -1774,3 +1774,15 @@
 "room_event_copy_link_info" = "Tautan disalin ke papan klip.";
 "room_event_action_reply_in_thread" = "Utasan";
 "room_event_action_view_in_room" = "Tampilkan di ruangan";
+"onboarding_use_case_skip_button" = "melewati pertanyaan ini";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "Belum yakin? Anda dapat %@";
+"onboarding_use_case_message" = "Kami akan membantu Anda untuk terhubung.";
+"onboarding_use_case_community_messaging" = "Komunitas";
+"onboarding_use_case_work_messaging" = "Tim";
+"onboarding_use_case_personal_messaging" = "Teman dan keluarga";
+"onboarding_use_case_title" = "Siapa saja yang Anda sering chat?";
+"onboarding_use_case_existing_server_message" = "Ingin bergabung ke server yang sudah ada?";
+"onboarding_use_case_existing_server_button" = "Hubungkan ke server";
+"search_filter_placeholder" = "Saring";
+"location_sharing_open_open_street_maps" = "Buka di OpenStreetMap";

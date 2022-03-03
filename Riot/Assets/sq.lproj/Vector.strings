@@ -409,7 +409,7 @@
 "room_message_reply_to_short_placeholder" = "Dërgoni një përgjigje…";
 "room_resend_unsent_messages" = "Ridërgo mesazhet e padërguara";
 "room_event_action_view_decrypted_source" = "Shihni Burim të Shfshehtëzuar";
-"room_event_action_kick_prompt_reason" = "Arsye për përzënien e këtij përdoruesi";
+"room_event_action_kick_prompt_reason" = "Arsye për heqjen e këtij përdoruesi";
 "room_event_action_ban_prompt_reason" = "Arsye për dëbimin e këtij përdoruesi";
 "room_action_send_photo_or_video" = "Dërgoni foto ose video";
 "room_replacement_link" = "Biseda vazhdon këtu.";
@@ -1647,3 +1647,15 @@
 "room_event_copy_link_info" = "Lidhja u kopjua në të papastër.";
 "room_event_action_reply_in_thread" = "Rrjedhë";
 "room_event_action_view_in_room" = "Shiheni në dhomë";
+"location_sharing_open_open_street_maps" = "Hape në OpenStreetMap";
+"search_filter_placeholder" = "Filtër";
+"onboarding_use_case_existing_server_button" = "Lidhu me shërbyesin";
+"onboarding_use_case_existing_server_message" = "Po shihni për t’u lidhur me një shërbyes ekzistues?";
+"onboarding_use_case_skip_button" = "anashkaloni këtë pyetje";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "Ende jo i sigurt? Mundeni të %@";
+"onboarding_use_case_community_messaging" = "Bashkësi";
+"onboarding_use_case_work_messaging" = "Ekipe";
+"onboarding_use_case_personal_messaging" = "Shokë dhe familje";
+"onboarding_use_case_message" = "Do t’ju ndihmojmë të lidheni.";
+"onboarding_use_case_title" = "Me kë do të bisedoni më të shumtën?";
