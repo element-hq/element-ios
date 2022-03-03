@@ -1629,3 +1629,15 @@
 "room_event_copy_link_info" = "Link copiato negli appunti.";
 "room_event_action_reply_in_thread" = "Conversazione";
 "room_event_action_view_in_room" = "Vedi nella stanza";
+"location_sharing_open_open_street_maps" = "Apri in OpenStreetMap";
+"search_filter_placeholder" = "Filtra";
+"onboarding_use_case_existing_server_button" = "Connetti al server";
+"onboarding_use_case_existing_server_message" = "Vuoi unirti ad un server esistente?";
+"onboarding_use_case_skip_button" = "salta questa domanda";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "Ancora non lo sai? Puoi %@";
+"onboarding_use_case_community_messaging" = "Comunità";
+"onboarding_use_case_work_messaging" = "Squadre";
+"onboarding_use_case_personal_messaging" = "Amici e famiglia";
+"onboarding_use_case_message" = "Vi aiuteremo a connettervi.";
+"onboarding_use_case_title" = "Con chi parlerai di più?";

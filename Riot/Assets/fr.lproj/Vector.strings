@@ -1672,3 +1672,15 @@
 "room_event_action_view_in_room" = "Afficher dans le salon";
 "home_context_menu_normal_priority" = "Priorité normale";
 "home_context_menu_low_priority" = "Basse priorité";
+"onboarding_use_case_title" = "À qui aller vous le plus parler ?";
+"onboarding_use_case_message" = "Nous allons vous aider à vous connecter.";
+"onboarding_use_case_personal_messaging" = "Famille et amis";
+"onboarding_use_case_work_messaging" = "Équipes";
+"onboarding_use_case_community_messaging" = "Communautés";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "Pas encore sûr ? Vous pouvez %@";
+"onboarding_use_case_skip_button" = "passer cette question";
+"onboarding_use_case_existing_server_message" = "Vous cherchez à joindre un serveur existant ?";
+"onboarding_use_case_existing_server_button" = "Se connecter au serveur";
+"search_filter_placeholder" = "Filtrer";
+"location_sharing_open_open_street_maps" = "Ouvrir avec OpenStreetMap";

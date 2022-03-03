@@ -229,7 +229,7 @@
 "room_event_action_view_decrypted_source" = "Visualizar Fonte Decriptada";
 "room_event_action_report" = "Reportar conteúdo";
 "room_event_action_report_prompt_reason" = "Razão para reportar este conteúdo";
-"room_event_action_kick_prompt_reason" = "Razão para expulsar esta(e) usuária(o)";
+"room_event_action_kick_prompt_reason" = "Razão para remover esta(e) usuária(o)";
 "room_event_action_ban_prompt_reason" = "Razão para banir esta(e) usuária(o)";
 "room_event_action_report_prompt_ignore_user" = "Você quer esconder todas as mensagens desta(e) usuária(o)?";
 "room_event_action_save" = "Salvar";
@@ -1626,3 +1626,15 @@
 "room_event_copy_link_info" = "Link copiado para clipboard.";
 "room_event_action_reply_in_thread" = "Thread";
 "room_event_action_view_in_room" = "Visualizar em sala";
+"location_sharing_open_open_street_maps" = "Abrir em OpenStreetMap";
+"search_filter_placeholder" = "Filtrar";
+"onboarding_use_case_existing_server_button" = "Conectar a servidor";
+"onboarding_use_case_existing_server_message" = "Procurando se juntar a um servidor existente?";
+"onboarding_use_case_skip_button" = "pukar esta pergunta";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "Não tem certeza ainda? Você pode %@";
+"onboarding_use_case_community_messaging" = "Comunidades";
+"onboarding_use_case_work_messaging" = "Times";
+"onboarding_use_case_personal_messaging" = "Amigas(os) e família";
+"onboarding_use_case_message" = "Nós vamos ajudá-la(o) a se conectar.";
+"onboarding_use_case_title" = "Com quem você vai fazer chat mais?";
