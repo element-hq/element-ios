@@ -58,9 +58,7 @@ struct TimelinePollView: View {
         .padding([.horizontal, .top], 2.0)
         .padding([.bottom])
         .alert(item: $viewModel.alertInfo) { info in
-            Alert(title: Text(info.title),
-                  message: info.messageText,
-                  dismissButton: .default(Text(VectorL10n.ok)))
+            info.alert
         }
     }
     

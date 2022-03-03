@@ -96,15 +96,15 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
         
         switch error {
         case .failedLoadingMap:
-            state.bindings.alertInfo = ErrorAlertInfo(id: LocationSharingAlertType.mapLoadingError,
+            state.bindings.alertInfo = ErrorAlertInfo(id: .mapLoadingError,
                                                       title: VectorL10n.locationSharingLoadingMapErrorTitle(AppInfo.current.displayName),
                                                       primaryButton: (VectorL10n.ok, primaryButtonCompletion))
         case .failedLocatingUser:
-            state.bindings.alertInfo = ErrorAlertInfo(id: LocationSharingAlertType.userLocatingError,
+            state.bindings.alertInfo = ErrorAlertInfo(id: .userLocatingError,
                                                       title: VectorL10n.locationSharingLocatingUserErrorTitle(AppInfo.current.displayName),
                                                       primaryButton: (VectorL10n.ok, primaryButtonCompletion))
         case .invalidLocationAuthorization:
-            state.bindings.alertInfo = ErrorAlertInfo(id: LocationSharingAlertType.authorizationError,
+            state.bindings.alertInfo = ErrorAlertInfo(id: .authorizationError,
                                                       title: VectorL10n.locationSharingInvalidAuthorizationErrorTitle(AppInfo.current.displayName),
                                                       primaryButton: (VectorL10n.locationSharingInvalidAuthorizationNotNow, primaryButtonCompletion),
                                                       secondaryButton: (VectorL10n.locationSharingInvalidAuthorizationSettings, {

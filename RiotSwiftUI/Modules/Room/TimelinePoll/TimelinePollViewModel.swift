@@ -64,13 +64,13 @@ class TimelinePollViewModel: TimelinePollViewModelType, TimelinePollViewModelPro
     }
     
     func showAnsweringFailure() {
-        state.bindings.alertInfo = ErrorAlertInfo(id: TimelinePollAlertType.failedSubmittingAnswer,
+        state.bindings.alertInfo = ErrorAlertInfo(id: .failedSubmittingAnswer,
                                                   title: VectorL10n.pollTimelineVoteNotRegisteredTitle,
                                                   message: VectorL10n.pollTimelineVoteNotRegisteredSubtitle)
     }
     
     func showClosingFailure() {
-        state.bindings.alertInfo = ErrorAlertInfo(id: TimelinePollAlertType.failedClosingPoll,
+        state.bindings.alertInfo = ErrorAlertInfo(id: .failedClosingPoll,
                                                   title: VectorL10n.pollTimelineNotClosedTitle,
                                                   message: VectorL10n.pollTimelineNotClosedSubtitle)
     }
