@@ -3175,6 +3175,10 @@ public class VectorL10n: NSObject {
   public static var noticeErrorUnexpectedEvent: String { 
     return VectorL10n.tr("Vector", "notice_error_unexpected_event") 
   }
+  /// ** Unable to render message. Please report a bug
+  public static var noticeErrorUnformattableEvent: String { 
+    return VectorL10n.tr("Vector", "notice_error_unformattable_event") 
+  }
   /// Unknown event type
   public static var noticeErrorUnknownEventType: String { 
     return VectorL10n.tr("Vector", "notice_error_unknown_event_type") 
