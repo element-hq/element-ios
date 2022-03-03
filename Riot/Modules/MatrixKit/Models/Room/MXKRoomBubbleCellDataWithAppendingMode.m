@@ -24,9 +24,9 @@ static NSAttributedString *messageSeparator = nil;
 
 #pragma mark - MXKRoomBubbleCellDataStoring
 
-- (instancetype)initWithEvent:(MXEvent *)event andRoomState:(MXRoomState *)roomState andRoomDataSource:(MXKRoomDataSource *)roomDataSource2
+- (instancetype)initWithEvent:(MXEvent *)event andRoomState:(MXRoomState *)roomState andRoomDataSource:(MXKRoomDataSource *)roomDataSource
 {
-    self = [super initWithEvent:event andRoomState:roomState andRoomDataSource:roomDataSource2];
+    self = [super initWithEvent:event andRoomState:roomState andRoomDataSource:roomDataSource];
     if (self)
     {
         // Set default settings
