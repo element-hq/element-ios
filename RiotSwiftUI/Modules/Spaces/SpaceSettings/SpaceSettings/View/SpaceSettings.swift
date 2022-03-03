@@ -148,7 +148,7 @@ struct SpaceSettings: View {
     
     @ViewBuilder
     private var roomAccess: some View {
-        VStack(alignment:.leading) {
+        VStack(alignment: .leading) {
             Spacer().frame(height:24)
             Text(VectorL10n.spaceSettingsAccessSection)
                 .font(theme.fonts.footnote)
