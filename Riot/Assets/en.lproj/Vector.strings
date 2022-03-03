@@ -2077,6 +2077,7 @@ Tap the + to start adding people.";
 "notice_error_unsupported_event" = "Unsupported event";
 "notice_error_unexpected_event" = "Unexpected event";
 "notice_error_unknown_event_type" = "Unknown event type";
+"notice_error_unformattable_event" = "** Unable to render message. Please report a bug";
 "notice_room_history_visible_to_anyone" = "%@ made future room history visible to anyone.";
 "notice_room_history_visible_to_members" = "%@ made future room history visible to all room members.";
 "notice_room_history_visible_to_members_for_dm" = "%@ made future messages visible to all room members.";
