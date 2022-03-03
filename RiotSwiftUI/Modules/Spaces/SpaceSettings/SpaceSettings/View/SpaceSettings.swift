@@ -85,7 +85,7 @@ struct SpaceSettings: View {
                             .clipShape(RoundedRectangle(cornerRadius: 8))
                     }
                 }.padding(10)
-                .gesture(TapGesture().onEnded { _ in
+                .onTapGesture {
                     guard viewModel.viewState.roomProperties?.isAvatarEditable == true else {
                         return
                     }
