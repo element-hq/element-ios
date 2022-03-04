@@ -293,8 +293,8 @@
 "settings_ui_language" = "言語";
 "settings_ui_theme" = "外観";
 "settings_ui_theme_auto" = "自動";
-"settings_ui_theme_light" = "明るい";
-"settings_ui_theme_dark" = "暗い";
+"settings_ui_theme_light" = "ライト";
+"settings_ui_theme_dark" = "ダーク";
 "settings_ui_theme_picker_title" = "外観を選択";
 "settings_ui_theme_picker_message" = "色反転設定の端末では、「自動」を使ってください";
 "settings_unignore_user" = "%@さんからのメッセージを見ますか？";
@@ -555,7 +555,7 @@
 "rerequest_keys_alert_message" = "鍵をこのセッションに送信できるように、メッセージを復号化できる他の端末で%@を起動してください。";
 "room_event_action_ban_prompt_reason" = "このユーザーをブロックする理由";
 "room_resource_limit_exceeded_message_contact_1" = " お願い ";
-"settings_ui_theme_black" = "Black";
+"settings_ui_theme_black" = "ブラック";
 "settings_flair" = "特色を表示";
 // String for App Store
 "store_short_description" = "セキュアな分散型チャット/VoIP";
@@ -685,7 +685,7 @@
 "room_details_access_section_for_dm" = "誰がアクセスできますか？";
 "room_details_photo_for_dm" = "写真";
 "room_details_integrations" = "インテグレーション";
-"room_details_search" = "ルーム（部屋）を探す";
+"room_details_search" = "ルーム内検索";
 "room_details_title_for_dm" = "詳細";
 "identity_server_settings_alert_error_invalid_identity_server" = "%@は有効なIDサーバーではありません。";
 "identity_server_settings_alert_error_terms_not_accepted" = "IDサーバーとして設定するには%@の条件を受け入れる必要があります。";
@@ -858,7 +858,7 @@
 "settings_key_backup_delete_confirmation_prompt_msg" = "よろしいですか？鍵が適切にバックアップされていないと、暗号化されたメッセージを失うことがあります。";
 "settings_key_backup_button_connect" = "このセッションを鍵のバックアップに接続";
 "settings_key_backup_button_delete" = "バックアップの削除";
-"settings_key_backup_button_restore" = "バックアップによる復元";
+"settings_key_backup_button_restore" = "バックアップから復元";
 "settings_key_backup_button_create" = "鍵のバックアップを使用開始";
 "settings_key_backup_info_trust_signature_invalid_device_unverified" = "バックアップには%@による無効な署名があります";
 "settings_key_backup_info_trust_signature_invalid_device_verified" = "バックアップには%@による無効な署名があります";
@@ -1549,3 +1549,13 @@
 "notice_room_history_visible_to_members_from_joined_point_for_dm" = "%@が今後のメッセージを「全員 （参加した時点以降）」閲覧可能に設定しました。";
 "notice_room_history_visible_to_members_from_invited_point_for_dm" = "%@が今後のメッセージを「メンバーのみ （招待された時点以降）」閲覧可能に設定しました。";
 "notice_room_history_visible_to_members_for_dm" = "%@が今後のメッセージを「メンバーのみ」閲覧可能に設定しました。";
+"room_intro_cell_information_room_without_topic_sentence2_part2" = " と、このルームの目的が分かりやすくなります。";
+"room_intro_cell_information_room_without_topic_sentence2_part1" = "トピックを追加する";
+"security_settings_secure_backup_restore" = "バックアップから復元";
+"settings_device_notifications" = "端末の通知";
+"settings_contacts_enable_sync" = "連絡先を探す";
+"settings_analytics_and_crash_data" = "クラッシュ・分析データを送信";
+"settings_ui_theme_picker_message_invert_colours" = "「自動」は端末の色の「反転」設定を使用します";
+"settings_ui_theme_picker_message_match_system_theme" = "「自動」は端末と同じ外観を自動で使用します";
+"space_home_show_all_rooms" = "全てのルームを表示";
+"room_notifs_settings_all_messages" = "全てのメッセージ";
