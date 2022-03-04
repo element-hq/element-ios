@@ -23,13 +23,18 @@ struct RoomAccessCoordinatorParameters {
     
     /// The Matrix room
     let room: MXRoom
+    
+    /// Set this value to false if you want to avoid room to be upgraded
+    let allowsRoomUpgrade: Bool
                 
     /// The navigation router that manage physical navigation
     let navigationRouter: NavigationRouterType
     
     init(room: MXRoom,
+         allowsRoomUpgrade: Bool = true,
          navigationRouter: NavigationRouterType? = nil) {
         self.room = room
+        self.allowsRoomUpgrade = allowsRoomUpgrade
         self.navigationRouter = navigationRouter ?? NavigationRouter(navigationController: RiotNavigationController())
     }
 }

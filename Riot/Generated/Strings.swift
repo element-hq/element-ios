@@ -5543,11 +5543,23 @@ public class VectorL10n: NSObject {
   public static var spacePublicJoinRuleDetail: String { 
     return VectorL10n.tr("Vector", "space_public_join_rule_detail") 
   }
+  /// Who can access this space?
+  public static var spaceSettingsAccessSection: String { 
+    return VectorL10n.tr("Vector", "space_settings_access_section") 
+  }
+  /// Your space is viewable at\n%@
+  public static func spaceSettingsCurrentAddressMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "space_settings_current_address_message", p1)
+  }
+  /// Failed to update space settings. Do you want to retry?
+  public static var spaceSettingsUpdateFailedMessage: String { 
+    return VectorL10n.tr("Vector", "space_settings_update_failed_message") 
+  }
   /// space
   public static var spaceTag: String { 
     return VectorL10n.tr("Vector", "space_tag") 
   }
-  /// description
+  /// Description
   public static var spaceTopic: String { 
     return VectorL10n.tr("Vector", "space_topic") 
   }

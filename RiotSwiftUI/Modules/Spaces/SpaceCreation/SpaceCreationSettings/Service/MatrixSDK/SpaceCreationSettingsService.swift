@@ -94,7 +94,7 @@ class SpaceCreationSettingsService: SpaceCreationSettingsServiceProtocol {
     }
     
     private func updateDefaultAddress() {
-        defaultAddress = roomName.toValidAliasLocalPart()
+        defaultAddress = MXTools.validAliasLocalPart(from: roomName)
     }
     
     private func validateAddress() {
@@ -102,7 +102,7 @@ class SpaceCreationSettingsService: SpaceCreationSettingsServiceProtocol {
         currentOperation = nil
 
         guard let userDefinedAddress = self.userDefinedAddress, !userDefinedAddress.isEmpty else {
-            let fullAddress = defaultAddress.fullLocalAlias(with: session)
+            let fullAddress = MXTools.fullLocalAlias(from: defaultAddress, with: session)
             
             if defaultAddress.isEmpty {
                 addressValidationSubject.send(.none(fullAddress))
@@ -116,7 +116,7 @@ class SpaceCreationSettingsService: SpaceCreationSettingsServiceProtocol {
     }
     
     private func validate(_ aliasLocalPart: String) {
-        let fullAddress = aliasLocalPart.fullLocalAlias(with: session)
+        let fullAddress = MXTools.fullLocalAlias(from: aliasLocalPart, with: session)
 
         currentOperation = MXRoomAliasAvailabilityChecker.validate(aliasLocalPart: aliasLocalPart, with: session) { [weak self] result in
             guard let self = self else { return }

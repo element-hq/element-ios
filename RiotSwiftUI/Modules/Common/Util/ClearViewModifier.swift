@@ -16,6 +16,20 @@
 
 import SwiftUI
 
+@available(iOS 14.0, *)
+extension ThemableTextField {
+    func showClearButton(text: Binding<String>, alignement: VerticalAlignment = .center) -> some View {
+        return modifier(ClearViewModifier(alignment: alignement, text: text))
+    }
+}
+
+@available(iOS 14.0, *)
+extension ThemableTextEditor {
+    func showClearButton(text: Binding<String>, alignement: VerticalAlignment = .top) -> some View {
+        return modifier(ClearViewModifier(alignment: alignement, text: text))
+    }
+}
+
 /// `ClearViewModifier` aims to add a clear button (e.g. `x` button) on the right side of any text editing view
 @available(iOS 14.0, *)
 struct ClearViewModifier: ViewModifier

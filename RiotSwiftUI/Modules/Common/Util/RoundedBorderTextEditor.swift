@@ -35,6 +35,7 @@ struct RoundedBorderTextEditor: View {
     // MARK: Private
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
+    @Environment(\.isEnabled) private var isEnabled
     
     // MARK: Setup
     
@@ -73,18 +74,32 @@ struct RoundedBorderTextEditor: View {
                         .foregroundColor(theme.colors.tertiaryContent)
                         .allowsHitTesting(false)
                 }
-                ThemableTextEditor(text: $text, onEditingChanged: { edit in
-                    self.editing = edit
-                    onEditingChanged?(edit)
-                })
-                .modifier(ClearViewModifier(alignment: .top, text: $text))
-                // Found no good solution here. Hidding next button for the moment
-//                .modifier(NextViewModifier(alignment: .bottomTrailing, isEditing: $editing))
-                .padding(EdgeInsets(top: 2, leading: 6, bottom: 0, trailing: 0))
-                .onChange(of: text, perform: { newText in
-                    onTextChanged?(newText)
-                })
+                if isEnabled {
+                    ThemableTextEditor(text: $text, onEditingChanged: { edit in
+                        self.editing = edit
+                        onEditingChanged?(edit)
+                    })
+                    .showClearButton(text: $text)
+                    // Found no good solution here. Hidding next button for the moment
+    //                .modifier(NextViewModifier(alignment: .bottomTrailing, isEditing: $editing))
+                    .padding(EdgeInsets(top: 2, leading: 6, bottom: 0, trailing: 0))
+                    .onChange(of: text, perform: { newText in
+                        onTextChanged?(newText)
+                    })
+                } else {
+                    ThemableTextEditor(text: $text, onEditingChanged: { edit in
+                        self.editing = edit
+                        onEditingChanged?(edit)
+                    })
+                    .padding(EdgeInsets(top: 2, leading: 6, bottom: 0, trailing: 6))
+                    .onChange(of: text, perform: { newText in
+                        onTextChanged?(newText)
+                    })
+                    .opacity(0.5)
+                    .allowsHitTesting(false)
+                }
             }
+            .background(RoundedRectangle(cornerRadius: 8).fill(theme.colors.background))
             .overlay(RoundedRectangle(cornerRadius: 8)
                     .stroke(editing ? theme.colors.accent : (error == nil ? theme.colors.quinaryContent : theme.colors.alert), lineWidth: editing || error != nil ? 2 : 1))
             .frame(height: textMaxHeight)
@@ -108,18 +123,19 @@ struct ThemableTextEditor_Previews: PreviewProvider {
     static var previews: some View {
 
         Group {
-            VStack(alignment: .center, spacing: 40) {
-                RoundedBorderTextEditor(title: "A title", placeHolder: "A placeholder", text: .constant(""), error: .constant(nil))
-                RoundedBorderTextEditor(placeHolder: "A placeholder", text: .constant("Some text"), error: .constant(nil))
-                RoundedBorderTextEditor(title: "A title", placeHolder: "A placeholder", text: .constant("Some very long text used to check overlapping with the delete button"), error: .constant("Some error text"))
-            }
-            VStack(alignment: .center, spacing: 40) {
-                RoundedBorderTextEditor(title: "A title", placeHolder: "A placeholder", text: .constant(""), error: .constant(nil))
-                RoundedBorderTextEditor(placeHolder: "A placeholder", text: .constant("Some text"), error: .constant(nil))
-                RoundedBorderTextEditor(title: "A title", placeHolder: "A placeholder", text: .constant("Some text"), error: .constant("Some error text"))
-            }
-            .theme(.dark).preferredColorScheme(.dark)
+            sampleView.theme(.light).preferredColorScheme(.light)
+            sampleView.theme(.dark).preferredColorScheme(.dark)
         }
         .padding()
+    }
+    
+    static var sampleView: some View {
+        VStack(alignment: .center, spacing: 40) {
+            RoundedBorderTextEditor(title: "A title", placeHolder: "A placeholder", text: .constant(""), error: .constant(nil))
+            RoundedBorderTextEditor(placeHolder: "A placeholder", text: .constant("Some text"), error: .constant(nil))
+            RoundedBorderTextEditor(title: "A title", placeHolder: "A placeholder", text: .constant("Some very long text used to check overlapping with the delete button"), error: .constant("Some error text"))
+            RoundedBorderTextEditor(title: "A title", placeHolder: "A placeholder", text: .constant("Some very long text used to check overlapping with the delete button"), error: .constant("Some error text"))
+                .disabled(true)
+        }
     }
 }

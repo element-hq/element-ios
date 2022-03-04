@@ -24,6 +24,7 @@ struct SpaceMemberDetailCoordinatorParameters {
     let member: MXRoomMember
     let session: MXSession
     let spaceId: String
+    let showCancelMenuItem: Bool
 }
 
 final class SpaceMemberDetailCoordinator: NSObject, SpaceMemberDetailCoordinatorType {
@@ -49,7 +50,7 @@ final class SpaceMemberDetailCoordinator: NSObject, SpaceMemberDetailCoordinator
     init(parameters: SpaceMemberDetailCoordinatorParameters) {
         self.parameters = parameters
         
-        let spaceMemberDetailViewModel = SpaceMemberDetailViewModel(userSessionsService: parameters.userSessionsService, session: parameters.session, member: parameters.member, spaceId: parameters.spaceId)
+        let spaceMemberDetailViewModel = SpaceMemberDetailViewModel(userSessionsService: parameters.userSessionsService, session: parameters.session, member: parameters.member, spaceId: parameters.spaceId, showCancelMenuItem: parameters.showCancelMenuItem)
         let spaceMemberDetailViewController = SpaceMemberDetailViewController.instantiate(with: spaceMemberDetailViewModel)
         spaceMemberDetailViewController.enableMention = true
         spaceMemberDetailViewController.enableVoipCall = false

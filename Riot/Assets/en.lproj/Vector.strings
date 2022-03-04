@@ -1886,7 +1886,11 @@ Tap the + to start adding people.";
 "spaces_add_space" = "Add space";
 "space_public_join_rule_detail" = "Open to anyone, best for communities";
 
-"space_topic" = "description";
+"space_topic" = "Description";
+
+"space_settings_access_section" = "Who can access this space?";
+"space_settings_update_failed_message" = "Failed to update space settings. Do you want to retry?";
+"space_settings_current_address_message" = "Your space is viewable at\n%@";
 
 // Mark: - Space Creation
 
