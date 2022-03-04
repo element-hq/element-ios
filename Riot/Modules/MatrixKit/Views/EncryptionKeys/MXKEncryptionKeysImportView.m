@@ -39,7 +39,7 @@
     {
         mxSession = matrixSession;
         
-        _alertController = [UIAlertController alertControllerWithTitle:[MatrixKitL10n e2eImportRoomKeys] message:[MatrixKitL10n e2eImportPrompt] preferredStyle:UIAlertControllerStyleAlert];
+        _alertController = [UIAlertController alertControllerWithTitle:[VectorL10n e2eImportRoomKeys] message:[VectorL10n e2eImportPrompt] preferredStyle:UIAlertControllerStyleAlert];
     }
     return self;
 }
@@ -52,11 +52,11 @@
     [_alertController addTextFieldWithConfigurationHandler:^(UITextField *textField)
      {
          textField.secureTextEntry = YES;
-         textField.placeholder = [MatrixKitL10n e2ePassphraseEnter];
+         textField.placeholder = [VectorL10n e2ePassphraseEnter];
          [textField resignFirstResponder];
      }];
     
-    [_alertController addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [_alertController addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -67,7 +67,7 @@
                                                            
                                                        }]];
     
-    [_alertController addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n e2eImport]
+    [_alertController addAction:[UIAlertAction actionWithTitle:[VectorL10n e2eImport]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -96,9 +96,9 @@
                                                                        [mxkViewController stopActivityIndicator];
                                                                        
                                                                        // TODO: i18n the error
-                                                                       UIAlertController *otherAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n error] message:error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
+                                                                       UIAlertController *otherAlert = [UIAlertController alertControllerWithTitle:[VectorL10n error] message:error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
                                                                        
-                                                                       [otherAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                       [otherAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                            
                                                                            if (weakSelf)
                                                                            {

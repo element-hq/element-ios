@@ -372,7 +372,7 @@
             }
             else
             {
-                alertMsg = [MatrixKitL10n roomErrorNameEditionNotAuthorized];
+                alertMsg = [VectorL10n roomErrorNameEditionNotAuthorized];
             }
             
             // Check whether the user is allowed to change room topic
@@ -401,7 +401,7 @@
             }
             else
             {
-                alertMsg = [MatrixKitL10n roomErrorTopicEditionNotAuthorized];
+                alertMsg = [VectorL10n roomErrorTopicEditionNotAuthorized];
             }
         }
         
@@ -415,7 +415,7 @@
             }
             currentAlert = [UIAlertController alertControllerWithTitle:nil message:alertMsg preferredStyle:UIAlertControllerStyleAlert];
             
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                                                                

@@ -83,9 +83,15 @@
     }
 }
 
+- (BOOL)canStopActivityIndicator {
+    return YES;
+}
+
 - (void)stopActivityIndicator
 {
-    [activityIndicator stopAnimating];
+    if ([self canStopActivityIndicator]) {
+        [activityIndicator stopAnimating];
+    }
 }
 
 @end

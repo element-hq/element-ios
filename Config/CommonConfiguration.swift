@@ -32,9 +32,6 @@ class CommonConfiguration: NSObject, Configurable {
             return
         }
         
-        // Customize the localized string table
-        Bundle.mxk_customizeLocalizedStringTableName("Vector")
-        
         // Disable CallKit
         settings.isCallKitEnabled = false
         

@@ -97,7 +97,7 @@ final class SpaceCreationEmailInvitesCoordinator: Coordinator, Presentable {
     
     private func showIdentityServiceFailure(_ error: Error?) {
         let alertController = UIAlertController(title: VectorL10n.findYourContactsIdentityServiceError, message: nil, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: MatrixKitL10n.ok, style: .default, handler: nil))
+        alertController.addAction(UIAlertAction(title: VectorL10n.ok, style: .default, handler: nil))
         self.toPresentable().present(alertController, animated: true, completion: nil);
     }
 }

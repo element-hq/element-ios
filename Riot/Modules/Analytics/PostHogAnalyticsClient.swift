@@ -80,6 +80,7 @@ class PostHogAnalyticsClient: AnalyticsClientProtocol {
         
         // Merge the updated user properties with the existing ones
         self.pendingUserProperties = AnalyticsEvent.UserProperties(ftueUseCaseSelection: userProperties.ftueUseCaseSelection ?? pendingUserProperties.ftueUseCaseSelection,
+                                                                   numFavouriteRooms: userProperties.numFavouriteRooms ?? pendingUserProperties.numFavouriteRooms,
                                                                    numSpaces: userProperties.numSpaces ?? pendingUserProperties.numSpaces)
     }
     

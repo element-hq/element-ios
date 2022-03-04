@@ -68,7 +68,7 @@ static RageShakeManager* sharedInstance = nil;
         confirmationAlert = [UIAlertController alertControllerWithTitle:[VectorL10n bugReportPrompt]  message:nil preferredStyle:UIAlertControllerStyleAlert];
         
         __weak typeof(self) weakSelf = self;
-        [confirmationAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+        [confirmationAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction * action) {
                                                                 
@@ -83,7 +83,7 @@ static RageShakeManager* sharedInstance = nil;
                                                                 
                                                             }]];
         
-        [confirmationAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+        [confirmationAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction * action) {
                                                                 
@@ -132,7 +132,7 @@ static RageShakeManager* sharedInstance = nil;
             confirmationAlert = [UIAlertController alertControllerWithTitle:[VectorL10n rageShakePrompt] message:nil preferredStyle:UIAlertControllerStyleAlert];
             
             __weak typeof(self) weakSelf = self;
-            [confirmationAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+            [confirmationAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                                   style:UIAlertActionStyleDefault
                                                                 handler:^(UIAlertAction * action) {
                                                                     
@@ -167,7 +167,7 @@ static RageShakeManager* sharedInstance = nil;
 
                                                                 }]];
 
-            [confirmationAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+            [confirmationAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                                   style:UIAlertActionStyleDefault
                                                                 handler:^(UIAlertAction * action) {
 

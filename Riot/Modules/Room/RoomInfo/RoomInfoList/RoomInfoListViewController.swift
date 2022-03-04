@@ -40,7 +40,8 @@ final class RoomInfoListViewController: UIViewController {
     private var viewModel: RoomInfoListViewModelType!
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
-    private var activityPresenter: ActivityIndicatorPresenterType!
+    private var indicatorPresenter: UserIndicatorTypePresenterProtocol!
+    private var loadingIndicator: UserIndicator?
     private var isRoomDirect: Bool = false
     private var screenTimer = AnalyticsScreenTimer(screen: .roomDetails)
     
@@ -116,14 +117,9 @@ final class RoomInfoListViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.setupViews()
-        if BuildSettings.useAppUserIndicators {
-            self.activityPresenter = FullscreenActivityIndicatorPresenter(
-                label: VectorL10n.roomParticipantsLeaveProcessing,
-                viewController: self
-            )
-        } else {
-            self.activityPresenter = ActivityIndicatorPresenter()
-        }
+        
+        self.indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: self)
+    
         self.errorPresenter = MXKErrorAlertPresentation()
         
         self.registerThemeServiceDidChangeThemeNotification()
@@ -152,7 +148,7 @@ final class RoomInfoListViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         screenTimer.stop()
-        activityPresenter.removeCurrentActivityIndicator(animated: animated)
+        stopLoading()
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -272,17 +268,26 @@ final class RoomInfoListViewController: UIViewController {
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        loadingIndicator = indicatorPresenter.present(
+            .loading(
+                label: VectorL10n.roomParticipantsLeaveProcessing,
+                isInteractionBlocking: true
+            )
+        )
     }
     
     private func renderLoaded(viewData: RoomInfoListViewData) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        stopLoading()
         self.updateSections(with: viewData)
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        stopLoading()
         self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+    }
+    
+    private func stopLoading() {
+        loadingIndicator?.cancel()
     }
     
     // MARK: - Actions

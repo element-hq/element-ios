@@ -86,7 +86,7 @@
     }
     else
     {
-        self.displayNameTextField.text = [MatrixKitL10n roomPleaseSelect];
+        self.displayNameTextField.text = [VectorL10n roomPleaseSelect];
         self.displayNameTextField.enabled = NO;
     }
     self.displayNameTextField.hidden = NO;
@@ -180,7 +180,7 @@
             }
             else
             {
-                alertMsg = [MatrixKitL10n roomErrorNameEditionNotAuthorized];
+                alertMsg = [VectorL10n roomErrorNameEditionNotAuthorized];
             }
         }
         
@@ -195,7 +195,7 @@
             
             currentAlert = [UIAlertController alertControllerWithTitle:nil message:alertMsg preferredStyle:UIAlertControllerStyleAlert];
             
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                       style:UIAlertActionStyleDefault
                                                     handler:^(UIAlertAction * action) {
                                                         

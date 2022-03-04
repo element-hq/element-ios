@@ -50,11 +50,11 @@
         {
             if (groupCellData.group.summary.usersSection.totalUserCountEstimate > 1)
             {
-                _memberCount.text = [MatrixKitL10n numMembersOther:@(groupCellData.group.summary.usersSection.totalUserCountEstimate).stringValue];
+                _memberCount.text = [VectorL10n numMembersOther:@(groupCellData.group.summary.usersSection.totalUserCountEstimate).stringValue];
             }
             else if (groupCellData.group.summary.usersSection.totalUserCountEstimate == 1)
             {
-                _memberCount.text = [MatrixKitL10n numMembersOne:@(1).stringValue];
+                _memberCount.text = [VectorL10n numMembersOne:@(1).stringValue];
             }
             else
             {

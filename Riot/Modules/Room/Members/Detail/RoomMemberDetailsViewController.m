@@ -1145,7 +1145,7 @@
                     textField.keyboardType = UIKeyboardTypeDefault;
                 }];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                                    
@@ -1157,7 +1157,7 @@
                                                                    
                                                                }]];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ban]
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ban]
                                                                  style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                      
                                                                      if (weakSelf)
@@ -1209,7 +1209,7 @@
                     textField.keyboardType = UIKeyboardTypeDefault;
                 }];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                                    
@@ -1278,7 +1278,7 @@
         __block MXKImageView * avatarFullScreenView = [[MXKImageView alloc] initWithFrame:CGRectZero];
         avatarFullScreenView.stretchable = YES;
 
-        [avatarFullScreenView setRightButtonTitle:[MatrixKitL10n ok]
+        [avatarFullScreenView setRightButtonTitle:[VectorL10n ok]
                                           handler:^(MXKImageView* imageView, NSString* buttonTitle) {
                                               
                                               MXStrongifyAndReturnIfNil(self);

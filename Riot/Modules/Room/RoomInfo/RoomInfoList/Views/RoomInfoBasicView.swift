@@ -28,21 +28,6 @@ class RoomInfoBasicView: UIView {
 
     @IBOutlet private weak var mainStackView: UIStackView!
     @IBOutlet private weak var avatarImageView: MXKImageView!
-    @IBOutlet private weak var shadowView: UIView! {
-        didSet {
-            let shadowPath = UIBezierPath(roundedRect: shadowView.bounds, cornerRadius: 0)
-            let layer = CALayer()
-            layer.shadowPath = shadowPath.cgPath
-            layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.12).cgColor
-            layer.shadowOpacity = 1
-            layer.shadowRadius = 25
-            layer.shadowOffset = CGSize(width: 0, height: 4)
-            layer.bounds = shadowView.bounds
-            layer.position = shadowView.center
-
-            shadowView.layer.addSublayer(layer)
-        }
-    }
     @IBOutlet private weak var badgeImageView: UIImageView!
     @IBOutlet private weak var roomNameLabel: UILabel!
     @IBOutlet private weak var roomAddressLabel: UILabel!

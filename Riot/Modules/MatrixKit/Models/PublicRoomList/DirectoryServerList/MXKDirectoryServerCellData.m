@@ -43,7 +43,7 @@
         else
         {
             // Use the Matrix name and logo when looking for Matrix rooms only
-            desc = [MatrixKitL10n matrix];
+            desc = [VectorL10n matrix];
             icon = [NSBundle mxk_imageFromMXKAssetsBundleWithName:@"network_matrix"];
         }
     }

@@ -16,7 +16,7 @@
 
 import UIKit
 
-class PollBaseBubbleCell: PollBubbleCell {
+class PollBaseBubbleCell: PollPlainCell {
     
     // MARK: - Properties
     

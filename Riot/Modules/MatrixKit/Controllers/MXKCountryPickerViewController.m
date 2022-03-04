@@ -109,7 +109,7 @@ NSString* const kMXKCountryPickerViewControllerCountryCellId = @"kMXKCountryPick
         [[[self class] nib] instantiateWithOwner:self options:nil];
     }
     
-    self.navigationItem.title = [MatrixKitL10n countryPickerTitle];
+    self.navigationItem.title = [VectorL10n countryPickerTitle];
     
     [self setupSearchController];
 }

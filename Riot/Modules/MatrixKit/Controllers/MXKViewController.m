@@ -492,21 +492,16 @@ const CGFloat MXKViewControllerMaxExternalKeyboardHeight = 80;
 
 #pragma mark - Activity indicator
 
-- (void)stopActivityIndicator
-{
+- (BOOL)canStopActivityIndicator {
     // Check whether all conditions are satisfied before stopping loading wheel
-    BOOL isActivityInProgress = NO;
     for (MXSession *mxSession in mxSessionArray)
     {
         if (mxSession.shouldShowActivityIndicator)
         {
-            isActivityInProgress = YES;
+            return NO;
         }
     }
-    if (!isActivityInProgress)
-    {
-        [super stopActivityIndicator];
-    }
+    return [super canStopActivityIndicator];
 }
 
 #pragma mark - Shake handling

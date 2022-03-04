@@ -253,6 +253,30 @@ canEditPollWithEventIdentifier:(NSString *)eventIdentifier;
 - (void)roomViewController:(RoomViewController *)roomViewController
 didRequestEditForPollWithStartEvent:(MXEvent *)startEvent;
 
+/**
+ Checks whether the delegate supports handling of activity indicators
+ 
+ Note: This is a transition API whilst `RoomViewController` contains legacy activity indicators
+ as well as using a newer user interaction presenters.
+ */
+- (BOOL)roomViewControllerCanDelegateUserIndicators:(RoomViewController *)roomViewController;
+
+/**
+ Indicate to the delegate that loading should start
+ 
+ Note: Only called if the controller can delegate user indicators rather than managing
+ loading indicators internally
+ */
+- (void)roomViewControllerDidStartLoading:(RoomViewController *)roomViewController;
+
+/**
+ Indicate to the delegate that loading should stop
+ 
+ Note: Only called if the controller can delegate user indicators rather than managing
+ loading indicators internally
+ */
+- (void)roomViewControllerDidStopLoading:(RoomViewController *)roomViewController;
+
 @end
 
 NS_ASSUME_NONNULL_END

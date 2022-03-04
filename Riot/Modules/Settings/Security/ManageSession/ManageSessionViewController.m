@@ -594,8 +594,8 @@ enum {
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
     MXWeakify(self);
-    currentAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n deviceDetailsRenamePromptTitle]
-                                                       message:[MatrixKitL10n deviceDetailsRenamePromptMessage]
+    currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n deviceDetailsRenamePromptTitle]
+                                                       message:[VectorL10n deviceDetailsRenamePromptMessage]
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
     [currentAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
@@ -606,7 +606,7 @@ enum {
         textField.text = self->device.displayName;
     }];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action)
                              {
@@ -614,7 +614,7 @@ enum {
                                  self->currentAlert = nil;
                              }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action)
                              {
@@ -674,8 +674,8 @@ enum {
         self.reauthenticationCoordinatorBridgePresenter = nil;
     };
     
-    NSString *title = [MatrixKitL10n deviceDetailsDeletePromptTitle];
-    NSString *message = [MatrixKitL10n deviceDetailsDeletePromptMessage];
+    NSString *title = [VectorL10n deviceDetailsDeletePromptTitle];
+    NSString *message = [VectorL10n deviceDetailsDeletePromptMessage];
     
     AuthenticatedEndpointRequest *deleteDeviceRequest = [[AuthenticatedEndpointRequest alloc] initWithPath:[NSString stringWithFormat:@"%@/devices/%@", kMXAPIPrefixPathR0, [MXTools encodeURIComponent:device.deviceId]] httpMethod:@"DELETE"];
     

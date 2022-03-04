@@ -55,7 +55,7 @@ class CallAudioRouteView: UIView {
             titleLabel.text = route.name
         case .loudSpeakers:
             iconImageView.image = Asset.Images.callAudioRouteSpeakers.image
-            titleLabel.text = MatrixKitL10n.callMoreActionsAudioUseDevice
+            titleLabel.text = VectorL10n.callMoreActionsAudioUseDevice
         case .externalWired, .externalBluetooth, .externalCar:
             iconImageView.image = Asset.Images.callAudioRouteHeadphones.image
             titleLabel.text = route.name

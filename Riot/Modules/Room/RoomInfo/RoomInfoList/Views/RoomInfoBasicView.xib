@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -164,7 +164,6 @@
                 <outlet property="securityContainerView" destination="l54-5L-xAv" id="Duy-QA-wrD"/>
                 <outlet property="securityInformationLabel" destination="HAS-Tr-iTE" id="GZC-gT-q2z"/>
                 <outlet property="securityTitleLabel" destination="peB-51-q5w" id="hbl-K6-AbE"/>
-                <outlet property="shadowView" destination="szu-r5-TIX" id="LDd-uy-FAG"/>
                 <outlet property="topicContainerView" destination="NSk-JY-5iY" id="YCo-cp-dbU"/>
                 <outlet property="topicTitleLabel" destination="cTV-D7-Uha" id="nt9-MZ-4t7"/>
             </connections>
@@ -173,7 +172,7 @@
     </objects>
     <designables>
         <designable name="DCx-MH-TSC">
-            <size key="intrinsicContentSize" width="-1" height="34"/>
+            <size key="intrinsicContentSize" width="98.5" height="34"/>
         </designable>
     </designables>
     <resources>

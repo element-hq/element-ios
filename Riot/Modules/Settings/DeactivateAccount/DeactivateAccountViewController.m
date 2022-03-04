@@ -245,7 +245,7 @@ static CGFloat const kTextFontSize = 15.0;
         textField.keyboardType = UIKeyboardTypeDefault;
     }];
     
-    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                               style:UIAlertActionStyleCancel
                                             handler:^(UIAlertAction * action) {
                                                 if (cancelHandler)
@@ -256,7 +256,7 @@ static CGFloat const kTextFontSize = 15.0;
     
     __weak typeof(self) weakSelf = self;
     
-    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n submit]
+    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n submit]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
                                                 UITextField *textField = alert.textFields.firstObject;

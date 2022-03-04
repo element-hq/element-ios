@@ -182,7 +182,7 @@
         }];
     }
     
-    self.title = [MatrixKitL10n roomDetailsTitle];
+    self.title = [VectorL10n roomDetailsTitle];
 }
 
 - (void)refreshRoomSettings

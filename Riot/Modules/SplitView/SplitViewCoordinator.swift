@@ -48,7 +48,7 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
     
     private weak var masterPresentable: SplitViewMasterPresentable?
     private var detailNavigationController: UINavigationController?
-    private var detailNavigationRouter: NavigationRouterType?
+    private(set) var detailNavigationRouter: NavigationRouterType?
     
     private var selectedNavigationRouter: NavigationRouterType? {
         return self.masterPresentable?.selectedNavigationRouter
@@ -324,7 +324,6 @@ extension SplitViewCoordinator: TabBarCoordinatorDelegate {
 
 // MARK: - SplitViewMasterPresentableDelegate
 extension SplitViewCoordinator: SplitViewMasterPresentableDelegate {
-    
     var detailModules: [Presentable] {
         return self.detailNavigationRouter?.modules ?? []
     }

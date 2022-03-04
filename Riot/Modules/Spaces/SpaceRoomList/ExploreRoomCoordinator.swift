@@ -448,6 +448,18 @@ extension ExploreRoomCoordinator: RoomViewControllerDelegate {
         return TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.canEndPoll() ?? false
     }
     
+    func roomViewControllerCanDelegateUserIndicators(_ roomViewController: RoomViewController) -> Bool {
+        return false
+    }
+    
+    func roomViewControllerDidStartLoading(_ roomViewController: RoomViewController) {
+        
+    }
+    
+    func roomViewControllerDidStopLoading(_ roomViewController: RoomViewController) {
+        
+    }
+    
 }
 
 // MARK: - ContactsPickerCoordinatorDelegate

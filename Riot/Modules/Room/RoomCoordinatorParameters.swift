@@ -28,6 +28,9 @@ struct RoomCoordinatorParameters {
     /// `navigationRouter` property takes priority on `navigationRouterStore`
     let navigationRouterStore: NavigationRouterStoreProtocol?
     
+    /// Presenter for displaying loading indicators, success messages and other user indicators
+    let userIndicatorPresenter: UserIndicatorTypePresenterProtocol?
+    
     /// The matrix session in which the room should be available.
     let session: MXSession
     
@@ -56,6 +59,7 @@ struct RoomCoordinatorParameters {
     
     private init(navigationRouter: NavigationRouterType?,
                  navigationRouterStore: NavigationRouterStoreProtocol?,
+                 userIndicatorPresenter: UserIndicatorTypePresenterProtocol?,
                  session: MXSession,
                  roomId: String,
                  parentSpaceId: String?,
@@ -66,6 +70,7 @@ struct RoomCoordinatorParameters {
                  showSettingsInitially: Bool) {
         self.navigationRouter = navigationRouter
         self.navigationRouterStore = navigationRouterStore
+        self.userIndicatorPresenter = userIndicatorPresenter
         self.session = session
         self.roomId = roomId
         self.parentSpaceId = parentSpaceId
@@ -79,6 +84,7 @@ struct RoomCoordinatorParameters {
     /// Init to present a joined room
     init(navigationRouter: NavigationRouterType? = nil,
          navigationRouterStore: NavigationRouterStoreProtocol? = nil,
+         userIndicatorPresenter: UserIndicatorTypePresenterProtocol? = nil,
          session: MXSession,
          parentSpaceId: String?,
          roomId: String,
@@ -89,6 +95,7 @@ struct RoomCoordinatorParameters {
         
         self.init(navigationRouter: navigationRouter,
                   navigationRouterStore: navigationRouterStore,
+                  userIndicatorPresenter: userIndicatorPresenter,
                   session: session,
                   roomId: roomId,
                   parentSpaceId: parentSpaceId,
@@ -107,6 +114,7 @@ struct RoomCoordinatorParameters {
         
         self.init(navigationRouter: navigationRouter,
                   navigationRouterStore: navigationRouterStore,
+                  userIndicatorPresenter: nil,
                   session: previewData.mxSession,
                   roomId: previewData.roomId,
                   parentSpaceId: parentSpaceId,

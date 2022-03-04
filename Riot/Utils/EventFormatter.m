@@ -65,6 +65,36 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 
 - (NSAttributedString *)attributedStringFromEvent:(MXEvent *)event withRoomState:(MXRoomState *)roomState error:(MXKEventFormatterError *)error
 {
+    NSAttributedString *string = [self unsafeAttributedStringFromEvent:event withRoomState:roomState error:error];
+    
+    // If we cannot create attributed string, but the message is nevertheless meant for display (e.g. not an edit event), show generic error
+    // instead of a missing message on a timeline.
+    if (
+        !string
+        && [self.eventTypesFilterForMessages containsObject:event.type]
+        && !event.isEditEvent
+    )
+    {
+        MXLogError(@"[EventFormatter]: Cannot format string for displayable event: %@, type: %@, msgtype: %@, has room state: %d, members: %lu, error: %lu",
+                   event.eventId,
+                   event.type,
+                   event.content[@"msgtype"],
+                   roomState != nil,
+                   roomState.membersCount.members,
+                   *error);
+        string = [[NSAttributedString alloc] initWithString:[VectorL10n noticeErrorUnformattableEvent] attributes:@{
+            NSFontAttributeName: [self encryptedMessagesTextFont]
+        }];
+    }
+    return string;
+}
+
+// The attributed string can fail to be created for a number of reasons, and the size of the function (as well as super's implementation) makes
+// it impossible to catch all the `return nil` and failure states.
+// To make catching of missing strings reliable (and not place that burden on callers), we use private `unsafeAttributedStringFromEvent` method
+// which is called by the public `attributedStringFromEvent`, and which also handles the catch-all missing message.
+- (NSAttributedString *)unsafeAttributedStringFromEvent:(MXEvent *)event withRoomState:(MXRoomState *)roomState error:(MXKEventFormatterError *)error
+{
     if (event.isRedactedEvent)
     {
         // Check whether the event is a thread root or redacted information is required

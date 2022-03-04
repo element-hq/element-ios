@@ -773,7 +773,7 @@
         avatarFullScreenView.stretchable = YES;
         
         MXWeakify(self);
-        [avatarFullScreenView setRightButtonTitle:[MatrixKitL10n ok] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+        [avatarFullScreenView setRightButtonTitle:[VectorL10n ok] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
             
             MXStrongifyAndReturnIfNil(self);
             [avatarFullScreenView dismissSelection];

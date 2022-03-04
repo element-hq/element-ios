@@ -204,7 +204,7 @@ extension ContactsPickerViewModel: ContactsTableViewControllerDelegate {
         let message = VectorL10n.roomParticipantsInvitePromptToMsg(contact.displayName, roomName)
         
         coordinatorDelegate?.contactsPickerViewModel(self, display: message, title: VectorL10n.roomParticipantsInvitePromptTitle, actions: [
-            UIAlertAction(title: MatrixKitL10n.cancel, style: .cancel, handler: nil),
+            UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil),
             UIAlertAction(title: VectorL10n.invite, style: .default, handler: { [weak self] action in
                 self?.invite(contact: contact)
             })

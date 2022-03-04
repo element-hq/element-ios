@@ -345,27 +345,27 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
             {
                 if ([redactorId isEqualToString:mxSession.myUserId])
                 {
-                    redactedBy = [NSString stringWithFormat:@"%@%@", [MatrixKitL10n noticeEventRedactedByYou], [MatrixKitL10n noticeEventRedactedReason:redactedReason]];
+                    redactedBy = [NSString stringWithFormat:@"%@%@", [VectorL10n noticeEventRedactedByYou], [VectorL10n noticeEventRedactedReason:redactedReason]];
                 }
                 else if (redactedBy.length)
                 {
-                    redactedBy = [NSString stringWithFormat:@"%@%@", [MatrixKitL10n noticeEventRedactedBy:redactedBy], [MatrixKitL10n noticeEventRedactedReason:redactedReason]];
+                    redactedBy = [NSString stringWithFormat:@"%@%@", [VectorL10n noticeEventRedactedBy:redactedBy], [VectorL10n noticeEventRedactedReason:redactedReason]];
                 }
                 else
                 {
-                    redactedBy = [MatrixKitL10n noticeEventRedactedReason:redactedReason];
+                    redactedBy = [VectorL10n noticeEventRedactedReason:redactedReason];
                 }
             }
             else if ([redactorId isEqualToString:mxSession.myUserId])
             {
-                redactedBy = [MatrixKitL10n noticeEventRedactedByYou];
+                redactedBy = [VectorL10n noticeEventRedactedByYou];
             }
             else if (redactedBy.length)
             {
-                redactedBy = [MatrixKitL10n noticeEventRedactedBy:redactedBy];
+                redactedBy = [VectorL10n noticeEventRedactedBy:redactedBy];
             }
             
-            redactedInfo = [MatrixKitL10n noticeEventRedacted:redactedBy];
+            redactedInfo = [VectorL10n noticeEventRedacted:redactedBy];
         }
     }
     
@@ -401,22 +401,22 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                 {
                     if (isRoomDirect)
                     {
-                        displayText = [MatrixKitL10n noticeRoomNameChangedByYouForDm:roomName];
+                        displayText = [VectorL10n noticeRoomNameChangedByYouForDm:roomName];
                     }
                     else
                     {
-                        displayText = [MatrixKitL10n noticeRoomNameChangedByYou:roomName];
+                        displayText = [VectorL10n noticeRoomNameChangedByYou:roomName];
                     }
                 }
                 else
                 {
                     if (isRoomDirect)
                     {
-                        displayText = [MatrixKitL10n noticeRoomNameChangedForDm:senderDisplayName :roomName];
+                        displayText = [VectorL10n noticeRoomNameChangedForDm:senderDisplayName :roomName];
                     }
                     else
                     {
-                        displayText = [MatrixKitL10n noticeRoomNameChanged:senderDisplayName :roomName];
+                        displayText = [VectorL10n noticeRoomNameChanged:senderDisplayName :roomName];
                     }
                 }
             }
@@ -426,22 +426,22 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                 {
                     if (isRoomDirect)
                     {
-                        displayText = [MatrixKitL10n noticeRoomNameRemovedByYouForDm];
+                        displayText = [VectorL10n noticeRoomNameRemovedByYouForDm];
                     }
                     else
                     {
-                        displayText = [MatrixKitL10n noticeRoomNameRemovedByYou];
+                        displayText = [VectorL10n noticeRoomNameRemovedByYou];
                     }
                 }
                 else
                 {
                     if (isRoomDirect)
                     {
-                        displayText = [MatrixKitL10n noticeRoomNameRemovedForDm:senderDisplayName];
+                        displayText = [VectorL10n noticeRoomNameRemovedForDm:senderDisplayName];
                     }
                     else
                     {
-                        displayText = [MatrixKitL10n noticeRoomNameRemoved:senderDisplayName];
+                        displayText = [VectorL10n noticeRoomNameRemoved:senderDisplayName];
                     }
                 }
             }
@@ -466,22 +466,22 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
             {
                 if (isEventSenderMyUser)
                 {
-                    displayText = [MatrixKitL10n noticeTopicChangedByYou:roomTopic];
+                    displayText = [VectorL10n noticeTopicChangedByYou:roomTopic];
                 }
                 else
                 {
-                    displayText = [MatrixKitL10n noticeTopicChanged:senderDisplayName :roomTopic];
+                    displayText = [VectorL10n noticeTopicChanged:senderDisplayName :roomTopic];
                 }
             }
             else
             {
                 if (isEventSenderMyUser)
                 {
-                    displayText = [MatrixKitL10n noticeRoomTopicRemovedByYou];
+                    displayText = [VectorL10n noticeRoomTopicRemovedByYou];
                 }
                 else
                 {
-                    displayText = [MatrixKitL10n noticeRoomTopicRemoved:senderDisplayName];
+                    displayText = [VectorL10n noticeRoomTopicRemoved:senderDisplayName];
                 }
             }
             
@@ -504,11 +504,11 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                     }
                     if (isEventSenderMyUser)
                     {
-                        displayText = [MatrixKitL10n noticeProfileChangeRedactedByYou:redactedInfo];
+                        displayText = [VectorL10n noticeProfileChangeRedactedByYou:redactedInfo];
                     }
                     else
                     {
-                        displayText = [MatrixKitL10n noticeProfileChangeRedacted:senderDisplayName :redactedInfo];
+                        displayText = [VectorL10n noticeProfileChangeRedacted:senderDisplayName :redactedInfo];
                     }
                 }
                 else
@@ -533,33 +533,33 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                         {
                             if (isEventSenderMyUser)
                             {
-                                displayText = [MatrixKitL10n noticeDisplayNameSetByYou:displayname];
+                                displayText = [VectorL10n noticeDisplayNameSetByYou:displayname];
                             }
                             else
                             {
-                                displayText = [MatrixKitL10n noticeDisplayNameSet:event.sender :displayname];
+                                displayText = [VectorL10n noticeDisplayNameSet:event.sender :displayname];
                             }
                         }
                         else if (!displayname)
                         {
                             if (isEventSenderMyUser)
                             {
-                                displayText = [MatrixKitL10n noticeDisplayNameRemovedByYou];
+                                displayText = [VectorL10n noticeDisplayNameRemovedByYou];
                             }
                             else
                             {
-                                displayText = [MatrixKitL10n noticeDisplayNameRemoved:event.sender];
+                                displayText = [VectorL10n noticeDisplayNameRemoved:event.sender];
                             }
                         }
                         else
                         {
                             if (isEventSenderMyUser)
                             {
-                                displayText = [MatrixKitL10n noticeDisplayNameChangedFromByYou:prevDisplayname :displayname];
+                                displayText = [VectorL10n noticeDisplayNameChangedFromByYou:prevDisplayname :displayname];
                             }
                             else
                             {
-                                displayText = [MatrixKitL10n noticeDisplayNameChangedFrom:event.sender :prevDisplayname :displayname];
+                                displayText = [VectorL10n noticeDisplayNameChangedFrom:event.sender :prevDisplayname :displayname];
                             }
                         }
                     }
@@ -582,17 +582,17 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                     {
                         if (displayText)
                         {
-                            displayText = [NSString stringWithFormat:@"%@ %@", displayText, [MatrixKitL10n noticeAvatarChangedToo]];
+                            displayText = [NSString stringWithFormat:@"%@ %@", displayText, [VectorL10n noticeAvatarChangedToo]];
                         }
                         else
                         {
                             if (isEventSenderMyUser)
                             {
-                                displayText = [MatrixKitL10n noticeAvatarUrlChangedByYou];
+                                displayText = [VectorL10n noticeAvatarUrlChangedByYou];
                             }
                             else
                             {
-                                displayText = [MatrixKitL10n noticeAvatarUrlChanged:senderDisplayName];
+                                displayText = [VectorL10n noticeAvatarUrlChanged:senderDisplayName];
                             }
                         }
                     }
@@ -620,11 +620,11 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                     {
                         if ([event.stateKey isEqualToString:mxSession.myUserId])
                         {
-                            displayText = [MatrixKitL10n noticeRoomThirdPartyRegisteredInviteByYou:event.content[@"third_party_invite"][@"display_name"]];
+                            displayText = [VectorL10n noticeRoomThirdPartyRegisteredInviteByYou:event.content[@"third_party_invite"][@"display_name"]];
                         }
                         else
                         {
-                            displayText = [MatrixKitL10n noticeRoomThirdPartyRegisteredInvite:targetDisplayName :event.content[@"third_party_invite"][@"display_name"]];
+                            displayText = [VectorL10n noticeRoomThirdPartyRegisteredInvite:targetDisplayName :event.content[@"third_party_invite"][@"display_name"]];
                         }
                     }
                     else
@@ -633,11 +633,11 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                         {
                             if (isEventSenderMyUser)
                             {
-                                displayText = [MatrixKitL10n noticeConferenceCallRequestByYou];
+                                displayText = [VectorL10n noticeConferenceCallRequestByYou];
                             }
                             else
                             {
-                                displayText = [MatrixKitL10n noticeConferenceCallRequest:senderDisplayName];
+                                displayText = [VectorL10n noticeConferenceCallRequest:senderDisplayName];
                             }
                         }
                         else
@@ -645,11 +645,11 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                             // The targeted member display name (if any) is available in content
                             if (isEventSenderMyUser)
                             {
-                                displayText = [MatrixKitL10n noticeRoomInviteByYou:targetDisplayName];
+                                displayText = [VectorL10n noticeRoomInviteByYou:targetDisplayName];
                             }
                             else if ([targetDisplayName isEqualToString:mxSession.myUserId])
                             {
-                                displayText = [MatrixKitL10n noticeRoomInviteYou:senderDisplayName];
+                                displayText = [VectorL10n noticeRoomInviteYou:senderDisplayName];
                             }
                             else
                             {
@@ -658,7 +658,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                                     targetDisplayName = contentDisplayname;
                                 }
                                 
-                                displayText = [MatrixKitL10n noticeRoomInvite:senderDisplayName :targetDisplayName];
+                                displayText = [VectorL10n noticeRoomInvite:senderDisplayName :targetDisplayName];
                             }
                         }
                     }
@@ -667,14 +667,14 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                 {
                     if ([MXCallManager isConferenceUser:event.stateKey])
                     {
-                        displayText = [MatrixKitL10n noticeConferenceCallStarted];
+                        displayText = [VectorL10n noticeConferenceCallStarted];
                     }
                     else
                     {
                         // The targeted member display name (if any) is available in content
                         if (isEventSenderMyUser)
                         {
-                            displayText = [MatrixKitL10n noticeRoomJoinByYou];
+                            displayText = [VectorL10n noticeRoomJoinByYou];
                         }
                         else
                         {
@@ -683,7 +683,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                                 targetDisplayName = contentDisplayname;
                             }
                             
-                            displayText = [MatrixKitL10n noticeRoomJoin:targetDisplayName];
+                            displayText = [VectorL10n noticeRoomJoin:targetDisplayName];
                         }
                     }
                 }
@@ -705,7 +705,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                     {
                         if ([MXCallManager isConferenceUser:event.stateKey])
                         {
-                            displayText = [MatrixKitL10n noticeConferenceCallFinished];
+                            displayText = [VectorL10n noticeConferenceCallFinished];
                         }
                         else
                         {
@@ -713,22 +713,22 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                             {
                                 if (isEventSenderMyUser)
                                 {
-                                    displayText = [MatrixKitL10n noticeRoomRejectByYou];
+                                    displayText = [VectorL10n noticeRoomRejectByYou];
                                 }
                                 else
                                 {
-                                    displayText = [MatrixKitL10n noticeRoomReject:targetDisplayName];
+                                    displayText = [VectorL10n noticeRoomReject:targetDisplayName];
                                 }
                             }
                             else
                             {
                                 if (isEventSenderMyUser)
                                 {
-                                    displayText = [MatrixKitL10n noticeRoomLeaveByYou];
+                                    displayText = [VectorL10n noticeRoomLeaveByYou];
                                 }
                                 else
                                 {
-                                    displayText = [MatrixKitL10n noticeRoomLeave:targetDisplayName];
+                                    displayText = [VectorL10n noticeRoomLeave:targetDisplayName];
                                 }
                             }
                         }
@@ -739,15 +739,15 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                         {
                             if (isEventSenderMyUser)
                             {
-                                displayText = [MatrixKitL10n noticeRoomWithdrawByYou:targetDisplayName];
+                                displayText = [VectorL10n noticeRoomWithdrawByYou:targetDisplayName];
                             }
                             else
                             {
-                                displayText = [MatrixKitL10n noticeRoomWithdraw:senderDisplayName :targetDisplayName];
+                                displayText = [VectorL10n noticeRoomWithdraw:senderDisplayName :targetDisplayName];
                             }
                             if (event.content[@"reason"])
                             {
-                                displayText = [displayText stringByAppendingString:[MatrixKitL10n noticeRoomReason:event.content[@"reason"]]];
+                                displayText = [displayText stringByAppendingString:[VectorL10n noticeRoomReason:event.content[@"reason"]]];
                             }
 
                         }
@@ -755,28 +755,28 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                         {
                             if (isEventSenderMyUser)
                             {
-                                displayText = [MatrixKitL10n noticeRoomKickByYou:targetDisplayName];
+                                displayText = [VectorL10n noticeRoomKickByYou:targetDisplayName];
                             }
                             else
                             {
-                                displayText = [MatrixKitL10n noticeRoomKick:senderDisplayName :targetDisplayName];
+                                displayText = [VectorL10n noticeRoomKick:senderDisplayName :targetDisplayName];
                             }
                             
                             //  add reason if exists
                             if (event.content[@"reason"])
                             {
-                                displayText = [displayText stringByAppendingString:[MatrixKitL10n noticeRoomReason:event.content[@"reason"]]];
+                                displayText = [displayText stringByAppendingString:[VectorL10n noticeRoomReason:event.content[@"reason"]]];
                             }
                         }
                         else if ([prevMembership isEqualToString:@"ban"])
                         {
                             if (isEventSenderMyUser)
                             {
-                                displayText = [MatrixKitL10n noticeRoomUnbanByYou:targetDisplayName];
+                                displayText = [VectorL10n noticeRoomUnbanByYou:targetDisplayName];
                             }
                             else
                             {
-                                displayText = [MatrixKitL10n noticeRoomUnban:senderDisplayName :targetDisplayName];
+                                displayText = [VectorL10n noticeRoomUnban:senderDisplayName :targetDisplayName];
                             }
                         }
                     }
@@ -791,15 +791,15 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                     
                     if (isEventSenderMyUser)
                     {
-                        displayText = [MatrixKitL10n noticeRoomBanByYou:targetDisplayName];
+                        displayText = [VectorL10n noticeRoomBanByYou:targetDisplayName];
                     }
                     else
                     {
-                        displayText = [MatrixKitL10n noticeRoomBan:senderDisplayName :targetDisplayName];
+                        displayText = [VectorL10n noticeRoomBan:senderDisplayName :targetDisplayName];
                     }
                     if (event.content[@"reason"])
                     {
-                        displayText = [displayText stringByAppendingString:[MatrixKitL10n noticeRoomReason:event.content[@"reason"]]];
+                        displayText = [displayText stringByAppendingString:[VectorL10n noticeRoomReason:event.content[@"reason"]]];
                     }
                 }
                 
@@ -827,22 +827,22 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                 {
                     if (isRoomDirect)
                     {
-                        displayText = [MatrixKitL10n noticeRoomCreatedByYouForDm];
+                        displayText = [VectorL10n noticeRoomCreatedByYouForDm];
                     }
                     else
                     {
-                        displayText = [MatrixKitL10n noticeRoomCreatedByYou];
+                        displayText = [VectorL10n noticeRoomCreatedByYou];
                     }
                 }
                 else
                 {
                     if (isRoomDirect)
                     {
-                        displayText = [MatrixKitL10n noticeRoomCreatedForDm:(roomState ? [roomState.members memberName:creatorId] : creatorId)];
+                        displayText = [VectorL10n noticeRoomCreatedForDm:(roomState ? [roomState.members memberName:creatorId] : creatorId)];
                     }
                     else
                     {
-                        displayText = [MatrixKitL10n noticeRoomCreated:(roomState ? [roomState.members memberName:creatorId] : creatorId)];
+                        displayText = [VectorL10n noticeRoomCreated:(roomState ? [roomState.members memberName:creatorId] : creatorId)];
                     }
                 }
                 // Append redacted info if any
@@ -866,22 +866,22 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                     {
                         if (isRoomDirect)
                         {
-                            displayText = [MatrixKitL10n noticeRoomJoinRulePublicByYouForDm];
+                            displayText = [VectorL10n noticeRoomJoinRulePublicByYouForDm];
                         }
                         else
                         {
-                            displayText = [MatrixKitL10n noticeRoomJoinRulePublicByYou];
+                            displayText = [VectorL10n noticeRoomJoinRulePublicByYou];
                         }
                     }
                     else if ([joinRule isEqualToString:kMXRoomJoinRuleInvite])
                     {
                         if (isRoomDirect)
                         {
-                            displayText = [MatrixKitL10n noticeRoomJoinRuleInviteByYouForDm];
+                            displayText = [VectorL10n noticeRoomJoinRuleInviteByYouForDm];
                         }
                         else
                         {
-                            displayText = [MatrixKitL10n noticeRoomJoinRuleInviteByYou];
+                            displayText = [VectorL10n noticeRoomJoinRuleInviteByYou];
                         }
                     }
                 }
@@ -892,22 +892,22 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                     {
                         if (isRoomDirect)
                         {
-                            displayText = [MatrixKitL10n noticeRoomJoinRulePublicForDm:displayName];
+                            displayText = [VectorL10n noticeRoomJoinRulePublicForDm:displayName];
                         }
                         else
                         {
-                            displayText = [MatrixKitL10n noticeRoomJoinRulePublic:displayName];
+                            displayText = [VectorL10n noticeRoomJoinRulePublic:displayName];
                         }
                     }
                     else if ([joinRule isEqualToString:kMXRoomJoinRuleInvite])
                     {
                         if (isRoomDirect)
                         {
-                            displayText = [MatrixKitL10n noticeRoomJoinRuleInviteForDm:displayName];
+                            displayText = [VectorL10n noticeRoomJoinRuleInviteForDm:displayName];
                         }
                         else
                         {
-                            displayText = [MatrixKitL10n noticeRoomJoinRuleInvite:displayName];
+                            displayText = [VectorL10n noticeRoomJoinRuleInvite:displayName];
                         }
                     }
                 }
@@ -915,7 +915,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                 if (!displayText)
                 {
                     //  use old string for non-handled cases: "knock" and "private"
-                    displayText = [MatrixKitL10n noticeRoomJoinRule:joinRule];
+                    displayText = [VectorL10n noticeRoomJoinRule:joinRule];
                 }
                 
                 // Append redacted info if any
@@ -930,11 +930,11 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
         {
             if (isRoomDirect)
             {
-                displayText = [MatrixKitL10n noticeRoomPowerLevelIntroForDm];
+                displayText = [VectorL10n noticeRoomPowerLevelIntroForDm];
             }
             else
             {
-                displayText = [MatrixKitL10n noticeRoomPowerLevelIntro];
+                displayText = [VectorL10n noticeRoomPowerLevelIntro];
             }
             NSDictionary *users;
             MXJSONModelSetDictionary(users, event.content[@"users"]);
@@ -945,10 +945,10 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
             }
             if (event.content[@"users_default"])
             {
-                displayText = [NSString stringWithFormat:@"%@\n\u2022 %@: %@", displayText, [MatrixKitL10n default], event.content[@"users_default"]];
+                displayText = [NSString stringWithFormat:@"%@\n\u2022 %@: %@", displayText, [VectorL10n default], event.content[@"users_default"]];
             }
             
-            displayText = [NSString stringWithFormat:@"%@\n%@", displayText, [MatrixKitL10n noticeRoomPowerLevelActingRequirement]];
+            displayText = [NSString stringWithFormat:@"%@\n%@", displayText, [VectorL10n noticeRoomPowerLevelActingRequirement]];
             if (event.content[@"ban"])
             {
                 displayText = [NSString stringWithFormat:@"%@\n\u2022 ban: %@", displayText, event.content[@"ban"]];
@@ -966,7 +966,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                 displayText = [NSString stringWithFormat:@"%@\n\u2022 invite: %@", displayText, event.content[@"invite"]];
             }
             
-            displayText = [NSString stringWithFormat:@"%@\n%@", displayText, [MatrixKitL10n noticeRoomPowerLevelEventRequirement]];
+            displayText = [NSString stringWithFormat:@"%@\n%@", displayText, [VectorL10n noticeRoomPowerLevelEventRequirement]];
             
             NSDictionary *events;
             MXJSONModelSetDictionary(events, event.content[@"events"]);
@@ -998,11 +998,11 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
             {
                 if (isRoomDirect)
                 {
-                    displayText = [MatrixKitL10n noticeRoomAliasesForDm:[aliases componentsJoinedByString:@", "]];
+                    displayText = [VectorL10n noticeRoomAliasesForDm:[aliases componentsJoinedByString:@", "]];
                 }
                 else
                 {
-                    displayText = [MatrixKitL10n noticeRoomAliases:[aliases componentsJoinedByString:@", "]];
+                    displayText = [VectorL10n noticeRoomAliases:[aliases componentsJoinedByString:@", "]];
                 }
                 // Append redacted info if any
                 if (redactedInfo)
@@ -1018,7 +1018,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
             MXJSONModelSetArray(groups, event.content[@"groups"]);
             if (groups)
             {
-                displayText = [MatrixKitL10n noticeRoomRelatedGroups:[groups componentsJoinedByString:@", "]];
+                displayText = [VectorL10n noticeRoomRelatedGroups:[groups componentsJoinedByString:@", "]];
                 // Append redacted info if any
                 if (redactedInfo)
                 {
@@ -1057,7 +1057,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                         && event.decryptionError.code == MXDecryptingErrorUnknownInboundSessionIdCode)
                     {
                         // Make the unknown inbound session id error description more user friendly
-                        errorDescription = [MatrixKitL10n noticeCryptoErrorUnknownInboundSessionId];
+                        errorDescription = [VectorL10n noticeCryptoErrorUnknownInboundSessionId];
                     }
                     else if ([event.decryptionError.domain isEqualToString:MXDecryptingErrorDomain]
                            && event.decryptionError.code == MXDecryptingErrorDuplicateMessageIndexCode)
@@ -1073,12 +1073,12 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
 
                     if (errorDescription)
                     {
-                        displayText = [MatrixKitL10n noticeCryptoUnableToDecrypt:errorDescription];
+                        displayText = [VectorL10n noticeCryptoUnableToDecrypt:errorDescription];
                     }
                 }
                 else
                 {
-                    displayText = [MatrixKitL10n noticeEncryptedMessage];
+                    displayText = [VectorL10n noticeEncryptedMessage];
                 }
             }
             
@@ -1103,22 +1103,22 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
             {
                 if (isEventSenderMyUser)
                 {
-                    displayText = [MatrixKitL10n noticeEncryptionEnabledOkByYou];
+                    displayText = [VectorL10n noticeEncryptionEnabledOkByYou];
                 }
                 else
                 {
-                    displayText = [MatrixKitL10n noticeEncryptionEnabledOk:senderDisplayName];
+                    displayText = [VectorL10n noticeEncryptionEnabledOk:senderDisplayName];
                 }
             }
             else
             {
                 if (isEventSenderMyUser)
                 {
-                    displayText = [MatrixKitL10n noticeEncryptionEnabledUnknownAlgorithmByYou:algorithm];
+                    displayText = [VectorL10n noticeEncryptionEnabledUnknownAlgorithmByYou:algorithm];
                 }
                 else
                 {
-                    displayText = [MatrixKitL10n noticeEncryptionEnabledUnknownAlgorithm:senderDisplayName :algorithm];
+                    displayText = [VectorL10n noticeEncryptionEnabledUnknownAlgorithm:senderDisplayName :algorithm];
                 }
             }
             
@@ -1143,11 +1143,11 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                         {
                             if (isEventSenderMyUser)
                             {
-                                displayText = [MatrixKitL10n noticeRoomHistoryVisibleToAnyoneByYou];
+                                displayText = [VectorL10n noticeRoomHistoryVisibleToAnyoneByYou];
                             }
                             else
                             {
-                                displayText = [MatrixKitL10n noticeRoomHistoryVisibleToAnyone:senderDisplayName];
+                                displayText = [VectorL10n noticeRoomHistoryVisibleToAnyone:senderDisplayName];
                             }
                         }
                     }
@@ -1157,22 +1157,22 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                         {
                             if (isRoomDirect)
                             {
-                                displayText = [MatrixKitL10n noticeRoomHistoryVisibleToMembersByYouForDm];
+                                displayText = [VectorL10n noticeRoomHistoryVisibleToMembersByYouForDm];
                             }
                             else
                             {
-                                displayText = [MatrixKitL10n noticeRoomHistoryVisibleToMembersByYou];
+                                displayText = [VectorL10n noticeRoomHistoryVisibleToMembersByYou];
                             }
                         }
                         else
                         {
                             if (isRoomDirect)
                             {
-                                displayText = [MatrixKitL10n noticeRoomHistoryVisibleToMembersForDm:senderDisplayName];
+                                displayText = [VectorL10n noticeRoomHistoryVisibleToMembersForDm:senderDisplayName];
                             }
                             else
                             {
-                                displayText = [MatrixKitL10n noticeRoomHistoryVisibleToMembers:senderDisplayName];
+                                displayText = [VectorL10n noticeRoomHistoryVisibleToMembers:senderDisplayName];
                             }
                         }
                     }
@@ -1182,22 +1182,22 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                         {
                             if (isRoomDirect)
                             {
-                                displayText = [MatrixKitL10n noticeRoomHistoryVisibleToMembersFromInvitedPointByYouForDm];
+                                displayText = [VectorL10n noticeRoomHistoryVisibleToMembersFromInvitedPointByYouForDm];
                             }
                             else
                             {
-                                displayText = [MatrixKitL10n noticeRoomHistoryVisibleToMembersFromInvitedPointByYou];
+                                displayText = [VectorL10n noticeRoomHistoryVisibleToMembersFromInvitedPointByYou];
                             }
                         }
                         else
                         {
                             if (isRoomDirect)
                             {
-                                displayText = [MatrixKitL10n noticeRoomHistoryVisibleToMembersFromInvitedPointForDm:senderDisplayName];
+                                displayText = [VectorL10n noticeRoomHistoryVisibleToMembersFromInvitedPointForDm:senderDisplayName];
                             }
                             else
                             {
-                                displayText = [MatrixKitL10n noticeRoomHistoryVisibleToMembersFromInvitedPoint:senderDisplayName];
+                                displayText = [VectorL10n noticeRoomHistoryVisibleToMembersFromInvitedPoint:senderDisplayName];
                             }
                         }
                     }
@@ -1207,22 +1207,22 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                         {
                             if (isRoomDirect)
                             {
-                                displayText = [MatrixKitL10n noticeRoomHistoryVisibleToMembersFromJoinedPointByYouForDm];
+                                displayText = [VectorL10n noticeRoomHistoryVisibleToMembersFromJoinedPointByYouForDm];
                             }
                             else
                             {
-                                displayText = [MatrixKitL10n noticeRoomHistoryVisibleToMembersFromJoinedPointByYou];
+                                displayText = [VectorL10n noticeRoomHistoryVisibleToMembersFromJoinedPointByYou];
                             }
                         }
                         else
                         {
                             if (isRoomDirect)
                             {
-                                displayText = [MatrixKitL10n noticeRoomHistoryVisibleToMembersFromJoinedPointForDm:senderDisplayName];
+                                displayText = [VectorL10n noticeRoomHistoryVisibleToMembersFromJoinedPointForDm:senderDisplayName];
                             }
                             else
                             {
-                                displayText = [MatrixKitL10n noticeRoomHistoryVisibleToMembersFromJoinedPoint:senderDisplayName];
+                                displayText = [VectorL10n noticeRoomHistoryVisibleToMembersFromJoinedPoint:senderDisplayName];
                             }
                         }
                     }
@@ -1288,57 +1288,57 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                 {
                     if ([msgtype isEqualToString:kMXMessageTypeImage])
                     {
-                        body = body? body : [MatrixKitL10n noticeImageAttachment];
+                        body = body? body : [VectorL10n noticeImageAttachment];
                         // Check attachment validity
                         if (![self isSupportedAttachment:event])
                         {
                             MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported attachment %@", event.description);
-                            body = [MatrixKitL10n noticeInvalidAttachment];
+                            body = [VectorL10n noticeInvalidAttachment];
                             *error = MXKEventFormatterErrorUnsupported;
                         }
                     }
                     else if ([msgtype isEqualToString:kMXMessageTypeAudio])
                     {
-                        body = body? body : [MatrixKitL10n noticeAudioAttachment];
+                        body = body? body : [VectorL10n noticeAudioAttachment];
                         if (![self isSupportedAttachment:event])
                         {
                             MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported attachment %@", event.description);
                             if (_isForSubtitle || !_settings.showUnsupportedEventsInRoomHistory)
                             {
-                                body = [MatrixKitL10n noticeInvalidAttachment];
+                                body = [VectorL10n noticeInvalidAttachment];
                             }
                             else
                             {
-                                body = [MatrixKitL10n noticeUnsupportedAttachment:event.description];
+                                body = [VectorL10n noticeUnsupportedAttachment:event.description];
                             }
                             *error = MXKEventFormatterErrorUnsupported;
                         }
                     }
                     else if ([msgtype isEqualToString:kMXMessageTypeVideo])
                     {
-                        body = body? body : [MatrixKitL10n noticeVideoAttachment];
+                        body = body? body : [VectorL10n noticeVideoAttachment];
                         if (![self isSupportedAttachment:event])
                         {
                             MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported attachment %@", event.description);
                             if (_isForSubtitle || !_settings.showUnsupportedEventsInRoomHistory)
                             {
-                                body = [MatrixKitL10n noticeInvalidAttachment];
+                                body = [VectorL10n noticeInvalidAttachment];
                             }
                             else
                             {
-                                body = [MatrixKitL10n noticeUnsupportedAttachment:event.description];
+                                body = [VectorL10n noticeUnsupportedAttachment:event.description];
                             }
                             *error = MXKEventFormatterErrorUnsupported;
                         }
                     }
                     else if ([msgtype isEqualToString:kMXMessageTypeFile])
                     {
-                        body = body? body : [MatrixKitL10n noticeFileAttachment];
+                        body = body? body : [VectorL10n noticeFileAttachment];
                         // Check attachment validity
                         if (![self isSupportedAttachment:event])
                         {
                             MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported attachment %@", event.description);
-                            body = [MatrixKitL10n noticeInvalidAttachment];
+                            body = [VectorL10n noticeInvalidAttachment];
                             *error = MXKEventFormatterErrorUnsupported;
                         }
                     }
@@ -1402,7 +1402,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
             
             if (type && eventId)
             {
-                displayText = [MatrixKitL10n noticeFeedback:eventId :type];
+                displayText = [VectorL10n noticeFeedback:eventId :type];
                 // Append redacted info if any
                 if (redactedInfo)
                 {
@@ -1416,11 +1416,11 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
             NSString *eventId = event.redacts;
             if (isEventSenderMyUser)
             {
-                displayText = [MatrixKitL10n noticeRedactionByYou:eventId];
+                displayText = [VectorL10n noticeRedactionByYou:eventId];
             }
             else
             {
-                displayText = [MatrixKitL10n noticeRedaction:senderDisplayName :eventId];
+                displayText = [VectorL10n noticeRedaction:senderDisplayName :eventId];
             }
             break;
         }
@@ -1434,22 +1434,22 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                 {
                     if (isRoomDirect)
                     {
-                        displayText = [MatrixKitL10n noticeRoomThirdPartyInviteByYouForDm:displayname];
+                        displayText = [VectorL10n noticeRoomThirdPartyInviteByYouForDm:displayname];
                     }
                     else
                     {
-                        displayText = [MatrixKitL10n noticeRoomThirdPartyInviteByYou:displayname];
+                        displayText = [VectorL10n noticeRoomThirdPartyInviteByYou:displayname];
                     }
                 }
                 else
                 {
                     if (isRoomDirect)
                     {
-                        displayText = [MatrixKitL10n noticeRoomThirdPartyInviteForDm:senderDisplayName :displayname];
+                        displayText = [VectorL10n noticeRoomThirdPartyInviteForDm:senderDisplayName :displayname];
                     }
                     else
                     {
-                        displayText = [MatrixKitL10n noticeRoomThirdPartyInvite:senderDisplayName :displayname];
+                        displayText = [VectorL10n noticeRoomThirdPartyInvite:senderDisplayName :displayname];
                     }
                 }
             }
@@ -1461,22 +1461,22 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                 {
                     if (isRoomDirect)
                     {
-                        displayText = [MatrixKitL10n noticeRoomThirdPartyRevokedInviteByYouForDm:displayname];
+                        displayText = [VectorL10n noticeRoomThirdPartyRevokedInviteByYouForDm:displayname];
                     }
                     else
                     {
-                        displayText = [MatrixKitL10n noticeRoomThirdPartyRevokedInviteByYou:displayname];
+                        displayText = [VectorL10n noticeRoomThirdPartyRevokedInviteByYou:displayname];
                     }
                 }
                 else
                 {
                     if (isRoomDirect)
                     {
-                        displayText = [MatrixKitL10n noticeRoomThirdPartyRevokedInviteForDm:senderDisplayName :displayname];
+                        displayText = [VectorL10n noticeRoomThirdPartyRevokedInviteForDm:senderDisplayName :displayname];
                     }
                     else
                     {
-                        displayText = [MatrixKitL10n noticeRoomThirdPartyRevokedInvite:senderDisplayName :displayname];
+                        displayText = [VectorL10n noticeRoomThirdPartyRevokedInvite:senderDisplayName :displayname];
                     }
                 }
             }
@@ -1490,22 +1490,22 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
             {
                 if (isEventSenderMyUser)
                 {
-                    displayText = [MatrixKitL10n noticePlacedVideoCallByYou];
+                    displayText = [VectorL10n noticePlacedVideoCallByYou];
                 }
                 else
                 {
-                    displayText = [MatrixKitL10n noticePlacedVideoCall:senderDisplayName];
+                    displayText = [VectorL10n noticePlacedVideoCall:senderDisplayName];
                 }
             }
             else
             {
                 if (isEventSenderMyUser)
                 {
-                    displayText = [MatrixKitL10n noticePlacedVoiceCallByYou];
+                    displayText = [VectorL10n noticePlacedVoiceCallByYou];
                 }
                 else
                 {
-                    displayText = [MatrixKitL10n noticePlacedVoiceCall:senderDisplayName];
+                    displayText = [VectorL10n noticePlacedVoiceCall:senderDisplayName];
                 }
             }
             break;
@@ -1514,11 +1514,11 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
         {
             if (isEventSenderMyUser)
             {
-                displayText = [MatrixKitL10n noticeAnsweredVideoCallByYou];
+                displayText = [VectorL10n noticeAnsweredVideoCallByYou];
             }
             else
             {
-                displayText = [MatrixKitL10n noticeAnsweredVideoCall:senderDisplayName];
+                displayText = [VectorL10n noticeAnsweredVideoCall:senderDisplayName];
             }
             break;
         }
@@ -1526,11 +1526,11 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
         {
             if (isEventSenderMyUser)
             {
-                displayText = [MatrixKitL10n noticeEndedVideoCallByYou];
+                displayText = [VectorL10n noticeEndedVideoCallByYou];
             }
             else
             {
-                displayText = [MatrixKitL10n noticeEndedVideoCall:senderDisplayName];
+                displayText = [VectorL10n noticeEndedVideoCall:senderDisplayName];
             }
             break;
         }
@@ -1538,11 +1538,11 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
         {
             if (isEventSenderMyUser)
             {
-                displayText = [MatrixKitL10n noticeDeclinedVideoCallByYou];
+                displayText = [VectorL10n noticeDeclinedVideoCallByYou];
             }
             else
             {
-                displayText = [MatrixKitL10n noticeDeclinedVideoCall:senderDisplayName];
+                displayText = [VectorL10n noticeDeclinedVideoCall:senderDisplayName];
             }
             break;
         }
@@ -1567,11 +1567,11 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                 if (![self isSupportedAttachment:event])
                 {
                     MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported sticker %@", event.description);
-                    body = [MatrixKitL10n noticeInvalidAttachment];
+                    body = [VectorL10n noticeInvalidAttachment];
                     *error = MXKEventFormatterErrorUnsupported;
                 }
                 
-                displayText = body? body : [MatrixKitL10n noticeSticker];
+                displayText = body? body : [VectorL10n noticeSticker];
             }
             break;
         }
@@ -1611,13 +1611,13 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
             switch (*error)
             {
                 case MXKEventFormatterErrorUnsupported:
-                    shortDescription = [MatrixKitL10n noticeErrorUnsupportedEvent];
+                    shortDescription = [VectorL10n noticeErrorUnsupportedEvent];
                     break;
                 case MXKEventFormatterErrorUnexpected:
-                    shortDescription = [MatrixKitL10n noticeErrorUnexpectedEvent];
+                    shortDescription = [VectorL10n noticeErrorUnexpectedEvent];
                     break;
                 case MXKEventFormatterErrorUnknownEventType:
-                    shortDescription = [MatrixKitL10n noticeErrorUnknownEventType];
+                    shortDescription = [VectorL10n noticeErrorUnknownEventType];
                     break;
                     
                 default:
@@ -1660,10 +1660,13 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:string];
 
     NSRange wholeString = NSMakeRange(0, str.length);
+    UIFont *fontForWholeString = [self fontForEvent:event string:string];
 
     // Apply color and font corresponding to the event state
     [str addAttribute:NSForegroundColorAttributeName value:[self textColorForEvent:event] range:wholeString];
-    [str addAttribute:NSFontAttributeName value:[self fontForEvent:event] range:wholeString];
+    [str addAttribute:NSFontAttributeName
+                value:fontForWholeString
+                range:wholeString];
 
     // If enabled, make links clickable
     if (!([[_settings httpLinkScheme] isEqualToString: @"http"] &&
@@ -1695,8 +1698,26 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
         }
     }
 
-    // Apply additional treatments
-    return [self postRenderAttributedString:str];
+    UIFont *fontForBody = [self fontForEvent:event string:nil];
+    if ([fontForWholeString isEqual:fontForBody])
+    {
+        //  body font is the same with the whole string font, no need to change body font
+        //  apply additional treatments
+        return [self postRenderAttributedString:str];
+    }
+
+    NSRange bodyRange = [str.string rangeOfString:event.content[kMXMessageBodyKey]];
+    if (bodyRange.location == NSNotFound)
+    {
+        //  body not found in the whole string
+        //  apply additional treatments
+        return [self postRenderAttributedString:str];
+    }
+
+    NSMutableAttributedString *mutableStr = [str mutableCopy];
+    [mutableStr addAttribute:NSFontAttributeName value:fontForBody range:bodyRange];
+    //  apply additional treatments
+    return [self postRenderAttributedString:mutableStr];
 }
 
 - (NSAttributedString*)renderHTMLString:(NSString*)htmlString forEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState
@@ -1710,20 +1731,20 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     }
 
     // Apply the css style that corresponds to the event state
-    UIFont *font = [self fontForEvent:event];
+    UIFont *fontForWholeString = [self fontForEvent:event string:htmlString];
     
     // Do some sanitisation before finalizing the string
     MXWeakify(self);
     DTHTMLAttributedStringBuilderWillFlushCallback sanitizeCallback = ^(DTHTMLElement *element) {
         MXStrongifyAndReturnIfNil(self);
-        [element sanitizeWith:self.allowedHTMLTags bodyFont:font imageHandler:self.htmlImageHandler];
+        [element sanitizeWith:self.allowedHTMLTags bodyFont:fontForWholeString imageHandler:self.htmlImageHandler];
     };
 
     NSDictionary *options = @{
                               DTUseiOS6Attributes: @(YES),              // Enable it to be able to display the attributed string in a UITextView
-                              DTDefaultFontFamily: font.familyName,
-                              DTDefaultFontName: font.fontName,
-                              DTDefaultFontSize: @(font.pointSize),
+                              DTDefaultFontFamily: fontForWholeString.familyName,
+                              DTDefaultFontName: fontForWholeString.fontName,
+                              DTDefaultFontSize: @(fontForWholeString.pointSize),
                               DTDefaultTextColor: [self textColorForEvent:event],
                               DTDefaultLinkDecoration: @(NO),
                               DTDefaultStyleSheet: dtCSS,
@@ -1748,7 +1769,23 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     // Finalize HTML blockquote blocks marking
     str = [MXKTools removeMarkedBlockquotesArtifacts:str];
 
-    return str;
+    UIFont *fontForBody = [self fontForEvent:event string:nil];
+    if ([fontForWholeString isEqual:fontForBody])
+    {
+        //  body font is the same with the whole string font, no need to change body font
+        return str;
+    }
+
+    NSRange bodyRange = [str.string rangeOfString:event.content[kMXMessageBodyKey]];
+    if (bodyRange.location == NSNotFound)
+    {
+        //  body not found in the whole string
+        return str;
+    }
+
+    NSMutableAttributedString *mutableStr = [str mutableCopy];
+    [mutableStr addAttribute:NSFontAttributeName value:fontForBody range:bodyRange];
+    return mutableStr;
 }
 
 /**
@@ -1825,7 +1862,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     
     if (inReplyToTextRange.location != NSNotFound)
     {
-        html = [html stringByReplacingCharactersInRange:inReplyToTextRange withString:[MatrixKitL10n noticeInReplyTo]];
+        html = [html stringByReplacingCharactersInRange:inReplyToTextRange withString:[VectorL10n noticeInReplyTo]];
     }
     
     if (inReplyToLinkRange.location != NSNotFound)
@@ -2080,9 +2117,10 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
  Get the text font to use according to the event state.
 
  @param event the event.
+ @param string the string to be rendered for the event. It may be different from event.content.body. Pass nil to get font just according to event.content.body.
  @return the text font.
  */
-- (UIFont*)fontForEvent:(MXEvent*)event
+- (UIFont*)fontForEvent:(MXEvent*)event string:(NSString*)string
 {
     // Select text font
     UIFont *font = _defaultTextFont;
@@ -2102,7 +2140,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     {
         font = _encryptedMessagesTextFont;
     }
-    else if (!_isForSubtitle && event.eventType == MXEventTypeRoomMessage && (_emojiOnlyTextFont || _singleEmojiTextFont))
+    else if (!_isForSubtitle && !string && event.eventType == MXEventTypeRoomMessage && (_emojiOnlyTextFont || _singleEmojiTextFont))
     {
         NSString *message;
         MXJSONModelSetString(message, event.content[kMXMessageBodyKey]);

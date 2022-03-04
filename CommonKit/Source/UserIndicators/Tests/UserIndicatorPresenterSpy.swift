@@ -16,7 +16,7 @@
 
 import Foundation
 
-class UserIndicatorPresenterSpy: UserIndicatorPresentable {
+class UserIndicatorPresenterSpy: UserIndicatorViewPresentable {
     var intel = [String]()
     
     func present() {

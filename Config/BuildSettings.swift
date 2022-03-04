@@ -225,15 +225,6 @@ final class BuildSettings: NSObject {
     
     static let allowInviteExernalUsers: Bool = true
     
-    /// Whether a screen uses legacy local activity indicators or improved app-wide indicators
-    static var useAppUserIndicators: Bool {
-        #if DEBUG
-        return false
-        #else
-        return false
-        #endif
-    }
-    
     // MARK: - Side Menu
     static let enableSideMenu: Bool = true
     static let sideMenuShowInviteFriends: Bool = true
@@ -405,5 +396,18 @@ final class BuildSettings: NSObject {
         }
         
         return true
+    }
+    
+    static var liveLocationSharingEnabled: Bool {
+        guard #available(iOS 14, *) else {
+            return false
+        }
+        
+        guard self.locationSharingEnabled else {
+            return false
+        }
+        
+        // Do not enable live location sharing atm
+        return false
     }
 }

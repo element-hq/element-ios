@@ -29,7 +29,7 @@
 
 const CGFloat kTypingCellHeight = 24;
 
-@interface RoomDataSource() <BubbleReactionsViewModelDelegate, URLPreviewViewDelegate, ThreadSummaryViewDelegate, MXThreadingServiceDelegate>
+@interface RoomDataSource() <RoomReactionsViewModelDelegate, URLPreviewViewDelegate, ThreadSummaryViewDelegate, MXThreadingServiceDelegate>
 {
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
@@ -348,7 +348,7 @@ const CGFloat kTypingCellHeight = 24;
 {
     if (indexPath.row == self.typingCellIndex)
     {
-        RoomTypingBubbleCell *cell = [tableView dequeueReusableCellWithIdentifier:RoomTypingBubbleCell.defaultReuseIdentifier forIndexPath:indexPath];
+        MessageTypingCell *cell = [tableView dequeueReusableCellWithIdentifier:MessageTypingCell.defaultReuseIdentifier forIndexPath:indexPath];
         [cell updateWithTheme:ThemeService.shared.theme];
         [cell updateTypingUsers:_currentTypingUsers mediaManager:self.mxSession.mediaManager];
         return cell;
@@ -431,21 +431,21 @@ const CGFloat kTypingCellHeight = 24;
                     
                     MXAggregatedReactions* reactions = cellData.reactions[componentEventId].aggregatedReactionsWithNonZeroCount;
                     
-                    BubbleReactionsView *reactionsView;
+                    RoomReactionsView *reactionsView;
                     
                     if (!component.event.isRedactedEvent && reactions && !isCollapsableCellCollapsed)
                     {
                         BOOL showAllReactions = [cellData showAllReactionsForEvent:componentEventId];
-                        BubbleReactionsViewModel *bubbleReactionsViewModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:reactions
+                        RoomReactionsViewModel *roomReactionsViewModel = [[RoomReactionsViewModel alloc] initWithAggregatedReactions:reactions
                                                                                                                                    eventId:componentEventId
                                                                                                                                    showAll:showAllReactions];
                         
-                        reactionsView = [BubbleReactionsView new];
-                        reactionsView.viewModel = bubbleReactionsViewModel;
+                        reactionsView = [RoomReactionsView new];
+                        reactionsView.viewModel = roomReactionsViewModel;
                         reactionsView.tag = index;
                         [reactionsView updateWithTheme:ThemeService.shared.theme];
                         
-                        bubbleReactionsViewModel.viewModelDelegate = self;
+                        roomReactionsViewModel.viewModelDelegate = self;
                         
                         [temporaryViews addObject:reactionsView];
                         [cellDecorator addReactionView:reactionsView toCell:bubbleCell
@@ -989,9 +989,9 @@ const CGFloat kTypingCellHeight = 24;
     }
 }
 
-#pragma mark - BubbleReactionsViewModelDelegate
+#pragma mark - RoomReactionsViewModelDelegate
 
-- (void)bubbleReactionsViewModel:(BubbleReactionsViewModel *)viewModel didAddReaction:(MXReactionCount *)reactionCount forEventId:(NSString *)eventId
+- (void)roomReactionsViewModel:(RoomReactionsViewModel *)viewModel didAddReaction:(MXReactionCount *)reactionCount forEventId:(NSString *)eventId
 {
     [self addReaction:reactionCount.reaction forEventId:eventId success:^{
         
@@ -1000,7 +1000,7 @@ const CGFloat kTypingCellHeight = 24;
     }];
 }
 
-- (void)bubbleReactionsViewModel:(BubbleReactionsViewModel *)viewModel didRemoveReaction:(MXReactionCount * _Nonnull)reactionCount forEventId:(NSString * _Nonnull)eventId
+- (void)roomReactionsViewModel:(RoomReactionsViewModel *)viewModel didRemoveReaction:(MXReactionCount * _Nonnull)reactionCount forEventId:(NSString * _Nonnull)eventId
 {
     [self removeReaction:reactionCount.reaction forEventId:eventId success:^{
         
@@ -1009,12 +1009,12 @@ const CGFloat kTypingCellHeight = 24;
     }];
 }
 
-- (void)bubbleReactionsViewModel:(BubbleReactionsViewModel *)viewModel didShowAllTappedForEventId:(NSString * _Nonnull)eventId
+- (void)roomReactionsViewModel:(RoomReactionsViewModel *)viewModel didShowAllTappedForEventId:(NSString * _Nonnull)eventId
 {
     [self setShowAllReactions:YES forEvent:eventId];
 }
 
-- (void)bubbleReactionsViewModel:(BubbleReactionsViewModel *)viewModel didShowLessTappedForEventId:(NSString * _Nonnull)eventId
+- (void)roomReactionsViewModel:(RoomReactionsViewModel *)viewModel didShowLessTappedForEventId:(NSString * _Nonnull)eventId
 {
     [self setShowAllReactions:NO forEvent:eventId];
 }
@@ -1033,7 +1033,7 @@ const CGFloat kTypingCellHeight = 24;
     }
 }
 
-- (void)bubbleReactionsViewModel:(BubbleReactionsViewModel *)viewModel didLongPressForEventId:(NSString *)eventId
+- (void)roomReactionsViewModel:(RoomReactionsViewModel *)viewModel didLongPressForEventId:(NSString *)eventId
 {
     [self.delegate dataSource:self didRecognizeAction:kMXKRoomBubbleCellLongPressOnReactionView inCell:nil userInfo:@{ kMXKRoomBubbleCellEventIdKey: eventId }];
 }
