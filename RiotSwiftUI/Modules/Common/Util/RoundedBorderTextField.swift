@@ -25,7 +25,6 @@ struct RoundedBorderTextField: View {
     var title: String?
     var placeHolder: String
     @Binding var text: String
-    var isEnabled: Bool
     @Binding var footerText: String?
     @Binding var isError: Bool
     var isFirstResponder = false
@@ -40,13 +39,13 @@ struct RoundedBorderTextField: View {
     @State private var editing = false
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
-    
+    @Environment(\.isEnabled) private var isEnabled
+
     // MARK: Setup
     
     init(title: String? = nil,
          placeHolder: String,
          text: Binding<String>,
-         isEnabled: Bool = true,
          footerText: Binding<String?> = .constant(nil),
          isError: Binding<Bool> = .constant(false),
          isFirstResponder: Bool = false,
@@ -56,7 +55,6 @@ struct RoundedBorderTextField: View {
         self.title = title
         self.placeHolder = placeHolder
         self._text = text
-        self.isEnabled = isEnabled
         self._footerText = footerText
         self._isError = isError
         self.isFirstResponder = isFirstResponder
@@ -89,11 +87,11 @@ struct RoundedBorderTextField: View {
                         onEditingChanged?(edit)
                     })
                     .makeFirstResponder(isFirstResponder)
+                    .showClearButton(text: $text)
                     .onChange(of: text, perform: { newText in
                         onTextChanged?(newText)
                     })
                     .frame(height: 30)
-                    .modifier(ClearViewModifier(alignment: .center, text: $text))
                 } else {
                     ThemableTextField(placeholder: "", text: $text, configuration: configuration, onEditingChanged: { edit in
                         self.editing = edit
@@ -145,7 +143,8 @@ struct TextFieldWithError_Previews: PreviewProvider {
             RoundedBorderTextField(placeHolder: "A placeholder", text: .constant("Some text"), footerText: .constant(nil), isError: .constant(false))
             RoundedBorderTextField(title: "A title", placeHolder: "A placeholder", text: .constant("Some very long text used to check overlapping with the delete button"), footerText: .constant("Some error text"), isError: .constant(true))
             RoundedBorderTextField(title: "A title", placeHolder: "A placeholder", text: .constant("Some very long text used to check overlapping with the delete button"), footerText: .constant("Some normal text"), isError: .constant(false))
-            RoundedBorderTextField(title: "A title", placeHolder: "A placeholder", text: .constant("Some very long text used to check overlapping with the delete button"), isEnabled: false, footerText: .constant("Some normal text"), isError: .constant(false))
+            RoundedBorderTextField(title: "A title", placeHolder: "A placeholder", text: .constant("Some very long text used to check overlapping with the delete button"), footerText: .constant("Some normal text"), isError: .constant(false))
+                .disabled(true)
         }
     }
 }

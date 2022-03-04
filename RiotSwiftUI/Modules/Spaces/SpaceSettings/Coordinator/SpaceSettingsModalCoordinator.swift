@@ -17,7 +17,7 @@
 import UIKit
 
 /// Actions returned by the coordinator callback
-enum SpaceSettingsModalCoordinatorCoordinatorAction {
+enum SpaceSettingsModalCoordinatorAction {
     case done(_ spaceId: String)
     case cancel(_ spaceId: String)
 }
@@ -45,7 +45,7 @@ final class SpaceSettingsModalCoordinator: Coordinator {
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
     
-    var callback: ((SpaceSettingsModalCoordinatorCoordinatorAction) -> Void)?
+    var callback: ((SpaceSettingsModalCoordinatorAction) -> Void)?
     
     // MARK: - Setup
     
@@ -152,9 +152,7 @@ final class SpaceSettingsModalCoordinator: Coordinator {
                 }
                 
                 self.navigationRouter.dismissModule(animated: true, completion: {
-                    if let coordinator = self.childCoordinators.last {
-                        self.remove(childCoordinator: coordinator)
-                    }
+                    self.remove(childCoordinator: coordinator)
                 })
             }
         }

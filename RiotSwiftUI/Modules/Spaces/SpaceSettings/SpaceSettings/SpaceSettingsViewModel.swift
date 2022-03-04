@@ -65,25 +65,14 @@ class SpaceSettingsViewModel: SpaceSettingsViewModelType, SpaceSettingsViewModel
             userSelectedAvatar: nil,
             showRoomAddress: service.roomProperties?.visibility == .public,
             roomNameError: nil,
-            addressMessage: addressMessage(with: validationStatus),
-            isAddressValid: isAddressValid(with: validationStatus),
+            addressMessage: validationStatus.message,
+            isAddressValid: validationStatus.isValid,
             isLoading: service.isLoadingSubject.value,
-            visibilityString: visibilityString(with: service.roomProperties?.visibility ?? .private),
+            visibilityString: (service.roomProperties?.visibility ?? .private).stringValue,
             options: options,
             bindings: bindings)
     }
     
-    private static func visibilityString(with visibility: SpaceSettingsVisibility) -> String {
-        switch visibility {
-        case .private:
-            return VectorL10n.private
-        case .public:
-            return VectorL10n.public
-        case .restricted:
-            return VectorL10n.createRoomTypeRestricted
-        }
-    }
-
     private func setupObservers() {
         service.isLoadingSubject.sink { [weak self] isLoading in
                 self?.state.isLoading = isLoading
@@ -105,8 +94,8 @@ class SpaceSettingsViewModel: SpaceSettingsViewModelType, SpaceSettingsViewModel
         .store(in: &cancellables)
         
         service.addressValidationSubject.sink { [weak self] validationStatus in
-            self?.state.addressMessage = Self.addressMessage(with: validationStatus)
-            self?.state.isAddressValid = Self.isAddressValid(with: validationStatus)
+            self?.state.addressMessage = validationStatus.message
+            self?.state.isAddressValid = validationStatus.isValid
         }
         .store(in: &cancellables)
     }
@@ -152,7 +141,7 @@ class SpaceSettingsViewModel: SpaceSettingsViewModelType, SpaceSettingsViewModel
         if !state.isAddressModified {
             state.bindings.address = roomProperties.address ?? ""
         }
-        state.visibilityString = Self.visibilityString(with: roomProperties.visibility)
+        state.visibilityString = roomProperties.visibility.stringValue
         state.showRoomAddress = roomProperties.visibility == .public
     }
 
@@ -162,29 +151,5 @@ class SpaceSettingsViewModel: SpaceSettingsViewModelType, SpaceSettingsViewModel
 
     private func cancel() {
         completion?(.cancel)
-    }
-    
-    private static func addressMessage(with validationStatus: SpaceCreationSettingsAddressValidationStatus) -> String {
-        switch validationStatus {
-        case .none(let fullAddress):
-            return VectorL10n.spacesCreationAddressDefaultMessage(fullAddress)
-        case .current(let fullAddress):
-            return VectorL10n.spaceSettingsCurrentAddressMessage(fullAddress)
-        case .valid(let fullAddress):
-            return VectorL10n.spacesCreationAddressDefaultMessage(fullAddress)
-        case .alreadyExists(let fullAddress):
-            return VectorL10n.spacesCreationAddressAlreadyExists(fullAddress)
-        case .invalidCharacters(let fullAddress):
-            return VectorL10n.spacesCreationAddressInvalidCharacters(fullAddress)
-        }
-    }
-    
-    private static func isAddressValid(with validationStatus: SpaceCreationSettingsAddressValidationStatus) -> Bool {
-        switch validationStatus {
-        case .none, .current, .valid:
-            return true
-        default:
-            return false
-        }
     }
 }

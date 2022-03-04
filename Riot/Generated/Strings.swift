@@ -5559,7 +5559,7 @@ public class VectorL10n: NSObject {
   public static var spaceTag: String { 
     return VectorL10n.tr("Vector", "space_tag") 
   }
-  /// description
+  /// Description
   public static var spaceTopic: String { 
     return VectorL10n.tr("Vector", "space_topic") 
   }

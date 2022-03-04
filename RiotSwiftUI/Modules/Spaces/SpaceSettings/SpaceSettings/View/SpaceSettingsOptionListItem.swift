@@ -22,13 +22,13 @@ struct SpaceSettingsOptionListItem: View {
     // MARK: Private
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
-    
+    @Environment(\.isEnabled) private var isEnabled
+
     // MARK: - Properties
     
     let icon: UIImage?
     let title: String?
     let value: String?
-    let isEnabled: Bool
     let action: (() -> Void)?
     
     // MARK: - Setup
@@ -36,12 +36,10 @@ struct SpaceSettingsOptionListItem: View {
     init(icon: UIImage? = nil,
          title: String? = nil,
          value: String? = nil,
-         isEnabled: Bool = true,
          action: (() -> Void)? = nil) {
         self.icon = icon
         self.title = title
         self.value = value
-        self.isEnabled = isEnabled
         self.action = action
     }
     
@@ -97,10 +95,11 @@ struct SpaceSettingsOptionListItem_Previews: PreviewProvider {
     
     static var sampleView: some View {
         VStack(spacing: 8) {
-            SpaceSettingsOptionListItem(icon: nil, title: "Some Title", value: nil, isEnabled: true)
-            SpaceSettingsOptionListItem(icon: nil, title: "Some Title", value: "Some value", isEnabled: true)
-            SpaceSettingsOptionListItem(icon: Asset.Images.spaceRoomIcon.image, title: "Some Title", value: "Some value", isEnabled: true)
-            SpaceSettingsOptionListItem(icon: Asset.Images.spaceRoomIcon.image, title: "Some Title", value: "Some value", isEnabled: false)
+            SpaceSettingsOptionListItem(icon: nil, title: "Some Title", value: nil)
+            SpaceSettingsOptionListItem(icon: nil, title: "Some Title", value: "Some value")
+            SpaceSettingsOptionListItem(icon: Asset.Images.spaceRoomIcon.image, title: "Some Title", value: "Some value")
+            SpaceSettingsOptionListItem(icon: Asset.Images.spaceRoomIcon.image, title: "Some Title", value: "Some value")
+                .disabled(true)
         }
     }
 

@@ -298,7 +298,6 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         presentable.presentationController?.delegate = self
         toPresentable().present(presentable, animated: true, completion: nil)
         createRoomCoordinator.start()
-        self.add(childCoordinator: createRoomCoordinator)
         self.createRoomCoordinator = createRoomCoordinator
     }
     
@@ -317,7 +316,6 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         presentable.presentationController?.delegate = self
         toPresentable().present(presentable, animated: true, completion: nil)
         coordinator.start()
-        self.add(childCoordinator: coordinator)
         self.spaceSettingsCoordinator = coordinator
     }
     
@@ -472,7 +470,6 @@ extension SideMenuCoordinator: SpaceMembersCoordinatorDelegate {
 extension SideMenuCoordinator: CreateRoomCoordinatorDelegate {
     func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didCreateNewRoom room: MXRoom) {
         coordinator.toPresentable().dismiss(animated: true) {
-            self.remove(childCoordinator: coordinator)
             self.createRoomCoordinator = nil
             self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
 
@@ -485,7 +482,6 @@ extension SideMenuCoordinator: CreateRoomCoordinatorDelegate {
     
     func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithIds roomIds: [String]) {
         coordinator.toPresentable().dismiss(animated: true) {
-            self.remove(childCoordinator: coordinator)
             self.createRoomCoordinator = nil
             self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
 
@@ -498,7 +494,6 @@ extension SideMenuCoordinator: CreateRoomCoordinatorDelegate {
 
     func createRoomCoordinatorDidCancel(_ coordinator: CreateRoomCoordinatorType) {
         coordinator.toPresentable().dismiss(animated: true) {
-            self.remove(childCoordinator: coordinator)
             self.createRoomCoordinator = nil
         }
     }

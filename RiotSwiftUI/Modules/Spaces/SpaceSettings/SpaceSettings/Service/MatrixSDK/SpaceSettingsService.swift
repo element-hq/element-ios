@@ -143,13 +143,13 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
     private func allowedParentIds(with roomState: MXRoomState) -> [String] {
         var allowedParentIds: [String] = []
         if roomState.joinRule == .restricted, let joinRuleEvent = roomState.stateEvents(with: .roomJoinRules)?.last {
-            let allowContent: [[String: String]] = joinRuleEvent.wireContent["allow"] as? [[String: String]] ?? []
+            let allowContent: [[String: String]] = joinRuleEvent.wireContent[kMXJoinRulesContentKeyAllow] as? [[String: String]] ?? []
             allowedParentIds = allowContent.compactMap { allowDictionnary in
-                guard let type = allowDictionnary["type"], type == "m.room_membership" else {
+                guard let type = allowDictionnary[kMXJoinRulesContentKeyType], type == kMXEventTypeStringRoomMembership else {
                     return nil
                 }
                 
-                return allowDictionnary["room_id"]
+                return allowDictionnary[kMXJoinRulesContentKeyRoomId]
             }
         }
         return allowedParentIds
@@ -426,8 +426,16 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
                                  success: { [weak self] (urlString) in
                                     guard let self = self else { return }
                                     
-                                    guard let urlString = urlString else { return }
-                                    guard let url = URL(string: urlString) else { return }
+                                    guard let urlString = urlString else {
+                                        self.updateCurrentTaskState(with: .failure)
+                                        self.runNextTask()
+                                        return
+                                    }
+                                    guard let url = URL(string: urlString) else {
+                                        self.updateCurrentTaskState(with: .failure)
+                                        self.runNextTask()
+                                        return
+                                    }
                                     
                                     self.setAvatar(withURL: url)
                                  },

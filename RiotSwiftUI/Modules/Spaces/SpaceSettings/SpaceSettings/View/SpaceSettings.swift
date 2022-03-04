@@ -37,6 +37,7 @@ struct SpaceSettings: View {
                 formView
                 roomAccess
                 options
+                    .padding(.bottom, 32)
             }
         }
         .background(theme.colors.navigation)
@@ -58,6 +59,7 @@ struct SpaceSettings: View {
                 }
             }
         }
+        .accentColor(theme.colors.accent)
         .alert(isPresented: $viewModel.showPostProcessAlert, content: {
             Alert(title: Text(VectorL10n.settingsTitle),
                   message: Text(VectorL10n.spaceSettingsUpdateFailedMessage),
@@ -91,7 +93,7 @@ struct SpaceSettings: View {
                     }
                     ResponderManager.resignFirstResponder()
                     viewModel.send(viewAction: .pickImage(reader.frame(in: .global)))
-                })
+                }
             }
             if viewModel.viewState.roomProperties?.isAvatarEditable == true {
                 Image(uiImage: Asset.Images.spaceCreationCamera.image)
@@ -111,33 +113,33 @@ struct SpaceSettings: View {
                 title: VectorL10n.createRoomPlaceholderName,
                 placeHolder: "",
                 text: $viewModel.name,
-                isEnabled: viewModel.viewState.roomProperties?.isNameEditable == true,
                 footerText: .constant(viewModel.viewState.roomNameError),
                 isError: .constant(true),
                 configuration: UIKitTextInputConfiguration( returnKeyType: .next))
                 .padding(.horizontal, 2)
                 .padding(.bottom, 20)
+                .disabled(viewModel.viewState.roomProperties?.isNameEditable != true)
             RoundedBorderTextEditor(
                 title: VectorL10n.spaceTopic,
                 placeHolder: VectorL10n.spaceTopic,
                 text: $viewModel.topic,
-                isEnabled: viewModel.viewState.roomProperties?.isTopicEditable == true,
                 textMaxHeight: 72,
                 error: .constant(nil))
                 .padding(.horizontal, 2)
                 .padding(.bottom, viewModel.viewState.showRoomAddress ? 20 : 3)
+                .disabled(viewModel.viewState.roomProperties?.isTopicEditable != true)
             if viewModel.viewState.showRoomAddress {
                 RoundedBorderTextField(
                     title: VectorL10n.spacesCreationAddress,
                     placeHolder: "# \(viewModel.viewState.defaultAddress)",
                     text: $viewModel.address,
-                    isEnabled: viewModel.viewState.roomProperties?.isAddressEditable == true,
                     footerText: .constant(viewModel.viewState.addressMessage),
                     isError: .constant(!viewModel.viewState.isAddressValid),
                     configuration: UIKitTextInputConfiguration(keyboardType: .URL, returnKeyType: .done, autocapitalizationType: .none), onTextChanged:  {
                         newText in
                         viewModel.send(viewAction: .addressChanged(newText))
                     })
+                    .disabled(viewModel.viewState.roomProperties?.isAddressEditable != true)
                     .padding(.horizontal, 2)
                     .padding(.bottom, 3)
                     .accessibility(identifier: "addressTextField")
@@ -157,11 +159,11 @@ struct SpaceSettings: View {
                 .padding(.bottom, 4)
             SpaceSettingsOptionListItem(
                 title: VectorL10n.roomDetailsAccessRowTitle,
-                value: viewModel.viewState.visibilityString,
-                isEnabled: viewModel.viewState.roomProperties?.isAccessEditable == true) {
+                value: viewModel.viewState.visibilityString) {
                 ResponderManager.resignFirstResponder()
                 viewModel.send(viewAction: .optionSelected(.visibility))
             }
+                .disabled(viewModel.viewState.roomProperties?.isAccessEditable != true)
         }
     }
     
@@ -178,11 +180,11 @@ struct SpaceSettings: View {
                 SpaceSettingsOptionListItem(
                     icon: option.icon,
                     title: option.title,
-                    value: option.value,
-                    isEnabled: option.isEnabled) {
+                    value: option.value) {
                     ResponderManager.resignFirstResponder()
                     viewModel.send(viewAction: .optionSelected(option.id))
                 }
+                    .disabled(!option.isEnabled)
             }
         }
     }

@@ -39,6 +39,17 @@ enum SpaceSettingsVisibility: CaseIterable {
     case `private`
     case restricted
     case `public`
+    
+    var stringValue: String {
+        switch self {
+        case .private:
+            return VectorL10n.private
+        case .public:
+            return VectorL10n.public
+        case .restricted:
+            return VectorL10n.createRoomTypeRestricted
+        }
+    }
 }
 
 struct SpaceSettingsRoomProperties {
