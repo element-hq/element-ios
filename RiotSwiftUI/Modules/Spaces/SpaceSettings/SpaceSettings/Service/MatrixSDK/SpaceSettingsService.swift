@@ -16,6 +16,7 @@
 
 import Foundation
 import Combine
+import MatrixSDK
 
 @available(iOS 14.0, *)
 class SpaceSettingsService: SpaceSettingsServiceProtocol {
@@ -169,7 +170,7 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
         addressValidationOperation = nil
 
         guard let userDefinedAddress = self.userDefinedAddress, !userDefinedAddress.isEmpty else {
-            let fullAddress = defaultAddress.fullLocalAlias(with: session)
+            let fullAddress = MXTools.fullLocalAlias(from: defaultAddress, with: session)
 
             if let publicAddress = self.publicAddress, !publicAddress.isEmpty {
                 addressValidationSubject.send(.current(fullAddress))
@@ -185,7 +186,7 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
     }
     
     private func validate(_ aliasLocalPart: String) {
-        let fullAddress = aliasLocalPart.fullLocalAlias(with: session)
+        let fullAddress = MXTools.fullLocalAlias(from: aliasLocalPart, with: session)
 
         if let publicAddress = self.publicAddress, publicAddress == aliasLocalPart {
             self.addressValidationSubject.send(.current(fullAddress))
@@ -215,8 +216,14 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
             return
         }
         
-        self.publicAddress = roomState.canonicalAlias?.extractLocalAliasPart()
-        self.defaultAddress = self.publicAddress ?? roomState.name.toValidAliasLocalPart()
+        if let canonicalAlias = roomState.canonicalAlias {
+            let localAliasPart = MXTools.extractLocalAliasPart(from: canonicalAlias)
+            self.publicAddress = localAliasPart
+            self.defaultAddress = localAliasPart
+        } else {
+            self.publicAddress = nil
+            self.defaultAddress = MXTools.validAliasLocalPart(from: roomState.name)
+        }
         
         self.roomProperties = SpaceSettingsRoomProperties(
             name: roomState.name,
@@ -379,13 +386,13 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
     private func update(canonicalAlias: String) {
         updateCurrentTaskState(with: .started)
         
-        currentOperation = room?.addAlias(canonicalAlias.fullLocalAlias(with: session), completion: { [weak self] response in
+        currentOperation = room?.addAlias(MXTools.fullLocalAlias(from: canonicalAlias, with: session), completion: { [weak self] response in
             guard let self = self else { return }
             
             switch response {
             case .success:
                 if let publicAddress = self.publicAddress {
-                    self.currentOperation = self.room?.removeAlias(publicAddress.fullLocalAlias(with: self.session), completion: { [weak self] response in
+                    self.currentOperation = self.room?.removeAlias(MXTools.fullLocalAlias(from: publicAddress, with: self.session), completion: { [weak self] response in
                         guard let self = self else { return }
 
                         self.setup(canonicalAlias: canonicalAlias)
@@ -402,7 +409,7 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
     }
     
     private func setup(canonicalAlias: String) {
-        currentOperation = room?.setCanonicalAlias(canonicalAlias.fullLocalAlias(with: session), completion: { [weak self] response in
+        currentOperation = room?.setCanonicalAlias(MXTools.fullLocalAlias(from: canonicalAlias, with: session), completion: { [weak self] response in
             guard let self = self else { return }
             
             switch response {
