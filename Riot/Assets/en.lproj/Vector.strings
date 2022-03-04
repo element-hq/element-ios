@@ -619,7 +619,7 @@ Tap the + to start adding people.";
 "settings_labs_enable_ringing_for_group_calls" = "Ring for group calls";
 "settings_labs_enabled_polls" = "Polls";
 "settings_labs_enable_threads" = "Threaded messaging";
-"settings_labs_use_only_latest_profiles" = "Use only latest profiles";
+"settings_labs_use_only_latest_user_avatar_and_name" = "Show latest avatar and name for users in message history";
 
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";

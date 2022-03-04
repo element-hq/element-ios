@@ -205,13 +205,13 @@ final class RiotSettings: NSObject {
         return self.roomScreenEnableMessageBubbles ? .bubble : .plain
     }
 
-    /// A setting used to display the latest known profile (display name + avatar) in the timeline
-    /// for the sender, rather than the profile at the time of the event.
+    /// A setting used to display the latest known display name and avatar in the timeline
+    /// for both the sender and target, rather than the profile at the time of the event.
     ///
     /// Note: this is set up from Room perspective, which means that if a user updates their profile after
     /// leaving a Room, it will show up the latest profile used in the Room rather than the latest overall.
-    @UserDefault(key: "roomScreenUseOnlyLatestProfiles", defaultValue: BuildSettings.roomScreenUseOnlyLatestProfiles, storage: defaults)
-    var roomScreenUseOnlyLatestProfiles
+    @UserDefault(key: "roomScreenUseOnlyLatestUserAvatarAndName", defaultValue: BuildSettings.roomScreenUseOnlyLatestUserAvatarAndName, storage: defaults)
+    var roomScreenUseOnlyLatestUserAvatarAndName
     
     // MARK: - Room Contextual Menu
     

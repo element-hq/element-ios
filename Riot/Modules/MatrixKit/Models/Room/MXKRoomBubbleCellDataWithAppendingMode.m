@@ -48,9 +48,12 @@ static NSAttributedString *messageSeparator = nil;
         }
         
         // Check sender information
-        MXRoomState *profileRoomState = RiotSettings.shared.roomScreenUseOnlyLatestProfiles ? roomDataSource.roomState : roomState;
-        NSString *eventSenderName = [roomDataSource.eventFormatter senderDisplayNameForEvent:event withRoomState:profileRoomState];
-        NSString *eventSenderAvatar = [roomDataSource.eventFormatter senderAvatarUrlForEvent:event withRoomState:profileRoomState];
+        // If `roomScreenUseOnlyLatestUserAvatarAndName`is enabled, the avatar and name are
+        // displayed from the latest room state perspective rather than the historical.
+        MXRoomState *latestRoomState = roomDataSource.roomState;
+        MXRoomState *displayRoomState = RiotSettings.shared.roomScreenUseOnlyLatestUserAvatarAndName ? latestRoomState : roomState;
+        NSString *eventSenderName = [roomDataSource.eventFormatter senderDisplayNameForEvent:event withRoomState:displayRoomState];
+        NSString *eventSenderAvatar = [roomDataSource.eventFormatter senderAvatarUrlForEvent:event withRoomState:displayRoomState];
         if ((self.senderDisplayName || eventSenderName) &&
             ([self.senderDisplayName isEqualToString:eventSenderName] == NO))
         {

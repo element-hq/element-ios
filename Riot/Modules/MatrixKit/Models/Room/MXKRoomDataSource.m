@@ -4332,11 +4332,11 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 /**
  Refreshes the avatars and display names if needed. This has no effect
- if `roomScreenUseOnlyLatestProfiles` is disabled.
+ if `roomScreenUseOnlyLatestUserAvatarAndName` is disabled.
  */
 - (void)refreshProfilesIfNeeded
 {
-    if (RiotSettings.shared.roomScreenUseOnlyLatestProfiles)
+    if (RiotSettings.shared.roomScreenUseOnlyLatestUserAvatarAndName)
     {
         @synchronized (bubbles) {
             for (id<MXKRoomBubbleCellDataStoring> bubble in bubbles)

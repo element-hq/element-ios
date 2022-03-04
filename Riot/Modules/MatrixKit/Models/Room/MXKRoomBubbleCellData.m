@@ -58,8 +58,11 @@
             targetId = [event.type isEqualToString:kMXEventTypeStringRoomMember] ? event.stateKey : nil;
             roomId = roomDataSource.roomId;
 
-            MXRoomState *profileRoomState = RiotSettings.shared.roomScreenUseOnlyLatestProfiles ? roomDataSource.roomState : roomState;
-            [self setRoomState:profileRoomState];
+            // If `roomScreenUseOnlyLatestUserAvatarAndName`is enabled, the avatar and name are
+            // displayed from the latest room state perspective rather than the historical.
+            MXRoomState *latestRoomState = roomDataSource.roomState;
+            MXRoomState *displayRoomState = RiotSettings.shared.roomScreenUseOnlyLatestUserAvatarAndName ? latestRoomState : roomState;
+            [self setRoomState:displayRoomState];
             senderAvatarPlaceholder = nil;
             targetAvatarPlaceholder = nil;
 
