@@ -311,7 +311,7 @@ final class BuildSettings: NSObject {
     static var isRoomScreenEnableMessageBubblesByDefault: Bool {
         return self.roomScreenTimelineDefaultStyleIdentifier == .bubble
     }
-    static let roomScreenUseOnlyLatestProfiles: Bool = false
+    static let roomScreenUseOnlyLatestUserAvatarAndName: Bool = false
 
     /// Allow split view detail view stacking    
     static let allowSplitViewDetailsScreenStacking: Bool = true
