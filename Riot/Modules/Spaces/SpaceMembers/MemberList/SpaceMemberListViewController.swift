@@ -110,7 +110,7 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
             self?.cancelButtonAction()
         }
         
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+        self.navigationItem.leftBarButtonItem = cancelBarButtonItem
         
         self.titleView = MainTitleView()
         self.titleView.titleLabel.text = VectorL10n.roomDetailsPeople

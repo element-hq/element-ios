@@ -110,7 +110,7 @@ final class RoomAccessCoordinator: Coordinator {
     }
 
     private func createRoomAccessTypeCoordinator() -> RoomAccessTypeChooserCoordinator {
-        let coordinator: RoomAccessTypeChooserCoordinator = RoomAccessTypeChooserCoordinator(parameters: RoomAccessTypeChooserCoordinatorParameters(roomId: parameters.room.roomId, session: parameters.room.mxSession))
+        let coordinator: RoomAccessTypeChooserCoordinator = RoomAccessTypeChooserCoordinator(parameters: RoomAccessTypeChooserCoordinatorParameters(roomId: parameters.room.roomId, allowsRoomUpgrade: parameters.allowsRoomUpgrade, session: parameters.room.mxSession))
         coordinator.callback = { [weak self] result in
             guard let self = self else { return }
             

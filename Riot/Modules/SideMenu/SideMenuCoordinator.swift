@@ -66,6 +66,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     private var membersCoordinator: SpaceMembersCoordinator?
     private var createSpaceCoordinator: SpaceCreationCoordinator?
     private var createRoomCoordinator: CreateRoomCoordinator?
+    private var spaceSettingsCoordinator: Coordinator?
 
     // MARK: Public
 
@@ -297,8 +298,25 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         presentable.presentationController?.delegate = self
         toPresentable().present(presentable, animated: true, completion: nil)
         createRoomCoordinator.start()
-        self.add(childCoordinator: createRoomCoordinator)
         self.createRoomCoordinator = createRoomCoordinator
+    }
+    
+    @available(iOS 14.0, *)
+    private func showSpaceSettings(spaceId: String, session: MXSession) {
+        let coordinator = SpaceSettingsModalCoordinator(parameters: SpaceSettingsModalCoordinatorParameters(session: session, spaceId: spaceId))
+        coordinator.callback = { [weak self] result in
+            guard let self = self else { return }
+            
+            coordinator.toPresentable().dismiss(animated: true) {
+                self.spaceSettingsCoordinator = nil
+            }
+        }
+        
+        let presentable = coordinator.toPresentable()
+        presentable.presentationController?.delegate = self
+        toPresentable().present(presentable, animated: true, completion: nil)
+        coordinator.start()
+        self.spaceSettingsCoordinator = coordinator
     }
     
     // MARK: UserSessions management
@@ -405,7 +423,11 @@ extension SideMenuCoordinator: SpaceMenuPresenterDelegate {
             case .addSpace:
                 AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.spacesAddSpace, message: VectorL10n.spacesComingSoonDetail(AppInfo.current.displayName))
             case .settings:
-                AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.sideMenuActionSettings, message: VectorL10n.spacesComingSoonDetail(AppInfo.current.displayName))
+                if #available(iOS 14.0, *) {
+                    self.showSpaceSettings(spaceId: spaceId, session: session)
+                } else {
+                    AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.settingsTitle, message: VectorL10n.spacesComingSoonDetail(AppInfo.current.displayName))
+                }
             }
         }
     }
@@ -448,7 +470,6 @@ extension SideMenuCoordinator: SpaceMembersCoordinatorDelegate {
 extension SideMenuCoordinator: CreateRoomCoordinatorDelegate {
     func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didCreateNewRoom room: MXRoom) {
         coordinator.toPresentable().dismiss(animated: true) {
-            self.remove(childCoordinator: coordinator)
             self.createRoomCoordinator = nil
             self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
 
@@ -461,7 +482,6 @@ extension SideMenuCoordinator: CreateRoomCoordinatorDelegate {
     
     func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithIds roomIds: [String]) {
         coordinator.toPresentable().dismiss(animated: true) {
-            self.remove(childCoordinator: coordinator)
             self.createRoomCoordinator = nil
             self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
 
@@ -474,7 +494,6 @@ extension SideMenuCoordinator: CreateRoomCoordinatorDelegate {
 
     func createRoomCoordinatorDidCancel(_ coordinator: CreateRoomCoordinatorType) {
         coordinator.toPresentable().dismiss(animated: true) {
-            self.remove(childCoordinator: coordinator)
             self.createRoomCoordinator = nil
         }
     }
@@ -488,5 +507,6 @@ extension SideMenuCoordinator: UIAdaptivePresentationControllerDelegate {
         self.membersCoordinator = nil
         self.createSpaceCoordinator = nil
         self.createRoomCoordinator = nil
+        self.spaceSettingsCoordinator = nil
     }
 }

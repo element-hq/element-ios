@@ -76,8 +76,8 @@ class SpaceCreationSettingsViewModel: SpaceCreationSettingsViewModelType, SpaceC
             showRoomAddress: creationParameters.showAddress,
             defaultAddress: creationParameters.address ?? "",
             roomNameError: nil,
-            addressMessage: addressMessage(with: validationStatus),
-            isAddressValid: isAddressValid(with: validationStatus),
+            addressMessage: validationStatus.message,
+            isAddressValid: validationStatus.isValid,
             avatar: AvatarInput(mxContentUri: nil, matrixItemId: "", displayName: nil),
             avatarImage: creationParameters.userSelectedAvatar,
             bindings: bindings)
@@ -120,8 +120,8 @@ class SpaceCreationSettingsViewModel: SpaceCreationSettingsViewModelType, SpaceC
         case .updateRoomDefaultAddress(let defaultAddress):
             state.defaultAddress = defaultAddress
         case .updateAddressValidationStatus(let validationStatus):
-            state.addressMessage = Self.addressMessage(with: validationStatus)
-            state.isAddressValid = Self.isAddressValid(with: validationStatus)
+            state.addressMessage = validationStatus.message
+            state.isAddressValid = validationStatus.isValid
         case .updateAvatar(let avatar):
             state.avatar = avatar
         case .updateAvatarImage(let image):
@@ -160,27 +160,5 @@ class SpaceCreationSettingsViewModel: SpaceCreationSettingsViewModelType, SpaceC
     
     private func pickImage(from sourceRect: CGRect) {
         callback?(.pickImage(sourceRect))
-    }
-    
-    private static func addressMessage(with validationStatus: SpaceCreationSettingsAddressValidationStatus) -> String {
-        switch validationStatus {
-        case .none(let fullAddress):
-            return VectorL10n.spacesCreationAddressDefaultMessage(fullAddress)
-        case .valid(let fullAddress):
-            return VectorL10n.spacesCreationAddressDefaultMessage(fullAddress)
-        case .alreadyExists(let fullAddress):
-            return VectorL10n.spacesCreationAddressAlreadyExists(fullAddress)
-        case .invalidCharacters(let fullAddress):
-            return VectorL10n.spacesCreationAddressInvalidCharacters(fullAddress)
-        }
-    }
-    
-    private static func isAddressValid(with validationStatus: SpaceCreationSettingsAddressValidationStatus) -> Bool {
-        switch validationStatus {
-        case .none, .valid:
-            return true
-        default:
-            return false
-        }
     }
 }

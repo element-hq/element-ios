@@ -37,13 +37,13 @@ class MatrixItemChooserRoomRestrictedAllowedParentsDataSource: MatrixItemChooser
             guard let self = self  else { return }
             
             let joinRuleEvent = state?.stateEvents(with: .roomJoinRules)?.last
-            let allowContent: [[String: String]] = joinRuleEvent?.wireContent["allow"] as? [[String: String]] ?? []
+            let allowContent: [[String: String]] = joinRuleEvent?.wireContent[kMXJoinRulesContentKeyAllow] as? [[String: String]] ?? []
             self.allowedParentIds = allowContent.compactMap { allowDictionnary in
-                guard let type = allowDictionnary["type"], type == "m.room_membership" else {
+                guard let type = allowDictionnary[kMXJoinRulesContentKeyType], type == kMXEventTypeStringRoomMembership else {
                     return nil
                 }
                 
-                return allowDictionnary["room_id"]
+                return allowDictionnary[kMXJoinRulesContentKeyRoomId]
             }
 
             let ancestorsId = session.spaceService.ancestorsPerRoomId[self.roomId] ?? []

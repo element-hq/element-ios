@@ -71,4 +71,8 @@ typedef enum : NSUInteger {
 
 - (void)roomSettingsViewController:(RoomSettingsViewController *)controller didReplaceRoomWithReplacementId:(NSString *)newRoomId;
 
+- (void)roomSettingsViewControllerDidCancel:(RoomSettingsViewController *)controller;
+
+- (void)roomSettingsViewControllerDidComplete:(RoomSettingsViewController *)controller;
+
 @end

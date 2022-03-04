@@ -48,7 +48,7 @@ struct SpaceAvatarImage: View {
                 Image(uiImage: image)
                     .resizable()
                     .frame(width: CGFloat(size.rawValue), height: CGFloat(size.rawValue))
-                    .clipShape(Circle())
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
             }
         }
         .onChange(of: displayName, perform: { value in
