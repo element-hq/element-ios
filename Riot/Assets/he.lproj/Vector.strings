@@ -4,7 +4,7 @@
 // Call Bar
 "callbar_only_single_active" = "(%@) לחץ לחזרה לשיחה";
 "ok" = "או קיי";
-"done" = "סיימת";
+"done" = "הסתיים";
 "open" = "פתח";
 "less" = "פחות";
 "more" = "יותר";
@@ -139,3 +139,105 @@
 "title_home" = "בית";
 // String for App Store
 "store_short_description" = "צ'אט מבוזר מאובטח/Voip";
+
+// No VoIP support
+"no_voip_title" = "שיחה נכנסת";
+"share_extension_send_now" = "שלח עכשיו";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_backup_action" = "גיבוי";
+"sign_out_existing_key_backup_alert_sign_out_action" = "התנתק";
+
+// MARK: Sign out warning
+
+"sign_out_existing_key_backup_alert_title" = "האם אתה בטוח שאתה רוצה להתנתק?";
+"side_menu_action_settings" = "הגדרות";
+"side_menu_action_invite_friends" = "הזמן חברים";
+"side_menu_action_help" = "עזרה";
+"redact" = "הסר";
+"private" = "פרטי";
+"public" = "ציבורי";
+"emoji_picker_flags_category" = "דגלים";
+"emoji_picker_activity_category" = "פעילויות";
+
+// MARK: Emoji picker
+"emoji_picker_title" = "תגובות";
+"file_upload_error_unsupported_file_type_message" = "סוג הקובץ לא נתמך.";
+
+// MARK: File upload
+"file_upload_error_title" = "הקובץ הועלה";
+"event_formatter_message_deleted" = "ההודעה נמחקה";
+"event_formatter_group_call" = "שיחה קבוצתית";
+"event_formatter_call_end_call" = "סיום שיחה";
+"event_formatter_call_retry" = "נסה שוב";
+"event_formatter_call_answer" = "תשובה";
+"event_formatter_call_decline" = "דחה";
+"event_formatter_call_back" = "שיחה חוזרת";
+"event_formatter_call_connection_failed" = "התחברות נכשלה";
+"event_formatter_call_connecting" = "מתחבר…";
+"event_formatter_group_call_leave" = "עזוב";
+"event_formatter_group_call_join" = "הצטרף";
+"external_link_confirmation_title" = "בדוק שוב את הקישור";
+"media_type_accessibility_sticker" = "מדבקה";
+"media_type_accessibility_location" = "מיקום";
+"media_type_accessibility_video" = "וידאו";
+"media_type_accessibility_audio" = "קול";
+"media_type_accessibility_image" = "תמונה";
+"media_type_accessibility_file" = "קובץ";
+"start_voice_call" = "התחל שיחה קולית";
+"start_video_call" = "התחל שיחת וידאו";
+"settings_key_backup_button_delete" = "מחק גיבוי";
+"settings_key_backup_info_checking" = "בודק…";
+"settings_about" = "אודות";
+"settings_report_bug" = "דווח על תקלה";
+"settings_first_name" = "שם פרטי";
+"settings_user_interface" = "ממשק משתמש";
+"cancel_download" = "בטל הורדה";
+"directory_search_fail" = "איסוף המידע נכשל";
+"analytics_prompt_stop" = "הפסק לחלוק";
+"analytics_prompt_yes" = "כן, זה תקין";
+"analytics_prompt_not_now" = "לא עכשיו";
+"attachment_multiselection_original" = "גודל אמיתי";
+"auth_reset_password_success_message" = "סיסמת המערכת אופסה.\nכל החיבורים שלך נותקו ולא תקבל עידכונים.\nעלל מנת לאפשר קבל עידכונים יש צורך להתחבר למערכת מחדש.";
+"auth_softlogout_clear_data_sign_out_title" = "האם אתה בטוח ?";
+"auth_softlogout_clear_data_button" = "מחק את כל המידע";
+"auth_phone_placeholder" = "מספר טלפון";
+"auth_msisdn_validation_message" = "נשלח אליך SMS עם קוד הפעלה. אנא הכנס את הקוד מטה.";
+"auth_reset_password_missing_password" = "יש לעדכן סיסמא חדשה.";
+"auth_reset_password_error_unauthorized" = "אימות הדוא\"ל נכשל, אנא ודא שנכנסת ללינק שנלח אל תיבת הדוא\"ל שלך";
+"auth_reset_password_next_step_button" = "כתובת הדוא\"ל שלך אומתה";
+"auth_softlogout_clear_data" = "מחק מידע אישי";
+"auth_softlogout_clear_data_sign_out" = "התנתק";
+"auth_softlogout_sign_in" = "התחבר";
+"auth_softlogout_signed_out" = "נותקת מהשרת";
+"auth_recaptcha_message" = "המערכת רוצה לאמת שאתה לא רובוט";
+"auth_msisdn_validation_error" = "אין אפשרות לאמת את מספר הטלפון.";
+"auth_username_in_use" = "שם משתמש קיים";
+"auth_password_dont_match" = "הסיסמאות לא זהות";
+"auth_phone_in_use" = "מספר טלפון כבר בשימוש";
+"auth_email_in_use" = "כתובת דוא\"ל כבר בשימוש";
+"auth_missing_email_or_phone" = "חסר כתובת דוא\"ל או מספר טלפון";
+"auth_missing_phone" = "חסר מספר טלפון";
+"auth_missing_email" = "חסרה כתובת דוא\"ל";
+"auth_missing_password" = "חסרה סיסמא";
+"auth_invalid_phone" = "מספר טלפון לא תקין";
+"auth_invalid_email" = "כתובת דוא\"ל לא תקינה";
+"auth_invalid_password" = "סיסמא קצרה מדי (מינימום 6 תווים)";
+"auth_invalid_login_param" = "שם משתמש ו/או סיסמא אינם נכונים";
+"auth_repeat_password_placeholder" = "הכנס סיסמא שוב";
+"auth_optional_phone_placeholder" = "טלפון (אופציונלי)";
+"auth_email_placeholder" = "דוא\"ל";
+"auth_optional_email_placeholder" = "דוא\"ל (אופציונלי)";
+"auth_user_name_placeholder" = "שם משתמש";
+"auth_new_password_placeholder" = "סיסמא חדשה";
+"auth_password_placeholder" = "סיסמא";
+"auth_return_to_login" = "חזור למסך התחברות";
+"auth_send_reset_email" = "שלח מייל איפוס";
+"auth_skip" = "דלג";
+"auth_submit" = "אשר";
+"auth_register" = "הירשם";
+
+// Authentication
+"auth_login" = "התחבר";
+"onboarding_use_case_work_messaging" = "צוותים";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "צור חשבון";
