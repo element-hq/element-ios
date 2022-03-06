@@ -130,3 +130,12 @@
 "callbar_only_single_paused" = "שיחה מוחזקת";
 "callbar_active_and_multiple_paused" = "שיחה אחת פעילה (%@) · %@ שיחות מוחזקות";
 "callbar_active_and_single_paused" = "שיחה 1 פעילה (%@) · שיחה 1 מוחזקת";
+"enable" = "מאופשר";
+"off" = "כבוי";
+"on" = "דולק";
+"title_favourites" = "מועדפים";
+
+// Titles
+"title_home" = "בית";
+// String for App Store
+"store_short_description" = "צ'אט מבוזר מאובטח/Voip";
