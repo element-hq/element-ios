@@ -1672,7 +1672,7 @@
 "room_event_action_view_in_room" = "Afficher dans le salon";
 "home_context_menu_normal_priority" = "Priorité normale";
 "home_context_menu_low_priority" = "Basse priorité";
-"onboarding_use_case_title" = "À qui aller vous le plus parler ?";
+"onboarding_use_case_title" = "À qui allez-vous le plus parler ?";
 "onboarding_use_case_message" = "Nous allons vous aider à vous connecter.";
 "onboarding_use_case_personal_messaging" = "Famille et amis";
 "onboarding_use_case_work_messaging" = "Équipes";
