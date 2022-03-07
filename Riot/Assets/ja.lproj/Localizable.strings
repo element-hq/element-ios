@@ -53,7 +53,7 @@
 
 /** Key verification **/
 
-"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@は検証を求めています";
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@は認証を要求しています";
 
 /* New message indicator on a room */
 "MESSAGE_IN_X" = "%@ 内のメッセージ";
