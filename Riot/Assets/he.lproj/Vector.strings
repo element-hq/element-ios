@@ -476,3 +476,11 @@
 "key_verification_self_verify_unverified_sessions_alert_title" = "בדוק היכן אתה מחובר";
 "key_verification_self_verify_current_session_alert_validate_action" = "אמת";
 "key_verification_self_verify_current_session_alert_message" = "משתמשים אחרים עלולים שלא לבטוח בזה.";
+"onboarding_splash_page_4_message" = "אלמנט נהדר גם עבור מקום העבודה. היא זוכה לאמון על ידי הארגונים המאובטחים בעולם.";
+"onboarding_splash_page_4_title_no_pun" = "הודעות עבור הקבוצה שלך.";
+"onboarding_splash_page_3_message" = "מוצפן מקצה לקצה ואין צורך במספר טלפון. ללא פרסומות או עיבוד נתונים.";
+"onboarding_splash_page_3_title" = "הודעה מאובטחת.";
+"onboarding_splash_page_2_message" = "בחר היכן השיחות שלך נשמרות, מה שמעניק לך שליטה ועצמאות. מחובר דרך מטריקס.";
+"onboarding_splash_page_2_title" = "אתה בשליטה.";
+"onboarding_splash_page_1_message" = "תקשורת בטוחה ועצמאית המעניקה לך את אותה רמת פרטיות כמו שיחה פנים אל פנים בבית שלך.";
+"onboarding_splash_page_1_title" = "שייך לשיחות שלך.";
