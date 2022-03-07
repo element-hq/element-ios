@@ -65,7 +65,7 @@
 "auth_missing_email" = "メールアドレスが入力されていません";
 "auth_missing_phone" = "電話番号が入力されていません";
 "auth_missing_email_or_phone" = "メールアドレスまたは電話番号が入力されていません";
-"auth_email_in_use" = "このメールアドレスは既に使われています";
+"auth_email_in_use" = "このメールアドレスは既に使用されています";
 "auth_phone_in_use" = "この電話番号は既に使用されています";
 "auth_untrusted_id_server" = "この認証サーバーは信用されていません";
 "auth_password_dont_match" = "パスワードが一致しません";
@@ -323,7 +323,7 @@
 "settings_crypto_device_id" = "\nセッションID: ";
 "settings_crypto_device_key" = "\nセッションキー:\n";
 "settings_crypto_export" = "鍵をエクスポート";
-"settings_crypto_blacklist_unverified_devices" = "検証されたセッションのみで暗号化";
+"settings_crypto_blacklist_unverified_devices" = "認証されたセッションのみで暗号化";
 // Room Details
 "room_details_title" = "ルームの詳細";
 "room_details_people" = "メンバー";
@@ -363,7 +363,7 @@
 "room_details_advanced_enable_e2e_encryption" = "暗号化を有効にする（警告: 有効後にこれを無効にすることはできません！)";
 "room_details_advanced_e2e_encryption_enabled" = "このルームの発言は暗号化されています";
 "room_details_advanced_e2e_encryption_disabled" = "このルームの発言は暗号化されていません。";
-"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "検証されたセッションのみで暗号化";
+"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "認証されたセッションのみで暗号化";
 "room_details_fail_to_update_avatar" = "ルームのアイコン画像の更新に失敗";
 "room_details_fail_to_update_room_name" = "ルーム名の更新に失敗";
 "room_details_fail_to_update_topic" = "ルームの説明の更新に失敗";
@@ -531,9 +531,9 @@
 // Room key request dialog
 "e2e_room_key_request_title" = "暗号鍵の要求";
 "e2e_room_key_request_message_new_device" = "暗号鍵を要求している新しい端末 '%@' を追加しました。";
-"e2e_room_key_request_message" = "検証されていない端末 '%@' が暗号鍵を要求しています。";
-"e2e_room_key_request_start_verification" = "検証を始めます…";
-"e2e_room_key_request_share_without_verifying" = "検証せずに共有";
+"e2e_room_key_request_message" = "認証されていない端末 '%@' が暗号鍵を要求しています。";
+"e2e_room_key_request_start_verification" = "認証を始めます…";
+"e2e_room_key_request_share_without_verifying" = "認証せずに共有";
 "e2e_room_key_request_ignore_request" = "要求を無視";
 // GDPR
 "gdpr_consent_not_given_alert_message" = "%@ホームサーバーを引き続き使用するには、利用規約を確認して同意する必要があります。";
@@ -742,8 +742,8 @@
 "room_participants_action_security_status_loading" = "読み込んでいます…";
 "room_participants_action_security_status_warning" = "警告";
 "room_participants_action_security_status_complete_security" = "セキュリティーを確認";
-"room_participants_action_security_status_verify" = "検証";
-"room_participants_action_security_status_verified" = "検証済";
+"room_participants_action_security_status_verify" = "認証";
+"room_participants_action_security_status_verified" = "認証済";
 "room_participants_action_section_security" = "セキュリティー";
 "room_participants_start_new_chat_error_using_user_email_without_identity_server" = "IDサーバーが設定されていないため、メールアドレスを使って連絡先とチャットを開始することができません。";
 "room_participants_filter_room_members_for_dm" = "メンバーを絞り込む";
@@ -814,7 +814,7 @@
 "security_settings_user_password_description" = "アカウントのパスワードを入力して本人確認を行ってください";
 "security_settings_coming_soon" = "申し訳ありません。このアクションはElement iOSではまだ利用できません。他のMatrixクライアントを使って設定してください。将来的にはElement iOSでも実装される予定です。";
 "security_settings_complete_security_alert_message" = "現在のセッションのセキュリティーを完了させる必要があります。";
-"security_settings_blacklist_unverified_devices_description" = "全てのセッションを検証して、信頼できるものとしてマークしメッセージを送信します。";
+"security_settings_blacklist_unverified_devices_description" = "全てのセッションを認証して、信頼できるものとしてマークしメッセージを送信します。";
 "security_settings_blacklist_unverified_devices" = "信頼していないセッションにはメッセージを送信しない";
 "security_settings_advanced" = "上級者向け";
 "security_settings_export_keys_manually" = "手動で鍵をエクスポート";
@@ -842,7 +842,7 @@
 "settings_identity_server_no_is" = "IDサーバーが設定されていません";
 "settings_identity_server_description" = "上記で設定したIDサーバーを使って、自分の知り合いを発見したり、発見されたりすることができます。";
 "settings_discovery_three_pid_details_enter_sms_code_action" = "SMSアクティベーションコードを入力";
-"settings_discovery_three_pid_details_cancel_email_validation_action" = "メールの検証をキャンセル";
+"settings_discovery_three_pid_details_cancel_email_validation_action" = "メールの認証をキャンセル";
 "settings_discovery_three_pid_details_revoke_action" = "取り消し";
 "settings_discovery_three_pid_details_share_action" = "共有";
 "settings_discovery_three_pid_details_title_email" = "メールアドレスを管理";
@@ -876,13 +876,13 @@
 "settings_security" = "セキュリティー";
 "settings_three_pids_management_information_part3" = "";
 "settings_three_pids_management_information_part2" = "ディスカバリー";
-"store_full_description" = "Elementはまったく新しいメッセンジャーアプリです。\n\n1. あなた自身がプライバシーをコントロールすることを可能にします。\n2. Matrixネットワークにいる誰とでも通信できることはもちろん、Slackなどのアプリとの連携によって他のネットワークとも通信ができます。\n3. 広告、データマイニング、バックドア、ウォールドガーデンから、あなたを守ります。\n4. エンドツーエンド暗号化とクロス署名によってあなたを保護します。\n\nElementは分散型（非中央集権型）でオープンソースであるため、他のメッセンジャーアプリと完全に異なっています。\n\nElementでは、あなた自身がサーバーを運営することも、サーバーを選ぶこともできます。これによってあなたのデータと会話に関するプライバシーや所有権はあなた自身で管理できるようになります。さらに、Elementは開かれたネットワークにアクセスするので、Elementのユーザー以外とも話すことができます。しかもきわめて安全です。\n\nElementはMatrixーーオープンな分散型通信の標準規格ーーで動作するため、これら全てを実現することができています。\n\nElementでは、どのサーバーを使用するかを、ご自身でElementのアプリから決めることができます。\n\n1. 開発者がホストする matrix.org のパブリックサーバーで無料アカウントを取得する。\n2. あなた自身がサーバーを運営し、アカウントを管理する。\n3. Element Matrix Servicesのホスティングプラットフォームに加入し、カスタムサーバー上でアカウントを作る。\n\nなぜElementを選ぶべきなのか？\n\n自分のデータを、自分で所有: データやメッセージを保管する場所を自分で決めることができます。データを所有しコントロールするのは、あなた自身です。データを解析したり第三者にデータを渡したりする巨大IT企業ではありません。\n\nオープンなメッセージングとコラボレーション: Matrixネットワーク上の誰とでも、相手がElementや他のMatrixアプリを使っているか、さらにはSlack、IRC、XMPPのような他のメッセージングシステムを使っているかに関わらず、チャットをすることができます。\n\n非常に安全: 本物のエンド・ツー・エンドの暗号化（会話に参加している人だけがメッセージを復号化できる）と、会話参加者の真正性を確認するための相互署名を行います。\n\n包括的なコミュニケーション: メッセージング、音声およびビデオ通話、ファイル共有、画面共有、その他多くのインテグレーション、ボット、ウィジェットを提供します。ルームやコミュニティーを立ち上げて連絡を取り合い、物事をスムーズに成し遂げることができます。\n\nいつでも、どこにいても: 全ての端末とウェブ（https://app.element.io）でメッセージの履歴が同期されるため、どこにいても連絡を取ることができます。";
-"user_verification_session_details_additional_information_untrusted_other_user" = "ユーザーがこのセッションを信頼するまでは、セッションとの間で送受信されるメッセージには警告が表示されます。また、手動で検証することもできます。";
+"store_full_description" = "Elementはまったく新しいメッセンジャーアプリです。\n\n1. あなた自身がプライバシーをコントロールすることを可能にします。\n2. Matrixネットワークにいる誰とでもコミュニケーションできるだけでなく、Slackなどのアプリと連携すれば、他のネットワークともコミュニケーションを行うことができます。\n3. 広告、データマイニング、バックドア、ユーザーの囲い込みから、あなたを守ります。\n4. エンドツーエンド暗号化とクロス署名によってあなたを保護します。\n\nElementは分散型（非中央集権型）でオープンソースであるため、他のメッセンジャーアプリと完全に異なっています。\n\nElementでは、あなた自身がサーバーを運営することも、サーバーを選ぶこともできます。あなたのデータと会話に関するプライバシーや所有権は、あなた自身で管理できます。さらに、Elementは開かれたネットワークにアクセスするので、Elementのユーザー以外とも話すことができます。しかもきわめて安全です。\n\nElementはMatrixーーオープンな分散型通信の標準規格ーーで動作するため、これら全てを実現することができています。\n\nElementでは、どのサーバーを使用するかを、ご自身でElementのアプリから決めることができます。\n\n1. 開発者がホストする matrix.org のパブリックサーバーで無料アカウントを取得する。\n2. あなた自身がサーバーを運営し、アカウントを管理する。\n3. Element Matrix Servicesのホスティングプラットフォームに加入し、カスタムサーバー上でアカウントを作る。\n\nなぜElementを選ぶべきなのか？\n\n自分のデータを、自分で所有: データやメッセージを保管する場所を自分で決めることができます。データを所有しコントロールするのは、あなた自身です。データを解析したり第三者にデータを渡したりする巨大IT企業ではありません。\n\nオープンなメッセージングとコラボレーション: Matrixネットワーク上の誰とでも、相手がElementや他のMatrixアプリを使っているか、さらにはSlack、IRC、XMPPのような他のメッセージングシステムを使っているかに関わらず、チャットをすることができます。\n\n非常に安全: 本物のエンド・ツー・エンドの暗号化（会話に参加している人だけがメッセージを復号化できます）と、会話参加者の真正性を確認するためのクロス署名を行います。\n\n包括的なコミュニケーション: メッセージング、音声およびビデオ通話、ファイル共有、画面共有、その他多くの機能統合、ボット、ウィジェットを提供します。ルームやコミュニティーを立ち上げて連絡を取り合い、物事をスムーズに成し遂げましょう。\n\nいつでも、どこにいても: 全ての端末とウェブ（https://app.element.io）でメッセージの履歴が同期されるため、どこにいても連絡を取ることができます。";
+"user_verification_session_details_additional_information_untrusted_other_user" = "ユーザーがこのセッションを信頼するまでは、セッションとの間で送受信されるメッセージには警告が表示されます。また、手動で認証することもできます。";
 "user_verification_session_details_information_untrusted_other_user" = " 新しいセッションを使ってサインインしました:";
-"user_verification_session_details_information_untrusted_current_user" = "このセッションを検証することで、信頼できるものとしてマークし、暗号化されたメッセージへのアクセスを許可します。";
-"user_verification_session_details_information_trusted_other_user_part2" = " 検証済:";
+"user_verification_session_details_information_untrusted_current_user" = "このセッションを認証することで、信頼できるものとしてマークし、暗号化されたメッセージへのアクセスを許可します。";
+"user_verification_session_details_information_trusted_other_user_part2" = " 認証済:";
 "user_verification_session_details_information_trusted_other_user_part1" = "このセッションは安全なものとして信頼されています。なぜなら ";
-"user_verification_session_details_information_trusted_current_user" = "このセッションは、検証されたため安全なものとして信頼されています。";
+"user_verification_session_details_information_trusted_current_user" = "このセッションは、認証されたため安全なものとして信頼されています。";
 "user_verification_session_details_untrusted_title" = "信頼されていません";
 
 // Session details
@@ -907,7 +907,7 @@
 
 // Start
 
-"user_verification_start_verify_action" = "検証を開始";
+"user_verification_start_verify_action" = "認証を開始";
 "key_verification_scan_confirmation_scanned_device_information" = "もう一方の端末にも同じシールドが表示されていますか？";
 "key_verification_scan_confirmation_scanned_user_information" = "%@は同じシールドを表示していますか？";
 
@@ -923,20 +923,20 @@
 "key_verification_verify_qr_code_scan_other_code_success_message" = "QRコードの認証に成功しました。";
 "key_verification_verify_qr_code_scan_other_code_success_title" = "コードが有効になりました！";
 "key_verification_verify_qr_code_other_scan_my_code_title" = "相手がQRコードを読み取ってくれましたか？";
-"key_verification_verify_qr_code_start_emoji_action" = "絵文字による検証";
+"key_verification_verify_qr_code_start_emoji_action" = "絵文字による認証";
 "key_verification_verify_qr_code_cannot_scan_action" = "スキャンできませんか？";
 "key_verification_verify_qr_code_scan_code_action" = "コードをスキャン";
-"key_verification_verify_qr_code_emoji_information" = "絵文字の並びを比較して検証。";
+"key_verification_verify_qr_code_emoji_information" = "絵文字の並びを比較して認証。";
 "key_verification_verify_qr_code_information_other_device" = "以下のコードをスキャンして確認してください:";
 "key_verification_verify_qr_code_information" = "コードをスキャンして、お互いをしっかりと確認します。";
 
 // MARK: QR code
 
-"key_verification_verify_qr_code_title" = "スキャンして検証";
+"key_verification_verify_qr_code_title" = "スキャンして認証";
 
 // Incoming key verification request
 
-"key_verification_incoming_request_incoming_alert_message" = "%@は検証を求めています";
+"key_verification_incoming_request_incoming_alert_message" = "%@は認証を要求しています";
 "key_verification_tile_conclusion_warning_title" = "信頼されていないサインイン";
 "key_verification_tile_conclusion_done_title" = "認証済";
 "key_verification_tile_request_incoming_approval_decline" = "却下";
@@ -1031,8 +1031,8 @@
 // MARK: Verify
 
 "key_verification_verify_sas_title_emoji" = "絵文字の比較";
-"device_verification_self_verify_alert_validate_action" = "検証";
-"device_verification_self_verify_alert_message" = "ログインを検証してください：%@";
+"device_verification_self_verify_alert_validate_action" = "認証";
+"device_verification_self_verify_alert_message" = "ログインを認証してください：%@";
 
 // MARK: Self verification start
 
@@ -1175,7 +1175,7 @@
 "login_optional_field" = "オプション";
 "login_display_name_placeholder" = "表示名 (例 Bob Obson)";
 "login_email_info" = "メールアドレスを指定すると、他のユーザーがあなたをMatrixで簡単に見つけることができ、今後パスワードをリセットすることができます。";
-"login_prompt_email_token" = "メールの検証トークンを入力してください:";
+"login_prompt_email_token" = "メールの認証トークンを入力してください:";
 "login_error_title" = "ログインに失敗しました";
 "login_error_no_login_flow" = "このホームサーバーから認証情報を取得できませんでした";
 "login_error_do_not_support_login_flows" = "現在、このホームサーバーによって定義されたログインフローの一部または全てをサポートしていません";
@@ -1266,7 +1266,7 @@
 "settings" = "設定";
 "settings_enable_inapp_notifications" = "アプリ内通知を有効にする";
 "settings_enable_push_notifications" = "プッシュ通知を有効にする";
-"settings_enter_validation_token_for" = "%@の検証トークンを入力:";
+"settings_enter_validation_token_for" = "%@の認証トークンを入力:";
 "notification_settings_room_rule_title" = "ルーム: '%@'";
 // Devices
 "device_details_title" = "セッション情報\n";
@@ -1292,18 +1292,18 @@
 "room_event_encryption_info_device_unknown" = "未知のセッション\n";
 "room_event_encryption_info_device_name" = "名前\n";
 "room_event_encryption_info_device_id" = "ID\n";
-"room_event_encryption_info_device_verification" = "検証\n";
+"room_event_encryption_info_device_verification" = "認証\n";
 "room_event_encryption_info_device_fingerprint" = "Ed25519 fingerprint\n";
-"room_event_encryption_info_device_verified" = "検証済";
-"room_event_encryption_info_device_not_verified" = "検証されていない";
+"room_event_encryption_info_device_verified" = "認証済";
+"room_event_encryption_info_device_not_verified" = "認証されていない";
 "room_event_encryption_info_device_blocked" = "ブラックリストに載せた";
-"room_event_encryption_info_verify" = "検証しています…";
-"room_event_encryption_info_unverify" = "未検証";
+"room_event_encryption_info_verify" = "認証しています…";
+"room_event_encryption_info_unverify" = "未認証";
 "room_event_encryption_info_block" = "ブラックリスト";
 "room_event_encryption_info_unblock" = "ブラックでないリスト";
-"room_event_encryption_verify_title" = "セッション検証\n\n";
-"room_event_encryption_verify_message" = "このセッションが信頼できることを確認するには、他の方法（対面や電話など）で所有者に連絡し、セッションのユーザー設定で表示される鍵が以下の鍵と一致するかどうかを訪ねてください。\n\nセッション名: %@\nセッションID: %@\nセッションキー: %@\n\n一致する場合は、下の確認ボタンを押します。 それ以外の人がこのセッションを傍受している場合は、代わりにブラックリストボタンを押してください。\n\n将来この検証プロセスはより洗練されたものになります。";
-"room_event_encryption_verify_ok" = "検証";
+"room_event_encryption_verify_title" = "セッション認証\n\n";
+"room_event_encryption_verify_message" = "このセッションが信頼できることを確認するには、他の方法（対面や電話など）で所有者に連絡し、セッションのユーザー設定で表示される鍵が以下の鍵と一致するかどうかを訪ねてください。\n\nセッション名: %@\nセッションID: %@\nセッションキー: %@\n\n一致する場合は、下の確認ボタンを押します。 それ以外の人がこのセッションを傍受している場合は、代わりにブラックリストボタンを押してください。\n\n将来この認証プロセスはより洗練されたものになります。";
+"room_event_encryption_verify_ok" = "認証";
 // Account
 "account_save_changes" = "変更を保存";
 "account_link_email" = "リンクメール";
@@ -1550,7 +1550,7 @@
 "notice_room_history_visible_to_members_from_invited_point_for_dm" = "%@が今後のメッセージを「メンバーのみ （招待された時点以降）」閲覧可能に設定しました。";
 "notice_room_history_visible_to_members_for_dm" = "%@が今後のメッセージを「メンバーのみ」閲覧可能に設定しました。";
 "room_intro_cell_information_room_without_topic_sentence2_part2" = " と、このルームの目的が分かりやすくなります。";
-"room_intro_cell_information_room_without_topic_sentence2_part1" = "トピックを追加する";
+"room_intro_cell_information_room_without_topic_sentence2_part1" = "トピックを追加";
 "security_settings_secure_backup_restore" = "バックアップから復元";
 "settings_device_notifications" = "端末の通知";
 "settings_contacts_enable_sync" = "連絡先を探す";
