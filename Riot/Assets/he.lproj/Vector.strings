@@ -44,3 +44,81 @@
 "title_groups" = "קהילות";
 "title_rooms" = "חדרים";
 "title_people" = "אנשים";
+
+// Current session
+
+"key_verification_self_verify_current_session_alert_title" = "מאמת קישור זה";
+"device_verification_self_verify_start_waiting" = "ממתין…";
+"device_verification_self_verify_start_information" = "השתמש בקישור זה לאימות החדש שלך, מתן אישור זה יאפשר הצפנת הודעות.";
+"device_verification_self_verify_alert_validate_action" = "מאומת";
+
+// Mark: Incoming
+"device_verification_incoming_title" = "בקשת אימות נכנסת";
+"device_verification_start_use_legacy_action" = "השתמש באימות רגיל";
+"device_verification_start_verify_button" = "מתחיל באימות";
+
+// MARK: Start
+"device_verification_start_title" = "מאומת ע\"י השוואת תבנית טקסט קצרה";
+"device_verification_incoming_description_2" = "אימות קישור זה יסמן אותו כבטוח, ובנוסף ישמש את הקישור שלך כבטוח לאחרים.";
+"device_verification_self_verify_start_verify_action" = "מתחיל באימות";
+"device_verification_self_verify_alert_message" = "אשר את החיבור החדש שנכנס לחשבון שלך:%@";
+
+// MARK: Self verification start
+
+// New login
+"device_verification_self_verify_alert_title" = "התחברות חדשה. האם זה אתה?";
+"device_verification_start_use_legacy" = "לא מופיע כלום? לא כל המשתמשים תומכים עדיין באישור אינטראקטיבי. השתמש באישור רגיל.";
+"device_verification_start_wait_partner" = "ממתין לאישור העמית…";
+"device_verification_incoming_description_1" = "וודא שקישור זה מסומן כבטוח. קישורים בטוחים של משתתפים נותנים לך שקט משמעותי כאשר עושים שימוש בהודעה מוצפנת מקצה לקצה.";
+"device_verification_error_cannot_load_device" = "מידע הממשק לא יכול להיטען.";
+"device_verification_cancelled_by_me" = "האישור בוטל. סיבה: %@";
+"device_verification_cancelled" = "המשתתף המרוחק ביטל את האישור.";
+"device_verification_security_advice_number" = "השווה את המספרים, וודא שהם מופיעים באותו סדר.";
+"device_verification_security_advice_emoji" = "השווה את הסימן הייחודי, וודא שהם מופיעים בסדר הנכון.";
+"key_verification_user_title" = "אשר אותם";
+"key_verification_this_session_title" = "אשר חיבור זה";
+"key_verification_new_session_title" = "אשר את חיבורך החדש";
+
+// MARK: - Device Verification
+"key_verification_other_session_title" = "אשר חיבור";
+"sign_out_key_backup_in_progress_alert_cancel_action" = "אני אמתין";
+
+// Mark: - Side menu
+
+"side_menu_reveal_action_accessibility_label" = "לוח שמאלי";
+"user_avatar_view_accessibility_hint" = "שנה תוית משתמש";
+
+// Mark: - User avatar view
+
+"user_avatar_view_accessibility_label" = "תוית";
+"space_avatar_view_accessibility_hint" = "שנה תוית מרחב";
+
+// Mark: Avatar
+
+"space_avatar_view_accessibility_label" = "תוית";
+"space_public_join_rule" = "מרחב ציבורי";
+"space_private_join_rule" = "מרחב פרטי";
+"space_home_show_all_rooms" = "הראה את כל החדרים";
+"space_participants_action_ban" = "אסור ממרחב זה";
+"space_participants_action_remove" = "הוסר ממרחב זה";
+"spaces_coming_soon_detail" = "תכונה זו לא הוטמעה כאן, אבל היא בדרך. כרגע, אתה יכול לעשות זאת עם %@ במחשב שלך.";
+"spaces_invites_coming_soon_title" = "הזמנות יגיעו בקרוב";
+"spaces_add_rooms_coming_soon_title" = "הוספת חדרים תגיע בקרוב";
+"spaces_coming_soon_title" = "מגיע בקרוב";
+"spaces_no_member_found_detail" = "מחפש מישהו לא ב %@? בינתיים, אתה יכול להזמין אותם ל WEB או ל Desktop.";
+"spaces_no_room_found_detail" = "חלק מהתוצאות עלולות להיות חסויות מכיון שהן פרטיות ואתה צריך הזמנה להצטרף אליהן.";
+"spaces_suggested_room" = "מוצע";
+"space_tag" = "רווח";
+"ssl_cert_new_account_expl" = "אם מנהל המערכת אמר שזה צפוי, וודא שטביעת האצבע למטה תואמת את טביעת האצבע שסופקה על ידם.";
+"ssl_cert_not_trust" = "זה יכול להצביע על כך שמישהו מפריע בצורה זדונית לתעבורה שלך, או שהטלפון שלך לא סומך על התעודה שסופקה ע\"י השרת המרוחק.";
+"ssl_could_not_verify" = "לא יכול לאשר זהות שרת מרוחק.";
+"ssl_expected_existing_expl" = "התעודה שונתה מתעודה בטוחה קודמת לאחת שהיא לא בטוחה. השרת חידש כנראה את התעודה שלו. צור קשר עם מנהל המערכת לקבלת טביעת אצבע.";
+"ssl_logout_account" = "התנתק";
+"ssl_only_accept" = "קבל את התעודה רק אם מנהל המערכת פרסם טביעת אצבע התואמת את זו שמעל.";
+"ssl_remain_offline" = "התעלם";
+
+// unrecognized SSL certificate
+"ssl_trust" = "בטוח";
+"ssl_unexpected_existing_expl" = "התעודה שונתה מזו שאומתה ע\"י הטלפון שלך. זה חריג לחלוטין. מומלץ לך לא לקבל את התעודה החדשה הזו.";
+"start_chat" = "התחל צ'אט";
+"store_full_description" = "Element היא סוג חדש של אפליקציית הודעות ושיתוף :\n\n1. מאפשרת לך לשלוט ולשמור על פרטיותך.\n2. מאפשרת לך לתקשר עם כל אחד ברשת,  ואפילו מעבר לכך ע\"י שילוב אפליקציות כמו Slack\n3. מגנה עליך מפני פרסומות, כריית מידע ופרצות אחוריות.\n4. מגנה עליך ע\"י הצפנה מקצה לקצה,  תוך התחברות מוצלבת לווידוא אחרים.\n\nElement היא אפליקצית הודעות ושיתוף השונה לחלוטין מאפליקציות אחרות מכיון שהיא מבוזרת ועובדת  בקוד פתוח.\n\nElement  מאפשרת לך לעבוד כמשתמש עצמי או לבחור לעבוד כמשתמש אורח, כך שתהיה לך פרטיות, בעלות וניהול של המידע שלך. היא מאפשרת לך גישה פתוחה לרשת כך שאתה לא מדבר רק עם משתמשים אחרים במערכת ה Element. ובנוסף המערכת מאוד מאובטחת.\n\nElement מסוגלת לבצע כל זאת מכיון שהיא עובדת במטריצה - הסטנדרט עבור תקשורת פתוחה ומבוזרת.\n\nElement נותנת לך בקרה ע\"י כך שהיא מאפשרת לך לבחור מי יהיו המשתמשים בחדרי השיחה. מאפליקציית  Element אתה יכול לבחור את צורת ההתחברות בשלוש דרכים שונות:\n\n1. קבלת חשבון חינמי בשרת ציבורי  matrix.org\n2. הקמת חשבון משתמש עצמי על שרת אישי שלך.\n3. רישום והקמת חשבון על שרת אירוח של מערכת Element\n\nמדוע לבחור ב Element ?\n\nשלוט במידע שלך : אתה מחליט היכן לשמור את המידע שלך וההודעות שלך. אתה הבעלים והמנהל של המידע, ולא איזה ארגון ענק שכורה את המידע ומאפשר גישה לצד שלישי.\n\nפתיחת הודעות וחדרים: אתה יכול לדבר בחדרי הצ'אט עם כל אחד אחר ברשת, בין אם הם משתמשים ב Element או בכל אפליקציית מטריקס, ואפילו אם הם משתמשים במערכת הודעות שונה כגון Slack, IRC או XMPP.\n\nאבטחה מקסימלית: הצפנה קצה לקצה אמתית (רק אלו שנמצאים בשיחה יכולים לפענח את ההודעות), וחתימה מוצלבת ע\"מ לאשר את מכשירי המשתתפים בשיחות.\n\nתקשורת מלאה: הודעות, שיחות קול ווידאו, שיתוף קבצים, שיתוף מסכים, ומבחר של התקנות, בוטים ויישומים. בניית חדרים, קהילות, \"שמירה על קשר\" ומעקב ביצוע משימות.\n\nהיכן שאתה נמצא: הישאר בקשר היכן שאתה נמצא עם סנכרון מלא להודעות היסטוריות בכל המכשירים ובאתר בכתובת :  https://element.io/app";
