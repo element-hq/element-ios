@@ -18,7 +18,7 @@ import SwiftUI
 
 /// A type that describes an alert to be shown to the user.
 ///
-/// The alert info can be added to the view state and used as an alert's `item`:
+/// The alert info can be added to the view state bindings and used as an alert's `item`:
 /// ```
 /// MyView
 ///     .alert(item: $viewModel.alertInfo) { $0.alert }
@@ -60,12 +60,20 @@ extension AlertInfo {
         if let secondaryButton = secondaryButton {
             return Alert(title: Text(title),
                          message: messageText,
-                         primaryButton: .default(Text(primaryButton.title), action: primaryButton.action),
-                         secondaryButton: .default(Text(secondaryButton.title), action: secondaryButton.action))
+                         primaryButton: alertButton(for: primaryButton),
+                         secondaryButton: alertButton(for: secondaryButton))
         } else {
             return Alert(title: Text(title),
                          message: messageText,
-                         dismissButton: .default(Text(primaryButton.title), action: primaryButton.action))
+                         dismissButton: alertButton(for: primaryButton))
         }
+    }
+    
+    private func alertButton(for buttonParameters: (title: String, action: (() -> Void)?)) -> Alert.Button {
+        guard let action = buttonParameters.action else {
+            return .default(Text(buttonParameters.title))
+        }
+        
+        return .default(Text(buttonParameters.title), action: action)
     }
 }
