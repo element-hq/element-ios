@@ -48,7 +48,7 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
     
     private weak var masterPresentable: SplitViewMasterPresentable?
     private var detailNavigationController: UINavigationController?
-    private(set) var detailNavigationRouter: NavigationRouterType?
+    private var detailNavigationRouter: NavigationRouterType?
     
     private var selectedNavigationRouter: NavigationRouterType? {
         return self.masterPresentable?.selectedNavigationRouter
@@ -60,6 +60,8 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
     private var hasStartedOnce: Bool = false
     
     // MARK: Public
+    
+    private(set) var detailUserIndicatorPresenter: UserIndicatorTypePresenterProtocol?
     
     var childCoordinators: [Coordinator] = []
     
@@ -100,6 +102,10 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
             
             // Setup split view controller
             self.splitViewController.viewControllers = [tabBarCoordinator.toPresentable(), detailNavigationController]
+            
+            // Setup detail user indicator presenter
+            let presentingViewController = splitViewController.isCollapsed ? tabBarCoordinator.toPresentable() : detailNavigationController
+            detailUserIndicatorPresenter = UserIndicatorTypePresenter(presentingViewController: presentingViewController)
                     
             self.add(childCoordinator: tabBarCoordinator)
             

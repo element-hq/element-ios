@@ -415,13 +415,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                 displayConfig = .default
             }
             
-            var indicatorPresenter: UserIndicatorTypePresenterProtocol?
-            if let detailNavigation = splitViewMasterPresentableDelegate?.detailNavigationRouter?.toPresentable() {
-                indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: detailNavigation)
-            }
-            
             let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
-                                                                      userIndicatorPresenter: indicatorPresenter,
+                                                                      userIndicatorPresenter: splitViewMasterPresentableDelegate?.detailUserIndicatorPresenter,
                                                                       session: roomNavigationParameters.mxSession,
                                                                       roomId: roomNavigationParameters.roomId,
                                                                       eventId: roomNavigationParameters.eventId,
