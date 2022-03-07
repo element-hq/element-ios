@@ -76,7 +76,7 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        Analytics.shared.trackScreen(.spaceMembers)
+        AnalyticsScreenTracker.trackScreen(.spaceMembers)
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {

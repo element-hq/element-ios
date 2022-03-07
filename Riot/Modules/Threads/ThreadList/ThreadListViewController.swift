@@ -69,7 +69,7 @@ final class ThreadListViewController: UIViewController {
         super.viewWillAppear(animated)
         
         self.keyboardAvoider?.startAvoiding()
-        Analytics.shared.trackScreen(.threadList)
+        AnalyticsScreenTracker.trackScreen(.threadList)
     }
     
     override func viewDidDisappear(_ animated: Bool) {

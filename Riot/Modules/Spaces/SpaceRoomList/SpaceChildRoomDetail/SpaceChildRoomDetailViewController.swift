@@ -78,7 +78,7 @@ final class SpaceChildRoomDetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        Analytics.shared.trackScreen(.roomPreview)
+        AnalyticsScreenTracker.trackScreen(.roomPreview)
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {

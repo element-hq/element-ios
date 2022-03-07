@@ -578,11 +578,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     MXRoomSummary *summary = [self.mainSession roomWithRoomId:self.roomDataSource.roomId].summary;
     if (!summary || !summary.isJoined)
     {
-        [Analytics.shared trackScreen:AnalyticsScreenRoomPreview];
+        [AnalyticsScreenTracker trackScreen: AnalyticsScreenRoomPreview];
     }
     else
     {
-        [Analytics.shared trackScreen:AnalyticsScreenRoom];
+        [AnalyticsScreenTracker trackScreen: AnalyticsScreenRoom];
     }
 
     isAppeared = YES;

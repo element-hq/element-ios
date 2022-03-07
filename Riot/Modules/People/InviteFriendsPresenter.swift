@@ -57,7 +57,6 @@ final class InviteFriendsPresenter: NSObject {
         let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         
         self.present(activityViewController, animated: true)
-        Analytics.shared.trackScreen(.inviteFriends)
     }
     
     private func buildShareText(with userId: String) -> String {
@@ -75,6 +74,6 @@ final class InviteFriendsPresenter: NSObject {
         
         self.presentingViewController?.present(viewController, animated: animated, completion: nil)
         
-        Analytics.shared.trackScreen(.inviteFriends, duration: nil)
+        AnalyticsScreenTracker.trackScreen(.inviteFriends)
     }
 }

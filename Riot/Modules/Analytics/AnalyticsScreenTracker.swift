@@ -40,4 +40,10 @@ import Foundation
         Analytics.shared.trackScreen(screen)
     }
     
+    // MARK: static method
+    
+    static func trackScreen(_ screen: AnalyticsScreen) {
+        Analytics.shared.trackScreen(screen)
+    }
+    
 }
