@@ -148,6 +148,9 @@ targets:
     - path: Assets/sv.lproj/InfoPlist.strings
     - path: Assets/sv.lproj/Localizable.strings
     - path: Assets/sv.lproj/Vector.strings
+    - path: Assets/uk.lproj/InfoPlist.strings
+    - path: Assets/uk.lproj/Localizable.strings
+    - path: Assets/uk.lproj/Vector.strings
     - path: Assets/vi.lproj/InfoPlist.strings
     - path: Assets/vi.lproj/Localizable.strings
     - path: Assets/vi.lproj/Vector.strings
