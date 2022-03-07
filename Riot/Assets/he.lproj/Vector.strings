@@ -104,7 +104,7 @@
 "spaces_coming_soon_detail" = "תכונה זו לא הוטמעה כאן, אבל היא בדרך. כרגע, אתה יכול לעשות זאת עם %@ במחשב שלך.";
 "spaces_invites_coming_soon_title" = "הזמנות יגיעו בקרוב";
 "spaces_add_rooms_coming_soon_title" = "הוספת חדרים תגיע בקרוב";
-"spaces_coming_soon_title" = "מגיע בקרוב";
+"spaces_coming_soon_title" = "יגיע בקרוב";
 "spaces_no_member_found_detail" = "מחפש מישהו לא ב %@? בינתיים, אתה יכול להזמין אותם ל WEB או ל Desktop.";
 "spaces_no_room_found_detail" = "חלק מהתוצאות עלולות להיות חסויות מכיון שהן פרטיות ואתה צריך הזמנה להצטרף אליהן.";
 "spaces_suggested_room" = "מוצע";
@@ -484,3 +484,9 @@
 "onboarding_splash_page_2_title" = "אתה בשליטה.";
 "onboarding_splash_page_1_message" = "תקשורת בטוחה ועצמאית המעניקה לך את אותה רמת פרטיות כמו שיחה פנים אל פנים בבית שלך.";
 "onboarding_splash_page_1_title" = "שייך לשיחות שלך.";
+"spaces_left_panel_title" = "מרחבים";
+"spaces_no_result_found_title" = "אין ממצאים";
+"spaces_empty_space_detail" = "חלק מהחדרים לא מופיעים בגלל שהם פרטיים, יש צורך בהזמנה להצטרף אליהם.";
+"spaces_empty_space_title" = "למרחב הזה אין עדיין חדרים";
+"space_beta_announce_title" = "בקרוב - מרחבים";
+"space_feature_unavailable_subtitle" = "מרחבים עדיין לא קיימים עבור iOS, אפשר להשתמש בהם בממשק ה WEB והמחשב";
