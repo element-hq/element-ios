@@ -76,10 +76,10 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
         state.showLoadingIndicator = false
         
         if let error = error {
-            state.bindings.alertInfo = ErrorAlertInfo(id: error,
-                                                      title: VectorL10n.locationSharingPostFailureTitle,
-                                                      message: VectorL10n.locationSharingPostFailureSubtitle(AppInfo.current.displayName),
-                                                      primaryButton: (VectorL10n.ok, nil))
+            state.bindings.alertInfo = AlertInfo(id: error,
+                                                 title: VectorL10n.locationSharingPostFailureTitle,
+                                                 message: VectorL10n.locationSharingPostFailureSubtitle(AppInfo.current.displayName),
+                                                 primaryButton: (VectorL10n.ok, nil))
         }
     }
     
@@ -96,18 +96,18 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
         
         switch error {
         case .failedLoadingMap:
-            state.bindings.alertInfo = ErrorAlertInfo(id: .mapLoadingError,
-                                                      title: VectorL10n.locationSharingLoadingMapErrorTitle(AppInfo.current.displayName),
-                                                      primaryButton: (VectorL10n.ok, primaryButtonCompletion))
+            state.bindings.alertInfo = AlertInfo(id: .mapLoadingError,
+                                                 title: VectorL10n.locationSharingLoadingMapErrorTitle(AppInfo.current.displayName),
+                                                 primaryButton: (VectorL10n.ok, primaryButtonCompletion))
         case .failedLocatingUser:
-            state.bindings.alertInfo = ErrorAlertInfo(id: .userLocatingError,
-                                                      title: VectorL10n.locationSharingLocatingUserErrorTitle(AppInfo.current.displayName),
-                                                      primaryButton: (VectorL10n.ok, primaryButtonCompletion))
+            state.bindings.alertInfo = AlertInfo(id: .userLocatingError,
+                                                 title: VectorL10n.locationSharingLocatingUserErrorTitle(AppInfo.current.displayName),
+                                                 primaryButton: (VectorL10n.ok, primaryButtonCompletion))
         case .invalidLocationAuthorization:
-            state.bindings.alertInfo = ErrorAlertInfo(id: .authorizationError,
-                                                      title: VectorL10n.locationSharingInvalidAuthorizationErrorTitle(AppInfo.current.displayName),
-                                                      primaryButton: (VectorL10n.locationSharingInvalidAuthorizationNotNow, primaryButtonCompletion),
-                                                      secondaryButton: (VectorL10n.locationSharingInvalidAuthorizationSettings, {
+            state.bindings.alertInfo = AlertInfo(id: .authorizationError,
+                                                 title: VectorL10n.locationSharingInvalidAuthorizationErrorTitle(AppInfo.current.displayName),
+                                                 primaryButton: (VectorL10n.locationSharingInvalidAuthorizationNotNow, primaryButtonCompletion),
+                                                 secondaryButton: (VectorL10n.locationSharingInvalidAuthorizationSettings, {
                 if let applicationSettingsURL = URL(string:UIApplication.openSettingsURLString) {
                     UIApplication.shared.open(applicationSettingsURL)
                 }

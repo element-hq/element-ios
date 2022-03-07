@@ -58,7 +58,7 @@ struct LocationSharingViewState: BindableState {
 }
 
 struct LocationSharingViewStateBindings {
-    var alertInfo: ErrorAlertInfo<LocationSharingAlertType>?
+    var alertInfo: AlertInfo<LocationSharingAlertType>?
     var userLocation: CLLocationCoordinate2D?
 }
 

@@ -99,7 +99,7 @@ struct TimelinePollViewState: BindableState {
 }
 
 struct TimelinePollViewStateBindings {
-    var alertInfo: ErrorAlertInfo<TimelinePollAlertType>?
+    var alertInfo: AlertInfo<TimelinePollAlertType>?
 }
 
 enum TimelinePollAlertType {
