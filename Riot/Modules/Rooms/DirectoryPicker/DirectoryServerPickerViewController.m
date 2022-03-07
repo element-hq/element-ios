@@ -39,7 +39,7 @@
     id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
-@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+@property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
 @end
 
@@ -53,7 +53,7 @@
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenSwitchDirectory];
+    self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenSwitchDirectory];
 }
 
 - (void)destroy
@@ -158,12 +158,7 @@
     }];
 
     [dataSource loadData];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self.screenTimer start];
+    [self.screenTracker trackScreen];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -175,12 +170,6 @@
     }
 
     [super viewWillDisappear:animated];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self.screenTimer stop];
 }
 
 - (void)displayWithDataSource:(MXKDirectoryServersDataSource*)theDataSource

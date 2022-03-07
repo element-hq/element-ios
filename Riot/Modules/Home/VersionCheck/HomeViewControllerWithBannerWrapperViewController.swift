@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import MatrixSDK
 
 class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKViewControllerActivityHandling, BannerPresentationProtocol, MasterTabBarItemDisplayProtocol {
     
@@ -38,6 +39,13 @@ class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKVi
         fatalError("Not implemented")
     }
     
+    deinit {
+        homeViewController.willMove(toParent: nil)
+        homeViewController.view.removeFromSuperview()
+        homeViewController.removeFromParent()
+        homeViewController.didMove(toParent: nil)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -53,8 +61,16 @@ class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKVi
         view.vc_addSubViewMatchingParent(stackView)
 
         addChild(homeViewController)
+        homeViewController.willMove(toParent: self)
         stackView.addArrangedSubview(homeViewController.view)
         homeViewController.didMove(toParent: self)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        MXLog.debug("[AnalyticsScreenTimer] viewDidAppear called in HomeViewControllerWithBannerWrapperViewController")
+//        homeViewController.viewDidAppear(animated)
     }
     
     // MARK: - BannerPresentationProtocol

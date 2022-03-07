@@ -71,6 +71,12 @@ class SpaceMenuViewController: UIViewController {
         self.viewModel.viewDelegate = self
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        Analytics.shared.trackScreen(.spaceMenu)
+    }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.theme.statusBarStyle
     }

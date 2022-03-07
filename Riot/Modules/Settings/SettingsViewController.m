@@ -288,7 +288,7 @@ TableViewSectionsDelegate>
 @property (nonatomic) BOOL isPreparingIdentityService;
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 
-@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+@property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
 @end
 
@@ -323,7 +323,7 @@ TableViewSectionsDelegate>
     isResetPwdInProgress = NO;
     is3PIDBindingInProgress = NO;
     
-    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenSettings];
+    self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenSettings];
 }
 
 - (void)updateSections
@@ -795,6 +795,8 @@ TableViewSectionsDelegate>
 {
     [super viewWillAppear:animated];
     
+    [self.screenTracker trackScreen];
+
     // Refresh display
     [self refreshSettings];
 
@@ -823,8 +825,6 @@ TableViewSectionsDelegate>
     [self releasePushedViewController];
     
     [self.settingsDiscoveryTableViewSection reload];
-    
-    [self.screenTimer start];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -866,12 +866,6 @@ TableViewSectionsDelegate>
         [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
         kAppDelegateDidTapStatusBarNotificationObserver = nil;
     }
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self.screenTimer stop];
 }
 
 #pragma mark - Internal methods
