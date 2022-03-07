@@ -34,6 +34,7 @@ struct RoomAccessTypeChooser: View {
         listContent
             .waitOverlay(show: viewModel.isLoading, message: viewModel.waitingMessage, allowUserInteraction: false)
             .navigationTitle(VectorL10n.roomAccessSettingsScreenNavTitle)
+            .background(theme.colors.background.ignoresSafeArea())
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(VectorL10n.cancel) {
@@ -77,7 +78,7 @@ struct RoomAccessTypeChooser: View {
                 .padding(.top, 30)
             }
             .padding(.horizontal)
-        }.background(theme.colors.background)
+        }
     }
 }
 

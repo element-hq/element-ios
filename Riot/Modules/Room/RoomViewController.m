@@ -2260,12 +2260,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 - (void)notifyDelegateOnLeaveRoomIfNecessary {
     if (self.delegate)
     {
-        // Leaving room often triggers multiple events, incl local delegate callbacks as well as global notifications,
-        // which may lead to multiple identical UI changes (navigating to home, displaying notification etc).
-        // To avoid this, as soon as we notify the delegate the first time, we nilify it, preventing future messages
-        // from being passed along, assuming that after leaving a room there is nothing else to communicate to the delegate.
         [self.delegate roomViewControllerDidLeaveRoom:self];
-        self.delegate = nil;
     }
     else
     {

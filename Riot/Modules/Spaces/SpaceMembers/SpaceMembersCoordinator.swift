@@ -172,7 +172,7 @@ extension SpaceMembersCoordinator: SpaceMemberListCoordinatorDelegate {
                 return
             }
             
-            let coordinator = ContactsPickerCoordinator(session: self.parameters.session, room: spaceRoom, initialSearchText: nil, actualParticipants: nil, invitedParticipants: nil, userParticipant: nil, navigationRouter: self.navigationRouter)
+            let coordinator = ContactsPickerCoordinator(session: self.parameters.session, room: spaceRoom, initialSearchText: nil, actualParticipants: nil, invitedParticipants: nil, userParticipant: nil)
             coordinator.delegate = self
             coordinator.start()
             self.childCoordinators.append(coordinator)

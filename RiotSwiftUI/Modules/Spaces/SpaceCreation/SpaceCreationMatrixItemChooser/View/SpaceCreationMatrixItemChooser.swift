@@ -39,7 +39,7 @@ struct SpaceCreationMatrixItemChooser: View {
             }
             mainView
         }
-        .background(theme.colors.background)
+        .background(theme.colors.background.ignoresSafeArea())
         .navigationBarHidden(true)
     }
     

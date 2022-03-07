@@ -105,7 +105,7 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
             self.remove(childCoordinator: currentCoordinator)
         }
         
-        let summary = self.session.roomSummary(withRoomId: item.childInfo.childRoomId)
+        let summary = self.session.room(withRoomId: item.childInfo.childRoomId)?.summary
         let isJoined = summary?.isJoined ?? false
 
         if isJoined {
@@ -290,6 +290,14 @@ extension ExploreRoomCoordinator: SpaceExploreRoomCoordinatorDelegate {
     
     func spaceExploreRoomCoordinator(_ coordinator: SpaceExploreRoomCoordinatorType, inviteTo item: SpaceExploreRoomListItemViewData) {
         self.presentInviteScreen(forRoomWithId: item.childInfo.childRoomId)
+    }
+    
+    func spaceExploreRoomCoordinator(_ coordinator: SpaceExploreRoomCoordinatorType, didJoin item: SpaceExploreRoomListItemViewData) {
+        if item.childInfo.roomType == .space {
+            self.pushSpace(with: item)
+        } else {
+            self.navigateTo(roomWith: item.childInfo.childRoomId)
+        }
     }
 }
 

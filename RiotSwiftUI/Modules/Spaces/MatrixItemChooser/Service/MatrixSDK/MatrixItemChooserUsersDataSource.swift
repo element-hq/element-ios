@@ -22,7 +22,7 @@ class MatrixItemChooserUsersDataSource: MatrixItemChooserDataSource {
     func sections(with session: MXSession, completion: @escaping (Result<[MatrixListItemSectionData], Error>) -> Void) {
         completion(Result(catching: {
             [
-                MatrixListItemSectionData(title: nil, infoText: nil, items: session.users().map { user in
+                MatrixListItemSectionData(items: session.users().map { user in
                     MatrixListItemData(mxUser: user)
                 })
             ]

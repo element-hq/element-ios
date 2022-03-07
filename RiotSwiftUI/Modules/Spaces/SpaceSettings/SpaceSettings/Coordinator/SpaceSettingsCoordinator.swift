@@ -52,7 +52,9 @@ final class SpaceSettingsCoordinator: Coordinator, Presentable {
         let view = SpaceSettings(viewModel: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
         spaceSettingsViewModel = viewModel
-        spaceSettingsHostingController = VectorHostingController(rootView: view)
+        let controller = VectorHostingController(rootView: view)
+        controller.enableNavigationBarScrollEdgesAppearance = true
+        spaceSettingsHostingController = controller
     }
     
     // MARK: - Public

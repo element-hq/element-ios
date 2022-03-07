@@ -118,7 +118,7 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
         case .removeChild(let item):
             removeChild(withRoomId: item.childInfo.childRoomId)
         case .join(let item):
-            joinRoom(withRoomId: item.childInfo.childRoomId)
+            joinRoom(with: item)
         case .joinOpenedSpace:
             self.joinSpace()
         }
@@ -134,7 +134,7 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
             canSendSpaceStateEvents = false
         }
         
-        let roomSummary = session.roomSummary(withRoomId: itemData.childInfo.childRoomId)
+        let roomSummary = session.room(withRoomId: itemData.childInfo.childRoomId)?.summary
         let isJoined = roomSummary?.isJoined ?? false
 
         if itemData.childInfo.roomType == .space {
@@ -292,13 +292,14 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
         }
     }
     
-    private func joinRoom(withRoomId roomId: String) {
+    private func joinRoom(with itemData: SpaceExploreRoomListItemViewData) {
         self.update(viewState: .loading)
-        self.session.joinRoom(roomId) { [weak self] response in
+        self.session.joinRoom(itemData.childInfo.childRoomId) { [weak self] response in
             guard let self = self else { return }
             switch response {
             case .success:
                 self.update(viewState: .loaded(self.filteredItemDataList, self.hasMore))
+                self.coordinatorDelegate?.spaceExploreRoomViewModel(self, didJoin: itemData)
             case .failure(let error):
                 self.update(viewState: .error(error))
             }

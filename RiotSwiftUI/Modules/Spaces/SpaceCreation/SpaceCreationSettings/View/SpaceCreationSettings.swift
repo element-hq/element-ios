@@ -42,7 +42,7 @@ struct SpaceCreationSettings: View {
             }
             mainView
         }
-        .background(theme.colors.background)
+        .background(theme.colors.background.ignoresSafeArea())
         .navigationBarHidden(true)
     }
     
