@@ -43,7 +43,7 @@ struct SpaceCreationEmailInvites: View {
                 .animation(.easeInOut(duration: 0.2), value: viewModel.viewState.loading)
                 .waitOverlay(show: viewModel.viewState.loading)
         }
-        .background(theme.colors.background)
+        .background(theme.colors.background.ignoresSafeArea())
         .navigationBarHidden(true)
     }
     

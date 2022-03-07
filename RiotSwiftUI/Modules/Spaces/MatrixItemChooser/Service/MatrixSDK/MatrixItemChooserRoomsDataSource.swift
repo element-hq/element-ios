@@ -22,7 +22,7 @@ class MatrixItemChooserRoomsDataSource: MatrixItemChooserDataSource {
     func sections(with session: MXSession, completion: @escaping (Result<[MatrixListItemSectionData], Error>) -> Void) {
         completion(Result(catching: {
             [
-                MatrixListItemSectionData(title: nil, infoText: nil, items: session.rooms.compactMap { room in
+                MatrixListItemSectionData(items: session.rooms.compactMap { room in
                     if room.summary.roomType == .space || room.isDirect {
                         return nil
                     }

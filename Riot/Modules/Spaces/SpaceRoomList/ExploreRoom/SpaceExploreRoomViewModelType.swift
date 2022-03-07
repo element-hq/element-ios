@@ -28,6 +28,7 @@ protocol SpaceExploreRoomViewModelCoordinatorDelegate: AnyObject {
     func spaceExploreRoomViewModelDidAddRoom(_ viewModel: SpaceExploreRoomViewModelType)
     func spaceExploreRoomViewModel(_ viewModel: SpaceExploreRoomViewModelType, openSettingsOf item: SpaceExploreRoomListItemViewData)
     func spaceExploreRoomViewModel(_ viewModel: SpaceExploreRoomViewModelType, inviteTo item: SpaceExploreRoomListItemViewData)
+    func spaceExploreRoomViewModel(_ viewModel: SpaceExploreRoomViewModelType, didJoin item: SpaceExploreRoomListItemViewData)
 }
 
 /// Protocol describing the view model used by `SpaceExploreRoomViewController`

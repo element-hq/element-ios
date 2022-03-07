@@ -49,10 +49,20 @@ enum MatrixListItemDataType {
 }
 
 struct MatrixListItemSectionData {
-    let id = UUID().uuidString
+    let id: String
     let title: String?
     let infoText: String?
     let items: [MatrixListItemData]
+    
+    init(id: String = UUID().uuidString,
+         title: String? = nil,
+         infoText: String? = nil,
+         items: [MatrixListItemData] = []) {
+        self.id = id
+        self.title = title
+        self.infoText = infoText
+        self.items = items
+    }
 }
 
 extension MatrixListItemSectionData: Identifiable, Equatable {}

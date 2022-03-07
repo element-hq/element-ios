@@ -136,7 +136,7 @@ class MatrixItemChooserService: MatrixItemChooserServiceProtocol {
                     itemsProcessor.isItemIncluded($0) && ($0.id.lowercased().contains(lowercasedSearchText) || ($0.displayName ?? "").lowercased().contains(lowercasedSearchText))
                 }
             }
-            newSections.append(MatrixListItemSectionData(title: section.title, infoText: section.infoText, items: items))
+            newSections.append(MatrixListItemSectionData(id: section.id, title: section.title, infoText: section.infoText, items: items))
         }
         
         return newSections

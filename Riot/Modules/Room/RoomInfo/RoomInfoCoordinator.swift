@@ -247,4 +247,8 @@ extension RoomInfoCoordinator: RoomSettingsViewControllerDelegate {
     func roomSettingsViewController(_ controller: RoomSettingsViewController!, didReplaceRoomWithReplacementId newRoomId: String!) {
         self.delegate?.roomInfoCoordinator(self, didReplaceRoomWithReplacementId: newRoomId)
     }
+    
+    func roomSettingsViewControllerDidLeaveRoom(_ controller: RoomSettingsViewController!) {
+        self.delegate?.roomInfoCoordinatorDidLeaveRoom(self)
+    }
 }

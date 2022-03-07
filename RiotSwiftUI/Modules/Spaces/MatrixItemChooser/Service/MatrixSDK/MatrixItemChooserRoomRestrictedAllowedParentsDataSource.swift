@@ -50,7 +50,6 @@ class MatrixItemChooserRoomRestrictedAllowedParentsDataSource: MatrixItemChooser
             var sections = [
                 MatrixListItemSectionData(
                     title: VectorL10n.roomAccessSpaceChooserKnownSpacesSection(room.displayName ?? ""),
-                    infoText: nil,
                     items: ancestorsId.compactMap { spaceId in
                         guard let space = session.spaceService.getSpace(withId: spaceId) else {
                             return nil

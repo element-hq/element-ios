@@ -43,7 +43,7 @@ struct SpaceCreationPostProcess: View {
         .animation(.easeIn(duration: 0.2), value: viewModel.viewState.errorCount)
         .padding(EdgeInsets(top: 0, leading: 16, bottom: 24, trailing: 16))
         .navigationBarHidden(true)
-        .background(theme.colors.background)
+        .background(theme.colors.background.ignoresSafeArea())
         .frame(maxHeight: .infinity)
         .onAppear() {
             viewModel.send(viewAction: .runTasks)

@@ -94,6 +94,10 @@ extension SpaceExploreRoomCoordinator: SpaceExploreRoomViewModelCoordinatorDeleg
         }
     }
     
+    func spaceExploreRoomViewModel(_ coordinator: SpaceExploreRoomViewModelType, didJoin item: SpaceExploreRoomListItemViewData) {
+        self.delegate?.spaceExploreRoomCoordinator(self, didJoin: item)
+    }
+    
     private func showAddRoomMissingPermissionAlert() {
         let alert = UIAlertController(title: VectorL10n.spacesAddRoom, message: VectorL10n.spacesAddRoomMissingPermissionMessage, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: VectorL10n.ok, style: .default, handler: nil))

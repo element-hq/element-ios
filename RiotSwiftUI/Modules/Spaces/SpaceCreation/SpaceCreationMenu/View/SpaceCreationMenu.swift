@@ -59,7 +59,7 @@ struct SpaceCreationMenu: View {
             }
             .padding(EdgeInsets(top: 0, leading: 16, bottom: 24, trailing: 16))
         }
-        .background(theme.colors.background)
+        .background(theme.colors.background.ignoresSafeArea())
     }
     
     @ViewBuilder

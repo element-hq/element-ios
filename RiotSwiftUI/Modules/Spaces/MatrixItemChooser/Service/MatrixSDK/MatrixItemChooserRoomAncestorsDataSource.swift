@@ -29,7 +29,7 @@ class MatrixItemChooserRoomAncestorsDataSource: MatrixItemChooserDataSource {
         let ancestorsIds = session.spaceService.ancestorsPerRoomId[roomId] ?? []
         completion(Result(catching: {
             return [
-                MatrixListItemSectionData(title: VectorL10n.roomAccessSpaceChooserKnownSpacesSection(session.room(withRoomId: roomId)?.displayName ?? ""), infoText: nil, items: ancestorsIds.compactMap { spaceId in
+                MatrixListItemSectionData(title: VectorL10n.roomAccessSpaceChooserKnownSpacesSection(session.room(withRoomId: roomId)?.displayName ?? ""), items: ancestorsIds.compactMap { spaceId in
                     guard let space = session.spaceService.getSpace(withId: spaceId) else {
                         return nil
                     }

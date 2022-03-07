@@ -31,7 +31,7 @@ struct AddRoomSelector: View {
     
     var body: some View {
         MatrixItemChooser(viewModel: viewModel, listBottomPadding: nil)
-            .background(theme.colors.background)
+            .background(theme.colors.background.ignoresSafeArea())
             .navigationBarItems(leading: cancelButton, trailing: doneButton)
             .accentColor(theme.colors.accent)
     }

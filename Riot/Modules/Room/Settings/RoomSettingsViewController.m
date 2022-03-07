@@ -3667,7 +3667,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                            [self startActivityIndicator];
                                                            [self->mxRoom leave:^{
                                                                
-                                                               [[LegacyAppDelegate theDelegate] restoreInitialDisplay:nil];
+                                                               if (self.delegate) {
+                                                                   [self.delegate roomSettingsViewControllerDidLeaveRoom:self];
+                                                               } else {
+                                                                   [[LegacyAppDelegate theDelegate] restoreInitialDisplay:nil];
+                                                               }
                                                                
                                                            } failure:^(NSError *error) {
                                                                

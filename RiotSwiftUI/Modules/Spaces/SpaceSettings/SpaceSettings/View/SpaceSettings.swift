@@ -40,7 +40,7 @@ struct SpaceSettings: View {
                     .padding(.bottom, 32)
             }
         }
-        .background(theme.colors.navigation)
+        .background(theme.colors.navigation.ignoresSafeArea())
         .waitOverlay(show: viewModel.viewState.isLoading, allowUserInteraction: false)
         .ignoresSafeArea(.container, edges: .bottom)
         .frame(maxHeight: .infinity)
