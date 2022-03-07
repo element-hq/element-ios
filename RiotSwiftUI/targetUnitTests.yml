@@ -50,6 +50,7 @@ targets:
           PROVISIONING_PROFILE: $(RIOT_PROVISIONING_PROFILE)
           PROVISIONING_PROFILE_SPECIFIER: $(RIOT_PROVISIONING_PROFILE_SPECIFIER)
     sources:
+    - path: ../Riot/Modules/Analytics/AnalyticsScreen.swift
     - path: ../RiotSwiftUI/Modules
       includes:
       - "**/Test"

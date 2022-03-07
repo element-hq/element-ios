@@ -25,7 +25,9 @@ struct ScreenTrackerViewModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .onAppear {
+                #if canImport(MatrixSDK)
                 Analytics.shared.trackScreen(screen)
+                #endif
             }
     }
 }
