@@ -16,8 +16,14 @@
 
 import SwiftUI
 
-/// A type that describes an alert to be shown after an error occurred.
-struct ErrorAlertInfo<T: Hashable>: Identifiable {
+/// A type that describes an alert to be shown to the user.
+///
+/// The alert info can be added to the view state and used as an alert's `item`:
+/// ```
+/// MyView
+///     .alert(item: $viewModel.alertInfo) { $0.alert }
+/// ```
+struct AlertInfo<T: Hashable>: Identifiable {
     /// An identifier that can be used to distinguish one error from another.
     let id: T
     /// The alert's title.
@@ -30,7 +36,7 @@ struct ErrorAlertInfo<T: Hashable>: Identifiable {
     var secondaryButton: (title: String, action: (() -> Void)?)? = nil
 }
 
-extension ErrorAlertInfo where T == Int {
+extension AlertInfo where T == Int {
     /// Initialises the type with the title and message from an `NSError` along with the default Ok button.
     init?(error: NSError? = nil) {
         guard error?.domain != NSURLErrorDomain && error?.code != NSURLErrorCancelled else { return nil }
@@ -42,7 +48,7 @@ extension ErrorAlertInfo where T == Int {
 }
 
 @available(iOS 13.0, *)
-extension ErrorAlertInfo {
+extension AlertInfo {
     private var messageText: Text? {
         guard let message = message else { return nil }
         return Text(message)
