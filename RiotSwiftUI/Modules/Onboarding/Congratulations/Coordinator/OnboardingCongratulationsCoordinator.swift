@@ -17,7 +17,12 @@
 import SwiftUI
 
 struct OnboardingCongratulationsCoordinatorParameters {
-    let userId: String
+    let userSession: UserSession
+}
+
+enum OnboardingCongratulationsCoordinatorResult {
+    case personaliseProfile(UserSession)
+    case takeMeHome(UserSession)
 }
 
 final class OnboardingCongratulationsCoordinator: Coordinator, Presentable {
@@ -34,7 +39,7 @@ final class OnboardingCongratulationsCoordinator: Coordinator, Presentable {
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    var completion: ((OnboardingCongratulationsViewModelResult) -> Void)?
+    var completion: ((OnboardingCongratulationsCoordinatorResult) -> Void)?
     
     // MARK: - Setup
     
@@ -42,7 +47,7 @@ final class OnboardingCongratulationsCoordinator: Coordinator, Presentable {
     init(parameters: OnboardingCongratulationsCoordinatorParameters) {
         self.parameters = parameters
         
-        let viewModel = OnboardingCongratulationsViewModel(userId: parameters.userId)
+        let viewModel = OnboardingCongratulationsViewModel(userId: parameters.userSession.userId)
         let view = OnboardingCongratulationsScreen(viewModel: viewModel.context)
         onboardingCongratulationsViewModel = viewModel
         onboardingCongratulationsHostingController = VectorHostingController(rootView: view)
@@ -54,7 +59,13 @@ final class OnboardingCongratulationsCoordinator: Coordinator, Presentable {
         onboardingCongratulationsViewModel.completion = { [weak self] result in
             guard let self = self else { return }
             MXLog.debug("[OnboardingCongratulationsCoordinator] OnboardingCongratulationsViewModel did complete with result: \(result).")
-            self.completion?(result)
+            
+            switch result {
+            case .personaliseProfile:
+                self.completion?(.personaliseProfile(self.parameters.userSession))
+            case .takeMeHome:
+                self.completion?(.takeMeHome(self.parameters.userSession))
+            }
         }
     }
     

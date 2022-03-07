@@ -21,3 +21,10 @@
 "onboarding_congratulations_message" = "Your account\n%@\nhas been created.";
 "onboarding_congratulations_personalise_button" = "Personalise profile";
 "onboarding_congratulations_home_button" = "Take me home";
+
+"onboarding_display_name_title" = "Choose a display name";
+"onboarding_display_name_message" = "This will be shown when you send messages.";
+"onboarding_display_name_placeholder" = "Display Name";
+"onboarding_display_name_hint" = "You can change this later";
+"onboarding_display_name_save" = "Save and continue";
+"onboarding_display_name_skip" = "Skip this step";
