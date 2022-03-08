@@ -19,13 +19,13 @@
 "VIDEO_CONF_NAMED_FROM_USER" = "مُكالَمَة مَرئيَّة جَماعِيَّة مِن %@: %@";
 
 /* Incoming named voice conference invite from a specific person */
-"VOICE_CONF_NAMED_FROM_USER" = "مُحادَثَة جَماعِيَّة مِن %@: '%@'";
+"VOICE_CONF_NAMED_FROM_USER" = "مُكالَمَة جَماعِيَّة مِن %@: '%@'";
 
 /* Incoming unnamed video conference invite from a specific person */
 "VIDEO_CONF_FROM_USER" = "مُكالَمَة مَرئيَّة جَماعِيَّة مِن %@";
 
 /* Incoming unnamed voice conference invite from a specific person */
-"VOICE_CONF_FROM_USER" = "مُحادَثَة جَماعِيَّة مِن %@";
+"VOICE_CONF_FROM_USER" = "مُكالَمَة جَماعِيَّة مِن %@";
 
 /* Incoming one-to-one video call */
 "VIDEO_CALL_FROM_USER" = "مُكالَمَة مَرئيَّة مِن %@";
@@ -117,3 +117,54 @@
 
 /* A user added a Jitsi call to a room */
 "GROUP_CALL_STARTED" = "بَدَأت مُكالَمَةٌ جَماعِيَّة";
+
+/* A user's membership has updated in an unknown way */
+"USER_MEMBERSHIP_UPDATED" = "%@ حَدَثَ مَلَفه الشَخْصي";
+
+/* A user has change their avatar */
+"USER_UPDATED_AVATAR" = "%@ غَيْر صُّورَتِهم الرَّمزية";
+
+/* A user has change their name to a new name which we don't know */
+"GENERIC_USER_UPDATED_DISPLAYNAME" = "%@ غَيْر اسْمهم";
+
+/** Membership Updates **/
+
+/* A user has change their name to a new name */
+"USER_UPDATED_DISPLAYNAME" = "%@ غَيْر اسْمهم إلى %@";
+
+/* A user has reacted to a message, but the reaction content is unknown */
+"GENERIC_REACTION_FROM_USER" = "%@ أرسَلَ رَدّ فِعْلٍ";
+
+/** Reactions **/
+
+/* A user has reacted to a message, including the reaction e.g. "Alice reacted 👍". */
+"REACTION_FROM_USER" = "%@ أَبْدى رَدَّ فِعْلٍ %@";
+
+/* New file message from a specific person, not referencing a room. */
+"LOCATION_FROM_USER" = "%@ شارَكَ مَوقعهم";
+
+/* New file message from a specific person, not referencing a room. */
+"FILE_FROM_USER" = "%@ أرسَلَ مَلَفّ %@";
+
+/* New voice message from a specific person, not referencing a room. */
+"VOICE_MESSAGE_FROM_USER" = "%@ أرسَلَ رِسالة صَوتيَّة";
+
+/* New audio message from a specific person, not referencing a room. */
+"AUDIO_FROM_USER" = "%@ أرسَلَ مَلَفّ صَوتي %@";
+
+/* New video message from a specific person, not referencing a room. */
+"VIDEO_FROM_USER" = "%@ أرسَلَ مَقطَع مَرئي";
+
+/** Media Messages **/
+
+/* New image message from a specific person, not referencing a room. */
+"PICTURE_FROM_USER" = "%@ أَرسَلَ صورة";
+
+/* New message reply from a specific person in a named room. */
+"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ رَد في %@";
+
+/* New message reply from a specific person, not referencing a room. */
+"REPLY_FROM_USER_TITLE" = "%@ رَد";
+/** General **/
+
+"NOTIFICATION" = "إشعار";
