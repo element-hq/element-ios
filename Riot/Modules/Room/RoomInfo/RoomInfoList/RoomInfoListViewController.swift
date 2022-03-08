@@ -17,6 +17,8 @@
  */
 
 import UIKit
+import CommonKit
+import MatrixSDK
 
 final class RoomInfoListViewController: UIViewController {
     
@@ -38,9 +40,10 @@ final class RoomInfoListViewController: UIViewController {
     private var viewModel: RoomInfoListViewModelType!
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
-    private var activityPresenter: ActivityIndicatorPresenter!
+    private var indicatorPresenter: UserIndicatorTypePresenterProtocol!
+    private var loadingIndicator: UserIndicator?
     private var isRoomDirect: Bool = false
-    private var screenTimer = AnalyticsScreenTimer(screen: .roomDetails)
+    private var screenTracker = AnalyticsScreenTracker(screen: .roomDetails)
     
     private lazy var closeButton: CloseButton = {
         let button = CloseButton()
@@ -114,7 +117,9 @@ final class RoomInfoListViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.setupViews()
-        self.activityPresenter = ActivityIndicatorPresenter()
+        
+        self.indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: self)
+    
         self.errorPresenter = MXKErrorAlertPresentation()
         
         self.registerThemeServiceDidChangeThemeNotification()
@@ -129,9 +134,9 @@ final class RoomInfoListViewController: UIViewController {
         return self.theme.statusBarStyle
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        screenTimer.start()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        screenTracker.trackScreen()
     }
     
     override func viewDidLayoutSubviews() {
@@ -142,7 +147,7 @@ final class RoomInfoListViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        screenTimer.stop()
+        stopLoading()
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -262,17 +267,26 @@ final class RoomInfoListViewController: UIViewController {
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        loadingIndicator = indicatorPresenter.present(
+            .loading(
+                label: VectorL10n.roomParticipantsLeaveProcessing,
+                isInteractionBlocking: true
+            )
+        )
     }
     
     private func renderLoaded(viewData: RoomInfoListViewData) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        stopLoading()
         self.updateSections(with: viewData)
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        stopLoading()
         self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+    }
+    
+    private func stopLoading() {
+        loadingIndicator?.cancel()
     }
     
     // MARK: - Actions

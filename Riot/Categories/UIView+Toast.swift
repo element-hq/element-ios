@@ -60,7 +60,7 @@ extension UIView {
                   duration: TimeInterval = Constants.defaultDuration,
                   position: ToastPosition = Constants.defaultPosition,
                   additionalMargin: CGFloat = 0.0) {
-        let view = BasicToastView(withMessage: message, image: image)
+        let view = RectangleToastView(withMessage: message, image: image)
         vc_toast(view: view, duration: duration, position: position, additionalMargin: additionalMargin)
     }
     

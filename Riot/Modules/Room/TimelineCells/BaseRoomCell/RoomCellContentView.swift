@@ -212,9 +212,9 @@ extension RoomCellContentView: RoomCellReactionsDisplayable {
         self.reactionsContentView.vc_removeAllSubviews()
         
         // Update reactions alignment according to current decoration alignment
-        if let bubbleReactionsView = reactionsView as? BubbleReactionsView {
+        if let reactionsView = reactionsView as? RoomReactionsView {
             
-            let reactionsAlignment: BubbleReactionsViewAlignment
+            let reactionsAlignment: RoomReactionsViewAlignment
             
             switch self.decorationViewsAlignment {
             case .left:
@@ -223,7 +223,7 @@ extension RoomCellContentView: RoomCellReactionsDisplayable {
                 reactionsAlignment = .right
             }
                         
-            bubbleReactionsView.alignment = reactionsAlignment
+            reactionsView.alignment = reactionsAlignment
         }
         
         self.reactionsContentView.vc_addSubViewMatchingParent(reactionsView)

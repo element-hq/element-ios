@@ -24,6 +24,7 @@ struct DefaultNotificationSettings: View {
     var body: some View {
         NotificationSettings(viewModel: viewModel)
             .navigationBarTitle(VectorL10n.settingsDefault)
+            .track(screen: .settingsDefaultNotifications)
     }
 }
 

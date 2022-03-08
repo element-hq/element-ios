@@ -17,6 +17,7 @@
  */
 
 import UIKit
+import CommonKit
 
 @objcMembers
 final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
@@ -27,6 +28,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     private let parameters: TabBarCoordinatorParameters
     private let activityIndicatorPresenter: ActivityIndicatorPresenterType
+    private let indicatorPresenter: UserIndicatorTypePresenterProtocol
     
     // Indicate if the Coordinator has started once
     private var hasStartedOnce: Bool {
@@ -53,6 +55,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         return self.navigationRouter.modules.last is MasterTabBarController
     }
     
+    private var indicators = [UserIndicator]()
+    
     // MARK: Public
 
     // Must be used only internally
@@ -71,6 +75,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.navigationRouter = NavigationRouter(navigationController: masterNavigationController)
         self.masterNavigationController = masterNavigationController
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
+        self.indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: masterNavigationController)
     }
     
     // MARK: - Public methods
@@ -226,10 +231,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         homeViewController.tabBarItem.tag = Int(TABBAR_HOME_INDEX)
         homeViewController.tabBarItem.image = homeViewController.tabBarItem.image
         homeViewController.accessibilityLabel = VectorL10n.titleHome
-        
-        if BuildSettings.appActivityIndicators {
-            homeViewController.activityPresenter = AppActivityIndicatorPresenter(appNavigator: parameters.appNavigator)
-        }
+        homeViewController.indicatorPresenter = UserIndicatorPresenterWrapper(presenter: indicatorPresenter)
         
         let wrapperViewController = HomeViewControllerWithBannerWrapperViewController(viewController: homeViewController)        
         return wrapperViewController
@@ -239,6 +241,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let favouritesViewController: FavouritesViewController = FavouritesViewController.instantiate()
         favouritesViewController.tabBarItem.tag = Int(TABBAR_FAVOURITES_INDEX)
         favouritesViewController.accessibilityLabel = VectorL10n.titleFavourites
+        favouritesViewController.indicatorPresenter = UserIndicatorPresenterWrapper(presenter: indicatorPresenter)
         return favouritesViewController
     }
     
@@ -246,6 +249,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let peopleViewController: PeopleViewController = PeopleViewController.instantiate()
         peopleViewController.tabBarItem.tag = Int(TABBAR_PEOPLE_INDEX)
         peopleViewController.accessibilityLabel = VectorL10n.titlePeople
+        peopleViewController.indicatorPresenter = UserIndicatorPresenterWrapper(presenter: indicatorPresenter)
         return peopleViewController
     }
     
@@ -253,6 +257,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let roomsViewController: RoomsViewController = RoomsViewController.instantiate()
         roomsViewController.tabBarItem.tag = Int(TABBAR_ROOMS_INDEX)
         roomsViewController.accessibilityLabel = VectorL10n.titleRooms
+        roomsViewController.indicatorPresenter = UserIndicatorPresenterWrapper(presenter: indicatorPresenter)
         return roomsViewController
     }
     
@@ -409,7 +414,9 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             } else {
                 displayConfig = .default
             }
+            
             let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
+                                                                      userIndicatorPresenter: splitViewMasterPresentableDelegate?.detailUserIndicatorPresenter,
                                                                       session: roomNavigationParameters.mxSession,
                                                                       roomId: roomNavigationParameters.roomId,
                                                                       eventId: roomNavigationParameters.eventId,
@@ -575,24 +582,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.splitViewMasterPresentableDelegate?.splitViewMasterPresentableWantsToResetDetail(self)
     }
     
-    @available(iOS 14.0, *)
-    private func presentAnalyticsPrompt(with session: MXSession) {
-        let parameters = AnalyticsPromptCoordinatorParameters(session: session)
-        let coordinator = AnalyticsPromptCoordinator(parameters: parameters)
-        
-        coordinator.completion = { [weak self, weak coordinator] in
-            guard let self = self, let coordinator = coordinator else { return }
-            
-            self.navigationRouter.dismissModule(animated: true, completion: nil)
-            self.remove(childCoordinator: coordinator)
-        }
-        
-        add(childCoordinator: coordinator)
-        
-        navigationRouter.present(coordinator, animated: true)
-        coordinator.start()
-    }
-    
     // MARK: UserSessions management
     
     private func registerUserSessionsServiceNotifications() {
@@ -684,12 +673,6 @@ extension TabBarCoordinator: MasterTabBarControllerDelegate {
         
         self.masterTabBarController.navigationItem.leftBarButtonItem = sideMenuBarButtonItem
     }
-    
-    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, shouldPresentAnalyticsPromptForMatrixSession matrixSession: MXSession!) {
-        if #available(iOS 14.0, *) {
-            presentAnalyticsPrompt(with: matrixSession)
-        }
-    }
 }
 
 // MARK: - RoomCoordinatorDelegate
@@ -702,6 +685,9 @@ extension TabBarCoordinator: RoomCoordinatorDelegate {
     func roomCoordinatorDidLeaveRoom(_ coordinator: RoomCoordinatorProtocol) {
         // For the moment when a room is left, reset the split detail with placeholder
         self.resetSplitViewDetails()
+        indicatorPresenter
+            .present(.success(label: VectorL10n.roomParticipantsLeaveSuccess))
+            .store(in: &indicators)
     }
     
     func roomCoordinatorDidCancelRoomPreview(_ coordinator: RoomCoordinatorProtocol) {

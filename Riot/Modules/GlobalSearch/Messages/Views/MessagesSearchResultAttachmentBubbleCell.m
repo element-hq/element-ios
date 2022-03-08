@@ -46,7 +46,7 @@
             self.roomNameLabel.text = room.summary.displayname;
             if (!self.roomNameLabel.text.length)
             {
-                self.roomNameLabel.text = [MatrixKitL10n roomDisplaynameEmptyRoom];
+                self.roomNameLabel.text = [VectorL10n roomDisplaynameEmptyRoom];
             }
         }
         else

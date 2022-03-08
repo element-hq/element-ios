@@ -452,16 +452,16 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
  While sending, a fake event will be echoed in the messages list.
  Once complete, this local echo will be replaced by the event saved by the homeserver.
  
- @param eventIdToReply the id of event to reply.
+ @param eventToReply the event to reply.
  @param text the text to send.
  @param success A block object called when the operation succeeds. It returns
  the event id of the event generated on the homeserver
  @param failure A block object called when the operation fails.
  */
-- (void)sendReplyToEventWithId:(NSString*)eventIdToReply
-               withTextMessage:(NSString *)text
-                       success:(void (^)(NSString *))success
-                       failure:(void (^)(NSError *))failure;
+- (void)sendReplyToEvent:(MXEvent*)eventToReply
+         withTextMessage:(NSString *)text
+                 success:(void (^)(NSString *))success
+                 failure:(void (^)(NSError *))failure;
 
 /**
  Indicates if replying to the provided event is supported.
@@ -795,16 +795,16 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
 /**
  Replace a text in an event.
 
- @param eventId The eventId of event to replace.
+ @param event The event to replace.
  @param text The new message text.
  @param success A block object called when the operation succeeds. It returns
  the event id of the event generated on the homeserver.
  @param failure A block object called when the operation fails.
  */
-- (void)replaceTextMessageForEventWithId:(NSString *)eventId
-                         withTextMessage:(NSString *)text
-                                 success:(void (^)(NSString *eventId))success
-                                 failure:(void (^)(NSError *error))failure;
+- (void)replaceTextMessageForEvent:(MXEvent *)event
+                   withTextMessage:(NSString *)text
+                           success:(void (^)(NSString *eventId))success
+                           failure:(void (^)(NSError *error))failure;
 
 
 /**

@@ -27,12 +27,4 @@ protocol AppNavigatorProtocol {
     /// Navigate to a destination screen or a state
     /// Do not use protocol with associatedtype for the moment like presented here https://www.swiftbysundell.com/articles/navigation-in-swift/#where-to-navigator use a separate enum
     func navigate(to destination: AppNavigatorDestination)
-    
-    /// Add loading activity to an app-wide queue of other activitie
-    ///
-    /// If the queue is empty, the activity will be displayed immediately, otherwise it will be pending
-    /// until the previously added activities have completed / been cancelled.
-    ///
-    /// To remove an activity indicator, cancel or deallocate the returned `Activity`
-    func addLoadingActivity() -> Activity
 }

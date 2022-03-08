@@ -35,6 +35,7 @@ struct MentionsAndKeywordNotificationSettings: View {
             bottomSection: keywordSection
         )
         .navigationTitle(VectorL10n.settingsMentionsAndKeywords)
+        .track(screen: .settingsMentionsAndKeywords)
     }
 }
 

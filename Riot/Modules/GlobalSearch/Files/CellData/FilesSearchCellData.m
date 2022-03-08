@@ -103,7 +103,7 @@
             roomDisplayName = room.summary.displayname;
             if (!roomDisplayName.length)
             {
-                roomDisplayName = [MatrixKitL10n roomDisplaynameEmptyRoom];
+                roomDisplayName = [VectorL10n roomDisplaynameEmptyRoom];
             }
         }
         else

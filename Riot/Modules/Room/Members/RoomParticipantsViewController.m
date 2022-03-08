@@ -251,6 +251,8 @@
     
     // Refresh display
     [self refreshTableView];
+    
+    [self.screenTracker trackScreen];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -268,8 +270,6 @@
         [contactsPickerViewController destroy];
         contactsPickerViewController = nil;
     }
-    
-    [self.screenTimer start];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -284,12 +284,6 @@
     
     // cancel any pending search
     [self searchBarCancelButtonClicked:_searchBarView];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self.screenTimer stop];
 }
 
 - (void)withdrawViewControllerAnimated:(BOOL)animated completion:(void (^)(void))completion
@@ -1311,7 +1305,7 @@
                                                                message:message
                                                         preferredStyle:UIAlertControllerStyleAlert];
             
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                              style:UIAlertActionStyleCancel
                                                            handler:^(UIAlertAction * action) {
                                                                
@@ -1396,7 +1390,7 @@
                                                                        message:promptMsg
                                                                 preferredStyle:UIAlertControllerStyleAlert];
                     
-                    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+                    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                                      style:UIAlertActionStyleCancel
                                                                    handler:^(UIAlertAction * action) {
                                                                        
@@ -1445,7 +1439,7 @@
                                                                        message:[VectorL10n roomParticipantsRemoveThirdPartyInvitePromptMsg]
                                                                 preferredStyle:UIAlertControllerStyleAlert];
                     
-                    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+                    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                                      style:UIAlertActionStyleCancel
                                                                    handler:^(UIAlertAction * action) {
                                                                        
@@ -1517,7 +1511,7 @@
                                                        message:promptMsg
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        

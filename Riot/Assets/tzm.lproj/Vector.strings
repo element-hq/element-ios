@@ -12,3 +12,21 @@
 "invite" = "Ɣer";
 "remove" = "Kkes";
 "title_people" = "Midden";
+
+
+// MARK: - MatrixKit
+
+
+
+
+
+"notice_event_redacted_by" = " Sɣur %@";
+"yes" = "Yah";
+
+// Action
+"no" = "Uhu";
+/* *********************** */
+/*      iOS specific       */
+/* *********************** */
+
+"matrix" = "Matrix";

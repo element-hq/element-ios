@@ -514,11 +514,11 @@ NSString *const kMXKGroupCellIdentifier = @"kMXKGroupCellIdentifier";
     
     if (section == _groupInvitesSection)
     {
-        sectionTitle = [MatrixKitL10n groupInviteSection];
+        sectionTitle = [VectorL10n groupInviteSection];
     }
     else if (section == _joinedGroupsSection)
     {
-        sectionTitle = [MatrixKitL10n groupSection];
+        sectionTitle = [VectorL10n groupSection];
     }
     
     return sectionTitle;

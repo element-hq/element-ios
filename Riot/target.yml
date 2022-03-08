@@ -90,6 +90,7 @@ targets:
     - path: Assets/en.lproj/InfoPlist.strings
     - path: Assets/en.lproj/Localizable.strings
     - path: Assets/en.lproj/Vector.strings
+    - path: Assets/en.lproj/Untranslated.strings
     - path: Assets/eo.lproj/InfoPlist.strings
     - path: Assets/eo.lproj/Localizable.strings
     - path: Assets/eo.lproj/Vector.strings
@@ -147,6 +148,9 @@ targets:
     - path: Assets/sv.lproj/InfoPlist.strings
     - path: Assets/sv.lproj/Localizable.strings
     - path: Assets/sv.lproj/Vector.strings
+    - path: Assets/uk.lproj/InfoPlist.strings
+    - path: Assets/uk.lproj/Localizable.strings
+    - path: Assets/uk.lproj/Vector.strings
     - path: Assets/vi.lproj/InfoPlist.strings
     - path: Assets/vi.lproj/Localizable.strings
     - path: Assets/vi.lproj/Vector.strings

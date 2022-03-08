@@ -194,6 +194,5 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 - (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectRoomPreviewWithParameters:(RoomPreviewNavigationParameters*)roomPreviewNavigationParameters completion:(void (^)(void))completion;
 - (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectContact:(MXKContact*)contact withPresentationParameters:(ScreenPresentationParameters*)presentationParameters;
 - (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession presentationParameters:(ScreenPresentationParameters*)presentationParameters;
-- (void)masterTabBarController:(MasterTabBarController *)masterTabBarController shouldPresentAnalyticsPromptForMatrixSession:(MXSession*)matrixSession;
 
 @end

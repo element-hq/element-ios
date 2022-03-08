@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -89,25 +89,6 @@
                             <constraint firstItem="Fc3-Id-aaG" firstAttribute="top" secondItem="tjf-WP-vTl" secondAttribute="top" id="rLo-t4-61H"/>
                         </constraints>
                     </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gCG-UR-b2u">
-                        <rect key="frame" x="563" y="14" width="27" height="20"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ztl-w2-d20">
-                                <rect key="frame" x="11" y="1.5" width="5" height="17"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" red="1" green="0.119521145" blue="0.2069467156" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <accessibility key="accessibilityConfiguration" identifier="NoticeBadgeView"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="27" id="1PJ-E8-qkY"/>
-                            <constraint firstItem="Ztl-w2-d20" firstAttribute="centerX" secondItem="gCG-UR-b2u" secondAttribute="centerX" id="jzA-xv-12e"/>
-                            <constraint firstAttribute="height" constant="20" id="l2J-Uf-lxI"/>
-                            <constraint firstItem="Ztl-w2-d20" firstAttribute="centerY" secondItem="gCG-UR-b2u" secondAttribute="centerY" id="nQM-He-36A"/>
-                        </constraints>
-                    </view>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_verified" translatesAutoresizingMaskIntoConstraints="NO" id="hVY-f3-80Y">
                         <rect key="frame" x="50" y="42.5" width="11" height="13"/>
                         <accessibility key="accessibilityConfiguration" identifier="EncryptedRoomIcon"/>
@@ -122,10 +103,7 @@
                     <constraint firstItem="RX5-eD-c3c" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" constant="13" id="3EJ-qT-J8r"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="14" id="Pgp-JM-oQd"/>
                     <constraint firstItem="hVY-f3-80Y" firstAttribute="centerY" secondItem="dQt-mN-T6b" secondAttribute="centerY" id="RM0-3J-ihk"/>
-                    <constraint firstItem="gCG-UR-b2u" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="14" id="Vb6-hc-Bsk"/>
                     <constraint firstItem="dQt-mN-T6b" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="14" id="XFM-LG-4uJ"/>
-                    <constraint firstAttribute="trailing" secondItem="gCG-UR-b2u" secondAttribute="trailing" constant="10" id="Zf3-3f-SWg"/>
-                    <constraint firstItem="gCG-UR-b2u" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Lg1-xQ-AGn" secondAttribute="trailing" constant="4" id="e2Q-RZ-IF2"/>
                     <constraint firstAttribute="trailing" secondItem="tjf-WP-vTl" secondAttribute="trailing" constant="54" id="kFW-Fa-ibz"/>
                     <constraint firstItem="hVY-f3-80Y" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" constant="50" id="prx-bM-qUg"/>
                     <constraint firstAttribute="trailing" secondItem="dQt-mN-T6b" secondAttribute="trailing" id="t2m-pb-5zd"/>
@@ -144,7 +122,6 @@
                 <outlet property="lastEventDescription" destination="dQt-mN-T6b" id="MSz-h1-cAL"/>
                 <outlet property="leftButton" destination="Fc3-Id-aaG" id="cx4-98-B32"/>
                 <outlet property="leftButtonActivityIndicator" destination="CzJ-mZ-Ryu" id="4Jt-iD-QeD"/>
-                <outlet property="noticeBadgeView" destination="gCG-UR-b2u" id="hTT-qW-DMa"/>
                 <outlet property="rightButton" destination="lGf-lB-FsE" id="DDr-zp-yX9"/>
                 <outlet property="rightButtonActivityIndicator" destination="f3G-yI-qc9" id="4gn-jb-wdm"/>
                 <outlet property="roomAvatar" destination="RX5-eD-c3c" id="dIC-8p-inL"/>

@@ -348,7 +348,7 @@
     selectedAssets = [NSMutableArray array];
 
     // Update the nav buttons
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[MatrixKitL10n send] style:UIBarButtonItemStylePlain target:self action:@selector(onSelectionSend:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[VectorL10n send] style:UIBarButtonItemStylePlain target:self action:@selector(onSelectionSend:)];
     self.navigationItem.rightBarButtonItem.enabled = NO;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onSelectionCancel:)];
 }

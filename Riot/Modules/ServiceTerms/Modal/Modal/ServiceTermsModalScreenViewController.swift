@@ -313,7 +313,7 @@ extension ServiceTermsModalScreenViewController: ServiceTermsModalTableHeaderVie
         }
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: Bundle.mxk_localizedString(forKey: "ok"), style: .default))
+        alertController.addAction(UIAlertAction(title: VectorL10n.ok, style: .default))
         
         present(alertController, animated: true)
     }

@@ -43,11 +43,11 @@ final class UserInteractiveAuthenticationViewControllerFactory: NSObject {
             textField.keyboardType = .default
         }
         
-        alertController.addAction(UIAlertAction(title: MatrixKitL10n.cancel, style: .cancel, handler: { _ in
+        alertController.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: { _ in
             onCancelled()
         }))
         
-        alertController.addAction(UIAlertAction(title: MatrixKitL10n.ok, style: .default, handler: { _ in
+        alertController.addAction(UIAlertAction(title: VectorL10n.ok, style: .default, handler: { _ in
             
             guard let password = alertController.textFields?.first?.text else {
                 // Should not happen

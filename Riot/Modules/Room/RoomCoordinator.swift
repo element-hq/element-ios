@@ -18,6 +18,7 @@
 
 import Foundation
 import UIKit
+import CommonKit
 
 final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
 
@@ -29,6 +30,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     private let roomViewController: RoomViewController
     private let activityIndicatorPresenter: ActivityIndicatorPresenterType
     private var selectedEventId: String?
+    private var loadingIndicator: UserIndicator?
     
     private var roomDataSourceManager: MXKRoomDataSourceManager {
         return MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.parameters.session)
@@ -149,7 +151,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     private func loadRoom(withId roomId: String, completion: (() -> Void)?) {
 
         // Present activity indicator when retrieving roomDataSource for given room ID
-        self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
+        startLoading()
 
         let roomDataSourceManager: MXKRoomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.parameters.session)
 
@@ -160,7 +162,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
                 return
             }
 
-            self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+            self.stopLoading()
 
             if let roomDataSource = roomDataSource {
                 self.roomViewController.displayRoom(roomDataSource)
@@ -173,7 +175,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     private func loadRoom(withId roomId: String, andEventId eventId: String, completion: (() -> Void)?) {
 
         // Present activity indicator when retrieving roomDataSource for given room ID
-        self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
+        startLoading()
 
         // Open the room on the requested event
         RoomDataSource.load(withRoomId: roomId,
@@ -185,7 +187,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
                 return
             }
 
-            self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+            self.stopLoading()
 
             guard let roomDataSource = dataSource as? RoomDataSource else {
                 return
@@ -204,7 +206,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     private func loadRoom(withId roomId: String, andThreadId threadId: String, eventId: String?, completion: (() -> Void)?) {
         
         // Present activity indicator when retrieving roomDataSource for given room ID
-        self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
+        startLoading()
         
         // Open the thread on the requested event
         ThreadDataSource.load(withRoomId: roomId,
@@ -216,7 +218,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
                 return
             }
             
-            self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+            self.stopLoading()
             
             guard let threadDataSource = dataSource as? ThreadDataSource else {
                 return
@@ -311,6 +313,23 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         
         navigationRouter?.present(coordinator, animated: true)
         coordinator.start()
+    }
+    
+    private func startLoading() {
+        if let presenter = parameters.userIndicatorPresenter {
+            if loadingIndicator == nil {
+                MXLog.debug("[RoomCoordinator] Present loading indicator in a room: \(roomId ?? "unknown")")
+                loadingIndicator = presenter.present(.loading(label: VectorL10n.homeSyncing, isInteractionBlocking: false))
+            }
+        } else {
+            activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: true)
+        }
+    }
+    
+    private func stopLoading() {
+        MXLog.debug("[RoomCoordinator] Dismiss loading indicator in a room: \(roomId ?? "unknown")")
+        loadingIndicator = nil
+        activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
     }
 }
 
@@ -420,5 +439,17 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     
     func roomViewController(_ roomViewController: RoomViewController, didRequestEditForPollWithStart startEvent: MXEvent) {
         startEditPollCoordinator(startEvent: startEvent)
+    }
+    
+    func roomViewControllerCanDelegateUserIndicators(_ roomViewController: RoomViewController) -> Bool {
+        return parameters.userIndicatorPresenter != nil
+    }
+    
+    func roomViewControllerDidStartLoading(_ roomViewController: RoomViewController) {
+        startLoading()
+    }
+    
+    func roomViewControllerDidStopLoading(_ roomViewController: RoomViewController) {
+        stopLoading()
     }
 }

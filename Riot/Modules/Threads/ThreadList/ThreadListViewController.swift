@@ -69,6 +69,7 @@ final class ThreadListViewController: UIViewController {
         super.viewWillAppear(animated)
         
         self.keyboardAvoider?.startAvoiding()
+        AnalyticsScreenTracker.trackScreen(.threadList)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -290,6 +291,8 @@ final class ThreadListViewController: UIViewController {
     @objc
     private func filterButtonTapped(_ sender: UIBarButtonItem) {
         self.viewModel.process(viewAction: .showFilterTypes)
+
+        Analytics.shared.trackInteraction(.threadListFilterItem)
     }
     
     @IBAction private func longPressed(_ sender: UILongPressGestureRecognizer) {
@@ -355,6 +358,8 @@ extension ThreadListViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         
         viewModel.process(viewAction: .selectThread(indexPath.row))
+
+        Analytics.shared.trackInteraction(.threadListThreadItem)
     }
     
 }

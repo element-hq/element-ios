@@ -156,20 +156,35 @@ final class BuildSettings: NSObject {
     static let roomsAllowToJoinPublicRooms: Bool = true
     
     // MARK: - Analytics
-    #if DEBUG
-    /// Host to use for PostHog analytics during development. Set to nil to disable analytics in debug builds.
-    static let analyticsHost: String? = "https://posthog-poc.lab.element.dev"
-    /// Public key for submitting analytics during development. Set to nil to disable analytics in debug builds.
-    static let analyticsKey: String? = "rs-pJjsYJTuAkXJfhaMmPUNBhWliDyTKLOOxike6ck8"
-    #else
-    /// Host to use for PostHog analytics. Set to nil to disable analytics.
-    static let analyticsHost: String? = "https://posthog.hss.element.io"
-    /// Public key for submitting analytics. Set to nil to disable analytics.
-    static let analyticsKey: String? = "phc_Jzsm6DTm6V2705zeU5dcNvQDlonOR68XvX2sh1sEOHO"
-    #endif
     
-    /// The URL to open with more information about analytics terms.
-    static let analyticsTermsURL = URL(string: "https://element.io/cookie-policy")!
+    /// A type that represents how to set up the analytics module in the app.
+    ///
+    /// **Note:** Analytics are disabled by default for forks.
+    /// If you are maintaining a fork, set custom configurations.
+    struct AnalyticsConfiguration {
+        /// Whether or not analytics should be enabled.
+        let isEnabled: Bool
+        /// The host to use for PostHog analytics.
+        let host: String
+        /// The public key for submitting analytics.
+        let apiKey: String
+        /// The URL to open with more information about analytics terms.
+        let termsURL: URL
+    }
+    
+    #if DEBUG
+    /// The configuration to use for analytics during development. Set `isEnabled` to false to disable analytics in debug builds.
+    static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: BuildSettings.baseBundleIdentifier.starts(with: "im.vector.app"),
+                                                               host: "https://posthog-poc.lab.element.dev",
+                                                               apiKey: "rs-pJjsYJTuAkXJfhaMmPUNBhWliDyTKLOOxike6ck8",
+                                                               termsURL: URL(string: "https://element.io/cookie-policy")!)
+    #else
+    /// The configuration to use for analytics. Set `isEnabled` to false to disable analytics.
+    static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: BuildSettings.baseBundleIdentifier.starts(with: "im.vector.app"),
+                                                               host: "https://posthog.hss.element.io",
+                                                               apiKey: "phc_Jzsm6DTm6V2705zeU5dcNvQDlonOR68XvX2sh1sEOHO",
+                                                               termsURL: URL(string: "https://element.io/cookie-policy")!)
+    #endif
     
     
     // MARK: - Bug report
@@ -209,15 +224,6 @@ final class BuildSettings: NSObject {
     static let allowLocalContactsAccess: Bool = true
     
     static let allowInviteExernalUsers: Bool = true
-    
-    /// Whether a screen uses legacy local activity indicators or improved app-wide indicators
-    static var appActivityIndicators: Bool {
-        #if DEBUG
-        return false
-        #else
-        return false
-        #endif
-    }
     
     // MARK: - Side Menu
     static let enableSideMenu: Bool = true
@@ -305,6 +311,7 @@ final class BuildSettings: NSObject {
     static var isRoomScreenEnableMessageBubblesByDefault: Bool {
         return self.roomScreenTimelineDefaultStyleIdentifier == .bubble
     }
+    static let roomScreenUseOnlyLatestUserAvatarAndName: Bool = false
 
     /// Allow split view detail view stacking    
     static let allowSplitViewDetailsScreenStacking: Bool = true
@@ -361,6 +368,9 @@ final class BuildSettings: NSObject {
     // MARK: - Authentication Options
     static let authEnableRefreshTokens = false
     
+    // MARK: - Onboarding
+    static let onboardingShowAccountPersonalisation = false
+    
     // MARK: - Unified Search
     static let unifiedSearchScreenShowPublicDirectory = true
     
@@ -387,5 +397,18 @@ final class BuildSettings: NSObject {
         }
         
         return true
+    }
+    
+    static var liveLocationSharingEnabled: Bool {
+        guard #available(iOS 14, *) else {
+            return false
+        }
+        
+        guard self.locationSharingEnabled else {
+            return false
+        }
+        
+        // Do not enable live location sharing atm
+        return false
     }
 }

@@ -18,15 +18,22 @@ import AnalyticsEvents
 
 /// A tappable UI element that can be tracked in Analytics.
 @objc enum AnalyticsUIElement: Int {
-    case removeMe
+    case roomThreadListButton
+    case roomThreadSummaryItem
+    case threadListThreadItem
+    case threadListFilterItem
     
     /// The element name reported to the AnalyticsEvent.
     var name: AnalyticsEvent.Interaction.Name {
         switch self {
-        // Note: This is a test element that doesn't need to be captured.
-        // It can be removed when some elements are added that relate to mobile.
-        case .removeMe:
-            return .WebRoomSettingsLeaveButton
+        case .roomThreadListButton:
+            return .MobileRoomThreadListButton
+        case .roomThreadSummaryItem:
+            return .MobileRoomThreadSummaryItem
+        case .threadListThreadItem:
+            return .MobileThreadListThreadItem
+        case .threadListFilterItem:
+            return .MobileThreadListFilterItem
         }
     }
 }

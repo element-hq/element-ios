@@ -29,10 +29,10 @@ class SizableBaseRoomCell: BaseRoomCell, SizableBaseRoomCellType {
     
     private static let sizingViewHeightStore = SizingViewHeightStore()
     private static var sizingViews: [String: SizableBaseRoomCell] = [:]
-    private static let sizingReactionsView = BubbleReactionsView()
+    private static let sizingReactionsView = RoomReactionsView()
     
-    private static let reactionsViewSizer = BubbleReactionsViewSizer()
-    private static let reactionsViewModelBuilder = BubbleReactionsViewModelBuilder()
+    private static let reactionsViewSizer = RoomReactionsViewSizer()
+    private static let reactionsViewModelBuilder = RoomReactionsViewModelBuilder()
     
     private static let urlPreviewViewSizer = URLPreviewViewSizer()
 
@@ -126,11 +126,11 @@ class SizableBaseRoomCell: BaseRoomCell, SizableBaseRoomCellType {
         // Add reactions view height if needed
         if sizingView is RoomCellReactionsDisplayable,
             let roomBubbleCellData = cellData as? RoomBubbleCellData,
-            let bubbleReactionsViewModel = self.reactionsViewModelBuilder.buildForFirstVisibleComponent(of: roomBubbleCellData) {
+            let reactionsViewModel = self.reactionsViewModelBuilder.buildForFirstVisibleComponent(of: roomBubbleCellData) {
             
             let reactionWidth = sizingView.roomCellContentView?.reactionsContentView.frame.width ?? roomBubbleCellData.maxTextViewWidth
             
-            let reactionsHeight = self.reactionsViewSizer.height(for: bubbleReactionsViewModel, fittingWidth: reactionWidth)
+            let reactionsHeight = self.reactionsViewSizer.height(for: reactionsViewModel, fittingWidth: reactionWidth)
             height+=reactionsHeight
         }
 

@@ -56,11 +56,11 @@ static NSAttributedString *verticalWhitespace = nil;
     [super awakeFromNib];
     
     // Localize string
-    [_cancelButton setTitle:[MatrixKitL10n ok] forState:UIControlStateNormal];
-    [_cancelButton setTitle:[MatrixKitL10n ok] forState:UIControlStateHighlighted];
+    [_cancelButton setTitle:[VectorL10n ok] forState:UIControlStateNormal];
+    [_cancelButton setTitle:[VectorL10n ok] forState:UIControlStateHighlighted];
     
-    [_confirmVerifyButton setTitle:[MatrixKitL10n roomEventEncryptionVerifyOk] forState:UIControlStateNormal];
-    [_confirmVerifyButton setTitle:[MatrixKitL10n roomEventEncryptionVerifyOk] forState:UIControlStateHighlighted];
+    [_confirmVerifyButton setTitle:[VectorL10n roomEventEncryptionVerifyOk] forState:UIControlStateNormal];
+    [_confirmVerifyButton setTitle:[VectorL10n roomEventEncryptionVerifyOk] forState:UIControlStateHighlighted];
 }
 
 - (void)layoutSubviews
@@ -140,7 +140,7 @@ static NSAttributedString *verticalWhitespace = nil;
 {
     // Prepare the text view content
     NSMutableAttributedString *textViewAttributedString = [[NSMutableAttributedString alloc]
-                                                           initWithString:[MatrixKitL10n roomEventEncryptionInfoTitle]
+                                                           initWithString:[VectorL10n roomEventEncryptionInfoTitle]
                                                            attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
                                                                         NSFontAttributeName: [UIFont boldSystemFontOfSize:17]}];
 
@@ -183,7 +183,7 @@ static NSAttributedString *verticalWhitespace = nil;
         
         // Event information
         NSMutableAttributedString *eventInformationString = [[NSMutableAttributedString alloc]
-                                                             initWithString:[MatrixKitL10n roomEventEncryptionInfoEvent]
+                                                             initWithString:[VectorL10n roomEventEncryptionInfoEvent]
                                                              attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
                                                                           NSFontAttributeName: [UIFont boldSystemFontOfSize:15]}];
         [eventInformationString appendAttributedString:[MXKEncryptionInfoView verticalWhitespace]];
@@ -201,23 +201,23 @@ static NSAttributedString *verticalWhitespace = nil;
         
         if (!senderKey.length)
         {
-            senderKey = [MatrixKitL10n roomEventEncryptionInfoEventNone];
+            senderKey = [VectorL10n roomEventEncryptionInfoEventNone];
         }
         if (!claimedKey.length)
         {
-            claimedKey = [MatrixKitL10n roomEventEncryptionInfoEventNone];
+            claimedKey = [VectorL10n roomEventEncryptionInfoEventNone];
         }
         if (!algorithm.length)
         {
-            algorithm = [MatrixKitL10n roomEventEncryptionInfoEventUnencrypted];
+            algorithm = [VectorL10n roomEventEncryptionInfoEventUnencrypted];
         }
         if (!sessionId.length)
         {
-            sessionId = [MatrixKitL10n roomEventEncryptionInfoEventNone];
+            sessionId = [VectorL10n roomEventEncryptionInfoEventNone];
         }
         
         [eventInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                        initWithString:[MatrixKitL10n roomEventEncryptionInfoEventUserId]                                                        attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
+                                                        initWithString:[VectorL10n roomEventEncryptionInfoEventUserId]                                                        attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
                                                                      NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}]];
         [eventInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                         initWithString:senderId
@@ -226,7 +226,7 @@ static NSAttributedString *verticalWhitespace = nil;
         [eventInformationString appendAttributedString:[MXKEncryptionInfoView verticalWhitespace]];
         
         [eventInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                        initWithString:[MatrixKitL10n roomEventEncryptionInfoEventIdentityKey]
+                                                        initWithString:[VectorL10n roomEventEncryptionInfoEventIdentityKey]
                                                         attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
                                                                      NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}]];
         [eventInformationString appendAttributedString:[[NSMutableAttributedString alloc]
@@ -236,7 +236,7 @@ static NSAttributedString *verticalWhitespace = nil;
         [eventInformationString appendAttributedString:[MXKEncryptionInfoView verticalWhitespace]];
         
         [eventInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                        initWithString:[MatrixKitL10n roomEventEncryptionInfoEventFingerprintKey]
+                                                        initWithString:[VectorL10n roomEventEncryptionInfoEventFingerprintKey]
                                                         attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
                                                                      NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}]];
         [eventInformationString appendAttributedString:[[NSMutableAttributedString alloc]
@@ -246,7 +246,7 @@ static NSAttributedString *verticalWhitespace = nil;
         [eventInformationString appendAttributedString:[MXKEncryptionInfoView verticalWhitespace]];
         
         [eventInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                        initWithString:[MatrixKitL10n roomEventEncryptionInfoEventAlgorithm]
+                                                        initWithString:[VectorL10n roomEventEncryptionInfoEventAlgorithm]
                                                         attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
                                                                      NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}]];
         [eventInformationString appendAttributedString:[[NSMutableAttributedString alloc]
@@ -258,7 +258,7 @@ static NSAttributedString *verticalWhitespace = nil;
         if (decryptionError.length)
         {
             [eventInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                            initWithString:[MatrixKitL10n roomEventEncryptionInfoEventDecryptionError]
+                                                            initWithString:[VectorL10n roomEventEncryptionInfoEventDecryptionError]
                                                             attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
                                                                          NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}]];
             [eventInformationString appendAttributedString:[[NSMutableAttributedString alloc]
@@ -269,7 +269,7 @@ static NSAttributedString *verticalWhitespace = nil;
         }
         
         [eventInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                        initWithString:[MatrixKitL10n roomEventEncryptionInfoEventSessionId]
+                                                        initWithString:[VectorL10n roomEventEncryptionInfoEventSessionId]
                                                         attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
                                                                      NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}]];
         [eventInformationString appendAttributedString:[[NSMutableAttributedString alloc]
@@ -283,7 +283,7 @@ static NSAttributedString *verticalWhitespace = nil;
     
     // Device information
     NSMutableAttributedString *deviceInformationString = [[NSMutableAttributedString alloc]
-                                                          initWithString:[MatrixKitL10n roomEventEncryptionInfoDevice]
+                                                          initWithString:[VectorL10n roomEventEncryptionInfoDevice]
                                                           attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
                                                                        NSFontAttributeName: [UIFont boldSystemFontOfSize:15]}];
     [deviceInformationString appendAttributedString:[MXKEncryptionInfoView verticalWhitespace]];
@@ -304,41 +304,41 @@ static NSAttributedString *verticalWhitespace = nil;
             case MXDeviceUnverified:
             {
                 verification = [[NSMutableAttributedString alloc]
-                                initWithString:[MatrixKitL10n roomEventEncryptionInfoDeviceNotVerified]
+                                initWithString:[VectorL10n roomEventEncryptionInfoDeviceNotVerified]
                                 attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
                                              NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}];
                 
-                [_verifyButton setTitle:[MatrixKitL10n roomEventEncryptionInfoVerify] forState:UIControlStateNormal];
-                [_verifyButton setTitle:[MatrixKitL10n roomEventEncryptionInfoVerify] forState:UIControlStateHighlighted];
-                [_blockButton setTitle:[MatrixKitL10n roomEventEncryptionInfoBlock] forState:UIControlStateNormal];
-                [_blockButton setTitle:[MatrixKitL10n roomEventEncryptionInfoBlock] forState:UIControlStateHighlighted];
+                [_verifyButton setTitle:[VectorL10n roomEventEncryptionInfoVerify] forState:UIControlStateNormal];
+                [_verifyButton setTitle:[VectorL10n roomEventEncryptionInfoVerify] forState:UIControlStateHighlighted];
+                [_blockButton setTitle:[VectorL10n roomEventEncryptionInfoBlock] forState:UIControlStateNormal];
+                [_blockButton setTitle:[VectorL10n roomEventEncryptionInfoBlock] forState:UIControlStateHighlighted];
                 break;
             }
             case MXDeviceVerified:
             {
                 verification = [[NSMutableAttributedString alloc]
-                                initWithString:[MatrixKitL10n roomEventEncryptionInfoDeviceVerified]
+                                initWithString:[VectorL10n roomEventEncryptionInfoDeviceVerified]
                                 attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
                                              NSFontAttributeName: [UIFont systemFontOfSize:14]}];
                 
-                [_verifyButton setTitle:[MatrixKitL10n roomEventEncryptionInfoUnverify] forState:UIControlStateNormal];
-                [_verifyButton setTitle:[MatrixKitL10n roomEventEncryptionInfoUnverify] forState:UIControlStateHighlighted];
-                [_blockButton setTitle:[MatrixKitL10n roomEventEncryptionInfoBlock] forState:UIControlStateNormal];
-                [_blockButton setTitle:[MatrixKitL10n roomEventEncryptionInfoBlock] forState:UIControlStateHighlighted];
+                [_verifyButton setTitle:[VectorL10n roomEventEncryptionInfoUnverify] forState:UIControlStateNormal];
+                [_verifyButton setTitle:[VectorL10n roomEventEncryptionInfoUnverify] forState:UIControlStateHighlighted];
+                [_blockButton setTitle:[VectorL10n roomEventEncryptionInfoBlock] forState:UIControlStateNormal];
+                [_blockButton setTitle:[VectorL10n roomEventEncryptionInfoBlock] forState:UIControlStateHighlighted];
                 
                 break;
             }
             case MXDeviceBlocked:
             {
                 verification = [[NSMutableAttributedString alloc]
-                                initWithString:[MatrixKitL10n roomEventEncryptionInfoDeviceBlocked]
+                                initWithString:[VectorL10n roomEventEncryptionInfoDeviceBlocked]
                                 attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
                                              NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}];
                 
-                [_verifyButton setTitle:[MatrixKitL10n roomEventEncryptionInfoVerify] forState:UIControlStateNormal];
-                [_verifyButton setTitle:[MatrixKitL10n roomEventEncryptionInfoVerify] forState:UIControlStateHighlighted];
-                [_blockButton setTitle:[MatrixKitL10n roomEventEncryptionInfoUnblock] forState:UIControlStateNormal];
-                [_blockButton setTitle:[MatrixKitL10n roomEventEncryptionInfoUnblock] forState:UIControlStateHighlighted];
+                [_verifyButton setTitle:[VectorL10n roomEventEncryptionInfoVerify] forState:UIControlStateNormal];
+                [_verifyButton setTitle:[VectorL10n roomEventEncryptionInfoVerify] forState:UIControlStateHighlighted];
+                [_blockButton setTitle:[VectorL10n roomEventEncryptionInfoUnblock] forState:UIControlStateNormal];
+                [_blockButton setTitle:[VectorL10n roomEventEncryptionInfoUnblock] forState:UIControlStateHighlighted];
                 
                 break;
             }
@@ -347,7 +347,7 @@ static NSAttributedString *verticalWhitespace = nil;
         }
         
         [deviceInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                         initWithString:[MatrixKitL10n roomEventEncryptionInfoDeviceName]
+                                                         initWithString:[VectorL10n roomEventEncryptionInfoDeviceName]
                                                          attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
                                                                       NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}]];
         [deviceInformationString appendAttributedString:[[NSMutableAttributedString alloc]
@@ -357,7 +357,7 @@ static NSAttributedString *verticalWhitespace = nil;
         [deviceInformationString appendAttributedString:[MXKEncryptionInfoView verticalWhitespace]];
         
         [deviceInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                         initWithString:[MatrixKitL10n roomEventEncryptionInfoDeviceId]                                                             attributes:@{NSForegroundColorAttributeName: _defaultTextColor, NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}]];
+                                                         initWithString:[VectorL10n roomEventEncryptionInfoDeviceId]                                                             attributes:@{NSForegroundColorAttributeName: _defaultTextColor, NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}]];
         [deviceInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                          initWithString:deviceId
                                                          attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
@@ -365,12 +365,12 @@ static NSAttributedString *verticalWhitespace = nil;
         [deviceInformationString appendAttributedString:[MXKEncryptionInfoView verticalWhitespace]];
         
         [deviceInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                         initWithString:[MatrixKitL10n roomEventEncryptionInfoDeviceVerification]                                                             attributes:@{NSForegroundColorAttributeName: _defaultTextColor, NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}]];
+                                                         initWithString:[VectorL10n roomEventEncryptionInfoDeviceVerification]                                                             attributes:@{NSForegroundColorAttributeName: _defaultTextColor, NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}]];
         [deviceInformationString appendAttributedString:verification];
         [deviceInformationString appendAttributedString:[MXKEncryptionInfoView verticalWhitespace]];
         
         [deviceInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                         initWithString:[MatrixKitL10n roomEventEncryptionInfoDeviceFingerprint]                                                             attributes:@{NSForegroundColorAttributeName: _defaultTextColor, NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}]];
+                                                         initWithString:[VectorL10n roomEventEncryptionInfoDeviceFingerprint]                                                             attributes:@{NSForegroundColorAttributeName: _defaultTextColor, NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}]];
         [deviceInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                          initWithString:fingerprint
                                                          attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
@@ -381,7 +381,7 @@ static NSAttributedString *verticalWhitespace = nil;
     {
         // Unknown device
         [deviceInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                         initWithString:[MatrixKitL10n roomEventEncryptionInfoDeviceUnknown]                                                             attributes:@{NSForegroundColorAttributeName: _defaultTextColor, NSFontAttributeName: [UIFont italicSystemFontOfSize:14]}]];
+                                                         initWithString:[VectorL10n roomEventEncryptionInfoDeviceUnknown]                                                             attributes:@{NSForegroundColorAttributeName: _defaultTextColor, NSFontAttributeName: [UIFont italicSystemFontOfSize:14]}]];
     }
     
     [textViewAttributedString appendAttributedString:deviceInformationString];
@@ -451,10 +451,10 @@ static NSAttributedString *verticalWhitespace = nil;
         {
             // Prompt user
             NSMutableAttributedString *textViewAttributedString = [[NSMutableAttributedString alloc]
-                                                                   initWithString:[MatrixKitL10n roomEventEncryptionVerifyTitle]                                                                   attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
+                                                                   initWithString:[VectorL10n roomEventEncryptionVerifyTitle]                                                                   attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
                                                                                 NSFontAttributeName: [UIFont boldSystemFontOfSize:17]}];
             
-            NSString *message = [MatrixKitL10n roomEventEncryptionVerifyMessage:_mxDeviceInfo.displayName :_mxDeviceInfo.deviceId :_mxDeviceInfo.fingerprint];
+            NSString *message = [VectorL10n roomEventEncryptionVerifyMessage:_mxDeviceInfo.displayName :_mxDeviceInfo.deviceId :_mxDeviceInfo.fingerprint];
             
             [textViewAttributedString appendAttributedString:[[NSMutableAttributedString alloc]
                                                              initWithString:message
@@ -463,8 +463,8 @@ static NSAttributedString *verticalWhitespace = nil;
             
             self.textView.attributedText = textViewAttributedString;
             
-            [_cancelButton setTitle:[MatrixKitL10n cancel] forState:UIControlStateNormal];
-            [_cancelButton setTitle:[MatrixKitL10n cancel] forState:UIControlStateHighlighted];
+            [_cancelButton setTitle:[VectorL10n cancel] forState:UIControlStateNormal];
+            [_cancelButton setTitle:[VectorL10n cancel] forState:UIControlStateHighlighted];
             _verifyButton.hidden = _blockButton.hidden = YES;
             _confirmVerifyButton.hidden = NO;
         }
