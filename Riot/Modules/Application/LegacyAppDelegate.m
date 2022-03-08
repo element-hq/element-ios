@@ -2993,7 +2993,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
 
     ThreadParameters *threadParameters = nil;
-    if (threadId)
+    if (RiotSettings.shared.enableThreads && threadId)
     {
         threadParameters = [[ThreadParameters alloc] initWithThreadId:threadId stackRoomScreen:NO];
     }
