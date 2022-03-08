@@ -561,3 +561,16 @@
 // Scanning
 "key_verification_scan_confirmation_scanning_title" = "כמעט סיימנו! ממתין לאישור…";
 "key_verification_verify_qr_code_scan_other_code_success_message" = "קוד QR אומת בהצלחה.";
+"auth_add_phone_message_2" = "הגדר מספר טלפון, בהמשך יהווה אפשרות לזיהויך על ידי משתמשים שמכירים אותך.";
+"auth_add_email_message_2" = "הגדר דוא\"ל לטובת שחזור החשבון, בהמשך יהווה אפשרות לזיהויך על ידי משתמשים שמכירים אותך.";
+"auth_invalid_user_name" = "שמות משתמשים יכולים להכיל רק אותיות, מספרים, נקודות, מקפים וקווים תחתונים";
+"auth_home_server_placeholder" = "כתובת אתר (לדוגמה https://matrix.org)";
+"auth_user_id_placeholder" = "דואר אלקטרוני או שם משתמש";
+"auth_login_single_sign_on" = "התחבר";
+"onboarding_use_case_existing_server_button" = "התחבר לשרת";
+"onboarding_use_case_existing_server_message" = "מחפשים להצטרף לשרת קיים ?";
+"onboarding_use_case_skip_button" = "דלג על השאלה";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "מתלבט ? אתה מסוגל %@";
+"onboarding_use_case_community_messaging" = "קהילות";
+"onboarding_use_case_personal_messaging" = "חברים ומשפחה";
