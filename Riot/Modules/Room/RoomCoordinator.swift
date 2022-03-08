@@ -321,6 +321,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     private func startLoading() {
         if let presenter = parameters.userIndicatorPresenter {
             if loadingIndicator == nil {
+                MXLog.debug("[RoomCoordinator] Present loading indicator in a room: \(roomId ?? "unknown")")
                 loadingIndicator = presenter.present(.loading(label: VectorL10n.homeSyncing, isInteractionBlocking: false))
             }
         } else {
@@ -329,6 +330,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     }
     
     private func stopLoading() {
+        MXLog.debug("[RoomCoordinator] Dismiss loading indicator in a room: \(roomId ?? "unknown")")
         loadingIndicator = nil
         activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
     }
