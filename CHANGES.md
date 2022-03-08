@@ -1,3 +1,47 @@
+## Changes in 1.8.4 (2022-03-08)
+
+🙌 Improvements
+
+- Add a generic SwiftUI Error type with support for showing NSErrors. ([#5742](https://github.com/vector-im/element-ios/pull/5742))
+- Upgrade MatrixSDK version ([v0.22.5](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.22.5)).
+- Move chat/room invites to dedicated sections and enable collapsing sections ([#5222](https://github.com/vector-im/element-ios/issues/5222))
+- Invites: remove exclamation mark badge ([#5249](https://github.com/vector-im/element-ios/issues/5249))
+- Localisation: Merge MatrixKit.strings into Vector.strings and de-dupe. ([#5325](https://github.com/vector-im/element-ios/issues/5325))
+- Analytics: Adapt to latest analytics repo & add screens, events & interactions for threads. ([#5365](https://github.com/vector-im/element-ios/issues/5365))
+- Activity Indicators: Add updated indicators to room loading ([#5603](https://github.com/vector-im/element-ios/issues/5603))
+- Activity Indicators: Update loading and success messages when leaving room ([#5605](https://github.com/vector-im/element-ios/issues/5605))
+- Enable activity indicators on the home screen ([#5663](https://github.com/vector-im/element-ios/issues/5663))
+- Activity Indicators: Enable updated UI for activity indicators and success messages ([#5696](https://github.com/vector-im/element-ios/issues/5696))
+- Labs/Room: Add a setting to use only latest sender profiles ([#5726](https://github.com/vector-im/element-ios/issues/5726))
+- Timeline: track and show error message when an event cannot be converted to attributed string ([#5739](https://github.com/vector-im/element-ios/issues/5739))
+- Activity Indicators: Use new activity indicators on all tabs ([#5750](https://github.com/vector-im/element-ios/issues/5750))
+- Analytics: Instrument missing screen metrics. ([#5763](https://github.com/vector-im/element-ios/issues/5763))
+
+🐛 Bugfixes
+
+- Removed unnecessary and cropped room info avatar shadow. ([#5714](https://github.com/vector-im/element-ios/pull/5714))
+- Started applying navigation bar theme styles to iOS 13 and 14 too. ([#5715](https://github.com/vector-im/element-ios/pull/5715))
+- Input Tool Bar: Show it when you jump to an old message (last unread message, direct link or from unified search) ([#3779](https://github.com/vector-im/element-ios/issues/3779))
+- MXKEventFormatter: Fix text color and font for regular reply events. ([#5552](https://github.com/vector-im/element-ios/issues/5552))
+- Timeline: Show start of conversation header for every user and only at the actual start of the timeline ([#5581](https://github.com/vector-im/element-ios/issues/5581))
+- Fixed partially hidden room invitation header. ([#5691](https://github.com/vector-im/element-ios/issues/5691))
+- MXKEventFormatter: Fix font size for emoji-only replies. ([#5712](https://github.com/vector-im/element-ios/issues/5712))
+- Room lists: Show the getting started hints again when there are no rooms in a tab. ([#5727](https://github.com/vector-im/element-ios/issues/5727))
+- Activity Indicator: Use split controller's top navigation controller to present toasts ([#5752](https://github.com/vector-im/element-ios/issues/5752))
+
+🗣 Translations
+
+- Add new languages: Ukrainian ([#5759](https://github.com/vector-im/element-ios/pull/5759))
+
+🚧 In development 🚧
+
+- Onboarding: Add Congratulations screen. ([#5651](https://github.com/vector-im/element-ios/issues/5651))
+
+Others
+
+- Disable the default analytics configurations for forks. ([#5687](https://github.com/vector-im/element-ios/issues/5687))
+
+
 ## Changes in 1.8.3 (2022-02-25)
 
 🙌 Improvements
