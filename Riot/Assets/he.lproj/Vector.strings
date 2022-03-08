@@ -163,7 +163,7 @@
 "file_upload_error_unsupported_file_type_message" = "סוג הקובץ לא נתמך.";
 
 // MARK: File upload
-"file_upload_error_title" = "הקובץ הועלה";
+"file_upload_error_title" = "העלאת קובץ";
 "event_formatter_message_deleted" = "ההודעה נמחקה";
 "event_formatter_group_call" = "שיחה קבוצתית";
 "event_formatter_call_end_call" = "סיום שיחה";
@@ -241,3 +241,238 @@
 
 // Onboarding
 "onboarding_splash_register_button_title" = "צור חשבון";
+"key_verification_verify_qr_code_scan_other_code_success_title" = "קוד אומת!";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "האם משתמש אחר הצליח לסרוק את קוד ה QR?";
+"key_verification_verify_qr_code_start_emoji_action" = "בצע אימות ע\"י אימוג'י";
+"key_verification_verify_qr_code_cannot_scan_action" = "לא יכול לסרוק?";
+"key_verification_verify_qr_code_scan_code_other_device_action" = "סרוק באמצעות מכשיר זה";
+"key_verification_verify_qr_code_scan_code_action" = "סרוק את הקוד שלהם";
+"key_verification_verify_qr_code_emoji_information" = "בצע אימות ע\"י השוואת סימן ייחודי.";
+"key_verification_verify_qr_code_information_other_device" = "סרוק את הקוד המופיע למטה על מנת לאמת:";
+"key_verification_verify_qr_code_information" = "סרוק את הקוד על מנת לאמת באופן בטוח כל אחד אחר.";
+
+// MARK: QR code
+
+"key_verification_verify_qr_code_title" = "מאומת באמצעות סריקה";
+
+// Incoming key verification request
+
+"key_verification_incoming_request_incoming_alert_message" = "%@ מעוניין לאמת";
+"key_verification_tile_conclusion_warning_title" = "התחברות לא מאובטחת";
+"key_verification_tile_conclusion_done_title" = "אושר";
+"key_verification_tile_request_incoming_approval_decline" = "סורב";
+"key_verification_tile_request_incoming_approval_accept" = "התקבל";
+"key_verification_tile_request_status_accepted" = "התקבלת";
+"key_verification_tile_request_status_cancelled" = "%@ בוטל";
+"key_verification_tile_request_status_cancelled_by_me" = "ביטלת";
+"key_verification_tile_request_status_expired" = "פג תוקף";
+"key_verification_tile_request_status_waiting" = "ממתין…";
+"key_verification_tile_request_status_data_loading" = "מידע נטען…";
+"key_verification_tile_request_outgoing_title" = "אימות נשלח";
+
+// Tiles
+
+"key_verification_tile_request_incoming_title" = "בקשת אימות";
+"key_verification_bootstrap_not_setup_message" = "אתה נדרש ראשית לבצע אתחול בהתחברות מאומתת.";
+
+// MARK: - Key Verification
+
+"key_verification_bootstrap_not_setup_title" = "שגיאה";
+"error_not_supported_on_mobile" = "אתה לא יכול לבצע זאת מנייד %@.";
+
+
+// Generic errors
+"error_invite_3pid_with_no_identity_server" = "הוסף שרת זיהוי בהגדרות שלך על מנת לשלוח הזמנה במייל.";
+
+// MARK: Reaction history
+"reaction_history_title" = "תגובות";
+"resend" = "שלח שוב";
+"room_accessibility_video_call" = "שיחת וידאו";
+"room_accessibility_call" = "שיחה";
+
+// Mark: - Room avatar view
+
+"room_avatar_view_accessibility_label" = "דמות";
+"invite_friends_share_text" = "שלום, דבר איתי ב%@:%@";
+
+// MARK: - Invite friends
+
+"invite_friends_action" = "הזמן חברים ל%@";
+"favourites_empty_view_information" = "אתה יכול לבחור מספר דרכים - הדרך המהירה ביותר היא ללחוץ ולהחזיק. לחץ על הכוכב והם יופיעו כאן בצורה אוטומטית לשמירה בטוחה.";
+
+// MARK: - Favourites
+
+"favourites_empty_view_title" = "חדרים ואנשים מועדפים";
+"event_formatter_widget_added" = "יישומון %@ התווסף ע\"י %@";
+"event_formatter_widget_removed" = "יישומון %@ הוסר ע\"י %@";
+
+// Events formatter
+"event_formatter_member_updates" = "% שינויי חברות";
+"directory_server_placeholder" = "matrix.org";
+"directory_server_type_homeserver" = "הקלד שרת בית על מנת להציג רשימת חדרים ממנו";
+"directory_server_all_native_rooms" = "כל חדרי מטריקס המקוריים";
+"directory_server_all_rooms" = "כל החדרים בשרת %@";
+"directory_server_picker_title" = "בחר ספריה";
+
+// Directory
+"directory_title" = "ספריה";
+"image_picker_action_library" = "בחר מתוך ספריה";
+
+// Image picker
+"image_picker_action_camera" = "צלם תמונה";
+"media_picker_select" = "בחר";
+"media_picker_library" = "ספריה";
+
+// Media picker
+"media_picker_title" = "ספרית מדיה";
+"receipt_status_read" = "קרא: ";
+
+// Read Receipts
+"read_receipts_list" = "קרא רשימת קבלות";
+
+// Group rooms
+"group_rooms_filter_rooms" = "סינון חדרי קהילה";
+"group_participants_invited_section" = "מוזמן";
+"group_participants_invite_malformed_id" = "מזהה לא תקין. צריך להיות מזהה חוקי כמו 'localpart:domain@'";
+"group_participants_invite_malformed_id_title" = "שגיאת הזמנה";
+"group_participants_invite_another_user" = "חפש/הזמן לפי מספר או שם משתמש";
+"group_participants_filter_members" = "סינון חברי קהילה";
+"group_participants_invite_prompt_msg" = "האם אתה בטוח שברצונך להוסיף את %@ לקבוצה זו?";
+"group_participants_invite_prompt_title" = "אישור";
+"group_participants_remove_prompt_msg" = "האם אתה בטוח שברצונך להסיר את %@ מקבוצה זו?";
+"group_participants_remove_prompt_title" = "אישור";
+"group_participants_leave_prompt_msg" = "האם אתה בטוח שאתה רוצה לעזוב את הקבוצה?";
+"group_participants_leave_prompt_title" = "עזוב קבוצה";
+
+// Group participants
+"group_participants_add_participant" = "הוסף משתתף";
+"group_invitation_format" = "%@ הזמין אותך להצטרף לקהילה זו";
+"group_home_multi_rooms_format" = "% חדרים";
+"group_home_one_room_format" = "חדר 1";
+"group_home_multi_members_format" = "% חברים";
+
+// Group Home
+"group_home_one_member_format" = "חבר 1";
+"group_details_rooms" = "חדרים";
+"device_verification_emoji_pin" = "סיכה";
+"device_verification_emoji_folder" = "תיקייה";
+"device_verification_emoji_headphones" = "אוזניות";
+"device_verification_emoji_anchor" = "עוגן";
+"device_verification_emoji_bell" = "פעמון";
+"device_verification_emoji_trumpet" = "חצוצרה";
+"device_verification_emoji_guitar" = "גיטרה";
+"device_verification_emoji_ball" = "כדור";
+"device_verification_emoji_trophy" = "טרופי";
+"device_verification_emoji_rocket" = "טיל";
+"device_verification_emoji_aeroplane" = "מטוס";
+"device_verification_emoji_bicycle" = "אופניים";
+"device_verification_emoji_train" = "רכבת";
+"device_verification_emoji_flag" = "דגל";
+"device_verification_emoji_telephone" = "טלפון";
+"device_verification_emoji_hammer" = "פטיש";
+"device_verification_emoji_key" = "מפתח";
+"device_verification_emoji_lock" = "מנעול";
+"device_verification_emoji_scissors" = "מספריים";
+"device_verification_emoji_paperclip" = "אטב";
+"device_verification_emoji_pencil" = "עיפרון";
+"device_verification_emoji_book" = "ספר";
+"device_verification_emoji_light bulb" = "נורה";
+"device_verification_emoji_gift" = "שי";
+"device_verification_emoji_clock" = "שעון";
+"device_verification_emoji_hourglass" = "שעון חול";
+"device_verification_emoji_umbrella" = "מטריה";
+"device_verification_emoji_thumbs up" = "אגודלים למעלה";
+"device_verification_emoji_santa" = "סנטה";
+"device_verification_emoji_spanner" = "מפתח ברגים";
+"device_verification_emoji_glasses" = "משקפיים";
+"device_verification_emoji_hat" = "כובע";
+"device_verification_emoji_robot" = "רובוט";
+"device_verification_emoji_smiley" = "חייכן";
+"device_verification_emoji_heart" = "לב";
+"device_verification_emoji_cake" = "עוגה";
+"device_verification_emoji_pizza" = "פיצה";
+"device_verification_emoji_corn" = "תירס";
+"device_verification_emoji_strawberry" = "תות שדה";
+"device_verification_emoji_apple" = "תפוח";
+"device_verification_emoji_banana" = "בננה";
+"device_verification_emoji_fire" = "אש";
+"device_verification_emoji_cloud" = "ענן";
+"device_verification_emoji_moon" = "ירח";
+"device_verification_emoji_globe" = "כדור הארץ";
+"device_verification_emoji_mushroom" = "פטריה";
+"device_verification_emoji_cactus" = "קקטוס";
+"device_verification_emoji_tree" = "עץ";
+"device_verification_emoji_flower" = "פרח";
+"device_verification_emoji_butterfly" = "פרפר";
+"device_verification_emoji_octopus" = "תמנון";
+"device_verification_emoji_fish" = "דג";
+"device_verification_emoji_turtle" = "צב";
+"device_verification_emoji_penguin" = "פינגו'ין";
+"device_verification_emoji_rooster" = "תרנגול";
+"device_verification_emoji_panda" = "פנדה";
+"device_verification_emoji_rabbit" = "ארנבת";
+"device_verification_emoji_elephant" = "פיל";
+"device_verification_emoji_pig" = "חזיר";
+"device_verification_emoji_unicorn" = "חד קרן";
+"device_verification_emoji_horse" = "סוס";
+"device_verification_emoji_lion" = "אריה";
+"device_verification_emoji_cat" = "חתול";
+
+// MARK: Emoji
+"device_verification_emoji_dog" = "כלב";
+
+// User
+
+"key_verification_verified_user_information" = "עם משתמש זה הודעות מוצפנות מקצה לקצה ואינן ניתנות לקריאה ע\"י צד שלישי.";
+"key_verification_verified_this_session_information" = "אתה יכול לקרא כעת הודעות מוצפנות במכשיר זה, ומשתמשים אחרים יידעו שהם יכולים לסמוך על כך.";
+"key_verification_verified_new_session_information" = "אתה יכול לקרא כעת הודעות מוצפנות במכשיר החדש שלך, ומשתמשים אחרים יידעו שהם יכולים לסמוך על כך.";
+"key_verification_verified_other_session_information" = "אתה יכול לקרא כעת הודעות מוצפנות בקישור אחר שלך, ומשתמשים אחרים יידעו שהם יכולים לסמוך על כך.";
+"key_verification_verified_new_session_title" = "קישור חדש אומת!";
+"device_verification_verified_got_it_button" = "התקבל";
+
+// MARK: Verified
+
+// Device
+
+"device_verification_verified_title" = "מאומת!";
+
+// Device
+
+"device_verification_verify_wait_partner" = "ממתין לאישור ע\"י השותף…";
+"key_verification_manually_verify_device_validate_action" = "אימות";
+"key_verification_manually_verify_device_additional_information" = "אם הם אינם תואמים, אבטחת התקשורת שלך עלולה להיפגע.";
+"key_verification_manually_verify_device_key_title" = "מפתח קישור";
+"key_verification_manually_verify_device_id_title" = "מספר קישור";
+"key_verification_manually_verify_device_name_title" = "שם הקישור";
+"key_verification_manually_verify_device_instruction" = "מאושר ע\"י השוואה עם הגדרות המשתמש שלך בקישור אחר:";
+
+// MARK: Manually Verify Device
+
+"key_verification_manually_verify_device_title" = "אמת בצורה ידנית באמצעות טקסט";
+"key_verification_verify_sas_additional_information" = "לאבטחה מקסימלית, השתמש באמצעי התקשרות בטוח אחר או בצע זאת באופן אישי.";
+"key_verification_verify_sas_validate_action" = "הם תואמים";
+"key_verification_verify_sas_cancel_action" = "הם אינם תואמים";
+"key_verification_verify_sas_title_number" = "משווה מספרים";
+
+// MARK: Verify
+
+"key_verification_verify_sas_title_emoji" = "משווה סימן";
+"device_verification_self_verify_wait_recover_secrets_checking_availability" = "בודק יכולות אימות נוספות...";
+"device_verification_self_verify_wait_recover_secrets_additional_information" = "אם אתה לא יכול להיכנס לקישור קיים";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "השתמש במשפט מפתח מוצפן";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "השתמש במפתח הצפנה";
+"device_verification_self_verify_wait_additional_information" = "זה עובד באמצעות %@ ומשתמשים בעלי יכולת חתימה מוצלבת.";
+"device_verification_self_verify_wait_information" = "אמת קישור זה מאחד הקישורים האחרים שלך, פעולה זו תיתן גישה להודעות מוצפנות.\n\nהשתמש ב%@ העדכני במכשירים האחרים שלך:";
+"device_verification_self_verify_wait_new_sign_in_title" = "אמת התחברות זו";
+
+// MARK: Self verification wait
+
+"device_verification_self_verify_wait_title" = "השלם אבטחה";
+"key_verification_self_verify_unverified_sessions_alert_validate_action" = "סקירה";
+"key_verification_self_verify_unverified_sessions_alert_message" = "אמת את כל הקישורים שלך על מנת להבטיח שהחשבון וההודעות שלך בטוחים.";
+
+// Unverified sessions
+
+"key_verification_self_verify_unverified_sessions_alert_title" = "בדוק היכן אתה מחובר";
+"key_verification_self_verify_current_session_alert_validate_action" = "אמת";
+"key_verification_self_verify_current_session_alert_message" = "משתמשים אחרים עלולים שלא לבטוח בזה.";
