@@ -90,6 +90,10 @@
  */
 @property (nonatomic) MXIdentityService *identityService;
 
+@property (nonatomic) AnalyticsScreenTracker *screenTracker;
+
+@property (nonatomic) BOOL isViewVisible;
+
 @end
 
 @implementation MXKAuthenticationViewController
@@ -187,6 +191,9 @@
     [super viewWillAppear:animated];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTextFieldChange:) name:UITextFieldTextDidChangeNotification object:nil];
+    
+    self.isViewVisible = YES;
+    [self.screenTracker trackScreen];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -204,6 +211,13 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AFNetworkingReachabilityDidChangeNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    self.isViewVisible = NO;
 }
 
 #pragma mark - Override MXKViewController
@@ -312,6 +326,8 @@
         
         // Update supported authentication flow and associated information (defined in authentication session)
         [self refreshAuthenticationSession];
+        
+        self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenLogin];
     }
     else if (authType == MXKAuthenticationTypeRegister)
     {
@@ -324,6 +340,8 @@
         
         // Update supported authentication flow and associated information (defined in authentication session)
         [self refreshAuthenticationSession];
+        
+        self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenRegister];
     }
     else if (authType == MXKAuthenticationTypeForgotPassword)
     {
@@ -344,8 +362,15 @@
         
         [_authSwitchButton setTitle:[VectorL10n back] forState:UIControlStateNormal];
         [_authSwitchButton setTitle:[VectorL10n back] forState:UIControlStateHighlighted];
+        
+        self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenForgotPassword];
     }
 
+    if (self.isViewVisible)
+    {
+        [self.screenTracker trackScreen];
+    }
+    
     [self checkIdentityServer];
 }
 

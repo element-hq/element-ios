@@ -104,7 +104,7 @@
 
 @property(nonatomic, strong) UserVerificationCoordinatorBridgePresenter *userVerificationCoordinatorBridgePresenter;
 
-@property(nonatomic) AnalyticsScreenTimer *screenTimer;
+@property(nonatomic) AnalyticsScreenTracker *screenTracker;
 
 @end
 
@@ -142,7 +142,7 @@
     // Keep visible the status bar by default.
     isStatusBarHidden = NO;
     
-    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenUser];
+    self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenUser];
 }
 
 - (void)viewDidLoad
@@ -242,6 +242,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.screenTracker trackScreen];
 
     [self userInterfaceThemeDidChange];
 
@@ -263,18 +265,6 @@
     [self hideNavigationBarBorder:NO];
     
     self.bottomImageView.hidden = YES;
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self.screenTimer start];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self.screenTimer stop];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator

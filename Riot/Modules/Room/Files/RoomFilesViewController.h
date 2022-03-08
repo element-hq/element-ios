@@ -16,7 +16,7 @@ limitations under the License.
 
 #import "MatrixKit.h"
 
-@class AnalyticsScreenTimer;
+@class AnalyticsScreenTracker;
 
 /**
  This view controller displays the attachments of a room. Only one matrix session is handled by this view controller.
@@ -28,6 +28,6 @@ limitations under the License.
 /**
  The screen timer used for analytics if they've been enabled. The default value is nil.
  */
-@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+@property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
 @end

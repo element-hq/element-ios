@@ -216,7 +216,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @property (nonatomic, weak) IBOutlet UIView *userSuggestionContainerView;
 
 @property (nonatomic, readwrite) RoomDisplayConfiguration *displayConfiguration;
-@property (nonatomic) AnalyticsScreenTimer *screenTimer;
 
 // When layout of the screen changes (e.g. height), we no longer know whether
 // to autoscroll to the bottom again or not. Instead we need to capture the
@@ -321,8 +320,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     _voiceMessageController = [[VoiceMessageController alloc] initWithThemeService:ThemeService.shared mediaServiceProvider:VoiceMessageMediaServiceProvider.sharedProvider];
     self.voiceMessageController.delegate = self;
-    
-    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenRoom];
 }
 
 - (void)viewDidLoad
@@ -577,6 +574,17 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 {
     [super viewDidAppear:animated];
     
+    // Screen tracking
+    MXRoomSummary *summary = [self.mainSession roomWithRoomId:self.roomDataSource.roomId].summary;
+    if (!summary || !summary.isJoined)
+    {
+        [AnalyticsScreenTracker trackScreen: AnalyticsScreenRoomPreview];
+    }
+    else
+    {
+        [AnalyticsScreenTracker trackScreen: AnalyticsScreenRoom];
+    }
+
     isAppeared = YES;
     [self checkReadMarkerVisibility];
     
@@ -621,9 +629,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         hasJitsiCall = NO;
         [self reloadBubblesTable:YES];
     }
-    
-    // Screen tracking
-    [self.screenTimer start];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -659,8 +664,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         hasJitsiCall = YES;
         [self reloadBubblesTable:YES];
     }
-    
-    [self.screenTimer stop];
 }
 
 - (void)viewWillLayoutSubviews {

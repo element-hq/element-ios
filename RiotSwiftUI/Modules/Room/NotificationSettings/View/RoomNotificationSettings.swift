@@ -70,6 +70,7 @@ struct RoomNotificationSettings: View {
             viewModel.process(viewAction: .load)
         }
         .accentColor(theme.colors.accent)
+        .track(screen: .roomNotifications)
     }
 }
 
