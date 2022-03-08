@@ -2072,3 +2072,6 @@
 "attachment_unsupported_preview_message" = "See failitüüp ei ole toetatud.";
 "attachment_unsupported_preview_title" = "Eelvaate kuvamine ei õnnestu";
 "message_reply_to_sender_sent_their_location" = "on jaganud oma asukohta.";
+"home_syncing" = "Sünkroniseerimine";
+"room_participants_leave_success" = "Sa oled jututoast lahkunud";
+"room_participants_leave_processing" = "Lahkumine";
