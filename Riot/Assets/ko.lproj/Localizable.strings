@@ -1,11 +1,11 @@
 /* New message from a specific person, not referencing a room */
-"MSG_FROM_USER" = "%@님이 메시지를 보냈습니다";
+"MSG_FROM_USER" = "%@ 님이 메시지를 보냈습니다";
 /* New message from a specific person in a named room */
-"MSG_FROM_USER_IN_ROOM" = "%@님, %@ 방에 게시함";
+"MSG_FROM_USER_IN_ROOM" = "%@ 님이 %@ 에 게시함";
 /* New message from a specific person, not referencing a room. Content included. */
 "MSG_FROM_USER_WITH_CONTENT" = "%@: %@";
 /* New message from a specific person in a named room. Content included. */
-"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@님, %@ 방에서: %@";
+"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ 님이 %@ 에서: %@";
 /* New action message from a specific person, not referencing a room. */
 "ACTION_FROM_USER" = "* %@ %@";
 /* New action message from a specific person in a named room. */
@@ -13,44 +13,119 @@
 /* New action message from a specific person, not referencing a room. */
 "IMAGE_FROM_USER" = "%@님이 사진을 보냈습니다 %@";
 /* A single unread message in a room */
-"SINGLE_UNREAD_IN_ROOM" = "%@ 방에서 메시지를 받았습니다";
+"SINGLE_UNREAD_IN_ROOM" = "%@ 에서 메시지를 받았습니다";
 /* A single unread message */
 "SINGLE_UNREAD" = "메시지를 받았습니다";
 /* A user has invited you to a chat */
-"USER_INVITE_TO_CHAT" = "%@님이 당신을 대화에 초대했습니다";
+"USER_INVITE_TO_CHAT" = "%@ 님이 대화에 초대했습니다";
 /* A user has invited you to an (unamed) group chat */
-"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@님이 그룹 대화에 당신을 초대했습니다";
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ 님이 그룹 대화에 초대했습니다";
 /* Incoming one-to-one voice call */
-"VOICE_CALL_FROM_USER" = "%@님이 건 전화";
+"VOICE_CALL_FROM_USER" = "%@ 님이 건 전화";
 /* Incoming one-to-one video call */
-"VIDEO_CALL_FROM_USER" = "%@님이 건 영상 통화";
+"VIDEO_CALL_FROM_USER" = "%@ 님이 건 영상 통화";
 /* Incoming unnamed voice conference invite from a specific person */
-"VOICE_CONF_FROM_USER" = "%@님이 건 그룹 통화";
+"VOICE_CONF_FROM_USER" = "%@ 님이 건 그룹 통화";
 /* Incoming unnamed video conference invite from a specific person */
-"VIDEO_CONF_FROM_USER" = "%@님이 건 영상 그룹 통화";
+"VIDEO_CONF_FROM_USER" = "%@ 님이 건 그룹 영상 통화";
 /* Sticker from a specific person, not referencing a room. */
-"STICKER_FROM_USER" = "%@님이 스티커를 보냈습니다";
+"STICKER_FROM_USER" = "%@ 님이 스티커를 보냈습니다";
 /* A user has invited you to a named room */
-"USER_INVITE_TO_NAMED_ROOM" = "%@님이 %@ 방으로 당신을 초대했습니다";
+"USER_INVITE_TO_NAMED_ROOM" = "%@ 님이 %@ 으로 초대했습니다";
 /* Message title for a specific person in a named room */
-"MSG_FROM_USER_IN_ROOM_TITLE" = "%@님, %@ 방에 있음";
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ 님 (%@ 에서)";
 /* New action message from a specific person in a named room. */
-"IMAGE_FROM_USER_IN_ROOM" = "%@님이 사진을 보냈습니다 %@, %@ 방에서";
+"IMAGE_FROM_USER_IN_ROOM" = "%@ 님이 사진을 보냈습니다: %@ (%@ 방에서)";
 /* Multiple unread messages in a room */
-"UNREAD_IN_ROOM" = "%@개의 새 메시지, %@ 방에서";
+"UNREAD_IN_ROOM" = "%@ 개의 새 메시지 (%@ 에서)";
 /* Multiple unread messages from a specific person, not referencing a room */
-"MSGS_FROM_USER" = "%@개의 새 메시지, %@님으로부터";
+"MSGS_FROM_USER" = "%@ 개의 새 메시지 (%@ 님으로부터)";
 /* Multiple unread messages from two people */
-"MSGS_FROM_TWO_USERS" = "%@개의 새 메시지, %@님과 %@님으로부터";
+"MSGS_FROM_TWO_USERS" = "%@ 개의 새 메시지 (%@ 님과 %@ 님으로부터)";
 /* Multiple unread messages from three people */
-"MSGS_FROM_THREE_USERS" = "%@개의 새 메시지, %@님과 %@님, %@님으로부터";
+"MSGS_FROM_THREE_USERS" = "%@ 개의 새 메시지 (%@ 님과 %@ 님, %@ 님으로부터)";
 /* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
-"MSGS_FROM_TWO_PLUS_USERS" = "%@개의 새 메시지, %@님과 %@님 외 여러 명으로부터";
+"MSGS_FROM_TWO_PLUS_USERS" = "%@ 개의 새 메시지 (%@ 님과 %@ 님 외 여러 명으로부터)";
 /* Multiple messages in two rooms */
-"MSGS_IN_TWO_ROOMS" = "%@개의 새 메시지, %@ 방과 %@ 방에서";
+"MSGS_IN_TWO_ROOMS" = "%@ 개의 새 메시지 (%@ 방과 %@ 방에서)";
 /* Look, stuff's happened, alright? Just open the app. */
-"MSGS_IN_TWO_PLUS_ROOMS" = "%@개의 새 메시지, %@ 방과 %@ 방 외 여러 방에서";
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@ 개의 새 메시지 (%@ 방과 %@ 방 외 여러 방에서)";
 /* Incoming named voice conference invite from a specific person */
-"VOICE_CONF_NAMED_FROM_USER" = "%@님이 건 그룹 통화: '%@'";
+"VOICE_CONF_NAMED_FROM_USER" = "%@ 님이 건 그룹 통화: '%@'";
 /* Incoming named video conference invite from a specific person */
-"VIDEO_CONF_NAMED_FROM_USER" = "%@님이 건 영상 그룹 통화: '%@'";
+"VIDEO_CONF_NAMED_FROM_USER" = "%@ 님이 건 그룹 영상 통화: '%@'";
+
+/* A user's membership has updated in an unknown way */
+"USER_MEMBERSHIP_UPDATED" = "%@ 님이 프로필을 업데이트 했습니다";
+
+/* A user has change their avatar */
+"USER_UPDATED_AVATAR" = "%@ 님이 아바타를 변경했습니다";
+
+/* A user has change their name to a new name which we don't know */
+"GENERIC_USER_UPDATED_DISPLAYNAME" = "%@ 님이 이름을 변경했습니다";
+
+/** Membership Updates **/
+
+/* A user has change their name to a new name */
+"USER_UPDATED_DISPLAYNAME" = "%@ 님이 %@ 으로 이름 변경했습니다";
+
+/* A user has reacted to a message, but the reaction content is unknown */
+"GENERIC_REACTION_FROM_USER" = "%@ 님이 반응을 보냄";
+
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "%@ 에서의 메세지";
+
+/* New file message from a specific person, not referencing a room. */
+"LOCATION_FROM_USER" = "%@ 님이 위치 정보 공유했습니다";
+
+/* New file message from a specific person, not referencing a room. */
+"FILE_FROM_USER" = "%@ 님이 %@ 에 파일을 보냈습니다";
+
+/* New voice message from a specific person, not referencing a room. */
+"VOICE_MESSAGE_FROM_USER" = "%@ 님이 음성 메세지를 보냈습니다";
+
+/* New audio message from a specific person, not referencing a room. */
+"AUDIO_FROM_USER" = "%@ 님이 %@ 에 음성 파일 보냈습니다";
+
+/* New video message from a specific person, not referencing a room. */
+"VIDEO_FROM_USER" = "%@ 님이 동영상을 보냈습니다";
+
+/** Media Messages **/
+
+/* New image message from a specific person, not referencing a room. */
+"PICTURE_FROM_USER" = "%@ 님이 사진을 보냈습니다";
+
+/* New message reply from a specific person in a named room. */
+"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ 님이 %@ 에서 답장";
+
+/* New message reply from a specific person, not referencing a room. */
+"REPLY_FROM_USER_TITLE" = "%@ 님이 답장";
+
+/** Key verification **/
+
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ 님이 인증을 원합니다";
+
+/* Group call from user, CallKit caller name */
+"GROUP_CALL_FROM_USER" = "%@ (그룹 통화)";
+
+/* A user added a Jitsi call to a room */
+"GROUP_CALL_STARTED" = "그룹 통화 시작됨";
+
+/** Reactions **/
+
+/* A user has reacted to a message, including the reaction e.g. "Alice reacted 👍". */
+"REACTION_FROM_USER" = "%@ 님이 %@ 님에게 반응";
+
+/* New message with hidden content due to PIN enabled */
+"MESSAGE_PROTECTED" = "새 메세지";
+
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "%@ 님의 메세지";
+
+/** Notification messages **/
+
+/* New message indicator on unknown room */
+"MESSAGE" = "메세지";
+/** General **/
+
+"NOTIFICATION" = "알림";
