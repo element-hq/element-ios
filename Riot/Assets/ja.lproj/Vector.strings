@@ -102,7 +102,7 @@
 "room_creation_keep_private" = "非公開に保つ";
 "room_creation_make_private" = "非公開にする";
 "room_creation_wait_for_creation" = "ルームは既に作成されています。お待ちください。";
-"room_creation_invite_another_user" = "ユーザーID、表示名、電子メールで検索と招待";
+"room_creation_invite_another_user" = "ユーザーID、表示名、電子メール";
 // Room recents
 "room_recents_directory_section" = "ルーム一覧";
 "room_recents_favourites_section" = "お気に入り";
@@ -159,7 +159,7 @@
 "room_participants_remove_third_party_invite_msg" = "サードパーティの招待を削除することは、APIが存在するまでサポートされていません";
 "room_participants_invite_prompt_title" = "確認";
 "room_participants_invite_prompt_msg" = "%@をチャットに招待してよろしいですか？";
-"room_participants_filter_room_members" = "ルームのメンバーを絞り込む";
+"room_participants_filter_room_members" = "ルームメンバーを現在";
 "room_participants_invite_another_user" = "ユーザーID、名前、電子メールで検索、招待";
 "room_participants_invite_malformed_id_title" = "招待エラー";
 "room_participants_invite_malformed_id" = "不正なIDです。メールアドレスを用いるか、'@localpart:domain'のようなMatrix IDを使用してください";
@@ -244,9 +244,9 @@
 "room_title_one_member" = "1名のメンバー";
 // Room Preview
 "room_preview_invitation_format" = "あなたは%@さんに呼ばれてこのルームへ参加しました";
-"room_preview_subtitle" = "これはルームのプレビューです。ルームでのやり取りは無効化されています。";
+"room_preview_subtitle" = "現在表示しているのはルームのプレビューです。メッセージの送信などは行えません。";
 "room_preview_unlinked_email_warning" = "このアカウントに関連付けられていない%@宛に招待が送信されました。別のアカウントでログインするか、メールアドレスをこのアカウントに追加することができます。";
-"room_preview_try_join_an_unknown_room" = "あなたは%@へ接続しようとしています。この会議に参加しますか？";
+"room_preview_try_join_an_unknown_room" = "%@ に参加しますか？";
 "room_preview_try_join_an_unknown_room_default" = "ルーム";
 // Settings
 "settings_title" = "設定";
@@ -329,20 +329,20 @@
 "room_details_people" = "メンバー";
 "room_details_files" = "アップロード";
 "room_details_settings" = "設定";
-"room_details_photo" = "ルームの画像アイコン";
+"room_details_photo" = "ルームのアイコン画像";
 "room_details_room_name" = "ルーム名";
 "room_details_topic" = "トピック";
 "room_details_favourite_tag" = "お気に入り";
 "room_details_low_priority_tag" = "低優先度";
 "room_details_mute_notifs" = "発言があっても通知しない";
 "room_details_direct_chat" = "対話";
-"room_details_access_section" = "誰がルームにアクセスできますか？";
+"room_details_access_section" = "ルームにアクセスできる人";
 "room_details_access_section_invited_only" = "招待された人のみ";
 "room_details_access_section_anyone_apart_from_guest" = "ルームのリンクを知っている人なら誰でも（ゲストユーザーを除く）";
 "room_details_access_section_anyone" = "ルームのリンクを知っている人なら誰でも（ゲストユーザーを含む）";
 "room_details_access_section_no_address_warning" = "このルームへのリンクを作成するには、ルームのアドレスが必要です";
 "room_details_access_section_directory_toggle" = "ルーム一覧へ公開";
-"room_details_history_section" = "誰をこのルームの発言履歴を読めるようにしますか？";
+"room_details_history_section" = "発言履歴を閲覧できる人";
 "room_details_history_section_anyone" = "誰でも";
 "room_details_history_section_members_only" = "メンバーのみ (この設定を選択した時点から)";
 "room_details_history_section_members_only_since_invited" = "メンバーのみ（招待を送った時点から）";
@@ -736,8 +736,8 @@
 "room_member_power_level_short_moderator" = "モデレーター";
 "room_member_power_level_custom_in" = "カスタム (%@) in %@";
 "room_member_power_level_short_admin" = "管理者";
-"room_member_power_level_moderator_in" = "モデレーターは%@";
-"room_member_power_level_admin_in" = "管理者は%@";
+"room_member_power_level_moderator_in" = "%@のモデレーター";
+"room_member_power_level_admin_in" = "%@の管理者";
 "room_participants_security_loading" = "読み込んでいます…";
 "room_participants_action_security_status_loading" = "読み込んでいます…";
 "room_participants_action_security_status_warning" = "警告";
@@ -1565,9 +1565,9 @@
 "location_sharing_title" = "位置情報";
 "poll_timeline_not_closed_subtitle" = "もう一度やり直してください";
 "poll_timeline_not_closed_title" = "アンケートの終了に失敗しました";
-"poll_timeline_total_no_votes" = "投票がありません";
-"poll_timeline_votes_count" = "%lu個の投票";
-"poll_timeline_one_vote" = "1個の投票";
+"poll_timeline_total_no_votes" = "まだ誰も投票していません";
+"poll_timeline_votes_count" = "%lu票";
+"poll_timeline_one_vote" = "1票";
 "poll_edit_form_poll_type_closed_description" = "結果はアンケートを終了した後でのみ明らかにされます";
 "poll_edit_form_poll_type_closed" = "アンケートの終了後に結果を公開";
 "poll_edit_form_poll_type_open_description" = "投票した人には、投票の際に即座に結果が表示されます";
@@ -1587,3 +1587,16 @@
 // Mark: - Polls
 
 "poll_edit_form_create_poll" = "アンケートを作成";
+"poll_timeline_vote_not_registered_subtitle" = "申し訳ありませんが投票が登録されていません、再度お試しください";
+"poll_timeline_vote_not_registered_title" = "投票が登録されていません";
+"poll_timeline_total_final_results" = "合計%lu票の投票に基づく最終結果";
+"poll_timeline_total_final_results_one_vote" = "合計1票の投票に基づく最終結果";
+"poll_timeline_total_votes_not_voted" = "合計%lu票、投票すると結果を確認できます";
+"poll_timeline_total_one_vote_not_voted" = "合計1票、投票すると結果を確認できます";
+"poll_timeline_total_votes" = "合計%lu票";
+"poll_timeline_total_one_vote" = "合計1票";
+"biometrics_cant_unlocked_alert_message_retry" = "再試行";
+"biometrics_usage_reason" = "アプリを開くには認証が必要です";
+"settings_sending_media" = "画像と動画の送信";
+"invite_friends_share_text" = "%@ での連絡先: %@";
+"side_menu_action_invite_friends" = "招待する";
