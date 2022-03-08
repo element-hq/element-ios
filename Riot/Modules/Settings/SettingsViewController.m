@@ -159,7 +159,8 @@ typedef NS_ENUM(NSUInteger, LABS_ENABLE)
 {
     LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX = 0,
     LABS_ENABLE_THREADS_INDEX,
-    LABS_ENABLE_MESSAGE_BUBBLES_INDEX
+    LABS_ENABLE_MESSAGE_BUBBLES_INDEX,
+    LABS_USE_ONLY_LATEST_USER_AVATAR_AND_NAME_INDEX
 };
 
 typedef NS_ENUM(NSUInteger, SECURITY)
@@ -288,7 +289,7 @@ TableViewSectionsDelegate>
 @property (nonatomic) BOOL isPreparingIdentityService;
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 
-@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+@property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
 @end
 
@@ -323,7 +324,7 @@ TableViewSectionsDelegate>
     isResetPwdInProgress = NO;
     is3PIDBindingInProgress = NO;
     
-    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenSettings];
+    self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenSettings];
 }
 
 - (void)updateSections
@@ -572,6 +573,7 @@ TableViewSectionsDelegate>
         [sectionLabs addRowWithTag:LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX];
         [sectionLabs addRowWithTag:LABS_ENABLE_THREADS_INDEX];
         [sectionLabs addRowWithTag:LABS_ENABLE_MESSAGE_BUBBLES_INDEX];
+        [sectionLabs addRowWithTag:LABS_USE_ONLY_LATEST_USER_AVATAR_AND_NAME_INDEX];
         sectionLabs.headerTitle = [VectorL10n settingsLabs];
         if (sectionLabs.hasAnyRows)
         {
@@ -795,6 +797,8 @@ TableViewSectionsDelegate>
 {
     [super viewWillAppear:animated];
     
+    [self.screenTracker trackScreen];
+
     // Refresh display
     [self refreshSettings];
 
@@ -823,8 +827,6 @@ TableViewSectionsDelegate>
     [self releasePushedViewController];
     
     [self.settingsDiscoveryTableViewSection reload];
-    
-    [self.screenTimer start];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -866,12 +868,6 @@ TableViewSectionsDelegate>
         [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
         kAppDelegateDidTapStatusBarNotificationObserver = nil;
     }
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self.screenTimer stop];
 }
 
 #pragma mark - Internal methods
@@ -2462,6 +2458,18 @@ TableViewSectionsDelegate>
         {
             cell = [self buildMessageBubblesCellForTableView:tableView atIndexPath:indexPath];
         }
+        else if (row == LABS_USE_ONLY_LATEST_USER_AVATAR_AND_NAME_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+
+            labelAndSwitchCell.mxkLabel.text = VectorL10n.settingsLabsUseOnlyLatestUserAvatarAndName;
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.roomScreenUseOnlyLatestUserAvatarAndName;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleUseOnlyLatestUserAvatarAndName:) forControlEvents:UIControlEventTouchUpInside];
+
+            cell = labelAndSwitchCell;
+        }
     }
     else if (section == SECTION_TAG_FLAIR)
     {
@@ -3242,6 +3250,11 @@ TableViewSectionsDelegate>
             }
         }];
     }
+}
+
+- (void)toggleUseOnlyLatestUserAvatarAndName:(UISwitch *)sender
+{
+    RiotSettings.shared.roomScreenUseOnlyLatestUserAvatarAndName = sender.isOn;
 }
 
 - (void)markAllAsRead:(id)sender

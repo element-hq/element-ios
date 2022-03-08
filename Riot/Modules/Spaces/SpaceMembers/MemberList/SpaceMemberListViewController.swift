@@ -71,6 +71,12 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
         self.setupTableViewHeader()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        AnalyticsScreenTracker.trackScreen(.spaceMembers)
+    }
+
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.theme.statusBarStyle
     }

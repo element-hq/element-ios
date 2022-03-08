@@ -255,6 +255,8 @@
     
     // Refresh display
     [self refreshTableView];
+    
+    [self.screenTracker trackScreen];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -266,8 +268,6 @@
         [memberDetailsViewController destroy];
         memberDetailsViewController = nil;
     }
-    
-    [self.screenTimer start];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -282,12 +282,6 @@
     
     // cancel any pending search
     [self searchBarCancelButtonClicked:_searchBarView];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self.screenTimer stop];
 }
 
 - (void)withdrawViewControllerAnimated:(BOOL)animated completion:(void (^)(void))completion

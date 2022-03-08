@@ -455,10 +455,12 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     
     // Check whether this avatar url is updated by the current event (This happens in case of new joined member)
     NSString* membership = event.content[@"membership"];
-    if (membership && [membership isEqualToString:@"join"] && [event.content[@"avatar_url"] length])
+    NSString* eventAvatarUrl = event.content[@"avatar_url"];
+    NSString* prevEventAvatarUrl = event.prevContent[@"avatar_url"];
+    if (membership && [membership isEqualToString:@"join"] && [eventAvatarUrl length] && ![eventAvatarUrl isEqualToString:prevEventAvatarUrl])
     {
         // Use the actual avatar
-        senderAvatarUrl = event.content[@"avatar_url"];
+        senderAvatarUrl = eventAvatarUrl;
     }
     
     // We ignore non mxc avatar url (The identicons are removed here).

@@ -85,6 +85,7 @@ final class SpaceExploreRoomViewController: UIViewController {
         super.viewWillAppear(animated)
         
         self.keyboardAvoider?.startAvoiding()
+        AnalyticsScreenTracker.trackScreen(.spaceExploreRooms)
     }
     
     override func viewDidDisappear(_ animated: Bool) {

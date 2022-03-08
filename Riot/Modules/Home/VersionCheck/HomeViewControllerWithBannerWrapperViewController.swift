@@ -56,7 +56,7 @@ class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKVi
         stackView.addArrangedSubview(homeViewController.view)
         homeViewController.didMove(toParent: self)
     }
-    
+        
     // MARK: - BannerPresentationProtocol
     
     func presentBannerView(_ bannerView: UIView, animated: Bool) {

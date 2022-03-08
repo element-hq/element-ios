@@ -81,7 +81,7 @@
     // Assign itself as delegate
     self.contactsTableViewControllerDelegate = self;
     
-    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenStartChat];
+    self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenStartChat];
 }
 
 - (void)viewDidLoad

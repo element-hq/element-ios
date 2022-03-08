@@ -18,7 +18,7 @@
 
 @class Contact;
 @class RoomParticipantsViewController;
-@class AnalyticsScreenTimer;
+@class AnalyticsScreenTracker;
 
 /**
  `RoomParticipantsViewController` delegate.
@@ -100,7 +100,7 @@
 /**
  The screen timer used for analytics if they've been enabled. The default value is nil.
  */
-@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+@property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
 /**
  Returns the `UINib` object initialized for a `RoomParticipantsViewController`.

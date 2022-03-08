@@ -241,6 +241,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let favouritesViewController: FavouritesViewController = FavouritesViewController.instantiate()
         favouritesViewController.tabBarItem.tag = Int(TABBAR_FAVOURITES_INDEX)
         favouritesViewController.accessibilityLabel = VectorL10n.titleFavourites
+        favouritesViewController.indicatorPresenter = UserIndicatorPresenterWrapper(presenter: indicatorPresenter)
         return favouritesViewController
     }
     
@@ -248,6 +249,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let peopleViewController: PeopleViewController = PeopleViewController.instantiate()
         peopleViewController.tabBarItem.tag = Int(TABBAR_PEOPLE_INDEX)
         peopleViewController.accessibilityLabel = VectorL10n.titlePeople
+        peopleViewController.indicatorPresenter = UserIndicatorPresenterWrapper(presenter: indicatorPresenter)
         return peopleViewController
     }
     
@@ -255,6 +257,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let roomsViewController: RoomsViewController = RoomsViewController.instantiate()
         roomsViewController.tabBarItem.tag = Int(TABBAR_ROOMS_INDEX)
         roomsViewController.accessibilityLabel = VectorL10n.titleRooms
+        roomsViewController.indicatorPresenter = UserIndicatorPresenterWrapper(presenter: indicatorPresenter)
         return roomsViewController
     }
     

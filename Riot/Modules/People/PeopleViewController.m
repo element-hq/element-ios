@@ -52,7 +52,7 @@
     
     directRoomsSectionNumber = 0;
     
-    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenPeople];
+    self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenPeople];
     self.tableViewPaginationThrottler = [[MXThrottler alloc] initWithMinimumDelay:0.1];
 }
 

@@ -19,7 +19,7 @@
 #import "MediaPickerViewController.h"
 #import "TableViewCellWithCheckBoxes.h"
 
-@class AnalyticsScreenTimer;
+@class AnalyticsScreenTracker;
 @protocol RoomSettingsViewControllerDelegate;
 
 /**
@@ -58,7 +58,7 @@ typedef enum : NSUInteger {
 /**
  The screen timer used for analytics if they've been enabled. The default value is nil.
  */
-@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+@property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
 /**
  Delegate of this view controller.
