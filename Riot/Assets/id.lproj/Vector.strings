@@ -2330,3 +2330,6 @@
 "attachment_unsupported_preview_title" = "Tidak dapat ditampilkan";
 "attachment_unsupported_preview_message" = "Tipe file ini tidak didukung.";
 "message_reply_to_sender_sent_their_location" = "telah membagikan lokasinya.";
+"home_syncing" = "Menyinkronkan";
+"room_participants_leave_success" = "Telah keluar dari ruangan";
+"room_participants_leave_processing" = "Meninggalkan";
