@@ -352,11 +352,11 @@
         // Reuse MatrixKit as is for the beginning of hardLimit
         if ([limitType isEqualToString:kMXErrorResourceLimitExceededLimitTypeMonthlyActiveUserValue])
         {
-            [message appendString:[MatrixKitL10n loginErrorResourceLimitExceededMessageMonthlyActiveUser]];
+            [message appendString:[VectorL10n loginErrorResourceLimitExceededMessageMonthlyActiveUser]];
         }
         else
         {
-            [message appendString:[MatrixKitL10n loginErrorResourceLimitExceededMessageDefault]];
+            [message appendString:[VectorL10n loginErrorResourceLimitExceededMessageDefault]];
         }
     }
     else

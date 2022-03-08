@@ -18,8 +18,8 @@
 #import "MatrixKit.h"
 
 @class RootTabEmptyView;
-@class AnalyticsScreenTimer;
-@class AppActivityIndicatorPresenter;
+@class AnalyticsScreenTracker;
+@class UserIndicatorPresenterWrapper;
 
 /**
  Notification to be posted when recents data is ready. Notification object will be the RecentsViewController instance.
@@ -95,12 +95,12 @@ FOUNDATION_EXPORT NSString *const RecentsViewControllerDataReadyNotification;
 /**
  The screen timer used for analytics if they've been enabled. The default value is nil.
  */
-@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+@property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
 /**
- Presenter for displaying app-wide activity / loading indicators. If not set, the view controller will use legacy activity indicators
+ Presenter for displaying app-wide user indicators. If not set, the view controller will use legacy activity indicators
  */
-@property (nonatomic, strong) AppActivityIndicatorPresenter *activityPresenter;
+@property (nonatomic, strong) UserIndicatorPresenterWrapper *indicatorPresenter;
 
 /**
  Return the sticky header for the specified section of the table view

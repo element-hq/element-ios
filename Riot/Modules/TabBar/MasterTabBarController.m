@@ -73,11 +73,6 @@
 
 @property (nonatomic) BOOL reviewSessionAlertHasBeenDisplayed;
 
-/**
- A flag to indicate that the analytics prompt should be shown during `-addMatrixSession:`.
- */
-@property(nonatomic) BOOL presentAnalyticsPromptOnAddSession;
-
 @end
 
 @implementation MasterTabBarController
@@ -204,20 +199,6 @@
 
     if (!authIsShown)
     {
-        // Check whether the user should be prompted to send analytics.
-        if (Analytics.shared.shouldShowAnalyticsPrompt)
-        {
-            MXSession *mxSession = self.mxSessions.firstObject;
-            if (mxSession)
-            {
-                [self promptUserBeforeUsingAnalyticsForSession:mxSession];
-            }
-            else
-            {
-                self.presentAnalyticsPromptOnAddSession = YES;
-            }
-        }
-        
         [self refreshTabBarBadges];
         
         // Release properly pushed and/or presented view controller
@@ -316,7 +297,7 @@
         }
     }
     
-    titleView.titleLabel.text = self.selectedViewController.accessibilityLabel;
+    titleView.titleLabel.text = [self getTitleForItemViewController:self.selectedViewController];
     
     // Need to be called in case of the controllers have been replaced
     [self.selectedViewController viewDidAppear:NO];
@@ -336,6 +317,8 @@
 {
     NSInteger index = [self indexOfTabItemWithTag:tabBarIndex];
     self.selectedIndex = index;
+    
+    titleView.titleLabel.text = [self getTitleForItemViewController:self.selectedViewController];
 }
 
 #pragma mark -
@@ -418,12 +401,6 @@
     {
         MXLogDebug(@"MasterTabBarController already has %@ in mxSessionArray", mxSession)
         return;
-    }
-    
-    if (self.presentAnalyticsPromptOnAddSession)
-    {
-        self.presentAnalyticsPromptOnAddSession = NO;
-        [self promptUserBeforeUsingAnalyticsForSession:mxSession];
     }
     
     // Check whether the controller's view is loaded into memory.
@@ -825,6 +802,17 @@
     self.navigationController.navigationBar.hidden = hidden;
 }
 
+- (NSString*)getTitleForItemViewController:(UIViewController*)itemViewController
+{
+    if ([itemViewController conformsToProtocol:@protocol(MasterTabBarItemDisplayProtocol)])
+    {
+        UIViewController<MasterTabBarItemDisplayProtocol> *masterTabBarItem = (UIViewController<MasterTabBarItemDisplayProtocol>*)itemViewController;
+        return masterTabBarItem.masterTabBarItemTitle;
+    }
+        
+    return nil;
+}
+
 #pragma mark -
 
 - (void)refreshTabBarBadges
@@ -950,18 +938,6 @@
     }
     
     return NSNotFound;
-}
-
-#pragma mark -
-
-- (void)promptUserBeforeUsingAnalyticsForSession:(MXSession *)mxSession
-{
-    // Analytics aren't collected on iOS 12 & 13.
-    if (@available(iOS 14.0, *))
-    {
-        MXLogDebug(@"[MasterTabBarController]: Invite the user to send analytics");
-        [self.masterTabBarDelegate masterTabBarController:self shouldPresentAnalyticsPromptForMatrixSession:mxSession];
-    }
 }
 
 #pragma mark - Review session
@@ -1115,7 +1091,7 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
-    titleView.titleLabel.text = viewController.accessibilityLabel;
+    titleView.titleLabel.text = [self getTitleForItemViewController:viewController];
 }
 
 @end

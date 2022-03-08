@@ -70,7 +70,7 @@
     selectedRoomId = nil;
     selectedCollectionViewContentOffset = -1;
     
-    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenHome];
+    self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenHome];
     self.collectionViewPaginationThrottler = [[MXThrottler alloc] initWithMinimumDelay:0.1];
 }
 
@@ -103,8 +103,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titleHome];
 
     [ThemeService.shared.theme applyStyleOnNavigationBar:[AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar];
 
@@ -113,7 +111,6 @@
     if (recentsDataSource)
     {
         // Take the lead on the shared data source.
-        recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeHome];
     }        
 
@@ -307,7 +304,7 @@
                                                    }]];
     
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -373,9 +370,16 @@
 {
     // Edit the potential selected room (see `onCollectionViewCellLongPress`).
     editedRoomId = selectedRoomId;
-    
-    // Each rooms section is represented by only one collection view.
-    return 1;
+
+    if ([recentsDataSource isSectionShrinkedAt:section])
+    {
+        return 0;
+    }
+    else
+    {
+        // Each rooms section is represented by only one collection view.
+        return 1;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

@@ -16,15 +16,17 @@
 
 #import "MXKRoomBubbleCellDataWithAppendingMode.h"
 
+#import "GeneratedInterface-Swift.h"
+
 static NSAttributedString *messageSeparator = nil;
 
 @implementation MXKRoomBubbleCellDataWithAppendingMode
 
 #pragma mark - MXKRoomBubbleCellDataStoring
 
-- (instancetype)initWithEvent:(MXEvent *)event andRoomState:(MXRoomState *)roomState andRoomDataSource:(MXKRoomDataSource *)roomDataSource2
+- (instancetype)initWithEvent:(MXEvent *)event andRoomState:(MXRoomState *)roomState andRoomDataSource:(MXKRoomDataSource *)roomDataSource
 {
-    self = [super initWithEvent:event andRoomState:roomState andRoomDataSource:roomDataSource2];
+    self = [super initWithEvent:event andRoomState:roomState andRoomDataSource:roomDataSource];
     if (self)
     {
         // Set default settings
@@ -46,8 +48,12 @@ static NSAttributedString *messageSeparator = nil;
         }
         
         // Check sender information
-        NSString *eventSenderName = [roomDataSource.eventFormatter senderDisplayNameForEvent:event withRoomState:roomState];
-        NSString *eventSenderAvatar = [roomDataSource.eventFormatter senderAvatarUrlForEvent:event withRoomState:roomState];
+        // If `roomScreenUseOnlyLatestUserAvatarAndName`is enabled, the avatar and name are
+        // displayed from the latest room state perspective rather than the historical.
+        MXRoomState *latestRoomState = roomDataSource.roomState;
+        MXRoomState *displayRoomState = RiotSettings.shared.roomScreenUseOnlyLatestUserAvatarAndName ? latestRoomState : roomState;
+        NSString *eventSenderName = [roomDataSource.eventFormatter senderDisplayNameForEvent:event withRoomState:displayRoomState];
+        NSString *eventSenderAvatar = [roomDataSource.eventFormatter senderAvatarUrlForEvent:event withRoomState:displayRoomState];
         if ((self.senderDisplayName || eventSenderName) &&
             ([self.senderDisplayName isEqualToString:eventSenderName] == NO))
         {

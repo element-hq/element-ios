@@ -43,14 +43,14 @@
     switch (mxPushRuleKind)
     {
         case MXPushRuleKindContent:
-            _inputTextField.placeholder = [MatrixKitL10n notificationSettingsWordToMatch];
+            _inputTextField.placeholder = [VectorL10n notificationSettingsWordToMatch];
             _inputTextField.autocorrectionType = UITextAutocorrectionTypeDefault;
             break;
         case MXPushRuleKindRoom:
-            _inputTextField.placeholder = [MatrixKitL10n notificationSettingsSelectRoom];
+            _inputTextField.placeholder = [VectorL10n notificationSettingsSelectRoom];
             break;
         case MXPushRuleKindSender:
-            _inputTextField.placeholder = [MatrixKitL10n notificationSettingsSenderHint];
+            _inputTextField.placeholder = [VectorL10n notificationSettingsSenderHint];
             _inputTextField.autocorrectionType = UITextAutocorrectionTypeNo;
             break;
         default:

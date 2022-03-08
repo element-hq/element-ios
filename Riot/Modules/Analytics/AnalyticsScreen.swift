@@ -32,6 +32,7 @@ import AnalyticsEvents
     case searchPeople
     case searchFiles
     case room
+    case roomPreview
     case roomDetails
     case roomMembers
     case user
@@ -47,13 +48,19 @@ import AnalyticsEvents
     case settingsSecurity
     case settingsDefaultNotifications
     case settingsMentionsAndKeywords
+    case settingsNotifications
     case deactivateAccount
     case group
     case myGroups
     case inviteFriends
+    case threadList
+    case spaceMenu
+    case spaceMembers
+    case spaceExploreRooms
+    case dialpad
     
     /// The screen name reported to the AnalyticsEvent.
-    var screenName: AnalyticsEvent.Screen.ScreenName {
+    var screenName: AnalyticsEvent.MobileScreen.ScreenName {
         switch self {
         case .welcome:
             return .Welcome
@@ -64,23 +71,23 @@ import AnalyticsEvents
         case .forgotPassword:
             return .ForgotPassword
         case .sidebar:
-            return .MobileSidebar
+            return .Sidebar
         case .home:
             return .Home
         case .favourites:
-            return .MobileFavourites
+            return .Favourites
         case .people:
-            return .MobilePeople
+            return .People
         case .rooms:
-            return .MobileRooms
+            return .Rooms
         case .searchRooms:
-            return .MobileSearchRooms
+            return .SearchRooms
         case .searchMessages:
-            return .MobileSearchMessages
+            return .SearchMessages
         case .searchPeople:
-            return .MobileSearchPeople
+            return .SearchPeople
         case .searchFiles:
-            return .MobileSearchFiles
+            return .SearchFiles
         case .room:
             return .Room
         case .roomDetails:
@@ -89,6 +96,8 @@ import AnalyticsEvents
             return .RoomMembers
         case .user:
             return .User
+        case .roomPreview:
+            return .RoomPreview
         case .roomSearch:
             return .RoomSearch
         case .roomUploads:
@@ -100,7 +109,7 @@ import AnalyticsEvents
         case .roomDirectory:
             return .RoomDirectory
         case .switchDirectory:
-            return .MobileSwitchDirectory
+            return .SwitchDirectory
         case .startChat:
             return .StartChat
         case .createRoom:
@@ -113,6 +122,8 @@ import AnalyticsEvents
             return .SettingsDefaultNotifications
         case .settingsMentionsAndKeywords:
             return .SettingsMentionsAndKeywords
+        case .settingsNotifications:
+            return .SettingsNotifications
         case .deactivateAccount:
             return .DeactivateAccount
         case .group:
@@ -120,7 +131,17 @@ import AnalyticsEvents
         case .myGroups:
             return .MyGroups
         case .inviteFriends:
-            return .MobileInviteFriends
+            return .InviteFriends
+        case .threadList:
+            return .ThreadList
+        case .spaceMenu:
+            return .SpaceMenu
+        case .spaceMembers:
+            return .SpaceMembers
+        case .spaceExploreRooms:
+            return .SpaceExploreRooms
+        case .dialpad:
+            return .Dialpad
         }
     }
 }

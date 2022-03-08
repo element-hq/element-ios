@@ -297,19 +297,7 @@ fileprivate class AppNavigator: AppNavigatorProtocol {
         
         return SideMenuPresenter(sideMenuCoordinator: sideMenuCoordinator)
     }()
-    
-    private var appNavigationVC: UINavigationController {
-        guard
-            let splitVC = appCoordinator.splitViewCoordinator?.toPresentable() as? UISplitViewController,
-            // Picking out the first view controller currently works only on iPhones, not iPads
-            let navigationVC = splitVC.viewControllers.first as? UINavigationController
-        else {
-            MXLog.error("[AppNavigator] Missing root split view controller")
-            return UINavigationController()
-        }
-        return navigationVC
-    }
-    
+
     // MARK: - Setup
     
     init(appCoordinator: AppCoordinator) {
@@ -320,17 +308,5 @@ fileprivate class AppNavigator: AppNavigatorProtocol {
     
     func navigate(to destination: AppNavigatorDestination) {
         self.appCoordinator.navigate(to: destination)
-    }
-    
-    func addLoadingActivity() -> Activity {
-        let presenter = ActivityIndicatorToastPresenter(
-            text: VectorL10n.roomParticipantsSecurityLoading,
-            navigationController: appNavigationVC
-        )
-        let request = ActivityRequest(
-            presenter: presenter,
-            dismissal: .manual
-        )
-        return ActivityCenter.shared.add(request)
     }
 }

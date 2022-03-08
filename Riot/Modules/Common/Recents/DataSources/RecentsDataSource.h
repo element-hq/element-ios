@@ -133,9 +133,14 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
 - (void)forceRefresh;
 
 /**
- Tell whether the sections are shrinkable. NO by default.
+ Tell whether the sections are shrinkable. YES by default.
  */
 @property (nonatomic) BOOL areSectionsShrinkable;
+
+/**
+ Return true if the given section is currently shrinked.
+ */
+- (BOOL)isSectionShrinkedAt:(NSInteger)section;
 
 /**
  Get the sticky header view for the specified section.

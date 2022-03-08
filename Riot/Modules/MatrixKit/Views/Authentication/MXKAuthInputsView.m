@@ -87,7 +87,7 @@ NSString *const MXKAuthErrorDomain = @"MXKAuthErrorDomain";
     // Do nothing by default
     if (callback)
     {
-        callback (nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n notSupportedYet]}]);
+        callback (nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[VectorL10n notSupportedYet]}]);
     }
 }
 
@@ -96,7 +96,7 @@ NSString *const MXKAuthErrorDomain = @"MXKAuthErrorDomain";
     // Do nothing by default
     if (callback)
     {
-        callback (nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n notSupportedYet]}]);
+        callback (nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[VectorL10n notSupportedYet]}]);
     }
 }
 

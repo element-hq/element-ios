@@ -57,20 +57,20 @@
         {
             self.deviceStatus.image = AssetImages.e2eWarning.image;
             
-            [_verifyButton setTitle:[MatrixKitL10n roomEventEncryptionInfoVerify] forState:UIControlStateNormal];
-            [_verifyButton setTitle:[MatrixKitL10n roomEventEncryptionInfoVerify] forState:UIControlStateHighlighted];
-            [_blockButton setTitle:[MatrixKitL10n roomEventEncryptionInfoBlock] forState:UIControlStateNormal];
-            [_blockButton setTitle:[MatrixKitL10n roomEventEncryptionInfoBlock] forState:UIControlStateHighlighted];
+            [_verifyButton setTitle:[VectorL10n roomEventEncryptionInfoVerify] forState:UIControlStateNormal];
+            [_verifyButton setTitle:[VectorL10n roomEventEncryptionInfoVerify] forState:UIControlStateHighlighted];
+            [_blockButton setTitle:[VectorL10n roomEventEncryptionInfoBlock] forState:UIControlStateNormal];
+            [_blockButton setTitle:[VectorL10n roomEventEncryptionInfoBlock] forState:UIControlStateHighlighted];
             break;
         }
         case MXDeviceVerified:
         {
             self.deviceStatus.image = AssetSharedImages.e2eVerified.image;
             
-            [_verifyButton setTitle:[MatrixKitL10n roomEventEncryptionInfoUnverify] forState:UIControlStateNormal];
-            [_verifyButton setTitle:[MatrixKitL10n roomEventEncryptionInfoUnverify] forState:UIControlStateHighlighted];
-            [_blockButton setTitle:[MatrixKitL10n roomEventEncryptionInfoBlock] forState:UIControlStateNormal];
-            [_blockButton setTitle:[MatrixKitL10n roomEventEncryptionInfoBlock] forState:UIControlStateHighlighted];
+            [_verifyButton setTitle:[VectorL10n roomEventEncryptionInfoUnverify] forState:UIControlStateNormal];
+            [_verifyButton setTitle:[VectorL10n roomEventEncryptionInfoUnverify] forState:UIControlStateHighlighted];
+            [_blockButton setTitle:[VectorL10n roomEventEncryptionInfoBlock] forState:UIControlStateNormal];
+            [_blockButton setTitle:[VectorL10n roomEventEncryptionInfoBlock] forState:UIControlStateHighlighted];
             
             break;
         }
@@ -78,10 +78,10 @@
         {
             self.deviceStatus.image = AssetImages.e2eBlocked.image;
             
-            [_verifyButton setTitle:[MatrixKitL10n roomEventEncryptionInfoVerify] forState:UIControlStateNormal];
-            [_verifyButton setTitle:[MatrixKitL10n roomEventEncryptionInfoVerify] forState:UIControlStateHighlighted];
-            [_blockButton setTitle:[MatrixKitL10n roomEventEncryptionInfoUnblock] forState:UIControlStateNormal];
-            [_blockButton setTitle:[MatrixKitL10n roomEventEncryptionInfoUnblock] forState:UIControlStateHighlighted];
+            [_verifyButton setTitle:[VectorL10n roomEventEncryptionInfoVerify] forState:UIControlStateNormal];
+            [_verifyButton setTitle:[VectorL10n roomEventEncryptionInfoVerify] forState:UIControlStateHighlighted];
+            [_blockButton setTitle:[VectorL10n roomEventEncryptionInfoUnblock] forState:UIControlStateNormal];
+            [_blockButton setTitle:[VectorL10n roomEventEncryptionInfoUnblock] forState:UIControlStateHighlighted];
             
             break;
         }

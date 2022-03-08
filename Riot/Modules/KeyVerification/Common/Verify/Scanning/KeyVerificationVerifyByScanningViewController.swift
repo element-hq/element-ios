@@ -275,7 +275,7 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
                                       message: VectorL10n.keyVerificationVerifyQrCodeScanOtherCodeSuccessMessage,
                                       preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: MatrixKitL10n.ok, style: .default, handler: { _ in
+        let okAction = UIAlertAction(title: VectorL10n.ok, style: .default, handler: { _ in
             completion()
         })
         alert.addAction(okAction)

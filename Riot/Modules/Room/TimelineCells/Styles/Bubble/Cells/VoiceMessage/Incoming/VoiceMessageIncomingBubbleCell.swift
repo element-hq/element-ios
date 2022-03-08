@@ -16,7 +16,7 @@
 
 import Foundation
 
-class VoiceMessageIncomingBubbleCell: VoiceMessageBubbleCell, BubbleIncomingRoomCellProtocol {
+class VoiceMessageIncomingBubbleCell: VoiceMessagePlainCell, BubbleIncomingRoomCellProtocol {
         
     override func setupViews() {
         super.setupViews()

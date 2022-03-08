@@ -32,11 +32,11 @@
 {
     [super awakeFromNib];
     
-    _userLoginTextField.placeholder = [MatrixKitL10n loginUserIdPlaceholder];
-    _emailAndTokenTextField.placeholder = [MatrixKitL10n loginEmailPlaceholder];
-    _promptEmailTokenLabel.text = [MatrixKitL10n loginPromptEmailToken];
+    _userLoginTextField.placeholder = [VectorL10n loginUserIdPlaceholder];
+    _emailAndTokenTextField.placeholder = [VectorL10n loginEmailPlaceholder];
+    _promptEmailTokenLabel.text = [VectorL10n loginPromptEmailToken];
     
-    _displayNameTextField.placeholder = [MatrixKitL10n loginDisplayNamePlaceholder];
+    _displayNameTextField.placeholder = [VectorL10n loginDisplayNamePlaceholder];
 }
 
 #pragma mark -
@@ -84,7 +84,7 @@
     {
         if (!self.areAllRequiredFieldsSet)
         {
-            errorMsg = [MatrixKitL10n loginInvalidParam];
+            errorMsg = [VectorL10n loginInvalidParam];
         }
     }
     

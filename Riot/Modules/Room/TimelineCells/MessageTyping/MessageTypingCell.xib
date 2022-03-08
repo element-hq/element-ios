@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="nQB-23-kip" customClass="MessageTypingCell" customModule="Riot" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nQB-23-kip" id="vRo-3W-dC9">
+                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+3" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4KE-u0-T4p">
+                        <rect key="frame" x="20" y="13" width="18.5" height="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bn5-WN-DQs" customClass="DotsView" customModule="Riot" customModuleProvider="target">
+                        <rect key="frame" x="38" y="13" width="91" height="18"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="4KE-u0-T4p" firstAttribute="leading" secondItem="vRo-3W-dC9" secondAttribute="leading" constant="20" symbolic="YES" id="PFN-Ig-2NK"/>
+                    <constraint firstItem="Bn5-WN-DQs" firstAttribute="leading" secondItem="vRo-3W-dC9" secondAttribute="leading" constant="38" id="hmq-dH-neQ"/>
+                    <constraint firstItem="Bn5-WN-DQs" firstAttribute="centerY" secondItem="vRo-3W-dC9" secondAttribute="centerY" id="jup-hc-eNQ"/>
+                </constraints>
+            </tableViewCellContentView>
+            <constraints>
+                <constraint firstItem="4KE-u0-T4p" firstAttribute="centerY" secondItem="nQB-23-kip" secondAttribute="centerY" id="hBP-OB-KGd"/>
+            </constraints>
+            <connections>
+                <outlet property="additionalUsersLabel" destination="4KE-u0-T4p" id="SVG-Oa-aHI"/>
+                <outlet property="additionalUsersLabelLeadingConstraint" destination="PFN-Ig-2NK" id="4Wr-XS-XXp"/>
+                <outlet property="dotsView" destination="Bn5-WN-DQs" id="QqF-bu-Pbm"/>
+                <outlet property="dotsViewLeadingConstraint" destination="hmq-dH-neQ" id="6hM-Sc-pCc"/>
+            </connections>
+            <point key="canvasLocation" x="166.66666666666669" y="20.758928571428569"/>
+        </tableViewCell>
+    </objects>
+</document>

@@ -1188,7 +1188,7 @@
         
         if ([MXKAppSettings standardAppSettings].messageDetailsAllowSaving)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n save]
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n save]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                 
@@ -1217,7 +1217,7 @@
         
         if ([MXKAppSettings standardAppSettings].messageDetailsAllowCopyingMedia)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n copyButtonName]
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n copyButtonName]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                 
@@ -1246,7 +1246,7 @@
         
         if ([MXKAppSettings standardAppSettings].messageDetailsAllowSharing)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n share]
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n share]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                 
@@ -1289,7 +1289,7 @@
         
         if ([MXMediaManager existingDownloaderWithIdentifier:attachment.downloadId])
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancelDownload]
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancelDownload]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                                                                
@@ -1308,7 +1308,7 @@
         
         if (currentAlert.actions.count)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                              style:UIAlertActionStyleCancel
                                                            handler:^(UIAlertAction * action) {
                                                                

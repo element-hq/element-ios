@@ -179,12 +179,7 @@
     
     // Show the contacts access footer if necessary.
     [self updateFooterViewVisibility];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self.screenTimer start];
+    [self.screenTracker trackScreen];
 }
 
 - (void)viewDidLayoutSubviews
@@ -209,12 +204,6 @@
         [self.navigationController.view setNeedsLayout]; // force update layout
         [self.navigationController.view layoutIfNeeded]; // to fix height of the navigation bar
     }
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self.screenTimer stop];
 }
 
 #pragma mark -
@@ -574,7 +563,7 @@
                                                                                      message:nil
                                                                               preferredStyle:UIAlertControllerStyleAlert];
             
-            [alertController addAction:[UIAlertAction actionWithTitle:MatrixKitL10n.ok
+            [alertController addAction:[UIAlertAction actionWithTitle:VectorL10n.ok
                                                                 style:UIAlertActionStyleDefault
                                                               handler:nil]];
             

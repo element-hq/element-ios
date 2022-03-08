@@ -35,7 +35,7 @@
     id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
-@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+@property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
 @end
 
@@ -49,7 +49,7 @@
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenRoomDirectory];
+    self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenRoomDirectory];
 }
 
 - (void)viewDidLoad
@@ -119,6 +119,7 @@
     }];
 
     [self.tableView reloadData];
+    [self.screenTracker trackScreen];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -136,8 +137,6 @@
         // the selected room (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
     }
-    
-    [self.screenTimer start];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -149,12 +148,6 @@
     }
     
     [super viewWillDisappear:animated];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self.screenTimer stop];
 }
 
 - (void)displayWitDataSource:(PublicRoomsDirectoryDataSource *)dataSource2

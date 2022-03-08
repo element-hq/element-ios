@@ -264,6 +264,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.screenTracker trackScreen];
 
     // Reset back user interactions
     self.userInteractionEnabled = YES;
@@ -314,6 +316,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         [[NSNotificationCenter defaultCenter] removeObserver:kMXNotificationCenterDidUpdateRulesObserver];
         kMXNotificationCenterDidUpdateRulesObserver = nil;
     }
+    
+    [self stopActivityIndicator];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -332,14 +336,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         // the selected room (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
     }
-    
-    [self.screenTimer start];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self.screenTimer stop];
 }
 
 - (void)viewDidLayoutSubviews
@@ -538,16 +534,16 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     {
         // minging kludge until https://matrix.org/jira/browse/SYN-678 is fixed
         // 'Error when trying to join an empty room should be more explicit'
-        msg = [MatrixKitL10n roomErrorJoinFailedEmptyRoom];
+        msg = [VectorL10n roomErrorJoinFailedEmptyRoom];
     }
     
     [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
     
-    UIAlertController *errorAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n roomErrorJoinFailedTitle]
+    UIAlertController *errorAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomErrorJoinFailedTitle]
                                                                         message:msg
                                                                  preferredStyle:UIAlertControllerStyleAlert];
     
-    [errorAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+    [errorAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                    style:UIAlertActionStyleDefault
                                                  handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
@@ -1040,6 +1036,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                     SectionHeaderView *updatedSectionHeaderView = (SectionHeaderView *)updatedHeaderView;
                     sectionHeaderView.headerLabel = updatedSectionHeaderView.headerLabel;
                     sectionHeaderView.accessoryView = updatedSectionHeaderView.accessoryView;
+                    sectionHeaderView.rightAccessoryView = updatedSectionHeaderView.rightAccessoryView;
                 }
             }
         }
@@ -1056,10 +1053,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
     }
     
-    if (changes == nil)
-    {
-        [self showEmptyViewIfNeeded];
-    }
+    [self showEmptyViewIfNeeded];
     
     if (dataSource.state == MXKDataSourceStateReady)
     {
@@ -1255,7 +1249,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                              message:message
                                                                       preferredStyle:UIAlertControllerStyleAlert];
         
-        [leavePrompt addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+        [leavePrompt addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                         style:UIAlertActionStyleCancel
                                                       handler:^(UIAlertAction * action) {
                                                            
@@ -1280,8 +1274,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                  MXRoom *room = [self.mainSession roomWithRoomId:currentRoomId];
                                                                  if (room)
                                                                  {
-                                                                     [self startActivityIndicator];
-                                                                     
+                                                                     [self startActivityIndicatorWithLabel:[VectorL10n roomParticipantsLeaveProcessing]];
                                                                      // cancel pending uploads/downloads
                                                                      // they are useless by now
                                                                      [MXMediaManager cancelDownloadsInCacheFolder:room.roomId];
@@ -1296,6 +1289,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                          {
                                                                              typeof(self) self = weakSelf;
                                                                              [self stopActivityIndicator];
+                                                                             [self.indicatorPresenter presentSuccessWithLabel:[VectorL10n roomParticipantsLeaveSuccess]];
                                                                              // Force table refresh
                                                                              [self cancelEditionMode:YES];
                                                                          }
@@ -1943,7 +1937,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                    }]];
     }
 
-    [actionSheet addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [actionSheet addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                     style:UIAlertActionStyleCancel
                                                   handler:^(UIAlertAction * action) {
                                                        
@@ -2358,7 +2352,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     else if ([MXTools isMatrixRoomAlias:roomIdOrAlias])
     {
         // Room preview doesn't support room alias
-        [[AppDelegate theDelegate] showAlertWithTitle:[MatrixKitL10n error] message:[VectorL10n roomRecentsUnknownRoomErrorMessage]];
+        [[AppDelegate theDelegate] showAlertWithTitle:[VectorL10n error] message:[VectorL10n roomRecentsUnknownRoomErrorMessage]];
     }
     else
     {
@@ -2384,7 +2378,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                 }];
                 self.roomsDirectoryCoordinatorBridgePresenter = nil;
             } else {
-                [[AppDelegate theDelegate] showAlertWithTitle:[MatrixKitL10n error] message:[VectorL10n roomRecentsUnknownRoomErrorMessage]];
+                [[AppDelegate theDelegate] showAlertWithTitle:[VectorL10n error] message:[VectorL10n roomRecentsUnknownRoomErrorMessage]];
             }
         }];
     }
@@ -2410,20 +2404,28 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 #pragma mark - Activity Indicator
 
 - (BOOL)providesCustomActivityIndicator {
-    return self.activityPresenter != nil;
+    return self.indicatorPresenter != nil;
+}
+
+- (void)startActivityIndicatorWithLabel:(NSString *)label {
+    if (self.indicatorPresenter) {
+        [self.indicatorPresenter presentActivityIndicatorWithLabel:label];
+    } else {
+        [super startActivityIndicator];
+    }
 }
 
 - (void)startActivityIndicator {
-    if (self.activityPresenter) {
-        [self.activityPresenter presentActivityIndicator];
+    if (self.indicatorPresenter) {
+        [self.indicatorPresenter presentActivityIndicator];
     } else {
         [super startActivityIndicator];
     }
 }
 
 - (void)stopActivityIndicator {
-    if (self.activityPresenter) {
-        [self.activityPresenter removeCurrentActivityIndicatorWithAnimated:YES completion:nil];
+    if (self.indicatorPresenter) {
+        [self.indicatorPresenter dismissActivityIndicator];
     } else {
         [super stopActivityIndicator];
     }

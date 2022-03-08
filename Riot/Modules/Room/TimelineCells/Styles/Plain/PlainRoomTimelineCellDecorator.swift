@@ -68,7 +68,7 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
         ])
     }
 
-    func addReactionView(_ reactionsView: BubbleReactionsView,
+    func addReactionView(_ reactionsView: RoomReactionsView,
                          toCell cell: MXKRoomBubbleTableViewCell,
                          cellData: RoomBubbleCellData,
                          contentViewPositionY: CGFloat,

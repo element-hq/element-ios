@@ -41,11 +41,11 @@
     // Set member count
     if (publicRoom.numJoinedMembers > 1)
     {
-        _memberCount.text = [MatrixKitL10n numMembersOther:@(publicRoom.numJoinedMembers).stringValue];
+        _memberCount.text = [VectorL10n numMembersOther:@(publicRoom.numJoinedMembers).stringValue];
     }
     else if (publicRoom.numJoinedMembers == 1)
     {
-        _memberCount.text = [MatrixKitL10n numMembersOne:@(1).stringValue];
+        _memberCount.text = [VectorL10n numMembersOne:@(1).stringValue];
     }
     else
     {
