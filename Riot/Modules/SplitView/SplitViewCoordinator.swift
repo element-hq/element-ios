@@ -15,6 +15,7 @@
  */
 
 import Foundation
+import MatrixSDK
 
 /// SplitViewCoordinatorParameters input parameters
 class SplitViewCoordinatorParameters {
@@ -40,7 +41,7 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
     
     // MARK: - Properties
     
-    // MARK: Private    
+    // MARK: Private
     
     private let parameters: SplitViewCoordinatorParameters
     
@@ -48,7 +49,7 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
     
     private weak var masterPresentable: SplitViewMasterPresentable?
     private var detailNavigationController: UINavigationController?
-    private(set) var detailNavigationRouter: NavigationRouterType?
+    private var detailNavigationRouter: NavigationRouterType?
     
     private var selectedNavigationRouter: NavigationRouterType? {
         return self.masterPresentable?.selectedNavigationRouter
@@ -60,6 +61,8 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
     private var hasStartedOnce: Bool = false
     
     // MARK: Public
+    
+    private(set) var detailUserIndicatorPresenter: UserIndicatorTypePresenterProtocol?
     
     var childCoordinators: [Coordinator] = []
     
@@ -100,6 +103,8 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
             
             // Setup split view controller
             self.splitViewController.viewControllers = [tabBarCoordinator.toPresentable(), detailNavigationController]
+            
+            updateUserIndicatorPresenter()
                     
             self.add(childCoordinator: tabBarCoordinator)
             
@@ -120,12 +125,12 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
         }
     }
     
-    func toPresentable() -> UIViewController {        
+    func toPresentable() -> UIViewController {
         return self.splitViewController
     }
             
     // TODO: Do not expose publicly this method
-    func resetDetails(animated: Bool) {                
+    func resetDetails(animated: Bool) {
         // Be sure that the primary is then visible too.
         if splitViewController.displayMode == .primaryHidden {
             splitViewController.preferredDisplayMode = .allVisible
@@ -135,7 +140,7 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
 
         // Release the current selected item (room/contact/group...).
         self.tabBarCoordinator?.releaseSelectedItems()
-    }   
+    }
     
     func popToHome(animated: Bool, completion: (() -> Void)?) {
         self.resetDetails(animated: animated)
@@ -172,17 +177,17 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
         // Set placeholder screen as root controller of detail navigation controller
         let placeholderDetailsVC = self.createPlaceholderDetailsViewController()
         detailNavigationRouter.setRootModule(placeholderDetailsVC, hideNavigationBar: false, animated: animated, popCompletion: nil)
-    }         
+    }
     
     private func resetDetailNavigationController(animated: Bool) {
         
         if self.splitViewController.isCollapsed {
-            if let topMostNavigationController = self.selectedNavigationRouter?.modules.last as? UINavigationController, topMostNavigationController == self.detailNavigationController {                
+            if let topMostNavigationController = self.selectedNavigationRouter?.modules.last as? UINavigationController, topMostNavigationController == self.detailNavigationController {
                 self.selectedNavigationRouter?.popModule(animated: animated)
-            }            
+            }
         } else {
             self.resetDetailNavigationControllerWithPlaceholder(animated: animated)
-        }                
+        }
     }
     
     private func isPlaceholderShown(from secondaryViewController: UIViewController) -> Bool {
@@ -255,6 +260,16 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
             }
         }
     }
+    
+    private func updateUserIndicatorPresenter() {
+        guard let tabBarCoordinator = tabBarCoordinator, let detailNavigationController = detailNavigationController else {
+            MXLog.debug("[SplitViewCoordinator]: Missing tab bar or detail coordinator, cannot update user indicator presenter")
+            return
+        }
+        
+        let presentingViewController = splitViewController.isCollapsed ? tabBarCoordinator.toPresentable() : detailNavigationController
+        detailUserIndicatorPresenter = UserIndicatorTypePresenter(presentingViewController: presentingViewController)
+    }
 }
 
 // MARK: - UISplitViewControllerDelegate
@@ -284,6 +299,8 @@ extension SplitViewCoordinator: UISplitViewControllerDelegate {
         // Restore detail navigation controller with placeholder as root
         self.resetDetailNavigationController(animated: false)
         
+        updateUserIndicatorPresenter()
+        
         // Return up to date detail navigation controller
         // In any cases `detailNavigationController` will be used as secondary view of the split view controller.
         return self.detailNavigationController
@@ -294,6 +311,7 @@ extension SplitViewCoordinator: UISplitViewControllerDelegate {
     /// or true to indicate that you do not want the split view controller to do anything with the secondary view controller.
     /// Sample case: large iPhone goes from landscape to portrait.
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
+        updateUserIndicatorPresenter()
         
         // If the secondary view is the placeholder screen do not merge the secondary into the primary.
         // Note: In this case, the secondaryViewController will be automatically discarded.
