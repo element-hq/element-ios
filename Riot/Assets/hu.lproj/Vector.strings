@@ -2133,3 +2133,6 @@
 "attachment_unsupported_preview_message" = "Ez a fájl típus nem támogatott.";
 "attachment_unsupported_preview_title" = "Az előnézetet nem lehet megjeleníteni";
 "message_reply_to_sender_sent_their_location" = "megosztotta a földrajzi helyzetét.";
+"home_syncing" = "Szinkronizálás";
+"room_participants_leave_success" = "Szobából kilépve";
+"room_participants_leave_processing" = "Távozás";
