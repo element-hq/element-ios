@@ -69,7 +69,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     
     // If we cannot create attributed string, but the message is nevertheless meant for display (e.g. not an edit event), show generic error
     // instead of a missing message on a timeline.
-    if ( !string && [self shouldBeVisibleEvent:event])
+    if (!string && [self shouldDisplayEvent:event])
     {
         MXLogError(@"[EventFormatter]: Cannot format string for displayable event: %@, type: %@, msgtype: %@, has room state: %d, members: %lu, error: %lu",
                    event.eventId,
@@ -85,7 +85,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     return string;
 }
 
-- (BOOL)shouldBeVisibleEvent:(MXEvent *)event {
+- (BOOL)shouldDisplayEvent:(MXEvent *)event {
     return [self.eventTypesFilterForMessages containsObject:event.type]
     && !event.isEditEvent
     && !event.isRedactedEvent;
