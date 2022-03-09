@@ -33,6 +33,11 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     private let allowOverwrite: Bool
     private let cancellable: Bool
 
+    private var isBackupSetupMethodKeySupported: Bool {
+        let homeserverEncryptionConfiguration = self.session.vc_homeserverConfiguration().encryption
+        return homeserverEncryptionConfiguration.secureBackupSetupMethods.contains(.key)
+    }
+
     // MARK: Public
 
     // Must be used only internally
@@ -208,7 +213,9 @@ extension SecureBackupSetupCoordinator: SecretsSetupRecoveryPassphraseCoordinato
     }
     
     func secretsSetupRecoveryPassphraseCoordinator(_ coordinator: SecretsSetupRecoveryPassphraseCoordinatorType, didConfirmPassphrase passphrase: String) {
-        self.showSetupKey(passphraseOnly: false, passphrase: passphrase)        
+
+        // Do not present recovery key export screen if secure backup setup key method is not supported
+        self.showSetupKey(passphraseOnly: !self.isBackupSetupMethodKeySupported, passphrase: passphrase)
     }
     
     func secretsSetupRecoveryPassphraseCoordinatorDidCancel(_ coordinator: SecretsSetupRecoveryPassphraseCoordinatorType) {
