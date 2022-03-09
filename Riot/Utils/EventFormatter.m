@@ -78,7 +78,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         
         // If we cannot create attributed string, but the message is nevertheless meant for display, show generic error
         // instead of a missing message on a timeline.
-        if (event.eventType == MXEventTypeRoomMessage) {
+        if ([self shouldDisplayEvent:event]) {
             MXLogError(@"[EventFormatter]: Missing attributed string for message event: %@", event.eventId);
             string = [[NSAttributedString alloc] initWithString:[VectorL10n noticeErrorUnformattableEvent] attributes:@{
                 NSFontAttributeName: [self encryptedMessagesTextFont]
