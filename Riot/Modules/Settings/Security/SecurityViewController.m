@@ -287,6 +287,8 @@ TableViewSectionsDelegate>
 - (void)updateSections
 {
     NSMutableArray<Section*> *sections = [NSMutableArray array];
+
+    BOOL isSecureBackupRequired = self.mainSession.vc_homeserverConfiguration.encryption.isSecureBackupRequired;
     
     // Pin code section
     
@@ -341,14 +343,17 @@ TableViewSectionsDelegate>
     }
     
     // Secure backup
-    
-    Section *secureBackupSection = [Section sectionWithTag:SECTION_SECURE_BACKUP];
-    secureBackupSection.headerTitle = [VectorL10n securitySettingsSecureBackup];
-    secureBackupSection.footerTitle = VectorL10n.securitySettingsSecureBackupDescription;
-    
-    [secureBackupSection addRowsWithCount:self->secureBackupSection.numberOfRows];
-    
-    [sections addObject:secureBackupSection];
+
+    if (!isSecureBackupRequired)
+    {
+        Section *secureBackupSection = [Section sectionWithTag:SECTION_SECURE_BACKUP];
+        secureBackupSection.headerTitle = [VectorL10n securitySettingsSecureBackup];
+        secureBackupSection.footerTitle = VectorL10n.securitySettingsSecureBackupDescription;
+
+        [secureBackupSection addRowsWithCount:self->secureBackupSection.numberOfRows];
+
+        [sections addObject:secureBackupSection];
+    }
     
     // Cross-Signing
     
@@ -369,7 +374,7 @@ TableViewSectionsDelegate>
         [cryptograhpySection addRowWithTag:CRYPTOGRAPHY_INFO];
     }
     
-    if (RiotSettings.shared.settingsSecurityScreenShowCryptographyExport)
+    if (RiotSettings.shared.settingsSecurityScreenShowCryptographyExport && !isSecureBackupRequired)
     {
         [cryptograhpySection addRowWithTag:CRYPTOGRAPHY_EXPORT];
     }
