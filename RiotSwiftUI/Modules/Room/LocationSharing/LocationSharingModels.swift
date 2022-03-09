@@ -19,6 +19,16 @@ import SwiftUI
 import Combine
 import CoreLocation
 
+enum LocationSharingViewAction {
+    case cancel
+    case share
+}
+
+enum LocationSharingViewModelResult {
+    case cancel
+    case share(latitude: Double, longitude: Double)
+}
+
 enum LocationSharingViewError {
     case failedLoadingMap
     case failedLocatingUser
@@ -26,27 +36,9 @@ enum LocationSharingViewError {
     case failedSharingLocation
 }
 
-enum LocationSharingStateAction {
-    case error(LocationSharingViewError, LocationSharingViewModelCallback?)
-    case startLoading
-    case stopLoading(Error?)
-}
-
-enum LocationSharingViewAction {
-    case cancel
-    case share
-}
-
-typealias LocationSharingViewModelCallback = ((LocationSharingViewModelResult) -> Void)
-
-enum LocationSharingViewModelResult {
-    case cancel
-    case share(latitude: Double, longitude: Double)
-}
-
 @available(iOS 14, *)
 struct LocationSharingViewState: BindableState {
-    let tileServerMapURL: URL
+    let mapStyleURL: URL
     let avatarData: AvatarInputProtocol
     let location: CLLocationCoordinate2D?
     
@@ -66,20 +58,13 @@ struct LocationSharingViewState: BindableState {
 }
 
 struct LocationSharingViewStateBindings {
-    var alertInfo: ErrorAlertInfo?
+    var alertInfo: AlertInfo<LocationSharingAlertType>?
     var userLocation: CLLocationCoordinate2D?
 }
 
-struct ErrorAlertInfo: Identifiable {
-    enum AlertType {
-        case mapLoadingError
-        case userLocatingError
-        case authorizationError
-        case locationSharingError
-    }
-    
-    let id: AlertType
-    let title: String
-    let primaryButton: (title: String, action: (() -> Void)?)
-    let secondaryButton: (title: String, action: (() -> Void)?)?
+enum LocationSharingAlertType {
+    case mapLoadingError
+    case userLocatingError
+    case authorizationError
+    case locationSharingError
 }

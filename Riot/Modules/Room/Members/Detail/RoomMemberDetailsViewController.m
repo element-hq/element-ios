@@ -104,7 +104,7 @@
 
 @property(nonatomic, strong) UserVerificationCoordinatorBridgePresenter *userVerificationCoordinatorBridgePresenter;
 
-@property(nonatomic) AnalyticsScreenTimer *screenTimer;
+@property(nonatomic) AnalyticsScreenTracker *screenTracker;
 
 @end
 
@@ -142,7 +142,7 @@
     // Keep visible the status bar by default.
     isStatusBarHidden = NO;
     
-    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenUser];
+    self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenUser];
 }
 
 - (void)viewDidLoad
@@ -242,6 +242,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.screenTracker trackScreen];
 
     [self userInterfaceThemeDidChange];
 
@@ -263,18 +265,6 @@
     [self hideNavigationBarBorder:NO];
     
     self.bottomImageView.hidden = YES;
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self.screenTimer start];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self.screenTimer stop];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
@@ -350,7 +340,7 @@
         return [AvatarGenerator generateAvatarForMatrixItem:self.mxRoomMember.userId withDisplayName:self.mxRoomMember.displayname];
     }
     
-    return [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
+    return [MXKTools paintImage:AssetImages.placeholder.image
                       withColor:ThemeService.shared.theme.tintColor];
 }
 
@@ -984,7 +974,7 @@
         }
         else
         {
-            roomCell.avatarImageView.image = [UIImage imageNamed:@"start_chat"];
+            roomCell.avatarImageView.image = AssetImages.startChat.image;
             roomCell.avatarImageView.defaultBackgroundColor = [UIColor clearColor];
             roomCell.avatarImageView.userInteractionEnabled = NO;
             roomCell.titleLabel.text = [VectorL10n roomParticipantsActionStartNewChat];
@@ -1145,7 +1135,7 @@
                     textField.keyboardType = UIKeyboardTypeDefault;
                 }];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                                    
@@ -1157,7 +1147,7 @@
                                                                    
                                                                }]];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ban]
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ban]
                                                                  style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                      
                                                                      if (weakSelf)
@@ -1209,7 +1199,7 @@
                     textField.keyboardType = UIKeyboardTypeDefault;
                 }];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                                    
@@ -1278,7 +1268,7 @@
         __block MXKImageView * avatarFullScreenView = [[MXKImageView alloc] initWithFrame:CGRectZero];
         avatarFullScreenView.stretchable = YES;
 
-        [avatarFullScreenView setRightButtonTitle:[MatrixKitL10n ok]
+        [avatarFullScreenView setRightButtonTitle:[VectorL10n ok]
                                           handler:^(MXKImageView* imageView, NSString* buttonTitle) {
                                               
                                               MXStrongifyAndReturnIfNil(self);

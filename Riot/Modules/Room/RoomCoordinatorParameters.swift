@@ -28,6 +28,9 @@ struct RoomCoordinatorParameters {
     /// `navigationRouter` property takes priority on `navigationRouterStore`
     let navigationRouterStore: NavigationRouterStoreProtocol?
     
+    /// Presenter for displaying loading indicators, success messages and other user indicators
+    let userIndicatorPresenter: UserIndicatorTypePresenterProtocol?
+    
     /// The matrix session in which the room should be available.
     let session: MXSession
     
@@ -37,6 +40,12 @@ struct RoomCoordinatorParameters {
     /// If not nil, the room will be opened on this event.
     let eventId: String?
     
+    /// If not nil, specified thread will be opened.
+    let threadId: String?
+    
+    /// Display configuration for the room
+    let displayConfiguration: RoomDisplayConfiguration
+    
     /// The data for the room preview.
     let previewData: RoomPreviewData?
     
@@ -44,26 +53,43 @@ struct RoomCoordinatorParameters {
     
     private init(navigationRouter: NavigationRouterType?,
                  navigationRouterStore: NavigationRouterStoreProtocol?,
+                 userIndicatorPresenter: UserIndicatorTypePresenterProtocol?,
                  session: MXSession,
                  roomId: String,
                  eventId: String?,
+                 threadId: String?,
+                 displayConfiguration: RoomDisplayConfiguration,
                  previewData: RoomPreviewData?) {
         self.navigationRouter = navigationRouter
         self.navigationRouterStore = navigationRouterStore
+        self.userIndicatorPresenter = userIndicatorPresenter
         self.session = session
         self.roomId = roomId
         self.eventId = eventId
+        self.threadId = threadId
+        self.displayConfiguration = displayConfiguration
         self.previewData = previewData
     }
     
     /// Init to present a joined room
     init(navigationRouter: NavigationRouterType? = nil,
          navigationRouterStore: NavigationRouterStoreProtocol? = nil,
+         userIndicatorPresenter: UserIndicatorTypePresenterProtocol? = nil,
          session: MXSession,
          roomId: String,
-         eventId: String? = nil) {
+         eventId: String? = nil,
+         threadId: String? = nil,
+         displayConfiguration: RoomDisplayConfiguration = .default) {
         
-        self.init(navigationRouter: navigationRouter, navigationRouterStore: navigationRouterStore, session: session, roomId: roomId, eventId: eventId, previewData: nil)
+        self.init(navigationRouter: navigationRouter,
+                  navigationRouterStore: navigationRouterStore,
+                  userIndicatorPresenter: userIndicatorPresenter,
+                  session: session,
+                  roomId: roomId,
+                  eventId: eventId,
+                  threadId: threadId,
+                  displayConfiguration: displayConfiguration,
+                  previewData: nil)
     }
     
     /// Init to present a room preview
@@ -71,6 +97,14 @@ struct RoomCoordinatorParameters {
          navigationRouterStore: NavigationRouterStoreProtocol? = nil,
          previewData: RoomPreviewData) {
         
-        self.init(navigationRouter: navigationRouter, navigationRouterStore: navigationRouterStore, session: previewData.mxSession, roomId: previewData.roomId, eventId: nil, previewData: previewData)
+        self.init(navigationRouter: navigationRouter,
+                  navigationRouterStore: navigationRouterStore,
+                  userIndicatorPresenter: nil,
+                  session: previewData.mxSession,
+                  roomId: previewData.roomId,
+                  eventId: nil,
+                  threadId: nil,
+                  displayConfiguration: .default,
+                  previewData: previewData)
     }
 }

@@ -44,7 +44,7 @@
     id roomDidFlushDataNotificationObserver;
 
     // Cache for the room live timeline
-    MXEventTimeline *mxRoomLiveTimeline;
+    id<MXEventTimeline> mxRoomLiveTimeline;
 }
 
 @end
@@ -134,7 +134,7 @@
     mxRoom = room;
 
     MXWeakify(self);
-    [mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+    [mxRoom liveTimeline:^(id<MXEventTimeline> liveTimeline) {
         MXStrongifyAndReturnIfNil(self);
 
         self->mxRoomLiveTimeline = liveTimeline;
@@ -152,7 +152,7 @@
     }];
 }
 
-- (MXEventTimeline *)mxRoomLiveTimeline
+- (id<MXEventTimeline> )mxRoomLiveTimeline
 {
     // @TODO(async-state): Just here for dev
     NSAssert(mxRoomLiveTimeline, @"[MXKRoomMemberDetailsViewController] Room live timeline must be preloaded before accessing to MXKRoomMemberDetailsViewController.mxRoomLiveTimeline");
@@ -320,9 +320,9 @@
                     [currentAlert dismissViewControllerAnimated:NO completion:nil];
                 }
                 
-                currentAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n roomMemberIgnorePrompt] message:nil preferredStyle:UIAlertControllerStyleAlert];
+                currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomMemberIgnorePrompt] message:nil preferredStyle:UIAlertControllerStyleAlert];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n yes]
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n yes]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                                    
@@ -357,7 +357,7 @@
                                                                    
                                                                }]];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n no]
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n no]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                                    
@@ -569,7 +569,7 @@
     if (membersListener && mxRoom)
     {
         MXWeakify(self);
-        [mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+        [mxRoom liveTimeline:^(id<MXEventTimeline> liveTimeline) {
             MXStrongifyAndReturnIfNil(self);
 
             [liveTimeline removeListener:self->membersListener];
@@ -768,49 +768,49 @@
     switch (action)
     {
         case MXKRoomMemberDetailsActionInvite:
-            title = [MatrixKitL10n invite];
+            title = [VectorL10n invite];
             break;
         case MXKRoomMemberDetailsActionLeave:
-            title = [MatrixKitL10n leave];
+            title = [VectorL10n leave];
             break;
         case MXKRoomMemberDetailsActionKick:
-            title = [MatrixKitL10n kick];
+            title = [VectorL10n kick];
             break;
         case MXKRoomMemberDetailsActionBan:
-            title = [MatrixKitL10n ban];
+            title = [VectorL10n ban];
             break;
         case MXKRoomMemberDetailsActionUnban:
-            title = [MatrixKitL10n unban];
+            title = [VectorL10n unban];
             break;
         case MXKRoomMemberDetailsActionIgnore:
-            title = [MatrixKitL10n ignore];
+            title = [VectorL10n ignore];
             break;
         case MXKRoomMemberDetailsActionUnignore:
-            title = [MatrixKitL10n unignore];
+            title = [VectorL10n unignore];
             break;
         case MXKRoomMemberDetailsActionSetDefaultPowerLevel:
-            title = [MatrixKitL10n setDefaultPowerLevel];
+            title = [VectorL10n setDefaultPowerLevel];
             break;
         case MXKRoomMemberDetailsActionSetModerator:
-            title = [MatrixKitL10n setModerator];
+            title = [VectorL10n setModerator];
             break;
         case MXKRoomMemberDetailsActionSetAdmin:
-            title = [MatrixKitL10n setAdmin];
+            title = [VectorL10n setAdmin];
             break;
         case MXKRoomMemberDetailsActionSetCustomPowerLevel:
-            title = [MatrixKitL10n setPowerLevel];
+            title = [VectorL10n setPowerLevel];
             break;
         case MXKRoomMemberDetailsActionStartChat:
-            title = [MatrixKitL10n startChat];
+            title = [VectorL10n startChat];
             break;
         case MXKRoomMemberDetailsActionStartVoiceCall:
-            title = [MatrixKitL10n startVoiceCall];
+            title = [VectorL10n startVoiceCall];
             break;
         case MXKRoomMemberDetailsActionStartVideoCall:
-            title = [MatrixKitL10n startVideoCall];
+            title = [VectorL10n startVideoCall];
             break;
         case MXKRoomMemberDetailsActionMention:
-            title = [MatrixKitL10n mention];
+            title = [VectorL10n mention];
             break;
         default:
             break;
@@ -918,9 +918,9 @@
                 [currentAlert dismissViewControllerAnimated:NO completion:nil];
             }
             
-            currentAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n roomMemberPowerLevelPrompt] message:nil preferredStyle:UIAlertControllerStyleAlert];
+            currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomMemberPowerLevelPrompt] message:nil preferredStyle:UIAlertControllerStyleAlert];
             
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n no]
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n no]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                                                                
@@ -932,7 +932,7 @@
                                                                
                                                            }]];
             
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n yes]
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n yes]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                                                                
@@ -983,12 +983,12 @@
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
     }
     
-    currentAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n powerLevel] message:nil preferredStyle:UIAlertControllerStyleAlert];
+    currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n powerLevel] message:nil preferredStyle:UIAlertControllerStyleAlert];
     
     
     if (![self.mainSession.myUser.userId isEqualToString:_mxRoomMember.userId])
     {
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n resetToDefault]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n resetToDefault]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -1013,7 +1013,7 @@
         textField.keyboardType = UIKeyboardTypeDecimalPad;
     }];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        

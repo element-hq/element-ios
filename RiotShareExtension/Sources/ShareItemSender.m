@@ -315,13 +315,13 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         return nil;
     }
     
-    UIAlertController *compressionPrompt = [UIAlertController alertControllerWithTitle:[MatrixKitL10n attachmentSizePromptTitle]
-                                                                               message:[MatrixKitL10n attachmentSizePromptMessage]
+    UIAlertController *compressionPrompt = [UIAlertController alertControllerWithTitle:[VectorL10n attachmentSizePromptTitle]
+                                                                               message:[VectorL10n attachmentSizePromptMessage]
                                                                         preferredStyle:UIAlertControllerStyleActionSheet];
     
     if (compressionSizes.small.fileSize)
     {
-        NSString *title = [MatrixKitL10n attachmentSmall:[MXTools fileSizeToString:compressionSizes.small.fileSize]];
+        NSString *title = [VectorL10n attachmentSmall:[MXTools fileSizeToString:compressionSizes.small.fileSize]];
         
         MXWeakify(self);
         [compressionPrompt addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
@@ -336,7 +336,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
     if (compressionSizes.medium.fileSize)
     {
-        NSString *title = [MatrixKitL10n attachmentMedium:[MXTools fileSizeToString:compressionSizes.medium.fileSize]];
+        NSString *title = [VectorL10n attachmentMedium:[MXTools fileSizeToString:compressionSizes.medium.fileSize]];
         
         MXWeakify(self);
         [compressionPrompt addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
@@ -353,7 +353,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     // TODO: Remove this condition when issue https://github.com/vector-im/riot-ios/issues/2341 will be fixed.
     if (compressionSizes.large.fileSize && (MAX(compressionSizes.large.imageSize.width, compressionSizes.large.imageSize.height) <= kLargeImageSizeMaxDimension))
     {
-        NSString *title = [MatrixKitL10n attachmentLarge:[MXTools fileSizeToString:compressionSizes.large.fileSize]];
+        NSString *title = [VectorL10n attachmentLarge:[MXTools fileSizeToString:compressionSizes.large.fileSize]];
         
         MXWeakify(self);
         [compressionPrompt addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
@@ -373,7 +373,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     {
         NSString *fileSizeString = [MXTools fileSizeToString:compressionSizes.original.fileSize];
         
-        NSString *title = [MatrixKitL10n attachmentOriginal:fileSizeString];
+        NSString *title = [VectorL10n attachmentOriginal:fileSizeString];
         
         MXWeakify(self);
         [compressionPrompt addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
@@ -386,7 +386,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         }]];
     }
     
-    [compressionPrompt addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [compressionPrompt addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                           style:UIAlertActionStyleCancel
                                                         handler:nil]];
     
@@ -525,7 +525,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     dispatch_group_t dispatchGroup = dispatch_group_create();
     for (MXRoom *room in rooms) {
         dispatch_group_enter(dispatchGroup);
-        [room sendTextMessage:text success:^(NSString *eventId) {
+        [room sendTextMessage:text threadId:nil success:^(NSString *eventId) {
             dispatch_group_leave(dispatchGroup);
         } failure:^(NSError *innerError) {
             MXLogError(@"[ShareItemSender] sendTextMessage failed with error %@", error);
@@ -565,7 +565,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     dispatch_group_t dispatchGroup = dispatch_group_create();
     for (MXRoom *room in rooms) {
         dispatch_group_enter(dispatchGroup);
-        [room sendFile:fileUrl mimeType:mimeType localEcho:nil success:^(NSString *eventId) {
+        [room sendFile:fileUrl mimeType:mimeType threadId:nil localEcho:nil success:^(NSString *eventId) {
             dispatch_group_leave(dispatchGroup);
         } failure:^(NSError *innerError) {
             MXLogError(@"[ShareItemSender] sendFile failed with error %@", innerError);
@@ -616,7 +616,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         dispatch_group_t dispatchGroup = dispatch_group_create();
         for (MXRoom *room in rooms) {
             dispatch_group_enter(dispatchGroup);
-            [room sendVideoAsset:videoAsset withThumbnail:videoThumbnail localEcho:nil success:^(NSString *eventId) {
+            [room sendVideoAsset:videoAsset withThumbnail:videoThumbnail threadId:nil localEcho:nil success:^(NSString *eventId) {
                 dispatch_group_leave(dispatchGroup);
             } failure:^(NSError *innerError) {
                 MXLogError(@"[ShareManager] Failed sending video with error %@", innerError);
@@ -669,7 +669,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                                                                                   message:[VectorL10n shareExtensionLowQualityVideoMessage:AppInfo.current.displayName]
                                                                            preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:MatrixKitL10n.cancel style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:VectorL10n.cancel style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
             // Do nothing
         }];
         UIAlertAction *sendAction = [UIAlertAction actionWithTitle:VectorL10n.shareExtensionSendNow style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -702,7 +702,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     dispatch_group_t dispatchGroup = dispatch_group_create();
     for (MXRoom *room in rooms) {
         dispatch_group_enter(dispatchGroup);
-        [room sendVoiceMessage:fileUrl mimeType:nil duration:0.0 samples:nil localEcho:nil success:^(NSString *eventId) {
+        [room sendVoiceMessage:fileUrl mimeType:nil duration:0.0 samples:nil threadId:nil localEcho:nil success:^(NSString *eventId) {
             dispatch_group_leave(dispatchGroup);
         } failure:^(NSError *innerError) {
             MXLogError(@"[ShareItemSender] sendVoiceMessage failed with error %@", error);
@@ -867,7 +867,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         }
         
         dispatch_group_enter(dispatchGroup);
-        [room sendImage:finalImageData withImageSize:imageSize mimeType:mimeType andThumbnail:thumbnail localEcho:nil success:^(NSString *eventId) {
+        [room sendImage:finalImageData withImageSize:imageSize mimeType:mimeType andThumbnail:thumbnail threadId:nil localEcho:nil success:^(NSString *eventId) {
             dispatch_group_leave(dispatchGroup);
         } failure:^(NSError *innerError) {
             MXLogError(@"[ShareManager] sendImage failed with error %@", error);

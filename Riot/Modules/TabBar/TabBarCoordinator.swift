@@ -17,6 +17,7 @@
  */
 
 import UIKit
+import CommonKit
 
 @objcMembers
 final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
@@ -26,6 +27,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     // MARK: Private
     
     private let parameters: TabBarCoordinatorParameters
+    private let activityIndicatorPresenter: ActivityIndicatorPresenterType
+    private let indicatorPresenter: UserIndicatorTypePresenterProtocol
     
     // Indicate if the Coordinator has started once
     private var hasStartedOnce: Bool {
@@ -52,6 +55,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         return self.navigationRouter.modules.last is MasterTabBarController
     }
     
+    private var indicators = [UserIndicator]()
+    
     // MARK: Public
 
     // Must be used only internally
@@ -69,6 +74,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let masterNavigationController = RiotNavigationController()
         self.navigationRouter = NavigationRouter(navigationController: masterNavigationController)
         self.masterNavigationController = masterNavigationController
+        self.activityIndicatorPresenter = ActivityIndicatorPresenter()
+        self.indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: masterNavigationController)
     }
     
     // MARK: - Public methods
@@ -224,6 +231,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         homeViewController.tabBarItem.tag = Int(TABBAR_HOME_INDEX)
         homeViewController.tabBarItem.image = homeViewController.tabBarItem.image
         homeViewController.accessibilityLabel = VectorL10n.titleHome
+        homeViewController.indicatorPresenter = UserIndicatorPresenterWrapper(presenter: indicatorPresenter)
         
         let wrapperViewController = HomeViewControllerWithBannerWrapperViewController(viewController: homeViewController)        
         return wrapperViewController
@@ -233,6 +241,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let favouritesViewController: FavouritesViewController = FavouritesViewController.instantiate()
         favouritesViewController.tabBarItem.tag = Int(TABBAR_FAVOURITES_INDEX)
         favouritesViewController.accessibilityLabel = VectorL10n.titleFavourites
+        favouritesViewController.indicatorPresenter = UserIndicatorPresenterWrapper(presenter: indicatorPresenter)
         return favouritesViewController
     }
     
@@ -240,6 +249,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let peopleViewController: PeopleViewController = PeopleViewController.instantiate()
         peopleViewController.tabBarItem.tag = Int(TABBAR_PEOPLE_INDEX)
         peopleViewController.accessibilityLabel = VectorL10n.titlePeople
+        peopleViewController.indicatorPresenter = UserIndicatorPresenterWrapper(presenter: indicatorPresenter)
         return peopleViewController
     }
     
@@ -247,6 +257,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let roomsViewController: RoomsViewController = RoomsViewController.instantiate()
         roomsViewController.tabBarItem.tag = Int(TABBAR_ROOMS_INDEX)
         roomsViewController.accessibilityLabel = VectorL10n.titleRooms
+        roomsViewController.indicatorPresenter = UserIndicatorPresenterWrapper(presenter: indicatorPresenter)
         return roomsViewController
     }
     
@@ -393,25 +404,41 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         }
     }
     
-    private func showRoom(withId roomId: String) {
+    private func showRoom(withId roomId: String, eventId: String? = nil) {
         
         guard let matrixSession = self.parameters.userSessionsService.mainUserSession?.matrixSession else {
             return
         }
         
-        self.showRoom(with: roomId, eventId: nil, matrixSession: matrixSession)
+        self.showRoom(with: roomId, eventId: eventId, matrixSession: matrixSession)
     }
     
     private func showRoom(withNavigationParameters roomNavigationParameters: RoomNavigationParameters, completion: (() -> Void)?) {
         
-        let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
-                                                                  session: roomNavigationParameters.mxSession,
-                                                                  roomId: roomNavigationParameters.roomId,
-                                                                  eventId: roomNavigationParameters.eventId)
-        
-        self.showRoom(with: roomCoordinatorParameters,
-                      stackOnSplitViewDetail: roomNavigationParameters.presentationParameters.stackAboveVisibleViews,
-                      completion: completion)
+        if let threadParameters = roomNavigationParameters.threadParameters, threadParameters.stackRoomScreen {
+            showRoomAndThread(with: roomNavigationParameters,
+                              completion: completion)
+        } else {
+            let threadId = roomNavigationParameters.threadParameters?.threadId
+            let displayConfig: RoomDisplayConfiguration
+            if threadId != nil {
+                displayConfig = .forThreads
+            } else {
+                displayConfig = .default
+            }
+            
+            let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
+                                                                      userIndicatorPresenter: splitViewMasterPresentableDelegate?.detailUserIndicatorPresenter,
+                                                                      session: roomNavigationParameters.mxSession,
+                                                                      roomId: roomNavigationParameters.roomId,
+                                                                      eventId: roomNavigationParameters.eventId,
+                                                                      threadId: threadId,
+                                                                      displayConfiguration: displayConfig)
+            
+            self.showRoom(with: roomCoordinatorParameters,
+                          stackOnSplitViewDetail: roomNavigationParameters.presentationParameters.stackAboveVisibleViews,
+                          completion: completion)
+        }
     }
         
     private func showRoom(with roomId: String, eventId: String?, matrixSession: MXSession, completion: (() -> Void)? = nil) {
@@ -448,18 +475,22 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                           stackOnSplitViewDetail: Bool = false,
                           completion: (() -> Void)? = nil) {
         
-        if let topRoomCoordinator =  self.splitViewMasterPresentableDelegate?.detailModules.last as? RoomCoordinatorProtocol,
-           parameters.roomId == topRoomCoordinator.roomId && parameters.session == topRoomCoordinator.mxSession {
-            
-                // RoomCoordinator with the same room id and Matrix session is shown
-            
-                if let eventId = parameters.eventId {
-                    // If there is an event id ask the RoomCoordinator to start with this one
-                    topRoomCoordinator.start(withEventId: eventId, completion: completion)
-                } else {
-                    // If there is no event id defined do nothing
-                    completion?()
-                }
+        //  try to find the desired room screen in the stack
+        if let roomCoordinator = self.splitViewMasterPresentableDelegate?.detailModules.last(where: { presentable in
+            guard let roomCoordinator = presentable as? RoomCoordinatorProtocol else {
+                return false
+            }
+            return roomCoordinator.roomId == parameters.roomId
+                && roomCoordinator.threadId == parameters.threadId
+                && roomCoordinator.mxSession == parameters.session
+        }) as? RoomCoordinatorProtocol {
+            self.splitViewMasterPresentableDelegate?.splitViewMasterPresentable(self, wantsToPopTo: roomCoordinator)
+            //  go to a specific event if provided
+            if let eventId = parameters.eventId {
+                roomCoordinator.start(withEventId: eventId, completion: completion)
+            } else {
+                completion?()
+            }
             return
         }
                         
@@ -471,6 +502,62 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.showSplitViewDetails(with: coordinator, stackedOnSplitViewDetail: stackOnSplitViewDetail) { [weak self] in
             // NOTE: The RoomDataSource releasing is handled in SplitViewCoordinator
             self?.remove(childCoordinator: coordinator)
+        }
+    }
+
+    private func showRoomAndThread(with roomNavigationParameters: RoomNavigationParameters,
+                                   completion: (() -> Void)? = nil) {
+        self.activityIndicatorPresenter.presentActivityIndicator(on: toPresentable().view, animated: false)
+        let dispatchGroup = DispatchGroup()
+
+        //  create room coordinator
+        let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
+                                                                  session: roomNavigationParameters.mxSession,
+                                                                  roomId: roomNavigationParameters.roomId,
+                                                                  eventId: nil,
+                                                                  threadId: nil)
+
+        dispatchGroup.enter()
+        let roomCoordinator = RoomCoordinator(parameters: roomCoordinatorParameters)
+        roomCoordinator.delegate = self
+        roomCoordinator.start {
+            dispatchGroup.leave()
+        }
+        self.add(childCoordinator: roomCoordinator)
+
+        //  create thread coordinator
+        let threadCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
+                                                                    session: roomNavigationParameters.mxSession,
+                                                                    roomId: roomNavigationParameters.roomId,
+                                                                    eventId: roomNavigationParameters.eventId,
+                                                                    threadId: roomNavigationParameters.threadParameters?.threadId,
+                                                                    displayConfiguration: .forThreads)
+
+        dispatchGroup.enter()
+        let threadCoordinator = RoomCoordinator(parameters: threadCoordinatorParameters)
+        threadCoordinator.delegate = self
+        threadCoordinator.start {
+            dispatchGroup.leave()
+        }
+        self.add(childCoordinator: threadCoordinator)
+
+        dispatchGroup.notify(queue: .main) { [weak self] in
+            guard let self = self else { return }
+            let modules: [NavigationModule] = [
+                NavigationModule(presentable: roomCoordinator, popCompletion: { [weak self] in
+                    // NOTE: The RoomDataSource releasing is handled in SplitViewCoordinator
+                    self?.remove(childCoordinator: roomCoordinator)
+                }),
+                NavigationModule(presentable: threadCoordinator, popCompletion: { [weak self] in
+                    // NOTE: The RoomDataSource releasing is handled in SplitViewCoordinator
+                    self?.remove(childCoordinator: threadCoordinator)
+                })
+            ]
+
+            self.showSplitViewDetails(with: modules,
+                                      stack: roomNavigationParameters.presentationParameters.stackAboveVisibleViews)
+
+            self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
         }
     }
     
@@ -495,26 +582,16 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         }
     }
     
-    private func resetSplitViewDetails() {
-        self.splitViewMasterPresentableDelegate?.splitViewMasterPresentableWantsToResetDetail(self)
+    private func showSplitViewDetails(with modules: [NavigationModule], stack: Bool) {
+        if stack {
+            self.splitViewMasterPresentableDelegate?.splitViewMasterPresentable(self, wantsToStack: modules)
+        } else {
+            self.splitViewMasterPresentableDelegate?.splitViewMasterPresentable(self, wantsToReplaceDetailsWith: modules)
+        }
     }
     
-    @available(iOS 14.0, *)
-    private func presentAnalyticsPrompt(with session: MXSession) {
-        let parameters = AnalyticsPromptCoordinatorParameters(session: session)
-        let coordinator = AnalyticsPromptCoordinator(parameters: parameters)
-        
-        coordinator.completion = { [weak self, weak coordinator] in
-            guard let self = self, let coordinator = coordinator else { return }
-            
-            self.navigationRouter.dismissModule(animated: true, completion: nil)
-            self.remove(childCoordinator: coordinator)
-        }
-        
-        add(childCoordinator: coordinator)
-        
-        navigationRouter.present(coordinator, animated: true)
-        coordinator.start()
+    private func resetSplitViewDetails() {
+        self.splitViewMasterPresentableDelegate?.splitViewMasterPresentableWantsToResetDetail(self)
     }
     
     // MARK: UserSessions management
@@ -608,12 +685,6 @@ extension TabBarCoordinator: MasterTabBarControllerDelegate {
         
         self.masterTabBarController.navigationItem.leftBarButtonItem = sideMenuBarButtonItem
     }
-    
-    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, shouldPresentAnalyticsPromptForMatrixSession matrixSession: MXSession!) {
-        if #available(iOS 14.0, *) {
-            presentAnalyticsPrompt(with: matrixSession)
-        }
-    }
 }
 
 // MARK: - RoomCoordinatorDelegate
@@ -626,15 +697,19 @@ extension TabBarCoordinator: RoomCoordinatorDelegate {
     func roomCoordinatorDidLeaveRoom(_ coordinator: RoomCoordinatorProtocol) {
         // For the moment when a room is left, reset the split detail with placeholder
         self.resetSplitViewDetails()
+        indicatorPresenter
+            .present(.success(label: VectorL10n.roomParticipantsLeaveSuccess))
+            .store(in: &indicators)
     }
     
     func roomCoordinatorDidCancelRoomPreview(_ coordinator: RoomCoordinatorProtocol) {
         self.navigationRouter.popModule(animated: true)
     }
     
-    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didSelectRoomWithId roomId: String) {
-        self.showRoom(withId: roomId)
+    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didSelectRoomWithId roomId: String, eventId: String?) {
+        self.showRoom(withId: roomId, eventId: eventId)
     }
+    
 }
 
 // MARK: - UIGestureRecognizerDelegate

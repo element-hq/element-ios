@@ -37,12 +37,12 @@
 {
     [super awakeFromNib];
     
-    _userLoginTextField.placeholder = [MatrixKitL10n loginUserIdPlaceholder];
-    _passWordTextField.placeholder = [MatrixKitL10n loginPasswordPlaceholder];
-    _emailTextField.placeholder = [NSString stringWithFormat:@"%@ (%@)", [MatrixKitL10n loginEmailPlaceholder], [MatrixKitL10n loginOptionalField]];
-    _emailInfoLabel.text = [MatrixKitL10n loginEmailInfo];
+    _userLoginTextField.placeholder = [VectorL10n loginUserIdPlaceholder];
+    _passWordTextField.placeholder = [VectorL10n loginPasswordPlaceholder];
+    _emailTextField.placeholder = [NSString stringWithFormat:@"%@ (%@)", [VectorL10n loginEmailPlaceholder], [VectorL10n loginOptionalField]];
+    _emailInfoLabel.text = [VectorL10n loginEmailInfo];
     
-    _displayNameTextField.placeholder = [MatrixKitL10n loginDisplayNamePlaceholder];
+    _displayNameTextField.placeholder = [VectorL10n loginDisplayNamePlaceholder];
 }
 
 #pragma mark -
@@ -91,7 +91,7 @@
         // Check user login and pass fields
         if (!self.areAllRequiredFieldsSet)
         {
-            errorMsg = [MatrixKitL10n loginInvalidParam];
+            errorMsg = [VectorL10n loginInvalidParam];
         }
     }
     
@@ -105,7 +105,7 @@
         // Sanity check on required fields
         if (!self.areAllRequiredFieldsSet)
         {
-            callback(nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n loginInvalidParam]}]);
+            callback(nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[VectorL10n loginInvalidParam]}]);
             return;
         }
         

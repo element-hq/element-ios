@@ -86,7 +86,7 @@ class CustomSizedPresentationController: UIPresentationController {
             // effect calls for only the top two corners to be rounded we size
             // the view such that the bottom CORNER_RADIUS points lie below
             // the bottom edge of the screen.
-            let cornerViewRect = presentationWrapperView.bounds//.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: -cornerRadius, right: 0))
+            let cornerViewRect = presentationWrapperView.bounds// .inset(by: UIEdgeInsets(top: 0, left: 0, bottom: -cornerRadius, right: 0))
             
             let presentationRoundedCornerView = UIView(frame: cornerViewRect)
             presentationRoundedCornerView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -180,7 +180,13 @@ class CustomSizedPresentationController: UIPresentationController {
         }
         
         //  return value from presentable if implemented
-        if let presentable = presentedViewController as? CustomSizedPresentable, let customSize = presentable.customSize?(withParentContainerSize: parentSize) {
+        if let presentable = presentedViewController as? CustomSizedPresentable,
+           let customSize = presentable.customSize?(withParentContainerSize: parentSize) {
+            return customSize
+        }
+        if let navController = presentedViewController as? UINavigationController,
+           let presentable = navController.viewControllers.first(where: { $0 is CustomSizedPresentable }) as? CustomSizedPresentable,
+           let customSize = presentable.customSize?(withParentContainerSize: parentSize) {
             return customSize
         }
         
@@ -197,7 +203,13 @@ class CustomSizedPresentationController: UIPresentationController {
                              withParentContainerSize: containerView.bounds.size)
         
         //  use origin value from presentable if implemented
-        if let presentable = presentedViewController as? CustomSizedPresentable, let origin = presentable.position?(withParentContainerSize: containerView.bounds.size) {
+        if let presentable = presentedViewController as? CustomSizedPresentable,
+           let origin = presentable.position?(withParentContainerSize: containerView.bounds.size) {
+            return CGRect(origin: origin, size: size)
+        }
+        if let navController = presentedViewController as? UINavigationController,
+           let presentable = navController.viewControllers.first(where: { $0 is CustomSizedPresentable }) as? CustomSizedPresentable,
+           let origin = presentable.position?(withParentContainerSize: containerView.bounds.size) {
             return CGRect(origin: origin, size: size)
         }
         

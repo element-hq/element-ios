@@ -187,22 +187,22 @@ static NSRegularExpression *htmlTagsRegex;
     
     if (secondsInterval < 1)
     {
-        [formattedString appendFormat:@"< 1%@", [MatrixKitL10n formatTimeS]];
+        [formattedString appendFormat:@"< 1%@", [VectorL10n formatTimeS]];
     }
     else if (secondsInterval < 60)
     {
-        [formattedString appendFormat:@"%d%@", (int)secondsInterval, [MatrixKitL10n formatTimeS]];
+        [formattedString appendFormat:@"%d%@", (int)secondsInterval, [VectorL10n formatTimeS]];
     }
     else if (secondsInterval < 3600)
     {
-        [formattedString appendFormat:@"%d%@ %2d%@", (int)(secondsInterval/60), [MatrixKitL10n formatTimeM],
-         ((int)secondsInterval) % 60, [MatrixKitL10n formatTimeS]];
+        [formattedString appendFormat:@"%d%@ %2d%@", (int)(secondsInterval/60), [VectorL10n formatTimeM],
+         ((int)secondsInterval) % 60, [VectorL10n formatTimeS]];
     }
     else if (secondsInterval >= 3600)
     {
-        [formattedString appendFormat:@"%d%@ %d%@ %d%@", (int)(secondsInterval / 3600), [MatrixKitL10n formatTimeH],
-         ((int)(secondsInterval) % 3600) / 60, [MatrixKitL10n formatTimeM],
-         (int)(secondsInterval) % 60, [MatrixKitL10n formatTimeS]];
+        [formattedString appendFormat:@"%d%@ %d%@ %d%@", (int)(secondsInterval / 3600), [VectorL10n formatTimeH],
+         ((int)(secondsInterval) % 3600) / 60, [VectorL10n formatTimeM],
+         (int)(secondsInterval) % 60, [VectorL10n formatTimeS]];
     }
     [formattedString appendString:@" left"];
     
@@ -215,26 +215,26 @@ static NSRegularExpression *htmlTagsRegex;
 
     if (secondsInterval < 0)
     {
-        formattedString = [NSString stringWithFormat:@"0%@", [MatrixKitL10n formatTimeS]];
+        formattedString = [NSString stringWithFormat:@"0%@", [VectorL10n formatTimeS]];
     }
     else
     {
         NSUInteger seconds = secondsInterval;
         if (seconds < 60)
         {
-            formattedString = [NSString stringWithFormat:@"%tu%@", seconds, [MatrixKitL10n formatTimeS]];
+            formattedString = [NSString stringWithFormat:@"%tu%@", seconds, [VectorL10n formatTimeS]];
         }
         else if (secondsInterval < 3600)
         {
-            formattedString = [NSString stringWithFormat:@"%tu%@", seconds / 60, [MatrixKitL10n formatTimeM]];
+            formattedString = [NSString stringWithFormat:@"%tu%@", seconds / 60, [VectorL10n formatTimeM]];
         }
         else if (secondsInterval < 86400)
         {
-            formattedString = [NSString stringWithFormat:@"%tu%@", seconds / 3600, [MatrixKitL10n formatTimeH]];
+            formattedString = [NSString stringWithFormat:@"%tu%@", seconds / 3600, [VectorL10n formatTimeH]];
         }
         else
         {
-            formattedString = [NSString stringWithFormat:@"%tu%@", seconds / 86400, [MatrixKitL10n formatTimeD]];
+            formattedString = [NSString stringWithFormat:@"%tu%@", seconds / 86400, [VectorL10n formatTimeD]];
         }
     }
 
@@ -715,15 +715,15 @@ static NSMutableDictionary* backgroundByImageNameDict;
 + (UIAlertController*)videoConversionPromptForVideoAsset:(AVAsset *)videoAsset
                                            withCompletion:(void (^)(NSString * _Nullable presetName))completion
 {
-    UIAlertController *compressionPrompt = [UIAlertController alertControllerWithTitle:[MatrixKitL10n attachmentSizePromptTitle]
-                                                                               message:[MatrixKitL10n attachmentSizePromptMessage]
+    UIAlertController *compressionPrompt = [UIAlertController alertControllerWithTitle:[VectorL10n attachmentSizePromptTitle]
+                                                                               message:[VectorL10n attachmentSizePromptMessage]
                                                                         preferredStyle:UIAlertControllerStyleActionSheet];
     
     CGSize naturalSize = [videoAsset tracksWithMediaType:AVMediaTypeVideo].firstObject.naturalSize;
     
     // Provide 480p as the baseline preset.
     NSString *fileSizeString = [MXKTools estimatedFileSizeStringForVideoAsset:videoAsset withPresetName:AVAssetExportPreset640x480];
-    NSString *title = [MatrixKitL10n attachmentSmallWithResolution:@"480p" :fileSizeString];
+    NSString *title = [VectorL10n attachmentSmallWithResolution:@"480p" :fileSizeString];
     [compressionPrompt addAction:[UIAlertAction actionWithTitle:title
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action) {
@@ -735,7 +735,7 @@ static NSMutableDictionary* backgroundByImageNameDict;
     if (naturalSize.height > 480)
     {
         NSString *fileSizeString = [MXKTools estimatedFileSizeStringForVideoAsset:videoAsset withPresetName:AVAssetExportPreset1280x720];
-        NSString *title = [MatrixKitL10n attachmentMediumWithResolution:@"720p" :fileSizeString];
+        NSString *title = [VectorL10n attachmentMediumWithResolution:@"720p" :fileSizeString];
         [compressionPrompt addAction:[UIAlertAction actionWithTitle:title
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction * action) {
@@ -748,7 +748,7 @@ static NSMutableDictionary* backgroundByImageNameDict;
     if (naturalSize.height > 720)
     {
         NSString *fileSizeString = [MXKTools estimatedFileSizeStringForVideoAsset:videoAsset withPresetName:AVAssetExportPreset1920x1080];
-        NSString *title = [MatrixKitL10n attachmentLargeWithResolution:@"1080p" :fileSizeString];
+        NSString *title = [VectorL10n attachmentLargeWithResolution:@"1080p" :fileSizeString];
         [compressionPrompt addAction:[UIAlertAction actionWithTitle:title
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction * action) {
@@ -757,7 +757,7 @@ static NSMutableDictionary* backgroundByImageNameDict;
         }]];
     }
     
-    [compressionPrompt addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [compressionPrompt addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                           style:UIAlertActionStyleCancel
                                                         handler:^(UIAlertAction * action) {
         // Cancelled. Call the completion with nil.
@@ -800,7 +800,7 @@ static NSMutableDictionary* backgroundByImageNameDict;
                 UIApplication *sharedApplication = [UIApplication performSelector:@selector(sharedApplication)];
                 if (sharedApplication && UIApplicationOpenSettingsURLString)
                 {
-                    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n settings]
+                    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n settings]
                                                                      style:UIAlertActionStyleDefault
                                                                    handler:^(UIAlertAction * action) {
                                                                        
@@ -814,7 +814,7 @@ static NSMutableDictionary* backgroundByImageNameDict;
                                                                    }]];
                 }
                 
-                [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+                [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action) {
                                                             
@@ -898,7 +898,7 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
         // Display manualChangeMessage
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:manualChangeTitle message:manualChangeMessage preferredStyle:UIAlertControllerStyleAlert];
 
-        [alert addAction:[UIAlertAction actionWithTitle:MatrixKitL10n.cancel
+        [alert addAction:[UIAlertAction actionWithTitle:VectorL10n.cancel
                                                   style:UIAlertActionStyleDefault
                                                 handler:^(UIAlertAction * action) {
             
@@ -910,7 +910,7 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
         UIApplication *sharedApplication = [UIApplication performSelector:@selector(sharedApplication)];
         if (sharedApplication)
         {
-            UIAlertAction *settingsAction = [UIAlertAction actionWithTitle:MatrixKitL10n.settings
+            UIAlertAction *settingsAction = [UIAlertAction actionWithTitle:VectorL10n.settings
                                                                      style:UIAlertActionStyleDefault
                                                                    handler:^(UIAlertAction * action) {
                 [MXKAppSettings standardAppSettings].syncLocalContactsPermissionOpenedSystemSettings = YES;
@@ -1112,7 +1112,7 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
             // Caution: We need here to escape the non-ASCII characters (like '#' in room alias)
             // to convert the link into a legal URL string.
             NSString *link = [attributedString.string substringWithRange:match.range];
-            link = [link stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            link = [link stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
             [*mutableAttributedString addAttribute:NSLinkAttributeName value:link range:match.range];
         }
     }];

@@ -52,8 +52,8 @@ final class TemplateUserProfileCoordinator: Coordinator, Presentable {
     func start() {
         MXLog.debug("[TemplateUserProfileCoordinator] did start.")
         templateUserProfileViewModel.completion = { [weak self] result in
-            MXLog.debug("[TemplateUserProfileCoordinator] TemplateUserProfileViewModel did complete with result: \(result).")
             guard let self = self else { return }
+            MXLog.debug("[TemplateUserProfileCoordinator] TemplateUserProfileViewModel did complete with result: \(result).")
             switch result {
             case .cancel, .done:
                 self.completion?()

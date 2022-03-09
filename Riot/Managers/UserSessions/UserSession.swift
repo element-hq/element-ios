@@ -33,19 +33,21 @@ class UserSession: NSObject, UserSessionProtocol {
     let account: MXKAccount
     // Keep strong reference to the MXSession because account.mxSession can become nil on logout or failure
     let matrixSession: MXSession
-    
-    var userId: String {
-        guard let userId = self.account.mxCredentials.userId else {
-            fatalError("[UserSession] identifier: account.mxCredentials.userId should be defined")
-        }
-        return userId
-    }
+    let userId: String
+    /// An object that contains user specific properties.
+    let userProperties: UserSessionProperties
     
     // MARK: - Setup
     
     init(account: MXKAccount, matrixSession: MXSession) {
+        guard let userId = account.mxCredentials.userId else {
+            fatalError("[UserSession] identifier: account.mxCredentials.userId should be defined")
+        }
+        
         self.account = account
         self.matrixSession = matrixSession
+        self.userId = userId
+        self.userProperties = UserSessionProperties(userId: userId)
         super.init()
     }
 }

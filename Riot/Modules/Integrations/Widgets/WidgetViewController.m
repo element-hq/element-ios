@@ -60,7 +60,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     {
         self.navigationItem.title = widget.name ? widget.name : widget.type;
 
-        UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"room_context_menu_more"] style:UIBarButtonItemStylePlain target:self action:@selector(onMenuButtonPressed:)];
+        UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:AssetImages.roomContextMenuMore.image style:UIBarButtonItemStylePlain target:self action:@selector(onMenuButtonPressed:)];
         self.navigationItem.rightBarButtonItem = menuButton;
     }
     
@@ -143,14 +143,14 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
         }
         else
         {
-            title = [MatrixKitL10n error];
+            title = [VectorL10n error];
         }
     }
 
     __weak __typeof__(self) weakSelf = self;
 
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
 
@@ -334,7 +334,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
                          }]];
     }
 
-    [menu addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [menu addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                     style:UIAlertActionStyleCancel
                                                   handler:^(UIAlertAction * action) {
                                                   }]];

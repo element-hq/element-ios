@@ -733,7 +733,7 @@
         }
         else
         {
-            roomCell.avatarImageView.image = [UIImage imageNamed:@"start_chat"];
+            roomCell.avatarImageView.image = AssetImages.startChat.image;
             roomCell.avatarImageView.defaultBackgroundColor = [UIColor clearColor];
             roomCell.titleLabel.text = [VectorL10n roomParticipantsActionStartNewChat];
         }
@@ -877,9 +877,9 @@
                 // Prompt user to ignore content from this user
                 __weak __typeof(self) weakSelf = self;
                 [currentAlert dismissViewControllerAnimated:NO completion:nil];
-                currentAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n roomMemberIgnorePrompt] message:nil preferredStyle:UIAlertControllerStyleAlert];
+                currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomMemberIgnorePrompt] message:nil preferredStyle:UIAlertControllerStyleAlert];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n yes]
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n yes]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                                    
@@ -908,7 +908,7 @@
                                                                    
                                                                }]];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n no]
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n no]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                                    
@@ -986,10 +986,10 @@
                         {
                             [self removePendingActionMask];
                             
-                            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n error]
+                            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[VectorL10n error]
                                                                                            message:[VectorL10n roomParticipantsStartNewChatErrorUsingUserEmailWithoutIdentityServer]
                                                                                     preferredStyle:UIAlertControllerStyleAlert];
-                            [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok] style:UIAlertActionStyleDefault handler:nil]];
+                            [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok] style:UIAlertActionStyleDefault handler:nil]];
                             [self presentViewController:alert animated:YES completion:nil];
                             
                             return;
@@ -1084,7 +1084,7 @@
                     MXRoomCreationParameters *roomCreationParameters = [MXRoomCreationParameters parametersForDirectRoomWithUser:matrixId];
                     roomCreationRequest = [self.mainSession createRoomWithParameters:roomCreationParameters success:^(MXRoom *room) {
 
-                        roomCreationRequest = nil;
+                        self->roomCreationRequest = nil;
 
                         // Delay the call in order to be sure that the room is ready
                         dispatch_async(dispatch_get_main_queue(), ^{
@@ -1096,7 +1096,7 @@
 
                         MXLogDebug(@"[ContactDetailsViewController] Create room failed");
 
-                        roomCreationRequest = nil;
+                        self->roomCreationRequest = nil;
 
                         [self removePendingActionMask];
 
@@ -1140,7 +1140,7 @@
         avatarFullScreenView.stretchable = YES;
 
         MXWeakify(self);
-        [avatarFullScreenView setRightButtonTitle:[MatrixKitL10n ok] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+        [avatarFullScreenView setRightButtonTitle:[VectorL10n ok] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
             
             MXStrongifyAndReturnIfNil(self);
             [avatarFullScreenView dismissSelection];

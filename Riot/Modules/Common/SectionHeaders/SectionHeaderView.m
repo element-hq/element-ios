@@ -17,9 +17,16 @@
 
 #import "SectionHeaderView.h"
 
+#import "GeneratedInterface-Swift.h"
+
 static const CGFloat kInterItemsSpaceHorizontal = 8.0;
 
 @implementation SectionHeaderView
+
++ (NSString*)defaultReuseIdentifier
+{
+    return NSStringFromClass([self class]);
+}
 
 - (void)setMinimumLeftInset:(CGFloat)minimumLeftInset
 {
@@ -41,25 +48,66 @@ static const CGFloat kInterItemsSpaceHorizontal = 8.0;
 
 - (void)setTopSpanningView:(UIView *)topSpanningView
 {
+    //  remove old one
+    [_topSpanningView removeFromSuperview];
     _topSpanningView = topSpanningView;
+    if (_topSpanningView)
+    {
+        //  add new one
+        [self.contentView addSubview:_topSpanningView];
+    }
     [self setNeedsLayout];
 }
 
 - (void)setHeaderLabel:(UILabel *)headerLabel
 {
+    //  remove old one
+    [_headerLabel removeFromSuperview];
     _headerLabel = headerLabel;
+    if (_headerLabel)
+    {
+        //  add new one
+        [self.contentView addSubview:_headerLabel];
+    }
     [self setNeedsLayout];
 }
 
 - (void)setAccessoryView:(UIView *)accessoryView
 {
+    //  remove old one
+    [_accessoryView removeFromSuperview];
     _accessoryView = accessoryView;
+    if (_accessoryView)
+    {
+        //  add new one
+        [self.contentView addSubview:_accessoryView];
+    }
+    [self setNeedsLayout];
+}
+
+- (void)setRightAccessoryView:(UIView *)rightAccessoryView
+{
+    //  remove old one
+    [_rightAccessoryView removeFromSuperview];
+    _rightAccessoryView = rightAccessoryView;
+    if (_rightAccessoryView)
+    {
+        //  add new one
+        [self.contentView addSubview:_rightAccessoryView];
+    }
     [self setNeedsLayout];
 }
 
 - (void)setBottomView:(UIView *)bottomView
 {
+    //  remove old one
+    [_bottomView removeFromSuperview];
     _bottomView = bottomView;
+    if (_bottomView)
+    {
+        //  add new one
+        [self.contentView addSubview:_bottomView];
+    }
     [self setNeedsLayout];
 }
 
@@ -88,6 +136,15 @@ static const CGFloat kInterItemsSpaceHorizontal = 8.0;
     return self;
 }
 
+- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier
+{
+    if (self = [super initWithReuseIdentifier:reuseIdentifier])
+    {
+        [self setup];
+    }
+    return self;
+}
+
 - (void)setup
 {
     _minimumLeftInset = 20;
@@ -95,21 +152,24 @@ static const CGFloat kInterItemsSpaceHorizontal = 8.0;
     _topViewHeight = 30;
 }
 
+- (void)prepareForReuse
+{
+    [self.contentView vc_removeAllSubviews];
+    [super prepareForReuse];
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
 
     CGFloat _leftInset = 0.0, _rightInset = 0.0;
-    
-    _leftInset += self.safeAreaInsets.left;
-    _rightInset += self.safeAreaInsets.right;
 
-    CGFloat leftMargin = MAX(_leftInset, _minimumLeftInset);
-    CGFloat rightMargin = MAX(_rightInset, _minimumRightInset);
+    CGFloat leftMargin = _minimumLeftInset;
+    CGFloat rightMargin = _minimumRightInset;
 
     if (_topSpanningView)
     {
-        CGRect frame = self.bounds;
+        CGRect frame = self.contentView.bounds;
         frame.size.height = _topViewHeight;
         _topSpanningView.frame = frame;
     }
@@ -122,6 +182,10 @@ static const CGFloat kInterItemsSpaceHorizontal = 8.0;
         {
             rightMargin += _accessoryView.frame.size.width + kInterItemsSpaceHorizontal;
         }
+        if (_rightAccessoryView)
+        {
+            rightMargin += _rightAccessoryView.frame.size.width + kInterItemsSpaceHorizontal;
+        }
         if (_bottomView)
         {
             //  set header label top
@@ -130,9 +194,10 @@ static const CGFloat kInterItemsSpaceHorizontal = 8.0;
         else
         {
             //  center header label vertically
-            frame.origin.y = MAX(0, (self.bounds.size.height - frame.size.height)/2);
+            frame.origin.y = MAX(0, (self.contentView.bounds.size.height - frame.size.height)/2);
         }
-        frame.size.width = self.bounds.size.width - leftMargin - rightMargin;
+        frame.size.width = MIN(self.contentView.bounds.size.width - leftMargin - rightMargin,
+                               [_headerLabel sizeThatFits:self.frame.size].width);
         _headerLabel.frame = frame;
     }
 
@@ -143,9 +208,28 @@ static const CGFloat kInterItemsSpaceHorizontal = 8.0;
         rightMargin = MAX(_rightInset, 20);
 
         CGRect frame = _accessoryView.frame;
-        frame.origin.x = self.bounds.size.width - frame.size.width - rightMargin;
+        if(_headerLabel)
+        {
+            frame.origin.x = leftMargin + _headerLabel.frame.size.width + kInterItemsSpaceHorizontal;
+        }
+        else
+        {
+            frame.origin.x = leftMargin;
+        }
         frame.origin.y = MAX(0, (_topViewHeight - frame.size.height)/2);
         _accessoryView.frame = frame;
+    }
+
+    if (_rightAccessoryView)
+    {
+        //  reset margins
+        leftMargin = MAX(_leftInset, 20);
+        rightMargin = MAX(_rightInset, 20);
+
+        CGRect frame = _rightAccessoryView.frame;
+        frame.origin.x = self.contentView.bounds.size.width - frame.size.width - rightMargin;
+        frame.origin.y = MAX(0, (_topViewHeight - frame.size.height)/2);
+        _rightAccessoryView.frame = frame;
     }
 
     if (_bottomView)
@@ -157,8 +241,8 @@ static const CGFloat kInterItemsSpaceHorizontal = 8.0;
         CGRect frame = _bottomView.frame;
         frame.origin.x = leftMargin;
         frame.origin.y = CGRectGetMaxY(_headerLabel.frame);
-        frame.size.width = self.bounds.size.width - leftMargin - rightMargin;
-        frame.size.height = self.bounds.size.height - frame.origin.y;
+        frame.size.width = self.contentView.bounds.size.width - leftMargin - rightMargin;
+        frame.size.height = self.contentView.bounds.size.height - frame.origin.y;
         _bottomView.frame = frame;
     }
 }

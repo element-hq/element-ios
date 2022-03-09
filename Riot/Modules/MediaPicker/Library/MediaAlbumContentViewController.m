@@ -268,10 +268,10 @@
             
         }];
         
-        cell.bottomLeftIcon.image = [UIImage imageNamed:@"video_icon"];
+        cell.bottomLeftIcon.image = AssetImages.videoIcon.image;
         cell.bottomLeftIcon.hidden = (asset.mediaType == PHAssetMediaTypeImage);
 
-        cell.bottomRightIcon.image = [UIImage imageNamed:@"selection_tick"];
+        cell.bottomRightIcon.image = AssetImages.selectionTick.image;
         cell.bottomRightIcon.tintColor = ThemeService.shared.theme.tintColor;
         cell.bottomRightIcon.hidden = !selectedAssets || (NSNotFound == [selectedAssets indexOfObject:asset]);
 
@@ -348,7 +348,7 @@
     selectedAssets = [NSMutableArray array];
 
     // Update the nav buttons
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[MatrixKitL10n send] style:UIBarButtonItemStylePlain target:self action:@selector(onSelectionSend:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[VectorL10n send] style:UIBarButtonItemStylePlain target:self action:@selector(onSelectionSend:)];
     self.navigationItem.rightBarButtonItem.enabled = NO;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onSelectionCancel:)];
 }

@@ -53,7 +53,7 @@
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     
-    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * _Nonnull action) {
                                                 if (handler)

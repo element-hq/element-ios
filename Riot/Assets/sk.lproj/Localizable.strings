@@ -75,3 +75,96 @@
 /** General **/
 
 "NOTIFICATION" = "Oznámenia";
+
+/* New message from a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM" = "%@ napísal v %@";
+
+/** Key verification **/
+
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ žiada o overenie";
+
+/* Group call from user, CallKit caller name */
+"GROUP_CALL_FROM_USER" = "%@ (Skupinový hovor)";
+
+/* A user added a Jitsi call to a room */
+"GROUP_CALL_STARTED" = "Začal sa skupinový hovor";
+
+/* Incoming named video conference invite from a specific person */
+"VIDEO_CONF_NAMED_FROM_USER" = "Skupinový videohovor od používateľa %@: '%@'";
+
+/* Incoming named voice conference invite from a specific person */
+"VOICE_CONF_NAMED_FROM_USER" = "Skupinový hovor od používateľa %@: '%@'";
+
+/* Incoming unnamed video conference invite from a specific person */
+"VIDEO_CONF_FROM_USER" = "Skupinový videohovor od používateľa %@";
+
+/* Incoming unnamed voice conference invite from a specific person */
+"VOICE_CONF_FROM_USER" = "Skupinový hovor od používateľa %@";
+
+/** Calls **/
+
+/* Incoming one-to-one voice call */
+"VOICE_CALL_FROM_USER" = "Hovor od používateľa %@";
+
+/* Incoming one-to-one video call */
+"VIDEO_CALL_FROM_USER" = "Videohovor od používateľa %@";
+
+/* A user's membership has updated in an unknown way */
+"USER_MEMBERSHIP_UPDATED" = "%@ aktualizoval/a svoj profil";
+
+/* A user has change their avatar */
+"USER_UPDATED_AVATAR" = "%@ zmenil/a svoj obrázok";
+
+/* A user has change their name to a new name which we don't know */
+"GENERIC_USER_UPDATED_DISPLAYNAME" = "%@ zmenil/a svoje meno";
+
+/** Membership Updates **/
+
+/* A user has change their name to a new name */
+"USER_UPDATED_DISPLAYNAME" = "%@ zmenil/a svoje meno na %@";
+
+/* A user has invited you to a named room */
+"USER_INVITE_TO_NAMED_ROOM" = "%@ vás pozval/a do %@";
+
+/* A user has invited you to an (unamed) group chat */
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ vás pozval/a na skupinovú konverzáciu";
+
+/** Invites **/
+
+/* A user has invited you to a chat */
+"USER_INVITE_TO_CHAT" = "%@ vás pozval/a na konverzáciu";
+
+/* A user has reacted to a message, but the reaction content is unknown */
+"GENERIC_REACTION_FROM_USER" = "%@ poslal/a reakciu";
+
+/** Reactions **/
+
+/* A user has reacted to a message, including the reaction e.g. "Alice reacted 👍". */
+"REACTION_FROM_USER" = "%@ reagoval/a %@";
+
+/* Look, stuff's happened, alright? Just open the app. */
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@ nových správ v %@, %@ a ďalších";
+
+/* Multiple messages in two rooms */
+"MSGS_IN_TWO_ROOMS" = "%@ nových správ v %@ a %@";
+
+/* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
+"MSGS_FROM_TWO_PLUS_USERS" = "%@ nových správ od %@, %@ a ďalších";
+
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@ poslal/a nálepku";
+
+/* New file message from a specific person, not referencing a room. */
+"FILE_FROM_USER" = "%@ poslal/a súbor %@";
+
+/* New voice message from a specific person, not referencing a room. */
+"VOICE_MESSAGE_FROM_USER" = "%@ poslal/a zvukovú správu";
+
+/* New audio message from a specific person, not referencing a room. */
+"AUDIO_FROM_USER" = "%@ poslal/a zvukový súbor %@";
+
+/* New message reply from a specific person in a named room. */
+"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ odpovedal/a v %@";
+
+/* New file message from a specific person, not referencing a room. */
+"LOCATION_FROM_USER" = "%@ zdieľal/a svoju polohu";

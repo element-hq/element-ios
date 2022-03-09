@@ -109,7 +109,7 @@ NSString* const kMXKCountryPickerViewControllerCountryCellId = @"kMXKCountryPick
         [[[self class] nib] instantiateWithOwner:self options:nil];
     }
     
-    self.navigationItem.title = [MatrixKitL10n countryPickerTitle];
+    self.navigationItem.title = [VectorL10n countryPickerTitle];
     
     [self setupSearchController];
 }
@@ -152,7 +152,7 @@ NSString* const kMXKCountryPickerViewControllerCountryCellId = @"kMXKCountryPick
 {
     UISearchController *searchController = [[UISearchController alloc]
      initWithSearchResultsController:nil];
-    searchController.dimsBackgroundDuringPresentation = NO;
+    searchController.obscuresBackgroundDuringPresentation = NO;
     searchController.hidesNavigationBarDuringPresentation = NO;
     searchController.searchResultsUpdater = self;
     

@@ -17,6 +17,7 @@
 
 #import <Contacts/Contacts.h>
 #import "ContactsTableViewController.h"
+#import "SectionHeaderView.h"
 
 #import "UIViewController+RiotSearch.h"
 
@@ -95,6 +96,9 @@
     self.contactsTableView.dataSource = contactsDataSource; // Note: dataSource may be nil here
     
     [self.contactsTableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:ContactTableViewCell.defaultReuseIdentifier];
+
+    [self.contactsTableView registerClass:SectionHeaderView.class
+       forHeaderFooterViewReuseIdentifier:SectionHeaderView.defaultReuseIdentifier];
     
     // Hide line separators of empty cells
     self.contactsTableView.tableFooterView = [[UIView alloc] init];
@@ -175,12 +179,7 @@
     
     // Show the contacts access footer if necessary.
     [self updateFooterViewVisibility];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self.screenTimer start];
+    [self.screenTracker trackScreen];
 }
 
 - (void)viewDidLayoutSubviews
@@ -205,12 +204,6 @@
         [self.navigationController.view setNeedsLayout]; // force update layout
         [self.navigationController.view layoutIfNeeded]; // to fix height of the navigation bar
     }
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self.screenTimer stop];
 }
 
 #pragma mark -
@@ -455,7 +448,9 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    return [contactsDataSource viewForHeaderInSection:section withFrame:[tableView rectForHeaderInSection:section]];
+    return [contactsDataSource viewForHeaderInSection:section
+                                            withFrame:[tableView rectForHeaderInSection:section]
+                                          inTableView:tableView];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -568,7 +563,7 @@
                                                                                      message:nil
                                                                               preferredStyle:UIAlertControllerStyleAlert];
             
-            [alertController addAction:[UIAlertAction actionWithTitle:MatrixKitL10n.ok
+            [alertController addAction:[UIAlertAction actionWithTitle:VectorL10n.ok
                                                                 style:UIAlertActionStyleDefault
                                                               handler:nil]];
             

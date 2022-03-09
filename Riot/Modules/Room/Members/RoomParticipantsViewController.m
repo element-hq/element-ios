@@ -102,6 +102,8 @@
     // Adjust Top and Bottom constraints to take into account potential navBar and tabBar.
     [NSLayoutConstraint deactivateConstraints:@[_searchBarTopConstraint]];
     
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated"
     _searchBarTopConstraint = [NSLayoutConstraint constraintWithItem:self.topLayoutGuide
                                                            attribute:NSLayoutAttributeBottom
                                                            relatedBy:NSLayoutRelationEqual
@@ -109,6 +111,7 @@
                                                            attribute:NSLayoutAttributeTop
                                                           multiplier:1.0f
                                                             constant:0.0f];
+    #pragma clang diagnostic pop
     
     [NSLayoutConstraint activateConstraints:@[_searchBarTopConstraint]];
     
@@ -142,7 +145,7 @@
     
     
     // Add invite members button programmatically
-    [self vc_addFABWithImage:[UIImage imageNamed:@"add_member_floating_action"]
+    [self vc_addFABWithImage:AssetImages.addMemberFloatingAction.image
                       target:self
                       action:@selector(onAddParticipantButtonPressed)];
     
@@ -214,7 +217,7 @@
     if (membersListener)
     {
         MXWeakify(self);
-        [self.mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+        [self.mxRoom liveTimeline:^(id<MXEventTimeline> liveTimeline) {
             MXStrongifyAndReturnIfNil(self);
 
             [liveTimeline removeListener:self->membersListener];
@@ -248,6 +251,8 @@
     
     // Refresh display
     [self refreshTableView];
+    
+    [self.screenTracker trackScreen];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -265,8 +270,6 @@
         [contactsPickerViewController destroy];
         contactsPickerViewController = nil;
     }
-    
-    [self.screenTimer start];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -281,12 +284,6 @@
     
     // cancel any pending search
     [self searchBarCancelButtonClicked:_searchBarView];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self.screenTimer stop];
 }
 
 - (void)withdrawViewControllerAnimated:(BOOL)animated completion:(void (^)(void))completion
@@ -333,7 +330,7 @@
             if (self->membersListener)
             {
                 MXWeakify(self);
-                [self.mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+                [self.mxRoom liveTimeline:^(id<MXEventTimeline> liveTimeline) {
                     MXStrongifyAndReturnIfNil(self);
 
                     [liveTimeline removeListener:self->membersListener];
@@ -399,7 +396,7 @@
             NSArray *mxMembersEvents = @[kMXEventTypeStringRoomMember, kMXEventTypeStringRoomThirdPartyInvite, kMXEventTypeStringRoomPowerLevels];
 
             MXWeakify(self);
-            [self.mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+            [self.mxRoom liveTimeline:^(id<MXEventTimeline> liveTimeline) {
                 MXStrongifyAndReturnIfNil(self);
 
                 self->membersListener = [liveTimeline listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {
@@ -559,7 +556,7 @@
     contactsDataSource.displaySearchInputInContactsList = YES;
     contactsDataSource.forceMatrixIdInDisplayName = YES;
     // Add a plus icon to the contact cell in the contacts picker, in order to make it more understandable for the end user.
-    contactsDataSource.contactCellAccessoryImage = [[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor];
+    contactsDataSource.contactCellAccessoryImage = [AssetImages.plusIcon.image vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor];
     
     // List all the participants matrix user id to ignore them during the contacts search.
     for (Contact *contact in actualParticipants)
@@ -850,7 +847,7 @@
     pendingMaskSpinnerView.alpha = 0;
     [UIView animateWithDuration:0.3 delay:0.3 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         
-        pendingMaskSpinnerView.alpha = 1;
+        self->pendingMaskSpinnerView.alpha = 1;
         
     } completion:^(BOOL finished) {
     }];
@@ -1308,7 +1305,7 @@
                                                                message:message
                                                         preferredStyle:UIAlertControllerStyleAlert];
             
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                              style:UIAlertActionStyleCancel
                                                            handler:^(UIAlertAction * action) {
                                                                
@@ -1393,7 +1390,7 @@
                                                                        message:promptMsg
                                                                 preferredStyle:UIAlertControllerStyleAlert];
                     
-                    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+                    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                                      style:UIAlertActionStyleCancel
                                                                    handler:^(UIAlertAction * action) {
                                                                        
@@ -1442,7 +1439,7 @@
                                                                        message:[VectorL10n roomParticipantsRemoveThirdPartyInvitePromptMsg]
                                                                 preferredStyle:UIAlertControllerStyleAlert];
                     
-                    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+                    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                                      style:UIAlertActionStyleCancel
                                                                    handler:^(UIAlertAction * action) {
                                                                        
@@ -1514,7 +1511,7 @@
                                                        message:promptMsg
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        

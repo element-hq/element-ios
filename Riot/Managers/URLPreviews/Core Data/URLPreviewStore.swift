@@ -61,6 +61,14 @@ class URLPreviewStore {
             if let error = error {
                 MXLog.error("[URLPreviewStore] Core Data container error: \(error.localizedDescription)")
             }
+            
+            if let url = storeDescription.url {
+                do {
+                    try FileManager.default.excludeItemFromBackup(at: url)
+                } catch {
+                    MXLog.error("[URLPreviewStore] Cannot exclude Core Data from backup: \(error.localizedDescription)")
+                }
+            }
         }
     }
     

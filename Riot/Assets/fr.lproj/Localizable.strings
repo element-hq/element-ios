@@ -116,3 +116,6 @@
 /** General **/
 
 "NOTIFICATION" = "Notification";
+
+/* New file message from a specific person, not referencing a room. */
+"LOCATION_FROM_USER" = "%@ a partagé sa localisation";

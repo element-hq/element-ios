@@ -33,7 +33,7 @@
     MXKSearchDataSource *filesSearchDataSource;
 }
 
-@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+@property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
 @end
 
@@ -52,7 +52,7 @@
     
     // The navigation bar tint color and the rageShake Manager are handled by super (see SegmentedViewController).
     
-    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenRoomSearch];
+    self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenRoomSearch];
 }
 
 - (void)viewDidLoad
@@ -73,10 +73,7 @@
     [self initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
     
     [super viewDidLoad];
-    
-    // Add the Riot background image when search bar is empty
-    [self addBackgroundImageViewToView:self.view];
-    
+
     // Initialize here the data sources if a matrix session has been already set.
     [self initializeDataSources];
     
@@ -87,12 +84,8 @@
 {
     [super userInterfaceThemeDidChange];
     
-    UIImageView *backgroundImageView = self.backgroundImageView;
-    if (backgroundImageView)
-    {
-        UIImage *image = [MXKTools paintImage:backgroundImageView.image withColor:ThemeService.shared.theme.matrixSearchBackgroundImageTintColor];
-        backgroundImageView.image = image;
-    }
+    // Match the search bar color to the navigation bar color as it extends slightly outside the frame.
+    self.searchBar.backgroundColor = ThemeService.shared.theme.baseColor;
 }
 
 - (void)destroy
@@ -104,6 +97,8 @@
 {
     [super viewWillAppear:animated];
     
+    [self.screenTracker trackScreen];
+
     // Let's child display the loading not this view controller
     if (self.activityIndicator)
     {
@@ -125,8 +120,6 @@
     // Refresh the search results.
     // Note: We wait for 'viewDidAppear' call to consider the actual view size during this update.
     [self updateSearch];
-    
-    [self.screenTimer start];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -141,15 +134,37 @@
     [super viewWillDisappear:animated];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self.screenTimer stop];
-}
-
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return ThemeService.shared.theme.statusBarStyle;
+}
+
+- (void)selectEvent:(MXEvent *)event
+{
+    ThreadParameters *threadParameters = nil;
+    if (RiotSettings.shared.enableThreads)
+    {
+        if (event.threadId)
+        {
+            threadParameters = [[ThreadParameters alloc] initWithThreadId:event.threadId
+                                                          stackRoomScreen:NO];
+        }
+        else if (event.unsignedData.relations.thread || [self.mainSession.threadingService isEventThreadRoot:event])
+        {
+            threadParameters = [[ThreadParameters alloc] initWithThreadId:event.eventId
+                                                          stackRoomScreen:NO];
+        }
+    }
+    
+    ScreenPresentationParameters *screenParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO
+                                                                                                  stackAboveVisibleViews:YES];
+    
+    RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:event.roomId
+                                                                                    eventId:event.eventId
+                                                                                  mxSession:self.mainSession
+                                                                           threadParameters:threadParameters
+                                                                     presentationParameters:screenParameters];
+    [[LegacyAppDelegate theDelegate] showRoomWithParameters:parameters];
 }
 
 #pragma mark -
@@ -195,15 +210,6 @@
 }
 
 #pragma mark - Override MXKViewController
-
-- (void)setKeyboardHeight:(CGFloat)keyboardHeight
-{
-    [self setKeyboardHeightForBackgroundImage:keyboardHeight];
-    
-    [super setKeyboardHeight:keyboardHeight];
-    
-    [self checkAndShowBackgroundImage];
-}
 
 - (void)startActivityIndicator
 {
@@ -252,48 +258,6 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)setKeyboardHeightForBackgroundImage:(CGFloat)keyboardHeight
-{
-    [super setKeyboardHeightForBackgroundImage:keyboardHeight];
-    
-    if (keyboardHeight > 0)
-    {
-        [self checkAndShowBackgroundImage];
-    }
-}
-
-// Check conditions before displaying the background
-- (void)checkAndShowBackgroundImage
-{
-    // Note: This background is hidden when keyboard is dismissed.
-    // The other conditions depend on the current selected view controller.
-    if (self.selectedViewController == messagesSearchViewController)
-    {
-        self.backgroundImageView.hidden = ((messagesSearchDataSource.serverCount != 0) || !messagesSearchViewController.noResultsLabel.isHidden || (self.keyboardHeight == 0));
-    }
-    else if (self.selectedViewController == filesSearchViewController)
-    {
-        self.backgroundImageView.hidden = ((filesSearchDataSource.serverCount != 0) || !filesSearchViewController.noResultsLabel.isHidden || (self.keyboardHeight == 0));
-    }
-    else
-    {
-        self.backgroundImageView.hidden = (self.keyboardHeight == 0);
-    }
-    
-    if (!self.backgroundImageView.hidden)
-    {
-        [self.backgroundImageView layoutIfNeeded];
-        [self.selectedViewController.view layoutIfNeeded];
-        
-        // Check whether there is enough space to display this background
-        // For example, in landscape with the iPhone 5 & 6 screen size, the backgroundImageView must be hidden.
-        if (self.backgroundImageView.frame.origin.y < 0 || (self.selectedViewController.view.frame.size.height - self.backgroundImageViewBottomConstraint.constant) < self.backgroundImageView.frame.size.height)
-        {
-            self.backgroundImageView.hidden = YES;
-        }
-    }
-}
-
 #pragma mark - Override SegmentedViewController
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex
@@ -303,46 +267,6 @@
     [self updateSearch];
 }
 
-#pragma mark - Navigation
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    [super prepareForSegue:segue sender:sender];
-    
-    if ([[segue identifier] isEqualToString:@"showTimeline"])
-    {
-        // Check whether an event has been selected from messages or files search tab
-        MXEvent *selectedSearchEvent = messagesSearchViewController.selectedEvent;
-        MXSession *selectedSearchEventSession = messagesSearchDataSource.mxSession;
-        if (!selectedSearchEvent)
-        {
-            selectedSearchEvent = filesSearchViewController.selectedEvent;
-            selectedSearchEventSession = filesSearchDataSource.mxSession;
-        }
-        
-        if (selectedSearchEvent)
-        {
-            RoomViewController *roomViewController = segue.destinationViewController;
-
-            [RoomDataSource loadRoomDataSourceWithRoomId:selectedSearchEvent.roomId
-                                          initialEventId:selectedSearchEvent.eventId
-                                        andMatrixSession:selectedSearchEventSession onComplete:^(RoomDataSource *roomDataSource) {
-
-                                            [roomDataSource finalizeInitialization];
-                                            roomDataSource.markTimelineInitialEvent = YES;
-
-                                            [roomViewController displayRoom:roomDataSource];
-                                            roomViewController.hasRoomDataSourceOwnership = YES;
-
-                                            roomViewController.navigationItem.leftItemsSupplementBackButton = YES;
-                                        }];
-        }
-        
-        // Hide back button title
-        self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    }
-}
-
 #pragma mark - Search
 
 // Update search results under the currently selected tab
@@ -350,8 +274,6 @@
 {
     if (self.searchBar.text.length)
     {
-        self.backgroundImageView.hidden = YES;
-        
         // Forward the search request to the data source
         if (self.selectedViewController == messagesSearchViewController)
         {
@@ -361,8 +283,8 @@
                 // Do it asynchronously to give time to messagesSearchViewController to be set up
                 // so that it can display its loading wheel
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [messagesSearchDataSource searchMessages:self.searchBar.text force:NO];
-                    messagesSearchViewController.shouldScrollToBottomOnRefresh = YES;
+                    [self->messagesSearchDataSource searchMessages:self.searchBar.text force:NO];
+                    self->messagesSearchViewController.shouldScrollToBottomOnRefresh = YES;
                 });
             }
         }
@@ -374,8 +296,8 @@
                 // Do it asynchronously to give time to filesSearchViewController to be set up
                 // so that it can display its loading wheel
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [filesSearchDataSource searchMessages:self.searchBar.text force:NO];
-                    filesSearchViewController.shouldScrollToBottomOnRefresh = YES;
+                    [self->filesSearchDataSource searchMessages:self.searchBar.text force:NO];
+                    self->filesSearchViewController.shouldScrollToBottomOnRefresh = YES;
                 });
             }
         }
@@ -392,8 +314,6 @@
             [filesSearchDataSource searchMessages:nil force:NO];
         }
     }
-    
-    [self checkAndShowBackgroundImage];
 }
 
 @end

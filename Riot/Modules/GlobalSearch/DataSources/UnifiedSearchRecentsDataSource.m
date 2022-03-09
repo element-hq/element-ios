@@ -35,9 +35,9 @@
 
 @implementation UnifiedSearchRecentsDataSource
 
-- (instancetype)init
+- (instancetype)initWithMatrixSession:(MXSession *)mxSession recentsListService:(id<RecentsListServiceProtocol>)recentsListService
 {
-    self = [super init];
+    self = [super initWithMatrixSession:mxSession recentsListService:recentsListService];
     if (self)
     {
         searchedRoomIdOrAliasSection = -1;
@@ -148,13 +148,13 @@
     return count;
 }
 
-- (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
+- (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame inTableView:(UITableView*)tableView
 {
     UIView *sectionHeader = nil;
     
     if (section != searchedRoomIdOrAliasSection)
     {
-        sectionHeader = [super viewForHeaderInSection:section withFrame:frame];
+        sectionHeader = [super viewForHeaderInSection:section withFrame:frame inTableView:tableView];
     }
     
     return sectionHeader;

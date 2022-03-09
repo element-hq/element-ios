@@ -47,7 +47,7 @@ static CGFloat const kTextFontSize = 15.0;
 
 @property (weak, nonatomic) id <NSObject> themeDidChangeNotificationObserver;
 
-@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+@property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
 @end
 
@@ -67,7 +67,7 @@ static CGFloat const kTextFontSize = 15.0;
 - (void)finalizeInit
 {
     [super finalizeInit];
-    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenDeactivateAccount];
+    self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenDeactivateAccount];
 }
 
 - (void)destroy
@@ -103,12 +103,7 @@ static CGFloat const kTextFontSize = 15.0;
     [super viewWillAppear:animated];
 
     [self userInterfaceThemeDidChange];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self.screenTimer start];
+    [self.screenTracker trackScreen];
 }
 
 - (void)viewDidLayoutSubviews
@@ -116,12 +111,6 @@ static CGFloat const kTextFontSize = 15.0;
     [super viewDidLayoutSubviews];
     
     [self.deactivateAcccountButton.layer setCornerRadius:kButtonCornerRadius];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self.screenTimer stop];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -245,7 +234,7 @@ static CGFloat const kTextFontSize = 15.0;
         textField.keyboardType = UIKeyboardTypeDefault;
     }];
     
-    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                               style:UIAlertActionStyleCancel
                                             handler:^(UIAlertAction * action) {
                                                 if (cancelHandler)
@@ -256,7 +245,7 @@ static CGFloat const kTextFontSize = 15.0;
     
     __weak typeof(self) weakSelf = self;
     
-    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n submit]
+    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n submit]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
                                                 UITextField *textField = alert.textFields.firstObject;

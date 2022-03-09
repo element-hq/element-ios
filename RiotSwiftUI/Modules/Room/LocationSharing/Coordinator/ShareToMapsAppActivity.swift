@@ -24,10 +24,11 @@ class ShareToMapsAppActivity: UIActivity {
     enum MapsAppType {
         case apple
         case google
+        case osm
     }
     
-    let type: MapsAppType
-    let location: CLLocationCoordinate2D
+    private let type: MapsAppType
+    private let location: CLLocationCoordinate2D
     
     private override init() {
         fatalError()
@@ -44,6 +45,8 @@ class ShareToMapsAppActivity: UIActivity {
             return URL(string: "https://maps.apple.com?ll=\(location.latitude),\(location.longitude)&q=Pin")!
         case .google:
             return URL(string: "https://www.google.com/maps/search/?api=1&query=\(location.latitude),\(location.longitude)")!
+        case .osm:
+            return URL(string: "https://www.openstreetmap.org/?mlat=\(location.latitude)&mlon=\(location.longitude)")!
         }
     }
     
@@ -53,6 +56,8 @@ class ShareToMapsAppActivity: UIActivity {
             return VectorL10n.locationSharingOpenAppleMaps
         case .google:
             return VectorL10n.locationSharingOpenGoogleMaps
+        case .osm:
+            return VectorL10n.locationSharingOpenOpenStreetMaps
         }
     }
     

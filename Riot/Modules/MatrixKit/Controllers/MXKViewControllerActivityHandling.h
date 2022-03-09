@@ -36,6 +36,14 @@
 @property (nonatomic) UIActivityIndicatorView *activityIndicator;
 
 /**
+ A view controller may choose to implement a completely custom activity indicator (e.g. shared toast notification),
+ 
+ In this case the default `activityIndicator` will be hidden, and the view controller is responsible for overriding
+ `startActivityIndicator` and `stopActivityIndicator` methods to show / hide the custom activity indicator.
+ */
+@property (nonatomic, readonly) BOOL providesCustomActivityIndicator;
+
+/**
  Bring the activity indicator to the front and start it.
  */
 - (void)startActivityIndicator;

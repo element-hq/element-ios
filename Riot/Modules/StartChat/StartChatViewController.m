@@ -81,7 +81,7 @@
     // Assign itself as delegate
     self.contactsTableViewControllerDelegate = self;
     
-    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenStartChat];
+    self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenStartChat];
 }
 
 - (void)viewDidLoad
@@ -105,7 +105,7 @@
     dataSource.forceMatrixIdInDisplayName = YES;
     // Add a plus icon to the contact cell when a search session is in progress,
     // in order to make it more understandable for the end user.
-    dataSource.contactCellAccessoryImage = [[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor];
+    dataSource.contactCellAccessoryImage = [AssetImages.plusIcon.image vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor];
 
     [self displayList:dataSource];
 
@@ -752,10 +752,10 @@
             
             [contactsTableViewController refreshCurrentSelectedCell:YES];
             
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n error]
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[VectorL10n error]
                                                                            message:[VectorL10n roomCreationErrorInviteUserByEmailWithoutIdentityServer]
                                                                     preferredStyle:UIAlertControllerStyleAlert];
-            [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok] style:UIAlertActionStyleDefault handler:nil]];
+            [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok] style:UIAlertActionStyleDefault handler:nil]];
             [self presentViewController:alert animated:YES completion:nil];
             
             return;

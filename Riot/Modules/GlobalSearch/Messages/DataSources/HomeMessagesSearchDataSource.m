@@ -51,33 +51,76 @@
             dispatch_group_enter(group);
 
             // Check whether the user knows this room to create the room data source if it doesn't exist.
-            [roomDataSourceManager roomDataSourceForRoom:roomId create:[self.mxSession roomWithRoomId:roomId] onComplete:^(MXKRoomDataSource *roomDataSource) {
+            MXRoom *room = [self.mxSession roomWithRoomId:roomId];
+            [roomDataSourceManager roomDataSourceForRoom:roomId create:(room != nil) onComplete:^(MXKRoomDataSource *roomDataSource) {
 
                 if (roomDataSource)
                 {
-                    // Prepare text font used to highlight the search pattern.
-                    UIFont *patternFont = [roomDataSource.eventFormatter bingTextFont];
+                    void(^continueBlock)(void) = ^{
+                        // Prepare text font used to highlight the search pattern.
+                        UIFont *patternFont = [roomDataSource.eventFormatter bingTextFont];
 
-                    // Let the `RoomViewController` ecosystem do the job
-                    // The search result contains only room message events, no state events.
-                    // Thus, passing the current room state is not a huge problem. Only
-                    // the user display name and his avatar may be wrong.
-                    RoomBubbleCellData *cellData = [[RoomBubbleCellData alloc] initWithEvent:result.result andRoomState:roomDataSource.roomState andRoomDataSource:roomDataSource];
-                    if (cellData)
+                        // Let the `RoomViewController` ecosystem do the job
+                        // The search result contains only room message events, no state events.
+                        // Thus, passing the current room state is not a huge problem. Only
+                        // the user display name and his avatar may be wrong.
+                        RoomBubbleCellData *cellData = [[RoomBubbleCellData alloc] initWithEvent:result.result andRoomState:roomDataSource.roomState andRoomDataSource:roomDataSource];
+                        if (cellData)
+                        {
+                            // Highlight the search pattern
+                            [cellData highlightPatternInTextMessage:self.searchText
+                                                withBackgroundColor:ThemeService.shared.theme.searchResultHighlightColor
+                                                    foregroundColor:ThemeService.shared.theme.textPrimaryColor
+                                                            andFont:patternFont];
+
+                            // Use profile information as data to display
+                            MXSearchUserProfile *userProfile = result.context.profileInfo[result.result.sender];
+                            cellData.senderDisplayName = userProfile.displayName;
+                            cellData.senderAvatarUrl = userProfile.avatarUrl;
+
+                            [self->cellDataArray insertObject:cellData atIndex:0];
+                        }
+                        dispatch_group_leave(group);
+                    };
+
+                    if (RiotSettings.shared.enableThreads)
                     {
-                        // Highlight the search pattern
-                        [cellData highlightPatternInTextMessage:self.searchText withForegroundColor:ThemeService.shared.theme.tintColor andFont:patternFont];
-
-                        // Use profile information as data to display
-                        MXSearchUserProfile *userProfile = result.context.profileInfo[result.result.sender];
-                        cellData.senderDisplayName = userProfile.displayName;
-                        cellData.senderAvatarUrl = userProfile.avatarUrl;
-
-                        [self->cellDataArray insertObject:cellData atIndex:0];
+                        if (result.result.isInThread)
+                        {
+                            continueBlock();
+                        }
+                        else if (result.result.unsignedData.relations.thread)
+                        {
+                            continueBlock();
+                        }
+                        else if (room)
+                        {
+                            [room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
+                                [liveTimeline paginate:NSUIntegerMax
+                                             direction:MXTimelineDirectionBackwards
+                                         onlyFromStore:YES
+                                              complete:^{
+                                    [liveTimeline resetPagination];
+                                    continueBlock();
+                                } failure:^(NSError * _Nonnull error) {
+                                    continueBlock();
+                                }];
+                            }];
+                        }
+                        else
+                        {
+                            continueBlock();
+                        }
+                    }
+                    else
+                    {
+                        continueBlock();
                     }
                 }
-
-                dispatch_group_leave(group);
+                else
+                {
+                    dispatch_group_leave(group);
+                }
             }];
         }
     }
@@ -115,6 +158,66 @@
         
         // Display date for each message
         [bubbleCell addDateLabel];
+
+        if (RiotSettings.shared.enableThreads)
+        {
+            RoomBubbleCellData *cellData = (RoomBubbleCellData*)[self cellDataAtIndex:indexPath.row];
+            MXEvent *event = cellData.events.firstObject;
+
+            if (event)
+            {
+                if (cellData.hasThreadRoot)
+                {
+                    id<MXThreadProtocol> thread = cellData.bubbleComponents.firstObject.thread;
+                    ThreadSummaryView *threadSummaryView = [[ThreadSummaryView alloc] initWithThread:thread
+                                                                                             session:self.mxSession];
+                    [bubbleCell.tmpSubviews addObject:threadSummaryView];
+
+                    threadSummaryView.translatesAutoresizingMaskIntoConstraints = NO;
+                    [bubbleCell.contentView addSubview:threadSummaryView];
+
+                    CGFloat leftMargin = PlainRoomCellLayoutConstants.reactionsViewLeftMargin;
+                    CGFloat height = [ThreadSummaryView contentViewHeightForThread:thread fitting:cellData.maxTextViewWidth];
+
+                    CGRect bubbleComponentFrame = [bubbleCell componentFrameInContentViewForIndex:0];
+                    CGFloat bottomPositionY = bubbleComponentFrame.origin.y + bubbleComponentFrame.size.height;
+
+                    // Set constraints for the summary view
+                    [NSLayoutConstraint activateConstraints: @[
+                        [threadSummaryView.leadingAnchor constraintEqualToAnchor:threadSummaryView.superview.leadingAnchor
+                                                                        constant:leftMargin],
+                        [threadSummaryView.topAnchor constraintEqualToAnchor:threadSummaryView.superview.topAnchor
+                                                                    constant:bottomPositionY + PlainRoomCellLayoutConstants.threadSummaryViewTopMargin],
+                        [threadSummaryView.heightAnchor constraintEqualToConstant:height],
+                        [threadSummaryView.trailingAnchor constraintLessThanOrEqualToAnchor:threadSummaryView.superview.trailingAnchor constant:-PlainRoomCellLayoutConstants.reactionsViewRightMargin]
+                    ]];
+                }
+                else if (event.isInThread)
+                {
+                    FromAThreadView *fromAThreadView = [FromAThreadView instantiate];
+                    [bubbleCell.tmpSubviews addObject:fromAThreadView];
+
+                    fromAThreadView.translatesAutoresizingMaskIntoConstraints = NO;
+                    [bubbleCell.contentView addSubview:fromAThreadView];
+                    
+                    CGFloat leftMargin = PlainRoomCellLayoutConstants.reactionsViewLeftMargin;
+                    CGFloat height = [FromAThreadView contentViewHeightForEvent:event fitting:cellData.maxTextViewWidth];
+
+                    CGRect bubbleComponentFrame = [bubbleCell componentFrameInContentViewForIndex:0];
+                    CGFloat bottomPositionY = bubbleComponentFrame.origin.y + bubbleComponentFrame.size.height;
+
+                    // Set constraints for the summary view
+                    [NSLayoutConstraint activateConstraints: @[
+                        [fromAThreadView.leadingAnchor constraintEqualToAnchor:fromAThreadView.superview.leadingAnchor
+                                                                      constant:leftMargin],
+                        [fromAThreadView.topAnchor constraintEqualToAnchor:fromAThreadView.superview.topAnchor
+                                                                  constant:bottomPositionY + PlainRoomCellLayoutConstants.fromAThreadViewTopMargin],
+                        [fromAThreadView.heightAnchor constraintEqualToConstant:height],
+                        [fromAThreadView.trailingAnchor constraintLessThanOrEqualToAnchor:fromAThreadView.superview.trailingAnchor constant:-PlainRoomCellLayoutConstants.reactionsViewRightMargin]
+                    ]];
+                }
+            }
+        }
     }
     
     return cell;

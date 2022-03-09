@@ -20,7 +20,7 @@
 /**
  Section header view class. Respects left and right safe area insets and layouts its subviews.
  */
-@interface SectionHeaderView : UIView
+@interface SectionHeaderView : UITableViewHeaderFooterView
 
 /**
  Default value: 20.0
@@ -53,8 +53,15 @@
 @property (nonatomic, strong) UIView *accessoryView;
 
 /**
+ Right accessory view for header. Both width and height will be used.
+ */
+@property (nonatomic, strong) UIView *rightAccessoryView;
+
+/**
  A view which spans the bottom view. No frame value will be used. Height will be remaining of the view at below topViewHeight.
  */
 @property (nonatomic, strong) UIView *bottomView;
+
++ (NSString*)defaultReuseIdentifier;
 
 @end

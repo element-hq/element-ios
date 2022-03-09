@@ -47,7 +47,7 @@
 "auth_optional_phone_placeholder" = "Numéro de téléphone (facultatif)";
 "auth_phone_placeholder" = "Numéro de téléphone";
 "auth_repeat_password_placeholder" = "Répéter le mot de passe";
-"auth_repeat_new_password_placeholder" = "Confirmer le nouveau mot de passe";
+"auth_repeat_new_password_placeholder" = "Confirmer le nouveau mot de passe de votre compte Matrix";
 "auth_invalid_login_param" = "Nom d’utilisateur et/ou mot de passe incorrect";
 "auth_invalid_user_name" = "Les noms d’utilisateur ne peuvent contenir que des lettres, des chiffres, des points, des traits d’union ou des tirets bas";
 "auth_invalid_password" = "Mot de passe trop court (min 6)";
@@ -62,7 +62,7 @@
 "auth_missing_phone" = "Numéro de téléphone manquant";
 "auth_missing_email_or_phone" = "Adresse e-mail ou numéro de téléphone manquant";
 "auth_password_dont_match" = "Les mots de passe ne correspondent pas";
-"auth_username_in_use" = "";
+"auth_username_in_use" = "Nom d’utilisateur déjà pris";
 "auth_forgot_password" = "Mot de passe oublié ?";
 "auth_use_server_options" = "Utiliser un serveur personnalisé (avancé)";
 "auth_email_validation_message" = "Merci de vérifier vos e-mails pour continuer l’inscription";
@@ -70,14 +70,14 @@
 "auth_msisdn_validation_message" = "Nous vous avons envoyé un SMS avec un code d’activation. Merci de le recopier ci-dessous.";
 "auth_msisdn_validation_error" = "Impossible de vérifier votre numéro de téléphone.";
 "auth_recaptcha_message" = "Ce serveur d’accueil voudrait s’assurer que vous n’êtes pas un robot";
-"auth_reset_password_message" = "Pour réinitialiser votre mot de passe, saisissez l’adresse e-mail liée à votre compte :";
+"auth_reset_password_message" = "Pour réinitialiser le mot de passe de votre compte Matrix, saisissez l’adresse e-mail liée à votre compte :";
 "auth_reset_password_missing_email" = "Vous devez saisir l’adresse e-mail liée à votre compte.";
 "auth_reset_password_missing_password" = "Vous devez spécifier un nouveau mot de passe.";
 "auth_reset_password_email_validation_message" = "Un e-mail a été envoyé à %@. Cliquez d’abord sur le lien dans l’e-mail, puis ci-dessous.";
 "auth_reset_password_next_step_button" = "J’ai vérifié mon adresse e-mail";
 "auth_reset_password_error_unauthorized" = "Impossible de vérifier l’adresse e-mail : assurez-vous de cliquer sur le lien dans l’e-mail";
 "auth_reset_password_error_not_found" = "Votre adresse e-mail ne semble pas associée à un identifiant Matrix sur ce serveur d’accueil.";
-"auth_reset_password_success_message" = "Votre mot de passe a été réinitialisé.\n\nVous avez été déconnecté de toutes vos sessions et ne recevrez plus de notifications. Pour réactiver les notifications, reconnectez-vous sur chaque appareil.";
+"auth_reset_password_success_message" = "Le mot de passe de votre compte Matrix a été réinitialisé.\n\nVous avez été déconnecté de toutes vos sessions et ne recevrez plus de notifications. Pour réactiver les notifications, reconnectez-vous sur chaque appareil.";
 "auth_add_email_and_phone_warning" = "L’inscription avec un e-mail et un numéro de téléphone à la fois n’est pas prise en charge tant que l’API n'existe pas. Seul votre numéro de téléphone sera pris en compte. Vous pourrez ajouter l’adresse e-mail dans vos options de profil.";
 // Chat creation
 "room_creation_title" = "Nouvelle discussion";
@@ -94,7 +94,7 @@
 "room_creation_keep_private" = "Garder privée";
 "room_creation_make_private" = "Rendre privée";
 "room_creation_wait_for_creation" = "Un salon est déjà en cours de création. Veuillez patienter.";
-"room_creation_invite_another_user" = "Rechercher/inviter par identifiant, nom ou e-mail";
+"room_creation_invite_another_user" = "Identifiant, nom ou e-mail";
 // Room recents
 "room_recents_directory_section" = "RÉPERTOIRE DES SALONS";
 "room_recents_favourites_section" = "FAVORIS";
@@ -206,7 +206,7 @@
 "room_event_action_redact" = "Effacer";
 "room_event_action_more" = "Plus";
 "room_event_action_share" = "Partager";
-"room_event_action_permalink" = "Permalien";
+"room_event_action_permalink" = "Copier le lien vers le message";
 "room_event_action_view_source" = "Voir la source";
 "room_event_action_report" = "Signaler le contenu";
 "room_event_action_report_prompt_reason" = "Raison pour le signalement du contenu";
@@ -251,9 +251,9 @@
 "settings_user_settings" = "PRÉFÉRENCES UTILISATEUR";
 "settings_notifications_settings" = "PRÉFÉRENCES DE NOTIFICATIONS";
 "settings_ignored_users" = "UTILISATEURS IGNORÉS";
-"settings_contacts" = "CONTACTS LOCAUX";
+"settings_contacts" = "CONTACTS DE L’APPAREIL";
 "settings_advanced" = "AVANCÉ";
-"settings_other" = "AUTRES";
+"settings_other" = "Autres";
 "settings_labs" = "EXPÉRIMENTAL";
 "settings_devices" = "SESSIONS";
 "settings_cryptography" = "CHIFFREMENT";
@@ -292,12 +292,12 @@
 "settings_send_crash_report" = "Envoyer des rapports d’anomalies anonymes et des statistiques d’utilisation";
 "settings_enable_rageshake" = "Secouer l’appareil pour signaler un bug";
 "settings_clear_cache" = "Vider le cache";
-"settings_change_password" = "Changer de mot de passe";
+"settings_change_password" = "Changer le mot de passe de votre compte Matrix";
 "settings_old_password" = "ancien mot de passe";
 "settings_new_password" = "nouveau mot de passe";
 "settings_confirm_password" = "confirmer le mot de passe";
-"settings_fail_to_update_password" = "Échec de la modification du mot de passe";
-"settings_password_updated" = "Votre mot de passe a été modifié";
+"settings_fail_to_update_password" = "Échec de la modification du mot de passe du compte Matrix";
+"settings_password_updated" = "Le mot de passe de votre compte Matrix a été modifié";
 "settings_crypto_device_name" = "Nom de la session : ";
 "settings_crypto_device_id" = "\nIdentifiant de la session : ";
 "settings_crypto_device_key" = "\nClé de la session :\n";
@@ -526,7 +526,7 @@
 "deactivate_account_forget_messages_information_part3" = ": les futurs utilisateurs auront alors une vue incomplète des conversations)";
 "deactivate_account_validate_action" = "Désactiver le compte";
 "deactivate_account_password_alert_title" = "Désactiver le compte";
-"deactivate_account_password_alert_message" = "Pour continuer, veuillez renseigner votre mot de passe";
+"deactivate_account_password_alert_message" = "Pour continuer, veuillez renseigner le mot de passe de votre compte Matrix";
 "event_formatter_rerequest_keys_part1_link" = "Redemander les clés de chiffrement";
 "event_formatter_rerequest_keys_part2" = " depuis vos autres sessions.";
 // Re-request confirmation dialog
@@ -584,7 +584,7 @@
 "key_backup_setup_intro_title" = "Ne perdez jamais vos messages chiffrés";
 "key_backup_setup_intro_info" = "Les messages des salons chiffrés sont sécurisés avec un chiffrement de bout en bout. Seuls vous et le(s) destinataire(s) avez les clés pour lire ces messages.\n\nSauvegardez vos clés de façon sécurisée pour éviter de les perdre.";
 "key_backup_setup_intro_setup_action" = "Configurer";
-"key_backup_setup_passphrase_info" = "Nous conserverons une copie chiffrée de vos clés sur notre serveur. Protégez votre sauvegarde avec une phrase secrète pour qu’elle soit en sécurité.\n\nPour une sécurité maximale, elle devrait être différente du mot de passe de votre compte.";
+"key_backup_setup_passphrase_info" = "Nous conserverons une copie chiffrée de vos clés sur notre serveur. Protégez votre sauvegarde avec une phrase secrète pour qu’elle soit en sécurité.\n\nPour une sécurité maximale, elle devrait être différente du mot de passe de votre compte Matrix.";
 "key_backup_setup_passphrase_passphrase_title" = "Saisir";
 "key_backup_setup_passphrase_passphrase_placeholder" = "Saisir la phrase secrète";
 "key_backup_setup_passphrase_passphrase_valid" = "Super !";
@@ -816,7 +816,7 @@
 "image_picker_action_library" = "Choisir dans la médiathèque";
 "camera_unavailable" = "L’appareil photo n’est pas disponible sur votre appareil";
 "photo_library_access_not_granted" = "%@ n’a pas la permission pour accéder à la médiathèque, veuillez modifier les options de confidentialité";
-"auth_forgot_password_error_no_configured_identity_server" = "Aucun serveur d’identité n’est configuré : ajoutez-en un pour réinitialiser votre mot de passe.";
+"auth_forgot_password_error_no_configured_identity_server" = "Aucun serveur d’identité n’est configuré : ajoutez-en un pour réinitialiser le mot de passe de votre compte Matrix.";
 "room_creation_error_invite_user_by_email_without_identity_server" = "Aucun serveur d’identité n’est configuré donc vous ne pouvez pas ajouter de participant avec un e-mail.";
 "room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Aucun serveur d’identité n’est configuré donc vous ne pouvez pas commencer de discussion avec un contact en utilisant un e-mail.";
 // Service terms
@@ -845,9 +845,9 @@
 "auth_add_email_message_2" = "Définissez une adresse e-mail pour la récupération de compte, et pour être éventuellement découvrable par les personnes qui vous connaissent.";
 "auth_add_phone_message_2" = "Définissez un numéro de téléphone pour être éventuellement découvrable par les personnes qui vous connaissent.";
 "auth_add_email_phone_message_2" = "Définissez une adresse e-mail pour la récupération de compte. Vous pouvez ensuite utiliser votre e-mail ou votre numéro de téléphone pour être découvrable par les personnes qui vous connaissent.";
-"auth_email_is_required" = "Aucun serveur d’identité n’est configuré donc vous ne pouvez pas ajouter d’adresse e-mail pour pouvoir réinitialiser votre mot de passe ultérieurement.";
-"auth_phone_is_required" = "Aucun serveur d’identité n’est configuré donc vous ne pouvez pas ajouter de numéro de téléphone pour pouvoir réinitialiser votre mot de passe ultérieurement.";
-"auth_reset_password_error_is_required" = "Aucun serveur d’identité n’est configuré : ajoutez-en un dans les options du serveur pour réinitialiser votre mot de passe.";
+"auth_email_is_required" = "Aucun serveur d’identité n’est configuré donc vous ne pouvez pas ajouter d’adresse e-mail pour pouvoir réinitialiser le mot de passe de votre compte Matrix ultérieurement.";
+"auth_phone_is_required" = "Aucun serveur d’identité n’est configuré donc vous ne pouvez pas ajouter de numéro de téléphone pour pouvoir réinitialiser le mot de passe de votre compte Matrix ultérieurement.";
+"auth_reset_password_error_is_required" = "Aucun serveur d’identité n’est configuré : ajoutez-en un dans les options du serveur pour réinitialiser le mot de passe de votre compte Matrix.";
 "contacts_address_book_no_identity_server" = "Aucun serveur d’identité n’est configuré";
 "settings_discovery_settings" = "DÉCOUVERTE";
 "settings_identity_server_settings" = "SERVEUR D’IDENTITÉ";
@@ -908,7 +908,7 @@
 "service_terms_modal_message_identity_server" = "Acceptez les conditions du serveur d’identité (%@) pour découvrir des contacts.";
 "settings_add_3pid_password_title_email" = "Ajouter une adresse e-mail";
 "settings_add_3pid_password_title_msidsn" = "Ajouter un numéro de téléphone";
-"settings_add_3pid_password_message" = "Pour continuer, saisissez votre mot de passe";
+"settings_add_3pid_password_message" = "Pour continuer, saisissez le mot de passe de votre compte Matrix";
 "settings_add_3pid_invalid_password_message" = "Informations d’authentification invalides";
 "error_not_supported_on_mobile" = "Vous ne pouvez pas faire cela depuis %@ mobile.";
 "widget_menu_refresh" = "Actualiser";
@@ -1130,7 +1130,7 @@
 "secrets_setup_recovery_key_storage_alert_message" = "✓ Imprimez-la et stockez-la dans un endroit sûr\n✓ Sauvegardez-la sur une clé USB ou un disque de sauvegarde\n✓ Copiez-la sur votre stockage personnel dans le cloud";
 "secrets_setup_recovery_passphrase_title" = "Définir une phrase de sécurité";
 "secrets_setup_recovery_passphrase_information" = "Saisissez une phrase de sécurité que vous seul connaissez, utilisée pour sécuriser les secrets sur votre serveur.";
-"secrets_setup_recovery_passphrase_additional_information" = "N’utilisez pas le mot de passe de votre compte.";
+"secrets_setup_recovery_passphrase_additional_information" = "N’utilisez pas le mot de passe de votre compte Matrix.";
 "secrets_setup_recovery_passphrase_validate_action" = "Terminé";
 "secrets_setup_recovery_passphrase_confirm_information" = "Saisissez à nouveau votre phrase de sécurité pour la confirmer.";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Confirmer";
@@ -1139,13 +1139,13 @@
 "authenticated_session_flow_not_supported" = "Cette application ne prend par en charge le mécanisme d’authentification de votre serveur d’accueil.";
 "secure_backup_setup_banner_title" = "Sauvegarde sécurisée";
 "secure_backup_setup_banner_subtitle" = "Protection afin d’éviter de perdre l’accès aux messages et données chiffrés";
-"security_settings_crypto_sessions_description_2" = "Si vous ne reconnaissez pas une connexion, changez votre mot de passe et réinitialisez la sauvegarde sécurisée.";
+"security_settings_crypto_sessions_description_2" = "Si vous ne reconnaissez pas une connexion, changez le mot de passe de votre compte Matrix et réinitialisez la sauvegarde sécurisée.";
 "security_settings_secure_backup" = "SAUVEGARDE SÉCURISÉE";
 "security_settings_secure_backup_description" = "Sauvegardez vos clés de chiffrement et les données de votre compte au où vous perdriez l’accès à vos sessions. Vos clés seront protégées par une clé de sécurité unique.";
 "security_settings_secure_backup_setup" = "Configurer";
 "security_settings_secure_backup_synchronise" = "Synchroniser";
 "security_settings_secure_backup_delete" = "Supprimer la sauvegarde";
-"security_settings_user_password_description" = "Confirmez votre identité en saisissant le mot de passe de votre compte";
+"security_settings_user_password_description" = "Confirmez votre identité en saisissant le mot de passe de votre compte Matrix";
 "secure_key_backup_setup_existing_backup_error_title" = "Une sauvegarde pour les messages existe déjà";
 "secure_key_backup_setup_existing_backup_error_info" = "Déverrouillez-la pour la réutiliser dans la sauvegarde sécurisée ou supprimez-la pour créer une nouvelle sauvegarde de messages dans la sauvegarde sécurisée.";
 "secure_key_backup_setup_existing_backup_error_unlock_it" = "La déverrouiller";
@@ -1285,7 +1285,7 @@
 // MARK: - Major update
 
 "major_update_title" = "Riot est désormais %@";
-"secrets_reset_authentication_message" = "Saisir votre mot de passe de compte pour confirmer";
+"secrets_reset_authentication_message" = "Saisissez le mot de passe de votre compte Matrix pour confirmer";
 "secrets_reset_reset_action" = "Réinitialiser";
 "secrets_reset_warning_message" = "Vous allez reprendre sans historique, sans message, appareil ou utilisateur de confiance.";
 "secrets_reset_warning_title" = "Si vous réinitialisez tout";
@@ -1356,7 +1356,7 @@
 "less" = "Moins";
 "more" = "Plus";
 "switch" = "Basculer";
-"joined" = "Rejoint";
+"joined" = "A rejoint";
 "store_promotional_text" = "Application de messagerie et collaboration respectueuse de la vie privée, sur un réseau ouvert. Décentralisée pour vous donner le contrôle. Pas d’extraction de vos données, pas de porte dérobée, pas d’accès réservé à des tiers.";
 "room_details_search" = "Rechercher dans le salon";
 "room_details_integrations" = "Intégrations";
@@ -1492,7 +1492,7 @@
 "space_private_join_rule" = "Espace privé";
 "space_participants_action_ban" = "Supprimer de cet espace";
 "space_participants_action_remove" = "Enlever de cet espace";
-"spaces_coming_soon_detail" = "Cette fonctionnalité n’a pas été implémentée ici, mais elle arrive. Pour effectuer cette action, vous pouvez utiliser Element sur votre ordinateur.";
+"spaces_coming_soon_detail" = "Cette fonctionnalité n’a pas été implémentée ici, mais elle arrive. Pour effectuer cette action, vous pouvez utiliser %@ sur votre ordinateur.";
 "spaces_invites_coming_soon_title" = "Les invitations arrivent prochainement";
 "spaces_add_rooms_coming_soon_title" = "L’ajout de salons arrive bientôt";
 "spaces_coming_soon_title" = "Prochainement";
@@ -1520,3 +1520,632 @@
 "room_recents_suggested_rooms_section" = "SALONS RECOMMANDÉS";
 "done" = "Terminé";
 "open" = "Ouvrir";
+"poll_timeline_not_closed_action" = "Ok";
+"poll_timeline_not_closed_subtitle" = "Merci de réessayer";
+"poll_timeline_not_closed_title" = "Échec de la fermeture du sondage";
+"poll_timeline_vote_not_registered_action" = "Ok";
+"poll_timeline_vote_not_registered_subtitle" = "Désolé votre vote n’a pas été enregistré, veuillez réessayer";
+"poll_timeline_vote_not_registered_title" = "Vote non enregistré";
+"poll_timeline_total_final_results" = "Résultats finaux basés sur %lu votes";
+"poll_timeline_total_final_results_one_vote" = "Résultats finaux basés sur 1 vote";
+"poll_timeline_total_votes_not_voted" = "%lu votes recueillis. Votez pour consulter les résultats";
+"poll_timeline_total_one_vote_not_voted" = "1 vote recueilli. Votez pour connaître les résultats";
+"poll_timeline_total_votes" = "%lu votes recueillis";
+"poll_timeline_total_one_vote" = "1 vote recueilli";
+"poll_timeline_total_no_votes" = "Aucun vote recueilli";
+"poll_timeline_votes_count" = "%lu votes";
+"poll_timeline_one_vote" = "1 vote";
+"poll_edit_form_post_failure_action" = "Ok";
+"poll_edit_form_post_failure_subtitle" = "Merci de réessayer";
+"poll_edit_form_post_failure_title" = "Échec de la publication du sondage";
+"poll_edit_form_add_option" = "Ajouter une option";
+"poll_edit_form_option_number" = "Option %lu";
+"poll_edit_form_create_options" = "Ajouter des options";
+"poll_edit_form_input_placeholder" = "Écrivez quelque chose";
+"poll_edit_form_question_or_topic" = "Question ou sujet";
+"poll_edit_form_poll_question_or_topic" = "Question ou sujet du sondage";
+
+// Mark: - Polls
+
+"poll_edit_form_create_poll" = "Créer un sondage";
+"space_home_show_all_rooms" = "Afficher tous les salons";
+"service_terms_modal_information_description_integration_manager" = "Un gestionnaire d’intégrations vous permet d’ajouter des fonctionnalités de tierces-parties.";
+"service_terms_modal_information_description_identity_server" = "Un serveur d’identité vous aide à trouver vos contacts, en recherchant leur numéro de téléphone ou adresse e-mail pour vérifier s’ils ont déjà un compte.";
+"service_terms_modal_information_title_integration_manager" = "Gestionnaire d’intégrations";
+
+// Alert explaining what an identity server / integration manager is.
+"service_terms_modal_information_title_identity_server" = "Serveur d’identité";
+"service_terms_modal_description_integration_manager" = "Ceci vous permettra d’utiliser les robots, passerelles, widgets et jeux d’autocollants.";
+"service_terms_modal_description_identity_server" = "Ceci permettra aux personnes qui ont votre numéro de téléphone ou adresse e-mail de sauvegardées dans leurs contacts de vous trouver.";
+"service_terms_modal_table_header_integration_manager" = "CONDITIONS D’UTILISATION DU GESTIONNAIRE D’INTÉGRATIONS";
+"service_terms_modal_table_header_identity_server" = "CONDITIONS D’UTILISATION DU SERVEUR D’IDENTITÉ";
+"service_terms_modal_footer" = "Ceci peut être désactivé a n’importe quel moment dans les paramètres.";
+
+// Service terms
+"service_terms_modal_title_message" = "Pour poursuivre, acceptez nos conditions d’utilisation";
+"share_extension_send_now" = "Envoyer maintenant";
+"share_extension_low_quality_video_message" = "Envoyez depuis %@ pour une meilleure qualité. Ou envoyez en mauvaise qualité ci-dessous.";
+"share_extension_low_quality_video_title" = "La vidéo sera envoyée en mauvaise qualité";
+"analytics_prompt_stop" = "Arrêter de partager";
+"analytics_prompt_yes" = "Oui, ça me va";
+"analytics_prompt_not_now" = "Pas maintenant";
+"analytics_prompt_point_3" = "Vous pouvez désactiver ceci à tout moment dans les paramètres";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "Nous ne partageons <b>pas</b> les données avec des entités tierces";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "Nous n’enregistrons et ne profilons <b>pas</b> de données liées à votre compte";
+"analytics_prompt_terms_link_upgrade" = "ici";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "Lisez nos conditions d’utilisation %@. Êtes vous d’accord ?";
+"analytics_prompt_terms_link_new_user" = "ici";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "Vous pouvez lire nos conditions d’utilisation %@.";
+"analytics_prompt_message_upgrade" = "Vous aviez consenti précédemment à partager des rapports d’utilisation avec nous. Désormais, pour nous aider à comprendre comment les gens utilisent cette application sur plusieurs appareils, nous allons générer un identifiant aléatoire commun à tous vos appareils.";
+"analytics_prompt_message_new_user" = "Aidez nous à identifier les problèmes et améliorer %@ en envoyant des rapports d’usage anonymes. Pour comprendre de quelle manière les gens utilisent Element sur plusieurs appareils, nous créeront un identifiant aléatoire commun à tous vos appareils.";
+
+// Analytics
+"analytics_prompt_title" = "Aidez à améliorer %@";
+"settings_discovery_accept_terms" = "Accepter les conditions du serveur d’identité";
+"settings_analytics_and_crash_data" = "Envoyer les rapports de plantages et d’utilisation";
+"settings_labs_enabled_polls" = "Sondages";
+"settings_about" = "À PROPOS";
+"settings_phone_contacts" = "CONTACTS DU TÉLÉPHONE";
+"room_event_action_forward" = "Transférer";
+"room_event_action_end_poll" = "Mettre fin au sondage";
+"room_event_action_remove_poll" = "Supprimer le sondage";
+"find_your_contacts_identity_service_error" = "Impossible de se connecter au serveur d’identité.";
+"find_your_contacts_button_title" = "Trouvez vos contacts";
+"find_your_contacts_message" = "Permettez à %@ d’accéder à vos contacts pour commencer à discuter rapidement avec ceux que vous connaissez le mieux.";
+"contacts_address_book_permission_denied_alert_message" = "Pour activer les contacts, rendez vous dans les paramètres de votre appareil.";
+"contacts_address_book_permission_denied_alert_title" = "Contacts désactivés";
+"accessibility_button_label" = "bouton";
+"enable" = "Activer";
+"find_your_contacts_footer" = "Cette fonctionnalité peut être désactivé à tout moment à partir des paramètres.";
+"find_your_contacts_title" = "Commencez par lister vos contacts";
+"settings_contacts_enable_sync_description" = "Cette fonctionnalité utilisera votre serveur d'identité pour vous connecter avec vos contacts, ainsi que pour les aider à vous trouver.";
+"settings_contacts_enable_sync" = "Trouvez vos contacts";
+"location_sharing_settings_toggle_title" = "Activer le partage de localisation";
+"location_sharing_settings_header" = "Partage de localisation";
+"location_sharing_open_google_maps" = "Ouvrir dans Google Maps";
+"location_sharing_open_apple_maps" = "Ouvrir dans Apple Plans";
+"location_sharing_invalid_authorization_settings" = "Paramètres";
+"location_sharing_invalid_authorization_not_now" = "Pas maintenant";
+"location_sharing_invalid_authorization_error_title" = "%@ n’a pas les autorisations pour accéder à votre localisation. Vous pouvez l’autoriser dans Réglages > Confidentialité";
+"location_sharing_locating_user_error_title" = "%@ n’a pas pu déterminer votre localisation. Veuillez ré-essayer plus tard.";
+"location_sharing_loading_map_error_title" = "%@ n’a pas pu charger la carte. Veuillez ré-essayer plus tard.";
+"location_sharing_share_action" = "Partager";
+"location_sharing_close_action" = "Fermer";
+
+// MARK: - Location sharing
+
+"location_sharing_title" = "Localisation";
+"settings_enable_room_message_bubbles" = "Messages en bulles";
+"onboarding_splash_page_4_message" = "Element est parfaite pour le bureau. Les sociétés aux plus gros besoins de sécurité lui font confiance.";
+"onboarding_splash_page_4_title_no_pun" = "Une messagerie pour votre équipe.";
+"onboarding_splash_page_3_message" = "Chiffrée de bout en bout, aucun numéro de téléphone requis. Pas de pub ni d’exploitation de données.";
+"onboarding_splash_page_3_title" = "Messagerie sécurisée.";
+"onboarding_splash_page_2_message" = "Décidez où vos conversations sont stockées, en toute liberté et indépendance. Grâce à Matrix.";
+"onboarding_splash_page_2_title" = "C’est vous qui décidez.";
+"onboarding_splash_page_1_message" = "Une messagerie sécurisée et indépendante qui vous garantit le même niveau de confidentialité qu’une conversation en face à face chez vous.";
+"onboarding_splash_page_1_title" = "Maîtrisez vos conversations.";
+"onboarding_splash_login_button_title" = "J’ai déjà un compte";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Créer un compte";
+"ok" = "Ok";
+"poll_edit_form_poll_type_closed_description" = "Les résultats ne sont dévoilés que lorsque vous terminez le sondage";
+"poll_edit_form_poll_type_closed" = "Sondage fermé";
+"poll_edit_form_poll_type_open_description" = "Les votants voient les résultats dès qu'ils ont voté";
+"poll_edit_form_poll_type_open" = "Ouvrir le sondage";
+"poll_edit_form_update_failure_subtitle" = "Veuillez réessayer";
+"poll_edit_form_update_failure_title" = "Échec lors de la mise à jour du sondage";
+"poll_edit_form_poll_type" = "Type de sondage";
+"location_sharing_post_failure_subtitle" = "%# n’a pas pu envoyer votre localisation. Merci de réessayer plus tard.";
+"location_sharing_post_failure_title" = "Nous n’avons pas pu envoyer votre localisation";
+"home_context_menu_leave" = "Partir";
+"home_context_menu_unfavourite" = "Retirer des favoris";
+"home_context_menu_favourite" = "Mettre en favoris";
+"home_context_menu_unmute" = "Retirer la sourdine";
+"home_context_menu_mute" = "Mettre en sourdine";
+"home_context_menu_notifications" = "Notifications";
+"home_context_menu_make_room" = "Déplacer vers Salons";
+"home_context_menu_make_dm" = "Déplacer vers Personnes";
+"event_formatter_message_deleted" = "Message supprimé";
+"settings_labs_enable_threads" = "Fils de discussion";
+"message_from_a_thread" = "Depuis un fil de discussion";
+"threads_empty_show_all_threads" = "Afficher tous les fils de discussion";
+"threads_empty_tip" = "Astuce : appuyez sur un message puis sur « Fil » pour en commencer un nouveau.";
+"threads_empty_info_my" = "Répondez à un fil de discussion actif, ou appuyez sur un message et utilisez « Fil » pour en commencer un nouveau.";
+"threads_empty_info_all" = "Les fils de discussion vous permettent de centrer vos conversations sur un sujet, et de les suivre facilement.";
+"threads_empty_title" = "Gardez vos conversations organisées avec les fils de discussion";
+"threads_action_my_threads" = "Mes fils";
+"threads_action_all_threads" = "Tous les fils";
+"threads_title" = "Fils";
+"thread_copy_link_to_thread" = "Copier le lien vers le fil";
+
+// MARK: Threads
+"room_thread_title" = "Fil";
+"room_accessibility_thread_more" = "Plus";
+"room_accessibility_threads" = "Fils";
+"room_event_copy_link_info" = "Lien copié dans le presse-papier.";
+"room_event_action_reply_in_thread" = "Fil";
+"room_event_action_view_in_room" = "Afficher dans le salon";
+"home_context_menu_normal_priority" = "Priorité normale";
+"home_context_menu_low_priority" = "Basse priorité";
+"onboarding_use_case_title" = "À qui allez-vous le plus parler ?";
+"onboarding_use_case_message" = "Nous allons vous aider à vous connecter.";
+"onboarding_use_case_personal_messaging" = "Famille et amis";
+"onboarding_use_case_work_messaging" = "Équipes";
+"onboarding_use_case_community_messaging" = "Communautés";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "Pas encore sûr ? Vous pouvez %@";
+"onboarding_use_case_skip_button" = "passer cette question";
+"onboarding_use_case_existing_server_message" = "Vous cherchez à joindre un serveur existant ?";
+"onboarding_use_case_existing_server_button" = "Se connecter au serveur";
+"search_filter_placeholder" = "Filtrer";
+"location_sharing_open_open_street_maps" = "Ouvrir avec OpenStreetMap";
+
+
+// MARK: - MatrixKit
+
+
+// room details dialog screen
+"matrix" = "Matrix";
+// Login Screen
+"login_create_account" = "Créer un compte :";
+"login_server_url_placeholder" = "URL (par ex. https://matrix.org)";
+"login_home_server_title" = "URL du serveur d’accueil :";
+"login_home_server_info" = "Votre serveur d’accueil stocke toutes vos discussions et les données de votre compte";
+"login_identity_server_title" = "URL du serveur d’identité :";
+"login_identity_server_info" = "Matrix fournit des serveurs d’identité pour lier les e-mail, etc aux identifiants Matrix. Seul https://matrix.org existe pour l’instant.";
+"login_user_id_placeholder" = "Identifiant Matrix (par ex. @bob:matrix.org ou bob)";
+"login_password_placeholder" = "Mot de passe";
+"login_optional_field" = "facultatif";
+"login_display_name_placeholder" = "Nom d’affichage (par ex. Bob Obson)";
+"login_email_info" = "Définir une adresse e-mail permet aux autres utilisateurs de vous retrouver plus facilement sur Matrix et vous permettra de réinitialiser votre mot de passe.";
+"login_email_placeholder" = "Adresse e-mail";
+"login_prompt_email_token" = "Veuillez saisir votre jeton de validation d’e-mail :";
+"login_error_title" = "Échec d’authentification";
+"login_error_no_login_flow" = "Échec de la récupération des informations d’authentification depuis ce serveur d’accueil";
+"login_error_do_not_support_login_flows" = "Aucun des parcours d’authentification définis par ce serveur d'accueil n’est pris en charge pour le moment";
+"login_error_registration_is_not_supported" = "L’inscription n'est pas prise en charge pour le moment";
+"login_error_forbidden" = "Nom d’utilisateur ou mot de passe invalide";
+"login_error_unknown_token" = "Le jeton d’accès spécifié n'est pas reconnu";
+"login_error_bad_json" = "JSON mal formaté";
+"login_error_not_json" = "Ne contenait pas de JSON valide";
+"login_error_limit_exceeded" = "Trop de requêtes ont été envoyées";
+"login_error_user_in_use" = "Ce nom d’utilisateur est déjà utilisé";
+"login_error_login_email_not_yet" = "Vous n’avez pas encore cliqué sur le lien dans l’e-mail";
+"login_use_fallback" = "Utiliser la page de secours";
+"login_leave_fallback" = "Annuler";
+"login_invalid_param" = "Paramètre invalide";
+"register_error_title" = "Échec lors de l’inscription";
+"login_error_forgot_password_is_not_supported" = "La réinitialisation du mot de passe n’est pas prise en charge pour le moment";
+// Action
+"no" = "Non";
+"yes" = "Oui";
+"abort" = "Abandonner";
+"discard" = "Abandonner";
+"dismiss" = "Ignorer";
+"sign_up" = "S’inscrire";
+"submit" = "Valider";
+"submit_code" = "Envoyer le code";
+"set_default_power_level" = "Réinitialiser le rang";
+"set_moderator" = "Nommer modérateur";
+"set_admin" = "Nommer administrateur";
+"start_chat" = "Nouvelle conversation privée";
+"start_voice_call" = "Commencer un appel audio";
+"start_video_call" = "Commencer un appel vidéo";
+"mention" = "Mentionner";
+"select_account" = "Sélectionner un compte";
+"attach_media" = "Joindre un média de la médiathèque";
+"capture_media" = "Prendre une photo/vidéo";
+"invite_user" = "Inviter un utilisateur matrix";
+"reset_to_default" = "Réinitialiser aux valeurs par défaut";
+"resend_message" = "Renvoyer le message";
+"select_all" = "Tout sélectionner";
+"cancel_upload" = "Annuler l’envoi";
+"cancel_download" = "Annuler le téléchargement";
+"show_details" = "Afficher les détails";
+"answer_call" = "Répondre à l’appel";
+"reject_call" = "Rejeter l’appel";
+"end_call" = "Terminer l’appel";
+"ignore" = "Ignorer";
+"unignore" = "Ne plus ignorer";
+// Events formatter
+"notice_avatar_changed_too" = "(l’avatar a aussi changé)";
+"notice_room_name_removed" = "%@ a supprimé le nom du salon";
+"notice_room_topic_removed" = "%@ a supprimé le sujet";
+"notice_event_redacted" = "<effacé%@>";
+"notice_event_redacted_by" = " par %@";
+"notice_event_redacted_reason" = " [raison : %@]";
+"notice_profile_change_redacted" = "%@ ont mis à jour leur profil %@";
+"notice_room_created" = "%@ a créé et configuré le salon.";
+"notice_room_join_rule" = "La règle pour rejoindre le salon est : %@";
+"notice_room_power_level_intro" = "Les rangs des membres du salon sont :";
+"notice_room_power_level_acting_requirement" = "Le rang minimum qu’un utilisateur doit avoir pour interagir est :";
+"notice_room_power_level_event_requirement" = "Le rang minimum lié aux événements est :";
+"notice_room_aliases" = "Les alias du salon sont : %@";
+"notice_room_related_groups" = "Les groupes associés à ce salon sont : %@";
+"notice_encrypted_message" = "Message chiffré";
+"notice_encryption_enabled" = "%@ a activé le chiffrement de bout en bout (algorithme %@)";
+"notice_image_attachment" = "image en pièce-jointe";
+"notice_audio_attachment" = "audio en pièce-jointe";
+"notice_video_attachment" = "vidéo en pièce-jointe";
+"notice_file_attachment" = "fichier en pièce-jointe";
+"notice_invalid_attachment" = "pièce-jointe non valide";
+"notice_unsupported_attachment" = "Pièce-jointe non prise en charge : %@";
+"notice_redaction" = "%@ a supprimé un événement (id : %@)";
+"notice_error_unsupported_event" = "Évènement non pris en charge";
+"notice_error_unexpected_event" = "Événement inattendu";
+"notice_error_unknown_event_type" = "Type d’événement inconnu";
+"notice_room_history_visible_to_anyone" = "%@ a rendu l’historique futur du salon visible à tout le monde.";
+"notice_room_history_visible_to_members" = "%@ a rendu l’historique futur du salon visible à tous les membres du salon.";
+"notice_room_history_visible_to_members_from_invited_point" = "%@ a rendu l’historique futur du salon visible à tous les membres, à partir du moment où ils ont été invités.";
+"notice_room_history_visible_to_members_from_joined_point" = "%@ a rendu l’historique futur du salon visible à tous les membres, à partir de leur arrivée.";
+"notice_crypto_unable_to_decrypt" = "** Déchiffrement impossible : %@ **";
+"notice_crypto_error_unknown_inbound_session_id" = "La session de l’expéditeur ne nous a pas envoyé les clés pour ce message.";
+"notice_sticker" = "autocollant";
+// room display name
+"room_displayname_empty_room" = "Salon vide";
+"room_displayname_two_members" = "%@ et %@";
+"room_displayname_more_than_two_members" = "%@ et %u autres";
+// Settings
+"settings" = "Paramètres";
+"settings_enable_inapp_notifications" = "Activer les notifications dans l’application";
+"settings_enable_push_notifications" = "Activer les notifications push";
+"settings_enter_validation_token_for" = "Saisir le jeton de validation pour %@ :";
+"notification_settings_room_rule_title" = "Salon : « %@ »";
+// Devices
+"device_details_title" = "Informations sur la session\n";
+"device_details_name" = "Nom public\n";
+"device_details_identifier" = "Identifiant\n";
+"device_details_last_seen" = "Vu pour la dernière fois\n";
+"device_details_last_seen_format" = "%@ @ %@\n";
+"device_details_rename_prompt_message" = "Le nom public de la session est visible par les personnes avec qui vous communiquez";
+"device_details_delete_prompt_title" = "Authentification";
+"device_details_delete_prompt_message" = "Cette opération requiert une nouvelle authentification.\nPour poursuivre, saisissez votre mot de passe.";
+// Encryption information
+"room_event_encryption_info_title" = "Informations sur le chiffrement de bout en bout\n\n";
+"room_event_encryption_info_event" = "Informations sur l’événement\n";
+"room_event_encryption_info_event_user_id" = "Identifiant utilisateur\n";
+"room_event_encryption_info_event_identity_key" = "Clé d’identité Curve25519\n";
+"room_event_encryption_info_event_fingerprint_key" = "Clé d’empreinte Ed25519 déclarée\n";
+"room_event_encryption_info_event_algorithm" = "Algorithme\n";
+"room_event_encryption_info_event_session_id" = "Identifiant de session\n";
+"room_event_encryption_info_event_decryption_error" = "Erreur de déchiffrement\n";
+"room_event_encryption_info_event_unencrypted" = "non chiffré";
+"room_event_encryption_info_event_none" = "aucun";
+"room_event_encryption_info_device" = "\nInformations sur la session de l’expéditeur\n";
+"room_event_encryption_info_device_unknown" = "session inconnue\n";
+"room_event_encryption_info_device_name" = "Nom public\n";
+"room_event_encryption_info_device_id" = "Identifiant\n";
+"room_event_encryption_info_device_verification" = "Vérification\n";
+"room_event_encryption_info_device_fingerprint" = "Empreinte Ed25519\n";
+"room_event_encryption_info_device_verified" = "Vérifié";
+"room_event_encryption_info_device_not_verified" = "NON vérifié";
+"room_event_encryption_info_device_blocked" = "Sur liste noire";
+"room_event_encryption_info_verify" = "Vérifier…";
+"room_event_encryption_info_unverify" = "Annuler la vérification";
+"room_event_encryption_info_block" = "Ajouter à la liste noire";
+"room_event_encryption_info_unblock" = "Supprimer de la liste noire";
+"room_event_encryption_verify_title" = "Vérifier la session\n\n";
+"room_event_encryption_verify_message" = "Pour vérifier que cette session est fiable, contactez son propriétaire par un autre moyen (par ex. en personne ou au téléphone) et demandez-lui si la clé qu’il voit dans ses paramètres utilisateur pour cette session est identique à la clé ci-dessous :\n\n\tNom de la session : %@\n\tIdentifiant de la session : %@\n\tClé de la session : %@\n\nSi les clés sont identiques, cliquez sur le bouton vérifier ci-dessous. Sinon, quelqu’un est probablement en train d’intercepter cette session et vous devriez plutôt l’ajouter à la liste noire.\n\nÀ l'avenir, ce processus de vérification sera plus élaboré.";
+"room_event_encryption_verify_ok" = "Vérifier";
+// Account
+"account_save_changes" = "Enregistrer les modifications";
+"account_link_email" = "Lier un e-mail";
+"account_linked_emails" = "E-mail liés";
+"account_email_validation_title" = "Vérification en attente";
+"account_email_validation_message" = "Vérifiez vos e-mails et cliquez sur le lien fourni. Ensuite, cliquez sur continuer.";
+"account_email_validation_error" = "Impossible de vérifier l'adresse e-mail. Vérifiez vos e-mails et cliquez sur le lien fourni. Ensuite, cliquez sur continuer";
+"account_msisdn_validation_title" = "Vérification en attente";
+"account_msisdn_validation_message" = "Nous vous avons envoyé un SMS avec un code d’activation. Veuillez le saisir ci-dessous.";
+"account_msisdn_validation_error" = "Impossible de vérifier le numéro de téléphone.";
+"account_error_display_name_change_failed" = "Échec de modification du nom d’affichage";
+"account_error_picture_change_failed" = "Échec de modification de l’image";
+"account_error_matrix_session_is_not_opened" = "La session Matrix n’est pas ouverte";
+"account_error_email_wrong_title" = "Adresse e-mail non valide";
+"account_error_email_wrong_description" = "L’adresse e-mail ne semble pas valide";
+"account_error_msisdn_wrong_title" = "Numéro de téléphone non valide";
+"account_error_msisdn_wrong_description" = "Le numéro de téléphone ne semble pas valide";
+// Room creation
+"room_creation_name_title" = "Nom du salon :";
+"room_creation_name_placeholder" = "(par ex. groupeDej)";
+"room_creation_alias_title" = "Alias du salon :";
+"room_creation_alias_placeholder" = "(par ex. #foo:exemple.org)";
+"room_creation_alias_placeholder_with_homeserver" = "(par ex. #foo%@)";
+"room_creation_participants_title" = "Membres :";
+"room_creation_participants_placeholder" = "(par ex. @bob:serveurdaccueil1 ; @john:serveurdaccueil2...)";
+// Room
+"room_please_select" = "Sélectionnez un salon";
+"room_error_join_failed_title" = "Échec de l’inscription au salon";
+"room_error_join_failed_empty_room" = "Il est impossible pour le moment de rejoindre un salon vide.";
+"room_error_name_edition_not_authorized" = "Vous n’êtes pas autorisé à modifier le nom du salon";
+"room_error_topic_edition_not_authorized" = "Vous n’êtes pas autorisé à modifier le sujet du salon";
+"room_error_cannot_load_timeline" = "Échec du chargement du fil de discussion";
+"room_error_timeline_event_not_found_title" = "Échec du chargement de la position dans le fil de discussion";
+"room_error_timeline_event_not_found" = "L’application a tenté de charger un instant précis dans l’historique du salon, mais ne l’a pas trouvée";
+"room_left" = "Vous avez quitté le salon";
+"room_no_power_to_create_conference_call" = "Des permissions sont requises pour inviter ou démarrer une téléconférence dans ce salon";
+"room_no_conference_call_in_encrypted_rooms" = "Les téléconférences ne sont pas prises en charges dans les salons chiffrés";
+// Room members
+"room_member_ignore_prompt" = "Voulez-vous vraiment masquer tous les messages de cet utilisateur ?";
+"room_member_power_level_prompt" = "Vous ne pourrez pas annuler cette modification car vous promouvez cet utilisateur au même rang que le vôtre.\nEn êtes-vous sûr ?";
+// Attachment
+"attachment_size_prompt" = "Voulez-vous envoyer au format :";
+"attachment_original" = "Taille réelle (%@)";
+"attachment_small" = "Petit (~%@)";
+"attachment_medium" = "Moyen (~%@)";
+"attachment_large" = "Grand (~%@)";
+"attachment_cancel_download" = "Annuler le téléchargement ?";
+"attachment_cancel_upload" = "Annuler l’envoi ?";
+"attachment_multiselection_size_prompt" = "Voulez-vous envoyer l’image au format :";
+"attachment_multiselection_original" = "Taille réelle";
+"attachment_e2e_keys_file_prompt" = "Ce fichier contient des clés de chiffrement exportées d’un client Matrix.\nVoulez-vous voir le contenu du fichier ou importer les clés qu'il contient ?";
+"attachment_e2e_keys_import" = "Importer…";
+// Contacts
+"contact_mx_users" = "Utilisateurs Matrix";
+"contact_local_contacts" = "Contacts locaux";
+// Groups
+// Search
+"search_no_results" = "Aucun résultat";
+"search_searching" = "Recherche en cours…";
+// Time
+"format_time_s" = "s";
+"format_time_m" = "m";
+"format_time_h" = "h";
+"format_time_d" = "j";
+// E2E import
+"e2e_import_room_keys" = "Importer les clés du salon";
+"e2e_import_prompt" = "Ce processus permet d’importer les clés de chiffrement que vous avez précédemment exportées d’un autre client Matrix. Vous pourrez ensuite déchiffrer tous les messages que l’autre client pouvait déchiffrer.\nLe fichier exporté est protégé par une phrase secrète. Entrez la phrase secrète ci-dessous pour déchiffrer le fichier.";
+"e2e_import" = "Importer";
+"e2e_passphrase_enter" = "Entrer la phrase secrète";
+// E2E export
+"e2e_export_room_keys" = "Exporter les clés de salon";
+"e2e_export_prompt" = "Ce processus permet d’exporter vers un fichier local les clés des messages que vous avez reçu sur les salons chiffrés. Vous pourrez ensuite importer ce fichier dans un autre client Matrix, pour qu’il puisse déchiffrer aussi ces messages.\nLe fichier exporté permettra à tous ceux qui y ont accès de déchiffrer tous les messages chiffrés que vous pouvez voir, donc vous devriez le conserver dans un endroit sûr.";
+"e2e_export" = "Exporter";
+"e2e_passphrase_confirm" = "Confirmer la phrase secrète";
+"e2e_passphrase_empty" = "La phrase secrète ne peut pas être vide";
+"e2e_passphrase_not_match" = "Les phrases secrètes doivent être identiques";
+// Others
+"user_id_title" = "Identifiant utilisateur :";
+"offline" = "hors ligne";
+"unsent" = "Non envoyé";
+"error" = "Erreur";
+"not_supported_yet" = "Pas encore pris en charge";
+"default" = "par défaut";
+"private" = "Privé";
+"public" = "Public";
+"power_level" = "Rang";
+"network_error_not_reachable" = "Vérifiez votre connexion au réseau";
+"user_id_placeholder" = "ex : @bob:serveurdaccueil";
+"ssl_homeserver_url" = "URL du serveur d’accueil : %@";
+// Permissions
+"camera_access_not_granted_for_call" = "Pour passer un appel vidéo l’accès à l’appareil photo est indispensable mais %@ n’a pas les permissions nécessaires";
+"microphone_access_not_granted_for_call" = "Pour passer un appel l’accès au microphone est indispensable mais %@ n’a pas les permissions nécessaires";
+"local_contacts_access_not_granted" = "Pour découvrir des utilisateurs à partir des contacts locaux, l’accès aux contacts est indispensable mais %@ n’a pas les permissions nécessaires";
+"local_contacts_access_discovery_warning_title" = "Découverte des utilisateurs";
+"local_contacts_access_discovery_warning" = "Pour découvrir des contacts utilisant déjà Matrix, %@ peut envoyer les adresses e-mail et les numéros de téléphone de votre répertoire au serveur d’identité que vous avez choisi. S’il le prend en charge, vos données personnelles sont hachées avant d’être envoyées − vérifiez la politique de confidentialité de votre serveur d’identité pour plus de détails.";
+// Country picker
+"country_picker_title" = "Choisissez un pays";
+"notice_room_invite" = "%@ a invité %@";
+"notice_room_third_party_invite" = "%@ a invité %@ à rejoindre ce salon";
+"notice_room_third_party_registered_invite" = "%@ a accepté l’invitation à %@";
+"notice_room_join" = "%@ est arrivé";
+"notice_room_leave" = "%@ est parti";
+"notice_room_reject" = "%@ a rejeté l’invitation";
+"notice_room_kick" = "%@ a expulsé %@";
+"notice_room_unban" = "%@ a révoqué le bannissement de %@";
+"notice_room_ban" = "%@ a banni %@";
+"notice_room_withdraw" = "%@ a annulé l’invitation de %@";
+"notice_room_reason" = ". Raison : %@";
+"notice_avatar_url_changed" = "%@ a changé d’avatar";
+"notice_display_name_set" = "%@ a modifié son nom en %@";
+"notice_display_name_changed_from" = "%@ a modifié son nom de %@ à %@";
+"notice_display_name_removed" = "%@ a supprimé son nom d’affichage";
+"notice_topic_changed" = "%@ a modifié le sujet en : « %@ ».";
+"notice_room_name_changed" = "%@ a modifié le nom du salon en %@.";
+"notice_placed_voice_call" = "%@ a passé un appel audio";
+"notice_placed_video_call" = "%@ a passé un appel vidéo";
+"notice_answered_video_call" = "%@ a répondu à l’appel";
+"notice_ended_video_call" = "%@ a terminé l’appel";
+"notice_conference_call_request" = "%@ a débuté une téléconférence en VoIP";
+"notice_conference_call_started" = "Téléconférence en VoIP démarrée";
+"notice_conference_call_finished" = "Téléconférence en VoIP terminée";
+// button names 
+"send" = "Envoyer";
+"copy_button_name" = "Copier";
+"resend" = "Renvoyer";
+"redact" = "Effacer";
+"share" = "Partager";
+"set_power_level" = "Définir le rang";
+"delete" = "Supprimer";
+// actions 
+"action_logout" = "Se déconnecter";
+"create_room" = "Créer un salon";
+"login" = "Connexion";
+"create_account" = "Créer un compte";
+"membership_invite" = "Invité";
+"membership_leave" = "Parti";
+"membership_ban" = "Banni";
+"num_members_one" = "%@ utilisateur";
+"num_members_other" = "%@ utilisateurs";
+"kick" = "Expulser";
+"ban" = "Bannir";
+"unban" = "Révoquer le bannissement";
+"message_unsaved_changes" = "Il y a des modifications non enregistrées. Quitter les annulera.";
+// Login Screen 
+"login_error_already_logged_in" = "Déjà connecté";
+"login_error_must_start_http" = "L’URL doit débuter par http[s]://";
+// contacts list screen 
+"invitation_message" = "Je souhaiterais discuter avec vous sur Matrix. Veuillez visiter le site web http://matrix.org pour plus d’informations.";
+// Settings screen 
+"settings_title_config" = "Configuration";
+"settings_title_notifications" = "Notifications";
+// Notification settings screen 
+"notification_settings_disable_all" = "Désactiver toutes les notifications";
+"notification_settings_enable_notifications" = "Activer les notifications";
+"notification_settings_enable_notifications_warning" = "Toutes les notifications sont actuellement désactivées pour tous les appareils.";
+"notification_settings_global_info" = "Les paramètres de notification sont sauvegardés sur le compte utilisateur et partagés entre tous les clients qui les prennent en charge (y compris les notifications de bureau).\n\nLes règles s’appliquent dans l'ordre ; la première règle applicable définit le résultat.\nEn conséquence : les notification par mot-clé sont plus importantes que les notifications par salon, qui sont plus importantes que les notifications par expéditeur.\nEntre plusieurs règles du même type, la première dans la liste est prioritaire.";
+"notification_settings_per_word_notifications" = "Notifications par mot-clé";
+"notification_settings_per_word_info" = "Les mots sont détectés sans tenir compte de la casse et peuvent contenir un joker *. Par conséquent :\nfoo détecte la chaîne foo entourée de délimiteurs de mots (par ex. ponctuation, espace et début ou fin de ligne).\nfoo* détecte tous les mots commençant par foo.\n*foo* détecte tous les mots qui contiennent les trois lettres foo.";
+"notification_settings_always_notify" = "Toujours notifier";
+"notification_settings_never_notify" = "Ne jamais notifier";
+"notification_settings_word_to_match" = "mots à détecter";
+"notification_settings_highlight" = "Mettre en valeur";
+"notification_settings_custom_sound" = "Son personnalisé";
+"notification_settings_per_room_notifications" = "Notifications par salon";
+"notification_settings_per_sender_notifications" = "Notifications par expéditeur";
+"notification_settings_sender_hint" = "@utilisateur:domaine.com";
+"notification_settings_select_room" = "Choisir un salon";
+"notification_settings_other_alerts" = "Autres alertes";
+"notification_settings_contain_my_user_name" = "Me notifier par un son lorsqu’un message contient mon nom d’utilisateur";
+"notification_settings_contain_my_display_name" = "Me notifier par un son lorsqu’un message contient mon nom d’affichage";
+"notification_settings_just_sent_to_me" = "Me notifier par un son lorsqu’un message privé m’est envoyé";
+"notification_settings_invite_to_a_new_room" = "Me notifier lorsque je suis invité dans un salon";
+"notification_settings_people_join_leave_rooms" = "Me notifier lorsque des personnes rejoignent et quittent les salons";
+"notification_settings_receive_a_call" = "Me notifier lorsque je reçois un appel";
+"notification_settings_suppress_from_bots" = "Supprimer les notifications des robots";
+"notification_settings_by_default" = "Par défaut…";
+"notification_settings_notify_all_other" = "Notifier pour tous les autres messages ou salons";
+// gcm section 
+// call string
+"call_waiting" = "En attente…";
+"call_connecting" = "Connexion…";
+"call_ended" = "Appel terminé";
+"call_ring" = "Appel…";
+"incoming_video_call" = "Appel vidéo entrant";
+"incoming_voice_call" = "Appel audio entrant";
+"call_invite_expired" = "La demande d’appel a expiré";
+// unrecognized SSL certificate
+"ssl_trust" = "Faire confiance";
+"ssl_logout_account" = "Se déconnecter";
+"ssl_remain_offline" = "Ignorer";
+"ssl_fingerprint_hash" = "Empreinte (%@) :";
+"ssl_could_not_verify" = "Impossible de vérifier l’identité du serveur distant.";
+"ssl_cert_not_trust" = "Cela pourrait signifier que quelqu’un de malveillant intercepte votre trafic, ou que votre téléphone ne fait pas confiance au certificat fourni par le serveur distant.";
+"ssl_cert_new_account_expl" = "Si l’administrateur affirme que ce comportement est normal, assurez-vous que l’empreinte ci-dessous est identique à celle qu’il fournit.";
+"ssl_unexpected_existing_expl" = "Le certificat a changé depuis qu’il a été approuvé par votre téléphone. Ce comportement est INATTENDU. Il est recommandé de ne PAS ACCEPTER ce nouveau certificat.";
+"ssl_expected_existing_expl" = "Le certificat était fiable et a été remplacé par un certificat qui ne l’est pas. Le serveur a peut-être renouvelé son certificat. Contactez l’administrateur du serveur pour lui demander l’empreinte de son certificat.";
+"ssl_only_accept" = "Accepter le certificat UNIQUEMENT si l’administrateur du serveur a publié une empreinte correspondant à celle ci-dessus.";
+"notice_feedback" = "Événement en retour (identifiant : %@) : %@";
+"notice_location_attachment" = "position en pièce-jointe";
+// Language picker
+"language_picker_title" = "Choisissez une langue";
+"language_picker_default_language" = "Défaut (%@)";
+"login_mobile_device" = "Téléphone";
+"login_tablet_device" = "Tablette";
+"login_desktop_device" = "Ordinateur";
+"notice_in_reply_to" = "En réponse à";
+"error_common_message" = "Une erreur est survenue. Veuillez réessayer ultérieurement.";
+// Reply to message
+"message_reply_to_sender_sent_an_image" = "a envoyé une image.";
+"message_reply_to_sender_sent_a_video" = "a envoyé une vidéo.";
+"message_reply_to_sender_sent_an_audio_file" = "a envoyé un fichier audio.";
+"message_reply_to_sender_sent_a_file" = "a envoyé un fichier.";
+"message_reply_to_message_to_reply_to_prefix" = "En réponse à";
+"login_error_resource_limit_exceeded_title" = "Limite de ressources dépassée";
+"login_error_resource_limit_exceeded_message_default" = "Ce serveur d’accueil a dépassé une de ses limites de ressources.";
+"login_error_resource_limit_exceeded_message_monthly_active_user" = "Ce serveur d’accueil a atteint sa limite mensuelle d’utilisateurs actifs.";
+"login_error_resource_limit_exceeded_message_contact" = "\n\nVeuillez contacter l’administrateur de votre service pour continuer à l’utiliser.";
+"login_error_resource_limit_exceeded_contact_button" = "Contacter l’administrateur";
+"e2e_passphrase_create" = "Créer la phrase secrète";
+"account_error_push_not_allowed" = "Les notifications ne sont pas autorisées";
+"notice_room_third_party_revoked_invite" = "%@ a retiré l’invitation de %@ à rejoindre ce salon";
+"device_details_rename_prompt_title" = "Nom de la session";
+"notice_encryption_enabled_ok" = "%@ a activé le chiffrement de bout en bout.";
+"notice_encryption_enabled_unknown_algorithm" = "%1$@ a activé le chiffrement de bout en bout (algorithme %2$@ inconnu).";
+// Notice Events with "You"
+"notice_room_invite_by_you" = "Vous avez invité %@";
+"notice_room_invite_you" = "%@ vous a invité";
+"notice_room_third_party_invite_by_you" = "Vous avez envoyé une invitation à %@ pour rejoindre le salon";
+"notice_room_third_party_registered_invite_by_you" = "Vous avez accepté l’invitation pour %@";
+"notice_room_third_party_revoked_invite_by_you" = "Vous avez révoqué l’invitation pour que %@ rejoigne le salon";
+"notice_room_join_by_you" = "Vous avez rejoint le salon";
+"notice_room_leave_by_you" = "Vous êtes parti";
+"notice_room_reject_by_you" = "Vous avez rejeté l’invitation";
+"notice_room_kick_by_you" = "Vous avez expulsé %@";
+"notice_room_unban_by_you" = "Vous avez révoqué le bannissement de %@";
+"notice_room_ban_by_you" = "Vous avez banni %@";
+"notice_room_withdraw_by_you" = "Vous avez annulé l’invitation de %@";
+"notice_avatar_url_changed_by_you" = "Vous avez changé votre avatar";
+"notice_display_name_set_by_you" = "Vous avez défini votre nom d’affichage en %@";
+"notice_display_name_changed_from_by_you" = "Vous avez changé votre nom d’affichage de %@ vers %@";
+"notice_display_name_removed_by_you" = "Vous avez supprimé votre nom d’affichage";
+"notice_topic_changed_by_you" = "Vous avez changé le sujet en « %@ ».";
+"notice_room_name_changed_by_you" = "Vous avez changé le nom du salon en %@.";
+"notice_placed_voice_call_by_you" = "Vous avez passé un appel audio";
+"notice_placed_video_call_by_you" = "Vous avez passé un appel vidéo";
+"notice_answered_video_call_by_you" = "Vous avez répondu à l’appel";
+"notice_ended_video_call_by_you" = "Vous avez terminé l’appel";
+"notice_conference_call_request_by_you" = "Vous avez demandé une conférence VoIP";
+"notice_room_name_removed_by_you" = "Vous avez supprimé le nom du salon";
+"notice_room_topic_removed_by_you" = "Vous avez supprimé le sujet";
+"notice_event_redacted_by_you" = " par vous";
+"notice_profile_change_redacted_by_you" = "Vous avez mis à jour votre profil %@";
+"notice_room_created_by_you" = "Vous avez créé et configuré le salon.";
+"notice_encryption_enabled_ok_by_you" = "Vous avez activé le chiffrement de bout en bout.";
+"notice_encryption_enabled_unknown_algorithm_by_you" = "Vous avez activé le chiffrement de bout en bout (algorithme non reconnu %@).";
+"notice_redaction_by_you" = "Vous avez supprimé un évènement (id : %@)";
+"notice_room_history_visible_to_anyone_by_you" = "Vous avez rendu l’historique futur du salon visible par tout le monde.";
+"notice_room_history_visible_to_members_by_you" = "Vous avez rendu l’historique futur du salon visible par tous les membres du salon.";
+"notice_room_history_visible_to_members_from_invited_point_by_you" = "Vous avez rendu l’historique futur du salon visible par tous les membres, à partir du moment où ils ont été invités.";
+"notice_room_history_visible_to_members_from_joined_point_by_you" = "Vous avez rendu l’historique futur du salon visible par tous les membres, à partir de leur arrivée.";
+"notice_room_history_visible_to_members_from_joined_point_by_you_for_dm" = "Vous avez rendu les messages ultérieurs visibles à tous le monde, à partir de leur arrivée.";
+"notice_room_history_visible_to_members_from_invited_point_by_you_for_dm" = "Vous avez rendu les messages ultérieurs visibles à tous le monde, à partir du moment où ils sont invités.";
+"notice_room_history_visible_to_members_by_you_for_dm" = "Vous avez rendu les messages ultérieurs visibles à tous les membres du salon.";
+"notice_room_created_by_you_for_dm" = "Vous êtes arrivé.";
+"notice_room_name_removed_by_you_for_dm" = "Vous avez supprimé le nom";
+"notice_room_name_changed_by_you_for_dm" = "Vous avez changé le nom en %@.";
+"notice_room_third_party_revoked_invite_by_you_for_dm" = "Vous avez supprimé l’invitation de %@";
+"notice_room_third_party_invite_by_you_for_dm" = "Vous avez invité %@";
+"notice_room_name_changed_for_dm" = "%@ a changé le nom en %@.";
+"notice_room_third_party_revoked_invite_for_dm" = "%@ a supprimé l’invitation de %@";
+"notice_room_third_party_invite_for_dm" = "%@ a invité %@";
+"room_left_for_dm" = "Vous êtes parti";
+"notice_room_history_visible_to_members_from_joined_point_for_dm" = "%@ a rendu les messages ultérieurs visibles à tout le monde, à partir de leur arrivée.";
+"notice_room_history_visible_to_members_from_invited_point_for_dm" = "%@ a rendu les messages ultérieurs visibles à tout le monde, à partir du moment où ils sont invités.";
+"notice_room_history_visible_to_members_for_dm" = "%@ a rendu les messages ultérieurs visibles à tous les membres du salon.";
+"notice_room_aliases_for_dm" = "Les alias sont : %@";
+"notice_room_power_level_intro_for_dm" = "Les rangs des membres sont :";
+"notice_room_join_rule_public_by_you_for_dm" = "Vous avez rendu le salon public.";
+"notice_room_join_rule_public_by_you" = "Vous avez rendu le salon public.";
+"notice_room_join_rule_public_for_dm" = "%@ a rendu le salon public.";
+"notice_room_join_rule_public" = "%@ a rendu le salon public.";
+"notice_room_join_rule_invite_by_you_for_dm" = "Vous avez rendu le salon joignable sur invitation exclusivement.";
+"notice_room_join_rule_invite_by_you" = "Vous avez rendu le salon joignable sur invitation exclusivement.";
+"notice_room_join_rule_invite_for_dm" = "%@ a rendu le salon joignable sur invitation exclusivement.";
+//  New
+"notice_room_join_rule_invite" = "%@ a rendu le salon joignable sur invitation exclusivement.";
+"notice_room_created_for_dm" = "%@ est arrivé.";
+"notice_room_name_removed_for_dm" = "%@ a supprimé le nom";
+"call_more_actions_dialpad" = "Pavé de numérotation";
+"call_more_actions_transfer" = "Transférer";
+"call_more_actions_audio_use_device" = "Haut parleur de l’appareil";
+"call_more_actions_audio_use_headset" = "Utiliser les écouteurs";
+"call_more_actions_change_audio_device" = "Changer de périphérique audio";
+"call_more_actions_unhold" = "Reprendre";
+"call_more_actions_hold" = "Mettre en attente";
+"call_holded" = "Vous avez mis l’appel en attente";
+"call_remote_holded" = "%@ a mis l’appel en attente";
+"notice_declined_video_call_by_you" = "Vous avez refusé l’appel";
+"notice_declined_video_call" = "%@ a refusé l’appel";
+"resume_call" = "Reprendre";
+"call_transfer_to_user" = "Transfert à %@";
+"call_consulting_with_user" = "Consultation de %@";
+"call_video_with_user" = "Appel vidéo avec %@";
+"call_voice_with_user" = "Appel audio avec %@";
+"call_ringing" = "Sonnerie…";
+"e2e_passphrase_too_short" = "La phrase secrète est trop courte, elle doit compter au moins %d caractères";
+"microphone_access_not_granted_for_voice_message" = "Pour les messages vocaux, l’accès au microphone est indispensable mais %@ n’a pas les permissions nécessaires";
+"message_reply_to_sender_sent_a_voice_message" = "envoyer un message vocal.";
+"attachment_large_with_resolution" = "Grand %@ (~%@)";
+"attachment_medium_with_resolution" = "Moyen %@ (~%@)";
+"attachment_small_with_resolution" = "Petit %@ (~%@)";
+"attachment_size_prompt_message" = "Vous pouvez désactiver ceci dans les paramètres.";
+"attachment_size_prompt_title" = "Préciser la taille pour l’envoi";
+"attachment_unsupported_preview_message" = "Ce type de fichier n’est pas pris en charge.";
+"attachment_unsupported_preview_title" = "Prévisualisation impossible";
+"room_displayname_all_other_members_left" = "%@ (Quitté)";
+"message_reply_to_sender_sent_their_location" = "a partagé sa localisation.";

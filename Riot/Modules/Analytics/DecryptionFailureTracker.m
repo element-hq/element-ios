@@ -19,11 +19,11 @@
 
 
 // Call `checkFailures` every `CHECK_INTERVAL`
-#define CHECK_INTERVAL 5
+#define CHECK_INTERVAL 2
 
 // Give events a chance to be decrypted by waiting `GRACE_PERIOD` before counting
 // and reporting them as failures
-#define GRACE_PERIOD 60
+#define GRACE_PERIOD 4
 
 // E2E failures analytics category.
 NSString *const kDecryptionFailureTrackerAnalyticsCategory = @"e2e.failure";

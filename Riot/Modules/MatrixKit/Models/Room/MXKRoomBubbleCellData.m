@@ -26,21 +26,23 @@
 
 #import "MXKTools.h"
 
+#import "GeneratedInterface-Swift.h"
+
 @implementation MXKRoomBubbleCellData
 @synthesize senderId, targetId, roomId, senderDisplayName, senderAvatarUrl, senderAvatarPlaceholder, targetDisplayName, targetAvatarUrl, targetAvatarPlaceholder, isEncryptedRoom, isPaginationFirstBubble, shouldHideSenderInformation, date, isIncoming, isAttachmentWithThumbnail, isAttachmentWithIcon, attachment, senderFlair;
-@synthesize textMessage, attributedTextMessage;
+@synthesize textMessage, attributedTextMessage, attributedTextMessageWithoutPositioningSpace;
 @synthesize shouldHideSenderName, isTyping, showBubbleDateTime, showBubbleReceipts, useCustomDateTimeLabel, useCustomReceipts, useCustomUnsentButton, hasNoDisplay;
 @synthesize tag;
 @synthesize collapsable, collapsed, collapsedAttributedTextMessage, prevCollapsableCellData, nextCollapsableCellData, collapseState;
 
 #pragma mark - MXKRoomBubbleCellDataStoring
 
-- (instancetype)initWithEvent:(MXEvent *)event andRoomState:(MXRoomState *)roomState andRoomDataSource:(MXKRoomDataSource *)roomDataSource2
+- (instancetype)initWithEvent:(MXEvent *)event andRoomState:(MXRoomState *)roomState andRoomDataSource:(MXKRoomDataSource *)roomDataSource
 {
     self = [self init];
     if (self)
     {
-        roomDataSource = roomDataSource2;
+        self->roomDataSource = roomDataSource;
 
         // Initialize read receipts
         self.readReceipts = [NSMutableDictionary dictionary];
@@ -55,12 +57,17 @@
             senderId = event.sender;
             targetId = [event.type isEqualToString:kMXEventTypeStringRoomMember] ? event.stateKey : nil;
             roomId = roomDataSource.roomId;
-            senderDisplayName = [roomDataSource.eventFormatter senderDisplayNameForEvent:event withRoomState:roomState];
-            senderAvatarUrl = [roomDataSource.eventFormatter senderAvatarUrlForEvent:event withRoomState:roomState];
+
+            // If `roomScreenUseOnlyLatestUserAvatarAndName`is enabled, the avatar and name are
+            // displayed from the latest room state perspective rather than the historical.
+            MXRoomState *latestRoomState = roomDataSource.roomState;
+            MXRoomState *displayRoomState = RiotSettings.shared.roomScreenUseOnlyLatestUserAvatarAndName ? latestRoomState : roomState;
+            [self setRoomState:displayRoomState];
             senderAvatarPlaceholder = nil;
-            targetDisplayName = [roomDataSource.eventFormatter targetDisplayNameForEvent:event withRoomState:roomState];
-            targetAvatarUrl = [roomDataSource.eventFormatter targetAvatarUrlForEvent:event withRoomState:roomState];
             targetAvatarPlaceholder = nil;
+
+            // Encryption status should always rely on the `MXRoomState`
+            // from the event rather than the latest.
             isEncryptedRoom = roomState.isEncrypted;
             isIncoming = ([event.sender isEqualToString:roomDataSource.mxSession.myUser.userId] == NO);
             
@@ -101,6 +108,25 @@
     
     roomDataSource = nil;
     bubbleComponents = nil;
+}
+
+- (void)setRoomState:(MXRoomState *)roomState;
+{
+    MXEvent* firstEvent = self.events.firstObject;
+
+    if (firstEvent == nil || roomState == nil)
+    {
+        return;
+    }
+
+    senderDisplayName = [roomDataSource.eventFormatter senderDisplayNameForEvent:firstEvent
+                                                                   withRoomState:roomState];
+    senderAvatarUrl = [roomDataSource.eventFormatter senderAvatarUrlForEvent:firstEvent
+                                                               withRoomState:roomState];
+    targetDisplayName = [roomDataSource.eventFormatter targetDisplayNameForEvent:firstEvent
+                                                                   withRoomState:roomState];
+    targetAvatarUrl = [roomDataSource.eventFormatter targetAvatarUrlForEvent:firstEvent
+                                                               withRoomState:roomState];
 }
 
 - (NSUInteger)updateEvent:(NSString *)eventId withEvent:(MXEvent *)event
@@ -306,16 +332,15 @@
     return first;
 }
 
-- (MXKRoomBubbleComponent*) getFirstBubbleComponentWithDisplay
+- (MXKRoomBubbleComponent*)getFirstBubbleComponentWithDisplay
 {
     // Look for the first component which is actually displayed (some event are ignored in room history display).
     MXKRoomBubbleComponent* first = nil;
     
     @synchronized(bubbleComponents)
     {
-        for (NSInteger index = 0; index < bubbleComponents.count; index++)
+        for (MXKRoomBubbleComponent *component in bubbleComponents)
         {
-            MXKRoomBubbleComponent *component = bubbleComponents[index];
             if (component.attributedTextMessage)
             {
                 first = component;
@@ -325,6 +350,26 @@
     }
     
     return first;
+}
+
+- (MXKRoomBubbleComponent*)getLastBubbleComponentWithDisplay
+{
+    // Look for the first component which is actually displayed (some event are ignored in room history display).
+    MXKRoomBubbleComponent* lastVisibleComponent = nil;
+
+    @synchronized(bubbleComponents)
+    {
+        for (MXKRoomBubbleComponent *component in bubbleComponents.reverseObjectEnumerator)
+        {
+            if (component.attributedTextMessage)
+            {
+                lastVisibleComponent = component;
+                break;
+            }
+        }
+    }
+
+    return lastVisibleComponent;
 }
 
 - (NSAttributedString*)attributedTextMessageWithHighlightedEvent:(NSString*)eventId tintColor:(UIColor*)tintColor
@@ -351,10 +396,14 @@
     return customAttributedTextMsg;
 }
 
-- (void)highlightPatternInTextMessage:(NSString*)pattern withForegroundColor:(UIColor*)patternColor andFont:(UIFont*)patternFont
+- (void)highlightPatternInTextMessage:(NSString*)pattern
+                  withBackgroundColor:(UIColor *)backgroundColor
+                      foregroundColor:(UIColor*)foregroundColor
+                              andFont:(UIFont*)patternFont
 {
     highlightedPattern = pattern;
-    highlightedPatternColor = patternColor;
+    highlightedPatternBackgroundColor = backgroundColor;
+    highlightedPatternForegroundColor = foregroundColor;
     highlightedPatternFont = patternFont;
     
     // Indicate that the text message layout should be recomputed.
@@ -607,6 +656,22 @@
     return NO;
 }
 
+- (BOOL)hasThreadRoot
+{
+    @synchronized (bubbleComponents)
+    {
+        for (MXKRoomBubbleComponent *component in bubbleComponents)
+        {
+            if (component.thread)
+            {
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
+}
+
 - (MXKRoomBubbleComponentDisplayFix)displayFix
 {
     MXKRoomBubbleComponentDisplayFix displayFix = MXKRoomBubbleComponentDisplayFixNone;
@@ -703,6 +768,27 @@
 {
     // Not supported yet (TODO for audio, file).
     return NO;
+}
+
+- (BOOL)isAttachment
+{
+    if (!self.attachment)
+    {
+        return NO;
+    }
+    
+    if (!attachment.contentURL || !attachment.contentInfo) {
+        return NO;
+    }
+    
+    switch (self.attachment.type) {
+        case MXKAttachmentTypeFile:
+        case MXKAttachmentTypeAudio:
+        case MXKAttachmentTypeVoiceMessage:
+            return YES;
+        default:
+            return NO;
+    }
 }
 
 - (void)setMaxTextViewWidth:(CGFloat)inMaxTextViewWidth
@@ -873,10 +959,16 @@
         
         while (range.location != NSNotFound)
         {
-            if (highlightedPatternColor)
+            if (highlightedPatternBackgroundColor)
+            {
+                // Update background color
+                [customAttributedTextMsg addAttribute:NSBackgroundColorAttributeName value:highlightedPatternBackgroundColor range:range];
+            }
+
+            if (highlightedPatternForegroundColor)
             {
                 // Update text color
-                [customAttributedTextMsg addAttribute:NSForegroundColorAttributeName value:highlightedPatternColor range:range];
+                [customAttributedTextMsg addAttribute:NSForegroundColorAttributeName value:highlightedPatternForegroundColor range:range];
             }
             
             if (highlightedPatternFont)

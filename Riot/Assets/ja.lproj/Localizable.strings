@@ -31,9 +31,9 @@
 /* A user has invited you to a chat */
 "USER_INVITE_TO_CHAT" = "%@ さんがあなたを対話に招待しました";
 /* A user has invited you to an (unamed) group chat */
-"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ さんがあなたを部屋へ招待しました";
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ さんがあなたをルームへ招待しました";
 /* A user has invited you to a named room */
-"USER_INVITE_TO_NAMED_ROOM" = "%@ さんが部屋 %@ へ招待しました";
+"USER_INVITE_TO_NAMED_ROOM" = "%@ さんがルーム %@ へ招待しました";
 /* Incoming one-to-one voice call */
 "VOICE_CALL_FROM_USER" = "%@ さんから通話着信";
 /* Incoming one-to-one video call */
@@ -53,7 +53,7 @@
 
 /** Key verification **/
 
-"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@は検証したい";
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@は認証を要求しています";
 
 /* New message indicator on a room */
 "MESSAGE_IN_X" = "%@ 内のメッセージ";
@@ -74,3 +74,34 @@
 
 /* New message indicator on unknown room */
 "MESSAGE" = "メッセージ";
+/** General **/
+
+"NOTIFICATION" = "通知";
+
+/* New message reply from a specific person in a named room. */
+"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ さんが %@ で返信";
+
+/* New message reply from a specific person, not referencing a room. */
+"REPLY_FROM_USER_TITLE" = "%@ さんが返信";
+
+/** Reactions **/
+
+/* A user has reacted to a message, including the reaction e.g. "Alice reacted 👍". */
+"REACTION_FROM_USER" = "%@ さんが %@ とリアクション";
+
+/* A user has reacted to a message, but the reaction content is unknown */
+"GENERIC_REACTION_FROM_USER" = "%@ さんがリアクション";
+
+/* New file message from a specific person, not referencing a room. */
+"LOCATION_FROM_USER" = "%@ さんが位置情報を共有";
+
+/* New voice message from a specific person, not referencing a room. */
+"VOICE_MESSAGE_FROM_USER" = "%@ さんが音声メッセージを送信";
+
+/* New video message from a specific person, not referencing a room. */
+"VIDEO_FROM_USER" = "%@ さんが動画を送信";
+
+/** Media Messages **/
+
+/* New image message from a specific person, not referencing a room. */
+"PICTURE_FROM_USER" = "%@ さんが写真を送信";

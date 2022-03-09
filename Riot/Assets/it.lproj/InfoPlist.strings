@@ -5,3 +5,4 @@
 "NSContactsUsageDescription" = "Element mostrerà i tuoi contatti così da poterli invitare in chat.";
 "NSCalendarsUsageDescription" = "Vedi le tue riunioni programmate nell'app.";
 "NSFaceIDUsageDescription" = "Face ID viene usato per accedere all'app.";
+"NSLocationWhenInUseUsageDescription" = "Quando condividi la tua posizione con altre persone, Element richiede l'accesso per mostrare loro una mappa.";

@@ -16,6 +16,24 @@
 
 import Foundation
 
+@objcMembers
+class ThreadParameters: NSObject {
+    
+    /// If not nil, the thread will be opened on this room
+    let threadId: String
+    
+    /// If true, related room screen will be stacked in the navigation stack
+    let stackRoomScreen: Bool
+    
+    init(threadId: String,
+         stackRoomScreen: Bool) {
+        self.threadId = threadId
+        self.stackRoomScreen = stackRoomScreen
+        super.init()
+    }
+    
+}
+
 /// Navigation parameters to display a room with a provided identifier in a specific matrix session.
 @objcMembers
 class RoomNavigationParameters: NSObject {
@@ -31,6 +49,9 @@ class RoomNavigationParameters: NSObject {
     /// The Matrix session in which the room should be available.
     let mxSession: MXSession
     
+    /// Navigation parameters for a thread
+    let threadParameters: ThreadParameters?
+    
     /// Screen presentation parameters.
     let presentationParameters: ScreenPresentationParameters
     
@@ -39,10 +60,12 @@ class RoomNavigationParameters: NSObject {
     init(roomId: String,
          eventId: String?,
          mxSession: MXSession,
+         threadParameters: ThreadParameters?,
          presentationParameters: ScreenPresentationParameters) {
         self.roomId = roomId
         self.eventId = eventId
         self.mxSession = mxSession
+        self.threadParameters = threadParameters
         self.presentationParameters = presentationParameters
         
         super.init()

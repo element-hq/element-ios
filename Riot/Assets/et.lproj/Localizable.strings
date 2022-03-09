@@ -116,3 +116,6 @@
 /** General **/
 
 "NOTIFICATION" = "Teavitus";
+
+/* New file message from a specific person, not referencing a room. */
+"LOCATION_FROM_USER" = "%@ jagas oma asukohta";

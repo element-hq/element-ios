@@ -32,9 +32,6 @@ class CommonConfiguration: NSObject, Configurable {
             return
         }
         
-        // Customize the localized string table
-        Bundle.mxk_customizeLocalizedStringTableName("Vector")
-        
         // Disable CallKit
         settings.isCallKitEnabled = false
         
@@ -74,8 +71,13 @@ class CommonConfiguration: NSObject, Configurable {
         
         // Disable key backup on common
         sdkOptions.enableKeyBackupWhenStartingMXCrypto = false
+
+        // Pass threading option to the SDK
+        sdkOptions.enableThreads = RiotSettings.shared.enableThreads
         
         sdkOptions.clientPermalinkBaseUrl = BuildSettings.clientPermalinkBaseUrl
+        
+        sdkOptions.authEnableRefreshTokens = BuildSettings.authEnableRefreshTokens
         // Configure key provider delegate
         MXKeyProvider.sharedInstance().delegate = EncryptionKeyManager.shared
     }

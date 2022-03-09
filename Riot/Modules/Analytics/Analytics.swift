@@ -19,6 +19,19 @@ import AnalyticsEvents
 
 /// A class responsible for managing an analytics client
 /// and sending events through this client.
+///
+/// ## Creating Analytics Events
+///
+/// Events are managed in a shared repo for all Element clients https://github.com/matrix-org/matrix-analytics-events
+/// To add a new event create a PR to that repo with the new/updated schema. Element's Podfile has
+/// a local version of the pod (commented out) for development purposes.
+/// Once merged into `main`, follow the steps below to integrate the changes into the project:
+/// 1. Check if `main` contains any source breaking changes to the events. If so, please
+/// wait until you are ready to merge your work into element-ios.
+/// 2. Merge `main` into the `release/swift` branch.
+/// 3. Run `bundle exec pod update AnalyticsEvents` to update the pod.
+/// 4. Make sure to commit `Podfile.lock` with the new commit hash.
+///
 @objcMembers class Analytics: NSObject {
     
     // MARK: - Properties
@@ -37,8 +50,8 @@ import AnalyticsEvents
     
     /// Whether to show the user the analytics opt in prompt.
     var shouldShowAnalyticsPrompt: Bool {
-        // Only show the prompt once, and when analytics are configured in BuildSettings.
-        !RiotSettings.shared.hasSeenAnalyticsPrompt && PHGPostHogConfiguration.standard != nil
+        // Only show the prompt once, and when analytics are enabled in BuildSettings.
+        !RiotSettings.shared.hasSeenAnalyticsPrompt && BuildSettings.analyticsConfiguration.isEnabled
     }
     
     /// Indicates whether the user previously accepted Matomo analytics and should be shown the upgrade prompt.
@@ -83,7 +96,7 @@ import AnalyticsEvents
         
         // Catch and log crashes
         MXLogger.logCrashes(true)
-        MXLogger.setBuildVersion(AppDelegate.theDelegate().build)
+        MXLogger.setBuildVersion(AppInfo.current.buildInfo.readableBuildVersion)
     }
     
     /// Use the analytics settings from the supplied session to configure analytics.
@@ -158,12 +171,22 @@ import AnalyticsEvents
 // The following methods are exposed for compatibility with Objective-C as
 // the `capture` method and the generated events cannot be bridged from Swift.
 extension Analytics {
+    /// Updates any user properties to help with creating cohorts.
+    /// 
+    /// Only non-nil properties will be updated when calling this method.
+    func updateUserProperties(ftueUseCase: UserSessionProperties.UseCase? = nil) {
+        let userProperties = AnalyticsEvent.UserProperties(ftueUseCaseSelection: ftueUseCase?.analyticsName,
+                                                           numFavouriteRooms: nil,
+                                                           numSpaces: nil)
+        client.updateUserProperties(userProperties)
+    }
+    
     /// Track the presentation of a screen
     /// - Parameters:
     ///   - screen: The screen that was shown.
     ///   - milliseconds: An optional value representing how long the screen was shown for in milliseconds.
     func trackScreen(_ screen: AnalyticsScreen, duration milliseconds: Int?) {
-        let event = AnalyticsEvent.Screen(durationMs: milliseconds, screenName: screen.screenName)
+        let event = AnalyticsEvent.MobileScreen(durationMs: milliseconds, screenName: screen.screenName)
         client.screen(event)
     }
     
@@ -173,20 +196,21 @@ extension Analytics {
         trackScreen(screen, duration: nil)
     }
     
-    /// Track an element that has been tapped
+    /// Track an element that has been interacted with
     /// - Parameters:
-    ///   - tap: The element that was tapped
+    ///   - uiElement: The element that was interacted with
+    ///   - interactionType: The way in with the element was interacted with
     ///   - index: The index of the element, if it's in a list of elements
-    func trackTap(_ tap: AnalyticsUIElement, index: Int?) {
-        let event = AnalyticsEvent.Click(index: index, name: tap.elementName)
+    func trackInteraction(_ uiElement: AnalyticsUIElement, interactionType: AnalyticsEvent.Interaction.InteractionType, index: Int?) {
+        let event = AnalyticsEvent.Interaction(index: index, interactionType: interactionType, name: uiElement.name)
         client.capture(event)
     }
     
     /// Track an element that has been tapped without including an index
     /// - Parameters:
-    ///   - tap: The element that was tapped
-    func trackTap(_ tap: AnalyticsUIElement) {
-        trackTap(tap, index: nil)
+    ///   - uiElement: The element that was tapped
+    func trackInteraction(_ uiElement: AnalyticsUIElement) {
+        trackInteraction(uiElement, interactionType: .Touch, index: nil)
     }
     
     /// Track an E2EE error that occurred
@@ -198,6 +222,18 @@ extension Analytics {
             let event = AnalyticsEvent.Error(context: nil, domain: .E2EE, name: reason.errorName)
             capture(event: event)
         }
+    }
+    
+    /// Track when a user becomes unauthenticated without pressing the `sign out` button.
+    /// - Parameters:
+    ///   - softLogout: Wether it was a soft/hard logout that was triggered.
+    ///   - refreshTokenAuth: Wether it was either an access-token-based or refresh-token-based auth mechanism enabled.
+    ///   - errorCode: The error code as returned by the homeserver that triggered the logout.
+    ///   - errorReason: The reason for the error as returned by the homeserver that triggered the logout.
+    func trackAuthUnauthenticatedError(softLogout: Bool, refreshTokenAuth: Bool, errorCode: String, errorReason: String) {
+        let errorCode = AnalyticsEvent.UnauthenticatedError.ErrorCode(rawValue: errorCode) ?? .M_UNKNOWN
+        let event = AnalyticsEvent.UnauthenticatedError(errorCode: errorCode, errorReason: errorReason, refreshTokenAuth: refreshTokenAuth, softLogout: softLogout)
+        client.capture(event)
     }
     
     /// Track whether the user accepted or declined the terms to an identity server.
@@ -242,13 +278,13 @@ extension Analytics: MXAnalyticsDelegate {
         capture(event: event)
     }
     
-    func trackJoinedRoom(asDM isDM: Bool, memberCount: UInt) {
+    func trackJoinedRoom(asDM isDM: Bool, isSpace: Bool, memberCount: UInt) {
         guard let roomSize = AnalyticsEvent.JoinedRoom.RoomSize(memberCount: memberCount) else {
             MXLog.warning("[Analytics] Attempt to capture joined room with invalid member count: \(memberCount)")
             return
         }
         
-        let event = AnalyticsEvent.JoinedRoom(isDM: isDM, roomSize: roomSize)
+        let event = AnalyticsEvent.JoinedRoom(isDM: isDM, isSpace: isSpace, roomSize: roomSize, trigger: nil)
         capture(event: event)
     }
     
@@ -256,4 +292,13 @@ extension Analytics: MXAnalyticsDelegate {
     func trackContactsAccessGranted(_ granted: Bool) {
         // Do we still want to track this?
     }
+
+    func trackComposerEvent(inThread: Bool, isEditing: Bool, isReply: Bool, startsThread: Bool) {
+        let event = AnalyticsEvent.Composer(inThread: inThread,
+                                            isEditing: isEditing,
+                                            isReply: isReply,
+                                            startsThread: startsThread)
+        capture(event: event)
+    }
+
 }

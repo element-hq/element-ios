@@ -26,13 +26,6 @@
 // MXKAuthenticationViewController has already a `delegate` member
 @property (nonatomic, weak) id<AuthenticationViewControllerDelegate> authVCDelegate;
 
-@property (weak, nonatomic) IBOutlet UIView *navigationBackView;
-@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
-@property (weak, nonatomic) IBOutlet UIView *navigationBarSeparatorView;
-
-@property (weak, nonatomic) IBOutlet UINavigationItem *mainNavigationItem;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *rightBarButtonItem;
-
 @property (weak, nonatomic) IBOutlet UIView *optionsContainer;
 
 @property (weak, nonatomic) IBOutlet UIButton *skipButton;
@@ -44,7 +37,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *customServersTickButton;
 @property (weak, nonatomic) IBOutlet UIView *customServersContainer;
 @property (weak, nonatomic) IBOutlet UIView *homeServerContainer;
-@property (weak, nonatomic) IBOutlet UIView *identityServerContainer;
 
 @property (weak, nonatomic) IBOutlet UIView *homeServerSeparator;
 @property (weak, nonatomic) IBOutlet UIView *identityServerSeparator;
@@ -61,11 +53,17 @@
 /// returns YES if the SSO login can be continued.
 - (BOOL)continueSSOLoginWithToken:(NSString*)loginToken txnId:(NSString*)txnId;
 
+/// Show or hide the custom server textfields.
+/// @param isVisible YES to show, NO to hide.
+- (void)setCustomServerFieldsVisible:(BOOL)isVisible;
+
 @end
 
 
 @protocol AuthenticationViewControllerDelegate <NSObject>
 
-- (void)authenticationViewControllerDidDismiss:(AuthenticationViewController *)authenticationViewController;
+- (void)authenticationViewController:(AuthenticationViewController *)authenticationViewController
+                 didLoginWithSession:(MXSession *)session
+                         andPassword:(NSString *)password;
 
 @end;

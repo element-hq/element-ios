@@ -20,10 +20,12 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface RoomsViewController ()
+@interface RoomsViewController () <MasterTabBarItemDisplayProtocol>
 {
     RecentsDataSource *recentsDataSource;
 }
+
+@property (nonatomic, strong) MXThrottler *tableViewPaginationThrottler;
 
 @end
 
@@ -40,7 +42,8 @@
 {
     [super finalizeInit];
     
-    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenRooms];
+    self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenRooms];
+    self.tableViewPaginationThrottler = [[MXThrottler alloc] initWithMinimumDelay:0.1];
 }
 
 - (void)viewDidLoad
@@ -55,7 +58,7 @@
     self.recentsTableView.tag = RecentsDataSourceModeRooms;
     
     // Add the (+) button programmatically
-    plusButtonImageView = [self vc_addFABWithImage:[UIImage imageNamed:@"rooms_floating_action"]
+    plusButtonImageView = [self vc_addFABWithImage:AssetImages.roomsFloatingAction.image
                                             target:self
                                             action:@selector(onPlusButtonPressed)];
 }
@@ -63,15 +66,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titleRooms];
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
     if ([self.dataSource isKindOfClass:RecentsDataSource.class])
     {
         // Take the lead on the shared data source.
         recentsDataSource = (RecentsDataSource*)self.dataSource;
-        recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeRooms];
     }
 }
@@ -101,15 +101,22 @@
 
 #pragma mark - UITableView delegate
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([tableView numberOfSections] <= 1)
+    if ([super respondsToSelector:@selector(tableView:willDisplayCell:forRowAtIndexPath:)])
     {
-        // Hide the header to merge Invites and Rooms into a single list.
-        return 0.0;
+        [super tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
     }
     
-    return [super tableView:tableView heightForHeaderInSection:section];
+    [self.tableViewPaginationThrottler throttle:^{
+        NSInteger section = indexPath.section;
+        NSInteger numberOfRowsInSection = [tableView numberOfRowsInSection:section];
+        if (tableView.numberOfSections > section
+            && indexPath.row == numberOfRowsInSection - 1)
+        {
+            [self->recentsDataSource paginateInSection:section];
+        }
+    }];
 }
 
 #pragma mark - 
@@ -136,12 +143,19 @@
 {
     if (ThemeService.shared.isCurrentThemeDark)
     {
-        return [UIImage imageNamed:@"rooms_empty_screen_artwork_dark"];
+        return AssetImages.roomsEmptyScreenArtworkDark.image;
     }
     else
     {
-        return [UIImage imageNamed:@"rooms_empty_screen_artwork"];
+        return AssetImages.roomsEmptyScreenArtwork.image;
     }
+}
+
+#pragma mark - MasterTabBarItemDisplayProtocol
+
+- (NSString *)masterTabBarItemTitle
+{
+    return [VectorL10n titleRooms];
 }
 
 @end

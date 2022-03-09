@@ -79,7 +79,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         
         [self resetSectionIndexes];
         
-        _areSectionsShrinkable = NO;
+        _areSectionsShrinkable = YES;
         shrinkedSectionsBitMask = 0;
         
         roomTagsListenerByUserId = [[NSMutableDictionary alloc] init];
@@ -209,7 +209,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     [self.recentsListService updateSpace:currentSpace];
 }
 
-- (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
+- (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame inTableView:(UITableView*)tableView
 {
     UIView *stickyHeader;
 
@@ -220,7 +220,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         shrinkedSectionsBitMask = RECENTSDATASOURCE_SECTION_DIRECTORY;
     }
 
-    stickyHeader = [self viewForHeaderInSection:section withFrame:frame];
+    stickyHeader = [self viewForHeaderInSection:section withFrame:frame inTableView:tableView];
 
     shrinkedSectionsBitMask = savedShrinkedSectionsBitMask;
 
@@ -626,17 +626,17 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     
     if (section == favoritesSection)
     {
-        count = self.favoriteCellDataArray.count;
+        count = self.recentsListService.favoritedRoomListData.counts.total.numberOfRooms;
         title = [VectorL10n roomRecentsFavouritesSection];
     }
     else if (section == peopleSection)
     {
-        count = self.peopleCellDataArray.count;
+        count = self.recentsListService.peopleRoomListData.counts.total.numberOfRooms;
         title = [VectorL10n roomRecentsPeopleSection];
     }
     else if (section == conversationSection)
     {
-        count = self.conversationCellDataArray.count;
+        count = self.recentsListService.conversationRoomListData.counts.total.numberOfRooms;
         
         if (_recentsDataSourceMode == RecentsDataSourceModePeople)
         {
@@ -653,17 +653,17 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
     else if (section == lowPrioritySection)
     {
-        count = self.lowPriorityCellDataArray.count;
+        count = self.recentsListService.lowPriorityRoomListData.counts.total.numberOfRooms;
         title = [VectorL10n roomRecentsLowPrioritySection];
     }
     else if (section == serverNoticeSection)
     {
-        count = self.serverNoticeCellDataArray.count;
+        count = self.recentsListService.serverNoticeRoomListData.counts.total.numberOfRooms;
         title = [VectorL10n roomRecentsServerNoticeSection];
     }
     else if (section == invitesSection)
     {
-        count = self.invitesCellDataArray.count;
+        count = self.recentsListService.invitedRoomListData.counts.total.numberOfRooms;
         
         if (_recentsDataSourceMode == RecentsDataSourceModePeople)
         {
@@ -676,7 +676,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
     else if (section == suggestedRoomsSection)
     {
-        count = self.suggestedRoomCellDataArray.count;
+        count = self.recentsListService.suggestedRoomListData.counts.total.numberOfRooms;
         title = [VectorL10n roomRecentsSuggestedRoomsSection];
     }
     else if (section == callsSection)
@@ -684,8 +684,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         count = self.callCellDataArray.count;
         title = [VectorL10n roomRecentsCallsSection];
     }
-
-    if (count)
+    
+    if (count && !(section == invitesSection))
     {
         NSString *roomCount = [NSString stringWithFormat:@"   %tu", count];
         
@@ -708,12 +708,16 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     return sectionTitle;
 }
 
-- (UIView *)badgeViewForHeaderTitleInHomeSection:(NSInteger)section
+- (UIView *)badgeViewForHeaderTitleInSection:(NSInteger)section
 {
     // Prepare a badge to display the total of missed notifications in this section.
     id<MXRoomListDataCounts> counts = nil;
     UIView *missedNotifAndUnreadBadgeBgView = nil;
-    
+
+    if (section == invitesSection)
+    {
+        counts = self.recentsListService.invitedRoomListData.counts;
+    }
     if (section == favoritesSection)
     {
         counts = self.recentsListService.favoritedRoomListData.counts;
@@ -743,26 +747,30 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         counts = self.recentsListService.callRoomListData.counts;
     }
 
-    if (counts.numberOfNotifications)
+    // Invites are counted as highlights for the badge view display.
+    NSUInteger numberOfNotifications = counts.total.numberOfNotifications + counts.total.numberOfInvitedRooms;
+    NSUInteger numberOfHighlights = counts.total.numberOfHighlights + counts.total.numberOfInvitedRooms;
+    
+    if (numberOfNotifications)
     {
         UILabel *missedNotifAndUnreadBadgeLabel = [[UILabel alloc] init];
         missedNotifAndUnreadBadgeLabel.textColor = ThemeService.shared.theme.baseTextPrimaryColor;
         missedNotifAndUnreadBadgeLabel.font = [UIFont boldSystemFontOfSize:14];
-        if (counts.numberOfNotifications > 1000)
+        if (numberOfNotifications > 1000)
         {
-            CGFloat value = counts.numberOfNotifications / 1000.0;
+            CGFloat value = numberOfNotifications / 1000.0;
             missedNotifAndUnreadBadgeLabel.text = [VectorL10n largeBadgeValueKFormat:value];
         }
         else
         {
-            missedNotifAndUnreadBadgeLabel.text = [NSString stringWithFormat:@"%tu", counts.numberOfNotifications];
+            missedNotifAndUnreadBadgeLabel.text = [NSString stringWithFormat:@"%tu", numberOfNotifications];
         }
         
         [missedNotifAndUnreadBadgeLabel sizeToFit];
         
         CGFloat bgViewWidth = missedNotifAndUnreadBadgeLabel.frame.size.width + 18;
         
-        BOOL highlight = counts.numberOfHighlights > 0;
+        BOOL highlight = numberOfHighlights > 0;
         missedNotifAndUnreadBadgeBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, bgViewWidth, 20)];
         [missedNotifAndUnreadBadgeBgView.layer setCornerRadius:10];
         missedNotifAndUnreadBadgeBgView.backgroundColor = highlight ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor;
@@ -778,7 +786,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     return missedNotifAndUnreadBadgeBgView;
 }
 
-- (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
+- (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame inTableView:(UITableView*)tableView
 {
     // No header view in key backup banner section
     if (section == self.secureBackupBannerSection || section == self.crossSigningBannerSection)
@@ -786,8 +794,14 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         return nil;
     }
     
-    SectionHeaderView *sectionHeader = [[SectionHeaderView alloc] initWithFrame:frame];
-    sectionHeader.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    SectionHeaderView *sectionHeader = [tableView dequeueReusableHeaderFooterViewWithIdentifier:SectionHeaderView.defaultReuseIdentifier];
+    if (sectionHeader == nil)
+    {
+        sectionHeader = [[SectionHeaderView alloc] initWithReuseIdentifier:SectionHeaderView.defaultReuseIdentifier];
+    }
+    sectionHeader.backgroundView = [UIView new];
+    sectionHeader.frame = frame;
+    sectionHeader.backgroundView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     sectionHeader.topViewHeight = RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT;
     NSInteger sectionBitwise = 0;
 
@@ -838,7 +852,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         shrinkButton.backgroundColor = [UIColor clearColor];
         [shrinkButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         shrinkButton.tag = sectionBitwise;
-        [sectionHeader addSubview:shrinkButton];
         sectionHeader.topSpanningView = shrinkButton;
         sectionHeader.userInteractionEnabled = YES;
         
@@ -846,27 +859,27 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         UIImage *chevron;
         if (shrinkedSectionsBitMask & sectionBitwise)
         {
-            chevron = [UIImage imageNamed:@"disclosure_icon"];
+            chevron = AssetImages.disclosureIcon.image;
         }
         else
         {
-            chevron = [UIImage imageNamed:@"shrink_icon"];
+            chevron = AssetImages.shrinkIcon.image;
         }
         UIImageView *chevronView = [[UIImageView alloc] initWithImage:chevron];
         chevronView.tintColor = ThemeService.shared.theme.textSecondaryColor;
         chevronView.contentMode = UIViewContentModeCenter;
-        [sectionHeader addSubview:chevronView];
         sectionHeader.accessoryView = chevronView;
     }
-    else if (_recentsDataSourceMode == RecentsDataSourceModeHome)
+    if (_recentsDataSourceMode == RecentsDataSourceModeHome
+        || _recentsDataSourceMode == RecentsDataSourceModePeople
+        || _recentsDataSourceMode == RecentsDataSourceModeRooms)
     {
         // Add a badge to display the total of missed notifications by section.
-        UIView *badgeView = [self badgeViewForHeaderTitleInHomeSection:section];
+        UIView *badgeView = [self badgeViewForHeaderTitleInSection:section];
         
         if (badgeView)
         {
-            [sectionHeader addSubview:badgeView];
-            sectionHeader.accessoryView = badgeView;
+            sectionHeader.rightAccessoryView = badgeView;
         }
     }
     
@@ -875,7 +888,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
     headerLabel.backgroundColor = [UIColor clearColor];
     headerLabel.attributedText = [self attributedStringForHeaderTitleInSection:section];
-    [sectionHeader addSubview:headerLabel];
     sectionHeader.headerLabel = headerLabel;
 
     return sectionHeader;
@@ -1422,6 +1434,38 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     return nil;
 }
 
+- (void)paginateInSection:(NSInteger)section
+{
+    if (section == invitesSection)
+    {
+        [self.recentsListService paginateInSection:RecentsListServiceSectionInvited];
+    }
+    else if (section == favoritesSection)
+    {
+        [self.recentsListService paginateInSection:RecentsListServiceSectionFavorited];
+    }
+    else if (section == peopleSection)
+    {
+        [self.recentsListService paginateInSection:RecentsListServiceSectionPeople];
+    }
+    else if (section == conversationSection)
+    {
+        [self.recentsListService paginateInSection:RecentsListServiceSectionConversation];
+    }
+    else if (section == lowPrioritySection)
+    {
+        [self.recentsListService paginateInSection:RecentsListServiceSectionLowPriority];
+    }
+    else if (section == serverNoticeSection)
+    {
+        [self.recentsListService paginateInSection:RecentsListServiceSectionServerNotice];
+    }
+    else if (section == suggestedRoomsSection)
+    {
+        [self.recentsListService paginateInSection:RecentsListServiceSectionSuggested];
+    }
+}
+
 - (void)moveRoomCell:(MXRoom*)room from:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath success:(void (^)(void))moveSuccess failure:(void (^)(NSError *error))moveFailure;
 {
     MXLogDebug(@"[RecentsDataSource] moveCellFrom (%tu, %tu) to (%tu, %tu)", oldPath.section, oldPath.row, newPath.section, newPath.row);
@@ -1517,10 +1561,96 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 #pragma mark - RecentsListServiceDelegate
 
-- (void)serviceDidChangeData:(id<RecentsListServiceProtocol>)service
+- (void)recentsListServiceDidChangeData:(id<RecentsListServiceProtocol>)service
+                     totalCountsChanged:(BOOL)totalCountsChanged
 {
-    // TODO: Update only updated sections
-    [self.delegate dataSource:self didCellChange:nil];
+    [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
+}
+
+- (void)recentsListServiceDidChangeData:(id<RecentsListServiceProtocol>)service
+                             forSection:(RecentsListServiceSection)section
+                     totalCountsChanged:(BOOL)totalCountsChanged
+{
+    NSInteger sectionIndex = -1;
+    switch (section)
+    {
+        case RecentsListServiceSectionInvited:
+            sectionIndex = invitesSection;
+            break;
+        case RecentsListServiceSectionFavorited:
+            sectionIndex = favoritesSection;
+            break;
+        case RecentsListServiceSectionPeople:
+            sectionIndex = peopleSection;
+            break;
+        case RecentsListServiceSectionConversation:
+            sectionIndex = conversationSection;
+            break;
+        case RecentsListServiceSectionLowPriority:
+            sectionIndex = lowPrioritySection;
+            break;
+        case RecentsListServiceSectionServerNotice:
+            sectionIndex = serverNoticeSection;
+            break;
+        case RecentsListServiceSectionSuggested:
+            sectionIndex = suggestedRoomsSection;
+            break;
+    }
+
+    RecentsSectionUpdate *update = [[RecentsSectionUpdate alloc] initWithSectionIndex:sectionIndex
+                                                                   totalCountsChanged:totalCountsChanged];
+    [self.delegate dataSource:self didCellChange:update];
+}
+
+#pragma mark - Shrinkable
+- (BOOL)isSectionShrinkedAt:(NSInteger)section
+{
+    if (_areSectionsShrinkable == NO)
+    {
+        return NO;
+    }
+
+    if (section == favoritesSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_FAVORITES))
+    {
+        return YES;
+    }
+
+    if (section == peopleSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_PEOPLE))
+    {
+        return YES;
+    }
+
+    if (section == conversationSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_CONVERSATIONS))
+    {
+        return YES;
+    }
+
+    if (section == directorySection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
+    {
+        return YES;
+    }
+
+    if (section == lowPrioritySection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_LOWPRIORITY))
+    {
+        return YES;
+    }
+
+    if (section == serverNoticeSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_SERVERNOTICE))
+    {
+        return YES;
+    }
+
+    if (section == invitesSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_INVITES))
+    {
+        return YES;
+    }
+
+    if (section == suggestedRoomsSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_SUGGESTED))
+    {
+        return YES;
+    }
+
+    return NO;
 }
 
 @end

@@ -19,10 +19,12 @@
 #import "RecentsDataSource.h"
 #import "GeneratedInterface-Swift.h"
 
-@interface FavouritesViewController ()
+@interface FavouritesViewController () <MasterTabBarItemDisplayProtocol>
 {    
     RecentsDataSource *recentsDataSource;
 }
+
+@property (nonatomic, strong) MXThrottler *tableViewPaginationThrottler;
 
 @end
 
@@ -41,7 +43,8 @@
     
     self.enableDragging = YES;
     
-    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenFavourites];
+    self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenFavourites];
+    self.tableViewPaginationThrottler = [[MXThrottler alloc] initWithMinimumDelay:0.1];
 }
 
 - (void)viewDidLoad
@@ -59,14 +62,11 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titleFavourites];
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
     if (recentsDataSource)
     {
         // Take the lead on the shared data source.
-        recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeFavourites];
     }
 }
@@ -121,6 +121,24 @@
     return 0.0f;
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([super respondsToSelector:@selector(tableView:willDisplayCell:forRowAtIndexPath:)])
+    {
+        [super tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
+    }
+    
+    [self.tableViewPaginationThrottler throttle:^{
+        NSInteger section = indexPath.section;
+        NSInteger numberOfRowsInSection = [tableView numberOfRowsInSection:section];
+        if (tableView.numberOfSections > section
+            && indexPath.row == numberOfRowsInSection - 1)
+        {
+            [self->recentsDataSource paginateInSection:section];
+        }
+    }];
+}
+
 #pragma mark - Empty view management
 
 - (void)updateEmptyView
@@ -134,12 +152,19 @@
 {
     if (ThemeService.shared.isCurrentThemeDark)
     {
-        return [UIImage imageNamed:@"favourites_empty_screen_artwork_dark"];
+        return AssetImages.favouritesEmptyScreenArtworkDark.image;
     }
     else
     {
-        return [UIImage imageNamed:@"favourites_empty_screen_artwork"];
+        return AssetImages.favouritesEmptyScreenArtwork.image;
     }
+}
+
+#pragma mark - MasterTabBarItemDisplayProtocol
+
+- (NSString *)masterTabBarItemTitle
+{
+    return [VectorL10n titleFavourites];
 }
 
 @end

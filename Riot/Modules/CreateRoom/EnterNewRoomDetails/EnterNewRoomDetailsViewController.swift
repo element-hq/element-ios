@@ -31,6 +31,8 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         static let roomNameMaximumNumberOfChars = 50
         static let roomAddressMaximumNumberOfChars = 50
         static let roomTopicMaximumNumberOfChars = 250
+        static let chooseAvatarTableViewCellHeight: CGFloat = 140
+        static let textViewTableViewCellHeight: CGFloat = 150
     }
     
     // MARK: - Properties
@@ -53,7 +55,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         item.isEnabled = false
         return item
     }()
-    private var screenTimer = AnalyticsScreenTimer(screen: .createRoom)
+    private var screenTracker = AnalyticsScreenTracker(screen: .createRoom)
     
     private enum RowType {
         case `default`
@@ -214,11 +216,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         super.viewWillAppear(animated)
         
         self.keyboardAvoider?.startAvoiding()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        screenTimer.start()
+        screenTracker.trackScreen()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -226,7 +224,6 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         
         self.keyboardAvoider?.stopAvoiding()
         
-        screenTimer.stop()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -481,9 +478,9 @@ extension EnterNewRoomDetailsViewController: UITableViewDelegate {
         
         switch row.type {
         case .avatar:
-            return 100
+            return Constants.chooseAvatarTableViewCellHeight
         case .textView:
-            return 150
+            return Constants.textViewTableViewCellHeight
         default:
             return UITableView.automaticDimension
         }
@@ -512,7 +509,11 @@ extension EnterNewRoomDetailsViewController: ChooseAvatarTableViewCellDelegate {
     func chooseAvatarTableViewCellDidTapChooseAvatar(_ cell: ChooseAvatarTableViewCell, sourceView: UIView) {
         viewModel.process(viewAction: .chooseAvatar(sourceView: sourceView))
     }
-    
+
+    func chooseAvatarTableViewCellDidTapRemoveAvatar(_ cell: ChooseAvatarTableViewCell) {
+        viewModel.process(viewAction: .removeAvatar)
+    }
+
 }
 
 // MARK: - EnterNewRoomDetailsViewModelViewDelegate
@@ -532,14 +533,6 @@ extension EnterNewRoomDetailsViewController: UITextFieldDelegate {
         switch textField.tag {
         case Constants.roomNameTextFieldTag:
             viewModel.roomCreationParameters.name = textField.text
-            if viewModel.roomCreationParameters.userSelectedAvatar == nil {
-                //  if no image selected by the user, set initials as image
-                let avatar = AvatarGenerator.generateAvatar(forMatrixItem: nil,
-                                                            withDisplayName: textField.text,
-                                                            size: 60,
-                                                            andFontSize: 30)
-                viewModel.roomCreationParameters.initialsAvatar = avatar
-            }
         case Constants.roomAddressTextFieldTag:
             viewModel.roomCreationParameters.address = textField.text
         default:

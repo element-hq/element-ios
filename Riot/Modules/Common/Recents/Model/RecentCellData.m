@@ -62,7 +62,7 @@
     NSString *result = [super roomDisplayname];
     if (!result.length)
     {
-        result = [MatrixKitL10n roomDisplaynameEmptyRoom];
+        result = [VectorL10n roomDisplaynameEmptyRoom];
     }
     return result;
 }

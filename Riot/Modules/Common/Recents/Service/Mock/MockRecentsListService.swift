@@ -184,6 +184,10 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
         }
     }
     
+    public func paginate(inSection section: RecentsListServiceSection) {
+        //  no-op
+    }
+    
     public func updateMode(_ mode: RecentsDataSourceMode) {
         self.mode = mode
         notifyDataChange()
@@ -225,7 +229,7 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
     }
     
     private func notifyDataChange() {
-        multicastDelegate.invoke({ $0.serviceDidChangeData(self) })
+        multicastDelegate.invoke({ $0.recentsListServiceDidChangeData?(self, totalCountsChanged: true) })
     }
     
 }

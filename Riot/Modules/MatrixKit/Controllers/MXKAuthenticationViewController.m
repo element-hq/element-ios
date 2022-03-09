@@ -90,6 +90,10 @@
  */
 @property (nonatomic) MXIdentityService *identityService;
 
+@property (nonatomic) AnalyticsScreenTracker *screenTracker;
+
+@property (nonatomic) BOOL isViewVisible;
+
 @end
 
 @implementation MXKAuthenticationViewController
@@ -166,14 +170,14 @@
     [self updateRESTClient];
     
     // Localize labels
-    _homeServerLabel.text = [MatrixKitL10n loginHomeServerTitle];
-    _homeServerTextField.placeholder = [MatrixKitL10n loginServerUrlPlaceholder];
-    _homeServerInfoLabel.text = [MatrixKitL10n loginHomeServerInfo];
-    _identityServerLabel.text = [MatrixKitL10n loginIdentityServerTitle];
-    _identityServerTextField.placeholder = [MatrixKitL10n loginServerUrlPlaceholder];
-    _identityServerInfoLabel.text = [MatrixKitL10n loginIdentityServerInfo];
-    [_cancelAuthFallbackButton setTitle:[MatrixKitL10n cancel] forState:UIControlStateNormal];
-    [_cancelAuthFallbackButton setTitle:[MatrixKitL10n cancel] forState:UIControlStateHighlighted];
+    _homeServerLabel.text = [VectorL10n loginHomeServerTitle];
+    _homeServerTextField.placeholder = [VectorL10n loginServerUrlPlaceholder];
+    _homeServerInfoLabel.text = [VectorL10n loginHomeServerInfo];
+    _identityServerLabel.text = [VectorL10n loginIdentityServerTitle];
+    _identityServerTextField.placeholder = [VectorL10n loginServerUrlPlaceholder];
+    _identityServerInfoLabel.text = [VectorL10n loginIdentityServerInfo];
+    [_cancelAuthFallbackButton setTitle:[VectorL10n cancel] forState:UIControlStateNormal];
+    [_cancelAuthFallbackButton setTitle:[VectorL10n cancel] forState:UIControlStateHighlighted];
 }
 
 - (void)didReceiveMemoryWarning
@@ -187,6 +191,9 @@
     [super viewWillAppear:animated];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTextFieldChange:) name:UITextFieldTextDidChangeNotification object:nil];
+    
+    self.isViewVisible = YES;
+    [self.screenTracker trackScreen];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -206,6 +213,13 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    self.isViewVisible = NO;
+}
+
 #pragma mark - Override MXKViewController
 
 - (void)onKeyboardShowAnimationComplete
@@ -215,6 +229,8 @@
     // and report the inputAccessoryView.superview of the firstResponder in self.keyboardView.
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated"
 - (void)setKeyboardHeight:(CGFloat)keyboardHeight
 {
     // Deduce the bottom inset for the scroll view (Don't forget the potential tabBar)
@@ -229,6 +245,7 @@
     insets.bottom = scrollViewInsetBottom;
     self.authenticationScrollView.contentInset = insets;
 }
+#pragma clang diagnostic pop
 
 - (void)destroy
 {
@@ -302,25 +319,29 @@
     if (authType == MXKAuthenticationTypeLogin)
     {
         _subTitleLabel.hidden = YES;
-        [_submitButton setTitle:[MatrixKitL10n login] forState:UIControlStateNormal];
-        [_submitButton setTitle:[MatrixKitL10n login] forState:UIControlStateHighlighted];
-        [_authSwitchButton setTitle:[MatrixKitL10n createAccount] forState:UIControlStateNormal];
-        [_authSwitchButton setTitle:[MatrixKitL10n createAccount] forState:UIControlStateHighlighted];
+        [_submitButton setTitle:[VectorL10n login] forState:UIControlStateNormal];
+        [_submitButton setTitle:[VectorL10n login] forState:UIControlStateHighlighted];
+        [_authSwitchButton setTitle:[VectorL10n createAccount] forState:UIControlStateNormal];
+        [_authSwitchButton setTitle:[VectorL10n createAccount] forState:UIControlStateHighlighted];
         
         // Update supported authentication flow and associated information (defined in authentication session)
         [self refreshAuthenticationSession];
+        
+        self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenLogin];
     }
     else if (authType == MXKAuthenticationTypeRegister)
     {
         _subTitleLabel.hidden = NO;
-        _subTitleLabel.text = [MatrixKitL10n loginCreateAccount];
-        [_submitButton setTitle:[MatrixKitL10n signUp] forState:UIControlStateNormal];
-        [_submitButton setTitle:[MatrixKitL10n signUp] forState:UIControlStateHighlighted];
-        [_authSwitchButton setTitle:[MatrixKitL10n back] forState:UIControlStateNormal];
-        [_authSwitchButton setTitle:[MatrixKitL10n back] forState:UIControlStateHighlighted];
+        _subTitleLabel.text = [VectorL10n loginCreateAccount];
+        [_submitButton setTitle:[VectorL10n signUp] forState:UIControlStateNormal];
+        [_submitButton setTitle:[VectorL10n signUp] forState:UIControlStateHighlighted];
+        [_authSwitchButton setTitle:[VectorL10n back] forState:UIControlStateNormal];
+        [_authSwitchButton setTitle:[VectorL10n back] forState:UIControlStateHighlighted];
         
         // Update supported authentication flow and associated information (defined in authentication session)
         [self refreshAuthenticationSession];
+        
+        self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenRegister];
     }
     else if (authType == MXKAuthenticationTypeForgotPassword)
     {
@@ -328,21 +349,28 @@
         
         if (isPasswordReseted)
         {
-            [_submitButton setTitle:[MatrixKitL10n back] forState:UIControlStateNormal];
-            [_submitButton setTitle:[MatrixKitL10n back] forState:UIControlStateHighlighted];
+            [_submitButton setTitle:[VectorL10n back] forState:UIControlStateNormal];
+            [_submitButton setTitle:[VectorL10n back] forState:UIControlStateHighlighted];
         }
         else
         {
-            [_submitButton setTitle:[MatrixKitL10n submit] forState:UIControlStateNormal];
-            [_submitButton setTitle:[MatrixKitL10n submit] forState:UIControlStateHighlighted];
+            [_submitButton setTitle:[VectorL10n submit] forState:UIControlStateNormal];
+            [_submitButton setTitle:[VectorL10n submit] forState:UIControlStateHighlighted];
             
             [self refreshForgotPasswordSession];
         }
         
-        [_authSwitchButton setTitle:[MatrixKitL10n back] forState:UIControlStateNormal];
-        [_authSwitchButton setTitle:[MatrixKitL10n back] forState:UIControlStateHighlighted];
+        [_authSwitchButton setTitle:[VectorL10n back] forState:UIControlStateNormal];
+        [_authSwitchButton setTitle:[VectorL10n back] forState:UIControlStateHighlighted];
+        
+        self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenForgotPassword];
     }
 
+    if (self.isViewVisible)
+    {
+        [self.screenTracker trackScreen];
+    }
+    
     [self checkIdentityServer];
 }
 
@@ -621,41 +649,51 @@
     // Reset potential authentication fallback url
     authenticationFallback = nil;
     
-    if (mxRestClient)
+    if (mxRestClient && (self.authType == MXKAuthenticationTypeLogin || self.authType == MXKAuthenticationTypeRegister))
     {
-        if (_authType == MXKAuthenticationTypeLogin)
-        {
-            mxCurrentOperation = [mxRestClient getLoginSession:^(MXAuthenticationSession* authSession) {
-                
-                [self handleAuthenticationSession:authSession];
-                
-            } failure:^(NSError *error) {
-                
-                [self onFailureDuringMXOperation:error];
-                
-            }];
-        }
-        else if (_authType == MXKAuthenticationTypeRegister)
-        {
-            mxCurrentOperation = [mxRestClient getRegisterSession:^(MXAuthenticationSession* authSession){
-                
-                [self handleAuthenticationSession:authSession];
-                
-            } failure:^(NSError *error){
-                
-                [self onFailureDuringMXOperation:error];
-                
-            }];
-        }
-        else
-        {
-            // Not supported for other types
-            MXLogDebug(@"[MXKAuthenticationVC] refreshAuthenticationSession is ignored");
-        }
+        MXWeakify(self);
+        
+        // Get the login session to determine available SSO flows.
+        mxCurrentOperation = [mxRestClient getLoginSession:^(MXAuthenticationSession* loginAuthSession) {
+            MXStrongifyAndReturnIfNil(self);
+            
+            if (self.authType == MXKAuthenticationTypeRegister)
+            {
+                MXWeakify(self);
+                self->mxCurrentOperation = [self->mxRestClient getRegisterSession:^(MXAuthenticationSession* registerAuthSession) {
+                    MXStrongifyAndReturnIfNil(self);
+                    
+                    // Handle the register session along with any SSO flows from the login session
+                    MXLoginSSOFlow *loginSSOFlow = [self loginSSOFlowWithProvidersFromFlows:loginAuthSession.flows];
+                    [self handleAuthenticationSession:registerAuthSession withFallbackSSOFlow:loginSSOFlow];
+                    
+                } failure:^(NSError *error) {
+                    
+                    [self onFailureDuringMXOperation:error];
+                    
+                }];
+            }
+            else
+            {
+                // Handle the login session by itself
+                [self handleAuthenticationSession:loginAuthSession withFallbackSSOFlow:nil];
+            }
+            
+        } failure:^(NSError *error) {
+            
+            MXStrongifyAndReturnIfNil(self);
+            [self onFailureDuringMXOperation:error];
+            
+        }];
+    }
+    else
+    {
+        // Not supported for other types
+        MXLogDebug(@"[MXKAuthenticationVC] refreshAuthenticationSession is ignored");
     }
 }
 
-- (void)handleAuthenticationSession:(MXAuthenticationSession *)authSession
+- (void)handleAuthenticationSession:(MXAuthenticationSession *)authSession withFallbackSSOFlow:(MXLoginSSOFlow *)fallbackSSOFlow
 {
     mxCurrentOperation = nil;
     
@@ -741,7 +779,7 @@
             }
             else
             {
-                [self onFailureDuringAuthRequest:[NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n notSupportedYet]}]];
+                [self onFailureDuringAuthRequest:[NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[VectorL10n notSupportedYet]}]];
                 
                 _externalRegistrationParameters = nil;
                 
@@ -766,23 +804,23 @@
         // Notify user that no flow is supported
         if (_authType == MXKAuthenticationTypeLogin)
         {
-            _noFlowLabel.text = [MatrixKitL10n loginErrorDoNotSupportLoginFlows];
+            _noFlowLabel.text = [VectorL10n loginErrorDoNotSupportLoginFlows];
         }
         else
         {
-            _noFlowLabel.text = [MatrixKitL10n loginErrorRegistrationIsNotSupported];
+            _noFlowLabel.text = [VectorL10n loginErrorRegistrationIsNotSupported];
         }
         MXLogDebug(@"[MXKAuthenticationVC] Warning: %@", _noFlowLabel.text);
         
         if (authenticationFallback.length)
         {
-            [_retryButton setTitle:[MatrixKitL10n loginUseFallback] forState:UIControlStateNormal];
-            [_retryButton setTitle:[MatrixKitL10n loginUseFallback] forState:UIControlStateNormal];
+            [_retryButton setTitle:[VectorL10n loginUseFallback] forState:UIControlStateNormal];
+            [_retryButton setTitle:[VectorL10n loginUseFallback] forState:UIControlStateNormal];
         }
         else
         {
-            [_retryButton setTitle:[MatrixKitL10n retry] forState:UIControlStateNormal];
-            [_retryButton setTitle:[MatrixKitL10n retry] forState:UIControlStateNormal];
+            [_retryButton setTitle:[VectorL10n retry] forState:UIControlStateNormal];
+            [_retryButton setTitle:[VectorL10n retry] forState:UIControlStateNormal];
         }
         
         _noFlowLabel.hidden = NO;
@@ -901,6 +939,27 @@
     mxCurrentOperation = [mxRestClient testUserRegistration:self.authInputsView.userId callback:callback];
 }
 
+- (MXLoginSSOFlow*)loginSSOFlowWithProvidersFromFlows:(NSArray<MXLoginFlow*>*)loginFlows
+{
+    MXLoginSSOFlow *ssoFlowWithProviders;
+    
+    for (MXLoginFlow *loginFlow in loginFlows)
+    {
+        if ([loginFlow isKindOfClass:MXLoginSSOFlow.class])
+        {
+            MXLoginSSOFlow *ssoFlow = (MXLoginSSOFlow *)loginFlow;
+            
+            if (ssoFlow.identityProviders.count)
+            {
+                ssoFlowWithProviders = ssoFlow;
+                break;
+            }
+        }
+    }
+    
+    return ssoFlowWithProviders;
+}
+
 - (IBAction)onButtonPressed:(id)sender
 {
     [self dismissKeyboard];
@@ -950,7 +1009,10 @@
                     {
                         // Trigger here a register request in order to associate the filled userId and password to the current session id
                         // This will check the availability of the userId at the same time
-                        NSDictionary *parameters = @{@"auth": @{},
+                        NSDictionary *parameters = @{@"auth": @{
+                                                        @"session": self.authInputsView.authSession.session,
+                                                        @"type": kMXLoginFlowTypeDummy
+                                                     },
                                                      @"username": self.authInputsView.userId,
                                                      @"password": self.authInputsView.password,
                                                      @"bind_email": @(NO),
@@ -969,7 +1031,7 @@
                             // Sanity check
                             if (!credentials.userId || !credentials.accessToken)
                             {
-                                [self onFailureDuringAuthRequest:[NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n notSupportedYet]}]];
+                                [self onFailureDuringAuthRequest:[NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[VectorL10n notSupportedYet]}]];
                             }
                             else
                             {
@@ -1030,7 +1092,7 @@
                             if (isUserNameInUse)
                             {
                                 MXLogDebug(@"[MXKAuthenticationVC] User name is already use");
-                                [self onFailureDuringAuthRequest:[NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n authUsernameInUse]}]];
+                                [self onFailureDuringAuthRequest:[NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[VectorL10n authUsernameInUse]}]];
                             }
                             else
                             {
@@ -1077,7 +1139,7 @@
                 else
                 {
                     MXLogDebug(@"[MXKAuthenticationVC] User name is missing");
-                    [self onFailureDuringAuthRequest:[NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n authInvalidUserName]}]];
+                    [self onFailureDuringAuthRequest:[NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[VectorL10n authInvalidUserName]}]];
                 }
             }
             else if (_authType == MXKAuthenticationTypeForgotPassword)
@@ -1192,15 +1254,15 @@
     {
         if (self.authType == MXKAuthenticationTypeLogin)
         {
-            title = [MatrixKitL10n loginErrorTitle];
+            title = [VectorL10n loginErrorTitle];
         }
         else if (self.authType == MXKAuthenticationTypeRegister)
         {
-            title = [MatrixKitL10n registerErrorTitle];
+            title = [VectorL10n registerErrorTitle];
         }
         else
         {
-            title = [MatrixKitL10n error];
+            title = [VectorL10n error];
         }
     }
     NSString* message = error.localizedDescription;
@@ -1221,31 +1283,31 @@
         {
             if ([errCode isEqualToString:kMXErrCodeStringForbidden])
             {
-                message = [MatrixKitL10n loginErrorForbidden];
+                message = [VectorL10n loginErrorForbidden];
             }
             else if ([errCode isEqualToString:kMXErrCodeStringUnknownToken])
             {
-                message = [MatrixKitL10n loginErrorUnknownToken];
+                message = [VectorL10n loginErrorUnknownToken];
             }
             else if ([errCode isEqualToString:kMXErrCodeStringBadJSON])
             {
-                message = [MatrixKitL10n loginErrorBadJson];
+                message = [VectorL10n loginErrorBadJson];
             }
             else if ([errCode isEqualToString:kMXErrCodeStringNotJSON])
             {
-                message = [MatrixKitL10n loginErrorNotJson];
+                message = [VectorL10n loginErrorNotJson];
             }
             else if ([errCode isEqualToString:kMXErrCodeStringLimitExceeded])
             {
-                message = [MatrixKitL10n loginErrorLimitExceeded];
+                message = [VectorL10n loginErrorLimitExceeded];
             }
             else if ([errCode isEqualToString:kMXErrCodeStringUserInUse])
             {
-                message = [MatrixKitL10n loginErrorUserInUse];
+                message = [VectorL10n loginErrorUserInUse];
             }
             else if ([errCode isEqualToString:kMXErrCodeStringLoginEmailURLNotYet])
             {
-                message = [MatrixKitL10n loginErrorLoginEmailNotYet];
+                message = [VectorL10n loginErrorLoginEmailNotYet];
             }
             else if ([errCode isEqualToString:kMXErrCodeStringResourceLimitExceeded])
             {
@@ -1267,7 +1329,7 @@
     
     alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     
-    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
                                                 
@@ -1310,20 +1372,20 @@
         adminContact = [NSURL URLWithString:adminContactString];
     }
 
-    NSString *title = [MatrixKitL10n loginErrorResourceLimitExceededTitle];
+    NSString *title = [VectorL10n loginErrorResourceLimitExceededTitle];
 
     // Build the message content
     NSMutableString *message = [NSMutableString new];
     if ([limitType isEqualToString:kMXErrorResourceLimitExceededLimitTypeMonthlyActiveUserValue])
     {
-        [message appendString:[MatrixKitL10n loginErrorResourceLimitExceededMessageMonthlyActiveUser]];
+        [message appendString:[VectorL10n loginErrorResourceLimitExceededMessageMonthlyActiveUser]];
     }
     else
     {
-        [message appendString:[MatrixKitL10n loginErrorResourceLimitExceededMessageDefault]];
+        [message appendString:[VectorL10n loginErrorResourceLimitExceededMessageDefault]];
     }
 
-    [message appendString:[MatrixKitL10n loginErrorResourceLimitExceededMessageContact]];
+    [message appendString:[VectorL10n loginErrorResourceLimitExceededMessageContact]];
 
     // Build the alert
     alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
@@ -1331,7 +1393,7 @@
     MXWeakify(self);
     if (adminContact && onAdminContactTapped)
     {
-        [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n loginErrorResourceLimitExceededContactButton]
+        [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n loginErrorResourceLimitExceededContactButton]
                                                   style:UIAlertActionStyleDefault
                                                 handler:^(UIAlertAction * action)
                           {
@@ -1344,7 +1406,7 @@
                           }]];
     }
 
-    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action)
                       {
@@ -1386,9 +1448,9 @@
             [alert dismissViewControllerAnimated:NO completion:nil];
         }
         
-        alert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n loginErrorAlreadyLoggedIn] message:nil preferredStyle:UIAlertControllerStyleAlert];
+        alert = [UIAlertController alertControllerWithTitle:[VectorL10n loginErrorAlreadyLoggedIn] message:nil preferredStyle:UIAlertControllerStyleAlert];
         
-        [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+        [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                   style:UIAlertActionStyleDefault
                                                 handler:^(UIAlertAction * action) {
                                                     
@@ -1451,7 +1513,9 @@
     
     MXRestClient *mxRestClient = [[MXRestClient alloc] initWithCredentials:credentials andOnUnrecognizedCertificateBlock:^BOOL(NSData *certificate) {
         return NO;
-    }];
+    } andPersistentTokenDataHandler:^(void (^handler)(NSArray<MXCredentials *> *credentials, void (^completion)(BOOL didUpdateCredentials))) {
+        [[MXKAccountManager sharedManager] readAndWriteCredentials:handler];
+    } andUnauthenticatedHandler: nil];
     
     MXWeakify(self);
     [[MXKAccountManager sharedManager].dehydrationService rehydrateDeviceWithMatrixRestClient:mxRestClient dehydrationKey:keyData success:^(NSString * deviceId) {
@@ -1505,9 +1569,9 @@
     }
     
 #if TARGET_OS_IPHONE
-    NSString *deviceName = [[UIDevice currentDevice].model isEqualToString:@"iPad"] ? [MatrixKitL10n loginTabletDevice] : [MatrixKitL10n loginMobileDevice];
+    NSString *deviceName = [[UIDevice currentDevice].model isEqualToString:@"iPad"] ? [VectorL10n loginTabletDevice] : [VectorL10n loginMobileDevice];
 #elif TARGET_OS_OSX
-    NSString *deviceName = [MatrixKitL10n loginDesktopDevice];
+    NSString *deviceName = [VectorL10n loginDesktopDevice];
 #endif
     
     return deviceName;
@@ -1552,7 +1616,7 @@
         // Remove the potential auth inputs view
         self.authInputsView = nil;
         
-        _noFlowLabel.text = [MatrixKitL10n loginErrorForgotPasswordIsNotSupported];
+        _noFlowLabel.text = [VectorL10n loginErrorForgotPasswordIsNotSupported];
         
         MXLogDebug(@"[MXKAuthenticationVC] Warning: %@", _noFlowLabel.text);
         
@@ -1581,12 +1645,12 @@
                 __block BOOL isTrusted;
                 dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
                 
-                NSString *title = [MatrixKitL10n sslCouldNotVerify];
-                NSString *homeserverURLStr = [MatrixKitL10n sslHomeserverUrl:homeserverURL];
-                NSString *fingerprint = [MatrixKitL10n sslFingerprintHash:@"SHA256"];
+                NSString *title = [VectorL10n sslCouldNotVerify];
+                NSString *homeserverURLStr = [VectorL10n sslHomeserverUrl:homeserverURL];
+                NSString *fingerprint = [VectorL10n sslFingerprintHash:@"SHA256"];
                 NSString *certFingerprint = [certificate mx_SHA256AsHexString];
                 
-                NSString *msg = [NSString stringWithFormat:@"%@\n\n%@\n\n%@\n\n%@\n\n%@\n\n%@", [MatrixKitL10n sslCertNotTrust], [MatrixKitL10n sslCertNewAccountExpl], homeserverURLStr, fingerprint, certFingerprint, [MatrixKitL10n sslOnlyAccept]];
+                NSString *msg = [NSString stringWithFormat:@"%@\n\n%@\n\n%@\n\n%@\n\n%@\n\n%@", [VectorL10n sslCertNotTrust], [VectorL10n sslCertNewAccountExpl], homeserverURLStr, fingerprint, certFingerprint, [VectorL10n sslOnlyAccept]];
                 
                 if (self->alert)
                 {
@@ -1595,7 +1659,7 @@
                 
                 self->alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
                 
-                [self->alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+                [self->alert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action) {
                                                             
@@ -1605,7 +1669,7 @@
                                                             
                                                         }]];
                 
-                [self->alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n sslTrust]
+                [self->alert addAction:[UIAlertAction actionWithTitle:[VectorL10n sslTrust]
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action) {
                                                             
@@ -1664,7 +1728,7 @@
         // Sanity check
         if (!credentials.userId || !credentials.accessToken)
         {
-            [self onFailureDuringAuthRequest:[NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n notSupportedYet]}]];
+            [self onFailureDuringAuthRequest:[NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[VectorL10n notSupportedYet]}]];
         }
         else
         {
@@ -1706,7 +1770,7 @@
         // Sanity check
         if (!credentials.userId || !credentials.accessToken)
         {
-            [self onFailureDuringAuthRequest:[NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n notSupportedYet]}]];
+            [self onFailureDuringAuthRequest:[NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[VectorL10n notSupportedYet]}]];
         }
         else
         {
@@ -1772,7 +1836,7 @@
                     return;
                 }
                 
-                [self onFailureDuringAuthRequest:[NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n notSupportedYet]}]];
+                [self onFailureDuringAuthRequest:[NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[VectorL10n notSupportedYet]}]];
             }
             else
             {
@@ -1823,9 +1887,9 @@
                 [self->alert dismissViewControllerAnimated:NO completion:nil];
             }
             
-            self->alert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n error] message:[MatrixKitL10n authResetPasswordErrorUnauthorized] preferredStyle:UIAlertControllerStyleAlert];
+            self->alert = [UIAlertController alertControllerWithTitle:[VectorL10n error] message:[VectorL10n authResetPasswordErrorUnauthorized] preferredStyle:UIAlertControllerStyleAlert];
             
-            [self->alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+            [self->alert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                       style:UIAlertActionStyleDefault
                                                     handler:^(UIAlertAction * action) {
                                                         
@@ -1849,7 +1913,7 @@
             {
                 userInfo = [NSMutableDictionary dictionary];
             }
-            userInfo[NSLocalizedDescriptionKey] = [MatrixKitL10n authResetPasswordErrorNotFound];
+            userInfo[NSLocalizedDescriptionKey] = [VectorL10n authResetPasswordErrorNotFound];
             
             [self onFailureDuringAuthRequest:[NSError errorWithDomain:kMXNSErrorDomain code:0 userInfo:userInfo]];
         }
@@ -1883,7 +1947,7 @@
     NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
     if (!title)
     {
-        title = [MatrixKitL10n error];
+        title = [VectorL10n error];
     }
     NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
     
@@ -1894,7 +1958,7 @@
     
     alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
     
-    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n dismiss]
+    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n dismiss]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
                                                 
@@ -1940,10 +2004,10 @@
         _noFlowLabel.text = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
         if (!_noFlowLabel.text.length)
         {
-            _noFlowLabel.text = [MatrixKitL10n loginErrorNoLoginFlow];
+            _noFlowLabel.text = [VectorL10n loginErrorNoLoginFlow];
         }
-        [_retryButton setTitle:[MatrixKitL10n retry] forState:UIControlStateNormal];
-        [_retryButton setTitle:[MatrixKitL10n retry] forState:UIControlStateNormal];
+        [_retryButton setTitle:[VectorL10n retry] forState:UIControlStateNormal];
+        [_retryButton setTitle:[VectorL10n retry] forState:UIControlStateNormal];
         _retryButton.hidden = NO;
     }
 }
@@ -1961,7 +2025,7 @@
     }
     else if (status == AFNetworkReachabilityStatusNotReachable)
     {
-        _noFlowLabel.text = [MatrixKitL10n networkErrorNotReachable];
+        _noFlowLabel.text = [VectorL10n networkErrorNotReachable];
     }
 }
 
@@ -2074,7 +2138,7 @@
     {
         if (!cancelFallbackBarButton)
         {
-            cancelFallbackBarButton = [[UIBarButtonItem alloc] initWithTitle:[MatrixKitL10n loginLeaveFallback] style:UIBarButtonItemStylePlain target:self action:@selector(hideRegistrationFallbackView)];
+            cancelFallbackBarButton = [[UIBarButtonItem alloc] initWithTitle:[VectorL10n loginLeaveFallback] style:UIBarButtonItemStylePlain target:self action:@selector(hideRegistrationFallbackView)];
         }
         
         // Add cancel button in right bar items

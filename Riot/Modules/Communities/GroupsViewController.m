@@ -21,7 +21,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface GroupsViewController ()
+@interface GroupsViewController () <MasterTabBarItemDisplayProtocol>
 {
     // Tell whether a groups refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -42,7 +42,7 @@
     __weak id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
-@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+@property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
 @end
 
@@ -77,7 +77,7 @@
     // Set itself as delegate by default.
     self.delegate = self;
     
-    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenMyGroups];
+    self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenMyGroups];
 }
 
 - (void)viewDidLoad
@@ -207,6 +207,8 @@
 {
     [super viewWillAppear:animated];
     
+    [self.screenTracker trackScreen];
+
     // Deselect the current selected row, it will be restored on viewDidAppear (if any)
     NSIndexPath *indexPath = [self.groupsTableView indexPathForSelectedRow];
     if (indexPath)
@@ -224,8 +226,6 @@
         [self scrollToTop:YES];
         
     }];
-    
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titleGroups];
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;        
 }
 
@@ -259,14 +259,6 @@
         // the selected group (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
     }
-    
-    [self.screenTimer start];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self.screenTimer stop];
 }
 
 #pragma mark - Override MXKGroupListViewController
@@ -581,7 +573,7 @@
     
     currentAlert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -642,6 +634,13 @@
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
     [self.groupsSearchBar setShowsCancelButton:NO animated:NO];
+}
+
+#pragma mark - MasterTabBarItemDisplayProtocol
+
+- (NSString *)masterTabBarItemTitle
+{
+    return [VectorL10n titleGroups];
 }
 
 @end

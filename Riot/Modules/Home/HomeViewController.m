@@ -47,6 +47,7 @@
 @property (nonatomic, strong) CrossSigningSetupCoordinatorBridgePresenter *crossSigningSetupCoordinatorBridgePresenter;
 
 @property (nonatomic, assign, readwrite) BOOL roomListDataReady;
+@property (nonatomic, strong) MXThrottler *collectionViewPaginationThrottler;
 
 @property(nonatomic) SpaceMembersCoordinatorBridgePresenter *spaceMembersCoordinatorBridgePresenter;
 
@@ -69,7 +70,8 @@
     selectedRoomId = nil;
     selectedCollectionViewContentOffset = -1;
     
-    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenHome];
+    self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenHome];
+    self.collectionViewPaginationThrottler = [[MXThrottler alloc] initWithMinimumDelay:0.1];
 }
 
 - (void)viewDidLoad
@@ -87,7 +89,7 @@
     self.recentsTableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     
     // Add the (+) button programmatically
-    plusButtonImageView = [self vc_addFABWithImage:[UIImage imageNamed:@"plus_floating_action"]
+    plusButtonImageView = [self vc_addFABWithImage:AssetImages.plusFloatingAction.image
                                             target:self
                                             action:@selector(onPlusButtonPressed)];
     
@@ -101,8 +103,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titleHome];
 
     [ThemeService.shared.theme applyStyleOnNavigationBar:[AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar];
 
@@ -111,7 +111,6 @@
     if (recentsDataSource)
     {
         // Take the lead on the shared data source.
-        recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeHome];
     }        
 
@@ -305,7 +304,7 @@
                                                    }]];
     
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -371,9 +370,16 @@
 {
     // Edit the potential selected room (see `onCollectionViewCellLongPress`).
     editedRoomId = selectedRoomId;
-    
-    // Each rooms section is represented by only one collection view.
-    return 1;
+
+    if ([recentsDataSource isSectionShrinkedAt:section])
+    {
+        return 0;
+    }
+    else
+    {
+        // Each rooms section is represented by only one collection view.
+        return 1;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -418,19 +424,19 @@
             // Update the edition menu content (Use the button tag to store the current value).
             tableViewCell.directChatButton.tag = room.isDirect;
             [tableViewCell.directChatButton addTarget:self action:@selector(onDirectChatButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-            tableViewCell.directChatImageView.image = [UIImage imageNamed:@"room_action_direct_chat"];
+            tableViewCell.directChatImageView.image = AssetImages.roomActionDirectChat.image;
             tableViewCell.directChatImageView.tintColor = room.isDirect ? selectedColor : unselectedColor;
             
             tableViewCell.notificationsButton.tag = room.isMute || room.isMentionsOnly;
             [tableViewCell.notificationsButton addTarget:self action:@selector(onNotificationsButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
             
-            if ([BuildSettings showNotificationsV2])
+            if ([BuildSettings showNotificationsV2] && tableViewCell.notificationsButton.tag)
             {
-                tableViewCell.notificationsImageView.image = tableViewCell.notificationsButton.tag ? [UIImage imageNamed:@"room_action_notification_muted"] : [UIImage imageNamed:@"room_action_notification"];
+                tableViewCell.notificationsImageView.image = AssetImages.roomActionNotificationMuted.image;
             }
             else
             {
-                tableViewCell.notificationsImageView.image = [UIImage imageNamed:@"room_action_notification"];
+                tableViewCell.notificationsImageView.image = AssetImages.roomActionNotification.image;
             }
             
             tableViewCell.notificationsImageView.tintColor = tableViewCell.notificationsButton.tag ? unselectedColor : selectedColor;
@@ -448,16 +454,16 @@
             
             tableViewCell.favouriteButton.tag = (currentTag && [kMXRoomTagFavourite isEqualToString:currentTag.name]);
             [tableViewCell.favouriteButton addTarget:self action:@selector(onFavouriteButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-            tableViewCell.favouriteImageView.image = [UIImage imageNamed:@"room_action_favourite"];
+            tableViewCell.favouriteImageView.image = AssetImages.roomActionFavourite.image;
             tableViewCell.favouriteImageView.tintColor = tableViewCell.favouriteButton.tag ? selectedColor : unselectedColor;
             
             tableViewCell.priorityButton.tag = (currentTag && [kMXRoomTagLowPriority isEqualToString:currentTag.name]);
             [tableViewCell.priorityButton addTarget:self action:@selector(onPriorityButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-            tableViewCell.priorityImageView.image = tableViewCell.priorityButton.tag ? [UIImage imageNamed:@"room_action_priority_high"] : [UIImage imageNamed:@"room_action_priority_low"];
+            tableViewCell.priorityImageView.image = tableViewCell.priorityButton.tag ? AssetImages.roomActionPriorityHigh.image : AssetImages.roomActionPriorityLow.image;
             tableViewCell.priorityImageView.tintColor = unselectedColor;
             
             [tableViewCell.leaveButton addTarget:self action:@selector(onLeaveButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-            tableViewCell.leaveImageView.image = [UIImage imageNamed:@"room_action_leave"];
+            tableViewCell.leaveImageView.image = AssetImages.roomActionLeave.image;
             tableViewCell.leaveImageView.tintColor = unselectedColor;
         }
     }
@@ -616,15 +622,36 @@
         }
         else
         {
-            // Add long tap gesture recognizer.
-            UILongPressGestureRecognizer *cellLongPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onCollectionViewCellLongPress:)];
-            [cell addGestureRecognizer:cellLongPressGesture];
+            if (@available(iOS 13.0, *))
+            {
+                // Use context menu instead
+            }
+            else
+            {
+                // Add long tap gesture recognizer.
+                UILongPressGestureRecognizer *cellLongPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onCollectionViewCellLongPress:)];
+                [cell addGestureRecognizer:cellLongPressGesture];
+            }
         }
     }
     
     cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.collectionViewPaginationThrottler throttle:^{
+        NSInteger collectionViewSection = indexPath.section;
+        NSInteger numberOfItemsInSection = [collectionView numberOfItemsInSection:collectionViewSection];
+        if (collectionView.numberOfSections > collectionViewSection
+            && indexPath.item == numberOfItemsInSection - 1)
+        {
+            NSInteger tableViewSection = collectionView.tag;
+            [self->recentsDataSource paginateInSection:tableViewSection];
+        }
+    }];
 }
 
 #pragma mark - UICollectionViewDelegate
@@ -654,6 +681,111 @@
     // do not hide the searchBar until the view controller disappear
     // on tablets / iphone 6+, the user could expect to search again while looking at a room
     [self.recentsSearchBar resignFirstResponder];
+}
+
+- (UIContextMenuConfiguration *)collectionView:(UICollectionView *)collectionView contextMenuConfigurationForItemAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point API_AVAILABLE(ios(13.0))
+{
+    UIView *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    MXRoom *room = [self.dataSource getRoomAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:collectionView.tag]];
+    NSString *roomId = room.roomId;
+    
+    MXWeakify(self);
+    MXWeakify(room);
+    
+    return [UIContextMenuConfiguration configurationWithIdentifier:roomId previewProvider:^UIViewController * _Nullable {
+        // Add a preview using the cell's data to prevent the avatar and displayname from changing with a room list update.
+        return [[ContextMenuSnapshotPreviewViewController alloc] initWithView:cell];
+        
+    } actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
+        MXStrongifyAndReturnValueIfNil(room, nil);
+        
+        BOOL isDirect = room.isDirect;
+        UIAction *directChatAction = [UIAction actionWithTitle:isDirect ? VectorL10n.homeContextMenuMakeRoom : VectorL10n.homeContextMenuMakeDm
+                                                         image:[UIImage systemImageNamed:isDirect ? @"person.crop.circle.badge.xmark" : @"person.circle"]
+                                                    identifier:nil
+                                                       handler:^(__kindof UIAction * _Nonnull action) {
+            MXStrongifyAndReturnIfNil(self);
+            [self updateRoomWithId:roomId asDirect:!isDirect];
+        }];
+        
+        BOOL isMuted = room.isMute || room.isMentionsOnly;
+        UIImage *notificationsImage;
+        NSString *notificationsTitle;
+        if ([BuildSettings showNotificationsV2])
+        {
+            notificationsTitle = VectorL10n.homeContextMenuNotifications;
+            notificationsImage = [UIImage systemImageNamed:@"bell"];
+        }
+        else
+        {
+            notificationsTitle = isMuted ? VectorL10n.homeContextMenuUnmute : VectorL10n.homeContextMenuMute;
+            notificationsImage = [UIImage systemImageNamed:isMuted ? @"bell.slash": @"bell"];
+        }
+        
+        UIAction *notificationsAction = [UIAction actionWithTitle:notificationsTitle
+                                                            image:notificationsImage
+                                                       identifier:nil
+                                                          handler:^(__kindof UIAction * _Nonnull action) {
+            MXStrongifyAndReturnIfNil(self);
+            [self updateRoomWithId:roomId asMuted:!isMuted];
+        }];
+        
+        
+        // Get the room tag (use only the first one).
+        MXRoomTag* currentTag = nil;
+        if (room.accountData.tags)
+        {
+            NSArray<MXRoomTag*>* tags = room.accountData.tags.allValues;
+            if (tags.count)
+            {
+                currentTag = tags[0];
+            }
+        }
+        
+        BOOL isFavourite = (currentTag && [kMXRoomTagFavourite isEqualToString:currentTag.name]);
+        UIAction *favouriteAction = [UIAction actionWithTitle:isFavourite ? VectorL10n.homeContextMenuUnfavourite : VectorL10n.homeContextMenuFavourite
+                                                        image:[UIImage systemImageNamed:isFavourite ? @"star.slash" : @"star"]
+                                                   identifier:nil
+                                                      handler:^(__kindof UIAction * _Nonnull action) {
+            MXStrongifyAndReturnIfNil(self);
+            [self updateRoomWithId:roomId asFavourite:!isFavourite];
+        }];
+        
+        BOOL isLowPriority = (currentTag && [kMXRoomTagLowPriority isEqualToString:currentTag.name]);
+        UIAction *lowPriorityAction = [UIAction actionWithTitle:isLowPriority ? VectorL10n.homeContextMenuNormalPriority : VectorL10n.homeContextMenuLowPriority
+                                                          image:[UIImage systemImageNamed:isLowPriority ? @"arrow.up" : @"arrow.down"]
+                                                     identifier:nil
+                                                        handler:^(__kindof UIAction * _Nonnull action) {
+            MXStrongifyAndReturnIfNil(self);
+            [self updateRoomWithId:roomId asLowPriority:!isLowPriority];
+        }];
+        
+        UIImage *leaveImage;
+        if (@available(iOS 14.0, *))
+        {
+            leaveImage = [UIImage systemImageNamed:@"rectangle.righthalf.inset.fill.arrow.right"];
+        }
+        else
+        {
+            leaveImage = [UIImage systemImageNamed:@"rectangle.xmark"];
+        }
+        UIAction *leaveAction = [UIAction actionWithTitle:VectorL10n.homeContextMenuLeave
+                                                    image:leaveImage
+                                               identifier:nil
+                                                  handler:^(__kindof UIAction * _Nonnull action) {
+            MXStrongifyAndReturnIfNil(self);
+            [self leaveRoomWithId:roomId];
+        }];
+        leaveAction.attributes = UIMenuElementAttributesDestructive;
+        
+        return [UIMenu menuWithTitle:@"" children:@[
+            directChatAction,
+            notificationsAction,
+            favouriteAction,
+            lowPriorityAction,
+            leaveAction
+        ]];
+    }];
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -695,7 +827,7 @@
                 // Store the current content offset of the selected collection before refreshing.
                 NSIndexPath *tableViewCellIndexPath = [NSIndexPath indexPathForRow:0 inSection:selectedSection];
                 TableViewCellWithCollectionView *tableViewCellWithCollectionView = [self.recentsTableView cellForRowAtIndexPath:tableViewCellIndexPath];
-                CGFloat selectedCollectionViewContentOffsetCpy = tableViewCellWithCollectionView.collectionView.contentOffset.x;
+                CGFloat selectedCollectionViewContentOffsetCopy = tableViewCellWithCollectionView.collectionView.contentOffset.x;
                 
                 [self refreshRecentsTable];
                 
@@ -712,8 +844,8 @@
                 {
                     // On iOS < 10, the collection view scrolls to the beginning during the table refresh.
                     // We store here the actual content offset, used during the collection view loading.
-                    selectedCollectionViewContentOffset = selectedCollectionViewContentOffsetCpy;
-                }  
+                    selectedCollectionViewContentOffset = selectedCollectionViewContentOffsetCopy;
+                }
                 
                 [self.recentsTableView scrollRectToVisible:tableViewCellWithCollectionView.frame animated:YES];
 
@@ -744,80 +876,96 @@
 
 - (IBAction)onDirectChatButtonPressed:(id)sender
 {
-    if (editedRoomId)
-    {
-        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
-        if (room)
-        {
-            UIButton *button = (UIButton*)sender;
-            [self makeDirectEditedRoom:!button.tag];
-        }
-    }
+    UIButton *button = (UIButton*)sender;
+    [self makeDirectEditedRoom:!button.tag];
 }
 
 - (IBAction)onNotificationsButtonPressed:(id)sender
 {
-    if (editedRoomId)
+    if ([BuildSettings showNotificationsV2])
     {
-        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
-        if (room)
-        {
-            if ([BuildSettings showNotificationsV2])
-            {
-                [self changeEditedRoomNotificationSettings];
-            }
-            else
-            {
-                UIButton *button = (UIButton*)sender;
-                [self muteEditedRoomNotifications:!button.tag];
-            }
-        }
+        [self changeEditedRoomNotificationSettings];
+    }
+    else
+    {
+        UIButton *button = (UIButton*)sender;
+        [self muteEditedRoomNotifications:!button.tag];
     }
 }
 
 - (IBAction)onFavouriteButtonPressed:(id)sender
 {
-    if (editedRoomId)
+    UIButton *button = (UIButton*)sender;
+    if (button.tag)
     {
-        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
-        if (room)
-        {
-            UIButton *button = (UIButton*)sender;
-            if (button.tag)
-            {
-                [self updateEditedRoomTag:nil];
-            }
-            else
-            {
-                [self updateEditedRoomTag:kMXRoomTagFavourite];
-            }
-        }
+        [self updateEditedRoomTag:nil];
+    }
+    else
+    {
+        [self updateEditedRoomTag:kMXRoomTagFavourite];
     }
 }
 
 - (IBAction)onPriorityButtonPressed:(id)sender
 {
-    if (editedRoomId)
+    UIButton *button = (UIButton*)sender;
+    if (button.tag)
     {
-        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
-        if (room)
-        {
-            UIButton *button = (UIButton*)sender;
-            if (button.tag)
-            {
-                [self updateEditedRoomTag:nil];
-            }
-            else
-            {
-                [self updateEditedRoomTag:kMXRoomTagLowPriority];
-            }
-        }
+        [self updateEditedRoomTag:nil];
+    }
+    else
+    {
+        [self updateEditedRoomTag:kMXRoomTagLowPriority];
     }
 }
 
 - (IBAction)onLeaveButtonPressed:(id)sender
 {
     [self leaveEditedRoom];
+}
+
+// MARK: - Context Menu Actions
+
+- (void)updateRoomWithId:(NSString *)roomId asDirect:(BOOL)direct
+{
+    editedRoomId = roomId;
+    [self makeDirectEditedRoom:direct];
+    editedRoomId = nil;
+}
+
+- (void)updateRoomWithId:(NSString *)roomId asMuted:(BOOL)muted
+{
+    editedRoomId = roomId;
+    if ([BuildSettings showNotificationsV2])
+    {
+        [self changeEditedRoomNotificationSettings];
+    }
+    else
+    {
+        [self muteEditedRoomNotifications:muted];
+    }
+    editedRoomId = nil;
+}
+
+- (void)updateRoomWithId:(NSString *)roomId asFavourite:(BOOL)favourite
+{
+    editedRoomId = roomId;
+    [self updateEditedRoomTag:favourite ? kMXRoomTagFavourite : nil];
+    editedRoomId = nil;
+}
+
+- (void)updateRoomWithId:(NSString *)roomId asLowPriority:(BOOL)lowPriority
+{
+    editedRoomId = roomId;
+    [self updateEditedRoomTag:lowPriority ? kMXRoomTagLowPriority : nil];
+    editedRoomId = nil;
+}
+
+- (void)leaveRoomWithId:(NSString *)roomId
+{
+    editedRoomId = roomId;
+    [self leaveEditedRoom];
+    editedRoomId = nil;
 }
 
 #pragma mark - SecureBackupSetupCoordinatorBridgePresenterDelegate
@@ -912,11 +1060,11 @@
 {
     if (ThemeService.shared.isCurrentThemeDark)
     {
-        return [UIImage imageNamed:@"home_empty_screen_artwork_dark"];
+        return AssetImages.homeEmptyScreenArtworkDark.image;
     }
     else
     {
-        return [UIImage imageNamed:@"home_empty_screen_artwork"];
+        return AssetImages.homeEmptyScreenArtwork.image;
     }
 }
 

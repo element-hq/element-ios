@@ -140,18 +140,24 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
 - (void)forceRefresh;
 
 /**
- Tell whether the sections are shrinkable. NO by default.
+ Tell whether the sections are shrinkable. YES by default.
  */
 @property (nonatomic) BOOL areSectionsShrinkable;
+
+/**
+ Return true if the given section is currently shrinked.
+ */
+- (BOOL)isSectionShrinkedAt:(NSInteger)section;
 
 /**
  Get the sticky header view for the specified section.
  
  @param section the section  index
  @param frame the drawing area for the header of the specified section.
+ @param tableView the table view
  @return the sticky header view.
  */
-- (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame;
+- (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame inTableView:(UITableView*)tableView;
 
 /**
  Get the height of the section header view.
@@ -188,6 +194,13 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
  The movingCellBackgroundImage.
  */
 @property (nonatomic) UIImageView* droppingCellBackGroundView;
+
+/**
+ Paginate in the given section. Results will be notified from delegate methods.
+ 
+ @param section section index to be paginated
+ */
+- (void)paginateInSection:(NSInteger)section;
 
 /**
  Move a cell from a path to another one.

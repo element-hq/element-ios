@@ -102,14 +102,14 @@ NSString *FallBackViewControllerJavascriptOnLogin = @"window.matrixLogin.onLogin
         }
         else
         {
-            title = [MatrixKitL10n error];
+            title = [VectorL10n error];
         }
     }
 
     MXWeakify(self);
 
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
                                                 MXStrongifyAndReturnIfNil(self);
@@ -157,7 +157,7 @@ NSString *FallBackViewControllerJavascriptOnLogin = @"window.matrixLogin.onLogin
     if ([urlString hasPrefix:@"js:"])
     {
         // Listen only to scheme of the JS-WKWebView bridge
-        NSString *jsonString = [[[urlString componentsSeparatedByString:@"js:"] lastObject]  stringByReplacingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
+        NSString *jsonString = [[[urlString componentsSeparatedByString:@"js:"] lastObject]  stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
 
         NSError *error;

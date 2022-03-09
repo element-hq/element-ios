@@ -128,9 +128,11 @@ class AvatarView: UIView, Themable {
                                         previewImage: defaultAvatarImage,
                                         mediaManager: viewData.mediaManager)
             avatarImageView.contentMode = .scaleAspectFill
+            avatarImageView.imageView?.contentMode = .scaleAspectFill
         } else {
             avatarImageView.image = defaultAvatarImage
             avatarImageView.contentMode = defaultAvatarImageContentMode
+            avatarImageView.imageView?.contentMode = defaultAvatarImageContentMode
         }
     }
     

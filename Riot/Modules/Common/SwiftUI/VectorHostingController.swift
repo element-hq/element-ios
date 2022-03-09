@@ -19,7 +19,7 @@ import SwiftUI
 
 /**
  UIHostingController that applies some app-level specific configuration
- (E.g. `vectorContent` modifier and themeing to the NavigationController container.
+ (E.g. `vectorContent` modifier and theming to the NavigationController container.
  */
 @available(iOS 14.0, *)
 class VectorHostingController: UIHostingController<AnyView> {
@@ -27,6 +27,10 @@ class VectorHostingController: UIHostingController<AnyView> {
     // MARK: Private
     
     private var theme: Theme
+    
+    // MARK: Public
+    
+    var enableNavigationBarScrollEdgesAppearance = false
     
     init<Content>(rootView: Content) where Content: View {
         self.theme = ThemeService.shared().theme
@@ -67,7 +71,7 @@ class VectorHostingController: UIHostingController<AnyView> {
     
     private func update(theme: Theme) {
         if let navigationBar = self.navigationController?.navigationBar {
-            theme.applyStyle(onNavigationBar: navigationBar)
+            theme.applyStyle(onNavigationBar: navigationBar, withModernScrollEdgesAppearance: enableNavigationBarScrollEdgesAppearance)
         }
     }
 }

@@ -71,7 +71,11 @@ final class SpaceChildRoomDetailViewModel: SpaceChildRoomDetailViewModelType {
     // MARK: - Private
     
     private func loadData() {
-        let avatarViewData = AvatarViewData(matrixItemId: self.childInfo.childRoomId, displayName: self.childInfo.displayName, avatarUrl: self.childInfo.avatarUrl, mediaManager: self.session.mediaManager, fallbackImage: .matrixItem(self.childInfo.childRoomId, self.childInfo.name))
+        let avatarViewData = AvatarViewData(matrixItemId: self.childInfo.childRoomId,
+                                            displayName: self.childInfo.displayName,
+                                            avatarUrl: self.childInfo.avatarUrl,
+                                            mediaManager: self.session.mediaManager,
+                                            fallbackImage: .matrixItem(self.childInfo.childRoomId, self.childInfo.name))
         self.update(viewState: .loaded(self.childInfo, avatarViewData, self.isRoomJoined))
     }
     

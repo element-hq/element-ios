@@ -298,7 +298,7 @@
         }
         else
         {
-            errorMsg = [MatrixKitL10n notSupportedYet];
+            errorMsg = [VectorL10n notSupportedYet];
         }
     }
     else if (type == MXKAuthenticationTypeRegister)
@@ -425,13 +425,13 @@
                 [inputsAlert dismissViewControllerAnimated:NO completion:nil];
             }
             
-            inputsAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n error] message:errorMsg preferredStyle:UIAlertControllerStyleAlert];
+            inputsAlert = [UIAlertController alertControllerWithTitle:[VectorL10n error] message:errorMsg preferredStyle:UIAlertControllerStyleAlert];
             
-            [inputsAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+            [inputsAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                                                                
-                                                               inputsAlert = nil;
+                                                               self->inputsAlert = nil;
                                                                
                                                            }]];
             
@@ -551,10 +551,10 @@
                             }
 
                             // Check whether a second 3pid is available
-                            _isThirdPartyIdentifierPending = (!self.emailContainer.isHidden && self.emailTextField.text.length && ![self isFlowCompleted:kMXLoginFlowTypeEmailIdentity]);
+                            self->_isThirdPartyIdentifierPending = (!self.emailContainer.isHidden && self.emailTextField.text.length && ![self isFlowCompleted:kMXLoginFlowTypeEmailIdentity]);
 
                             // Launch msisdn validation
-                            NSString *e164 = [[NBPhoneNumberUtil sharedInstance] format:nbPhoneNumber numberFormat:NBEPhoneNumberFormatE164 error:nil];
+                            NSString *e164 = [[NBPhoneNumberUtil sharedInstance] format:self->nbPhoneNumber numberFormat:NBEPhoneNumberFormatE164 error:nil];
                             NSString *msisdn;
                             if ([e164 hasPrefix:@"+"])
                             {
@@ -564,12 +564,12 @@
                             {
                                 msisdn = [e164 substringFromIndex:2];
                             }
-                            submittedMSISDN = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumMSISDN andAddress:msisdn];
-
-                            [submittedMSISDN requestValidationTokenWithMatrixRestClient:restClient
-                                                                   isDuringRegistration:YES
-                                                                               nextLink:nil
-                                                                                success:^
+                            self->submittedMSISDN = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumMSISDN andAddress:msisdn];
+                            
+                            [self->submittedMSISDN requestValidationTokenWithMatrixRestClient:restClient
+                                                                         isDuringRegistration:YES
+                                                                                     nextLink:nil
+                                                                                      success:^
                              {
 
                                  [self showValidationMSISDNDialogToPrepareParameters:callback];
@@ -763,7 +763,7 @@
                         {
                             NSDictionary *parameters = @{
                                                          @"auth": @{
-                                                                 @"session":currentSession.session,
+                                                                 @"session": self->currentSession.session,
                                                                  @"response": response,
                                                                  @"type": kMXLoginFlowTypeRecaptcha
                                                                  },
@@ -776,7 +776,7 @@
                         else
                         {
                             MXLogDebug(@"[AuthInputsView] reCaptcha stage failed");
-                            callback(nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n notSupportedYet]}]);
+                            callback(nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[VectorL10n notSupportedYet]}]);
                         }
                         
                     }];
@@ -870,14 +870,14 @@
                         {
                             // We finalize here a registration triggered from external inputs. All the required data are handled by the session id
                             NSDictionary *parameters = @{
-                                           @"auth": @{@"session": currentSession.session, @"response": response, @"type": kMXLoginFlowTypeRecaptcha},
+                                           @"auth": @{@"session": self->currentSession.session, @"response": response, @"type": kMXLoginFlowTypeRecaptcha},
                                            };
                             callback (parameters, nil);
                         }
                         else
                         {
                             MXLogDebug(@"[AuthInputsView] reCaptcha stage failed");
-                            callback (nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n notSupportedYet]}]);
+                            callback (nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[VectorL10n notSupportedYet]}]);
                         }
                     }];
                 }
@@ -915,7 +915,7 @@
         }
         
         MXLogDebug(@"[AuthInputsView] updateAuthSessionWithCompletedStages failed");
-        callback (nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n notSupportedYet]}]);
+        callback (nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[VectorL10n notSupportedYet]}]);
     }
 }
 
@@ -1322,7 +1322,7 @@
         
         [phoneNumberPickerNavigationController pushViewController:phoneNumberCountryPicker animated:NO];
         
-        UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(dismissCountryPicker)];
+        UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:AssetImages.backIcon.image style:UIBarButtonItemStylePlain target:self action:@selector(dismissCountryPicker)];
         phoneNumberCountryPicker.navigationItem.leftBarButtonItem = leftBarButtonItem;
         
         [self.delegate authInputsView:self presentViewController:phoneNumberPickerNavigationController animated:YES];
@@ -1673,7 +1673,7 @@
     
     inputsAlert = [UIAlertController alertControllerWithTitle:[VectorL10n authMsisdnValidationTitle] message:[VectorL10n authMsisdnValidationMessage] preferredStyle:UIAlertControllerStyleAlert];
     
-    [inputsAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [inputsAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                     style:UIAlertActionStyleDefault
                                                   handler:^(UIAlertAction * action) {
                                                       
@@ -1698,14 +1698,14 @@
         
     }];
     
-    [inputsAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n submit]
+    [inputsAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n submit]
                                                     style:UIAlertActionStyleDefault
                                                   handler:^(UIAlertAction * action) {
                                                       
                                                       if (weakSelf)
                                                       {
                                                           typeof(self) self = weakSelf;
-                                                          UITextField *textField = [inputsAlert textFields].firstObject;
+                                                          UITextField *textField = [self->inputsAlert textFields].firstObject;
                                                           NSString *smsCode = textField.text;
                                                           self->inputsAlert = nil;
                                                           
@@ -1770,15 +1770,15 @@
                                                                       }
                                                                       else
                                                                       {
-                                                                          title = [MatrixKitL10n error];
+                                                                          title = [VectorL10n error];
                                                                       }
                                                                   }
                                                                   
                                                                   self->inputsAlert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
                                                                   
-                                                                  [inputsAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
-                                                                                                                  style:UIAlertActionStyleDefault
-                                                                                                                handler:^(UIAlertAction * action) {
+                                                                  [self->inputsAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
+                                                                                                                        style:UIAlertActionStyleDefault
+                                                                                                                      handler:^(UIAlertAction * action) {
                                                                                                                     
                                                                                                                     if (weakSelf)
                                                                                                                     {
