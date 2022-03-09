@@ -47,24 +47,17 @@ protocol UserIndicatorTypePresenterProtocol {
 }
 
 class UserIndicatorTypePresenter: UserIndicatorTypePresenterProtocol {
-    private weak var viewController: UIViewController?
-    
-    // In the existing app architecture it is often view controllers which instantiate
-    // various presenters (errors, alerts ... ) and present on self. Since the presenting view controller
-    // needs to be passed on init, it must be declared as weak, otherwise a retain cycle would occur.
-    private var presentingViewController: UIViewController {
-        guard let viewController = viewController else {
-            MXLog.error("[UserIndicatorTypePresenter]: Presenting view controller is not available")
-            return UIViewController()
-        }
-        return viewController
-    }
-    
+    private let presentationContext: UserIndicatorPresentationContext
     let queue: UserIndicatorQueue
     
-    init(presentingViewController: UIViewController) {
-        self.viewController = presentingViewController
+    init(presentationContext: UserIndicatorPresentationContext) {
+        self.presentationContext = presentationContext
         self.queue = UserIndicatorQueue()
+    }
+    
+    convenience init(presentingViewController: UIViewController) {
+        let context = StaticUserIndicatorPresentationContext(viewController: presentingViewController)
+        self.init(presentationContext: context)
     }
     
     func present(_ type: UserIndicatorType) -> UserIndicator {
@@ -91,7 +84,7 @@ class UserIndicatorTypePresenter: UserIndicatorTypePresenterProtocol {
                 style: .loading,
                 label: label
             ),
-            presentingViewController: presentingViewController
+            presentationContext: presentationContext
         )
         return UserIndicatorRequest(
             presenter: presenter,
@@ -102,7 +95,7 @@ class UserIndicatorTypePresenter: UserIndicatorTypePresenterProtocol {
     private func fullScreenLoadingRequest(label: String) -> UserIndicatorRequest {
         let presenter = FullscreenLoadingViewPresenter(
             label: label,
-            presentingViewController: presentingViewController
+            presentationContext: presentationContext
         )
         return UserIndicatorRequest(
             presenter: presenter,
@@ -116,7 +109,7 @@ class UserIndicatorTypePresenter: UserIndicatorTypePresenterProtocol {
                 style: .success,
                 label: label
             ),
-            presentingViewController: presentingViewController
+            presentationContext: presentationContext
         )
         return UserIndicatorRequest(
             presenter: presenter,

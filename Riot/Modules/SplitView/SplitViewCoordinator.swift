@@ -16,6 +16,7 @@
 
 import Foundation
 import MatrixSDK
+import CommonKit
 
 /// SplitViewCoordinatorParameters input parameters
 class SplitViewCoordinatorParameters {
@@ -104,7 +105,13 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
             // Setup split view controller
             self.splitViewController.viewControllers = [tabBarCoordinator.toPresentable(), detailNavigationController]
             
-            updateUserIndicatorPresenter()
+            // Setup detail user indicator presenter
+            let context = SplitViewUserIndicatorPresentationContext(
+                splitViewController: splitViewController,
+                tabBarCoordinator: tabBarCoordinator,
+                detailNavigationController: detailNavigationController
+            )
+            detailUserIndicatorPresenter = UserIndicatorTypePresenter(presentationContext: context)
                     
             self.add(childCoordinator: tabBarCoordinator)
             
@@ -260,16 +267,6 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
             }
         }
     }
-    
-    private func updateUserIndicatorPresenter() {
-        guard let tabBarCoordinator = tabBarCoordinator, let detailNavigationController = detailNavigationController else {
-            MXLog.debug("[SplitViewCoordinator]: Missing tab bar or detail coordinator, cannot update user indicator presenter")
-            return
-        }
-        
-        let presentingViewController = splitViewController.isCollapsed ? tabBarCoordinator.toPresentable() : detailNavigationController
-        detailUserIndicatorPresenter = UserIndicatorTypePresenter(presentingViewController: presentingViewController)
-    }
 }
 
 // MARK: - UISplitViewControllerDelegate
@@ -299,8 +296,6 @@ extension SplitViewCoordinator: UISplitViewControllerDelegate {
         // Restore detail navigation controller with placeholder as root
         self.resetDetailNavigationController(animated: false)
         
-        updateUserIndicatorPresenter()
-        
         // Return up to date detail navigation controller
         // In any cases `detailNavigationController` will be used as secondary view of the split view controller.
         return self.detailNavigationController
@@ -311,7 +306,6 @@ extension SplitViewCoordinator: UISplitViewControllerDelegate {
     /// or true to indicate that you do not want the split view controller to do anything with the secondary view controller.
     /// Sample case: large iPhone goes from landscape to portrait.
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
-        updateUserIndicatorPresenter()
         
         // If the secondary view is the placeholder screen do not merge the secondary into the primary.
         // Note: In this case, the secondaryViewController will be automatically discarded.

@@ -22,18 +22,18 @@ import UIKit
 /// It is managed by a `UserIndicator`, meaning the `present` and `dismiss` methods will be called when the parent `UserIndicator` starts or completes.
 class FullscreenLoadingViewPresenter: UserIndicatorViewPresentable {
     private let label: String
-    private weak var viewController: UIViewController?
+    private let presentationContext: UserIndicatorPresentationContext
     private weak var view: UIView?
     private var animator: UIViewPropertyAnimator?
     
-    init(label: String, presentingViewController: UIViewController) {
+    init(label: String, presentationContext: UserIndicatorPresentationContext) {
         self.label = label
-        self.viewController = presentingViewController
+        self.presentationContext = presentationContext
     }
 
     func present() {
         // Find the current top navigation controller
-        var presentingController: UIViewController? = viewController
+        var presentingController: UIViewController? = presentationContext.indicatorPresentingViewController
         while presentingController?.navigationController != nil {
             presentingController = presentingController?.navigationController
         }
