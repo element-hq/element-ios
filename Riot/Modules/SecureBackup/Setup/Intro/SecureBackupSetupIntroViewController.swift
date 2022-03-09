@@ -123,6 +123,21 @@ final class SecureBackupSetupIntroViewController: UIViewController {
             }
             self.delegate?.secureBackupSetupIntroViewControllerDidTapUsePassphrase(self)
         }
+
+        setupBackupMethods()
+    }
+
+    private func setupBackupMethods() {
+        let secureBackupSetupMethods = self.viewModel.homeserverEncryptionConfiguration.secureBackupSetupMethods
+
+        // Hide setup methods that are not listed
+        if !secureBackupSetupMethods.contains(.key) {
+            self.secureKeyCell.isHidden = true
+        }
+
+        if !secureBackupSetupMethods.contains(.passphrase) {
+            self.securePassphraseCell.isHidden = true
+        }
     }
     
     private func renderLoading() {

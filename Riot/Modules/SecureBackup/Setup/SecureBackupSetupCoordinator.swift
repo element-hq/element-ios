@@ -30,6 +30,7 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     private let recoveryService: MXRecoveryService
     private let keyBackup: MXKeyBackup?
     private let checkKeyBackup: Bool
+    private let homeserverEncryptionConfiguration: HomeserverEncryptionConfiguration
     private let allowOverwrite: Bool
     private let cancellable: Bool
 
@@ -58,6 +59,7 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
         self.recoveryService = session.crypto.recoveryService
         self.keyBackup = session.crypto.backup
         self.checkKeyBackup = checkKeyBackup
+        self.homeserverEncryptionConfiguration = session.vc_homeserverConfiguration().encryption
         self.allowOverwrite = allowOverwrite
         self.cancellable = cancellable
         
@@ -90,7 +92,9 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
 
     private func createIntro() -> SecureBackupSetupIntroViewController {
         // TODO: Use a coordinator
-        let viewModel = SecureBackupSetupIntroViewModel(keyBackup: self.keyBackup, checkKeyBackup: self.checkKeyBackup)
+        let viewModel = SecureBackupSetupIntroViewModel(keyBackup: self.keyBackup,
+                                                        checkKeyBackup: self.checkKeyBackup,
+                                                        homeserverEncryptionConfiguration: self.homeserverEncryptionConfiguration)
         let introViewController = SecureBackupSetupIntroViewController.instantiate(with: viewModel, cancellable: self.cancellable)
         introViewController.delegate = self
         return introViewController
