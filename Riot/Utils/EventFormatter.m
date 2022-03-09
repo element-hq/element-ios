@@ -66,27 +66,30 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 - (NSAttributedString *)attributedStringFromEvent:(MXEvent *)event withRoomState:(MXRoomState *)roomState error:(MXKEventFormatterError *)error
 {
     NSAttributedString *string = [self unsafeAttributedStringFromEvent:event withRoomState:roomState error:error];
-    
-    // If we cannot create attributed string, but the message is nevertheless meant for display (e.g. not an edit event), show generic error
-    // instead of a missing message on a timeline.
-    if (!string && [self shouldDisplayEvent:event])
+    if (!string)
     {
-        MXLogError(@"[EventFormatter]: Cannot format string for displayable event: %@, type: %@, msgtype: %@, has room state: %d, members: %lu, error: %lu",
+        MXLogDebug(@"[EventFormatter]: No attributed string for event: %@, type: %@, msgtype: %@, has room state: %d, members: %lu, error: %lu",
                    event.eventId,
                    event.type,
                    event.content[@"msgtype"],
                    roomState != nil,
                    roomState.membersCount.members,
                    *error);
-        string = [[NSAttributedString alloc] initWithString:[VectorL10n noticeErrorUnformattableEvent] attributes:@{
-            NSFontAttributeName: [self encryptedMessagesTextFont]
-        }];
+        
+        // If we cannot create attributed string, but the message is nevertheless meant for display, show generic error
+        // instead of a missing message on a timeline.
+        if ([self shouldDisplayEvent:event]) {
+            MXLogError(@"[EventFormatter]: Missing attributed string for message event: %@", event.eventId);
+            string = [[NSAttributedString alloc] initWithString:[VectorL10n noticeErrorUnformattableEvent] attributes:@{
+                NSFontAttributeName: [self encryptedMessagesTextFont]
+            }];
+        }
     }
     return string;
 }
 
 - (BOOL)shouldDisplayEvent:(MXEvent *)event {
-    return [self.eventTypesFilterForMessages containsObject:event.type]
+    return event.eventType == MXEventTypeRoomMessage
     && !event.isEditEvent
     && !event.isRedactedEvent;
 }
