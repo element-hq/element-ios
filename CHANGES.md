@@ -1,3 +1,10 @@
+## Changes in 1.8.5 (2022-03-09)
+
+🐛 Bugfixes
+
+- Room: Only render missing messages for m.room.message types ([#5783](https://github.com/vector-im/element-ios/issues/5783))
+
+
 ## Changes in 1.8.4 (2022-03-08)
 
 🙌 Improvements
