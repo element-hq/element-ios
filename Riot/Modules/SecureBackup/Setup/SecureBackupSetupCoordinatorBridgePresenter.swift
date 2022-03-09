@@ -37,9 +37,12 @@ final class SecureBackupSetupCoordinatorBridgePresenter: NSObject {
     private var coordinator: SecureBackupSetupCoordinator?
     
     // MARK: Public
-    
     weak var delegate: SecureBackupSetupCoordinatorBridgePresenterDelegate?
-    
+
+    var isPresenting: Bool {
+        return self.coordinator != nil
+    }
+
     // MARK: - Setup
 
     init(session: MXSession, allowOverwrite: Bool) {
