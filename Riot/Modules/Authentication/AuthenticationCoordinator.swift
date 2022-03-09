@@ -117,7 +117,6 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     }
     
     private func presentCompleteSecurity() {
-        // TODO: handle secure backup required here
         guard let session = session else {
             MXLog.error("[AuthenticationCoordinator] presentCompleteSecurity: Unable to present security due to missing session.")
             authenticationDidComplete()
@@ -125,7 +124,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         }
         
         let isNewSignIn = true
-        let keyVerificationCoordinator = KeyVerificationCoordinator(session: session, flow: .completeSecurity(isNewSignIn), cancellable: true)
+        let cancellable = !session.vc_homeserverConfiguration().encryption.isSecureBackupRequired
+        let keyVerificationCoordinator = KeyVerificationCoordinator(session: session, flow: .completeSecurity(isNewSignIn), cancellable: cancellable)
         
         keyVerificationCoordinator.delegate = self
         let presentable = keyVerificationCoordinator.toPresentable()

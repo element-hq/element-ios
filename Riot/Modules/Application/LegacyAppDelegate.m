@@ -4281,6 +4281,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     if (!keyVerificationCoordinatorBridgePresenter.isPresenting)
     {
         keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
+        keyVerificationCoordinatorBridgePresenter.cancellable = !mxSession.vc_homeserverConfiguration.encryption.isSecureBackupRequired;
         keyVerificationCoordinatorBridgePresenter.delegate = self;
         
         [keyVerificationCoordinatorBridgePresenter presentCompleteSecurityFrom:self.presentedViewController isNewSignIn:NO animated:YES];
