@@ -106,7 +106,12 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
             self.splitViewController.viewControllers = [tabBarCoordinator.toPresentable(), detailNavigationController]
             
             // Setup detail user indicator presenter
-            detailUserIndicatorPresenter = UserIndicatorTypePresenter(presentationContext: self)
+            let context = SplitViewUserIndicatorPresentationContext(
+                splitViewController: splitViewController,
+                tabBarCoordinator: tabBarCoordinator,
+                detailNavigationController: detailNavigationController
+            )
+            detailUserIndicatorPresenter = UserIndicatorTypePresenter(presentationContext: context)
                     
             self.add(childCoordinator: tabBarCoordinator)
             
@@ -398,15 +403,5 @@ extension SplitViewCoordinator: SplitViewMasterPresentableDelegate {
     
     func splitViewMasterPresentableWantsToResetDetail(_ presentable: Presentable) {
         self.resetDetails(animated: false)
-    }
-}
-
-extension SplitViewCoordinator: UserIndicatorPresentationContext {
-    var indicatorPresentingViewController: UIViewController? {
-        guard let tabBarCoordinator = tabBarCoordinator, let detailNavigationController = detailNavigationController else {
-            MXLog.debug("[SplitViewCoordinator]: Missing tab bar or detail coordinator, cannot update user indicator presenter")
-            return nil
-        }
-        return splitViewController.isCollapsed ? tabBarCoordinator.toPresentable() : detailNavigationController
     }
 }

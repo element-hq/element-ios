@@ -28,8 +28,8 @@ public protocol UserIndicatorPresentationContext {
     var indicatorPresentingViewController: UIViewController? { get }
 }
 
-/// A simple implementation of `UserIndicatorPresentationContext` that simply uses
-/// the a weak reference of the passed-in view controller as the presentation context.
+/// A simple implementation of `UserIndicatorPresentationContext` that uses a weak reference
+/// to the passed-in view controller as the presentation context.
 public class StaticUserIndicatorPresentationContext: UserIndicatorPresentationContext {
     // The presenting view controller will be the parent of the user indicator,
     // and the indicator holds a strong reference to the context, so the view controller
