@@ -2109,3 +2109,5 @@
 "home_syncing" = "Sincronizzazione";
 "room_participants_leave_success" = "Stanza abbandonata";
 "room_participants_leave_processing" = "Uscita in corso";
+"notice_error_unformattable_event" = "** Impossibile visualizzare il messaggio. Si prega di segnalare l'errore";
+"settings_labs_use_only_latest_user_avatar_and_name" = "Mostra avatar e nome più recenti per gli utenti nella cronologia dei messaggi";
