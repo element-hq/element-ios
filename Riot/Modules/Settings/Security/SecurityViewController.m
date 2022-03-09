@@ -364,24 +364,24 @@ TableViewSectionsDelegate>
     
     [sections addObject:crossSigningSection];
     
-    // Cryptograhpy
+    // Cryptography
     
-    Section *cryptograhpySection = [Section sectionWithTag:SECTION_CRYPTOGRAPHY];
-    cryptograhpySection.headerTitle = [VectorL10n securitySettingsCryptography];
+    Section *cryptographySection = [Section sectionWithTag:SECTION_CRYPTOGRAPHY];
+    cryptographySection.headerTitle = [VectorL10n securitySettingsCryptography];
     
     if (RiotSettings.shared.settingsSecurityScreenShowCryptographyInfo)
     {
-        [cryptograhpySection addRowWithTag:CRYPTOGRAPHY_INFO];
+        [cryptographySection addRowWithTag:CRYPTOGRAPHY_INFO];
     }
     
     if (RiotSettings.shared.settingsSecurityScreenShowCryptographyExport && !isSecureBackupRequired)
     {
-        [cryptograhpySection addRowWithTag:CRYPTOGRAPHY_EXPORT];
+        [cryptographySection addRowWithTag:CRYPTOGRAPHY_EXPORT];
     }
 
-    if (cryptograhpySection.rows.count)
+    if (cryptographySection.rows.count)
     {
-        [sections addObject:cryptograhpySection];
+        [sections addObject:cryptographySection];
     }
 
 #ifdef CROSS_SIGNING_AND_BACKUP_DEV
