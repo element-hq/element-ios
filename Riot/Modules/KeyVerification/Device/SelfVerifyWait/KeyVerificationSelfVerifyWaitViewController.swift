@@ -56,7 +56,7 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
 
     // MARK: - Setup
     
-    class func instantiate(with viewModel: KeyVerificationSelfVerifyWaitViewModelType, cancellable: Bool = true) -> KeyVerificationSelfVerifyWaitViewController {
+    class func instantiate(with viewModel: KeyVerificationSelfVerifyWaitViewModelType, cancellable: Bool) -> KeyVerificationSelfVerifyWaitViewController {
         let viewController = StoryboardScene.KeyVerificationSelfVerifyWaitViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
         viewController.cancellable = cancellable

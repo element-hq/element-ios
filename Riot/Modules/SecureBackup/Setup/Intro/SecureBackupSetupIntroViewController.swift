@@ -51,7 +51,7 @@ final class SecureBackupSetupIntroViewController: UIViewController {
         
     // MARK: - Setup
     
-    class func instantiate(with viewModel: SecureBackupSetupIntroViewModelType, cancellable: Bool = true) -> SecureBackupSetupIntroViewController {
+    class func instantiate(with viewModel: SecureBackupSetupIntroViewModelType, cancellable: Bool) -> SecureBackupSetupIntroViewController {
         let viewController = StoryboardScene.SecureBackupSetupIntroViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
         viewController.cancellable = cancellable

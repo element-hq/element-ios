@@ -53,7 +53,7 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
     
     // MARK: - Setup
     
-    class func instantiate(with viewModel: SecretsRecoveryWithPassphraseViewModelType, cancellable: Bool = true) -> SecretsRecoveryWithPassphraseViewController {
+    class func instantiate(with viewModel: SecretsRecoveryWithPassphraseViewModelType, cancellable: Bool) -> SecretsRecoveryWithPassphraseViewController {
         let viewController = StoryboardScene.SecretsRecoveryWithPassphraseViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
         viewController.cancellable = cancellable

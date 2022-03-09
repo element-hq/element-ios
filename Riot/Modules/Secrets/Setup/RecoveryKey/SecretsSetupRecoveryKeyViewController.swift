@@ -44,7 +44,7 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
 
     // MARK: - Setup
     
-    class func instantiate(with viewModel: SecretsSetupRecoveryKeyViewModelType, cancellable: Bool = true) -> SecretsSetupRecoveryKeyViewController {
+    class func instantiate(with viewModel: SecretsSetupRecoveryKeyViewModelType, cancellable: Bool) -> SecretsSetupRecoveryKeyViewController {
         let viewController = StoryboardScene.SecretsSetupRecoveryKeyViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
         viewController.cancellable = cancellable
