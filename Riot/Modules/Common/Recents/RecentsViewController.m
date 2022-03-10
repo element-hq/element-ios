@@ -64,9 +64,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     // when the user selects it.
     UISearchBar *tableSearchBar;
     
-    // Flag determining whether the view controller is ready to use (potentially shared) user indicators
-    // depending on whether the controller is visible or not
-    BOOL isUserIndicatorEnabled;
+    // Flag indicating whether the view controller is (at least partially) visible and not dissapearing
+    BOOL isViewVisible;
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     __weak id kThemeServiceDidChangeThemeNotificationObserver;
@@ -268,10 +267,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    isViewVisible = YES;
     
     [self.screenTracker trackScreen];
-    
-    isUserIndicatorEnabled = YES;
 
     // Reset back user interactions
     self.userInteractionEnabled = YES;
@@ -307,6 +305,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    isViewVisible = NO;
     
     // Leave potential editing mode
     [self cancelEditionMode:NO];
@@ -323,7 +322,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         kMXNotificationCenterDidUpdateRulesObserver = nil;
     }
     
-    isUserIndicatorEnabled = NO;
     [self stopActivityIndicator];
 }
 
@@ -2415,16 +2413,16 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 }
 
 - (void)startActivityIndicatorWithLabel:(NSString *)label {
-    if (self.indicatorPresenter && isUserIndicatorEnabled) {
-        [self.indicatorPresenter presentActivityIndicatorWithLabel:label];
+    if (self.indicatorPresenter && isViewVisible) {
+        [self.indicatorPresenter presentLoadingIndicatorWithLabel:label];
     } else {
         [super startActivityIndicator];
     }
 }
 
 - (void)startActivityIndicator {
-    if (self.indicatorPresenter && isUserIndicatorEnabled) {
-        [self.indicatorPresenter presentActivityIndicator];
+    if (self.indicatorPresenter && isViewVisible) {
+        [self.indicatorPresenter presentLoadingIndicator];
     } else {
         [super startActivityIndicator];
     }
@@ -2432,7 +2430,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)stopActivityIndicator {
     if (self.indicatorPresenter) {
-        [self.indicatorPresenter dismissActivityIndicator];
+        [self.indicatorPresenter dismissLoadingIndicator];
     } else {
         [super stopActivityIndicator];
     }

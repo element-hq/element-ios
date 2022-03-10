@@ -30,13 +30,13 @@ import CommonKit
         self.presenter = presenter
     }
     
-    @objc func presentActivityIndicator() {
-        presentActivityIndicator(label: VectorL10n.homeSyncing)
+    @objc func presentLoadingIndicator() {
+        presentLoadingIndicator(label: VectorL10n.homeSyncing)
     }
 
-    @objc func presentActivityIndicator(label: String) {
+    @objc func presentLoadingIndicator(label: String) {
         guard loadingIndicator == nil else {
-            // The app is very liberal with calling `presentActivityIndicator` (often not matched by corresponding `removeCurrentActivityIndicator`),
+            // The app is very liberal with calling `presentLoadingIndicator` (often not matched by corresponding `dismissLoadingIndicator`),
             // so there is no reason to keep adding new indiciators if there is one already showing.
             return
         }
@@ -45,7 +45,7 @@ import CommonKit
         loadingIndicator = presenter.present(.loading(label: label, isInteractionBlocking: false))
     }
     
-    @objc func dismissActivityIndicator() {
+    @objc func dismissLoadingIndicator() {
         MXLog.debug("[UserIndicatorPresenterWrapper] Dismiss loading indicator")
         loadingIndicator = nil
     }
