@@ -64,6 +64,10 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     // when the user selects it.
     UISearchBar *tableSearchBar;
     
+    // Flag determining whether the view controller is ready to use (potentially shared) user indicators
+    // depending on whether the controller is visible or not
+    BOOL isUserIndicatorEnabled;
+    
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     __weak id kThemeServiceDidChangeThemeNotificationObserver;
 }
@@ -266,6 +270,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     [super viewWillAppear:animated];
     
     [self.screenTracker trackScreen];
+    
+    isUserIndicatorEnabled = YES;
 
     // Reset back user interactions
     self.userInteractionEnabled = YES;
@@ -317,6 +323,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         kMXNotificationCenterDidUpdateRulesObserver = nil;
     }
     
+    isUserIndicatorEnabled = NO;
     [self stopActivityIndicator];
 }
 
@@ -2408,7 +2415,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 }
 
 - (void)startActivityIndicatorWithLabel:(NSString *)label {
-    if (self.indicatorPresenter) {
+    if (self.indicatorPresenter && isUserIndicatorEnabled) {
         [self.indicatorPresenter presentActivityIndicatorWithLabel:label];
     } else {
         [super startActivityIndicator];
@@ -2416,7 +2423,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 }
 
 - (void)startActivityIndicator {
-    if (self.indicatorPresenter) {
+    if (self.indicatorPresenter && isUserIndicatorEnabled) {
         [self.indicatorPresenter presentActivityIndicator];
     } else {
         [super startActivityIndicator];

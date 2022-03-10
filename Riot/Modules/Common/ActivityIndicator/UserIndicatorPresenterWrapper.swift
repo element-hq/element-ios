@@ -41,10 +41,12 @@ import CommonKit
             return
         }
 
+        MXLog.debug("[UserIndicatorPresenterWrapper] Present loading indicator")
         loadingIndicator = presenter.present(.loading(label: label, isInteractionBlocking: false))
     }
     
     @objc func dismissActivityIndicator() {
+        MXLog.debug("[UserIndicatorPresenterWrapper] Dismiss loading indicator")
         loadingIndicator = nil
     }
     

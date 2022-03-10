@@ -567,7 +567,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     isAppeared = NO;
     
     [VoiceMessageMediaServiceProvider.sharedProvider pauseAllServices];
-    [self stopActivityIndicator];
+    
+    // Stop the loading indicator even if the session is still in progress
+    [self stopLoadingIndicator];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -956,12 +958,20 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         notificationTaskProfile = nil;
     }
     if ([self providesCustomActivityIndicator]) {
+        // The legacy super implementation of `stopActivityIndicator` contains a number of checks grouped under `canStopActivityIndicator`
+        // to determine whether the indicator can be stopped or not (and the method should thus rather be called `stopActivityIndicatorIfPossible`).
+        // Since the newer indicators are not calling super implementation, the check for `canStopActivityIndicator` has to be performed manually.
         if ([self canStopActivityIndicator]) {
-            [self.delegate roomViewControllerDidStopLoading:self];
+            [self stopLoadingIndicator];
         }
     } else {
         [super stopActivityIndicator];
     }
+}
+
+- (void)stopLoadingIndicator
+{
+    [self.delegate roomViewControllerDidStopLoading:self];
 }
 
 - (void)displayRoom:(MXKRoomDataSource *)dataSource
