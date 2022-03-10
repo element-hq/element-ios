@@ -1105,10 +1105,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 #pragma mark - PushNotificationServiceDelegate
 
-- (void)pushNotificationService:(PushNotificationService *)pushNotificationService shouldNavigateToRoomWithId:(NSString *)roomId
+- (void)pushNotificationService:(PushNotificationService *)pushNotificationService
+     shouldNavigateToRoomWithId:(NSString *)roomId
+                       threadId:(NSString *)threadId
 {
     _lastNavigatedRoomIdFromPush = roomId;
-    [self navigateToRoomById:roomId];
+    [self navigateToRoomById:roomId threadId:threadId];
 }
 
 #pragma mark - Badge Count
@@ -2897,7 +2899,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 #pragma mark - Matrix Rooms handling
 
-- (void)navigateToRoomById:(NSString *)roomId
+- (void)navigateToRoomById:(NSString *)roomId threadId:(NSString *)threadId
 {
     if (roomId.length)
     {
@@ -2931,7 +2933,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         {
             MXLogDebug(@"[AppDelegate][Push] navigateToRoomById: open the roomViewController %@", roomId);
 
-            [self showRoom:roomId andEventId:nil withMatrixSession:dedicatedAccount.mxSession];
+            [self showRoom:roomId
+                  threadId:threadId
+                andEventId:nil
+         withMatrixSession:dedicatedAccount.mxSession];
         }
         else
         {
@@ -2998,13 +3003,24 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession
 {
+    [self showRoom:roomId threadId:nil andEventId:eventId withMatrixSession:mxSession];
+}
+
+- (void)showRoom:(NSString*)roomId threadId:(NSString*)threadId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession
+{
     // Ask to restore initial display
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
-    
+
+    ThreadParameters *threadParameters = nil;
+    if (RiotSettings.shared.enableThreads && threadId)
+    {
+        threadParameters = [[ThreadParameters alloc] initWithThreadId:threadId stackRoomScreen:NO];
+    }
+
     RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
                                                                                     eventId:eventId
                                                                                   mxSession:mxSession
-                                                                           threadParameters:nil
+                                                                           threadParameters:threadParameters
                                                                      presentationParameters:presentationParameters];
     
     [self showRoomWithParameters:parameters];

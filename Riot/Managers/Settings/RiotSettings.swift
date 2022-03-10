@@ -352,4 +352,7 @@ final class RiotSettings: NSObject {
     
     @UserDefault(key: "versionCheckNextDisplayDateTimeInterval", defaultValue: 0.0, storage: defaults)
     var versionCheckNextDisplayDateTimeInterval
+    
+    @UserDefault(key: "slideMenuRoomsCoachMessageHasBeenDisplayed", defaultValue: false, storage: defaults)
+    var slideMenuRoomsCoachMessageHasBeenDisplayed
 }

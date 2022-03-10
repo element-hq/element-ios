@@ -30,7 +30,7 @@ final class SpaceChildRoomDetailViewModel: SpaceChildRoomDetailViewModelType {
     private var currentOperation: MXHTTPOperation?
     private var userDisplayName: String?
     private var isRoomJoined: Bool {
-        let summary = self.session.roomSummary(withRoomId: self.childInfo.childRoomId)
+        let summary = self.session.room(withRoomId: self.childInfo.childRoomId)?.summary
         return summary?.isJoined ?? false
     }
     

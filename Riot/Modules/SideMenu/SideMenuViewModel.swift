@@ -105,7 +105,6 @@ final class SideMenuViewModel: SideMenuViewModelType {
         
         sideMenuItems += [
             .settings,
-            .help,
             .feedback
         ]
         

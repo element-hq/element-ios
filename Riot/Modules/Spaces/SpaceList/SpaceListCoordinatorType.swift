@@ -23,6 +23,7 @@ protocol SpaceListCoordinatorDelegate: AnyObject {
     func spaceListCoordinator(_ coordinator: SpaceListCoordinatorType, didSelectSpaceWithId spaceId: String)
     func spaceListCoordinator(_ coordinator: SpaceListCoordinatorType, didSelectInviteWithId spaceId: String, from sourceView: UIView?)
     func spaceListCoordinator(_ coordinator: SpaceListCoordinatorType, didPressMoreForSpaceWithId spaceId: String, from sourceView: UIView)
+    func spaceListCoordinatorDidSelectCreateSpace(_ coordinator: SpaceListCoordinatorType)
 }
 
 /// `SpaceListCoordinatorType` is a protocol describing a Coordinator that handle key backup setup passphrase navigation flow.
