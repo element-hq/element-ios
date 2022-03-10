@@ -93,7 +93,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, ThreadsCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, ThreadsCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate>
 {
     
     // The preview header
@@ -201,6 +201,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @property (nonatomic, strong) RoomCreationModalCoordinatorBridgePresenter *roomCreationModalCoordinatorBridgePresenter;
 @property (nonatomic, strong) RoomInfoCoordinatorBridgePresenter *roomInfoCoordinatorBridgePresenter;
 @property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
+@property (nonatomic, strong) RoomParticipantsInviteCoordinatorBridgePresenter *participantsInvitePresenter;
 @property (nonatomic, strong) ThreadsCoordinatorBridgePresenter *threadsBridgePresenter;
 @property (nonatomic, getter=isActivitiesViewExpanded) BOOL activitiesViewExpanded;
 @property (nonatomic, getter=isScrollToBottomHidden) BOOL scrollToBottomHidden;
@@ -629,6 +630,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         hasJitsiCall = NO;
         [self reloadBubblesTable:YES];
     }
+    
+    self.showSettingsInitially = NO;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -1997,32 +2000,34 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)showRoomAvatarChange
 {
-    [self showRoomInfoWithInitialSection:RoomInfoSectionChangeAvatar];
+    [self showRoomInfoWithInitialSection:RoomInfoSectionChangeAvatar animated:YES];
 }
 
 - (void)showAddParticipants
 {
-    [self showRoomInfoWithInitialSection:RoomInfoSectionAddParticipants];
+    self.participantsInvitePresenter = [[RoomParticipantsInviteCoordinatorBridgePresenter alloc] initWithSession:self.roomDataSource.mxSession room:self.roomDataSource.room parentSpaceId:self.parentSpaceId];
+    self.participantsInvitePresenter.delegate = self;
+    [self.participantsInvitePresenter presentFrom:self animated:YES];
 }
 
 - (void)showRoomTopicChange
 {
-    [self showRoomInfoWithInitialSection:RoomInfoSectionChangeTopic];
+    [self showRoomInfoWithInitialSection:RoomInfoSectionChangeTopic animated:YES];
 }
 
 - (void)showRoomInfo
 {
-    [self showRoomInfoWithInitialSection:RoomInfoSectionNone];
+    [self showRoomInfoWithInitialSection:RoomInfoSectionNone animated:YES];
 }
 
-- (void)showRoomInfoWithInitialSection:(RoomInfoSection)roomInfoSection
+- (void)showRoomInfoWithInitialSection:(RoomInfoSection)roomInfoSection animated:(BOOL)animated
 {
-    RoomInfoCoordinatorParameters *parameters = [[RoomInfoCoordinatorParameters alloc] initWithSession:self.roomDataSource.mxSession room:self.roomDataSource.room initialSection:roomInfoSection];
+    RoomInfoCoordinatorParameters *parameters = [[RoomInfoCoordinatorParameters alloc] initWithSession:self.roomDataSource.mxSession room:self.roomDataSource.room parentSpaceId:self.parentSpaceId initialSection:roomInfoSection];
     
     self.roomInfoCoordinatorBridgePresenter = [[RoomInfoCoordinatorBridgePresenter alloc] initWithParameters:parameters];
     
     self.roomInfoCoordinatorBridgePresenter.delegate = self;
-    [self.roomInfoCoordinatorBridgePresenter pushFrom:self.navigationController animated:YES];
+    [self.roomInfoCoordinatorBridgePresenter pushFrom:self.navigationController animated:animated];
 }
 
 - (void)setupActions {
@@ -2254,12 +2259,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 - (void)notifyDelegateOnLeaveRoomIfNecessary {
     if (self.delegate)
     {
-        // Leaving room often triggers multiple events, incl local delegate callbacks as well as global notifications,
-        // which may lead to multiple identical UI changes (navigating to home, displaying notification etc).
-        // To avoid this, as soon as we notify the delegate the first time, we nilify it, preventing future messages
-        // from being passed along, assuming that after leaving a room there is nothing else to communicate to the delegate.
         [self.delegate roomViewControllerDidLeaveRoom:self];
-        self.delegate = nil;
     }
     else
     {
@@ -7094,6 +7094,20 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self notifyDelegateOnLeaveRoomIfNecessary];
 }
 
+- (void)roomInfoCoordinatorBridgePresenter:(RoomInfoCoordinatorBridgePresenter *)coordinatorBridgePresenter didReplaceRoomWithReplacementId:(NSString *)roomId
+{
+    if (self.delegate)
+    {
+        [self.delegate roomViewController:self didReplaceRoomWithReplacementId:roomId];
+    }
+    else
+    {
+        ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES stackAboveVisibleViews:NO];
+        RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId eventId:nil mxSession:self.mainSession presentationParameters:presentationParameters showSettingsInitially:YES];
+        [[AppDelegate theDelegate] showRoomWithParameters:parameters];
+    }
+}
+
 #pragma mark - RemoveJitsiWidgetViewDelegate
 
 - (void)removeJitsiWidgetViewDidCompleteSliding:(RemoveJitsiWidgetView *)view
@@ -7224,4 +7238,22 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self updateThreadListBarButtonBadgeWith:service];
 }
 
+#pragma mark - RoomParticipantsInviteCoordinatorBridgePresenterDelegate
+
+- (void)roomParticipantsInviteCoordinatorBridgePresenterDidComplete:(RoomParticipantsInviteCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    self.participantsInvitePresenter = nil;
+}
+
+- (void)roomParticipantsInviteCoordinatorBridgePresenterDidStartLoading:(RoomParticipantsInviteCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self startActivityIndicator];
+}
+
+- (void)roomParticipantsInviteCoordinatorBridgePresenterDidEndLoading:(RoomParticipantsInviteCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self stopActivityIndicator];
+}
+
 @end
+

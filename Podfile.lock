@@ -45,7 +45,7 @@ PODS:
     - GBDeviceInfo/Core (= 6.6.0)
   - GBDeviceInfo/Core (6.6.0)
   - GZIP (1.3.0)
-  - Introspect (0.1.3)
+  - Introspect (0.1.4)
   - JitsiMeetSDK (3.10.2)
   - KeychainAccess (4.2.2)
   - KituraContracts (1.2.1):
@@ -199,7 +199,7 @@ SPEC CHECKSUMS:
   FlowCommoniOS: ca92071ab526dc89905495a37844fd7e78d1a7f2
   GBDeviceInfo: ed0db16230d2fa280e1cbb39a5a7f60f6946aaec
   GZIP: 416858efbe66b41b206895ac6dfd5493200d95b3
-  Introspect: 2be020f30f084ada52bb4387fff83fa52c5c400e
+  Introspect: b62c4dd2063072327c21d618ef2bedc3c87bc366
   JitsiMeetSDK: 2f118fa770f23e518f3560fc224fae3ac7062223
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
   KituraContracts: e845e60dc8627ad0a76fa55ef20a45451d8f830b

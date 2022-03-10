@@ -22,6 +22,7 @@ import Foundation
     func roomInfoCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: RoomInfoCoordinatorBridgePresenter)
     func roomInfoCoordinatorBridgePresenter(_ coordinatorBridgePresenter: RoomInfoCoordinatorBridgePresenter, didRequestMentionForMember member: MXRoomMember)
     func roomInfoCoordinatorBridgePresenterDelegateDidLeaveRoom(_ coordinatorBridgePresenter: RoomInfoCoordinatorBridgePresenter)
+    func roomInfoCoordinatorBridgePresenter(_ coordinatorBridgePresenter: RoomInfoCoordinatorBridgePresenter, didReplaceRoomWithReplacementId roomId: String)
 }
 
 /// RoomInfoCoordinatorBridgePresenter enables to start RoomInfoCoordinator from a view controller.
@@ -123,6 +124,10 @@ extension RoomInfoCoordinatorBridgePresenter: RoomInfoCoordinatorDelegate {
     
     func roomInfoCoordinatorDidLeaveRoom(_ coordinator: RoomInfoCoordinatorType) {
         self.delegate?.roomInfoCoordinatorBridgePresenterDelegateDidLeaveRoom(self)
+    }
+    
+    func roomInfoCoordinator(_ coordinator: RoomInfoCoordinatorType, didReplaceRoomWithReplacementId roomId: String) {
+        self.delegate?.roomInfoCoordinatorBridgePresenter(self, didReplaceRoomWithReplacementId: roomId)
     }
 }
 

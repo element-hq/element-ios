@@ -68,8 +68,9 @@
     // This will be used by the shared RecentsDataSource instance for sanity checks (see UITableViewDataSource methods).
     self.recentsTableView.tag = RecentsDataSourceModePeople;
     
+    UIImage *fabImage = self.dataSource.currentSpace == nil ? AssetImages.peopleFloatingAction.image : AssetImages.addMemberFloatingAction.image;
     // Add the (+) button programmatically
-    plusButtonImageView = [self vc_addFABWithImage:AssetImages.peopleFloatingAction.image
+    plusButtonImageView = [self vc_addFABWithImage:fabImage
                                             target:self
                                             action:@selector(onPlusButtonPressed)];
 }
