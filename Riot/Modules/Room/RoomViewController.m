@@ -569,7 +569,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [VoiceMessageMediaServiceProvider.sharedProvider pauseAllServices];
     
     // Stop the loading indicator even if the session is still in progress
-    [self stopLoadingIndicator];
+    [self stopLoadingUserIndicator];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -937,10 +937,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     self.updateRoomReadMarker = NO;
 }
 
+#pragma mark - Loading indicators
+
 - (BOOL)providesCustomActivityIndicator {
     return [self.delegate roomViewControllerCanDelegateUserIndicators:self];
 }
 
+// Override of a legacy method to determine whether to use a newer implementation instead.
+// Will be removed in the future https://github.com/vector-im/element-ios/issues/5608
 - (void)startActivityIndicator {
     if ([self providesCustomActivityIndicator]) {
         [self.delegate roomViewControllerDidStartLoading:self];
@@ -949,6 +953,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
 }
 
+// Override of a legacy method to determine whether to use a newer implementation instead.
+// Will be removed in the future https://github.com/vector-im/element-ios/issues/5608
 - (void)stopActivityIndicator
 {
     if (notificationTaskProfile)
@@ -962,14 +968,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         // to determine whether the indicator can be stopped or not (and the method should thus rather be called `stopActivityIndicatorIfPossible`).
         // Since the newer indicators are not calling super implementation, the check for `canStopActivityIndicator` has to be performed manually.
         if ([self canStopActivityIndicator]) {
-            [self stopLoadingIndicator];
+            [self stopLoadingUserIndicator];
         }
     } else {
         [super stopActivityIndicator];
     }
 }
 
-- (void)stopLoadingIndicator
+- (void)stopLoadingUserIndicator
 {
     [self.delegate roomViewControllerDidStopLoading:self];
 }
