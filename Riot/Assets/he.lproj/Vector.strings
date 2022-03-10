@@ -490,3 +490,74 @@
 "spaces_empty_space_title" = "למרחב הזה אין עדיין חדרים";
 "space_beta_announce_title" = "בקרוב - מרחבים";
 "space_feature_unavailable_subtitle" = "מרחבים עדיין לא קיימים עבור iOS, אפשר להשתמש בהם בממשק ה WEB והמחשב";
+
+// Recover with key
+
+"secrets_recovery_with_key_title" = "מפתח אבטחה";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "אנא וודא שהכנסת ביטוי אבטחה נכון.";
+"secrets_recovery_with_passphrase_invalid_passphrase_title" = "לא יכול לגשת לאחסון סודי";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "השתמש במפתח האבטחה שלך";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "לא יודע את ביטוי האבטחה שלך? אתה יכול ";
+"secrets_recovery_with_passphrase_recover_action" = "השתמש בביטוי";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "הכנס ביטוי אבטחה";
+"secrets_recovery_with_passphrase_passphrase_title" = "הכנס";
+"secrets_recovery_with_passphrase_information_verify_device" = "השתמש בביטוי האבטחה שלך על מנת לאמת התקן זה.";
+"secrets_recovery_with_passphrase_information_default" = "הכנס את הודעת האבטחה הישנה שלך ואת זיהוי החתימה שלך על מנת לאמת ממשקים אחרים ע\"י הכנסת ביטוי האבטחה שלך.";
+
+// Recover with passphrase
+
+"secrets_recovery_with_passphrase_title" = "ביטוי אבטחה";
+"secrets_recovery_reset_action_part_2" = "אתחל הכל";
+
+// MARK: - Secrets recovery
+
+"secrets_recovery_reset_action_part_1" = "אפשרויות שחזור נשכחו או הלכו לאיבוד? ";
+"user_verification_session_details_verify_action_other_user" = "מאומת ידנית";
+"user_verification_session_details_verify_action_current_user_manually" = "אימות טקסט ידני";
+"user_verification_session_details_verify_action_current_user" = "אימות אינטראקטיבי";
+"user_verification_session_details_additional_information_untrusted_current_user" = "אם לא התחברת לממשק זה, חשבונך עלול להיחסם.";
+"user_verification_session_details_additional_information_untrusted_other_user" = "עד לאישור הממשק ע\"י היוזר, הודעות שנשלחות אליו וממנו יסומנו עם הודעת אזהרה. לחילופין, אתה יכול לאמת אותו ידנית.";
+"user_verification_session_details_information_untrusted_other_user" = " התחבר ע\"י שימוש בממשק חדש:";
+"user_verification_session_details_information_untrusted_current_user" = "אמת ממשק זה ע\"מ לסמן אותו כבטוח ואפשר לו גישה להודעות מוצפנות:";
+"user_verification_session_details_information_trusted_other_user_part2" = " אמת זאת:";
+"user_verification_session_details_information_trusted_other_user_part1" = "ממשק זה מהימן עבור הודעות מוצפנות מכיון ";
+"user_verification_session_details_information_trusted_current_user" = "ממשק זה מהימן עבור הודעות מוצפנות מכיון שכבר אימתת אותו:";
+"user_verification_session_details_untrusted_title" = "לא מהימן";
+
+// Session details
+
+"user_verification_session_details_trusted_title" = "מהימן";
+"user_verification_sessions_list_session_untrusted" = "לא מהימן";
+"user_verification_sessions_list_session_trusted" = "מהימן";
+"user_verification_sessions_list_table_title" = "ממשק";
+"user_verification_sessions_list_information" = "הודעות עם משתמש זה בחדר זה מוצפנות מקצה לקצה ואינן ניתנות לקריאה ע\"י צד שלישי.";
+"user_verification_sessions_list_user_trust_level_unknown_title" = "לא ידוע";
+"user_verification_sessions_list_user_trust_level_warning_title" = "זהירות";
+
+// Sessions list
+
+"user_verification_sessions_list_user_trust_level_trusted_title" = "מהימן";
+"user_verification_start_additional_information" = "ע\"מ לשמור על אבטחה, בצע פעולה זו לבד או מצא דרך חלופית ליצור קשר.";
+"user_verification_start_waiting_partner" = "ממתין ל %@…";
+"user_verification_start_information_part2" = " ע\"י בדיקה באמצעות קוד חד פעמי בשני ההתקנים שלך.";
+"user_verification_start_information_part1" = "לטובת אבטחה מקסימלית, אנא אשר. ";
+
+// MARK: - User verification
+
+// Start
+
+"user_verification_start_verify_action" = "התחל אימות";
+"key_verification_scan_confirmation_scanned_device_information" = "האם התקן אחר מראה גם את אותה הגנה?";
+"key_verification_scan_confirmation_scanned_user_information" = "האם %@ מציג את אותה הגנה?";
+
+// Scanned
+"key_verification_scan_confirmation_scanned_title" = "כמעט סיימנו!";
+"key_verification_scan_confirmation_scanning_device_waiting_other" = "ממתין להתקן אחר…";
+"key_verification_scan_confirmation_scanning_user_waiting_other" = "ממתין ל%@…";
+
+// MARK: Scan confirmation
+
+// Scanning
+"key_verification_scan_confirmation_scanning_title" = "כמעט סיימנו! ממתין לאישור…";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "קוד QR אומת בהצלחה.";
