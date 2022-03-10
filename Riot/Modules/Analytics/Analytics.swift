@@ -94,8 +94,13 @@ import AnalyticsEvents
         
         MXLog.debug("[Analytics] Started.")
         
-        // Catch and log crashes
-        MXLogger.logCrashes(true)
+        if Bundle.isShareExtension {
+            // Don't log crashes in the share extension
+        } else {
+            // Catch and log crashes
+            MXLogger.logCrashes(true)
+        }
+        
         MXLogger.setBuildVersion(AppInfo.current.buildInfo.readableBuildVersion)
     }
     

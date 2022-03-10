@@ -1,0 +1,1 @@
+Share Extension: Stop logging crashes due to intentional exception that frees up memory.

@@ -30,4 +30,9 @@ public extension Bundle {
         }
         return bundle
     }
+    
+    /// Whether or not the current executable is running in the RiotShareExtension.
+    static var isShareExtension: Bool {
+        main.bundleURL.lastPathComponent.contains("RiotShareExtension.appex")
+    }
 }
