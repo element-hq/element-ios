@@ -1261,6 +1261,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         if (!bubbleTableViewDisplayInTransition && !self.bubblesTableView.isHidden)
         {
             [self refreshActivitiesViewDisplay];
+            [self refreshRoomTitle];
             
             [self checkReadMarkerVisibility];
             [self refreshJumpToLastUnreadBannerDisplay];
