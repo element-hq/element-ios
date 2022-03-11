@@ -4979,8 +4979,29 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     else if (tappedView == previewHeader.leftButton)
     {
-        [self declineRoomInvitation];
+        [self presentDeclineOptions];
     }
+}
+
+- (void)presentDeclineOptions
+{
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:[VectorL10n roomPreviewDeclineInvitationOptions]
+                                                                         message:nil
+                                                                  preferredStyle:UIAlertControllerStyleActionSheet];
+    [actionSheet addAction:[UIAlertAction actionWithTitle:[VectorL10n decline]
+                                                    style:UIAlertActionStyleDefault
+                                                  handler:^(UIAlertAction * _Nonnull action) {
+        [self declineRoomInvitation];
+    }]];
+    [actionSheet addAction:[UIAlertAction actionWithTitle:[VectorL10n ignoreUser]
+                                                    style:UIAlertActionStyleDestructive
+                                                  handler:^(UIAlertAction * _Nonnull action) {
+        [self ignoreInviteSender];
+    }]];
+    [actionSheet addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
+                                                    style:UIAlertActionStyleCancel
+                                                  handler:nil]];
+    [self presentViewController:actionSheet animated:YES completion:nil];
 }
 
 - (void)declineRoomInvitation
@@ -4993,14 +5014,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     else
     {
         [self startActivityIndicator];
-        
         [self.roomDataSource.room leave:^{
-            
             [self stopActivityIndicator];
-            
-            // We remove the current view controller.
-            // Pop to homes view controller
-            [[AppDelegate theDelegate] restoreInitialDisplay:^{}];
+            [self popToHomeViewController];
             
         } failure:^(NSError *error) {
             
@@ -5009,6 +5025,26 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             
         }];
     }
+}
+
+- (void)ignoreInviteSender
+{
+    [self startActivityIndicator];
+    [self.roomDataSource.room ignoreInviteSender:^{
+        [self stopActivityIndicator];
+        [self popToHomeViewController];
+
+    } failure:^(NSError *error) {
+        [self stopActivityIndicator];
+        MXLogDebug(@"[RoomVC] Failed to ignore inviter in room (%@)", self.roomDataSource.room.roomId);
+    }];
+}
+
+- (void)popToHomeViewController
+{
+    // We remove the current view controller.
+    // Pop to homes view controller
+    [[AppDelegate theDelegate] restoreInitialDisplay:^{}];
 }
 
 #pragma mark - Typing management
