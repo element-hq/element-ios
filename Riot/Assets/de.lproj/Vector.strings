@@ -2138,3 +2138,8 @@
 "attachment_unsupported_preview_title" = "Vorschau kann nicht angezeigt werden";
 "message_reply_to_sender_sent_their_location" = "hat den eigenen Standort geteilt.";
 "room_displayname_all_other_members_left" = "%@ (Verlassen)";
+"notice_error_unformattable_event" = "** Nachricht kann nicht dargestellt werden. Bitte erstelle einen Bug-Report";
+"home_syncing" = "Synchronisiere";
+"settings_labs_use_only_latest_user_avatar_and_name" = "Immer aktuelle Profilbilder und Nicknamen anzeigen";
+"room_participants_leave_success" = "Raum verlassen";
+"room_participants_leave_processing" = "Verlassen";
