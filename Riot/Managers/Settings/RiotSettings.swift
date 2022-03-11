@@ -30,6 +30,7 @@ final class RiotSettings: NSObject {
         static let pinRoomsWithMissedNotificationsOnHome = "pinRoomsWithMissedNotif"
         static let pinRoomsWithUnreadMessagesOnHome = "pinRoomsWithUnread"
         static let showAllRoomsInHomeSpace = "showAllRoomsInHomeSpace"
+        static let enableUISIAutoReporting = "enableUISIAutoReporting"
     }
     
     static let shared = RiotSettings()
@@ -145,6 +146,10 @@ final class RiotSettings: NSObject {
     /// Indicates if threads enabled in the timeline.
     @UserDefault(key: "enableThreads", defaultValue: false, storage: defaults)
     var enableThreads
+    
+    /// Indicates if threads enabled in the timeline.
+    @UserDefault(key: UserDefaultsKeys.enableUISIAutoReporting, defaultValue: BuildSettings.cryptoUISIAutoReportingEnabled, storage: defaults)
+    var enableUISIAutoReporting
     
     // MARK: Calls
     

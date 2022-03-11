@@ -220,6 +220,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 @property (nonatomic, strong) PushNotificationStore *pushNotificationStore;
 @property (nonatomic, strong) LocalAuthenticationService *localAuthenticationService;
 @property (nonatomic, strong, readwrite) CallPresenter *callPresenter;
+@property (nonatomic, strong, readwrite) id uisiAutoReporter;
 
 @property (nonatomic, strong) MajorUpdateManager *majorUpdateManager;
 
@@ -465,6 +466,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     self.pushNotificationService.delegate = self;
         
     self.spaceFeatureUnavailablePresenter = [SpaceFeatureUnavailablePresenter new];
+    
+    if (@available(iOS 14.0, *)) {
+        self.uisiAutoReporter = [[UISIAutoReporter alloc] init];
+    }
     
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
@@ -2124,6 +2129,17 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         // register the session to the call service
         [_callPresenter addMatrixSession:mxSession];
         
+        // register the session to the uisi auto-reporter
+        if (_uisiAutoReporter != nil)
+        {
+            if (@available(iOS 14.0, *))
+            {
+                UISIAutoReporter* uisiAutoReporter = (UISIAutoReporter*)_uisiAutoReporter;
+                [uisiAutoReporter add:mxSession];
+            }
+        }
+        [_callPresenter addMatrixSession:mxSession];
+        
         [mxSessionArray addObject:mxSession];
         
         // Do the one time check on device id
@@ -2139,6 +2155,16 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     // remove session from the call service
     [_callPresenter removeMatrixSession:mxSession];
+    
+    // register the session to the uisi auto-reporter
+    if (_uisiAutoReporter != nil)
+    {
+        if (@available(iOS 14.0, *))
+        {
+            UISIAutoReporter* uisiAutoReporter = (UISIAutoReporter*)_uisiAutoReporter;
+            [uisiAutoReporter remove:mxSession];
+        }
+    }
 
     // Update the widgets manager
     [[WidgetManager sharedManager] removeMatrixSession:mxSession]; 

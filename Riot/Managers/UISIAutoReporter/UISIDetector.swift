@@ -23,11 +23,13 @@ protocol UISIDetectorDelegate: AnyObject {
     func uisiReciprocateRequest(source: MXEvent)
 }
 
-enum UISIEventSource {
-    case initialSync
-    case incrementalSync
-    case pagination
+enum UISIEventSource: String {
+    case initialSync = "INITIAL_SYNC"
+    case incrementalSync = "INCREMENTAL_SYNC"
+    case pagination = "PAGINATION"
 }
+
+extension UISIEventSource: Equatable, Codable { }
 
 struct E2EMessageDetected {
     let eventId: String
@@ -43,9 +45,9 @@ struct E2EMessageDetected {
             eventId: event.eventId ?? "",
             roomId: roomId,
             senderUserId: event.sender,
-            senderDeviceId: event.content["device_id"] as? String ?? "",
-            senderKey: event.content["sender_key"] as? String ?? "",
-            sessionId: event.content["session_id"] as? String ?? "",
+            senderDeviceId: event.wireContent["device_id"] as? String ?? "",
+            senderKey: event.wireContent["sender_key"] as? String ?? "",
+            sessionId: event.wireContent["session_id"] as? String ?? "",
             source: source
         )
     }
@@ -70,14 +72,14 @@ class UISIDetector: MXLiveEventListener {
     
     
     func onLiveEvent(roomId: String, event: MXEvent) {
-        guard enabled, !event.isEncrypted else { return }
+        guard enabled, event.isEncrypted, event.clear == nil else { return }
         dispatchQueue.async {
             self.handleEventReceived(detectorEvent: E2EMessageDetected.fromEvent(event: event, roomId: roomId, source: .incrementalSync))
         }
     }
     
     func onPaginatedEvent(roomId: String, event: MXEvent) {
-        guard enabled else { return }
+        guard enabled, event.isEncrypted, event.clear == nil else { return }
         dispatchQueue.async {
             self.handleEventReceived(detectorEvent: E2EMessageDetected.fromEvent(event: event, roomId: roomId, source: .pagination))
         }
