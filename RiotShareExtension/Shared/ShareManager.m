@@ -34,6 +34,12 @@
 @property (nonatomic, strong) MXKAccount *userAccount;
 @property (nonatomic, strong) MXFileStore *fileStore;
 
+/**
+ An array of rooms that the item is being shared to. This is to maintain a strong ref
+ to all necessary `MXRoom`s until sharing has completed.
+ */
+@property (nonatomic, strong) NSMutableArray<MXRoom *> *selectedRooms;
+
 @end
 
 
@@ -94,17 +100,19 @@
         
         session.crypto.warnOnUnknowDevices = NO; // Do not warn for unknown devices. We have cross-signing now
         
-        NSMutableArray<MXRoom *> *rooms = [NSMutableArray array];
+        self.selectedRooms = [NSMutableArray array];
         for (NSString *roomIdentifier in roomIdentifiers) {
             MXRoom *room = [MXRoom loadRoomFromStore:self.fileStore withRoomId:roomIdentifier matrixSession:session];
             if (room) {
-                [rooms addObject:room];
+                [self.selectedRooms addObject:room];
             }
         }
         
-        [self.shareItemSender sendItemsToRooms:rooms success:^{
+        [self.shareItemSender sendItemsToRooms:self.selectedRooms success:^{
+            self.selectedRooms = nil;
             self.completionCallback(ShareManagerResultFinished);
         } failure:^(NSArray<NSError *> *errors) {
+            self.selectedRooms = nil;
             [self showFailureAlert:[VectorL10n roomEventFailedToSend]];
         }];
         

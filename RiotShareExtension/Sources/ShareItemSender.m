@@ -35,7 +35,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 @interface ShareItemSender ()
 
-@property (nonatomic, strong, readonly) UIViewController *rootViewController;
+@property (nonatomic, weak, readonly) UIViewController *rootViewController;
 @property (nonatomic, strong, readonly) ShareExtensionShareItemProvider *shareItemProvider;
 
 @property (nonatomic, strong, readonly) NSMutableArray<NSData *> *pendingImages;
