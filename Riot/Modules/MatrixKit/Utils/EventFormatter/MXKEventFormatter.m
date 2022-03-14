@@ -1261,7 +1261,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                     isHTML =YES;
                     MXJSONModelSetString(body, event.content[@"formatted_body"]);
                 }
-                else if (eventThreadId && !RiotSettings.shared.enableThreads)
+                else if (event.isReplyEvent || (eventThreadId && !RiotSettings.shared.enableThreads))
                 {
                     NSString *repliedEventId = event.relatesTo.inReplyTo.eventId ?: eventThreadId;
                     isHTML = YES;
@@ -2067,7 +2067,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
         textColor = _errorTextColor;
     }
     // Check whether the message is highlighted.
-    else if (event.mxkIsHighlighted || (!RiotSettings.shared.enableThreads && event.isInThread && [event shouldBeHighlightedInSession:mxSession]))
+    else if (event.mxkIsHighlighted || [event shouldBeHighlightedInSession:mxSession])
     {
         textColor = _bingTextColor;
     }
@@ -2132,7 +2132,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     {
         font = _callNoticesTextFont;
     }
-    else if (event.mxkIsHighlighted || (!RiotSettings.shared.enableThreads && event.isInThread && [event shouldBeHighlightedInSession:mxSession]))
+    else if (event.mxkIsHighlighted || [event shouldBeHighlightedInSession:mxSession])
     {
         font = _bingTextFont;
     }
