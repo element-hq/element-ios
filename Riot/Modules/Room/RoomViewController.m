@@ -4979,11 +4979,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     else if (tappedView == previewHeader.leftButton)
     {
-        [self presentDeclineOptions];
+        [self presentDeclineOptionsFromView:tappedView];
     }
 }
 
-- (void)presentDeclineOptions
+- (void)presentDeclineOptionsFromView:(UIView *)view
 {
     UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:[VectorL10n roomPreviewDeclineInvitationOptions]
                                                                          message:nil
@@ -5001,6 +5001,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [actionSheet addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                     style:UIAlertActionStyleCancel
                                                   handler:nil]];
+    actionSheet.popoverPresentationController.sourceView = view;
     [self presentViewController:actionSheet animated:YES completion:nil];
 }
 
@@ -5014,11 +5015,15 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     else
     {
         [self startActivityIndicator];
+        MXWeakify(self);
         [self.roomDataSource.room leave:^{
+            MXStrongifyAndReturnIfNil(self);
+            
             [self stopActivityIndicator];
             [self popToHomeViewController];
             
         } failure:^(NSError *error) {
+            MXStrongifyAndReturnIfNil(self);
             
             [self stopActivityIndicator];
             MXLogDebug(@"[RoomVC] Failed to reject an invited room (%@) failed", self.roomDataSource.room.roomId);
@@ -5030,11 +5035,16 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 - (void)ignoreInviteSender
 {
     [self startActivityIndicator];
+    MXWeakify(self);
     [self.roomDataSource.room ignoreInviteSender:^{
+        MXStrongifyAndReturnIfNil(self);
+        
         [self stopActivityIndicator];
         [self popToHomeViewController];
 
     } failure:^(NSError *error) {
+        MXStrongifyAndReturnIfNil(self);
+        
         [self stopActivityIndicator];
         MXLogDebug(@"[RoomVC] Failed to ignore inviter in room (%@)", self.roomDataSource.room.roomId);
     }];
