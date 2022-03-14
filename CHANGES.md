@@ -1,3 +1,16 @@
+## Changes in 1.8.6 (2022-03-14)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.22.6](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.22.6)).
+- Room: Ignore the sender of a room invite without needing to join the room first ([#5807](https://github.com/vector-im/element-ios/issues/5807))
+
+🐛 Bugfixes
+
+- Activity Indicators: Do not show user indicators when the view controller is not visible ([#5801](https://github.com/vector-im/element-ios/issues/5801))
+- Authentication: Fix social login buttons visibility during registration flow and other minor navigation tweaks. ([#5879](https://github.com/vector-im/element-ios/issues/5879))
+
+
 ## Changes in 1.8.5 (2022-03-09)
 
 🐛 Bugfixes
