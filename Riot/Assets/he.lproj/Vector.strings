@@ -574,3 +574,151 @@
 "onboarding_use_case_not_sure_yet" = "מתלבט ? אתה מסוגל %@";
 "onboarding_use_case_community_messaging" = "קהילות";
 "onboarding_use_case_personal_messaging" = "חברים ומשפחה";
+"discard" = "לבטל";
+"abort" = "בטל";
+"yes" = "כן";
+
+// Action
+"no" = "לא";
+"login_error_resource_limit_exceeded_contact_button" = "צור קשר עם מנהל המערכת";
+"login_error_resource_limit_exceeded_message_contact" = "\n\nאנא צור קשר מנהל השירות שלך על מנת להמשיך להשתמש בשירות זה.";
+"login_error_resource_limit_exceeded_message_monthly_active_user" = "שרת זה הגיע למגבלת המשתמשים הפעילים בו.";
+"login_error_resource_limit_exceeded_message_default" = "שרת בית זה הגיע לסף של אחד המשאבים שלו.";
+"login_error_resource_limit_exceeded_title" = "הגעה לסף משאבים";
+"login_desktop_device" = "שולחן עבודה";
+"login_tablet_device" = "טאבלט";
+"login_mobile_device" = "נייד";
+"login_error_forgot_password_is_not_supported" = "שכחתי סיסמה לא נתמך כרגע";
+"register_error_title" = "רישום נכשל";
+"room_accessibility_upload" = "העלאה";
+"room_accessibility_integrations" = "התקנות";
+"room_accessibility_search" = "חפש";
+"room_message_edits_history_title" = "עריכות הודעה";
+"room_resource_usage_limit_reached_message_contact_3" = " על מנת להגיע לעלית סף זה.";
+"room_resource_usage_limit_reached_message_2" = "חלק מהמשתמשים לא יוכלו להתחבר.";
+"room_resource_usage_limit_reached_message_1_monthly_active_user" = "שרת הבית הזה הגיע לסף החודשי של משתמשים פעילים בו אז ";
+"room_resource_usage_limit_reached_message_1_default" = "שרת הבית הזה הגיע לסף של אחד המשאבים שלו אז ";
+"room_resource_limit_exceeded_message_contact_3" = " על מנת להמשיך לעשות שימוש בשירות זה.";
+"room_resource_limit_exceeded_message_contact_2_link" = "צור קשר עם מנהל השירות שלך";
+"room_resource_limit_exceeded_message_contact_1" = " בבקשה ";
+"room_predecessor_link" = "לחץ כאן כדי לראות הודעות ישנות.";
+"room_predecessor_information" = "חדר זה הוא המשך של שיחה אחרת.";
+"room_replacement_link" = "השיחה ממשיכה כאן.";
+"room_replacement_information" = "חדר זה הוחלף והוא אינו פעיל יותר.";
+"room_action_reply" = "תשובה";
+"room_action_send_file" = "שלח קובץ";
+"room_action_send_sticker" = "שלח תוית";
+"room_action_send_photo_or_video" = "שלח תמונה אם סרטון וידאו";
+"room_action_camera" = "צלם תמונה או וידאו";
+"room_creation_error_invite_user_by_email_without_identity_server" = "לא הוגדר אף שרת זיהוי לכן אתה לא יכול להוסיף משתתף עם אימייל.";
+"room_creation_invite_another_user" = "מספר משתמש, שם או אימייל";
+"room_creation_wait_for_creation" = "החדר כבר הוגדר. אנא המתן.";
+"room_creation_make_private" = "הפוך לפרטי";
+"room_creation_keep_private" = "שמור על פרטיות";
+"room_creation_make_public_prompt_msg" = "האם אתה בטוח שברצונך ליצור צ'אט זה ציבורי? כל אחד יוכל לקרא את ההודעות שלך ולהצטרף לצ'אט.";
+"room_creation_make_public_prompt_title" = "הגדר צ'אט זה ציבורי?";
+"room_creation_make_public" = "הפוך לציבורי";
+"room_creation_public_room" = "צ'אט זה הוא ציבורי";
+"room_creation_private_room" = "צ'אט זה הוא פרטי";
+"room_creation_privacy" = "פרטי";
+"room_creation_appearance_picture" = "תמונת צ'אט(אופציונלי)";
+"room_creation_appearance_name" = "שם";
+"room_creation_appearance" = "קיים";
+"room_creation_account" = "חשבון";
+
+// Chat creation
+"room_creation_title" = "צ'אט חדש";
+
+// Errors
+"error_user_already_logged_in" = "נראה שאתה מנסה להתחבר לשרת בית אחר. האם אתה מעוניין להתנתק?";
+"social_login_button_title_sign_up" = "הירשם באמצעות %@";
+"social_login_button_title_sign_in" = "התחבר באמצעות %@";
+"social_login_button_title_continue" = "המשך עם %@";
+"space_feature_unavailable_information" = "מרחבים הם דרך חדשה לקבץ חדרים ואנשים.\n\nהם יהיו כאן בקרוב. בינתיים, אם תצטרף לאחד בפלטפורמה אחרת, תוכל לגשת לכל חדר אליו אתה מצטרף כאן.";
+"leave_space_and_all_rooms_action" = "עזוב את כל החדרים והמרחבים";
+"leave_space_only_action" = "אל תעזוב אף אחד מהחדרים";
+"leave_space_message_admin_warning" = "אתה עם הרשאות admin במרחב זה, וודא שהעברת הרשאות admin לחבר אחר לפני שאתה עוזב.";
+"leave_space_message" = "האתם אתה בטוח שברצונך לעזוב את %@? האם אתה מעוניין לעזוב גם את כל החדרים והמרחבים של מרחב זה?";
+"leave_space_title" = "עזוב את %@";
+"spaces_home_space_title" = "בית";
+"space_beta_announce_information" = "מרחבים הם דרך לקבץ חדרים ואנשים. הם לא ב IOS לבינתיים, אבל אתה יכול להשתמש בהם כעת ב WEB או בשולחן העבודה.";
+"space_beta_announce_subtitle" = "הגרסה החדשה של קהילות";
+"space_beta_announce_badge" = "בטה";
+"spaces_explore_rooms" = "חשוף חדרים";
+"ssl_fingerprint_hash" = "טביעת אצבע (%@):";
+"call_transfer_to_user" = "העבר ל %@";
+"call_consulting_with_user" = "התייעצות עם %@";
+"call_video_with_user" = "שיחת וידאו באמצעות %@";
+"call_voice_with_user" = "חיוג קולי באמצעות %@";
+"call_more_actions_dialpad" = "מסך חיוג";
+"call_more_actions_transfer" = "העבר";
+"call_more_actions_audio_use_device" = "מכשיר רמקול";
+"call_more_actions_change_audio_device" = "החלף התקן שמע";
+"call_more_actions_unhold" = "התחל שוב";
+"call_more_actions_hold" = "החזק";
+"call_holded" = "אתה מחזיק את השיחה";
+"call_remote_holded" = "%@ מחזיק את השיחה";
+"call_invite_expired" = "פג תוקף הזמנת שיחה";
+"incoming_voice_call" = "שיחת קול נכנסת";
+"incoming_video_call" = "שיחת וידאו נכנסת";
+"call_ended" = "שיחה הסתיימה";
+"call_ringing" = "מצלצל…";
+
+// Settings keys 
+
+// call string
+"call_connecting" = "מתחבר…";
+
+// gcm section 
+"settings_config_identity_server" = "זהות שרת:%@";
+"notification_settings_notify_all_other" = "עדכן עבור כל ההודעות/החדרים האחרים";
+"notification_settings_by_default" = "בברירת מחדל...";
+"notification_settings_suppress_from_bots" = "השתק התראות מבוטים";
+"notification_settings_receive_a_call" = "עדכן אותי כאשר אני מקבל שיחה";
+"notification_settings_people_join_leave_rooms" = "עדכן אותי כאשר אנשים מצטרפים או עוזבים חדרים";
+"notification_settings_invite_to_a_new_room" = "עדכן אותי כאשר אני מוזמן לחדר חדש";
+"notification_settings_just_sent_to_me" = "עדכן אותי עם צליל עבור הודעות שנשלחות רק אליי";
+"notification_settings_contain_my_display_name" = "עדכן אותי עם צליל לגבי הודעות הכוללות תצוגת שמי";
+"notification_settings_contain_my_user_name" = "עדכן אותי עם צליל לגבי הודעות הכוללות את שם המשתמש שלי";
+"notification_settings_other_alerts" = "התראות אחרות";
+"notification_settings_highlight" = "דבר חשוב";
+"notification_settings_global_info" = "התראת הגדרות עבור החשבון שלך נשמרה ותשותף עם כל ההתקנים שתומכים בה(כולל התראות מסך).\n\nחוקים יושמו; החוק הראשון שיותאם יגדיר את התוצאה שתישלח כהודעה.\nאז:התראות עבור מלה חשובות יותר מהתראות עבור חדר שחשובות יותר מהתראות שולח.\nעבור מספר חוקים מאותו סוג, הראשון ברשימה שיימצא מתאים יקבל את העדיפות.";
+"notification_settings_per_word_notifications" = "התראות מלה";
+"notification_settings_enable_notifications_warning" = "ההתראות עבור כל ההתקנים נחסמו כעת.";
+"notification_settings_enable_notifications" = "אפשר התראות";
+
+// Notification settings screen 
+"notification_settings_disable_all" = "בטל את כל ההתראות";
+"settings_title_notifications" = "התראות";
+
+// Settings screen 
+"settings_title_config" = "תצורה";
+"settings_integrations" = "התקנה";
+"settings_identity_server_settings" = "שרת הזדהות";
+"settings_discovery_settings" = "גלוי";
+"settings_calls_settings" = "שיחות";
+"account_logout_all" = "צא מכל החשבונות";
+
+// Settings
+"settings_title" = "הגדרות";
+"settings_ui_theme_picker_title" = "בחר נושא";
+"settings_ui_theme_black" = "שחור";
+"settings_ui_theme_dark" = "חשוך";
+"share_extension_low_quality_video_message" = "שלח ב%@ עבור איכות משופרת, או שלח באיכות נמוכה מזו.";
+"share_extension_low_quality_video_title" = "וידאו יישלח באיכות נמוכה";
+"share_extension_failed_to_encrypt" = "שליחה נכשלה. בדוק באפליקציה הראשית את הגדרות ההצפנה עבור חדר זה";
+
+// Share extension
+"share_extension_auth_prompt" = "התחבר אל האפליקציה הראשית על מנת לחלוק תוכן";
+"room_widget_permission_room_id_permission" = "מספר חדר";
+"room_widget_permission_widget_id_permission" = "מספר יישומון";
+"room_widget_permission_theme_permission" = "שם הנושא";
+"room_widget_permission_user_id_permission" = "מספר המשתמש שלך";
+"room_widget_permission_avatar_url_permission" = "דמות ה URL שלך";
+"room_widget_permission_display_name_permission" = "שם התצוגה שלך";
+"search_no_result" = "אין תוצאות";
+"search_people_placeholder" = "חיפוש באמצעות מספר משתמש, שם או אימייל";
+"search_filter_placeholder" = "סינון";
+"search_default_placeholder" = "חפש";
+"secrets_recovery_with_key_information_verify_device" = "השתמש במפתח האבטחה שלך ע\"מ לאשר התקן זה.";
+"secrets_recovery_with_key_information_default" = "היכנס אל ההודעות המאובטחות הישנות שלך ואל זיהוי החתימה שלך ע\"מ לאשר קישורים אחרים ע\"י הכנסת מפתח האבטחה שלך.";
