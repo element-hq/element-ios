@@ -2127,6 +2127,10 @@ public class VectorL10n: NSObject {
   public static var ignore: String { 
     return VectorL10n.tr("Vector", "ignore") 
   }
+  /// Ignore User
+  public static var ignoreUser: String { 
+    return VectorL10n.tr("Vector", "ignore_user") 
+  }
   /// Take photo
   public static var imagePickerActionCamera: String { 
     return VectorL10n.tr("Vector", "image_picker_action_camera") 
@@ -5322,6 +5326,10 @@ public class VectorL10n: NSObject {
   /// Tap here to see older messages.
   public static var roomPredecessorLink: String { 
     return VectorL10n.tr("Vector", "room_predecessor_link") 
+  }
+  /// Do you want to decline the invitation or ignore this user?
+  public static var roomPreviewDeclineInvitationOptions: String { 
+    return VectorL10n.tr("Vector", "room_preview_decline_invitation_options") 
   }
   /// You have been invited to join this room by %@
   public static func roomPreviewInvitationFormat(_ p1: String) -> String {
