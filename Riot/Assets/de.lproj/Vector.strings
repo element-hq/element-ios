@@ -56,7 +56,7 @@
 "auth_missing_email_or_phone" = "Fehlende E-Mail-Adresse oder Telefon-Nummer";
 "auth_password_dont_match" = "Passwörter stimmen nicht überein";
 "auth_username_in_use" = "Benutzername bereits verwendet";
-"auth_forgot_password" = "Passwort des Matrix-Kontos vergessen?";
+"auth_forgot_password" = "Passwort deines Matrix-Kontos vergessen?";
 "auth_msisdn_validation_title" = "Verifizierung ausstehend";
 "auth_msisdn_validation_message" = "Bitte gib unten den Aktivierungs-Code ein, den wir per SMS verschickt haben.";
 "auth_msisdn_validation_error" = "Telefonnummer kann nicht verifiziert werden.";
