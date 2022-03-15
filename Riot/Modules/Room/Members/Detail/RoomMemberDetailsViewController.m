@@ -460,6 +460,7 @@
 
 - (void)showRoomWithId:(NSString*)roomId
 {
+    Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerRoomMemberDetail;
     [[AppDelegate theDelegate] showRoom:roomId andEventId:nil withMatrixSession:self.mainSession];
 }
 

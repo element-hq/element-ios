@@ -68,6 +68,9 @@ struct SpaceSettings: View {
                   }),
                   secondaryButton: .cancel())
         })
+        .onAppear {
+            viewModel.send(viewAction: .trackSpace)
+        }
     }
     
     // MARK: - Private

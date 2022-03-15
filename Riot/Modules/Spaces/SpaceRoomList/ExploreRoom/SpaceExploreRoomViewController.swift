@@ -88,6 +88,15 @@ final class SpaceExploreRoomViewController: UIViewController {
         AnalyticsScreenTracker.trackScreen(.spaceExploreRooms)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if let spaceRoom = self.viewModel.space?.room {
+            Analytics.shared.trackViewRoom(spaceRoom)
+        }
+        Analytics.shared.exploringSpace = self.viewModel.space
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         

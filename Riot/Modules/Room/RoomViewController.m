@@ -1204,6 +1204,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         // Check
         if (roomAlias.length)
         {
+            Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerSlashCommand;
+            
             // TODO: /join command does not support via parameters yet
             [self.mainSession joinRoom:roomAlias viaServers:nil success:^(MXRoom *room) {
                                 
@@ -2323,6 +2325,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (BOOL)handleUniversalLinkWithParameters:(UniversalLinkParameters*)parameters
 {
+    Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerTimeline;
+    
     if (self.delegate)
     {
         return [self.delegate roomViewController:self handleUniversalLinkWithParameters:parameters];
@@ -3109,6 +3113,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     if (predecessorRoomId)
                     {
                         // Show predecessor room
+                        Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerTombstone;
                         [self showRoomWithId:predecessorRoomId];
                     }
                     else

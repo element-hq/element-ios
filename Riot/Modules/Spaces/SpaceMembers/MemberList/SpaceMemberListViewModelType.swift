@@ -33,6 +33,7 @@ protocol SpaceMemberListViewModelType {
         
     var viewDelegate: SpaceMemberListViewModelViewDelegate? { get set }
     var coordinatorDelegate: SpaceMemberListViewModelCoordinatorDelegate? { get set }
+    var space: MXSpace? { get }
     
     func process(viewAction: SpaceMemberListViewAction)
 }

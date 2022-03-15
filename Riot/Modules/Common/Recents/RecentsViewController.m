@@ -873,6 +873,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)showRoomWithRoomId:(NSString*)roomId inMatrixSession:(MXSession*)matrixSession
 {
+    MXRoom *room = [matrixSession roomWithRoomId:roomId];
+    if (room.summary.membership == MXMembershipInvite)
+    {
+        Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerInvite;
+    }
+
     // Avoid multiple openings of rooms
     self.userInteractionEnabled = NO;
 
@@ -892,6 +898,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)showRoomPreviewWithData:(RoomPreviewData*)roomPreviewData
 {
+    Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerRoomDirectory;
+
     // Do not stack views when showing room
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO sender:nil sourceView:nil];
     
@@ -988,6 +996,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         }
         
         // Accept invitation
+        Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerInvite;
         [self joinRoom:invitedRoom completion:nil];
     }
     else if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellDeclineButtonPressed])
@@ -2055,6 +2064,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     // Check whether the user has already joined the selected public room
     if ([self.recentsDataSource.publicRoomsDirectoryDataSource.mxSession isJoinedOnRoom:publicRoom.roomId])
     {
+        Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerRoomDirectory;
+        
         // Open the public room
         [self showRoomWithRoomId:publicRoom.roomId
                  inMatrixSession:self.recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
@@ -2150,11 +2161,14 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
 {
+    Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerRoomList;
     [self showRoomWithRoomId:roomId inMatrixSession:matrixSession];
 }
 
 - (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectSuggestedRoom:(MXSpaceChildInfo *)childInfo
 {
+    Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerSpaceHierarchy;
+    
     RoomPreviewData *previewData = [[RoomPreviewData alloc] initWithSpaceChildInfo:childInfo andSession:self.mainSession];
     [self startActivityIndicator];
     MXWeakify(self);
@@ -2214,6 +2228,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 - (void)createRoomCoordinatorBridgePresenterDelegate:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter didCreateNewRoom:(MXRoom *)room
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerCreated;
         [self showRoomWithRoomId:room.roomId inMatrixSession:self.mainSession];
     }];
     coordinatorBridgePresenter = nil;

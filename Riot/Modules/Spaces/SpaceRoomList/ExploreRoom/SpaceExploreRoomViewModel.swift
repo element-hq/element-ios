@@ -71,6 +71,9 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
     }
     
     private var spaceGraphObserver: Any?
+    var space: MXSpace? {
+        return session.spaceService.getSpace(withId: spaceId)
+    }
     
     // MARK: Public
 
