@@ -65,6 +65,9 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     private var authenticationType: MXKAuthenticationType?
     private var session: MXSession?
     
+    private var shouldShowDisplayNameScreen = false
+    private var shouldShowAvatarScreen = false
+    
     /// Whether all of the onboarding steps have been completed or not. `false` if there are more screens to be shown.
     private var onboardingFinished = false
     /// Whether authentication is complete. `true` once authenticated, verified and the app is ready to be shown.
@@ -255,8 +258,8 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             if authenticationType == .register,
                let userId = session.credentials.userId,
                let userSession = UserSessionsService.shared.userSession(withUserId: userId),
-               BuildSettings.onboardingShowAccountPersonalisation {
-                showCongratulationsScreen(userSession: userSession)
+               BuildSettings.onboardingShowAccountPersonalization {
+                checkHomeserverCapabilities(for: userSession)
                 return
             } else if Analytics.shared.shouldShowAnalyticsPrompt {
                 showAnalyticsPrompt(for: session)
@@ -267,6 +270,20 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         // Otherwise onboarding is finished.
         onboardingFinished = true
         completeIfReady()
+    }
+    
+    @available(iOS 14.0, *)
+    private func checkHomeserverCapabilities(for userSession: UserSession) {
+        userSession.matrixSession.matrixRestClient.capabilities { [weak self] capabilities in
+            guard let self = self else { return }
+            self.shouldShowDisplayNameScreen = capabilities?.setDisplayName?.isEnabled == true
+            self.shouldShowAvatarScreen = capabilities?.setAvatarUrl?.isEnabled == true
+            
+            self.beginPostAuthentication(for: userSession)
+        } failure: { [weak self] _ in
+            MXLog.warning("[OnboardingCoordinator] Homeserver capabilities not returned. Skipping personalisation")
+            self?.beginPostAuthentication(for: userSession)
+        }
     }
     
     /// Displays the next view in the flow after the authentication screen.
@@ -292,10 +309,16 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     // MARK: - Post-Authentication
     
     @available(iOS 14.0, *)
-    private func showCongratulationsScreen(userSession: UserSession) {
+    private func beginPostAuthentication(for userSession: UserSession) {
+        showCongratulationsScreen(for: userSession)
+    }
+    
+    @available(iOS 14.0, *)
+    private func showCongratulationsScreen(for userSession: UserSession) {
         MXLog.debug("[OnboardingCoordinator] showCongratulationsScreen")
         
-        let parameters = OnboardingCongratulationsCoordinatorParameters(userSession: userSession)
+        let parameters = OnboardingCongratulationsCoordinatorParameters(userSession: userSession,
+                                                                        personalizationDisabled: !shouldShowDisplayNameScreen && !shouldShowAvatarScreen)
         let coordinator = OnboardingCongratulationsCoordinator(parameters: parameters)
         
         coordinator.completion = { [weak self, weak coordinator] result in
@@ -316,15 +339,25 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     private func congratulationsCoordinator(_ coordinator: OnboardingCongratulationsCoordinator, didCompleteWith result: OnboardingCongratulationsCoordinatorResult) {
         switch result {
         case .personaliseProfile(let userSession):
-            #warning("Check server capabilities first")
-            showDisplayNameScreen(for: userSession)
-            return
+            if shouldShowDisplayNameScreen {
+                showDisplayNameScreen(for: userSession)
+                return
+            } else if shouldShowAvatarScreen {
+                showAvatarScreen(for: userSession)
+                return
+            } else if Analytics.shared.shouldShowAnalyticsPrompt {
+                showAnalyticsPrompt(for: userSession.matrixSession)
+                return
+            }
         case .takeMeHome(let userSession):
             if Analytics.shared.shouldShowAnalyticsPrompt {
                 showAnalyticsPrompt(for: userSession.matrixSession)
                 return
             }
         }
+        
+        onboardingFinished = true
+        completeIfReady()
     }
     
     @available(iOS 14.0, *)
@@ -349,7 +382,46 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     
     @available(iOS 14.0, *)
     private func displayNameCoordinator(_ coordinator: OnboardingDisplayNameCoordinator, didCompleteWith userSession: UserSession) {
-        // TODO: Show Avatar screen.
+        if shouldShowAvatarScreen {
+            showAvatarScreen(for: userSession)
+            return
+        } else if Analytics.shared.shouldShowAnalyticsPrompt {
+            showAnalyticsPrompt(for: userSession.matrixSession)
+        }
+        
+        onboardingFinished = true
+        completeIfReady()
+    }
+    
+    @available(iOS 14.0, *)
+    private func showAvatarScreen(for userSession: UserSession) {
+        MXLog.debug("[OnboardingCoordinator]: showAvatarScreen")
+        
+        let parameters = OnboardingAvatarCoordinatorParameters(userSession: userSession)
+        let coordinator = OnboardingAvatarCoordinator(parameters: parameters)
+        
+        coordinator.completion = { [weak self, weak coordinator] session in
+            guard let self = self, let coordinator = coordinator else { return }
+            self.avatarCoordinator(coordinator, didCompleteWith: session)
+        }
+        
+        add(childCoordinator: coordinator)
+        coordinator.start()
+        
+        #warning("Should become root if display name was disabled.")
+        if navigationRouter.modules.isEmpty {
+            navigationRouter.setRootModule(coordinator, hideNavigationBar: false, animated: true) { [weak self] in
+                self?.remove(childCoordinator: coordinator)
+            }
+        } else {
+            navigationRouter.push(coordinator, animated: true) { [weak self] in
+                self?.remove(childCoordinator: coordinator)
+            }
+        }
+    }
+    
+    @available(iOS 14.0, *)
+    private func avatarCoordinator(_ coordinator: OnboardingAvatarCoordinator, didCompleteWith userSession: UserSession) {
         if Analytics.shared.shouldShowAnalyticsPrompt {
             showAnalyticsPrompt(for: userSession.matrixSession)
             return

@@ -27,6 +27,19 @@ struct OnboardingDisplayNameScreen: View {
     
     @State private var isEditingTextField = false
     
+    #warning("Move these computed properties to the view model")
+    var textFieldFooterString: String {
+        if let errorMessage = viewModel.viewState.validationErrorMessage {
+            return errorMessage
+        }
+        
+        return VectorL10n.onboardingDisplayNameHint
+    }
+    
+    var textFieldFooterColor: Color {
+        viewModel.viewState.validationErrorMessage == nil ? theme.colors.tertiaryContent : theme.colors.alert
+    }
+    
     // MARK: Public
     
     @ObservedObject var viewModel: OnboardingDisplayNameViewModel.Context
@@ -49,7 +62,11 @@ struct OnboardingDisplayNameScreen: View {
         }
         .accentColor(theme.colors.accent)
         .background(theme.colors.background.ignoresSafeArea())
+        .waitOverlay(show: viewModel.viewState.isWaiting, allowUserInteraction: false)
         .alert(item: $viewModel.alertInfo) { $0.alert }
+        .onChange(of: viewModel.displayName) { _ in
+            viewModel.send(viewAction: .validateDisplayName)
+        }
     }
     
     /// The icon, title and message views.
@@ -77,11 +94,13 @@ struct OnboardingDisplayNameScreen: View {
             TextField(VectorL10n.onboardingDisplayNamePlaceholder, text: $viewModel.displayName) {
                 isEditingTextField = $0
             }
-            .textFieldStyle(BorderedInputFieldStyle(theme: _theme, isEditing: isEditingTextField))
+            .textFieldStyle(BorderedInputFieldStyle(theme: _theme,
+                                                    isEditing: isEditingTextField,
+                                                    isError: viewModel.viewState.validationErrorMessage != nil))
             
-            Text(VectorL10n.onboardingDisplayNameHint)
-                .font(theme.fonts.caption2)
-                .foregroundColor(theme.colors.tertiaryContent)
+            Text(textFieldFooterString)
+                .font(theme.fonts.footnote)
+                .foregroundColor(textFieldFooterColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
@@ -89,15 +108,15 @@ struct OnboardingDisplayNameScreen: View {
     /// The main action buttons in the form.
     var buttons: some View {
         VStack(spacing: 8) {
-            Button(VectorL10n.onboardingDisplayNameSave) {
+            Button(VectorL10n.onboardingPersonalizationSave) {
                 viewModel.send(viewAction: .save)
             }
             .buttonStyle(PrimaryActionButtonStyle())
             .disabled(viewModel.displayName.isEmpty || viewModel.viewState.isWaiting)
             
-            #warning("Use font/theme")
             Button { viewModel.send(viewAction: .skip) } label: {
-                Text(VectorL10n.onboardingDisplayNameSkip)
+                Text(VectorL10n.onboardingPersonalizationSkip)
+                    .font(theme.fonts.body)
                     .padding(12)
             }
         }

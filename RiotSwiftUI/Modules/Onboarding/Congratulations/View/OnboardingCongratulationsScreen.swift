@@ -45,7 +45,7 @@ struct OnboardingCongratulationsScreen: View {
                 
                 Spacer()
                 
-                buttons
+                footer
                     .padding(.horizontal, horizontalPadding)
                     .padding(.bottom, 24)
                     .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
@@ -79,11 +79,20 @@ struct OnboardingCongratulationsScreen: View {
         }
     }
     
-    /// The action buttons shown at the bottom of the view.
-    var buttons: some View {
+    @ViewBuilder
+    var footer: some View {
+        if viewModel.viewState.personalizationDisabled {
+            homeButton
+        } else {
+            actionButtons
+        }
+    }
+    
+    /// The default action buttons shown at the bottom of the view.
+    var actionButtons: some View {
         VStack(spacing: 12) {
             Button { viewModel.send(viewAction: .personaliseProfile) } label: {
-                Text(VectorL10n.onboardingCongratulationsPersonaliseButton)
+                Text(VectorL10n.onboardingCongratulationsPersonalizeButton)
                     .font(theme.fonts.bodySB)
                     .foregroundColor(theme.colors.accent)
             }
@@ -95,6 +104,16 @@ struct OnboardingCongratulationsScreen: View {
                     .padding(.vertical, 12)
             }
         }
+    }
+    
+    /// The single "Take me home" button shown when personlization isn't supported.
+    var homeButton: some View {
+        Button { viewModel.send(viewAction: .takeMeHome) } label: {
+            Text(VectorL10n.onboardingCongratulationsHomeButton)
+                .font(theme.fonts.bodySB)
+                .foregroundColor(theme.colors.accent)
+        }
+        .buttonStyle(PrimaryActionButtonStyle(customColor: .white))
     }
 }
 

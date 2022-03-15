@@ -18,6 +18,7 @@ import SwiftUI
 
 struct OnboardingCongratulationsCoordinatorParameters {
     let userSession: UserSession
+    let personalizationDisabled: Bool
 }
 
 enum OnboardingCongratulationsCoordinatorResult {
@@ -47,7 +48,9 @@ final class OnboardingCongratulationsCoordinator: Coordinator, Presentable {
     init(parameters: OnboardingCongratulationsCoordinatorParameters) {
         self.parameters = parameters
         
-        let viewModel = OnboardingCongratulationsViewModel(userId: parameters.userSession.userId)
+        #warning("Add confetti when personalizationDisabled is false")
+        let viewModel = OnboardingCongratulationsViewModel(userId: parameters.userSession.userId,
+                                                           personalizationDisabled: parameters.personalizationDisabled)
         let view = OnboardingCongratulationsScreen(viewModel: viewModel.context)
         onboardingCongratulationsViewModel = viewModel
         onboardingCongratulationsHostingController = VectorHostingController(rootView: view)

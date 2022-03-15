@@ -45,6 +45,7 @@ final class OnboardingDisplayNameCoordinator: Coordinator, Presentable {
         let view = OnboardingDisplayNameScreen(viewModel: viewModel.context)
         onboardingDisplayNameViewModel = viewModel
         onboardingDisplayNameHostingController = VectorHostingController(rootView: view)
+        onboardingDisplayNameHostingController.vc_removeBackTitle()
         onboardingDisplayNameHostingController.enableNavigationBarScrollEdgesAppearance = true
     }
     

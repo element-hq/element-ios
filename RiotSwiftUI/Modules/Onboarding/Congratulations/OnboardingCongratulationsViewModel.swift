@@ -33,8 +33,9 @@ class OnboardingCongratulationsViewModel: OnboardingCongratulationsViewModelType
 
     // MARK: - Setup
 
-    init(userId: String, initialCount: Int = 0) {
-        super.init(initialViewState: OnboardingCongratulationsViewState(userId: userId))
+    init(userId: String, personalizationDisabled: Bool = false) {
+        super.init(initialViewState: OnboardingCongratulationsViewState(userId: userId,
+                                                                        personalizationDisabled: personalizationDisabled))
     }
 
     // MARK: - Public
