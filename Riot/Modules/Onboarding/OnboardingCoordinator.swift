@@ -215,9 +215,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             coordinator.update(externalRegistrationParameters: externalRegistrationParameters)
         }
         
-        if useCaseResult == .customServer {
-            coordinator.showCustomServer()
-        }
+        coordinator.customServerFieldsVisible = useCaseResult == .customServer
         
         if let softLogoutCredentials = parameters.softLogoutCredentials {
             coordinator.update(softLogoutCredentials: softLogoutCredentials)

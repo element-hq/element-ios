@@ -504,6 +504,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
         // Remove the potential back button.
         self.navigationItem.leftBarButtonItem = nil;
+        [self.navigationItem setHidesBackButton:YES];
     }
     else
     {
@@ -903,6 +904,12 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
             authInputsview.thirdPartyIdentifiersHidden = YES;
             
             [self updateRegistrationScreenWithThirdPartyIdentifiersHidden:YES];
+            
+            // Show the social login buttons again if needed.
+            [self updateSocialLoginViewVisibility];
+            
+            // Allow backward navigation in the flow again.
+            [self.navigationItem setHidesBackButton:NO];
         }
     }
     else if (sender == self.submitButton)
@@ -947,7 +954,10 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
                             else
                             {
                                 [self.authenticationActivityIndicator stopAnimating];
-
+                                
+                                // Hide the social login buttons now that a different flow has started.
+                                [self hideSocialLoginView];
+                                
                                 // Show the supported 3rd party ids which may be added to the account
                                 authInputsview.thirdPartyIdentifiersHidden = NO;
                                 [self updateRegistrationScreenWithThirdPartyIdentifiersHidden:NO];

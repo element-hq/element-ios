@@ -36,11 +36,11 @@ enum AuthenticationCoordinatorResult {
 protocol AuthenticationCoordinatorProtocol: Coordinator, Presentable {
     var completion: ((AuthenticationCoordinatorResult) -> Void)? { get set }
     
+    /// Whether the custom homeserver checkbox is enabled for the user to enter a homeserver URL.
+    var customServerFieldsVisible: Bool { get set }
+    
     /// Update the screen to display registration or login.
     func update(authenticationType: MXKAuthenticationType)
-    
-    /// Enable the custom server checkbox to allow the user to enter a homeserver URL.
-    func showCustomServer()
     
     /// Force a registration process based on a predefined set of parameters from a server provisioning link.
     /// For more information see `AuthenticationViewController.externalRegistrationParameters`.
