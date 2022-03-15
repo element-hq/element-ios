@@ -16,6 +16,7 @@
 
 import UIKit
 import PhotosUI
+import CommonKit
 
 @available(iOS 14.0, *)
 protocol PhotoPickerPresenterDelegate: AnyObject {
@@ -35,6 +36,9 @@ final class PhotoPickerPresenter: NSObject {
     private weak var pickerViewController: UIViewController?
     private var filter: PHPickerFilter?
     
+    private var indicatorPresenter: UserIndicatorTypePresenterProtocol?
+    private var loadingIndicator: UserIndicator?
+    
     // MARK: Public
     
     weak var delegate: PhotoPickerPresenterDelegate?
@@ -50,6 +54,7 @@ final class PhotoPickerPresenter: NSObject {
         pickerViewController.delegate = self
         
         self.pickerViewController = pickerViewController
+        indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: pickerViewController)
         
         presentingViewController.present(pickerViewController, animated: true, completion: nil)
     }
@@ -57,6 +62,17 @@ final class PhotoPickerPresenter: NSObject {
     func dismiss(animated: Bool, completion: (() -> Void)?) {
         guard let pickerViewController = pickerViewController else { return }
         pickerViewController.dismiss(animated: animated, completion: completion)
+    }
+    
+    // MARK: - Private
+    
+    func showLoadingIndicator() {
+        loadingIndicator = indicatorPresenter?.present(.loading(label: VectorL10n.loading, isInteractionBlocking: true))
+    }
+    
+    func hideLoadingIndicator() {
+        loadingIndicator?.cancel()
+        loadingIndicator = nil
     }
 }
 
@@ -73,17 +89,21 @@ extension PhotoPickerPresenter: PHPickerViewControllerDelegate {
             return
         }
         
+        showLoadingIndicator()
+        
         provider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
             guard let self = self else { return }
             
             guard let image = image as? UIImage else {
                 DispatchQueue.main.async {
+                    self.hideLoadingIndicator()
                     self.delegate?.photoPickerPresenterDidCancel(self)
                 }
                 return
             }
             
             DispatchQueue.main.async {
+                self.hideLoadingIndicator()
                 self.delegate?.photoPickerPresenter(self, didPickImage: image)
             }
         }

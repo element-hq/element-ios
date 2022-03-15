@@ -31,7 +31,6 @@ struct OnboardingAvatarViewState: BindableState {
     let placeholderAvatarLetter: String
     let placeholderAvatarColorIndex: Int
     var avatar: UIImage?
-    var isWaiting = false
     var bindings: OnboardingAvatarBindings
     
     var buttonImage: ImageAsset {

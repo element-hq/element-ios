@@ -2710,6 +2710,9 @@ public class VectorL10n: NSObject {
   /// Live location enabled
   public static var liveLocationSharingBannerTitle: String { 
     return VectorL10n.tr("Vector", "live_location_sharing_banner_title") 
+  /// Loading
+  public static var loading: String { 
+    return VectorL10n.tr("Vector", "loading") 
   }
   /// To discover contacts already using Matrix, %@ can send email addresses and phone numbers in your address book to your chosen Matrix identity server. Where supported, personal data is hashed before sending - please check your identity server's privacy policy for more details.
   public static func localContactsAccessDiscoveryWarning(_ p1: String) -> String {
@@ -5730,6 +5733,10 @@ public class VectorL10n: NSObject {
   /// Save
   public static var save: String { 
     return VectorL10n.tr("Vector", "save") 
+  }
+  /// Saving
+  public static var saving: String { 
+    return VectorL10n.tr("Vector", "saving") 
   }
   /// Search
   public static var searchDefaultPlaceholder: String { 

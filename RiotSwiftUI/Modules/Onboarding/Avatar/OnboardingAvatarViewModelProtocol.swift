@@ -24,6 +24,5 @@ protocol OnboardingAvatarViewModelProtocol {
     
     func updateAvatarImage(with image: UIImage?)
     
-    func startLoading()
-    func stopLoading(error: Error?)
+    func update(with error: Error)
 }

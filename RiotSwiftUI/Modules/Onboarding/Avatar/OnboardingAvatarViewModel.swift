@@ -61,13 +61,7 @@ class OnboardingAvatarViewModel: OnboardingAvatarViewModelType, OnboardingAvatar
         state.avatar = image
     }
     
-    func startLoading() {
-        state.isWaiting = true
-    }
-    
-    func stopLoading(error: Error?) {
-        state.isWaiting = false
-        
+    func update(with error: Error) {
         if let error = error as NSError? {
             state.bindings.alertInfo = AlertInfo(error: error)
         }

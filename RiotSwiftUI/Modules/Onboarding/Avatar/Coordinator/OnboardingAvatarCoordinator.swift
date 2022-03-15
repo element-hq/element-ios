@@ -15,7 +15,7 @@
 //
 
 import SwiftUI
-import MatrixSDK
+import CommonKit
 
 struct OnboardingAvatarCoordinatorParameters {
     let userSession: UserSession
@@ -32,6 +32,9 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
     private let onboardingAvatarHostingController: VectorHostingController
     private var onboardingAvatarViewModel: OnboardingAvatarViewModelProtocol
     
+    private var indicatorPresenter: UserIndicatorTypePresenterProtocol
+    private var waitingIndicator: UserIndicator?
+    
     private lazy var cameraPresenter: CameraPresenter = {
         let presenter = CameraPresenter()
         presenter.delegate = self
@@ -43,6 +46,10 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
         presenter.delegate = self
         return presenter
     }()
+    
+    private lazy var mediaUploader: MXMediaLoader = MXMediaManager.prepareUploader(withMatrixSession: parameters.userSession.matrixSession,
+                                                                                   initialRange: 0,
+                                                                                   andRange: 1.0)
     
     // MARK: Public
 
@@ -62,6 +69,8 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
         onboardingAvatarHostingController = VectorHostingController(rootView: view)
         onboardingAvatarHostingController.vc_removeBackTitle()
         onboardingAvatarHostingController.enableNavigationBarScrollEdgesAppearance = true
+        
+        indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: onboardingAvatarHostingController)
     }
     
     
@@ -91,6 +100,19 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
     
     // MARK: - Private
     
+    private func startWaiting() {
+        waitingIndicator = indicatorPresenter.present(.loading(label: VectorL10n.saving, isInteractionBlocking: true))
+    }
+    
+    private func stopWaiting(error: Error? = nil) {
+        waitingIndicator?.cancel()
+        waitingIndicator = nil
+        
+        if let error = error {
+            onboardingAvatarViewModel.update(with: error)
+        }
+    }
+    
     private func pickImage() {
         let controller = toPresentable()
         photoPickerPresenter.presentPicker(from: controller, with: .images, animated: true)
@@ -100,10 +122,6 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
         let controller = toPresentable()
         cameraPresenter.presentCamera(from: controller, with: [.image], animated: true)
     }
-    
-    private lazy var mediaUploader: MXMediaLoader = MXMediaManager.prepareUploader(withMatrixSession: parameters.userSession.matrixSession,
-                                                                                   initialRange: 0,
-                                                                                   andRange: 1.0)
     
     #warning("Temporary")
     func unknownError() -> Error {
@@ -116,11 +134,11 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
             return
         }
         
-        onboardingAvatarViewModel.startLoading()
+        startWaiting()
         
         guard let avatarData = MXKTools.forceImageOrientationUp(image)?.jpegData(compressionQuality: 0.5) else {
             MXLog.error("[OnboardingAvatarCoordinator] Failed to create jpeg data.")
-            self.onboardingAvatarViewModel.stopLoading(error: self.unknownError())
+            self.stopWaiting(error: self.unknownError())
             return
         }
         
@@ -128,20 +146,21 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
             guard let self = self else { return }
             
             guard let urlString = urlString else {
-                self.onboardingAvatarViewModel.stopLoading(error: self.unknownError())
+                self.stopWaiting(error: self.unknownError())
                 return
             }
             
             self.parameters.userSession.account.setUserAvatarUrl(urlString) { [weak self] in
                 guard let self = self else { return }
+                self.stopWaiting()
                 self.completion?(self.parameters.userSession)
             } failure: { [weak self] error in
                 guard let self = self else { return }
-                self.onboardingAvatarViewModel.stopLoading(error: error ?? self.unknownError())
+                self.stopWaiting(error: error ?? self.unknownError())
             }
         } failure: { [weak self] error in
             guard let self = self else { return }
-            self.onboardingAvatarViewModel.stopLoading(error: error ?? self.unknownError())
+            self.stopWaiting(error: error ?? self.unknownError())
         }
     }
 }

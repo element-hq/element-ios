@@ -57,7 +57,6 @@
 "rename" = "Rename";
 "collapse" = "collapse";
 "send_to" = "Send to %@";
-"sending" = "Sending";
 "close" = "Close";
 "skip" = "Skip";
 "joined" = "Joined";
@@ -75,6 +74,11 @@
 "ok" = "OK";
 "error" = "Error";
 "suggest" = "Suggest";
+
+// Activities
+"loading" = "Loading";
+"sending" = "Sending";
+"saving" = "Saving";
 
 // Call Bar
 "callbar_only_single_active" = "Tap to return to the call (%@)";

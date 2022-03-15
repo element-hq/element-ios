@@ -15,6 +15,7 @@
 //
 
 import SwiftUI
+import CommonKit
 
 struct OnboardingDisplayNameCoordinatorParameters {
     let userSession: UserSession
@@ -31,6 +32,9 @@ final class OnboardingDisplayNameCoordinator: Coordinator, Presentable {
     private let onboardingDisplayNameHostingController: VectorHostingController
     private var onboardingDisplayNameViewModel: OnboardingDisplayNameViewModelProtocol
     
+    private var indicatorPresenter: UserIndicatorTypePresenterProtocol
+    private var waitingIndicator: UserIndicator?
+    
     // MARK: Public
 
     // Must be used only internally
@@ -41,25 +45,64 @@ final class OnboardingDisplayNameCoordinator: Coordinator, Presentable {
     
     init(parameters: OnboardingDisplayNameCoordinatorParameters) {
         self.parameters = parameters
-        let viewModel = OnboardingDisplayNameViewModel.makeOnboardingDisplayNameViewModel(onboardingDisplayNameService: OnboardingDisplayNameService(userSession: parameters.userSession))
+        
+        // Don't pre-fill the display name from the MXID to encourage the user to enter something
+        let viewModel = OnboardingDisplayNameViewModel()
+        
         let view = OnboardingDisplayNameScreen(viewModel: viewModel.context)
         onboardingDisplayNameViewModel = viewModel
         onboardingDisplayNameHostingController = VectorHostingController(rootView: view)
         onboardingDisplayNameHostingController.vc_removeBackTitle()
         onboardingDisplayNameHostingController.enableNavigationBarScrollEdgesAppearance = true
+        
+        indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: onboardingDisplayNameHostingController)
     }
     
     // MARK: - Public
     func start() {
         MXLog.debug("[OnboardingDisplayNameCoordinator] did start.")
-        onboardingDisplayNameViewModel.completion = { [weak self] in
+        onboardingDisplayNameViewModel.completion = { [weak self] result in
             guard let self = self else { return }
             MXLog.debug("[OnboardingDisplayNameCoordinator] OnboardingDisplayNameViewModel did complete.")
-            self.completion?(self.parameters.userSession)
+            
+            switch result {
+            case .save(let displayName):
+                self.setDisplayName(displayName)
+            case .skip:
+                self.completion?(self.parameters.userSession)
+            }
         }
     }
     
     func toPresentable() -> UIViewController {
         return self.onboardingDisplayNameHostingController
+    }
+    
+    // MARK: - Private
+    
+    private func startWaiting() {
+        waitingIndicator = indicatorPresenter.present(.loading(label: VectorL10n.saving, isInteractionBlocking: true))
+    }
+    
+    private func stopWaiting(error: Error? = nil) {
+        waitingIndicator?.cancel()
+        waitingIndicator = nil
+        
+        if let error = error {
+            onboardingDisplayNameViewModel.update(with: error)
+        }
+    }
+    
+    private func setDisplayName(_ displayName: String) {
+        startWaiting()
+        
+        parameters.userSession.account.setUserDisplayName(displayName) { [weak self] in
+            guard let self = self else { return }
+            self.stopWaiting()
+            self.completion?(self.parameters.userSession)
+        } failure: { [weak self] error in
+            guard let self = self else { return }
+            self.stopWaiting(error: error)
+        }
     }
 }

@@ -18,9 +18,9 @@ import Foundation
 
 protocol OnboardingDisplayNameViewModelProtocol {
     
-    var completion: (() -> Void)? { get set }
-    @available(iOS 14, *)
-    static func makeOnboardingDisplayNameViewModel(onboardingDisplayNameService: OnboardingDisplayNameServiceProtocol) -> OnboardingDisplayNameViewModelProtocol
+    var completion: ((OnboardingDisplayNameViewModelResult) -> Void)? { get set }
     @available(iOS 14, *)
     var context: OnboardingDisplayNameViewModelType.Context { get }
+    
+    func update(with error: Error)
 }

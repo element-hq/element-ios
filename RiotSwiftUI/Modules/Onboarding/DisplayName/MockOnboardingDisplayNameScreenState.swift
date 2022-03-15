@@ -26,7 +26,6 @@ enum MockOnboardingDisplayNameScreenState: MockScreenState, CaseIterable {
     // mock that screen.
     case emptyTextField
     case filledTextField(displayName: String)
-    case operationInProgress(displayName: String)
     
     /// The associated screen
     var screenType: Any.Type {
@@ -37,28 +36,24 @@ enum MockOnboardingDisplayNameScreenState: MockScreenState, CaseIterable {
     static var allCases: [MockOnboardingDisplayNameScreenState] {
         [
             MockOnboardingDisplayNameScreenState.emptyTextField,
-            MockOnboardingDisplayNameScreenState.filledTextField(displayName: "Test User"),
-            MockOnboardingDisplayNameScreenState.operationInProgress(displayName: "Test User"),
+            MockOnboardingDisplayNameScreenState.filledTextField(displayName: "Test User")
         ]
     }
     
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView)  {
-        let service: MockOnboardingDisplayNameService
+        let viewModel: OnboardingDisplayNameViewModel
         switch self {
         case .emptyTextField:
-            service = MockOnboardingDisplayNameService()
+            viewModel = OnboardingDisplayNameViewModel()
         case .filledTextField(let displayName):
-            service = MockOnboardingDisplayNameService(displayName: displayName)
-        case .operationInProgress(let displayName):
-            service = MockOnboardingDisplayNameService(displayName: displayName, isWaiting: true)
+            viewModel = OnboardingDisplayNameViewModel(displayName: displayName)
         }
-        let viewModel = OnboardingDisplayNameViewModel.makeOnboardingDisplayNameViewModel(onboardingDisplayNameService: service)
         
         // can simulate service and viewModel actions here if needs be.
         
         return (
-            [service, viewModel], AnyView(OnboardingDisplayNameScreen(viewModel: viewModel.context))
+            [self, viewModel], AnyView(OnboardingDisplayNameScreen(viewModel: viewModel.context))
         )
     }
 }

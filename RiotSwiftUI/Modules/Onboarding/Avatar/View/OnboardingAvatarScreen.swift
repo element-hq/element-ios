@@ -50,7 +50,6 @@ struct OnboardingAvatarScreen: View {
         }
         .accentColor(theme.colors.accent)
         .background(theme.colors.background.ignoresSafeArea())
-        .waitOverlay(show: viewModel.viewState.isWaiting, allowUserInteraction: false)
         .alert(item: $viewModel.alertInfo) { $0.alert }
     }
     
@@ -68,8 +67,8 @@ struct OnboardingAvatarScreen: View {
             }
         }
         .clipShape(Circle())
-        .overlay(cameraButton, alignment: .bottomTrailing)
         .frame(width: 120, height: 120)
+        .overlay(cameraButton, alignment: .bottomTrailing)
         .onTapGesture { isPresentingPickerSelection = true }
         .actionSheet(isPresented: $isPresentingPickerSelection) { pickerSelectionActionSheet }
     }
@@ -122,7 +121,7 @@ struct OnboardingAvatarScreen: View {
                 viewModel.send(viewAction: .save)
             }
             .buttonStyle(PrimaryActionButtonStyle())
-            .disabled(viewModel.viewState.avatar == nil || viewModel.viewState.isWaiting)
+            .disabled(viewModel.viewState.avatar == nil)
             
             Button { viewModel.send(viewAction: .skip) } label: {
                 Text(VectorL10n.onboardingPersonalizationSkip)

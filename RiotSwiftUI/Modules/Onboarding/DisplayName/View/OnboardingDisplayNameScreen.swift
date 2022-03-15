@@ -27,22 +27,15 @@ struct OnboardingDisplayNameScreen: View {
     
     @State private var isEditingTextField = false
     
-    #warning("Move these computed properties to the view model")
-    var textFieldFooterString: String {
-        if let errorMessage = viewModel.viewState.validationErrorMessage {
-            return errorMessage
-        }
-        
-        return VectorL10n.onboardingDisplayNameHint
-    }
-    
-    var textFieldFooterColor: Color {
+    private var textFieldFooterColor: Color {
         viewModel.viewState.validationErrorMessage == nil ? theme.colors.tertiaryContent : theme.colors.alert
     }
     
     // MARK: Public
     
     @ObservedObject var viewModel: OnboardingDisplayNameViewModel.Context
+    
+    // MARK: - Views
     
     var body: some View {
         ScrollView {
@@ -62,7 +55,6 @@ struct OnboardingDisplayNameScreen: View {
         }
         .accentColor(theme.colors.accent)
         .background(theme.colors.background.ignoresSafeArea())
-        .waitOverlay(show: viewModel.viewState.isWaiting, allowUserInteraction: false)
         .alert(item: $viewModel.alertInfo) { $0.alert }
         .onChange(of: viewModel.displayName) { _ in
             viewModel.send(viewAction: .validateDisplayName)
@@ -98,7 +90,7 @@ struct OnboardingDisplayNameScreen: View {
                                                     isEditing: isEditingTextField,
                                                     isError: viewModel.viewState.validationErrorMessage != nil))
             
-            Text(textFieldFooterString)
+            Text(viewModel.viewState.textFieldFooterMessage)
                 .font(theme.fonts.footnote)
                 .foregroundColor(textFieldFooterColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -112,7 +104,7 @@ struct OnboardingDisplayNameScreen: View {
                 viewModel.send(viewAction: .save)
             }
             .buttonStyle(PrimaryActionButtonStyle())
-            .disabled(viewModel.displayName.isEmpty || viewModel.viewState.isWaiting)
+            .disabled(viewModel.displayName.isEmpty)
             
             Button { viewModel.send(viewAction: .skip) } label: {
                 Text(VectorL10n.onboardingPersonalizationSkip)

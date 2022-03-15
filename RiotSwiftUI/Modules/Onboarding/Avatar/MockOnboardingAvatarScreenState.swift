@@ -26,7 +26,6 @@ enum MockOnboardingAvatarScreenState: MockScreenState, CaseIterable {
     // mock that screen.
     case placeholderAvatar(userId: String, displayName: String)
     case userSelectedAvatar(userId: String, displayName: String, avatar: UIImage)
-    case waiting(userId: String, displayName: String?, avatar: UIImage)
     
     /// The associated screen
     var screenType: Any.Type {
@@ -41,8 +40,7 @@ enum MockOnboardingAvatarScreenState: MockScreenState, CaseIterable {
         
         return [
             .placeholderAvatar(userId: userId, displayName: displayName),
-            .userSelectedAvatar(userId: userId, displayName: displayName, avatar: avatar),
-            .waiting(userId: userId, displayName: displayName, avatar: avatar)
+            .userSelectedAvatar(userId: userId, displayName: displayName, avatar: avatar)
         ]
     }
     
@@ -56,10 +54,6 @@ enum MockOnboardingAvatarScreenState: MockScreenState, CaseIterable {
         case .userSelectedAvatar(let userId, let displayName, let avatar):
             viewModel = OnboardingAvatarViewModel(userId: userId, displayName: displayName, avatarColorCount: avatarColorCount)
             viewModel.updateAvatarImage(with: avatar)
-        case .waiting(let userId, let displayName, let avatar):
-            viewModel = OnboardingAvatarViewModel(userId: userId, displayName: displayName, avatarColorCount: avatarColorCount)
-            viewModel.updateAvatarImage(with: avatar)
-            viewModel.startLoading()
         }
         
         return (

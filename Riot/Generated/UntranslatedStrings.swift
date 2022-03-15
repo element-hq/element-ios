@@ -42,6 +42,10 @@ public extension VectorL10n {
   static var onboardingDisplayNameHint: String { 
     return VectorL10n.tr("Untranslated", "onboarding_display_name_hint") 
   }
+  /// Your display name must be less than 256 characters
+  static var onboardingDisplayNameMaxLength: String { 
+    return VectorL10n.tr("Untranslated", "onboarding_display_name_max_length") 
+  }
   /// This will be shown when you send messages.
   static var onboardingDisplayNameMessage: String { 
     return VectorL10n.tr("Untranslated", "onboarding_display_name_message") 

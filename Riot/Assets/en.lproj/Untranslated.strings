@@ -29,6 +29,7 @@
 "onboarding_display_name_message" = "This will be shown when you send messages.";
 "onboarding_display_name_placeholder" = "Display Name";
 "onboarding_display_name_hint" = "You can change this later";
+"onboarding_display_name_max_length" = "Your display name must be less than 256 characters";
 
 "onboarding_avatar_title" = "Add a profile picture";
 "onboarding_avatar_message" = "You can change this anytime.";

@@ -19,14 +19,19 @@ import Foundation
 // MARK: View model
 
 enum OnboardingDisplayNameViewModelResult {
-    // Can probably be removed
+    case save(String)
+    case skip
 }
 
 // MARK: View
 
 struct OnboardingDisplayNameViewState: BindableState {
-    var isWaiting = false
     var bindings: OnboardingDisplayNameBindings
+    var validationErrorMessage: String?
+    
+    var textFieldFooterMessage: String {
+        validationErrorMessage ?? VectorL10n.onboardingDisplayNameHint
+    }
 }
 
 struct OnboardingDisplayNameBindings {
@@ -35,6 +40,7 @@ struct OnboardingDisplayNameBindings {
 }
 
 enum OnboardingDisplayNameViewAction {
+    case validateDisplayName
     case save
     case skip
 }
