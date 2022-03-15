@@ -2067,7 +2067,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
         textColor = _errorTextColor;
     }
     // Check whether the message is highlighted.
-    else if (event.mxkIsHighlighted || [event shouldBeHighlightedInSession:mxSession])
+    else if (event.mxkIsHighlighted || (mxSession && [event shouldBeHighlightedInSession:mxSession]))
     {
         textColor = _bingTextColor;
     }
@@ -2132,7 +2132,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     {
         font = _callNoticesTextFont;
     }
-    else if (event.mxkIsHighlighted || [event shouldBeHighlightedInSession:mxSession])
+    else if (event.mxkIsHighlighted || (mxSession && [event shouldBeHighlightedInSession:mxSession]))
     {
         font = _bingTextFont;
     }
