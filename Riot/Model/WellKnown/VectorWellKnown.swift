@@ -48,8 +48,6 @@ struct VectorWellKnownEncryptionConfiguration {
     let isSecureBackupRequired: Bool?
     /// Methods to use to setup secure backup (SSSS).
     let secureBackupSetupMethods: [VectorWellKnownBackupSetupMethod]?
-    /// Outbound keys pre sharing strategy.
-    let outboundKeysPreSharingMode: MXKKeyPreSharingStrategy?
 }
 
 extension VectorWellKnownEncryptionConfiguration: Decodable {
@@ -58,7 +56,6 @@ extension VectorWellKnownEncryptionConfiguration: Decodable {
         case isE2EEByDefaultEnabled = "default"
         case isSecureBackupRequired = "secure_backup_required"
         case secureBackupSetupMethods = "secure_backup_setup_methods"
-        case outboundKeysPreSharingMode = "outbound_keys_pre_sharing_mode"
     }
 
     init(from decoder: Decoder) throws {
@@ -67,8 +64,6 @@ extension VectorWellKnownEncryptionConfiguration: Decodable {
         isSecureBackupRequired = try? container.decode(Bool.self, forKey: .isSecureBackupRequired)
         let secureBackupSetupMethodsKeys = try? container.decode([String].self, forKey: .secureBackupSetupMethods)
         secureBackupSetupMethods = secureBackupSetupMethodsKeys?.compactMap { VectorWellKnownBackupSetupMethod(key: $0) }
-        let outboundKeysPreSharingModeKey = try? container.decode(String.self, forKey: .outboundKeysPreSharingMode)
-        outboundKeysPreSharingMode = MXKKeyPreSharingStrategy(key: outboundKeysPreSharingModeKey)
     }
 }
 
