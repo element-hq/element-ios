@@ -38,14 +38,33 @@ enum LocationSharingViewError {
 
 @available(iOS 14, *)
 struct LocationSharingViewState: BindableState {
-    let mapStyleURL: URL
-    let avatarData: AvatarInputProtocol
-    let location: CLLocationCoordinate2D?
     
+    /// Map style URL
+    let mapStyleURL: URL
+    
+    /// Current user avatarData
+    let userAvatarData: AvatarInputProtocol
+    
+    /// User map annotation to display existing location
+    let userAnnotation: UserLocationAnnotation?
+    
+    /// Map annotations to display on map
+    var annotations: [UserLocationAnnotation]
+
+    /// Map annotation to focus on
+    var highlightedAnnotation: UserLocationAnnotation?
+
     var showLoadingIndicator: Bool = false
     
+    /// True to indicate to show and follow current user location
+    var showsUserLocation: Bool = false
+    
     var shareButtonVisible: Bool {
-        return location == nil
+        return self.displayExistingLocation == false
+    }
+    
+    var displayExistingLocation: Bool {
+        return userAnnotation != nil
     }
     
     var shareButtonEnabled: Bool {

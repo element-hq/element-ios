@@ -36,7 +36,32 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
     // MARK: - Setup
     
     init(mapStyleURL: URL, avatarData: AvatarInputProtocol, location: CLLocationCoordinate2D? = nil) {
-        let viewState = LocationSharingViewState(mapStyleURL: mapStyleURL, avatarData: avatarData, location: location)
+        
+        var userAnnotation: UserLocationAnnotation?
+        var annotations: [UserLocationAnnotation] = []
+        var highlightedAnnotation: UserLocationAnnotation?
+        var showsUserLocation: Bool = false
+        
+        // Displaying an existing location
+        if let userCoordinate = location {
+            let userLocationAnnotation = UserLocationAnnotation(avatarData: avatarData, coordinate: userCoordinate)
+            
+            annotations.append(userLocationAnnotation)
+            highlightedAnnotation = userLocationAnnotation
+            
+            userAnnotation = userLocationAnnotation
+        } else {
+            // Share current location
+            showsUserLocation = true
+        }
+        
+        let viewState = LocationSharingViewState(mapStyleURL: mapStyleURL,
+                                                 userAvatarData: avatarData,
+                                                 userAnnotation: userAnnotation,
+                                                 annotations: annotations,
+                                                 highlightedAnnotation: highlightedAnnotation,
+                                                 showsUserLocation: showsUserLocation)
+        
         super.init(initialViewState: viewState)
         
         state.errorSubject.sink { [weak self] error in
@@ -52,11 +77,13 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
         case .cancel:
             completion?(.cancel)
         case .share:
-            if let location = state.location {
+            // Share existing location
+            if let location = state.userAnnotation?.coordinate {
                 completion?(.share(latitude: location.latitude, longitude: location.longitude))
                 return
             }
             
+            // Share current user location
             guard let location = state.bindings.userLocation else {
                 processError(.failedLocatingUser)
                 return
