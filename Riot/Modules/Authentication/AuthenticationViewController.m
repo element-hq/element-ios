@@ -211,7 +211,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 - (void)userInterfaceThemeDidChange
 {
     [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar
-                         withModernScrollEdgesAppearance:YES];
+                          withModernScrollEdgeAppearance:YES];
     
     self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
 

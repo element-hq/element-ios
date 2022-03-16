@@ -53,7 +53,7 @@ final class SpaceSettingsCoordinator: Coordinator, Presentable {
             .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
         spaceSettingsViewModel = viewModel
         let controller = VectorHostingController(rootView: view)
-        controller.enableNavigationBarScrollEdgesAppearance = true
+        controller.enableNavigationBarScrollEdgeAppearance = true
         spaceSettingsHostingController = controller
     }
     
