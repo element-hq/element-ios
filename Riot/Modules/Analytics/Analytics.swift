@@ -288,7 +288,6 @@ extension Analytics {
     ///   - isDM: Whether the room is a DM.
     ///   - isSpace: Whether the room is a Space.
     func trackViewRoom(asDM isDM: Bool, isSpace: Bool) {
-        MXLog.debug("[Analytics] trackViewRoom (asDM:\(isDM), isSpace:\(isSpace), trigger:\(viewRoomTrigger.trigger?.rawValue ?? "unknown"), activeSpace:\(viewRoomActiveSpace.space?.rawValue ?? "unknown"))")
         let event = AnalyticsEvent.ViewRoom(activeSpace: viewRoomActiveSpace.space,
                                             isDM: isDM,
                                             isSpace: isSpace,
