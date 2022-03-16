@@ -43,6 +43,13 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     var childCoordinators: [Coordinator] = []
     var completion: ((AuthenticationCoordinatorResult) -> Void)?
     
+    var customServerFieldsVisible = false {
+        didSet {
+            guard customServerFieldsVisible != oldValue else { return }
+            authenticationViewController.setCustomServerFieldsVisible(customServerFieldsVisible)
+        }
+    }
+    
     // MARK: - Setup
     
     init(parameters: AuthenticationCoordinatorParameters) {
@@ -72,10 +79,6 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     func update(authenticationType: MXKAuthenticationType) {
         authenticationViewController.authType = authenticationType
-    }
-    
-    func showCustomServer() {
-        authenticationViewController.setCustomServerFieldsVisible(true)
     }
     
     func update(externalRegistrationParameters: [AnyHashable: Any]) {
