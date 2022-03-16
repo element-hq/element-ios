@@ -159,7 +159,8 @@ typedef NS_ENUM(NSUInteger, LABS_ENABLE)
 {
     LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX = 0,
     LABS_ENABLE_THREADS_INDEX,
-    LABS_ENABLE_MESSAGE_BUBBLES_INDEX
+    LABS_ENABLE_MESSAGE_BUBBLES_INDEX,
+    LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS
 };
 
 typedef NS_ENUM(NSUInteger, SECURITY)
@@ -572,6 +573,7 @@ TableViewSectionsDelegate>
         [sectionLabs addRowWithTag:LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX];
         [sectionLabs addRowWithTag:LABS_ENABLE_THREADS_INDEX];
         [sectionLabs addRowWithTag:LABS_ENABLE_MESSAGE_BUBBLES_INDEX];
+        [sectionLabs addRowWithTag:LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS];
         sectionLabs.headerTitle = [VectorL10n settingsLabs];
         if (sectionLabs.hasAnyRows)
         {
@@ -1486,6 +1488,21 @@ TableViewSectionsDelegate>
     labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
     labelAndSwitchCell.mxkSwitch.enabled = YES;
     [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableRoomMessageBubbles:) forControlEvents:UIControlEventTouchUpInside];
+    
+    return labelAndSwitchCell;
+}
+
+- (UITableViewCell *)buildAutoReportDecryptionErrorsCellForTableView:(UITableView*)tableView
+                                             atIndexPath:(NSIndexPath*)indexPath
+{
+    MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+    
+    labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsLabsEnableAutoReportDecryptionErrors];
+    
+    labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.enableUISIAutoReporting;
+    labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+    labelAndSwitchCell.mxkSwitch.enabled = YES;
+    [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableAutoReportDecryptionErrors:) forControlEvents:UIControlEventTouchUpInside];
     
     return labelAndSwitchCell;
 }
@@ -2461,6 +2478,10 @@ TableViewSectionsDelegate>
         else if (row == LABS_ENABLE_MESSAGE_BUBBLES_INDEX)
         {
             cell = [self buildMessageBubblesCellForTableView:tableView atIndexPath:indexPath];
+        }
+        else if (row == LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS)
+        {
+            cell = [self buildAutoReportDecryptionErrorsCellForTableView:tableView atIndexPath:indexPath];
         }
     }
     else if (section == SECTION_TAG_FLAIR)
@@ -3888,6 +3909,12 @@ TableViewSectionsDelegate>
     // Be sure to use new room timeline style configurations
     MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
     [roomDataSourceManager reset];
+}
+
+
+- (void)toggleEnableAutoReportDecryptionErrors:(UISwitch *)sender
+{
+    RiotSettings.shared.enableUISIAutoReporting = sender.isOn;
 }
 
 #pragma mark - TextField listener

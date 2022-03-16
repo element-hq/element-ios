@@ -23,7 +23,6 @@ struct UISIAutoReportData {
     let roomId: String?
     let senderKey: String?
     let deviceId: String?
-    let source: UISIEventSource?
     let userId: String?
     let sessionId: String?
 }
@@ -34,7 +33,6 @@ extension UISIAutoReportData: Codable {
         case roomId = "room_id"
         case senderKey = "sender_key"
         case deviceId = "device_id"
-        case source
         case userId = "user_id"
         case sessionId = "session_id"
     }
@@ -48,13 +46,14 @@ extension UISIAutoReportData: Codable {
         let sessionId: String
     }
     
-    static let autoRsRequest = "im.vector.auto_rs_request"
+    private static let autoRsRequest = "im.vector.auto_rs_request"
+    private static let reportSpacing = 60
     
     private let bugReporter: MXBugReportRestClient
     private let dispatchQueue = DispatchQueue(label: "io.element.UISIAutoReporter.queue")
     // Simple in memory cache of already sent report
     private var alreadyReportedUisi = Set<ReportInfo>()
-    private let e2eDetectedSubject = PassthroughSubject<E2EMessageDetected, Never>()
+    private let e2eDetectedSubject = PassthroughSubject<UISIDetectedMessage, Never>()
     private let matchingRSRequestSubject = PassthroughSubject<MXEvent, Never>()
     private var cancellables = Set<AnyCancellable>()
     private var sessions = [MXSession]()
@@ -70,14 +69,14 @@ extension UISIAutoReportData: Codable {
         super.init()
         // Simple rate limiting, for any rage-shakes emitted we guarantee a spacing between requests.
         e2eDetectedSubject
-            .bufferAndSpace(spacingDelay: 2)
+            .bufferAndSpace(spacingDelay: Self.reportSpacing)
             .sink { [weak self] in
                 guard let self = self else { return }
                 self.sendRageShake(source: $0)
             }.store(in: &cancellables)
         
         matchingRSRequestSubject
-            .bufferAndSpace(spacingDelay: 2)
+            .bufferAndSpace(spacingDelay: Self.reportSpacing)
             .sink { [weak self] in
                 guard let self = self else { return }
                 self.sendMatchingRageShake(source: $0)
@@ -103,8 +102,7 @@ extension UISIAutoReportData: Codable {
         return Self.autoRsRequest
     }
     
-    func uisiDetected(source: E2EMessageDetected) {
-        guard source.source != UISIEventSource.initialSync else { return }
+    func uisiDetected(source: UISIDetectedMessage) {
         dispatchQueue.async {
             let reportInfo = ReportInfo(roomId: source.roomId, sessionId: source.sessionId)
             let alreadySent = self.alreadyReportedUisi.contains(reportInfo)
@@ -120,15 +118,14 @@ extension UISIAutoReportData: Codable {
         self.matchingRSRequestSubject.send(source)
     }
     
-    func sendRageShake(source: E2EMessageDetected) {
-        MXLog.debug("dl sendRageShake")
+    func sendRageShake(source: UISIDetectedMessage) {
+        MXLog.debug("[UISIAutoReporter] sendRageShake")
         guard let session = sessions.first else { return }
         let uisiData = UISIAutoReportData(
             eventId: source.eventId,
             roomId: source.roomId,
             senderKey: source.senderKey,
             deviceId: source.senderDeviceId,
-            source: source.source,
             userId: source.senderUserId,
             sessionId: source.sessionId
         ).jsonString ?? ""
@@ -174,7 +171,7 @@ extension UISIAutoReportData: Codable {
     }
     
     func sendMatchingRageShake(source: MXEvent) {
-        MXLog.debug("dl sendMatchingRageShake")
+        MXLog.debug("[UISIAutoReporter] sendMatchingRageShake")
         let eventId = source.content["event_id"] as? String
         let roomId = source.content["room_id"] as? String
         let sessionId = source.content["session_id"] as? String
@@ -189,7 +186,6 @@ extension UISIAutoReportData: Codable {
             roomId: roomId,
             senderKey: senderKey,
             deviceId: deviceId,
-            source: nil,
             userId: userId,
             sessionId: sessionId
         ).jsonString ?? ""
