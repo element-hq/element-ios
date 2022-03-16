@@ -45,6 +45,10 @@
 
 @implementation ShareManager
 
+/// A fake matrix session used to provide summaries with a REST client to handle room avatars.
+/// The session is stored statically to prevent new ones from being created for each share.
+static MXSession *fakeSession;
+
 - (instancetype)initWithShareItemSender:(id<ShareItemSenderProtocol>)itemSender
                                    type:(ShareManagerType)type
 {
@@ -182,6 +186,7 @@
         // We consider the first enabled account.
         // TODO: Handle multiple accounts
         self.userAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+        [self checkFakeSession];
     }
     
     // Reset the file store to reload the room data.
@@ -191,12 +196,12 @@
         _fileStore = nil;
     }
     
-    if (self.userAccount)
+    if (self.userAccount && fakeSession)
     {
         _fileStore = [[MXFileStore alloc] initWithCredentials:self.userAccount.mxCredentials];
         
         ShareDataSource *roomDataSource = [[ShareDataSource alloc] initWithFileStore:_fileStore
-                                                                         credentials:self.userAccount.mxCredentials];
+                                                                             session:fakeSession];
         
         [self.shareViewController configureWithState:ShareViewControllerAccountStateConfigured
                                       roomDataSource:roomDataSource];
@@ -204,6 +209,27 @@
         [self.shareViewController configureWithState:ShareViewControllerAccountStateNotConfigured
                                       roomDataSource:nil];
     }
+}
+
+- (void)checkFakeSession
+{
+    if (!self.userAccount)
+    {
+        return;
+    }
+    
+    if (fakeSession && [fakeSession.credentials.userId isEqualToString:self.userAccount.mxCredentials.userId])
+    {
+        return;
+    }
+    
+    MXRestClient *mxRestClient = [[MXRestClient alloc] initWithCredentials:self.userAccount.mxCredentials
+                                         andOnUnrecognizedCertificateBlock:nil
+                                             andPersistentTokenDataHandler:^(void (^handler)(NSArray<MXCredentials *> *credentials, void (^completion)(BOOL didUpdateCredentials))) {
+        [[MXKAccountManager sharedManager] readAndWriteCredentials:handler];
+    } andUnauthenticatedHandler:nil];
+    
+    fakeSession = [[MXSession alloc] initWithMatrixRestClient:mxRestClient];
 }
 
 - (void)didStartSending
