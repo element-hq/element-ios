@@ -34,17 +34,14 @@ struct LocationSharingView: View {
         NavigationView {
             ZStack(alignment: .bottom) {
                 LocationSharingMapView(tileServerMapURL: context.viewState.mapStyleURL,
-                                       avatarData: context.viewState.avatarData,
-                                       location: context.viewState.location,
-                                       errorSubject: context.viewState.errorSubject,
-                                       userLocation: $context.userLocation)
+                                       annotations: context.viewState.annotations,
+                                       highlightedAnnotation: context.viewState.highlightedAnnotation,
+                                       userAvatarData: context.viewState.userAvatarData,
+                                       showsUserLocation: context.viewState.showsUserLocation,
+                                       userLocation: $context.userLocation,
+                                       errorSubject: context.viewState.errorSubject)
                     .ignoresSafeArea()
-                
-                HStack {
-                    Link("© MapTiler", destination: URL(string: "https://www.maptiler.com/copyright/")!)
-                    Link("© OpenStreetMap contributors", destination: URL(string: "https://www.openstreetmap.org/copyright")!)
-                }
-                .font(theme.fonts.caption1)
+                MapCreditsView()
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -58,7 +55,7 @@ struct LocationSharingView: View {
                         .foregroundColor(theme.colors.primaryContent)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    if context.viewState.location != nil {
+                    if context.viewState.displayExistingLocation {
                         Button {
                             context.send(viewAction: .share)
                         } label: {
