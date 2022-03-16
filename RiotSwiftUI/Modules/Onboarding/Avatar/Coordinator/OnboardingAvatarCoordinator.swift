@@ -68,7 +68,7 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
         onboardingAvatarViewModel = viewModel
         onboardingAvatarHostingController = VectorHostingController(rootView: view)
         onboardingAvatarHostingController.vc_removeBackTitle()
-        onboardingAvatarHostingController.enableNavigationBarScrollEdgesAppearance = true
+        onboardingAvatarHostingController.enableNavigationBarScrollEdgeAppearance = true
         
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: onboardingAvatarHostingController)
     }

@@ -53,7 +53,7 @@ final class OnboardingDisplayNameCoordinator: Coordinator, Presentable {
         onboardingDisplayNameViewModel = viewModel
         onboardingDisplayNameHostingController = VectorHostingController(rootView: view)
         onboardingDisplayNameHostingController.vc_removeBackTitle()
-        onboardingDisplayNameHostingController.enableNavigationBarScrollEdgesAppearance = true
+        onboardingDisplayNameHostingController.enableNavigationBarScrollEdgeAppearance = true
         
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: onboardingDisplayNameHostingController)
     }

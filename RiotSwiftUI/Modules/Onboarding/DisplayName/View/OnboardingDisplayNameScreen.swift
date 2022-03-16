@@ -67,6 +67,7 @@ struct OnboardingDisplayNameScreen: View {
             Image(Asset.Images.onboardingCongratulationsIcon.name)
                 .renderingMode(.template)
                 .foregroundColor(theme.colors.accent)
+                .background(Circle().foregroundColor(.white).padding(2))
                 .padding(.bottom, 8)
                 .accessibilityHidden(true)
             
@@ -122,5 +123,10 @@ struct OnboardingDisplayName_Previews: PreviewProvider {
     static let stateRenderer = MockOnboardingDisplayNameScreenState.stateRenderer
     static var previews: some View {
         stateRenderer.screenGroup(addNavigation: true)
+            .navigationViewStyle(.stack)
+            .theme(.light).preferredColorScheme(.light)
+        stateRenderer.screenGroup(addNavigation: true)
+            .navigationViewStyle(.stack)
+            .theme(.dark).preferredColorScheme(.dark)
     }
 }
