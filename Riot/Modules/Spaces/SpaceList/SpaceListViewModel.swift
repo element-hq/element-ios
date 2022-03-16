@@ -73,13 +73,16 @@ final class SpaceListViewModel: SpaceListViewModelType {
             self.loadData()
         case .selectRow(at: let indexPath, from: let sourceView):
             guard self.selectedIndexPath != indexPath else {
+                Analytics.shared.trackInteraction(.spacePanelSelectedSpace)
                 return
             }
+            
             let section = self.sections[indexPath.section]
             switch section {
             case .home:
                 self.selectHome()
                 self.selectedIndexPath = indexPath
+                Analytics.shared.trackInteraction(.spacePanelSwitchSpace)
                 self.update(viewState: .selectionChanged(indexPath))
             case .spaces(let viewDataList):
                 let spaceViewData = viewDataList[indexPath.row]
@@ -88,6 +91,7 @@ final class SpaceListViewModel: SpaceListViewModelType {
                 } else {
                     self.selectSpace(with: spaceViewData.spaceId)
                     self.selectedIndexPath = indexPath
+                    Analytics.shared.trackInteraction(.spacePanelSwitchSpace)
                     self.update(viewState: .selectionChanged(indexPath))
                 }
             case .addSpace:

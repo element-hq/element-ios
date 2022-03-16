@@ -59,6 +59,11 @@ import AnalyticsEvents
         RiotSettings.shared.hasAcceptedMatomoAnalytics
     }
     
+    // MARK: - Private
+    
+    /// keep an instance of `AnalyticsSpaceTracker` to track space metrics when space graph is built.
+    private let spaceTracker: AnalyticsSpaceTracker = AnalyticsSpaceTracker()
+    
     // MARK: - Public
     
     /// Opts in to analytics tracking with the supplied session.
@@ -174,10 +179,10 @@ extension Analytics {
     /// Updates any user properties to help with creating cohorts.
     /// 
     /// Only non-nil properties will be updated when calling this method.
-    func updateUserProperties(ftueUseCase: UserSessionProperties.UseCase? = nil) {
+    func updateUserProperties(ftueUseCase: UserSessionProperties.UseCase? = nil, numFavouriteRooms: Int? = nil, numSpaces: Int? = nil) {
         let userProperties = AnalyticsEvent.UserProperties(ftueUseCaseSelection: ftueUseCase?.analyticsName,
-                                                           numFavouriteRooms: nil,
-                                                           numSpaces: nil)
+                                                           numFavouriteRooms: numFavouriteRooms,
+                                                           numSpaces: numSpaces)
         client.updateUserProperties(userProperties)
     }
     
