@@ -61,20 +61,22 @@ import AnalyticsEvents
         RiotSettings.shared.hasAcceptedMatomoAnalytics
     }
     
+    /// Used to defined the trigger of the next potential `JoinedRoom` event
     var joinedRoomTrigger: AnalyticsJoinedRoomTrigger = .unknown
     
+    /// Used to defined the trigger of the next potential `ViewRoom` event
     var viewRoomTrigger: AnalyticsViewRoomTrigger = .unknown
     
+    /// Used to defined the actual space activated by the user.
     var activeSpace: MXSpace? {
         didSet {
-            MXLog.debug("[Analytics] activeSpace space \(activeSpace?.summary?.displayname ?? "home")")
             updateViewRoomActiveSpace()
         }
     }
     
+    /// Used to defined the currently visible space in explore rooms.
     var exploringSpace: MXSpace? {
         didSet {
-            MXLog.debug("[Analytics] exploring space \(exploringSpace?.summary?.displayname ?? "none")")
             updateViewRoomActiveSpace()
         }
     }
