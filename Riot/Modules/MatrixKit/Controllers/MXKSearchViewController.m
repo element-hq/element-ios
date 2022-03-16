@@ -102,7 +102,7 @@
     self.searchSearchBarHeightConstraint.constant = 0;
     [self.view setNeedsUpdateConstraints];
 
-    self.noResultsLabel.text = [MatrixKitL10n searchNoResults];
+    self.noResultsLabel.text = [VectorL10n searchNoResults];
     self.noResultsLabel.hidden = YES;
 
     searchBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(showSearchBar:)];

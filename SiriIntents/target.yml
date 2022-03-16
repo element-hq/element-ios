@@ -58,5 +58,4 @@ targets:
     - path: ../Riot/Generated/Strings.swift
       excludes:
         - "**/*.md" # excludes all files with the .md extension
-    - path: ../Riot/Generated/MatrixKitStrings.swift
     - path: ../Riot/Modules/Room/TimelineCells/Styles/RoomTimelineStyleIdentifier.swift

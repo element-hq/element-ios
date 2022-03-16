@@ -298,7 +298,7 @@
         }
         else
         {
-            errorMsg = [MatrixKitL10n notSupportedYet];
+            errorMsg = [VectorL10n notSupportedYet];
         }
     }
     else if (type == MXKAuthenticationTypeRegister)
@@ -425,9 +425,9 @@
                 [inputsAlert dismissViewControllerAnimated:NO completion:nil];
             }
             
-            inputsAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n error] message:errorMsg preferredStyle:UIAlertControllerStyleAlert];
+            inputsAlert = [UIAlertController alertControllerWithTitle:[VectorL10n error] message:errorMsg preferredStyle:UIAlertControllerStyleAlert];
             
-            [inputsAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+            [inputsAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                                                                
@@ -776,7 +776,7 @@
                         else
                         {
                             MXLogDebug(@"[AuthInputsView] reCaptcha stage failed");
-                            callback(nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n notSupportedYet]}]);
+                            callback(nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[VectorL10n notSupportedYet]}]);
                         }
                         
                     }];
@@ -877,7 +877,7 @@
                         else
                         {
                             MXLogDebug(@"[AuthInputsView] reCaptcha stage failed");
-                            callback (nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n notSupportedYet]}]);
+                            callback (nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[VectorL10n notSupportedYet]}]);
                         }
                     }];
                 }
@@ -915,7 +915,7 @@
         }
         
         MXLogDebug(@"[AuthInputsView] updateAuthSessionWithCompletedStages failed");
-        callback (nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n notSupportedYet]}]);
+        callback (nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[VectorL10n notSupportedYet]}]);
     }
 }
 
@@ -1673,7 +1673,7 @@
     
     inputsAlert = [UIAlertController alertControllerWithTitle:[VectorL10n authMsisdnValidationTitle] message:[VectorL10n authMsisdnValidationMessage] preferredStyle:UIAlertControllerStyleAlert];
     
-    [inputsAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [inputsAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                     style:UIAlertActionStyleDefault
                                                   handler:^(UIAlertAction * action) {
                                                       
@@ -1698,7 +1698,7 @@
         
     }];
     
-    [inputsAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n submit]
+    [inputsAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n submit]
                                                     style:UIAlertActionStyleDefault
                                                   handler:^(UIAlertAction * action) {
                                                       
@@ -1770,13 +1770,13 @@
                                                                       }
                                                                       else
                                                                       {
-                                                                          title = [MatrixKitL10n error];
+                                                                          title = [VectorL10n error];
                                                                       }
                                                                   }
                                                                   
                                                                   self->inputsAlert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
                                                                   
-                                                                  [self->inputsAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+                                                                  [self->inputsAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                                                                                         style:UIAlertActionStyleDefault
                                                                                                                       handler:^(UIAlertAction * action) {
                                                                                                                     

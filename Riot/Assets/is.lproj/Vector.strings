@@ -478,3 +478,9 @@
 "share_extension_auth_prompt" = "Skráðu inn í aðalforrit til að deila efni";
 "e2e_room_key_request_message_new_device" = "Þú bættir við nýju tæki '%@', sem er að krefjast dulritunarlykla.";
 "e2e_room_key_request_message" = "Ósannvottaða tækið þitt '%@' er að krefjast dulritunarlykla.";
+
+
+// MARK: - MatrixKit
+
+
+

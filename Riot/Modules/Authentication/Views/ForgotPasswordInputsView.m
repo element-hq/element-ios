@@ -213,9 +213,9 @@
                 [inputsAlert dismissViewControllerAnimated:NO completion:nil];
             }
             
-            inputsAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n error] message:errorMsg preferredStyle:UIAlertControllerStyleAlert];
+            inputsAlert = [UIAlertController alertControllerWithTitle:[VectorL10n error] message:errorMsg preferredStyle:UIAlertControllerStyleAlert];
             
-            [inputsAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+            [inputsAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                             style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {
                                                               
@@ -315,9 +315,9 @@
                                  [self->inputsAlert dismissViewControllerAnimated:NO completion:nil];
                              }
 
-                             self->inputsAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n error] message:errorMessage preferredStyle:UIAlertControllerStyleAlert];
+                             self->inputsAlert = [UIAlertController alertControllerWithTitle:[VectorL10n error] message:errorMessage preferredStyle:UIAlertControllerStyleAlert];
 
-                             [self->inputsAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+                             [self->inputsAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                                                    style:UIAlertActionStyleDefault
                                                                                  handler:^(UIAlertAction * action) {
 
@@ -349,7 +349,7 @@
             }
         }
         
-        callback(nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n notSupportedYet]}]);
+        callback(nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[VectorL10n notSupportedYet]}]);
     }
 }
 

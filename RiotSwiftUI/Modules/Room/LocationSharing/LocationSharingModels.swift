@@ -38,14 +38,33 @@ enum LocationSharingViewError {
 
 @available(iOS 14, *)
 struct LocationSharingViewState: BindableState {
-    let mapStyleURL: URL
-    let avatarData: AvatarInputProtocol
-    let location: CLLocationCoordinate2D?
     
+    /// Map style URL
+    let mapStyleURL: URL
+    
+    /// Current user avatarData
+    let userAvatarData: AvatarInputProtocol
+    
+    /// User map annotation to display existing location
+    let userAnnotation: UserLocationAnnotation?
+    
+    /// Map annotations to display on map
+    var annotations: [UserLocationAnnotation]
+
+    /// Map annotation to focus on
+    var highlightedAnnotation: UserLocationAnnotation?
+
     var showLoadingIndicator: Bool = false
     
+    /// True to indicate to show and follow current user location
+    var showsUserLocation: Bool = false
+    
     var shareButtonVisible: Bool {
-        return location == nil
+        return self.displayExistingLocation == false
+    }
+    
+    var displayExistingLocation: Bool {
+        return userAnnotation != nil
     }
     
     var shareButtonEnabled: Bool {
@@ -58,21 +77,13 @@ struct LocationSharingViewState: BindableState {
 }
 
 struct LocationSharingViewStateBindings {
-    var alertInfo: LocationSharingErrorAlertInfo?
+    var alertInfo: AlertInfo<LocationSharingAlertType>?
     var userLocation: CLLocationCoordinate2D?
 }
 
-struct LocationSharingErrorAlertInfo: Identifiable {
-    enum AlertType {
-        case mapLoadingError
-        case userLocatingError
-        case authorizationError
-        case locationSharingError
-    }
-    
-    let id: AlertType
-    let title: String
-    var subtitle: String? = nil
-    let primaryButton: (title: String, action: (() -> Void)?)
-    var secondaryButton: (title: String, action: (() -> Void)?)? = nil
+enum LocationSharingAlertType {
+    case mapLoadingError
+    case userLocatingError
+    case authorizationError
+    case locationSharingError
 }

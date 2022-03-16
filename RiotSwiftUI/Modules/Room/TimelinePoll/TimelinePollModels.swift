@@ -99,16 +99,10 @@ struct TimelinePollViewState: BindableState {
 }
 
 struct TimelinePollViewStateBindings {
-    var alertInfo: TimelinePollErrorAlertInfo?
+    var alertInfo: AlertInfo<TimelinePollAlertType>?
 }
 
-struct TimelinePollErrorAlertInfo: Identifiable {
-    enum AlertType {
-        case failedClosingPoll
-        case failedSubmittingAnswer
-    }
-    
-    let id: AlertType
-    let title: String
-    let subtitle: String
+enum TimelinePollAlertType {
+    case failedClosingPoll
+    case failedSubmittingAnswer
 }

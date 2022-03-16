@@ -57,6 +57,8 @@ final class SpaceMemberListViewModel: SpaceMemberListViewModelType {
         case .cancel:
             self.cancelOperations()
             self.coordinatorDelegate?.spaceMemberListViewModelDidCancel(self)
+        case .invite:
+            self.coordinatorDelegate?.spaceMemberListViewModelShowInvite(self)
         }
     }
     

@@ -57,10 +57,10 @@
     [super awakeFromNib];
     
     // Localize string
-    [_redactButton setTitle:[MatrixKitL10n redact] forState:UIControlStateNormal];
-    [_redactButton setTitle:[MatrixKitL10n redact] forState:UIControlStateHighlighted];
-    [_closeButton setTitle:[MatrixKitL10n close] forState:UIControlStateNormal];
-    [_closeButton setTitle:[MatrixKitL10n close] forState:UIControlStateHighlighted];
+    [_redactButton setTitle:[VectorL10n redact] forState:UIControlStateNormal];
+    [_redactButton setTitle:[VectorL10n redact] forState:UIControlStateHighlighted];
+    [_closeButton setTitle:[VectorL10n close] forState:UIControlStateNormal];
+    [_closeButton setTitle:[VectorL10n close] forState:UIControlStateHighlighted];
 }
 
 - (instancetype)initWithEvent:(MXEvent*)event andMatrixSession:(MXSession*)session

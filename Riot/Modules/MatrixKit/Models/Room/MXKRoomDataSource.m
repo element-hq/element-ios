@@ -34,6 +34,8 @@
 #import "MXKSendReplyEventStringLocalizer.h"
 #import "MXKSlashCommands.h"
 
+#import "GeneratedInterface-Swift.h"
+
 const BOOL USE_THREAD_TIMELINE = YES;
 
 #pragma mark - Constant definitions
@@ -1009,6 +1011,11 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         liveEventsListener = [_timeline listenToEventsOfTypes:liveEventTypesFilterForMessages onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
             
             MXStrongifyAndReturnIfNil(self);
+
+            if (event.eventType == MXEventTypeRoomMember && event.isUserProfileChange)
+            {
+                [self refreshProfilesIfNeeded];
+            }
             
             if (MXTimelineDirectionForwards == direction)
             {
@@ -1882,7 +1889,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     
     id<MXSendReplyEventStringLocalizerProtocol> stringLocalizer = [MXKSendReplyEventStringLocalizer new];
     
-    [_room sendReplyToEvent:eventToReply withTextMessage:sanitizedText formattedTextMessage:html stringLocalizer:stringLocalizer localEcho:&localEchoEvent success:success failure:failure];
+    [_room sendReplyToEvent:eventToReply withTextMessage:sanitizedText formattedTextMessage:html stringLocalizer:stringLocalizer threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure];
     
     if (localEchoEvent)
     {
@@ -4319,6 +4326,25 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 {
     //  update secondary room id
     self.secondaryRoomId = [self.mxSession virtualRoomOf:self.roomId];
+}
+
+#pragma mark - Use Only Latest Profiles
+
+/**
+ Refreshes the avatars and display names if needed. This has no effect
+ if `roomScreenUseOnlyLatestUserAvatarAndName` is disabled.
+ */
+- (void)refreshProfilesIfNeeded
+{
+    if (RiotSettings.shared.roomScreenUseOnlyLatestUserAvatarAndName)
+    {
+        @synchronized (bubbles) {
+            for (id<MXKRoomBubbleCellDataStoring> bubble in bubbles)
+            {
+                [bubble setRoomState:self.roomState];
+            }
+        }
+    }
 }
 
 @end

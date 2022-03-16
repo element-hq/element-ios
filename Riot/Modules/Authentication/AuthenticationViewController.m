@@ -211,7 +211,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 - (void)userInterfaceThemeDidChange
 {
     [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar
-                         withModernScrollEdgesAppearance:YES];
+                          withModernScrollEdgeAppearance:YES];
     
     self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
 
@@ -504,6 +504,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
         // Remove the potential back button.
         self.navigationItem.leftBarButtonItem = nil;
+        [self.navigationItem setHidesBackButton:YES];
     }
     else
     {
@@ -698,7 +699,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
                       }]];
 
     MXWeakify(self);
-    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action)
                       {
@@ -860,10 +861,10 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     {
         if (!self.isIdentityServerConfigured)
         {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n error]
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[VectorL10n error]
                                                                            message:[VectorL10n authForgotPasswordErrorNoConfiguredIdentityServer]
                                                                     preferredStyle:UIAlertControllerStyleAlert];
-            [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok] style:UIAlertActionStyleDefault handler:nil]];
+            [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok] style:UIAlertActionStyleDefault handler:nil]];
             [self presentViewController:alert animated:YES completion:nil];
             
             return;
@@ -903,6 +904,12 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
             authInputsview.thirdPartyIdentifiersHidden = YES;
             
             [self updateRegistrationScreenWithThirdPartyIdentifiersHidden:YES];
+            
+            // Show the social login buttons again if needed.
+            [self updateSocialLoginViewVisibility];
+            
+            // Allow backward navigation in the flow again.
+            [self.navigationItem setHidesBackButton:NO];
         }
     }
     else if (sender == self.submitButton)
@@ -947,7 +954,10 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
                             else
                             {
                                 [self.authenticationActivityIndicator stopAnimating];
-
+                                
+                                // Hide the social login buttons now that a different flow has started.
+                                [self hideSocialLoginView];
+                                
                                 // Show the supported 3rd party ids which may be added to the account
                                 authInputsview.thirdPartyIdentifiersHidden = NO;
                                 [self updateRegistrationScreenWithThirdPartyIdentifiersHidden:NO];
@@ -1077,7 +1087,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
             
             alert = [UIAlertController alertControllerWithTitle:[VectorL10n warning] message:[VectorL10n authAddEmailAndPhoneWarning] preferredStyle:UIAlertControllerStyleAlert];
             
-            [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+            [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                                                                
@@ -1396,7 +1406,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
                                                                   message:nil
                                                            preferredStyle:UIAlertControllerStyleAlert];
 
-                [self->alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+                [self->alert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                                 style:UIAlertActionStyleDefault
                                                               handler:^(UIAlertAction * action) {
 

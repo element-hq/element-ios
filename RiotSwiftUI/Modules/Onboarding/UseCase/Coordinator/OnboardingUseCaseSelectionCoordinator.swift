@@ -41,7 +41,7 @@ final class OnboardingUseCaseSelectionCoordinator: Coordinator, Presentable {
         
         let hostingController = VectorHostingController(rootView: view)
         hostingController.vc_removeBackTitle()
-        hostingController.enableNavigationBarScrollEdgesAppearance = true
+        hostingController.enableNavigationBarScrollEdgeAppearance = true
         onboardingUseCaseHostingController = hostingController
     }
     

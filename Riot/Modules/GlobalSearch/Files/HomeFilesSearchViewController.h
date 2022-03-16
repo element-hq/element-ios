@@ -17,7 +17,7 @@
 
 #import "MatrixKit.h"
 
-@class AnalyticsScreenTimer;
+@class AnalyticsScreenTracker;
 
 /**
  `HomeFilesSearchViewController` displays the files search in user's rooms under a `HomeViewController` segment.
@@ -32,6 +32,6 @@
 /**
  The screen timer used for analytics if they've been enabled. The default value is nil.
  */
-@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+@property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
 @end

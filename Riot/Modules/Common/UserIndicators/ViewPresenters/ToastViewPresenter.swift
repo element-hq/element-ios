@@ -27,17 +27,17 @@ class ToastViewPresenter: UserIndicatorViewPresentable {
     }
     
     private let viewState: ToastViewState
-    private weak var viewController: UIViewController?
+    private let presentationContext: UserIndicatorPresentationContext
     private weak var view: UIView?
     private var animator: UIViewPropertyAnimator?
     
-    init(viewState: ToastViewState, presentingViewController: UIViewController) {
+    init(viewState: ToastViewState, presentationContext: UserIndicatorPresentationContext) {
         self.viewState = viewState
-        self.viewController = presentingViewController
+        self.presentationContext = presentationContext
     }
 
     func present() {
-        guard let viewController = viewController else {
+        guard let viewController = presentationContext.indicatorPresentingViewController else {
             return
         }
         

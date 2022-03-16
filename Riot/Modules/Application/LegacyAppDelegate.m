@@ -941,7 +941,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         }
         else
         {
-            title = [MatrixKitL10n error];
+            title = [VectorL10n error];
         }
     }
     
@@ -959,7 +959,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [_errorNotification dismissViewControllerAnimated:NO completion:nil];
 
     _errorNotification = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    [_errorNotification addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+    [_errorNotification addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                            style:UIAlertActionStyleDefault
                                                          handler:^(UIAlertAction * action) {
 
@@ -1105,10 +1105,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 #pragma mark - PushNotificationServiceDelegate
 
-- (void)pushNotificationService:(PushNotificationService *)pushNotificationService shouldNavigateToRoomWithId:(NSString *)roomId
+- (void)pushNotificationService:(PushNotificationService *)pushNotificationService
+     shouldNavigateToRoomWithId:(NSString *)roomId
+                       threadId:(NSString *)threadId
 {
     _lastNavigatedRoomIdFromPush = roomId;
-    [self navigateToRoomById:roomId];
+    [self navigateToRoomById:roomId threadId:threadId];
 }
 
 #pragma mark - Badge Count
@@ -1895,7 +1897,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                             completion(YES);
                                         }]];
 
-    [self.logoutConfirmation addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [self.logoutConfirmation addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                                 style:UIAlertActionStyleCancel
                                                               handler:^(UIAlertAction * action)
                                         {
@@ -2268,7 +2270,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                                            
                                                        }]];
         
-        [self.logoutConfirmation addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+        [self.logoutConfirmation addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                          style:UIAlertActionStyleCancel
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -2717,7 +2719,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                                                      
                                                                  }]];
             
-            [_errorNotification addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+            [_errorNotification addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                                    style:UIAlertActionStyleDefault
                                                                  handler:^(UIAlertAction * action) {
                                                                      
@@ -2798,7 +2800,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                                                                        message:messageText
                                                                                 preferredStyle:UIAlertControllerStyleAlert];
                         
-                        [self.mxInAppNotification addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+                        [self.mxInAppNotification addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                                                      style:UIAlertActionStyleCancel
                                                                                    handler:^(UIAlertAction * action) {
                                                                                        
@@ -2858,7 +2860,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         [accountPicker dismissViewControllerAnimated:NO completion:nil];
         
-        accountPicker = [UIAlertController alertControllerWithTitle:[MatrixKitL10n selectAccount] message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        accountPicker = [UIAlertController alertControllerWithTitle:[VectorL10n selectAccount] message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         
         __weak typeof(self) weakSelf = self;
         for(MXKAccount *account in mxAccounts)
@@ -2881,7 +2883,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                                             }]];
         }
         
-        [accountPicker addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+        [accountPicker addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                           style:UIAlertActionStyleCancel
                                                         handler:^(UIAlertAction * action) {
                                                             
@@ -2904,7 +2906,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 #pragma mark - Matrix Rooms handling
 
-- (void)navigateToRoomById:(NSString *)roomId
+- (void)navigateToRoomById:(NSString *)roomId threadId:(NSString *)threadId
 {
     if (roomId.length)
     {
@@ -2938,7 +2940,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         {
             MXLogDebug(@"[AppDelegate][Push] navigateToRoomById: open the roomViewController %@", roomId);
 
-            [self showRoom:roomId andEventId:nil withMatrixSession:dedicatedAccount.mxSession];
+            [self showRoom:roomId
+                  threadId:threadId
+                andEventId:nil
+         withMatrixSession:dedicatedAccount.mxSession];
         }
         else
         {
@@ -3005,13 +3010,24 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession
 {
+    [self showRoom:roomId threadId:nil andEventId:eventId withMatrixSession:mxSession];
+}
+
+- (void)showRoom:(NSString*)roomId threadId:(NSString*)threadId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession
+{
     // Ask to restore initial display
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
-    
+
+    ThreadParameters *threadParameters = nil;
+    if (RiotSettings.shared.enableThreads && threadId)
+    {
+        threadParameters = [[ThreadParameters alloc] initWithThreadId:threadId stackRoomScreen:NO];
+    }
+
     RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
                                                                                     eventId:eventId
                                                                                   mxSession:mxSession
-                                                                           threadParameters:nil
+                                                                           threadParameters:threadParameters
                                                                      presentationParameters:presentationParameters];
     
     [self showRoomWithParameters:parameters];
@@ -3306,7 +3322,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                                              [AppDelegate theDelegate].errorNotification = nil;
                                                          }]];
 
-    [_errorNotification addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [_errorNotification addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                            style:UIAlertActionStyleCancel
                                                          handler:^(UIAlertAction * action) {
 
@@ -3511,7 +3527,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                              
                                              __weak typeof(self) weakSelf = self;
                                              
-                                             [self->noCallSupportAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ignore]
+                                             [self->noCallSupportAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ignore]
                                                                                                           style:UIAlertActionStyleDefault
                                                                                                         handler:^(UIAlertAction * action) {
                                                                                                       
@@ -3523,7 +3539,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                                                                                       
                                                                                                   }]];
                                              
-                                             [self->noCallSupportAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n rejectCall]
+                                             [self->noCallSupportAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n rejectCall]
                                                                                                           style:UIAlertActionStyleDefault
                                                                                                         handler:^(UIAlertAction * action) {
                                                                                                       
@@ -4371,7 +4387,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     GDPRConsentViewController *gdprConsentViewController = [[GDPRConsentViewController alloc] initWithURL:consentURI];    
     
-    UIBarButtonItem *closeBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[MatrixKitL10n close]
+    UIBarButtonItem *closeBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[VectorL10n close]
                                                                            style:UIBarButtonItemStylePlain
                                                                           target:self
                                                                           action:@selector(dismissGDPRConsent)];
@@ -4495,7 +4511,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         [[UIApplication sharedApplication] vc_open:self.majorUpdateManager.learnMoreURL completionHandler:^(BOOL success) {
             if (!success)
             {
-                [self showAlertWithTitle:[MatrixKitL10n error] message:[VectorL10n roomMessageUnableOpenLinkErrorMessage]];
+                [self showAlertWithTitle:[VectorL10n error] message:[VectorL10n roomMessageUnableOpenLinkErrorMessage]];
             }
         }];
         

@@ -167,7 +167,7 @@ class CallPresenter: NSObject {
         
         #else
         AppDelegate.theDelegate().showAlert(withTitle: nil,
-                                            message: MatrixKitL10n.notSupportedYet)
+                                            message: VectorL10n.notSupportedYet)
         #endif
     }
     

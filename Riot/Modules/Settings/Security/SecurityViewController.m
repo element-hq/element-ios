@@ -119,7 +119,7 @@ TableViewSectionsDelegate>
 @property (nonatomic, strong) SetPinCoordinatorBridgePresenter *setPinCoordinatorBridgePresenter;
 @property (nonatomic, strong) CrossSigningSetupCoordinatorBridgePresenter *crossSigningSetupCoordinatorBridgePresenter;
 
-@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+@property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
 @end
 
@@ -145,7 +145,7 @@ TableViewSectionsDelegate>
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenSettingsSecurity];
+    self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenSettingsSecurity];
 }
 
 - (void)viewDidLoad
@@ -254,6 +254,8 @@ TableViewSectionsDelegate>
 {
     [super viewWillAppear:animated];
 
+    [self.screenTracker trackScreen];
+
     // Release the potential pushed view controller
     [self releasePushedViewController];
 
@@ -269,12 +271,6 @@ TableViewSectionsDelegate>
     [self loadCrossSigning];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self.screenTimer start];
-}
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -284,12 +280,6 @@ TableViewSectionsDelegate>
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         currentAlert = nil;
     }
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self.screenTimer stop];
 }
 
 #pragma mark - Internal methods
@@ -829,7 +819,7 @@ TableViewSectionsDelegate>
                                     [self setupCrossSigning:nil];
                                 }]];
     
-    [alertController addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [alertController addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                                 style:UIAlertActionStyleCancel
                                                               handler:nil]];
     
@@ -1416,7 +1406,7 @@ TableViewSectionsDelegate>
                                                                              message:[VectorL10n securitySettingsCompleteSecurityAlertMessage]
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     
-    [alertController addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+    [alertController addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
                                                     [self presentCompleteSecurity];
@@ -1612,7 +1602,7 @@ TableViewSectionsDelegate>
                                         message:[VectorL10n settingsKeyBackupDeleteConfirmationPromptMsg]
                                  preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
@@ -1741,7 +1731,7 @@ TableViewSectionsDelegate>
                                         message:[VectorL10n  settingsKeyBackupDeleteConfirmationPromptMsg]
                                  preferredStyle:UIAlertControllerStyleAlert];
 
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        MXStrongifyAndReturnIfNil(self);

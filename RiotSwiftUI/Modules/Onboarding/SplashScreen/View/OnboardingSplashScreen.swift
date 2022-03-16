@@ -112,8 +112,11 @@ struct OnboardingSplashScreen: View {
         .background(theme.colors.background.ignoresSafeArea())
         .accentColor(theme.colors.accent)
         .navigationBarHidden(true)
-        .onAppear { startTimer() }
+        .onAppear {
+            startTimer()
+        }
         .onDisappear { stopTimer() }
+        .track(screen: .welcome)
     }
     
     // MARK: - Animation

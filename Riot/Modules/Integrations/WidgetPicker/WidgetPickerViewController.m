@@ -95,7 +95,7 @@
         }
 
         // Cancel
-        alertAction = [UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+        alertAction = [UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                style:UIAlertActionStyleCancel
                                              handler:nil];
         [self.alertController addAction:alertAction];

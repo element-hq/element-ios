@@ -18,7 +18,7 @@
 #import "MatrixKit.h"
 
 @class RootTabEmptyView;
-@class AnalyticsScreenTimer;
+@class AnalyticsScreenTracker;
 @class UserIndicatorPresenterWrapper;
 
 /**
@@ -95,7 +95,7 @@ FOUNDATION_EXPORT NSString *const RecentsViewControllerDataReadyNotification;
 /**
  The screen timer used for analytics if they've been enabled. The default value is nil.
  */
-@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+@property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
 /**
  Presenter for displaying app-wide user indicators. If not set, the view controller will use legacy activity indicators
@@ -146,6 +146,11 @@ FOUNDATION_EXPORT NSString *const RecentsViewControllerDataReadyNotification;
  Create an empty room by default.
  */
 - (void)onPlusButtonPressed;
+
+/**
+ Open screen to create a new chat room.
+ */
+- (void)startChat;
 
 /**
  Open screen to create a new room.

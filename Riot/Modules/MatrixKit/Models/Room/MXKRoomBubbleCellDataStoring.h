@@ -232,6 +232,15 @@
 - (instancetype)initWithEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState andRoomDataSource:(MXKRoomDataSource*)roomDataSource;
 
 /**
+ Sets the `MXRoomState` for a buble cell. This allows to adapt the display
+ of a cell with a different room state than its historical. This won't update critical
+ flag/status, such as `isEncryptedRoom`.
+
+ @param roomState the `MXRoomState` to use for this cell.
+ */
+- (void)setRoomState:(MXRoomState *)roomState;
+
+/**
 Update the event because its sent state changed or it is has been redacted.
  
  @param eventId the id of the event to change.

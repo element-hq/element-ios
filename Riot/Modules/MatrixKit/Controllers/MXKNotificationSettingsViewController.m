@@ -317,13 +317,13 @@
             
             if (areAllDisabled)
             {
-                [masterBtnCell.mxkButton setTitle:[MatrixKitL10n notificationSettingsEnableNotifications] forState:UIControlStateNormal];
-                [masterBtnCell.mxkButton setTitle:[MatrixKitL10n notificationSettingsEnableNotifications] forState:UIControlStateHighlighted];
+                [masterBtnCell.mxkButton setTitle:[VectorL10n notificationSettingsEnableNotifications] forState:UIControlStateNormal];
+                [masterBtnCell.mxkButton setTitle:[VectorL10n notificationSettingsEnableNotifications] forState:UIControlStateHighlighted];
             }
             else
             {
-                [masterBtnCell.mxkButton setTitle:[MatrixKitL10n notificationSettingsDisableAll] forState:UIControlStateNormal];
-                [masterBtnCell.mxkButton setTitle:[MatrixKitL10n notificationSettingsDisableAll] forState:UIControlStateHighlighted];
+                [masterBtnCell.mxkButton setTitle:[VectorL10n notificationSettingsDisableAll] forState:UIControlStateNormal];
+                [masterBtnCell.mxkButton setTitle:[VectorL10n notificationSettingsDisableAll] forState:UIControlStateHighlighted];
             }
             
             [masterBtnCell.mxkButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -342,12 +342,12 @@
             
             if (areAllDisabled)
             {
-                introCell.mxkTextView.text = [MatrixKitL10n notificationSettingsEnableNotificationsWarning];
+                introCell.mxkTextView.text = [VectorL10n notificationSettingsEnableNotificationsWarning];
                 introCell.mxkTextView.backgroundColor = [UIColor redColor];
             }
             else
             {
-                introCell.mxkTextView.text = [MatrixKitL10n notificationSettingsGlobalInfo];
+                introCell.mxkTextView.text = [VectorL10n notificationSettingsGlobalInfo];
                 introCell.mxkTextView.backgroundColor = [UIColor clearColor];
             }
             
@@ -365,7 +365,7 @@
             {
                 introCell = [[MXKTableViewCellWithTextView alloc] init];
             }
-            introCell.mxkTextView.text = [MatrixKitL10n notificationSettingsPerWordInfo];
+            introCell.mxkTextView.text = [VectorL10n notificationSettingsPerWordInfo];
             introCell.mxkTextView.font = [UIFont systemFontOfSize:14];
              
              cell = introCell;
@@ -474,37 +474,37 @@
         if (rowIndex == ruleContainsUserNameIndex)
         {
             pushRule = [_mxAccount.mxSession.notificationCenter ruleById:kMXNotificationCenterContainUserNameRuleID];
-            ruleDescription = [MatrixKitL10n notificationSettingsContainMyUserName];
+            ruleDescription = [VectorL10n notificationSettingsContainMyUserName];
         }
         if (rowIndex == ruleContainsDisplayNameIndex)
         {
             pushRule = [_mxAccount.mxSession.notificationCenter ruleById:kMXNotificationCenterContainDisplayNameRuleID];
-            ruleDescription = [MatrixKitL10n notificationSettingsContainMyDisplayName];
+            ruleDescription = [VectorL10n notificationSettingsContainMyDisplayName];
         }
         if (rowIndex == ruleOneToOneRoomIndex)
         {
             pushRule = [_mxAccount.mxSession.notificationCenter ruleById:kMXNotificationCenterOneToOneRoomRuleID];
-            ruleDescription = [MatrixKitL10n notificationSettingsJustSentToMe];
+            ruleDescription = [VectorL10n notificationSettingsJustSentToMe];
         }
         if (rowIndex == ruleInviteForMeIndex)
         {
             pushRule = [_mxAccount.mxSession.notificationCenter ruleById:kMXNotificationCenterInviteMeRuleID];
-            ruleDescription = [MatrixKitL10n notificationSettingsInviteToANewRoom];
+            ruleDescription = [VectorL10n notificationSettingsInviteToANewRoom];
         }
         if (rowIndex == ruleMemberEventIndex)
         {
             pushRule = [_mxAccount.mxSession.notificationCenter ruleById:kMXNotificationCenterMemberEventRuleID];
-            ruleDescription = [MatrixKitL10n notificationSettingsPeopleJoinLeaveRooms];
+            ruleDescription = [VectorL10n notificationSettingsPeopleJoinLeaveRooms];
         }
         if (rowIndex == ruleCallIndex)
         {
             pushRule = [_mxAccount.mxSession.notificationCenter ruleById:kMXNotificationCenterCallRuleID];
-            ruleDescription = [MatrixKitL10n notificationSettingsReceiveACall];
+            ruleDescription = [VectorL10n notificationSettingsReceiveACall];
         }
         if (rowIndex == ruleSuppressBotsNotificationsIndex)
         {
             pushRule = [_mxAccount.mxSession.notificationCenter ruleById:kMXNotificationCenterSuppressBotsNotificationsRuleID];
-            ruleDescription = [MatrixKitL10n notificationSettingsSuppressFromBots];
+            ruleDescription = [VectorL10n notificationSettingsSuppressFromBots];
         }
         
         if (pushRule)
@@ -536,7 +536,7 @@
             
             pushRuleCell.mxSession = _mxAccount.mxSession;
             pushRuleCell.mxPushRule = pushRule;
-            pushRuleCell.ruleDescription.text = [MatrixKitL10n notificationSettingsNotifyAllOther];
+            pushRuleCell.ruleDescription.text = [VectorL10n notificationSettingsNotifyAllOther];
 
             cell = pushRuleCell;
         }
@@ -558,7 +558,7 @@
     {
         UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, MAXFLOAT)];
         textView.font = [UIFont systemFontOfSize:14];
-        textView.text = areAllDisabled ? [MatrixKitL10n notificationSettingsEnableNotificationsWarning] : [MatrixKitL10n notificationSettingsGlobalInfo];
+        textView.text = areAllDisabled ? [VectorL10n notificationSettingsEnableNotificationsWarning] : [VectorL10n notificationSettingsGlobalInfo];
         CGSize contentSize = [textView sizeThatFits:textView.frame.size];
         return contentSize.height + 1;
     }
@@ -569,7 +569,7 @@
         {
             UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, MAXFLOAT)];
             textView.font = [UIFont systemFontOfSize:14];
-            textView.text = [MatrixKitL10n notificationSettingsPerWordInfo];
+            textView.text = [VectorL10n notificationSettingsPerWordInfo];
             CGSize contentSize = [textView sizeThatFits:textView.frame.size];
             return contentSize.height + 1;
         }
@@ -612,23 +612,23 @@
     
     if (section == MXKNOTIFICATIONSETTINGS_SECTION_PER_WORD_INDEX)
     {
-        sectionLabel.text = [MatrixKitL10n notificationSettingsPerWordNotifications];
+        sectionLabel.text = [VectorL10n notificationSettingsPerWordNotifications];
     }
     else if (section == MXKNOTIFICATIONSETTINGS_SECTION_PER_ROOM_INDEX)
     {
-        sectionLabel.text = [MatrixKitL10n notificationSettingsPerRoomNotifications];
+        sectionLabel.text = [VectorL10n notificationSettingsPerRoomNotifications];
     }
     else if (section == MXKNOTIFICATIONSETTINGS_SECTION_PER_SENDER_INDEX)
     {
-        sectionLabel.text = [MatrixKitL10n notificationSettingsPerSenderNotifications];
+        sectionLabel.text = [VectorL10n notificationSettingsPerSenderNotifications];
     }
     else if (section == MXKNOTIFICATIONSETTINGS_SECTION_OTHERS_INDEX)
     {
-        sectionLabel.text = [MatrixKitL10n notificationSettingsOtherAlerts];
+        sectionLabel.text = [VectorL10n notificationSettingsOtherAlerts];
     }
     else if (section == MXKNOTIFICATIONSETTINGS_SECTION_DEFAULT_INDEX)
     {
-        sectionLabel.text = [MatrixKitL10n notificationSettingsByDefault];
+        sectionLabel.text = [VectorL10n notificationSettingsByDefault];
     }
     
     return sectionHeader;

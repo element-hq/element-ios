@@ -20,6 +20,7 @@ import Foundation
 enum RoomInfoSection: Int {
     case none
     case addParticipants
+    case settings
     case changeAvatar
     case changeTopic
 }
@@ -29,16 +30,24 @@ class RoomInfoCoordinatorParameters: NSObject {
     
     let session: MXSession
     let room: MXRoom
+    let parentSpaceId: String?
     let initialSection: RoomInfoSection
+    let dismissOnCancel: Bool
     
-    init(session: MXSession, room: MXRoom, initialSection: RoomInfoSection) {
+    init(session: MXSession, room: MXRoom, parentSpaceId: String?, initialSection: RoomInfoSection, dismissOnCancel: Bool) {
         self.session = session
         self.room = room
+        self.parentSpaceId = parentSpaceId
         self.initialSection = initialSection
+        self.dismissOnCancel = dismissOnCancel
         super.init()
     }
     
-    convenience init(session: MXSession, room: MXRoom) {
-        self.init(session: session, room: room, initialSection: .none)
+    convenience init(session: MXSession, room: MXRoom, parentSpaceId: String?) {
+        self.init(session: session, room: room, parentSpaceId: parentSpaceId, initialSection: .none, dismissOnCancel: false)
+    }
+    
+    convenience init(session: MXSession, room: MXRoom, parentSpaceId: String?, initialSection: RoomInfoSection) {
+        self.init(session: session, room: room, parentSpaceId: parentSpaceId, initialSection: initialSection, dismissOnCancel: false)
     }
 }

@@ -53,7 +53,7 @@
 
 /** Key verification **/
 
-"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@は検証を求めています";
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@は認証を要求しています";
 
 /* New message indicator on a room */
 "MESSAGE_IN_X" = "%@ 内のメッセージ";
@@ -77,3 +77,31 @@
 /** General **/
 
 "NOTIFICATION" = "通知";
+
+/* New message reply from a specific person in a named room. */
+"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ さんが %@ で返信";
+
+/* New message reply from a specific person, not referencing a room. */
+"REPLY_FROM_USER_TITLE" = "%@ さんが返信";
+
+/** Reactions **/
+
+/* A user has reacted to a message, including the reaction e.g. "Alice reacted 👍". */
+"REACTION_FROM_USER" = "%@ さんが %@ とリアクション";
+
+/* A user has reacted to a message, but the reaction content is unknown */
+"GENERIC_REACTION_FROM_USER" = "%@ さんがリアクション";
+
+/* New file message from a specific person, not referencing a room. */
+"LOCATION_FROM_USER" = "%@ さんが位置情報を共有";
+
+/* New voice message from a specific person, not referencing a room. */
+"VOICE_MESSAGE_FROM_USER" = "%@ さんが音声メッセージを送信";
+
+/* New video message from a specific person, not referencing a room. */
+"VIDEO_FROM_USER" = "%@ さんが動画を送信";
+
+/** Media Messages **/
+
+/* New image message from a specific person, not referencing a room. */
+"PICTURE_FROM_USER" = "%@ さんが写真を送信";

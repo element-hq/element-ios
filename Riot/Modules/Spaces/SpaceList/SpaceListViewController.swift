@@ -169,8 +169,10 @@ extension SpaceListViewController: UITableViewDataSource {
             numberOfRows = 1
         case .spaces(let viewDataList):
             numberOfRows = viewDataList.count
+        case .addSpace:
+            numberOfRows = 1
         }
-        
+
         return numberOfRows
     }
     
@@ -186,6 +188,8 @@ extension SpaceListViewController: UITableViewDataSource {
             viewData = spaceViewData
         case .spaces(let viewDataList):
             viewData = viewDataList[indexPath.row]
+        case .addSpace(let spaceViewData):
+            viewData = spaceViewData
         }
         
         cell.update(theme: self.theme)

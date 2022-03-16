@@ -16,10 +16,9 @@
 
 #import "SegmentedViewController.h"
 
-#import "ContactsTableViewController.h"
-
 @class Contact;
 @class RoomParticipantsViewController;
+@class AnalyticsScreenTracker;
 
 /**
  `RoomParticipantsViewController` delegate.
@@ -42,7 +41,7 @@
  'RoomParticipantsViewController' instance is used to edit members of the room defined by the property 'mxRoom'.
  When this property is nil, the view controller is empty.
  */
-@interface RoomParticipantsViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIGestureRecognizerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate>
+@interface RoomParticipantsViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIGestureRecognizerDelegate, MXKRoomMemberDetailsViewControllerDelegate>
 {
 @protected
     /**
@@ -80,12 +79,18 @@
 @property (nonatomic) MXRoom *mxRoom;
 
 /**
+ The ID of the parent space. `nil` for home space
+ */
+@property (nonatomic) NSString *parentSpaceId;
+
+/**
  Enable mention option in member details view. NO by default
  */
 @property (nonatomic) BOOL enableMention;
 
 @property (nonatomic) BOOL showCancelBarButtonItem;
 @property (nonatomic) BOOL showParticipantCustomAccessoryView;
+@property (nonatomic) BOOL showInviteUserFab;
 
 /**
  The delegate for the view controller.
@@ -95,7 +100,7 @@
 /**
  The screen timer used for analytics if they've been enabled. The default value is nil.
  */
-@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+@property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
 /**
  Returns the `UINib` object initialized for a `RoomParticipantsViewController`.

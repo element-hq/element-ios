@@ -34,17 +34,14 @@ struct LocationSharingView: View {
         NavigationView {
             ZStack(alignment: .bottom) {
                 LocationSharingMapView(tileServerMapURL: context.viewState.mapStyleURL,
-                                       avatarData: context.viewState.avatarData,
-                                       location: context.viewState.location,
-                                       errorSubject: context.viewState.errorSubject,
-                                       userLocation: $context.userLocation)
+                                       annotations: context.viewState.annotations,
+                                       highlightedAnnotation: context.viewState.highlightedAnnotation,
+                                       userAvatarData: context.viewState.userAvatarData,
+                                       showsUserLocation: context.viewState.showsUserLocation,
+                                       userLocation: $context.userLocation,
+                                       errorSubject: context.viewState.errorSubject)
                     .ignoresSafeArea()
-                
-                HStack {
-                    Link("© MapTiler", destination: URL(string: "https://www.maptiler.com/copyright/")!)
-                    Link("© OpenStreetMap contributors", destination: URL(string: "https://www.openstreetmap.org/copyright")!)
-                }
-                .font(theme.fonts.caption1)
+                MapCreditsView()
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -58,7 +55,7 @@ struct LocationSharingView: View {
                         .foregroundColor(theme.colors.primaryContent)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    if context.viewState.location != nil {
+                    if context.viewState.displayExistingLocation {
                         Button {
                             context.send(viewAction: .share)
                         } label: {
@@ -79,22 +76,7 @@ struct LocationSharingView: View {
                 ThemeService.shared().theme.applyStyle(onNavigationBar: navigationController.navigationBar)
             }
             .alert(item: $context.alertInfo) { info in
-                if let secondaryButton = info.secondaryButton {
-                    return Alert(title: Text(info.title),
-                                 message: subtitleTextForAlertInfo(info),
-                                 primaryButton: .default(Text(info.primaryButton.title)) {
-                        info.primaryButton.action?()
-                    },
-                                 secondaryButton: .default(Text(secondaryButton.title)) {
-                        secondaryButton.action?()
-                    })
-                } else {
-                    return Alert(title: Text(info.title),
-                                 message: subtitleTextForAlertInfo(info),
-                                 dismissButton: .default(Text(info.primaryButton.title)) {
-                        info.primaryButton.action?()
-                    })
-                }
+                info.alert
             }
         }
         .accentColor(theme.colors.accent)
@@ -107,14 +89,6 @@ struct LocationSharingView: View {
         if context.viewState.showLoadingIndicator {
             ActivityIndicator()
         }
-    }
-    
-    private func subtitleTextForAlertInfo(_ alertInfo: LocationSharingErrorAlertInfo) -> Text? {
-        guard let subtitle = alertInfo.subtitle else {
-            return nil
-        }
-        
-        return Text(subtitle)
     }
 }
 

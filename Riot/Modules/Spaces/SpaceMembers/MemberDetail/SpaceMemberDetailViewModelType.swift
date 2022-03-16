@@ -32,6 +32,7 @@ protocol SpaceMemberDetailViewModelType {
         
     var viewDelegate: SpaceMemberDetailViewModelViewDelegate? { get set }
     var coordinatorDelegate: SpaceMemberDetailViewModelCoordinatorDelegate? { get set }
+    var showCancelMenuItem: Bool { get }
     
     func process(viewAction: SpaceMemberDetailViewAction)
 }

@@ -18,11 +18,11 @@ import UIKit
 
 protocol SplitViewMasterPresentableDelegate: AnyObject {
     
-    /// Navigation router for the split view detail
-    var detailNavigationRouter: NavigationRouterType? { get }
-    
     /// Detail items from the split view
     var detailModules: [Presentable] { get }
+    
+    /// Shared presenter of user indicators for detail views, such as rooms
+    var detailUserIndicatorPresenter: UserIndicatorTypePresenterProtocol? { get }
     
     /// Replace split view detail with the given detailPresentable
     func splitViewMasterPresentable(_ presentable: Presentable, wantsToReplaceDetailWith detailPresentable: Presentable, popCompletion: (() -> Void)?)

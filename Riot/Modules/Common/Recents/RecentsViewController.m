@@ -64,6 +64,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     // when the user selects it.
     UISearchBar *tableSearchBar;
     
+    // Flag indicating whether the view controller is (at least partially) visible and not dissapearing
+    BOOL isViewVisible;
+    
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     __weak id kThemeServiceDidChangeThemeNotificationObserver;
 }
@@ -264,6 +267,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    isViewVisible = YES;
+    
+    [self.screenTracker trackScreen];
 
     // Reset back user interactions
     self.userInteractionEnabled = YES;
@@ -299,6 +305,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    isViewVisible = NO;
     
     // Leave potential editing mode
     [self cancelEditionMode:NO];
@@ -334,14 +341,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         // the selected room (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
     }
-    
-    [self.screenTimer start];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self.screenTimer stop];
 }
 
 - (void)viewDidLayoutSubviews
@@ -540,16 +539,16 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     {
         // minging kludge until https://matrix.org/jira/browse/SYN-678 is fixed
         // 'Error when trying to join an empty room should be more explicit'
-        msg = [MatrixKitL10n roomErrorJoinFailedEmptyRoom];
+        msg = [VectorL10n roomErrorJoinFailedEmptyRoom];
     }
     
     [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
     
-    UIAlertController *errorAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n roomErrorJoinFailedTitle]
+    UIAlertController *errorAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomErrorJoinFailedTitle]
                                                                         message:msg
                                                                  preferredStyle:UIAlertControllerStyleAlert];
     
-    [errorAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+    [errorAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                    style:UIAlertActionStyleDefault
                                                  handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
@@ -1059,10 +1058,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
     }
     
-    if (changes == nil)
-    {
-        [self showEmptyViewIfNeeded];
-    }
+    [self showEmptyViewIfNeeded];
     
     if (dataSource.state == MXKDataSourceStateReady)
     {
@@ -1258,7 +1254,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                              message:message
                                                                       preferredStyle:UIAlertControllerStyleAlert];
         
-        [leavePrompt addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+        [leavePrompt addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                         style:UIAlertActionStyleCancel
                                                       handler:^(UIAlertAction * action) {
                                                            
@@ -1896,7 +1892,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                            typeof(self) self = weakSelf;
                                                            self->currentAlert = nil;
                                                            
-                                                           [self performSegueWithIdentifier:@"presentStartChat" sender:self];
+                                                           [self startChat];
                                                        }
                                                        
                                                    }]];
@@ -1946,7 +1942,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                    }]];
     }
 
-    [actionSheet addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [actionSheet addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                     style:UIAlertActionStyleCancel
                                                   handler:^(UIAlertAction * action) {
                                                        
@@ -2006,12 +2002,17 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     self.customSizedPresentationController = nil;
 }
 
+- (void)startChat {
+    [self performSegueWithIdentifier:@"presentStartChat" sender:self];
+}
+
 - (void)createNewRoom
 {
     // Sanity check
     if (self.mainSession)
     {
-        self.createRoomCoordinatorBridgePresenter = [[CreateRoomCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+        CreateRoomCoordinatorParameter *parameters = [[CreateRoomCoordinatorParameter alloc] initWithSession:self.mainSession parentSpace: self.dataSource.currentSpace];
+        self.createRoomCoordinatorBridgePresenter = [[CreateRoomCoordinatorBridgePresenter alloc] initWithParameters:parameters];
         self.createRoomCoordinatorBridgePresenter.delegate = self;
         [self.createRoomCoordinatorBridgePresenter presentFrom:self animated:YES];
     }
@@ -2229,6 +2230,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     coordinatorBridgePresenter = nil;
 }
 
+- (void)createRoomCoordinatorBridgePresenterDelegate:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter didAddRoomsWithIds:(NSArray<NSString *> *)roomIds
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    coordinatorBridgePresenter = nil;
+}
+
 #pragma mark - Empty view management
 
 - (void)showEmptyViewIfNeeded
@@ -2361,7 +2368,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     else if ([MXTools isMatrixRoomAlias:roomIdOrAlias])
     {
         // Room preview doesn't support room alias
-        [[AppDelegate theDelegate] showAlertWithTitle:[MatrixKitL10n error] message:[VectorL10n roomRecentsUnknownRoomErrorMessage]];
+        [[AppDelegate theDelegate] showAlertWithTitle:[VectorL10n error] message:[VectorL10n roomRecentsUnknownRoomErrorMessage]];
     }
     else
     {
@@ -2387,7 +2394,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                 }];
                 self.roomsDirectoryCoordinatorBridgePresenter = nil;
             } else {
-                [[AppDelegate theDelegate] showAlertWithTitle:[MatrixKitL10n error] message:[VectorL10n roomRecentsUnknownRoomErrorMessage]];
+                [[AppDelegate theDelegate] showAlertWithTitle:[VectorL10n error] message:[VectorL10n roomRecentsUnknownRoomErrorMessage]];
             }
         }];
     }
@@ -2417,16 +2424,16 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 }
 
 - (void)startActivityIndicatorWithLabel:(NSString *)label {
-    if (self.indicatorPresenter) {
-        [self.indicatorPresenter presentActivityIndicatorWithLabel:label];
+    if (self.indicatorPresenter && isViewVisible) {
+        [self.indicatorPresenter presentLoadingIndicatorWithLabel:label];
     } else {
         [super startActivityIndicator];
     }
 }
 
 - (void)startActivityIndicator {
-    if (self.indicatorPresenter) {
-        [self.indicatorPresenter presentActivityIndicator];
+    if (self.indicatorPresenter && isViewVisible) {
+        [self.indicatorPresenter presentLoadingIndicator];
     } else {
         [super startActivityIndicator];
     }
@@ -2434,7 +2441,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)stopActivityIndicator {
     if (self.indicatorPresenter) {
-        [self.indicatorPresenter dismissActivityIndicator];
+        [self.indicatorPresenter dismissLoadingIndicator];
     } else {
         [super stopActivityIndicator];
     }

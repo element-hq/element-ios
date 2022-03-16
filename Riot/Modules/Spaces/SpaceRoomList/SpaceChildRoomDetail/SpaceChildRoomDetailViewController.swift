@@ -74,6 +74,12 @@ final class SpaceChildRoomDetailViewController: UIViewController {
 
         self.viewModel.process(viewAction: .loadData)
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        AnalyticsScreenTracker.trackScreen(.roomPreview)
+    }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.theme.statusBarStyle

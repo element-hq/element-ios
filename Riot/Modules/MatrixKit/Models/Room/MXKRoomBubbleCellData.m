@@ -26,6 +26,8 @@
 
 #import "MXKTools.h"
 
+#import "GeneratedInterface-Swift.h"
+
 @implementation MXKRoomBubbleCellData
 @synthesize senderId, targetId, roomId, senderDisplayName, senderAvatarUrl, senderAvatarPlaceholder, targetDisplayName, targetAvatarUrl, targetAvatarPlaceholder, isEncryptedRoom, isPaginationFirstBubble, shouldHideSenderInformation, date, isIncoming, isAttachmentWithThumbnail, isAttachmentWithIcon, attachment, senderFlair;
 @synthesize textMessage, attributedTextMessage, attributedTextMessageWithoutPositioningSpace;
@@ -35,12 +37,12 @@
 
 #pragma mark - MXKRoomBubbleCellDataStoring
 
-- (instancetype)initWithEvent:(MXEvent *)event andRoomState:(MXRoomState *)roomState andRoomDataSource:(MXKRoomDataSource *)roomDataSource2
+- (instancetype)initWithEvent:(MXEvent *)event andRoomState:(MXRoomState *)roomState andRoomDataSource:(MXKRoomDataSource *)roomDataSource
 {
     self = [self init];
     if (self)
     {
-        roomDataSource = roomDataSource2;
+        self->roomDataSource = roomDataSource;
 
         // Initialize read receipts
         self.readReceipts = [NSMutableDictionary dictionary];
@@ -55,12 +57,17 @@
             senderId = event.sender;
             targetId = [event.type isEqualToString:kMXEventTypeStringRoomMember] ? event.stateKey : nil;
             roomId = roomDataSource.roomId;
-            senderDisplayName = [roomDataSource.eventFormatter senderDisplayNameForEvent:event withRoomState:roomState];
-            senderAvatarUrl = [roomDataSource.eventFormatter senderAvatarUrlForEvent:event withRoomState:roomState];
+
+            // If `roomScreenUseOnlyLatestUserAvatarAndName`is enabled, the avatar and name are
+            // displayed from the latest room state perspective rather than the historical.
+            MXRoomState *latestRoomState = roomDataSource.roomState;
+            MXRoomState *displayRoomState = RiotSettings.shared.roomScreenUseOnlyLatestUserAvatarAndName ? latestRoomState : roomState;
+            [self setRoomState:displayRoomState];
             senderAvatarPlaceholder = nil;
-            targetDisplayName = [roomDataSource.eventFormatter targetDisplayNameForEvent:event withRoomState:roomState];
-            targetAvatarUrl = [roomDataSource.eventFormatter targetAvatarUrlForEvent:event withRoomState:roomState];
             targetAvatarPlaceholder = nil;
+
+            // Encryption status should always rely on the `MXRoomState`
+            // from the event rather than the latest.
             isEncryptedRoom = roomState.isEncrypted;
             isIncoming = ([event.sender isEqualToString:roomDataSource.mxSession.myUser.userId] == NO);
             
@@ -101,6 +108,25 @@
     
     roomDataSource = nil;
     bubbleComponents = nil;
+}
+
+- (void)setRoomState:(MXRoomState *)roomState;
+{
+    MXEvent* firstEvent = self.events.firstObject;
+
+    if (firstEvent == nil || roomState == nil)
+    {
+        return;
+    }
+
+    senderDisplayName = [roomDataSource.eventFormatter senderDisplayNameForEvent:firstEvent
+                                                                   withRoomState:roomState];
+    senderAvatarUrl = [roomDataSource.eventFormatter senderAvatarUrlForEvent:firstEvent
+                                                               withRoomState:roomState];
+    targetDisplayName = [roomDataSource.eventFormatter targetDisplayNameForEvent:firstEvent
+                                                                   withRoomState:roomState];
+    targetAvatarUrl = [roomDataSource.eventFormatter targetAvatarUrlForEvent:firstEvent
+                                                               withRoomState:roomState];
 }
 
 - (NSUInteger)updateEvent:(NSString *)eventId withEvent:(MXEvent *)event

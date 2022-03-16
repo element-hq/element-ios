@@ -28,7 +28,9 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
     private let room: MXRoom
+    private let parentSpaceId: String?
     private let initialSection: RoomInfoSection
+    private let dismissOnCancel: Bool
     private weak var roomSettingsViewController: RoomSettingsViewController?
     
     private lazy var segmentedViewController: SegmentedViewController = {
@@ -38,12 +40,13 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         participants.finalizeInit()
         participants.enableMention = true
         participants.mxRoom = self.room
+        participants.parentSpaceId = self.parentSpaceId
         participants.delegate = self
-        participants.screenTimer = AnalyticsScreenTimer(screen: .roomMembers)
+        participants.screenTracker = AnalyticsScreenTracker(screen: .roomMembers)
         
         let files = RoomFilesViewController()
         files.finalizeInit()
-        files.screenTimer = AnalyticsScreenTimer(screen: .roomUploads)
+        files.screenTracker = AnalyticsScreenTracker(screen: .roomUploads)
         MXKRoomDataSource.load(withRoomId: self.room.roomId, andMatrixSession: self.session) { (dataSource) in
             guard let dataSource = dataSource as? MXKRoomDataSource else { return }
             dataSource.filterMessagesWithURL = true
@@ -53,8 +56,9 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         }
         
         let settings = RoomSettingsViewController()
+        settings.delegate = self
         settings.finalizeInit()
-        settings.screenTimer = AnalyticsScreenTimer(screen: .roomSettings)
+        settings.screenTracker = AnalyticsScreenTracker(screen: .roomSettings)
         settings.initWith(self.session, andRoomId: self.room.roomId)
         
         if self.room.isDirect {
@@ -98,7 +102,9 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
 
         self.session = parameters.session
         self.room = parameters.room
+        self.parentSpaceId = parameters.parentSpaceId
         self.initialSection = parameters.initialSection
+        self.dismissOnCancel = parameters.dismissOnCancel
     }    
     
     // MARK: - Public methods
@@ -111,7 +117,9 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         self.add(childCoordinator: rootCoordinator)
         
         if self.navigationRouter.modules.isEmpty == false {
-            self.navigationRouter.push(rootCoordinator.toPresentable(), animated: true, popCompletion: nil)
+            // push room info screen non animated if another screen needs to be pushed just after
+            let animated = initialSection == .none
+            self.navigationRouter.push(rootCoordinator.toPresentable(), animated: animated, popCompletion: nil)
         } else {
             self.navigationRouter.setRootModule(rootCoordinator)
         }
@@ -123,6 +131,8 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
             self.showRoomDetails(with: .settings(RoomSettingsViewControllerFieldAvatar), animated: false)
         case .changeTopic:
             self.showRoomDetails(with: .settings(RoomSettingsViewControllerFieldTopic), animated: false)
+        case .settings:
+            self.showRoomDetails(with: .settings(RoomSettingsViewControllerFieldNone), animated: false)
         case .none:
             break
         }
@@ -215,4 +225,30 @@ extension RoomInfoCoordinator: RoomNotificationSettingsCoordinatorDelegate {
         
     }
     
+}
+
+extension RoomInfoCoordinator: RoomSettingsViewControllerDelegate {
+    func roomSettingsViewControllerDidCancel(_ controller: RoomSettingsViewController!) {
+        if self.dismissOnCancel {
+            self.navigationRouter.dismissModule(animated: true, completion: nil)
+        } else {
+            controller.withdrawViewController(animated: true) {}
+        }
+    }
+    
+    func roomSettingsViewControllerDidComplete(_ controller: RoomSettingsViewController!) {
+        if self.dismissOnCancel {
+            self.navigationRouter.dismissModule(animated: true, completion: nil)
+        } else {
+            controller.withdrawViewController(animated: true) {}
+        }
+    }
+    
+    func roomSettingsViewController(_ controller: RoomSettingsViewController!, didReplaceRoomWithReplacementId newRoomId: String!) {
+        self.delegate?.roomInfoCoordinator(self, didReplaceRoomWithReplacementId: newRoomId)
+    }
+    
+    func roomSettingsViewControllerDidLeaveRoom(_ controller: RoomSettingsViewController!) {
+        self.delegate?.roomInfoCoordinatorDidLeaveRoom(self)
+    }
 }

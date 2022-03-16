@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view userInteractionEnabled="NO" contentMode="scaleToFill" id="iN0-l3-epB" customClass="CoachMarkView" customModule="Riot" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="195" height="126"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="coach_mark" translatesAutoresizingMaskIntoConstraints="NO" id="Yri-TE-HDk">
+                    <rect key="frame" x="0.0" y="0.0" width="195" height="126"/>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swipe right or tap to see all rooms" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BK3-2S-2hk">
+                    <rect key="frame" x="8" y="12" width="179" height="106"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="180" id="GrV-aN-FQc"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="Yri-TE-HDk" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="3iZ-JC-2Mu"/>
+                <constraint firstItem="BK3-2S-2hk" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="8" id="A5q-Gc-8o9"/>
+                <constraint firstAttribute="bottom" secondItem="Yri-TE-HDk" secondAttribute="bottom" id="Ka2-g8-H5F"/>
+                <constraint firstItem="Yri-TE-HDk" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="PHQ-HD-2hl"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="BK3-2S-2hk" secondAttribute="trailing" constant="8" id="W1u-cB-zLa"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Yri-TE-HDk" secondAttribute="trailing" id="cwv-xc-3TW"/>
+                <constraint firstItem="BK3-2S-2hk" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="12" id="xdg-IG-jef"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="BK3-2S-2hk" secondAttribute="bottom" constant="8" id="ybh-Us-2uE"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="backgroundView" destination="Yri-TE-HDk" id="LtG-WV-2Rh"/>
+                <outlet property="textLabel" destination="BK3-2S-2hk" id="rhq-K7-3Ix"/>
+                <outlet property="textLabelBottomMargin" destination="ybh-Us-2uE" id="oPz-br-dkj"/>
+                <outlet property="textLabelTopMargin" destination="xdg-IG-jef" id="ITN-e6-8n7"/>
+            </connections>
+            <point key="canvasLocation" x="-200.72463768115944" y="-162.05357142857142"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="coach_mark" width="31.5" height="31"/>
+    </resources>
+</document>
