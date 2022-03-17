@@ -470,6 +470,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self updateThreadListBarButtonBadgeWith:self.mainSession.threadingService];
     [threadListBarButtonItem updateWithTheme:ThemeService.shared.theme];
     
+    [self.liveLocationSharingBannerView updateWithTheme:ThemeService.shared.theme];
+    
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
