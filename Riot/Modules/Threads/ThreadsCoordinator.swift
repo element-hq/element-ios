@@ -68,6 +68,10 @@ final class ThreadsCoordinator: NSObject, ThreadsCoordinatorProtocol {
         // Detect when view controller has been dismissed by gesture when presented modally (not in full screen).
         self.navigationRouter.toPresentable().presentationController?.delegate = self
         
+        guard parameters.threadId == nil else {
+            return
+        }
+        
         if self.navigationRouter.modules.isEmpty == false {
             self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)
