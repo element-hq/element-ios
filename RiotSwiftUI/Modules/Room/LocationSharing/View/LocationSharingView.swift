@@ -32,16 +32,22 @@ struct LocationSharingView: View {
     
     var body: some View {
         NavigationView {
-            ZStack(alignment: .bottom) {
-                LocationSharingMapView(tileServerMapURL: context.viewState.mapStyleURL,
-                                       annotations: context.viewState.annotations,
-                                       highlightedAnnotation: context.viewState.highlightedAnnotation,
-                                       userAvatarData: context.viewState.userAvatarData,
-                                       showsUserLocation: context.viewState.showsUserLocation,
-                                       userLocation: $context.userLocation,
-                                       errorSubject: context.viewState.errorSubject)
-                    .ignoresSafeArea()
-                MapCreditsView()
+            VStack {
+                ZStack(alignment: .bottom) {
+                    LocationSharingMapView(tileServerMapURL: context.viewState.mapStyleURL,
+                                           annotations: context.viewState.annotations,
+                                           highlightedAnnotation: context.viewState.highlightedAnnotation,
+                                           userAvatarData: context.viewState.userAvatarData,
+                                           showsUserLocation: context.viewState.showsUserLocation,
+                                           userLocation: $context.userLocation,
+                                           errorSubject: context.viewState.errorSubject)
+                        .ignoresSafeArea()
+                    MapCreditsView()
+                }
+                if context.viewState.shareButtonVisible {
+                    buttonsView
+                        .cornerRadius(5)
+                }
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -63,11 +69,6 @@ struct LocationSharingView: View {
                                 .accessibilityIdentifier("LocationSharingView.shareButton")
                         }
                         .disabled(!context.viewState.shareButtonEnabled)
-                    } else {
-                        Button(VectorL10n.locationSharingShareAction, action: {
-                            context.send(viewAction: .share)
-                        })
-                            .disabled(!context.viewState.shareButtonEnabled)
                     }
                 }
             }
@@ -82,6 +83,38 @@ struct LocationSharingView: View {
         .accentColor(theme.colors.accent)
         .activityIndicator(show: context.viewState.showLoadingIndicator)
         .navigationViewStyle(StackNavigationViewStyle())
+    }
+    
+    var buttonsView: some View {
+        VStack(alignment: .leading, spacing: 15) {
+            if !context.viewState.isPinDropSharing {
+                LocationSharingOptionButton(text: VectorL10n.locationSharingStaticShareTitle) {
+                    context.send(viewAction: .share)
+                } content: {
+                    LocationSharingUserMarkerView(isMarker: false, avatarData: context.viewState.userAvatarData)
+                }
+                .disabled(!context.viewState.shareButtonEnabled)
+                // Disable for now until live location sharing is done
+                if BuildSettings.liveLocationSharingEnabled {
+                    LocationSharingOptionButton(text: VectorL10n.locationSharingLiveShareTitle) {
+                        // TODO: - Start live location sharing
+                    } content: {
+                        LocationSharingOptionButtonIcon(fillColor: Color.purple, image: Asset.Images.locationLiveIcon.image)
+                    }
+                    .disabled(!context.viewState.shareButtonEnabled)
+                }
+            } else {
+                LocationSharingOptionButton(text: VectorL10n.locationSharingPinDropShareTitle) {
+                    // TODO: - Pin drop sharing action
+                } content: {
+                    LocationSharingOptionButtonIcon(fillColor:
+                                                        theme.colors.primaryContent, image: Asset.Images.locationMarkerIcon.image)
+                }
+                .disabled(!context.viewState.shareButtonEnabled)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
     }
     
     @ViewBuilder

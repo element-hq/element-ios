@@ -45,7 +45,7 @@ class UserLocationAnnotatonView: MGLUserLocationAnnotationView {
     
     private func addUserMarkerView(with avatarData: AvatarInputProtocol) {
         
-        guard let avatarImageView = UIHostingController(rootView: LocationSharingUserMarkerView(avatarData: avatarData)).view else {
+        guard let avatarImageView = UIHostingController(rootView: LocationSharingUserMarkerView(isMarker: true, avatarData: avatarData)).view else {
             return
         }
         

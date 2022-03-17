@@ -36,7 +36,7 @@ enum MockLocationSharingScreenState: MockScreenState, CaseIterable {
         
         let mapStyleURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx")!
         let viewModel = LocationSharingViewModel(mapStyleURL: mapStyleURL,
-                                                 avatarData: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: "Alice"),
+                                                 avatarData: AvatarInput(mxContentUri: "", matrixItemId: "alice:matrix.org", displayName: "Alice"),
                                                  location: location)
         return ([viewModel],
                 AnyView(LocationSharingView(context: viewModel.context)

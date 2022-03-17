@@ -27,19 +27,35 @@ struct LocationSharingUserMarkerView: View {
     
     @State private var frame: CGRect = .zero
     
+    private var usernameColorGenerator: UserNameColorGenerator {
+        let usernameColorGenerator = UserNameColorGenerator()
+        let theme = ThemeService.shared().theme
+        usernameColorGenerator.defaultColor = theme.textPrimaryColor
+        usernameColorGenerator.userNameColors = theme.userNameColors
+        return usernameColorGenerator
+    }
+    
     // MARK: Public
     
+    let isMarker: Bool
     let avatarData: AvatarInputProtocol
     
     var body: some View {
+        let fillColor: Color = Color(usernameColorGenerator.color(from:avatarData.matrixItemId))
         ZStack {
-            Image(uiImage: Asset.Images.locationUserMarker.image)
-            AvatarImage(avatarData: avatarData, size: .large)
-                .offset(y: -1.5)
+            Circle()
+                .fill(fillColor)
+                .frame(width: 40, height: 40)
+            if isMarker {
+                Rectangle()
+                    .rotation(Angle(degrees: 45))
+                    .fill(fillColor)
+                    .frame(width: 7, height: 7)
+                    .offset(x: 0, y: 19)
+            }
+            AvatarImage(avatarData: avatarData, size: .small)
         }
         .background(ViewFrameReader(frame: $frame))
-        .padding(.bottom, frame.height)
-        .accentColor(theme.colors.accent)
     }
 }
 
@@ -49,9 +65,11 @@ struct LocationSharingUserMarkerView: View {
 struct LocationSharingUserMarkerView_Previews: PreviewProvider {
     static var previews: some View {
         let avatarData = AvatarInput(mxContentUri: "",
-                                     matrixItemId: "",
+                                     matrixItemId: "test",
                                      displayName: "Alice")
-        
-        LocationSharingUserMarkerView(avatarData: avatarData)
+        VStack(alignment: .center, spacing: 15) {
+            LocationSharingUserMarkerView(isMarker: true, avatarData: avatarData)
+            LocationSharingUserMarkerView(isMarker: false, avatarData: avatarData)
+        }
     }
 }

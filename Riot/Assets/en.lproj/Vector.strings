@@ -2062,8 +2062,6 @@ Tap the + to start adding people.";
 
 "location_sharing_close_action" = "Close";
 
-"location_sharing_share_action" = "Share";
-
 "location_sharing_post_failure_title" = "We couldn’t send your location";
 
 "location_sharing_post_failure_subtitle" = "%@ could not send your location. Please try again later.";
@@ -2087,6 +2085,12 @@ Tap the + to start adding people.";
 "location_sharing_settings_header" = "Location sharing";
 
 "location_sharing_settings_toggle_title" = "Enable location sharing";
+
+"location_sharing_live_share_title" = "Share live location";
+
+"location_sharing_static_share_title" = "Send my current location";
+
+"location_sharing_pin_drop_share_title" = "Send this location";
 
 
 // MARK: - MatrixKit

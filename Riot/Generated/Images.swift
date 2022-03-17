@@ -169,6 +169,7 @@ internal class Asset: NSObject {
     internal static let videoCall = ImageAsset(name: "video_call")
     internal static let voiceCallHangonIcon = ImageAsset(name: "voice_call_hangon_icon")
     internal static let voiceCallHangupIcon = ImageAsset(name: "voice_call_hangup_icon")
+    internal static let locationLiveIcon = ImageAsset(name: "location_live_icon")
     internal static let locationMarkerIcon = ImageAsset(name: "location_marker_icon")
     internal static let locationShareIcon = ImageAsset(name: "location_share_icon")
     internal static let locationUserMarker = ImageAsset(name: "location_user_marker")
