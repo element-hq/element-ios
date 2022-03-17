@@ -600,9 +600,13 @@
 {
     [self.collectionViewPaginationThrottler throttle:^{
         NSInteger collectionViewSection = indexPath.section;
+        if (collectionView.numberOfSections <= collectionViewSection)
+        {
+            return;
+        }
+        
         NSInteger numberOfItemsInSection = [collectionView numberOfItemsInSection:collectionViewSection];
-        if (collectionView.numberOfSections > collectionViewSection
-            && indexPath.item == numberOfItemsInSection - 1)
+        if (indexPath.item == numberOfItemsInSection - 1)
         {
             NSInteger tableViewSection = collectionView.tag;
             [self->recentsDataSource paginateInSection:tableViewSection];
