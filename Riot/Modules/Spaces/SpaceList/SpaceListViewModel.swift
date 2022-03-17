@@ -37,7 +37,7 @@ final class SpaceListViewModel: SpaceListViewModelType {
     private var sections: [SpaceListSection] = []
     private var selectedIndexPath: IndexPath = IndexPath(row: 0, section: 0) {
         didSet {
-            self.selectedItemId = self.itemId(with: self.selectedIndexPath)
+            self.selectedItemId = self.itemId(with: self.selectedIndexPath) ?? Constants.homeSpaceId
         }
     }
     private var homeIndexPath: IndexPath = IndexPath(row: 0, section: 0)
@@ -270,7 +270,7 @@ final class SpaceListViewModel: SpaceListViewModelType {
         self.currentOperation?.cancel()
     }
     
-    private func itemId(with indexPath: IndexPath) -> String {
+    private func itemId(with indexPath: IndexPath) -> String? {
         guard self.selectedIndexPath.section < self.sections.count else {
             return Constants.homeSpaceId
         }
@@ -279,6 +279,9 @@ final class SpaceListViewModel: SpaceListViewModelType {
         case .home:
             return Constants.homeSpaceId
         case .spaces(let viewDataList):
+            guard self.selectedIndexPath.row < viewDataList.count else {
+                return nil
+            }
             let spaceViewData = viewDataList[self.selectedIndexPath.row]
             return spaceViewData.spaceId
         case .addSpace:
