@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-import Foundation
+import UIKit
 
 extension UIButton {
     
@@ -50,5 +50,11 @@ extension UIButton {
         set {
             self.titleLabel?.adjustsFontForContentSizeCategory = newValue
         }
+    }
+    
+    /// Set title font and enable Dynamic Type support
+    func vc_setTitleFont(_ font: UIFont) {
+        self.vc_adjustsFontForContentSizeCategory = true
+        self.titleLabel?.font = font
     }
 }
