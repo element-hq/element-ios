@@ -1729,11 +1729,11 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     NSString *body;
     if (event.content[kMXMessageContentKeyNewContent])
     {
-        body = event.content[kMXMessageContentKeyNewContent][kMXMessageBodyKey];
+        MXJSONModelSetString(body, event.content[kMXMessageContentKeyNewContent][kMXMessageBodyKey]);
     }
     else
     {
-        body = event.content[kMXMessageBodyKey];
+        MXJSONModelSetString(body, event.content[kMXMessageBodyKey]);
     }
     NSRange bodyRange = [str.string rangeOfString:body];
     if (bodyRange.location == NSNotFound)
@@ -1808,11 +1808,11 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     NSString *body;
     if (event.content[kMXMessageContentKeyNewContent])
     {
-        body = event.content[kMXMessageContentKeyNewContent][kMXMessageBodyKey];
+        MXJSONModelSetString(body, event.content[kMXMessageContentKeyNewContent][kMXMessageBodyKey]);
     }
     else
     {
-        body = event.content[kMXMessageBodyKey];
+        MXJSONModelSetString(body, event.content[kMXMessageBodyKey]);
     }
     NSRange bodyRange = [str.string rangeOfString:body];
     if (bodyRange.location == NSNotFound)
