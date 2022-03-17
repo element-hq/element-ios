@@ -104,13 +104,8 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
         waitingIndicator = indicatorPresenter.present(.loading(label: VectorL10n.saving, isInteractionBlocking: true))
     }
     
-    private func stopWaiting(error: Error? = nil) {
-        waitingIndicator?.cancel()
+    private func stopWaiting() {
         waitingIndicator = nil
-        
-        if let error = error {
-            onboardingAvatarViewModel.update(with: error)
-        }
     }
     
     private func pickImage() {
@@ -123,11 +118,6 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
         cameraPresenter.presentCamera(from: controller, with: [.image], animated: true)
     }
     
-    #warning("Temporary")
-    func unknownError() -> Error {
-        MXError(errorCode: "M.UNKNOWN", error: "Something went wrong!").createNSError()
-    }
-    
     func setAvatar(_ image: UIImage?) {
         guard let image = image else {
             MXLog.error("[OnboardingAvatarCoordinator] setAvatar called with a nil image.")
@@ -138,7 +128,8 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
         
         guard let avatarData = MXKTools.forceImageOrientationUp(image)?.jpegData(compressionQuality: 0.5) else {
             MXLog.error("[OnboardingAvatarCoordinator] Failed to create jpeg data.")
-            self.stopWaiting(error: self.unknownError())
+            self.stopWaiting()
+            self.onboardingAvatarViewModel.processError(nil)
             return
         }
         
@@ -146,7 +137,9 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
             guard let self = self else { return }
             
             guard let urlString = urlString else {
-                self.stopWaiting(error: self.unknownError())
+                MXLog.error("[OnboardingAvatarCoordinator] Missing URL string for avatar.")
+                self.stopWaiting()
+                self.onboardingAvatarViewModel.processError(nil)
                 return
             }
             
@@ -156,11 +149,13 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
                 self.completion?(self.parameters.userSession)
             } failure: { [weak self] error in
                 guard let self = self else { return }
-                self.stopWaiting(error: error ?? self.unknownError())
+                self.stopWaiting()
+                self.onboardingAvatarViewModel.processError(error as NSError?)
             }
         } failure: { [weak self] error in
             guard let self = self else { return }
-            self.stopWaiting(error: error ?? self.unknownError())
+            self.stopWaiting()
+            self.onboardingAvatarViewModel.processError(error as NSError?)
         }
     }
 }
@@ -183,8 +178,8 @@ extension OnboardingAvatarCoordinator: PhotoPickerPresenterDelegate {
 
 @available(iOS 14.0, *)
 extension OnboardingAvatarCoordinator: CameraPresenterDelegate {
-    func cameraPresenter(_ presenter: CameraPresenter, didSelectImageData imageData: Data, withUTI uti: MXKUTI?) {
-        onboardingAvatarViewModel.updateAvatarImage(with: UIImage(data: imageData))
+    func cameraPresenter(_ presenter: CameraPresenter, didSelectImage image: UIImage) {
+        onboardingAvatarViewModel.updateAvatarImage(with: image)
         presenter.dismiss(animated: true, completion: nil)
     }
     

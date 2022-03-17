@@ -34,7 +34,6 @@ final class PhotoPickerPresenter: NSObject {
     // MARK: Private
     
     private weak var pickerViewController: UIViewController?
-    private var filter: PHPickerFilter?
     
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol?
     private var loadingIndicator: UserIndicator?
@@ -45,6 +44,7 @@ final class PhotoPickerPresenter: NSObject {
     
     // MARK: - Public
     
+    // TODO: Support videos and multi-selection
     func presentPicker(from presentingViewController: UIViewController, with filter: PHPickerFilter?, animated: Bool) {
         var configuration = PHPickerConfiguration(photoLibrary: .shared())
         configuration.selectionLimit = 1
@@ -71,7 +71,6 @@ final class PhotoPickerPresenter: NSObject {
     }
     
     func hideLoadingIndicator() {
-        loadingIndicator?.cancel()
         loadingIndicator = nil
     }
 }
@@ -81,10 +80,7 @@ final class PhotoPickerPresenter: NSObject {
 extension PhotoPickerPresenter: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         // TODO: Handle videos and multi-selection
-        guard
-            let provider = results.first?.itemProvider,
-            provider.canLoadObject(ofClass: UIImage.self)
-        else {
+        guard let provider = results.first?.itemProvider, provider.canLoadObject(ofClass: UIImage.self) else {
             self.delegate?.photoPickerPresenterDidCancel(self)
             return
         }

@@ -50,6 +50,10 @@ class OnboardingAvatarUITests: MockScreenTest {
         
         let avatarImage = app.images["avatarImage"]
         XCTAssertFalse(avatarImage.exists, "The avatar image should be hidden as no selection has been made.")
+        
+        let saveButton = app.buttons["saveButton"]
+        XCTAssertTrue(saveButton.exists, "There should be a save button.")
+        XCTAssertFalse(saveButton.isEnabled, "The save button should not be enabled.")
     }
     
     func verifyUserSelectedAvatar() {
@@ -58,5 +62,9 @@ class OnboardingAvatarUITests: MockScreenTest {
         
         let avatarImage = app.images["avatarImage"]
         XCTAssertTrue(avatarImage.exists, "The selected avatar should be shown.")
+        
+        let saveButton = app.buttons["saveButton"]
+        XCTAssertTrue(saveButton.exists, "There should be a save button.")
+        XCTAssertTrue(saveButton.isEnabled, "The save button should be enabled.")
     }
 }

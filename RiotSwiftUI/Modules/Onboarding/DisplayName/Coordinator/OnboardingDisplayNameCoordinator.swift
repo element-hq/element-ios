@@ -84,13 +84,8 @@ final class OnboardingDisplayNameCoordinator: Coordinator, Presentable {
         waitingIndicator = indicatorPresenter.present(.loading(label: VectorL10n.saving, isInteractionBlocking: true))
     }
     
-    private func stopWaiting(error: Error? = nil) {
-        waitingIndicator?.cancel()
+    private func stopWaiting() {
         waitingIndicator = nil
-        
-        if let error = error {
-            onboardingDisplayNameViewModel.update(with: error)
-        }
     }
     
     private func setDisplayName(_ displayName: String) {
@@ -102,7 +97,8 @@ final class OnboardingDisplayNameCoordinator: Coordinator, Presentable {
             self.completion?(self.parameters.userSession)
         } failure: { [weak self] error in
             guard let self = self else { return }
-            self.stopWaiting(error: error)
+            self.stopWaiting()
+            self.onboardingDisplayNameViewModel.processError(error as NSError?)
         }
     }
 }

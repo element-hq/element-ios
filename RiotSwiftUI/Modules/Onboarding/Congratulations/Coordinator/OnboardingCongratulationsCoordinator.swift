@@ -48,7 +48,7 @@ final class OnboardingCongratulationsCoordinator: Coordinator, Presentable {
     init(parameters: OnboardingCongratulationsCoordinatorParameters) {
         self.parameters = parameters
         
-        #warning("Add confetti when personalizationDisabled is false")
+        // TODO: Add confetti when personalizationDisabled is false
         let viewModel = OnboardingCongratulationsViewModel(userId: parameters.userSession.userId,
                                                            personalizationDisabled: parameters.personalizationDisabled)
         let view = OnboardingCongratulationsScreen(viewModel: viewModel.context)

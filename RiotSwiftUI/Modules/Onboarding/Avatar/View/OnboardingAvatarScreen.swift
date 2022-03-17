@@ -127,6 +127,7 @@ struct OnboardingAvatarScreen: View {
             }
             .buttonStyle(PrimaryActionButtonStyle())
             .disabled(viewModel.viewState.avatar == nil)
+            .accessibilityIdentifier("saveButton")
             
             Button { viewModel.send(viewAction: .skip) } label: {
                 Text(VectorL10n.onboardingPersonalizationSkip)

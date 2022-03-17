@@ -49,6 +49,10 @@ class OnboardingDisplayNameUITests: MockScreenTest {
         let footer = app.staticTexts["textFieldFooter"]
         XCTAssertTrue(footer.exists, "The textfield's footer should always be shown.")
         XCTAssertEqual(footer.label, VectorL10n.onboardingDisplayNameHint, "The footer should display a hint when no text is set.")
+        
+        let saveButton = app.buttons["saveButton"]
+        XCTAssertTrue(saveButton.exists, "There should be a save button.")
+        XCTAssertFalse(saveButton.isEnabled, "The save button should not be enabled.")
     }
 
     func verifyDisplayName(displayName: String) {
@@ -56,6 +60,10 @@ class OnboardingDisplayNameUITests: MockScreenTest {
         XCTAssertTrue(textField.exists, "The textfield should always be shown.")
         XCTAssertEqual(textField.value as? String, displayName, "When a name has been set, it should show in the textfield.")
         XCTAssertEqual(textField.placeholderValue, VectorL10n.onboardingDisplayNamePlaceholder, "The textfield's placeholder should be set.")
+        
+        let saveButton = app.buttons["saveButton"]
+        XCTAssertTrue(saveButton.exists, "There should be a save button.")
+        XCTAssertTrue(saveButton.isEnabled, "The save button should be enabled.")
         
         let footer = app.staticTexts["textFieldFooter"]
         XCTAssertTrue(footer.exists, "The textfield's footer should always be shown.")
@@ -71,5 +79,9 @@ class OnboardingDisplayNameUITests: MockScreenTest {
         let footer = app.staticTexts["textFieldFooter"]
         XCTAssertTrue(footer.exists, "The textfield's footer should always be shown.")
         XCTAssertEqual(footer.label, VectorL10n.onboardingDisplayNameMaxLength, "The footer should display an error when the display name is too long.")
+        
+        let saveButton = app.buttons["saveButton"]
+        XCTAssertTrue(saveButton.exists, "There should be a save button.")
+        XCTAssertFalse(saveButton.isEnabled, "The save button should not be enabled.")
     }
 }

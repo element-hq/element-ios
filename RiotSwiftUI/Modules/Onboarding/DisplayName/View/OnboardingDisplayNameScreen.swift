@@ -111,7 +111,8 @@ struct OnboardingDisplayNameScreen: View {
                 viewModel.send(viewAction: .save)
             }
             .buttonStyle(PrimaryActionButtonStyle())
-            .disabled(viewModel.displayName.isEmpty)
+            .disabled(viewModel.displayName.isEmpty || viewModel.viewState.validationErrorMessage != nil)
+            .accessibilityIdentifier("saveButton")
             
             Button { viewModel.send(viewAction: .skip) } label: {
                 Text(VectorL10n.onboardingPersonalizationSkip)

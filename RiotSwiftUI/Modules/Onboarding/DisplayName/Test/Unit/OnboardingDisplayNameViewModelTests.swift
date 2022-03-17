@@ -21,10 +21,6 @@ import Combine
 
 @available(iOS 14.0, *)
 class OnboardingDisplayNameViewModelTests: XCTestCase {
-    private enum Constants {
-        static let displayName = "Alice"
-    }
-    
     var viewModel: OnboardingDisplayNameViewModel!
     var context: OnboardingDisplayNameViewModelType.Context!
     

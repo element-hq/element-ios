@@ -61,9 +61,7 @@ class OnboardingAvatarViewModel: OnboardingAvatarViewModelType, OnboardingAvatar
         state.avatar = image
     }
     
-    func update(with error: Error) {
-        if let error = error as NSError? {
-            state.bindings.alertInfo = AlertInfo(error: error)
-        }
+    func processError(_ error: NSError?) {
+        state.bindings.alertInfo = AlertInfo(error: error)
     }
 }

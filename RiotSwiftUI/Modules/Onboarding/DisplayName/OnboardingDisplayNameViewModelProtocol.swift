@@ -22,5 +22,7 @@ protocol OnboardingDisplayNameViewModelProtocol {
     @available(iOS 14, *)
     var context: OnboardingDisplayNameViewModelType.Context { get }
     
-    func update(with error: Error)
+    /// Update the view model to show that an error has occurred.
+    /// - Parameter error: The error to be displayed or `nil` to display a generic alert.
+    func processError(_ error: NSError?)
 }

@@ -52,14 +52,13 @@ class OnboardingDisplayNameViewModel: OnboardingDisplayNameViewModelType, Onboar
         }
     }
     
-    func update(with error: Error) {
-        if let error = error as NSError? {
-            state.bindings.alertInfo = AlertInfo(error: error)
-        }
+    func processError(_ error: NSError?) {
+        state.bindings.alertInfo = AlertInfo(error: error)
     }
     
     // MARK: - Private
     
+    /// Checks for a display name that exceeds 256 characters and updates the footer error if needed.
     private func validateDisplayName() {
         if state.bindings.displayName.count > 256 {
             guard state.validationErrorMessage == nil else { return }
