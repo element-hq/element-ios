@@ -1576,7 +1576,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                 NSString *body;
                 if (event.content[kMXMessageContentKeyNewContent])
                 {
-                    body = event.content[kMXMessageContentKeyNewContent][kMXMessageBodyKey];
+                    MXJSONModelSetString(body, event.content[kMXMessageContentKeyNewContent][kMXMessageBodyKey]);
                 }
                 else
                 {
