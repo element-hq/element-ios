@@ -2088,6 +2088,11 @@ Tap the + to start adding people.";
 
 "location_sharing_settings_toggle_title" = "Enable location sharing";
 
+// MARK: Live location sharing
+
+"live_location_sharing_banner_title" = "Live location enabled";
+"live_location_sharing_banner_stop" = "Stop";
+
 
 // MARK: - MatrixKit
 
