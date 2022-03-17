@@ -25,7 +25,7 @@ enum MockOnboardingCongratulationsScreenState: MockScreenState, CaseIterable {
     // with specific, minimal associated data that will allow you
     // mock that screen.
     case regular
-    case personalisationDisabled
+    case personalizationDisabled
     
     /// The associated screen
     var screenType: Any.Type {
@@ -39,7 +39,7 @@ enum MockOnboardingCongratulationsScreenState: MockScreenState, CaseIterable {
         switch self {
         case .regular:
             viewModel = OnboardingCongratulationsViewModel(userId: "@testuser:example.com")
-        case .personalisationDisabled:
+        case .personalizationDisabled:
             viewModel = OnboardingCongratulationsViewModel(userId: "@testuser:example.com", personalizationDisabled: true)
         }
         

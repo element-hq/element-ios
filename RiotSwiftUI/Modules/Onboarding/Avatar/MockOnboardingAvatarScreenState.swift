@@ -25,7 +25,7 @@ enum MockOnboardingAvatarScreenState: MockScreenState, CaseIterable {
     // with specific, minimal associated data that will allow you
     // mock that screen.
     case placeholderAvatar(userId: String, displayName: String)
-    case userSelectedAvatar(userId: String, displayName: String, avatar: UIImage)
+    case userSelectedAvatar(userId: String, displayName: String)
     
     /// The associated screen
     var screenType: Any.Type {
@@ -36,11 +36,10 @@ enum MockOnboardingAvatarScreenState: MockScreenState, CaseIterable {
     static var allCases: [MockOnboardingAvatarScreenState] {
         let userId = "@example:matrix.org"
         let displayName = "Jane"
-        let avatar = Asset.Images.appSymbol.image
         
         return [
             .placeholderAvatar(userId: userId, displayName: displayName),
-            .userSelectedAvatar(userId: userId, displayName: displayName, avatar: avatar)
+            .userSelectedAvatar(userId: userId, displayName: displayName)
         ]
     }
     
@@ -51,9 +50,9 @@ enum MockOnboardingAvatarScreenState: MockScreenState, CaseIterable {
         switch self {
         case .placeholderAvatar(let userId, let displayName):
             viewModel = OnboardingAvatarViewModel(userId: userId, displayName: displayName, avatarColorCount: avatarColorCount)
-        case .userSelectedAvatar(let userId, let displayName, let avatar):
+        case .userSelectedAvatar(let userId, let displayName):
             viewModel = OnboardingAvatarViewModel(userId: userId, displayName: displayName, avatarColorCount: avatarColorCount)
-            viewModel.updateAvatarImage(with: avatar)
+            viewModel.updateAvatarImage(with: Asset.Images.appSymbol.image)
         }
         
         return (
@@ -61,5 +60,18 @@ enum MockOnboardingAvatarScreenState: MockScreenState, CaseIterable {
             AnyView(OnboardingAvatarScreen(viewModel: viewModel.context)
                 .addDependency(MockAvatarService.example))
         )
+    }
+}
+
+@available(iOS 14.0, *)
+extension MockOnboardingAvatarScreenState: CustomStringConvertible {
+    // Added to have different descriptions in the SwiftUI target's list.
+    var description: String {
+        switch self {
+        case .placeholderAvatar:
+            return "placeholderAvatar"
+        case .userSelectedAvatar:
+            return "userSelectedAvatar"
+        }
     }
 }

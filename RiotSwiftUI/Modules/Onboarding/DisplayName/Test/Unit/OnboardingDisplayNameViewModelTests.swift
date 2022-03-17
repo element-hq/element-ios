@@ -22,36 +22,47 @@ import Combine
 @available(iOS 14.0, *)
 class OnboardingDisplayNameViewModelTests: XCTestCase {
     private enum Constants {
-        static let presenceInitialValue: OnboardingDisplayNamePresence = .offline
         static let displayName = "Alice"
     }
-    var service: MockOnboardingDisplayNameService!
-    var viewModel: OnboardingDisplayNameViewModelProtocol!
+    
+    var viewModel: OnboardingDisplayNameViewModel!
     var context: OnboardingDisplayNameViewModelType.Context!
-    var cancellables = Set<AnyCancellable>()
+    
     override func setUpWithError() throws {
-        service = MockOnboardingDisplayNameService(displayName: Constants.displayName, presence: Constants.presenceInitialValue)
-        viewModel = OnboardingDisplayNameViewModel.makeOnboardingDisplayNameViewModel(onboardingDisplayNameService: service)
+        viewModel = nil
+        context = nil
+    }
+    
+    func setUp(with displayName: String) {
+        viewModel = OnboardingDisplayNameViewModel(displayName: displayName)
         context = viewModel.context
     }
 
-    func testInitialState() {
-        XCTAssertEqual(context.viewState.displayName, Constants.displayName)
-        XCTAssertEqual(context.viewState.presence, Constants.presenceInitialValue)
+    func testValidDisplayName() {
+        // Given a short display name
+        let displayName = "Alice"
+        setUp(with: displayName)
+        
+        // When validating the display name
+        viewModel.process(viewAction: .validateDisplayName)
+        
+        // Then no error message should be set
+        XCTAssertEqual(context.viewState.bindings.displayName, displayName, "The display name should match the value used at init.")
+        XCTAssertNil(context.viewState.validationErrorMessage, "There should not be an error message in the view state.")
     }
-
-    func testFirstPresenceReceived() throws {
-        let presencePublisher = context.$viewState.map(\.presence).removeDuplicates().collect(1).first()
-        XCTAssertEqual(try xcAwait(presencePublisher), [Constants.presenceInitialValue])
-    }
-
-    func testPresenceUpdatesReceived() throws {
-        let presencePublisher = context.$viewState.map(\.presence).removeDuplicates().collect(3).first()
-        let awaitDeferred = xcAwaitDeferred(presencePublisher)
-        let newPresenceValue1: OnboardingDisplayNamePresence = .online
-        let newPresenceValue2: OnboardingDisplayNamePresence = .idle
-        service.simulateUpdate(presence: newPresenceValue1)
-        service.simulateUpdate(presence: newPresenceValue2)
-        XCTAssertEqual(try awaitDeferred(), [Constants.presenceInitialValue, newPresenceValue1, newPresenceValue2])
+    
+    func testInvalidDisplayName() {
+        // Given a short display name
+        let displayName = """
+        Bacon ipsum dolor amet filet mignon chicken kevin andouille. Doner shoulder beef, brisket bresaola turkey jowl venison. Ham hock cow turducken, chislic venison doner short loin strip steak tri-tip jowl. Sirloin pork belly hamburger ribeye. Tail capicola alcatra short ribs turkey doner.
+        """
+        setUp(with: displayName)
+        
+        // When validating the display name
+        viewModel.process(viewAction: .validateDisplayName)
+        
+        // Then no error message should be set
+        XCTAssertEqual(context.viewState.bindings.displayName, displayName, "The display name should match the value used at init.")
+        XCTAssertNotNil(context.viewState.validationErrorMessage, "There should be an error message in the view state.")
     }
 }

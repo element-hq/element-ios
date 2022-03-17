@@ -36,6 +36,7 @@ class OnboardingDisplayNameViewModel: OnboardingDisplayNameViewModelType, Onboar
     
     init(displayName: String = "") {
         super.init(initialViewState: OnboardingDisplayNameViewState(bindings: OnboardingDisplayNameBindings(displayName: displayName)))
+        validateDisplayName()
     }
     
     // MARK: - Public

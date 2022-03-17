@@ -26,6 +26,7 @@ enum MockOnboardingDisplayNameScreenState: MockScreenState, CaseIterable {
     // mock that screen.
     case emptyTextField
     case filledTextField(displayName: String)
+    case longDisplayName(displayName: String)
     
     /// The associated screen
     var screenType: Any.Type {
@@ -36,7 +37,10 @@ enum MockOnboardingDisplayNameScreenState: MockScreenState, CaseIterable {
     static var allCases: [MockOnboardingDisplayNameScreenState] {
         [
             MockOnboardingDisplayNameScreenState.emptyTextField,
-            MockOnboardingDisplayNameScreenState.filledTextField(displayName: "Test User")
+            MockOnboardingDisplayNameScreenState.filledTextField(displayName: "Test User"),
+            MockOnboardingDisplayNameScreenState.longDisplayName(displayName: """
+            Bacon ipsum dolor amet filet mignon chicken kevin andouille. Doner shoulder beef, brisket bresaola turkey jowl venison. Ham hock cow turducken, chislic venison doner short loin strip steak tri-tip jowl. Sirloin pork belly hamburger ribeye. Tail capicola alcatra short ribs turkey doner.
+            """)
         ]
     }
     
@@ -46,7 +50,7 @@ enum MockOnboardingDisplayNameScreenState: MockScreenState, CaseIterable {
         switch self {
         case .emptyTextField:
             viewModel = OnboardingDisplayNameViewModel()
-        case .filledTextField(let displayName):
+        case .filledTextField(let displayName), .longDisplayName(displayName: let displayName):
             viewModel = OnboardingDisplayNameViewModel(displayName: displayName)
         }
         

@@ -31,23 +31,32 @@ class OnboardingAvatarUITests: MockScreenTest {
     func verifyOnboardingAvatarScreen() throws {
         guard let screenState = screenState as? MockOnboardingAvatarScreenState else { fatalError("no screen") }
         switch screenState {
-        case .presence(let presence):
-            verifyOnboardingAvatarPresence(presence: presence)
-        case .longDisplayName(let name):
-            verifyOnboardingAvatarLongName(name: name)
+        case .placeholderAvatar(let userId, let displayName):
+            verifyPlaceholderAvatar(userId: userId, displayName: displayName)
+        case .userSelectedAvatar:
+            verifyUserSelectedAvatar()
         }
     }
-
-    func verifyOnboardingAvatarPresence(presence: OnboardingAvatarPresence) {
-        let presenceText = app.staticTexts["presenceText"]
-        XCTAssert(presenceText.exists)
-        XCTAssertEqual(presenceText.label, presence.title)
+    
+    func verifyPlaceholderAvatar(userId: String, displayName: String) {
+        guard let firstLetter = displayName.uppercased().first else {
+            XCTFail("Unable to get the first letter of the display name.")
+            return
+        }
+        
+        let placeholderAvatar = app.staticTexts["placeholderAvatar"]
+        XCTAssertTrue(placeholderAvatar.exists, "The placeholder avatar should be shown.")
+        XCTAssertEqual(placeholderAvatar.label, String(firstLetter), "The placeholder avatar should show the first letter of the display name.")
+        
+        let avatarImage = app.images["avatarImage"]
+        XCTAssertFalse(avatarImage.exists, "The avatar image should be hidden as no selection has been made.")
     }
-
-    func verifyOnboardingAvatarLongName(name: String) {
-        let displayNameText = app.staticTexts["displayNameText"]
-        XCTAssert(displayNameText.exists)
-        XCTAssertEqual(displayNameText.label, name)
+    
+    func verifyUserSelectedAvatar() {
+        let placeholderAvatar = app.otherElements["placeholderAvatar"]
+        XCTAssertFalse(placeholderAvatar.exists, "The placeholder avatar should be hidden.")
+        
+        let avatarImage = app.images["avatarImage"]
+        XCTAssertTrue(avatarImage.exists, "The selected avatar should be shown.")
     }
-
 }

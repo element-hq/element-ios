@@ -99,12 +99,14 @@ struct OnboardingCongratulationsScreen: View {
                     .foregroundColor(theme.colors.accent)
             }
             .buttonStyle(PrimaryActionButtonStyle(customColor: .white))
+            .accessibilityIdentifier("personalizeButton")
             
             Button { viewModel.send(viewAction: .takeMeHome) } label: {
                 Text(VectorL10n.onboardingCongratulationsHomeButton)
                     .font(theme.fonts.body)
                     .padding(.vertical, 12)
             }
+            .accessibilityIdentifier("homeButton")
         }
     }
     
@@ -116,6 +118,7 @@ struct OnboardingCongratulationsScreen: View {
                 .foregroundColor(theme.colors.accent)
         }
         .buttonStyle(PrimaryActionButtonStyle(customColor: .white))
+        .accessibilityIdentifier("homeButton")
     }
 }
 

@@ -100,6 +100,7 @@ struct OnboardingDisplayNameScreen: View {
                 .font(theme.fonts.footnote)
                 .foregroundColor(textFieldFooterColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .accessibilityIdentifier("textFieldFooter")
         }
     }
     

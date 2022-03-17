@@ -22,36 +22,36 @@ import Combine
 @available(iOS 14.0, *)
 class OnboardingAvatarViewModelTests: XCTestCase {
     private enum Constants {
-        static let presenceInitialValue: OnboardingAvatarPresence = .offline
+        static let userId = "@user:matrix.org"
         static let displayName = "Alice"
+        static let avatarColorCount = DefaultThemeSwiftUI().colors.namesAndAvatars.count
+        static let avatarImage = Asset.Images.appSymbol.image
     }
-    var service: MockOnboardingAvatarService!
+    
     var viewModel: OnboardingAvatarViewModelProtocol!
     var context: OnboardingAvatarViewModelType.Context!
-    var cancellables = Set<AnyCancellable>()
+    
     override func setUpWithError() throws {
-        service = MockOnboardingAvatarService(displayName: Constants.displayName, presence: Constants.presenceInitialValue)
-        viewModel = OnboardingAvatarViewModel.makeOnboardingAvatarViewModel(onboardingAvatarService: service)
+        viewModel = OnboardingAvatarViewModel(userId: Constants.userId,
+                                              displayName: Constants.displayName,
+                                              avatarColorCount: Constants.avatarColorCount)
         context = viewModel.context
     }
 
     func testInitialState() {
-        XCTAssertEqual(context.viewState.displayName, Constants.displayName)
-        XCTAssertEqual(context.viewState.presence, Constants.presenceInitialValue)
+        XCTAssertEqual(context.viewState.placeholderAvatarLetter, "A")
+        XCTAssertNil(context.viewState.avatar)
+        XCTAssertNil(context.viewState.bindings.alertInfo)
     }
-
-    func testFirstPresenceReceived() throws {
-        let presencePublisher = context.$viewState.map(\.presence).removeDuplicates().collect(1).first()
-        XCTAssertEqual(try xcAwait(presencePublisher), [Constants.presenceInitialValue])
-    }
-
-    func testPresenceUpdatesReceived() throws {
-        let presencePublisher = context.$viewState.map(\.presence).removeDuplicates().collect(3).first()
-        let awaitDeferred = xcAwaitDeferred(presencePublisher)
-        let newPresenceValue1: OnboardingAvatarPresence = .online
-        let newPresenceValue2: OnboardingAvatarPresence = .idle
-        service.simulateUpdate(presence: newPresenceValue1)
-        service.simulateUpdate(presence: newPresenceValue2)
-        XCTAssertEqual(try awaitDeferred(), [Constants.presenceInitialValue, newPresenceValue1, newPresenceValue2])
+    
+    func testUpdatingAvatar() {
+        // Given the default view model
+        XCTAssertNil(context.viewState.avatar, "The default view state should not have an avatar.")
+        
+        // When updating the image
+        viewModel.updateAvatarImage(with: Constants.avatarImage)
+        
+        // Then the view state should contain the new image
+        XCTAssertEqual(context.viewState.avatar, Constants.avatarImage, "The view state should contain the new avatar image.")
     }
 }

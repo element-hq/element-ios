@@ -31,23 +31,45 @@ class OnboardingDisplayNameUITests: MockScreenTest {
     func verifyOnboardingDisplayNameScreen() throws {
         guard let screenState = screenState as? MockOnboardingDisplayNameScreenState else { fatalError("no screen") }
         switch screenState {
-        case .presence(let presence):
-            verifyOnboardingDisplayNamePresence(presence: presence)
-        case .longDisplayName(let name):
-            verifyOnboardingDisplayNameLongName(name: name)
+        case .emptyTextField:
+            verifyEmptyTextField()
+        case .filledTextField(let displayName):
+            verifyDisplayName(displayName: displayName)
+        case .longDisplayName(displayName: let displayName):
+            verifyLongDisplayName(displayName: displayName)
         }
     }
 
-    func verifyOnboardingDisplayNamePresence(presence: OnboardingDisplayNamePresence) {
-        let presenceText = app.staticTexts["presenceText"]
-        XCTAssert(presenceText.exists)
-        XCTAssertEqual(presenceText.label, presence.title)
+    func verifyEmptyTextField() {
+        let textField = app.textFields.element
+        XCTAssertTrue(textField.exists, "The textfield should always be shown.")
+        XCTAssertEqual(textField.value as? String, VectorL10n.onboardingDisplayNamePlaceholder, "When the textfield is empty, the value should match the placeholder.")
+        XCTAssertEqual(textField.placeholderValue, VectorL10n.onboardingDisplayNamePlaceholder, "The textfield's placeholder should be set.")
+        
+        let footer = app.staticTexts["textFieldFooter"]
+        XCTAssertTrue(footer.exists, "The textfield's footer should always be shown.")
+        XCTAssertEqual(footer.label, VectorL10n.onboardingDisplayNameHint, "The footer should display a hint when no text is set.")
     }
 
-    func verifyOnboardingDisplayNameLongName(name: String) {
-        let displayNameText = app.staticTexts["displayNameText"]
-        XCTAssert(displayNameText.exists)
-        XCTAssertEqual(displayNameText.label, name)
+    func verifyDisplayName(displayName: String) {
+        let textField = app.textFields.element
+        XCTAssertTrue(textField.exists, "The textfield should always be shown.")
+        XCTAssertEqual(textField.value as? String, displayName, "When a name has been set, it should show in the textfield.")
+        XCTAssertEqual(textField.placeholderValue, VectorL10n.onboardingDisplayNamePlaceholder, "The textfield's placeholder should be set.")
+        
+        let footer = app.staticTexts["textFieldFooter"]
+        XCTAssertTrue(footer.exists, "The textfield's footer should always be shown.")
+        XCTAssertEqual(footer.label, VectorL10n.onboardingDisplayNameHint, "The footer should display a hint when an acceptable name is entered.")
     }
-
+    
+    func verifyLongDisplayName(displayName: String) {
+        let textField = app.textFields.element
+        XCTAssertTrue(textField.exists, "The textfield should always be shown.")
+        XCTAssertEqual(textField.value as? String, displayName, "When a name has been set, it should show in the textfield.")
+        XCTAssertEqual(textField.placeholderValue, VectorL10n.onboardingDisplayNamePlaceholder, "The textfield's placeholder should be set.")
+        
+        let footer = app.staticTexts["textFieldFooter"]
+        XCTAssertTrue(footer.exists, "The textfield's footer should always be shown.")
+        XCTAssertEqual(footer.label, VectorL10n.onboardingDisplayNameMaxLength, "The footer should display an error when the display name is too long.")
+    }
 }

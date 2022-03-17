@@ -62,9 +62,11 @@ struct OnboardingAvatarScreen: View {
                 Image(uiImage: avatarImage)
                     .resizable()
                     .scaledToFill()
+                    .accessibilityIdentifier("avatarImage")
             } else {
                 PlaceholderAvatarImage(firstCharacter: viewModel.viewState.placeholderAvatarLetter,
                                        colorIndex: viewModel.viewState.placeholderAvatarColorIndex)
+                    .accessibilityIdentifier("placeholderAvatar")
             }
         }
         .clipShape(Circle())
