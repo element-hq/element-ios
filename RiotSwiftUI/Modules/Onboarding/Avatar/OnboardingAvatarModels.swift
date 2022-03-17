@@ -36,6 +36,10 @@ struct OnboardingAvatarViewState: BindableState {
     var buttonImage: ImageAsset {
         avatar == nil ? Asset.Images.onboardingAvatarCamera : Asset.Images.onboardingAvatarEdit
     }
+    
+    var avatarAccessibilityLabel: String {
+        avatar == nil ? VectorL10n.onboardingAvatarPlaceholderAccessibilityLabel(placeholderAvatarLetter) : VectorL10n.onboardingAvatarImageAccessibilityLabel
+    }
 }
 
 struct OnboardingAvatarBindings {

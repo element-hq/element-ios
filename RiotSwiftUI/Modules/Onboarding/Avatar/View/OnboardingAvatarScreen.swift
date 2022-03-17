@@ -74,6 +74,9 @@ struct OnboardingAvatarScreen: View {
         .overlay(cameraButton, alignment: .bottomTrailing)
         .onTapGesture { isPresentingPickerSelection = true }
         .actionSheet(isPresented: $isPresentingPickerSelection) { pickerSelectionActionSheet }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(viewModel.viewState.avatarAccessibilityLabel)
+        .accessibilityValue(VectorL10n.accessibilityButtonLabel)
     }
     
     /// The button to indicate the user can tap to select an avatar
