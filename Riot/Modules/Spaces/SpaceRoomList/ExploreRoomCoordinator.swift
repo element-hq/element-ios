@@ -474,6 +474,13 @@ extension ExploreRoomCoordinator: RoomViewControllerDelegate {
         
     }
     
+    func roomViewControllerDidTapLiveLocationSharingBanner(_ roomViewController: RoomViewController) {
+        // TODO:
+    }
+    
+    func roomViewControllerDidStopLiveLocationSharing(_ roomViewController: RoomViewController) {
+        // TODO:
+    }
 }
 
 // MARK: - ContactsPickerCoordinatorDelegate
