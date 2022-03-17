@@ -46,8 +46,9 @@ struct OnboardingAvatarScreen: View {
             }
             .padding(.horizontal)
             .padding(.top, 8)
-            .frame(maxHeight: .infinity)
+            .frame(maxWidth: OnboardingConstants.maxContentWidth)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .accentColor(theme.colors.accent)
         .background(theme.colors.background.ignoresSafeArea())
         .alert(item: $viewModel.alertInfo) { $0.alert }
@@ -106,10 +107,12 @@ struct OnboardingAvatarScreen: View {
         VStack(spacing: 8) {
             Text(VectorL10n.onboardingAvatarTitle)
                 .font(theme.fonts.title2B)
+                .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.primaryContent)
             
             Text(VectorL10n.onboardingAvatarMessage)
                 .font(theme.fonts.subheadline)
+                .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.secondaryContent)
         }
     }
@@ -134,7 +137,7 @@ struct OnboardingAvatarScreen: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
+@available(iOS 15.0, *)
 struct OnboardingAvatar_Previews: PreviewProvider {
     static let stateRenderer = MockOnboardingAvatarScreenState.stateRenderer
     static var previews: some View {

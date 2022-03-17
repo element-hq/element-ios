@@ -51,8 +51,9 @@ struct OnboardingDisplayNameScreen: View {
             }
             .padding(.horizontal)
             .padding(.top, 8)
-            .frame(maxHeight: .infinity)
+            .frame(maxWidth: OnboardingConstants.maxContentWidth)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .accentColor(theme.colors.accent)
         .background(theme.colors.background.ignoresSafeArea())
         .alert(item: $viewModel.alertInfo) { $0.alert }
@@ -65,18 +66,22 @@ struct OnboardingDisplayNameScreen: View {
     var header: some View {
         VStack(spacing: 8) {
             Image(Asset.Images.onboardingCongratulationsIcon.name)
+                .resizable()
                 .renderingMode(.template)
                 .foregroundColor(theme.colors.accent)
+                .frame(width: 90, height: 90)
                 .background(Circle().foregroundColor(.white).padding(2))
                 .padding(.bottom, 8)
                 .accessibilityHidden(true)
             
             Text(VectorL10n.onboardingDisplayNameTitle)
                 .font(theme.fonts.title2B)
+                .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.primaryContent)
             
             Text(VectorL10n.onboardingDisplayNameMessage)
                 .font(theme.fonts.subheadline)
+                .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.secondaryContent)
         }
     }
@@ -118,7 +123,7 @@ struct OnboardingDisplayNameScreen: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
+@available(iOS 15.0, *)
 struct OnboardingDisplayName_Previews: PreviewProvider {
     static let stateRenderer = MockOnboardingDisplayNameScreenState.stateRenderer
     static var previews: some View {
