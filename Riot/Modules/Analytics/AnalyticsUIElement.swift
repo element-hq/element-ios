@@ -22,6 +22,8 @@ import AnalyticsEvents
     case roomThreadSummaryItem
     case threadListThreadItem
     case threadListFilterItem
+    case spacePanelSelectedSpace
+    case spacePanelSwitchSpace
     
     /// The element name reported to the AnalyticsEvent.
     var name: AnalyticsEvent.Interaction.Name {
@@ -34,6 +36,10 @@ import AnalyticsEvents
             return .MobileThreadListThreadItem
         case .threadListFilterItem:
             return .MobileThreadListFilterItem
+        case .spacePanelSelectedSpace:
+            return .SpacePanelSelectedSpace
+        case .spacePanelSwitchSpace:
+            return .SpacePanelSwitchSpace
         }
     }
 }
