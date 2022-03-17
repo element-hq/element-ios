@@ -1248,24 +1248,37 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
             }
             else
             {
+                NSDictionary *contentToUse;
+
+                if (event.content[kMXMessageContentKeyNewContent])
+                {
+                    //  use new content if exists
+                    contentToUse = event.content[kMXMessageContentKeyNewContent];
+                }
+                else
+                {
+                    //  fallback to default content
+                    contentToUse = event.content;
+                }
+
                 NSString *msgtype;
-                MXJSONModelSetString(msgtype, event.content[kMXMessageTypeKey]);
+                MXJSONModelSetString(msgtype, contentToUse[kMXMessageTypeKey]);
 
                 NSString *body;
                 BOOL isHTML = NO;
                 NSString *eventThreadId = event.threadId;
 
                 // Use the HTML formatted string if provided
-                if ([event.content[@"format"] isEqualToString:kMXRoomMessageFormatHTML])
+                if ([contentToUse[@"format"] isEqualToString:kMXRoomMessageFormatHTML])
                 {
                     isHTML =YES;
-                    MXJSONModelSetString(body, event.content[@"formatted_body"]);
+                    MXJSONModelSetString(body, contentToUse[@"formatted_body"]);
                 }
                 else if (event.isReplyEvent || (eventThreadId && !RiotSettings.shared.enableThreads))
                 {
                     NSString *repliedEventId = event.relatesTo.inReplyTo.eventId ?: eventThreadId;
                     isHTML = YES;
-                    MXJSONModelSetString(body, event.content[kMXMessageBodyKey]);
+                    MXJSONModelSetString(body, contentToUse[kMXMessageBodyKey]);
                     MXEvent *repliedEvent = [mxSession.store eventWithEventId:repliedEventId
                                                                        inRoom:event.roomId];
                     
@@ -1281,7 +1294,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                 }
                 else
                 {
-                    MXJSONModelSetString(body, event.content[kMXMessageBodyKey]);
+                    MXJSONModelSetString(body, contentToUse[kMXMessageBodyKey]);
                 }
 
                 if (body)
@@ -1561,7 +1574,14 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
             else
             {
                 NSString *body;
-                MXJSONModelSetString(body, event.content[kMXMessageBodyKey]);
+                if (event.content[kMXMessageContentKeyNewContent])
+                {
+                    MXJSONModelSetString(body, event.content[kMXMessageContentKeyNewContent][kMXMessageBodyKey]);
+                }
+                else
+                {
+                    MXJSONModelSetString(body, event.content[kMXMessageBodyKey]);
+                }
                 
                 // Check sticker validity
                 if (![self isSupportedAttachment:event])
@@ -1706,7 +1726,16 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
         return [self postRenderAttributedString:str];
     }
 
-    NSRange bodyRange = [str.string rangeOfString:event.content[kMXMessageBodyKey]];
+    NSString *body;
+    if (event.content[kMXMessageContentKeyNewContent])
+    {
+        MXJSONModelSetString(body, event.content[kMXMessageContentKeyNewContent][kMXMessageBodyKey]);
+    }
+    else
+    {
+        MXJSONModelSetString(body, event.content[kMXMessageBodyKey]);
+    }
+    NSRange bodyRange = [str.string rangeOfString:body];
     if (bodyRange.location == NSNotFound)
     {
         //  body not found in the whole string
@@ -1776,7 +1805,16 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
         return str;
     }
 
-    NSRange bodyRange = [str.string rangeOfString:event.content[kMXMessageBodyKey]];
+    NSString *body;
+    if (event.content[kMXMessageContentKeyNewContent])
+    {
+        MXJSONModelSetString(body, event.content[kMXMessageContentKeyNewContent][kMXMessageBodyKey]);
+    }
+    else
+    {
+        MXJSONModelSetString(body, event.content[kMXMessageBodyKey]);
+    }
+    NSRange bodyRange = [str.string rangeOfString:body];
     if (bodyRange.location == NSNotFound)
     {
         //  body not found in the whole string
@@ -2143,7 +2181,14 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     else if (!_isForSubtitle && !string && event.eventType == MXEventTypeRoomMessage && (_emojiOnlyTextFont || _singleEmojiTextFont))
     {
         NSString *message;
-        MXJSONModelSetString(message, event.content[kMXMessageBodyKey]);
+        if (event.content[kMXMessageContentKeyNewContent])
+        {
+            MXJSONModelSetString(message, event.content[kMXMessageContentKeyNewContent][kMXMessageBodyKey]);
+        }
+        else
+        {
+            MXJSONModelSetString(message, event.content[kMXMessageBodyKey]);
+        }
 
         if (_emojiOnlyTextFont && [MXKTools isEmojiOnlyString:message])
         {
