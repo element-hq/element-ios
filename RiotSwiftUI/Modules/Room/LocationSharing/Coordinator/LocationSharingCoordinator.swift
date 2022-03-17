@@ -71,6 +71,8 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
             case .cancel:
                 self.completion?()
             case .share(let latitude, let longitude):
+                
+                // Show share sheet on existing location display
                 if let location = self.parameters.location {
                     self.locationSharingHostingController.present(Self.shareLocationActivityController(location), animated: true)
                     return

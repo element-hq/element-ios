@@ -114,11 +114,11 @@ class DarkTheme: NSObject, Theme {
     
     // Protocols don't support default parameter values and a protocol extension won't work for @objc
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
-        applyStyle(onNavigationBar: navigationBar, withModernScrollEdgesAppearance: false)
+        applyStyle(onNavigationBar: navigationBar, withModernScrollEdgeAppearance: false)
     }
     
     func applyStyle(onNavigationBar navigationBar: UINavigationBar,
-                    withModernScrollEdgesAppearance modernScrollEdgesAppearance: Bool) {
+                    withModernScrollEdgeAppearance modernScrollEdgeAppearance: Bool) {
         navigationBar.tintColor = tintColor
         
         // On iOS 15 use UINavigationBarAppearance to fix visual issues with the scrollEdgeAppearance style.
@@ -127,7 +127,7 @@ class DarkTheme: NSObject, Theme {
             
             appearance.configureWithOpaqueBackground()
             appearance.backgroundColor = baseColor
-            if !modernScrollEdgesAppearance {
+            if !modernScrollEdgeAppearance {
                 appearance.shadowColor = nil
             }
             appearance.titleTextAttributes = [
@@ -135,7 +135,7 @@ class DarkTheme: NSObject, Theme {
             ]
             
             navigationBar.standardAppearance = appearance
-            navigationBar.scrollEdgeAppearance = modernScrollEdgesAppearance ? nil : appearance
+            navigationBar.scrollEdgeAppearance = modernScrollEdgeAppearance ? nil : appearance
         } else {
             navigationBar.titleTextAttributes = [
                 NSAttributedString.Key.foregroundColor: textPrimaryColor

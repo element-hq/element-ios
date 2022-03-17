@@ -355,4 +355,10 @@ final class RiotSettings: NSObject {
     
     @UserDefault(key: "slideMenuRoomsCoachMessageHasBeenDisplayed", defaultValue: false, storage: defaults)
     var slideMenuRoomsCoachMessageHasBeenDisplayed
+    
+    // MARK: - Metrics
+    
+    /// Number of spaces previously tracked by the `AnalyticsSpaceTracker` instance.
+    @UserDefault(key: "lastNumberOfTrackedSpaces", defaultValue: nil, storage: defaults)
+    var lastNumberOfTrackedSpaces: Int?
 }

@@ -20,121 +20,141 @@ import Mapbox
 
 @available(iOS 14, *)
 struct LocationSharingMapView: UIViewRepresentable {
+    
+    // MARK: - Constants
+    
     private struct Constants {
         static let mapZoomLevel = 15.0
     }
     
-    let tileServerMapURL: URL
-    let avatarData: AvatarInputProtocol
-    let location: CLLocationCoordinate2D?
+    // MARK: - Properties
     
-    let errorSubject: PassthroughSubject<LocationSharingViewError, Never>
+    /// Map style URL (https://docs.mapbox.com/api/maps/styles/)
+    let tileServerMapURL: URL
+    
+    /// Map annotations
+    let annotations: [UserLocationAnnotation]
+    
+    /// Map annotation to focus on
+    let highlightedAnnotation: UserLocationAnnotation?
+    
+    /// Current user avatar data, used to replace current location annotation view with the user avatar
+    let userAvatarData: AvatarInputProtocol?
+    
+    /// True to indicate to show and follow current user location
+    var showsUserLocation: Bool = false
+
+    /// Last user location if `showsUserLocation` has been enabled
     @Binding var userLocation: CLLocationCoordinate2D?
+    
+    /// Publish view errors if any
+    let errorSubject: PassthroughSubject<LocationSharingViewError, Never>
+
+    // MARK: - UIViewRepresentable
+    
+    func makeUIView(context: Context) -> MGLMapView {
         
-    func makeUIView(context: Context) -> some UIView {
-        let mapView = MGLMapView(frame: .zero, styleURL: tileServerMapURL)
+        let mapView = self.makeMapView()
         mapView.delegate = context.coordinator
-        
-        mapView.logoView.isHidden = true
-        mapView.attributionButton.isHidden = true
-        
-        if let location = location {
-            mapView.setCenter(location, zoomLevel: Constants.mapZoomLevel, animated: false)
-            
-            let pointAnnotation = MGLPointAnnotation()
-            pointAnnotation.coordinate = location
-            mapView.addAnnotation(pointAnnotation)
-        } else {
-            mapView.showsUserLocation = true
-            mapView.userTrackingMode = .follow
-        }
-        
         return mapView
     }
     
-    func updateUIView(_ uiView: UIViewType, context: Context) {
+    func updateUIView(_ mapView: MGLMapView, context: Context) {
         
+        mapView.vc_removeAllAnnotations()
+        mapView.addAnnotations(self.annotations)
+        
+        if let highlightedAnnotation = self.highlightedAnnotation {
+            mapView.setCenter(highlightedAnnotation.coordinate, zoomLevel: Constants.mapZoomLevel, animated: false)
+        }
+        
+        if self.showsUserLocation {
+            mapView.showsUserLocation = true
+            mapView.userTrackingMode = .follow
+        } else {
+            mapView.showsUserLocation = false
+            mapView.userTrackingMode = .none
+        }
     }
     
-    func makeCoordinator() -> LocationSharingMapViewCoordinator {
-        LocationSharingMapViewCoordinator(avatarData: avatarData,
-                                          errorSubject: errorSubject,
-                                          userLocation: $userLocation)
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    
+    // MARK: - Private
+    
+    private func makeMapView() -> MGLMapView {
+        let mapView = MGLMapView(frame: .zero, styleURL: tileServerMapURL)
+
+        mapView.logoView.isHidden = true
+        mapView.attributionButton.isHidden = true
+        
+        return mapView
     }
 }
 
+// MARK: - Coordinator
 @available(iOS 14, *)
-class LocationSharingMapViewCoordinator: NSObject, MGLMapViewDelegate {
+extension LocationSharingMapView {
     
-    private let avatarData: AvatarInputProtocol
-    private let errorSubject: PassthroughSubject<LocationSharingViewError, Never>
-    @Binding private var userLocation: CLLocationCoordinate2D?
-    
-    init(avatarData: AvatarInputProtocol,
-         errorSubject: PassthroughSubject<LocationSharingViewError, Never>,
-         userLocation: Binding<CLLocationCoordinate2D?>) {
-        self.avatarData = avatarData
-        self.errorSubject = errorSubject
-        self._userLocation = userLocation
-    }
-    
-    // MARK: - MGLMapViewDelegate
-    
-    func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
-        return UserLocationAnnotatonView(avatarData: avatarData)
-    }
-    
-    func mapViewDidFailLoadingMap(_ mapView: MGLMapView, withError error: Error) {
-        errorSubject.send(.failedLoadingMap)
-    }
-    
-    func mapView(_ mapView: MGLMapView, didFailToLocateUserWithError error: Error) {
-        guard mapView.showsUserLocation else {
-            return
+    class Coordinator: NSObject, MGLMapViewDelegate {
+        
+        // MARK: - Properties
+
+        var locationSharingMapView: LocationSharingMapView
+        
+        // MARK: - Setup
+
+         init(_ locationSharingMapView: LocationSharingMapView) {
+             self.locationSharingMapView = locationSharingMapView
+         }
+        
+        // MARK: - MGLMapViewDelegate
+        
+        func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
+            
+            if let userLocationAnnotation = annotation as? UserLocationAnnotation {
+                return UserLocationAnnotatonView(userLocationAnnotation: userLocationAnnotation)
+            } else if annotation is MGLUserLocation, let currentUserAvatarData = locationSharingMapView.userAvatarData {
+                // Replace default current location annotation view with a UserLocationAnnotatonView
+                return UserLocationAnnotatonView(avatarData: currentUserAvatarData)
+            }
+
+            return nil
         }
         
-        errorSubject.send(.failedLocatingUser)
-    }
-    
-    func mapView(_ mapView: MGLMapView, didUpdate userLocation: MGLUserLocation?) {
-        self.userLocation = userLocation?.coordinate
-    }
-    
-    func mapView(_ mapView: MGLMapView, didChangeLocationManagerAuthorization manager: MGLLocationManager) {
-        guard mapView.showsUserLocation else {
-            return
+        func mapViewDidFailLoadingMap(_ mapView: MGLMapView, withError error: Error) {
+            locationSharingMapView.errorSubject.send(.failedLoadingMap)
         }
         
-        switch manager.authorizationStatus {
-        case .restricted:
-            fallthrough
-        case .denied:
-            errorSubject.send(.invalidLocationAuthorization)
-        default:
-            break
+        func mapView(_ mapView: MGLMapView, didUpdate userLocation: MGLUserLocation?) {
+            locationSharingMapView.userLocation = userLocation?.coordinate
+        }
+        
+        func mapView(_ mapView: MGLMapView, didChangeLocationManagerAuthorization manager: MGLLocationManager) {
+            guard mapView.showsUserLocation else {
+                return
+            }
+            
+            switch manager.authorizationStatus {
+            case .restricted:
+                fallthrough
+            case .denied:
+                locationSharingMapView.errorSubject.send(.invalidLocationAuthorization)
+            default:
+                break
+            }
         }
     }
 }
 
-@available(iOS 14, *)
-private class UserLocationAnnotatonView: MGLUserLocationAnnotationView {
+// MARK: - MGLMapView convenient methods
+extension MGLMapView {
     
-    init(avatarData: AvatarInputProtocol) {
-        super.init(frame: .zero)
-        
-        guard let avatarImageView = UIHostingController(rootView: LocationSharingUserMarkerView(avatarData: avatarData)).view else {
+    func vc_removeAllAnnotations() {
+        guard let annotations = self.annotations else {
             return
         }
-        
-        addSubview(avatarImageView)
-        
-        addConstraints([topAnchor.constraint(equalTo: avatarImageView.topAnchor),
-                        leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
-                        bottomAnchor.constraint(equalTo: avatarImageView.bottomAnchor),
-                        trailingAnchor.constraint(equalTo: avatarImageView.trailingAnchor)])
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError()
+        self.removeAnnotations(annotations)
     }
 }

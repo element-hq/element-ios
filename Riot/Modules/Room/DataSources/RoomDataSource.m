@@ -968,11 +968,6 @@ const CGFloat kTypingCellHeight = 24;
 
 - (void)threadingService:(MXThreadingService *)service didCreateNewThread:(MXThread *)thread direction:(MXTimelineDirection)direction
 {
-    if (self.threadId)
-    {
-        //  no need to reload the thread screen
-        return;
-    }
     if (direction == MXTimelineDirectionBackwards)
     {
         //  no need to reload when paginating back

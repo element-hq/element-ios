@@ -1889,7 +1889,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     
     id<MXSendReplyEventStringLocalizerProtocol> stringLocalizer = [MXKSendReplyEventStringLocalizer new];
     
-    [_room sendReplyToEvent:eventToReply withTextMessage:sanitizedText formattedTextMessage:html stringLocalizer:stringLocalizer localEcho:&localEchoEvent success:success failure:failure];
+    [_room sendReplyToEvent:eventToReply withTextMessage:sanitizedText formattedTextMessage:html stringLocalizer:stringLocalizer threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure];
     
     if (localEchoEvent)
     {
