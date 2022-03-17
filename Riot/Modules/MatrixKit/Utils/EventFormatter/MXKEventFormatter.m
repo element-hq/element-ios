@@ -1580,7 +1580,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                 }
                 else
                 {
-                    body = event.content[kMXMessageBodyKey];
+                    MXJSONModelSetString(body, event.content[kMXMessageBodyKey]);
                 }
                 
                 // Check sticker validity
