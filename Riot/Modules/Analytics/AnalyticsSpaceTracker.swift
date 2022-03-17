@@ -17,32 +17,7 @@
 import Foundation
 
 class AnalyticsSpaceTracker {
-    // MARK: - Constants
-
-    private enum Constants {
-        static let lastNumberOfSpaces: String = "AnalyticsSpaceTracker.lastNumberOfSpaces"
-    }
     
-    // Last number of spaces tracked
-    private var lastNumberOfSpaces: Int? {
-        get {
-            guard let value = UserDefaults.standard.value(forKey: Constants.lastNumberOfSpaces) as? NSNumber else {
-                return nil
-            }
-            
-            return value.intValue
-        }
-        
-        set {
-            guard let value = newValue else {
-                UserDefaults.standard.removeObject(forKey: Constants.lastNumberOfSpaces)
-                return
-            }
-            
-            UserDefaults.standard.setValue(NSNumber(value: value), forKey: Constants.lastNumberOfSpaces)
-        }
-    }
-
     // MARK: - Setup
     
     init() {
@@ -62,11 +37,11 @@ class AnalyticsSpaceTracker {
     private func trackSpaceNumber(with spaceService: MXSpaceService) {
         let spaceNumber = spaceService.spaceSummaries.filter { $0.membership == .join }.count
         
-        guard lastNumberOfSpaces != spaceNumber else {
+        guard RiotSettings.shared.lastNumberOfTrackedSpaces != spaceNumber else {
             return
         }
         
         Analytics.shared.updateUserProperties(numSpaces: spaceNumber)
-        lastNumberOfSpaces = spaceNumber
+        RiotSettings.shared.lastNumberOfTrackedSpaces = spaceNumber
     }
 }
