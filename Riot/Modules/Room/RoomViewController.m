@@ -223,6 +223,13 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 // scroll state just before the layout change, and restore it after the layout.
 @property (nonatomic) BOOL shouldScrollToBottomAfterLayout;
 
+/// Handles all banners that should be displayed at the top of the timeline but that should not scroll with the timeline
+@property (weak, nonatomic, nullable) IBOutlet UIStackView *topBannersStackView;
+
+@property (nonatomic) BOOL shouldShowLiveLocationSharingBannerView;
+
+@property (nonatomic, weak) LiveLocationSharingBannerView *liveLocationSharingBannerView;
+
 @end
 
 @implementation RoomViewController
@@ -2378,6 +2385,18 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                               [suggestionsViewController.view.bottomAnchor constraintEqualToAnchor:self.userSuggestionContainerView.bottomAnchor],]];
     
     [suggestionsViewController didMoveToParentViewController:self];
+}
+
+- (void)updateTopBanners
+{
+    [self.view bringSubviewToFront:self.topBannersStackView];
+    
+    [self.topBannersStackView vc_removeAllSubviews];
+    
+    if (self.shouldShowLiveLocationSharingBannerView)
+    {
+        [self showLiveLocationBannerView];
+    }
 }
 
 #pragma mark - Jitsi
@@ -7323,5 +7342,34 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self stopActivityIndicator];
 }
 
-@end
+#pragma mark - Live location sharing
 
+- (void)showLiveLocationBannerView
+{
+    if (self.liveLocationSharingBannerView)
+    {
+        return;
+    }
+    
+    LiveLocationSharingBannerView *bannerView = [LiveLocationSharingBannerView instantiate];
+    
+    [bannerView updateWithTheme:ThemeService.shared.theme];
+    
+    MXWeakify(self);
+    
+    bannerView.didTapBackground = ^{
+        MXStrongifyAndReturnIfNil(self);
+        [self.delegate roomViewControllerDidTapLiveLocationSharingBanner:self];
+    };
+    
+    bannerView.didTapStopButton = ^{
+        MXStrongifyAndReturnIfNil(self);
+        [self.delegate roomViewControllerDidStopLiveLocationSharing:self];
+    };
+    
+    [self.topBannersStackView addArrangedSubview:bannerView];
+    
+    self.liveLocationSharingBannerView = bannerView;
+}
+
+@end
