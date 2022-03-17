@@ -111,8 +111,10 @@ final class SpaceSettingsModalCoordinator: Coordinator {
     private func pushOptionScreen(ofType optionType: SpaceSettingsOptionType) {
         switch optionType {
         case .rooms:
+            Analytics.shared.viewRoomTrigger = .spaceSettings
             exploreRooms(ofSpaceWithId: self.parameters.spaceId)
         case .members:
+            Analytics.shared.viewRoomTrigger = .spaceSettings
             showMembers(ofSpaceWithId: self.parameters.spaceId)
         case .visibility:
             showAccess(ofSpaceWithId: self.parameters.spaceId)

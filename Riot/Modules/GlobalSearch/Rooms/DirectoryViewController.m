@@ -243,11 +243,13 @@
                                                                                   mxSession:mxSession
                                                                            threadParameters:nil
                                                                      presentationParameters:presentationParameters];
+    Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerRoomDirectory;
     [[AppDelegate theDelegate] showRoomWithParameters:parameters];
 }
 
 - (void)showRoomPreviewWithData:(RoomPreviewData*)roomPreviewData
 {
+    Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerRoomDirectory;
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
     
     RoomPreviewNavigationParameters *parameters = [[RoomPreviewNavigationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:presentationParameters];

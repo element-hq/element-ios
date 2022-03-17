@@ -171,6 +171,7 @@
                                                                                   mxSession:self.mainSession
                                                                            threadParameters:threadParameters
                                                                      presentationParameters:screenParameters];
+    Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerMessageSearch;
     [[LegacyAppDelegate theDelegate] showRoomWithParameters:parameters];
 }
 

@@ -75,6 +75,7 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
         super.viewWillAppear(animated)
         
         AnalyticsScreenTracker.trackScreen(.spaceMembers)
+        Analytics.shared.exploringSpace = viewModel.space
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {

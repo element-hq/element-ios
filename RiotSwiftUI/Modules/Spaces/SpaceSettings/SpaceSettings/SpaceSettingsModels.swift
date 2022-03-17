@@ -120,4 +120,5 @@ enum SpaceSettingsViewAction {
     case pickImage(_ sourceRect: CGRect)
     case optionSelected(_ optionType: SpaceSettingsOptionType)
     case addressChanged(_ newValue: String)
+    case trackSpace
 }

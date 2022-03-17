@@ -59,6 +59,7 @@ final class SpaceMemberDetailViewModel: NSObject, SpaceMemberDetailViewModelType
         case .loadData:
             self.loadData()
         case .openRoom(let roomId):
+            Analytics.shared.viewRoomTrigger = .spaceMemberDetail
             self.coordinatorDelegate?.spaceMemberDetailViewModel(self, showRoomWithId: roomId)
         case .createRoom(let memberId):
             self.createDirectRoom(forMemberWithId: memberId)
@@ -108,6 +109,7 @@ final class SpaceMemberDetailViewModel: NSObject, SpaceMemberDetailViewModelType
                     }
                     return
                 }
+                Analytics.shared.viewRoomTrigger = .created
                 self.coordinatorDelegate?.spaceMemberDetailViewModel(self, showRoomWithId: room.roomId)
             }
         } failure: { error in

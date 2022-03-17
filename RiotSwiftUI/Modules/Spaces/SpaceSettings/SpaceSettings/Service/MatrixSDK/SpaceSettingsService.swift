@@ -114,6 +114,10 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
         userDefinedAddress = newValue
     }
     
+    func trackSpace() {
+        Analytics.shared.exploringSpace = session.spaceService.getSpace(withId: spaceId)
+    }
+    
     // MARK: - Private
     
     private func readRoomState() {

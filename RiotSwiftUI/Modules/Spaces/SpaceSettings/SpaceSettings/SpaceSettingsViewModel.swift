@@ -123,6 +123,8 @@ class SpaceSettingsViewModel: SpaceSettingsViewModelType, SpaceSettingsViewModel
             }
         case .addressChanged(let newValue):
             service.addressDidChange(newValue)
+        case .trackSpace:
+            service.trackSpace()
         }
     }
 

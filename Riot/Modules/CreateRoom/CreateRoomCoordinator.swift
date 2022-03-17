@@ -96,6 +96,7 @@ final class CreateRoomCoordinator: CreateRoomCoordinatorType {
                 TabbedRouterTab(title: VectorL10n.existing, icon: nil, module: roomSelectionCoordinator)
             ]
             self.navigationRouter.setRootModule(self.tabRouter)
+            Analytics.shared.exploringSpace = parentSpace
         } else {
             self.navigationRouter.setRootModule(createRoomCoordinator)
         }

@@ -1104,6 +1104,19 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
      shouldNavigateToRoomWithId:(NSString *)roomId
                        threadId:(NSString *)threadId
 {
+    if (roomId)
+    {
+        MXRoom *room = [self.mxSessions.firstObject roomWithRoomId:roomId];
+        if (room.summary.membership != MXMembershipJoin)
+        {
+            Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerNotification;
+        }
+        else
+        {
+            Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerNotification;
+        }
+    }
+
     _lastNavigatedRoomIdFromPush = roomId;
     [self navigateToRoomById:roomId threadId:threadId];
 }
@@ -2941,6 +2954,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         MXRoom *room = [mxSession roomWithRoomId:roomId];
         
+        if (room && room.summary.membership == MXMembershipJoin)
+        {
+            [Analytics.shared trackViewRoom:room];
+        }
+
         // Indicates that spaces are not supported
         if (room.summary.roomType == MXRoomTypeSpace)
         {
@@ -3172,6 +3190,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 [mxSession createRoomWithParameters:roomCreationParameters success:^(MXRoom *room) {
 
                     // Open created room
+                    Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerCreated;
                     [self showRoom:room.roomId andEventId:nil withMatrixSession:mxSession];
 
                     if (completion)
@@ -3206,6 +3225,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             if (directRoom)
             {
                 // open it
+                Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerCreated;
                 [self showRoom:directRoom.roomId andEventId:nil withMatrixSession:mxSession];
                 
                 if (completion)
