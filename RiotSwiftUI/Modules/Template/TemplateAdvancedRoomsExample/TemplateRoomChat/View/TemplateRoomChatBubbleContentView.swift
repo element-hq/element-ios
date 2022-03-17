@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
+@available(iOS 15.0, *)
 struct TemplateRoomChatBubbleContentView: View {
     
     // MARK: - Properties
@@ -44,7 +44,7 @@ struct TemplateRoomChatBubbleContentView: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
+@available(iOS 15.0, *)
 struct TemplateRoomChatBubbleItemView_Previews: PreviewProvider {
     static var previews: some View {
         EmptyView()

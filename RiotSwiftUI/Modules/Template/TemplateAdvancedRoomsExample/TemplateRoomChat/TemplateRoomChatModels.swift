@@ -20,7 +20,7 @@ import UIKit
 
 /// An image sent as a message.
 struct TemplateRoomChatMessageImageContent: Equatable {
-    var image: UIImage
+    var url: URL
 }
 
 /// The text content of a message sent by a user.

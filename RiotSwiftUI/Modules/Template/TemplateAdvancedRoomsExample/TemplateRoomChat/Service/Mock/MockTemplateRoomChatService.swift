@@ -24,11 +24,13 @@ class MockTemplateRoomChatService: TemplateRoomChatServiceProtocol {
     
     static let amadine = TemplateRoomChatMember(id: "@amadine:matrix.org", avatarUrl: "!aaabaa:matrix.org", displayName: "Amadine")
     static let mathew = TemplateRoomChatMember(id: "@mathew:matrix.org", avatarUrl: "!bbabb:matrix.org", displayName: "Mathew")
+    static let partyImageUrl = URL(string: "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F184375039%2F474927372937%2F1%2Foriginal.20211111-155142?w=800&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C236%2C4724%2C2362&s=18c17c71af6df1e5e46d630fac923834")!
     static let mockMessages = [
         TemplateRoomChatMessage(id: "!0:matrix.org", content: .text(TemplateRoomChatMessageTextContent(body: "Shall I put it live?")) , sender: amadine, timestamp: Date(timeIntervalSinceNow: 60 * -3)),
         TemplateRoomChatMessage(id: "!1:matrix.org", content: .text(TemplateRoomChatMessageTextContent(body: "Yea go for it! ...and then let's head to the pub")), sender: mathew, timestamp: Date(timeIntervalSinceNow: 60)),
         TemplateRoomChatMessage(id: "!2:matrix.org", content: .text(TemplateRoomChatMessageTextContent(body: "Deal.")), sender: amadine, timestamp: Date(timeIntervalSinceNow: 60 * -2)),
         TemplateRoomChatMessage(id: "!3:matrix.org", content: .text(TemplateRoomChatMessageTextContent(body: "Ok, Done. 🍻")), sender: amadine, timestamp: Date(timeIntervalSinceNow: 60 * -1)),
+        TemplateRoomChatMessage(id: "!3:matrix.org", content: .image(TemplateRoomChatMessageImageContent(url: partyImageUrl)), sender: mathew, timestamp: Date(timeIntervalSinceNow: 60 * -1)),
     ]
     var roomInitializationStatus: CurrentValueSubject<TemplateRoomChatRoomInitializationStatus, Never>
     var chatMessagesSubject: CurrentValueSubject<[TemplateRoomChatMessage], Never>

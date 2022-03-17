@@ -67,6 +67,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     private var createSpaceCoordinator: SpaceCreationCoordinator?
     private var createRoomCoordinator: CreateRoomCoordinator?
     private var spaceSettingsCoordinator: Coordinator?
+    private var chatCoordinator: TemplateRoomsCoordinator?
 
     // MARK: Public
 
@@ -238,10 +239,28 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     }
 
     private func showInviteFriends(from sourceView: UIView?) {
-        let myUserId = self.parameters.userSessionsService.mainUserSession?.userId ?? ""
+//        let myUserId = self.parameters.userSessionsService.mainUserSession?.userId ?? ""
         
-        let inviteFriendsPresenter = InviteFriendsPresenter()
-        inviteFriendsPresenter.present(for: myUserId, from: self.sideMenuViewController, sourceView: sourceView, animated: true)
+//        let inviteFriendsPresenter = InviteFriendsPresenter()
+//        inviteFriendsPresenter.present(for: myUserId, from: self.sideMenuViewController, sourceView: sourceView, animated: true)
+        
+        guard let session = self.parameters.userSessionsService.mainUserSession?.matrixSession else {
+            return
+        }
+        let coordinator = TemplateRoomsCoordinator(parameters: TemplateRoomsCoordinatorParameters(session: session))
+        coordinator.callback = { [weak self] in
+            guard let self = self else { return }
+            
+            coordinator.toPresentable().dismiss(animated: true) {
+                self.chatCoordinator = nil
+            }
+        }
+        
+        let presentable = coordinator.toPresentable()
+        presentable.presentationController?.delegate = self
+        toPresentable().present(presentable, animated: true, completion: nil)
+        coordinator.start()
+        self.chatCoordinator = coordinator
     }
     
     private func showMenu(forSpaceWithId spaceId: String, from sourceView: UIView?) {
