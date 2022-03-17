@@ -4461,6 +4461,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         RiotSettings.shared.showDecryptedContentInNotifications = BuildSettings.decryptNotificationsByDefault;
     }
+
+    if (!RiotSettings.shared.isThreadsEnabledHasBeenSetOnce)
+    {
+        RiotSettings.shared.enableThreads = YES;
+    }
 }
 
 #pragma mark - App version management

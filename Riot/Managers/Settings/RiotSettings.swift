@@ -147,6 +147,11 @@ final class RiotSettings: NSObject {
     @UserDefault(key: UserDefaultsKeys.enableThreads, defaultValue: true, storage: defaults)
     var enableThreads
     
+    /// Indicates if `enableThreads` setting has been set once.
+    var isThreadsEnabledHasBeenSetOnce: Bool {
+        return RiotSettings.defaults.object(forKey: UserDefaultsKeys.enableThreads) != nil
+    }
+    
     // MARK: Calls
     
     /// Indicate if `allowStunServerFallback` settings has been set once.
