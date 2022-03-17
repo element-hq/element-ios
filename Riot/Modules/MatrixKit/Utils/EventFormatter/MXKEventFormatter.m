@@ -2187,7 +2187,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
         }
         else
         {
-            message = event.content[kMXMessageBodyKey];
+            MXJSONModelSetString(message, event.content[kMXMessageBodyKey]);
         }
 
         if (_emojiOnlyTextFont && [MXKTools isEmojiOnlyString:message])
