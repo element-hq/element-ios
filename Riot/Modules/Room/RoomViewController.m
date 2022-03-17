@@ -89,6 +89,10 @@
 NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNotification";
 NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTileTappedNotification";
 const NSTimeInterval kResizeComposerAnimationDuration = .05;
+static const int kThreadListBarButtonItemTag = 99;
+static UIEdgeInsets kThreadListBarButtonItemContentInsetsNoDot;
+static UIEdgeInsets kThreadListBarButtonItemContentInsetsDot;
+static CGSize kThreadListBarButtonItemImageSize;
 
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
@@ -178,9 +182,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     // Time to display notification content in the timeline
     MXTaskProfile *notificationTaskProfile;
-    
-    // Reference to thread list bar button item, to update it easily later
-    BadgedBarButtonItem *threadListBarButtonItem;
 }
 
 @property (nonatomic, weak) IBOutlet UIView *overlayContainerView;
@@ -229,6 +230,13 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @synthesize roomPreviewData;
 
 #pragma mark - Class methods
+
++ (void)initialize
+{
+    kThreadListBarButtonItemContentInsetsNoDot = UIEdgeInsetsMake(0, 8, 0, 8);
+    kThreadListBarButtonItemContentInsetsDot = UIEdgeInsetsMake(0, 8, 6, 8);
+    kThreadListBarButtonItemImageSize = CGSizeMake(21, 21);
+}
 
 + (UINib *)nib
 {
@@ -461,8 +469,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     self.scrollToBottomBadgeLabel.badgeColor = ThemeService.shared.theme.tintColor;
     
     [self updateThreadListBarButtonBadgeWith:self.mainSession.threadingService];
-    [threadListBarButtonItem updateWithTheme:ThemeService.shared.theme];
-    
+
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
@@ -1520,20 +1527,21 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     return item;
 }
 
-- (BadgedBarButtonItem *)threadListBarButtonItem
+- (UIBarButtonItem *)threadListBarButtonItem
 {
     UIButton *button = [UIButton new];
-    UIImage *icon = [AssetImages.threadsIcon.image vc_resizedWith:CGSizeMake(21, 21)];
-    button.contentEdgeInsets = UIEdgeInsetsMake(4, 8, 4, 8);
-    [button setImage:icon
+    button.contentEdgeInsets = kThreadListBarButtonItemContentInsetsNoDot;
+    button.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [button setImage:[AssetImages.threadsIcon.image vc_resizedWith:kThreadListBarButtonItemImageSize]
             forState:UIControlStateNormal];
     [button addTarget:self
                action:@selector(onThreadListTapped:)
      forControlEvents:UIControlEventTouchUpInside];
     button.accessibilityLabel = [VectorL10n roomAccessibilityThreads];
-    
-    return [[BadgedBarButtonItem alloc] initWithBaseButton:button
-                                                     theme:ThemeService.shared.theme];
+
+    UIBarButtonItem *result = [[UIBarButtonItem alloc] initWithCustomView:button];
+    result.tag = kThreadListBarButtonItemTag;
+    return result;
 }
 
 - (void)setupRemoveJitsiWidgetRemoveView
@@ -1783,10 +1791,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             else
             {
                 //  in a regular timeline
-                BadgedBarButtonItem *itemThreadList = [self threadListBarButtonItem];
+                UIBarButtonItem *itemThreadList = [self threadListBarButtonItem];
+                [self updateThreadListBarButtonItem:itemThreadList
+                                               with:self.mainSession.threadingService];
                 [rightBarButtonItems insertObject:itemThreadList atIndex:0];
-                threadListBarButtonItem = itemThreadList;
-                [self updateThreadListBarButtonBadgeWith:self.mainSession.threadingService];
             }
         }
     }
@@ -6831,41 +6839,82 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)updateThreadListBarButtonBadgeWith:(MXThreadingService *)service
 {
-    if (!threadListBarButtonItem || !service)
+    [self updateThreadListBarButtonItem:nil with:service];
+}
+
+- (void)updateThreadListBarButtonItem:(UIBarButtonItem *)barButtonItem with:(MXThreadingService *)service
+{
+    if (!service)
     {
-        //  there is no thread list bar button, ignore
         return;
     }
+
+    __block NSInteger replaceIndex = NSNotFound;
+    [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem * _Nonnull item, NSUInteger index, BOOL * _Nonnull stop)
+     {
+        if (item.tag == kThreadListBarButtonItemTag)
+        {
+            replaceIndex = index;
+            *stop = YES;
+        }
+    }];
+
+    if (!barButtonItem && replaceIndex == NSNotFound)
+    {
+        //  there is no thread list bar button item, and not provided another to update
+        //  ignore
+        return;
+    }
+
+    UIBarButtonItem *threadListBarButtonItem = barButtonItem ?: [self threadListBarButtonItem];
+    UIButton *button = (UIButton *)threadListBarButtonItem.customView;
     
     MXThreadNotificationsCount *notificationsCount = [service notificationsCountForRoom:self.roomDataSource.roomId];
     
     if (notificationsCount.numberOfHighlightedThreads > 0)
     {
-        threadListBarButtonItem.badgeText = [self threadListBadgeTextFor:notificationsCount.numberOfHighlightedThreads];
-        threadListBarButtonItem.badgeBackgroundColor = ThemeService.shared.theme.colors.alert;
+        [button setImage:AssetImages.threadsIconRedDot.image
+                forState:UIControlStateNormal];
+        button.contentEdgeInsets = kThreadListBarButtonItemContentInsetsDot;
     }
     else if (notificationsCount.numberOfNotifiedThreads > 0)
     {
-        threadListBarButtonItem.badgeText = [self threadListBadgeTextFor:notificationsCount.numberOfNotifiedThreads];
-        threadListBarButtonItem.badgeBackgroundColor = ThemeService.shared.theme.noticeSecondaryColor;
+        if (ThemeService.shared.isCurrentThemeDark)
+        {
+            [button setImage:AssetImages.threadsIconGrayDotDark.image
+                    forState:UIControlStateNormal];
+        }
+        else
+        {
+            [button setImage:AssetImages.threadsIconGrayDotLight.image
+                    forState:UIControlStateNormal];
+        }
+        button.contentEdgeInsets = kThreadListBarButtonItemContentInsetsDot;
     }
     else
     {
-        //  remove badge
-        threadListBarButtonItem.badgeText = nil;
+        [button setImage:[AssetImages.threadsIcon.image vc_resizedWith:kThreadListBarButtonItemImageSize]
+                forState:UIControlStateNormal];
+        button.contentEdgeInsets = kThreadListBarButtonItemContentInsetsNoDot;
     }
-}
 
-- (NSString *)threadListBadgeTextFor:(NSUInteger)numberOfThreads
-{
-    if (numberOfThreads < 100)
+    if (replaceIndex == NSNotFound)
     {
-        return [NSString stringWithFormat:@"%tu", numberOfThreads];
+        // there is no thread list bar button item, this was only an update
+        return;
     }
-    else
+
+    UIBarButtonItem *originalItem = self.navigationItem.rightBarButtonItems[replaceIndex];
+    UIButton *originalButton = (UIButton *)originalItem.customView;
+    if ([originalButton imageForState:UIControlStateNormal] == [button imageForState:UIControlStateNormal]
+        && UIEdgeInsetsEqualToEdgeInsets(originalButton.contentEdgeInsets, button.contentEdgeInsets))
     {
-        return @"···";
+        //  no need to replace, it's the same
+        return;
     }
+    NSMutableArray<UIBarButtonItem*> *items = [self.navigationItem.rightBarButtonItems mutableCopy];
+    items[replaceIndex] = threadListBarButtonItem;
+    self.navigationItem.rightBarButtonItems = items;
 }
 
 #pragma mark - RoomContextualMenuViewControllerDelegate
