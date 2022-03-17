@@ -30,6 +30,7 @@ final class RiotSettings: NSObject {
         static let pinRoomsWithMissedNotificationsOnHome = "pinRoomsWithMissedNotif"
         static let pinRoomsWithUnreadMessagesOnHome = "pinRoomsWithUnread"
         static let showAllRoomsInHomeSpace = "showAllRoomsInHomeSpace"
+        static let enableThreads = "enableThreads"
     }
     
     static let shared = RiotSettings()
@@ -143,7 +144,7 @@ final class RiotSettings: NSObject {
     var enableRingingForGroupCalls
     
     /// Indicates if threads enabled in the timeline.
-    @UserDefault(key: "enableThreads", defaultValue: false, storage: defaults)
+    @UserDefault(key: UserDefaultsKeys.enableThreads, defaultValue: true, storage: defaults)
     var enableThreads
     
     // MARK: Calls
