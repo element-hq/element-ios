@@ -641,7 +641,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     {
         if (!RiotSettings.shared.showMediaCompressionPrompt)
         {
-            [MXSDKOptions sharedInstance].videoConversionPresetName = AVCaptureSessionPreset1920x1080;
+            [MXSDKOptions sharedInstance].videoConversionPresetName = AVAssetExportPreset1920x1080;
             sendVideo();
         }
         else
