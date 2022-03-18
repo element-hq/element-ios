@@ -103,8 +103,6 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
             
             // Setup split view controller
             self.splitViewController.viewControllers = [tabBarCoordinator.toPresentable(), detailNavigationController]
-            
-            updateUserIndicatorPresenter()
                     
             self.add(childCoordinator: tabBarCoordinator)
             
@@ -112,6 +110,8 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
             self.masterPresentable = tabBarCoordinator
             self.detailNavigationController = detailNavigationController
             self.detailNavigationRouter = NavigationRouter(navigationController: detailNavigationController)
+            
+            updateUserIndicatorPresenter()
             
             self.parameters.router.setRootModule(self.splitViewController)
             
