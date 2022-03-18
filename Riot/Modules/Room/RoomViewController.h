@@ -277,6 +277,12 @@ didRequestEditForPollWithStartEvent:(MXEvent *)startEvent;
  */
 - (void)roomViewControllerDidStopLoading:(RoomViewController *)roomViewController;
 
+/// User tap live location sharing stop action
+- (void)roomViewControllerDidStopLiveLocationSharing:(RoomViewController *)roomViewController;
+
+/// User tap live location sharing banner
+- (void)roomViewControllerDidTapLiveLocationSharingBanner:(RoomViewController *)roomViewController;
+
 @end
 
 NS_ASSUME_NONNULL_END
