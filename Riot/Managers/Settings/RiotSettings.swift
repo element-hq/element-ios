@@ -347,7 +347,10 @@ final class RiotSettings: NSObject {
     
     @UserDefault(key: "hideSpaceBetaAnnounce", defaultValue: false, storage: defaults)
     var hideSpaceBetaAnnounce
-    
+
+    @UserDefault(key: "threadsNoticeDisplayed", defaultValue: false, storage: defaults)
+    var threadsNoticeDisplayed
+
     // MARK: - Version check
     
     @UserDefault(key: "versionCheckNextDisplayDateTimeInterval", defaultValue: 0.0, storage: defaults)
