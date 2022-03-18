@@ -778,7 +778,7 @@
             title = [VectorL10n roomParticipantsActionUnban];
             break;
         case MXKRoomMemberDetailsActionIgnore:
-            title = [VectorL10n ignoreUser];
+            title = [VectorL10n roomParticipantsActionIgnore];
             break;
         case MXKRoomMemberDetailsActionUnignore:
             title = [VectorL10n roomParticipantsActionUnignore];
