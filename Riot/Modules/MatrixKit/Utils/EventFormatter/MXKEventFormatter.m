@@ -1266,31 +1266,12 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
 
                 NSString *body;
                 BOOL isHTML = NO;
-                NSString *eventThreadId = event.threadId;
 
                 // Use the HTML formatted string if provided
                 if ([contentToUse[@"format"] isEqualToString:kMXRoomMessageFormatHTML])
                 {
-                    isHTML =YES;
-                    MXJSONModelSetString(body, contentToUse[@"formatted_body"]);
-                }
-                else if (event.isReplyEvent || (eventThreadId && !RiotSettings.shared.enableThreads))
-                {
-                    NSString *repliedEventId = event.relatesTo.inReplyTo.eventId ?: eventThreadId;
                     isHTML = YES;
-                    MXJSONModelSetString(body, contentToUse[kMXMessageBodyKey]);
-                    MXEvent *repliedEvent = [mxSession.store eventWithEventId:repliedEventId
-                                                                       inRoom:event.roomId];
-                    
-                    NSString *repliedEventContent;
-                    MXJSONModelSetString(repliedEventContent, repliedEvent.content[kMXMessageBodyKey]);
-                    body = [NSString stringWithFormat:@"<mx-reply><blockquote><a href=\"%@\">In reply to</a> <a href=\"%@\">%@</a><br>%@</blockquote></mx-reply>%@",
-                            [MXTools permalinkToEvent:repliedEventId inRoom:event.roomId],
-                            [MXTools permalinkToUserWithUserId:repliedEvent.sender],
-                            repliedEvent.sender,
-                            repliedEventContent,
-                            body];
-                    
+                    MXJSONModelSetString(body, contentToUse[@"formatted_body"]);
                 }
                 else
                 {
