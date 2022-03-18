@@ -7563,6 +7563,18 @@ public class VectorL10n: NSObject {
   public static var threadsEmptyTitle: String { 
     return VectorL10n.tr("Vector", "threads_empty_title") 
   }
+  /// Got it
+  public static var threadsNoticeDone: String { 
+    return VectorL10n.tr("Vector", "threads_notice_done") 
+  }
+  /// All threads created during the experimental period will now be <b>rendered as regular replies</b>.<br/><br/>This will be a one-off transition, as threads are now part of the Matrix specification.
+  public static var threadsNoticeInformation: String { 
+    return VectorL10n.tr("Vector", "threads_notice_information") 
+  }
+  /// Threads no longer experimental 🎉
+  public static var threadsNoticeTitle: String { 
+    return VectorL10n.tr("Vector", "threads_notice_title") 
+  }
   /// Threads
   public static var threadsTitle: String { 
     return VectorL10n.tr("Vector", "threads_title") 
