@@ -643,7 +643,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     self.showSettingsInitially = NO;
 
-    if (!RiotSettings.shared.threadsNoticeDisplayed && RiotSettings.shared.enableThreads)
+    if (!RiotSettings.shared.threadsNoticeDisplayed)
     {
         [self showThreadsNotice];
     }
