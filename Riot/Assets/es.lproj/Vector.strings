@@ -49,7 +49,7 @@
 "auth_optional_phone_placeholder" = "Número telefónico (opcional)";
 "auth_phone_placeholder" = "Número telefónico";
 "auth_repeat_password_placeholder" = "Repite la contraseña";
-"auth_repeat_new_password_placeholder" = "Confirma tu contraseña nueva";
+"auth_repeat_new_password_placeholder" = "Confirma la nueva contraseña de tu cuenta de Matrix";
 "auth_home_server_placeholder" = "URL (ej. https://matrix.org)";
 "auth_identity_server_placeholder" = "URL (ej.: https://matrix.org)";
 "auth_invalid_login_param" = "Nombre de usuario y/o contraseña incorrectos";
@@ -115,7 +115,7 @@
 "auth_missing_phone" = "Falta el número telefónico";
 "auth_missing_email_or_phone" = "Falta la dirección de correo electrónico o el número telefónico";
 "auth_untrusted_id_server" = "El servidor de identidad no es de confianza";
-"auth_forgot_password" = "¿Olvidaste tu contraseña?";
+"auth_forgot_password" = "¿Has olvidado la contraseña de tu cuenta de Matrix?";
 "auth_email_not_found" = "No se pudo enviar el correo electrónico: No se encontró esta dirección de correo electrónico";
 "auth_email_validation_message" = "Por favor consulta tu correo electrónico para continuar con el registro";
 "auth_msisdn_validation_title" = "Verificación Pendiente";
@@ -231,7 +231,7 @@
 "room_event_action_redact" = "Eliminar";
 "room_event_action_more" = "Más";
 "room_event_action_share" = "Compartir";
-"room_event_action_permalink" = "Enlace Permanente";
+"room_event_action_permalink" = "Copiar enlace al mensaje";
 "room_event_action_view_source" = "Ver Fuente";
 "room_event_action_view_decrypted_source" = "Ver Fuente Descifrada";
 "room_event_action_report" = "Reportar contenido";
@@ -293,7 +293,7 @@
 "settings_ignored_users" = "USUARIOS IGNORADOS";
 "settings_contacts" = "CONTACTOS LOCALES";
 "settings_advanced" = "AVANZADO";
-"settings_other" = "OTRO";
+"settings_other" = "OTROS";
 "settings_labs" = "LABORATORIOS";
 "settings_flair" = "Mostrar insignia donde esté permitido";
 "settings_devices" = "DISPOSITIVOS";
@@ -1036,3 +1036,80 @@
 //  New
 "notice_room_join_rule_invite" = "%@ ha hecho que la sala solo sea accesible por invitación.";
 "resume_call" = "Volver a la llamada";
+"settings_key_backup_info_checking" = "Comprobando…";
+"settings_messages_containing_display_name" = "Mi nombre";
+"settings_three_pids_management_information_part2" = "Descubrir";
+"threads_empty_tip" = "Consejo: toca un mensaje y dale a «Hilo» para empezar uno nuevo.";
+"threads_empty_info_my" = "Responde en un hilo que ya exista o toca un mensaje y dale a «Hilo» para empezar uno nuevo.";
+"threads_empty_info_all" = "Los hilos ayudan a que las conversaciones no se desvíen y sean fáciles de seguir.";
+"threads_empty_title" = "Mantén las conversaciones organizadas usando los hilos";
+"thread_copy_link_to_thread" = "Copiar enlace al hilo";
+"room_event_copy_link_info" = "Enlace copiado al portapapeles.";
+"room_event_action_delete_confirmation_message" = "¿Seguro que quieres borrar este no enviado?";
+"room_participants_security_information_room_not_encrypted_for_dm" = "Estos mensajes no están cifrados de extremo a extremo.";
+"store_promotional_text" = "Aplicación para chatear y colaborar que respeta tu privacidad y funciona con una red abierta. Descentralizada, para que puedas mantener el control. Sin minería de datos, puertas traseras ni acceso de terceros.";
+"settings_call_invitations" = "Llamadas";
+"settings_room_invitations" = "Invitaciones a salas";
+"settings_messages_containing_keywords" = "Palabras clave";
+"settings_messages_containing_user_name" = "Tu nombre de usuario";
+"settings_messages_containing_at_room" = "@room";
+"settings_security" = "SEGURIDAD";
+"settings_three_pids_management_information_part3" = ".";
+"settings_about" = "ACERCA DE";
+"settings_notifications" = "NOTIFICACIONES";
+"settings_links" = "ENLACES";
+"settings_sending_media" = "ENVÍA IMÁGENES Y VÍDEOS";
+"threads_empty_show_all_threads" = "Ver todos los hilos";
+"message_from_a_thread" = "Desde un hilo";
+"threads_action_my_threads" = "Mis hilos";
+"threads_action_all_threads" = "Todos los hilos";
+"threads_title" = "Hilos";
+
+// MARK: Threads
+"room_thread_title" = "Hilo";
+"room_no_privileges_to_create_group_call" = "Tienes que ser un administrador o moderador para empezar una llamada.";
+"room_accessibility_thread_more" = "Más";
+"room_accessibility_threads" = "Hilos";
+"room_message_edits_history_title" = "Ediciones de mensajes";
+"room_event_action_reaction_history" = "Historial de reacciones";
+"room_event_action_reply_in_thread" = "Hilo";
+"room_event_action_view_in_room" = "Ver en la sala";
+"room_event_action_forward" = "Reenviar";
+"room_event_action_end_poll" = "Terminar encuesta";
+"room_event_action_remove_poll" = "Quitar encuesta";
+"room_participants_action_security_status_complete_security" = "Completar la seguridad";
+"room_participants_leave_success" = "Salió de la sala";
+"find_your_contacts_footer" = "Puedes desactivar esto cuando quieres desde ajustes.";
+"find_your_contacts_button_title" = "Encuentra tus contactos";
+"find_your_contacts_message" = "Deja que %@ te muestre tus contactos, para que puedas empezar a hablar rápidamente con quienes más te relacionas.";
+"contacts_address_book_permission_denied_alert_message" = "Para activar los contactos, ve a los ajustes de tu dispositivo.";
+"contacts_address_book_permission_denied_alert_title" = "Contactos desactivados";
+"search_filter_placeholder" = "Filtrar";
+"room_recents_suggested_rooms_section" = "SALAS SUGERIDAS";
+"onboarding_use_case_existing_server_button" = "Conectar a un servidor";
+"onboarding_use_case_existing_server_message" = "¿Te quieres unir a un servidor que ya existe?";
+"onboarding_use_case_skip_button" = "saltar esta pregunta";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "¿Todavía no lo sabes? Puedes %@";
+"onboarding_use_case_community_messaging" = "Comunidades";
+"onboarding_use_case_work_messaging" = "Equipos";
+"onboarding_use_case_personal_messaging" = "Familia y amigos";
+"onboarding_use_case_message" = "Te vamos a ayudar a conectarte.";
+"onboarding_use_case_title" = "¿Con quién vas a hablar más?";
+"onboarding_splash_page_4_message" = "Element también funciona genial en el trabajo. Usado por algunas de las organizaciones más seguras.";
+"onboarding_splash_page_4_title_no_pun" = "Mensajería para tu equipo.";
+"onboarding_splash_page_3_message" = "Cifrado de extremo a extremo, y no hace falta que nos des tu número de móvil. Sin anuncios ni minería de datos.";
+"onboarding_splash_page_3_title" = "Mensajería segura.";
+"onboarding_splash_page_2_message" = "Decide cómo quieres guardar tus conversaciones, te damos el control y la independencia. Gracias a Matrix.";
+"onboarding_splash_page_2_title" = "Tú mandas.";
+"onboarding_splash_page_1_message" = "Comunicación segura e independiente que te ofrece el mismo nivel de privacidad que las conversaciones en persona dentro de tu casa.";
+"onboarding_splash_page_1_title" = "Toma el control de tus conversaciones.";
+"onboarding_splash_login_button_title" = "Ya tengo cuenta";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Crear una cuenta";
+"accessibility_button_label" = "botón";
+"done" = "Terminado";
+"open" = "Abrir";
+"joined" = "Se unió";
+"enable" = "Activar";
