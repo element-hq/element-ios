@@ -203,6 +203,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
 @property (nonatomic, strong) RoomParticipantsInviteCoordinatorBridgePresenter *participantsInvitePresenter;
 @property (nonatomic, strong) ThreadsCoordinatorBridgePresenter *threadsBridgePresenter;
+@property (nonatomic, strong) SlidingModalPresenter *threadsNoticeModalPresenter;
 @property (nonatomic, getter=isActivitiesViewExpanded) BOOL activitiesViewExpanded;
 @property (nonatomic, getter=isScrollToBottomHidden) BOOL scrollToBottomHidden;
 @property (nonatomic, getter=isMissedDiscussionsBadgeHidden) BOOL missedDiscussionsBadgeHidden;
@@ -634,6 +635,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     
     self.showSettingsInitially = NO;
+
+    if (!RiotSettings.shared.threadsNoticeDisplayed)
+    {
+        [self showThreadsNotice];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -6740,6 +6746,35 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 }
 
 #pragma mark - Threads
+
+- (void)showThreadsNotice
+{
+    if (!self.threadsNoticeModalPresenter)
+    {
+        self.threadsNoticeModalPresenter = [SlidingModalPresenter new];
+    }
+
+    [self.threadsNoticeModalPresenter dismissWithAnimated:NO completion:nil];
+
+    ThreadsNoticeViewController *threadsNoticeVC = [ThreadsNoticeViewController instantiate];
+
+    MXWeakify(self);
+
+    threadsNoticeVC.didTapDoneButton = ^{
+
+        MXStrongifyAndReturnIfNil(self);
+
+        [self.threadsNoticeModalPresenter dismissWithAnimated:YES completion:^{
+            RiotSettings.shared.threadsNoticeDisplayed = YES;
+        }];
+    };
+
+    [self.threadsNoticeModalPresenter present:threadsNoticeVC
+                                         from:self.presentedViewController?:self
+                                     animated:YES
+                                      options:SlidingModalPresenter.SpanningOption
+                                   completion:nil];
+}
 
 - (void)openThreadWithId:(NSString *)threadId
 {
