@@ -1477,7 +1477,7 @@
 "notification_settings_always_notify" = "常に通知";
 "notification_settings_never_notify" = "決して通知しない";
 "notification_settings_word_to_match" = "一致する単語";
-"notification_settings_highlight" = "Highlight";
+"notification_settings_highlight" = "ハイライト";
 "notification_settings_custom_sound" = "カスタムサウンド";
 "notification_settings_per_room_notifications" = "1ルームあたりの通知";
 "notification_settings_per_sender_notifications" = "送信者ごとの通知";
@@ -1600,3 +1600,9 @@
 "settings_sending_media" = "画像と動画の送信";
 "invite_friends_share_text" = "%@ での連絡先: %@";
 "side_menu_action_invite_friends" = "招待する";
+"call_more_actions_change_audio_device" = "オーディオデバイスを変更";
+"call_more_actions_dialpad" = "ダイヤルパッド";
+"onboarding_splash_login_button_title" = "既にアカウントを持っています";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "アカウントを作成";
