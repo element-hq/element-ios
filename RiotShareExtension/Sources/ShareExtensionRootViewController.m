@@ -99,6 +99,10 @@
 {
     [self dismissViewControllerAnimated:true completion:^{
         [self.presentingViewController dismissViewControllerAnimated:false completion:nil];
+        
+        // FIXME: Share extension memory usage increase when launched several times and then crash due to some memory leaks.
+        // For now, we force the share extension to exit and free memory.
+        [NSException raise:@"Kill the app extension" format:@"Free memory used by share extension"];
     }];
 }
 
