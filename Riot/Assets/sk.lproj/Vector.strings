@@ -490,7 +490,7 @@
 "unknown_devices_verify" = "Overiť…";
 "media_type_accessibility_sticker" = "Nálepka";
 "media_type_accessibility_file" = "Súbor";
-"media_type_accessibility_location" = "Miesto";
+"media_type_accessibility_location" = "Poloha";
 "media_type_accessibility_video" = "Video";
 "media_type_accessibility_audio" = "Audio";
 "media_type_accessibility_image" = "Obrázok";
