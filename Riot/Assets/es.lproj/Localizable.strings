@@ -70,3 +70,60 @@
 /* New message indicator on a room */
 "MESSAGE_IN_X" = "Mensaje en %@";
 "MESSAGE_PROTECTED" = "Nuevo mensaje";
+
+/* Group call from user, CallKit caller name */
+"GROUP_CALL_FROM_USER" = "%@ (llamada en grupo)";
+
+/* A user added a Jitsi call to a room */
+"GROUP_CALL_STARTED" = "Llamada en grupo empezada";
+
+/* A user's membership has updated in an unknown way */
+"USER_MEMBERSHIP_UPDATED" = "%@ ha actualizado su perfil";
+
+/* A user has change their avatar */
+"USER_UPDATED_AVATAR" = "%@ ha cambiado su foto de perfil";
+
+/* A user has change their name to a new name which we don't know */
+"GENERIC_USER_UPDATED_DISPLAYNAME" = "%@ ha cambiado su nombre";
+
+/** Membership Updates **/
+
+/* A user has change their name to a new name */
+"USER_UPDATED_DISPLAYNAME" = "%@ ha cambiado su nombre a %@";
+
+/* A user has reacted to a message, but the reaction content is unknown */
+"GENERIC_REACTION_FROM_USER" = "%@ ha enviado una reacción";
+
+/** Reactions **/
+
+/* A user has reacted to a message, including the reaction e.g. "Alice reacted 👍". */
+"REACTION_FROM_USER" = "%@ ha reaccionado %@";
+
+/* New file message from a specific person, not referencing a room. */
+"LOCATION_FROM_USER" = "%@ ha compartido su ubicación";
+
+/* New file message from a specific person, not referencing a room. */
+"FILE_FROM_USER" = "%@ ha enviado un archivo %@";
+
+/* New voice message from a specific person, not referencing a room. */
+"VOICE_MESSAGE_FROM_USER" = "%@ ha enviado un mensaje de voz";
+
+/* New audio message from a specific person, not referencing a room. */
+"AUDIO_FROM_USER" = "%@ ha enviado un audio %@";
+
+/* New video message from a specific person, not referencing a room. */
+"VIDEO_FROM_USER" = "%@ ha enviado un vídeo";
+
+/** Media Messages **/
+
+/* New image message from a specific person, not referencing a room. */
+"PICTURE_FROM_USER" = "%@ ha enviado una imagen";
+
+/* New message reply from a specific person in a named room. */
+"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ ha respondido en %@";
+
+/* New message reply from a specific person, not referencing a room. */
+"REPLY_FROM_USER_TITLE" = "%@ ha respondido";
+/** General **/
+
+"NOTIFICATION" = "Notificación";
