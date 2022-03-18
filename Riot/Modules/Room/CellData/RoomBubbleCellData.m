@@ -284,12 +284,6 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 
 - (BOOL)hasThreadRoot
 {
-    if (!RiotSettings.shared.enableThreads)
-    {
-        //  do not consider this cell data if threads not enabled in the timeline
-        return NO;
-    }
-
     if (roomDataSource.threadId)
     {
         //  do not consider this cell data if in a thread view
@@ -680,11 +674,6 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 
 - (CGFloat)threadSummaryViewHeightForEventId:(NSString*)eventId
 {
-    if (!RiotSettings.shared.enableThreads)
-    {
-        //  do not show thread summary view if threads not enabled in the timeline
-        return 0;
-    }
     if (roomDataSource.threadId)
     {
         //  do not show thread summary view on threads
@@ -707,11 +696,6 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 
 - (CGFloat)fromAThreadViewHeightForEventId:(NSString*)eventId
 {
-    if (!RiotSettings.shared.enableThreads)
-    {
-        //  do not show from a thread view if threads not enabled
-        return 0;
-    }
     if (roomDataSource.threadId)
     {
         //  do not show from a thread view on threads

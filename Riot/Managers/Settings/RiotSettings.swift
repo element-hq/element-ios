@@ -30,7 +30,6 @@ final class RiotSettings: NSObject {
         static let pinRoomsWithMissedNotificationsOnHome = "pinRoomsWithMissedNotif"
         static let pinRoomsWithUnreadMessagesOnHome = "pinRoomsWithUnread"
         static let showAllRoomsInHomeSpace = "showAllRoomsInHomeSpace"
-        static let enableThreads = "enableThreads"
     }
     
     static let shared = RiotSettings()
@@ -142,15 +141,6 @@ final class RiotSettings: NSObject {
     /// Indicates if CallKit ringing is enabled for group calls. This setting does not disable the CallKit integration for group calls, only relates to ringing.
     @UserDefault(key: "enableRingingForGroupCalls", defaultValue: false, storage: defaults)
     var enableRingingForGroupCalls
-    
-    /// Indicates if threads enabled in the timeline.
-    @UserDefault(key: UserDefaultsKeys.enableThreads, defaultValue: true, storage: defaults)
-    var enableThreads
-    
-    /// Indicates if `enableThreads` setting has been set once.
-    var isThreadsEnabledHasBeenSetOnce: Bool {
-        return RiotSettings.defaults.object(forKey: UserDefaultsKeys.enableThreads) != nil
-    }
     
     // MARK: Calls
     

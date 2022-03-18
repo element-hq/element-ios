@@ -1775,27 +1775,24 @@ static CGSize kThreadListBarButtonItemImageSize;
         }
         
         [self refreshMissedDiscussionsCount:YES];
-        
-        if (RiotSettings.shared.enableThreads)
+
+        if (self.roomDataSource.threadId)
         {
-            if (self.roomDataSource.threadId)
+            //  in a thread
+            if (rightBarButtonItems == nil)
             {
-                //  in a thread
-                if (rightBarButtonItems == nil)
-                {
-                    rightBarButtonItems = [NSMutableArray new];
-                }
-                UIBarButtonItem *itemThreadMore = [self threadMoreBarButtonItem];
-                [rightBarButtonItems insertObject:itemThreadMore atIndex:0];
+                rightBarButtonItems = [NSMutableArray new];
             }
-            else
-            {
-                //  in a regular timeline
-                UIBarButtonItem *itemThreadList = [self threadListBarButtonItem];
-                [self updateThreadListBarButtonItem:itemThreadList
-                                               with:self.mainSession.threadingService];
-                [rightBarButtonItems insertObject:itemThreadList atIndex:0];
-            }
+            UIBarButtonItem *itemThreadMore = [self threadMoreBarButtonItem];
+            [rightBarButtonItems insertObject:itemThreadMore atIndex:0];
+        }
+        else
+        {
+            //  in a regular timeline
+            UIBarButtonItem *itemThreadList = [self threadListBarButtonItem];
+            [self updateThreadListBarButtonItem:itemThreadList
+                                           with:self.mainSession.threadingService];
+            [rightBarButtonItems insertObject:itemThreadList atIndex:0];
         }
     }
     
@@ -3445,9 +3442,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     MXWeakify(self);
     
-    BOOL showThreadOption = RiotSettings.shared.enableThreads
-    && !self.roomDataSource.threadId
-    && !selectedEvent.threadId;
+    BOOL showThreadOption = !self.roomDataSource.threadId && !selectedEvent.threadId;
     if (showThreadOption && [self canCopyEvent:selectedEvent andCell:cell])
     {
         [self.eventMenuBuilder addItemWithType:EventMenuItemTypeCopy
@@ -6365,7 +6360,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     BOOL showMoreOption = (event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForStates)
         || (!event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForMessages);
-    BOOL showThreadOption = RiotSettings.shared.enableThreads && !self.roomDataSource.threadId && !event.threadId;
+    BOOL showThreadOption = !self.roomDataSource.threadId && !event.threadId;
     
     NSMutableArray<RoomContextualMenuItem*> *items = [NSMutableArray arrayWithCapacity:5];
     

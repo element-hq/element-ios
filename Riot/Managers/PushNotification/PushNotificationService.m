@@ -484,7 +484,7 @@ Matrix session observer used to detect new opened sessions.
             //  initialize data source for a thread or a room
             __block MXKRoomDataSource *dataSource;
             dispatch_group_t dispatchGroupDataSource = dispatch_group_create();
-            if (RiotSettings.shared.enableThreads && threadId)
+            if (threadId)
             {
                 dispatch_group_enter(dispatchGroupDataSource);
                 [ThreadDataSource loadRoomDataSourceWithRoomId:roomId
