@@ -636,7 +636,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     self.showSettingsInitially = NO;
 
-    if (!RiotSettings.shared.threadsNoticeDisplayed)
+    if (!RiotSettings.shared.threadsNoticeDisplayed && RiotSettings.shared.enableThreads)
     {
         [self showThreadsNotice];
     }
