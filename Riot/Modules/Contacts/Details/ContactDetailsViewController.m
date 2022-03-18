@@ -671,7 +671,7 @@
     switch (action)
     {
         case ContactDetailsActionIgnore:
-            title = [VectorL10n roomParticipantsActionIgnore];
+            title = [VectorL10n ignoreUser];
             break;
         case ContactDetailsActionUnignore:
             title = [VectorL10n roomParticipantsActionUnignore];

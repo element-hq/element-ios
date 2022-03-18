@@ -629,7 +629,7 @@
         }
         
         // Check whether the option Ignore may be presented
-        if (RiotSettings.shared.roomMemberScreenShowIgnore && self.mxRoomMember.membership == MXMembershipJoin)
+        if (RiotSettings.shared.roomMemberScreenShowIgnore)
         {
             // is he already ignored ?
             if (![self.mainSession isUserIgnored:self.mxRoomMember.userId])
@@ -778,7 +778,7 @@
             title = [VectorL10n roomParticipantsActionUnban];
             break;
         case MXKRoomMemberDetailsActionIgnore:
-            title = [VectorL10n roomParticipantsActionIgnore];
+            title = [VectorL10n ignoreUser];
             break;
         case MXKRoomMemberDetailsActionUnignore:
             title = [VectorL10n roomParticipantsActionUnignore];
