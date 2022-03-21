@@ -21,6 +21,7 @@ public enum RecentsListServiceSection: Int {
     case invited
     case favorited
     case people
+    case sipCalls
     case conversation
     case lowPriority
     case serverNotice
