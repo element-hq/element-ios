@@ -43,6 +43,8 @@ struct UISIDetectedMessage {
     }
 }
 
+/// Detects decryption errors that occur and don't recover within a grace period.
+/// see `UISIDetectorDelegate` for listening to detections.
 class UISIDetector: MXLiveEventListener {
     
     weak var delegate: UISIDetectorDelegate?
@@ -88,7 +90,6 @@ class UISIDetector: MXLiveEventListener {
             self.trackedUISIs[trackedId] = timer
             timer.activate()
         }
-        
     }
     
     func onLiveToDeviceEvent(event: MXEvent) {
@@ -96,13 +97,17 @@ class UISIDetector: MXLiveEventListener {
         delegate?.uisiReciprocateRequest(source: event)
     }
     
+    // MARK: - Private
+    
     private func triggerUISI(source: UISIDetectedMessage) {
         guard enabled else { return }
         MXLog.info("[UISIDetector] triggerUISI: Unable To Decrypt \(source)")
         self.delegate?.uisiDetected(source: source)
     }
     
-    static func trackedEventId(roomId: String, eventId: String) -> String {
+    // MARK: - Static
+    
+    private static func trackedEventId(roomId: String, eventId: String) -> String {
         return "\(roomId)-\(eventId)"
     }
 }

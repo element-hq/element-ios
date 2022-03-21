@@ -39,6 +39,8 @@ extension UISIAutoReportData: Codable {
 }
 
 @available(iOS 14.0, *)
+/// Listens for failed decryption events and silently sends reports RageShake server.
+/// Also requests that message senders send a matching report to have both sides of the interaction.
 @objcMembers class UISIAutoReporter: NSObject, UISIDetectorDelegate {
     
     struct ReportInfo: Hashable {
@@ -96,7 +98,6 @@ extension UISIAutoReportData: Codable {
         detector.delegate = self
         return detector
     }()
-    
     
     var reciprocateToDeviceEventType: String {
         return Self.autoRsRequest
@@ -180,7 +181,6 @@ extension UISIAutoReportData: Codable {
         let senderKey = source.content["sender_key"] as? String
         let matchingIssue = source.content["recipient_rageshake"] as? String ?? ""
         
-        
         let uisiData = UISIAutoReportData(
             eventId: eventId,
             roomId: roomId,
@@ -205,7 +205,6 @@ extension UISIAutoReportData: Codable {
             ]
         )
     }
-    
     
     func add(_ session: MXSession) {
         sessions.append(session)

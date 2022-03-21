@@ -21,10 +21,7 @@ import GBDeviceInfo
 extension MXBugReportRestClient {
     
     @objc static func vc_bugReportRestClient(appName: String) -> MXBugReportRestClient {
-        guard let client = MXBugReportRestClient(bugReportEndpoint: BuildSettings.bugReportEndpointUrlString) else {
-            fatalError("Could not create MXBugReportRestClient")
-        }
-        
+        let client = MXBugReportRestClient(bugReportEndpoint: BuildSettings.bugReportEndpointUrlString)
         // App info
         client.appName = appName
         client.version = AppDelegate.theDelegate().appVersion
