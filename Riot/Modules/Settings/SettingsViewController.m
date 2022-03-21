@@ -2478,7 +2478,6 @@ TableViewSectionsDelegate>
         else if (row == LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS)
         {
             cell = [self buildAutoReportDecryptionErrorsCellForTableView:tableView atIndexPath:indexPath];
-        }
         else if (row == LABS_USE_ONLY_LATEST_USER_AVATAR_AND_NAME_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];

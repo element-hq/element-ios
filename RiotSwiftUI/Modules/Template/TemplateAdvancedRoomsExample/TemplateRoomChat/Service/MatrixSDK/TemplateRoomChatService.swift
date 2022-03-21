@@ -16,7 +16,6 @@
 
 import Foundation
 import Combine
-import MatrixSDK
 
 @available(iOS 14.0, *)
 class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
@@ -97,21 +96,20 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
         return events
             .filter({ event in
                 event.type == kMXEventTypeStringRoomMessage
-                    && (event.content[kMXMessageTypeKey] as? String == kMXMessageTypeText
-                        || event.content[kMXMessageTypeKey] as? String == kMXMessageTypeImage)
+                    && event.content[kMXMessageTypeKey] as? String == kMXMessageTypeText
                 
                 // TODO: New to our SwiftUI Template? Why not implement another message type like image?
                 
             })
             .compactMap({ event -> TemplateRoomChatMessage?  in
                 guard let eventId = event.eventId,
+                      let body = event.content[kMXMessageBodyKey] as? String,
                       let sender = senderForMessage(event: event)
                 else { return nil }
                 
-                let messageContent = messageContentForEvent(event: event)
                 return TemplateRoomChatMessage(
                     id: eventId,
-                    content: messageContent,
+                    content: .text(TemplateRoomChatMessageTextContent(body: body)),
                     sender: sender,
                     timestamp: Date(timeIntervalSince1970: TimeInterval(event.originServerTs / 1000))
                 )
@@ -125,26 +123,5 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
         let displayName = eventFormatter.senderDisplayName(for: event, with: roomState)
         let avatarUrl = eventFormatter.senderAvatarUrl(for: event, with: roomState)
         return TemplateRoomChatMember(id: sender, avatarUrl: avatarUrl, displayName: displayName)
-    }
-    
-    private func messageContentForEvent(event: MXEvent) -> TemplateRoomChatMessageContent {
-        switch event.content[kMXMessageTypeKey] as? String  {
-        case kMXMessageTypeText:
-                let body = event.content[kMXMessageBodyKey] as? String ?? ""
-                return .text(TemplateRoomChatMessageTextContent(body: body))
-        case kMXMessageTypeImage:
-            let url: URL
-//            room.mxSession.mediaManager.
-            if let contentURL = event.content["url"] as? String,
-               let info = event.content["info"] as? [String: Any],
-               let localImagePath = MXMediaManager.cachePath(forMatrixContentURI: contentURL, andType:info["mimetype"] as? String, inFolder: event.roomId) {
-                url = URL(fileURLWithPath: localImagePath)
-            } else{
-                url = URL(string: "https://cahilldental.ie/wp-content/uploads/2016/10/orionthemes-placeholder-image.png")!
-            }
-            return  .image(TemplateRoomChatMessageImageContent(url: url))
-        default: break
-        }
-        fatalError("unsupported event type content")
     }
 }

@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-@available(iOS 15.0, *)
+@available(iOS 14.0, *)
 struct TemplateRoomChatBubbleImage: View {
 
     // MARK: - Properties
@@ -24,29 +24,22 @@ struct TemplateRoomChatBubbleImage: View {
     // MARK: Private
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
-
+    
     // MARK: Public
     
     let imageContent: TemplateRoomChatMessageImageContent
-    @State var showImageViewer: Bool = false
+    
     var body: some View {
-        AsyncImage(url: imageContent.url) { image in
-            image.resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: CGFloat(258), height: CGFloat(150))
-                .cornerRadius(8)
-        } placeholder: {
-            Color.green
-        }
+        EmptyView()
     }
 }
 
 // MARK: - Previews
 
-@available(iOS 15.0, *)
+@available(iOS 14.0, *)
 struct TemplateRoomChatBubbleImage_Previews: PreviewProvider {
-    static let exampleUrl = URL(string: "https://docs-assets.developer.apple.com/published/9c4143a9a48a080f153278c9732c03e7/17400/SwiftUI-Image-waterWheel-resize~dark@2x.png")!
     static var previews: some View {
-        TemplateRoomChatBubbleImage(imageContent: TemplateRoomChatMessageImageContent(url:exampleUrl))
+        EmptyView()
+        // TODO: New to our SwiftUI Template? Why not implement the image item in the bubble here?
     }
 }

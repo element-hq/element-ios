@@ -17,7 +17,7 @@
 import SwiftUI
 import Combine
 
-@available(iOS 15.0, *)
+@available(iOS 14.0, *)
 struct TemplateRoomChat: View {
     
     // MARK: - Properties
@@ -25,8 +25,6 @@ struct TemplateRoomChat: View {
     // MARK: Private
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
-    
-    @State var fullScreenImage: Image?
     
     // MARK: Public
     
@@ -65,12 +63,6 @@ struct TemplateRoomChat: View {
         }
     }
     
-    
-    
-    .onTapGesture {
-        showImageViewer.toggle()
-    }
-    .overlay(ImageViewer(image: $image, viewerShown: self.$showImageViewer))
     @ViewBuilder
     private var roomContent: some View {
         if case .notInitialized = viewModel.viewState.roomInitializationStatus {
@@ -135,7 +127,7 @@ struct TemplateRoomChat: View {
 
 // MARK: - Previews
 
-@available(iOS 15.0, *)
+@available(iOS 14.0, *)
 struct TemplateRoomChat_Previews: PreviewProvider {
     static let stateRenderer = MockTemplateRoomChatScreenState.stateRenderer
     static var previews: some View {
