@@ -932,12 +932,17 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
     NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
     NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
+    NSString *localizedDescription = error.localizedDescription;
     if (!title)
     {
         if (msg)
         {
             title = msg;
             msg = nil;
+        }
+        else if (localizedDescription.length > 0)
+        {
+            title = localizedDescription;
         }
         else
         {

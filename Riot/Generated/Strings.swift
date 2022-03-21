@@ -687,6 +687,10 @@ public class VectorL10n: NSObject {
   public static var callJitsiError: String { 
     return VectorL10n.tr("Vector", "call_jitsi_error") 
   }
+  /// Unable to start conference call
+  public static var callJitsiUnableToStart: String { 
+    return VectorL10n.tr("Vector", "call_jitsi_unable_to_start") 
+  }
   /// Device Speaker
   public static var callMoreActionsAudioUseDevice: String { 
     return VectorL10n.tr("Vector", "call_more_actions_audio_use_device") 

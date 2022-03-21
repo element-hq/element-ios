@@ -19,11 +19,15 @@ import Foundation
 #if canImport(JitsiMeetSDK)
 import JitsiMeetSDK
 
-enum JitsiServiceError: Error {
+enum JitsiServiceError: LocalizedError {
     case widgetContentCreationFailed
     case emptyResponse
     case noWellKnown
     case unknown
+    
+    var errorDescription: String? {
+        return VectorL10n.callJitsiUnableToStart
+    }
 }
 
 private enum HTTPStatusCodes {

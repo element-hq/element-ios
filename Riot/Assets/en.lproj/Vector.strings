@@ -1028,6 +1028,7 @@ Tap the + to start adding people.";
 "call_incoming_video" = "Incoming video call…";
 "call_already_displayed" = "There is already a call in progress.";
 "call_jitsi_error" = "Failed to join the conference call.";
+"call_jitsi_unable_to_start" = "Unable to start conference call";
 
 "call_no_stun_server_error_title" ="Call failed due to misconfigured server";
 "call_no_stun_server_error_message_1" ="Please ask the administrator of your homeserver %@ to configure a TURN server in order for calls to work reliably.";
