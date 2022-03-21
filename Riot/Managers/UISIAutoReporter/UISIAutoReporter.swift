@@ -201,7 +201,12 @@ extension UISIAutoReportData: Codable {
         let deviceId = source.content["device_id"] as? String
         let userId = source.content["user_id"] as? String
         let senderKey = source.content["sender_key"] as? String
-        let matchingIssue = source.content["recipient_rageshake"] as? String ?? ""
+        let matchingIssue = source.content["recipient_rageshake"] as? String
+        
+        var description = "Auto-reporting decryption error (sender)"
+        if let matchingIssue = matchingIssue {
+            description += "\nRecipient rageshake: \(matchingIssue)"
+        }
         
         let uisiData = UISIAutoReportData(
             eventId: eventId,
@@ -213,7 +218,7 @@ extension UISIAutoReportData: Codable {
         ).jsonString ?? ""
         
         self.bugReporter.vc_sendBugReport(
-            description: "Auto-reporting decryption error",
+            description: description,
             sendLogs: true,
             sendCrashLog: true,
             additionalLabels: [
@@ -223,7 +228,7 @@ extension UISIAutoReportData: Codable {
             ],
             customFields: [
                 "auto_uisi": uisiData,
-                "recipient_rageshake": matchingIssue
+                "recipient_rageshake": matchingIssue ?? ""
             ]
         )
     }
