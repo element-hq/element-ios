@@ -400,6 +400,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self registerURLPreviewNotifications];
     
     [self setupActions];
+    
+    [self setupUserSuggestionViewIfNeeded];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -1045,7 +1047,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                                                                                           room:dataSource.room];
     _userSuggestionCoordinator.delegate = self;
     
-    [self setupUserSuggestionView];
+    [self setupUserSuggestionViewIfNeeded];
 }
 
 - (void)onRoomDataSourceReady
@@ -2370,10 +2372,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
 }
 
-- (void)setupUserSuggestionView
+- (void)setupUserSuggestionViewIfNeeded
 {
     if(!self.isViewLoaded) {
-        MXLogError(@"Failed setting up user suggestions. View not loaded.");
         return;
     }
     
