@@ -198,6 +198,10 @@ final class SideMenuViewController: UIViewController {
 
     
     // MARK: - Actions
+    
+    @IBAction func headerTapAction(sender: UIView) {
+        self.viewModel.process(viewAction: .tapHeader(sourceView: sender))
+    }
 }
 
 // MARK: - SideMenuViewModelViewDelegate
