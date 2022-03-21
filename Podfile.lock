@@ -180,7 +180,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   AnalyticsEvents:
-    :commit: 0101e4fd25ded5fb2cba8a9119cb061e36296369
+    :commit: f37a2f243270bffdcddfa5cbaeb4379e0db581c2
     :git: https://github.com/matrix-org/matrix-analytics-events.git
 
 SPEC CHECKSUMS:
@@ -227,4 +227,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 16aaf5e59ec902619fbfd799939f044728a92ab7
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

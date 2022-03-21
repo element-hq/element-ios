@@ -33,9 +33,9 @@ class LocationSharingViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.context.viewState.showLoadingIndicator)
         
         XCTAssertNotNil(viewModel.context.viewState.mapStyleURL)
-        XCTAssertNotNil(viewModel.context.viewState.avatarData)
+        XCTAssertNotNil(viewModel.context.viewState.userAvatarData)
         
-        XCTAssertNil(viewModel.context.viewState.location)
+        XCTAssertNil(viewModel.context.viewState.userAnnotation)
         XCTAssertNil(viewModel.context.viewState.bindings.userLocation)
         XCTAssertNil(viewModel.context.viewState.bindings.alertInfo)
     }
@@ -63,7 +63,7 @@ class LocationSharingViewModelTests: XCTestCase {
         let viewModel = buildViewModel(withLocation: false)
         
         XCTAssertNil(viewModel.context.viewState.bindings.userLocation)
-        XCTAssertNil(viewModel.context.viewState.location)
+        XCTAssertNil(viewModel.context.viewState.userAnnotation)
         
         viewModel.context.send(viewAction: .share)
         
@@ -79,8 +79,8 @@ class LocationSharingViewModelTests: XCTestCase {
         viewModel.completion = { result in
             switch result {
             case .share(let latitude, let longitude):
-                XCTAssertEqual(latitude, viewModel.context.viewState.location?.latitude)
-                XCTAssertEqual(longitude, viewModel.context.viewState.location?.longitude)
+                XCTAssertEqual(latitude, viewModel.context.viewState.userAnnotation?.coordinate.latitude)
+                XCTAssertEqual(longitude, viewModel.context.viewState.userAnnotation?.coordinate.longitude)
                 expectation.fulfill()
             case .cancel:
                 XCTFail()
@@ -88,7 +88,7 @@ class LocationSharingViewModelTests: XCTestCase {
         }
         
         XCTAssertNil(viewModel.context.viewState.bindings.userLocation)
-        XCTAssertNotNil(viewModel.context.viewState.location)
+        XCTAssertNotNil(viewModel.context.viewState.userAnnotation)
         
         viewModel.context.send(viewAction: .share)
         

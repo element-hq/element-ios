@@ -34,6 +34,7 @@ protocol SpaceSettingsServiceProtocol: Avatarable {
 
     func update(roomName: String, topic: String, address: String, avatar: UIImage?, completion: ((_ result: SpaceSettingsServiceCompletionResult) -> Void)?)
     func addressDidChange(_ newValue: String)
+    func trackSpace()
 }
 
 // MARK: Avatarable

@@ -27,6 +27,12 @@
 // Build Settings
 @property (nonatomic) id<Configurable> configuration;
 
+/**
+ The room that is currently being used to send a message. This is to ensure a
+ strong ref is maintained on the `MXRoom` until sending has completed.
+ */
+@property (nonatomic) MXRoom *selectedRoom;
+
 @end
 
 @implementation IntentHandler
@@ -242,17 +248,22 @@
                 [session setStore:fileStore success:^{
                     MXStrongifyAndReturnIfNil(session);
 
-                    MXRoom *room = [MXRoom loadRoomFromStore:fileStore withRoomId:roomID matrixSession:session];
+                    self.selectedRoom = [MXRoom loadRoomFromStore:fileStore withRoomId:roomID matrixSession:session];
 
                     // Do not warn for unknown devices. We have cross-signing now
                     session.crypto.warnOnUnknowDevices = NO;
 
-                    [room sendTextMessage:intent.content
-                                 threadId:nil
-                                  success:^(NSString *eventId) {
+                    MXWeakify(self);
+                    [self.selectedRoom sendTextMessage:intent.content
+                                              threadId:nil
+                                               success:^(NSString *eventId) {
                         completeWithCode(INSendMessageIntentResponseCodeSuccess);
+                        MXStrongifyAndReturnIfNil(self);
+                        self.selectedRoom = nil;
                     } failure:^(NSError *error) {
                         completeWithCode(INSendMessageIntentResponseCodeFailure);
+                        MXStrongifyAndReturnIfNil(self);
+                        self.selectedRoom = nil;
                     }];
 
                 } failure:^(NSError *error) {

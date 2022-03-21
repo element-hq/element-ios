@@ -32,6 +32,9 @@ final class SpaceMemberListViewModel: SpaceMemberListViewModelType {
     
     // MARK: Public
 
+    var space: MXSpace? {
+        return session.spaceService.getSpace(withId: spaceId)
+    }
     weak var viewDelegate: SpaceMemberListViewModelViewDelegate?
     weak var coordinatorDelegate: SpaceMemberListViewModelCoordinatorDelegate?
     

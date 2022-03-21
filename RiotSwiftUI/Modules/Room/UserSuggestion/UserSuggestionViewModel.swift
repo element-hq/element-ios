@@ -46,8 +46,8 @@ class UserSuggestionViewModel: UserSuggestionViewModelType, UserSuggestionViewMo
         
         super.init(initialViewState: UserSuggestionViewState(items: items))
         
-        userSuggestionService.items.sink { items in
-            self.state.items = items.map({ item in
+        userSuggestionService.items.sink { [weak self] items in
+            self?.state.items = items.map({ item in
                 UserSuggestionViewStateItem(id: item.userId, avatar: item, displayName: item.displayName)
             })
         }.store(in: &cancellables)

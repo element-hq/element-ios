@@ -127,6 +127,10 @@ final class SpaceMembersCoordinator: SpaceMembersCoordinatorType {
         let roomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.parameters.session)
         roomDataSourceManager?.roomDataSource(forRoom: roomId, create: true, onComplete: { [weak self] roomDataSource in
             
+            if let room = self?.parameters.session.room(withRoomId: roomId) {
+                Analytics.shared.trackViewRoom(room)
+            }
+
             let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
             guard let roomViewController = storyboard.instantiateViewController(withIdentifier: "RoomViewControllerStoryboardId") as? RoomViewController else {
                 return

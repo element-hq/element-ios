@@ -116,6 +116,7 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
     }
 
     private func showRoomPreview(with item: SpaceExploreRoomListItemViewData, from sourceView: UIView?) {
+        Analytics.shared.joinedRoomTrigger = .spaceHierarchy
         let coordinator = self.createShowSpaceRoomDetailCoordinator(session: self.session, childInfo: item.childInfo)
         coordinator.start()
         self.add(childCoordinator: coordinator)
@@ -151,6 +152,11 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
         let roomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.session)
         roomDataSourceManager?.roomDataSource(forRoom: roomId, create: true, onComplete: { [weak self] roomDataSource in
             
+            if let room = self?.session.room(withRoomId: roomId) {
+                Analytics.shared.viewRoomTrigger = .spaceHierarchy
+                Analytics.shared.trackViewRoom(room)
+            }
+
             let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
             guard let roomViewController = storyboard.instantiateViewController(withIdentifier: "RoomViewControllerStoryboardId") as? RoomViewController else {
                 return
@@ -468,6 +474,13 @@ extension ExploreRoomCoordinator: RoomViewControllerDelegate {
         
     }
     
+    func roomViewControllerDidTapLiveLocationSharingBanner(_ roomViewController: RoomViewController) {
+        // TODO:
+    }
+    
+    func roomViewControllerDidStopLiveLocationSharing(_ roomViewController: RoomViewController) {
+        // TODO:
+    }
 }
 
 // MARK: - ContactsPickerCoordinatorDelegate

@@ -309,6 +309,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
             
             coordinator.toPresentable().dismiss(animated: true) {
                 self.spaceSettingsCoordinator = nil
+                self.resetExploringSpaceIfNeeded()
             }
         }
         
@@ -319,6 +320,12 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         self.spaceSettingsCoordinator = coordinator
     }
     
+    private func resetExploringSpaceIfNeeded() {
+        if sideMenuNavigationViewController.presentedViewController == nil {
+            Analytics.shared.exploringSpace = nil
+        }
+    }
+
     // MARK: UserSessions management
     
     private func registerUserSessionsServiceNotifications() {
@@ -407,8 +414,10 @@ extension SideMenuCoordinator: SpaceMenuPresenterDelegate {
         presenter.dismiss(animated: false) {
             switch action {
             case .exploreRooms:
+                Analytics.shared.viewRoomTrigger = .spaceMenu
                 self.showExploreRooms(spaceId: spaceId, session: session)
             case .exploreMembers:
+                Analytics.shared.viewRoomTrigger = .spaceMenu
                 self.showMembers(spaceId: spaceId, session: session)
             case .addRoom:
                 session.spaceService.getSpace(withId: spaceId)?.canAddRoom { canAddRoom in
@@ -453,6 +462,7 @@ extension SideMenuCoordinator: ExploreRoomCoordinatorDelegate {
     func exploreRoomCoordinatorDidComplete(_ coordinator: ExploreRoomCoordinatorType) {
         self.exploreRoomCoordinator?.toPresentable().dismiss(animated: true) {
             self.exploreRoomCoordinator = nil
+            self.resetExploringSpaceIfNeeded()
         }
     }
 }
@@ -462,6 +472,7 @@ extension SideMenuCoordinator: SpaceMembersCoordinatorDelegate {
     func spaceMembersCoordinatorDidCancel(_ coordinator: SpaceMembersCoordinatorType) {
         self.membersCoordinator?.toPresentable().dismiss(animated: true) {
             self.membersCoordinator = nil
+            self.resetExploringSpaceIfNeeded()
         }
     }
 }
@@ -472,7 +483,7 @@ extension SideMenuCoordinator: CreateRoomCoordinatorDelegate {
         coordinator.toPresentable().dismiss(animated: true) {
             self.createRoomCoordinator = nil
             self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
-
+                self.resetExploringSpaceIfNeeded()
             }
             if let spaceId = coordinator.parentSpace?.spaceId {
                 self.parameters.appNavigator.navigate(to: .space(spaceId))
@@ -484,7 +495,7 @@ extension SideMenuCoordinator: CreateRoomCoordinatorDelegate {
         coordinator.toPresentable().dismiss(animated: true) {
             self.createRoomCoordinator = nil
             self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
-
+                self.resetExploringSpaceIfNeeded()
             }
             if let spaceId = coordinator.parentSpace?.spaceId {
                 self.parameters.appNavigator.navigate(to: .space(spaceId))
@@ -495,6 +506,7 @@ extension SideMenuCoordinator: CreateRoomCoordinatorDelegate {
     func createRoomCoordinatorDidCancel(_ coordinator: CreateRoomCoordinatorType) {
         coordinator.toPresentable().dismiss(animated: true) {
             self.createRoomCoordinator = nil
+            self.resetExploringSpaceIfNeeded()
         }
     }
 }
@@ -508,5 +520,6 @@ extension SideMenuCoordinator: UIAdaptivePresentationControllerDelegate {
         self.createSpaceCoordinator = nil
         self.createRoomCoordinator = nil
         self.spaceSettingsCoordinator = nil
+        self.resetExploringSpaceIfNeeded()
     }
 }

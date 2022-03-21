@@ -213,9 +213,11 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         case .homeSpace:
             MXLog.verbose("Switch to home space")
             self.navigateToSpace(with: nil)
+            Analytics.shared.activeSpace = nil
         case .space(let spaceId):
             MXLog.verbose("Switch to space with id: \(spaceId)")
             self.navigateToSpace(with: spaceId)
+            Analytics.shared.activeSpace = userSessionsService.mainUserSession?.matrixSession.spaceService.getSpace(withId: spaceId)
         }
     }
     

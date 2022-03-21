@@ -53,4 +53,8 @@ class MockSpaceSettingsService: SpaceSettingsServiceProtocol {
     func simulateUpdate(addressValidationStatus: SpaceCreationSettingsAddressValidationStatus) {
         self.addressValidationSubject.value = addressValidationStatus
     }
+    
+    func trackSpace() {
+        
+    }
 }

@@ -1,3 +1,10 @@
+## Changes in 1.8.7 (2022-03-18)
+
+🙌 Improvements
+
+- Room: Allow ignoring invited users that have not joined a room yet ([#5866](https://github.com/vector-im/element-ios/issues/5866))
+
+
 ## Changes in 1.8.6 (2022-03-14)
 
 🙌 Improvements

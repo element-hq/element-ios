@@ -17,6 +17,7 @@
  */
 
 import Foundation
+import MatrixSDK
 
 protocol SpaceExploreRoomViewModelViewDelegate: AnyObject {
     func spaceExploreRoomViewModel(_ viewModel: SpaceExploreRoomViewModelType, didUpdateViewState viewSate: SpaceExploreRoomViewState)
@@ -37,6 +38,7 @@ protocol SpaceExploreRoomViewModelType {
     var viewDelegate: SpaceExploreRoomViewModelViewDelegate? { get set }
     var coordinatorDelegate: SpaceExploreRoomViewModelCoordinatorDelegate? { get set }
     var showCancelMenuItem: Bool { get }
+    var space: MXSpace? { get }
 
     func process(viewAction: SpaceExploreRoomViewAction)
     @available(iOS 13.0, *)
