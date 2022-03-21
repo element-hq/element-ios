@@ -54,6 +54,7 @@ struct OnboardingCongratulationsScreen: View {
                    maxHeight: OnboardingConstants.maxContentHeight)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+        .overlay(effects.ignoresSafeArea())
         .background(theme.colors.accent.ignoresSafeArea())
         .accentColor(.white)
         .navigationBarHidden(true)
@@ -119,6 +120,13 @@ struct OnboardingCongratulationsScreen: View {
         }
         .buttonStyle(PrimaryActionButtonStyle(customColor: .white))
         .accessibilityIdentifier("homeButton")
+    }
+    
+    @ViewBuilder
+    var effects: some View {
+        if viewModel.viewState.personalizationDisabled {
+            EffectsView(effectsType: .confetti)
+        }
     }
 }
 

@@ -96,7 +96,7 @@ struct OnboardingCelebrationScreen: View {
     }
     
     var effects: some View {
-        EffectsSceneView(scene: EffectsScene.confetti(with: theme))
+        EffectsView(effectsType: .confetti)
     }
 }
 

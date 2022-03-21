@@ -20,15 +20,43 @@ import SceneKit
 @available(iOS 14.0, *)
 /// A SwiftUI wrapper around `SCNView`, that unlike `SceneView` allows the
 /// scene to have a transparent background and be rendered on top of other views.
-struct EffectsSceneView: UIViewRepresentable {
-    let scene: SCNScene?
+struct EffectsView: UIViewRepresentable {
+    
+    // MARK: - Private
+    
+    @Environment(\.theme) private var theme
+    
+    // MARK: - Public
+    
+    enum EffectsType {
+        /// A confetti drop effect from the top centre of the screen.
+        case confetti
+        /// No effect will be shown.
+        case none
+    }
+    
+    /// The type of effects to be shown in the view.
+    var effectsType: EffectsType = .none
+    
+    // MARK: - Lifecycle
     
     func makeUIView(context: Context) -> SCNView {
         SCNView(frame: .zero)
     }
     
     func updateUIView(_ sceneView: SCNView, context: Context) {
-        sceneView.scene = scene
+        sceneView.scene = makeScene()
         sceneView.backgroundColor = .clear
+    }
+    
+    // MARK: - Private
+    
+    private func makeScene() -> EffectsScene? {
+        switch effectsType {
+        case .confetti:
+            return EffectsScene.confetti(with: theme)
+        case .none:
+            return nil
+        }
     }
 }
