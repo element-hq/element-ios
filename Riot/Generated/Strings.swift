@@ -2714,6 +2714,7 @@ public class VectorL10n: NSObject {
   /// Live location enabled
   public static var liveLocationSharingBannerTitle: String { 
     return VectorL10n.tr("Vector", "live_location_sharing_banner_title") 
+  }
   /// Loading
   public static var loading: String { 
     return VectorL10n.tr("Vector", "loading") 
