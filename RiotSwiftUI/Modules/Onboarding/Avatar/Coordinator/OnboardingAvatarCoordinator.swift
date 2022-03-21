@@ -41,8 +41,8 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
         return presenter
     }()
     
-    private lazy var photoPickerPresenter: PhotoPickerPresenter = {
-        let presenter = PhotoPickerPresenter()
+    private lazy var mediaPickerPresenter: MediaPickerPresenter = {
+        let presenter = MediaPickerPresenter()
         presenter.delegate = self
         return presenter
     }()
@@ -100,24 +100,29 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
     
     // MARK: - Private
     
+    /// Show a blocking activity indicator whilst saving.
     private func startWaiting() {
         waitingIndicator = indicatorPresenter.present(.loading(label: VectorL10n.saving, isInteractionBlocking: true))
     }
     
+    /// Hide the currently displayed activity indicator.
     private func stopWaiting() {
         waitingIndicator = nil
     }
     
+    /// Present an image picker for the device photo library.
     private func pickImage() {
         let controller = toPresentable()
-        photoPickerPresenter.presentPicker(from: controller, with: .images, animated: true)
+        mediaPickerPresenter.presentPicker(from: controller, with: .images, animated: true)
     }
     
+    /// Present a camera view to take a photo to use for the avatar.
     private func takePhoto() {
         let controller = toPresentable()
         cameraPresenter.presentCamera(from: controller, with: [.image], animated: true)
     }
     
+    /// Set the supplied image as user's avatar, completing the screen's display if successful.
     func setAvatar(_ image: UIImage?) {
         guard let image = image else {
             MXLog.error("[OnboardingAvatarCoordinator] setAvatar called with a nil image.")
@@ -160,16 +165,16 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
     }
 }
 
-// MARK: - PhotoPickerPresenterDelegate
+// MARK: - MediaPickerPresenterDelegate
 
 @available(iOS 14.0, *)
-extension OnboardingAvatarCoordinator: PhotoPickerPresenterDelegate {
-    func photoPickerPresenter(_ presenter: PhotoPickerPresenter, didPickImage image: UIImage) {
+extension OnboardingAvatarCoordinator: MediaPickerPresenterDelegate {
+    func mediaPickerPresenter(_ presenter: MediaPickerPresenter, didPickImage image: UIImage) {
         onboardingAvatarViewModel.updateAvatarImage(with: image)
         presenter.dismiss(animated: true, completion: nil)
     }
     
-    func photoPickerPresenterDidCancel(_ presenter: PhotoPickerPresenter) {
+    func mediaPickerPresenterDidCancel(_ presenter: MediaPickerPresenter) {
         presenter.dismiss(animated: true, completion: nil)
     }
 }

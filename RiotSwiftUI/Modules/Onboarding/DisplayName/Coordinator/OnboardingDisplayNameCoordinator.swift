@@ -80,14 +80,17 @@ final class OnboardingDisplayNameCoordinator: Coordinator, Presentable {
     
     // MARK: - Private
     
+    /// Show a blocking activity indicator whilst saving.
     private func startWaiting() {
         waitingIndicator = indicatorPresenter.present(.loading(label: VectorL10n.saving, isInteractionBlocking: true))
     }
     
+    /// Hide the currently displayed activity indicator.
     private func stopWaiting() {
         waitingIndicator = nil
     }
     
+    /// Set the supplied string as user's display name, completing the screen's display if successful.
     private func setDisplayName(_ displayName: String) {
         startWaiting()
         

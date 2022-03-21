@@ -17,6 +17,11 @@
 import SwiftUI
 
 @available(iOS 14.0, *)
+/// A reusable view that will show a standard placeholder avatar with the
+/// supplied character and colour index for the `namesAndAvatars` color array.
+///
+/// This view has a forced 1:1 aspect ratio but will appear very large until a `.frame`
+/// modifier is applied.
 struct PlaceholderAvatarImage: View {
     
     // MARK: - Private
@@ -25,7 +30,7 @@ struct PlaceholderAvatarImage: View {
     
     // MARK: - Public
     
-    let firstCharacter: String
+    let firstCharacter: Character
     let colorIndex: Int
     
     // MARK: - Views
@@ -34,7 +39,7 @@ struct PlaceholderAvatarImage: View {
         ZStack {
             theme.colors.namesAndAvatars[colorIndex]
             
-            Text(firstCharacter)
+            Text(String(firstCharacter))
                 .padding(4)
                 .foregroundColor(.white)
                 // Make the text resizable (i.e. Make it large and then allow it to scale down)

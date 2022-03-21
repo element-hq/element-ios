@@ -25,12 +25,9 @@ struct PlaceholderAvatarViewModel {
     /// The number of total colors available for the `stableColorIndex`.
     let colorCount: Int
     
-    /// Get the first character of the display name capitalized or else an empty string.
-    var firstCharacterCapitalized: String {
-        guard let character = displayName?.first else {
-            return ""
-        }
-        return String(character).capitalized
+    /// Get the first character of the display name capitalized or else a space character.
+    var firstCharacterCapitalized: Character {
+        return displayName?.capitalized.first ?? " "
     }
     
     /// Provides the same color each time for a specified matrixId

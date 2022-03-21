@@ -21,7 +21,7 @@ import Foundation
 // MARK: View model
 
 enum OnboardingCongratulationsViewModelResult {
-    case personaliseProfile
+    case personalizeProfile
     case takeMeHome
 }
 

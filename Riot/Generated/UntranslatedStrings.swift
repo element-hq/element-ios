@@ -14,17 +14,13 @@ public extension VectorL10n {
   static var imagePickerActionFiles: String { 
     return VectorL10n.tr("Untranslated", "image_picker_action_files") 
   }
-  /// Profile picture, image
-  static var onboardingAvatarImageAccessibilityLabel: String { 
-    return VectorL10n.tr("Untranslated", "onboarding_avatar_image_accessibility_label") 
+  /// Profile picture
+  static var onboardingAvatarAccessibilityLabel: String { 
+    return VectorL10n.tr("Untranslated", "onboarding_avatar_accessibility_label") 
   }
   /// You can change this anytime.
   static var onboardingAvatarMessage: String { 
     return VectorL10n.tr("Untranslated", "onboarding_avatar_message") 
-  }
-  /// Profile picture, %@
-  public static func onboardingAvatarPlaceholderAccessibilityLabel(_ p1: String) -> String {
-    return VectorL10n.tr("Untranslated", "onboarding_avatar_placeholder_accessibility_label", p1)
   }
   /// Add a profile picture
   static var onboardingAvatarTitle: String { 

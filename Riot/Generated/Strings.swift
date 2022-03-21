@@ -1651,6 +1651,10 @@ public class VectorL10n: NSObject {
   public static var e2eRoomKeyRequestTitle: String { 
     return VectorL10n.tr("Vector", "e2e_room_key_request_title") 
   }
+  /// Edit
+  public static var edit: String { 
+    return VectorL10n.tr("Vector", "edit") 
+  }
   /// Activities
   public static var emojiPickerActivityCategory: String { 
     return VectorL10n.tr("Vector", "emoji_picker_activity_category") 

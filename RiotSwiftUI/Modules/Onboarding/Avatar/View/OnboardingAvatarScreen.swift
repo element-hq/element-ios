@@ -75,8 +75,8 @@ struct OnboardingAvatarScreen: View {
         .onTapGesture { isPresentingPickerSelection = true }
         .actionSheet(isPresented: $isPresentingPickerSelection) { pickerSelectionActionSheet }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(viewModel.viewState.avatarAccessibilityLabel)
-        .accessibilityValue(VectorL10n.accessibilityButtonLabel)
+        .accessibilityLabel(VectorL10n.onboardingAvatarAccessibilityLabel)
+        .accessibilityValue(VectorL10n.edit)
     }
     
     /// The button to indicate the user can tap to select an avatar

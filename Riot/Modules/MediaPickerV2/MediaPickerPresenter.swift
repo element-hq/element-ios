@@ -19,15 +19,18 @@ import PhotosUI
 import CommonKit
 
 @available(iOS 14.0, *)
-protocol PhotoPickerPresenterDelegate: AnyObject {
-    func photoPickerPresenter(_ presenter: PhotoPickerPresenter, didPickImage image: UIImage)
-    func photoPickerPresenterDidCancel(_ presenter: PhotoPickerPresenter)
+protocol MediaPickerPresenterDelegate: AnyObject {
+    func mediaPickerPresenter(_ presenter: MediaPickerPresenter, didPickImage image: UIImage)
+    func mediaPickerPresenterDidCancel(_ presenter: MediaPickerPresenter)
 }
 
 /// A picker for photos and videos from the user's photo library on iOS 14+ using the
 /// new `PHPickerViewController` that doesn't require permission to be granted.
+///
+/// **Note:** If you need to support iOS 12 & 13, then you will need to use the older
+/// `MediaPickerCoordinator`/`MediaPickerViewController` instead.
 @available(iOS 14.0, *)
-final class PhotoPickerPresenter: NSObject {
+final class MediaPickerPresenter: NSObject {
     
     // MARK: - Properties
     
@@ -40,7 +43,7 @@ final class PhotoPickerPresenter: NSObject {
     
     // MARK: Public
     
-    weak var delegate: PhotoPickerPresenterDelegate?
+    weak var delegate: MediaPickerPresenterDelegate?
     
     // MARK: - Public
     
@@ -77,11 +80,11 @@ final class PhotoPickerPresenter: NSObject {
 
 // MARK: - PHPickerViewControllerDelegate
 @available(iOS 14, *)
-extension PhotoPickerPresenter: PHPickerViewControllerDelegate {
+extension MediaPickerPresenter: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         // TODO: Handle videos and multi-selection
         guard let provider = results.first?.itemProvider, provider.canLoadObject(ofClass: UIImage.self) else {
-            self.delegate?.photoPickerPresenterDidCancel(self)
+            self.delegate?.mediaPickerPresenterDidCancel(self)
             return
         }
         
@@ -93,14 +96,14 @@ extension PhotoPickerPresenter: PHPickerViewControllerDelegate {
             guard let image = image as? UIImage else {
                 DispatchQueue.main.async {
                     self.hideLoadingIndicator()
-                    self.delegate?.photoPickerPresenterDidCancel(self)
+                    self.delegate?.mediaPickerPresenterDidCancel(self)
                 }
                 return
             }
             
             DispatchQueue.main.async {
                 self.hideLoadingIndicator()
-                self.delegate?.photoPickerPresenter(self, didPickImage: image)
+                self.delegate?.mediaPickerPresenter(self, didPickImage: image)
             }
         }
     }

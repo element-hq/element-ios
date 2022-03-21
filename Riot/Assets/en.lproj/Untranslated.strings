@@ -33,7 +33,6 @@
 
 "onboarding_avatar_title" = "Add a profile picture";
 "onboarding_avatar_message" = "You can change this anytime.";
-"onboarding_avatar_placeholder_accessibility_label" = "Profile picture, %@";
-"onboarding_avatar_image_accessibility_label" = "Profile picture, image";
+"onboarding_avatar_accessibility_label" = "Profile picture";
 
 "image_picker_action_files" = "Choose from files";

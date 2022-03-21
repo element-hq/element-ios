@@ -17,12 +17,17 @@
 import SwiftUI
 
 struct OnboardingCongratulationsCoordinatorParameters {
+    /// The user session used to determine the user ID to display.
     let userSession: UserSession
+    /// When `true` the "Personalise Profile" button will be hidden, preventing the
+    /// user from setting a displayname or avatar.
     let personalizationDisabled: Bool
 }
 
 enum OnboardingCongratulationsCoordinatorResult {
-    case personaliseProfile(UserSession)
+    /// Show the display name and/or avatar screens for the user to personalize their profile.
+    case personalizeProfile(UserSession)
+    /// Continue the flow by skipping the display name and avatar screens.
     case takeMeHome(UserSession)
 }
 
@@ -64,8 +69,8 @@ final class OnboardingCongratulationsCoordinator: Coordinator, Presentable {
             MXLog.debug("[OnboardingCongratulationsCoordinator] OnboardingCongratulationsViewModel did complete with result: \(result).")
             
             switch result {
-            case .personaliseProfile:
-                self.completion?(.personaliseProfile(self.parameters.userSession))
+            case .personalizeProfile:
+                self.completion?(.personalizeProfile(self.parameters.userSession))
             case .takeMeHome:
                 self.completion?(.takeMeHome(self.parameters.userSession))
             }

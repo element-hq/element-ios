@@ -43,7 +43,7 @@ class OnboardingCongratulationsViewModel: OnboardingCongratulationsViewModelType
     override func process(viewAction: OnboardingCongratulationsViewAction) {
         switch viewAction {
         case .personaliseProfile:
-            completion?(.personaliseProfile)
+            completion?(.personalizeProfile)
         case .takeMeHome:
             completion?(.takeMeHome)
         }

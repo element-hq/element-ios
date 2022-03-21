@@ -343,7 +343,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     @available(iOS 14.0, *)
     private func congratulationsCoordinator(_ coordinator: OnboardingCongratulationsCoordinator, didCompleteWith result: OnboardingCongratulationsCoordinatorResult) {
         switch result {
-        case .personaliseProfile(let userSession):
+        case .personalizeProfile(let userSession):
             if shouldShowDisplayNameScreen {
                 showDisplayNameScreen(for: userSession)
                 return
