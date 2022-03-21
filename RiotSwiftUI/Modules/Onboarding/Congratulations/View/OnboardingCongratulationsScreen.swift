@@ -45,7 +45,7 @@ struct OnboardingCongratulationsScreen: View {
                 
                 Spacer()
                 
-                buttons
+                footer
                     .padding(.horizontal, horizontalPadding)
                     .padding(.bottom, 24)
                     .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
@@ -62,8 +62,10 @@ struct OnboardingCongratulationsScreen: View {
     
     /// The main content of the view to be shown in a scroll view.
     var mainContent: some View {
-        VStack(spacing: 62) {
+        VStack(spacing: 42) {
             Image(Asset.Images.onboardingCongratulationsIcon.name)
+                .resizable()
+                .frame(width: 90, height: 90)
                 .accessibilityHidden(true)
             
             VStack(spacing: 8) {
@@ -79,22 +81,44 @@ struct OnboardingCongratulationsScreen: View {
         }
     }
     
-    /// The action buttons shown at the bottom of the view.
-    var buttons: some View {
+    @ViewBuilder
+    var footer: some View {
+        if viewModel.viewState.personalizationDisabled {
+            homeButton
+        } else {
+            actionButtons
+        }
+    }
+    
+    /// The default action buttons shown at the bottom of the view.
+    var actionButtons: some View {
         VStack(spacing: 12) {
             Button { viewModel.send(viewAction: .personaliseProfile) } label: {
-                Text(VectorL10n.onboardingCongratulationsPersonaliseButton)
-                    .font(theme.fonts.bodySB)
+                Text(VectorL10n.onboardingCongratulationsPersonalizeButton)
+                    .font(theme.fonts.body)
                     .foregroundColor(theme.colors.accent)
             }
             .buttonStyle(PrimaryActionButtonStyle(customColor: .white))
+            .accessibilityIdentifier("personalizeButton")
             
             Button { viewModel.send(viewAction: .takeMeHome) } label: {
                 Text(VectorL10n.onboardingCongratulationsHomeButton)
                     .font(theme.fonts.body)
                     .padding(.vertical, 12)
             }
+            .accessibilityIdentifier("homeButton")
         }
+    }
+    
+    /// The single "Take me home" button shown when personlization isn't supported.
+    var homeButton: some View {
+        Button { viewModel.send(viewAction: .takeMeHome) } label: {
+            Text(VectorL10n.onboardingCongratulationsHomeButton)
+                .font(theme.fonts.body)
+                .foregroundColor(theme.colors.accent)
+        }
+        .buttonStyle(PrimaryActionButtonStyle(customColor: .white))
+        .accessibilityIdentifier("homeButton")
     }
 }
 

@@ -35,22 +35,15 @@ struct AvatarImage: View {
             case .empty:
                 ProgressView()
             case .placeholder(let firstCharacter, let colorIndex):
-                Text(firstCharacter)
-                    .padding(4)
-                    .frame(width: CGFloat(size.rawValue), height: CGFloat(size.rawValue))
-                    .foregroundColor(.white)
-                    .background(theme.colors.namesAndAvatars[colorIndex])
-                    .clipShape(Circle())
-                    // Make the text resizable (i.e. Make it large and then allow it to scale down)
-                    .font(.system(size: 200))
-                    .minimumScaleFactor(0.001)
+                PlaceholderAvatarImage(firstCharacter: firstCharacter,
+                                       colorIndex: colorIndex)
             case .avatar(let image):
                 Image(uiImage: image)
                     .resizable()
-                    .frame(width: CGFloat(size.rawValue), height: CGFloat(size.rawValue))
-                    .clipShape(Circle())
             }
         }
+        .frame(width: CGFloat(size.rawValue), height: CGFloat(size.rawValue))
+        .clipShape(Circle())
         .onAppear {
             viewModel.inject(dependencies: dependencies)
             viewModel.loadAvatar(

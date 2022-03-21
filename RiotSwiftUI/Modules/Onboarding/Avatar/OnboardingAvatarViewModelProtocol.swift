@@ -14,25 +14,18 @@
 // limitations under the License.
 //
 
-import Foundation
+import SwiftUI
 
-// MARK: - Coordinator
-
-// MARK: View model
-
-enum OnboardingCongratulationsViewModelResult {
-    case personalizeProfile
-    case takeMeHome
-}
-
-// MARK: View
-
-struct OnboardingCongratulationsViewState: BindableState {
-    let userId: String
-    let personalizationDisabled: Bool
-}
-
-enum OnboardingCongratulationsViewAction {
-    case personaliseProfile
-    case takeMeHome
+protocol OnboardingAvatarViewModelProtocol {
+    
+    var completion: ((OnboardingAvatarViewModelResult) -> Void)? { get set }
+    @available(iOS 14, *)
+    var context: OnboardingAvatarViewModelType.Context { get }
+    
+    /// Update the view model to show the image that the user has picked.
+    func updateAvatarImage(with image: UIImage?)
+    
+    /// Update the view model to show that an error has occurred.
+    /// - Parameter error: The error to be displayed or `nil` to display a generic alert.
+    func processError(_ error: NSError?)
 }

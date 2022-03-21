@@ -17,7 +17,18 @@
 import SwiftUI
 
 struct OnboardingCongratulationsCoordinatorParameters {
-    let userId: String
+    /// The user session used to determine the user ID to display.
+    let userSession: UserSession
+    /// When `true` the "Personalise Profile" button will be hidden, preventing the
+    /// user from setting a displayname or avatar.
+    let personalizationDisabled: Bool
+}
+
+enum OnboardingCongratulationsCoordinatorResult {
+    /// Show the display name and/or avatar screens for the user to personalize their profile.
+    case personalizeProfile(UserSession)
+    /// Continue the flow by skipping the display name and avatar screens.
+    case takeMeHome(UserSession)
 }
 
 final class OnboardingCongratulationsCoordinator: Coordinator, Presentable {
@@ -34,7 +45,7 @@ final class OnboardingCongratulationsCoordinator: Coordinator, Presentable {
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    var completion: ((OnboardingCongratulationsViewModelResult) -> Void)?
+    var completion: ((OnboardingCongratulationsCoordinatorResult) -> Void)?
     
     // MARK: - Setup
     
@@ -42,7 +53,9 @@ final class OnboardingCongratulationsCoordinator: Coordinator, Presentable {
     init(parameters: OnboardingCongratulationsCoordinatorParameters) {
         self.parameters = parameters
         
-        let viewModel = OnboardingCongratulationsViewModel(userId: parameters.userId)
+        // TODO: Add confetti when personalizationDisabled is false
+        let viewModel = OnboardingCongratulationsViewModel(userId: parameters.userSession.userId,
+                                                           personalizationDisabled: parameters.personalizationDisabled)
         let view = OnboardingCongratulationsScreen(viewModel: viewModel.context)
         onboardingCongratulationsViewModel = viewModel
         onboardingCongratulationsHostingController = VectorHostingController(rootView: view)
@@ -54,7 +67,13 @@ final class OnboardingCongratulationsCoordinator: Coordinator, Presentable {
         onboardingCongratulationsViewModel.completion = { [weak self] result in
             guard let self = self else { return }
             MXLog.debug("[OnboardingCongratulationsCoordinator] OnboardingCongratulationsViewModel did complete with result: \(result).")
-            self.completion?(result)
+            
+            switch result {
+            case .personalizeProfile:
+                self.completion?(.personalizeProfile(self.parameters.userSession))
+            case .takeMeHome:
+                self.completion?(.takeMeHome(self.parameters.userSession))
+            }
         }
     }
     

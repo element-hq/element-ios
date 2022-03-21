@@ -71,13 +71,14 @@ struct AnalyticsPrompt: View {
             
             Text(VectorL10n.analyticsPromptTitle(AppInfo.current.displayName))
                 .font(theme.fonts.title2B)
+                .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.primaryContent)
                 .padding(.bottom, 2)
             
             messageText
                 .font(theme.fonts.body)
-                .foregroundColor(theme.colors.secondaryContent)
                 .multilineTextAlignment(.center)
+                .foregroundColor(theme.colors.secondaryContent)
             
             Divider()
                 .background(theme.colors.quinaryContent)
@@ -117,8 +118,11 @@ struct AnalyticsPrompt: View {
                         .padding(.top, 50)
                         .padding(.horizontal, horizontalPadding)
                 }
+                .frame(maxWidth: OnboardingConstants.maxContentWidth)
+                .frame(maxWidth: .infinity)
                 
                 buttons
+                    .frame(maxWidth: OnboardingConstants.maxContentWidth)
                     .padding(.horizontal, horizontalPadding)
                     .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
             }
