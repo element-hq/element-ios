@@ -35,4 +35,8 @@
 "onboarding_avatar_message" = "You can change this anytime.";
 "onboarding_avatar_accessibility_label" = "Profile picture";
 
+"onboarding_celebration_title" = "You’re all set!";
+"onboarding_celebration_message" = "Your preferences have been saved.";
+"onboarding_celebration_button" = "Let's go";
+
 "image_picker_action_files" = "Choose from files";
