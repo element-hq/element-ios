@@ -55,6 +55,8 @@ class UISIDetector: MXLiveEventListener {
     private let dispatchQueue = DispatchQueue(label: "io.element.UISIDetector.queue")
     private static let gracePeriodSeconds = 30
     
+    // MARK: - Public
+    
     func onSessionStateChanged(state: MXSessionState) {
         dispatchQueue.async {
             self.initialSyncCompleted = state == .running

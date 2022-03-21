@@ -38,15 +38,18 @@ extension UISIAutoReportData: Codable {
     }
 }
 
-@available(iOS 14.0, *)
+
 /// Listens for failed decryption events and silently sends reports RageShake server.
 /// Also requests that message senders send a matching report to have both sides of the interaction.
+@available(iOS 14.0, *)
 @objcMembers class UISIAutoReporter: NSObject, UISIDetectorDelegate {
     
     struct ReportInfo: Hashable {
         let roomId: String
         let sessionId: String
     }
+    
+    // MARK: - Properties
     
     private static let autoRsRequest = "im.vector.auto_rs_request"
     private static let reportSpacing = 60
@@ -65,6 +68,8 @@ extension UISIAutoReportData: Codable {
             detector.enabled = enabled
         }
     }
+    
+    // MARK: - Setup
     
     override init() {
         self.bugReporter =  MXBugReportRestClient.vc_bugReportRestClient(appName: BuildSettings.bugReportUISIId)
@@ -103,6 +108,8 @@ extension UISIAutoReportData: Codable {
         return Self.autoRsRequest
     }
     
+    // MARK: - Public
+    
     func uisiDetected(source: UISIDetectedMessage) {
         dispatchQueue.async {
             let reportInfo = ReportInfo(roomId: source.roomId, sessionId: source.sessionId)
@@ -114,12 +121,27 @@ extension UISIAutoReportData: Codable {
         }
     }
     
+    func add(_ session: MXSession) {
+        sessions.append(session)
+        detector.enabled = enabled
+        session.eventStreamService.add(eventStreamListener: detector)
+    }
+    
+    func remove(_ session: MXSession) {
+        if let index = sessions.firstIndex(of: session) {
+            sessions.remove(at: index)
+        }
+        session.eventStreamService.remove(eventStreamListener: detector)
+    }
+    
     func uisiReciprocateRequest(source: MXEvent) {
         guard source.type == Self.autoRsRequest else { return }
         self.matchingRSRequestSubject.send(source)
     }
     
-    func sendRageShake(source: UISIDetectedMessage) {
+    // MARK: - Private
+    
+    private func sendRageShake(source: UISIDetectedMessage) {
         MXLog.debug("[UISIAutoReporter] sendRageShake")
         guard let session = sessions.first else { return }
         let uisiData = UISIAutoReportData(
@@ -171,7 +193,7 @@ extension UISIAutoReportData: Codable {
             })
     }
     
-    func sendMatchingRageShake(source: MXEvent) {
+    private func sendMatchingRageShake(source: MXEvent) {
         MXLog.debug("[UISIAutoReporter] sendMatchingRageShake")
         let eventId = source.content["event_id"] as? String
         let roomId = source.content["room_id"] as? String
@@ -206,16 +228,4 @@ extension UISIAutoReportData: Codable {
         )
     }
     
-    func add(_ session: MXSession) {
-        sessions.append(session)
-        detector.enabled = enabled
-        session.eventStreamService.add(eventStreamListener: detector)
-    }
-    
-    func remove(_ session: MXSession) {
-        if let index = sessions.firstIndex(of: session) {
-            sessions.remove(at: index)
-        }
-        session.eventStreamService.remove(eventStreamListener: detector)
-    }
 }
