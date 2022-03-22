@@ -44,6 +44,7 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
     
     private var viewModel: SecretsRecoveryWithPassphraseViewModelType!
     private var keyboardAvoider: KeyboardAvoider?
+    private var cancellable: Bool!
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
@@ -52,9 +53,10 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
     
     // MARK: - Setup
     
-    class func instantiate(with viewModel: SecretsRecoveryWithPassphraseViewModelType) -> SecretsRecoveryWithPassphraseViewController {
+    class func instantiate(with viewModel: SecretsRecoveryWithPassphraseViewModelType, cancellable: Bool) -> SecretsRecoveryWithPassphraseViewController {
         let viewController = StoryboardScene.SecretsRecoveryWithPassphraseViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
+        viewController.cancellable = cancellable
         viewController.theme = ThemeService.shared().theme
         return viewController
     }
@@ -86,11 +88,13 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
     // MARK: - Private
     
     private func setupViews() {
-        let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
-            self?.viewModel.process(viewAction: .cancel)
+        if self.cancellable {
+            let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
+                self?.viewModel.process(viewAction: .cancel)
+            }
+            self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         }
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
-        
+
         self.title = VectorL10n.secretsRecoveryWithPassphraseTitle
         
         self.scrollView.keyboardDismissMode = .interactive

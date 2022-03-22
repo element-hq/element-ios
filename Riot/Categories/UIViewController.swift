@@ -137,4 +137,18 @@ extension UIViewController {
         // set split view display mode button as left bar button item
         self.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem
     }
+
+    /// Set the view controller to be displayed in fullscreen modal presentation style on any iOS version.
+    ///
+    /// - Parameters:
+    ///   - isFullScreen: whether view controller should be displayed full screen
+    /// - Returns: the view controller
+    @discardableResult
+    func vc_setModalFullScreen(_ isFullScreen: Bool) -> UIViewController {
+        if #available(iOS 13.0, *) {
+            self.modalPresentationStyle = isFullScreen ? .fullScreen : .automatic
+        }
+
+        return self
+    }
 }

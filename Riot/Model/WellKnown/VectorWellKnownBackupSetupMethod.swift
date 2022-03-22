@@ -1,5 +1,5 @@
 // 
-// Copyright 2020 New Vector Ltd
+// Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,11 +16,24 @@
 
 import Foundation
 
-/// Protocol describing the view model used by `SecureBackupSetupIntroViewController`
-protocol SecureBackupSetupIntroViewModelType {
-            
-    // TODO: Hide these properties from interface and use same behavior as other view models
-    var keyBackup: MXKeyBackup? { get }
-    var checkKeyBackup: Bool { get }
-    var homeserverEncryptionConfiguration: HomeserverEncryptionConfiguration { get }
+/// Methods to use to setup secure backup (SSSS).
+@objc enum VectorWellKnownBackupSetupMethod: Int, CaseIterable {
+    case passphrase = 0
+    case key
+
+    private enum Constants {
+        static let setupMethodPassphrase: String = "passphrase"
+        static let setupMethodKey: String = "key"
+    }
+
+    init?(key: String) {
+        switch key {
+        case Constants.setupMethodPassphrase:
+            self = .passphrase
+        case Constants.setupMethodKey:
+            self = .key
+        default:
+            return nil
+        }
+    }
 }

@@ -59,7 +59,7 @@
                                                          success:(void (^)(BOOL canEnableE2E))success
                                                          failure:(void (^)(NSError *error))failure;
 {
-    if ([self vc_homeserverConfiguration].isE2EEByDefaultEnabled)
+    if ([self vc_homeserverConfiguration].encryption.isE2EEByDefaultEnabled)
     {
         return [self canEnableE2EByDefaultInNewRoomWithUsers:userIds success:success failure:failure];
     }

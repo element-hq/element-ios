@@ -29,6 +29,7 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     private let session: MXSession
     private let verificationFlow: KeyVerificationFlow
     private let verificationKind: KeyVerificationKind
+    private let cancellable: Bool
     private weak var completeSecurityCoordinator: KeyVerificationSelfVerifyWaitCoordinatorType?
     
     private var otherUserId: String {
@@ -86,7 +87,8 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     ///   - session: The MXSession.
     ///   - flow: The wanted key verification flow.
     ///   - navigationRouter: Existing NavigationRouter from which present the flow (optional).
-    init(session: MXSession, flow: KeyVerificationFlow, navigationRouter: NavigationRouterType? = nil) {
+    ///   - cancellable: Whether key verification process can be cancelled.
+    init(session: MXSession, flow: KeyVerificationFlow, navigationRouter: NavigationRouterType? = nil, cancellable: Bool) {
         self.navigationRouter = navigationRouter ?? NavigationRouter(navigationController: RiotNavigationController())
         
         self.session = session
@@ -113,6 +115,7 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
         }
         
         self.verificationKind = verificationKind
+        self.cancellable = cancellable
     }
     
     // MARK: - Public methods
@@ -155,7 +158,9 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     }
     
     func toPresentable() -> UIViewController {
-        return self.navigationRouter.toPresentable()
+        return self.navigationRouter
+            .toPresentable()
+            .vc_setModalFullScreen(!self.cancellable)
     }
     
     // MARK: - Private methods
@@ -177,7 +182,7 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     }
     
     private func createCompleteSecurityCoordinator(isNewSignIn: Bool) -> KeyVerificationSelfVerifyWaitCoordinatorType {
-        let coordinator = KeyVerificationSelfVerifyWaitCoordinator(session: self.session, isNewSignIn: isNewSignIn)
+        let coordinator = KeyVerificationSelfVerifyWaitCoordinator(session: self.session, isNewSignIn: isNewSignIn, cancellable: self.cancellable)
         coordinator.delegate = self
         coordinator.start()
         
@@ -185,7 +190,7 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     }
     
     private func showSecretsRecovery(with recoveryMode: SecretsRecoveryMode) {
-        let coordinator = SecretsRecoveryCoordinator(session: self.session, recoveryMode: recoveryMode, recoveryGoal: .verifyDevice, navigationRouter: self.navigationRouter)
+        let coordinator = SecretsRecoveryCoordinator(session: self.session, recoveryMode: recoveryMode, recoveryGoal: .verifyDevice, navigationRouter: self.navigationRouter, cancellable: self.cancellable)
         coordinator.delegate = self
         coordinator.start()
         

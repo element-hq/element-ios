@@ -51,7 +51,7 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
     init(session: MXSession, parentSpace: MXSpace?) {
         self.session = session
         self.parentSpace = parentSpace
-        roomCreationParameters.isEncrypted = session.vc_homeserverConfiguration().isE2EEByDefaultEnabled &&  RiotSettings.shared.roomCreationScreenRoomIsEncrypted
+        roomCreationParameters.isEncrypted = session.vc_homeserverConfiguration().encryption.isE2EEByDefaultEnabled &&  RiotSettings.shared.roomCreationScreenRoomIsEncrypted
         roomCreationParameters.joinRule = RiotSettings.shared.roomCreationScreenRoomIsPublic ? .public : .private
         viewState = .loaded
     }

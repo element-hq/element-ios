@@ -85,7 +85,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
 NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUniversalLinkDidChangeNotification";
 
-@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate, CallPresenterDelegate, SpaceDetailPresenterDelegate>
+@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate, CallPresenterDelegate, SpaceDetailPresenterDelegate, SecureBackupSetupCoordinatorBridgePresenterDelegate>
 {
     /**
      Reachability observer
@@ -128,6 +128,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
      If any the currently displayed key verification dialog
      */
     KeyVerificationCoordinatorBridgePresenter *keyVerificationCoordinatorBridgePresenter;
+
+    /**
+     Currently displayed secure backup setup
+     */
+    SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
 
     /**
      Account picker used in case of multiple account.
@@ -2447,6 +2452,15 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             //  wait for another session state change to check room list data is ready
             return;
         }
+
+        if (mainSession.vc_homeserverConfiguration.encryption.isSecureBackupRequired
+            && mainSession.vc_canSetupSecureBackup)
+        {
+            // This only happens at the first login
+            // Or when migrating an existing user
+            MXLogDebug(@"[AppDelegate] handleAppState: Force SSSS setup");
+            [self presentSecureBackupSetupForSession:mainSession];
+        }
         
         void (^finishAppLaunch)(void) = ^{
             [self hideLaunchAnimation];
@@ -4316,6 +4330,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     if (!keyVerificationCoordinatorBridgePresenter.isPresenting)
     {
         keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
+        keyVerificationCoordinatorBridgePresenter.cancellable = !mxSession.vc_homeserverConfiguration.encryption.isSecureBackupRequired;
         keyVerificationCoordinatorBridgePresenter.delegate = self;
         
         [keyVerificationCoordinatorBridgePresenter presentCompleteSecurityFrom:self.presentedViewController isNewSignIn:NO animated:YES];
@@ -4694,6 +4709,39 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     self.spaceDetailPresenter = nil;
     [self openSpaceWithId:spaceId];
+}
+
+#pragma mark - Mandatory SSSS setup
+
+- (void)presentSecureBackupSetupForSession:(MXSession*)mxSession
+{
+    MXLogDebug(@"[AppDelegate][Mandatory SSSS] presentSecureBackupSetupForSession");
+
+    if (!secureBackupSetupCoordinatorBridgePresenter.isPresenting)
+    {
+        secureBackupSetupCoordinatorBridgePresenter = [[SecureBackupSetupCoordinatorBridgePresenter alloc] initWithSession:mxSession allowOverwrite:false];
+        secureBackupSetupCoordinatorBridgePresenter.delegate = self;
+
+        [secureBackupSetupCoordinatorBridgePresenter presentFrom:self.masterTabBarController animated:NO cancellable:NO];
+    }
+    else
+    {
+        MXLogDebug(@"[AppDelegate][Mandatory SSSS] presentSecureBackupSetupForSession: Controller already presented")
+    }
+}
+
+#pragma mark - SecureBackupSetupCoordinatorBridgePresenterDelegate
+
+- (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidComplete:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    secureBackupSetupCoordinatorBridgePresenter = nil;
+}
+
+- (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    secureBackupSetupCoordinatorBridgePresenter = nil;
 }
 
 @end
