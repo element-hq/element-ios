@@ -16,12 +16,6 @@
 
 import Foundation
 
-// MARK: View model
-
-enum OnboardingCelebrationViewModelResult {
-    case complete
-}
-
 // MARK: View
 
 struct OnboardingCelebrationViewState: BindableState { }

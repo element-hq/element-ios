@@ -43,7 +43,7 @@ public extension VectorL10n {
     return VectorL10n.tr("Untranslated", "onboarding_congratulations_home_button") 
   }
   /// Your account %@ has been created.
-  public static func onboardingCongratulationsMessage(_ p1: String) -> String {
+  static func onboardingCongratulationsMessage(_ p1: String) -> String {
     return VectorL10n.tr("Untranslated", "onboarding_congratulations_message", p1)
   }
   /// Personalise profile

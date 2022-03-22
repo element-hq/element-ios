@@ -29,7 +29,7 @@ class OnboardingCelebrationViewModel: OnboardingCelebrationViewModelType, Onboar
 
     // MARK: Public
 
-    var completion: ((OnboardingCelebrationViewModelResult) -> Void)?
+    var completion: (() -> Void)?
 
     // MARK: - Setup
 
@@ -42,7 +42,7 @@ class OnboardingCelebrationViewModel: OnboardingCelebrationViewModelType, Onboar
     override func process(viewAction: OnboardingCelebrationViewAction) {
         switch viewAction {
         case .complete:
-            completion?(.complete)
+            completion?()
         }
     }
 }

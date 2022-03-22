@@ -41,24 +41,31 @@ struct OnboardingCelebrationScreen: View {
         GeometryReader { geometry in
             VStack {
                 ScrollView(showsIndicators: false) {
+                    Spacer()
+                        .frame(height: OnboardingMetrics.spacerHeight(in: geometry))
+                    
                     mainContent
                         .padding(.top, 106)
                         .padding(.horizontal, horizontalPadding)
-                        .frame(maxWidth: OnboardingConstants.maxContentWidth)
+                        .frame(maxWidth: OnboardingMetrics.maxContentWidth)
                 }
                 .frame(maxWidth: .infinity)
                 
                 buttons
-                    .frame(maxWidth: OnboardingConstants.maxContentWidth)
+                    .frame(maxWidth: OnboardingMetrics.maxContentWidth)
                     .padding(.horizontal, horizontalPadding)
                     .padding(.bottom, 24)
                     .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
+                
+                Spacer()
+                    .frame(height: OnboardingMetrics.spacerHeight(in: geometry))
             }
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .overlay(effects.ignoresSafeArea())
         .background(theme.colors.background.ignoresSafeArea())
         .accentColor(theme.colors.accent)
+        .navigationBarHidden(true)
     }
     
     /// The main content of the view to be shown in a scroll view.
@@ -71,6 +78,7 @@ struct OnboardingCelebrationScreen: View {
                 .foregroundColor(theme.colors.accent)
                 .background(Circle().foregroundColor(.white).padding(2))
                 .padding(.bottom, 42)
+                .accessibilityHidden(true)
             
             Text(VectorL10n.onboardingCelebrationTitle)
                 .font(theme.fonts.title2B)
@@ -97,6 +105,7 @@ struct OnboardingCelebrationScreen: View {
     
     var effects: some View {
         EffectsView(effectsType: .confetti)
+            .allowsHitTesting(false)
     }
 }
 

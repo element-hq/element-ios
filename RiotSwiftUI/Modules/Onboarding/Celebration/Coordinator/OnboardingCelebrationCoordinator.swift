@@ -52,9 +52,9 @@ final class OnboardingCelebrationCoordinator: Coordinator, Presentable {
     // MARK: - Public
     func start() {
         MXLog.debug("[OnboardingCelebrationCoordinator] did start.")
-        onboardingCelebrationViewModel.completion = { [weak self] result in
+        onboardingCelebrationViewModel.completion = { [weak self] in
             guard let self = self else { return }
-            MXLog.debug("[OnboardingCelebrationCoordinator] OnboardingCelebrationViewModel did complete with result: \(result).")
+            MXLog.debug("[OnboardingCelebrationCoordinator] OnboardingCelebrationViewModel did complete.")
             self.completion?(self.parameters.userSession)
         }
     }

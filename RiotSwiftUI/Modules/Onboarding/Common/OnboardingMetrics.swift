@@ -14,10 +14,15 @@
 // limitations under the License.
 //
 
-import CoreGraphics
+import SwiftUI
 
-/// Constants used across the entire onboarding flow.
-struct OnboardingConstants {
+/// Metrics used across the entire onboarding flow.
+@available(iOS 14.0, *)
+struct OnboardingMetrics {
     static let maxContentWidth: CGFloat = 600
     static let maxContentHeight: CGFloat = 750
+    
+    static func spacerHeight(in geometry: GeometryProxy) -> CGFloat {
+        max(0, (geometry.size.height - maxContentHeight) / 2)
+    }
 }
