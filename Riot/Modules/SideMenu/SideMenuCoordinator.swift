@@ -320,6 +320,36 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         self.spaceSettingsCoordinator = coordinator
     }
     
+    func showSpaceInvite(spaceId: String, session: MXSession) {
+        guard let space = session.spaceService.getSpace(withId: spaceId), let spaceRoom = space.room else {
+            MXLog.error("[SideMenuCoordinator] showSpaceInvite: failed to find space with id \(spaceId)")
+            return
+        }
+        
+        spaceRoom.state { [weak self] roomState in
+            guard let self = self else { return }
+            
+            guard let powerLevels = roomState?.powerLevels, let userId = session.myUserId else {
+                MXLog.error("[SpaceMembersCoordinator] spaceMemberListCoordinatorShowInvite: failed to find powerLevels for room")
+                return
+            }
+            let userPowerLevel = powerLevels.powerLevelOfUser(withUserID: userId)
+            
+            guard userPowerLevel >= powerLevels.invite else {
+                let alert = UIAlertController(title: VectorL10n.spacesInvitePeople, message: VectorL10n.spaceInviteNotEnoughPermission, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: VectorL10n.ok, style: .default, handler: nil))
+                self.sideMenuViewController.present(alert, animated: true)
+                return
+            }
+            
+            let coordinator = ContactsPickerCoordinator(session: session, room: spaceRoom, initialSearchText: nil, actualParticipants: nil, invitedParticipants: nil, userParticipant: nil)
+            coordinator.delegate = self
+            coordinator.start()
+            self.add(childCoordinator: coordinator)
+            self.sideMenuViewController.present(coordinator.toPresentable(), animated: true)
+        }
+    }
+
     private func resetExploringSpaceIfNeeded() {
         if sideMenuNavigationViewController.presentedViewController == nil {
             Analytics.shared.exploringSpace = nil
@@ -437,6 +467,8 @@ extension SideMenuCoordinator: SpaceMenuPresenterDelegate {
                 } else {
                     AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.settingsTitle, message: VectorL10n.spacesComingSoonDetail(AppInfo.current.displayName))
                 }
+            case .invite:
+                self.showSpaceInvite(spaceId: spaceId, session: session)
             }
         }
     }
@@ -508,6 +540,19 @@ extension SideMenuCoordinator: CreateRoomCoordinatorDelegate {
             self.createRoomCoordinator = nil
             self.resetExploringSpaceIfNeeded()
         }
+    }
+}
+
+// MARK: - ContactsPickerCoordinatorDelegate
+extension SideMenuCoordinator: ContactsPickerCoordinatorDelegate {
+    func contactsPickerCoordinatorDidStartLoading(_ coordinator: ContactsPickerCoordinatorProtocol) {
+    }
+    
+    func contactsPickerCoordinatorDidEndLoading(_ coordinator: ContactsPickerCoordinatorProtocol) {
+    }
+    
+    func contactsPickerCoordinatorDidClose(_ coordinator: ContactsPickerCoordinatorProtocol) {
+        remove(childCoordinator: coordinator)
     }
 }
 

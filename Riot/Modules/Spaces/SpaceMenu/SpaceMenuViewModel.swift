@@ -25,11 +25,12 @@ class SpaceMenuViewModel: SpaceMenuViewModelType {
     weak var viewDelegate: SpaceMenuViewModelViewDelegate?
 
     private let spaceMenuItems: [SpaceMenuListItemViewData] = [
+        SpaceMenuListItemViewData(action: .invite, style: .normal, title: VectorL10n.spacesInvitePeople, icon: Asset.Images.spaceInviteUser.image, value: nil),
         SpaceMenuListItemViewData(action: .exploreSpaceMembers, style: .normal, title: VectorL10n.roomDetailsPeople, icon: Asset.Images.spaceMenuMembers.image, value: nil),
+        SpaceMenuListItemViewData(action: .settings, style: .normal, title: VectorL10n.sideMenuActionSettings, icon: Asset.Images.sideMenuActionIconSettings.image, value: nil),
         SpaceMenuListItemViewData(action: .exploreSpaceRooms, style: .normal, title: VectorL10n.spacesExploreRooms, icon: Asset.Images.spaceMenuRooms.image, value: nil),
         SpaceMenuListItemViewData(action: .addRoom, style: .normal, title: VectorL10n.spacesAddRoom, icon: Asset.Images.spaceMenuPlusIcon.image, value: nil),
         SpaceMenuListItemViewData(action: .addSpace, style: .normal, title: VectorL10n.spacesAddSpace, icon: Asset.Images.spaceMenuPlusIcon.image, value: nil, isBeta: true),
-        SpaceMenuListItemViewData(action: .settings, style: .normal, title: VectorL10n.sideMenuActionSettings, icon: Asset.Images.sideMenuActionIconSettings.image, value: nil),
         SpaceMenuListItemViewData(action: .leaveSpace, style: .destructive, title: VectorL10n.leave, icon: Asset.Images.spaceMenuLeave.image, value: nil)
     ]
     
