@@ -24,7 +24,8 @@ enum MockOnboardingCongratulationsScreenState: MockScreenState, CaseIterable {
     // A case for each state you want to represent
     // with specific, minimal associated data that will allow you
     // mock that screen.
-    case congratulations
+    case regular
+    case personalizationDisabled
     
     /// The associated screen
     var screenType: Any.Type {
@@ -33,14 +34,18 @@ enum MockOnboardingCongratulationsScreenState: MockScreenState, CaseIterable {
     
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView)  {
-        let viewModel = OnboardingCongratulationsViewModel(userId: "@testuser:example.com")
+        let viewModel: OnboardingCongratulationsViewModel
         
-        // can simulate service and viewModel actions here if needs be.
+        switch self {
+        case .regular:
+            viewModel = OnboardingCongratulationsViewModel(userId: "@testuser:example.com")
+        case .personalizationDisabled:
+            viewModel = OnboardingCongratulationsViewModel(userId: "@testuser:example.com", personalizationDisabled: true)
+        }
         
         return (
             [self, viewModel],
-            AnyView(OnboardingCongratulationsScreen(viewModel: viewModel.context)
-                .addDependency(MockAvatarService.example))
+            AnyView(OnboardingCongratulationsScreen(viewModel: viewModel.context))
         )
     }
 }

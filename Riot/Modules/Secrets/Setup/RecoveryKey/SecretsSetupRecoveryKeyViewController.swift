@@ -34,6 +34,7 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
 
     private var viewModel: SecretsSetupRecoveryKeyViewModelType!
     private var isPassphraseOnly: Bool = true
+    private var cancellable: Bool!
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
@@ -43,9 +44,10 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
 
     // MARK: - Setup
     
-    class func instantiate(with viewModel: SecretsSetupRecoveryKeyViewModelType) -> SecretsSetupRecoveryKeyViewController {
+    class func instantiate(with viewModel: SecretsSetupRecoveryKeyViewModelType, cancellable: Bool) -> SecretsSetupRecoveryKeyViewController {
         let viewController = StoryboardScene.SecretsSetupRecoveryKeyViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
+        viewController.cancellable = cancellable
         viewController.theme = ThemeService.shared().theme
         return viewController
     }
@@ -108,12 +110,14 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
     }
     
     private func setupViews() {
-        let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
-            self?.cancelButtonAction()
+        if self.cancellable {
+            let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
+                self?.cancelButtonAction()
+            }
+
+            self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         }
-        
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
-        
+
         self.vc_removeBackTitle()                
         
         self.title = VectorL10n.secretsSetupRecoveryKeyTitle

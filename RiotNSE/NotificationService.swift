@@ -692,6 +692,9 @@ class NotificationService: UNNotificationServiceExtension {
             "room_id": event.roomId as Any,
             "event_id": event.eventId as Any
         ]
+        if let threadId = event.threadId {
+            notificationUserInfo["thread_id"] = threadId
+        }
         if let userId = userId {
             notificationUserInfo["user_id"] = userId
         }

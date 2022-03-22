@@ -38,6 +38,7 @@ final class KeyVerificationCoordinatorBridgePresenter: NSObject {
     // MARK: Public
     
     weak var delegate: KeyVerificationCoordinatorBridgePresenterDelegate?
+    var cancellable: Bool = true
     
     var isPresenting: Bool {
         return self.coordinator != nil
@@ -61,7 +62,7 @@ final class KeyVerificationCoordinatorBridgePresenter: NSObject {
         
         MXLog.debug("[KeyVerificationCoordinatorBridgePresenter] Present from \(viewController)")
         
-        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .verifyDevice(userId: otherUserId, deviceId: otherDeviceId))
+        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .verifyDevice(userId: otherUserId, deviceId: otherDeviceId), cancellable: self.cancellable)
         self.present(coordinator: keyVerificationCoordinator, from: viewController, animated: animated)
     }
     
@@ -69,7 +70,7 @@ final class KeyVerificationCoordinatorBridgePresenter: NSObject {
         
         MXLog.debug("[KeyVerificationCoordinatorBridgePresenter] Present from \(viewController)")
         
-        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .verifyUser(roomMember))
+        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .verifyUser(roomMember), cancellable: self.cancellable)
         self.present(coordinator: keyVerificationCoordinator, from: viewController, animated: animated)
     }
 
@@ -77,7 +78,7 @@ final class KeyVerificationCoordinatorBridgePresenter: NSObject {
         
         MXLog.debug("[KeyVerificationCoordinatorBridgePresenter] Present incoming verification from \(viewController)")
         
-        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .incomingSASTransaction(incomingTransaction))
+        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .incomingSASTransaction(incomingTransaction), cancellable: self.cancellable)
         self.present(coordinator: keyVerificationCoordinator, from: viewController, animated: animated)
     }
     
@@ -85,7 +86,7 @@ final class KeyVerificationCoordinatorBridgePresenter: NSObject {
         
         MXLog.debug("[KeyVerificationCoordinatorBridgePresenter] Present incoming key verification request from \(viewController)")
         
-        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .incomingRequest(incomingKeyVerificationRequest))
+        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .incomingRequest(incomingKeyVerificationRequest), cancellable: self.cancellable)
         self.present(coordinator: keyVerificationCoordinator, from: viewController, animated: animated)
     }
     
@@ -93,7 +94,7 @@ final class KeyVerificationCoordinatorBridgePresenter: NSObject {
         
         MXLog.debug("[KeyVerificationCoordinatorBridgePresenter] Present complete security from \(viewController)")
         
-        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .completeSecurity(isNewSignIn))
+        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .completeSecurity(isNewSignIn), cancellable: self.cancellable)
         self.present(coordinator: keyVerificationCoordinator, from: viewController, animated: animated)
     }
     
@@ -103,7 +104,7 @@ final class KeyVerificationCoordinatorBridgePresenter: NSObject {
         
         let navigationRouter = NavigationRouterStore.shared.navigationRouter(for: navigationController)
         
-        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .completeSecurity(isNewSignIn), navigationRouter: navigationRouter)
+        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .completeSecurity(isNewSignIn), navigationRouter: navigationRouter, cancellable: self.cancellable)
         keyVerificationCoordinator.delegate = self
         keyVerificationCoordinator.start() // Will trigger view controller push
         

@@ -24,6 +24,7 @@ final class SecretsRecoveryWithPassphraseCoordinator: SecretsRecoveryWithPassphr
     
     private let secretsRecoveryWithPassphraseViewController: SecretsRecoveryWithPassphraseViewController
     private var secretsRecoveryWithPassphraseViewModel: SecretsRecoveryWithPassphraseViewModelType
+    private let cancellable: Bool
     
     // MARK: Public
     
@@ -33,11 +34,12 @@ final class SecretsRecoveryWithPassphraseCoordinator: SecretsRecoveryWithPassphr
     
     // MARK: - Setup
     
-    init(recoveryService: MXRecoveryService, recoveryGoal: SecretsRecoveryGoal) {
+    init(recoveryService: MXRecoveryService, recoveryGoal: SecretsRecoveryGoal, cancellable: Bool) {
         let secretsRecoveryWithPassphraseViewModel = SecretsRecoveryWithPassphraseViewModel(recoveryService: recoveryService, recoveryGoal: recoveryGoal)
-        let secretsRecoveryWithPassphraseViewController = SecretsRecoveryWithPassphraseViewController.instantiate(with: secretsRecoveryWithPassphraseViewModel)
+        let secretsRecoveryWithPassphraseViewController = SecretsRecoveryWithPassphraseViewController.instantiate(with: secretsRecoveryWithPassphraseViewModel, cancellable: cancellable)
         self.secretsRecoveryWithPassphraseViewController = secretsRecoveryWithPassphraseViewController
         self.secretsRecoveryWithPassphraseViewModel = secretsRecoveryWithPassphraseViewModel
+        self.cancellable = cancellable
     }
     
     // MARK: - Public
@@ -48,6 +50,7 @@ final class SecretsRecoveryWithPassphraseCoordinator: SecretsRecoveryWithPassphr
     
     func toPresentable() -> UIViewController {
         return self.secretsRecoveryWithPassphraseViewController
+            .vc_setModalFullScreen(!self.cancellable)
     }
 }
 

@@ -108,13 +108,11 @@
 
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
-    if (recentsDataSource)
+    if (recentsDataSource.recentsDataSourceMode != RecentsDataSourceModeHome)
     {
         // Take the lead on the shared data source.
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeHome];
-    }        
-
-    [self moveAllCollectionsToLeft];
+    }
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
@@ -131,26 +129,6 @@
 - (void)destroy
 {
     [super destroy];
-}
-
-- (void)moveAllCollectionsToLeft
-{
-    selectedCollectionViewContentOffset = -1;
-    
-    // Scroll all rooms collections to their beginning
-    for (NSInteger section = 0; section < [self numberOfSectionsInTableView:self.recentsTableView]; section++)
-    {
-        UITableViewCell *firstSectionCell = [self.recentsTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section]];
-        if (firstSectionCell && [firstSectionCell isKindOfClass:TableViewCellWithCollectionView.class])
-        {
-            TableViewCellWithCollectionView *tableViewCell = (TableViewCellWithCollectionView*)firstSectionCell;
-
-            if ([tableViewCell.collectionView numberOfItemsInSection:0] > 0)
-            {
-                [tableViewCell.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
-            }
-        }
-    }
 }
 
 - (SecureBackupBannerCell *)secureBackupBannerPrototypeCell
@@ -255,72 +233,7 @@
         [self cancelEditionMode:YES];
     }
     
-    if (recentsDataSource.currentSpace != nil)
-    {
-        [self showPlusMenuForSpace];
-    }
-    else
-    {
-        [super onPlusButtonPressed];
-    }
-}
-
-- (void)showPlusMenuForSpace
-{
-    __weak typeof(self) weakSelf = self;
-    
-    [currentAlert dismissViewControllerAnimated:NO completion:nil];
-    
-    currentAlert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n spacesExploreRooms]
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
-                                                           self->currentAlert = nil;
-
-                                                           [self showRoomDirectory];
-                                                       }
-                                                       
-                                                   }]];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomDetailsPeople]
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
-                                                           self->currentAlert = nil;
-                                                           
-                                                           self.spaceMembersCoordinatorBridgePresenter = [[SpaceMembersCoordinatorBridgePresenter alloc] initWithUserSessionsService:[UserSessionsService shared] session:self.mainSession spaceId:self.dataSource.currentSpace.spaceId];
-                                                           self.spaceMembersCoordinatorBridgePresenter.delegate = self;
-                                                           [self.spaceMembersCoordinatorBridgePresenter presentFrom:self animated:YES];
-                                                       }
-                                                       
-                                                   }]];
-    
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
-                                                     style:UIAlertActionStyleCancel
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
-                                                           self->currentAlert = nil;
-                                                       }
-                                                       
-                                                   }]];
-    
-    [currentAlert popoverPresentationController].sourceView = plusButtonImageView;
-    [currentAlert popoverPresentationController].sourceRect = plusButtonImageView.bounds;
-    
-    [currentAlert mxk_setAccessibilityIdentifier:@"RecentsVCCreateRoomAlert"];
-    [self presentViewController:currentAlert animated:YES completion:nil];
+    [super onPlusButtonPressed];
 }
 
 - (void)cancelEditionMode:(BOOL)forceRefresh
@@ -356,6 +269,35 @@
     [super onMatrixSessionChange];
     
     [self updateEmptyView];
+}
+
+- (void)startChat {
+    if (recentsDataSource.currentSpace)
+    {
+        self.spaceMembersCoordinatorBridgePresenter = [[SpaceMembersCoordinatorBridgePresenter alloc] initWithUserSessionsService:[UserSessionsService shared] session:self.mainSession spaceId:self.dataSource.currentSpace.spaceId];
+        self.spaceMembersCoordinatorBridgePresenter.delegate = self;
+        [self.spaceMembersCoordinatorBridgePresenter presentFrom:self animated:YES];
+    }
+    else
+    {
+        [super startChat];
+    }
+}
+
+- (void)createNewRoom
+{
+    if (recentsDataSource.currentSpace) {
+        [recentsDataSource.currentSpace canAddRoomWithCompletion:^(BOOL canAddRoom) {
+            if (canAddRoom) {
+                [super createNewRoom];
+            } else {
+                [[AppDelegate theDelegate] showAlertWithTitle:[VectorL10n roomRecentsCreateEmptyRoom]
+                                                      message:[VectorL10n spacesAddRoomMissingPermissionMessage]];
+            }
+        }];
+    } else {
+        [super createNewRoom];
+    }
 }
 
 #pragma mark - UITableViewDataSource
@@ -636,9 +578,13 @@
 {
     [self.collectionViewPaginationThrottler throttle:^{
         NSInteger collectionViewSection = indexPath.section;
+        if (collectionView.numberOfSections <= collectionViewSection)
+        {
+            return;
+        }
+        
         NSInteger numberOfItemsInSection = [collectionView numberOfItemsInSection:collectionViewSection];
-        if (collectionView.numberOfSections > collectionViewSection
-            && indexPath.item == numberOfItemsInSection - 1)
+        if (indexPath.item == numberOfItemsInSection - 1)
         {
             NSInteger tableViewSection = collectionView.tag;
             [self->recentsDataSource paginateInSection:tableViewSection];

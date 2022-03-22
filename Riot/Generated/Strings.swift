@@ -111,6 +111,10 @@ public class VectorL10n: NSObject {
   public static func activeCallDetails(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "active_call_details", p1)
   }
+  /// Add
+  public static var add: String { 
+    return VectorL10n.tr("Vector", "add") 
+  }
   /// Help us identify issues and improve %@ by sharing anonymous usage data. To understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.
   public static func analyticsPromptMessageNewUser(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "analytics_prompt_message_new_user", p1)
@@ -923,53 +927,81 @@ public class VectorL10n: NSObject {
   public static var createRoomPlaceholderName: String { 
     return VectorL10n.tr("Vector", "create_room_placeholder_name") 
   }
-  /// Topic
+  /// What is this room about?
   public static var createRoomPlaceholderTopic: String { 
     return VectorL10n.tr("Vector", "create_room_placeholder_topic") 
+  }
+  /// PROMOTION
+  public static var createRoomPromotionHeader: String { 
+    return VectorL10n.tr("Vector", "create_room_promotion_header") 
   }
   /// Encryption can’t be disabled afterwards.
   public static var createRoomSectionFooterEncryption: String { 
     return VectorL10n.tr("Vector", "create_room_section_footer_encryption") 
   }
-  /// People join a private room only with the room invitation.
-  public static var createRoomSectionFooterType: String { 
-    return VectorL10n.tr("Vector", "create_room_section_footer_type") 
+  /// Only people invited can find and join.
+  public static var createRoomSectionFooterTypePrivate: String { 
+    return VectorL10n.tr("Vector", "create_room_section_footer_type_private") 
   }
-  /// Room address
+  /// Only people invited can find and join, not just people in Space name.
+  public static var createRoomSectionFooterTypePublic: String { 
+    return VectorL10n.tr("Vector", "create_room_section_footer_type_public") 
+  }
+  /// Anyone in Space name can find and join.
+  public static var createRoomSectionFooterTypeRestricted: String { 
+    return VectorL10n.tr("Vector", "create_room_section_footer_type_restricted") 
+  }
+  /// ADDRESS
   public static var createRoomSectionHeaderAddress: String { 
     return VectorL10n.tr("Vector", "create_room_section_header_address") 
   }
-  /// Room encryption
+  /// ENCRYPTION
   public static var createRoomSectionHeaderEncryption: String { 
     return VectorL10n.tr("Vector", "create_room_section_header_encryption") 
   }
-  /// Room name
+  /// NAME
   public static var createRoomSectionHeaderName: String { 
     return VectorL10n.tr("Vector", "create_room_section_header_name") 
   }
-  /// Room topic (optional)
+  /// TOPIC (OPTIONAL)
   public static var createRoomSectionHeaderTopic: String { 
     return VectorL10n.tr("Vector", "create_room_section_header_topic") 
   }
-  /// Room type
+  /// WHO CAN ACCESS
   public static var createRoomSectionHeaderType: String { 
     return VectorL10n.tr("Vector", "create_room_section_header_type") 
   }
-  /// Show the room in the directory
+  /// Show in room directory
   public static var createRoomShowInDirectory: String { 
     return VectorL10n.tr("Vector", "create_room_show_in_directory") 
+  }
+  /// This will help people find and join.
+  public static var createRoomShowInDirectoryFooter: String { 
+    return VectorL10n.tr("Vector", "create_room_show_in_directory_footer") 
+  }
+  /// Suggest to space members
+  public static var createRoomSuggestRoom: String { 
+    return VectorL10n.tr("Vector", "create_room_suggest_room") 
+  }
+  /// Suggested rooms are promoted to space members as good to join.
+  public static var createRoomSuggestRoomFooter: String { 
+    return VectorL10n.tr("Vector", "create_room_suggest_room_footer") 
   }
   /// New Room
   public static var createRoomTitle: String { 
     return VectorL10n.tr("Vector", "create_room_title") 
   }
-  /// Private Room
+  /// Private Room (invite only)
   public static var createRoomTypePrivate: String { 
     return VectorL10n.tr("Vector", "create_room_type_private") 
   }
-  /// Public Room
+  /// Public Room (anyone)
   public static var createRoomTypePublic: String { 
     return VectorL10n.tr("Vector", "create_room_type_public") 
+  }
+  /// Space members
+  public static var createRoomTypeRestricted: String { 
+    return VectorL10n.tr("Vector", "create_room_type_restricted") 
   }
   /// Verify your other devices easier
   public static var crossSigningSetupBannerSubtitle: String { 
@@ -1619,6 +1651,10 @@ public class VectorL10n: NSObject {
   public static var e2eRoomKeyRequestTitle: String { 
     return VectorL10n.tr("Vector", "e2e_room_key_request_title") 
   }
+  /// Edit
+  public static var edit: String { 
+    return VectorL10n.tr("Vector", "edit") 
+  }
   /// Activities
   public static var emojiPickerActivityCategory: String { 
     return VectorL10n.tr("Vector", "emoji_picker_activity_category") 
@@ -1826,6 +1862,10 @@ public class VectorL10n: NSObject {
   /// You removed the widget: %@
   public static func eventFormatterWidgetRemovedByYou(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_widget_removed_by_you", p1)
+  }
+  /// Existing
+  public static var existing: String { 
+    return VectorL10n.tr("Vector", "existing") 
   }
   /// The link %@ is taking you to another site: %@\n\nAre you sure you want to continue?
   public static func externalLinkConfirmationMessage(_ p1: String, _ p2: String) -> String {
@@ -2667,6 +2707,18 @@ public class VectorL10n: NSObject {
   public static var less: String { 
     return VectorL10n.tr("Vector", "less") 
   }
+  /// Stop
+  public static var liveLocationSharingBannerStop: String { 
+    return VectorL10n.tr("Vector", "live_location_sharing_banner_stop") 
+  }
+  /// Live location enabled
+  public static var liveLocationSharingBannerTitle: String { 
+    return VectorL10n.tr("Vector", "live_location_sharing_banner_title") 
+  }
+  /// Loading
+  public static var loading: String { 
+    return VectorL10n.tr("Vector", "loading") 
+  }
   /// To discover contacts already using Matrix, %@ can send email addresses and phone numbers in your address book to your chosen Matrix identity server. Where supported, personal data is hashed before sending - please check your identity server's privacy policy for more details.
   public static func localContactsAccessDiscoveryWarning(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "local_contacts_access_discovery_warning", p1)
@@ -3046,6 +3098,10 @@ public class VectorL10n: NSObject {
   /// The Internet connection appears to be offline.
   public static var networkOfflinePrompt: String { 
     return VectorL10n.tr("Vector", "network_offline_prompt") 
+  }
+  /// New
+  public static var newWord: String { 
+    return VectorL10n.tr("Vector", "new_word") 
   }
   /// Next
   public static var next: String { 
@@ -4099,6 +4155,74 @@ public class VectorL10n: NSObject {
   public static var retry: String { 
     return VectorL10n.tr("Vector", "retry") 
   }
+  /// Edit spaces
+  public static var roomAccessSettingsScreenEditSpaces: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_edit_spaces") 
+  }
+  /// Decide who can find and join %@.
+  public static func roomAccessSettingsScreenMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_access_settings_screen_message", p1)
+  }
+  /// Room access
+  public static var roomAccessSettingsScreenNavTitle: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_nav_title") 
+  }
+  /// Only invited people can find and join.
+  public static var roomAccessSettingsScreenPrivateMessage: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_private_message") 
+  }
+  /// Anyone can find and join.
+  public static var roomAccessSettingsScreenPublicMessage: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_public_message") 
+  }
+  /// Let anyone in a space find and join.\nYou’ll be asked to confirm which spaces.
+  public static var roomAccessSettingsScreenRestrictedMessage: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_restricted_message") 
+  }
+  /// Setting room access
+  public static var roomAccessSettingsScreenSettingRoomAccess: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_setting_room_access") 
+  }
+  /// Who can access this room?
+  public static var roomAccessSettingsScreenTitle: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_title") 
+  }
+  /// Automatically invite members to new room
+  public static var roomAccessSettingsScreenUpgradeAlertAutoInviteSwitch: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_auto_invite_switch") 
+  }
+  /// Anyone in Space name will be able to find and join this room - no need to manually invite everyone. You’ll be able to change this in room settings anytime.\n\nPlease note upgrading will make a new version of the room.  All current messages will stay in this archived room.
+  public static var roomAccessSettingsScreenUpgradeAlertMessage: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_message") 
+  }
+  /// Upgrade room
+  public static var roomAccessSettingsScreenUpgradeAlertTitle: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_title") 
+  }
+  /// Upgrade
+  public static var roomAccessSettingsScreenUpgradeAlertUpgradeButton: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_upgrade_button") 
+  }
+  /// Upgrading room
+  public static var roomAccessSettingsScreenUpgradeAlertUpgrading: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_upgrading") 
+  }
+  /// Upgrade required
+  public static var roomAccessSettingsScreenUpgradeRequired: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_required") 
+  }
+  /// Spaces you know containing %@
+  public static func roomAccessSpaceChooserKnownSpacesSection(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_access_space_chooser_known_spaces_section", p1)
+  }
+  /// Other spaces or rooms
+  public static var roomAccessSpaceChooserOtherSpacesSection: String { 
+    return VectorL10n.tr("Vector", "room_access_space_chooser_other_spaces_section") 
+  }
+  /// These are likely things other admins of %@ are a part of.
+  public static func roomAccessSpaceChooserOtherSpacesSectionInfo(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_access_space_chooser_other_spaces_section_info", p1)
+  }
   /// Call
   public static var roomAccessibilityCall: String { 
     return VectorL10n.tr("Vector", "room_accessibility_call") 
@@ -4266,6 +4390,10 @@ public class VectorL10n: NSObject {
   /// Delete unsent messages
   public static var roomDeleteUnsentMessages: String { 
     return VectorL10n.tr("Vector", "room_delete_unsent_messages") 
+  }
+  /// Access
+  public static var roomDetailsAccessRowTitle: String { 
+    return VectorL10n.tr("Vector", "room_details_access_row_title") 
   }
   /// Who can access this room?
   public static var roomDetailsAccessSection: String { 
@@ -4530,6 +4658,14 @@ public class VectorL10n: NSObject {
   /// Photo
   public static var roomDetailsPhotoForDm: String { 
     return VectorL10n.tr("Vector", "room_details_photo_for_dm") 
+  }
+  /// Suggest to space members
+  public static var roomDetailsPromoteRoomSuggestTitle: String { 
+    return VectorL10n.tr("Vector", "room_details_promote_room_suggest_title") 
+  }
+  /// Promote room
+  public static var roomDetailsPromoteRoomTitle: String { 
+    return VectorL10n.tr("Vector", "room_details_promote_room_title") 
   }
   /// Room Name
   public static var roomDetailsRoomName: String { 
@@ -4915,6 +5051,26 @@ public class VectorL10n: NSObject {
   public static var roomIntroCellInformationRoomWithoutTopicSentence2Part2: String { 
     return VectorL10n.tr("Vector", "room_intro_cell_information_room_without_topic_sentence2_part2") 
   }
+  /// You do not have permission to invite people to this room
+  public static var roomInviteNotEnoughPermission: String { 
+    return VectorL10n.tr("Vector", "room_invite_not_enough_permission") 
+  }
+  /// They won’t be a part of %@.
+  public static func roomInviteToRoomOptionDetail(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_invite_to_room_option_detail", p1)
+  }
+  /// To just this room
+  public static var roomInviteToRoomOptionTitle: String { 
+    return VectorL10n.tr("Vector", "room_invite_to_room_option_title") 
+  }
+  /// They can explore %@, but won’t be a member of %@.
+  public static func roomInviteToSpaceOptionDetail(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "room_invite_to_space_option_detail", p1, p2)
+  }
+  /// To %@
+  public static func roomInviteToSpaceOptionTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_invite_to_space_option_title", p1)
+  }
   /// Join
   public static var roomJoinGroupCall: String { 
     return VectorL10n.tr("Vector", "room_join_group_call") 
@@ -5219,6 +5375,10 @@ public class VectorL10n: NSObject {
   public static var roomParticipantsInvitePromptTitle: String { 
     return VectorL10n.tr("Vector", "room_participants_invite_prompt_title") 
   }
+  /// Are you sure you want to invite %@ to %@?
+  public static func roomParticipantsInvitePromptToMsg(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "room_participants_invite_prompt_to_msg", p1, p2)
+  }
   /// INVITED
   public static var roomParticipantsInvitedSection: String { 
     return VectorL10n.tr("Vector", "room_participants_invited_section") 
@@ -5463,6 +5623,18 @@ public class VectorL10n: NSObject {
   public static var roomSlideToEndGroupCall: String { 
     return VectorL10n.tr("Vector", "room_slide_to_end_group_call") 
   }
+  /// Suggested rooms are promoted to space members as good ones to join.
+  public static var roomSuggestionSettingsScreenMessage: String { 
+    return VectorL10n.tr("Vector", "room_suggestion_settings_screen_message") 
+  }
+  /// Suggest room
+  public static var roomSuggestionSettingsScreenNavTitle: String { 
+    return VectorL10n.tr("Vector", "room_suggestion_settings_screen_nav_title") 
+  }
+  /// Make a room suggested in a space
+  public static var roomSuggestionSettingsScreenTitle: String { 
+    return VectorL10n.tr("Vector", "room_suggestion_settings_screen_title") 
+  }
   /// Thread
   public static var roomThreadTitle: String { 
     return VectorL10n.tr("Vector", "room_thread_title") 
@@ -5566,6 +5738,10 @@ public class VectorL10n: NSObject {
   /// Save
   public static var save: String { 
     return VectorL10n.tr("Vector", "save") 
+  }
+  /// Saving
+  public static var saving: String { 
+    return VectorL10n.tr("Vector", "saving") 
   }
   /// Search
   public static var searchDefaultPlaceholder: String { 
@@ -6811,6 +6987,18 @@ public class VectorL10n: NSObject {
   public static var shareExtensionSendNow: String { 
     return VectorL10n.tr("Vector", "share_extension_send_now") 
   }
+  /// Share invite link
+  public static var shareInviteLinkAction: String { 
+    return VectorL10n.tr("Vector", "share_invite_link_action") 
+  }
+  /// Hey, join this room on %@
+  public static func shareInviteLinkRoomText(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "share_invite_link_room_text", p1)
+  }
+  /// Hey, join this space on %@
+  public static func shareInviteLinkSpaceText(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "share_invite_link_space_text", p1)
+  }
   /// Show Details
   public static var showDetails: String { 
     return VectorL10n.tr("Vector", "show_details") 
@@ -6834,6 +7022,10 @@ public class VectorL10n: NSObject {
   /// Version %@
   public static func sideMenuAppVersion(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "side_menu_app_version", p1)
+  }
+  /// Swipe right or tap to see all rooms
+  public static var sideMenuCoachMessage: String { 
+    return VectorL10n.tr("Vector", "side_menu_coach_message") 
   }
   /// Left panel
   public static var sideMenuRevealActionAccessibilityLabel: String { 
@@ -6959,6 +7151,10 @@ public class VectorL10n: NSObject {
   public static var spaceHomeShowAllRooms: String { 
     return VectorL10n.tr("Vector", "space_home_show_all_rooms") 
   }
+  /// You do not have permission to invite people to this space
+  public static var spaceInviteNotEnoughPermission: String { 
+    return VectorL10n.tr("Vector", "space_invite_not_enough_permission") 
+  }
   /// Ban from this space
   public static var spaceParticipantsActionBan: String { 
     return VectorL10n.tr("Vector", "space_participants_action_ban") 
@@ -6971,17 +7167,57 @@ public class VectorL10n: NSObject {
   public static var spacePrivateJoinRule: String { 
     return VectorL10n.tr("Vector", "space_private_join_rule") 
   }
+  /// Invite only, best for yourself or teams
+  public static var spacePrivateJoinRuleDetail: String { 
+    return VectorL10n.tr("Vector", "space_private_join_rule_detail") 
+  }
   /// Public space
   public static var spacePublicJoinRule: String { 
     return VectorL10n.tr("Vector", "space_public_join_rule") 
+  }
+  /// Open to anyone, best for communities
+  public static var spacePublicJoinRuleDetail: String { 
+    return VectorL10n.tr("Vector", "space_public_join_rule_detail") 
+  }
+  /// Who can access this space?
+  public static var spaceSettingsAccessSection: String { 
+    return VectorL10n.tr("Vector", "space_settings_access_section") 
+  }
+  /// Your space is viewable at\n%@
+  public static func spaceSettingsCurrentAddressMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "space_settings_current_address_message", p1)
+  }
+  /// Failed to update space settings. Do you want to retry?
+  public static var spaceSettingsUpdateFailedMessage: String { 
+    return VectorL10n.tr("Vector", "space_settings_update_failed_message") 
   }
   /// space
   public static var spaceTag: String { 
     return VectorL10n.tr("Vector", "space_tag") 
   }
+  /// Description
+  public static var spaceTopic: String { 
+    return VectorL10n.tr("Vector", "space_topic") 
+  }
+  /// Add room
+  public static var spacesAddRoom: String { 
+    return VectorL10n.tr("Vector", "spaces_add_room") 
+  }
+  /// You do not have permissions to add rooms to this space.
+  public static var spacesAddRoomMissingPermissionMessage: String { 
+    return VectorL10n.tr("Vector", "spaces_add_room_missing_permission_message") 
+  }
   /// Adding rooms coming soon
   public static var spacesAddRoomsComingSoonTitle: String { 
     return VectorL10n.tr("Vector", "spaces_add_rooms_coming_soon_title") 
+  }
+  /// Add space
+  public static var spacesAddSpace: String { 
+    return VectorL10n.tr("Vector", "spaces_add_space") 
+  }
+  /// Create space
+  public static var spacesAddSpaceTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_add_space_title") 
   }
   /// This feature hasn’t been implemented here, but it’s on the way. For now, you can do that with %@ on your computer.
   public static func spacesComingSoonDetail(_ p1: String) -> String {
@@ -6990,6 +7226,190 @@ public class VectorL10n: NSObject {
   /// Coming soon
   public static var spacesComingSoonTitle: String { 
     return VectorL10n.tr("Vector", "spaces_coming_soon_title") 
+  }
+  /// Create a space
+  public static var spacesCreateSpaceTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_create_space_title") 
+  }
+  /// As this space is just for you, no one will be informed. You can add more later.
+  public static var spacesCreationAddRoomsMessage: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_add_rooms_message") 
+  }
+  /// What do you want to add?
+  public static var spacesCreationAddRoomsTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_add_rooms_title") 
+  }
+  /// Address
+  public static var spacesCreationAddress: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_address") 
+  }
+  /// %@\nalready exists
+  public static func spacesCreationAddressAlreadyExists(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_creation_address_already_exists", p1)
+  }
+  /// Your space will be viewable at\n%@
+  public static func spacesCreationAddressDefaultMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_creation_address_default_message", p1)
+  }
+  /// %@\nhas invalid characters
+  public static func spacesCreationAddressInvalidCharacters(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_creation_address_invalid_characters", p1)
+  }
+  /// Your progress will be lost.
+  public static var spacesCreationCancelMessage: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_cancel_message") 
+  }
+  /// Stop creating a space?
+  public static var spacesCreationCancelTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_cancel_title") 
+  }
+  /// Email
+  public static var spacesCreationEmailInvitesEmailTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_email_invites_email_title") 
+  }
+  /// You can invite them later too.
+  public static var spacesCreationEmailInvitesMessage: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_email_invites_message") 
+  }
+  /// Invite your team
+  public static var spacesCreationEmailInvitesTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_email_invites_title") 
+  }
+  /// Name required
+  public static var spacesCreationEmptyRoomNameError: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_empty_room_name_error") 
+  }
+  /// You can change this later
+  public static var spacesCreationFooter: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_footer") 
+  }
+  /// Spaces are a new way to group rooms and people.
+  public static var spacesCreationHint: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_hint") 
+  }
+  /// in %@ spaces
+  public static func spacesCreationInManySpaces(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_creation_in_many_spaces", p1)
+  }
+  /// in 1 space
+  public static var spacesCreationInOneSpace: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_in_one_space") 
+  }
+  /// in %@
+  public static func spacesCreationInSpacename(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_creation_in_spacename", p1)
+  }
+  /// in %@ + %@ spaces
+  public static func spacesCreationInSpacenamePlusMany(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_creation_in_spacename_plus_many", p1, p2)
+  }
+  /// in %@ + 1 space
+  public static func spacesCreationInSpacenamePlusOne(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_creation_in_spacename_plus_one", p1)
+  }
+  /// Invite by username
+  public static var spacesCreationInviteByUsername: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_invite_by_username") 
+  }
+  /// You can invite them later too.
+  public static var spacesCreationInviteByUsernameMessage: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_invite_by_username_message") 
+  }
+  /// Invite your team
+  public static var spacesCreationInviteByUsernameTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_invite_by_username_title") 
+  }
+  /// General
+  public static var spacesCreationNewRoomsGeneral: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_new_rooms_general") 
+  }
+  /// We’ll create a room for each one.
+  public static var spacesCreationNewRoomsMessage: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_new_rooms_message") 
+  }
+  /// Random
+  public static var spacesCreationNewRoomsRandom: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_new_rooms_random") 
+  }
+  /// Room name
+  public static var spacesCreationNewRoomsRoomNameTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_new_rooms_room_name_title") 
+  }
+  /// Support
+  public static var spacesCreationNewRoomsSupport: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_new_rooms_support") 
+  }
+  /// What are some discussions you’ll have?
+  public static var spacesCreationNewRoomsTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_new_rooms_title") 
+  }
+  /// Adding %@ rooms
+  public static func spacesCreationPostProcessAddingRooms(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_creation_post_process_adding_rooms", p1)
+  }
+  /// Creating %@
+  public static func spacesCreationPostProcessCreatingRoom(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_creation_post_process_creating_room", p1)
+  }
+  /// Creating space
+  public static var spacesCreationPostProcessCreatingSpace: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_post_process_creating_space") 
+  }
+  /// Creating %@
+  public static func spacesCreationPostProcessCreatingSpaceTask(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_creation_post_process_creating_space_task", p1)
+  }
+  /// Inviting %@ users
+  public static func spacesCreationPostProcessInvitingUsers(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_creation_post_process_inviting_users", p1)
+  }
+  /// Uploading avatar
+  public static var spacesCreationPostProcessUploadingAvatar: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_post_process_uploading_avatar") 
+  }
+  /// Your private space
+  public static var spacesCreationPrivateSpaceTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_private_space_title") 
+  }
+  /// Your public space
+  public static var spacesCreationPublicSpaceTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_public_space_title") 
+  }
+  /// Add some details to help it stand out. You can change these at any point.
+  public static var spacesCreationSettingsMessage: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_settings_message") 
+  }
+  /// A private space to organise your rooms
+  public static var spacesCreationSharingTypeJustMeDetail: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_sharing_type_just_me_detail") 
+  }
+  /// Just me
+  public static var spacesCreationSharingTypeJustMeTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_sharing_type_just_me_title") 
+  }
+  /// A private space for you & your teammates
+  public static var spacesCreationSharingTypeMeAndTeammatesDetail: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_sharing_type_me_and_teammates_detail") 
+  }
+  /// Me and teammates
+  public static var spacesCreationSharingTypeMeAndTeammatesTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_sharing_type_me_and_teammates_title") 
+  }
+  /// Make sure the right people have access %@. You can change this later.
+  public static func spacesCreationSharingTypeMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_creation_sharing_type_message", p1)
+  }
+  /// Who are you working with?
+  public static var spacesCreationSharingTypeTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_sharing_type_title") 
+  }
+  /// To join an existing space, you need an invite.
+  public static var spacesCreationVisibilityMessage: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_visibility_message") 
+  }
+  /// What type of space do you want to create?
+  public static var spacesCreationVisibilityTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_visibility_title") 
   }
   /// Some rooms may be hidden because they’re private and you need an invite.
   public static var spacesEmptySpaceDetail: String { 
@@ -7003,9 +7423,21 @@ public class VectorL10n: NSObject {
   public static var spacesExploreRooms: String { 
     return VectorL10n.tr("Vector", "spaces_explore_rooms") 
   }
+  /// 1 room
+  public static var spacesExploreRoomsOneRoom: String { 
+    return VectorL10n.tr("Vector", "spaces_explore_rooms_one_room") 
+  }
+  /// %@ rooms
+  public static func spacesExploreRoomsRoomNumber(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_explore_rooms_room_number", p1)
+  }
   /// Home
   public static var spacesHomeSpaceTitle: String { 
     return VectorL10n.tr("Vector", "spaces_home_space_title") 
+  }
+  /// Invite people
+  public static var spacesInvitePeople: String { 
+    return VectorL10n.tr("Vector", "spaces_invite_people") 
   }
   /// Invites coming soon
   public static var spacesInvitesComingSoonTitle: String { 
@@ -7091,6 +7523,10 @@ public class VectorL10n: NSObject {
   public static var startVoiceCall: String { 
     return VectorL10n.tr("Vector", "start_voice_call") 
   }
+  /// Stop
+  public static var stop: String { 
+    return VectorL10n.tr("Vector", "stop") 
+  }
   /// Element is a new type of messenger and collaboration app that:\n\n1. Puts you in control to preserve your privacy\n2. Lets you communicate with anyone in the Matrix network, and even beyond by integrating with apps such as Slack\n3. Protects you from advertising, datamining, backdoors and walled gardens\n4. Secures you through end-to-end encryption, with cross-signing to verify others\n\nElement is completely different from other messaging and collaboration apps because it is decentralised and open source.\n\nElement lets you self-host - or choose a host - so that you have privacy, ownership and control of your data and conversations. It gives you access to an open network; so you’re not just stuck speaking to other Element users only. And it is very secure.\n\nElement is able to do all this because it operates on Matrix - the standard for open, decentralised communication. \n\nElement puts you in control by letting you choose who hosts your conversations. From the Element app, you can choose to host in different ways:\n\n1. Get a free account on the matrix.org public server\n2. Self-host your account by running a server on your own hardware\n3. Sign up for an account on a custom server by simply subscribing to the Element Matrix Services hosting platform\n\nWhy choose Element?\n\nOWN YOUR DATA: You decide where to keep your data and messages. You own it and control it, not some MEGACORP that mines your data or gives access to third parties.\n\nOPEN MESSAGING AND COLLABORATION: You can chat with anyone else in the Matrix network, whether they’re using Element or another Matrix app, and even if they are using a different messaging system of the likes of Slack, IRC or XMPP.\n\nSUPER-SECURE: Real end-to-end encryption (only those in the conversation can decrypt messages), and cross-signing to verify the devices of conversation participants.\n\nCOMPLETE COMMUNICATION: Messaging, voice and video calls, file sharing, screen sharing and a whole bunch of integrations, bots and widgets. Build rooms, communities, stay in touch and get things done.\n\nEVERYWHERE YOU ARE: Stay in touch wherever you are with fully synchronised message history across all your devices and on the web at https://element.io/app.
   public static var storeFullDescription: String { 
     return VectorL10n.tr("Vector", "store_full_description") 
@@ -7110,6 +7546,10 @@ public class VectorL10n: NSObject {
   /// Submit code
   public static var submitCode: String { 
     return VectorL10n.tr("Vector", "submit_code") 
+  }
+  /// Suggest
+  public static var suggest: String { 
+    return VectorL10n.tr("Vector", "suggest") 
   }
   /// Switch
   public static var `switch`: String { 

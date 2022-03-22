@@ -28,6 +28,11 @@ protocol EnterNewRoomDetailsViewModelCoordinatorDelegate: AnyObject {
     func enterNewRoomDetailsViewModelDidCancel(_ viewModel: EnterNewRoomDetailsViewModelType)
 }
 
+enum EnterNewRoomActionType {
+    case createOnly
+    case createAndAddToSpace
+}
+
 /// Protocol describing the view model used by `EnterNewRoomDetailsViewController`
 protocol EnterNewRoomDetailsViewModelType {        
         
@@ -39,4 +44,6 @@ protocol EnterNewRoomDetailsViewModelType {
     var roomCreationParameters: RoomCreationParameters { get set }
     
     var viewState: EnterNewRoomDetailsViewState { get }
+    
+    var actionType: EnterNewRoomActionType { get }
 }

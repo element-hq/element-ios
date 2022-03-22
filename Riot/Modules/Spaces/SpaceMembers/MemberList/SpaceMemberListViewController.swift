@@ -35,20 +35,16 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
     private var titleView: MainTitleView!
-    private var emptyView: SearchEmptyView!
+    private let inviteHeaderView = AddItemHeaderView.instantiate(title: VectorL10n.spacesInvitePeople, icon: Asset.Images.spaceInviteUser.image)
 
-    private var emptyViewArtwork: UIImage {
-        return ThemeService.shared().isCurrentThemeDark() ? Asset.Images.peopleEmptyScreenArtworkDark.image : Asset.Images.peopleEmptyScreenArtwork.image
-    }
-    
     // MARK: - Setup
     
     class func instantiate(with viewModel: SpaceMemberListViewModelType) -> SpaceMemberListViewController {
         let viewController = SpaceMemberListViewController()
         viewController.viewModel = viewModel
         viewController.showParticipantCustomAccessoryView = false
+        viewController.showInviteUserFab = false
         viewController.theme = ThemeService.shared().theme
-        viewController.emptyView = SearchEmptyView()
         return viewController
     }
     
@@ -71,12 +67,15 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
         self.viewModel.process(viewAction: .loadData)
         
         self.title = ""
+        
+        self.setupTableViewHeader()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         AnalyticsScreenTracker.trackScreen(.spaceMembers)
+        Analytics.shared.exploringSpace = viewModel.space
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -84,7 +83,12 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
     }
     
     // MARK: - Private
-    
+
+    private func setupTableViewHeader() {
+        inviteHeaderView.delegate = self
+        tableView.tableHeaderView = inviteHeaderView
+    }
+
     private func update(theme: Theme) {
         self.theme = theme
         
@@ -96,7 +100,8 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
         
         theme.applyStyle(onSearchBar: self.searchBarView)
         self.titleView.update(theme: theme)
-        self.emptyView.update(theme: theme)
+        
+        self.inviteHeaderView.update(theme: theme)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -112,16 +117,11 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
             self?.cancelButtonAction()
         }
         
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+        self.navigationItem.leftBarButtonItem = cancelBarButtonItem
         
         self.titleView = MainTitleView()
         self.titleView.titleLabel.text = VectorL10n.roomDetailsPeople
         self.navigationItem.titleView = self.titleView
-        
-        self.emptyView.frame = CGRect(x: Constants.emptySearchViewMargin, y: self.searchBarView.frame.maxY + 2 * Constants.emptySearchViewMargin, width: self.view.bounds.width - 2 * Constants.emptySearchViewMargin, height: 0)
-        self.emptyView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        self.emptyView.alpha = 0
-        self.view.insertSubview(self.emptyView, at: 0)
     }
 
     private func render(viewState: SpaceMemberListViewState) {
@@ -143,9 +143,6 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.mxRoom = space.room
         self.titleView.subtitleLabel.text = space.summary?.displayname
-        self.emptyView.titleLabel.text = VectorL10n.spacesNoResultFoundTitle
-        self.emptyView.detailLabel.text = VectorL10n.spacesNoMemberFoundDetail(space.summary?.displayname ?? "")
-        self.emptyView.layoutIfNeeded()
     }
     
     private func render(error: Error) {
@@ -160,7 +157,7 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
     // MARK: - Actions
 
     @objc private func onAddParticipantButtonPressed() {
-        self.errorPresenter.presentError(from: self, title: VectorL10n.spacesInvitesComingSoonTitle, message: VectorL10n.spacesComingSoonDetail(AppInfo.current.displayName), animated: true, handler: nil)
+        self.viewModel.process(viewAction: .invite)
     }
     
     private func cancelButtonAction() {
@@ -179,11 +176,6 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
     
     override func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         super.searchBar(searchBar, textDidChange: searchText)
-        
-        UIView.animate(withDuration: 0.2) {
-            self.emptyView.alpha = self.tableView.numberOfSections == 0 ? 1 : 0
-            self.tableView.alpha = self.tableView.numberOfSections == 0 ? 0 : 1
-        }
     }
     
     // MARK: - MXKRoomMemberDetailsViewControllerDelegate
@@ -204,5 +196,12 @@ extension SpaceMemberListViewController: SpaceMemberListViewModelViewDelegate {
 
     func spaceMemberListViewModel(_ viewModel: SpaceMemberListViewModelType, didUpdateViewState viewSate: SpaceMemberListViewState) {
         self.render(viewState: viewSate)
+    }
+}
+
+// MARK: - SpaceMemberListViewModelViewDelegate
+extension SpaceMemberListViewController: AddItemHeaderViewDelegate {
+    func addItemHeaderView(_ headerView: AddItemHeaderView, didTapButton button: UIButton) {
+        self.viewModel.process(viewAction: .invite)
     }
 }

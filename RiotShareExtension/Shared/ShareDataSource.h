@@ -31,7 +31,7 @@
 @property (nonatomic, strong, readonly) NSSet<NSString *> *selectedRoomIdentifiers;
 
 - (instancetype)initWithFileStore:(MXFileStore *)fileStore
-                      credentials:(MXCredentials *)credentials;
+                          session:(MXSession *)session;
 
 - (void)selectRoomWithIdentifier:(NSString *)roomIdentifier animated:(BOOL)animated;
 

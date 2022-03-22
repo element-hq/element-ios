@@ -85,6 +85,11 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 @property (nonatomic) BOOL showMissedDiscussionsBadge;
 
 /**
+ ID of the parent space. `nil` for home space.
+ */
+@property (nonatomic, nullable) NSString *parentSpaceId;
+
+/**
  Display the preview of a room that is unknown for the user.
 
  This room can come from an email invitation link or a simple link to a room.
@@ -92,6 +97,11 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
  @param roomPreviewData the data for the room preview.
  */
 - (void)displayRoomPreview:(RoomPreviewData*)roomPreviewData;
+
+/**
+ If `YES`, the room settings screen will be initially displayed. Default `NO`
+ */
+@property (nonatomic) BOOL showSettingsInitially;
 
 /**
  Action used to handle some buttons.
@@ -150,6 +160,15 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 - (void)roomViewController:(RoomViewController *)roomViewController
             showRoomWithId:(NSString *)roomID
                    eventId:(nullable NSString *)eventID;
+
+/**
+ Tells the delegate that the room has replaced by a room with a specific replacement room ID.
+ 
+ @param roomViewController the `RoomViewController` instance.
+ @param roomID the replacement roomId
+ */
+- (void)roomViewController:(RoomViewController *)roomViewController
+didReplaceRoomWithReplacementId:(NSString *)roomID;
 
 /**
  Tells the delegate that the user wants to start a direct chat with a user.
@@ -257,6 +276,12 @@ didRequestEditForPollWithStartEvent:(MXEvent *)startEvent;
  loading indicators internally
  */
 - (void)roomViewControllerDidStopLoading:(RoomViewController *)roomViewController;
+
+/// User tap live location sharing stop action
+- (void)roomViewControllerDidStopLiveLocationSharing:(RoomViewController *)roomViewController;
+
+/// User tap live location sharing banner
+- (void)roomViewControllerDidTapLiveLocationSharingBanner:(RoomViewController *)roomViewController;
 
 @end
 

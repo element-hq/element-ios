@@ -27,6 +27,12 @@ import AVFoundation
 @objcMembers
 final class SingleImagePickerPresenter: NSObject {
     
+    // MARK: - Constants
+    
+    private enum Constants {
+        static let jpegCompressionQuality: CGFloat = 1.0
+    }
+    
     // MARK: - Properties
     
     // MARK: Private
@@ -117,8 +123,10 @@ final class SingleImagePickerPresenter: NSObject {
 // MARK: - CameraPresenterDelegate
 extension SingleImagePickerPresenter: CameraPresenterDelegate {
     
-    func cameraPresenter(_ cameraPresenter: CameraPresenter, didSelectImageData imageData: Data, withUTI uti: MXKUTI?) {
-        self.delegate?.singleImagePickerPresenter(self, didSelectImageData: imageData, withUTI: uti)
+    func cameraPresenter(_ cameraPresenter: CameraPresenter, didSelectImage image: UIImage) {
+        if let imageData = image.jpegData(compressionQuality: Constants.jpegCompressionQuality) {
+            self.delegate?.singleImagePickerPresenter(self, didSelectImageData: imageData, withUTI: MXKUTI.jpeg)
+        }
     }
     
     func cameraPresenterDidCancel(_ cameraPresenter: CameraPresenter) {

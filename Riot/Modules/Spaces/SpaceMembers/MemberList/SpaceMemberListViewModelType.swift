@@ -25,6 +25,7 @@ protocol SpaceMemberListViewModelViewDelegate: AnyObject {
 protocol SpaceMemberListViewModelCoordinatorDelegate: AnyObject {
     func spaceMemberListViewModel(_ viewModel: SpaceMemberListViewModelType, didSelect member: MXRoomMember, from sourceView: UIView?)
     func spaceMemberListViewModelDidCancel(_ viewModel: SpaceMemberListViewModelType)
+    func spaceMemberListViewModelShowInvite(_ viewModel: SpaceMemberListViewModelType)
 }
 
 /// Protocol describing the view model used by `SpaceMemberListViewController`
@@ -32,6 +33,7 @@ protocol SpaceMemberListViewModelType {
         
     var viewDelegate: SpaceMemberListViewModelViewDelegate? { get set }
     var coordinatorDelegate: SpaceMemberListViewModelCoordinatorDelegate? { get set }
+    var space: MXSpace? { get }
     
     func process(viewAction: SpaceMemberListViewAction)
 }

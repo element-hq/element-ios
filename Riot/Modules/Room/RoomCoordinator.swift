@@ -80,8 +80,11 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         } else {
             self.roomViewController = RoomViewController.instantiate(with: parameters.displayConfiguration)
         }
+        self.roomViewController.showSettingsInitially = parameters.showSettingsInitially
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         
+        self.roomViewController.parentSpaceId = parameters.parentSpaceId
+
         if #available(iOS 14, *) {
             TimelinePollProvider.shared.session = parameters.session
         }
@@ -365,6 +368,10 @@ extension RoomCoordinator: RoomViewControllerDelegate {
         self.delegate?.roomCoordinator(self, didSelectRoomWithId: roomID, eventId: eventID)
     }
     
+    func roomViewController(_ roomViewController: RoomViewController, didReplaceRoomWithReplacementId roomID: String) {
+        self.delegate?.roomCoordinator(self, didReplaceRoomWithReplacementId: roomID)
+    }
+    
     func roomViewController(_ roomViewController: RoomViewController, showMemberDetails roomMember: MXRoomMember) {
         // TODO:
     }
@@ -451,5 +458,13 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     
     func roomViewControllerDidStopLoading(_ roomViewController: RoomViewController) {
         stopLoading()
+    }
+    
+    func roomViewControllerDidTapLiveLocationSharingBanner(_ roomViewController: RoomViewController) {
+        // TODO:
+    }
+    
+    func roomViewControllerDidStopLiveLocationSharing(_ roomViewController: RoomViewController) {
+        // TODO:
     }
 }

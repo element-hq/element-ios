@@ -16,13 +16,14 @@
 
 import SwiftUI
 
+@available(iOS 14.0, *)
 final class OnboardingUseCaseSelectionCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties
     
     // MARK: Private
     
-    private let onboardingUseCaseHostingController: UIViewController
+    private let onboardingUseCaseHostingController: VectorHostingController
     private var onboardingUseCaseViewModel: OnboardingUseCaseViewModelProtocol
     
     // MARK: Public
@@ -33,16 +34,14 @@ final class OnboardingUseCaseSelectionCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init() {
         let viewModel = OnboardingUseCaseViewModel()
         let view = OnboardingUseCaseSelectionScreen(viewModel: viewModel.context)
         onboardingUseCaseViewModel = viewModel
         
-        let hostingController = VectorHostingController(rootView: view)
-        hostingController.vc_removeBackTitle()
-        hostingController.enableNavigationBarScrollEdgesAppearance = true
-        onboardingUseCaseHostingController = hostingController
+        onboardingUseCaseHostingController = VectorHostingController(rootView: view)
+        onboardingUseCaseHostingController.vc_removeBackTitle()
+        onboardingUseCaseHostingController.enableNavigationBarScrollEdgeAppearance = true
     }
     
     // MARK: - Public

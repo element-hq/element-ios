@@ -13,7 +13,6 @@
             <connections>
                 <outlet property="bubblesTableView" destination="BGD-sd-SQR" id="OG4-Tw-Ovt"/>
                 <outlet property="bubblesTableViewBottomConstraint" destination="1SD-y2-oTg" id="n8D-hT-eqt"/>
-                <outlet property="bubblesTableViewTopConstraint" destination="bFw-dg-qEr" id="KxM-H0-h2y"/>
                 <outlet property="inputBackgroundView" destination="Xt7-83-dQh" id="xoG-eb-zFB"/>
                 <outlet property="jumpToLastUnreadBanner" destination="S6r-bo-jxw" id="FSS-Be-E15"/>
                 <outlet property="jumpToLastUnreadBannerContainer" destination="S6H-Az-RCM" id="YlI-fu-OpT"/>
@@ -32,6 +31,7 @@
                 <outlet property="roomInputToolbarContainerHeightConstraint" destination="5eD-Fm-RDb" id="6ny-5w-1UA"/>
                 <outlet property="scrollToBottomBadgeLabel" destination="QHs-rM-UU8" id="wk7-PQ-9Jm"/>
                 <outlet property="scrollToBottomButton" destination="Ih9-EU-BOU" id="Wwg-gS-Sfp"/>
+                <outlet property="topBannersStackView" destination="3z2-8P-wlg" id="uf5-gw-zWi"/>
                 <outlet property="userSuggestionContainerView" destination="oni-F4-X1U" id="0js-Ji-8Mm"/>
                 <outlet property="view" destination="iN0-l3-epB" id="ieV-u7-rXU"/>
             </connections>
@@ -41,8 +41,25 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="BGD-sd-SQR">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="626"/>
+                <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="3z2-8P-wlg">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="20.5"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hIS-uE-jlE">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="20.5"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <variation key="default">
+                        <mask key="subviews">
+                            <exclude reference="hIS-uE-jlE"/>
+                        </mask>
+                    </variation>
+                </stackView>
+                <tableView contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" keyboardDismissMode="interactive" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="BGD-sd-SQR">
+                    <rect key="frame" x="0.0" y="20.5" width="375" height="605.5"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="RoomVCBubblesTableView"/>
@@ -192,6 +209,7 @@
                 <constraint firstItem="54r-18-K1g" firstAttribute="top" secondItem="QpJ-1u-4ii" secondAttribute="top" id="7Ft-EV-Br0"/>
                 <constraint firstItem="gt1-EO-UVY" firstAttribute="leading" secondItem="QpJ-1u-4ii" secondAttribute="leading" id="8Ff-Ot-h3F"/>
                 <constraint firstItem="Xt7-83-dQh" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="9g2-wm-4M9"/>
+                <constraint firstItem="3z2-8P-wlg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="AN6-Eq-Po9"/>
                 <constraint firstItem="fmF-ad-erE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="DtG-PR-F24"/>
                 <constraint firstItem="BGD-sd-SQR" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="ECb-mP-EOG"/>
                 <constraint firstAttribute="trailing" secondItem="BGD-sd-SQR" secondAttribute="trailing" id="EGD-cX-OGq"/>
@@ -200,17 +218,19 @@
                 <constraint firstItem="QHs-rM-UU8" firstAttribute="centerX" secondItem="Ih9-EU-BOU" secondAttribute="centerX" id="K8X-wJ-hkh"/>
                 <constraint firstItem="QHs-rM-UU8" firstAttribute="centerY" secondItem="Ih9-EU-BOU" secondAttribute="top" id="KL4-OU-cP6"/>
                 <constraint firstItem="gt1-EO-UVY" firstAttribute="trailing" secondItem="QpJ-1u-4ii" secondAttribute="trailing" id="L9A-P5-xeT"/>
+                <constraint firstItem="3z2-8P-wlg" firstAttribute="top" secondItem="QpJ-1u-4ii" secondAttribute="top" id="Nyp-Yf-EfD"/>
                 <constraint firstItem="XX4-n6-hCm" firstAttribute="leading" secondItem="QpJ-1u-4ii" secondAttribute="leading" id="Os4-cU-eQb"/>
                 <constraint firstItem="XX4-n6-hCm" firstAttribute="bottom" secondItem="nLd-BP-JAE" secondAttribute="top" id="QO8-nF-xys"/>
+                <constraint firstAttribute="trailing" secondItem="3z2-8P-wlg" secondAttribute="trailing" id="QPT-D1-rPy"/>
                 <constraint firstItem="nLd-BP-JAE" firstAttribute="leading" secondItem="QpJ-1u-4ii" secondAttribute="leading" id="T1Y-r9-bYV"/>
                 <constraint firstItem="XX4-n6-hCm" firstAttribute="trailing" secondItem="QpJ-1u-4ii" secondAttribute="trailing" id="Tij-mR-KZp"/>
                 <constraint firstItem="gt1-EO-UVY" firstAttribute="top" secondItem="QpJ-1u-4ii" secondAttribute="top" id="YfN-0Z-0bc"/>
                 <constraint firstItem="54r-18-K1g" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="aR5-rp-1Cp"/>
                 <constraint firstItem="gt1-EO-UVY" firstAttribute="bottom" secondItem="nLd-BP-JAE" secondAttribute="bottom" id="acJ-g8-R7x"/>
                 <constraint firstItem="nLd-BP-JAE" firstAttribute="top" secondItem="oni-F4-X1U" secondAttribute="bottom" id="ave-fu-X1D"/>
-                <constraint firstItem="BGD-sd-SQR" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="bFw-dg-qEr"/>
                 <constraint firstItem="oni-F4-X1U" firstAttribute="top" relation="greaterThanOrEqual" secondItem="QpJ-1u-4ii" secondAttribute="top" id="hzP-Ee-xzI"/>
                 <constraint firstItem="oni-F4-X1U" firstAttribute="leading" secondItem="QpJ-1u-4ii" secondAttribute="leading" id="k83-dd-hdL"/>
+                <constraint firstItem="BGD-sd-SQR" firstAttribute="top" secondItem="3z2-8P-wlg" secondAttribute="bottom" id="lqZ-Cq-40f"/>
                 <constraint firstAttribute="bottom" secondItem="nLd-BP-JAE" secondAttribute="bottom" id="omU-sm-3bK"/>
                 <constraint firstItem="nLd-BP-JAE" firstAttribute="trailing" secondItem="QpJ-1u-4ii" secondAttribute="trailing" id="pRw-S0-6WL"/>
                 <constraint firstItem="fmF-ad-erE" firstAttribute="top" secondItem="QpJ-1u-4ii" secondAttribute="top" id="qYq-nb-cu5"/>

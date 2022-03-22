@@ -26,11 +26,13 @@ class VectorHostingController: UIHostingController<AnyView> {
     
     // MARK: Private
     
+    var isNavigationBarHidden: Bool = false
+    var hidesBackTitleWhenPushed: Bool = false
     private var theme: Theme
     
     // MARK: Public
     
-    var enableNavigationBarScrollEdgesAppearance = false
+    var enableNavigationBarScrollEdgeAppearance = false
     
     init<Content>(rootView: Content) where Content: View {
         self.theme = ThemeService.shared().theme
@@ -52,6 +54,26 @@ class VectorHostingController: UIHostingController<AnyView> {
         self.update(theme: self.theme)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if isNavigationBarHidden {
+            self.navigationController?.isNavigationBarHidden = true
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if hidesBackTitleWhenPushed {
+            vc_removeBackTitle()
+        }
+        
+        if navigationController?.isNavigationBarHidden ?? false {
+            navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        }
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
     
@@ -71,7 +93,7 @@ class VectorHostingController: UIHostingController<AnyView> {
     
     private func update(theme: Theme) {
         if let navigationBar = self.navigationController?.navigationBar {
-            theme.applyStyle(onNavigationBar: navigationBar, withModernScrollEdgesAppearance: enableNavigationBarScrollEdgesAppearance)
+            theme.applyStyle(onNavigationBar: navigationBar, withModernScrollEdgeAppearance: enableNavigationBarScrollEdgeAppearance)
         }
     }
 }

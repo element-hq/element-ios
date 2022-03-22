@@ -47,6 +47,7 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     // MARK: Private
 
     private var viewModel: KeyVerificationSelfVerifyWaitViewModelType!
+    private var cancellable: Bool!
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
@@ -55,9 +56,10 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
 
     // MARK: - Setup
     
-    class func instantiate(with viewModel: KeyVerificationSelfVerifyWaitViewModelType) -> KeyVerificationSelfVerifyWaitViewController {
+    class func instantiate(with viewModel: KeyVerificationSelfVerifyWaitViewModelType, cancellable: Bool) -> KeyVerificationSelfVerifyWaitViewController {
         let viewController = StoryboardScene.KeyVerificationSelfVerifyWaitViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
+        viewController.cancellable = cancellable
         viewController.theme = ThemeService.shared().theme
         return viewController
     }
@@ -112,14 +114,16 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     }
     
     private func setupViews() {
-        let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.skip, style: .plain) { [weak self] in
-            self?.cancelButtonAction()
+        if self.cancellable {
+            let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.skip, style: .plain) { [weak self] in
+                self?.cancelButtonAction()
+            }
+
+            self.vc_removeBackTitle()
+
+            self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+            self.cancelBarButtonItem = cancelBarButtonItem
         }
-        
-        self.vc_removeBackTitle()
-        
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
-        self.cancelBarButtonItem = cancelBarButtonItem
         
         self.title = VectorL10n.deviceVerificationSelfVerifyWaitTitle
         

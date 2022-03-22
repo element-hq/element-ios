@@ -118,7 +118,7 @@ final class UserVerificationCoordinator: NSObject, UserVerificationCoordinatorTy
     
     private func presentDeviceVerification(for deviceId: String) {
         
-        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .verifyDevice(userId: self.userId, deviceId: deviceId), navigationRouter: self.navigationRouter)
+        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .verifyDevice(userId: self.userId, deviceId: deviceId), navigationRouter: self.navigationRouter, cancellable: true)
         keyVerificationCoordinator.delegate = self
         keyVerificationCoordinator.start()
         

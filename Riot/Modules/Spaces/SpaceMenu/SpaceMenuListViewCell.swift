@@ -23,6 +23,8 @@ class SpaceMenuListViewCell: UITableViewCell, SpaceMenuCell, NibReusable {
     
     @IBOutlet private weak var iconView: UIImageView!
     @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var betaView: UIView!
+    @IBOutlet private weak var betaLabel: UILabel!
     @IBOutlet private weak var selectionView: UIView!
 
     // MARK: - Private
@@ -64,6 +66,10 @@ class SpaceMenuListViewCell: UITableViewCell, SpaceMenuCell, NibReusable {
             self.titleLabel.textColor = theme.colors.primaryContent
             self.iconView.tintColor = theme.colors.secondaryContent
         }
+        
+        self.betaView.layer.masksToBounds = true
+        self.betaView.layer.cornerRadius = 4
+        self.betaView.isHidden = !viewData.isBeta
     }
     
     func update(theme: Theme) {
@@ -73,5 +79,8 @@ class SpaceMenuListViewCell: UITableViewCell, SpaceMenuCell, NibReusable {
         self.titleLabel.textColor = theme.colors.primaryContent
         self.titleLabel.font = theme.fonts.body
         self.selectionView.backgroundColor = theme.colors.separator
+        self.betaLabel.font = theme.fonts.caption2SB
+        self.betaLabel.textColor = theme.colors.secondaryContent
+        self.betaView.backgroundColor = theme.colors.quinaryContent
     }
 }

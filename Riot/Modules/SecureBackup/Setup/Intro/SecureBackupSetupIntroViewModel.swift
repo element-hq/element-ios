@@ -23,11 +23,13 @@ final class SecureBackupSetupIntroViewModel: SecureBackupSetupIntroViewModelType
     // TODO: Make these properties private
     let keyBackup: MXKeyBackup?
     let checkKeyBackup: Bool
+    let homeserverEncryptionConfiguration: HomeserverEncryptionConfiguration
     
     // MARK: - Setup
     
-    init(keyBackup: MXKeyBackup?, checkKeyBackup: Bool) {
+    init(keyBackup: MXKeyBackup?, checkKeyBackup: Bool, homeserverEncryptionConfiguration: HomeserverEncryptionConfiguration) {
         self.keyBackup = keyBackup
         self.checkKeyBackup = checkKeyBackup
-    }    
+        self.homeserverEncryptionConfiguration = homeserverEncryptionConfiguration
+    }
 }

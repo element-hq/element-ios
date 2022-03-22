@@ -563,6 +563,7 @@ CallAudioRouteMenuViewDelegate>
                 if (self.mxCall.room)
                 {
                     // Open the room page
+                    Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerInCall;
                     [[AppDelegate theDelegate] showRoom:self.mxCall.room.roomId andEventId:nil withMatrixSession:self.mxCall.room.mxSession];
                 }
                 

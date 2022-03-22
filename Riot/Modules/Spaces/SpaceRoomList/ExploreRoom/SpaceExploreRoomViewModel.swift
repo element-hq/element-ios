@@ -17,6 +17,7 @@
  */
 
 import Foundation
+import MatrixSDK
 
 final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
     
@@ -32,6 +33,16 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
     private var nextBatch: String?
     private var rootSpaceChildInfo: MXSpaceChildInfo?
     
+    private var spaceRoom: MXRoom?
+    private var powerLevels: MXRoomPowerLevels?
+    private var powerLevelOfCurrentUser: Int?
+
+    private var canJoin: Bool = false {
+        didSet {
+            self.update(viewState: .canJoin(self.canJoin))
+        }
+    }
+
     private var itemDataList: [SpaceExploreRoomListItemViewData] = [] {
         didSet {
             self.updateFilteredItemList()
@@ -51,22 +62,32 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
                     self.update(viewState: .emptyFilterResult)
                 }
             } else {
-                self.update(viewState: .loaded(self.filteredItemDataList, self.nextBatch != nil && (self.searchKeyword ?? "").isEmpty))
+                self.update(viewState: .loaded(self.filteredItemDataList, self.hasMore))
             }
         }
+    }
+    private var hasMore: Bool {
+        self.nextBatch != nil && (self.searchKeyword ?? "").isEmpty
+    }
+    
+    private var spaceGraphObserver: Any?
+    var space: MXSpace? {
+        return session.spaceService.getSpace(withId: spaceId)
     }
     
     // MARK: Public
 
     weak var viewDelegate: SpaceExploreRoomViewModelViewDelegate?
     weak var coordinatorDelegate: SpaceExploreRoomViewModelCoordinatorDelegate?
-    
+    private(set) var showCancelMenuItem: Bool
+
     // MARK: - Setup
     
     init(parameters: SpaceExploreRoomCoordinatorParameters) {
         self.session = parameters.session
         self.spaceId = parameters.spaceId
         self.spaceName = parameters.spaceName
+        self.showCancelMenuItem = parameters.showCancelMenuItem
     }
     
     deinit {
@@ -79,6 +100,9 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
         switch viewAction {
         case .loadData:
             self.loadData()
+        case .reloadData:
+            self.nextBatch = nil
+            self.loadData()
         case .complete(let selectedItem, let sourceView):
             self.coordinatorDelegate?.spaceExploreRoomViewModel(self, didSelect: selectedItem, from: sourceView)
         case .cancel:
@@ -86,9 +110,43 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
             self.coordinatorDelegate?.spaceExploreRoomViewModelDidCancel(self)
         case .searchChanged(let newText):
             self.searchKeyword = newText
+        case .addRoom:
+            self.coordinatorDelegate?.spaceExploreRoomViewModelDidAddRoom(self)
+        case .inviteTo(let item):
+            self.coordinatorDelegate?.spaceExploreRoomViewModel(self, inviteTo: item)
+        case .revertSuggestion(let item):
+            setChild(withRoomId: item.childInfo.childRoomId, suggested: !item.childInfo.suggested)
+        case .settings(let item):
+            self.coordinatorDelegate?.spaceExploreRoomViewModel(self, openSettingsOf: item)
+        case .removeChild(let item):
+            removeChild(withRoomId: item.childInfo.childRoomId)
+        case .join(let item):
+            joinRoom(with: item)
+        case .joinOpenedSpace:
+            self.joinSpace()
         }
     }
     
+    @available(iOS 13.0, *)
+    func contextMenu(for itemData: SpaceExploreRoomListItemViewData) -> UIMenu {
+        let canSendSpaceStateEvents: Bool
+        if let powerLevels = self.powerLevels, let powerLevelOfCurrentUser = self.powerLevelOfCurrentUser {
+            let minimumPowerLevel = powerLevels.minimumPowerLevel(forNotifications: kMXEventTypeStringRoomJoinRules, defaultPower: powerLevels.stateDefault)
+            canSendSpaceStateEvents = powerLevelOfCurrentUser >= minimumPowerLevel
+        } else {
+            canSendSpaceStateEvents = false
+        }
+        
+        let roomSummary = session.room(withRoomId: itemData.childInfo.childRoomId)?.summary
+        let isJoined = roomSummary?.isJoined ?? false
+
+        if itemData.childInfo.roomType == .space {
+            return contextMenu(forSpace: itemData, isJoined: isJoined, canSendSpaceStateEvents: canSendSpaceStateEvents)
+        } else {
+            return contextMenu(forRoom: itemData, isJoined: isJoined, canSendSpaceStateEvents: canSendSpaceStateEvents)
+        }
+    }
+
     // MARK: - Private
     
     private func loadData() {
@@ -104,6 +162,17 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
             self.update(viewState: .loading)
         }
         
+        self.spaceRoom = self.session.spaceService.getSpace(withId: self.spaceId)?.room
+        if let spaceRoom = self.spaceRoom {
+            spaceRoom.state { roomState in
+                self.powerLevels = roomState?.powerLevels
+                self.powerLevelOfCurrentUser = self.powerLevels?.powerLevelOfUser(withUserID: self.session.myUserId)
+                
+            }
+        }
+
+        self.canJoin = self.session.room(withRoomId: spaceId) == nil
+        
         self.currentOperation = self.session.spaceService.getSpaceChildrenForSpace(withId: self.spaceId, suggestedOnly: false, limit: nil, maxDepth: 1, paginationToken: self.nextBatch, completion: { [weak self] response in
             guard let self = self else {
                 return
@@ -111,7 +180,9 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
             
             switch response {
             case .success(let spaceSummary):
+                let appendData = self.nextBatch != nil
                 self.nextBatch = spaceSummary.nextBatch
+                
                 // The MXSpaceChildInfo of the root space is available only in the first batch
                 if let rootSpaceInfo = spaceSummary.spaceInfo {
                     self.rootSpaceChildInfo = rootSpaceInfo
@@ -131,7 +202,12 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
                 }).sorted(by: { item1, item2 in
                     return !item2.childInfo.suggested || item1.childInfo.suggested
                 })
-                self.itemDataList.append(contentsOf: batchedItemDataList)
+                
+                if appendData {
+                    self.itemDataList.append(contentsOf: batchedItemDataList)
+                } else {
+                    self.itemDataList = batchedItemDataList
+                }
             case .failure(let error):
                 self.update(viewState: .error(error))
             }
@@ -146,6 +222,9 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
     
     private func cancelOperations() {
         self.currentOperation?.cancel()
+        if let observer = self.spaceGraphObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
     
     private func updateFilteredItemList() {
@@ -157,5 +236,178 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
         self.filteredItemDataList = self.itemDataList.filter({ itemData in
             return (itemData.childInfo.name?.lowercased().contains(searchKeyword) ?? false) || (itemData.childInfo.topic?.lowercased().contains(searchKeyword) ?? false)
         })
+    }
+    
+    private func setChild(withRoomId roomId: String, suggested: Bool) {
+        guard let space = session.spaceService.getSpace(withId: spaceId) else {
+            return
+        }
+        
+        self.update(viewState: .loading)
+        space.setChild(withRoomId: roomId, suggested: suggested) { [weak self] response in
+            guard let self = self else { return }
+            
+            switch response {
+            case .success:
+                self.itemDataList = self.itemDataList.compactMap({ item in
+                    if item.childInfo.childRoomId != roomId {
+                        return item
+                    }
+                    
+                    let childInfo = MXSpaceChildInfo(
+                        childRoomId: item.childInfo.childRoomId,
+                        isKnown: item.childInfo.isKnown,
+                        roomTypeString: item.childInfo.roomTypeString,
+                        roomType: item.childInfo.roomType,
+                        name: item.childInfo.name,
+                        topic: item.childInfo.topic,
+                        canonicalAlias: item.childInfo.canonicalAlias,
+                        avatarUrl: item.childInfo.avatarUrl,
+                        activeMemberCount: item.childInfo.activeMemberCount,
+                        autoJoin: item.childInfo.autoJoin,
+                        suggested: suggested,
+                        childrenIds: item.childInfo.childrenIds)
+                    return SpaceExploreRoomListItemViewData(childInfo: childInfo, avatarViewData: item.avatarViewData)
+                })
+                self.update(viewState: .loaded(self.filteredItemDataList, self.hasMore))
+            case .failure(let error):
+                self.update(viewState: .error(error))
+            }
+        }
+    }
+    
+    private func removeChild(withRoomId roomId: String) {
+        guard let space = session.spaceService.getSpace(withId: spaceId) else {
+            return
+        }
+        
+        self.update(viewState: .loading)
+        space.removeChild(roomId: roomId) { [weak self] response in
+            guard let self = self else { return }
+            
+            switch response {
+            case .success:
+                self.itemDataList = self.itemDataList.filter { $0.childInfo.childRoomId != roomId }
+                self.update(viewState: .loaded(self.filteredItemDataList, self.hasMore))
+            case .failure(let error):
+                self.update(viewState: .error(error))
+            }
+        }
+    }
+    
+    private func joinRoom(with itemData: SpaceExploreRoomListItemViewData) {
+        self.update(viewState: .loading)
+        self.session.joinRoom(itemData.childInfo.childRoomId) { [weak self] response in
+            guard let self = self else { return }
+            switch response {
+            case .success:
+                self.update(viewState: .loaded(self.filteredItemDataList, self.hasMore))
+                self.coordinatorDelegate?.spaceExploreRoomViewModel(self, didJoin: itemData)
+            case .failure(let error):
+                self.update(viewState: .error(error))
+            }
+        }
+    }
+
+    
+    // MARK: - ContextMenu
+    
+    @available(iOS 13.0, *)
+    private func contextMenu(forRoom itemData: SpaceExploreRoomListItemViewData, isJoined: Bool, canSendSpaceStateEvents: Bool) -> UIMenu {
+        return UIMenu(children: [
+            inviteAction(for: itemData, isJoined: isJoined),
+            suggestAction(for: itemData, canSendSpaceStateEvents: canSendSpaceStateEvents),
+            isJoined ? settingsAction(for: itemData, isJoined: isJoined) : joinAction(for: itemData, isJoined: isJoined),
+            removeAction(for: itemData, canSendSpaceStateEvents: canSendSpaceStateEvents)
+        ])
+    }
+    
+    @available(iOS 13.0, *)
+    private func contextMenu(forSpace itemData: SpaceExploreRoomListItemViewData, isJoined: Bool, canSendSpaceStateEvents: Bool) -> UIMenu {
+        return UIMenu(children: [
+            inviteAction(for: itemData, isJoined: isJoined),
+            suggestAction(for: itemData, canSendSpaceStateEvents: canSendSpaceStateEvents),
+            isJoined ? settingsAction(for: itemData, isJoined: isJoined) : joinAction(for: itemData, isJoined: isJoined),
+            removeAction(for: itemData, canSendSpaceStateEvents: canSendSpaceStateEvents)
+        ])
+    }
+    
+    @available(iOS 13.0, *)
+    private func inviteAction(for itemData: SpaceExploreRoomListItemViewData, isJoined: Bool) -> UIAction {
+        let action = UIAction(title: VectorL10n.invite, image: Asset.Images.spaceInviteUser.image) { action in
+            self.process(viewAction: .inviteTo(itemData))
+        }
+        if !isJoined {
+            action.attributes = .disabled
+        }
+        return action
+    }
+    
+    @available(iOS 13.0, *)
+    private func suggestAction(for itemData: SpaceExploreRoomListItemViewData, canSendSpaceStateEvents: Bool) -> UIAction {
+        let action = UIAction(title: itemData.childInfo.suggested ? VectorL10n.spacesSuggestedRoom : VectorL10n.suggest) { action in
+            self.process(viewAction: .revertSuggestion(itemData))
+        }
+        action.state = itemData.childInfo.suggested ? .on : .off
+        if !canSendSpaceStateEvents {
+            action.attributes = .disabled
+        }
+        return action
+    }
+    
+    @available(iOS 13.0, *)
+    private func settingsAction(for itemData: SpaceExploreRoomListItemViewData, isJoined: Bool) -> UIAction {
+        let action = UIAction(title: VectorL10n.roomDetailsSettings, image: Asset.Images.settingsIcon.image) { action in
+            self.process(viewAction: .settings(itemData))
+        }
+        if !isJoined {
+            action.attributes = .disabled
+        }
+        return action
+    }
+    
+    @available(iOS 13.0, *)
+    private func joinAction(for itemData: SpaceExploreRoomListItemViewData, isJoined: Bool) -> UIAction {
+        let action = UIAction(title: VectorL10n.join) { action in
+            self.process(viewAction: .join(itemData))
+        }
+        if isJoined {
+            action.attributes = .disabled
+        }
+        return action
+    }
+    
+    @available(iOS 13.0, *)
+    private func removeAction(for itemData: SpaceExploreRoomListItemViewData, canSendSpaceStateEvents: Bool) -> UIAction {
+        let action = UIAction(title: VectorL10n.remove, image: Asset.Images.roomContextMenuDelete.image) { action in
+            self.process(viewAction: .removeChild(itemData))
+        }
+        action.attributes = .destructive
+        if !canSendSpaceStateEvents {
+            action.attributes = .disabled
+        }
+        return action
+    }
+
+    private func joinSpace() {
+        self.update(viewState: .loading)
+        
+        self.currentOperation = session.joinRoom(spaceId) { [weak self] response in
+            switch response {
+            case .success:
+                self?.spaceGraphObserver = NotificationCenter.default.addObserver(forName: MXSpaceService.didBuildSpaceGraph, object: nil, queue: OperationQueue.main, using: { [weak self] notification in
+                    guard let self = self else { return }
+                    
+                    self.currentOperation = nil
+                    if let observer = self.spaceGraphObserver {
+                        NotificationCenter.default.removeObserver(observer)
+                    }
+                    self.canJoin = false
+                    self.update(viewState: .loaded(self.filteredItemDataList, self.hasMore))
+                })
+            case .failure(let error):
+                self?.update(viewState: .error(error))
+            }
+        }
     }
 }

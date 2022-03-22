@@ -2073,6 +2073,11 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
               mxSession.syncFilterId, syncFilter.JSONDictionary);
         completion(NO);
     }
+    else if (!mxSession.store.allFilterIds.count)
+    {
+        MXLogDebug(@"[MXKAccount] There are no filters stored in this session, proceed as if no /sync was done before");
+        completion(YES);
+    }
     else
     {
         // Check the filter is the one previously set

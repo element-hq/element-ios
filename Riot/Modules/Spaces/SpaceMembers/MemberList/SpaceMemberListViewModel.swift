@@ -32,6 +32,9 @@ final class SpaceMemberListViewModel: SpaceMemberListViewModelType {
     
     // MARK: Public
 
+    var space: MXSpace? {
+        return session.spaceService.getSpace(withId: spaceId)
+    }
     weak var viewDelegate: SpaceMemberListViewModelViewDelegate?
     weak var coordinatorDelegate: SpaceMemberListViewModelCoordinatorDelegate?
     
@@ -57,6 +60,8 @@ final class SpaceMemberListViewModel: SpaceMemberListViewModelType {
         case .cancel:
             self.cancelOperations()
             self.coordinatorDelegate?.spaceMemberListViewModelDidCancel(self)
+        case .invite:
+            self.coordinatorDelegate?.spaceMemberListViewModelShowInvite(self)
         }
     }
     
