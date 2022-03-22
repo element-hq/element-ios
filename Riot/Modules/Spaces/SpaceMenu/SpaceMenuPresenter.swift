@@ -27,6 +27,7 @@ class SpaceMenuPresenter: NSObject {
         case addRoom
         case addSpace
         case settings
+        case invite
     }
     
     // MARK: - Properties
@@ -117,6 +118,8 @@ extension SpaceMenuPresenter: SpaceMenuModelViewModelCoordinatorDelegate {
             self.delegate?.spaceMenuPresenter(self, didCompleteWith: .addSpace, forSpaceWithId: self.spaceId, with: self.session)
         case .settings:
             self.delegate?.spaceMenuPresenter(self, didCompleteWith: .settings, forSpaceWithId: self.spaceId, with: self.session)
+        case .invite:
+            self.delegate?.spaceMenuPresenter(self, didCompleteWith: .invite, forSpaceWithId: self.spaceId, with: self.session)
         default:
             MXLog.error("[SpaceMenuPresenter] spaceListViewModel didSelectItem: invalid action \(action)")
         }
