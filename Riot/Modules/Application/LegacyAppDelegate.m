@@ -1263,12 +1263,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     return [self handleUniversalLinkFragment:webURL.fragment fromURL:webURL];
 }
 
-- (BOOL)handleUniversalLinkFragment:(NSString*)fragment
-{
-    return [self handleUniversalLinkFragment:fragment fromURL:nil];
-}
-
-
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL
 
 {
