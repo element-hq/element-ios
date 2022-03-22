@@ -1,1 +1,0 @@
-Share Extension: Stop logging crashes due to intentional exception that frees up memory and handle changes to MXRoom in the SDK.

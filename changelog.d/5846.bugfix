@@ -1,1 +1,0 @@
-Authentication: Fix a crash that occurred when using the app with an account that had a soft logout.

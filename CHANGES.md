@@ -1,3 +1,58 @@
+## Changes in 1.8.8 (2022-03-22)
+
+✨ Features
+
+- Invite to Space in room landing ([#5225](https://github.com/vector-im/element-ios/issues/5225))
+- Implement FAB journeys & rough edge warnings ([#5226](https://github.com/vector-im/element-ios/issues/5226))
+- Space panel overflow journeys & rough edge warnings ([#5227](https://github.com/vector-im/element-ios/issues/5227))
+- Let people know when rooms have moved. ([#5228](https://github.com/vector-im/element-ios/issues/5228))
+- Room Settings bottom sheet ([#5229](https://github.com/vector-im/element-ios/issues/5229))
+- Adding Rooms to Spaces ([#5230](https://github.com/vector-im/element-ios/issues/5230))
+- Spaces: Update room settings for Spaces ([#5231](https://github.com/vector-im/element-ios/issues/5231))
+- Spaces: Long press on rooms in space room lists ([#5232](https://github.com/vector-im/element-ios/issues/5232))
+- Space Settings ([#5233](https://github.com/vector-im/element-ios/issues/5233))
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.23.0](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.23.0)).
+- Space creation: Added entire space creation flow. ([#5224](https://github.com/vector-im/element-ios/issues/5224))
+- Instrument metrics for the IA project. ([#5401](https://github.com/vector-im/element-ios/issues/5401))
+- RoomDataSource: Reload thread screen for the first message. ([#5441](https://github.com/vector-im/element-ios/issues/5441))
+- Change behaviour of avatar/self in left menu to match common paradigm and take user to their own profile/settings ([#5500](https://github.com/vector-im/element-ios/issues/5500))
+- Secure Backup: Add support for mandatory backup/verification ([#5745](https://github.com/vector-im/element-ios/issues/5745))
+- Thread Notifications: Open thread & reply to thread from notifications. ([#5749](https://github.com/vector-im/element-ios/issues/5749))
+- IA Metrics: added trigger to JoinedRoom event and implemented ViewRoom event ([#5769](https://github.com/vector-im/element-ios/issues/5769))
+- Activity Indicators: Replace user indicator presenting view controller with context ([#5780](https://github.com/vector-im/element-ios/issues/5780))
+- MXKEventFormatter: Extend reply fallback for also non-thread events. ([#5816](https://github.com/vector-im/element-ios/issues/5816))
+- Location sharing: Support multiple user annotation views on the map. ([#5827](https://github.com/vector-im/element-ios/issues/5827))
+- MXKRoomDataSource: Pass threadId of room data source for replies. ([#5829](https://github.com/vector-im/element-ios/issues/5829))
+- MXKEventFormatter: Fix edit fallback usage for edited events. ([#5841](https://github.com/vector-im/element-ios/issues/5841))
+- RoomViewController: Remove thread list bar button item badge count. ([#5853](https://github.com/vector-im/element-ios/issues/5853))
+
+🐛 Bugfixes
+
+- Fix user suggestions not showing up when re-entering a room. ([#5876](https://github.com/vector-im/element-ios/pull/5876))
+- Prevent the homescreen from resetting on every appearance. ([#5885](https://github.com/vector-im/element-ios/pull/5885))
+- UserSuggestionViewModel: Fix retain cycle ([#5058](https://github.com/vector-im/element-ios/issues/5058))
+- Green launch spinner is sometimes dismissed too early causing the incorrect onboarding screen to be displayed. ([#5472](https://github.com/vector-im/element-ios/issues/5472))
+- Home: Fix crash when pressing tabs ([#5547](https://github.com/vector-im/element-ios/issues/5547))
+- Selection impossible when filtering in add room screen. ([#5757](https://github.com/vector-im/element-ios/issues/5757))
+- Room: Refresh header when call actions become available (member count changes) ([#5800](https://github.com/vector-im/element-ios/issues/5800))
+- Share Extension: Stop logging crashes due to intentional exception that frees up memory and handle changes to MXRoom in the SDK. ([#5805](https://github.com/vector-im/element-ios/issues/5805))
+- Crash after leaving last space. ([#5825](https://github.com/vector-im/element-ios/issues/5825))
+- Authentication: Fix a crash that occurred when using the app with an account that had a soft logout. ([#5846](https://github.com/vector-im/element-ios/issues/5846))
+- MXAccount: Do not clear cache if there are no stored filters ([#5873](https://github.com/vector-im/element-ios/issues/5873))
+
+⚠️ API Changes
+
+- Rename scrollEdgesAppearance → scrollEdgeAppearance to match UIKit. ([#5826](https://github.com/vector-im/element-ios/pull/5826))
+
+🚧 In development 🚧
+
+- Onboarding: Add screens for setting a display name and avatar when signing up for the first time. ([#5652](https://github.com/vector-im/element-ios/issues/5652))
+- Location sharing: Handle live location banner view in room screen. ([#5857](https://github.com/vector-im/element-ios/issues/5857))
+
+
 ## Changes in 1.8.7 (2022-03-18)
 
 🙌 Improvements
