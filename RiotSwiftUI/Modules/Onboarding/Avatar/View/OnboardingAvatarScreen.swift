@@ -46,7 +46,7 @@ struct OnboardingAvatarScreen: View {
             }
             .padding(.horizontal)
             .padding(.top, 8)
-            .frame(maxWidth: OnboardingConstants.maxContentWidth)
+            .frame(maxWidth: OnboardingMetrics.maxContentWidth)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .accentColor(theme.colors.accent)

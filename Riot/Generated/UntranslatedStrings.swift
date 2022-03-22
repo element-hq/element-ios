@@ -26,12 +26,24 @@ public extension VectorL10n {
   static var onboardingAvatarTitle: String { 
     return VectorL10n.tr("Untranslated", "onboarding_avatar_title") 
   }
+  /// Let's go
+  static var onboardingCelebrationButton: String { 
+    return VectorL10n.tr("Untranslated", "onboarding_celebration_button") 
+  }
+  /// Your preferences have been saved.
+  static var onboardingCelebrationMessage: String { 
+    return VectorL10n.tr("Untranslated", "onboarding_celebration_message") 
+  }
+  /// You’re all set!
+  static var onboardingCelebrationTitle: String { 
+    return VectorL10n.tr("Untranslated", "onboarding_celebration_title") 
+  }
   /// Take me home
   static var onboardingCongratulationsHomeButton: String { 
     return VectorL10n.tr("Untranslated", "onboarding_congratulations_home_button") 
   }
   /// Your account %@ has been created.
-  public static func onboardingCongratulationsMessage(_ p1: String) -> String {
+  static func onboardingCongratulationsMessage(_ p1: String) -> String {
     return VectorL10n.tr("Untranslated", "onboarding_congratulations_message", p1)
   }
   /// Personalise profile
