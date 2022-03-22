@@ -2048,7 +2048,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidSoftlogoutAccountNotification  object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
 
         MXKAccount *account = notif.object;
-        [self removeMatrixSession:account.mxSession];
+        
+        if (account.mxSession)
+        {
+            [self removeMatrixSession:account.mxSession];
+        }
 
         // Return to authentication screen
         [self.masterTabBarController showSoftLogoutOnboardingFlowWithCredentials:account.mxCredentials];

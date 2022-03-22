@@ -31,10 +31,26 @@ class OnboardingCongratulationsUITests: MockScreenTest {
     func verifyOnboardingCongratulationsScreen() throws {
         guard let screenState = screenState as? MockOnboardingCongratulationsScreenState else { fatalError("no screen") }
         switch screenState {
-        case .congratulations:
-            // There isn't anything to test here
-            break
+        case .regular:
+            verifyButtons()
+        case .personalizationDisabled:
+            verifyButtonsWhenPersonalizationIsDisabled()
         }
     }
-
+    
+    func verifyButtons() {
+        let personalizeButton = app.buttons["personalizeButton"]
+        XCTAssertTrue(personalizeButton.exists, "The personalization button should be shown.")
+        
+        let homeButton = app.buttons["homeButton"]
+        XCTAssertTrue(homeButton.exists, "The home button should always be shown.")
+    }
+    
+    func verifyButtonsWhenPersonalizationIsDisabled() {
+        let personalizeButton = app.buttons["personalizeButton"]
+        XCTAssertFalse(personalizeButton.exists, "The personalization button should be hidden.")
+        
+        let homeButton = app.buttons["homeButton"]
+        XCTAssertTrue(homeButton.exists, "The home button should always be shown.")
+    }
 }

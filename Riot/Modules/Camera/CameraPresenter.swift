@@ -19,19 +19,13 @@ import UIKit
 import AVFoundation
 
 @objc protocol CameraPresenterDelegate: AnyObject {
-    func cameraPresenter(_ presenter: CameraPresenter, didSelectImageData imageData: Data, withUTI uti: MXKUTI?)
+    func cameraPresenter(_ presenter: CameraPresenter, didSelectImage image: UIImage)
     func cameraPresenter(_ presenter: CameraPresenter, didSelectVideoAt url: URL)
     func cameraPresenterDidCancel(_ cameraPresenter: CameraPresenter)
 }
 
 /// CameraPresenter enables to present native camera
 @objc final class CameraPresenter: NSObject {
-    
-    // MARK: - Constants
-    
-    private enum Constants {
-        static let jpegCompressionQuality: CGFloat = 1.0
-    }
     
     // MARK: - Properties
     
@@ -131,8 +125,8 @@ extension CameraPresenter: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         if let videoURL = info[.mediaURL] as? URL {
             self.delegate?.cameraPresenter(self, didSelectVideoAt: videoURL)
-        } else if let image = (info[.editedImage] ?? info[.originalImage]) as? UIImage, let imageData = image.jpegData(compressionQuality: Constants.jpegCompressionQuality) {
-            self.delegate?.cameraPresenter(self, didSelectImageData: imageData, withUTI: MXKUTI.jpeg)
+        } else if let image = (info[.editedImage] ?? info[.originalImage]) as? UIImage {
+            self.delegate?.cameraPresenter(self, didSelectImage: image)
         }
     }
     

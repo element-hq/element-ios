@@ -459,4 +459,12 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     func roomViewControllerDidStopLoading(_ roomViewController: RoomViewController) {
         stopLoading()
     }
+    
+    func roomViewControllerDidTapLiveLocationSharingBanner(_ roomViewController: RoomViewController) {
+        // TODO:
+    }
+    
+    func roomViewControllerDidStopLiveLocationSharing(_ roomViewController: RoomViewController) {
+        // TODO:
+    }
 }

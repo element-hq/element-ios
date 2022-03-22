@@ -57,7 +57,6 @@
 "rename" = "Rename";
 "collapse" = "collapse";
 "send_to" = "Send to %@";
-"sending" = "Sending";
 "close" = "Close";
 "skip" = "Skip";
 "joined" = "Joined";
@@ -75,6 +74,12 @@
 "ok" = "OK";
 "error" = "Error";
 "suggest" = "Suggest";
+"edit" = "Edit";
+
+// Activities
+"loading" = "Loading";
+"sending" = "Sending";
+"saving" = "Saving";
 
 // Call Bar
 "callbar_only_single_active" = "Tap to return to the call (%@)";
@@ -2086,12 +2091,13 @@ Tap the + to start adding people.";
 
 "location_sharing_settings_toggle_title" = "Enable location sharing";
 
+// MARK: Live location sharing
+
 "location_sharing_live_share_title" = "Share live location";
-
+"live_location_sharing_banner_title" = "Live location enabled";
+"live_location_sharing_banner_stop" = "Stop";
 "location_sharing_static_share_title" = "Send my current location";
-
 "location_sharing_pin_drop_share_title" = "Send this location";
-
 
 // MARK: - MatrixKit
 

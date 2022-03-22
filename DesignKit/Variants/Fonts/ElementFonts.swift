@@ -110,10 +110,10 @@ extension ElementFonts: Fonts {
     public var title2: SharedFont {
         let uiFont = self.font(forTextStyle: .title2)
         
-        if #available(iOS 13.0, *) {
-            return SharedFont(uiFont: uiFont, font: Font(uiFont))
-        } else if #available(iOS 14.0, *) {
+        if #available(iOS 14.0, *) {
             return SharedFont(uiFont: uiFont, font: .title2)
+        } else if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: Font(uiFont))
         } else {
             return SharedFont(uiFont: uiFont)
         }
@@ -122,10 +122,10 @@ extension ElementFonts: Fonts {
     public var title2B: SharedFont {
         let uiFont = self.title2.uiFont.vc_bold
         
-        if #available(iOS 13.0, *) {
-            return SharedFont(uiFont: uiFont, font: Font(uiFont))
-        } else if #available(iOS 14.0, *) {
+        if #available(iOS 14.0, *) {
             return SharedFont(uiFont: uiFont, font: .title2.bold())
+        } else if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: Font(uiFont))
         } else {
             return SharedFont(uiFont: uiFont)
         }
@@ -134,10 +134,10 @@ extension ElementFonts: Fonts {
     public var title3: SharedFont {
         let uiFont = self.font(forTextStyle: .title3)
         
-        if #available(iOS 13.0, *) {
-            return SharedFont(uiFont: uiFont, font: Font(uiFont))
-        } else if #available(iOS 14.0, *) {
+        if #available(iOS 14.0, *) {
             return SharedFont(uiFont: uiFont, font: .title3)
+        } else if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: Font(uiFont))
         } else {
             return SharedFont(uiFont: uiFont)
         }
@@ -146,10 +146,10 @@ extension ElementFonts: Fonts {
     public var title3SB: SharedFont {
         let uiFont = self.title3.uiFont.vc_semiBold
         
-        if #available(iOS 13.0, *) {
-            return SharedFont(uiFont: uiFont, font: Font(uiFont))
-        } else if #available(iOS 14.0, *) {
+        if #available(iOS 14.0, *) {
             return SharedFont(uiFont: uiFont, font: .title3.weight(.semibold))
+        } else if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: Font(uiFont))
         } else {
             return SharedFont(uiFont: uiFont)
         }
@@ -258,10 +258,10 @@ extension ElementFonts: Fonts {
     public var caption2: SharedFont {
         let uiFont = self.font(forTextStyle: .caption2)
         
-        if #available(iOS 13.0, *) {
-            return SharedFont(uiFont: uiFont, font: Font(uiFont))
-        } else if #available(iOS 14.0, *) {
+        if #available(iOS 14.0, *) {
             return SharedFont(uiFont: uiFont, font: .caption2)
+        } else if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: Font(uiFont))
         } else {
             return SharedFont(uiFont: uiFont)
         }
@@ -270,10 +270,10 @@ extension ElementFonts: Fonts {
     public var caption2SB: SharedFont {
         let uiFont = self.caption2.uiFont.vc_semiBold
         
-        if #available(iOS 13.0, *) {
-            return SharedFont(uiFont: uiFont, font: Font(uiFont))
-        } else if #available(iOS 14.0, *) {
+        if #available(iOS 14.0, *) {
             return SharedFont(uiFont: uiFont, font: .caption2.weight(.semibold))
+        } else if #available(iOS 13.0, *) {
+            return SharedFont(uiFont: uiFont, font: Font(uiFont))
         } else {
             return SharedFont(uiFont: uiFont)
         }

@@ -130,9 +130,13 @@
     
     [self.tableViewPaginationThrottler throttle:^{
         NSInteger section = indexPath.section;
+        if (tableView.numberOfSections <= section)
+        {
+            return;
+        }
+        
         NSInteger numberOfRowsInSection = [tableView numberOfRowsInSection:section];
-        if (tableView.numberOfSections > section
-            && indexPath.row == numberOfRowsInSection - 1)
+        if (indexPath.row == numberOfRowsInSection - 1)
         {
             [self->recentsDataSource paginateInSection:section];
         }

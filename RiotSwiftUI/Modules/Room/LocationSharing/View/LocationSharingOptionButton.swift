@@ -54,7 +54,7 @@ struct LocationSharingOptionButton_Previews: PreviewProvider {
             LocationSharingOptionButton(text: "Share live location") {
                 
             } content: {
-                LocationSharingOptionButtonIcon(fillColor: Color.purple, image: Asset.Images.locationLiveIcon.image)
+                LocationSharingOptionButtonIcon(fillColor: Color.purple, image: Asset.Images.liveLocationIcon.image)
             }
         }
     }

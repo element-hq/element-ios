@@ -23,29 +23,34 @@ struct PrimaryActionButtonStyle: ButtonStyle {
     
     var customColor: Color? = nil
     
+    private var fontColor: Color {
+        // Always white unless disabled with a dark theme.
+        .white.opacity(theme.isDark && !isEnabled ? 0.3 : 1.0)
+    }
+    
+    private var backgroundColor: Color {
+        customColor ?? theme.colors.accent
+    }
+    
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .padding(12.0)
             .frame(maxWidth: .infinity)
-            .foregroundColor(.white)
+            .foregroundColor(fontColor)
             .font(theme.fonts.body)
-            .background(backgroundColor(configuration.isPressed))
-            .opacity(isEnabled ? 1.0 : 0.6)
+            .background(backgroundColor.opacity(backgroundOpacity(when: configuration.isPressed)))
             .cornerRadius(8.0)
     }
     
-    func backgroundColor(_ isPressed: Bool) -> Color {
-        if let customColor = customColor {
-            return customColor
-        }
-        
-        return isPressed ? theme.colors.accent.opacity(0.6) : theme.colors.accent
+    func backgroundOpacity(when isPressed: Bool) -> CGFloat {
+        guard isEnabled else { return 0.3 }
+        return isPressed ? 0.6 : 1.0
     }
 }
 
 @available(iOS 14.0, *)
 struct PrimaryActionButtonStyle_Previews: PreviewProvider {
-    static var previews: some View {
+    static var buttons: some View {
         Group {
             VStack {
                 Button("Enabled") { }
@@ -66,5 +71,12 @@ struct PrimaryActionButtonStyle_Previews: PreviewProvider {
             }
             .padding()
         }
+    }
+    
+    static var previews: some View {
+        buttons
+            .theme(.light).preferredColorScheme(.light)
+        buttons
+            .theme(.dark).preferredColorScheme(.dark)
     }
 }

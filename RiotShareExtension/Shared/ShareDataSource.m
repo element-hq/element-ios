@@ -20,7 +20,7 @@
 @interface ShareDataSource ()
 
 @property (nonatomic, strong, readonly) MXFileStore *fileStore;
-@property (nonatomic, strong, readonly) MXCredentials *credentials;
+@property (nonatomic, strong, readonly) MXSession *session;
 
 @property NSArray <MXKRecentCellData *> *recentCellDatas;
 @property NSMutableArray <MXKRecentCellData *> *visibleRoomCellDatas;
@@ -32,12 +32,12 @@
 @implementation ShareDataSource
 
 - (instancetype)initWithFileStore:(MXFileStore *)fileStore
-                      credentials:(MXCredentials *)credentials
+                          session:(MXSession *)session
 {
     if (self = [super init])
     {
         _fileStore = fileStore;
-        _credentials = credentials;
+        _session = session;
         
         _internalSelectedRoomIdentifiers = [NSMutableSet set];
         
@@ -81,19 +81,13 @@
         
         NSMutableArray *cellData = [NSMutableArray array];
         
-        MXRestClient *mxRestClient = [[MXRestClient alloc] initWithCredentials:self.credentials andOnUnrecognizedCertificateBlock:nil andPersistentTokenDataHandler:^(void (^handler)(NSArray<MXCredentials *> *credentials, void (^completion)(BOOL didUpdateCredentials))) {
-            [[MXKAccountManager sharedManager] readAndWriteCredentials:handler];
-        } andUnauthenticatedHandler:nil];
-        // Add a fake matrix session to each room summary to provide it a REST client (used to handle correctly the room avatar).
-        MXSession *session = [[MXSession alloc] initWithMatrixRestClient:mxRestClient];
-        
         for (id<MXRoomSummaryProtocol> summary in summaries)
         {
             if (!summary.hiddenFromUser && summary.roomType == MXRoomTypeRoom)
             {
                 if ([summary respondsToSelector:@selector(setMatrixSession:)])
                 {
-                    [summary setMatrixSession:session];
+                    [summary setMatrixSession:self.session];
                 }
                 
                 MXKRecentCellData *recentCellData = [[MXKRecentCellData alloc] initWithRoomSummary:summary dataSource:nil];
