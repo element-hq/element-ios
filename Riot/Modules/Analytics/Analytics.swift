@@ -45,6 +45,8 @@ import AnalyticsEvents
     /// The service used to interact with account data settings.
     private var service: AnalyticsService?
     
+    private var viewRoomActiveSpace: AnalyticsViewRoomActiveSpace = .home
+    
     /// Whether or not the object is enabled and sending events to the server.
     var isRunning: Bool { client.isRunning }
     
@@ -58,6 +60,31 @@ import AnalyticsEvents
     var promptShouldDisplayUpgradeMessage: Bool {
         RiotSettings.shared.hasAcceptedMatomoAnalytics
     }
+    
+    /// Used to defined the trigger of the next potential `JoinedRoom` event
+    var joinedRoomTrigger: AnalyticsJoinedRoomTrigger = .unknown
+    
+    /// Used to defined the trigger of the next potential `ViewRoom` event
+    var viewRoomTrigger: AnalyticsViewRoomTrigger = .unknown
+    
+    /// Used to defined the actual space activated by the user.
+    var activeSpace: MXSpace? {
+        didSet {
+            updateViewRoomActiveSpace()
+        }
+    }
+    
+    /// Used to defined the currently visible space in explore rooms.
+    var exploringSpace: MXSpace? {
+        didSet {
+            updateViewRoomActiveSpace()
+        }
+    }
+
+    // MARK: - Private
+    
+    /// keep an instance of `AnalyticsSpaceTracker` to track space metrics when space graph is built.
+    private let spaceTracker: AnalyticsSpaceTracker = AnalyticsSpaceTracker()
     
     // MARK: - Public
     
@@ -94,8 +121,13 @@ import AnalyticsEvents
         
         MXLog.debug("[Analytics] Started.")
         
-        // Catch and log crashes
-        MXLogger.logCrashes(true)
+        if Bundle.main.isShareExtension {
+            // Don't log crashes in the share extension
+        } else {
+            // Catch and log crashes
+            MXLogger.logCrashes(true)
+        }
+        
         MXLogger.setBuildVersion(AppInfo.current.buildInfo.readableBuildVersion)
     }
     
@@ -165,6 +197,19 @@ import AnalyticsEvents
     private func capture(event: AnalyticsEventProtocol) {
         client.capture(event)
     }
+    
+    /// Update `viewRoomActiveSpace` property according to the current value of `exploringSpace` and `activeSpace` properties.
+    private func updateViewRoomActiveSpace() {
+        let space = exploringSpace ?? activeSpace
+        guard let spaceRoom = space?.room else {
+            viewRoomActiveSpace = .home
+            return
+        }
+        
+        spaceRoom.state { roomState in
+            self.viewRoomActiveSpace = roomState?.isJoinRulePublic == true ? .public : .private
+        }
+    }
 }
 
 // MARK: - Public tracking methods
@@ -174,10 +219,10 @@ extension Analytics {
     /// Updates any user properties to help with creating cohorts.
     /// 
     /// Only non-nil properties will be updated when calling this method.
-    func updateUserProperties(ftueUseCase: UserSessionProperties.UseCase? = nil) {
+    func updateUserProperties(ftueUseCase: UserSessionProperties.UseCase? = nil, numFavouriteRooms: Int? = nil, numSpaces: Int? = nil) {
         let userProperties = AnalyticsEvent.UserProperties(ftueUseCaseSelection: ftueUseCase?.analyticsName,
-                                                           numFavouriteRooms: nil,
-                                                           numSpaces: nil)
+                                                           numFavouriteRooms: numFavouriteRooms,
+                                                           numSpaces: numSpaces)
         client.updateUserProperties(userProperties)
     }
     
@@ -242,6 +287,27 @@ extension Analytics {
     func trackIdentityServerAccepted(_ accepted: Bool) {
         // Do we still want to track this?
     }
+    
+    /// Track view room event triggered when the user changes rooms.
+    /// - Parameters:
+    ///   - room: the room being viewed
+    func trackViewRoom(_ room: MXRoom) {
+        trackViewRoom(asDM: room.isDirect, isSpace: room.summary?.roomType == .space)
+    }
+    
+    /// Track view room event triggered when the user changes rooms.
+    /// - Parameters:
+    ///   - isDM: Whether the room is a DM.
+    ///   - isSpace: Whether the room is a Space.
+    func trackViewRoom(asDM isDM: Bool, isSpace: Bool) {
+        let event = AnalyticsEvent.ViewRoom(activeSpace: viewRoomActiveSpace.space,
+                                            isDM: isDM,
+                                            isSpace: isSpace,
+                                            trigger: viewRoomTrigger.trigger,
+                                            viaKeyboard: nil)
+        viewRoomTrigger = .unknown
+        capture(event: event)
+    }
 }
 
 // MARK: - MXAnalyticsDelegate
@@ -284,8 +350,10 @@ extension Analytics: MXAnalyticsDelegate {
             return
         }
         
-        let event = AnalyticsEvent.JoinedRoom(isDM: isDM, isSpace: isSpace, roomSize: roomSize, trigger: nil)
+        let event = AnalyticsEvent.JoinedRoom(isDM: isDM, isSpace: isSpace, roomSize: roomSize, trigger: joinedRoomTrigger.trigger)
         capture(event: event)
+        
+        self.joinedRoomTrigger = .unknown
     }
     
     /// **Note** This method isn't currently implemented.

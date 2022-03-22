@@ -363,6 +363,7 @@ Matrix session observer used to detect new opened sessions.
     UNNotificationContent *content = notification.request.content;
     NSString *actionIdentifier = [response actionIdentifier];
     NSString *roomId = content.userInfo[@"room_id"];
+    NSString *threadId = content.userInfo[@"thread_id"];
 
     if ([actionIdentifier isEqualToString:@"inline-reply"])
     {
@@ -371,7 +372,10 @@ Matrix session observer used to detect new opened sessions.
             UNTextInputNotificationResponse *textInputNotificationResponse = (UNTextInputNotificationResponse *)response;
             NSString *responseText = [textInputNotificationResponse userText];
 
-            [self handleNotificationInlineReplyForRoomId:roomId withResponseText:responseText success:^(NSString *eventId) {
+            [self handleNotificationInlineReplyForRoomId:roomId
+                                                threadId:threadId
+                                        withResponseText:responseText
+                                                 success:^(NSString *eventId) {
                 completionHandler();
             } failure:^(NSError *error) {
 
@@ -399,7 +403,7 @@ Matrix session observer used to detect new opened sessions.
     }
     else if ([actionIdentifier isEqualToString:UNNotificationDefaultActionIdentifier])
     {
-        [self notifyNavigateToRoomById:roomId];
+        [self notifyNavigateToRoomById:roomId threadId:threadId];
         completionHandler();
     }
     else
@@ -412,6 +416,7 @@ Matrix session observer used to detect new opened sessions.
 #pragma mark - Other Methods
 
 - (void)handleNotificationInlineReplyForRoomId:(NSString*)roomId
+                                      threadId:(NSString*)threadId
                               withResponseText:(NSString*)responseText
                                        success:(void(^)(NSString *eventId))success
                                        failure:(void(^)(NSError *error))failure
@@ -424,35 +429,35 @@ Matrix session observer used to detect new opened sessions.
 
     NSArray* mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
 
-    __block MXKRoomDataSourceManager* manager;
-    dispatch_group_t group = dispatch_group_create();
+    __block MXSession *mxSession;
+    dispatch_group_t dispatchGroupSession = dispatch_group_create();
 
     for (MXKAccount* account in mxAccounts)
     {
         void(^storeDataReadyBlock)(void) = ^{
-            MXRoom* room = [account.mxSession roomWithRoomId:roomId];
+            MXRoom *room = [account.mxSession roomWithRoomId:roomId];
             if (room)
             {
-                manager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:account.mxSession];
+                mxSession = account.mxSession;
             }
         };
         
         if (account.mxSession.state >= MXSessionStateStoreDataReady)
         {
             storeDataReadyBlock();
-            if (manager)
+            if (mxSession)
             {
                 break;
             }
         }
         else
         {
-            dispatch_group_enter(group);
+            dispatch_group_enter(dispatchGroupSession);
             
             //  wait for session state to be store data ready
             id sessionStateObserver = nil;
             sessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:account.mxSession queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-                if (manager)
+                if (mxSession)
                 {
                     [[NSNotificationCenter defaultCenter] removeObserver:sessionStateObserver];
                     return;
@@ -462,25 +467,51 @@ Matrix session observer used to detect new opened sessions.
                 {
                     [[NSNotificationCenter defaultCenter] removeObserver:sessionStateObserver];
                     storeDataReadyBlock();
-                    dispatch_group_leave(group);
+                    dispatch_group_leave(dispatchGroupSession);
                 }
             }];
         }
     }
     
-    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
-        if (manager == nil)
+    dispatch_group_notify(dispatchGroupSession, dispatch_get_main_queue(), ^{
+        if (mxSession == nil)
         {
             MXLogDebug(@"[PushNotificationService][Push] didReceiveNotificationResponse: room with id %@ not found", roomId);
             failure(nil);
         }
         else
         {
-            [manager roomDataSourceForRoom:roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
+            //  initialize data source for a thread or a room
+            __block MXKRoomDataSource *dataSource;
+            dispatch_group_t dispatchGroupDataSource = dispatch_group_create();
+            if (RiotSettings.shared.enableThreads && threadId)
+            {
+                dispatch_group_enter(dispatchGroupDataSource);
+                [ThreadDataSource loadRoomDataSourceWithRoomId:roomId
+                                                initialEventId:nil
+                                                      threadId:threadId
+                                              andMatrixSession:mxSession
+                                                    onComplete:^(MXKRoomDataSource *threadDataSource) {
+                    dataSource = threadDataSource;
+                    dispatch_group_leave(dispatchGroupDataSource);
+                }];
+            }
+            else
+            {
+                dispatch_group_enter(dispatchGroupDataSource);
+                MXKRoomDataSourceManager *manager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
+                [manager roomDataSourceForRoom:roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
+                    dataSource = roomDataSource;
+                    dispatch_group_leave(dispatchGroupDataSource);
+                }];
+            }
+
+            dispatch_group_notify(dispatchGroupDataSource, dispatch_get_main_queue(), ^{
                 if (responseText != nil && responseText.length != 0)
                 {
-                    MXLogDebug(@"[PushNotificationService][Push] didReceiveNotificationResponse: sending message to room: %@", roomId);
-                    [roomDataSource sendTextMessage:responseText success:^(NSString* eventId) {
+                    NSString *logForThread = threadId ? [NSString stringWithFormat:@", thread: %@", threadId] : nil;
+                    MXLogDebug(@"[PushNotificationService][Push] didReceiveNotificationResponse: sending message to room: %@%@", roomId, logForThread);
+                    [dataSource sendTextMessage:responseText success:^(NSString* eventId) {
                         success(eventId);
                     } failure:^(NSError* error) {
                         failure(error);
@@ -490,7 +521,7 @@ Matrix session observer used to detect new opened sessions.
                 {
                     failure(nil);
                 }
-            }];
+            });
         }
     });
 }
@@ -536,11 +567,11 @@ Matrix session observer used to detect new opened sessions.
 
 #pragma mark - Delegate Notifiers
 
-- (void)notifyNavigateToRoomById:(NSString *)roomId
+- (void)notifyNavigateToRoomById:(NSString *)roomId threadId:(NSString *)threadId
 {
-    if ([_delegate respondsToSelector:@selector(pushNotificationService:shouldNavigateToRoomWithId:)])
+    if ([_delegate respondsToSelector:@selector(pushNotificationService:shouldNavigateToRoomWithId:threadId:)])
     {
-        [_delegate pushNotificationService:self shouldNavigateToRoomWithId:roomId];
+        [_delegate pushNotificationService:self shouldNavigateToRoomWithId:roomId threadId:threadId];
     }
 }
 

@@ -41,14 +41,29 @@ extension VectorWellKnown: Decodable {
 }
 
 // MARK: - Encryption
-
-struct VectorWellKnownEncryptionConfiguration: Decodable {
-    
+struct VectorWellKnownEncryptionConfiguration {
     /// Indicate if E2EE is enabled by default
     let isE2EEByDefaultEnabled: Bool?
-    
+    /// Check if secure backup (SSSS) is mandatory.
+    let isSecureBackupRequired: Bool?
+    /// Methods to use to setup secure backup (SSSS).
+    let secureBackupSetupMethods: [VectorWellKnownBackupSetupMethod]?
+}
+
+extension VectorWellKnownEncryptionConfiguration: Decodable {
+    /// JSON keys associated to `VectorWellKnownEncryptionConfiguration`
     enum CodingKeys: String, CodingKey {
         case isE2EEByDefaultEnabled = "default"
+        case isSecureBackupRequired = "secure_backup_required"
+        case secureBackupSetupMethods = "secure_backup_setup_methods"
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        isE2EEByDefaultEnabled = try? container.decode(Bool.self, forKey: .isE2EEByDefaultEnabled)
+        isSecureBackupRequired = try? container.decode(Bool.self, forKey: .isSecureBackupRequired)
+        let secureBackupSetupMethodsKeys = try? container.decode([String].self, forKey: .secureBackupSetupMethods)
+        secureBackupSetupMethods = secureBackupSetupMethodsKeys?.compactMap { VectorWellKnownBackupSetupMethod(key: $0) }
     }
 }
 

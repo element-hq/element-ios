@@ -85,7 +85,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
 NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUniversalLinkDidChangeNotification";
 
-@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate, CallPresenterDelegate, SpaceDetailPresenterDelegate>
+@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate, CallPresenterDelegate, SpaceDetailPresenterDelegate, SecureBackupSetupCoordinatorBridgePresenterDelegate>
 {
     /**
      Reachability observer
@@ -128,6 +128,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
      If any the currently displayed key verification dialog
      */
     KeyVerificationCoordinatorBridgePresenter *keyVerificationCoordinatorBridgePresenter;
+
+    /**
+     Currently displayed secure backup setup
+     */
+    SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
 
     /**
      Account picker used in case of multiple account.
@@ -1100,10 +1105,25 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 #pragma mark - PushNotificationServiceDelegate
 
-- (void)pushNotificationService:(PushNotificationService *)pushNotificationService shouldNavigateToRoomWithId:(NSString *)roomId
+- (void)pushNotificationService:(PushNotificationService *)pushNotificationService
+     shouldNavigateToRoomWithId:(NSString *)roomId
+                       threadId:(NSString *)threadId
 {
+    if (roomId)
+    {
+        MXRoom *room = [self.mxSessions.firstObject roomWithRoomId:roomId];
+        if (room.summary.membership != MXMembershipJoin)
+        {
+            Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerNotification;
+        }
+        else
+        {
+            Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerNotification;
+        }
+    }
+
     _lastNavigatedRoomIdFromPush = roomId;
-    [self navigateToRoomById:roomId];
+    [self navigateToRoomById:roomId threadId:threadId];
 }
 
 #pragma mark - Badge Count
@@ -2033,7 +2053,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidSoftlogoutAccountNotification  object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
 
         MXKAccount *account = notif.object;
-        [self removeMatrixSession:account.mxSession];
+        
+        if (account.mxSession)
+        {
+            [self removeMatrixSession:account.mxSession];
+        }
 
         // Return to authentication screen
         [self.masterTabBarController showSoftLogoutOnboardingFlowWithCredentials:account.mxCredentials];
@@ -2389,6 +2413,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                     isLaunching = YES;
                     break;
                 case MXSessionStateStoreDataReady:
+                case MXSessionStateProcessingBackgroundSyncCache:
                 case MXSessionStateSyncInProgress:
                     // Stay in launching during the first server sync if the store is empty.
                     isLaunching = (mainSession.rooms.count == 0 && launchAnimationContainerView);
@@ -2427,6 +2452,15 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         {
             //  wait for another session state change to check room list data is ready
             return;
+        }
+
+        if (mainSession.vc_homeserverConfiguration.encryption.isSecureBackupRequired
+            && mainSession.vc_canSetupSecureBackup)
+        {
+            // This only happens at the first login
+            // Or when migrating an existing user
+            MXLogDebug(@"[AppDelegate] handleAppState: Force SSSS setup");
+            [self presentSecureBackupSetupForSession:mainSession];
         }
         
         void (^finishAppLaunch)(void) = ^{
@@ -2878,7 +2912,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 #pragma mark - Matrix Rooms handling
 
-- (void)navigateToRoomById:(NSString *)roomId
+- (void)navigateToRoomById:(NSString *)roomId threadId:(NSString *)threadId
 {
     if (roomId.length)
     {
@@ -2912,7 +2946,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         {
             MXLogDebug(@"[AppDelegate][Push] navigateToRoomById: open the roomViewController %@", roomId);
 
-            [self showRoom:roomId andEventId:nil withMatrixSession:dedicatedAccount.mxSession];
+            [self showRoom:roomId
+                  threadId:threadId
+                andEventId:nil
+         withMatrixSession:dedicatedAccount.mxSession];
         }
         else
         {
@@ -2936,6 +2973,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         MXRoom *room = [mxSession roomWithRoomId:roomId];
         
+        if (room && room.summary.membership == MXMembershipJoin)
+        {
+            [Analytics.shared trackViewRoom:room];
+        }
+
         // Indicates that spaces are not supported
         if (room.summary.roomType == MXRoomTypeSpace)
         {
@@ -2979,13 +3021,24 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession
 {
+    [self showRoom:roomId threadId:nil andEventId:eventId withMatrixSession:mxSession];
+}
+
+- (void)showRoom:(NSString*)roomId threadId:(NSString*)threadId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession
+{
     // Ask to restore initial display
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
-    
+
+    ThreadParameters *threadParameters = nil;
+    if (RiotSettings.shared.enableThreads && threadId)
+    {
+        threadParameters = [[ThreadParameters alloc] initWithThreadId:threadId stackRoomScreen:NO];
+    }
+
     RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
                                                                                     eventId:eventId
                                                                                   mxSession:mxSession
-                                                                           threadParameters:nil
+                                                                           threadParameters:threadParameters
                                                                      presentationParameters:presentationParameters];
     
     [self showRoomWithParameters:parameters];
@@ -3156,6 +3209,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 [mxSession createRoomWithParameters:roomCreationParameters success:^(MXRoom *room) {
 
                     // Open created room
+                    Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerCreated;
                     [self showRoom:room.roomId andEventId:nil withMatrixSession:mxSession];
 
                     if (completion)
@@ -3190,6 +3244,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             if (directRoom)
             {
                 // open it
+                Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerCreated;
                 [self showRoom:directRoom.roomId andEventId:nil withMatrixSession:mxSession];
                 
                 if (completion)
@@ -4276,6 +4331,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     if (!keyVerificationCoordinatorBridgePresenter.isPresenting)
     {
         keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
+        keyVerificationCoordinatorBridgePresenter.cancellable = !mxSession.vc_homeserverConfiguration.encryption.isSecureBackupRequired;
         keyVerificationCoordinatorBridgePresenter.delegate = self;
         
         [keyVerificationCoordinatorBridgePresenter presentCompleteSecurityFrom:self.presentedViewController isNewSignIn:NO animated:YES];
@@ -4654,6 +4710,39 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     self.spaceDetailPresenter = nil;
     [self openSpaceWithId:spaceId];
+}
+
+#pragma mark - Mandatory SSSS setup
+
+- (void)presentSecureBackupSetupForSession:(MXSession*)mxSession
+{
+    MXLogDebug(@"[AppDelegate][Mandatory SSSS] presentSecureBackupSetupForSession");
+
+    if (!secureBackupSetupCoordinatorBridgePresenter.isPresenting)
+    {
+        secureBackupSetupCoordinatorBridgePresenter = [[SecureBackupSetupCoordinatorBridgePresenter alloc] initWithSession:mxSession allowOverwrite:false];
+        secureBackupSetupCoordinatorBridgePresenter.delegate = self;
+
+        [secureBackupSetupCoordinatorBridgePresenter presentFrom:self.masterTabBarController animated:NO cancellable:NO];
+    }
+    else
+    {
+        MXLogDebug(@"[AppDelegate][Mandatory SSSS] presentSecureBackupSetupForSession: Controller already presented")
+    }
+}
+
+#pragma mark - SecureBackupSetupCoordinatorBridgePresenterDelegate
+
+- (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidComplete:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    secureBackupSetupCoordinatorBridgePresenter = nil;
+}
+
+- (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    secureBackupSetupCoordinatorBridgePresenter = nil;
 }
 
 @end

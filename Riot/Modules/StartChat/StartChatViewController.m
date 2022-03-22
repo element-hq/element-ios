@@ -648,6 +648,7 @@
 
                     [self stopActivityIndicator];
 
+                    Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerCreated;
                     [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession];
 
                 } failure:onFailure];

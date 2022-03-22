@@ -20,6 +20,7 @@
 #import "TableViewCellWithCheckBoxes.h"
 
 @class AnalyticsScreenTracker;
+@protocol RoomSettingsViewControllerDelegate;
 
 /**
  List the settings fields. Used to preselect/edit a field
@@ -59,5 +60,21 @@ typedef enum : NSUInteger {
  */
 @property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
+/**
+ Delegate of this view controller.
+ */
+@property (nonatomic, weak) id<RoomSettingsViewControllerDelegate> delegate;
+
 @end
 
+@protocol RoomSettingsViewControllerDelegate <NSObject>
+
+- (void)roomSettingsViewControllerDidLeaveRoom:(RoomSettingsViewController *)controller;
+
+- (void)roomSettingsViewController:(RoomSettingsViewController *)controller didReplaceRoomWithReplacementId:(NSString *)newRoomId;
+
+- (void)roomSettingsViewControllerDidCancel:(RoomSettingsViewController *)controller;
+
+- (void)roomSettingsViewControllerDidComplete:(RoomSettingsViewController *)controller;
+
+@end

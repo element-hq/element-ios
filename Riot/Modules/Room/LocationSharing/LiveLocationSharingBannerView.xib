@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="LiveLocationSharingBannerView" customModule="Riot" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="104"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="live_location_icon" translatesAutoresizingMaskIntoConstraints="NO" id="hDt-s2-HU0">
+                    <rect key="frame" x="15" y="62" width="24" height="24"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="hDt-s2-HU0" secondAttribute="height" multiplier="1:1" id="LUH-tx-Vu9"/>
+                        <constraint firstAttribute="width" constant="24" id="jBe-4U-Yb7"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Live location enabled" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7UG-mn-oZ3">
+                    <rect key="frame" x="49" y="49" width="128.5" height="50"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H2w-fv-3ba">
+                    <rect key="frame" x="355" y="60.5" width="44" height="27"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="WZJ-7H-OFh"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" title="Stop"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="vc_adjustsFontForContentSizeCategory" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="stopButtonAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="rVA-YA-4J6"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" red="0.050980392156862744" green="0.74117647058823533" blue="0.54509803921568623" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="H2w-fv-3ba" secondAttribute="trailing" constant="15" id="29I-X9-nEy"/>
+                <constraint firstAttribute="bottomMargin" secondItem="7UG-mn-oZ3" secondAttribute="bottom" constant="5" id="5TD-eA-uqi"/>
+                <constraint firstItem="7UG-mn-oZ3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" constant="5" id="919-NN-C1l"/>
+                <constraint firstItem="hDt-s2-HU0" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="15" id="FcV-b9-J6v"/>
+                <constraint firstItem="7UG-mn-oZ3" firstAttribute="leading" secondItem="hDt-s2-HU0" secondAttribute="trailing" constant="10" id="Lsz-9Z-xLO"/>
+                <constraint firstItem="H2w-fv-3ba" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="RTT-lt-BtI"/>
+                <constraint firstItem="hDt-s2-HU0" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="XgN-M3-jLz"/>
+                <constraint firstItem="H2w-fv-3ba" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="7UG-mn-oZ3" secondAttribute="trailing" constant="10" id="zWz-Me-wx1"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="iconImageView" destination="hDt-s2-HU0" id="1HC-Kc-Rxp"/>
+                <outlet property="stopButton" destination="H2w-fv-3ba" id="g7S-JF-xw5"/>
+                <outlet property="titleLabel" destination="7UG-mn-oZ3" id="bxZ-zI-Q7J"/>
+            </connections>
+            <point key="canvasLocation" x="137.68115942028987" y="-122.54464285714285"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="live_location_icon" width="24" height="24"/>
+    </resources>
+</document>

@@ -44,28 +44,50 @@ extension UIViewController {
     /// - Parameters:
     ///   - viewController: The child view controller to add.
     ///   - view: The view on which to add the child view controller view.
-    func vc_addChildViewController(viewController: UIViewController, onView view: UIView) {
+    ///   - animated: true to add a fade in animation
+    func vc_addChildViewController(viewController: UIViewController, onView view: UIView, animated: Bool = false) {
         self.addChild(viewController)
         
         viewController.view.frame = view.bounds
+        if animated {
+            viewController.view.alpha = 0
+        }
         view.vc_addSubViewMatchingParent(viewController.view)
+        if animated {
+            UIView.animate(withDuration: 0.2) {
+                viewController.view.alpha = 1
+            }
+        }
         viewController.didMove(toParent: self)
     }
     
     
     /// Remove a child view controller from current view controller.
     ///
-    /// - Parameter viewController: The child view controller to remove.
-    func vc_removeChildViewController(viewController: UIViewController) {
+    /// - Parameters:
+    ///     - viewController: The child view controller to remove.
+    ///     - animated: true to add a fade out animation
+    func vc_removeChildViewController(viewController: UIViewController, animated: Bool = false) {
         viewController.willMove(toParent: nil)
-        viewController.view.removeFromSuperview()
+        if animated {
+            UIView.animate(withDuration: 0.2) {
+                viewController.view.alpha = 0
+            } completion: { finished in
+                viewController.view.removeFromSuperview()
+                viewController.view.alpha = 1
+            }
+        } else {
+            viewController.view.removeFromSuperview()
+        }
         viewController.removeFromParent()
     }
     
     
     /// Remove current view controller from parent.
-    func vc_removeFromParent() {
-        self.vc_removeChildViewController(viewController: self)
+    ///
+    /// - Parameter animated: true to add a fade out animation
+    func vc_removeFromParent(animated: Bool = false) {
+        self.vc_removeChildViewController(viewController: self, animated: animated)
     }
     
     /// Adds a floating action button to the bottom-right of the page.
@@ -114,5 +136,19 @@ extension UIViewController {
         // If there is no leftBarButtonItem defined,
         // set split view display mode button as left bar button item
         self.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem
+    }
+
+    /// Set the view controller to be displayed in fullscreen modal presentation style on any iOS version.
+    ///
+    /// - Parameters:
+    ///   - isFullScreen: whether view controller should be displayed full screen
+    /// - Returns: the view controller
+    @discardableResult
+    func vc_setModalFullScreen(_ isFullScreen: Bool) -> UIViewController {
+        if #available(iOS 13.0, *) {
+            self.modalPresentationStyle = isFullScreen ? .fullScreen : .automatic
+        }
+
+        return self
     }
 }

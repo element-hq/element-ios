@@ -20,10 +20,12 @@ import Foundation
 
 protocol CreateRoomCoordinatorDelegate: AnyObject {
     func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didCreateNewRoom room: MXRoom)
+    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithIds roomIds: [String])
     func createRoomCoordinatorDidCancel(_ coordinator: CreateRoomCoordinatorType)
 }
 
 /// `CreateRoomCoordinatorType` is a protocol describing a Coordinator that handle keybackup setup navigation flow.
 protocol CreateRoomCoordinatorType: Coordinator, Presentable {
     var delegate: CreateRoomCoordinatorDelegate? { get }
+    var parentSpace: MXSpace? { get }
 }

@@ -21,14 +21,15 @@ import Foundation
 // MARK: View model
 
 enum OnboardingCongratulationsViewModelResult {
-    case personaliseProfile
+    case personalizeProfile
     case takeMeHome
 }
 
 // MARK: View
 
 struct OnboardingCongratulationsViewState: BindableState {
-    var userId: String
+    let userId: String
+    let personalizationDisabled: Bool
 }
 
 enum OnboardingCongratulationsViewAction {

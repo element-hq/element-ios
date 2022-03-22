@@ -213,9 +213,11 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         case .homeSpace:
             MXLog.verbose("Switch to home space")
             self.navigateToSpace(with: nil)
+            Analytics.shared.activeSpace = nil
         case .space(let spaceId):
             MXLog.verbose("Switch to space with id: \(spaceId)")
             self.navigateToSpace(with: spaceId)
+            Analytics.shared.activeSpace = userSessionsService.mainUserSession?.matrixSession.spaceService.getSpace(withId: spaceId)
         }
     }
     
@@ -249,7 +251,8 @@ extension AppCoordinator: LegacyAppDelegateDelegate {
     func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didAddMatrixSession session: MXSession!) {
     }
     
-    func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didRemoveMatrixSession session: MXSession!) {
+    func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didRemoveMatrixSession session: MXSession?) {
+        guard let session = session else { return }
         // Handle user session removal on clear cache. On clear cache the account has his session closed but the account is not removed.
         self.userSessionsService.removeUserSession(relatedToMatrixSession: session)
     }

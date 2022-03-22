@@ -801,6 +801,7 @@
         if (indexPath.row < directChatsArray.count)
         {
             // Open this room
+            Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerSearchContactDetail;
             [[AppDelegate theDelegate] showRoom:directChatsArray[indexPath.row] andEventId:nil withMatrixSession:self.mainSession];
         }
         else
@@ -1053,7 +1054,8 @@
                             self->roomCreationRequest = nil;
 
                             [self removePendingActionMask];
-
+                            
+                            Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerCreated;
                             [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession];
 
                         } failure:onFailure];

@@ -19,6 +19,21 @@
 import UIKit
 
 @objcMembers
+class CreateRoomCoordinatorParameter: NSObject {
+    /// Instance of the current MXSession
+    let session: MXSession
+    
+    /// Instance of the parent space. `nil` if home space
+    let parentSpace: MXSpace?
+    
+    init(session: MXSession,
+         parentSpace: MXSpace?) {
+        self.session = session
+        self.parentSpace = parentSpace
+    }
+}
+
+@objcMembers
 final class CreateRoomCoordinator: CreateRoomCoordinatorType {
     
     // MARK: - Properties
@@ -26,7 +41,8 @@ final class CreateRoomCoordinator: CreateRoomCoordinatorType {
     // MARK: Private
     
     private let navigationRouter: NavigationRouterType
-    private let session: MXSession
+    private let tabRouter: TabbedRouterType
+    private let parameters: CreateRoomCoordinatorParameter
     
     // MARK: Public
 
@@ -35,25 +51,56 @@ final class CreateRoomCoordinator: CreateRoomCoordinatorType {
     
     weak var delegate: CreateRoomCoordinatorDelegate?
     
+    var parentSpace: MXSpace? {
+        parameters.parentSpace
+    }
+    
     // MARK: - Setup
     
-    init(session: MXSession) {
+    init(parameters: CreateRoomCoordinatorParameter) {
         self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
-        self.session = session
+        let segmentedController = SegmentedController.instantiate()
+        segmentedController.title = VectorL10n.spacesAddRoom
+        self.tabRouter = SegmentedRouter(segmentedController: segmentedController)
+        self.parameters = parameters
     }
     
     // MARK: - Public methods
     
     func start() {
 
-        let rootCoordinator = self.createEnterNewRoomDetailsCoordinator()
+        let createRoomCoordinator = self.createEnterNewRoomDetailsCoordinator()
 
-        rootCoordinator.start()
+        createRoomCoordinator.start()
 
-        self.add(childCoordinator: rootCoordinator)
+        self.add(childCoordinator: createRoomCoordinator)
 
-        self.navigationRouter.setRootModule(rootCoordinator)
-      }
+        if let parentSpace = self.parentSpace, #available(iOS 14, *) {
+            let roomSelectionCoordinator = self.createRoomSelectorCoordinator(parentSpace: parentSpace)
+            roomSelectionCoordinator.completion = { [weak self] result in
+                guard let self = self else {
+                    return
+                }
+                
+                switch result {
+                case .done(let selectedItemIds):
+                    self.delegate?.createRoomCoordinator(self, didAddRoomsWithIds: selectedItemIds)
+                default:
+                    self.delegate?.createRoomCoordinatorDidCancel(self)
+                }
+            }
+            roomSelectionCoordinator.start()
+            self.add(childCoordinator: roomSelectionCoordinator)
+            self.tabRouter.tabs = [
+                TabbedRouterTab(title: VectorL10n.newWord, icon: nil, module: createRoomCoordinator),
+                TabbedRouterTab(title: VectorL10n.existing, icon: nil, module: roomSelectionCoordinator)
+            ]
+            self.navigationRouter.setRootModule(self.tabRouter)
+            Analytics.shared.exploringSpace = parentSpace
+        } else {
+            self.navigationRouter.setRootModule(createRoomCoordinator)
+        }
+    }
     
     func toPresentable() -> UIViewController {
         return self.navigationRouter.toPresentable()
@@ -62,8 +109,15 @@ final class CreateRoomCoordinator: CreateRoomCoordinatorType {
     // MARK: - Private methods
 
     private func createEnterNewRoomDetailsCoordinator() -> EnterNewRoomDetailsCoordinator {
-        let coordinator = EnterNewRoomDetailsCoordinator(session: self.session)
+        let coordinator = EnterNewRoomDetailsCoordinator(session: self.parameters.session, parentSpace: self.parentSpace)
         coordinator.delegate = self
+        return coordinator
+    }
+    
+    @available(iOS 14.0, *)
+    private func createRoomSelectorCoordinator(parentSpace: MXSpace) -> MatrixItemChooserCoordinator {
+        let paramaters = MatrixItemChooserCoordinatorParameters(session: self.parameters.session, viewProvider: AddRoomSelectorViewProvider(), itemsProcessor: AddRoomItemsProcessor(parentSpace: parentSpace))
+        let coordinator = MatrixItemChooserCoordinator(parameters: paramaters)
         return coordinator
     }
 }

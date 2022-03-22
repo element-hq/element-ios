@@ -169,9 +169,6 @@
     
     // Observe the server sync
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSyncNotification) name:kMXSessionDidSyncNotification object:nil];
-    
-    // Do a full reload
-    [self refreshRecentsTable];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -180,12 +177,6 @@
 
     // The user may still press search button whereas the view disappears
     ignoreSearchRequest = YES;
-
-    // Leave potential search session
-    if (!self.recentsSearchBar.isHidden)
-    {
-        [self searchBarCancelButtonClicked:self.recentsSearchBar];
-    }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXKRoomDataSourceSyncStatusChanged object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionDidSyncNotification object:nil];

@@ -29,6 +29,7 @@ final class SpaceMemberDetailViewModel: NSObject, SpaceMemberDetailViewModelType
     private let member: MXRoomMember
     private let spaceId: String
     private var space: MXSpace?
+    private(set) var showCancelMenuItem: Bool
     
     private var currentOperation: MXHTTPOperation?
     
@@ -39,11 +40,12 @@ final class SpaceMemberDetailViewModel: NSObject, SpaceMemberDetailViewModelType
     
     // MARK: - Setup
     
-    init(userSessionsService: UserSessionsService, session: MXSession, member: MXRoomMember, spaceId: String) {
+    init(userSessionsService: UserSessionsService, session: MXSession, member: MXRoomMember, spaceId: String, showCancelMenuItem: Bool) {
         self.userSessionsService = userSessionsService
         self.session = session
         self.member = member
         self.spaceId = spaceId
+        self.showCancelMenuItem = showCancelMenuItem
     }
     
     deinit {
@@ -57,6 +59,7 @@ final class SpaceMemberDetailViewModel: NSObject, SpaceMemberDetailViewModelType
         case .loadData:
             self.loadData()
         case .openRoom(let roomId):
+            Analytics.shared.viewRoomTrigger = .spaceMemberDetail
             self.coordinatorDelegate?.spaceMemberDetailViewModel(self, showRoomWithId: roomId)
         case .createRoom(let memberId):
             self.createDirectRoom(forMemberWithId: memberId)
@@ -106,6 +109,7 @@ final class SpaceMemberDetailViewModel: NSObject, SpaceMemberDetailViewModelType
                     }
                     return
                 }
+                Analytics.shared.viewRoomTrigger = .created
                 self.coordinatorDelegate?.spaceMemberDetailViewModel(self, showRoomWithId: room.roomId)
             }
         } failure: { error in

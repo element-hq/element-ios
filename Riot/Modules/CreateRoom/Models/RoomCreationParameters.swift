@@ -24,16 +24,22 @@ struct RoomCreationParameters {
         return userSelectedAvatar
     }
     var isEncrypted: Bool = false
-    var isPublic: Bool = false {
+    var joinRule: MXRoomJoinRule = .private {
         didSet {
-            if !isPublic {
-                //  if set to private again, reset some fields
+            switch joinRule {
+            case .restricted:
                 showInDirectory = false
                 address = nil
+            case .private:
+                showInDirectory = false
+                address = nil
+                isRoomSuggested = false
+            default: break
             }
         }
     }
     var showInDirectory: Bool = false
+    var isRoomSuggested: Bool = false
     
     var userSelectedAvatar: UIImage?
 }

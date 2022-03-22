@@ -22,4 +22,5 @@ protocol SecureBackupSetupIntroViewModelType {
     // TODO: Hide these properties from interface and use same behavior as other view models
     var keyBackup: MXKeyBackup? { get }
     var checkKeyBackup: Bool { get }
+    var homeserverEncryptionConfiguration: HomeserverEncryptionConfiguration { get }
 }

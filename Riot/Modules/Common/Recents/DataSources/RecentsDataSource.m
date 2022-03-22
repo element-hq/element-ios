@@ -195,6 +195,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (void)setCurrentSpace:(MXSpace *)currentSpace
 {
+    super.currentSpace = currentSpace;
     [self.recentsListService updateSpace:currentSpace];
 }
 

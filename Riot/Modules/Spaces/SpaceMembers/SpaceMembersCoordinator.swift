@@ -22,6 +22,17 @@ struct SpaceMembersCoordinatorParameters {
     let userSessionsService: UserSessionsService
     let session: MXSession
     let spaceId: String
+    let navigationRouter: NavigationRouterType
+    
+    init(userSessionsService: UserSessionsService,
+         session: MXSession,
+         spaceId: String,
+         navigationRouter: NavigationRouterType = NavigationRouter(navigationController: RiotNavigationController())) {
+        self.userSessionsService = userSessionsService
+        self.session = session
+        self.spaceId = spaceId
+        self.navigationRouter = navigationRouter
+    }
 }
 
 @objcMembers
@@ -46,7 +57,7 @@ final class SpaceMembersCoordinator: SpaceMembersCoordinatorType {
     
     init(parameters: SpaceMembersCoordinatorParameters) {
         self.parameters = parameters
-        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
+        self.navigationRouter = parameters.navigationRouter
     }
     
     // MARK: - Public methods
@@ -59,8 +70,15 @@ final class SpaceMembersCoordinator: SpaceMembersCoordinatorType {
 
         self.add(childCoordinator: rootCoordinator)
 
-        self.navigationRouter.setRootModule(rootCoordinator)
-      }
+        if self.navigationRouter.modules.isEmpty {
+            self.navigationRouter.setRootModule(rootCoordinator)
+        } else {
+            self.navigationRouter.push(rootCoordinator, animated: true) {
+                self.remove(childCoordinator: rootCoordinator)
+            }
+        }
+
+    }
     
     func toPresentable() -> UIViewController {
         return self.navigationRouter.toPresentable()
@@ -99,7 +117,7 @@ final class SpaceMembersCoordinator: SpaceMembersCoordinatorType {
     }
     
     private func createSpaceMemberDetailCoordinator(with member: MXRoomMember) -> SpaceMemberDetailCoordinator {
-        let parameters = SpaceMemberDetailCoordinatorParameters(userSessionsService: self.parameters.userSessionsService, member: member, session: self.parameters.session, spaceId: self.parameters.spaceId)
+        let parameters = SpaceMemberDetailCoordinatorParameters(userSessionsService: self.parameters.userSessionsService, member: member, session: self.parameters.session, spaceId: self.parameters.spaceId, showCancelMenuItem: false)
         let coordinator = SpaceMemberDetailCoordinator(parameters: parameters)
         coordinator.delegate = self
         return coordinator
@@ -109,6 +127,10 @@ final class SpaceMembersCoordinator: SpaceMembersCoordinatorType {
         let roomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.parameters.session)
         roomDataSourceManager?.roomDataSource(forRoom: roomId, create: true, onComplete: { [weak self] roomDataSource in
             
+            if let room = self?.parameters.session.room(withRoomId: roomId) {
+                Analytics.shared.trackViewRoom(room)
+            }
+
             let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
             guard let roomViewController = storyboard.instantiateViewController(withIdentifier: "RoomViewControllerStoryboardId") as? RoomViewController else {
                 return
@@ -131,8 +153,52 @@ extension SpaceMembersCoordinator: SpaceMemberListCoordinatorDelegate {
     func spaceMemberListCoordinatorDidCancel(_ coordinator: SpaceMemberListCoordinatorType) {
         self.delegate?.spaceMembersCoordinatorDidCancel(self)
     }
+    
+    func spaceMemberListCoordinatorShowInvite(_ coordinator: SpaceMemberListCoordinatorType) {
+        guard let space = parameters.session.spaceService.getSpace(withId: parameters.spaceId), let spaceRoom = space.room else {
+            MXLog.error("[SpaceMembersCoordinator] spaceMemberListCoordinatorShowInvite: failed to find space with id \(parameters.spaceId)")
+            return
+        }
+        
+        spaceRoom.state { [weak self] roomState in
+            guard let self = self else { return }
+            
+            guard let powerLevels = roomState?.powerLevels, let userId = self.parameters.session.myUserId else {
+                MXLog.error("[SpaceMembersCoordinator] spaceMemberListCoordinatorShowInvite: failed to find powerLevels for room")
+                return
+            }
+            let userPowerLevel = powerLevels.powerLevelOfUser(withUserID: userId)
+            
+            guard userPowerLevel >= powerLevels.invite else {
+                let alert = UIAlertController(title: VectorL10n.spacesInvitePeople, message: VectorL10n.spaceInviteNotEnoughPermission, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: VectorL10n.ok, style: .default, handler: nil))
+                self.navigationRouter.present(alert, animated: true)
+                return
+            }
+            
+            let coordinator = ContactsPickerCoordinator(session: self.parameters.session, room: spaceRoom, initialSearchText: nil, actualParticipants: nil, invitedParticipants: nil, userParticipant: nil)
+            coordinator.delegate = self
+            coordinator.start()
+            self.childCoordinators.append(coordinator)
+            self.navigationRouter.present(coordinator.toPresentable(), animated: true)
+        }
+    }
 }
 
+// MARK: - ContactsPickerCoordinatorDelegate
+extension SpaceMembersCoordinator: ContactsPickerCoordinatorDelegate {
+    func contactsPickerCoordinatorDidStartLoading(_ coordinator: ContactsPickerCoordinatorProtocol) {
+    }
+    
+    func contactsPickerCoordinatorDidEndLoading(_ coordinator: ContactsPickerCoordinatorProtocol) {
+    }
+    
+    func contactsPickerCoordinatorDidClose(_ coordinator: ContactsPickerCoordinatorProtocol) {
+        remove(childCoordinator: coordinator)
+    }
+}
+
+// MARK: - SpaceMemberDetailCoordinatorDelegate
 extension SpaceMembersCoordinator: SpaceMemberDetailCoordinatorDelegate {
     func spaceMemberDetailCoordinator(_ coordinator: SpaceMemberDetailCoordinatorType, showRoomWithId roomId: String) {
         if !UIDevice.current.isPhone, let memberDetailCoordinator = self.memberDetailCoordinator {

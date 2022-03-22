@@ -287,6 +287,8 @@ TableViewSectionsDelegate>
 - (void)updateSections
 {
     NSMutableArray<Section*> *sections = [NSMutableArray array];
+
+    BOOL isSecureBackupRequired = self.mainSession.vc_homeserverConfiguration.encryption.isSecureBackupRequired;
     
     // Pin code section
     
@@ -341,14 +343,17 @@ TableViewSectionsDelegate>
     }
     
     // Secure backup
-    
-    Section *secureBackupSection = [Section sectionWithTag:SECTION_SECURE_BACKUP];
-    secureBackupSection.headerTitle = [VectorL10n securitySettingsSecureBackup];
-    secureBackupSection.footerTitle = VectorL10n.securitySettingsSecureBackupDescription;
-    
-    [secureBackupSection addRowsWithCount:self->secureBackupSection.numberOfRows];
-    
-    [sections addObject:secureBackupSection];
+
+    if (!isSecureBackupRequired)
+    {
+        Section *secureBackupSection = [Section sectionWithTag:SECTION_SECURE_BACKUP];
+        secureBackupSection.headerTitle = [VectorL10n securitySettingsSecureBackup];
+        secureBackupSection.footerTitle = VectorL10n.securitySettingsSecureBackupDescription;
+
+        [secureBackupSection addRowsWithCount:self->secureBackupSection.numberOfRows];
+
+        [sections addObject:secureBackupSection];
+    }
     
     // Cross-Signing
     
@@ -359,24 +364,24 @@ TableViewSectionsDelegate>
     
     [sections addObject:crossSigningSection];
     
-    // Cryptograhpy
+    // Cryptography
     
-    Section *cryptograhpySection = [Section sectionWithTag:SECTION_CRYPTOGRAPHY];
-    cryptograhpySection.headerTitle = [VectorL10n securitySettingsCryptography];
+    Section *cryptographySection = [Section sectionWithTag:SECTION_CRYPTOGRAPHY];
+    cryptographySection.headerTitle = [VectorL10n securitySettingsCryptography];
     
     if (RiotSettings.shared.settingsSecurityScreenShowCryptographyInfo)
     {
-        [cryptograhpySection addRowWithTag:CRYPTOGRAPHY_INFO];
+        [cryptographySection addRowWithTag:CRYPTOGRAPHY_INFO];
     }
     
-    if (RiotSettings.shared.settingsSecurityScreenShowCryptographyExport)
+    if (RiotSettings.shared.settingsSecurityScreenShowCryptographyExport && !isSecureBackupRequired)
     {
-        [cryptograhpySection addRowWithTag:CRYPTOGRAPHY_EXPORT];
+        [cryptographySection addRowWithTag:CRYPTOGRAPHY_EXPORT];
     }
 
-    if (cryptograhpySection.rows.count)
+    if (cryptographySection.rows.count)
     {
-        [sections addObject:cryptograhpySection];
+        [sections addObject:cryptographySection];
     }
 
 #ifdef CROSS_SIGNING_AND_BACKUP_DEV
