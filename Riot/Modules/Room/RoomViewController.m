@@ -159,6 +159,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     // Tell whether the view controller is appeared or not.
     BOOL isAppeared;
     
+    // A flag indicating whether a room has been left
+    BOOL isRoomLeft;
+    
     // Tell whether the room has a Jitsi call or not.
     BOOL hasJitsiCall;
     
@@ -2295,6 +2298,11 @@ static CGSize kThreadListBarButtonItemImageSize;
 }
 
 - (void)notifyDelegateOnLeaveRoomIfNecessary {
+    if (isRoomLeft) {
+        return;
+    }
+    isRoomLeft = YES;
+    
     if (self.delegate)
     {
         [self.delegate roomViewControllerDidLeaveRoom:self];
