@@ -39,6 +39,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     
     private var mapView: MGLMapView!
     private var annotationView: LocationMarkerView?
+    private static var usernameColorGenerator = UserNameColorGenerator()
     
     // MARK: Public
     
@@ -82,7 +83,8 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
         annotationView = LocationMarkerView.loadFromNib()
         
         if let userAvatarData = userAvatarData {
-            annotationView?.setAvatarData(userAvatarData)
+            let avatarBackgroundColor = Self.usernameColorGenerator.color(from: userAvatarData.matrixItemId)
+            annotationView?.setAvatarData(userAvatarData, avatarBackgroundColor: avatarBackgroundColor)
         }
         
         if let annotations = mapView.annotations {
@@ -99,6 +101,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     // MARK: - Themable
     
     func update(theme: Theme) {
+        Self.usernameColorGenerator.update(theme: theme)
         descriptionLabel.textColor = theme.colors.primaryContent
         descriptionLabel.font = theme.fonts.footnote
         descriptionIcon.tintColor = theme.colors.accent

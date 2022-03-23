@@ -49,6 +49,12 @@ public struct ColorSwiftUI: Colors {
     
     public let namesAndAvatars: [Color]
     
+    // MARK: - Others colors
+    
+    public let white: Color
+    
+    public let purple: Color
+    
     init(values: ColorValues) {
         accent = Color(values.accent)
         alert = Color(values.alert)
@@ -63,5 +69,7 @@ public struct ColorSwiftUI: Colors {
         navigation = Color(values.navigation)
         background = Color(values.background)
         namesAndAvatars = values.namesAndAvatars.map({ Color($0) })
+        white = Color(values.white)
+        purple = Color(values.purple)
     }
 }

@@ -49,7 +49,8 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
         
         let viewModel = LocationSharingViewModel(mapStyleURL: BuildSettings.tileServerMapStyleURL,
                                                  avatarData: parameters.avatarData,
-                                                 location: parameters.location)
+                                                 location: parameters.location,
+                                                 isLiveLocationSharingEnabled: BuildSettings.liveLocationSharingEnabled)
         let view = LocationSharingView(context: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
         

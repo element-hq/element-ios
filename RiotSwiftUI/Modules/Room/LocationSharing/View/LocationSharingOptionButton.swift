@@ -27,12 +27,12 @@ struct LocationSharingOptionButton<Content: View>: View {
     
     let text: String
     let action: () -> (Void)
-    @ViewBuilder var content: Content
+    @ViewBuilder var buttonIcon: Content
     
     var body: some View {
         Button(action: action) {
             HStack(spacing: 18) {
-                content
+                buttonIcon
                     .frame(width: 40, height: 40)
                 Text(text)
                     .font(theme.fonts.body)
@@ -45,16 +45,22 @@ struct LocationSharingOptionButton<Content: View>: View {
 @available(iOS 14.0, *)
 struct LocationSharingOptionButton_Previews: PreviewProvider {
     static var previews: some View {
-        VStack {
-            LocationSharingOptionButton(text: "Share my current location") {
+        VStack(alignment: .leading) {
+            LocationSharingOptionButton(text: VectorL10n.locationSharingStaticShareTitle) {
                 
-            } content: {
-                LocationSharingUserMarkerView(isMarker: false, avatarData: AvatarInput(mxContentUri: "", matrixItemId: "test", displayName: "Nicolas"))
+            } buttonIcon: {
+                AvatarImage(avatarData: AvatarInput(mxContentUri: nil, matrixItemId: "Alice", displayName: "Alice"), size: nil)
+                    .shapedBorder(color: Color.green, borderWidth: 3, shape: Circle())
             }
-            LocationSharingOptionButton(text: "Share live location") {
+            LocationSharingOptionButton(text: VectorL10n.locationSharingLiveShareTitle) {
                 
-            } content: {
-                LocationSharingOptionButtonIcon(fillColor: Color.purple, image: Asset.Images.liveLocationIcon.image)
+            } buttonIcon: {
+                Image(uiImage: Asset.Images.locationLiveIcon.image)
+            }
+            LocationSharingOptionButton(text: VectorL10n.locationSharingPinDropShareTitle) {
+                
+            } buttonIcon: {
+                Image(uiImage: Asset.Images.locationPinIcon.image)
             }
         }
     }

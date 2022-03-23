@@ -27,7 +27,14 @@ struct AvatarImage: View {
     var mxContentUri: String?
     var matrixItemId: String
     var displayName: String?
-    var size: AvatarSize
+    var size: AvatarSize?
+    
+    var sizeValue: CGFloat? {
+        guard let size = size else {
+            return nil
+        }
+        return CGFloat(size.rawValue)
+    }
     
     var body: some View {
         Group {
@@ -42,7 +49,7 @@ struct AvatarImage: View {
                     .resizable()
             }
         }
-        .frame(width: CGFloat(size.rawValue), height: CGFloat(size.rawValue))
+        .frame(width: sizeValue, height: sizeValue)
         .clipShape(Circle())
         .onAppear {
             viewModel.inject(dependencies: dependencies)
@@ -59,7 +66,7 @@ struct AvatarImage: View {
 
 @available(iOS 14.0, *)
 extension AvatarImage {
-    init(avatarData: AvatarInputProtocol, size: AvatarSize) {
+    init(avatarData: AvatarInputProtocol, size: AvatarSize?) {
         self.init(
             mxContentUri: avatarData.mxContentUri,
             matrixItemId: avatarData.matrixItemId,

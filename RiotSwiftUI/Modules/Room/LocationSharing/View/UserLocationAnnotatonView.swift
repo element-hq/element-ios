@@ -21,6 +21,10 @@ import Mapbox
 @available(iOS 14, *)
 class UserLocationAnnotatonView: MGLUserLocationAnnotationView {
     
+    // MARK: Private
+    
+    @Environment(\.theme) private var theme: ThemeSwiftUI
+    
     // MARK: - Setup
     
     init(avatarData: AvatarInputProtocol) {
@@ -45,7 +49,10 @@ class UserLocationAnnotatonView: MGLUserLocationAnnotationView {
     
     private func addUserMarkerView(with avatarData: AvatarInputProtocol) {
         
-        guard let avatarImageView = UIHostingController(rootView: LocationSharingUserMarkerView(isMarker: true, avatarData: avatarData)).view else {
+        guard let avatarImageView = UIHostingController(rootView: LocationSharingMarkerView(backgroundColor: theme.displayUserColor(for: avatarData.matrixItemId)) {
+            AvatarImage(avatarData: avatarData, size: nil)
+                .shapedBorder(color: theme.displayUserColor(for: avatarData.matrixItemId), borderWidth: 3, shape: Circle())
+        }).view else {
             return
         }
         

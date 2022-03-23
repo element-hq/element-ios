@@ -47,4 +47,10 @@ public struct ColorValues: Colors {
     public let background: UIColor
     
     public let namesAndAvatars: [UIColor]
+    
+    // MARK: - Others colors
+    
+    public let white: UIColor
+    
+    public let purple: UIColor
 }

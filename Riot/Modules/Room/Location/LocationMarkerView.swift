@@ -20,23 +20,17 @@ import Mapbox
 
 class LocationMarkerView: MGLAnnotationView, NibLoadable {
     
-    @IBOutlet private var markerBackground: UIImageView!
+    @IBOutlet private var backgroundImageView: UIImageView!
     @IBOutlet private var avatarView: UserAvatarView!
-    
-    private static var usernameColorGenerator = UserNameColorGenerator()
-    private let theme: Theme = ThemeService.shared().theme
     
     override func awakeFromNib() {
         super.awakeFromNib()
         translatesAutoresizingMaskIntoConstraints = false
     }
     
-    func setAvatarData(_ avatarData: AvatarViewDataProtocol) {
-        Self.usernameColorGenerator.defaultColor = theme.colors.primaryContent
-        Self.usernameColorGenerator.userNameColors = theme.colors.namesAndAvatars
-        let image = Asset.Images.locationUserMarker.image.withRenderingMode(.alwaysTemplate)
-        markerBackground.image = image
-        markerBackground.tintColor = Self.usernameColorGenerator.color(from: avatarData.matrixItemId)
+    func setAvatarData(_ avatarData: AvatarViewDataProtocol, avatarBackgroundColor: UIColor) {
+        backgroundImageView.image = Asset.Images.locationUserMarker.image
+        backgroundImageView.tintColor = avatarBackgroundColor
         avatarView.fill(with: avatarData)
     }
 }

@@ -17,7 +17,7 @@
 import SwiftUI
 
 @available(iOS 14.0, *)
-struct LocationSharingUserMarkerView: View {
+struct LocationSharingMarkerView<Content: View>: View {
     
     // MARK: - Properties
     
@@ -25,37 +25,21 @@ struct LocationSharingUserMarkerView: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
-    @State private var frame: CGRect = .zero
-    
-    private var usernameColorGenerator: UserNameColorGenerator {
-        let usernameColorGenerator = UserNameColorGenerator()
-        let theme = ThemeService.shared().theme
-        usernameColorGenerator.defaultColor = theme.textPrimaryColor
-        usernameColorGenerator.userNameColors = theme.userNameColors
-        return usernameColorGenerator
-    }
-    
     // MARK: Public
     
-    let isMarker: Bool
-    let avatarData: AvatarInputProtocol
+    let backgroundColor: Color
+    @ViewBuilder var markerImage: Content
     
     var body: some View {
-        let fillColor: Color = Color(usernameColorGenerator.color(from:avatarData.matrixItemId))
         ZStack {
-            Circle()
-                .fill(fillColor)
-                .frame(width: 40, height: 40)
-            if isMarker {
-                Rectangle()
-                    .rotation(Angle(degrees: 45))
-                    .fill(fillColor)
-                    .frame(width: 7, height: 7)
-                    .offset(x: 0, y: 19)
-            }
-            AvatarImage(avatarData: avatarData, size: .small)
+            Rectangle()
+                .rotation(Angle(degrees: 45))
+                .fill(backgroundColor)
+                .frame(width: 7, height: 7)
+                .offset(x: 0, y: 22)
+            markerImage
+                .frame(width: 42, height: 42)
         }
-        .background(ViewFrameReader(frame: $frame))
     }
 }
 
@@ -68,8 +52,14 @@ struct LocationSharingUserMarkerView_Previews: PreviewProvider {
                                      matrixItemId: "test",
                                      displayName: "Alice")
         VStack(alignment: .center, spacing: 15) {
-            LocationSharingUserMarkerView(isMarker: true, avatarData: avatarData)
-            LocationSharingUserMarkerView(isMarker: false, avatarData: avatarData)
+            LocationSharingMarkerView(backgroundColor: .green) {
+                AvatarImage(avatarData: avatarData, size: nil)
+                    .shapedBorder(color: Color.green, borderWidth: 3, shape: Circle())
+            }
+            LocationSharingMarkerView(backgroundColor: .green) {
+                AvatarImage(avatarData: avatarData, size: nil)
+                    .shapedBorder(color: Color.green, borderWidth: 3, shape: Circle())
+            }
         }
     }
 }

@@ -32,7 +32,7 @@ struct LocationSharingView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
+            VStack(spacing: 0) {
                 ZStack(alignment: .bottom) {
                     LocationSharingMapView(tileServerMapURL: context.viewState.mapStyleURL,
                                            annotations: context.viewState.annotations,
@@ -46,7 +46,7 @@ struct LocationSharingView: View {
                 }
                 if context.viewState.shareButtonVisible {
                     buttonsView
-                        .cornerRadius(5)
+                        .cornerRadius(10)
                 }
             }
             .toolbar {
@@ -90,25 +90,25 @@ struct LocationSharingView: View {
             if !context.viewState.isPinDropSharing {
                 LocationSharingOptionButton(text: VectorL10n.locationSharingStaticShareTitle) {
                     context.send(viewAction: .share)
-                } content: {
-                    LocationSharingUserMarkerView(isMarker: false, avatarData: context.viewState.userAvatarData)
+                } buttonIcon: {
+                    AvatarImage(avatarData: context.viewState.userAvatarData, size: nil)
+                        .shapedBorder(color: theme.displayUserColor(for: context.viewState.userAvatarData.matrixItemId), borderWidth: 3, shape: Circle())
                 }
                 .disabled(!context.viewState.shareButtonEnabled)
-                // Disable for now until live location sharing is done
-                if BuildSettings.liveLocationSharingEnabled {
+                // Hide for now until live location sharing is finished
+                if context.viewState.isLiveLocationSharingEnabled {
                     LocationSharingOptionButton(text: VectorL10n.locationSharingLiveShareTitle) {
                         // TODO: - Start live location sharing
-                    } content: {
-                        LocationSharingOptionButtonIcon(fillColor: Color.purple, image: Asset.Images.liveLocationIcon.image)
+                    } buttonIcon: {
+                        Image(uiImage: Asset.Images.locationLiveIcon.image)
                     }
                     .disabled(!context.viewState.shareButtonEnabled)
                 }
             } else {
                 LocationSharingOptionButton(text: VectorL10n.locationSharingPinDropShareTitle) {
                     // TODO: - Pin drop sharing action
-                } content: {
-                    LocationSharingOptionButtonIcon(fillColor:
-                                                        theme.colors.primaryContent, image: Asset.Images.locationMarkerIcon.image)
+                } buttonIcon: {
+                    Image(uiImage: Asset.Images.locationPinIcon.image)
                 }
                 .disabled(!context.viewState.shareButtonEnabled)
             }
