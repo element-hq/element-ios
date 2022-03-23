@@ -442,7 +442,8 @@
                     if (recentCellData.isSuggestedRoom)
                     {
                         [_delegate recentListViewController:self
-                                     didSelectSuggestedRoom:recentCellData.roomSummary.spaceChildInfo];
+                                     didSelectSuggestedRoom:recentCellData.roomSummary.spaceChildInfo
+                                                       from:selectedCell];
                     }
                     else
                     {
