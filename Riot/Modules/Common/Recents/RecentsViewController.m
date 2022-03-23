@@ -36,7 +36,7 @@
 
 NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewControllerDataReadyNotification";
 
-@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate>
+@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate, SpaceChildRoomDetailBridgePresenterDelegate>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -82,6 +82,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 @property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
 
 @property (nonatomic, strong) RoomNotificationSettingsCoordinatorBridgePresenter *roomNotificationSettingsCoordinatorBridgePresenter;
+
+@property (nonatomic, strong) SpaceChildRoomDetailBridgePresenter *spaceChildPresenter;
 
 @end
 
@@ -2171,18 +2173,13 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     [self showRoomWithRoomId:roomId inMatrixSession:matrixSession];
 }
 
-- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectSuggestedRoom:(MXSpaceChildInfo *)childInfo
+- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectSuggestedRoom:(MXSpaceChildInfo *)childInfo from:(UIView* _Nullable)sourceView
 {
     Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerSpaceHierarchy;
     
-    RoomPreviewData *previewData = [[RoomPreviewData alloc] initWithSpaceChildInfo:childInfo andSession:self.mainSession];
-    [self startActivityIndicator];
-    MXWeakify(self);
-    [previewData peekInRoom:^(BOOL succeeded) {
-        MXStrongifyAndReturnIfNil(self);
-        [self stopActivityIndicator];
-        [self showRoomPreviewWithData:previewData];
-    }];
+    self.spaceChildPresenter = [[SpaceChildRoomDetailBridgePresenter alloc] initWithSession:self.mainSession childInfo:childInfo];
+    self.spaceChildPresenter.delegate = self;
+    [self.spaceChildPresenter presentFrom:self sourceView:sourceView animated:YES];
 }
 
 #pragma mark - UISearchBarDelegate
@@ -2431,6 +2428,23 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.roomNotificationSettingsCoordinatorBridgePresenter = nil;
+}
+
+#pragma mark - SpaceChildRoomDetailBridgePresenterDelegate
+- (void)spaceChildRoomDetailBridgePresenterDidCancel:(SpaceChildRoomDetailBridgePresenter *)coordinator
+{
+    [self.spaceChildPresenter dismissWithAnimated:YES completion:^{
+        self.spaceChildPresenter = nil;
+    }];
+}
+
+- (void)spaceChildRoomDetailBridgePresenter:(SpaceChildRoomDetailBridgePresenter *)coordinator didOpenRoomWith:(NSString *)roomId
+{
+    [self showRoomWithRoomId:roomId inMatrixSession:self.mainSession];
+
+    [self.spaceChildPresenter dismissWithAnimated:YES completion:^{
+        self.spaceChildPresenter = nil;
+    }];
 }
 
 #pragma mark - Activity Indicator
