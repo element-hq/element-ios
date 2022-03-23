@@ -32,21 +32,21 @@ struct LocationSharingView: View {
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 0) {
-                ZStack(alignment: .bottom) {
-                    LocationSharingMapView(tileServerMapURL: context.viewState.mapStyleURL,
-                                           annotations: context.viewState.annotations,
-                                           highlightedAnnotation: context.viewState.highlightedAnnotation,
-                                           userAvatarData: context.viewState.userAvatarData,
-                                           showsUserLocation: context.viewState.showsUserLocation,
-                                           userLocation: $context.userLocation,
-                                           errorSubject: context.viewState.errorSubject)
-                        .ignoresSafeArea()
+            ZStack(alignment: .bottom) {
+                LocationSharingMapView(tileServerMapURL: context.viewState.mapStyleURL,
+                                       annotations: context.viewState.annotations,
+                                       highlightedAnnotation: context.viewState.highlightedAnnotation,
+                                       userAvatarData: context.viewState.userAvatarData,
+                                       showsUserLocation: context.viewState.showsUserLocation,
+                                       userLocation: $context.userLocation,
+                                       errorSubject: context.viewState.errorSubject)
+                VStack(spacing: 0) {
                     MapCreditsView()
-                }
-                if context.viewState.shareButtonVisible {
-                    buttonsView
-                        .cornerRadius(10)
+                    if context.viewState.shareButtonVisible {
+                        buttonsView
+                            .background(theme.colors.background)
+                            .clipShape(RoundedCornerShape(radius: 8, corners: [.topLeft, .topRight]))
+                    }
                 }
             }
             .toolbar {

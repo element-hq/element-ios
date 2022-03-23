@@ -63,7 +63,7 @@ struct LocationSharingViewState: BindableState {
     var showsUserLocation: Bool = false
     
     /// Used to hide live location sharing features until is finished
-    var isLiveLocationSharingEnabled: Bool
+    var isLiveLocationSharingEnabled: Bool = false
     
     var shareButtonVisible: Bool {
         return self.displayExistingLocation == false

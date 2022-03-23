@@ -35,7 +35,7 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
     
     // MARK: - Setup
     
-    init(mapStyleURL: URL, avatarData: AvatarInputProtocol, location: CLLocationCoordinate2D? = nil, isLiveLocationSharingEnabled: Bool) {
+    init(mapStyleURL: URL, avatarData: AvatarInputProtocol, location: CLLocationCoordinate2D? = nil, isLiveLocationSharingEnabled: Bool = false) {
         
         var userAnnotation: UserLocationAnnotation?
         var annotations: [UserLocationAnnotation] = []
