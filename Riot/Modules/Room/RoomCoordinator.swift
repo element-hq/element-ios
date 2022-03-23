@@ -28,9 +28,9 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
 
     private let parameters: RoomCoordinatorParameters
     private let roomViewController: RoomViewController
-    private let activityIndicatorPresenter: ActivityIndicatorPresenterType
+    private let userIndicatorStore: UserIndicatorStore
     private var selectedEventId: String?
-    private var loadingIndicator: UserIndicator?
+    private var loadingCancel: UserIndicatorCancel?
     
     private var roomDataSourceManager: MXKRoomDataSourceManager {
         return MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.parameters.session)
@@ -73,15 +73,16 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     init(parameters: RoomCoordinatorParameters) {
         self.parameters = parameters
         self.selectedEventId = parameters.eventId
-
+        self.userIndicatorStore = UserIndicatorStore(presenter: parameters.userIndicatorPresenter)
+        
         if let threadId = parameters.threadId {
             self.roomViewController = ThreadViewController.instantiate(withThreadId: threadId,
                                                                        configuration: parameters.displayConfiguration)
         } else {
             self.roomViewController = RoomViewController.instantiate(with: parameters.displayConfiguration)
         }
+        self.roomViewController.userIndicatorStore = userIndicatorStore
         self.roomViewController.showSettingsInitially = parameters.showSettingsInitially
-        self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         
         self.roomViewController.parentSpaceId = parameters.parentSpaceId
 
@@ -319,20 +320,21 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     }
     
     private func startLoading() {
-        if let presenter = parameters.userIndicatorPresenter {
-            if loadingIndicator == nil {
-                MXLog.debug("[RoomCoordinator] Present loading indicator in a room: \(roomId ?? "unknown")")
-                loadingIndicator = presenter.present(.loading(label: VectorL10n.homeSyncing, isInteractionBlocking: false))
-            }
-        } else {
-            activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: true)
+        // The `RoomViewController` does not currently ensure that `startLoading` is matched by corresponding `stopLoading` and may
+        // thus trigger start of loading multiple times. To solve for this we will hold onto the cancellation reference of the
+        // last loading request, and if one already exists, we will not present a new indicator.
+        guard loadingCancel == nil else {
+            return
         }
+        
+        MXLog.debug("[RoomCoordinator] Present loading indicator in a room: \(roomId ?? "unknown")")
+        loadingCancel = userIndicatorStore.present(type: .loading(label: VectorL10n.homeSyncing, isInteractionBlocking: false))
     }
     
     private func stopLoading() {
         MXLog.debug("[RoomCoordinator] Dismiss loading indicator in a room: \(roomId ?? "unknown")")
-        loadingIndicator = nil
-        activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+        loadingCancel?()
+        loadingCancel = nil
     }
 }
 
@@ -448,10 +450,6 @@ extension RoomCoordinator: RoomViewControllerDelegate {
         startEditPollCoordinator(startEvent: startEvent)
     }
     
-    func roomViewControllerCanDelegateUserIndicators(_ roomViewController: RoomViewController) -> Bool {
-        return parameters.userIndicatorPresenter != nil
-    }
-    
     func roomViewControllerDidStartLoading(_ roomViewController: RoomViewController) {
         startLoading()
     }
@@ -466,5 +464,19 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     
     func roomViewControllerDidStopLiveLocationSharing(_ roomViewController: RoomViewController) {
         // TODO:
+    }
+    
+    func threadsCoordinator(for roomViewController: RoomViewController, threadId: String?) -> ThreadsCoordinatorBridgePresenter? {
+        guard let session = mxSession, let roomId = roomId else {
+            MXLog.error("[RoomCoordinator] Cannot create threads coordinator for room \(roomId ?? "")")
+            return nil
+        }
+        
+        return ThreadsCoordinatorBridgePresenter(
+            session: session,
+            roomId: roomId,
+            threadId: threadId,
+            userIndicatorPresenter: parameters.userIndicatorPresenter
+        )
     }
 }

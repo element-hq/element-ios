@@ -29,7 +29,7 @@ struct RoomCoordinatorParameters {
     let navigationRouterStore: NavigationRouterStoreProtocol?
     
     /// Presenter for displaying loading indicators, success messages and other user indicators
-    let userIndicatorPresenter: UserIndicatorTypePresenterProtocol?
+    let userIndicatorPresenter: UserIndicatorTypePresenterProtocol
     
     /// The matrix session in which the room should be available.
     let session: MXSession
@@ -59,7 +59,7 @@ struct RoomCoordinatorParameters {
     
     private init(navigationRouter: NavigationRouterType?,
                  navigationRouterStore: NavigationRouterStoreProtocol?,
-                 userIndicatorPresenter: UserIndicatorTypePresenterProtocol?,
+                 userIndicatorPresenter: UserIndicatorTypePresenterProtocol,
                  session: MXSession,
                  roomId: String,
                  parentSpaceId: String?,
@@ -84,7 +84,7 @@ struct RoomCoordinatorParameters {
     /// Init to present a joined room
     init(navigationRouter: NavigationRouterType? = nil,
          navigationRouterStore: NavigationRouterStoreProtocol? = nil,
-         userIndicatorPresenter: UserIndicatorTypePresenterProtocol? = nil,
+         userIndicatorPresenter: UserIndicatorTypePresenterProtocol,
          session: MXSession,
          parentSpaceId: String?,
          roomId: String,
@@ -109,12 +109,13 @@ struct RoomCoordinatorParameters {
     /// Init to present a room preview
     init(navigationRouter: NavigationRouterType? = nil,
          navigationRouterStore: NavigationRouterStoreProtocol? = nil,
+         userIndicatorPresenter: UserIndicatorTypePresenterProtocol,
          parentSpaceId: String?,
          previewData: RoomPreviewData) {
         
         self.init(navigationRouter: navigationRouter,
                   navigationRouterStore: navigationRouterStore,
-                  userIndicatorPresenter: nil,
+                  userIndicatorPresenter: userIndicatorPresenter,
                   session: previewData.mxSession,
                   roomId: previewData.roomId,
                   parentSpaceId: parentSpaceId,

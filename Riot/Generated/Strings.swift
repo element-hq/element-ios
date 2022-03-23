@@ -2219,6 +2219,10 @@ public class VectorL10n: NSObject {
   public static var joined: String { 
     return VectorL10n.tr("Vector", "joined") 
   }
+  /// Joining
+  public static var joining: String { 
+    return VectorL10n.tr("Vector", "joining") 
+  }
   /// Done
   public static var keyBackupRecoverDoneAction: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_done_action") 

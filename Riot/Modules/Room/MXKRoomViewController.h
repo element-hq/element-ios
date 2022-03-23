@@ -27,6 +27,8 @@
 #import "MXKAttachmentsViewController.h"
 #import "MXKAttachmentAnimator.h"
 
+@class UserIndicatorStore;
+
 typedef NS_ENUM(NSUInteger, MXKRoomViewControllerJoinRoomResult) {
     MXKRoomViewControllerJoinRoomResultSuccess,
     MXKRoomViewControllerJoinRoomResultFailureRoomEmpty,
@@ -197,6 +199,12 @@ typedef NS_ENUM(NSUInteger, MXKRoomViewControllerJoinRoomResult) {
  Duration of the animation in case of the composer needs to be resized (default 0.3s)
  */
 @property NSTimeInterval resizeComposerAnimationDuration;
+
+/**
+ A store of user indicators that lets the room present and dismiss indicators without
+ worrying about the presentation context or memory management.
+ */
+@property (strong, nonatomic) UserIndicatorStore *userIndicatorStore;
 
 /**
  This object is defined when the displayed room is left. It is added into the bubbles table header.

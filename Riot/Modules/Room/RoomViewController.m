@@ -969,17 +969,13 @@ static CGSize kThreadListBarButtonItemImageSize;
 #pragma mark - Loading indicators
 
 - (BOOL)providesCustomActivityIndicator {
-    return [self.delegate roomViewControllerCanDelegateUserIndicators:self];
+    return YES;
 }
 
 // Override of a legacy method to determine whether to use a newer implementation instead.
 // Will be removed in the future https://github.com/vector-im/element-ios/issues/5608
 - (void)startActivityIndicator {
-    if ([self providesCustomActivityIndicator]) {
-        [self.delegate roomViewControllerDidStartLoading:self];
-    } else {
-        [super startActivityIndicator];
-    }
+    [self.delegate roomViewControllerDidStartLoading:self];
 }
 
 // Override of a legacy method to determine whether to use a newer implementation instead.
@@ -992,15 +988,11 @@ static CGSize kThreadListBarButtonItemImageSize;
         [MXSDKOptions.sharedInstance.profiler stopMeasuringTaskWithProfile:notificationTaskProfile];
         notificationTaskProfile = nil;
     }
-    if ([self providesCustomActivityIndicator]) {
-        // The legacy super implementation of `stopActivityIndicator` contains a number of checks grouped under `canStopActivityIndicator`
-        // to determine whether the indicator can be stopped or not (and the method should thus rather be called `stopActivityIndicatorIfPossible`).
-        // Since the newer indicators are not calling super implementation, the check for `canStopActivityIndicator` has to be performed manually.
-        if ([self canStopActivityIndicator]) {
-            [self stopLoadingUserIndicator];
-        }
-    } else {
-        [super stopActivityIndicator];
+    // The legacy super implementation of `stopActivityIndicator` contains a number of checks grouped under `canStopActivityIndicator`
+    // to determine whether the indicator can be stopped or not (and the method should thus rather be called `stopActivityIndicatorIfPossible`).
+    // Since the newer indicators are not calling super implementation, the check for `canStopActivityIndicator` has to be performed manually.
+    if ([self canStopActivityIndicator]) {
+        [self stopLoadingUserIndicator];
     }
 }
 
@@ -4733,9 +4725,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (IBAction)onThreadListTapped:(id)sender
 {
-    self.threadsBridgePresenter = [[ThreadsCoordinatorBridgePresenter alloc] initWithSession:self.mainSession
-                                                                                      roomId:self.roomDataSource.roomId
-                                                                                    threadId:nil];
+    self.threadsBridgePresenter = [self.delegate threadsCoordinatorForRoomViewController:self threadId:nil];
     self.threadsBridgePresenter.delegate = self;
     [self.threadsBridgePresenter pushFrom:self.navigationController animated:YES];
 
@@ -6796,9 +6786,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         self.threadsBridgePresenter = nil;
     }
 
-    self.threadsBridgePresenter = [[ThreadsCoordinatorBridgePresenter alloc] initWithSession:self.mainSession
-                                                                                      roomId:self.roomDataSource.roomId
-                                                                                    threadId:threadId];
+    self.threadsBridgePresenter = [self.delegate threadsCoordinatorForRoomViewController:self threadId:threadId];
     self.threadsBridgePresenter.delegate = self;
     [self.threadsBridgePresenter pushFrom:self.navigationController animated:YES];
 }
