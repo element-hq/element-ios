@@ -1606,3 +1606,11 @@
 
 // Onboarding
 "onboarding_splash_register_button_title" = "アカウントを作成";
+"notice_room_created_by_you_for_dm" = "参加しました";
+"notice_room_created_for_dm" = "%@が参加しました";
+"onboarding_use_case_existing_server_button" = "サーバーに接続";
+"callbar_only_single_active_group" = "タップしてグループ通話に参加 (%@)";
+"settings_confirm_media_size" = "送信時のサイズ確認";
+"settings_confirm_media_size_description" = "この機能をオンにすると、画像や動画をどのサイズで送信するか確認する画面が表示されます。";
+"settings_contacts_enable_sync_description" = "IDサーバーを使用して連絡先を探すと同時に、連絡先があなたを探せるようにします。";
+"home_syncing" = "同期中";
