@@ -21,14 +21,14 @@ struct RoundedBorderTextEditor: View {
     
     // MARK: - Properties
     
-    var title: String?
-    var placeHolder: String
+    var title: String? = nil
+    let placeHolder: String
     @Binding var text: String
-    var textMaxHeight: CGFloat?
-    @Binding var error: String?
+    var textMaxHeight: CGFloat? = nil
+    var error: String? = nil
     
-    var onTextChanged: ((String) -> Void)?
-    var onEditingChanged: ((Bool) -> Void)?
+    var onTextChanged: ((String) -> Void)? = nil
+    var onEditingChanged: ((Bool) -> Void)? = nil
 
     @State private var editing = false
     
@@ -36,24 +36,6 @@ struct RoundedBorderTextEditor: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     @Environment(\.isEnabled) private var isEnabled
-    
-    // MARK: Setup
-    
-    init(title: String? = nil,
-         placeHolder: String,
-         text: Binding<String>,
-         textMaxHeight: CGFloat? = nil,
-         error: Binding<String?> = .constant(nil),
-         onTextChanged: ((String) -> Void)? = nil,
-         onEditingChanged: ((Bool) -> Void)? = nil) {
-        self.title = title
-        self.placeHolder = placeHolder
-        self._text = text
-        self.textMaxHeight = textMaxHeight
-        self._error = error
-        self.onTextChanged = onTextChanged
-        self.onEditingChanged = onEditingChanged
-    }
     
     // MARK: Public
     
@@ -131,10 +113,10 @@ struct ThemableTextEditor_Previews: PreviewProvider {
     
     static var sampleView: some View {
         VStack(alignment: .center, spacing: 40) {
-            RoundedBorderTextEditor(title: "A title", placeHolder: "A placeholder", text: .constant(""), error: .constant(nil))
-            RoundedBorderTextEditor(placeHolder: "A placeholder", text: .constant("Some text"), error: .constant(nil))
-            RoundedBorderTextEditor(title: "A title", placeHolder: "A placeholder", text: .constant("Some very long text used to check overlapping with the delete button"), error: .constant("Some error text"))
-            RoundedBorderTextEditor(title: "A title", placeHolder: "A placeholder", text: .constant("Some very long text used to check overlapping with the delete button"), error: .constant("Some error text"))
+            RoundedBorderTextEditor(title: "A title", placeHolder: "A placeholder", text: .constant(""), error: nil)
+            RoundedBorderTextEditor(placeHolder: "A placeholder", text: .constant("Some text"), error: nil)
+            RoundedBorderTextEditor(title: "A title", placeHolder: "A placeholder", text: .constant("Some very long text used to check overlapping with the delete button"), error: "Some error text")
+            RoundedBorderTextEditor(title: "A title", placeHolder: "A placeholder", text: .constant("Some very long text used to check overlapping with the delete button"), error: "Some error text")
                 .disabled(true)
         }
     }
