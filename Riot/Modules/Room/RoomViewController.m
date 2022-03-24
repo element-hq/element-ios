@@ -163,7 +163,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     BOOL isRoomLeft;
     
     // The last known frame of the view used to detect whether size-related layout change is needed
-    CGRect lastViewFrame;
+    CGRect lastViewBounds;
     
     // Tell whether the room has a Jitsi call or not.
     BOOL hasJitsiCall;
@@ -703,8 +703,8 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    BOOL didViewChangeFrame = !CGRectEqualToRect(lastViewFrame, self.view.frame);
-    lastViewFrame = self.view.frame;
+    BOOL didViewChangeBounds = !CGRectEqualToRect(lastViewBounds, self.view.bounds);
+    lastViewBounds = self.view.bounds;
     
     UIEdgeInsets contentInset = self.bubblesTableView.contentInset;
     contentInset.bottom = self.view.safeAreaInsets.bottom;
@@ -768,7 +768,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
     
     // re-scroll to the bottom, if at bottom before the most recent layout
-    if (self.wasScrollAtBottomBeforeLayout && didViewChangeFrame)
+    if (self.wasScrollAtBottomBeforeLayout && didViewChangeBounds)
     {
         self.wasScrollAtBottomBeforeLayout = NO;
         [self scrollBubblesTableViewToBottomAnimated:NO];
