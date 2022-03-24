@@ -49,9 +49,9 @@ class UserLocationAnnotatonView: MGLUserLocationAnnotationView {
     
     private func addUserMarkerView(with avatarData: AvatarInputProtocol) {
         
-        guard let avatarImageView = UIHostingController(rootView: LocationSharingMarkerView(backgroundColor: theme.displayUserColor(for: avatarData.matrixItemId)) {
-            AvatarImage(avatarData: avatarData, size: nil)
-                .shapedBorder(color: theme.displayUserColor(for: avatarData.matrixItemId), borderWidth: 3, shape: Circle())
+        guard let avatarImageView = UIHostingController(rootView: LocationSharingMarkerView(backgroundColor: theme.userColor(for: avatarData.matrixItemId)) {
+            AvatarImage(avatarData: avatarData, size: .medium)
+                .border()
         }).view else {
             return
         }

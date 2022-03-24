@@ -49,18 +49,20 @@ struct LocationSharingOptionButton_Previews: PreviewProvider {
             LocationSharingOptionButton(text: VectorL10n.locationSharingStaticShareTitle) {
                 
             } buttonIcon: {
-                AvatarImage(avatarData: AvatarInput(mxContentUri: nil, matrixItemId: "Alice", displayName: "Alice"), size: nil)
-                    .shapedBorder(color: Color.green, borderWidth: 3, shape: Circle())
+                AvatarImage(avatarData: AvatarInput(mxContentUri: nil, matrixItemId: "Alice", displayName: "Alice"), size: .medium)
+                    .border()
             }
             LocationSharingOptionButton(text: VectorL10n.locationSharingLiveShareTitle) {
                 
             } buttonIcon: {
                 Image(uiImage: Asset.Images.locationLiveIcon.image)
+                    .resizable()
             }
             LocationSharingOptionButton(text: VectorL10n.locationSharingPinDropShareTitle) {
                 
             } buttonIcon: {
                 Image(uiImage: Asset.Images.locationPinIcon.image)
+                    .resizable()
             }
         }
     }

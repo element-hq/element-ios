@@ -91,8 +91,8 @@ struct LocationSharingView: View {
                 LocationSharingOptionButton(text: VectorL10n.locationSharingStaticShareTitle) {
                     context.send(viewAction: .share)
                 } buttonIcon: {
-                    AvatarImage(avatarData: context.viewState.userAvatarData, size: nil)
-                        .shapedBorder(color: theme.displayUserColor(for: context.viewState.userAvatarData.matrixItemId), borderWidth: 3, shape: Circle())
+                    AvatarImage(avatarData: context.viewState.userAvatarData, size: .medium)
+                        .border()
                 }
                 .disabled(!context.viewState.shareButtonEnabled)
                 // Hide for now until live location sharing is finished
@@ -101,6 +101,7 @@ struct LocationSharingView: View {
                         // TODO: - Start live location sharing
                     } buttonIcon: {
                         Image(uiImage: Asset.Images.locationLiveIcon.image)
+                            .resizable()
                     }
                     .disabled(!context.viewState.shareButtonEnabled)
                 }
@@ -109,6 +110,7 @@ struct LocationSharingView: View {
                     // TODO: - Pin drop sharing action
                 } buttonIcon: {
                     Image(uiImage: Asset.Images.locationPinIcon.image)
+                        .resizable()
                 }
                 .disabled(!context.viewState.shareButtonEnabled)
             }
@@ -131,6 +133,9 @@ struct LocationSharingView: View {
 struct LocationSharingView_Previews: PreviewProvider {
     static let stateRenderer = MockLocationSharingScreenState.stateRenderer
     static var previews: some View {
-        stateRenderer.screenGroup()
+        Group {
+            stateRenderer.screenGroup().theme(.light).preferredColorScheme(.light)
+            stateRenderer.screenGroup().theme(.dark).preferredColorScheme(.dark)
+        }
     }
 }

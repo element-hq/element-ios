@@ -47,12 +47,6 @@ import UIKit
     public let background: UIColor
 
     public let namesAndAvatars: [UIColor]
-
-    // MARK: - Others colors
-    
-    public let white: UIColor
-    
-    public let purple: UIColor
     
     init(values: ColorValues) {
         accent = values.accent
@@ -68,8 +62,6 @@ import UIKit
         navigation = values.navigation
         background = values.background
         namesAndAvatars = values.namesAndAvatars
-        white = values.white
-        purple = values.purple
     }
 }
 

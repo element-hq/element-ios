@@ -43,9 +43,7 @@ public class LightColors {
             UIColor(rgb:0x2DC2C5),
             UIColor(rgb:0x5C56F5),
             UIColor(rgb:0x74D12C)
-        ],
-        white: UIColor(rgb: 0xFFFFFF),
-        purple: UIColor(rgb: 0x5C56F5)
+        ]
     )
     
     public static var uiKit = ColorsUIKit(values: values)

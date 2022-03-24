@@ -27,14 +27,7 @@ struct AvatarImage: View {
     var mxContentUri: String?
     var matrixItemId: String
     var displayName: String?
-    var size: AvatarSize?
-    
-    var sizeValue: CGFloat? {
-        guard let size = size else {
-            return nil
-        }
-        return CGFloat(size.rawValue)
-    }
+    var size: AvatarSize
     
     var body: some View {
         Group {
@@ -49,7 +42,7 @@ struct AvatarImage: View {
                     .resizable()
             }
         }
-        .frame(width: sizeValue, height: sizeValue)
+        .frame(maxWidth: CGFloat(size.rawValue), maxHeight: CGFloat(size.rawValue))
         .clipShape(Circle())
         .onAppear {
             viewModel.inject(dependencies: dependencies)
@@ -66,13 +59,26 @@ struct AvatarImage: View {
 
 @available(iOS 14.0, *)
 extension AvatarImage {
-    init(avatarData: AvatarInputProtocol, size: AvatarSize?) {
+    init(avatarData: AvatarInputProtocol, size: AvatarSize) {
         self.init(
             mxContentUri: avatarData.mxContentUri,
             matrixItemId: avatarData.matrixItemId,
             displayName: avatarData.displayName,
             size: size
         )
+    }
+}
+
+@available(iOS 14.0, *)
+extension AvatarImage {
+    func border(color: Color) -> some View {
+        modifier(BorderModifier(color: color, borderWidth: 3, shape: Circle()))
+    }
+    
+    /// Use display name color as border color by default
+    func border() -> some View {
+        let borderColor = theme.userColor(for: matrixItemId)
+        return self.border(color: borderColor)
     }
 }
 

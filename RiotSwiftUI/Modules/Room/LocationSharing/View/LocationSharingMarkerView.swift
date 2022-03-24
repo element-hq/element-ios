@@ -36,9 +36,9 @@ struct LocationSharingMarkerView<Content: View>: View {
                 .rotation(Angle(degrees: 45))
                 .fill(backgroundColor)
                 .frame(width: 7, height: 7)
-                .offset(x: 0, y: 22)
+                .offset(x: 0, y: 21)
             markerImage
-                .frame(width: 42, height: 42)
+                .frame(width: 40, height: 40)
         }
     }
 }
@@ -53,12 +53,12 @@ struct LocationSharingUserMarkerView_Previews: PreviewProvider {
                                      displayName: "Alice")
         VStack(alignment: .center, spacing: 15) {
             LocationSharingMarkerView(backgroundColor: .green) {
-                AvatarImage(avatarData: avatarData, size: nil)
-                    .shapedBorder(color: Color.green, borderWidth: 3, shape: Circle())
+                AvatarImage(avatarData: avatarData, size: .medium)
+                    .border()
             }
             LocationSharingMarkerView(backgroundColor: .green) {
-                AvatarImage(avatarData: avatarData, size: nil)
-                    .shapedBorder(color: Color.green, borderWidth: 3, shape: Circle())
+                AvatarImage(avatarData: avatarData, size: .medium)
+                    .border()
             }
         }
     }
