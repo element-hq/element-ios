@@ -40,8 +40,14 @@ struct LocationSharingView: View {
                                        showsUserLocation: context.viewState.showsUserLocation,
                                        userLocation: $context.userLocation,
                                        errorSubject: context.viewState.errorSubject)
-                    .ignoresSafeArea()
-                MapCreditsView()
+                VStack(spacing: 0) {
+                    MapCreditsView()
+                    if context.viewState.shareButtonVisible {
+                        buttonsView
+                            .background(theme.colors.background)
+                            .clipShape(RoundedCornerShape(radius: 8, corners: [.topLeft, .topRight]))
+                    }
+                }
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -63,11 +69,6 @@ struct LocationSharingView: View {
                                 .accessibilityIdentifier("LocationSharingView.shareButton")
                         }
                         .disabled(!context.viewState.shareButtonEnabled)
-                    } else {
-                        Button(VectorL10n.locationSharingShareAction, action: {
-                            context.send(viewAction: .share)
-                        })
-                            .disabled(!context.viewState.shareButtonEnabled)
                     }
                 }
             }
@@ -84,6 +85,40 @@ struct LocationSharingView: View {
         .navigationViewStyle(StackNavigationViewStyle())
     }
     
+    var buttonsView: some View {
+        VStack(alignment: .leading, spacing: 15) {
+            if !context.viewState.isPinDropSharing {
+                LocationSharingOptionButton(text: VectorL10n.locationSharingStaticShareTitle) {
+                    context.send(viewAction: .share)
+                } buttonIcon: {
+                    AvatarImage(avatarData: context.viewState.userAvatarData, size: .medium)
+                        .border()
+                }
+                .disabled(!context.viewState.shareButtonEnabled)
+                // Hide for now until live location sharing is finished
+                if context.viewState.isLiveLocationSharingEnabled {
+                    LocationSharingOptionButton(text: VectorL10n.locationSharingLiveShareTitle) {
+                        // TODO: - Start live location sharing
+                    } buttonIcon: {
+                        Image(uiImage: Asset.Images.locationLiveIcon.image)
+                            .resizable()
+                    }
+                    .disabled(!context.viewState.shareButtonEnabled)
+                }
+            } else {
+                LocationSharingOptionButton(text: VectorL10n.locationSharingPinDropShareTitle) {
+                    // TODO: - Pin drop sharing action
+                } buttonIcon: {
+                    Image(uiImage: Asset.Images.locationPinIcon.image)
+                        .resizable()
+                }
+                .disabled(!context.viewState.shareButtonEnabled)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
+    }
+    
     @ViewBuilder
     private var activityIndicator: some View {
         if context.viewState.showLoadingIndicator {
@@ -98,6 +133,9 @@ struct LocationSharingView: View {
 struct LocationSharingView_Previews: PreviewProvider {
     static let stateRenderer = MockLocationSharingScreenState.stateRenderer
     static var previews: some View {
-        stateRenderer.screenGroup()
+        Group {
+            stateRenderer.screenGroup().theme(.light).preferredColorScheme(.light)
+            stateRenderer.screenGroup().theme(.dark).preferredColorScheme(.dark)
+        }
     }
 }

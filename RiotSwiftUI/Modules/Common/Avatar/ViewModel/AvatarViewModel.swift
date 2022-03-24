@@ -52,7 +52,7 @@ class AvatarViewModel: InjectableObject, ObservableObject {
             return
         }
         
-        avatarService.avatarImage(mxContentUri: mxContentUri, avatarSize: avatarSize)
+            avatarService.avatarImage(mxContentUri: mxContentUri, avatarSize: avatarSize)
             .sink { completion in
                 guard case let .failure(error) = completion else { return }
                 UILog.error("[AvatarService] Failed to retrieve avatar: \(error)")
