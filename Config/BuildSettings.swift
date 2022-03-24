@@ -191,6 +191,7 @@ final class BuildSettings: NSObject {
     static let bugReportEndpointUrlString = "https://riot.im/bugreports"
     // Use the name allocated by the bug report server
     static let bugReportApplicationId = "riot-ios"
+    static let bugReportUISIId = "element-auto-uisi"
     
     
     // MARK: - Integrations
@@ -378,6 +379,9 @@ final class BuildSettings: NSObject {
     
     // MARK: - Secrets Recovery
     static let secretsRecoveryAllowReset = true
+    
+    // MARK: - UISI Autoreporting
+    static let cryptoUISIAutoReportingEnabled = false
     
     // MARK: - Polls
     

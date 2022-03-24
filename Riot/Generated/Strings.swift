@@ -6699,6 +6699,10 @@ public class VectorL10n: NSObject {
   public static var settingsLabsE2eEncryptionPromptMessage: String { 
     return VectorL10n.tr("Vector", "settings_labs_e2e_encryption_prompt_message") 
   }
+  /// Auto Report Decryption Errors
+  public static var settingsLabsEnableAutoReportDecryptionErrors: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enable_auto_report_decryption_errors") 
+  }
   /// Ring for group calls
   public static var settingsLabsEnableRingingForGroupCalls: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_ringing_for_group_calls") 
