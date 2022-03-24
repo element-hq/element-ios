@@ -1043,6 +1043,10 @@
 
 - (void)setRoomTitleViewClass:(Class)roomTitleViewClass
 {
+    if ([self.titleView.class isEqual:roomTitleViewClass]) {
+        return;
+    }
+    
     // Sanity check: accept only MXKRoomTitleView classes or sub-classes
     NSParameterAssert([roomTitleViewClass isSubclassOfClass:MXKRoomTitleView.class]);
     
