@@ -116,8 +116,8 @@ struct SpaceSettings: View {
                 title: VectorL10n.createRoomPlaceholderName,
                 placeHolder: "",
                 text: $viewModel.name,
-                footerText: .constant(viewModel.viewState.roomNameError),
-                isError: .constant(true),
+                footerText: viewModel.viewState.roomNameError,
+                isError: true,
                 configuration: UIKitTextInputConfiguration( returnKeyType: .next))
                 .padding(.horizontal, 2)
                 .padding(.bottom, 20)
@@ -127,7 +127,7 @@ struct SpaceSettings: View {
                 placeHolder: VectorL10n.spaceTopic,
                 text: $viewModel.topic,
                 textMaxHeight: 72,
-                error: .constant(nil))
+                error: nil)
                 .padding(.horizontal, 2)
                 .padding(.bottom, viewModel.viewState.showRoomAddress ? 20 : 3)
                 .disabled(viewModel.viewState.roomProperties?.isTopicEditable != true)
@@ -136,8 +136,8 @@ struct SpaceSettings: View {
                     title: VectorL10n.spacesCreationAddress,
                     placeHolder: "# \(viewModel.viewState.defaultAddress)",
                     text: $viewModel.address,
-                    footerText: .constant(viewModel.viewState.addressMessage),
-                    isError: .constant(!viewModel.viewState.isAddressValid),
+                    footerText: viewModel.viewState.addressMessage,
+                    isError: !viewModel.viewState.isAddressValid,
                     configuration: UIKitTextInputConfiguration(keyboardType: .URL, returnKeyType: .done, autocapitalizationType: .none), onTextChanged:  {
                         newText in
                         viewModel.send(viewAction: .addressChanged(newText))
