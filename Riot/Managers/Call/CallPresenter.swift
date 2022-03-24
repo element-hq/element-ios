@@ -263,24 +263,25 @@ class CallPresenter: NSObject {
     func processWidgetEvent(_ event: MXEvent, inSession session: MXSession) {
         MXLog.debug("[CallPresenter] processWidgetEvent")
         
-        guard JMCallKitProxy.isProviderConfigured() else {
-            //  CallKit proxy is not configured, no benefit in parsing the event
-            MXLog.debug("[CallPresenter] processWidgetEvent: JMCallKitProxy not configured")
-            return
-        }
-        
         guard let widget = Widget(widgetEvent: event, inMatrixSession: session) else {
             MXLog.debug("[CallPresenter] processWidgetEvent: widget couldn't be created")
             return
         }
         
-        if let uuid = self.jitsiCalls.first(where: { $0.value.widgetId == widget.widgetId })?.key {
-            //  this Jitsi call is already managed by this class, no need to report the call again
-            MXLog.debug("[CallPresenter] processWidgetEvent: Jitsi call already managed with id: \(uuid.uuidString)")
+        guard JMCallKitProxy.isProviderConfigured() else {
+            //  CallKit proxy is not configured, no benefit in parsing the event
+            MXLog.debug("[CallPresenter] processWidgetEvent: JMCallKitProxy not configured")
+            hangupUnhandledCallIfNeeded(widget)
             return
         }
         
         if widget.isActive {
+            if let uuid = self.jitsiCalls.first(where: { $0.value.widgetId == widget.widgetId })?.key {
+                //  this Jitsi call is already managed by this class, no need to report the call again
+                MXLog.debug("[CallPresenter] processWidgetEvent: Jitsi call already managed with id: \(uuid.uuidString)")
+                return
+            }
+            
             guard widget.type == kWidgetTypeJitsiV1 || widget.type == kWidgetTypeJitsiV2 else {
                 //  not a Jitsi widget, ignore
                 MXLog.debug("[CallPresenter] processWidgetEvent: not a Jitsi widget")
@@ -337,6 +338,7 @@ class CallPresenter: NSObject {
             guard let uuid = self.jitsiCalls.first(where: { $0.value.widgetId == widget.widgetId })?.key else {
                 //  this Jitsi call is not managed by this class
                 MXLog.debug("[CallPresenter] processWidgetEvent: not managed Jitsi call: \(widget.widgetId)")
+                hangupUnhandledCallIfNeeded(widget)
                 return
             }
             MXLog.debug("[CallPresenter] processWidgetEvent: ended call with id: \(uuid.uuidString)")
@@ -722,6 +724,15 @@ class CallPresenter: NSObject {
         uiOperationQueue.addOperation(operation)
     }
     
+    /// Hangs up current Jitsi call, if it is inactive and associated with given widget.
+    /// Should be used for calls that are not handled through JMCallKitProxy,
+    /// as these should be removed regardless.
+    private func hangupUnhandledCallIfNeeded(_ widget: Widget) {
+        guard !widget.isActive, widget.widgetId == jitsiVC?.widget.widgetId else { return }
+        
+        MXLog.debug("[CallPresenter] hangupUnhandledCallIfNeeded: ending call with Widget id: %@", widget.widgetId)
+        endActiveJitsiCall()
+    }
 }
 
 //  MARK: - MXKCallViewControllerDelegate
