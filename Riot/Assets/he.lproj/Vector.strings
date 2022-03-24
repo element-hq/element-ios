@@ -121,7 +121,7 @@
 "ssl_trust" = "בטוח";
 "ssl_unexpected_existing_expl" = "התעודה שונתה מזו שאומתה ע\"י הטלפון שלך. זה חריג לחלוטין. מומלץ לך לא לקבל את התעודה החדשה הזו.";
 "start_chat" = "התחל צ'אט";
-"store_full_description" = "Element היא סוג חדש של אפליקציית הודעות ושיתוף :\n\n1. מאפשרת לך לשלוט ולשמור על פרטיותך.\n2. מאפשרת לך לתקשר עם כל אחד ברשת,  ואפילו מעבר לכך ע\"י שילוב אפליקציות כמו Slack\n3. מגנה עליך מפני פרסומות, כריית מידע ופרצות אחוריות.\n4. מגנה עליך ע\"י הצפנה מקצה לקצה,  תוך התחברות מוצלבת לווידוא אחרים.\n\nElement היא אפליקצית הודעות ושיתוף השונה לחלוטין מאפליקציות אחרות מכיון שהיא מבוזרת ועובדת  בקוד פתוח.\n\nElement  מאפשרת לך לעבוד כמשתמש עצמי או לבחור לעבוד כמשתמש אורח, כך שתהיה לך פרטיות, בעלות וניהול של המידע שלך. היא מאפשרת לך גישה פתוחה לרשת כך שאתה לא מדבר רק עם משתמשים אחרים במערכת ה Element. ובנוסף המערכת מאוד מאובטחת.\n\nElement מסוגלת לבצע כל זאת מכיון שהיא עובדת במטריצה - הסטנדרט עבור תקשורת פתוחה ומבוזרת.\n\nElement נותנת לך בקרה ע\"י כך שהיא מאפשרת לך לבחור מי יהיו המשתמשים בחדרי השיחה. מאפליקציית  Element אתה יכול לבחור את צורת ההתחברות בשלוש דרכים שונות:\n\n1. קבלת חשבון חינמי בשרת ציבורי  matrix.org\n2. הקמת חשבון משתמש עצמי על שרת אישי שלך.\n3. רישום והקמת חשבון על שרת אירוח של מערכת Element\n\nמדוע לבחור ב Element ?\n\nשלוט במידע שלך : אתה מחליט היכן לשמור את המידע שלך וההודעות שלך. אתה הבעלים והמנהל של המידע, ולא איזה ארגון ענק שכורה את המידע ומאפשר גישה לצד שלישי.\n\nפתיחת הודעות וחדרים: אתה יכול לדבר בחדרי הצ'אט עם כל אחד אחר ברשת, בין אם הם משתמשים ב Element או בכל אפליקציית מטריקס, ואפילו אם הם משתמשים במערכת הודעות שונה כגון Slack, IRC או XMPP.\n\nאבטחה מקסימלית: הצפנה קצה לקצה אמתית (רק אלו שנמצאים בשיחה יכולים לפענח את ההודעות), וחתימה מוצלבת ע\"מ לאשר את מכשירי המשתתפים בשיחות.\n\nתקשורת מלאה: הודעות, שיחות קול ווידאו, שיתוף קבצים, שיתוף מסכים, ומבחר של התקנות, בוטים ויישומים. בניית חדרים, קהילות, \"שמירה על קשר\" ומעקב ביצוע משימות.\n\nהיכן שאתה נמצא: הישאר בקשר היכן שאתה נמצא עם סנכרון מלא להודעות היסטוריות בכל המכשירים ובאתר בכתובת :  https://element.io/app";
+"store_full_description" = "Element היא סוג חדש של אפליקציית הודעות ושיתוף :\n\n1. מאפשרת לך לשלוט ולשמור על פרטיותך\n2. מאפשרת לך לתקשר עם כל אחד ברשת, ואפילו מעבר לכך ע\"י שילוב אפליקציות כמו Slack\n3. מגנה עליך מפני פרסומות, כריית מידע ופרצות אחוריות\n4. מגנה עליך ע\"י הצפנה מקצה לקצה, תוך התחברות מוצלבת לווידוא אחרים\n\nElement היא אפליקצית הודעות ושיתוף השונה לחלוטין מאפליקציות אחרות מכיון שהיא מבוזרת ועובדת בקוד פתוח.\n\nElement מאפשרת לך לעבוד כמשתמש עצמי או לבחור לעבוד כמשתמש אורח כך שתהיה לך פרטיות, בעלות וניהול של המידע שלך. היא מאפשרת לך גישה פתוחה לרשת; כך שאתה לא מדבר רק עם משתמשים אחרים במערכת ה Element. ובנוסף המערכת מאוד מאובטחת.\n\nElement מסוגלת לבצע כל זאת מכיון שהיא עובדת במטריצה - הסטנדרט עבור תקשורת פתוחה ומבוזרת.\n\nElement נותנת לך בקרה ע\"י כך שהיא מאפשרת לך לבחור מי יהיו המשתמשים בחדרי השיחה. מאפליקציית Element אתה יכול לבחור את צורת ההתחברות בשלוש דרכים שונות:\n\n1. קבלת חשבון חינמי בשרת ציבורי matrix.org\n2. הקמת חשבון משתמש עצמי על שרת אישי שלך\n3. רישום והקמת חשבון על שרת אירוח של מערכת Element\n\nמדוע לבחור ב Element?\n\nשלוט במידע שלך: אתה מחליט היכן לשמור את המידע שלך וההודעות שלך. אתה הבעלים והמנהל של המידע, ולא איזה ארגון ענק שכורה את המידע ומאפשר גישה לצד שלישי.\n\nפתיחת הודעות וחדרים: אתה יכול לדבר בחדרי הצ'אט עם כל אחד אחר ברשת, בין אם הם משתמשים ב Element או בכל אפליקציית מטריקס, ואפילו אם הם משתמשים במערכת הודעות שונה כגון Slack, IRC או XMPP.\n\nאבטחה מקסימלית: הצפנה קצה לקצה אמתית (רק אלו שנמצאים בשיחה יכולים לפענח את ההודעות), וחתימה מוצלבת ע\"מ לאשר את מכשירי המשתתפים בשיחות.\n\nתקשורת מלאה: הודעות, שיחות קול ווידאו, שיתוף קבצים, שיתוף מסכים, ומבחר של התקנות, בוטים ויישומים. בניית חדרים, קהילות, \"שמירה על קשר\" ומעקב ביצוע משימות.\n\nהיכן שאתה נמצא: הישאר בקשר היכן שאתה נמצא עם סנכרון מלא להודעות היסטוריות בכל המכשירים שלך ובאתר בכתובת : https://element.io/app.";
 "onboarding_splash_login_button_title" = "קיים ברשותי חשבון";
 "accessibility_button_label" = "כפתור";
 "callbar_only_single_active_group" = "החלק להשתתפות בשיחת הועידה (%@)";
@@ -722,3 +722,237 @@
 "search_default_placeholder" = "חפש";
 "secrets_recovery_with_key_information_verify_device" = "השתמש במפתח האבטחה שלך ע\"מ לאשר התקן זה.";
 "secrets_recovery_with_key_information_default" = "היכנס אל ההודעות המאובטחות הישנות שלך ואל זיהוי החתימה שלך ע\"מ לאשר קישורים אחרים ע\"י הכנסת מפתח האבטחה שלך.";
+"room_event_action_reaction_history" = "תגובה ישנה";
+"room_event_action_reaction_show_less" = "הראה פחות";
+"room_event_action_reaction_show_all" = "הראה הכל";
+"room_event_action_edit" = "ערוך";
+"room_event_action_reply" = "תגובה";
+"room_event_action_view_encryption" = "מידע מוצפן";
+"room_event_action_cancel_download" = "בטל הורדה";
+"room_event_action_cancel_send" = "בטל שליחה";
+"room_event_action_delete_confirmation_message" = "האם אתה בטוח שברצונך למחוק הודעה זו שלא נשלחה?";
+"room_event_action_delete_confirmation_title" = "מחק הודעה שלא נשלחה";
+"room_event_action_delete" = "מחק";
+"room_event_action_resend" = "שלח שוב";
+"room_event_action_save" = "שמור";
+"room_event_action_report_prompt_ignore_user" = "האם אתה רוצה להסתיר את כל ההודעות ממשתמש זה?";
+"room_event_action_ban_prompt_reason" = "סיבה לחסימת משתמש זה";
+"room_event_action_kick_prompt_reason" = "סיבה להסרת משתמש זה";
+"room_event_action_report_prompt_reason" = "סיבה לדיווח על תוכן זה";
+"room_event_action_report" = "דווח תוכן";
+"room_event_action_view_decrypted_source" = "צפה במקור מפוענח";
+"room_event_action_view_source" = "צפה במקור";
+"room_event_action_permalink" = "העתק קישור להודעה";
+"room_event_action_view_in_room" = "צפה בתוך החדר";
+"room_event_action_forward" = "העבר";
+"room_event_action_share" = "שתף";
+"room_event_action_more" = "עוד";
+"room_event_action_redact" = "הסר";
+"room_event_action_end_poll" = "סוף הצבעה";
+"room_event_action_remove_poll" = "הסר הצבעה";
+"room_event_action_quote" = "ציטוט";
+"room_event_action_copy" = "העתק";
+"room_delete_unsent_messages" = "מחק הודעות שלא נשלחו";
+"room_resend_unsent_messages" = "שלח שוב הודעות שלא נשלחו";
+"room_prompt_cancel" = "בטל הכל";
+"room_prompt_resend" = "שלח שוב הכל";
+"room_conference_call_no_power" = "אתה צריך הרשאה על מנת לנהל שיחת ועידה בחדר זה";
+"room_ongoing_conference_call_close" = "סגור";
+"room_ongoing_conference_call_with_close" = "שיחת ועידה מתמשכת. הצטרף לזה כ%@ או %@. %@.";
+"room_ongoing_conference_call" = "שיחת ועידה מתמשכת. הצטרף כ%@ או %@.";
+"room_unsent_messages_cancel_message" = "אתה בטוח שברצונך למחוק את כל ההודעות שלא נשלחו בחדר זה?";
+"room_unsent_messages_cancel_title" = "מחק הודעות שלא נשלחו";
+"room_unsent_messages_unknown_devices_notification" = "הודעה נכשלה להישלח בשל קישור לא ידוע שהוצג.";
+"room_unsent_messages_notification" = "הודעות נכשלו להישלח.";
+"room_offline_notification" = "החיבור לשרת אבד.";
+"room_message_reply_to_short_placeholder" = "שלח תגובה…";
+"room_message_short_placeholder" = "שלח הודעה…";
+"encrypted_room_message_reply_to_placeholder" = "שלח תגובה מוצפנת…";
+"encrypted_room_message_placeholder" = "שלח הודעה מוצפנת…";
+"room_do_not_have_permission_to_post" = "אין לך הרשאות לשלוח לחדר זה";
+"room_message_replying_to" = "עונה ל%@";
+"room_message_editing" = "עורך";
+"room_message_unable_open_link_error_message" = "לא יכול לפתוח את הקישור.";
+"room_message_reply_to_placeholder" = "שלח תגובה (לא מוצפנת)…";
+"room_message_placeholder" = "שלח הודעה (לא מוצפנת)…";
+"room_many_users_are_typing" = "%@, %@ וגם אחרים מקלידים…";
+"room_two_users_are_typing" = "%@ & %@ מקלידים…";
+"room_one_user_is_typing" = "%@ מקליד…";
+"room_new_messages_notification" = "%@ הודעות חדשות";
+"room_new_message_notification" = "%@ הודעה חדשה";
+"room_accessiblity_scroll_to_bottom" = "גלול לתחתית";
+"room_jump_to_first_unread" = "עבור ללא נקרא";
+
+// MARK: - Chat
+
+"room_slide_to_end_group_call" = "החלק על מנת לסיים את השיחה לכולם";
+"room_member_power_level_short_custom" = "מותאם אישית";
+"room_member_power_level_short_moderator" = "מצב";
+"room_member_power_level_short_admin" = "מנהל מערכת";
+"room_member_power_level_custom_in" = "%@ מותאם אישית ב%@";
+"room_member_power_level_moderator_in" = "מנחה ב %@";
+"room_member_power_level_admin_in" = "מנהל ב%@";
+"room_participants_security_information_room_encrypted_for_dm" = "ההודעות כאן מוצפנות קצה לקצה.\n\nההודעות שלך מאובטחות עם מנעולים ורק לך ולמקבל ההודעות יש מפתחות ייחודיים לפתוח אותם.";
+"room_participants_security_information_room_encrypted" = "ההודעות בחדר זה מוצפנות קצה לקצה.\n\nההודעות שלך מאובטחות עם מנעולים ורק לך ולמקבל ההודעות יש מפתח ייחודי לפתוח אותן.";
+"room_participants_security_information_room_not_encrypted_for_dm" = "ההודעות כאן אינן מוצפנות קצה לקצה.";
+"room_participants_security_information_room_not_encrypted" = "הודעות בחדר זה אינן מוצפנות קצה לקצה.";
+"room_participants_security_loading" = "טוען…";
+"room_participants_action_security_status_loading" = "טוען…";
+"room_participants_action_security_status_warning" = "אזהרה";
+"room_participants_action_security_status_complete_security" = "אבטחה מלאה";
+"room_participants_action_security_status_verify" = "תאשר";
+"room_participants_action_security_status_verified" = "מאומת";
+"room_participants_action_mention" = "תזכורת";
+"room_participants_action_start_video_call" = "התחל שיחת וידאו";
+"room_participants_action_start_voice_call" = "התחל שיחת קול";
+"room_participants_action_start_new_chat" = "התחל צ'אט חדש";
+"room_participants_action_set_admin" = "הפוך למנהל";
+"room_participants_action_set_moderator" = "הפוך למנחה";
+"room_participants_action_set_default_power_level" = "אפס הגדרות משתמש לברירת מחדל";
+"room_participants_action_unignore" = "הצג כל ההודעות ממשתמש זה";
+"room_participants_action_ignore" = "הסתר כל ההודעות ממשתמש זה";
+"room_participants_action_unban" = "בטל חסימה";
+"room_participants_action_ban" = "אסור מחדר זה";
+"room_participants_action_remove" = "הוצא מחדר זה";
+"room_participants_action_leave" = "עזוב חדר זה";
+"room_participants_action_invite" = "הזמן";
+"room_participants_action_section_security" = "אבטחה";
+"room_participants_action_section_other" = "אפשרויות";
+"room_participants_action_section_devices" = "ממשקים";
+"room_participants_action_section_direct_chats" = "צ'אטים ישירים";
+"room_participants_action_section_admin_tools" = "כלי מערכת";
+"room_participants_ago" = "לפני";
+"room_participants_now" = "כעת";
+"room_participants_idle" = "פנוי";
+"room_participants_unknown" = "לא ידוע";
+"room_participants_offline" = "לא זמין";
+"room_participants_online" = "זמין";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "לא הוגדר שרת זיהוי לכן אתה לא יכול להתחיל צ'אט עם איש קשר באמצעות אימייל.";
+"room_participants_invited_section" = "מוזמן";
+"room_participants_invite_malformed_id" = "מספר מזהה לא תקין. צריך להיות כתובת אימייל או מזהה מערכת כמו 'localpart:domain@'";
+"room_participants_invite_malformed_id_title" = "שגיאת הזמנה";
+"room_participants_invite_another_user" = "חפש/הזמן באמצעות מספר מזהה, שם או כתובת מייל";
+"room_participants_filter_room_members_for_dm" = "סינון חברים";
+"room_participants_filter_room_members" = "סינון חברים בחדר";
+"room_participants_invite_prompt_msg" = "האם אתה בטוח שברצונך להזמין את %@ לצ'אט זה?";
+"room_participants_invite_prompt_title" = "אישור";
+"room_participants_remove_third_party_invite_prompt_msg" = "האם אתה בטוח שברצונך לבטל הזמנה זו?";
+"room_participants_remove_prompt_msg" = "האם אתה בטוח שברצונך להסיר את %@ מצ'אט זה?";
+"room_participants_remove_prompt_title" = "אישור";
+"room_participants_leave_success" = "עזב את החדר";
+"room_participants_leave_processing" = "עוזב";
+"room_participants_leave_prompt_msg_for_dm" = "האם אתה בטוח שברצונך לעזוב?";
+"room_participants_leave_prompt_msg" = "האם אתה בטוח שברצונך לעזוב את החדר?";
+"room_participants_leave_prompt_title_for_dm" = "עזוב";
+"room_participants_leave_prompt_title" = "עזוב חדר";
+"room_participants_multi_participants" = "%@ משתתפים";
+"room_participants_one_participant" = "משתתף 1";
+"room_participants_add_participant" = "הוסף משתתף";
+
+// Chat participants
+"room_participants_title" = "משתתפים";
+"find_your_contacts_identity_service_error" = "לא ניתן להתחבר לשרת הזיהוי.";
+"find_your_contacts_footer" = "ניתן לחסום זאת בכל זמן דרך תפריט הגדרות.";
+"find_your_contacts_button_title" = "חפש את אנשי הקשר שלך";
+"find_your_contacts_message" = "אפשר ל%@ להציג את רשימת אנשי הקשר שלך על מנת שתוכל לפתוח צ'אט במהירות עם אלה שאתה מכיר הכי טוב.";
+"find_your_contacts_title" = "התחל ע\"י הצגת רשימת אנשי הקשר שלך";
+"contacts_user_directory_offline_section" = "ספריית משתמש (במצב לא מקוון)";
+"contacts_user_directory_section" = "ספריית משתמש";
+"contacts_address_book_permission_denied_alert_message" = "על מנת לאפשר גישה לרשימת אנשי קשר, עבור להגדרות המכשיר שלך.";
+"contacts_address_book_permission_denied_alert_title" = "גישה לרשימת אנשי קשר נחסמה";
+"contacts_address_book_permission_denied" = "לא אישרת ל %@ גישה לרשימת אנשי הקשר שלך";
+"contacts_address_book_permission_required" = "נדרשת הרשאה עבור גישה לרשימת אנשי הקשר";
+"contacts_address_book_no_contact" = "אין אנשי קשר לוקליים";
+"contacts_address_book_no_identity_server" = "לא הוגדר שרת זיהוי";
+"contacts_address_book_matrix_users_toggle" = "משתמשי מטריצה בלבד";
+
+// Contacts
+"contacts_address_book_section" = "אנשי קשר מקומיים";
+"directory_searching_title" = "מחפש ספריות…";
+"directory_search_results_more_than" = ">% תוצאות נמצאו עבור %@";
+"directory_search_results" = "% תוצאות נמצאו עבור %@";
+"directory_search_results_title" = "דפדף תוצאות ספרייה";
+"directory_cell_description" = "% חדרים";
+
+// Directory
+"directory_cell_title" = "דפדף תיקייה";
+"search_in_progress" = "מחפש…";
+"search_files" = "קבצים";
+"search_people" = "אנשים";
+"search_messages" = "הודעות";
+
+// Search
+"search_rooms" = "חדרים";
+"group_section" = "קהילות";
+
+// Groups tab
+"group_invite_section" = "הזמנות";
+"rooms_empty_view_information" = "חדרים הם דבר נפלא עבור כל קבוצת צ'אט , פרטית או ציבורית. הקש + על מנת לחפש חדרים קיימים, או צור חדשים.";
+"rooms_empty_view_title" = "חדרים";
+
+// Rooms tab
+"room_directory_no_public_room" = "אין חדרים ציבוריים זמינים";
+"people_empty_view_information" = "השתמש בצ'אט בצורה בטוחה עם כל אחד. הקש + על מנת להוסיף אנשים.";
+"people_empty_view_title" = "אנשים";
+"people_no_conversation" = "אין שיחות";
+"people_conversation_section" = "שיחות";
+
+// People tab
+"people_invites_section" = "הזמנות";
+"room_recents_unknown_room_error_message" = "חדר זה לא נמצא.וודא האם הוא קיים";
+"room_recents_join_room_prompt" = "הכנס מספר או כינוי חדר";
+"room_recents_join_room_title" = "הצטרף לחדר";
+"room_recents_join_room" = "הצטרף לחדר";
+"room_recents_create_empty_room" = "צור חדר";
+"room_recents_start_chat_with" = "התחל צ'אט";
+"room_recents_suggested_rooms_section" = "חדרים מומלצים";
+"room_recents_invites_section" = "הזמנות";
+"room_recents_server_notice_section" = "התראות מערכת";
+"room_recents_low_priority_section" = "הרשאה נמוכה";
+"room_recents_no_conversation" = "אין חדרים";
+"room_recents_conversations_section" = "חדרים";
+"room_recents_people_section" = "אנשים";
+"room_recents_favourites_section" = "מועדפים";
+
+// Room recents
+"room_recents_directory_section" = "ספריית חדר";
+"room_creation_dm_error" = "לא הצלחנו ליצור את מנהל ההתקן. אנא בדוק את המשתמשים אותם אתה מעוניין להזמין ונסה שוב.";
+"social_login_list_title_sign_up" = "או";
+"social_login_list_title_sign_in" = "או";
+
+// Social login
+
+"social_login_list_title_continue" = "המשך עם";
+"auth_softlogout_clear_data_sign_out_msg" = "האם אתה בטוח שברצונך למחוק את כל המידע השמור כרגע במכשיר זה? התחבר שוב על מנת לגשת לחשבון המידע וההודעות שלך.";
+"auth_softlogout_clear_data_message_2" = "מחק אותו שם סיימת להשתמש במכשיר זה, או אם אתה מעוניין להתחבר לחשבון אחר.";
+"auth_softlogout_clear_data_message_1" = "זהירות:המידע האישי שלך (כולל מפתחות הצפנה) עדיין שמור במכשיר זה.";
+"auth_softlogout_recover_encryption_keys" = "התחבר על מנת לשחזר את מפתחות ההצפנה השמור בצורה בלעדית במכשיר זה. תצטרך אותם על מנת לקרא את כל ההודעות המאובטחות שלך בכל מכשיר.";
+"auth_softlogout_reason" = "מנהל שרת הבית שלך (% 1 $@) הוציא אותך החוצה מהחשבון שלך % 2 $@ (% 3 $@).";
+"auth_autodiscover_invalid_response" = "תגובת חשיפה לא חוקית של שרת הבית";
+"auth_accept_policies" = "אנא עבור ואשר את המדיניות בשרת הבית הזה:";
+"auth_add_email_and_phone_warning" = "רישום באמצעות מייל ומספר טלפון יחד לא נתמך עדיין עד שה API קיים. רק מספר הטלפון יילקח בחשבון. תוכל להוסיף את כתובת המייל שלך בהגדרות הפרופיל שלך.";
+"auth_reset_password_error_is_required" = "לא הוגדר שרת זיהוי: הוסף אחד באפשרויות שרת על מנת לאפס את סיסמת חשבון המטריצה שלך.";
+"auth_reset_password_error_not_found" = "כתובת המייל שלך לא מופיעה כמשוייכת למספר המטריצה בשרת הבית הזה.";
+"auth_reset_password_email_validation_message" = "אי מייל נשלח אל %@. ברגע שתעקוב הלינק המצורף, הקלק עליו.";
+"auth_reset_password_missing_email" = "חובה להכניס את כתובת המייל המשוייכת לחשבון שלך.";
+"auth_reset_password_message" = "על מנת לאפס את סיסמת החשבון שלך, הכנס את כתובת המייל המשוייכת לחשבון שלך:";
+"auth_msisdn_validation_title" = "ממתין לאימות";
+"auth_email_validation_message" = "אנא בדוק את כתובת המייל ע\"מ להמשיך ברישום";
+"auth_use_server_options" = "השתמש באפשרות שרת מותאמות אישית (מתקדמת)";
+"auth_email_not_found" = "שליחת הודעה נכשלה:כתובת מייל זו לא נמצאה";
+"auth_forgot_password_error_no_configured_identity_server" = "לא הוגדר שרת זיהוי:הוסף אחד על מנת לאפס את סיסמת החשבון שלך.";
+"auth_forgot_password" = "שכחת את סיסמת החשבון?";
+"auth_untrusted_id_server" = "שרת הזיהוי אינו מהימן";
+"auth_phone_is_required" = "לא הוגדר שרת זיהוי לכן אתה לא יכול להוסיף מספר טלפון על מנת לאפס את סיסמת החשבון שלך בעתיד.";
+"auth_email_is_required" = "לא הוגדר שרת זיהוי לכן אתה לא יכול להוסיף כתובת מייל על מנת לאפס את סיסמת החשבון שלך בעתיד.";
+"auth_add_email_phone_message_2" = "הגדר כתובת מייל עבור שחזור חשבון. השתמש במייל עדכני או טלפון על מנת להיות מזוהה ע\"י אנשים שמכירים אותך.";
+"auth_identity_server_placeholder" = "דף (https://vector.im לדוגמא)";
+"auth_repeat_new_password_placeholder" = "אשר את סיסמת החשבון החדשה שלך";
+"onboarding_use_case_message" = "אנחנו נעזור לך להתחבר.";
+"onboarding_use_case_title" = "עם מי תהיה לרוב בצ'אט?";
+
+// Accessibility
+"accessibility_checkbox_label" = "תיבת סימון";
+"store_promotional_text" = "צ'אט הגנה על פרטיות ואפליקציית שיתוף, ברשת פתוחה. מבוזרים על מנת לשמור אותך בבקרה. ללא כריית מידע, דלתות אחוריות או גישה של צד שלישי.";
+"sign_up" = "הירשם";
+"dismiss" = "לדחות";
