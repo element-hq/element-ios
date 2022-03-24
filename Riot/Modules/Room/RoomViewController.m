@@ -162,6 +162,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     // A flag indicating whether a room has been left
     BOOL isRoomLeft;
     
+    // The last known frame of the view used to detect whether size-related layout change is needed
+    CGRect lastViewFrame;
+    
     // Tell whether the room has a Jitsi call or not.
     BOOL hasJitsiCall;
     
@@ -225,7 +228,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 // When layout of the screen changes (e.g. height), we no longer know whether
 // to autoscroll to the bottom again or not. Instead we need to capture the
 // scroll state just before the layout change, and restore it after the layout.
-@property (nonatomic) BOOL shouldScrollToBottomAfterLayout;
+@property (nonatomic) BOOL wasScrollAtBottomBeforeLayout;
 
 /// Handles all banners that should be displayed at the top of the timeline but that should not scroll with the timeline
 @property (weak, nonatomic, nullable) IBOutlet UIStackView *topBannersStackView;
@@ -694,12 +697,14 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    self.shouldScrollToBottomAfterLayout = self.isBubblesTableScrollViewAtTheBottom;
+    self.wasScrollAtBottomBeforeLayout = self.isBubblesTableScrollViewAtTheBottom;
 }
 
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
+    BOOL didViewChangeFrame = !CGRectEqualToRect(lastViewFrame, self.view.frame);
+    lastViewFrame = self.view.frame;
     
     UIEdgeInsets contentInset = self.bubblesTableView.contentInset;
     contentInset.bottom = self.view.safeAreaInsets.bottom;
@@ -763,9 +768,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
     
     // re-scroll to the bottom, if at bottom before the most recent layout
-    if (self.shouldScrollToBottomAfterLayout)
+    if (self.wasScrollAtBottomBeforeLayout && didViewChangeFrame)
     {
-        self.shouldScrollToBottomAfterLayout = NO;
+        self.wasScrollAtBottomBeforeLayout = NO;
         [self scrollBubblesTableViewToBottomAnimated:NO];
     }
     
@@ -1378,6 +1383,10 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)setRoomTitleViewClass:(Class)roomTitleViewClass
 {
+    if ([self.titleView.class isEqual:roomTitleViewClass]) {
+        return;
+    }
+    
     // Sanity check: accept only MXKRoomTitleView classes or sub-classes
     NSParameterAssert([roomTitleViewClass isSubclassOfClass:MXKRoomTitleView.class]);
     
