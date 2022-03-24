@@ -40,3 +40,5 @@
 "onboarding_celebration_button" = "Let's go";
 
 "image_picker_action_files" = "Choose from files";
+
+"spaces_feature_not_available" = "This feature isn't available here. For now, you can do this with %@ on your computer.";
