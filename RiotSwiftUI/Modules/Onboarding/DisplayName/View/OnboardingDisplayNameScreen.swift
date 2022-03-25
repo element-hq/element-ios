@@ -80,7 +80,7 @@ struct OnboardingDisplayNameScreen: View {
                 .foregroundColor(theme.colors.primaryContent)
             
             Text(VectorL10n.onboardingDisplayNameMessage)
-                .font(theme.fonts.subheadline)
+                .font(theme.fonts.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.secondaryContent)
         }
@@ -92,6 +92,7 @@ struct OnboardingDisplayNameScreen: View {
             TextField(VectorL10n.onboardingDisplayNamePlaceholder, text: $viewModel.displayName) {
                 isEditingTextField = $0
             }
+            .autocapitalization(.words)
             .textFieldStyle(BorderedInputFieldStyle(theme: _theme,
                                                     isEditing: isEditingTextField,
                                                     isError: viewModel.viewState.validationErrorMessage != nil))

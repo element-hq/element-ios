@@ -132,7 +132,7 @@ struct OnboardingCongratulationsScreen: View {
     @ViewBuilder
     var effects: some View {
         if viewModel.viewState.personalizationDisabled {
-            EffectsView(effectsType: .confetti)
+            EffectsView(effect: .confetti)
                 .allowsHitTesting(false)
                 .accessibilityIdentifier("confetti")
         }

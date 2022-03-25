@@ -116,7 +116,7 @@ struct OnboardingAvatarScreen: View {
                 .foregroundColor(theme.colors.primaryContent)
             
             Text(VectorL10n.onboardingAvatarMessage)
-                .font(theme.fonts.subheadline)
+                .font(theme.fonts.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.secondaryContent)
         }

@@ -86,7 +86,7 @@ struct OnboardingCelebrationScreen: View {
                 .foregroundColor(theme.colors.primaryContent)
             
             Text(VectorL10n.onboardingCelebrationMessage)
-                .font(theme.fonts.subheadline)
+                .font(theme.fonts.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.secondaryContent)
         }
@@ -104,7 +104,7 @@ struct OnboardingCelebrationScreen: View {
     }
     
     var effects: some View {
-        EffectsView(effectsType: .confetti)
+        EffectsView(effect: .confetti)
             .allowsHitTesting(false)
     }
 }
