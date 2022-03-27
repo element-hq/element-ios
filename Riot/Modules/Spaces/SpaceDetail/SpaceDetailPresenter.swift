@@ -40,6 +40,7 @@ class SpaceDetailPresenter: NSObject {
     }()
     private var session: MXSession!
     private var spaceId: String!
+    private var senderId: String?
 
     // MARK: - Public
     
@@ -59,15 +60,16 @@ class SpaceDetailPresenter: NSObject {
         self.show(with: session)
     }
     
-    @objc func present(forSpaceWithPublicRoom publicRoom: MXPublicRoom,
+    @objc func present(forSpaceWithPublicRoom publicRoom: MXPublicRoom, senderId: String?,
                  from viewController: UIViewController,
                  sourceView: UIView?,
                  session: MXSession,
                  animated: Bool) {
         self.session = session
         self.spaceId = publicRoom.roomId
+        self.senderId = senderId
 
-        self.viewModel = SpaceDetailViewModel(session: session, publicRoom: publicRoom)
+        self.viewModel = SpaceDetailViewModel(session: session, publicRoom: publicRoom, senderId: senderId)
         self.viewModel.coordinatorDelegate = self
         self.presentingViewController = viewController
         self.sourceView = sourceView
