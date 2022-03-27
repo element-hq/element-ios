@@ -82,6 +82,10 @@ public extension VectorL10n {
   static var onboardingPersonalizationSkip: String { 
     return VectorL10n.tr("Untranslated", "onboarding_personalization_skip") 
   }
+  /// This feature isn't available here. For now, you can do this with %@ on your computer.
+  static func spacesFeatureNotAvailable(_ p1: String) -> String {
+    return VectorL10n.tr("Untranslated", "spaces_feature_not_available", p1)
+  }
 }
 // swiftlint:enable function_parameter_count identifier_name line_length type_body_length
 
