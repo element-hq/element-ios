@@ -605,7 +605,8 @@
         if (renderedCellData.isSuggestedRoom)
         {
             [self.delegate recentListViewController:self
-                             didSelectSuggestedRoom:renderedCellData.roomSummary.spaceChildInfo];
+                             didSelectSuggestedRoom:renderedCellData.roomSummary.spaceChildInfo
+                                               from:roomCollectionViewCell];
         }
         else
         {

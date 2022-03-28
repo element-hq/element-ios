@@ -1058,17 +1058,6 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     }
     
     self.forgotPasswordButton.hidden = !showForgotPasswordButton;
-    
-    // Adjust minimum leading constraint of the submit button
-    if (self.forgotPasswordButton.isHidden)
-    {
-        self.submitButtonMinLeadingConstraint.constant = 19;
-    }
-    else
-    {
-        CGRect frame = self.forgotPasswordButton.frame;
-        self.submitButtonMinLeadingConstraint.constant =  frame.origin.x + frame.size.width + 10;
-    }
 }
 
 - (void)afterSetPinFlowCompletedWithCredentials:(MXCredentials*)credentials
