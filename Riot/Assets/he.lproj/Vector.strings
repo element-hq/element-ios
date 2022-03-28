@@ -956,3 +956,35 @@
 "store_promotional_text" = "צ'אט הגנה על פרטיות ואפליקציית שיתוף, ברשת פתוחה. מבוזרים על מנת לשמור אותך בבקרה. ללא כריית מידע, דלתות אחוריות או גישה של צד שלישי.";
 "sign_up" = "הירשם";
 "dismiss" = "לדחות";
+
+// Banner
+
+"secure_backup_setup_banner_title" = "גיבוי מאובטח";
+"secure_key_backup_setup_cancel_alert_message" = "אם תבטל כעת, אתה עלול לאבד הודעות מוצפנות ומידע אם תאבד את הגישה שלך.\n\nאתה יכול להגדיר גם גיבוי מאובטח ולנהל את המפתחות שלך בהגדרות.";
+
+
+// Cancel
+
+"secure_key_backup_setup_cancel_alert_title" = "האם אתה בטוח?";
+"secure_key_backup_setup_existing_backup_error_delete_it" = "מחק זאת";
+"secure_key_backup_setup_existing_backup_error_unlock_it" = "פתח נעילה זו";
+"secure_key_backup_setup_existing_backup_error_info" = "בטל נעילה זו על מנת להשתמש בזה בגיבוי מאובטח או מחק זאת על מנת ליצור גיבוי הודעות חדש בגיבוי המאובטח.";
+"secure_key_backup_setup_existing_backup_error_title" = "גיבוי להודעות כבר קיים";
+"secure_key_backup_setup_intro_use_security_passphrase_info" = "השתמש בביטוי סודי שרק אתה יודע, וחולל מפתח לגיבוי.";
+"secure_key_backup_setup_intro_use_security_passphrase_title" = "השתמש בביטוי מאובטח";
+"secure_key_backup_setup_intro_use_security_key_info" = "חולל מפתח הצפנה כדי לשמור במקום בטוח כגון מנהל הצפנה או כספת.";
+"secure_key_backup_setup_intro_use_security_key_title" = "השתמש במפתח אבטחה";
+"secure_key_backup_setup_intro_info" = "אמצעי אבטחה למניעת איבוד גישה של הודעות מוצפנות ומידע באמצעות גיבוי מפתחות הצפנה בשרת שלך.";
+
+// MARK: Secure backup setup
+
+// Intro
+
+"secure_key_backup_setup_intro_title" = "גיבוי מאובטח";
+"rerequest_keys_alert_message" = "שלח בבקשה את %@ בהתקן אחר שיכול לפענח את ההודעה כך שניתן יהיה לשלוח את המפתח בממשק זה.";
+
+// Re-request confirmation dialog
+"rerequest_keys_alert_title" = "בקשה נשלחה";
+"room_event_failed_to_send" = "שליחה נכשלה";
+"room_warning_about_encryption" = "הצפנה קצה לקצה בפיתוח ולא ניתן לסמוך על כך.\n\nאתה עדיין לא יכול לסמוך על זה בשמירה על מידע.\n\nהתקנים עדיין לא יוכלו לפענח היסטוריה מלפני השלב בו הצטרפו לחדר.\n\nהודעות מוצפנות לא יוכלו להיות נצפות ע\"י משתמשים שטרם התקינו הצפנה.";
+"room_event_copy_link_info" = "לינק הועתק ללוח הכתיבה.";
