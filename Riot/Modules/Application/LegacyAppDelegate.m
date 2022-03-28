@@ -1108,6 +1108,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 - (void)pushNotificationService:(PushNotificationService *)pushNotificationService
      shouldNavigateToRoomWithId:(NSString *)roomId
                        threadId:(NSString *)threadId
+                         sender:(NSString *)userId
 {
     if (roomId)
     {
@@ -1123,7 +1124,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 
     _lastNavigatedRoomIdFromPush = roomId;
-    [self navigateToRoomById:roomId threadId:threadId];
+    [self navigateToRoomById:roomId threadId:threadId sender:userId];
 }
 
 #pragma mark - Badge Count
@@ -2912,7 +2913,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 #pragma mark - Matrix Rooms handling
 
-- (void)navigateToRoomById:(NSString *)roomId threadId:(NSString *)threadId
+- (void)navigateToRoomById:(NSString *)roomId threadId:(NSString *)threadId sender:(NSString *)userId
 {
     if (roomId.length)
     {
@@ -2949,7 +2950,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             [self showRoom:roomId
                   threadId:threadId
                 andEventId:nil
-         withMatrixSession:dedicatedAccount.mxSession];
+         withMatrixSession:dedicatedAccount.mxSession
+                    sender:userId];
         }
         else
         {
@@ -2967,7 +2969,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     NSString *roomId = parameters.roomId;
     MXSession *mxSession = parameters.mxSession;
-    BOOL restoreInitialDisplay = parameters.presentationParameters.restoreInitialDisplay;
     
     if (roomId && mxSession)
     {
@@ -2978,21 +2979,38 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             [Analytics.shared trackViewRoom:room];
         }
 
-        // Indicates that spaces are not supported
-        if (room.summary.roomType == MXRoomTypeSpace)
+        if (!room)
         {
-            
-            [self.spaceFeatureUnavailablePresenter presentUnavailableFeatureFrom:self.presentedViewController animated:YES];
-            
-            if (completion)
-            {
-                completion();
-            }
+            MXWeakify(self);
+            [mxSession.matrixRestClient roomSummaryWith:roomId via:@[] success:^(MXPublicRoom *room) {
+                MXStrongifyAndReturnIfNil(self);
+                if ([room.roomTypeString isEqualToString:MXRoomTypeStringSpace])
+                {
+                    SpacePreviewNavigationParameters *spacePreviewNavigationParameters = [[SpacePreviewNavigationParameters alloc] initWithPublicRoom:room mxSession:mxSession senderId:parameters.senderId presentationParameters:parameters.presentationParameters];
+                    [self showSpacePreviewWithParameters:spacePreviewNavigationParameters];
+                }
+                else
+                {
+                    [self finaliseShowRoomWithParameters:parameters completion:completion];
+                }
+            } failure:^(NSError *error) {
+                MXStrongifyAndReturnIfNil(self);
+                [self finaliseShowRoomWithParameters:parameters completion:completion];
+            }];
             
             return;
         }
+        
     }
     
+    [self finaliseShowRoomWithParameters:parameters completion:completion];
+}
+
+- (void)finaliseShowRoomWithParameters:(RoomNavigationParameters*)parameters completion:(void (^)(void))completion
+{
+    NSString *roomId = parameters.roomId;
+    BOOL restoreInitialDisplay = parameters.presentationParameters.restoreInitialDisplay;
+
     void (^selectRoom)(void) = ^() {
         // Select room to display its details (dispatch this action in order to let TabBarController end its refresh)
         
@@ -3021,10 +3039,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession
 {
-    [self showRoom:roomId threadId:nil andEventId:eventId withMatrixSession:mxSession];
+    [self showRoom:roomId threadId:nil andEventId:eventId withMatrixSession:mxSession sender:nil];
 }
 
-- (void)showRoom:(NSString*)roomId threadId:(NSString*)threadId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession
+- (void)showRoom:(NSString*)roomId threadId:(NSString*)threadId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession sender:(NSString*)userId
 {
     // Ask to restore initial display
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
@@ -3038,6 +3056,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
                                                                                     eventId:eventId
                                                                                   mxSession:mxSession
+                                                                                   senderId:userId
                                                                            threadParameters:threadParameters
                                                                      presentationParameters:presentationParameters];
     
@@ -3097,6 +3116,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     void(^showSpace)(void) = ^{
         [self.spaceDetailPresenter presentForSpaceWithPublicRoom:parameters.publicRoom
+                                                        senderId:parameters.senderId
                                                             from:presentingViewController
                                                       sourceView:sourceView
                                                          session:parameters.mxSession 
