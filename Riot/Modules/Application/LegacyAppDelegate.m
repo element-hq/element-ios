@@ -1489,12 +1489,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                 // Check that 'fragment' has not been cancelled
                                 if ([self->universalLinkFragmentPending isEqualToString:fragment])
                                 {
-                                    NSString *mewFragment = resolution.deeplinkFragment;
-                                    if (mewFragment && ![mewFragment isEqualToString:fragment])
+                                    NSString *newFragment = resolution.deeplinkFragment;
+                                    if (newFragment && ![newFragment isEqualToString:fragment])
                                     {
                                         self->universalLinkFragmentPendingRoomAlias = @{resolution.roomId: roomIdOrAlias};
 
-                                        UniversalLinkParameters *newParameters = [[UniversalLinkParameters alloc] initWithFragment:mewFragment
+                                        UniversalLinkParameters *newParameters = [[UniversalLinkParameters alloc] initWithFragment:newFragment
                                                                                                                   universalLinkURL:universalLinkURL
                                                                                                             presentationParameters:presentationParameters];
                                         [self handleUniversalLinkWithParameters:newParameters];
