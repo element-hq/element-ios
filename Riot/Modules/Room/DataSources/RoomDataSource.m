@@ -56,6 +56,8 @@ const CGFloat kTypingCellHeight = 24;
 
 @property (nonatomic) NSInteger typingCellIndex;
 
+@property(nonatomic, readwrite) BOOL isCurrentUserSharingIsLocation;
+
 @end
 
 @implementation RoomDataSource
@@ -131,6 +133,8 @@ const CGFloat kTypingCellHeight = 24;
     }
     
     self.showTypingRow = YES;
+    
+    [self updateCurrentUserLocationSharingStatus];
 }
 
 - (id<RoomDataSourceDelegate>)roomDataSourceDelegate
@@ -225,6 +229,8 @@ const CGFloat kTypingCellHeight = 24;
 
 - (void)roomSummaryDidChange:(NSNotification*)notification
 {
+    [self updateCurrentUserLocationSharingStatus];
+    
     if (!self.room.summary.isEncrypted)
     {
         return;
@@ -1128,6 +1134,29 @@ const CGFloat kTypingCellHeight = 24;
 {
     [self.roomDataSourceDelegate roomDataSource:self
                                    didTapThread:summaryView.thread];
+}
+
+#pragma mark - Location sharing
+
+- (void)updateCurrentUserLocationSharingStatus
+{
+    MXLocationService *locationService = self.mxSession.locationService;
+    
+    if (!locationService || !self.roomId)
+    {
+        return;
+    }
+    
+    BOOL isUserSharingIsLocation = [locationService isCurrentUserSharingIsLocationInRoomWithId:self.roomId];
+    
+    if (isUserSharingIsLocation != self.isCurrentUserSharingIsLocation)
+    {
+        self.isCurrentUserSharingIsLocation = [locationService isCurrentUserSharingIsLocationInRoomWithId:self.roomId];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.roomDataSourceDelegate roomDataSourceDidUpdateCurrentUserSharingLocationStatus:self];
+        });
+    }
 }
 
 @end
