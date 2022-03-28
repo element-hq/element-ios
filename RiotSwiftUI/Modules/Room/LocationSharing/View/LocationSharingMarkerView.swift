@@ -17,7 +17,7 @@
 import SwiftUI
 
 @available(iOS 14.0, *)
-struct LocationSharingUserMarkerView: View {
+struct LocationSharingMarkerView<Content: View>: View {
     
     // MARK: - Properties
     
@@ -25,21 +25,21 @@ struct LocationSharingUserMarkerView: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
-    @State private var frame: CGRect = .zero
-    
     // MARK: Public
     
-    let avatarData: AvatarInputProtocol
+    let backgroundColor: Color
+    @ViewBuilder var markerImage: Content
     
     var body: some View {
         ZStack {
-            Image(uiImage: Asset.Images.locationUserMarker.image)
-            AvatarImage(avatarData: avatarData, size: .large)
-                .offset(y: -1.5)
+            Rectangle()
+                .rotation(Angle(degrees: 45))
+                .fill(backgroundColor)
+                .frame(width: 7, height: 7)
+                .offset(x: 0, y: 21)
+            markerImage
+                .frame(width: 40, height: 40)
         }
-        .background(ViewFrameReader(frame: $frame))
-        .padding(.bottom, frame.height)
-        .accentColor(theme.colors.accent)
     }
 }
 
@@ -49,9 +49,17 @@ struct LocationSharingUserMarkerView: View {
 struct LocationSharingUserMarkerView_Previews: PreviewProvider {
     static var previews: some View {
         let avatarData = AvatarInput(mxContentUri: "",
-                                     matrixItemId: "",
+                                     matrixItemId: "test",
                                      displayName: "Alice")
-        
-        LocationSharingUserMarkerView(avatarData: avatarData)
+        VStack(alignment: .center, spacing: 15) {
+            LocationSharingMarkerView(backgroundColor: .green) {
+                AvatarImage(avatarData: avatarData, size: .medium)
+                    .border()
+            }
+            LocationSharingMarkerView(backgroundColor: .green) {
+                AvatarImage(avatarData: avatarData, size: .medium)
+                    .border()
+            }
+        }
     }
 }

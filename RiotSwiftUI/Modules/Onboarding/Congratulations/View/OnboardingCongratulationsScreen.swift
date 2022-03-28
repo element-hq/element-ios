@@ -39,21 +39,29 @@ struct OnboardingCongratulationsScreen: View {
     var body: some View {
         GeometryReader { geometry in
             VStack {
-                mainContent
-                    .padding(.top, 60)
-                    .padding(.horizontal, horizontalPadding)
-                
-                Spacer()
+                ScrollView {
+                    Spacer()
+                        .frame(height: OnboardingMetrics.spacerHeight(in: geometry))
+                    
+                    mainContent
+                        .frame(maxWidth: OnboardingMetrics.maxContentWidth)
+                        .padding(.top, 60)
+                        .padding(.horizontal, horizontalPadding)
+                }
+                .frame(maxWidth: .infinity)
                 
                 footer
+                    .frame(maxWidth: OnboardingMetrics.maxContentWidth)
                     .padding(.horizontal, horizontalPadding)
                     .padding(.bottom, 24)
                     .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
+                
+                Spacer()
+                    .frame(height: OnboardingMetrics.spacerHeight(in: geometry))
             }
-            .frame(maxWidth: OnboardingConstants.maxContentWidth,
-                   maxHeight: OnboardingConstants.maxContentHeight)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+        .overlay(effects.ignoresSafeArea())
         .background(theme.colors.accent.ignoresSafeArea())
         .accentColor(.white)
         .navigationBarHidden(true)
@@ -119,6 +127,15 @@ struct OnboardingCongratulationsScreen: View {
         }
         .buttonStyle(PrimaryActionButtonStyle(customColor: .white))
         .accessibilityIdentifier("homeButton")
+    }
+    
+    @ViewBuilder
+    var effects: some View {
+        if viewModel.viewState.personalizationDisabled {
+            EffectsView(effectsType: .confetti)
+                .allowsHitTesting(false)
+                .accessibilityIdentifier("confetti")
+        }
     }
 }
 

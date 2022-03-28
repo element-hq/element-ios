@@ -48,3 +48,12 @@ final class UserNameColorGenerator: NSObject {
         return self.userNameColors[senderNameColorIndex]
     }
 }
+
+// MARK: - Themable
+extension UserNameColorGenerator: Themable {
+    
+    func update(theme: Theme) {
+        self.defaultColor = theme.colors.primaryContent
+        self.userNameColors = theme.colors.namesAndAvatars
+    }
+}

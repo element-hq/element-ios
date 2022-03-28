@@ -1566,7 +1566,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         {
             // Open the room or preview it
             NSString *fragment = [NSString stringWithFormat:@"/room/%@", [MXTools encodeURIComponent:roomIdOrAlias]];
-            [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
+            NSURL *url = [NSURL URLWithString:[MXTools permalinkToRoom:fragment]];
+            [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment fromURL:url];
         }
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
     }

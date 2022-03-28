@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,10 +14,10 @@
 // limitations under the License.
 //
 
-import CoreGraphics
+import XCTest
+import RiotSwiftUI
 
-/// Constants used across the entire onboarding flow.
-struct OnboardingConstants {
-    static let maxContentWidth: CGFloat = 600
-    static let maxContentHeight: CGFloat = 750
+@available(iOS 14.0, *)
+class OnboardingCelebrationUITests: MockScreenTest {
+    // Nothing to test as the view is completely static
 }

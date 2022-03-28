@@ -634,6 +634,7 @@ Tap the + to start adding people.";
 "settings_labs_enable_ringing_for_group_calls" = "Ring for group calls";
 "settings_labs_enabled_polls" = "Polls";
 "settings_labs_enable_threads" = "Threaded messaging";
+"settings_labs_enable_auto_report_decryption_errors" = "Auto Report Decryption Errors";
 "settings_labs_use_only_latest_user_avatar_and_name" = "Show latest avatar and name for users in message history";
 
 "settings_version" = "Version %@";
@@ -1028,6 +1029,7 @@ Tap the + to start adding people.";
 "call_incoming_video" = "Incoming video call…";
 "call_already_displayed" = "There is already a call in progress.";
 "call_jitsi_error" = "Failed to join the conference call.";
+"call_jitsi_unable_to_start" = "Unable to start conference call";
 
 "call_no_stun_server_error_title" ="Call failed due to misconfigured server";
 "call_no_stun_server_error_message_1" ="Please ask the administrator of your homeserver %@ to configure a TURN server in order for calls to work reliably.";
@@ -2067,8 +2069,6 @@ Tap the + to start adding people.";
 
 "location_sharing_close_action" = "Close";
 
-"location_sharing_share_action" = "Share";
-
 "location_sharing_post_failure_title" = "We couldn’t send your location";
 
 "location_sharing_post_failure_subtitle" = "%@ could not send your location. Please try again later.";
@@ -2095,9 +2095,11 @@ Tap the + to start adding people.";
 
 // MARK: Live location sharing
 
+"location_sharing_live_share_title" = "Share live location";
 "live_location_sharing_banner_title" = "Live location enabled";
 "live_location_sharing_banner_stop" = "Stop";
-
+"location_sharing_static_share_title" = "Send my current location";
+"location_sharing_pin_drop_share_title" = "Send this location";
 
 // MARK: - MatrixKit
 
@@ -2434,7 +2436,7 @@ Tap the + to start adding people.";
 "language_picker_title" = "Choose a language";
 "language_picker_default_language" = "Default (%@)";
 
-/* -*- 
+/* -*-
    Automatic localization for en
 
    The following key/value pairs were extracted from the android i18n file:
@@ -2517,17 +2519,17 @@ Tap the + to start adding people.";
 "notice_room_history_visible_to_members_from_joined_point_by_you" = "You made future room history visible to all room members, from the point they joined.";
 "notice_room_history_visible_to_members_from_joined_point_by_you_for_dm" = "You made future messages visible to everyone, from when they joined.";
 
-// Room Screen 
+// Room Screen
 
-// general errors 
+// general errors
 
-// Home Screen 
+// Home Screen
 
-// Last seen time 
+// Last seen time
 
-// call events 
+// call events
 
-/* -*- 
+/* -*-
    Automatic localization for en
 
    The following key/value pairs were extracted from the android i18n file:
@@ -2535,9 +2537,9 @@ Tap the + to start adding people.";
 */
 
 
-// titles 
+// titles
 
-// button names 
+// button names
 "send" = "Send";
 "copy_button_name" = "Copy";
 "resend" = "Resend";
@@ -2545,7 +2547,7 @@ Tap the + to start adding people.";
 "share" = "Share";
 "delete" = "Delete";
 
-// actions 
+// actions
 "action_logout" = "Logout";
 "create_room" = "Create Room";
 "login" = "Login";
@@ -2560,32 +2562,32 @@ Tap the + to start adding people.";
 "unban" = "Un-ban";
 "message_unsaved_changes" = "There are unsaved changes. Leaving will discard them.";
 
-// Login Screen 
+// Login Screen
 "login_error_already_logged_in" = "Already logged in";
 "login_error_must_start_http" = "URL must start with http[s]://";
 
-// members list Screen 
+// members list Screen
 
-// accounts list Screen 
+// accounts list Screen
 
-// image size selection 
+// image size selection
 
-// invitation members list Screen 
+// invitation members list Screen
 
-// room creation dialog Screen 
+// room creation dialog Screen
 
 // room info dialog Screen
 
 // room details dialog screen
 
-// contacts list screen 
+// contacts list screen
 "invitation_message" = "I\'d like to chat with you with matrix. Please, visit the website http://matrix.org to have more information.";
 
-// Settings screen 
+// Settings screen
 "settings_title_config" = "Configuration";
 "settings_title_notifications" = "Notifications";
 
-// Notification settings screen 
+// Notification settings screen
 "notification_settings_disable_all" = "Disable all notifications";
 "notification_settings_enable_notifications" = "Enable notifications";
 "notification_settings_enable_notifications_warning" = "All notifications are currently disabled for all devices.";
@@ -2612,10 +2614,10 @@ Tap the + to start adding people.";
 "notification_settings_by_default" = "By default...";
 "notification_settings_notify_all_other" = "Notify for all other messages/rooms";
 
-// gcm section 
+// gcm section
 "settings_config_identity_server" = "Identity server: %@";
 
-// Settings keys 
+// Settings keys
 
 // call string
 "call_connecting" = "Connecting…";
@@ -2648,4 +2650,3 @@ Tap the + to start adding people.";
 "ssl_unexpected_existing_expl" = "The certificate has changed from one that was trusted by your phone. This is HIGHLY UNUSUAL. It is recommended that you DO NOT ACCEPT this new certificate.";
 "ssl_expected_existing_expl" = "The certificate has changed from a previously trusted one to one that is not trusted. The server may have renewed its certificate. Contact the server administrator for the expected fingerprint.";
 "ssl_only_accept" = "ONLY accept the certificate if the server administrator has published a fingerprint that matches the one above.";
-

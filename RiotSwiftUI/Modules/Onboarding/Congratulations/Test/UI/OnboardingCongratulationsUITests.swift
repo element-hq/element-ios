@@ -44,6 +44,9 @@ class OnboardingCongratulationsUITests: MockScreenTest {
         
         let homeButton = app.buttons["homeButton"]
         XCTAssertTrue(homeButton.exists, "The home button should always be shown.")
+        
+        let confetti = app.otherElements["confetti"]
+        XCTAssertFalse(confetti.exists, "There should not be any confetti.")
     }
     
     func verifyButtonsWhenPersonalizationIsDisabled() {
@@ -52,5 +55,8 @@ class OnboardingCongratulationsUITests: MockScreenTest {
         
         let homeButton = app.buttons["homeButton"]
         XCTAssertTrue(homeButton.exists, "The home button should always be shown.")
+        
+        let confetti = app.otherElements["confetti"]
+        XCTAssertTrue(confetti.exists, "There should be a confetti overlay.")
     }
 }

@@ -890,7 +890,7 @@
         // Open the group or preview it
         NSString *fragment = [NSString stringWithFormat:@"/group/%@",
                         [MXTools encodeURIComponent:absoluteURLString]];
-        [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
+        [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment fromURL:URL];
     }
     
     return shouldInteractWithURL;

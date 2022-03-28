@@ -391,14 +391,9 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     private func displayNameCoordinator(_ coordinator: OnboardingDisplayNameCoordinator, didCompleteWith userSession: UserSession) {
         if shouldShowAvatarScreen {
             showAvatarScreen(for: userSession)
-            return
-        } else if Analytics.shared.shouldShowAnalyticsPrompt {
-            showAnalyticsPrompt(for: userSession.matrixSession)
-            return
+        } else {
+            showCelebrationScreen(for: userSession)
         }
-        
-        onboardingFinished = true
-        completeIfReady()
     }
     
     /// Show the avatar personalization screen for new users using the supplied user session.
@@ -431,6 +426,31 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     /// Displays the next view in the flow after the avatar screen.
     @available(iOS 14.0, *)
     private func avatarCoordinator(_ coordinator: OnboardingAvatarCoordinator, didCompleteWith userSession: UserSession) {
+        showCelebrationScreen(for: userSession)
+    }
+    
+    @available(iOS 14.0, *)
+    private func showCelebrationScreen(for userSession: UserSession) {
+        MXLog.debug("[OnboardingCoordinator] showCelebrationScreen")
+        
+        let parameters = OnboardingCelebrationCoordinatorParameters(userSession: userSession)
+        let coordinator = OnboardingCelebrationCoordinator(parameters: parameters)
+        
+        coordinator.completion = { [weak self, weak coordinator] userSession in
+            guard let self = self, let coordinator = coordinator else { return }
+            self.celebrationCoordinator(coordinator, didCompleteWith: userSession)
+        }
+        
+        add(childCoordinator: coordinator)
+        coordinator.start()
+        
+        navigationRouter.setRootModule(coordinator, hideNavigationBar: true, animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
+    
+    @available(iOS 14.0, *)
+    private func celebrationCoordinator(_ coordinator: OnboardingCelebrationCoordinator, didCompleteWith userSession: UserSession) {
         if Analytics.shared.shouldShowAnalyticsPrompt {
             showAnalyticsPrompt(for: userSession.matrixSession)
             return

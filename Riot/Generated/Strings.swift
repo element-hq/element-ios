@@ -687,6 +687,10 @@ public class VectorL10n: NSObject {
   public static var callJitsiError: String { 
     return VectorL10n.tr("Vector", "call_jitsi_error") 
   }
+  /// Unable to start conference call
+  public static var callJitsiUnableToStart: String { 
+    return VectorL10n.tr("Vector", "call_jitsi_unable_to_start") 
+  }
   /// Device Speaker
   public static var callMoreActionsAudioUseDevice: String { 
     return VectorL10n.tr("Vector", "call_more_actions_audio_use_device") 
@@ -2747,6 +2751,10 @@ public class VectorL10n: NSObject {
   public static var locationSharingInvalidAuthorizationSettings: String { 
     return VectorL10n.tr("Vector", "location_sharing_invalid_authorization_settings") 
   }
+  /// Share live location
+  public static var locationSharingLiveShareTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_share_title") 
+  }
   /// %@ could not load the map. Please try again later.
   public static func locationSharingLoadingMapErrorTitle(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "location_sharing_loading_map_error_title", p1)
@@ -2767,6 +2775,10 @@ public class VectorL10n: NSObject {
   public static var locationSharingOpenOpenStreetMaps: String { 
     return VectorL10n.tr("Vector", "location_sharing_open_open_street_maps") 
   }
+  /// Send this location
+  public static var locationSharingPinDropShareTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_pin_drop_share_title") 
+  }
   /// %@ could not send your location. Please try again later.
   public static func locationSharingPostFailureSubtitle(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "location_sharing_post_failure_subtitle", p1)
@@ -2783,9 +2795,9 @@ public class VectorL10n: NSObject {
   public static var locationSharingSettingsToggleTitle: String { 
     return VectorL10n.tr("Vector", "location_sharing_settings_toggle_title") 
   }
-  /// Share
-  public static var locationSharingShareAction: String { 
-    return VectorL10n.tr("Vector", "location_sharing_share_action") 
+  /// Send my current location
+  public static var locationSharingStaticShareTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_static_share_title") 
   }
   /// Location
   public static var locationSharingTitle: String { 
@@ -6686,6 +6698,10 @@ public class VectorL10n: NSObject {
   /// To finish setting up encryption you must log in again.
   public static var settingsLabsE2eEncryptionPromptMessage: String { 
     return VectorL10n.tr("Vector", "settings_labs_e2e_encryption_prompt_message") 
+  }
+  /// Auto Report Decryption Errors
+  public static var settingsLabsEnableAutoReportDecryptionErrors: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enable_auto_report_decryption_errors") 
   }
   /// Ring for group calls
   public static var settingsLabsEnableRingingForGroupCalls: String { 
