@@ -397,7 +397,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     if (BuildSettings.disableRightToLeftLayout)
     {
         [[UIView appearance] setSemanticContentAttribute:UISemanticContentAttributeForceLeftToRight];
-        [[UIView appearanceWhenContainedInInstancesOfClasses:@[UIAlertController.class]] setSemanticContentAttribute:UISemanticContentAttributeUnspecified];
     }
     
     // Set app info now as Mac (Designed for iPad) accesses it before didFinishLaunching is called

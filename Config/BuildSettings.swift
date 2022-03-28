@@ -296,7 +296,11 @@ final class BuildSettings: NSObject {
     static let settingsSecurityScreenShowAdvancedUnverifiedDevices:Bool = true
 
     // MARK: - Timeline settings
-    static let roomInputToolbarCompressionMode = MXKRoomInputToolbarCompressionModePrompt
+    static let roomInputToolbarCompressionMode: MediaCompressionMode = .prompt
+    
+    enum MediaCompressionMode {
+        case prompt, small, medium, large, none
+    }
     
     // MARK: - Room Creation Screen
     
