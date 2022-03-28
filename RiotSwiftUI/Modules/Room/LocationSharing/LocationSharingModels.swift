@@ -22,11 +22,13 @@ import CoreLocation
 enum LocationSharingViewAction {
     case cancel
     case share
+    case shareLiveLocation
 }
 
 enum LocationSharingViewModelResult {
     case cancel
     case share(latitude: Double, longitude: Double)
+    case shareLiveLocation(timeout: TimeInterval)
 }
 
 enum LocationSharingViewError {
