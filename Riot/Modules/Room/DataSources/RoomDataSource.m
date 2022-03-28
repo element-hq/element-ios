@@ -229,7 +229,10 @@ const CGFloat kTypingCellHeight = 24;
 
 - (void)roomSummaryDidChange:(NSNotification*)notification
 {
-    [self updateCurrentUserLocationSharingStatus];
+    if (BuildSettings.liveLocationSharingEnabled)
+    {
+        [self updateCurrentUserLocationSharingStatus];
+    }
     
     if (!self.room.summary.isEncrypted)
     {
