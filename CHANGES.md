@@ -1,3 +1,20 @@
+## Changes in 1.8.9 (2022-03-28)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.23.1](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.23.1)).
+- Update suggested room preview to behave the same way in all cases ([#5771](https://github.com/vector-im/element-ios/issues/5771))
+- Add "Invite people" to the space menu in the left panel and update menu order ([#5810](https://github.com/vector-im/element-ios/issues/5810))
+
+🐛 Bugfixes
+
+- Sync Spaces order with web ([#5134](https://github.com/vector-im/element-ios/issues/5134))
+- Fixed "Add Space" error message ([#5797](https://github.com/vector-im/element-ios/issues/5797))
+- Authentication: Ensure the login button is always visible ([#5875](https://github.com/vector-im/element-ios/issues/5875))
+- Room: Fix typing performance by avoiding expensive UI operations ([#5906](https://github.com/vector-im/element-ios/issues/5906))
+- Push notifications: show space preview if user taps invite notification ([#5915](https://github.com/vector-im/element-ios/issues/5915))
+
+
 ## Changes in 1.8.8 (2022-03-22)
 
 ✨ Features
