@@ -394,6 +394,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [NSBundle mxk_setLanguage:language];
     [NSBundle mxk_setFallbackLanguage:@"en"];
     
+    [[UIView appearance] setSemanticContentAttribute:UISemanticContentAttributeForceLeftToRight];
+    [[UIView appearanceWhenContainedInInstancesOfClasses:@[UIAlertController.class]] setSemanticContentAttribute:UISemanticContentAttributeUnspecified];
+    
     // Set app info now as Mac (Designed for iPad) accesses it before didFinishLaunching is called
     self.appInfo = AppInfo.current;
     
