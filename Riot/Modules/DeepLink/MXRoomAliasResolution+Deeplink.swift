@@ -29,10 +29,15 @@ import MatrixSDK
             return nil
         }
         
+        return MXTools.encodeURIComponent(
+            fragment(for: roomId)
+        )
+    }
+    
+    private func fragment(for roomId: String) -> String {
         guard let servers = servers, !servers.isEmpty else {
             return roomId
         }
-        
         return roomId + "?via=" + servers.joined(separator: "&via=")
     }
 }
