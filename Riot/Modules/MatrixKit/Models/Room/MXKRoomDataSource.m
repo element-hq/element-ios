@@ -1075,7 +1075,10 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     }
 
     // Register a listener to handle redaction which can affect live and past timelines
+    MXWeakify(self);
     redactionListener = [_timeline listenToEventsOfTypes:@[kMXEventTypeStringRoomRedaction] onEvent:^(MXEvent *redactionEvent, MXTimelineDirection direction, MXRoomState *roomState) {
+
+        MXStrongifyAndReturnIfNil(self);
 
         // Consider only live redaction events
         if (direction == MXTimelineDirectionForwards)
