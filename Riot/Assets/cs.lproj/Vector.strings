@@ -50,7 +50,7 @@
 "auth_optional_phone_placeholder" = "Číslo mobilního telefonu (nepovinné)";
 "auth_phone_placeholder" = "Telefonní číslo";
 "auth_repeat_password_placeholder" = "Zopakovat heslo";
-"auth_repeat_new_password_placeholder" = "Potvrďte své nové heslo";
+"auth_repeat_new_password_placeholder" = "Potvrďte své nové heslo k účtu Matrix";
 "auth_home_server_placeholder" = "URL (např. https://matrix.org)";
 "auth_identity_server_placeholder" = "URL (např. https://vector.im)";
 "auth_invalid_login_param" = "Nesprávné uživatelské jméno nebo heslo";
@@ -351,3 +351,30 @@
 "room_recents_suggested_rooms_section" = "DOPORUČENÉ MÍSTNOSTI";
 "auth_phone_is_required" = "Nelze přidat telefonní číslo pro obnovení hesla k vašemu Matrix účtu, protože není nastaven žádný server identity.";
 "auth_email_is_required" = "Nelze přidat emailovou adresu pro obnovení hesla k vašemu Matrix účtu, protože není nastaven žádný server identity.";
+"onboarding_use_case_existing_server_button" = "Připojit k serveru";
+"onboarding_use_case_existing_server_message" = "Chcete se připojit k již existujícímu serveru?";
+"onboarding_use_case_skip_button" = "přeskočit tuto otázku";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "Ještě si nejste jistí? Můžete %@";
+"onboarding_use_case_community_messaging" = "Komunity";
+"onboarding_use_case_work_messaging" = "Týmy";
+"onboarding_use_case_personal_messaging" = "Přátelé a rodina";
+"onboarding_use_case_message" = "Pomůžeme vám navázat kontakty.";
+"onboarding_use_case_title" = "S kým si budete nejvíce psát?";
+"onboarding_splash_page_4_message" = "Element je také skvělý na pracovišti. Důvěřují mu nejbezpečnější světové organizace.";
+"onboarding_splash_page_4_title_no_pun" = "Zasílání zpráv pro váš tým.";
+"onboarding_splash_page_3_message" = "End-to-end šifrování a bez potřeby telefonního čísla. Žádné reklamy nebo zneužívání údajů.";
+"onboarding_splash_page_2_message" = "Volba, kde jsou vaše konverzace uloženy, vám dává kontrolu a nezávislost. Spojeno pomocí Matrix.";
+"onboarding_splash_page_1_message" = "Bezpečná a nezávislá komunikace, která vám zajistí stejnou úroveň soukromý, jako konverzace z očí do očí ve vašem vlastním domě.";
+"onboarding_splash_page_3_title" = "Zabezpečené zasílání zpráv.";
+"onboarding_splash_page_2_title" = "Vy máte kontrolu.";
+"onboarding_splash_page_1_title" = "Vlastněte své konverzace.";
+"onboarding_splash_login_button_title" = "Již mám účet";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Vytvořit účet";
+"accessibility_button_label" = "tlačítko";
+"ok" = "OK";
+"done" = "Hotovo";
+"open" = "Otevřít";
+"enable" = "Povolit";
