@@ -1287,6 +1287,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL
 
 {
+    if (!fragment || !universalLinkURL)
+    {
+        MXLogDebug(@"[AppDelegate] Cannot handle universal link with missing data: %@ %@", fragment, universalLinkURL);
+        return NO;
+    }
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES stackAboveVisibleViews:NO];
     
     UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithFragment:fragment universalLinkURL:universalLinkURL presentationParameters:presentationParameters];
