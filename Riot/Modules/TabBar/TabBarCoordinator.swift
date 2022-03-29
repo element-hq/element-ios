@@ -653,7 +653,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         if !RiotSettings.shared.slideMenuRoomsCoachMessageHasBeenDisplayed {
             let isAuthenticated = MXKAccountManager.shared().activeAccounts.first != nil || MXKAccountManager.shared().accounts.first?.isSoftLogout == false
 
-            if isAuthenticated, let spaceService = session.spaceService {
+        if isAuthenticated, let spaceService = session.spaceService, masterTabBarController.presentedViewController == nil, navigationRouter.modules.count == 1 {
                 if spaceService.isInitialised && !spaceService.rootSpaceSummaries.isEmpty {
                     RiotSettings.shared.slideMenuRoomsCoachMessageHasBeenDisplayed = true
                     windowOverlay = WindowOverlayPresenter()
