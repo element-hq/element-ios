@@ -1767,6 +1767,7 @@ Tap the + to start adding people.";
 "create_room_placeholder_address" = "#testroom:matrix.org";
 "create_room_suggest_room" = "Suggest to space members";
 "create_room_suggest_room_footer" = "Suggested rooms are promoted to space members as good to join.";
+"create_room_processing" = "Creating room";
 
 // MARK: - Room Info
 

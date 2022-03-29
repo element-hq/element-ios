@@ -935,6 +935,10 @@ public class VectorL10n: NSObject {
   public static var createRoomPlaceholderTopic: String { 
     return VectorL10n.tr("Vector", "create_room_placeholder_topic") 
   }
+  /// Creating room
+  public static var createRoomProcessing: String { 
+    return VectorL10n.tr("Vector", "create_room_processing") 
+  }
   /// PROMOTION
   public static var createRoomPromotionHeader: String { 
     return VectorL10n.tr("Vector", "create_room_promotion_header") 

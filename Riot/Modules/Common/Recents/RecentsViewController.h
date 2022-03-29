@@ -19,7 +19,7 @@
 
 @class RootTabEmptyView;
 @class AnalyticsScreenTracker;
-@class UserIndicatorPresenterWrapper;
+@class UserIndicatorStore;
 
 /**
  Notification to be posted when recents data is ready. Notification object will be the RecentsViewController instance.
@@ -98,9 +98,10 @@ FOUNDATION_EXPORT NSString *const RecentsViewControllerDataReadyNotification;
 @property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
 /**
- Presenter for displaying app-wide user indicators. If not set, the view controller will use legacy activity indicators
+ A store of user indicators that lets the room present and dismiss indicators without
+ worrying about the presentation context or memory management.
  */
-@property (nonatomic, strong) UserIndicatorPresenterWrapper *indicatorPresenter;
+@property (nonatomic, strong) UserIndicatorStore *userIndicatorStore;
 
 /**
  Return the sticky header for the specified section of the table view
