@@ -2167,7 +2167,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 [uisiAutoReporter add:mxSession];
             }
         }
-        [_callPresenter addMatrixSession:mxSession];
         
         [mxSessionArray addObject:mxSession];
         
