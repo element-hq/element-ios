@@ -39,21 +39,29 @@ struct OnboardingCongratulationsScreen: View {
     var body: some View {
         GeometryReader { geometry in
             VStack {
-                mainContent
-                    .padding(.top, 60)
-                    .padding(.horizontal, horizontalPadding)
+                ScrollView {
+                    Spacer()
+                        .frame(height: OnboardingMetrics.spacerHeight(in: geometry))
+                    
+                    mainContent
+                        .frame(maxWidth: OnboardingMetrics.maxContentWidth)
+                        .padding(.top, 60)
+                        .padding(.horizontal, horizontalPadding)
+                }
+                .frame(maxWidth: .infinity)
                 
-                Spacer()
-                
-                buttons
+                footer
+                    .frame(maxWidth: OnboardingMetrics.maxContentWidth)
                     .padding(.horizontal, horizontalPadding)
                     .padding(.bottom, 24)
                     .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
+                
+                Spacer()
+                    .frame(height: OnboardingMetrics.spacerHeight(in: geometry))
             }
-            .frame(maxWidth: OnboardingConstants.maxContentWidth,
-                   maxHeight: OnboardingConstants.maxContentHeight)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+        .overlay(effects.ignoresSafeArea())
         .background(theme.colors.accent.ignoresSafeArea())
         .accentColor(.white)
         .navigationBarHidden(true)
@@ -62,8 +70,10 @@ struct OnboardingCongratulationsScreen: View {
     
     /// The main content of the view to be shown in a scroll view.
     var mainContent: some View {
-        VStack(spacing: 62) {
+        VStack(spacing: 42) {
             Image(Asset.Images.onboardingCongratulationsIcon.name)
+                .resizable()
+                .frame(width: 90, height: 90)
                 .accessibilityHidden(true)
             
             VStack(spacing: 8) {
@@ -79,21 +89,52 @@ struct OnboardingCongratulationsScreen: View {
         }
     }
     
-    /// The action buttons shown at the bottom of the view.
-    var buttons: some View {
+    @ViewBuilder
+    var footer: some View {
+        if viewModel.viewState.personalizationDisabled {
+            homeButton
+        } else {
+            actionButtons
+        }
+    }
+    
+    /// The default action buttons shown at the bottom of the view.
+    var actionButtons: some View {
         VStack(spacing: 12) {
             Button { viewModel.send(viewAction: .personaliseProfile) } label: {
-                Text(VectorL10n.onboardingCongratulationsPersonaliseButton)
-                    .font(theme.fonts.bodySB)
+                Text(VectorL10n.onboardingCongratulationsPersonalizeButton)
+                    .font(theme.fonts.body)
                     .foregroundColor(theme.colors.accent)
             }
             .buttonStyle(PrimaryActionButtonStyle(customColor: .white))
+            .accessibilityIdentifier("personalizeButton")
             
             Button { viewModel.send(viewAction: .takeMeHome) } label: {
                 Text(VectorL10n.onboardingCongratulationsHomeButton)
                     .font(theme.fonts.body)
                     .padding(.vertical, 12)
             }
+            .accessibilityIdentifier("homeButton")
+        }
+    }
+    
+    /// The single "Take me home" button shown when personlization isn't supported.
+    var homeButton: some View {
+        Button { viewModel.send(viewAction: .takeMeHome) } label: {
+            Text(VectorL10n.onboardingCongratulationsHomeButton)
+                .font(theme.fonts.body)
+                .foregroundColor(theme.colors.accent)
+        }
+        .buttonStyle(PrimaryActionButtonStyle(customColor: .white))
+        .accessibilityIdentifier("homeButton")
+    }
+    
+    @ViewBuilder
+    var effects: some View {
+        if viewModel.viewState.personalizationDisabled {
+            EffectsView(effectsType: .confetti)
+                .allowsHitTesting(false)
+                .accessibilityIdentifier("confetti")
         }
     }
 }

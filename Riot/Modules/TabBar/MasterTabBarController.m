@@ -952,6 +952,15 @@
     }
     
     self.reviewSessionAlertHasBeenDisplayed = YES;
+
+    // Force verification if required by the HS configuration
+    if (session.vc_homeserverConfiguration.encryption.isSecureBackupRequired)
+    {
+        NSLog(@"[MasterTabBarController] presentVerifyCurrentSessionAlertIfNeededWithSession: Force verification of the device");
+        [[AppDelegate theDelegate] presentCompleteSecurityForSession:session];
+        return;
+    }
+
     [self presentVerifyCurrentSessionAlertWithSession:session];
 }
 

@@ -104,13 +104,13 @@ struct SpaceCreationSettings: View {
                         Spacer()
                         avatarView
                         Spacer().frame(height:40)
-                        RoundedBorderTextField(title: VectorL10n.createRoomPlaceholderName, placeHolder: "", text: $viewModel.roomName, footerText: .constant(viewModel.viewState.roomNameError), isError: .constant(true), isFirstResponder: false, configuration: UIKitTextInputConfiguration( returnKeyType: .next), onTextChanged: { newText in
+                        RoundedBorderTextField(title: VectorL10n.createRoomPlaceholderName, placeHolder: "", text: $viewModel.roomName, footerText: viewModel.viewState.roomNameError, isError: true, isFirstResponder: false, configuration: UIKitTextInputConfiguration( returnKeyType: .next), onTextChanged: { newText in
                             viewModel.send(viewAction: .nameChanged(newText))
                         })
                         .id("nameTextField")
                         .padding(.horizontal, 2)
                         .padding(.bottom, 20)
-                        RoundedBorderTextEditor(title: nil, placeHolder: VectorL10n.spaceTopic, text: $viewModel.topic, textMaxHeight: 72, error: .constant(nil), onTextChanged:  {
+                        RoundedBorderTextEditor(title: nil, placeHolder: VectorL10n.spaceTopic, text: $viewModel.topic, textMaxHeight: 72, error: nil, onTextChanged:  {
                             newText in
                             viewModel.send(viewAction: .topicChanged(newText))
                         }, onEditingChanged: { editing in
@@ -122,7 +122,7 @@ struct SpaceCreationSettings: View {
                         .padding(.horizontal, 2)
                         .padding(.bottom, viewModel.viewState.showRoomAddress ? 20 : 3)
                         if viewModel.viewState.showRoomAddress {
-                            RoundedBorderTextField(title: VectorL10n.spacesCreationAddress, placeHolder: "# \(viewModel.viewState.defaultAddress)", text: $viewModel.address, footerText: .constant(viewModel.viewState.addressMessage), isError: .constant(!viewModel.viewState.isAddressValid), configuration: UIKitTextInputConfiguration(keyboardType: .URL, returnKeyType: .done, autocapitalizationType: .none), onTextChanged:  {
+                            RoundedBorderTextField(title: VectorL10n.spacesCreationAddress, placeHolder: "# \(viewModel.viewState.defaultAddress)", text: $viewModel.address, footerText: viewModel.viewState.addressMessage, isError: !viewModel.viewState.isAddressValid, configuration: UIKitTextInputConfiguration(keyboardType: .URL, returnKeyType: .done, autocapitalizationType: .none), onTextChanged:  {
                                 newText in
                                 viewModel.send(viewAction: .addressChanged(newText))
                             })

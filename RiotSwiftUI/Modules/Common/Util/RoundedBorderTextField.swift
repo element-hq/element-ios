@@ -22,17 +22,17 @@ struct RoundedBorderTextField: View {
     
     // MARK: - Properties
     
-    var title: String?
-    var placeHolder: String
+    var title: String? = nil
+    let placeHolder: String
     @Binding var text: String
-    @Binding var footerText: String?
-    @Binding var isError: Bool
+    var footerText: String? = nil
+    var isError: Bool = false
     var isFirstResponder = false
 
     var configuration: UIKitTextInputConfiguration = UIKitTextInputConfiguration()
     
-    var onTextChanged: ((String) -> Void)?
-    var onEditingChanged: ((Bool) -> Void)?
+    var onTextChanged: ((String) -> Void)? = nil
+    var onEditingChanged: ((Bool) -> Void)? = nil
 
     // MARK: Private
     
@@ -40,28 +40,6 @@ struct RoundedBorderTextField: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     @Environment(\.isEnabled) private var isEnabled
-
-    // MARK: Setup
-    
-    init(title: String? = nil,
-         placeHolder: String,
-         text: Binding<String>,
-         footerText: Binding<String?> = .constant(nil),
-         isError: Binding<Bool> = .constant(false),
-         isFirstResponder: Bool = false,
-         configuration: UIKitTextInputConfiguration = UIKitTextInputConfiguration(),
-         onTextChanged: ((String) -> Void)? = nil,
-         onEditingChanged: ((Bool) -> Void)? = nil) {
-        self.title = title
-        self.placeHolder = placeHolder
-        self._text = text
-        self._footerText = footerText
-        self._isError = isError
-        self.isFirstResponder = isFirstResponder
-        self.configuration = configuration
-        self.onTextChanged = onTextChanged
-        self.onEditingChanged = onEditingChanged
-    }
     
     // MARK: Public
     
@@ -139,11 +117,11 @@ struct TextFieldWithError_Previews: PreviewProvider {
     
     static var sampleView: some View {
         VStack(alignment: .center, spacing: 20) {
-            RoundedBorderTextField(title: "A title", placeHolder: "A placeholder", text: .constant(""), footerText: .constant(nil), isError: .constant(false))
-            RoundedBorderTextField(placeHolder: "A placeholder", text: .constant("Some text"), footerText: .constant(nil), isError: .constant(false))
-            RoundedBorderTextField(title: "A title", placeHolder: "A placeholder", text: .constant("Some very long text used to check overlapping with the delete button"), footerText: .constant("Some error text"), isError: .constant(true))
-            RoundedBorderTextField(title: "A title", placeHolder: "A placeholder", text: .constant("Some very long text used to check overlapping with the delete button"), footerText: .constant("Some normal text"), isError: .constant(false))
-            RoundedBorderTextField(title: "A title", placeHolder: "A placeholder", text: .constant("Some very long text used to check overlapping with the delete button"), footerText: .constant("Some normal text"), isError: .constant(false))
+            RoundedBorderTextField(title: "A title", placeHolder: "A placeholder", text: .constant(""), footerText: nil, isError: false)
+            RoundedBorderTextField(placeHolder: "A placeholder", text: .constant("Some text"), footerText: nil, isError: false)
+            RoundedBorderTextField(title: "A title", placeHolder: "A placeholder", text: .constant("Some very long text used to check overlapping with the delete button"), footerText: "Some error text", isError: true)
+            RoundedBorderTextField(title: "A title", placeHolder: "A placeholder", text: .constant("Some very long text used to check overlapping with the delete button"), footerText: "Some normal text", isError: false)
+            RoundedBorderTextField(title: "A title", placeHolder: "A placeholder", text: .constant("Some very long text used to check overlapping with the delete button"), footerText: "Some normal text", isError: false)
                 .disabled(true)
         }
     }

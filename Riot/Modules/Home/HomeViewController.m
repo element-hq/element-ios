@@ -108,13 +108,11 @@
 
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
-    if (recentsDataSource)
+    if (recentsDataSource.recentsDataSourceMode != RecentsDataSourceModeHome)
     {
         // Take the lead on the shared data source.
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeHome];
-    }        
-
-    [self moveAllCollectionsToLeft];
+    }
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
@@ -131,26 +129,6 @@
 - (void)destroy
 {
     [super destroy];
-}
-
-- (void)moveAllCollectionsToLeft
-{
-    selectedCollectionViewContentOffset = -1;
-    
-    // Scroll all rooms collections to their beginning
-    for (NSInteger section = 0; section < [self numberOfSectionsInTableView:self.recentsTableView]; section++)
-    {
-        UITableViewCell *firstSectionCell = [self.recentsTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section]];
-        if (firstSectionCell && [firstSectionCell isKindOfClass:TableViewCellWithCollectionView.class])
-        {
-            TableViewCellWithCollectionView *tableViewCell = (TableViewCellWithCollectionView*)firstSectionCell;
-
-            if ([tableViewCell.collectionView numberOfItemsInSection:0] > 0)
-            {
-                [tableViewCell.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
-            }
-        }
-    }
 }
 
 - (SecureBackupBannerCell *)secureBackupBannerPrototypeCell
@@ -627,7 +605,8 @@
         if (renderedCellData.isSuggestedRoom)
         {
             [self.delegate recentListViewController:self
-                             didSelectSuggestedRoom:renderedCellData.roomSummary.spaceChildInfo];
+                             didSelectSuggestedRoom:renderedCellData.roomSummary.spaceChildInfo
+                                               from:roomCollectionViewCell];
         }
         else
         {

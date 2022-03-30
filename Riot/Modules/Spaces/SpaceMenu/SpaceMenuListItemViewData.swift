@@ -25,6 +25,7 @@ enum SpaceMenuListItemAction {
     case addSpace
     case settings
     case leaveSpace
+    case invite
 }
 
 /// Style of the `SpaceMenuListViewCell`

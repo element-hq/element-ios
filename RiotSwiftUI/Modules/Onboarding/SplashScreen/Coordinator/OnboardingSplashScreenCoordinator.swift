@@ -20,13 +20,14 @@ protocol OnboardingSplashScreenCoordinatorProtocol: Coordinator, Presentable {
     var completion: ((OnboardingSplashScreenViewModelResult) -> Void)? { get set }
 }
 
+@available(iOS 14.0, *)
 final class OnboardingSplashScreenCoordinator: OnboardingSplashScreenCoordinatorProtocol {
     
     // MARK: - Properties
     
     // MARK: Private
     
-    private let onboardingSplashScreenHostingController: UIViewController
+    private let onboardingSplashScreenHostingController: VectorHostingController
     private var onboardingSplashScreenViewModel: OnboardingSplashScreenViewModelProtocol
     
     // MARK: Public
@@ -37,14 +38,12 @@ final class OnboardingSplashScreenCoordinator: OnboardingSplashScreenCoordinator
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init() {
         let viewModel = OnboardingSplashScreenViewModel()
         let view = OnboardingSplashScreen(viewModel: viewModel.context)
         onboardingSplashScreenViewModel = viewModel
-        let hostingController = VectorHostingController(rootView: view)
-        hostingController.vc_removeBackTitle()
-        onboardingSplashScreenHostingController = hostingController
+        onboardingSplashScreenHostingController = VectorHostingController(rootView: view)
+        onboardingSplashScreenHostingController.vc_removeBackTitle()
     }
     
     // MARK: - Public

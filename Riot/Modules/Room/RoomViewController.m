@@ -159,6 +159,12 @@ static CGSize kThreadListBarButtonItemImageSize;
     // Tell whether the view controller is appeared or not.
     BOOL isAppeared;
     
+    // A flag indicating whether a room has been left
+    BOOL isRoomLeft;
+    
+    // The last known frame of the view used to detect whether size-related layout change is needed
+    CGRect lastViewBounds;
+    
     // Tell whether the room has a Jitsi call or not.
     BOOL hasJitsiCall;
     
@@ -223,7 +229,14 @@ static CGSize kThreadListBarButtonItemImageSize;
 // When layout of the screen changes (e.g. height), we no longer know whether
 // to autoscroll to the bottom again or not. Instead we need to capture the
 // scroll state just before the layout change, and restore it after the layout.
-@property (nonatomic) BOOL shouldScrollToBottomAfterLayout;
+@property (nonatomic) BOOL wasScrollAtBottomBeforeLayout;
+
+/// Handles all banners that should be displayed at the top of the timeline but that should not scroll with the timeline
+@property (weak, nonatomic, nullable) IBOutlet UIStackView *topBannersStackView;
+
+@property (nonatomic) BOOL shouldShowLiveLocationSharingBannerView;
+
+@property (nonatomic, weak) LiveLocationSharingBannerView *liveLocationSharingBannerView;
 
 @end
 
@@ -394,6 +407,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self registerURLPreviewNotifications];
     
     [self setupActions];
+    
+    [self setupUserSuggestionViewIfNeeded];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -470,7 +485,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     self.scrollToBottomBadgeLabel.badgeColor = ThemeService.shared.theme.tintColor;
     
     [self updateThreadListBarButtonBadgeWith:self.mainSession.threadingService];
-
+    
+    [self.liveLocationSharingBannerView updateWithTheme:ThemeService.shared.theme];
+    
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
@@ -686,12 +703,14 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    self.shouldScrollToBottomAfterLayout = self.isBubblesTableScrollViewAtTheBottom;
+    self.wasScrollAtBottomBeforeLayout = self.isBubblesTableScrollViewAtTheBottom;
 }
 
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
+    BOOL didViewChangeBounds = !CGRectEqualToRect(lastViewBounds, self.view.bounds);
+    lastViewBounds = self.view.bounds;
     
     UIEdgeInsets contentInset = self.bubblesTableView.contentInset;
     contentInset.bottom = self.view.safeAreaInsets.bottom;
@@ -755,9 +774,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
     
     // re-scroll to the bottom, if at bottom before the most recent layout
-    if (self.shouldScrollToBottomAfterLayout)
+    if (self.wasScrollAtBottomBeforeLayout && didViewChangeBounds)
     {
-        self.shouldScrollToBottomAfterLayout = NO;
+        self.wasScrollAtBottomBeforeLayout = NO;
         [self scrollBubblesTableViewToBottomAnimated:NO];
     }
     
@@ -956,17 +975,13 @@ static CGSize kThreadListBarButtonItemImageSize;
 #pragma mark - Loading indicators
 
 - (BOOL)providesCustomActivityIndicator {
-    return [self.delegate roomViewControllerCanDelegateUserIndicators:self];
+    return YES;
 }
 
 // Override of a legacy method to determine whether to use a newer implementation instead.
 // Will be removed in the future https://github.com/vector-im/element-ios/issues/5608
 - (void)startActivityIndicator {
-    if ([self providesCustomActivityIndicator]) {
-        [self.delegate roomViewControllerDidStartLoading:self];
-    } else {
-        [super startActivityIndicator];
-    }
+    [self.delegate roomViewControllerDidStartLoading:self];
 }
 
 // Override of a legacy method to determine whether to use a newer implementation instead.
@@ -979,15 +994,11 @@ static CGSize kThreadListBarButtonItemImageSize;
         [MXSDKOptions.sharedInstance.profiler stopMeasuringTaskWithProfile:notificationTaskProfile];
         notificationTaskProfile = nil;
     }
-    if ([self providesCustomActivityIndicator]) {
-        // The legacy super implementation of `stopActivityIndicator` contains a number of checks grouped under `canStopActivityIndicator`
-        // to determine whether the indicator can be stopped or not (and the method should thus rather be called `stopActivityIndicatorIfPossible`).
-        // Since the newer indicators are not calling super implementation, the check for `canStopActivityIndicator` has to be performed manually.
-        if ([self canStopActivityIndicator]) {
-            [self stopLoadingUserIndicator];
-        }
-    } else {
-        [super stopActivityIndicator];
+    // The legacy super implementation of `stopActivityIndicator` contains a number of checks grouped under `canStopActivityIndicator`
+    // to determine whether the indicator can be stopped or not (and the method should thus rather be called `stopActivityIndicatorIfPossible`).
+    // Since the newer indicators are not calling super implementation, the check for `canStopActivityIndicator` has to be performed manually.
+    if ([self canStopActivityIndicator]) {
+        [self stopLoadingUserIndicator];
     }
 }
 
@@ -1042,7 +1053,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                                                                                           room:dataSource.room];
     _userSuggestionCoordinator.delegate = self;
     
-    [self setupUserSuggestionView];
+    [self setupUserSuggestionViewIfNeeded];
 }
 
 - (void)onRoomDataSourceReady
@@ -1370,6 +1381,10 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)setRoomTitleViewClass:(Class)roomTitleViewClass
 {
+    if ([self.titleView.class isEqual:roomTitleViewClass]) {
+        return;
+    }
+    
     // Sanity check: accept only MXKRoomTitleView classes or sub-classes
     NSParameterAssert([roomTitleViewClass isSubclassOfClass:MXKRoomTitleView.class]);
     
@@ -2290,6 +2305,11 @@ static CGSize kThreadListBarButtonItemImageSize;
 }
 
 - (void)notifyDelegateOnLeaveRoomIfNecessary {
+    if (isRoomLeft) {
+        return;
+    }
+    isRoomLeft = YES;
+    
     if (self.delegate)
     {
         [self.delegate roomViewControllerDidLeaveRoom:self];
@@ -2367,10 +2387,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
 }
 
-- (void)setupUserSuggestionView
+- (void)setupUserSuggestionViewIfNeeded
 {
     if(!self.isViewLoaded) {
-        MXLogError(@"Failed setting up user suggestions. View not loaded.");
         return;
     }
     
@@ -2392,6 +2411,18 @@ static CGSize kThreadListBarButtonItemImageSize;
                                               [suggestionsViewController.view.bottomAnchor constraintEqualToAnchor:self.userSuggestionContainerView.bottomAnchor],]];
     
     [suggestionsViewController didMoveToParentViewController:self];
+}
+
+- (void)updateTopBanners
+{
+    [self.view bringSubviewToFront:self.topBannersStackView];
+    
+    [self.topBannersStackView vc_removeAllSubviews];
+    
+    if (self.shouldShowLiveLocationSharingBannerView)
+    {
+        [self showLiveLocationBannerView];
+    }
 }
 
 #pragma mark - Jitsi
@@ -4700,9 +4731,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (IBAction)onThreadListTapped:(id)sender
 {
-    self.threadsBridgePresenter = [[ThreadsCoordinatorBridgePresenter alloc] initWithSession:self.mainSession
-                                                                                      roomId:self.roomDataSource.roomId
-                                                                                    threadId:nil];
+    self.threadsBridgePresenter = [self.delegate threadsCoordinatorForRoomViewController:self threadId:nil];
     self.threadsBridgePresenter.delegate = self;
     [self.threadsBridgePresenter pushFrom:self.navigationController animated:YES];
 
@@ -6792,9 +6821,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         self.threadsBridgePresenter = nil;
     }
 
-    self.threadsBridgePresenter = [[ThreadsCoordinatorBridgePresenter alloc] initWithSession:self.mainSession
-                                                                                      roomId:self.roomDataSource.roomId
-                                                                                    threadId:threadId];
+    self.threadsBridgePresenter = [self.delegate threadsCoordinatorForRoomViewController:self threadId:threadId];
     self.threadsBridgePresenter.delegate = self;
     [self.threadsBridgePresenter pushFrom:self.navigationController animated:YES];
 }
@@ -7407,5 +7434,34 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self stopActivityIndicator];
 }
 
-@end
+#pragma mark - Live location sharing
 
+- (void)showLiveLocationBannerView
+{
+    if (self.liveLocationSharingBannerView)
+    {
+        return;
+    }
+    
+    LiveLocationSharingBannerView *bannerView = [LiveLocationSharingBannerView instantiate];
+    
+    [bannerView updateWithTheme:ThemeService.shared.theme];
+    
+    MXWeakify(self);
+    
+    bannerView.didTapBackground = ^{
+        MXStrongifyAndReturnIfNil(self);
+        [self.delegate roomViewControllerDidTapLiveLocationSharingBanner:self];
+    };
+    
+    bannerView.didTapStopButton = ^{
+        MXStrongifyAndReturnIfNil(self);
+        [self.delegate roomViewControllerDidStopLiveLocationSharing:self];
+    };
+    
+    [self.topBannersStackView addArrangedSubview:bannerView];
+    
+    self.liveLocationSharingBannerView = bannerView;
+}
+
+@end

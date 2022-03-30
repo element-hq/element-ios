@@ -35,7 +35,7 @@ struct SpaceAvatarImage: View {
             case .empty:
                 ProgressView()
             case .placeholder(let firstCharacter, let colorIndex):
-                Text(firstCharacter)
+                Text(String(firstCharacter))
                     .padding(10)
                     .frame(width: CGFloat(size.rawValue), height: CGFloat(size.rawValue))
                     .foregroundColor(.white)

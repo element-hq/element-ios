@@ -36,7 +36,7 @@
 
 NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewControllerDataReadyNotification";
 
-@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate>
+@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate, SpaceChildRoomDetailBridgePresenterDelegate>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -69,6 +69,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     __weak id kThemeServiceDidChangeThemeNotificationObserver;
+    
+    // Cancel handler of any ongoing loading indicator
+    UserIndicatorCancel loadingIndicatorCancel;
 }
 
 @property (nonatomic, strong) CreateRoomCoordinatorBridgePresenter *createRoomCoordinatorBridgePresenter;
@@ -82,6 +85,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 @property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
 
 @property (nonatomic, strong) RoomNotificationSettingsCoordinatorBridgePresenter *roomNotificationSettingsCoordinatorBridgePresenter;
+
+@property (nonatomic, strong) SpaceChildRoomDetailBridgePresenter *spaceChildPresenter;
 
 @end
 
@@ -1303,7 +1308,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                          {
                                                                              typeof(self) self = weakSelf;
                                                                              [self stopActivityIndicator];
-                                                                             [self.indicatorPresenter presentSuccessWithLabel:[VectorL10n roomParticipantsLeaveSuccess]];
+                                                                             [self.userIndicatorStore presentSuccessWithLabel:[VectorL10n roomParticipantsLeaveSuccess]];
                                                                              // Force table refresh
                                                                              [self cancelEditionMode:YES];
                                                                          }
@@ -1564,7 +1569,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         {
             // Open the room or preview it
             NSString *fragment = [NSString stringWithFormat:@"/room/%@", [MXTools encodeURIComponent:roomIdOrAlias]];
-            [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
+            NSURL *url = [NSURL URLWithString:[MXTools permalinkToRoom:fragment]];
+            [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment fromURL:url];
         }
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
     }
@@ -2170,18 +2176,13 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     [self showRoomWithRoomId:roomId inMatrixSession:matrixSession];
 }
 
-- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectSuggestedRoom:(MXSpaceChildInfo *)childInfo
+- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectSuggestedRoom:(MXSpaceChildInfo *)childInfo from:(UIView* _Nullable)sourceView
 {
     Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerSpaceHierarchy;
     
-    RoomPreviewData *previewData = [[RoomPreviewData alloc] initWithSpaceChildInfo:childInfo andSession:self.mainSession];
-    [self startActivityIndicator];
-    MXWeakify(self);
-    [previewData peekInRoom:^(BOOL succeeded) {
-        MXStrongifyAndReturnIfNil(self);
-        [self stopActivityIndicator];
-        [self showRoomPreviewWithData:previewData];
-    }];
+    self.spaceChildPresenter = [[SpaceChildRoomDetailBridgePresenter alloc] initWithSession:self.mainSession childInfo:childInfo];
+    self.spaceChildPresenter.delegate = self;
+    [self.spaceChildPresenter presentFrom:self sourceView:sourceView animated:YES];
 }
 
 #pragma mark - UISearchBarDelegate
@@ -2432,31 +2433,55 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     self.roomNotificationSettingsCoordinatorBridgePresenter = nil;
 }
 
+#pragma mark - SpaceChildRoomDetailBridgePresenterDelegate
+- (void)spaceChildRoomDetailBridgePresenterDidCancel:(SpaceChildRoomDetailBridgePresenter *)coordinator
+{
+    [self.spaceChildPresenter dismissWithAnimated:YES completion:^{
+        self.spaceChildPresenter = nil;
+    }];
+}
+
+- (void)spaceChildRoomDetailBridgePresenter:(SpaceChildRoomDetailBridgePresenter *)coordinator didOpenRoomWith:(NSString *)roomId
+{
+    [self showRoomWithRoomId:roomId inMatrixSession:self.mainSession];
+
+    [self.spaceChildPresenter dismissWithAnimated:YES completion:^{
+        self.spaceChildPresenter = nil;
+    }];
+}
+
 #pragma mark - Activity Indicator
 
 - (BOOL)providesCustomActivityIndicator {
-    return self.indicatorPresenter != nil;
+    return self.userIndicatorStore != nil;
 }
 
 - (void)startActivityIndicatorWithLabel:(NSString *)label {
-    if (self.indicatorPresenter && isViewVisible) {
-        [self.indicatorPresenter presentLoadingIndicatorWithLabel:label];
+    if (self.userIndicatorStore && isViewVisible) {
+        // The app is very liberal with calling `startActivityIndicator` (often not matched by corresponding `stopActivityIndicator`),
+        // so there is no reason to keep adding new indicators if there is one already showing.
+        if (loadingIndicatorCancel) {
+            return;
+        }
+        
+        MXLogDebug(@"[RecentsViewController] Present loading indicator")
+        loadingIndicatorCancel = [self.userIndicatorStore presentLoadingWithLabel:label isInteractionBlocking:NO];
     } else {
         [super startActivityIndicator];
     }
 }
 
 - (void)startActivityIndicator {
-    if (self.indicatorPresenter && isViewVisible) {
-        [self.indicatorPresenter presentLoadingIndicator];
-    } else {
-        [super startActivityIndicator];
-    }
+    [self startActivityIndicatorWithLabel:[VectorL10n homeSyncing]];
 }
 
 - (void)stopActivityIndicator {
-    if (self.indicatorPresenter) {
-        [self.indicatorPresenter dismissLoadingIndicator];
+    if (self.userIndicatorStore) {
+        if (loadingIndicatorCancel) {
+            MXLogDebug(@"[RecentsViewController] Present loading indicator")
+            loadingIndicatorCancel();
+            loadingIndicatorCancel = nil;
+        }
     } else {
         [super stopActivityIndicator];
     }

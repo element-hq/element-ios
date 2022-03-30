@@ -67,8 +67,8 @@ struct OnboardingSplashScreenPage: View {
                 Spacer().frame(maxHeight: overlayHeight)
             }
             .padding(.horizontal, 16)
-            .frame(maxWidth: OnboardingConstants.maxContentWidth,
-                   maxHeight: OnboardingConstants.maxContentHeight)
+            .frame(maxWidth: OnboardingMetrics.maxContentWidth,
+                   maxHeight: OnboardingMetrics.maxContentHeight)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(backgroundGradient.ignoresSafeArea())

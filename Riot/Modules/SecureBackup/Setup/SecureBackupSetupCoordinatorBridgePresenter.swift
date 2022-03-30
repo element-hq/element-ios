@@ -37,9 +37,12 @@ final class SecureBackupSetupCoordinatorBridgePresenter: NSObject {
     private var coordinator: SecureBackupSetupCoordinator?
     
     // MARK: Public
-    
     weak var delegate: SecureBackupSetupCoordinatorBridgePresenterDelegate?
-    
+
+    var isPresenting: Bool {
+        return self.coordinator != nil
+    }
+
     // MARK: - Setup
 
     init(session: MXSession, allowOverwrite: Bool) {
@@ -54,9 +57,13 @@ final class SecureBackupSetupCoordinatorBridgePresenter: NSObject {
     // func present(from viewController: UIViewController, animated: Bool) {
     //     self.present(from: viewController, animated: animated)
     // }
-    
+
     func present(from viewController: UIViewController, animated: Bool) {
-        let secureBackupSetupCoordinator = SecureBackupSetupCoordinator(session: self.session, allowOverwrite: self.allowOverwrite)
+        self.present(from: viewController, animated: animated, cancellable: true)
+    }
+    
+    func present(from viewController: UIViewController, animated: Bool, cancellable: Bool) {
+        let secureBackupSetupCoordinator = SecureBackupSetupCoordinator(session: self.session, allowOverwrite: self.allowOverwrite, cancellable: cancellable)
         secureBackupSetupCoordinator.delegate = self
         viewController.present(secureBackupSetupCoordinator.toPresentable(), animated: animated, completion: nil)
         secureBackupSetupCoordinator.start()

@@ -19,6 +19,6 @@ import UIKit
 
 enum AvatarViewState {
     case empty
-    case placeholder(String, Int)
+    case placeholder(Character, Int)
     case avatar(UIImage)
 }

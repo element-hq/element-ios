@@ -127,7 +127,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         }
         
         let isNewSignIn = true
-        let keyVerificationCoordinator = KeyVerificationCoordinator(session: session, flow: .completeSecurity(isNewSignIn))
+        let cancellable = !session.vc_homeserverConfiguration().encryption.isSecureBackupRequired
+        let keyVerificationCoordinator = KeyVerificationCoordinator(session: session, flow: .completeSecurity(isNewSignIn), cancellable: cancellable)
         
         keyVerificationCoordinator.delegate = self
         let presentable = keyVerificationCoordinator.toPresentable()
@@ -176,7 +177,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
                         // TODO: This is still not sure we want to disable the automatic cross-signing bootstrap
                         // if the admin disabled e2e by default.
                         // Do like riot-web for the moment
-                        if session.vc_homeserverConfiguration().isE2EEByDefaultEnabled {
+                        if session.vc_homeserverConfiguration().encryption.isE2EEByDefaultEnabled {
                             // Bootstrap cross-signing on user's account
                             // We do it for both registration and new login as long as cross-signing does not exist yet
                             if let password = self.password, !password.isEmpty {

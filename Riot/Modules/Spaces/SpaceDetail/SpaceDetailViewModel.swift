@@ -26,6 +26,7 @@ class SpaceDetailViewModel: SpaceDetailViewModelType {
 
     private let session: MXSession
     private let spaceId: String
+    private let senderId: String?
     private let publicRoom: MXPublicRoom?
     private var spaceGraphObserver: Any?
     
@@ -35,12 +36,14 @@ class SpaceDetailViewModel: SpaceDetailViewModelType {
         self.session = session
         self.spaceId = spaceId
         self.publicRoom = nil
+        self.senderId = nil
     }
     
-    init(session: MXSession, publicRoom: MXPublicRoom) {
+    init(session: MXSession, publicRoom: MXPublicRoom, senderId: String?) {
         self.session = session
         self.publicRoom = publicRoom
         self.spaceId = publicRoom.roomId
+        self.senderId = senderId
     }
     
     deinit {
@@ -76,14 +79,21 @@ class SpaceDetailViewModel: SpaceDetailViewModelType {
     
     private func loadData() {
         if let publicRoom = self.publicRoom {
+            let sender: MXUser?
+            if let senderId = self.senderId {
+                sender = session.user(withUserId: senderId)
+            } else {
+                sender = nil
+            }
+            
             self.update(viewState: .loaded(SpaceDetailLoadedParameters(spaceId: publicRoom.roomId,
                                                                        displayName: publicRoom.displayname(),
                                                                        topic: publicRoom.topic,
                                                                        avatarUrl: publicRoom.avatarUrl,
                                                                        joinRule: publicRoom.worldReadable ? .public : .private,
-                                                                       membership: .unknown,
-                                                                       inviterId: nil,
-                                                                       inviter: nil,
+                                                                       membership: self.senderId != nil ? .invite : .unknown,
+                                                                       inviterId: self.senderId,
+                                                                       inviter: sender,
                                                                        membersCount: UInt(publicRoom.numJoinedMembers))))
         } else {
             guard let space = self.session.spaceService.getSpace(withId: self.spaceId), let summary = space.summary else {
@@ -105,7 +115,7 @@ class SpaceDetailViewModel: SpaceDetailViewModelType {
             self.update(viewState: .loading)
             space.room?.state { state in
                 let joinRule = state?.joinRule
-                let membersCount = summary.membersCount.members
+                let membersCount = summary.membersCount.joined
                 
                 var inviterId: String?
                 var inviter: MXUser?

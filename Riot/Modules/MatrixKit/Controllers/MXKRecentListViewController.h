@@ -41,8 +41,9 @@ limitations under the License.
 
  @param recentListViewController the `MXKRecentListViewController` instance.
  @param childInfo the `MXSpaceChildInfo` instance that describes the selected room.
+ @param sourceView the view the modal has to be presented from.
  */
--(void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectSuggestedRoom:(MXSpaceChildInfo *)childInfo;
+-(void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectSuggestedRoom:(MXSpaceChildInfo *)childInfo from:(UIView* _Nullable)sourceView;
 
 @end
 

@@ -99,8 +99,8 @@ struct OnboardingUseCaseSelectionScreen: View {
                         
                         useCaseButtons
                     }
-                    .frame(maxWidth: OnboardingConstants.maxContentWidth,
-                           maxHeight: OnboardingConstants.maxContentHeight)
+                    .frame(maxWidth: OnboardingMetrics.maxContentWidth,
+                           maxHeight: OnboardingMetrics.maxContentHeight)
                     .padding(16)
                 }
                 .frame(maxWidth: .infinity)

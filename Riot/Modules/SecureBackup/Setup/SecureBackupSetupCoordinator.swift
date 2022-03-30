@@ -30,7 +30,14 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     private let recoveryService: MXRecoveryService
     private let keyBackup: MXKeyBackup?
     private let checkKeyBackup: Bool
+    private let homeserverEncryptionConfiguration: HomeserverEncryptionConfiguration
     private let allowOverwrite: Bool
+    private let cancellable: Bool
+
+    private var isBackupSetupMethodKeySupported: Bool {
+        let homeserverEncryptionConfiguration = self.session.vc_homeserverConfiguration().encryption
+        return homeserverEncryptionConfiguration.secureBackupSetupMethods.contains(.key)
+    }
 
     // MARK: Public
 
@@ -46,12 +53,15 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     ///   - session: The MXSession.
     ///   - checkKeyBackup: Indicate false to ignore existing key backup.
     ///   - navigationRouter: Use existing navigation router to plug this flow or let nil to use new one.
-    init(session: MXSession, checkKeyBackup: Bool = true, allowOverwrite: Bool = false, navigationRouter: NavigationRouterType? = nil) {
+    ///   - cancellable: Whether secure backup can be cancelled
+    init(session: MXSession, checkKeyBackup: Bool = true, allowOverwrite: Bool = false, navigationRouter: NavigationRouterType? = nil, cancellable: Bool) {
         self.session = session
         self.recoveryService = session.crypto.recoveryService
         self.keyBackup = session.crypto.backup
         self.checkKeyBackup = checkKeyBackup
+        self.homeserverEncryptionConfiguration = session.vc_homeserverConfiguration().encryption
         self.allowOverwrite = allowOverwrite
+        self.cancellable = cancellable
         
         if let navigationRouter = navigationRouter {
             self.navigationRouter = navigationRouter
@@ -73,21 +83,25 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     }
     
     func toPresentable() -> UIViewController {
-        return self.navigationRouter.toPresentable()
+        return self.navigationRouter
+            .toPresentable()
+            .vc_setModalFullScreen(!self.cancellable)
     }
     
     // MARK: - Private methods
 
     private func createIntro() -> SecureBackupSetupIntroViewController {
         // TODO: Use a coordinator
-        let viewModel = SecureBackupSetupIntroViewModel(keyBackup: self.keyBackup, checkKeyBackup: self.checkKeyBackup)
-        let introViewController = SecureBackupSetupIntroViewController.instantiate(with: viewModel)
+        let viewModel = SecureBackupSetupIntroViewModel(keyBackup: self.keyBackup,
+                                                        checkKeyBackup: self.checkKeyBackup,
+                                                        homeserverEncryptionConfiguration: self.homeserverEncryptionConfiguration)
+        let introViewController = SecureBackupSetupIntroViewController.instantiate(with: viewModel, cancellable: self.cancellable)
         introViewController.delegate = self
         return introViewController
     }
     
     private func showSetupKey(passphraseOnly: Bool, passphrase: String? = nil) {
-        let coordinator = SecretsSetupRecoveryKeyCoordinator(recoveryService: self.recoveryService, passphrase: passphrase, passphraseOnly: passphraseOnly, allowOverwrite: allowOverwrite)
+        let coordinator = SecretsSetupRecoveryKeyCoordinator(recoveryService: self.recoveryService, passphrase: passphrase, passphraseOnly: passphraseOnly, allowOverwrite: allowOverwrite, cancellable: self.cancellable)
         coordinator.delegate = self
         coordinator.start()
         
@@ -98,7 +112,7 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     }
     
     private func showSetupPassphrase() {
-        let coordinator = SecretsSetupRecoveryPassphraseCoordinator(passphraseInput: .new)
+        let coordinator = SecretsSetupRecoveryPassphraseCoordinator(passphraseInput: .new, cancellable: self.cancellable)
         coordinator.delegate = self
         coordinator.start()
 
@@ -109,7 +123,7 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     }
     
     private func showSetupPassphraseConfirmation(with passphrase: String) {
-        let coordinator = SecretsSetupRecoveryPassphraseCoordinator(passphraseInput: .confirm(passphrase))
+        let coordinator = SecretsSetupRecoveryPassphraseCoordinator(passphraseInput: .confirm(passphrase), cancellable: self.cancellable)
         coordinator.delegate = self
         coordinator.start()
         
@@ -203,7 +217,9 @@ extension SecureBackupSetupCoordinator: SecretsSetupRecoveryPassphraseCoordinato
     }
     
     func secretsSetupRecoveryPassphraseCoordinator(_ coordinator: SecretsSetupRecoveryPassphraseCoordinatorType, didConfirmPassphrase passphrase: String) {
-        self.showSetupKey(passphraseOnly: false, passphrase: passphrase)        
+
+        // Do not present recovery key export screen if secure backup setup key method is not supported
+        self.showSetupKey(passphraseOnly: !self.isBackupSetupMethodKeySupported, passphrase: passphrase)
     }
     
     func secretsSetupRecoveryPassphraseCoordinatorDidCancel(_ coordinator: SecretsSetupRecoveryPassphraseCoordinatorType) {

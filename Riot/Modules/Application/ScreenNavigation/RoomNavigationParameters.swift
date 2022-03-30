@@ -58,6 +58,9 @@ class RoomNavigationParameters: NSObject {
     /// If `true`, the room settings screen will be initially displayed. Default `false`
     let showSettingsInitially: Bool
     
+    /// ID of the sender of the notification. Default `nil`
+    let senderId: String?
+    
     // MARK: - Setup
     
     init(roomId: String,
@@ -71,6 +74,24 @@ class RoomNavigationParameters: NSObject {
         self.threadParameters = threadParameters
         self.presentationParameters = presentationParameters
         self.showSettingsInitially = false
+        self.senderId = nil
+        
+        super.init()
+    }
+    
+    init(roomId: String,
+         eventId: String?,
+         mxSession: MXSession,
+         senderId: String?,
+         threadParameters: ThreadParameters?,
+         presentationParameters: ScreenPresentationParameters) {
+        self.roomId = roomId
+        self.eventId = eventId
+        self.mxSession = mxSession
+        self.threadParameters = threadParameters
+        self.presentationParameters = presentationParameters
+        self.showSettingsInitially = false
+        self.senderId = senderId
         
         super.init()
     }
@@ -86,7 +107,8 @@ class RoomNavigationParameters: NSObject {
         self.presentationParameters = presentationParameters
         self.showSettingsInitially = showSettingsInitially
         self.threadParameters = nil
-        
+        self.senderId = nil
+
         super.init()
     }
 }

@@ -26,6 +26,7 @@ final class SecretsRecoveryCoordinator: SecretsRecoveryCoordinatorType {
     private let navigationRouter: NavigationRouterType
     private let recoveryMode: SecretsRecoveryMode
     private let recoveryGoal: SecretsRecoveryGoal
+    private let cancellable: Bool
     
     // MARK: Public
     
@@ -35,10 +36,11 @@ final class SecretsRecoveryCoordinator: SecretsRecoveryCoordinatorType {
     
     // MARK: - Setup
     
-    init(session: MXSession, recoveryMode: SecretsRecoveryMode, recoveryGoal: SecretsRecoveryGoal, navigationRouter: NavigationRouterType? = nil) {
+    init(session: MXSession, recoveryMode: SecretsRecoveryMode, recoveryGoal: SecretsRecoveryGoal, navigationRouter: NavigationRouterType? = nil, cancellable: Bool) {
         self.session = session
         self.recoveryMode = recoveryMode
         self.recoveryGoal = recoveryGoal
+        self.cancellable = cancellable
         
         if let navigationRouter = navigationRouter {
             self.navigationRouter = navigationRouter
@@ -76,19 +78,21 @@ final class SecretsRecoveryCoordinator: SecretsRecoveryCoordinatorType {
     }
     
     func toPresentable() -> UIViewController {
-        return self.navigationRouter.toPresentable()
+        return self.navigationRouter
+            .toPresentable()
+            .vc_setModalFullScreen(!self.cancellable)
     }
     
     // MARK: - Private
     
     private func createRecoverFromKeyCoordinator() -> SecretsRecoveryWithKeyCoordinator {
-        let coordinator = SecretsRecoveryWithKeyCoordinator(recoveryService: self.session.crypto.recoveryService, recoveryGoal: self.recoveryGoal)
+        let coordinator = SecretsRecoveryWithKeyCoordinator(recoveryService: self.session.crypto.recoveryService, recoveryGoal: self.recoveryGoal, cancellable: self.cancellable)
         coordinator.delegate = self
         return coordinator
     }
     
     private func createRecoverFromPassphraseCoordinator() -> SecretsRecoveryWithPassphraseCoordinator {
-        let coordinator = SecretsRecoveryWithPassphraseCoordinator(recoveryService: self.session.crypto.recoveryService, recoveryGoal: self.recoveryGoal)
+        let coordinator = SecretsRecoveryWithPassphraseCoordinator(recoveryService: self.session.crypto.recoveryService, recoveryGoal: self.recoveryGoal, cancellable: self.cancellable)
         coordinator.delegate = self
         return coordinator
     }
@@ -115,7 +119,7 @@ final class SecretsRecoveryCoordinator: SecretsRecoveryCoordinatorType {
     }
     
     private func showSecureBackupSetup(checkKeyBackup: Bool) {
-        let coordinator = SecureBackupSetupCoordinator(session: self.session, checkKeyBackup: checkKeyBackup, navigationRouter: self.navigationRouter)
+        let coordinator = SecureBackupSetupCoordinator(session: self.session, checkKeyBackup: checkKeyBackup, navigationRouter: self.navigationRouter, cancellable: self.cancellable)
         coordinator.delegate = self
         coordinator.start()
         
