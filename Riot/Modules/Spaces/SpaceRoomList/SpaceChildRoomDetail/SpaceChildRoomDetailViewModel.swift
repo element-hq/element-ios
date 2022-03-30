@@ -95,11 +95,13 @@ final class SpaceChildRoomDetailViewModel: SpaceChildRoomDetailViewModelType {
                 switch response {
                 case .success(let resolution):
                     self.joinRoom(withId: resolution.roomId, via: resolution.servers)
-                case .failure:
+                case .failure(let error):
+                    MXLog.warning("[SpaceChildRoomDetailViewModel] joinRoom: failed to resolve room alias due to error \(error).")
                     self.joinRoom(withId: self.childInfo.childRoomId, via: nil)
                 }
             }
         } else {
+            MXLog.warning("[SpaceChildRoomDetailViewModel] joinRoom: no canonical alias provided.")
             joinRoom(withId: self.childInfo.childRoomId, via: nil)
         }
     }
