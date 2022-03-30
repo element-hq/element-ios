@@ -39,8 +39,8 @@ import CommonKit
         }
     }
     
-    /// Present a new type of user indicator, such as loading spinner or success message.
-    /// To remove an indicator, call the returned `UserIndicatorCancel` function
+    /// Present a loading indicator.
+    /// To remove the indicator call the returned `UserIndicatorCancel` function
     ///
     /// Note: This is a convenience function callable by objective-c code
     @objc func presentLoading(label: String, isInteractionBlocking: Bool) -> UserIndicatorCancel {
@@ -50,5 +50,13 @@ import CommonKit
                 isInteractionBlocking: isInteractionBlocking
             )
         )
+    }
+    
+    /// Present a success message that will be automatically dismissed after a few seconds.
+    ///
+    /// Note: This is a convenience function callable by objective-c code
+    @objc func presentSuccess(label: String) {
+        let indicator = presenter.present(.success(label: label))
+        indicators.append(indicator)
     }
 }

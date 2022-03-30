@@ -239,7 +239,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         homeViewController.tabBarItem.tag = Int(TABBAR_HOME_INDEX)
         homeViewController.tabBarItem.image = homeViewController.tabBarItem.image
         homeViewController.accessibilityLabel = VectorL10n.titleHome
-        homeViewController.indicatorPresenter = UserIndicatorPresenterWrapper(presenter: indicatorPresenter)
+        homeViewController.userIndicatorStore = UserIndicatorStore(presenter: indicatorPresenter)
         
         let wrapperViewController = HomeViewControllerWithBannerWrapperViewController(viewController: homeViewController)        
         return wrapperViewController
@@ -249,7 +249,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let favouritesViewController: FavouritesViewController = FavouritesViewController.instantiate()
         favouritesViewController.tabBarItem.tag = Int(TABBAR_FAVOURITES_INDEX)
         favouritesViewController.accessibilityLabel = VectorL10n.titleFavourites
-        favouritesViewController.indicatorPresenter = UserIndicatorPresenterWrapper(presenter: indicatorPresenter)
+        favouritesViewController.userIndicatorStore = UserIndicatorStore(presenter: indicatorPresenter)
         return favouritesViewController
     }
     
@@ -257,7 +257,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let peopleViewController: PeopleViewController = PeopleViewController.instantiate()
         peopleViewController.tabBarItem.tag = Int(TABBAR_PEOPLE_INDEX)
         peopleViewController.accessibilityLabel = VectorL10n.titlePeople
-        peopleViewController.indicatorPresenter = UserIndicatorPresenterWrapper(presenter: indicatorPresenter)
+        peopleViewController.userIndicatorStore = UserIndicatorStore(presenter: indicatorPresenter)
         return peopleViewController
     }
     
@@ -265,7 +265,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let roomsViewController: RoomsViewController = RoomsViewController.instantiate()
         roomsViewController.tabBarItem.tag = Int(TABBAR_ROOMS_INDEX)
         roomsViewController.accessibilityLabel = VectorL10n.titleRooms
-        roomsViewController.indicatorPresenter = UserIndicatorPresenterWrapper(presenter: indicatorPresenter)
+        roomsViewController.userIndicatorStore = UserIndicatorStore(presenter: indicatorPresenter)
         return roomsViewController
     }
     
