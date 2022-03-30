@@ -49,9 +49,9 @@ struct OnboardingDisplayNameScreen: View {
                 
                 buttons
             }
-            .padding(.horizontal)
-            .padding(.top, 8)
             .frame(maxWidth: OnboardingMetrics.maxContentWidth)
+            .padding(.horizontal)
+            .padding(.top, OnboardingMetrics.topPaddingToNavigationBar)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .accentColor(theme.colors.accent)
@@ -69,7 +69,7 @@ struct OnboardingDisplayNameScreen: View {
                 .resizable()
                 .renderingMode(.template)
                 .foregroundColor(theme.colors.accent)
-                .frame(width: 90, height: 90)
+                .frame(width: OnboardingMetrics.iconSize, height: OnboardingMetrics.iconSize)
                 .background(Circle().foregroundColor(.white).padding(2))
                 .padding(.bottom, 8)
                 .accessibilityHidden(true)

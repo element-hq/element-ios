@@ -114,17 +114,23 @@ struct AnalyticsPrompt: View {
         GeometryReader { geometry in
             VStack {
                 ScrollView(showsIndicators: false) {
+                    Spacer()
+                        .frame(height: OnboardingMetrics.spacerHeight(in: geometry))
+                    
                     mainContent
-                        .padding(.top, 50)
+                        .frame(maxWidth: OnboardingMetrics.maxContentWidth)
                         .padding(.horizontal, horizontalPadding)
+                        .padding(.top, OnboardingMetrics.breakerScreenTopPadding)
                 }
-                .frame(maxWidth: OnboardingMetrics.maxContentWidth)
                 .frame(maxWidth: .infinity)
                 
                 buttons
                     .frame(maxWidth: OnboardingMetrics.maxContentWidth)
                     .padding(.horizontal, horizontalPadding)
                     .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
+                
+                Spacer()
+                    .frame(height: OnboardingMetrics.spacerHeight(in: geometry))
             }
             .background(theme.colors.background.ignoresSafeArea())
             .accentColor(theme.colors.accent)
@@ -136,10 +142,13 @@ struct AnalyticsPrompt: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
+@available(iOS 15.0, *)
 struct AnalyticsPrompt_Previews: PreviewProvider {
     static let stateRenderer = MockAnalyticsPromptScreenState.stateRenderer
     static var previews: some View {
         stateRenderer.screenGroup()
+            .theme(.light).preferredColorScheme(.light)
+        stateRenderer.screenGroup()
+            .theme(.dark).preferredColorScheme(.dark)
     }
 }

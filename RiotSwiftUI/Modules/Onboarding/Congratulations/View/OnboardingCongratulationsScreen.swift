@@ -45,7 +45,7 @@ struct OnboardingCongratulationsScreen: View {
                     
                     mainContent
                         .frame(maxWidth: OnboardingMetrics.maxContentWidth)
-                        .padding(.top, 60)
+                        .padding(.top, OnboardingMetrics.breakerScreenTopPadding)
                         .padding(.horizontal, horizontalPadding)
                 }
                 .frame(maxWidth: .infinity)
@@ -73,7 +73,7 @@ struct OnboardingCongratulationsScreen: View {
         VStack(spacing: 42) {
             Image(Asset.Images.onboardingCongratulationsIcon.name)
                 .resizable()
-                .frame(width: 90, height: 90)
+                .frame(width: OnboardingMetrics.iconSize, height: OnboardingMetrics.iconSize)
                 .accessibilityHidden(true)
             
             VStack(spacing: 8) {
