@@ -59,6 +59,7 @@
 "send_to" = "Send to %@";
 "close" = "Close";
 "skip" = "Skip";
+"joining" = "Joining";
 "joined" = "Joined";
 "switch" = "Switch";
 "more" = "More";
