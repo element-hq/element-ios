@@ -1,1 +1,0 @@
-Room Settings bottom sheet

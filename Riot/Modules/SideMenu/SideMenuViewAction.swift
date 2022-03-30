@@ -22,4 +22,5 @@ import Foundation
 enum SideMenuViewAction {
     case loadData
     case tap(menuItem: SideMenuItem, sourceView: UIView)
+    case tapHeader(sourceView: UIView)
 }

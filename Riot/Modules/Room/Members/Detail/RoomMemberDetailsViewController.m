@@ -630,7 +630,7 @@
         }
         
         // Check whether the option Ignore may be presented
-        if (RiotSettings.shared.roomMemberScreenShowIgnore && self.mxRoomMember.membership == MXMembershipJoin)
+        if (RiotSettings.shared.roomMemberScreenShowIgnore)
         {
             // is he already ignored ?
             if (![self.mainSession isUserIgnored:self.mxRoomMember.userId])

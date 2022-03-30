@@ -30,6 +30,7 @@ final class RiotSettings: NSObject {
         static let pinRoomsWithMissedNotificationsOnHome = "pinRoomsWithMissedNotif"
         static let pinRoomsWithUnreadMessagesOnHome = "pinRoomsWithUnread"
         static let showAllRoomsInHomeSpace = "showAllRoomsInHomeSpace"
+        static let enableUISIAutoReporting = "enableUISIAutoReporting"
     }
     
     static let shared = RiotSettings()
@@ -141,6 +142,10 @@ final class RiotSettings: NSObject {
     /// Indicates if CallKit ringing is enabled for group calls. This setting does not disable the CallKit integration for group calls, only relates to ringing.
     @UserDefault(key: "enableRingingForGroupCalls", defaultValue: false, storage: defaults)
     var enableRingingForGroupCalls
+    
+    /// Indicates if auto reporting of decryption errors is enabled
+    @UserDefault(key: UserDefaultsKeys.enableUISIAutoReporting, defaultValue: BuildSettings.cryptoUISIAutoReportingEnabled, storage: defaults)
+    var enableUISIAutoReporting
     
     // MARK: Calls
     

@@ -20,6 +20,7 @@ import Mapbox
 
 class LocationMarkerView: MGLAnnotationView, NibLoadable {
     
+    @IBOutlet private var backgroundImageView: UIImageView!
     @IBOutlet private var avatarView: UserAvatarView!
     
     override func awakeFromNib() {
@@ -27,7 +28,9 @@ class LocationMarkerView: MGLAnnotationView, NibLoadable {
         translatesAutoresizingMaskIntoConstraints = false
     }
     
-    func setAvatarData(_ avatarData: AvatarViewDataProtocol) {
+    func setAvatarData(_ avatarData: AvatarViewDataProtocol, avatarBackgroundColor: UIColor) {
+        backgroundImageView.image = Asset.Images.locationUserMarker.image
+        backgroundImageView.tintColor = avatarBackgroundColor
         avatarView.fill(with: avatarData)
     }
 }

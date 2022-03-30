@@ -35,7 +35,7 @@ struct TemplateRoomChatBubbleView: View {
                 .accessibility(identifier: "bubbleImage")
             VStack(alignment: .leading){
                 Text(bubble.sender.displayName ?? "")
-                    .foregroundColor(theme.displayNameColor(for: bubble.sender.id))
+                    .foregroundColor(theme.userColor(for: bubble.sender.id))
                     .font(theme.fonts.bodySB)
                 ForEach(bubble.items) { item in
                     TemplateRoomChatBubbleContentView(bubbleItem: item)

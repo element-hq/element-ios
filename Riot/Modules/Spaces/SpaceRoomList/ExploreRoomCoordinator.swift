@@ -462,10 +462,6 @@ extension ExploreRoomCoordinator: RoomViewControllerDelegate {
         return TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.canEndPoll() ?? false
     }
     
-    func roomViewControllerCanDelegateUserIndicators(_ roomViewController: RoomViewController) -> Bool {
-        return false
-    }
-    
     func roomViewControllerDidStartLoading(_ roomViewController: RoomViewController) {
         
     }
@@ -474,6 +470,27 @@ extension ExploreRoomCoordinator: RoomViewControllerDelegate {
         
     }
     
+    func roomViewControllerDidTapLiveLocationSharingBanner(_ roomViewController: RoomViewController) {
+        // TODO:
+    }
+    
+    func roomViewControllerDidStopLiveLocationSharing(_ roomViewController: RoomViewController) {
+        // TODO:
+    }
+    
+    func threadsCoordinator(for roomViewController: RoomViewController, threadId: String?) -> ThreadsCoordinatorBridgePresenter? {
+        guard let roomId = roomViewController.roomPreviewData?.roomId else {
+            MXLog.error("[ExploreRoomCoordinator] Cannot create threads coordinator for room")
+            return nil
+        }
+        
+        return ThreadsCoordinatorBridgePresenter(
+            session: session,
+            roomId: roomId,
+            threadId: threadId,
+            userIndicatorPresenter: UserIndicatorTypePresenter(presentingViewController: toPresentable())
+        )
+    }
 }
 
 // MARK: - ContactsPickerCoordinatorDelegate

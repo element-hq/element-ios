@@ -42,7 +42,8 @@ typedef enum : NSUInteger
     WidgetManagerErrorCodeNoIntegrationsServerConfigured,
     WidgetManagerErrorCodeDisabledIntegrationsServer,
     WidgetManagerErrorCodeFailedToConnectToIntegrationsServer,
-    WidgetManagerErrorCodeTermsNotSigned
+    WidgetManagerErrorCodeTermsNotSigned,
+    WidgetManagerErrorCodeUnavailableJitsiURL
 }
 WidgetManagerErrorCode;
 

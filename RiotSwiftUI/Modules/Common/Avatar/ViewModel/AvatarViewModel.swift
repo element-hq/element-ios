@@ -42,16 +42,17 @@ class AvatarViewModel: InjectableObject, ObservableObject {
         colorCount: Int,
         avatarSize: AvatarSize) {
         
-        self.viewState = .placeholder(
-            firstCharacterCapitalized(displayName),
-            stableColorIndex(matrixItemId: matrixItemId, colorCount: colorCount)
-        )
+        let placeholderViewModel = PlaceholderAvatarViewModel(displayName: displayName,
+                                                              matrixItemId: matrixItemId,
+                                                              colorCount: colorCount)
+        
+        self.viewState = .placeholder(placeholderViewModel.firstCharacterCapitalized, placeholderViewModel.stableColorIndex)
         
         guard let mxContentUri = mxContentUri, mxContentUri.count > 0 else {
             return
         }
         
-        avatarService.avatarImage(mxContentUri: mxContentUri, avatarSize: avatarSize)
+            avatarService.avatarImage(mxContentUri: mxContentUri, avatarSize: avatarSize)
             .sink { completion in
                 guard case let .failure(error) = completion else { return }
                 UILog.error("[AvatarService] Failed to retrieve avatar: \(error)")
@@ -60,31 +61,4 @@ class AvatarViewModel: InjectableObject, ObservableObject {
             }
             .store(in: &cancellables)
     }
-    
-    /// Get the first character of a string capialized or else an empty string.
-    /// - Parameter string: The input string to get the capitalized letter from.
-    /// - Returns: The capitalized first letter.
-    private func firstCharacterCapitalized(_ string: String?) -> String {
-        guard let character = string?.first else {
-            return ""
-        }
-        return String(character).capitalized
-    }
-    
-    /// Provides the same color each time for a specified matrixId
-    ///
-    /// Same algorithm as in AvatarGenerator.
-    /// - Parameters:
-    ///   - matrixItemId: the matrix id used as input to create the stable index.
-    ///   - colorCount: The number of total colors we want to index in to.
-    /// - Returns: The stable index.
-    private func stableColorIndex(matrixItemId: String, colorCount: Int) -> Int {
-        // Sum all characters
-        let sum = matrixItemId.utf8
-            .map({ UInt($0) })
-            .reduce(0, +)
-        // modulo the color count
-        return Int(sum) % colorCount
-    }
-    
 }

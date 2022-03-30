@@ -24,6 +24,7 @@ final class SecretsRecoveryWithKeyCoordinator: SecretsRecoveryWithKeyCoordinator
     
     private let secretsRecoveryWithKeyViewController: SecretsRecoveryWithKeyViewController
     private let secretsRecoveryWithKeyViewModel: SecretsRecoveryWithKeyViewModel
+    private let cancellable: Bool
     
     // MARK: Public
     
@@ -33,12 +34,13 @@ final class SecretsRecoveryWithKeyCoordinator: SecretsRecoveryWithKeyCoordinator
     
     // MARK: - Setup
     
-    init(recoveryService: MXRecoveryService, recoveryGoal: SecretsRecoveryGoal) {
+    init(recoveryService: MXRecoveryService, recoveryGoal: SecretsRecoveryGoal, cancellable: Bool) {
         
         let secretsRecoveryWithKeyViewModel = SecretsRecoveryWithKeyViewModel(recoveryService: recoveryService, recoveryGoal: recoveryGoal)
-        let secretsRecoveryWithKeyViewController = SecretsRecoveryWithKeyViewController.instantiate(with: secretsRecoveryWithKeyViewModel)
+        let secretsRecoveryWithKeyViewController = SecretsRecoveryWithKeyViewController.instantiate(with: secretsRecoveryWithKeyViewModel, cancellable: cancellable)
         self.secretsRecoveryWithKeyViewController = secretsRecoveryWithKeyViewController
         self.secretsRecoveryWithKeyViewModel = secretsRecoveryWithKeyViewModel
+        self.cancellable = cancellable
     }
     
     // MARK: - Public
@@ -49,6 +51,7 @@ final class SecretsRecoveryWithKeyCoordinator: SecretsRecoveryWithKeyCoordinator
     
     func toPresentable() -> UIViewController {
         return self.secretsRecoveryWithKeyViewController
+            .vc_setModalFullScreen(!self.cancellable)
     }
 }
 

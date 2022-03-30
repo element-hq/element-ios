@@ -51,7 +51,7 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
     init(session: MXSession, parentSpace: MXSpace?) {
         self.session = session
         self.parentSpace = parentSpace
-        roomCreationParameters.isEncrypted = session.vc_homeserverConfiguration().isE2EEByDefaultEnabled &&  RiotSettings.shared.roomCreationScreenRoomIsEncrypted
+        roomCreationParameters.isEncrypted = session.vc_homeserverConfiguration().encryption.isE2EEByDefaultEnabled &&  RiotSettings.shared.roomCreationScreenRoomIsEncrypted
         roomCreationParameters.joinRule = RiotSettings.shared.roomCreationScreenRoomIsPublic ? .public : .private
         viewState = .loaded
     }
@@ -115,6 +115,7 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
             fatalError("[EnterNewRoomDetailsViewModel] createRoom: room name cannot be nil.")
         }
         
+        viewState = .loading
         currentOperation = session.createRoom(
             withName: roomName,
             joinRule: roomCreationParameters.joinRule,
@@ -125,6 +126,8 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
             completion: { response in
               switch response {
               case .success(let room):
+                  self.viewState = .loaded
+                  
                   if let parentSpace = self.parentSpace {
                       self.add(room, to: parentSpace)
                   } else {

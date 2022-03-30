@@ -184,7 +184,7 @@ final class SpaceListViewModel: SpaceListViewModelType {
                 var index = 0
                 for itemViewData in viewDataList {
                     if itemViewData.spaceId == self.selectedItemId {
-                        newSelection = IndexPath(row: index, section: sections.count - 1)
+                        newSelection = IndexPath(row: index, section: spacesSectionIndex)
                     }
                     index += 1
                 }

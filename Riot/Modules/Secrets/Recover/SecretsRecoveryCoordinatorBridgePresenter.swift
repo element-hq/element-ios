@@ -74,7 +74,7 @@ final class SecretsRecoveryCoordinatorBridgePresenter: NSObject {
     
     func present(from viewController: UIViewController, animated: Bool) {
         
-        let coordinator = SecretsRecoveryCoordinator(session: self.session, recoveryMode: self.recoveryMode, recoveryGoal: self.recoveryGoal.goal)
+        let coordinator = SecretsRecoveryCoordinator(session: self.session, recoveryMode: self.recoveryMode, recoveryGoal: self.recoveryGoal.goal, cancellable: true)
         coordinator.delegate = self
         
         let presentable = coordinator.toPresentable()

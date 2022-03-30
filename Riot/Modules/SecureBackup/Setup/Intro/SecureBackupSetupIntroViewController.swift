@@ -39,6 +39,7 @@ final class SecureBackupSetupIntroViewController: UIViewController {
     // MARK: Private
     
     private var viewModel: SecureBackupSetupIntroViewModelType!
+    private var cancellable: Bool!
     private var theme: Theme!
     
     private var activityIndicatorPresenter: ActivityIndicatorPresenter!
@@ -50,9 +51,10 @@ final class SecureBackupSetupIntroViewController: UIViewController {
         
     // MARK: - Setup
     
-    class func instantiate(with viewModel: SecureBackupSetupIntroViewModelType) -> SecureBackupSetupIntroViewController {
+    class func instantiate(with viewModel: SecureBackupSetupIntroViewModelType, cancellable: Bool) -> SecureBackupSetupIntroViewController {
         let viewController = StoryboardScene.SecureBackupSetupIntroViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
+        viewController.cancellable = cancellable
         viewController.theme = ThemeService.shared().theme
         return viewController
     }
@@ -86,13 +88,15 @@ final class SecureBackupSetupIntroViewController: UIViewController {
     // MARK: - Private
     
     private func setupViews() {
-        let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
-            guard let self = self else {
-                return
+        if self.cancellable {
+            let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                self.delegate?.secureBackupSetupIntroViewControllerDidCancel(self, showSkipAlert: true)
             }
-            self.delegate?.secureBackupSetupIntroViewControllerDidCancel(self, showSkipAlert: true)
+            self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         }
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         
         self.title = VectorL10n.secureKeyBackupSetupIntroTitle
                 
@@ -118,6 +122,21 @@ final class SecureBackupSetupIntroViewController: UIViewController {
                 return
             }
             self.delegate?.secureBackupSetupIntroViewControllerDidTapUsePassphrase(self)
+        }
+
+        setupBackupMethods()
+    }
+
+    private func setupBackupMethods() {
+        let secureBackupSetupMethods = self.viewModel.homeserverEncryptionConfiguration.secureBackupSetupMethods
+
+        // Hide setup methods that are not listed
+        if !secureBackupSetupMethods.contains(.key) {
+            self.secureKeyCell.isHidden = true
+        }
+
+        if !secureBackupSetupMethods.contains(.passphrase) {
+            self.securePassphraseCell.isHidden = true
         }
     }
     

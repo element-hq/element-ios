@@ -28,10 +28,6 @@ final class HomeserverConfigurationBuilder: NSObject {
     
     /// Create an `HomeserverConfiguration` from an HS Well-Known when possible otherwise it takes hardcoded values from BuildSettings by default.
     func build(from wellKnown: MXWellKnown?) -> HomeserverConfiguration {
-                
-        let isE2EEByDefaultEnabled: Bool
-        let jitsiPreferredDomain: String
-        
         var vectorWellKnownEncryptionConfiguration: VectorWellKnownEncryptionConfiguration?
         var vectorWellKnownJitsiConfiguration: VectorWellKnownJitsiConfiguration?
         
@@ -39,23 +35,34 @@ final class HomeserverConfigurationBuilder: NSObject {
             vectorWellKnownEncryptionConfiguration = self.getEncryptionConfiguration(from: vectorWellKnown)
             vectorWellKnownJitsiConfiguration = self.getJitsiConfiguration(from: vectorWellKnown)
         }
-        
+
         // Encryption configuration
         // Enable E2EE by default when there is no value
-        isE2EEByDefaultEnabled = vectorWellKnownEncryptionConfiguration?.isE2EEByDefaultEnabled ?? true
+        let isE2EEByDefaultEnabled = vectorWellKnownEncryptionConfiguration?.isE2EEByDefaultEnabled ?? true
+        // Disable mandatory secure backup when there is no value
+        let isSecureBackupRequired = vectorWellKnownEncryptionConfiguration?.isSecureBackupRequired ?? false
+        // Defaults to all secure backup methods available when there is no value
+        let secureBackupSetupMethods: [VectorWellKnownBackupSetupMethod]
+        if let backupSetupMethods = vectorWellKnownEncryptionConfiguration?.secureBackupSetupMethods {
+            secureBackupSetupMethods = backupSetupMethods.isEmpty ? VectorWellKnownBackupSetupMethod.allCases : backupSetupMethods
+        } else {
+            secureBackupSetupMethods = VectorWellKnownBackupSetupMethod.allCases
+        }
+
+        let encryptionConfiguration = HomeserverEncryptionConfiguration(isE2EEByDefaultEnabled: isE2EEByDefaultEnabled,
+                                                                        isSecureBackupRequired: isSecureBackupRequired,
+                                                                        secureBackupSetupMethods: secureBackupSetupMethods)
         
         // Jitsi configuration
-        let jitsiServerURL: URL
-        let hardcodedJitsiServerURL: URL = BuildSettings.jitsiServerUrl
+        let jitsiPreferredDomain: String?
+        let jitsiServerURL: URL?
+        let hardcodedJitsiServerURL: URL? = BuildSettings.jitsiServerUrl
         
         if let preferredDomain = vectorWellKnownJitsiConfiguration?.preferredDomain {
             jitsiPreferredDomain = preferredDomain
             jitsiServerURL = self.jitsiServerURL(from: preferredDomain) ?? hardcodedJitsiServerURL
         } else {
-            guard let hardcodedJitsiDomain = hardcodedJitsiServerURL.host else {
-                fatalError("[HomeserverConfigurationBuilder] Fail to get Jitsi domain from hardcoded Jitsi URL")
-            }
-            jitsiPreferredDomain = hardcodedJitsiDomain
+            jitsiPreferredDomain = hardcodedJitsiServerURL?.host
             jitsiServerURL = hardcodedJitsiServerURL
         }
         
@@ -77,7 +84,7 @@ final class HomeserverConfigurationBuilder: NSObject {
                                                               serverURL: jitsiServerURL)
                 
         return HomeserverConfiguration(jitsi: jitsiConfiguration,
-                                       isE2EEByDefaultEnabled: isE2EEByDefaultEnabled,
+                                       encryption: encryptionConfiguration,
                                        tileServer: tileServerConfiguration)
     }
     

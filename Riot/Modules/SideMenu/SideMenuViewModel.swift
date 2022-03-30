@@ -53,6 +53,8 @@ final class SideMenuViewModel: SideMenuViewModelType {
             self.loadData()
         case .tap(menuItem: let menuItem, sourceView: let sourceView):
             self.coordinatorDelegate?.sideMenuViewModel(self, didTapMenuItem: menuItem, fromSourceView: sourceView)
+        case .tapHeader(sourceView: let sourceView):
+            self.coordinatorDelegate?.sideMenuViewModel(self, didTapMenuItem: .settings, fromSourceView: sourceView)
         }
     }
     
