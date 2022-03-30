@@ -20,8 +20,13 @@
 /**
  'PresenceIndicatorView' is used to display a presence indicator over an avatar.
  */
+IB_DESIGNABLE
 @interface PresenceIndicatorView : UIView
 
+/**
+ Border width of the presence indicator.
+ */
+@property (nonatomic) IBInspectable CGFloat borderWidth;
 /**
  Presence status to display.
  */

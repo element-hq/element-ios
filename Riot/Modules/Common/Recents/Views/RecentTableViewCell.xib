@@ -105,6 +105,11 @@
                             <constraint firstAttribute="width" constant="15" id="ZpE-ja-bYB"/>
                             <constraint firstAttribute="height" constant="15" id="xlV-Rh-dQN"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                <real key="value" value="1.5"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </view>
                 </subviews>
                 <constraints>

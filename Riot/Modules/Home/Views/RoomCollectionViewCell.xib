@@ -44,6 +44,11 @@
                             <constraint firstAttribute="width" constant="18" id="B0R-l8-aEh"/>
                             <constraint firstAttribute="height" constant="18" id="VaP-nI-eyF"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                <real key="value" value="1.5"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="RoomTitle" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oxX-IL-dG4">
                         <rect key="frame" x="4" y="74" width="72" height="16"/>

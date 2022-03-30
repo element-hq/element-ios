@@ -51,17 +51,16 @@
 {
     self.layer.cornerRadius = self.frame.size.width / 2.f;
     self.borderLayer = [[CALayer alloc] init];
-    self.borderLayer.borderWidth = 2.5;
     [self.layer addSublayer:self.borderLayer];
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
     // This sets up a slightly larger border layer to avoid common iOS
     // issue of having a very thin but noticeable additional border of
     // backgroundColor when using corner radius + borderWidth.
+    self.borderLayer.borderWidth = self.borderWidth + 1.f;
     self.borderLayer.cornerRadius = self.layer.cornerRadius + 1.f;
     self.borderLayer.frame = CGRectMake(-1.f,
                                    -1.f,
