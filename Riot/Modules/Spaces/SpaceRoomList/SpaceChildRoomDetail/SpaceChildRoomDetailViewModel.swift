@@ -89,7 +89,23 @@ final class SpaceChildRoomDetailViewModel: SpaceChildRoomDetailViewModelType {
     
     private func joinRoom() {
         self.update(viewState: .loading)
-        self.session.joinRoom(self.childInfo.childRoomId) { [weak self] (response) in
+        if let canonicalAlias = self.childInfo.canonicalAlias {
+            self.session.matrixRestClient.resolveRoomAlias(canonicalAlias) { [weak self] (response) in
+                guard let self = self else { return }
+                switch response {
+                case .success(let resolution):
+                    self.joinRoom(withId: resolution.roomId, via: resolution.servers)
+                case .failure:
+                    self.joinRoom(withId: self.childInfo.childRoomId, via: nil)
+                }
+            }
+        } else {
+            joinRoom(withId: self.childInfo.childRoomId, via: nil)
+        }
+    }
+    
+    private func joinRoom(withId roomId: String, via viaServers: [String]?) {
+        self.session.joinRoom(roomId, viaServers: viaServers, withSignUrl: nil) { [weak self] response in
             guard let self = self else { return }
             switch response {
             case .success:
