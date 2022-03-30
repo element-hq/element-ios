@@ -988,3 +988,97 @@
 "room_event_failed_to_send" = "שליחה נכשלה";
 "room_warning_about_encryption" = "הצפנה קצה לקצה בפיתוח ולא ניתן לסמוך על כך.\n\nאתה עדיין לא יכול לסמוך על זה בשמירה על מידע.\n\nהתקנים עדיין לא יוכלו לפענח היסטוריה מלפני השלב בו הצטרפו לחדר.\n\nהודעות מוצפנות לא יוכלו להיות נצפות ע\"י משתמשים שטרם התקינו הצפנה.";
 "room_event_copy_link_info" = "לינק הועתק ללוח הכתיבה.";
+"settings_integrations_allow_button" = "נהל שילובים";
+"settings_calls_stun_server_fallback_description" = "אפשר שרת סיוע לשיחות חלופיות %@ כאשר שרת הבית שלך לא מציע כזו (כתובת ה IP שלך תשותף במהלך השיחה).";
+"settings_calls_stun_server_fallback_button" = "אפשר שרת סיוע לשיחות חלופיות";
+"settings_callkit_info" = "קבל שיחות נכנסות במסך הנעילה שלך. ראה את %@ השיחות שלך בהיסטורית השיחות של המערכת. אם iCloud מאופשר, היסטורית שיחות אלה תשותף עם Apple.";
+"settings_enable_callkit" = "שיחות משולבות";
+"settings_mentions_and_keywords_encryption_notice" = "לא תקבל הודעות עבור תזכורות ומפתחות מלים בחדרים מוצפנים בסלולרי.";
+"settings_new_keyword" = "הוסף מלת מפתח חדשה";
+"settings_your_keywords" = "מפתח המלים שלך";
+"key_backup_recover_done_action" = "בוצע";
+
+// Success
+
+"key_backup_recover_success_info" = "גיבוי שוחזר!";
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "אבדת את מפתח האבטחה שלך אתה יכול להגדיר חדש בתפריט הגדרות.";
+"key_backup_recover_from_recovery_key_recover_action" = "פתח הסטוריה מנעילה";
+"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "הכנס מפתח אבטחה";
+"key_backup_recover_from_recovery_key_recovery_key_title" = "הכנס";
+
+// Recover from recovery key
+
+"key_backup_recover_from_recovery_key_info" = "השתמש במפתח האבטחה שלך על מנת לפתוח את הסטורית ההודעות שלך";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "השתמש במפתח האבטחה שלך";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "לא יודע את את ביטוי האבטחה שלך? אתה יכול ";
+"key_backup_recover_from_passphrase_recover_action" = "בטל נעילת היסטוריה";
+"key_backup_recover_from_passphrase_passphrase_placeholder" = "הכנס ביטוי";
+"key_backup_recover_from_passphrase_passphrase_title" = "הכנס";
+
+// Recover from passphrase
+
+"key_backup_recover_from_passphrase_info" = "השתמש בביטוי האבטחה שלך על מנת לפתוח הסטורית הודעות מאובטחת";
+
+// Recover from private key
+"key_backup_recover_from_private_key_info" = "משחזר גיבוי…";
+"key_backup_recover_invalid_recovery_key" = "הגיבוי לא יכול להיות מפוענח באמצעות מפתח זה: אנא וודא שהכנסת את מפתח האבטחה הנכון.";
+"key_backup_recover_invalid_recovery_key_title" = "מפתח אבטחה לא תואם";
+"key_backup_recover_invalid_passphrase" = "הגיבוי לא יכול להיות מפוענח עם ביטוי זה: אנא וודא שהכנסת את ביטוי האבטחה הנכון.";
+"key_backup_recover_invalid_passphrase_title" = "ביטוי אבטחה לא תקין";
+
+// MARK: Key backup recover
+
+"key_backup_recover_title" = "הודעות מאובטחות";
+
+// Success from secure backup
+"key_backup_setup_success_from_secure_backup_info" = "המפתחות שלך מגובים.";
+"key_backup_setup_success_from_recovery_key_made_copy_action" = "ביצעתי עותק";
+"key_backup_setup_success_from_recovery_key_make_copy_action" = "בצע עותק";
+"key_backup_setup_success_from_recovery_key_recovery_key_title" = "מפתח אבטחה";
+
+// Success from recovery key
+"key_backup_setup_success_from_recovery_key_info" = "המפתחות שלך גובו.\n\nהעתק את מפתח ההצפנה ושמור אותו בטוח.";
+"key_backup_setup_success_from_passphrase_done_action" = "בוצע";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "שמור מפתח אבטחה";
+
+// Success from passphrase
+"key_backup_setup_success_from_passphrase_info" = "המפתחות שלך גובו.\n\nמפתח האבטחה שלך הוא רשת ביטחון - אתה יכול לעשות בו שימוש לשחזור הגישה להודעות המוצפנות שלך אם שכחת את ביטוי הסיסמה שלך.\n\nשמור את מפתח האבטחה שלך במקום מאובטח ביותר, כגון מנהל סיסמאות (או כספת).";
+
+// Success
+
+"key_backup_setup_success_title" = "הצלחה!";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "(מתקדם) הגדרה עם מפתח אבטחה";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "או, אבטח את הגיבוי שלך עם מפתח אבטחה, שמור אותו במקום בטוח.";
+"key_backup_setup_passphrase_set_passphrase_action" = "בחר ביטוי";
+"key_backup_setup_passphrase_confirm_passphrase_invalid" = "ביטוי לא תואם";
+"key_backup_setup_passphrase_confirm_passphrase_valid" = "מעולה!";
+"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "אשר ביטוי";
+"key_backup_setup_passphrase_confirm_passphrase_title" = "אשר";
+"key_backup_setup_passphrase_passphrase_invalid" = "נסה להוסיף מלה";
+"key_backup_setup_passphrase_passphrase_valid" = "מעולה!";
+"key_backup_setup_passphrase_passphrase_placeholder" = "הכנס ביטוי";
+"key_backup_setup_passphrase_passphrase_title" = "הכנס";
+"key_backup_setup_passphrase_info" = "אנחנו נשמור גיבוי מוצפן של המפתחות שלך בשרת שלנו. הגן על הגיבוי שלך באמצעות ביטוי על מנת להשאיר אותו בטוח.\n\nלאבטחה מקסימלית, זה אמור להיות שונה מסיסמת החשבון שלך.";
+
+// Passphrase
+
+"key_backup_setup_passphrase_title" = "אבטח את הגיבוי שלך באמצעות ביטוי מאובטח";
+"key_backup_setup_intro_manual_export_action" = "הוצא מפתחות בצורה ידנית";
+"key_backup_setup_intro_manual_export_info" = "(מתקדם)";
+"key_backup_setup_intro_setup_connect_action_with_existing_backup" = "חבר התקן זה לגיבוי מפתח";
+"key_backup_setup_intro_setup_action_without_existing_backup" = "התחל להשתמש בגיבוי מפתח";
+"key_backup_setup_intro_info" = "הודעות בחדרים מוצפנים הן מאובטחות קצה לקצה. רק לך ולמקבל(ים) יש את המפתחות לקרוא הודעות אלה.\n\nגבה בצורה מאובטחת את המפתחות שלך על מנת להימנע מלאבד אותם.";
+
+// Intro
+
+"key_backup_setup_intro_title" = "אף פעם אל תאבד הודעות מוצפנות";
+"key_backup_setup_skip_alert_skip_action" = "דלג";
+"key_backup_setup_skip_alert_message" = "אתה עלול לאבד הודעות מאובטחות אם תתנתק או תאבד את המכשיר שלך.";
+"key_backup_setup_skip_alert_title" = "האם אתה בטוח?";
+
+
+// MARK: Key backup setup
+
+"key_backup_setup_title" = "גיבוי מפתח";
+"secure_backup_setup_banner_subtitle" = "אמצעי אבטחה למניעת איבוד גישה להודעות מוצפנות ומידע";
