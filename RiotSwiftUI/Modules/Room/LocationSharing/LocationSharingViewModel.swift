@@ -91,6 +91,15 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
             }
             
             completion?(.share(latitude: location.latitude, longitude: location.longitude))
+        case .sharePinLocation:
+            guard let pinLocation = state.bindings.pinLocation else {
+                processError(.failedLocatingUser)
+                return
+            }
+            
+            completion?(.share(latitude: pinLocation.latitude, longitude: pinLocation.longitude))
+        case .goToUserLocation:
+            state.bindings.pinLocation = nil
         }
     }
     

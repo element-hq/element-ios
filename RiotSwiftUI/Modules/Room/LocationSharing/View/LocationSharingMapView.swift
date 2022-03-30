@@ -47,6 +47,9 @@ struct LocationSharingMapView: UIViewRepresentable {
     /// Last user location if `showsUserLocation` has been enabled
     @Binding var userLocation: CLLocationCoordinate2D?
     
+    /// Coordinate of the center of the map
+    @Binding var mapCenterCoordinate: CLLocationCoordinate2D?
+    
     /// Publish view errors if any
     let errorSubject: PassthroughSubject<LocationSharingViewError, Never>
 
@@ -68,7 +71,7 @@ struct LocationSharingMapView: UIViewRepresentable {
             mapView.setCenter(highlightedAnnotation.coordinate, zoomLevel: Constants.mapZoomLevel, animated: false)
         }
         
-        if self.showsUserLocation {
+        if self.showsUserLocation && mapCenterCoordinate == nil {
             mapView.showsUserLocation = true
             mapView.userTrackingMode = .follow
         } else {
@@ -144,6 +147,16 @@ extension LocationSharingMapView {
             default:
                 break
             }
+        }
+        
+        func mapView(_ mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
+            let mapCenterCoordinate = mapView.centerCoordinate
+            // Prevent this function to set pinLocation when the map is openning
+            guard let userLocation = locationSharingMapView.userLocation,
+                  !userLocation.isEqual(to: mapCenterCoordinate, precision: 0.0000000001) else {
+                return
+            }
+            locationSharingMapView.mapCenterCoordinate = mapCenterCoordinate
         }
     }
 }

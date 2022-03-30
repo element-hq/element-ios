@@ -22,6 +22,8 @@ import CoreLocation
 enum LocationSharingViewAction {
     case cancel
     case share
+    case sharePinLocation
+    case goToUserLocation
 }
 
 enum LocationSharingViewModelResult {
@@ -55,7 +57,9 @@ struct LocationSharingViewState: BindableState {
     var highlightedAnnotation: UserLocationAnnotation?
 
     /// Indicates whether the user has moved around the map to drop a pin somewhere other than their current location
-    var isPinDropSharing: Bool = false
+    var isPinDropSharing: Bool {
+        return bindings.pinLocation != nil
+    }
     
     var showLoadingIndicator: Bool = false
     
@@ -85,6 +89,7 @@ struct LocationSharingViewState: BindableState {
 struct LocationSharingViewStateBindings {
     var alertInfo: AlertInfo<LocationSharingAlertType>?
     var userLocation: CLLocationCoordinate2D?
+    var pinLocation: CLLocationCoordinate2D?
 }
 
 enum LocationSharingAlertType {
