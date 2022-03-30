@@ -15,6 +15,7 @@
  */
 
 #import "MatrixKit.h"
+#import "PresenceIndicatorView.h"
 
 @class BadgeLabel;
 
@@ -38,6 +39,7 @@
 
 @property (weak, nonatomic) IBOutlet MXKImageView *roomAvatar;
 @property (weak, nonatomic) IBOutlet UIImageView *encryptedRoomIcon;
+@property (weak, nonatomic) IBOutlet PresenceIndicatorView *presenceIndicatorView;
 
 @property (weak, nonatomic) IBOutlet BadgeLabel *badgeLabel;
 

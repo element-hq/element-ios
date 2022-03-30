@@ -15,6 +15,7 @@
  */
 
 #import "MatrixKit.h"
+#import "PresenceIndicatorView.h"
 
 /**
  `RecentTableViewCell` instances display a room in the context of the recents list.
@@ -24,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UIView *missedNotifAndUnreadIndicator;
 @property (weak, nonatomic) IBOutlet MXKImageView *roomAvatar;
 @property (weak, nonatomic) IBOutlet UIImageView *encryptedRoomIcon;
+@property (weak, nonatomic) IBOutlet PresenceIndicatorView *presenceIndicatorView;
 
 @property (weak, nonatomic) IBOutlet UILabel *missedNotifAndUnreadBadgeLabel;
 @property (weak, nonatomic) IBOutlet UIView  *missedNotifAndUnreadBadgeBgView;
