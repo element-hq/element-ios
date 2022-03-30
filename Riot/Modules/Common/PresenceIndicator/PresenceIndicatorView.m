@@ -27,6 +27,16 @@
 
 @implementation PresenceIndicatorView
 
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self)
+    {
+        [self setup];
+    }
+    return self;
+}
+
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
     self = [super initWithCoder:coder];
@@ -49,11 +59,14 @@
 {
     [super layoutSubviews];
     
-    self.borderLayer.cornerRadius = self.layer.cornerRadius + 1;
-    self.borderLayer.frame = CGRectMake(-1,
-                                   -1,
-                                   self.frame.size.width + 2,
-                                   self.frame.size.height +2);
+    // This sets up a slightly larger border layer to avoid common iOS
+    // issue of having a very thin but noticeable additional border of
+    // backgroundColor when using corner radius + borderWidth.
+    self.borderLayer.cornerRadius = self.layer.cornerRadius + 1.f;
+    self.borderLayer.frame = CGRectMake(-1.f,
+                                   -1.f,
+                                   self.frame.size.width + 2.f,
+                                   self.frame.size.height + 2.f);
 }
 
 - (void)setPresence:(MXPresence)presence

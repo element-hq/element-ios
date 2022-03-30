@@ -17,8 +17,14 @@
 #import <UIKit/UIKit.h>
 #import <MatrixSDK/MatrixSDK.h>
 
+/**
+ 'PresenceIndicatorView' is used to display a presence indicator over an avatar.
+ */
 @interface PresenceIndicatorView : UIView
 
+/**
+ Presence status to display.
+ */
 @property (nonatomic) MXPresence presence;
 
 @end
