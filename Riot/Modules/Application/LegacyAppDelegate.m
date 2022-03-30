@@ -2417,6 +2417,18 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     if (mainSession)
     {
+        
+        switch (mainSession.state)
+        {
+            case MXSessionStateClosed:
+            case MXSessionStateInitialised:
+            case MXSessionStateBackgroundSyncInProgress:
+                self.roomListDataReady = NO;
+                [self listenForRoomListDataReady];
+            default:
+                break;
+        }
+        
         BOOL isLaunching = NO;
         
         if (_masterTabBarController.isOnboardingInProgress)
@@ -2434,8 +2446,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 case MXSessionStateClosed:
                 case MXSessionStateInitialised:
                 case MXSessionStateBackgroundSyncInProgress:
-                    self.roomListDataReady = NO;
-                    [self listenForRoomListDataReady];
                     isLaunching = YES;
                     break;
                 case MXSessionStateStoreDataReady:
