@@ -54,7 +54,7 @@ struct OnboardingCelebrationScreen: View {
                 buttons
                     .frame(maxWidth: OnboardingMetrics.maxContentWidth)
                     .padding(.horizontal, horizontalPadding)
-                    .padding(.bottom, 24)
+                    .padding(.bottom, OnboardingMetrics.actionButtonBottomPadding)
                     .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
                 
                 Spacer()

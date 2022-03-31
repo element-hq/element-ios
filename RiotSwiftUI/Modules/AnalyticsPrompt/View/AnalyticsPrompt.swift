@@ -127,6 +127,7 @@ struct AnalyticsPrompt: View {
                 buttons
                     .frame(maxWidth: OnboardingMetrics.maxContentWidth)
                     .padding(.horizontal, horizontalPadding)
+                    .padding(.bottom, OnboardingMetrics.actionButtonBottomPadding)
                     .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
                 
                 Spacer()

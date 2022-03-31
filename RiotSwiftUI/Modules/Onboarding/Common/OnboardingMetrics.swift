@@ -26,6 +26,8 @@ struct OnboardingMetrics {
     static let breakerScreenTopPadding: CGFloat = 80
     /// The padding used between the top of the main content and the navigation bar.
     static let topPaddingToNavigationBar: CGFloat = 16
+    /// The padding used between the footer and the bottom of the view.
+    static let actionButtonBottomPadding: CGFloat = 24
     /// The width/height used for the main icon shown in most of the screens.
     static let iconSize: CGFloat = 90
     
