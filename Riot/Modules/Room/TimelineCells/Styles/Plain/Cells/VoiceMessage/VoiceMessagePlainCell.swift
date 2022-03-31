@@ -16,7 +16,7 @@
 
 import Foundation
 
-class VoiceMessagePlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable {
+class VoiceMessagePlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable, RoomCellThreadSummaryDisplayable {
     
     private(set) var playbackController: VoiceMessagePlaybackController!
     
