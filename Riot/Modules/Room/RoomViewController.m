@@ -7154,7 +7154,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     self.cameraPresenter = nil;
 }
 
-- (void)cameraPresenter:(CameraPresenter *)cameraPresenter didSelectImageData:(NSData *)imageData withUTI:(MXKUTI *)uti
+- (void)cameraPresenter:(CameraPresenter *)cameraPresenter didSelectImage:(UIImage *)image
 {
     [cameraPresenter dismissWithAnimated:YES completion:nil];
     self.cameraPresenter = nil;
@@ -7162,8 +7162,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
     if (roomInputToolbarView)
     {
+        NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
         [roomInputToolbarView sendSelectedImage:imageData
-                                   withMimeType:uti.mimeType
+                                   withMimeType:MXKUTI.jpeg.mimeType
                              andCompressionMode:MediaCompressionHelper.defaultCompressionMode
                             isPhotoLibraryAsset:NO];
     }
