@@ -26,4 +26,24 @@ extension MXEvent {
         }
         return MXMessageType(identifier: messageTypeString)
     }
+
+    /// Lightweight version of the receiver, in which reply-specific keys are stripped. Returns the same event with the receiver if not a reply event.
+    /// Should be used only to update formatting behavior.
+    var replyStrippedVersion: MXEvent {
+        if self.isReply(), let newMessage = self.copy() as? MXEvent {
+            var jsonDict = newMessage.isEncrypted ? newMessage.clear?.jsonDictionary() : newMessage.jsonDictionary()
+            if var content = jsonDict?["content"] as? [String: Any] {
+                content.removeValue(forKey: "format")
+                content.removeValue(forKey: "formatted_body")
+                content.removeValue(forKey: kMXEventRelationRelatesToKey)
+                if let replyText = MXReplyEventParser().parse(newMessage)?.bodyParts.replyText {
+                    content["body"] = replyText
+                }
+                jsonDict?["content"] = content
+            }
+            return MXEvent(fromJSON: jsonDict)
+        } else {
+            return self
+        }
+    }
 }
