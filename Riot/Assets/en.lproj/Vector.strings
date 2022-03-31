@@ -476,6 +476,9 @@ Tap the + to start adding people.";
 "threads_empty_tip" = "Tip: Tap a message and use “Thread” to start one.";
 "threads_empty_show_all_threads" = "Show all threads";
 "message_from_a_thread" = "From a thread";
+"threads_notice_title" = "Threads no longer experimental 🎉";
+"threads_notice_information" = "All threads created during the experimental period will now be <b>rendered as regular replies</b>.<br/><br/>This will be a one-off transition, as threads are now part of the Matrix specification.";
+"threads_notice_done" = "Got it";
 
 "media_type_accessibility_image" = "Image";
 "media_type_accessibility_audio" = "Audio";

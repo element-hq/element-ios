@@ -294,6 +294,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.ThreadListViewController>(storyboard: ThreadListViewController.self)
   }
+  internal enum ThreadsNoticeViewController: StoryboardType {
+    internal static let storyboardName = "ThreadsNoticeViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.ThreadsNoticeViewController>(storyboard: ThreadsNoticeViewController.self)
+  }
   internal enum UserVerificationSessionStatusViewController: StoryboardType {
     internal static let storyboardName = "UserVerificationSessionStatusViewController"
 
