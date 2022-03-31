@@ -16,6 +16,7 @@
 
 import Foundation
 import Mapbox
+import MatrixSDK
 
 class UserLocationAnnotation: NSObject, MGLAnnotation {
     
@@ -25,13 +26,17 @@ class UserLocationAnnotation: NSObject, MGLAnnotation {
     
     let coordinate: CLLocationCoordinate2D
     
+    let coordinateType: MXEventAssetType
+    
     // MARK: - Setup
     
     init(avatarData: AvatarInputProtocol,
-         coordinate: CLLocationCoordinate2D) {
+         coordinate: CLLocationCoordinate2D,
+         coordinateType: MXEventAssetType) {
         
         self.coordinate = coordinate
         self.avatarData = avatarData
+        self.coordinateType = coordinateType
         
         super.init()
     }

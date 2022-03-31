@@ -21,6 +21,7 @@
 #import "MXKDataSource.h"
 #import "MXKRoomBubbleCellDataStoring.h"
 #import "MXKEventFormatter.h"
+#import "MXEventContentLocation.h"
 
 @class MXKQueuedEvent;
 
@@ -614,6 +615,7 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
  @param latitude the location's latitude
  @param longitude the location's longitude
  @param description an optional description
+ @param assetType the location's type
  @param success A block object called when the operation succeeds. It returns
                 the event id of the event generated on the homeserver
  @param failure A block object called when the operation fails.
@@ -621,6 +623,7 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
 - (void)sendLocationWithLatitude:(double)latitude
                        longitude:(double)longitude
                      description:(NSString *)description
+                  coordinateType:(MXEventAssetType)coordinateType
                          success:(void (^)(NSString *))success
                          failure:(void (^)(NSError *))failure;
 

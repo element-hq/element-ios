@@ -18,6 +18,7 @@ import Foundation
 import SwiftUI
 import Combine
 import CoreLocation
+import MatrixSDK
 
 enum LocationSharingViewAction {
     case cancel
@@ -28,7 +29,7 @@ enum LocationSharingViewAction {
 
 enum LocationSharingViewModelResult {
     case cancel
-    case share(latitude: Double, longitude: Double)
+    case share(latitude: Double, longitude: Double, coordinateType: MXEventAssetType)
 }
 
 enum LocationSharingViewError {
@@ -47,8 +48,8 @@ struct LocationSharingViewState: BindableState {
     /// Current user avatarData
     let userAvatarData: AvatarInputProtocol
     
-    /// User map annotation to display existing location
-    let userAnnotation: UserLocationAnnotation?
+    /// Shared annotation to display existing location
+    let sharedAnnotation: UserLocationAnnotation?
     
     /// Map annotations to display on map
     var annotations: [UserLocationAnnotation]
@@ -74,7 +75,7 @@ struct LocationSharingViewState: BindableState {
     }
     
     var displayExistingLocation: Bool {
-        return userAnnotation != nil
+        return sharedAnnotation != nil
     }
     
     var shareButtonEnabled: Bool {

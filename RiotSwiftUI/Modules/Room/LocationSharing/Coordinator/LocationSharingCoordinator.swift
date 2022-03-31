@@ -17,12 +17,14 @@
 import Foundation
 import UIKit
 import SwiftUI
+import MatrixSDK
 
 struct LocationSharingCoordinatorParameters {
     let roomDataSource: MXKRoomDataSource
     let mediaManager: MXMediaManager
     let avatarData: AvatarInputProtocol
     let location: CLLocationCoordinate2D?
+    let coordinateType: MXEventAssetType
 }
 
 final class LocationSharingCoordinator: Coordinator, Presentable {
@@ -50,6 +52,7 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
         let viewModel = LocationSharingViewModel(mapStyleURL: BuildSettings.tileServerMapStyleURL,
                                                  avatarData: parameters.avatarData,
                                                  location: parameters.location,
+                                                 coordinateType: parameters.coordinateType,
                                                  isLiveLocationSharingEnabled: BuildSettings.liveLocationSharingEnabled)
         let view = LocationSharingView(context: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
@@ -71,7 +74,7 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
             switch result {
             case .cancel:
                 self.completion?()
-            case .share(let latitude, let longitude):
+            case .share(let latitude, let longitude, let coordinateType):
                 
                 // Show share sheet on existing location display
                 if let location = self.parameters.location {
@@ -81,7 +84,7 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
                 
                 self.locationSharingViewModel.startLoading()
                 
-                self.parameters.roomDataSource.sendLocation(withLatitude: latitude, longitude: longitude, description: nil) { [weak self] _ in
+                self.parameters.roomDataSource.sendLocation(withLatitude: latitude, longitude: longitude, description: nil, coordinateType: coordinateType) { [weak self] _ in
                     guard let self = self else { return }
                     
                     self.locationSharingViewModel.stopLoading()
