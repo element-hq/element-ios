@@ -1,3 +1,10 @@
+## Changes in 1.8.10 (2022-03-31)
+
+🐛 Bugfixes
+
+- Message Composer: Fix a crash when sending a photo using the camera. ([#5951](https://github.com/vector-im/element-ios/issues/5951))
+
+
 ## Changes in 1.8.9 (2022-03-28)
 
 🙌 Improvements
