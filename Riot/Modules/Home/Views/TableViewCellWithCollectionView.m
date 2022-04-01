@@ -56,6 +56,7 @@ static CGFloat const kEditionViewCornerRadius = 10.0;
     self.editionViewBottomConstraint.constant = 0;
     self.editionView.hidden = YES;
     
+    [self.collectionView setContentOffset:CGPointZero];
     self.collectionView.scrollEnabled = YES;
 }
 

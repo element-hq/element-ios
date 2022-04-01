@@ -69,3 +69,4 @@
 #import "MXRoom+Sync.h"
 #import "UIAlertController+MatrixKit.h"
 #import "MXKMessageTextView.h"
+#import "TableViewCellWithCollectionView.h"

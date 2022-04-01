@@ -102,16 +102,16 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (void)resetSectionIndexes
 {
-    crossSigningBannerSection = -1;
-    secureBackupBannerSection = -1;
-    directorySection = -1;
-    invitesSection = -1;
-    favoritesSection = -1;
-    peopleSection = -1;
-    conversationSection = -1;
-    lowPrioritySection = -1;
-    serverNoticeSection = -1;
-    suggestedRoomsSection = -1;
+    crossSigningBannerSection = DATA_SOURCE_INVALID_SECTION;
+    secureBackupBannerSection = DATA_SOURCE_INVALID_SECTION;
+    directorySection = DATA_SOURCE_INVALID_SECTION;
+    invitesSection = DATA_SOURCE_INVALID_SECTION;
+    favoritesSection = DATA_SOURCE_INVALID_SECTION;
+    peopleSection = DATA_SOURCE_INVALID_SECTION;
+    conversationSection = DATA_SOURCE_INVALID_SECTION;
+    lowPrioritySection = DATA_SOURCE_INVALID_SECTION;
+    serverNoticeSection = DATA_SOURCE_INVALID_SECTION;
+    suggestedRoomsSection = DATA_SOURCE_INVALID_SECTION;
 }
 
 #pragma mark - Properties
@@ -402,7 +402,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 {
     if (dataSource == _publicRoomsDirectoryDataSource)
     {
-        if (-1 != directorySection && !self.droppingCellIndexPath)
+        if (DATA_SOURCE_INVALID_SECTION != directorySection && !self.droppingCellIndexPath)
         {
             // TODO: We should only update the directory section
             [self.delegate dataSource:self didCellChange:nil];
@@ -1486,7 +1486,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                              forSection:(RecentsListServiceSection)section
                      totalCountsChanged:(BOOL)totalCountsChanged
 {
-    NSInteger sectionIndex = -1;
+    NSInteger sectionIndex = DATA_SOURCE_INVALID_SECTION;
     switch (section)
     {
         case RecentsListServiceSectionInvited:

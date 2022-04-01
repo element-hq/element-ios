@@ -88,6 +88,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 @property (nonatomic, strong) SpaceChildRoomDetailBridgePresenter *spaceChildPresenter;
 
+@property (nonatomic, strong) RecentsContentOffsetStore *contentOffsetStore;
+
 @end
 
 @implementation RecentsViewController
@@ -137,6 +139,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     tableSearchBar.delegate = self;
     
     displayedSectionHeaders = [NSMutableArray array];
+    
+    _contentOffsetStore = [[RecentsContentOffsetStore alloc] init];
     
     // Set itself as delegate by default.
     self.delegate = self;
@@ -213,7 +217,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     [ThemeService.shared.theme applyStyleOnSearchBar:self.recentsSearchBar];
 
     // Force table refresh
-    [self.recentsTableView reloadData];
+    [self refreshRecentsTable];
     
     [self.emptyView updateWithTheme:ThemeService.shared.theme];
 
@@ -394,7 +398,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     // Force reset existing sticky headers if any
     [self resetStickyHeaders];
     
-    [self.recentsTableView reloadData];
+    [self reloadTableViewWithContentOffsets];
     
     // Check conditions to display the fake search bar into the table header
     if (_enableSearchBar && self.recentsSearchBar.isHidden && self.recentsTableView.tableHeaderView == nil)
@@ -417,6 +421,19 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     if (!self.splitViewController.isCollapsed)
     {
         [self refreshCurrentSelectedCell:NO];
+    }
+}
+
+- (void)reloadTableViewWithContentOffsets
+{
+    // We must store the current content offsets if each cell is a collection view
+    // and restore after the reload is done.
+    if (self.recentsDataSource) {
+        [self.contentOffsetStore storeContentOffsetsFor:self.recentsTableView dataSource:self.recentsDataSource];
+        [self.recentsTableView reloadData];
+        [self.contentOffsetStore restoreContentOffsetsFor:self.recentsTableView dataSource:self.recentsDataSource];
+    } else {
+        [self.recentsTableView reloadData];
     }
 }
 

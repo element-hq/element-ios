@@ -23,6 +23,8 @@
 @class DiscussionsCount;
 @class MXSpace;
 
+#define DATA_SOURCE_INVALID_SECTION -1
+
 /**
  List the different modes used to prepare the recents data source.
  Each mode corresponds to an application tab: Home, Favourites, People and Rooms.
