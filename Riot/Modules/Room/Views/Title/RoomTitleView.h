@@ -48,6 +48,10 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pictureViewWidthConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *dotViewCenterXConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *dotViewCenterYConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *badgeImageViewToPictureViewTrailingConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *badgeImageViewToPictureViewBottomConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *badgeImageViewLeadingToPictureViewConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *badgeImageViewCenterYToDisplayNameConstraint;
 
 /**
  The room preview data may be used when mxRoom instance is not available

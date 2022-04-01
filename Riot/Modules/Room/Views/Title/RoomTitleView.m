@@ -121,9 +121,24 @@
         }
         
         MXUser *contact = [self.mxRoom.mxSession userWithUserId:self.mxRoom.directUserId];
-        self.presenceIndicatorView.hidden = contact.presence == MXPresenceUnknown;
+        BOOL presenceHidden = contact.presence == MXPresenceUnknown;
+        self.presenceIndicatorView.hidden = presenceHidden;
         self.presenceIndicatorView.borderColor = ThemeService.shared.theme.headerBackgroundColor;
         self.presenceIndicatorView.presence = contact.presence;
+        if (presenceHidden)
+        {
+            [self.badgeImageViewLeadingToPictureViewConstraint setPriority:UILayoutPriorityDefaultLow];
+            [self.badgeImageViewCenterYToDisplayNameConstraint setPriority:UILayoutPriorityDefaultLow];
+            [self.badgeImageViewToPictureViewBottomConstraint setPriority:UILayoutPriorityRequired];
+            [self.badgeImageViewToPictureViewTrailingConstraint setPriority:UILayoutPriorityRequired];
+        }
+        else
+        {
+            [self.badgeImageViewToPictureViewBottomConstraint setPriority:UILayoutPriorityDefaultLow];
+            [self.badgeImageViewToPictureViewTrailingConstraint setPriority:UILayoutPriorityDefaultLow];
+            [self.badgeImageViewLeadingToPictureViewConstraint setPriority:UILayoutPriorityRequired];
+            [self.badgeImageViewCenterYToDisplayNameConstraint setPriority:UILayoutPriorityRequired];
+        }
     }
 }
 
