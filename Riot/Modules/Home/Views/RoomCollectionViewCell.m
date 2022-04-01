@@ -63,6 +63,7 @@
     self.roomTitle.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.roomTitle1.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.roomTitle2.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.presenceIndicatorView.borderColor = ThemeService.shared.theme.backgroundColor;
     
     self.editionArrowView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     

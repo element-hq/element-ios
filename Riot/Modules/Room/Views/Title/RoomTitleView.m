@@ -122,6 +122,7 @@
         
         MXUser *contact = [self.mxRoom.mxSession userWithUserId:self.mxRoom.directUserId];
         self.presenceIndicatorView.hidden = contact.presence == MXPresenceUnknown;
+        self.presenceIndicatorView.borderColor = ThemeService.shared.theme.headerBackgroundColor;
         self.presenceIndicatorView.presence = contact.presence;
     }
 }

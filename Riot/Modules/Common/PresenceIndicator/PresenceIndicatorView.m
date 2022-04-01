@@ -49,6 +49,7 @@
 
 - (void)setup
 {
+    self.borderColor = ThemeService.shared.theme.backgroundColor;
     self.layer.cornerRadius = self.frame.size.width / 2.f;
     self.borderLayer = [[CALayer alloc] init];
     [self.layer addSublayer:self.borderLayer];
@@ -73,12 +74,12 @@
     switch (presence) {
         case MXPresenceOnline:
             self.backgroundColor = ThemeService.shared.theme.tintColor;
-            self.borderLayer.borderColor = ThemeService.shared.theme.backgroundColor.CGColor;
+            self.borderLayer.borderColor = self.borderColor.CGColor;
             break;
         case MXPresenceOffline:
         case MXPresenceUnavailable:
             self.backgroundColor = ThemeService.shared.theme.tabBarUnselectedItemTintColor;
-            self.borderLayer.borderColor = ThemeService.shared.theme.backgroundColor.CGColor;
+            self.borderLayer.borderColor = self.borderColor.CGColor;
             break;
         default:
             self.backgroundColor = UIColor.clearColor;

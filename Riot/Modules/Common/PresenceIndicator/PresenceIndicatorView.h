@@ -28,6 +28,10 @@ IB_DESIGNABLE
  */
 @property (nonatomic) IBInspectable CGFloat borderWidth;
 /**
+ Border color of the presence indicator. Defaults to current theme background color.
+ */
+@property (nonatomic) UIColor* borderColor;
+/**
  Presence status to display.
  */
 @property (nonatomic) MXPresence presence;
