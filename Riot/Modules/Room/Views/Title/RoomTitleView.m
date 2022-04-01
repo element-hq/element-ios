@@ -119,6 +119,10 @@
         {
             self.displayNameTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
         }
+        
+        MXUser *contact = [self.mxRoom.mxSession userWithUserId:self.mxRoom.directUserId];
+        self.presenceIndicatorView.hidden = contact.presence == MXPresenceUnknown;
+        self.presenceIndicatorView.presence = contact.presence;
     }
 }
 

@@ -17,6 +17,7 @@
 #import "MatrixKit.h"
 
 #import "RoomPreviewData.h"
+#import "PresenceIndicatorView.h"
 
 // We add here a protocol to handle tap gesture in title view.
 @class RoomTitleView;
@@ -37,6 +38,7 @@
 @property (weak, nonatomic) IBOutlet UIView *titleMask;
 @property (weak, nonatomic) IBOutlet UIImageView *badgeImageView;
 @property (weak, nonatomic) IBOutlet MXKImageView *pictureView;
+@property (weak, nonatomic) IBOutlet PresenceIndicatorView *presenceIndicatorView;
 @property (weak, nonatomic) IBOutlet UILabel *missedDiscussionsBadgeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *typingLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *displayNameCenterYConstraint;
