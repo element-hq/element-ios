@@ -17,7 +17,6 @@
 import SwiftUI
 import Combine
 import CoreLocation
-import MatrixSDK
 
 @available(iOS 14, *)
 typealias LocationSharingViewModelType = StateStoreViewModel<LocationSharingViewState,
@@ -36,7 +35,7 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
     
     // MARK: - Setup
     
-    init(mapStyleURL: URL, avatarData: AvatarInputProtocol, location: CLLocationCoordinate2D? = nil, coordinateType: MXEventAssetType, isLiveLocationSharingEnabled: Bool = false) {
+    init(mapStyleURL: URL, avatarData: AvatarInputProtocol, location: CLLocationCoordinate2D? = nil, coordinateType: LocationSharingCoordinateType, isLiveLocationSharingEnabled: Bool = false) {
         
         var sharedAnnotation: UserLocationAnnotation?
         var annotations: [UserLocationAnnotation] = []

@@ -18,7 +18,13 @@ import Foundation
 import SwiftUI
 import Combine
 import CoreLocation
-import MatrixSDK
+
+// This is the equivalent of MXEventAssetType in the MatrixSDK
+enum LocationSharingCoordinateType {
+    case user
+    case pin
+    case generic
+}
 
 enum LocationSharingViewAction {
     case cancel
@@ -29,7 +35,7 @@ enum LocationSharingViewAction {
 
 enum LocationSharingViewModelResult {
     case cancel
-    case share(latitude: Double, longitude: Double, coordinateType: MXEventAssetType)
+    case share(latitude: Double, longitude: Double, coordinateType: LocationSharingCoordinateType)
 }
 
 enum LocationSharingViewError {

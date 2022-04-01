@@ -27,6 +27,40 @@ struct LocationSharingCoordinatorParameters {
     let coordinateType: MXEventAssetType
 }
 
+// Map between type from MatrixSDK and type from SwiftUI target, as we don't want
+// to add the SDK as a dependency to it. We need to translate from one to the other on this level.
+extension MXEventAssetType {
+    func locationSharingCoordinateType() -> LocationSharingCoordinateType {
+        let coordinateType: LocationSharingCoordinateType
+        switch self {
+        case .user:
+            coordinateType = .user
+        case .pin:
+            coordinateType = .pin
+        case .generic:
+            coordinateType = .generic
+        @unknown default:
+            coordinateType = .generic
+        }
+        return coordinateType
+    }
+}
+
+extension LocationSharingCoordinateType {
+    func eventAssetType() -> MXEventAssetType {
+        let eventAssetType: MXEventAssetType
+        switch self {
+        case .user:
+            eventAssetType = .user
+        case .pin:
+            eventAssetType = .pin
+        case .generic:
+            eventAssetType = .generic
+        }
+        return eventAssetType
+    }
+}
+
 final class LocationSharingCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties
@@ -52,7 +86,7 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
         let viewModel = LocationSharingViewModel(mapStyleURL: BuildSettings.tileServerMapStyleURL,
                                                  avatarData: parameters.avatarData,
                                                  location: parameters.location,
-                                                 coordinateType: parameters.coordinateType,
+                                                 coordinateType: parameters.coordinateType.locationSharingCoordinateType(),
                                                  isLiveLocationSharingEnabled: BuildSettings.liveLocationSharingEnabled)
         let view = LocationSharingView(context: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
@@ -84,7 +118,7 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
                 
                 self.locationSharingViewModel.startLoading()
                 
-                self.parameters.roomDataSource.sendLocation(withLatitude: latitude, longitude: longitude, description: nil, coordinateType: coordinateType) { [weak self] _ in
+                self.parameters.roomDataSource.sendLocation(withLatitude: latitude, longitude: longitude, description: nil, coordinateType: coordinateType.eventAssetType()) { [weak self] _ in
                     guard let self = self else { return }
                     
                     self.locationSharingViewModel.stopLoading()
