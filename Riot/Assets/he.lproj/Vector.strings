@@ -1082,3 +1082,24 @@
 
 "key_backup_setup_title" = "גיבוי מפתח";
 "secure_backup_setup_banner_subtitle" = "אמצעי אבטחה למניעת איבוד גישה להודעות מוצפנות ומידע";
+"settings_confirm_media_size" = "אשר גודל בזמן שליחה";
+"settings_three_pids_management_information_part3" = ".";
+"settings_three_pids_management_information_part2" = "גלוי";
+"settings_three_pids_management_information_part1" = "קבע איזה כתובות אימייל או מספרי טלפון אתה יכול לעשות בהם שימוש להתחברות או לשחזור החשבון שלך כאן. החלט מי יכול למצא אותך ב ";
+"settings_fail_to_update_profile" = "כשלון בעדכון הפרופיל";
+"settings_night_mode" = "מצב לילה";
+"settings_change_password" = "שנה סיסמת חשבון מטריקס";
+"settings_add_phone_number" = "הוסף מספר טלפון";
+"settings_phone_number" = "טלפון";
+"settings_add_email_address" = "הוסף כתובת אימייל";
+"settings_email_address_placeholder" = "הכנס את כתובת האימייל שלך";
+"settings_email_address" = "אימייל";
+"settings_display_name" = "הצג שם";
+"settings_profile_picture" = "תמונת פרופיל";
+"settings_sign_out_e2e_warn" = "אתה תאבד את מפתחות ההצפנה קצה לקצה. המשמעות היא שלא תוכל יותר לקרא הודעות ישנות בחדרים מוצפנים בהתקן זה.";
+"settings_sign_out_confirmation" = "האם אתה בטוח?";
+"settings_ui_theme_light" = "אור";
+"settings_ui_theme_auto" = "אוטומטי";
+"settings_ui_theme" = "נושא";
+"settings_ui_language" = "שפה";
+"settings_integrations_allow_description" = "השתמש במנהל שילובים (%@) לניהול בוטים, גשרי ועידה, וו'ידגטים ומדבקות.\n\nמנהלי שילובים מקבלים נתוני תצורה, ויכולים להגדיר וו'ידגטים, לשלוח הזמנות חדרים ורמות הספק בשמך.";
