@@ -349,6 +349,8 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     [super viewDidLoad];
     
+    [MXKRoomBubbleTableViewCell disableLongPressGestureOnEvent:YES];
+    
     // Register first customized cell view classes used to render bubbles
     [[RoomTimelineConfiguration shared].currentStyle.cellProvider registerCellsForTableView:self.bubblesTableView];
     
@@ -1593,6 +1595,11 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (BOOL)isRoomPreview
 {
+    if (self.isContextPreview)
+    {
+        return YES;
+    }
+    
     // Check first whether some preview data are defined.
     if (roomPreviewData)
     {
