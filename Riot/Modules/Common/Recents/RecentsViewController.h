@@ -20,6 +20,7 @@
 @class RootTabEmptyView;
 @class AnalyticsScreenTracker;
 @class UserIndicatorStore;
+@class RecentCellContextMenuProvider;
 
 /**
  Notification to be posted when recents data is ready. Notification object will be the RecentsViewController instance.
@@ -102,6 +103,8 @@ FOUNDATION_EXPORT NSString *const RecentsViewControllerDataReadyNotification;
  worrying about the presentation context or memory management.
  */
 @property (nonatomic, strong) UserIndicatorStore *userIndicatorStore;
+
+@property (nonatomic, readonly) RecentCellContextMenuProvider *contextMenuProvider;
 
 /**
  Return the sticky header for the specified section of the table view
@@ -197,6 +200,11 @@ Enable/disable the notifications for the selected room.
  Show a public room.
  */
 - (void)openPublicRoom:(MXPublicRoom *)publicRoom;
+
+/**
+ Show a room using its roomID
+ */
+- (void)showRoomWithRoomId:(NSString*)roomId inMatrixSession:(MXSession*)matrixSession;
 
 #pragma mark - Scrolling
 
