@@ -30,14 +30,7 @@ class ThreadsBetaViewController: UIViewController {
     @IBOutlet private weak var separatorLineView: UIView!
     @IBOutlet private weak var informationTextView: UITextView! {
         didSet {
-            informationTextView.contentInset = .zero
-            informationTextView.textContainerInset = .zero
             informationTextView.textContainer.lineFragmentPadding = 0
-            informationTextView.scrollsToTop = false
-            informationTextView.showsVerticalScrollIndicator = false
-            informationTextView.showsHorizontalScrollIndicator = false
-            informationTextView.isEditable = false
-            informationTextView.isScrollEnabled = false
         }
     }
     @IBOutlet private weak var enableButton: UIButton!
