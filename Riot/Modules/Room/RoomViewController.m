@@ -6400,7 +6400,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     BOOL showMoreOption = (event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForStates)
         || (!event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForMessages);
-    BOOL showThreadOption = RiotSettings.shared.enableThreads && !self.roomDataSource.threadId && !event.threadId;
+    BOOL showThreadOption = !self.roomDataSource.threadId && !event.threadId;
     
     NSMutableArray<RoomContextualMenuItem*> *items = [NSMutableArray arrayWithCapacity:5];
     
@@ -6762,7 +6762,14 @@ static CGSize kThreadListBarButtonItemImageSize;
         
         [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
 
-        [self openThreadWithId:event.eventId];
+        if (RiotSettings.shared.enableThreads)
+        {
+            [self openThreadWithId:event.eventId];
+        }
+        else
+        {
+            [self showThreadsBeta];
+        }
     };
     
     return item;
@@ -6807,6 +6814,45 @@ static CGSize kThreadListBarButtonItemImageSize;
     };
 
     [self.threadsNoticeModalPresenter present:threadsNoticeVC
+                                         from:self.presentedViewController?:self
+                                     animated:YES
+                                      options:SlidingModalPresenter.SpanningOption
+                                   completion:nil];
+}
+
+- (void)showThreadsBeta
+{
+    if (!self.threadsNoticeModalPresenter)
+    {
+        self.threadsNoticeModalPresenter = [SlidingModalPresenter new];
+    }
+
+    [self.threadsNoticeModalPresenter dismissWithAnimated:NO completion:nil];
+
+    ThreadsBetaViewController *threadsBetaVC = [ThreadsBetaViewController instantiate];
+
+    MXWeakify(self);
+
+    threadsBetaVC.didTapEnableButton = ^{
+        MXStrongifyAndReturnIfNil(self);
+
+        [self.threadsNoticeModalPresenter dismissWithAnimated:YES completion:^{
+            RiotSettings.shared.enableThreads = YES;
+            MXSDKOptions.sharedInstance.enableThreads = YES;
+            [self cancelEventSelection];
+            [self.roomDataSource reload];
+        }];
+    };
+
+    threadsBetaVC.didTapCancelButton = ^{
+        MXStrongifyAndReturnIfNil(self);
+
+        [self.threadsNoticeModalPresenter dismissWithAnimated:YES completion:^{
+            [self cancelEventSelection];
+        }];
+    };
+
+    [self.threadsNoticeModalPresenter present:threadsBetaVC
                                          from:self.presentedViewController?:self
                                      animated:YES
                                       options:SlidingModalPresenter.SpanningOption
