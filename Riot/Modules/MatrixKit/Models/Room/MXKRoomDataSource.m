@@ -2115,6 +2115,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
                         description:description
                            threadId:self.threadId
                           localEcho:&localEchoEvent
+                          assetType:MXEventAssetTypeGeneric
                             success:success failure:failure];
     
     if (localEchoEvent)
