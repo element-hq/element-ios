@@ -17,22 +17,35 @@
 import Foundation
 import Mapbox
 
-class UserLocationAnnotation: NSObject, MGLAnnotation {
+class LocationAnnotation: NSObject, MGLAnnotation {
     
     // MARK: - Properties
-    
-    let avatarData: AvatarInputProtocol
     
     let coordinate: CLLocationCoordinate2D
     
     // MARK: - Setup
     
-    init(avatarData: AvatarInputProtocol,
-         coordinate: CLLocationCoordinate2D) {
+    init(coordinate: CLLocationCoordinate2D) {
         
         self.coordinate = coordinate
+    }
+}
+
+class PinLocationAnnotation: LocationAnnotation {}
+
+class UserLocationAnnotation: LocationAnnotation {
+    
+    // MARK: - Properties
+    
+    let avatarData: AvatarInputProtocol
+    
+    // MARK: - Setup
+    
+    init(avatarData: AvatarInputProtocol,
+         coordinate: CLLocationCoordinate2D) {
+
         self.avatarData = avatarData
         
-        super.init()
+        super.init(coordinate: coordinate)
     }
 }
