@@ -112,4 +112,35 @@ class RecentsDataSourceSectionsTests: XCTestCase {
             ]
         )
     }
+    
+    func test_equalsIfSameSectionsInSameOrder() {
+        let original = RecentsDataSourceSections(sectionTypes: [
+            .favorites,
+            .invites,
+            .lowPriority,
+            .searchedRoom,
+        ])
+        let sameOrder = RecentsDataSourceSections(sectionTypes: [
+            .favorites,
+            .invites,
+            .lowPriority,
+            .searchedRoom,
+        ])
+        let differentOrder = RecentsDataSourceSections(sectionTypes: [
+            .lowPriority,
+            .favorites,
+            .invites,
+            .searchedRoom,
+        ])
+        let differentSections = RecentsDataSourceSections(sectionTypes: [
+            .favorites,
+            .serverNotice,
+            .lowPriority,
+            .searchedRoom,
+        ])
+        
+        XCTAssertEqual(original, sameOrder)
+        XCTAssertNotEqual(original, differentOrder)
+        XCTAssertNotEqual(original, differentSections)
+    }
 }

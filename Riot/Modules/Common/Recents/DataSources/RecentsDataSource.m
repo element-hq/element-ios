@@ -1501,35 +1501,41 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                              forSection:(RecentsListServiceSection)section
                      totalCountsChanged:(BOOL)totalCountsChanged
 {
-    NSInteger sectionIndex = -1;
-    switch (section)
+    RecentsDataSourceSections *updatedSections = [self makeDataSourceSections];
+    BOOL hasChangedSections = ![self.sections isEqual:updatedSections];
+    if (hasChangedSections) {
+        // If the number or order of sections has changed, we reload all of the data
+        [self.delegate dataSource:self didCellChange:nil];
+        return;
+    }
+    
+    RecentsDataSourceSectionType sectionType = [self sectionTypeForServiceSection:section];
+    NSInteger sectionIndex = [self.sections sectionIndexForSectionType:sectionType];
+    if (sectionIndex >= 0) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:(NSUInteger)sectionIndex];
+        [self.delegate dataSource:self didCellChange:indexPath];
+    }
+}
+
+- (RecentsDataSourceSectionType)sectionTypeForServiceSection:(RecentsListServiceSection)serviceSection
+{
+    switch (serviceSection)
     {
         case RecentsListServiceSectionInvited:
-            sectionIndex = [self.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeInvites];
-            break;
+            return RecentsDataSourceSectionTypeInvites;
         case RecentsListServiceSectionFavorited:
-            sectionIndex = [self.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeFavorites];
-            break;
+            return RecentsDataSourceSectionTypeFavorites;
         case RecentsListServiceSectionPeople:
-            sectionIndex = [self.sections sectionIndexForSectionType:RecentsDataSourceSectionTypePeople];
-            break;
+            return RecentsDataSourceSectionTypePeople;
         case RecentsListServiceSectionConversation:
-            sectionIndex = [self.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeConversation];
-            break;
+            return RecentsDataSourceSectionTypeConversation;
         case RecentsListServiceSectionLowPriority:
-            sectionIndex = [self.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeLowPriority];
-            break;
+            return RecentsDataSourceSectionTypeLowPriority;
         case RecentsListServiceSectionServerNotice:
-            sectionIndex = [self.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeServerNotice];
-            break;
+            return RecentsDataSourceSectionTypeServerNotice;
         case RecentsListServiceSectionSuggested:
-            sectionIndex = [self.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeSuggestedRooms];
-            break;
+            return RecentsDataSourceSectionTypeSuggestedRooms;
     }
-
-    RecentsSectionUpdate *update = [[RecentsSectionUpdate alloc] initWithSectionIndex:sectionIndex
-                                                                   totalCountsChanged:totalCountsChanged];
-    [self.delegate dataSource:self didCellChange:update];
 }
 
 #pragma mark - Shrinkable
