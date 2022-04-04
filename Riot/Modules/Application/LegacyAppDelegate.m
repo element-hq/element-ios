@@ -1440,18 +1440,15 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                             }
                             
                             ThreadParameters *threadParameters = nil;
-                            if (RiotSettings.shared.enableThreads)
+                            if (event.threadId)
                             {
-                                if (event.threadId)
-                                {
-                                    threadParameters = [[ThreadParameters alloc] initWithThreadId:event.threadId
-                                                                                  stackRoomScreen:NO];
-                                }
-                                else if ([account.mxSession.threadingService threadWithId:eventId])
-                                {
-                                    threadParameters = [[ThreadParameters alloc] initWithThreadId:eventId
-                                                                                  stackRoomScreen:NO];
-                                }
+                                threadParameters = [[ThreadParameters alloc] initWithThreadId:event.threadId
+                                                                              stackRoomScreen:NO];
+                            }
+                            else if ([account.mxSession.threadingService threadWithId:eventId])
+                            {
+                                threadParameters = [[ThreadParameters alloc] initWithThreadId:eventId
+                                                                              stackRoomScreen:NO];
                             }
                             
                             RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
@@ -3083,7 +3080,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
 
     ThreadParameters *threadParameters = nil;
-    if (RiotSettings.shared.enableThreads && threadId)
+    if (threadId)
     {
         threadParameters = [[ThreadParameters alloc] initWithThreadId:threadId stackRoomScreen:NO];
     }

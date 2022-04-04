@@ -158,7 +158,6 @@ typedef NS_ENUM(NSUInteger, ABOUT)
 typedef NS_ENUM(NSUInteger, LABS_ENABLE)
 {
     LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX = 0,
-    LABS_ENABLE_THREADS_INDEX,
     LABS_ENABLE_MESSAGE_BUBBLES_INDEX,
     LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS,
     LABS_USE_ONLY_LATEST_USER_AVATAR_AND_NAME_INDEX
@@ -572,7 +571,6 @@ TableViewSectionsDelegate>
     {
         Section *sectionLabs = [Section sectionWithTag:SECTION_TAG_LABS];
         [sectionLabs addRowWithTag:LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX];
-        [sectionLabs addRowWithTag:LABS_ENABLE_THREADS_INDEX];
         [sectionLabs addRowWithTag:LABS_ENABLE_MESSAGE_BUBBLES_INDEX];
         [sectionLabs addRowWithTag:LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS];
         [sectionLabs addRowWithTag:LABS_USE_ONLY_LATEST_USER_AVATAR_AND_NAME_INDEX];
@@ -2459,18 +2457,6 @@ TableViewSectionsDelegate>
             
             cell = labelAndSwitchCell;
         }
-        else if (row == LABS_ENABLE_THREADS_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-            
-            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsLabsEnableThreads];
-            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.enableThreads;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableThreads:) forControlEvents:UIControlEventTouchUpInside];
-            
-            cell = labelAndSwitchCell;
-        }
         else if (row == LABS_ENABLE_MESSAGE_BUBBLES_INDEX)
         {
             cell = [self buildMessageBubblesCellForTableView:tableView atIndexPath:indexPath];
@@ -3216,14 +3202,6 @@ TableViewSectionsDelegate>
 - (void)toggleEnableRingingForGroupCalls:(UISwitch *)sender
 {
     RiotSettings.shared.enableRingingForGroupCalls = sender.isOn;
-}
-
-- (void)toggleEnableThreads:(UISwitch *)sender
-{
-    RiotSettings.shared.enableThreads = sender.isOn;
-    MXSDKOptions.sharedInstance.enableThreads = sender.isOn;
-    [[MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession] reset];
-    [[AppDelegate theDelegate] restoreEmptyDetailsViewController];
 }
 
 - (void)togglePinRoomsWithMissedNotif:(UISwitch *)sender

@@ -261,7 +261,7 @@ const CGFloat kTypingCellHeight = 24;
             }
         }
     }
-    else if (RiotSettings.shared.enableThreads)
+    else
     {
         //  if not in a thread, ignore all threaded events
         if (event.isInThread)
@@ -455,7 +455,7 @@ const CGFloat kTypingCellHeight = 24;
                     ThreadSummaryView *threadSummaryView;
                     
                     //  display thread summary view if the component has a thread in the room timeline
-                    if (RiotSettings.shared.enableThreads && component.thread && !self.threadId)
+                    if (component.thread && !self.threadId)
                     {
                         threadSummaryView = [[ThreadSummaryView alloc] initWithThread:component.thread
                                                                               session:self.mxSession];

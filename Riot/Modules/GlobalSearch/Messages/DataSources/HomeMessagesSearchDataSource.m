@@ -83,34 +83,27 @@
                         dispatch_group_leave(group);
                     };
 
-                    if (RiotSettings.shared.enableThreads)
+                    if (result.result.isInThread)
                     {
-                        if (result.result.isInThread)
-                        {
-                            continueBlock();
-                        }
-                        else if (result.result.unsignedData.relations.thread)
-                        {
-                            continueBlock();
-                        }
-                        else if (room)
-                        {
-                            [room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
-                                [liveTimeline paginate:NSUIntegerMax
-                                             direction:MXTimelineDirectionBackwards
-                                         onlyFromStore:YES
-                                              complete:^{
-                                    [liveTimeline resetPagination];
-                                    continueBlock();
-                                } failure:^(NSError * _Nonnull error) {
-                                    continueBlock();
-                                }];
+                        continueBlock();
+                    }
+                    else if (result.result.unsignedData.relations.thread)
+                    {
+                        continueBlock();
+                    }
+                    else if (room)
+                    {
+                        [room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
+                            [liveTimeline paginate:NSUIntegerMax
+                                         direction:MXTimelineDirectionBackwards
+                                     onlyFromStore:YES
+                                          complete:^{
+                                [liveTimeline resetPagination];
+                                continueBlock();
+                            } failure:^(NSError * _Nonnull error) {
+                                continueBlock();
                             }];
-                        }
-                        else
-                        {
-                            continueBlock();
-                        }
+                        }];
                     }
                     else
                     {
@@ -159,63 +152,60 @@
         // Display date for each message
         [bubbleCell addDateLabel];
 
-        if (RiotSettings.shared.enableThreads)
+        RoomBubbleCellData *cellData = (RoomBubbleCellData*)[self cellDataAtIndex:indexPath.row];
+        MXEvent *event = cellData.events.firstObject;
+
+        if (event)
         {
-            RoomBubbleCellData *cellData = (RoomBubbleCellData*)[self cellDataAtIndex:indexPath.row];
-            MXEvent *event = cellData.events.firstObject;
-
-            if (event)
+            if (cellData.hasThreadRoot)
             {
-                if (cellData.hasThreadRoot)
-                {
-                    id<MXThreadProtocol> thread = cellData.bubbleComponents.firstObject.thread;
-                    ThreadSummaryView *threadSummaryView = [[ThreadSummaryView alloc] initWithThread:thread
-                                                                                             session:self.mxSession];
-                    [bubbleCell.tmpSubviews addObject:threadSummaryView];
+                id<MXThreadProtocol> thread = cellData.bubbleComponents.firstObject.thread;
+                ThreadSummaryView *threadSummaryView = [[ThreadSummaryView alloc] initWithThread:thread
+                                                                                         session:self.mxSession];
+                [bubbleCell.tmpSubviews addObject:threadSummaryView];
 
-                    threadSummaryView.translatesAutoresizingMaskIntoConstraints = NO;
-                    [bubbleCell.contentView addSubview:threadSummaryView];
+                threadSummaryView.translatesAutoresizingMaskIntoConstraints = NO;
+                [bubbleCell.contentView addSubview:threadSummaryView];
 
-                    CGFloat leftMargin = PlainRoomCellLayoutConstants.reactionsViewLeftMargin;
-                    CGFloat height = [ThreadSummaryView contentViewHeightForThread:thread fitting:cellData.maxTextViewWidth];
+                CGFloat leftMargin = PlainRoomCellLayoutConstants.reactionsViewLeftMargin;
+                CGFloat height = [ThreadSummaryView contentViewHeightForThread:thread fitting:cellData.maxTextViewWidth];
 
-                    CGRect bubbleComponentFrame = [bubbleCell componentFrameInContentViewForIndex:0];
-                    CGFloat bottomPositionY = bubbleComponentFrame.origin.y + bubbleComponentFrame.size.height;
+                CGRect bubbleComponentFrame = [bubbleCell componentFrameInContentViewForIndex:0];
+                CGFloat bottomPositionY = bubbleComponentFrame.origin.y + bubbleComponentFrame.size.height;
 
-                    // Set constraints for the summary view
-                    [NSLayoutConstraint activateConstraints: @[
-                        [threadSummaryView.leadingAnchor constraintEqualToAnchor:threadSummaryView.superview.leadingAnchor
-                                                                        constant:leftMargin],
-                        [threadSummaryView.topAnchor constraintEqualToAnchor:threadSummaryView.superview.topAnchor
-                                                                    constant:bottomPositionY + PlainRoomCellLayoutConstants.threadSummaryViewTopMargin],
-                        [threadSummaryView.heightAnchor constraintEqualToConstant:height],
-                        [threadSummaryView.trailingAnchor constraintLessThanOrEqualToAnchor:threadSummaryView.superview.trailingAnchor constant:-PlainRoomCellLayoutConstants.reactionsViewRightMargin]
-                    ]];
-                }
-                else if (event.isInThread)
-                {
-                    FromAThreadView *fromAThreadView = [FromAThreadView instantiate];
-                    [bubbleCell.tmpSubviews addObject:fromAThreadView];
+                // Set constraints for the summary view
+                [NSLayoutConstraint activateConstraints: @[
+                    [threadSummaryView.leadingAnchor constraintEqualToAnchor:threadSummaryView.superview.leadingAnchor
+                                                                    constant:leftMargin],
+                    [threadSummaryView.topAnchor constraintEqualToAnchor:threadSummaryView.superview.topAnchor
+                                                                constant:bottomPositionY + PlainRoomCellLayoutConstants.threadSummaryViewTopMargin],
+                    [threadSummaryView.heightAnchor constraintEqualToConstant:height],
+                    [threadSummaryView.trailingAnchor constraintLessThanOrEqualToAnchor:threadSummaryView.superview.trailingAnchor constant:-PlainRoomCellLayoutConstants.reactionsViewRightMargin]
+                ]];
+            }
+            else if (event.isInThread)
+            {
+                FromAThreadView *fromAThreadView = [FromAThreadView instantiate];
+                [bubbleCell.tmpSubviews addObject:fromAThreadView];
 
-                    fromAThreadView.translatesAutoresizingMaskIntoConstraints = NO;
-                    [bubbleCell.contentView addSubview:fromAThreadView];
-                    
-                    CGFloat leftMargin = PlainRoomCellLayoutConstants.reactionsViewLeftMargin;
-                    CGFloat height = [FromAThreadView contentViewHeightForEvent:event fitting:cellData.maxTextViewWidth];
+                fromAThreadView.translatesAutoresizingMaskIntoConstraints = NO;
+                [bubbleCell.contentView addSubview:fromAThreadView];
 
-                    CGRect bubbleComponentFrame = [bubbleCell componentFrameInContentViewForIndex:0];
-                    CGFloat bottomPositionY = bubbleComponentFrame.origin.y + bubbleComponentFrame.size.height;
+                CGFloat leftMargin = PlainRoomCellLayoutConstants.reactionsViewLeftMargin;
+                CGFloat height = [FromAThreadView contentViewHeightForEvent:event fitting:cellData.maxTextViewWidth];
 
-                    // Set constraints for the summary view
-                    [NSLayoutConstraint activateConstraints: @[
-                        [fromAThreadView.leadingAnchor constraintEqualToAnchor:fromAThreadView.superview.leadingAnchor
-                                                                      constant:leftMargin],
-                        [fromAThreadView.topAnchor constraintEqualToAnchor:fromAThreadView.superview.topAnchor
-                                                                  constant:bottomPositionY + PlainRoomCellLayoutConstants.fromAThreadViewTopMargin],
-                        [fromAThreadView.heightAnchor constraintEqualToConstant:height],
-                        [fromAThreadView.trailingAnchor constraintLessThanOrEqualToAnchor:fromAThreadView.superview.trailingAnchor constant:-PlainRoomCellLayoutConstants.reactionsViewRightMargin]
-                    ]];
-                }
+                CGRect bubbleComponentFrame = [bubbleCell componentFrameInContentViewForIndex:0];
+                CGFloat bottomPositionY = bubbleComponentFrame.origin.y + bubbleComponentFrame.size.height;
+
+                // Set constraints for the summary view
+                [NSLayoutConstraint activateConstraints: @[
+                    [fromAThreadView.leadingAnchor constraintEqualToAnchor:fromAThreadView.superview.leadingAnchor
+                                                                  constant:leftMargin],
+                    [fromAThreadView.topAnchor constraintEqualToAnchor:fromAThreadView.superview.topAnchor
+                                                              constant:bottomPositionY + PlainRoomCellLayoutConstants.fromAThreadViewTopMargin],
+                    [fromAThreadView.heightAnchor constraintEqualToConstant:height],
+                    [fromAThreadView.trailingAnchor constraintLessThanOrEqualToAnchor:fromAThreadView.superview.trailingAnchor constant:-PlainRoomCellLayoutConstants.reactionsViewRightMargin]
+                ]];
             }
         }
     }
