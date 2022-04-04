@@ -349,8 +349,6 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     [super viewDidLoad];
     
-    [MXKRoomBubbleTableViewCell disableLongPressGestureOnEvent:YES];
-    
     // Register first customized cell view classes used to render bubbles
     [[RoomTimelineConfiguration shared].currentStyle.cellProvider registerCellsForTableView:self.bubblesTableView];
     
