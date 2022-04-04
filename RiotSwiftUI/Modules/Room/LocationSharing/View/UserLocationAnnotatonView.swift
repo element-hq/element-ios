@@ -42,7 +42,7 @@ class LocationAnnotatonView: MGLUserLocationAnnotationView {
         
     }
     
-    init(pinLocationAnnotation: LocationAnnotation) {
+    init(pinLocationAnnotation: PinLocationAnnotation) {
         // TODO: Use a reuseIdentifier
         super.init(annotation: pinLocationAnnotation, reuseIdentifier: nil)
         

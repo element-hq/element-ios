@@ -118,7 +118,7 @@ extension LocationSharingMapView {
             
             if let userLocationAnnotation = annotation as? UserLocationAnnotation {
                 return LocationAnnotatonView(userLocationAnnotation: userLocationAnnotation)
-            } else if let pinLocationAnnotation = annotation as? LocationAnnotation {
+            } else if let pinLocationAnnotation = annotation as? PinLocationAnnotation {
                 return LocationAnnotatonView(pinLocationAnnotation: pinLocationAnnotation)
             } else if annotation is MGLUserLocation && locationSharingMapView.mapCenterCoordinate == nil, let currentUserAvatarData = locationSharingMapView.userAvatarData {
                 // Replace default current location annotation view with a UserLocationAnnotatonView when the map is center on user location

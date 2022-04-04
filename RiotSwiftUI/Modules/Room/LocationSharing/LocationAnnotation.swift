@@ -31,6 +31,8 @@ class LocationAnnotation: NSObject, MGLAnnotation {
     }
 }
 
+class PinLocationAnnotation: LocationAnnotation {}
+
 class UserLocationAnnotation: LocationAnnotation {
     
     // MARK: - Properties

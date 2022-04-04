@@ -49,7 +49,7 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
             case .user:
                 sharedLocationAnnotation = UserLocationAnnotation(avatarData: avatarData, coordinate: sharedCoordinate)
             case .pin:
-                sharedLocationAnnotation = LocationAnnotation(coordinate: sharedCoordinate)
+                sharedLocationAnnotation = PinLocationAnnotation(coordinate: sharedCoordinate)
             }
             
             annotations.append(sharedLocationAnnotation)
