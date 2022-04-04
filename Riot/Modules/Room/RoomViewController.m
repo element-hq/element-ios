@@ -97,7 +97,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, ThreadsCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, ThreadsCoordinatorBridgePresenterDelegate, ThreadsBetaCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate>
 {
     
     // The preview header
@@ -210,6 +210,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 @property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
 @property (nonatomic, strong) RoomParticipantsInviteCoordinatorBridgePresenter *participantsInvitePresenter;
 @property (nonatomic, strong) ThreadsCoordinatorBridgePresenter *threadsBridgePresenter;
+@property (nonatomic, strong) ThreadsBetaCoordinatorBridgePresenter *threadsBetaBridgePresenter;
 @property (nonatomic, strong) SlidingModalPresenter *threadsNoticeModalPresenter;
 @property (nonatomic, getter=isActivitiesViewExpanded) BOOL activitiesViewExpanded;
 @property (nonatomic, getter=isScrollToBottomHidden) BOOL scrollToBottomHidden;
@@ -6768,7 +6769,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         }
         else
         {
-            [self showThreadsBeta];
+            [self showThreadsBetaForEvent:event];
         }
     };
     
@@ -6820,43 +6821,18 @@ static CGSize kThreadListBarButtonItemImageSize;
                                    completion:nil];
 }
 
-- (void)showThreadsBeta
+- (void)showThreadsBetaForEvent:(MXEvent *)event
 {
-    if (!self.threadsNoticeModalPresenter)
+    if (self.threadsBetaBridgePresenter)
     {
-        self.threadsNoticeModalPresenter = [SlidingModalPresenter new];
+        [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:nil];
+        self.threadsBetaBridgePresenter = nil;
     }
 
-    [self.threadsNoticeModalPresenter dismissWithAnimated:NO completion:nil];
+    self.threadsBetaBridgePresenter = [[ThreadsBetaCoordinatorBridgePresenter alloc] initWithThreadId:event.eventId];
+    self.threadsBetaBridgePresenter.delegate = self;
 
-    ThreadsBetaViewController *threadsBetaVC = [ThreadsBetaViewController instantiate];
-
-    MXWeakify(self);
-
-    threadsBetaVC.didTapEnableButton = ^{
-        MXStrongifyAndReturnIfNil(self);
-
-        [self.threadsNoticeModalPresenter dismissWithAnimated:YES completion:^{
-            RiotSettings.shared.enableThreads = YES;
-            MXSDKOptions.sharedInstance.enableThreads = YES;
-            [self cancelEventSelection];
-            [self.roomDataSource reload];
-        }];
-    };
-
-    threadsBetaVC.didTapCancelButton = ^{
-        MXStrongifyAndReturnIfNil(self);
-
-        [self.threadsNoticeModalPresenter dismissWithAnimated:YES completion:^{
-            [self cancelEventSelection];
-        }];
-    };
-
-    [self.threadsNoticeModalPresenter present:threadsBetaVC
-                                         from:self.presentedViewController?:self
-                                     animated:YES
-                                      options:SlidingModalPresenter.SpanningOption
-                                   completion:nil];
+    [self.threadsBetaBridgePresenter presentFrom:self.presentedViewController?:self animated:YES];
 }
 
 - (void)openThreadWithId:(NSString *)threadId
@@ -7455,6 +7431,30 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (void)threadsCoordinatorBridgePresenterDidDismissInteractively:(ThreadsCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
     self.threadsBridgePresenter = nil;
+}
+
+#pragma mark - ThreadsBetaCoordinatorBridgePresenterDelegate
+
+- (void)threadsBetaCoordinatorBridgePresenterDelegateDidTapEnable:(ThreadsBetaCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    MXWeakify(self);
+    [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:^{
+        MXStrongifyAndReturnIfNil(self);
+        RiotSettings.shared.enableThreads = YES;
+        MXSDKOptions.sharedInstance.enableThreads = YES;
+        [self cancelEventSelection];
+        [self.roomDataSource reload];
+        [self openThreadWithId:coordinatorBridgePresenter.threadId];
+    }];
+}
+
+- (void)threadsBetaCoordinatorBridgePresenterDelegateDidTapCancel:(ThreadsBetaCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    MXWeakify(self);
+    [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:^{
+        MXStrongifyAndReturnIfNil(self);
+        [self cancelEventSelection];
+    }];
 }
 
 #pragma mark - MXThreadingServiceDelegate
