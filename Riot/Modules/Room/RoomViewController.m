@@ -1593,6 +1593,11 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (BOOL)isRoomPreview
 {
+    if (self.isContextPreview)
+    {
+        return YES;
+    }
+    
     // Check first whether some preview data are defined.
     if (roomPreviewData)
     {
