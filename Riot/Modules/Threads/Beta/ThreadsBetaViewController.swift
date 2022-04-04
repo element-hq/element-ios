@@ -21,7 +21,7 @@ class ThreadsBetaViewController: UIViewController {
     // MARK: Constants
 
     private enum Constants {
-        static let learnMoreLink = "https://element.io"
+        static let learnMoreLink = "https://element.io/help#threads"
     }
 
     // MARK: Outlets
