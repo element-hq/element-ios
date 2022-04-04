@@ -29,4 +29,11 @@ public extension NSAttributedString {
         
         return unquotedSubstrings.joined(separator: " ") as NSString
     }
+
+    /// Returns a new attributed string by removing all links from the receiver.
+    @objc var byRemovingLinks: NSAttributedString {
+        let result = NSMutableAttributedString(attributedString: self)
+        result.removeAttribute(.link, range: NSRange(location: 0, length: length))
+        return result
+    }
 }
