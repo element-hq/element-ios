@@ -33,14 +33,12 @@ extension MXEventAssetType {
     func locationSharingCoordinateType() -> LocationSharingCoordinateType {
         let coordinateType: LocationSharingCoordinateType
         switch self {
-        case .user:
+        case .user, .generic:
             coordinateType = .user
         case .pin:
             coordinateType = .pin
-        case .generic:
-            coordinateType = .generic
         @unknown default:
-            coordinateType = .generic
+            coordinateType = .user
         }
         return coordinateType
     }
@@ -54,8 +52,6 @@ extension LocationSharingCoordinateType {
             eventAssetType = .user
         case .pin:
             eventAssetType = .pin
-        case .generic:
-            eventAssetType = .generic
         }
         return eventAssetType
     }

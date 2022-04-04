@@ -19,7 +19,7 @@ import SwiftUI
 import Mapbox
 
 @available(iOS 14, *)
-class UserLocationAnnotatonView: MGLUserLocationAnnotationView {
+class LocationAnnotatonView: MGLUserLocationAnnotationView {
     
     // MARK: Private
     
@@ -38,14 +38,15 @@ class UserLocationAnnotatonView: MGLUserLocationAnnotationView {
         // TODO: Use a reuseIdentifier
         super.init(annotation: userLocationAnnotation, reuseIdentifier: nil)
         
-        switch userLocationAnnotation.coordinateType {
-        case .user:
-            self.addUserMarkerView(with: userLocationAnnotation.avatarData)
-        case .pin, .generic:
-            self.addPinMarkerView()
-        @unknown default:
-            return
-        }
+        self.addUserMarkerView(with: userLocationAnnotation.avatarData)
+        
+    }
+    
+    init(pinLocationAnnotation: LocationAnnotation) {
+        // TODO: Use a reuseIdentifier
+        super.init(annotation: pinLocationAnnotation, reuseIdentifier: nil)
+        
+        self.addPinMarkerView()
     }
     
     required init?(coder: NSCoder) {

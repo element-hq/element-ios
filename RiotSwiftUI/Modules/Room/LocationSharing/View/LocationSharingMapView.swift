@@ -33,10 +33,10 @@ struct LocationSharingMapView: UIViewRepresentable {
     let tileServerMapURL: URL
     
     /// Map annotations
-    let annotations: [UserLocationAnnotation]
+    let annotations: [LocationAnnotation]
     
     /// Map annotation to focus on
-    let highlightedAnnotation: UserLocationAnnotation?
+    let highlightedAnnotation: LocationAnnotation?
     
     /// Current user avatar data, used to replace current location annotation view with the user avatar
     let userAvatarData: AvatarInputProtocol?
@@ -117,10 +117,12 @@ extension LocationSharingMapView {
         func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
             
             if let userLocationAnnotation = annotation as? UserLocationAnnotation {
-                return UserLocationAnnotatonView(userLocationAnnotation: userLocationAnnotation)
+                return LocationAnnotatonView(userLocationAnnotation: userLocationAnnotation)
+            } else if let pinLocationAnnotation = annotation as? LocationAnnotation {
+                return LocationAnnotatonView(pinLocationAnnotation: pinLocationAnnotation)
             } else if annotation is MGLUserLocation && locationSharingMapView.mapCenterCoordinate == nil, let currentUserAvatarData = locationSharingMapView.userAvatarData {
                 // Replace default current location annotation view with a UserLocationAnnotatonView when the map is center on user location
-                return UserLocationAnnotatonView(avatarData: currentUserAvatarData)
+                return LocationAnnotatonView(avatarData: currentUserAvatarData)
             }
 
             return nil

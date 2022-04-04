@@ -17,26 +17,33 @@
 import Foundation
 import Mapbox
 
-class UserLocationAnnotation: NSObject, MGLAnnotation {
+class LocationAnnotation: NSObject, MGLAnnotation {
+    
+    // MARK: - Properties
+    
+    let coordinate: CLLocationCoordinate2D
+    
+    // MARK: - Setup
+    
+    init(coordinate: CLLocationCoordinate2D) {
+        
+        self.coordinate = coordinate
+    }
+}
+
+class UserLocationAnnotation: LocationAnnotation {
     
     // MARK: - Properties
     
     let avatarData: AvatarInputProtocol
     
-    let coordinate: CLLocationCoordinate2D
-    
-    let coordinateType: LocationSharingCoordinateType
-    
     // MARK: - Setup
     
     init(avatarData: AvatarInputProtocol,
-         coordinate: CLLocationCoordinate2D,
-         coordinateType: LocationSharingCoordinateType) {
-        
-        self.coordinate = coordinate
+         coordinate: CLLocationCoordinate2D) {
+
         self.avatarData = avatarData
-        self.coordinateType = coordinateType
         
-        super.init()
+        super.init(coordinate: coordinate)
     }
 }

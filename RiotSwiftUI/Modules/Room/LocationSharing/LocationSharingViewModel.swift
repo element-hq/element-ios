@@ -37,14 +37,20 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
     
     init(mapStyleURL: URL, avatarData: AvatarInputProtocol, location: CLLocationCoordinate2D? = nil, coordinateType: LocationSharingCoordinateType, isLiveLocationSharingEnabled: Bool = false) {
         
-        var sharedAnnotation: UserLocationAnnotation?
-        var annotations: [UserLocationAnnotation] = []
-        var highlightedAnnotation: UserLocationAnnotation?
+        var sharedAnnotation: LocationAnnotation?
+        var annotations: [LocationAnnotation] = []
+        var highlightedAnnotation: LocationAnnotation?
         var showsUserLocation: Bool = false
         
         // Displaying an existing location
         if let sharedCoordinate = location {
-            let sharedLocationAnnotation = UserLocationAnnotation(avatarData: avatarData, coordinate: sharedCoordinate, coordinateType: coordinateType)
+            let sharedLocationAnnotation: LocationAnnotation
+            switch coordinateType {
+            case .user:
+                sharedLocationAnnotation = UserLocationAnnotation(avatarData: avatarData, coordinate: sharedCoordinate)
+            case .pin:
+                sharedLocationAnnotation = LocationAnnotation(coordinate: sharedCoordinate)
+            }
             
             annotations.append(sharedLocationAnnotation)
             highlightedAnnotation = sharedLocationAnnotation
@@ -80,7 +86,7 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
         case .share:
             // Share existing location
             if let location = state.sharedAnnotation?.coordinate {
-                completion?(.share(latitude: location.latitude, longitude: location.longitude, coordinateType: .generic))
+                completion?(.share(latitude: location.latitude, longitude: location.longitude, coordinateType: .user))
                 return
             }
             

@@ -23,7 +23,6 @@ import CoreLocation
 enum LocationSharingCoordinateType {
     case user
     case pin
-    case generic
 }
 
 enum LocationSharingViewAction {
@@ -55,13 +54,13 @@ struct LocationSharingViewState: BindableState {
     let userAvatarData: AvatarInputProtocol
     
     /// Shared annotation to display existing location
-    let sharedAnnotation: UserLocationAnnotation?
+    let sharedAnnotation: LocationAnnotation?
     
     /// Map annotations to display on map
-    var annotations: [UserLocationAnnotation]
+    var annotations: [LocationAnnotation]
 
     /// Map annotation to focus on
-    var highlightedAnnotation: UserLocationAnnotation?
+    var highlightedAnnotation: LocationAnnotation?
 
     /// Indicates whether the user has moved around the map to drop a pin somewhere other than their current location
     var isPinDropSharing: Bool {
