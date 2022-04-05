@@ -7591,6 +7591,26 @@ public class VectorL10n: NSObject {
   public static var threadsActionMyThreads: String { 
     return VectorL10n.tr("Vector", "threads_action_my_threads") 
   }
+  /// Not now
+  public static var threadsBetaCancel: String { 
+    return VectorL10n.tr("Vector", "threads_beta_cancel") 
+  }
+  /// Try it out
+  public static var threadsBetaEnable: String { 
+    return VectorL10n.tr("Vector", "threads_beta_enable") 
+  }
+  /// Keep discussions organised with threads.\n\nThreads help keep your conversations on-topic and easy to track. 
+  public static var threadsBetaInformation: String { 
+    return VectorL10n.tr("Vector", "threads_beta_information") 
+  }
+  /// Learn more
+  public static var threadsBetaInformationLink: String { 
+    return VectorL10n.tr("Vector", "threads_beta_information_link") 
+  }
+  /// Threads
+  public static var threadsBetaTitle: String { 
+    return VectorL10n.tr("Vector", "threads_beta_title") 
+  }
   /// Threads help keep your conversations on-topic and easy to track.
   public static var threadsEmptyInfoAll: String { 
     return VectorL10n.tr("Vector", "threads_empty_info_all") 
