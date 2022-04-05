@@ -42,7 +42,7 @@ struct AvatarImage: View {
                     .resizable()
             }
         }
-        .frame(width: CGFloat(size.rawValue), height: CGFloat(size.rawValue))
+        .frame(maxWidth: CGFloat(size.rawValue), maxHeight: CGFloat(size.rawValue))
         .clipShape(Circle())
         .onAppear {
             viewModel.inject(dependencies: dependencies)
@@ -66,6 +66,19 @@ extension AvatarImage {
             displayName: avatarData.displayName,
             size: size
         )
+    }
+}
+
+@available(iOS 14.0, *)
+extension AvatarImage {
+    func border(color: Color) -> some View {
+        modifier(BorderModifier(color: color, borderWidth: 3, shape: Circle()))
+    }
+    
+    /// Use display name color as border color by default
+    func border() -> some View {
+        let borderColor = theme.userColor(for: matrixItemId)
+        return self.border(color: borderColor)
     }
 }
 

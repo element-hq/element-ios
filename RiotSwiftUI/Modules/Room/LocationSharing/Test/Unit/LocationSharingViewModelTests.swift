@@ -35,7 +35,7 @@ class LocationSharingViewModelTests: XCTestCase {
         XCTAssertNotNil(viewModel.context.viewState.mapStyleURL)
         XCTAssertNotNil(viewModel.context.viewState.userAvatarData)
         
-        XCTAssertNil(viewModel.context.viewState.userAnnotation)
+        XCTAssertNil(viewModel.context.viewState.sharedAnnotation)
         XCTAssertNil(viewModel.context.viewState.bindings.userLocation)
         XCTAssertNil(viewModel.context.viewState.bindings.alertInfo)
     }
@@ -63,7 +63,7 @@ class LocationSharingViewModelTests: XCTestCase {
         let viewModel = buildViewModel(withLocation: false)
         
         XCTAssertNil(viewModel.context.viewState.bindings.userLocation)
-        XCTAssertNil(viewModel.context.viewState.userAnnotation)
+        XCTAssertNil(viewModel.context.viewState.sharedAnnotation)
         
         viewModel.context.send(viewAction: .share)
         
@@ -78,9 +78,9 @@ class LocationSharingViewModelTests: XCTestCase {
         
         viewModel.completion = { result in
             switch result {
-            case .share(let latitude, let longitude):
-                XCTAssertEqual(latitude, viewModel.context.viewState.userAnnotation?.coordinate.latitude)
-                XCTAssertEqual(longitude, viewModel.context.viewState.userAnnotation?.coordinate.longitude)
+            case .share(let latitude, let longitude, _):
+                XCTAssertEqual(latitude, viewModel.context.viewState.sharedAnnotation?.coordinate.latitude)
+                XCTAssertEqual(longitude, viewModel.context.viewState.sharedAnnotation?.coordinate.longitude)
                 expectation.fulfill()
             case .cancel:
                 XCTFail()
@@ -88,7 +88,7 @@ class LocationSharingViewModelTests: XCTestCase {
         }
         
         XCTAssertNil(viewModel.context.viewState.bindings.userLocation)
-        XCTAssertNotNil(viewModel.context.viewState.userAnnotation)
+        XCTAssertNotNil(viewModel.context.viewState.sharedAnnotation)
         
         viewModel.context.send(viewAction: .share)
         
@@ -123,6 +123,6 @@ class LocationSharingViewModelTests: XCTestCase {
     private func buildViewModel(withLocation: Bool) -> LocationSharingViewModel {
         LocationSharingViewModel(mapStyleURL: URL(string: "http://empty.com")!,
                                  avatarData: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: ""),
-                                 location: (withLocation ? CLLocationCoordinate2D(latitude: 51.4932641, longitude: -0.257096) : nil))
+                                 location: (withLocation ? CLLocationCoordinate2D(latitude: 51.4932641, longitude: -0.257096) : nil), coordinateType: .user)
     }
 }

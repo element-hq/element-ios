@@ -109,7 +109,7 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
         
         switch self.selectedType {
         case .private:
-            _joinRule = .private
+            _joinRule = .invite
         case .public:
             _joinRule = .public
         case .restricted:

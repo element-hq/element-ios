@@ -35,21 +35,27 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
     
     // MARK: - Setup
     
-    init(mapStyleURL: URL, avatarData: AvatarInputProtocol, location: CLLocationCoordinate2D? = nil) {
+    init(mapStyleURL: URL, avatarData: AvatarInputProtocol, location: CLLocationCoordinate2D? = nil, coordinateType: LocationSharingCoordinateType, isLiveLocationSharingEnabled: Bool = false) {
         
-        var userAnnotation: UserLocationAnnotation?
-        var annotations: [UserLocationAnnotation] = []
-        var highlightedAnnotation: UserLocationAnnotation?
+        var sharedAnnotation: LocationAnnotation?
+        var annotations: [LocationAnnotation] = []
+        var highlightedAnnotation: LocationAnnotation?
         var showsUserLocation: Bool = false
         
         // Displaying an existing location
-        if let userCoordinate = location {
-            let userLocationAnnotation = UserLocationAnnotation(avatarData: avatarData, coordinate: userCoordinate)
+        if let sharedCoordinate = location {
+            let sharedLocationAnnotation: LocationAnnotation
+            switch coordinateType {
+            case .user:
+                sharedLocationAnnotation = UserLocationAnnotation(avatarData: avatarData, coordinate: sharedCoordinate)
+            case .pin:
+                sharedLocationAnnotation = PinLocationAnnotation(coordinate: sharedCoordinate)
+            }
             
-            annotations.append(userLocationAnnotation)
-            highlightedAnnotation = userLocationAnnotation
+            annotations.append(sharedLocationAnnotation)
+            highlightedAnnotation = sharedLocationAnnotation
             
-            userAnnotation = userLocationAnnotation
+            sharedAnnotation = sharedLocationAnnotation
         } else {
             // Share current location
             showsUserLocation = true
@@ -57,10 +63,11 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
         
         let viewState = LocationSharingViewState(mapStyleURL: mapStyleURL,
                                                  userAvatarData: avatarData,
-                                                 userAnnotation: userAnnotation,
+                                                 sharedAnnotation: sharedAnnotation,
                                                  annotations: annotations,
                                                  highlightedAnnotation: highlightedAnnotation,
-                                                 showsUserLocation: showsUserLocation)
+                                                 showsUserLocation: showsUserLocation,
+                                                 isLiveLocationSharingEnabled: isLiveLocationSharingEnabled)
         
         super.init(initialViewState: viewState)
         
@@ -78,8 +85,8 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
             completion?(.cancel)
         case .share:
             // Share existing location
-            if let location = state.userAnnotation?.coordinate {
-                completion?(.share(latitude: location.latitude, longitude: location.longitude))
+            if let location = state.sharedAnnotation?.coordinate {
+                completion?(.share(latitude: location.latitude, longitude: location.longitude, coordinateType: .user))
                 return
             }
             
@@ -89,7 +96,16 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
                 return
             }
             
-            completion?(.share(latitude: location.latitude, longitude: location.longitude))
+            completion?(.share(latitude: location.latitude, longitude: location.longitude, coordinateType: .user))
+        case .sharePinLocation:
+            guard let pinLocation = state.bindings.pinLocation else {
+                processError(.failedLocatingUser)
+                return
+            }
+            
+            completion?(.share(latitude: pinLocation.latitude, longitude: pinLocation.longitude, coordinateType: .pin))
+        case .goToUserLocation:
+            state.bindings.pinLocation = nil
         }
     }
     

@@ -31,6 +31,7 @@
 @class UniversalLinkParameters;
 @protocol RoomViewControllerDelegate;
 @class RoomDisplayConfiguration;
+@class ThreadsCoordinatorBridgePresenter;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -88,6 +89,8 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
  ID of the parent space. `nil` for home space.
  */
 @property (nonatomic, nullable) NSString *parentSpaceId;
+
+@property (nonatomic, getter=isContextPreview) BOOL contextPeview;
 
 /**
  Display the preview of a room that is unknown for the user.
@@ -254,14 +257,6 @@ canEditPollWithEventIdentifier:(NSString *)eventIdentifier;
 didRequestEditForPollWithStartEvent:(MXEvent *)startEvent;
 
 /**
- Checks whether the delegate supports handling of activity indicators
- 
- Note: This is a transition API whilst `RoomViewController` contains legacy activity indicators
- as well as using a newer user interaction presenters.
- */
-- (BOOL)roomViewControllerCanDelegateUserIndicators:(RoomViewController *)roomViewController;
-
-/**
  Indicate to the delegate that loading should start
  
  Note: Only called if the controller can delegate user indicators rather than managing
@@ -282,6 +277,9 @@ didRequestEditForPollWithStartEvent:(MXEvent *)startEvent;
 
 /// User tap live location sharing banner
 - (void)roomViewControllerDidTapLiveLocationSharingBanner:(RoomViewController *)roomViewController;
+
+/// Request a threads coordinator for a given threadId, used to open a thread from within a room.
+- (nullable ThreadsCoordinatorBridgePresenter *)threadsCoordinatorForRoomViewController:(RoomViewController *)roomViewController threadId:(nullable NSString *)threadId;
 
 @end
 

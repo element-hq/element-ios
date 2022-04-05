@@ -70,7 +70,7 @@ struct OnboardingSplashScreen: View {
                 
                 buttons
                     .padding(.horizontal, 16)
-                    .frame(maxWidth: OnboardingConstants.maxContentWidth)
+                    .frame(maxWidth: OnboardingMetrics.maxContentWidth)
                 Spacer()
             }
             .background(ViewFrameReader(frame: $overlayFrame))

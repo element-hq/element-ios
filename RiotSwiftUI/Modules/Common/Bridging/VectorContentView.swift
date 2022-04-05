@@ -23,10 +23,18 @@ import SwiftUI
 struct VectorContentModifier: ViewModifier {
     
     @ObservedObject private var themePublisher = ThemePublisher.shared
+    @Environment(\.layoutDirection) private var defaultLayoutDirection
+    
+    /// The layout direction to use, taking into account the build settings. SwiftUI generally
+    /// handles RTL well enough, but we match the behaviour used in UIKit to avoid mixed layouts.
+    var layoutDirection: LayoutDirection {
+        BuildSettings.disableRightToLeftLayout ? .leftToRight : defaultLayoutDirection
+    }
     
     func body(content: Content) -> some View {
         content
             .theme(themePublisher.theme)
+            .environment(\.layoutDirection, layoutDirection)
     }
 }
 

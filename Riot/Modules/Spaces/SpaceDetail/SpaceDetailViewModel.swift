@@ -115,7 +115,7 @@ class SpaceDetailViewModel: SpaceDetailViewModelType {
             self.update(viewState: .loading)
             space.room?.state { state in
                 let joinRule = state?.joinRule
-                let membersCount = summary.membersCount.members
+                let membersCount = summary.membersCount.joined
                 
                 var inviterId: String?
                 var inviter: MXUser?

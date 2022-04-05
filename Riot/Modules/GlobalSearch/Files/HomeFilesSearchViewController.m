@@ -150,11 +150,6 @@
             threadParameters = [[ThreadParameters alloc] initWithThreadId:event.threadId
                                                           stackRoomScreen:NO];
         }
-        else if (event.unsignedData.relations.thread || [self.mainSession.threadingService isEventThreadRoot:event])
-        {
-            threadParameters = [[ThreadParameters alloc] initWithThreadId:event.eventId
-                                                          stackRoomScreen:NO];
-        }
     }
 
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];

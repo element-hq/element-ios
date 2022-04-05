@@ -54,18 +54,15 @@ final class HomeserverConfigurationBuilder: NSObject {
                                                                         secureBackupSetupMethods: secureBackupSetupMethods)
         
         // Jitsi configuration
-        let jitsiPreferredDomain: String
-        let jitsiServerURL: URL
-        let hardcodedJitsiServerURL: URL = BuildSettings.jitsiServerUrl
+        let jitsiPreferredDomain: String?
+        let jitsiServerURL: URL?
+        let hardcodedJitsiServerURL: URL? = BuildSettings.jitsiServerUrl
         
         if let preferredDomain = vectorWellKnownJitsiConfiguration?.preferredDomain {
             jitsiPreferredDomain = preferredDomain
             jitsiServerURL = self.jitsiServerURL(from: preferredDomain) ?? hardcodedJitsiServerURL
         } else {
-            guard let hardcodedJitsiDomain = hardcodedJitsiServerURL.host else {
-                fatalError("[HomeserverConfigurationBuilder] Fail to get Jitsi domain from hardcoded Jitsi URL")
-            }
-            jitsiPreferredDomain = hardcodedJitsiDomain
+            jitsiPreferredDomain = hardcodedJitsiServerURL?.host
             jitsiServerURL = hardcodedJitsiServerURL
         }
         

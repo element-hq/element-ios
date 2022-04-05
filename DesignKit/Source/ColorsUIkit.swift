@@ -47,7 +47,7 @@ import UIKit
     public let background: UIColor
 
     public let namesAndAvatars: [UIColor]
-
+    
     init(values: ColorValues) {
         accent = values.accent
         alert = values.alert

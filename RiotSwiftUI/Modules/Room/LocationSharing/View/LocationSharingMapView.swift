@@ -33,10 +33,10 @@ struct LocationSharingMapView: UIViewRepresentable {
     let tileServerMapURL: URL
     
     /// Map annotations
-    let annotations: [UserLocationAnnotation]
+    let annotations: [LocationAnnotation]
     
     /// Map annotation to focus on
-    let highlightedAnnotation: UserLocationAnnotation?
+    let highlightedAnnotation: LocationAnnotation?
     
     /// Current user avatar data, used to replace current location annotation view with the user avatar
     let userAvatarData: AvatarInputProtocol?
@@ -46,6 +46,9 @@ struct LocationSharingMapView: UIViewRepresentable {
 
     /// Last user location if `showsUserLocation` has been enabled
     @Binding var userLocation: CLLocationCoordinate2D?
+    
+    /// Coordinate of the center of the map
+    @Binding var mapCenterCoordinate: CLLocationCoordinate2D?
     
     /// Publish view errors if any
     let errorSubject: PassthroughSubject<LocationSharingViewError, Never>
@@ -68,7 +71,7 @@ struct LocationSharingMapView: UIViewRepresentable {
             mapView.setCenter(highlightedAnnotation.coordinate, zoomLevel: Constants.mapZoomLevel, animated: false)
         }
         
-        if self.showsUserLocation {
+        if self.showsUserLocation && mapCenterCoordinate == nil {
             mapView.showsUserLocation = true
             mapView.userTrackingMode = .follow
         } else {
@@ -114,10 +117,12 @@ extension LocationSharingMapView {
         func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
             
             if let userLocationAnnotation = annotation as? UserLocationAnnotation {
-                return UserLocationAnnotatonView(userLocationAnnotation: userLocationAnnotation)
-            } else if annotation is MGLUserLocation, let currentUserAvatarData = locationSharingMapView.userAvatarData {
-                // Replace default current location annotation view with a UserLocationAnnotatonView
-                return UserLocationAnnotatonView(avatarData: currentUserAvatarData)
+                return LocationAnnotatonView(userLocationAnnotation: userLocationAnnotation)
+            } else if let pinLocationAnnotation = annotation as? PinLocationAnnotation {
+                return LocationAnnotatonView(pinLocationAnnotation: pinLocationAnnotation)
+            } else if annotation is MGLUserLocation && locationSharingMapView.mapCenterCoordinate == nil, let currentUserAvatarData = locationSharingMapView.userAvatarData {
+                // Replace default current location annotation view with a UserLocationAnnotatonView when the map is center on user location
+                return LocationAnnotatonView(avatarData: currentUserAvatarData)
             }
 
             return nil
@@ -144,6 +149,16 @@ extension LocationSharingMapView {
             default:
                 break
             }
+        }
+        
+        func mapView(_ mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
+            let mapCenterCoordinate = mapView.centerCoordinate
+            // Prevent this function to set pinLocation when the map is openning
+            guard let userLocation = locationSharingMapView.userLocation,
+                  !userLocation.isEqual(to: mapCenterCoordinate, precision: 0.0000000001) else {
+                return
+            }
+            locationSharingMapView.mapCenterCoordinate = mapCenterCoordinate
         }
     }
 }

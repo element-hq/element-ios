@@ -94,8 +94,7 @@ extension ThreadTableViewCell: Themable {
     
     func update(theme: Theme) {
         self.theme = theme
-        Self.usernameColorGenerator.defaultColor = theme.colors.primaryContent
-        Self.usernameColorGenerator.userNameColors = theme.colors.namesAndAvatars
+        Self.usernameColorGenerator.update(theme: theme)
         updateRootMessageSenderColor()
         rootMessageAvatarView.backgroundColor = .clear
         if let attributedText = rootMessageContentLabel.attributedText {
