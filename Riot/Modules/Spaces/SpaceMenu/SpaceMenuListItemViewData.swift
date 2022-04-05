@@ -25,6 +25,7 @@ enum SpaceMenuListItemAction {
     case addSpace
     case settings
     case leaveSpace
+    case leaveSpaceAndChooseRooms
     case invite
 }
 

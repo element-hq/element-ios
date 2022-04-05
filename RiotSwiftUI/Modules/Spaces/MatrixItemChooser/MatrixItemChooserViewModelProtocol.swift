@@ -20,7 +20,7 @@ protocol MatrixItemChooserViewModelProtocol {
     
     var completion: ((MatrixItemChooserViewModelResult) -> Void)? { get set }
     @available(iOS 14, *)
-    static func makeMatrixItemChooserViewModel(matrixItemChooserService: MatrixItemChooserServiceProtocol, title: String?, detail: String?) -> MatrixItemChooserViewModelProtocol
+    static func makeMatrixItemChooserViewModel(matrixItemChooserService: MatrixItemChooserServiceProtocol, title: String?, detail: String?, selectionHeader: MatrixItemChooserSelectionHeader?) -> MatrixItemChooserViewModelProtocol
     @available(iOS 14, *)
     var context: MatrixItemChooserViewModelType.Context { get }
 }

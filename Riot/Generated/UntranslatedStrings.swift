@@ -14,6 +14,30 @@ public extension VectorL10n {
   static var imagePickerActionFiles: String { 
     return VectorL10n.tr("Untranslated", "image_picker_action_files") 
   }
+  /// Leave space
+  static var leaveSpaceAction: String { 
+    return VectorL10n.tr("Untranslated", "leave_space_action") 
+  }
+  /// Leave space and %@ rooms
+  static func leaveSpaceAndMoreRooms(_ p1: String) -> String {
+    return VectorL10n.tr("Untranslated", "leave_space_and_more_rooms", p1)
+  }
+  /// Leave space and 1 room
+  static var leaveSpaceAndOneRoom: String { 
+    return VectorL10n.tr("Untranslated", "leave_space_and_one_room") 
+  }
+  /// Select all rooms
+  static var leaveSpaceSelectionAllRooms: String { 
+    return VectorL10n.tr("Untranslated", "leave_space_selection_all_rooms") 
+  }
+  /// Select no rooms
+  static var leaveSpaceSelectionNoRooms: String { 
+    return VectorL10n.tr("Untranslated", "leave_space_selection_no_rooms") 
+  }
+  /// SELECT ROOMS
+  static var leaveSpaceSelectionTitle: String { 
+    return VectorL10n.tr("Untranslated", "leave_space_selection_title") 
+  }
   /// Profile picture
   static var onboardingAvatarAccessibilityLabel: String { 
     return VectorL10n.tr("Untranslated", "onboarding_avatar_accessibility_label") 

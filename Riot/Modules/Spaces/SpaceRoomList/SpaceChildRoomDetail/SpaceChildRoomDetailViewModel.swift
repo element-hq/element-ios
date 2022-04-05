@@ -89,7 +89,7 @@ final class SpaceChildRoomDetailViewModel: SpaceChildRoomDetailViewModelType {
     
     private func joinRoom() {
         self.update(viewState: .loading)
-        self.session.joinRoom(self.childInfo.childRoomId) { [weak self] (response) in
+        self.session.joinRoom(self.childInfo.childRoomId, viaServers: nil, withSignUrl: nil) { [weak self] (response) in
             guard let self = self else { return }
             switch response {
             case .success:
