@@ -44,6 +44,8 @@ public class MockRoomSummary: NSObject, MXRoomSummaryProtocol {
     
     public var isConferenceUserRoom: Bool = false
     
+    public var isSipCallRoom: Bool = false
+    
     public var hiddenFromUser: Bool = false
     
     public var storedHash: UInt = 0

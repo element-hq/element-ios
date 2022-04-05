@@ -33,7 +33,8 @@ typedef NS_ENUM(NSInteger, RecentsDataSourceMode)
     RecentsDataSourceModeHome = 1,
     RecentsDataSourceModeFavourites,
     RecentsDataSourceModePeople,
-    RecentsDataSourceModeRooms
+    RecentsDataSourceModeRooms,
+    RecentsDataSourceModeSipCalls
 };
 
 /**
@@ -77,6 +78,7 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
 @property (nonatomic) NSInteger lowPrioritySection;
 @property (nonatomic) NSInteger serverNoticeSection;
 @property (nonatomic) NSInteger suggestedRoomsSection;
+@property (nonatomic) NSInteger callsSection;
 
 @property (nonatomic, readonly) NSInteger totalVisibleItemCount;
 
@@ -94,6 +96,11 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
  Counts for group rooms.
  */
 @property (nonatomic, readonly) DiscussionsCount *groupMissedDiscussionsCount;
+
+/**
+ Counts for call rooms.
+ */
+@property (nonatomic, readonly) DiscussionsCount *callsMissedDiscussionsCount;
 
 @property (nonatomic, readonly) SecureBackupBannerDisplay secureBackupBannerDisplay;
 @property (nonatomic, readonly) CrossSigningBannerDisplay crossSigningBannerDisplay;

@@ -12,6 +12,7 @@
 "title_favourites" = "Favoriten";
 "title_people" = "Personen";
 "title_rooms" = "Räume";
+"title_calls" = "Anrufe";
 "warning" = "Warnung";
 "remove" = "Entferne";
 "start" = "Starte";
@@ -82,6 +83,7 @@
 "room_recents_favourites_section" = "FAVORITEN";
 "room_recents_people_section" = "PERSONEN";
 "room_recents_conversations_section" = "RÄUME";
+"room_recents_calls_section" = "ANRUFE";
 "room_recents_no_conversation" = "Keine Räume";
 "room_recents_low_priority_section" = "NIEDRIGE PRIORITÄT";
 "room_recents_invites_section" = "EINLADUNGEN";
@@ -1245,6 +1247,8 @@
 "rooms_empty_view_title" = "Räume";
 "people_empty_view_information" = "Sicher kommunizieren mit allen. Drücke + um Leute hinzuzufügen.";
 "people_empty_view_title" = "Leute";
+"calls_empty_view_title" = "Anrufe";
+"calls_empty_view_information" = "Eingehende und ausgehende Anrufe werden hier gelistet. Drücke + um einen Anruf von der Wähltastatur zu starten.";
 
 // MARK: - Favourites
 

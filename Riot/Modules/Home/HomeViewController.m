@@ -334,7 +334,11 @@
     {
         return [recentsDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
     }
-    
+    if (indexPath.section == recentsDataSource.callsSection && !recentsDataSource.recentsListService.callRoomListData.counts.numberOfRooms)
+    {
+        return [recentsDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
+    }
+
     TableViewCellWithCollectionView *tableViewCell = [tableView dequeueReusableCellWithIdentifier:TableViewCellWithCollectionView.defaultReuseIdentifier forIndexPath:indexPath];
     tableViewCell.collectionView.tag = indexPath.section;
     [tableViewCell.collectionView registerClass:RoomCollectionViewCell.class forCellWithReuseIdentifier:RoomCollectionViewCell.defaultReuseIdentifier];
@@ -420,6 +424,10 @@
 {
     if ((indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.recentsListService.conversationRoomListData.counts.numberOfRooms)
         || (indexPath.section == recentsDataSource.peopleSection && !recentsDataSource.recentsListService.peopleRoomListData.counts.numberOfRooms))
+    {
+        return [recentsDataSource cellHeightAtIndexPath:indexPath];
+    }
+    else if (indexPath.section == recentsDataSource.callsSection && !recentsDataSource.recentsListService.callRoomListData.counts.numberOfRooms)
     {
         return [recentsDataSource cellHeightAtIndexPath:indexPath];
     }

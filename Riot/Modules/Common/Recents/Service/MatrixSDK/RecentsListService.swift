@@ -40,6 +40,8 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
             return invitedRoomListDataFetcherForPeople
         case .rooms:
             return invitedRoomListDataFetcherForRooms
+        case .sipCalls:
+            return invitedRoomListDataFetcherForCalls
         default:
             return nil
         }
@@ -51,6 +53,8 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
             return directRoomListDataFetcherForHome
         case .people:
             return directRoomListDataFetcherForPeople
+        case .sipCalls:
+            return directRoomListDataFetcherForCalls
         default:
             return nil
         }
@@ -73,9 +77,11 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     private var conversationRoomListDataFetcherForRooms: MXRoomListDataFetcher?
     private var directRoomListDataFetcherForHome: MXRoomListDataFetcher?
     private var directRoomListDataFetcherForPeople: MXRoomListDataFetcher?
+    private var directRoomListDataFetcherForCalls: MXRoomListDataFetcher?
     private var invitedRoomListDataFetcherForHome: MXRoomListDataFetcher?
     private var invitedRoomListDataFetcherForPeople: MXRoomListDataFetcher?
     private var invitedRoomListDataFetcherForRooms: MXRoomListDataFetcher?
+    private var invitedRoomListDataFetcherForCalls: MXRoomListDataFetcher?
 
     //  MARK: - Private
     
@@ -83,7 +89,8 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         .home: [.invited, .favorited, .directHome, .conversationHome, .lowPriority, .serverNotice, .suggested],
         .favourites: [.favorited],
         .people: [.invited, .directPeople],
-        .rooms: [.invited, .conversationRooms, .suggested]
+        .rooms: [.invited, .conversationRooms, .suggested],
+        .sipCalls: [.invited, .sipCalls]
     ]
     
     private var allFetchers: [MXRoomListDataFetcher] {
@@ -91,9 +98,11 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
             invitedRoomListDataFetcherForHome,
             invitedRoomListDataFetcherForPeople,
             invitedRoomListDataFetcherForRooms,
+            invitedRoomListDataFetcherForCalls,
             favoritedRoomListDataFetcher,
             directRoomListDataFetcherForHome,
             directRoomListDataFetcherForPeople,
+            directRoomListDataFetcherForCalls,
             conversationRoomListDataFetcherForHome,
             conversationRoomListDataFetcherForRooms,
             lowPriorityRoomListDataFetcher,
@@ -117,6 +126,9 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
             result.append(fetcher)
         }
         if let fetcher = directRoomListDataFetcherForPeople, fetcherTypes.contains(.directPeople) {
+            result.append(fetcher)
+        }
+        if let fetcher = directRoomListDataFetcherForCalls, fetcherTypes.contains(.sipCalls) {
             result.append(fetcher)
         }
         if let fetcher = conversationRoomListDataFetcherForHome, fetcherTypes.contains(.conversationHome) {
@@ -215,7 +227,11 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         guard shouldShowSuggested else { return nil }
         return suggestedRoomListDataFetcher?.data
     }
-    
+    public var callRoomListData: MXRoomListData? {
+        guard shouldShowCalls else { return nil }
+        return directRoomListDataFetcherForCalls?.data
+    }
+
     public var favoritedMissedDiscussionsCount: DiscussionsCount {
         guard let totalCounts = favoritedRoomListDataFetcher?.data?.counts.total else {
             return .zero
@@ -234,6 +250,13 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         let invitesCount = invitedRoomListDataFetcherForRooms?.data?.counts.total
         let conversationCount = conversationRoomListDataFetcherForRooms?.data?.counts.total
         let totalCounts = [invitesCount, conversationCount].compactMap { $0 }
+        return DiscussionsCount(withRoomListDataCounts: totalCounts)
+    }
+
+    public var callsMissedDiscussionsCount: DiscussionsCount {
+        let invitesCount = invitedRoomListDataFetcherForCalls?.data?.counts.total
+        let callsCount = directRoomListDataFetcherForCalls?.data?.counts.total
+        let totalCounts = [invitesCount, callsCount].compactMap { $0 }
         return DiscussionsCount(withRoomListDataCounts: totalCounts)
     }
     
@@ -288,9 +311,11 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         invitedRoomListDataFetcherForHome = nil
         invitedRoomListDataFetcherForPeople = nil
         invitedRoomListDataFetcherForRooms = nil
+        invitedRoomListDataFetcherForCalls = nil
         favoritedRoomListDataFetcher = nil
         directRoomListDataFetcherForHome = nil
         directRoomListDataFetcherForPeople = nil
+        directRoomListDataFetcherForCalls = nil
         conversationRoomListDataFetcherForHome = nil
         conversationRoomListDataFetcherForRooms = nil
         lowPriorityRoomListDataFetcher = nil
@@ -413,6 +438,10 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         return fetcherTypesForMode[mode]?.contains(.suggested) ?? false
     }
     
+    private var shouldShowCalls: Bool {
+        return fetcherTypesForMode[mode]?.contains(.sipCalls) ?? false
+    }
+
     private func fetcher(forSection section: RecentsListServiceSection) -> MXRoomListDataFetcher? {
         switch section {
         case .invited:
@@ -421,6 +450,8 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
             return favoritedRoomListDataFetcher
         case .people:
             return directRoomListDataFetcher
+        case .sipCalls:
+            return directRoomListDataFetcherForCalls
         case .conversation:
             return conversationRoomListDataFetcher
         case .lowPriority:
@@ -439,6 +470,8 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
             return .favorited
         } else if fetcher === directRoomListDataFetcher {
             return .people
+        } else if fetcher === directRoomListDataFetcherForCalls {
+            return .sipCalls
         } else if fetcher === conversationRoomListDataFetcher {
             return .conversation
         } else if fetcher === lowPriorityRoomListDataFetcher {
@@ -492,6 +525,14 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         return fetcher
     }
     
+    private func createInvitedRoomListDataFetcherForCalls() -> MXRoomListDataFetcher {
+        let fetcher = createCommonRoomListDataFetcher(withDataTypes: [.invited, .sipCall], paginate: false, strictMatches: true)
+        updateInvitedFetcher(fetcher, for: .sipCalls)
+        fetcher.addDelegate(self)
+        fetcher.paginate()
+        return fetcher
+    }
+    
     private func createDirectRoomListDataFetcherForHome() -> MXRoomListDataFetcher {
         let fetcher = createCommonRoomListDataFetcher(withDataTypes: [.direct], paginate: false)
         updateDirectFetcher(fetcher, for: .home)
@@ -508,6 +549,14 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         return fetcher
     }
     
+    private func createDirectRoomListDataFetcherForCalls() -> MXRoomListDataFetcher {
+        let fetcher = createCommonRoomListDataFetcher(withDataTypes: [.sipCall], paginate: false)
+        updateDirectFetcher(fetcher, for: .sipCalls)
+        fetcher.addDelegate(self)
+        fetcher.paginate()
+        return fetcher
+    }
+
     private func createConversationRoomListDataFetcherForHome() -> MXRoomListDataFetcher {
         let fetcher = createCommonRoomListDataFetcher(withDataTypes: [], paginate: false)
         updateConversationFetcher(fetcher, for: .home)
@@ -539,10 +588,12 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
             invitedRoomListDataFetcherForHome = createCommonRoomListDataFetcher(withDataTypes: [.invited])
             invitedRoomListDataFetcherForPeople = createInvitedRoomListDataFetcherForPeople()
             invitedRoomListDataFetcherForRooms = createInvitedRoomListDataFetcherForRooms()
+            invitedRoomListDataFetcherForCalls = createInvitedRoomListDataFetcherForCalls()
         }
         favoritedRoomListDataFetcher = createCommonRoomListDataFetcher(withDataTypes: [.favorited])
         directRoomListDataFetcherForHome = createDirectRoomListDataFetcherForHome()
         directRoomListDataFetcherForPeople = createDirectRoomListDataFetcherForPeople()
+        directRoomListDataFetcherForCalls = createDirectRoomListDataFetcherForCalls()
         conversationRoomListDataFetcherForHome = createConversationRoomListDataFetcherForHome()
         conversationRoomListDataFetcherForRooms = createConversationRoomListDataFetcherForRooms()
         lowPriorityRoomListDataFetcher = createCommonRoomListDataFetcher(withDataTypes: [.lowPriority])
@@ -557,9 +608,12 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         var notDataTypes: MXRoomSummaryDataTypes = [.hidden, .conferenceUser, .space, .invited, .lowPriority]
             switch mode {
             case .home:
-                notDataTypes.insert(.favorited)
+                notDataTypes.insert([.favorited, .sipCall])
                 fetcher.fetchOptions.filterOptions.notDataTypes = notDataTypes
             case .people:
+                notDataTypes.insert([.sipCall])
+                fetcher.fetchOptions.filterOptions.notDataTypes = notDataTypes
+            case .sipCalls:
                 fetcher.fetchOptions.filterOptions.notDataTypes = notDataTypes
             default:
                 break
@@ -570,9 +624,12 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         var notDataTypes: MXRoomSummaryDataTypes = [.hidden, .conferenceUser, .lowPriority, .serverNotice, .space]
         switch mode {
         case .people:
+            notDataTypes.insert([.sipCall])
             fetcher.fetchOptions.filterOptions.notDataTypes = notDataTypes
         case .rooms:
-            notDataTypes.insert([.direct])
+            notDataTypes.insert([.direct, .sipCall])
+            fetcher.fetchOptions.filterOptions.notDataTypes = notDataTypes
+        case .sipCalls:
             fetcher.fetchOptions.filterOptions.notDataTypes = notDataTypes
         default:
             break
@@ -650,8 +707,9 @@ private struct FetcherTypes: OptionSet {
     static let lowPriority = FetcherTypes(rawValue: 1 << 6)
     static let serverNotice = FetcherTypes(rawValue: 1 << 7)
     static let suggested = FetcherTypes(rawValue: 1 << 8)
+    static let sipCalls = FetcherTypes(rawValue: 1 << 9)
 
     static let none: FetcherTypes = []
     static let all: FetcherTypes = [
-        .invited, .favorited, .directHome, .directPeople, .conversationHome, .conversationRooms, .lowPriority, .serverNotice, .suggested]
+        .invited, .favorited, .directHome, .directPeople, .sipCalls, .conversationHome, .conversationRooms, .lowPriority, .serverNotice, .suggested]
 }

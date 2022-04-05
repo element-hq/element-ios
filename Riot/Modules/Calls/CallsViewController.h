@@ -14,16 +14,24 @@
 // limitations under the License.
 //
 
-import Foundation
+#ifndef CallsViewController_h
+#define CallsViewController_h
 
-@objc
-public enum RecentsListServiceSection: Int {
-    case invited
-    case favorited
-    case people
-    case sipCalls
-    case conversation
-    case lowPriority
-    case serverNotice
-    case suggested
-}
+#import "RecentsViewController.h"
+
+/**
+ 'CallsViewController' instance is used to display/filter the direct rooms and a list of contacts.
+ */
+@interface CallsViewController : RecentsViewController
+
++ (instancetype)instantiate;
+
+/**
+ Scroll the next room with missed notifications to the top.
+ */
+- (void)scrollToNextRoomWithMissedNotifications;
+
+@end
+
+
+#endif /* CallsViewController_h */

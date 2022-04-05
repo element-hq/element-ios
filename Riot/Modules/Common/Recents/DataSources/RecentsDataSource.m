@@ -36,6 +36,7 @@
 #define RECENTSDATASOURCE_SECTION_SERVERNOTICE  0x20
 #define RECENTSDATASOURCE_SECTION_PEOPLE        0x40
 #define RECENTSDATASOURCE_SECTION_SUGGESTED     0x80
+#define RECENTSDATASOURCE_SECTION_CALLS       0x0100
 
 #define RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT     30.0
 
@@ -63,7 +64,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 @end
 
 @implementation RecentsDataSource
-@synthesize directorySection, invitesSection, favoritesSection, peopleSection, conversationSection, lowPrioritySection, serverNoticeSection, suggestedRoomsSection, secureBackupBannerSection, crossSigningBannerSection;
+@synthesize directorySection, invitesSection, favoritesSection, peopleSection, conversationSection, lowPrioritySection, serverNoticeSection, suggestedRoomsSection, secureBackupBannerSection, crossSigningBannerSection, callsSection;
 @synthesize hiddenCellIndexPath, droppingCellIndexPath, droppingCellBackGroundView;
 
 - (instancetype)initWithMatrixSession:(MXSession *)mxSession
@@ -112,6 +113,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     lowPrioritySection = -1;
     serverNoticeSection = -1;
     suggestedRoomsSection = -1;
+    callsSection = -1;
 }
 
 #pragma mark - Properties
@@ -144,6 +146,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 {
     return self.recentsListService.suggestedRoomListData.rooms;
 }
+- (NSArray<id<MXRoomSummaryProtocol>> *)callCellDataArray
+{
+    return self.recentsListService.callRoomListData.rooms;
+}
 
 - (NSInteger)totalVisibleItemCount
 {
@@ -163,6 +169,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 - (DiscussionsCount *)groupMissedDiscussionsCount
 {
     return self.recentsListService.conversationMissedDiscussionsCount;
+}
+
+- (DiscussionsCount *)callsMissedDiscussionsCount
+{
+    return self.recentsListService.callsMissedDiscussionsCount;
 }
 
 #pragma mark -
@@ -518,6 +529,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         {
             suggestedRoomsSection = sectionsCount++;
         }
+        
+        if (self.callCellDataArray.count > 0)
+        {
+            callsSection = sectionsCount++;
+        }
     }
     
     return sectionsCount;
@@ -574,7 +590,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         count = self.suggestedRoomCellDataArray.count;
     }
-    
+    else if (section == callsSection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_CALLS))
+    {
+        count = self.callCellDataArray.count;
+    }
+
     // Adjust this count according to the potential dragged cell.
     if ([self isMovingCellSection:section])
     {
@@ -660,6 +680,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         count = self.recentsListService.suggestedRoomListData.counts.total.numberOfRooms;
         title = [VectorL10n roomRecentsSuggestedRoomsSection];
     }
+    else if (section == callsSection)
+    {
+        count = self.callCellDataArray.count;
+        title = [VectorL10n roomRecentsCallsSection];
+    }
     
     if (count && !(section == invitesSection))
     {
@@ -717,6 +742,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     else if (section == suggestedRoomsSection)
     {
         counts = self.recentsListService.suggestedRoomListData.counts;
+    }
+    else if (section == callsSection)
+    {
+        counts = self.recentsListService.callRoomListData.counts;
     }
 
     // Invites are counted as highlights for the badge view display.
@@ -810,6 +839,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         else if (section == suggestedRoomsSection)
         {
             sectionBitwise = RECENTSDATASOURCE_SECTION_SUGGESTED;
+        }
+        else if (section == callsSection)
+        {
+            sectionBitwise = RECENTSDATASOURCE_SECTION_CALLS;
         }
     }
     
@@ -944,7 +977,30 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         
         return tableViewCell;
     }
-    
+    else if (indexPath.section == callsSection && !self.callCellDataArray.count)
+    {
+        MXKTableViewCell *tableViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+        if (!tableViewCell)
+        {
+            tableViewCell = [[MXKTableViewCell alloc] init];
+            tableViewCell.textLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
+            tableViewCell.textLabel.font = [UIFont systemFontOfSize:15.0];
+            tableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        
+        // Check whether a search session is in progress
+        if (self.searchPatternsList)
+        {
+            tableViewCell.textLabel.text = [VectorL10n searchNoResult];
+        }
+        else
+        {
+            tableViewCell.textLabel.text = [VectorL10n roomRecentsNoConversation];
+        }
+        
+        return tableViewCell;
+    }
+
     return [super tableView:tableView cellForRowAtIndexPath:indexPath];
 }
 
@@ -1013,7 +1069,14 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             summary = self.suggestedRoomCellDataArray[cellDataIndex];
         }
     }
-    
+    else if (tableSection == callsSection)
+    {
+        if (cellDataIndex < self.callCellDataArray.count)
+        {
+            summary = self.callCellDataArray[cellDataIndex];
+        }
+    }
+
     if (summary)
     {
         return [[MXKRecentCellData alloc] initWithRoomSummary:summary dataSource:self];
@@ -1036,7 +1099,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         return 50.0;
     }
-    
+    if (indexPath.section == callsSection && !self.callCellDataArray.count)
+    {
+        return 50.0;
+    }
+
     // Override this method here to use our own cellDataAtIndexPath
     id<MXKRecentCellDataStoring> cellData = [self cellDataAtIndexPath:indexPath];
     
@@ -1185,6 +1252,21 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             indexPath = [NSIndexPath indexPathForRow:index inSection:serverNoticeSection];
         }
     }
+    
+    if (!indexPath && (callsSection >= 0))
+    {
+        index = [self cellIndexPosWithRoomId:roomId andMatrixSession:matrixSession within:self.callCellDataArray];
+
+        if (index != NSNotFound)
+        {
+            // Check whether the low priority rooms are shrinked
+            if (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_CALLS)
+            {
+                return nil;
+            }
+            indexPath = [NSIndexPath indexPathForRow:index inSection:callsSection];
+        }
+    }
 
     return indexPath;
 }
@@ -1308,6 +1390,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 - (BOOL)isDraggableCellAt:(NSIndexPath*)path
 {
     if (_recentsDataSourceMode == RecentsDataSourceModePeople || _recentsDataSourceMode == RecentsDataSourceModeRooms)
+    {
+        return NO;
+    }
+    if (_recentsDataSourceMode == RecentsDataSourceModeSipCalls)
     {
         return NO;
     }
