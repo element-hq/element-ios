@@ -2149,3 +2149,8 @@
 "attachment_unsupported_preview_title" = "Prévisualisation impossible";
 "room_displayname_all_other_members_left" = "%@ (Quitté)";
 "message_reply_to_sender_sent_their_location" = "a partagé sa localisation.";
+"settings_labs_use_only_latest_user_avatar_and_name" = "Afficher le dernier avatar et nom des utilisateurs dans l’historique de messages";
+"room_participants_leave_success" = "Parti du salon";
+"room_participants_leave_processing" = "Départ";
+"notice_error_unformattable_event" = "** Impossible d’afficher le message. Merci de signaler une erreur";
+"home_syncing" = "Synchronisation";
