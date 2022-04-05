@@ -1,7 +1,7 @@
 source 'https://cdn.cocoapods.org/'
 
 # Uncomment this line to define a global platform for your project
-platform :ios, '12.1'
+platform :ios, '13.0'
 
 # Use frameworks to allow usage of pods written in Swift
 use_frameworks!
@@ -57,6 +57,7 @@ end
 
 def import_SwiftUI_pods
     pod 'Introspect', '~> 0.1'
+    pod 'DSBottomSheet', '~> 0.3'
 end
 
 abstract_target 'RiotPods' do
