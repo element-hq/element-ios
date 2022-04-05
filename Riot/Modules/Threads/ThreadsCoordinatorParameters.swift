@@ -33,13 +33,17 @@ struct ThreadsCoordinatorParameters {
     /// The navigation router that manage physical navigation
     let navigationRouter: NavigationRouterType
     
+    let userIndicatorPresenter: UserIndicatorTypePresenterProtocol
+    
     init(session: MXSession,
          roomId: String,
          threadId: String?,
+         userIndicatorPresenter: UserIndicatorTypePresenterProtocol,
          navigationRouter: NavigationRouterType? = nil) {
         self.session = session
         self.roomId = roomId
         self.threadId = threadId
+        self.userIndicatorPresenter = userIndicatorPresenter
         self.navigationRouter = navigationRouter ?? NavigationRouter(navigationController: RiotNavigationController())
     }
 }

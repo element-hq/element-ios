@@ -1,3 +1,59 @@
+## Changes in 1.8.11 (2022-04-05)
+
+✨ Features
+
+- RoomViewController: Display threads notice if not displayed before. ([#5770](https://github.com/vector-im/element-ios/issues/5770))
+- Addded support for Apple context menus in matrix items list screens ([#5953](https://github.com/vector-im/element-ios/issues/5953))
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.23.2](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.23.2)).
+- Threads: Strip `ìn reply to` from thread summaries and latest messages. ([#5488](https://github.com/vector-im/element-ios/issues/5488))
+- Room: New loading indicators when joining room ([#5604](https://github.com/vector-im/element-ios/issues/5604))
+- Room: New loading indicators when creating a room ([#5606](https://github.com/vector-im/element-ios/issues/5606))
+- Location Sharing: Update UI on location sharing view ([#5720](https://github.com/vector-im/element-ios/issues/5720))
+- Update suggested room preview to behave the same way in all cases ([#5771](https://github.com/vector-im/element-ios/issues/5771))
+- RoomViewController: Enable thread menu option and display opt-in screen if threads disabled. ([#5772](https://github.com/vector-im/element-ios/issues/5772))
+- Add "Invite people" to the space menu in the left panel and update menu order ([#5810](https://github.com/vector-im/element-ios/issues/5810))
+- Allow empty Jitsi default URL in BuildSettings ([#5837](https://github.com/vector-im/element-ios/issues/5837))
+- Location sharing: Add the ability for the user to share static location of a pin anywhere on the map ([#5858](https://github.com/vector-im/element-ios/issues/5858))
+- Restrict UI components on authentication screen to readable width ([#5898](https://github.com/vector-im/element-ios/issues/5898))
+
+🐛 Bugfixes
+
+- Fixed the regular expression used for link detection in attributed strings. ([#5926](https://github.com/vector-im/element-ios/pull/5926))
+- Jitsi: fix app not leaving call when widget is removed ([#1575](https://github.com/vector-im/element-ios/issues/1575))
+- Space preview shows wrong number of members ([#4842](https://github.com/vector-im/element-ios/issues/4842))
+- Room: Enable joining a room via identifier from another home server ([#4858](https://github.com/vector-im/element-ios/issues/4858))
+- MXKRoomDataSource: Fix retain cycle ([#5058](https://github.com/vector-im/element-ios/issues/5058))
+- Sync Spaces order with web ([#5134](https://github.com/vector-im/element-ios/issues/5134))
+- Fix “It is not possible to join an empty room” on some suggested rooms. ([#5170](https://github.com/vector-im/element-ios/issues/5170))
+- Fixed "Add Space" error message ([#5797](https://github.com/vector-im/element-ios/issues/5797))
+- RoomDataSource: Reload thread data source without notifying the screen for the first reply. ([#5838](https://github.com/vector-im/element-ios/issues/5838))
+- VoiceMessagePlainCell: Fix cell height by adding missing thread summary displayable conformance. ([#5870](https://github.com/vector-im/element-ios/issues/5870))
+- Authentication: Ensure the login button is always visible ([#5875](https://github.com/vector-im/element-ios/issues/5875))
+- Threads: Tweaks for design review. ([#5878](https://github.com/vector-im/element-ios/issues/5878))
+- Search: prevent crash when searching for rooms ([#5883](https://github.com/vector-im/element-ios/issues/5883))
+- Room: Fix typing performance by avoiding expensive UI operations ([#5906](https://github.com/vector-im/element-ios/issues/5906))
+- The "Swipe to see all rooms" hint is sometimes presented at the wrong time ([#5911](https://github.com/vector-im/element-ios/issues/5911))
+- Push notifications: show space preview if user taps invite notification ([#5915](https://github.com/vector-im/element-ios/issues/5915))
+- Fix session handling of the call presenter. ([#5938](https://github.com/vector-im/element-ios/issues/5938))
+- m.room.join_rules not properly set for private access ([#5943](https://github.com/vector-im/element-ios/issues/5943))
+- Fix for app occasionally getting stuck during launch after Login/Register. ([#5948](https://github.com/vector-im/element-ios/issues/5948))
+
+⚠️ API Changes
+
+- Remove unused Bindings in RoundedBorderTextField/Editor ([#5910](https://github.com/vector-im/element-ios/pull/5910))
+
+🗣 Translations
+
+- Translations: Enable all languages rather than waiting for an 80% translation. RTL languages are still disabled due to layout and formatting bugs. ([#5935](https://github.com/vector-im/element-ios/issues/5935))
+
+🚧 In development 🚧
+
+- Onboarding: Add celebration screen after display name and avatar screens. ([#5651](https://github.com/vector-im/element-ios/issues/5651))
+
+
 ## Changes in 1.8.10 (2022-03-31)
 
 🐛 Bugfixes

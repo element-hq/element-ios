@@ -2136,3 +2136,5 @@
 "home_syncing" = "Szinkronizálás";
 "room_participants_leave_success" = "Szobából kilépve";
 "room_participants_leave_processing" = "Távozás";
+"notice_error_unformattable_event" = "** Az üzenetet nem lehet megjeleníteni. Kérlek jelezd ezt a hibát";
+"settings_labs_use_only_latest_user_avatar_and_name" = "A felhasználó jelenlegi profilképének és nevének megjelenítése a régi üzeneteknél is";

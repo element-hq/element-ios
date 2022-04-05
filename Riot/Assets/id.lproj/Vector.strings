@@ -298,7 +298,7 @@
 "emoji_picker_flags_category" = "Bendera";
 "emoji_picker_symbols_category" = "Simbol";
 "emoji_picker_objects_category" = "Benda";
-"emoji_picker_activity_category" = "Aktifitas";
+"emoji_picker_activity_category" = "Aktivitas";
 
 // MARK: Emoji picker
 "emoji_picker_title" = "Reaksi";
@@ -1859,7 +1859,7 @@
 "login_error_resource_limit_exceeded_title" = "Melebihi Batas Sumber";
 "login_desktop_device" = "Desktop";
 "login_tablet_device" = "Tablet";
-"login_mobile_device" = "Mobile";
+"login_mobile_device" = "Ponsel";
 "login_error_forgot_password_is_not_supported" = "Lupa kata sandi saat ini belum didukung";
 "register_error_title" = "Pendaftaran Gagal";
 "login_invalid_param" = "Parameter tidak valid";
@@ -1947,7 +1947,7 @@
 "notification_settings_per_sender_notifications" = "Notifikasi per pengirim";
 "notification_settings_per_room_notifications" = "Notifikasi per ruangan";
 "notification_settings_custom_sound" = "Suara kustom";
-"notification_settings_highlight" = "Highlight";
+"notification_settings_highlight" = "Sorotan";
 "notification_settings_word_to_match" = "kata untuk dicocokkan";
 "notification_settings_never_notify" = "Jangan diberitahu";
 "notification_settings_always_notify" = "Selalu diberitahu";
@@ -2333,3 +2333,5 @@
 "home_syncing" = "Menyinkronkan";
 "room_participants_leave_success" = "Telah keluar dari ruangan";
 "room_participants_leave_processing" = "Meninggalkan";
+"notice_error_unformattable_event" = "** Tidak dapat memuat pesan. Mohon laporkan sebuah kutu";
+"settings_labs_use_only_latest_user_avatar_and_name" = "Tampilkan avatar dan nama terkini untuk pengguna di riwayat pesan";

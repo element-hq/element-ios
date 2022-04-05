@@ -22,11 +22,29 @@ class MediaCompressionHelper: NSObject {
     /// and the `showMediaCompressionPrompt` Riot setting.
     @objc static var defaultCompressionMode: MXKRoomInputToolbarCompressionMode {
         // When the compression mode build setting hasn't been customised, use the media compression prompt setting to determine what to do.
-        if BuildSettings.roomInputToolbarCompressionMode == MXKRoomInputToolbarCompressionModePrompt {
+        if BuildSettings.roomInputToolbarCompressionMode == .prompt {
             return RiotSettings.shared.showMediaCompressionPrompt ? MXKRoomInputToolbarCompressionModePrompt : MXKRoomInputToolbarCompressionModeNone
         } else {
             // Otherwise use the compression mode defined in the build settings.
-            return BuildSettings.roomInputToolbarCompressionMode
+            return BuildSettings.roomInputToolbarCompressionMode.mxkCompressionMode
+        }
+    }
+}
+
+extension BuildSettings.MediaCompressionMode {
+    /// The compression mode as an `MXKRoomInputToolbarCompressionMode` value.
+    var mxkCompressionMode: MXKRoomInputToolbarCompressionMode {
+        switch self {
+        case .prompt:
+            return MXKRoomInputToolbarCompressionModePrompt
+        case .small:
+            return MXKRoomInputToolbarCompressionModeSmall
+        case .medium:
+            return MXKRoomInputToolbarCompressionModeMedium
+        case .large:
+            return MXKRoomInputToolbarCompressionModeLarge
+        case .none:
+            return MXKRoomInputToolbarCompressionModeNone
         }
     }
 }

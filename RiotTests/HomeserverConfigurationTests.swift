@@ -74,7 +74,7 @@ class HomeserverConfigurationTests: XCTestCase {
         let homeserverConfiguration = homeserverConfigurationBuilder.build(from: wellKnown)
     
         XCTAssertEqual(homeserverConfiguration.jitsi.serverDomain, expectedJitsiServer)
-        XCTAssertEqual(homeserverConfiguration.jitsi.serverURL.absoluteString, expectedJitsiServerStringURL)
+        XCTAssertEqual(homeserverConfiguration.jitsi.serverURL?.absoluteString, expectedJitsiServerStringURL)
         XCTAssertEqual(homeserverConfiguration.encryption.isE2EEByDefaultEnabled, expectedE2EEEByDefaultEnabled)
         XCTAssertEqual(homeserverConfiguration.encryption.isSecureBackupRequired, expectedSecureBackupRequired)
         XCTAssertEqual(homeserverConfiguration.encryption.secureBackupSetupMethods, expectedSecureBackupSetupMethods)

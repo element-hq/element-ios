@@ -61,7 +61,7 @@ static NSRegularExpression *htmlTagsRegex;
         eventIdRegex = [NSRegularExpression regularExpressionWithPattern:kMXToolsRegexStringForMatrixEventIdentifier options:NSRegularExpressionCaseInsensitive error:nil];
         groupIdRegex = [NSRegularExpression regularExpressionWithPattern:kMXToolsRegexStringForMatrixGroupIdentifier options:NSRegularExpressionCaseInsensitive error:nil];
         
-        httpLinksRegex = [NSRegularExpression regularExpressionWithPattern:@"(?i)\\b(https?://.*)\\b" options:NSRegularExpressionCaseInsensitive error:nil];
+        httpLinksRegex = [NSRegularExpression regularExpressionWithPattern:@"(?i)\\b(https?://\\S*)\\b" options:NSRegularExpressionCaseInsensitive error:nil];
         htmlTagsRegex  = [NSRegularExpression regularExpressionWithPattern:@"<(\\w+)[^>]*>" options:NSRegularExpressionCaseInsensitive error:nil];        
     });
 }

@@ -118,11 +118,11 @@ struct AnalyticsPrompt: View {
                         .padding(.top, 50)
                         .padding(.horizontal, horizontalPadding)
                 }
-                .frame(maxWidth: OnboardingConstants.maxContentWidth)
+                .frame(maxWidth: OnboardingMetrics.maxContentWidth)
                 .frame(maxWidth: .infinity)
                 
                 buttons
-                    .frame(maxWidth: OnboardingConstants.maxContentWidth)
+                    .frame(maxWidth: OnboardingMetrics.maxContentWidth)
                     .padding(.horizontal, horizontalPadding)
                     .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
             }

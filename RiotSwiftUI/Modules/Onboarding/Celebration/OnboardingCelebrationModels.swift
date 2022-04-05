@@ -14,10 +14,12 @@
 // limitations under the License.
 //
 
-import CoreGraphics
+import Foundation
 
-/// Constants used across the entire onboarding flow.
-struct OnboardingConstants {
-    static let maxContentWidth: CGFloat = 600
-    static let maxContentHeight: CGFloat = 750
+// MARK: View
+
+struct OnboardingCelebrationViewState: BindableState { }
+
+enum OnboardingCelebrationViewAction {
+    case complete
 }

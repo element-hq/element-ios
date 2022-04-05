@@ -67,5 +67,4 @@ public protocol Colors {
     /// - Names in chat timeline
     /// - Avatars default states that include first name letter
     var namesAndAvatars: [ColorType] { get }
-    
 }

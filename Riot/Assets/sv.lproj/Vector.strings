@@ -2068,3 +2068,8 @@
 "attachment_unsupported_preview_title" = "Kunde inte förhandsgranska";
 "room_displayname_all_other_members_left" = "%@ (Kvar)";
 "message_reply_to_sender_sent_their_location" = "har delat sin plats.";
+"notice_error_unformattable_event" = "** Kunde inte rendera meddelande. Vänligen rapportera en bugg";
+"home_syncing" = "Synkar";
+"settings_labs_use_only_latest_user_avatar_and_name" = "Visa senaste avatar och namn för användare i meddelandehistoriken";
+"room_participants_leave_success" = "Lämnade rummet";
+"room_participants_leave_processing" = "Lämnar";

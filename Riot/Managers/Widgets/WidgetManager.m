@@ -278,6 +278,13 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     NSString *widgetId = [NSString stringWithFormat:@"%@_%@_%@", kWidgetTypeJitsiV1, room.mxSession.myUser.userId, @((uint64_t)([[NSDate date] timeIntervalSince1970] * 1000))];
     
     NSURL *preferredJitsiServerUrl = [room.mxSession vc_homeserverConfiguration].jitsi.serverURL;
+    
+    if (!preferredJitsiServerUrl)
+    {
+        MXLogDebug(@"[WidgetManager] createJitsiWidgetInRoom: Error: No Jitsi server URL provided");
+        failure(self.errorForUnavailableJitsiURL);
+        return nil;
+    }
 
     JitsiService *jitsiService = JitsiService.shared;
     
@@ -805,6 +812,13 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     return [NSError errorWithDomain:WidgetManagerErrorDomain
                                code:WidgetManagerErrorCodeDisabledIntegrationsServer
                            userInfo:@{NSLocalizedDescriptionKey: [VectorL10n widgetIntegrationManagerDisabled]}];
+}
+
+- (NSError*)errorForUnavailableJitsiURL
+{
+    return [NSError errorWithDomain:WidgetManagerErrorDomain
+                               code:WidgetManagerErrorCodeUnavailableJitsiURL
+                           userInfo:@{NSLocalizedDescriptionKey: VectorL10n.callJitsiUnableToStart}];
 }
 
 @end

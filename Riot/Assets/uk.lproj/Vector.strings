@@ -2330,3 +2330,5 @@
 "home_syncing" = "Синхронізація";
 "room_participants_leave_success" = "Вихід успішний";
 "room_participants_leave_processing" = "Вихід триває";
+"notice_error_unformattable_event" = "** Неможливо показати повідомлення. Надішліть звіт про помилку";
+"settings_labs_use_only_latest_user_avatar_and_name" = "Показувати останній аватар та ім'я для користувачів у історії повідомлень";
