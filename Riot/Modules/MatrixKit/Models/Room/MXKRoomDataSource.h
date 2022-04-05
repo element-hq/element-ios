@@ -353,9 +353,16 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
 - (void)limitMemoryUsage:(NSInteger)maxBubbleNb;
 
 /**
- Force data reload.
+ Force data reload. Calls `reloadNotifying` with `YES`.
  */
 - (void)reload;
+
+/**
+ Force data reload.
+
+ @param notify Flag to notify the delegate about the changes.
+ */
+- (void)reloadNotifying:(BOOL)notify;
 
 /**
  Called when room property changed. Designed to be used by subclasses.
