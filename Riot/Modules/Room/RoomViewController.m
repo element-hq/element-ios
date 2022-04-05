@@ -7440,8 +7440,6 @@ static CGSize kThreadListBarButtonItemImageSize;
     MXWeakify(self);
     [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:^{
         MXStrongifyAndReturnIfNil(self);
-        RiotSettings.shared.enableThreads = YES;
-        MXSDKOptions.sharedInstance.enableThreads = YES;
         [self cancelEventSelection];
         [self.roomDataSource reload];
         [self openThreadWithId:coordinatorBridgePresenter.threadId];
