@@ -2442,3 +2442,57 @@
 "room_access_settings_screen_upgrade_alert_upgrading" = "Поліпшення кімнати";
 "room_access_settings_screen_upgrade_alert_upgrade_button" = "Поліпшити";
 "room_access_settings_screen_upgrade_alert_auto_invite_switch" = "Автоматично запросити учасників до нової кімнати";
+"room_access_settings_screen_upgrade_alert_title" = "Покращити кімнату";
+"room_access_settings_screen_public_message" = "Будь-хто може знайти й приєднатися.";
+"room_access_settings_screen_edit_spaces" = "Редагувати простори";
+"room_access_settings_screen_upgrade_required" = "Покращення обов'язкове";
+"room_access_settings_screen_restricted_message" = "Дозвольте всім у просторі знаходити й приєднуватися.\nВас буде запитано підтвердити з яких саме просторів.";
+"room_access_settings_screen_private_message" = "Лише запрошені люди можуть знайти й приєднатися.";
+"room_access_settings_screen_message" = "Визначте, хто може знайти й приєднатися до %@.";
+"room_access_settings_screen_title" = "Хто має доступ до кімнати?";
+
+// Room Access Settings
+"room_access_settings_screen_nav_title" = "Доступ до кімнати";
+"room_details_promote_room_suggest_title" = "Порадити учасникам простору";
+"room_details_promote_room_title" = "Рекламувати кімнату";
+"room_details_access_row_title" = "Доступ";
+"settings_labs_enable_auto_report_decryption_errors" = "Автозвіт про помилки розшифрування";
+"room_preview_decline_invitation_options" = "Бажаєте відкласти запрошення або знехтувати користувача?";
+"threads_beta_cancel" = "Не зараз";
+"threads_beta_enable" = "Спробувати";
+"threads_beta_information_link" = "Докладніше";
+"threads_beta_information" = "Спілкуйтеся у тредах.\n\nТреди допомагають розмежовувати свої розмови за темами та легко стежити за ними. ";
+"threads_beta_title" = "Треди";
+"threads_notice_done" = "Зрозуміло";
+"threads_notice_information" = "Усі треди, створені в експериментальному режимі, буде <b>показано звичайними відповідями</b>.<br/><br/>Це буде одноразовим переходом, оскільки треди зараз є частиною специфікації Matrix.";
+"threads_notice_title" = "Треди більше не експериментальна функція 🎉";
+"room_participants_invite_prompt_to_msg" = "Ви впевнені, що хочете запросити %@ до %@?";
+"onboarding_celebration_button" = "Поїхали";
+"onboarding_celebration_message" = "Ваші налаштування збережено.";
+"onboarding_celebration_title" = "Усе налаштовано!";
+"onboarding_avatar_accessibility_label" = "Зображення профілю";
+"onboarding_avatar_message" = "Ви можете змінити його будь-коли.";
+"onboarding_avatar_title" = "Додати зображення профілю";
+"onboarding_display_name_max_length" = "Ваше показуване ім'я повинно складатися з менш ніж 256 символів";
+"onboarding_display_name_hint" = "Ви можете змінити його пізніше";
+"onboarding_display_name_placeholder" = "Показуване ім'я";
+"onboarding_display_name_message" = "Його буде показано у надісланих повідомленнях.";
+"onboarding_display_name_title" = "Виберіть показуване ім'я";
+"onboarding_personalization_skip" = "Пропустити цей крок";
+"onboarding_personalization_save" = "Зберегти й продовжити";
+"onboarding_congratulations_home_button" = "На головну";
+"onboarding_congratulations_personalize_button" = "Персоналізувати профіль";
+/* The placeholder string contains the user's matrix ID */
+"onboarding_congratulations_message" = "Ваш обліковий запис %@ створено.";
+"onboarding_congratulations_title" = "Вітаємо!";
+"saving" = "Збереження";
+
+// Activities
+"loading" = "Завантаження";
+"edit" = "Змінити";
+"suggest" = "Порадити";
+"add" = "Додати";
+"existing" = "Наявне";
+"new_word" = "Нове";
+"stop" = "Зупинити";
+"joining" = "Приєднання";
