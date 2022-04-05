@@ -121,7 +121,9 @@
         if (!mxDirectUserPresenceObserver && self.mxRoom.isDirect)
         {
             // Observe contact presence change
+            MXWeakify(self);
             mxDirectUserPresenceObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKContactManagerMatrixUserPresenceChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+                MXStrongifyAndReturnIfNil(self);
                 
                 NSString* directUserId = self.mxRoom.directUserId;
                 
