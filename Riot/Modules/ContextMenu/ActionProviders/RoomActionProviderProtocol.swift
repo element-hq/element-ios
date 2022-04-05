@@ -1,5 +1,5 @@
 // 
-// Copyright 2021 New Vector Ltd
+// Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,24 +15,10 @@
 //
 
 import Foundation
-import Mapbox
 
-class UserLocationAnnotation: NSObject, MGLAnnotation {
-    
-    // MARK: - Properties
-    
-    let avatarData: AvatarInputProtocol
-    
-    let coordinate: CLLocationCoordinate2D
-    
-    // MARK: - Setup
-    
-    init(avatarData: AvatarInputProtocol,
-         coordinate: CLLocationCoordinate2D) {
-        
-        self.coordinate = coordinate
-        self.avatarData = avatarData
-        
-        super.init()
-    }
+/// Classes compliant with the protocol `RoomActionProviderProtocol` are meant to provide the menu within `UIContextMenuActionProvider`
+@available(iOS 13.0, *)
+protocol RoomActionProviderProtocol {
+    /// menu instance returned within the `UIContextMenuActionProvider` block
+    var menu: UIMenu { get }
 }

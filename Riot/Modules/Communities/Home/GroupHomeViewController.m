@@ -867,14 +867,13 @@
             __weak typeof(self) weakSelf = self;
             [self startActivityIndicator];
             
-            [self.mxSession.matrixRestClient roomIDForRoomAlias:roomIdOrAlias success:^(NSString *roomId) {
-                
+            [self.mxSession.matrixRestClient resolveRoomAlias:roomIdOrAlias success:^(MXRoomAliasResolution *resolution) {
                 if (roomId && weakSelf)
                 {
                     typeof(self) self = weakSelf;
                     
                     [self stopActivityIndicator];
-                    [self didSelectRoomId:roomId];
+                    [self didSelectRoomId:resolution.roomId];
                 }
                 
             } failure:^(NSError *error) {

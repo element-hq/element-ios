@@ -16,6 +16,7 @@
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="location_user_marker" translatesAutoresizingMaskIntoConstraints="NO" id="ldO-kc-R5W">
                             <rect key="frame" x="0.0" y="0.0" width="50" height="54"/>
+                            <color key="tintColor" red="0.050980392159999999" green="0.74117647060000003" blue="0.5450980392" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="50" id="41S-fj-tn4"/>
                                 <constraint firstAttribute="height" constant="54" id="MAX-5E-xvS"/>

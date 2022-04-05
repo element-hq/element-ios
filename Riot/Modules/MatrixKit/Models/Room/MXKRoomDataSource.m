@@ -1075,7 +1075,10 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     }
 
     // Register a listener to handle redaction which can affect live and past timelines
+    MXWeakify(self);
     redactionListener = [_timeline listenToEventsOfTypes:@[kMXEventTypeStringRoomRedaction] onEvent:^(MXEvent *redactionEvent, MXTimelineDirection direction, MXRoomState *roomState) {
+
+        MXStrongifyAndReturnIfNil(self);
 
         // Consider only live redaction events
         if (direction == MXTimelineDirectionForwards)
@@ -2101,6 +2104,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 - (void)sendLocationWithLatitude:(double)latitude
                        longitude:(double)longitude
                      description:(NSString *)description
+                  coordinateType:(MXEventAssetType)coordinateType
                          success:(void (^)(NSString *))success
                          failure:(void (^)(NSError *))failure
 {
@@ -2112,6 +2116,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
                         description:description
                            threadId:self.threadId
                           localEcho:&localEchoEvent
+                          assetType:coordinateType
                             success:success failure:failure];
     
     if (localEchoEvent)

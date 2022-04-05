@@ -36,7 +36,7 @@
 
 NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewControllerDataReadyNotification";
 
-@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate, SpaceChildRoomDetailBridgePresenterDelegate>
+@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate, SpaceChildRoomDetailBridgePresenterDelegate, RoomContextActionServiceDelegate>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -69,6 +69,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     __weak id kThemeServiceDidChangeThemeNotificationObserver;
+    
+    // Cancel handler of any ongoing loading indicator
+    UserIndicatorCancel loadingIndicatorCancel;
 }
 
 @property (nonatomic, strong) CreateRoomCoordinatorBridgePresenter *createRoomCoordinatorBridgePresenter;
@@ -135,6 +138,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     
     displayedSectionHeaders = [NSMutableArray array];
     
+    _contextMenuProvider = [RecentCellContextMenuProvider new];
+    self.contextMenuProvider.serviceDelegate = self;
+
     // Set itself as delegate by default.
     self.delegate = self;
 }
@@ -1305,7 +1311,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                          {
                                                                              typeof(self) self = weakSelf;
                                                                              [self stopActivityIndicator];
-                                                                             [self.indicatorPresenter presentSuccessWithLabel:[VectorL10n roomParticipantsLeaveSuccess]];
+                                                                             [self.userIndicatorStore presentSuccessWithLabel:[VectorL10n roomParticipantsLeaveSuccess]];
                                                                              // Force table refresh
                                                                              [self cancelEditionMode:YES];
                                                                          }
@@ -2450,31 +2456,103 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 #pragma mark - Activity Indicator
 
 - (BOOL)providesCustomActivityIndicator {
-    return self.indicatorPresenter != nil;
+    return self.userIndicatorStore != nil;
 }
 
 - (void)startActivityIndicatorWithLabel:(NSString *)label {
-    if (self.indicatorPresenter && isViewVisible) {
-        [self.indicatorPresenter presentLoadingIndicatorWithLabel:label];
+    if (self.userIndicatorStore && isViewVisible) {
+        // The app is very liberal with calling `startActivityIndicator` (often not matched by corresponding `stopActivityIndicator`),
+        // so there is no reason to keep adding new indicators if there is one already showing.
+        if (loadingIndicatorCancel) {
+            return;
+        }
+        
+        MXLogDebug(@"[RecentsViewController] Present loading indicator")
+        loadingIndicatorCancel = [self.userIndicatorStore presentLoadingWithLabel:label isInteractionBlocking:NO];
     } else {
         [super startActivityIndicator];
     }
 }
 
 - (void)startActivityIndicator {
-    if (self.indicatorPresenter && isViewVisible) {
-        [self.indicatorPresenter presentLoadingIndicator];
-    } else {
-        [super startActivityIndicator];
-    }
+    [self startActivityIndicatorWithLabel:[VectorL10n homeSyncing]];
 }
 
 - (void)stopActivityIndicator {
-    if (self.indicatorPresenter) {
-        [self.indicatorPresenter dismissLoadingIndicator];
+    if (self.userIndicatorStore) {
+        if (loadingIndicatorCancel) {
+            MXLogDebug(@"[RecentsViewController] Present loading indicator")
+            loadingIndicatorCancel();
+            loadingIndicatorCancel = nil;
+        }
     } else {
         [super stopActivityIndicator];
     }
+}
+
+#pragma mark - Context Menu
+
+- (UIContextMenuConfiguration *)tableView:(UITableView *)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point API_AVAILABLE(ios(13.0))
+{
+    id<MXKRecentCellDataStoring> cellData = [self.dataSource cellDataAtIndexPath:indexPath];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    if (!cellData || !cell)
+    {
+        return nil;
+    }
+    
+    return [self.contextMenuProvider contextMenuConfigurationWith:cellData from:cell session:self.dataSource.mxSession];
+}
+
+- (void)tableView:(UITableView *)tableView willPerformPreviewActionForMenuWithConfiguration:(UIContextMenuConfiguration *)configuration animator:(id<UIContextMenuInteractionCommitAnimating>)animator API_AVAILABLE(ios(13.0))
+{
+    NSString *roomId = [self.contextMenuProvider roomIdFrom:configuration.identifier];
+    
+    if (!roomId)
+    {
+        return;
+    }
+    
+    [animator addCompletion:^{
+        [self showRoomWithRoomId:roomId inMatrixSession:self.mainSession];
+    }];
+}
+
+#pragma mark - RoomContextActionServiceDelegate
+
+- (void)roomContextActionServiceDidJoinRoom:(id<RoomContextActionServiceProtocol>)service
+{
+    [self showRoomWithRoomId:service.roomId inMatrixSession:service.session];
+}
+
+- (void)roomContextActionServiceDidLeaveRoom:(id<RoomContextActionServiceProtocol>)service
+{
+    [self.userIndicatorStore presentSuccessWithLabel:VectorL10n.roomParticipantsLeaveSuccess];
+}
+
+- (void)roomContextActionService:(id<RoomContextActionServiceProtocol>)service presentAlert:(UIAlertController *)alertController
+{
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)roomContextActionService:(id<RoomContextActionServiceProtocol>)service updateActivityIndicator:(BOOL)isActive
+{
+    if (isActive)
+    {
+        [self startActivityIndicator];
+    }
+    else if ([self canStopActivityIndicator])
+    {
+        [self stopActivityIndicator];
+    }
+}
+
+- (void)roomContextActionService:(id<RoomContextActionServiceProtocol>)service showRoomNotificationSettingsForRoomWithId:(NSString *)roomId
+{
+    editedRoomId = roomId;
+    [self changeEditedRoomNotificationSettings];
+    editedRoomId = nil;
 }
 
 @end

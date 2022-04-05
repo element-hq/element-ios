@@ -15,3 +15,4 @@
 #import "MXKRoomInputToolbarView.h"
 #import "MXKImageView.h"
 #import "MXKRoomBubbleCellData.h"
+#import "UserIndicatorCancel.h"

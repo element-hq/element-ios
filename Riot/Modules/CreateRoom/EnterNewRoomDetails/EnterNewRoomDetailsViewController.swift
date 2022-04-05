@@ -17,6 +17,7 @@
  */
 
 import UIKit
+import CommonKit
 
 final class EnterNewRoomDetailsViewController: UIViewController {
     
@@ -47,7 +48,9 @@ final class EnterNewRoomDetailsViewController: UIViewController {
     private var theme: Theme!
     private var keyboardAvoider: KeyboardAvoider?
     private var errorPresenter: MXKErrorPresentation!
-    private var activityPresenter: ActivityIndicatorPresenter!
+    private var userIndicatorPresenter: UserIndicatorTypePresenterProtocol!
+    private var loadingIndicator: UserIndicator?
+    
     private lazy var createBarButtonItem: MXKBarButtonItem = {
         let title: String
         switch viewModel.actionType {
@@ -262,7 +265,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         
         self.setupViews()
         self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.mainTableView)
-        self.activityPresenter = ActivityIndicatorPresenter()
+        self.userIndicatorPresenter = UserIndicatorTypePresenter(presentingViewController: self)
         self.errorPresenter = MXKErrorAlertPresentation()
         
         self.registerThemeServiceDidChangeThemeNotification()
@@ -352,11 +355,11 @@ final class EnterNewRoomDetailsViewController: UIViewController {
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        loadingIndicator = userIndicatorPresenter.present(.loading(label: VectorL10n.createRoomProcessing, isInteractionBlocking: true))
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        loadingIndicator = nil
         self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
     

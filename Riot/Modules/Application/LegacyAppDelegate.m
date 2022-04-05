@@ -394,6 +394,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [NSBundle mxk_setLanguage:language];
     [NSBundle mxk_setFallbackLanguage:@"en"];
     
+    if (BuildSettings.disableRightToLeftLayout)
+    {
+        [[UIView appearance] setSemanticContentAttribute:UISemanticContentAttributeForceLeftToRight];
+    }
+    
     // Set app info now as Mac (Designed for iPad) accesses it before didFinishLaunching is called
     self.appInfo = AppInfo.current;
     
@@ -1282,6 +1287,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL
 
 {
+    if (!fragment || !universalLinkURL)
+    {
+        MXLogDebug(@"[AppDelegate] Cannot handle universal link with missing data: %@ %@", fragment, universalLinkURL);
+        return NO;
+    }
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES stackAboveVisibleViews:NO];
     
     UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithFragment:fragment universalLinkURL:universalLinkURL presentationParameters:presentationParameters];
@@ -1482,7 +1492,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                             // Ask the HS to resolve the room alias into a room id and then retry
                             self->universalLinkFragmentPending = fragment;
                             MXKAccount* account = accountManager.activeAccounts.firstObject;
-                            [account.mxSession.matrixRestClient roomIDForRoomAlias:roomIdOrAlias success:^(NSString *roomId) {
+                            [account.mxSession.matrixRestClient resolveRoomAlias:roomIdOrAlias success:^(MXRoomAliasResolution *resolution) {
                                 
                                 // Note: the activity indicator will not disappear if the session is not ready
                                 [homeViewController stopActivityIndicator];
@@ -1490,34 +1500,20 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                 // Check that 'fragment' has not been cancelled
                                 if ([self->universalLinkFragmentPending isEqualToString:fragment])
                                 {
-                                    // Retry opening the link but with the returned room id
-                                    NSString *newUniversalLinkFragment =
-                                            [fragment stringByReplacingOccurrencesOfString:[MXTools encodeURIComponent:roomIdOrAlias]
-                                                                                withString:[MXTools encodeURIComponent:roomId]
-                                            ];
-                                    
-                                    // The previous operation can fail because of percent encoding
-                                    // TBH we are not clean on data inputs. For the moment, just give another try with no encoding
-                                    // TODO: Have a dedicated module and tests to handle universal links (matrix.to, email link, etc)
-                                    if ([newUniversalLinkFragment isEqualToString:fragment])
+                                    NSString *newFragment = resolution.deeplinkFragment;
+                                    if (newFragment && ![newFragment isEqualToString:fragment])
                                     {
-                                        newUniversalLinkFragment =
-                                        [fragment stringByReplacingOccurrencesOfString:roomIdOrAlias
-                                                                            withString:[MXTools encodeURIComponent:roomId]];
-                                    }
-                                    
-                                    if (![newUniversalLinkFragment isEqualToString:fragment])
-                                    {
-                                        self->universalLinkFragmentPendingRoomAlias = @{roomId: roomIdOrAlias};
-                                        
-                                        UniversalLinkParameters *newParameters = [[UniversalLinkParameters alloc] initWithFragment:newUniversalLinkFragment universalLinkURL:universalLinkURL presentationParameters:presentationParameters];
-                                        
+                                        self->universalLinkFragmentPendingRoomAlias = @{resolution.roomId: roomIdOrAlias};
+
+                                        UniversalLinkParameters *newParameters = [[UniversalLinkParameters alloc] initWithFragment:newFragment
+                                                                                                                  universalLinkURL:universalLinkURL
+                                                                                                            presentationParameters:presentationParameters];
                                         [self handleUniversalLinkWithParameters:newParameters];
                                     }
                                     else
                                     {
                                         // Do not continue. Else we will loop forever
-                                        MXLogDebug(@"[AppDelegate] Universal link: Error: Cannot resolve alias in %@ to the room id %@", fragment, roomId);
+                                        MXLogDebug(@"[AppDelegate] Universal link: Error: Cannot resolve alias in %@ to the room id %@", fragment, resolution.roomId);
                                     }
                                 }
                                 
@@ -2167,7 +2163,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 [uisiAutoReporter add:mxSession];
             }
         }
-        [_callPresenter addMatrixSession:mxSession];
         
         [mxSessionArray addObject:mxSession];
         
@@ -2422,6 +2417,18 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     if (mainSession)
     {
+        
+        switch (mainSession.state)
+        {
+            case MXSessionStateClosed:
+            case MXSessionStateInitialised:
+            case MXSessionStateBackgroundSyncInProgress:
+                self.roomListDataReady = NO;
+                [self listenForRoomListDataReady];
+            default:
+                break;
+        }
+        
         BOOL isLaunching = NO;
         
         if (_masterTabBarController.isOnboardingInProgress)
@@ -2439,8 +2446,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 case MXSessionStateClosed:
                 case MXSessionStateInitialised:
                 case MXSessionStateBackgroundSyncInProgress:
-                    self.roomListDataReady = NO;
-                    [self listenForRoomListDataReady];
                     isLaunching = YES;
                     break;
                 case MXSessionStateStoreDataReady:

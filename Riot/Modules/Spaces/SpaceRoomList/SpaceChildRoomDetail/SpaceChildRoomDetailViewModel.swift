@@ -89,7 +89,25 @@ final class SpaceChildRoomDetailViewModel: SpaceChildRoomDetailViewModelType {
     
     private func joinRoom() {
         self.update(viewState: .loading)
-        self.session.joinRoom(self.childInfo.childRoomId, viaServers: nil, withSignUrl: nil) { [weak self] (response) in
+        if let canonicalAlias = self.childInfo.canonicalAlias {
+            self.session.matrixRestClient.resolveRoomAlias(canonicalAlias) { [weak self] (response) in
+                guard let self = self else { return }
+                switch response {
+                case .success(let resolution):
+                    self.joinRoom(withId: resolution.roomId, via: resolution.servers)
+                case .failure(let error):
+                    MXLog.warning("[SpaceChildRoomDetailViewModel] joinRoom: failed to resolve room alias due to error \(error).")
+                    self.joinRoom(withId: self.childInfo.childRoomId, via: nil)
+                }
+            }
+        } else {
+            MXLog.warning("[SpaceChildRoomDetailViewModel] joinRoom: no canonical alias provided.")
+            joinRoom(withId: self.childInfo.childRoomId, via: nil)
+        }
+    }
+    
+    private func joinRoom(withId roomId: String, via viaServers: [String]?) {
+        self.session.joinRoom(roomId, viaServers: viaServers, withSignUrl: nil) { [weak self] response in
             guard let self = self else { return }
             switch response {
             case .success:
