@@ -67,6 +67,8 @@ targets:
     - path: .
       excludes:
         - "Modules/Room/EmojiPicker/Data/EmojiMart/EmojiJSONStore.swift"
+        - "Assets/ar.lproj/**" # RTL is broken so languages are disabled for now
+        - "Assets/he.lproj/**"
     - path: ../RiotShareExtension/Shared
     - path: Modules/MatrixKit
       excludes:
