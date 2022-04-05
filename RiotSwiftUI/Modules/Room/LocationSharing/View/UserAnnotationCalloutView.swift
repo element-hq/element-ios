@@ -101,7 +101,7 @@ class UserAnnotationCalloutView: UIView, MGLCalloutView, Themable {
         
         if isCalloutTappable() {
             // Handle taps and eventually try to send them to the delegate (usually the map view).
-            self.contentView.shareButton.addTarget(self, action: #selector(CustomCalloutView.calloutTapped), for: .touchUpInside)
+            self.contentView.shareButton.addTarget(self, action: #selector(UserAnnotationCalloutView.calloutTapped), for: .touchUpInside)
         } else {
             // Disable tapping and highlighting.
             self.contentView.shareButton.isUserInteractionEnabled = false
