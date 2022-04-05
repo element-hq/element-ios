@@ -17,10 +17,10 @@
 #import "MatrixKit.h"
 
 #import "RoomPreviewData.h"
-#import "PresenceIndicatorView.h"
 
 // We add here a protocol to handle tap gesture in title view.
 @class RoomTitleView;
+@class PresenceIndicatorView;
 @protocol RoomTitleViewTapGestureDelegate <NSObject>
 
 /**

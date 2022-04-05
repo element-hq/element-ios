@@ -37,7 +37,7 @@
                             <constraint firstAttribute="width" secondItem="5Yd-df-HbB" secondAttribute="height" multiplier="1:1" constant="1" id="QGp-OT-7yA"/>
                         </constraints>
                     </imageView>
-                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JjC-wU-vgp" customClass="PresenceIndicatorView">
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JjC-wU-vgp" customClass="PresenceIndicatorView" customModule="Riot" customModuleProvider="target">
                         <rect key="frame" x="52" y="52" width="18" height="18"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>

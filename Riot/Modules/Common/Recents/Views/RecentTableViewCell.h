@@ -15,7 +15,8 @@
  */
 
 #import "MatrixKit.h"
-#import "PresenceIndicatorView.h"
+
+@class PresenceIndicatorView;
 
 /**
  `RecentTableViewCell` instances display a room in the context of the recents list.

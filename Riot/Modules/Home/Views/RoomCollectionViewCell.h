@@ -15,9 +15,9 @@
  */
 
 #import "MatrixKit.h"
-#import "PresenceIndicatorView.h"
 
 @class BadgeLabel;
+@class PresenceIndicatorView;
 
 /**
  'RoomCollectionViewCell' class is used to display a room in a collection view.

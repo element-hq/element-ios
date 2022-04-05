@@ -98,7 +98,7 @@ class RoomInfoBasicView: UIView {
             VectorL10n.roomParticipantsSecurityInformationRoomEncryptedForDm :
             VectorL10n.roomParticipantsSecurityInformationRoomEncrypted
         securityContainerView.isHidden = !viewData.isEncrypted
-        presenceIndicatorView.presence = viewData.directUserPresence
+        presenceIndicatorView.setPresence(viewData.directUserPresence)
         updateBadgeImageViewPosition(with: viewData.encryptionImage, presence: viewData.directUserPresence)
     }
     

@@ -98,7 +98,7 @@
                             <constraint firstAttribute="height" constant="16" id="lNd-8B-gRr"/>
                         </constraints>
                     </imageView>
-                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RDK-ky-osD" customClass="PresenceIndicatorView">
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RDK-ky-osD" customClass="PresenceIndicatorView" customModule="Riot" customModuleProvider="target">
                         <rect key="frame" x="43" y="42" width="15" height="15"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
