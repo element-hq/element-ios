@@ -1214,25 +1214,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         [self.identityServerTextField resignFirstResponder];
         
         // Report server url typed by the user as custom url.
-        NSString *homeServerURL = self.homeServerTextField.text;
-        if (homeServerURL.length && ![homeServerURL isEqualToString:self.defaultHomeServerUrl])
-        {
-            [[NSUserDefaults standardUserDefaults] setObject:homeServerURL forKey:@"customHomeServerURL"];
-        }
-        else
-        {
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"customHomeServerURL"];
-        }
-        
-        NSString *identityServerURL = self.identityServerTextField.text;
-        if (identityServerURL.length && ![identityServerURL isEqualToString:self.defaultIdentityServerUrl])
-        {
-            [[NSUserDefaults standardUserDefaults] setObject:identityServerURL forKey:@"customIdentityServerURL"];
-        }
-        else
-        {
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"customIdentityServerURL"];
-        }
+        [self saveCustomServerInputs];
                 
         // Restore default configuration
         [self setHomeServerTextFieldText:self.defaultHomeServerUrl];
@@ -1272,6 +1254,29 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         CGPoint offset = self.authenticationScrollView.contentOffset;
         offset.y += self.customServersContainer.frame.size.height;
         self.authenticationScrollView.contentOffset = offset;
+    }
+}
+
+- (void)saveCustomServerInputs
+{
+    NSString *homeServerURL = self.homeServerTextField.text;
+    if (homeServerURL.length && ![homeServerURL isEqualToString:self.defaultHomeServerUrl])
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:homeServerURL forKey:@"customHomeServerURL"];
+    }
+    else
+    {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"customHomeServerURL"];
+    }
+    
+    NSString *identityServerURL = self.identityServerTextField.text;
+    if (identityServerURL.length && ![identityServerURL isEqualToString:self.defaultIdentityServerUrl])
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:identityServerURL forKey:@"customIdentityServerURL"];
+    }
+    else
+    {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"customIdentityServerURL"];
     }
 }
 
@@ -1325,8 +1330,11 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     self.userInteractionEnabled = NO;
     [self.authenticationActivityIndicator startAnimating];
     
-    // Hide the custom server details in order to save customized inputs
-    [self setCustomServerFieldsVisible:NO];
+    // Save customized server inputs if used
+    if (!self.customServersContainer.isHidden)
+    {
+        [self saveCustomServerInputs];
+    }
     
     MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:userId];
     MXSession *session = account.mxSession;

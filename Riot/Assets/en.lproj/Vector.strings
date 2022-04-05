@@ -118,6 +118,29 @@
 "onboarding_use_case_existing_server_message" = "Looking to join an existing server?";
 "onboarding_use_case_existing_server_button" = "Connect to server";
 
+"onboarding_congratulations_title" = "Congratulations!";
+/* The placeholder string contains the user's matrix ID */
+"onboarding_congratulations_message" = "Your account %@ has been created.";
+"onboarding_congratulations_personalize_button" = "Personalise profile";
+"onboarding_congratulations_home_button" = "Take me home";
+
+"onboarding_personalization_save" = "Save and continue";
+"onboarding_personalization_skip" = "Skip this step";
+
+"onboarding_display_name_title" = "Choose a display name";
+"onboarding_display_name_message" = "This will be shown when you send messages.";
+"onboarding_display_name_placeholder" = "Display Name";
+"onboarding_display_name_hint" = "You can change this later";
+"onboarding_display_name_max_length" = "Your display name must be less than 256 characters";
+
+"onboarding_avatar_title" = "Add a profile picture";
+"onboarding_avatar_message" = "You can change this anytime.";
+"onboarding_avatar_accessibility_label" = "Profile picture";
+
+"onboarding_celebration_title" = "You’re all set!";
+"onboarding_celebration_message" = "Your preferences have been saved.";
+"onboarding_celebration_button" = "Let's go";
+
 // Authentication
 "auth_login" = "Log in";
 "auth_register" = "Register";

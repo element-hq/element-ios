@@ -19,6 +19,15 @@ import CommonKit
 
 struct OnboardingAvatarCoordinatorParameters {
     let userSession: UserSession
+    /// An optional image that can be set to pre-fill the avatar.
+    let avatar: UIImage?
+}
+
+enum OnboardingAvatarCoordinatorResult {
+    /// The user has chosen an image (but hasn't yet saved it).
+    case selectedAvatar(UIImage?)
+    /// The screen is finished and the next one can be shown.
+    case complete(UserSession)
 }
 
 @available(iOS 14.0, *)
@@ -55,7 +64,7 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    var completion: ((UserSession) -> Void)?
+    var completion: ((OnboardingAvatarCoordinatorResult) -> Void)?
     
     // MARK: - Setup
     
@@ -64,6 +73,8 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
         let viewModel = OnboardingAvatarViewModel(userId: parameters.userSession.userId,
                                                   displayName: parameters.userSession.account.userDisplayName,
                                                   avatarColorCount: DefaultThemeSwiftUI().colors.namesAndAvatars.count)
+        viewModel.updateAvatarImage(with: parameters.avatar)
+        
         let view = OnboardingAvatarScreen(viewModel: viewModel.context)
         onboardingAvatarViewModel = viewModel
         onboardingAvatarHostingController = VectorHostingController(rootView: view)
@@ -89,7 +100,7 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
             case .save(let avatar):
                 self.setAvatar(avatar)
             case .skip:
-                self.completion?(self.parameters.userSession)
+                self.completion?(.complete(self.parameters.userSession))
             }
         }
     }
@@ -151,7 +162,7 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
             self.parameters.userSession.account.setUserAvatarUrl(urlString) { [weak self] in
                 guard let self = self else { return }
                 self.stopWaiting()
-                self.completion?(self.parameters.userSession)
+                self.completion?(.complete(self.parameters.userSession))
             } failure: { [weak self] error in
                 guard let self = self else { return }
                 self.stopWaiting()
@@ -169,8 +180,11 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
 
 @available(iOS 14.0, *)
 extension OnboardingAvatarCoordinator: MediaPickerPresenterDelegate {
+    /// **Note:** MediaPickerPresenter fails to load images on the simulator as of Xcode 13.3 (at least on an M1 Mac),
+    /// so whilst this method may not appear to be called, everything works fine when run on a device.
     func mediaPickerPresenter(_ presenter: MediaPickerPresenter, didPickImage image: UIImage) {
         onboardingAvatarViewModel.updateAvatarImage(with: image)
+        completion?(.selectedAvatar(image))
         presenter.dismiss(animated: true, completion: nil)
     }
     
@@ -185,6 +199,7 @@ extension OnboardingAvatarCoordinator: MediaPickerPresenterDelegate {
 extension OnboardingAvatarCoordinator: CameraPresenterDelegate {
     func cameraPresenter(_ presenter: CameraPresenter, didSelectImage image: UIImage) {
         onboardingAvatarViewModel.updateAvatarImage(with: image)
+        completion?(.selectedAvatar(image))
         presenter.dismiss(animated: true, completion: nil)
     }
     
