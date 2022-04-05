@@ -209,7 +209,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
         return eventFormatter.attributedString(from: message.replyStrippedVersion,
                                                with: roomState,
-                                               error: formatterError).byRemovingLinks
+                                               error: formatterError).vc_byRemovingLinks
     }
     
     private func lastMessageTextAndTime(forThread thread: MXThreadProtocol) -> (NSAttributedString?, String?) {
