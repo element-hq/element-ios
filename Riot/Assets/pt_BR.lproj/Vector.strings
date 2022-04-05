@@ -2104,7 +2104,7 @@
 "attachment_unsupported_preview_message" = "Este tipo de arquivo não é suportado.";
 "attachment_unsupported_preview_title" = "Incapaz de previsualizar";
 "message_reply_to_sender_sent_their_location" = "tem compartilhado a localização dela(e).";
-"home_syncing" = "Sincando";
+"home_syncing" = "Sincronizando";
 "room_participants_leave_success" = "Saiu de sala";
 "room_participants_leave_processing" = "Saindo";
 "notice_error_unformattable_event" = "** Incapaz de render mensagem. Por favor reporte um bug";
