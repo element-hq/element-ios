@@ -479,6 +479,11 @@ Tap the + to start adding people.";
 "threads_notice_title" = "Threads no longer experimental 🎉";
 "threads_notice_information" = "All threads created during the experimental period will now be <b>rendered as regular replies</b>.<br/><br/>This will be a one-off transition, as threads are now part of the Matrix specification.";
 "threads_notice_done" = "Got it";
+"threads_beta_title" = "Threads";
+"threads_beta_information" = "Keep discussions organised with threads.\n\nThreads help keep your conversations on-topic and easy to track. ";
+"threads_beta_information_link" = "Learn more";
+"threads_beta_enable" = "Try it out";
+"threads_beta_cancel" = "Not now";
 
 "media_type_accessibility_image" = "Image";
 "media_type_accessibility_audio" = "Audio";
