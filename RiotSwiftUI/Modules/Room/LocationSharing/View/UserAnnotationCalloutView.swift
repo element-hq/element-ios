@@ -46,7 +46,7 @@ class UserAnnotationCalloutView: UIView, MGLCalloutView, Themable {
     override var center: CGPoint {
         set {
             var newCenter = newValue
-            newCenter.y -= bounds.maxY + Constants.bottomMargin
+            newCenter.y -= bounds.midY + Constants.bottomMargin
             super.center = newCenter
         }
         get {
