@@ -251,6 +251,25 @@ final class MXRoomNotificationSettingsService: RoomNotificationSettingsServiceTy
     }
 }
 
+extension MXRoom {
+    public var isMuted: Bool {
+        // Check whether an override rule has been defined with the roomm id as rule id.
+        // This kind of rule is created to mute the room
+        guard let rule = self.overridePushRule,
+              rule.actionsContains(actionType: MXPushRuleActionTypeDontNotify),
+              rule.conditionIsEnabled(kind: .eventMatch, for: roomId) else {
+            return false
+        }
+        return rule.enabled
+    }
+    
+    public var isMentionsOnly: Bool {
+        // Check push rules at room level
+        guard let rule = roomPushRule else { return false }
+        return rule.enabled && rule.actionsContains(actionType: MXPushRuleActionTypeDontNotify)
+    }
+}
+
 // We could move these to their own file and make available in global namespace or move to sdk but they are only used here at the moment
 fileprivate extension MXRoom {
     
@@ -288,23 +307,6 @@ fileprivate extension MXRoom {
         return .all
     }
 
-    var isMuted: Bool {
-        // Check whether an override rule has been defined with the roomm id as rule id.
-        // This kind of rule is created to mute the room
-        guard let rule = self.overridePushRule,
-              rule.actionsContains(actionType: MXPushRuleActionTypeDontNotify),
-              rule.conditionIsEnabled(kind: .eventMatch, for: roomId) else {
-            return false
-        }
-        return rule.enabled
-    }
-    
-    var isMentionsOnly: Bool {
-        // Check push rules at room level
-        guard let rule = roomPushRule else { return false }
-        return rule.enabled && rule.actionsContains(actionType: MXPushRuleActionTypeDontNotify)
-    }
-    
 }
 
 fileprivate extension MXPushRule {

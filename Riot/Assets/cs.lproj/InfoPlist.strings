@@ -5,3 +5,5 @@
 "NSPhotoLibraryUsageDescription" = "Galerie se používá k posílání obrázků a videí.";
 "NSCalendarsUsageDescription" = "Zobrazuje události v aplikaci.";
 "NSFaceIDUsageDescription" = "Face ID se používá k přístupu do aplikace.";
+"NSLocationWhenInUseUsageDescription" = "Když sdílíte svou polohu s lidmi, Element potřebuje přístup, aby jim mohl zobrazit mapu.";
+"NSMicrophoneUsageDescription" = "Element vyžaduje přístup k mikrofonu vašeho zařízení pro zahajování a přijímání hovorů, pořizování videa a nahrávání hlasových zpráv.";

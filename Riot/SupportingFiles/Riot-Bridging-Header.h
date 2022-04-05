@@ -51,6 +51,7 @@
 #import "PlainRoomTimelineCellProvider.h"
 #import "BubbleRoomTimelineCellProvider.h"
 #import "RoomSelectedStickerBubbleCell.h"
+#import "MXRoom+Riot.h"
 
 // MatrixKit common imports, shared with all targets
 #import "MatrixKit-Bridging-Header.h"

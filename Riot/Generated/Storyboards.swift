@@ -162,6 +162,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.ReactionHistoryViewController>(storyboard: ReactionHistoryViewController.self)
   }
+  internal enum RoomContextPreviewViewController: StoryboardType {
+    internal static let storyboardName = "RoomContextPreviewViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.RoomContextPreviewViewController>(storyboard: RoomContextPreviewViewController.self)
+  }
   internal enum RoomContextualMenuViewController: StoryboardType {
     internal static let storyboardName = "RoomContextualMenuViewController"
 
@@ -279,11 +284,6 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.SpaceMenuViewController>(storyboard: SpaceMenuViewController.self)
   }
-  internal enum SpaceRoomPreviewViewController: StoryboardType {
-    internal static let storyboardName = "SpaceRoomPreviewViewController"
-
-    internal static let initialScene = InitialSceneType<Riot.SpaceRoomPreviewViewController>(storyboard: SpaceRoomPreviewViewController.self)
-  }
   internal enum TemplateScreenViewController: StoryboardType {
     internal static let storyboardName = "TemplateScreenViewController"
 
@@ -293,6 +293,11 @@ internal enum StoryboardScene {
     internal static let storyboardName = "ThreadListViewController"
 
     internal static let initialScene = InitialSceneType<Riot.ThreadListViewController>(storyboard: ThreadListViewController.self)
+  }
+  internal enum ThreadsBetaViewController: StoryboardType {
+    internal static let storyboardName = "ThreadsBetaViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.ThreadsBetaViewController>(storyboard: ThreadsBetaViewController.self)
   }
   internal enum ThreadsNoticeViewController: StoryboardType {
     internal static let storyboardName = "ThreadsNoticeViewController"

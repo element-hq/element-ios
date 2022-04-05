@@ -90,6 +90,8 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
  */
 @property (nonatomic, nullable) NSString *parentSpaceId;
 
+@property (nonatomic, getter=isContextPreview) BOOL contextPeview;
+
 /**
  Display the preview of a room that is unknown for the user.
 
