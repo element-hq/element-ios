@@ -1,1 +1,0 @@
-VoiceMessagePlainCell: Fix cell height by adding missing thread summary displayable conformance.
