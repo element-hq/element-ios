@@ -51,11 +51,12 @@ struct LiveLocationSharingViewer: View {
                                    errorSubject: viewModel.viewState.errorSubject)
             MapCreditsView()
         }
+        .navigationTitle(VectorL10n.locationSharingLiveViewerTitle)
+        .accentColor(theme.colors.accent)
         .bottomSheet(sheet, if: isBottomSheetVisible)
         .alert(item: $viewModel.alertInfo) { info in
             info.alert
         }
-        .accentColor(theme.colors.accent)
         .activityIndicator(show: viewModel.viewState.showLoadingIndicator)
     }
     
