@@ -715,6 +715,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     
     // Instantiate new session
     mxSession = [[MXSession alloc] initWithMatrixRestClient:mxRestClient];
+    mxSession.preferredSyncPresence = self.preferredSyncPresence;
     
     // Check whether an antivirus url is defined.
     if (_antivirusServerURL)
@@ -1007,7 +1008,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         
         // Update user presence
         MXWeakify(self);
-        [self setUserPresence:MXPresenceUnavailable andStatusMessage:nil completion:^{
+        [self setUserPresence:MXPresenceOffline andStatusMessage:nil completion:^{
             MXStrongifyAndReturnIfNil(self);
             [self cancelPauseBackgroundTask];
         }];
@@ -1045,8 +1046,10 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         case MXSessionStatePauseRequested:
         {
             // Resume SDK and update user presence
+            MXWeakify(self);
             [mxSession resume:^{
-                [self setUserPresence:MXPresenceOnline andStatusMessage:nil completion:nil];
+                MXStrongifyAndReturnIfNil(self);
+                [self setUserPresence:self.preferredSyncPresence andStatusMessage:nil completion:nil];
 
                 [self refreshAPNSPusher];
                 [self refreshPushKitPusher];
@@ -1513,7 +1516,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 
                 MXLogDebug(@"[MXKAccount] %@: The session is ready. Matrix SDK session has been started in %0.fms.", self.mxCredentials.userId, [[NSDate date] timeIntervalSinceDate:self->openSessionStartDate] * 1000);
 
-                [self setUserPresence:MXPresenceOnline andStatusMessage:nil completion:nil];
+                [self setUserPresence:self.preferredSyncPresence andStatusMessage:nil completion:nil];
 
             } failure:^(NSError *error) {
                 MXStrongifyAndReturnIfNil(self);
@@ -2156,6 +2159,19 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 
         // Archive updated field
         [[MXKAccountManager sharedManager] saveAccounts];
+    }
+}
+
+#pragma mark - Presence
+
+- (void)setPreferredSyncPresence:(MXPresence)preferredSyncPresence
+{
+    [super setPreferredSyncPresence:preferredSyncPresence];
+    
+    if (self.mxSession)
+    {
+        self.mxSession.preferredSyncPresence = preferredSyncPresence;
+        [self setUserPresence:preferredSyncPresence andStatusMessage:nil completion:nil];
     }
 }
 

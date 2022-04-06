@@ -6895,6 +6895,18 @@ public class VectorL10n: NSObject {
   public static var settingsPinRoomsWithUnread: String { 
     return VectorL10n.tr("Vector", "settings_pin_rooms_with_unread") 
   }
+  /// Presence
+  public static var settingsPresence: String { 
+    return VectorL10n.tr("Vector", "settings_presence") 
+  }
+  /// Offline Mode
+  public static var settingsPresenceOfflineMode: String { 
+    return VectorL10n.tr("Vector", "settings_presence_offline_mode") 
+  }
+  /// If enabled, you will always appear offline to other users, even when using the application.
+  public static var settingsPresenceOfflineModeDescription: String { 
+    return VectorL10n.tr("Vector", "settings_presence_offline_mode_description") 
+  }
   /// Privacy Policy
   public static var settingsPrivacyPolicy: String { 
     return VectorL10n.tr("Vector", "settings_privacy_policy") 

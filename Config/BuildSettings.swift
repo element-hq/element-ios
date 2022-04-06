@@ -427,4 +427,9 @@ final class BuildSettings: NSObject {
         // Do not enable live location sharing atm
         return false
     }
+    
+    // MARK: - Presence
+    
+    /// A setting to enable the presence configuration settings section.
+    static let presenceSettingsAllowConfiguration: Bool = false
 }

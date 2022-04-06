@@ -80,6 +80,15 @@
 
         _warnedAboutEncryption = [coder decodeBoolForKey:@"warnedAboutEncryption"];
         
+        if ([coder decodeIntForKey:@"preferredSyncPresence"])
+        {
+            _preferredSyncPresence = [coder decodeInt64ForKey:@"preferredSyncPresence"];
+        }
+        else
+        {
+            _preferredSyncPresence = MXPresenceOnline;
+        }
+        
         _others = [coder decodeObjectForKey:@"others"];
     }
     
@@ -142,6 +151,8 @@
     [coder encodeBool:_isSoftLogout forKey:@"isSoftLogout"];
 
     [coder encodeBool:_warnedAboutEncryption forKey:@"warnedAboutEncryption"];
+    
+    [coder encodeInt64:_preferredSyncPresence forKey:@"preferredSyncPresence"];
     
     [coder encodeObject:_others forKey:@"others"];
 }

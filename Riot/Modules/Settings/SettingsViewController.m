@@ -62,6 +62,7 @@ typedef NS_ENUM(NSUInteger, SECTION_TAG)
     SECTION_TAG_IGNORED_USERS,
     SECTION_TAG_INTEGRATIONS,
     SECTION_TAG_USER_INTERFACE,
+    SECTION_TAG_PRESENCE,
     SECTION_TAG_ADVANCED,
     SECTION_TAG_ABOUT,
     SECTION_TAG_LABS,
@@ -135,6 +136,11 @@ typedef NS_ENUM(NSUInteger, USER_INTERFACE)
 typedef NS_ENUM(NSUInteger, IDENTITY_SERVER)
 {
     IDENTITY_SERVER_INDEX
+};
+
+typedef NS_ENUM(NSUInteger, PRESENCE)
+{
+    PRESENCE_OFFLINE_MODE = 0,
 };
 
 typedef NS_ENUM(NSUInteger, ADVANCED)
@@ -519,6 +525,16 @@ TableViewSectionsDelegate>
     }
         
     [tmpSections addObject: sectionUserInterface];
+    
+    if(BuildSettings.presenceSettingsAllowConfiguration)
+    {
+        Section *sectionPresence = [Section sectionWithTag:SECTION_TAG_PRESENCE];
+        [sectionPresence addRowWithTag:PRESENCE_OFFLINE_MODE];
+        sectionPresence.headerTitle = VectorL10n.settingsPresence;
+        sectionPresence.footerTitle = VectorL10n.settingsPresenceOfflineModeDescription;
+
+        [tmpSections addObject:sectionPresence];
+    }
     
     Section *sectionAdvanced = [Section sectionWithTag:SECTION_TAG_ADVANCED];
     sectionAdvanced.headerTitle = [VectorL10n settingsAdvanced];
@@ -2287,6 +2303,24 @@ TableViewSectionsDelegate>
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
     }
+    else if (section == SECTION_TAG_PRESENCE)
+    {
+        if (row == PRESENCE_OFFLINE_MODE)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            labelAndSwitchCell.mxkLabel.text = VectorL10n.settingsPresenceOfflineMode;
+            
+            MXKAccount *account = MXKAccountManager.sharedManager.accounts.firstObject;
+            
+            labelAndSwitchCell.mxkSwitch.on = account.preferredSyncPresence == MXPresenceOffline;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePresenceOfflineMode:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell = labelAndSwitchCell;
+        }
+    }
     else if (section == SECTION_TAG_ADVANCED)
     {
         if (row == ADVANCED_SHOW_NSFW_ROOMS_INDEX)
@@ -3905,6 +3939,19 @@ TableViewSectionsDelegate>
     deactivateAccountViewController.delegate = self;
     
     self.deactivateAccountViewController = deactivateAccountViewController;
+}
+
+- (void)togglePresenceOfflineMode:(UISwitch *)sender
+{
+    MXKAccount *account = MXKAccountManager.sharedManager.accounts.firstObject;
+    if (sender.isOn)
+    {
+        account.preferredSyncPresence = MXPresenceOffline;
+    }
+    else
+    {
+        account.preferredSyncPresence = MXPresenceOnline;
+    }
 }
 
 - (void)toggleNSFWPublicRoomsFiltering:(UISwitch *)sender
