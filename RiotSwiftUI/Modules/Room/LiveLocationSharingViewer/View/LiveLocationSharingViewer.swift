@@ -49,7 +49,11 @@ struct LiveLocationSharingViewer: View {
                 }
             },
                                    errorSubject: viewModel.viewState.errorSubject)
-            MapCreditsView()
+            VStack(alignment: .center) {
+                Spacer()
+                MapCreditsView()
+                    .offset(y: -130)
+            }
         }
         .navigationTitle(VectorL10n.locationSharingLiveViewerTitle)
         .accentColor(theme.colors.accent)
