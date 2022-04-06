@@ -902,6 +902,7 @@
         return nil;
     }
     
+    self.recentsUpdateEnabled = NO;
     return [self.contextMenuProvider contextMenuConfigurationWith:cellData from:cell session:self.dataSource.mxSession];
 }
 
@@ -911,12 +912,20 @@
     
     if (!roomId)
     {
+        self.recentsUpdateEnabled = YES;
         return;
     }
 
     [animator addCompletion:^{
+        self.recentsUpdateEnabled = YES;
         [self showRoomWithRoomId:roomId inMatrixSession:self.mainSession];
     }];
+}
+
+- (UITargetedPreview *)collectionView:(UICollectionView *)collectionView previewForDismissingContextMenuWithConfiguration:(UIContextMenuConfiguration *)configuration API_AVAILABLE(ios(13.0))
+{
+    self.recentsUpdateEnabled = YES;
+    return nil;
 }
 
 @end
