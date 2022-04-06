@@ -63,6 +63,7 @@
     self.roomTitle.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.roomTitle1.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.roomTitle2.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.presenceIndicatorView.borderColor = ThemeService.shared.theme.backgroundColor;
     
     self.editionArrowView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     
@@ -145,6 +146,10 @@
                                             roomId:roomCellData.roomIdentifier
                                        displayName:roomCellData.roomDisplayname
                                       mediaManager:roomCellData.mxSession.mediaManager];
+        
+        // Presence indicator
+        self.presenceIndicatorView.presence = roomCellData.presence;
+        self.presenceIndicatorView.hidden = roomCellData.presence == MXPresenceUnknown;
     }
 }
 
