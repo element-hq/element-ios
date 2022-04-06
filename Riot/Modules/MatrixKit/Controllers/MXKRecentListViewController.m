@@ -83,6 +83,7 @@
 {
     [super finalizeInit];
     
+    _recentsUpdateEnabled = YES;
     _enableBarButtonSearch = YES;
 }
 
@@ -169,6 +170,8 @@
     
     // Observe the server sync
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSyncNotification) name:kMXSessionDidSyncNotification object:nil];
+    
+    self.recentsUpdateEnabled = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -319,6 +322,10 @@
 
 - (void)refreshRecentsTable
 {
+    if (!self.recentsUpdateEnabled) return;
+    
+    isRefreshNeeded = NO;
+    
     // For now, do a simple full reload
     [self.recentsTableView reloadData];
 }
@@ -328,6 +335,16 @@
     self.recentsSearchBar.hidden = hidden;
     self.recentsSearchBarHeightConstraint.constant = hidden ? 0 : 44;
     [self.view setNeedsUpdateConstraints];
+}
+
+- (void)setRecentsUpdateEnabled:(BOOL)activeUpdate
+{
+    _recentsUpdateEnabled = activeUpdate;
+    
+    if (_recentsUpdateEnabled && isRefreshNeeded)
+    {
+        [self refreshRecentsTable];
+    }
 }
 
 #pragma mark - Action
@@ -385,6 +402,12 @@
 
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
 {
+    if (!_recentsUpdateEnabled)
+    {
+        isRefreshNeeded = YES;
+        return;
+    }
+    
     // For now, do a simple full reload
     [self refreshRecentsTable];
 }
