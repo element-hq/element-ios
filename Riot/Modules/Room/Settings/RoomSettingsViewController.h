@@ -61,6 +61,11 @@ typedef enum : NSUInteger {
 @property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
 /**
+ ID of the currently selected space. `nil` if home
+ */
+@property (nonatomic, nullable) NSString *parentSpaceId;
+
+/**
  Delegate of this view controller.
  */
 @property (nonatomic, weak) id<RoomSettingsViewControllerDelegate> delegate;

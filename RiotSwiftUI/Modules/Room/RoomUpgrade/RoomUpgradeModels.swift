@@ -35,6 +35,7 @@ enum RoomUpgradeViewModelResult {
 struct RoomUpgradeViewState: BindableState {
     var waitingMessage: String?
     var isLoading: Bool
+    var parentSpaceName: String?
 }
 
 enum RoomUpgradeViewAction {

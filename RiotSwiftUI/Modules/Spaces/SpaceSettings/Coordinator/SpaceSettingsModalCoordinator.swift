@@ -142,7 +142,7 @@ final class SpaceSettingsModalCoordinator: Coordinator {
             return
         }
         // Needed more tests on synaose side before starting space upgrade implementation
-        let coordinator = RoomAccessCoordinator(parameters: RoomAccessCoordinatorParameters(room: room, allowsRoomUpgrade: false))
+        let coordinator = RoomAccessCoordinator(parameters: RoomAccessCoordinatorParameters(room: room, parentId: parameters.parentId, allowsRoomUpgrade: false))
         coordinator.callback = { [weak self] result in
             guard let self = self else { return }
             

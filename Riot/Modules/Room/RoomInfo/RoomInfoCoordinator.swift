@@ -56,6 +56,7 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         }
         
         let settings = RoomSettingsViewController()
+        settings.parentSpaceId = parentSpaceId
         settings.delegate = self
         settings.finalizeInit()
         settings.screenTracker = AnalyticsScreenTracker(screen: .roomSettings)

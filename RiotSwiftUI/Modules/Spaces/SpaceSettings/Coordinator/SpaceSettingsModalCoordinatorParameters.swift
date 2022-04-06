@@ -24,15 +24,20 @@ struct SpaceSettingsModalCoordinatorParameters {
 
     /// The ID of the space
     let spaceId: String
+    
+    /// The ID of the currently selected parent of this space. `nil` for home
+    let parentId: String?
                 
     /// The navigation router that manage physical navigation
     let navigationRouter: NavigationRouterType
     
     init(session: MXSession,
          spaceId: String,
+         parentId: String?,
          navigationRouter: NavigationRouterType? = nil) {
         self.session = session
         self.spaceId = spaceId
+        self.parentId = parentId
         self.navigationRouter = navigationRouter ?? NavigationRouter(navigationController: RiotNavigationController())
     }
 }

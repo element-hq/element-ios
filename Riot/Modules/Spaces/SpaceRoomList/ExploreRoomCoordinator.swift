@@ -206,7 +206,7 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
     
     @available(iOS 14.0, *)
     private func showSpaceSettings(of childInfo: MXSpaceChildInfo) {
-        let coordinator = SpaceSettingsModalCoordinator(parameters: SpaceSettingsModalCoordinatorParameters(session: session, spaceId: childInfo.childRoomId))
+        let coordinator = SpaceSettingsModalCoordinator(parameters: SpaceSettingsModalCoordinatorParameters(session: session, spaceId: childInfo.childRoomId, parentId: spaceIdStack.last))
         coordinator.callback = { [weak self] result in
             guard let self = self else { return }
             
