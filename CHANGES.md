@@ -1,3 +1,11 @@
+## Changes in 1.8.12 (2022-04-06)
+
+🐛 Bugfixes
+
+- RecentsViewController: Room context preview dismissed unexpectedly ([#5992](https://github.com/vector-im/element-ios/issues/5992))
+- Notifications: Strings now fall back to English if they're missing for the current language. ([#5996](https://github.com/vector-im/element-ios/issues/5996))
+
+
 ## Changes in 1.8.11 (2022-04-05)
 
 ✨ Features

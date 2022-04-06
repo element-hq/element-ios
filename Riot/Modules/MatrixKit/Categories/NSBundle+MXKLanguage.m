@@ -15,6 +15,7 @@
  */
 
 #import "NSBundle+MXKLanguage.h"
+#import "GeneratedInterface-Swift.h"
 
 #import <objc/runtime.h>
 
@@ -55,37 +56,37 @@ static const char _fallbackLanguage = 0;
     [self setupMXKLanguageBundle];
 
     // [NSBundle localizedStringForKey] calls will be redirected to the bundle corresponding
-    // to "language"
-    objc_setAssociatedObject([NSBundle mainBundle],
-                             &_bundle, language ? [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:language ofType:@"lproj"]] : nil,
+    // to "language". `lprojBundleFor` loads this from the main app bundle as we might be running in an extension.
+    objc_setAssociatedObject(NSBundle.app,
+                             &_bundle, language ? [NSBundle lprojBundleFor:language] : nil,
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
-    objc_setAssociatedObject([NSBundle mainBundle],
+    objc_setAssociatedObject(NSBundle.app,
                              &_language, language,
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 + (NSString *)mxk_language
 {
-    return objc_getAssociatedObject([NSBundle mainBundle], &_language);
+    return objc_getAssociatedObject(NSBundle.app, &_language);
 }
 
 + (void)mxk_setFallbackLanguage:(NSString *)language
 {
     [self setupMXKLanguageBundle];
 
-    objc_setAssociatedObject([NSBundle mainBundle],
-                             &_fallbackBundle, language ? [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:language ofType:@"lproj"]] : nil,
+    objc_setAssociatedObject(NSBundle.app,
+                             &_fallbackBundle, language ? [NSBundle lprojBundleFor:language] : nil,
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
-    objc_setAssociatedObject([NSBundle mainBundle],
+    objc_setAssociatedObject(NSBundle.app,
                              &_fallbackLanguage, language,
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 + (NSString *)mxk_fallbackLanguage
 {
-    return objc_getAssociatedObject([NSBundle mainBundle], &_fallbackLanguage);
+    return objc_getAssociatedObject(NSBundle.app, &_fallbackLanguage);
 }
 
 #pragma mark - Private methods
@@ -96,7 +97,7 @@ static const char _fallbackLanguage = 0;
     dispatch_once(&onceToken, ^{
 
         // Use MXKLanguageBundle as the [NSBundle mainBundle] class
-        object_setClass([NSBundle mainBundle], [MXKLanguageBundle class]);
+        object_setClass(NSBundle.app, MXKLanguageBundle.class);
     });
 }
 
