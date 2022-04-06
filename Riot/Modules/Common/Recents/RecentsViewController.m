@@ -366,6 +366,14 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)refreshRecentsTable
 {
+    if (!self.recentsUpdateEnabled)
+    {
+        isRefreshNeeded = NO;
+        return;
+    }
+    
+    isRefreshNeeded = NO;
+    
     // Refresh the tabBar icon badges
     [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
     
@@ -1034,6 +1042,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
 {
+    if (!self.recentsUpdateEnabled)
+    {
+        [super dataSource:dataSource didCellChange:changes];
+        return;
+    }
+    
     BOOL cellReloaded = NO;
     if ([changes isKindOfClass:RecentsSectionUpdate.class])
     {
@@ -2502,6 +2516,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         return nil;
     }
     
+    self.recentsUpdateEnabled = NO;
     return [self.contextMenuProvider contextMenuConfigurationWith:cellData from:cell session:self.dataSource.mxSession];
 }
 
@@ -2511,12 +2526,20 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     
     if (!roomId)
     {
+        self.recentsUpdateEnabled = YES;
         return;
     }
     
     [animator addCompletion:^{
+        self.recentsUpdateEnabled = YES;
         [self showRoomWithRoomId:roomId inMatrixSession:self.mainSession];
     }];
+}
+
+- (UITargetedPreview *)tableView:(UITableView *)tableView previewForDismissingContextMenuWithConfiguration:(UIContextMenuConfiguration *)configuration API_AVAILABLE(ios(13.0))
+{
+    self.recentsUpdateEnabled = YES;
+    return nil;
 }
 
 #pragma mark - RoomContextActionServiceDelegate
