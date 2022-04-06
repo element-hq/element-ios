@@ -50,7 +50,7 @@
                         <constraint firstAttribute="width" secondItem="Ky3-cy-HAx" secondAttribute="height" multiplier="1:1" id="peq-8l-eJv"/>
                     </constraints>
                 </imageView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="grc-2K-fj1" customClass="PresenceIndicatorView" customModule="Riot" customModuleProvider="target">
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="grc-2K-fj1" customClass="PresenceIndicatorView" customModule="Riot" customModuleProvider="target">
                     <rect key="frame" x="29" y="26" width="12" height="12"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
