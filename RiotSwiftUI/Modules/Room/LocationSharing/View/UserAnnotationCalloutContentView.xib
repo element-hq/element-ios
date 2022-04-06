@@ -10,7 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="UserAnnotationCalloutContentView" customModule="RiotSwiftUI" customModuleProvider="target">
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="UserAnnotationCalloutContentView" customModule="Riot" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="222" height="62"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -19,7 +19,7 @@
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8qV-yr-fDH">
-                    <rect key="frame" x="10" y="0.0" width="168" height="62"/>
+                    <rect key="frame" x="10" y="0.0" width="173" height="62"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -38,7 +38,7 @@
                 <constraint firstItem="WEX-LH-zYE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Glo-Kv-b9P"/>
                 <constraint firstAttribute="bottom" secondItem="WEX-LH-zYE" secondAttribute="bottom" id="TVK-pw-MQi"/>
                 <constraint firstItem="Htx-uD-cf2" firstAttribute="centerY" secondItem="8qV-yr-fDH" secondAttribute="centerY" id="VLm-I1-Xa5"/>
-                <constraint firstItem="Htx-uD-cf2" firstAttribute="leading" secondItem="8qV-yr-fDH" secondAttribute="trailing" constant="10" id="aNO-Wu-hrO"/>
+                <constraint firstItem="Htx-uD-cf2" firstAttribute="leading" secondItem="8qV-yr-fDH" secondAttribute="trailing" constant="5" id="aNO-Wu-hrO"/>
                 <constraint firstItem="Htx-uD-cf2" firstAttribute="trailing" secondItem="WEX-LH-zYE" secondAttribute="trailing" constant="-10" id="eB7-OT-FSZ"/>
                 <constraint firstItem="Htx-uD-cf2" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WEX-LH-zYE" secondAttribute="top" id="gsk-Ld-Ahq"/>
                 <constraint firstItem="WEX-LH-zYE" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="kVf-HO-jBq"/>
