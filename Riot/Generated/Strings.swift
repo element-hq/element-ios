@@ -8006,7 +8006,7 @@ public class VectorL10n: NSObject {
 
 extension VectorL10n {
   static func tr(_ table: String, _ key: String, _ args: CVarArg...) -> String {
-    let format = NSLocalizedString(key, tableName: table, bundle: Bundle(for: BundleToken.self), comment: "")
+    let format = NSLocalizedString(key, tableName: table, bundle: Bundle.app, comment: "")
     let locale: Locale
     if let providedLocale = LocaleProvider.locale {
       locale = providedLocale
@@ -8018,4 +8018,3 @@ extension VectorL10n {
     }
 }
 
-private final class BundleToken {}
