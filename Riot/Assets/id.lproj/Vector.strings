@@ -258,7 +258,7 @@
 "call_transfer_title" = "Pindahkan";
 "room_info_list_section_other" = "Lainnya";
 "create_room_placeholder_address" = "#ruangantest:matrix.org";
-"create_room_placeholder_topic" = "Topik";
+"create_room_placeholder_topic" = "Tentang apa ruangan ini?";
 "create_room_placeholder_name" = "Nama";
 "biometrics_cant_unlocked_alert_message_retry" = "Coba lagi";
 "pin_protection_reset_alert_action_reset" = "Atur Ulang";
@@ -837,7 +837,7 @@
 
 "voice_message_release_to_send" = "Tahan untuk merekam, lepaskan untuk mengirim";
 "spaces_empty_space_title" = "Space ini belum ada ruangan";
-"create_room_show_in_directory" = "Tampilkan ruangan di direktori";
+"create_room_show_in_directory" = "Tampilkan di direktori ruangan";
 "secrets_reset_authentication_message" = "Masukkan kata sandi akun Matrix Anda untuk mengkonfirmasi";
 "secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Masukkan Kunci Keamanan Anda untuk melanjutkan.";
 "secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Masukkan Frasa Keamanan Anda untuk melanjutkan.";
@@ -1065,7 +1065,7 @@
 "room_intro_cell_information_room_without_topic_sentence2_part1" = "Tambahkan sebuah topik";
 "room_avatar_view_accessibility_hint" = "Ubah avatar ruangan";
 "call_transfer_error_message" = "Gagal memindahkan panggilan";
-"create_room_section_header_topic" = "Topik ruangan (opsional)";
+"create_room_section_header_topic" = "TOPIK (OPSIONAL)";
 "searchable_directory_search_placeholder" = "Nama atau ID";
 "biometrics_cant_unlocked_alert_message_login" = "Masuk kembali";
 "biometrics_cant_unlocked_alert_title" = "Tidak dapat membuka kunci aplikasi";
@@ -1260,13 +1260,13 @@
 // MARK: - Room Info
 
 "room_info_list_one_member" = "1 anggota";
-"create_room_section_header_address" = "Alamat ruangan";
-"create_room_type_public" = "Ruangan Publik";
-"create_room_type_private" = "Ruangan Privat";
-"create_room_section_header_type" = "Tipe ruangan";
+"create_room_section_header_address" = "ALAMAT";
+"create_room_type_public" = "Ruangan Publik (siapa saja)";
+"create_room_type_private" = "Ruangan Privat (undangan saja)";
+"create_room_section_header_type" = "SIAPA SAJA YANG DAPAT MENGAKSES";
 "create_room_enable_encryption" = "Aktifkan Enkripsi";
-"create_room_section_header_encryption" = "Enkripsi ruangan";
-"create_room_section_header_name" = "Nama ruangan";
+"create_room_section_header_encryption" = "ENKRIPSI";
+"create_room_section_header_name" = "NAMA";
 
 // MARK: - Create Room
 
@@ -2335,3 +2335,167 @@
 "room_participants_leave_processing" = "Meninggalkan";
 "notice_error_unformattable_event" = "** Tidak dapat memuat pesan. Mohon laporkan sebuah kutu";
 "settings_labs_use_only_latest_user_avatar_and_name" = "Tampilkan avatar dan nama terkini untuk pengguna di riwayat pesan";
+"ignore_user" = "Abaikan Pengguna";
+"location_sharing_pin_drop_share_title" = "Kirim lokasi ini";
+"location_sharing_static_share_title" = "Kirimkan lokasi saya saat ini";
+"live_location_sharing_banner_stop" = "Hentikan";
+"live_location_sharing_banner_title" = "Lokasi langsung diaktifkan";
+
+// MARK: Live location sharing
+
+"location_sharing_live_share_title" = "Bagikan lokasi langsung";
+"side_menu_coach_message" = "Usap kanan atau ketuk untuk melihat semua ruangan";
+"spaces_add_room_missing_permission_message" = "Anda tidak memiliki izin untuk menambahkan ruangan ke space ini.";
+"spaces_creation_in_one_space" = "dalam 1 space";
+"spaces_creation_in_many_spaces" = "dalam %@ space";
+"spaces_creation_in_spacename_plus_many" = "dalam %@ + %@ space";
+"spaces_creation_in_spacename_plus_one" = "dalam %@ + 1 space";
+"spaces_creation_in_spacename" = "dalam %@";
+"spaces_creation_post_process_inviting_users" = "Mengundang %@ pengguna";
+"spaces_creation_post_process_adding_rooms" = "Menambahkan %@ ruangan";
+"spaces_creation_post_process_creating_room" = "Membuat %@";
+"spaces_creation_post_process_uploading_avatar" = "Mengunggah avatar";
+"spaces_creation_post_process_creating_space_task" = "Membuat %@";
+"spaces_creation_post_process_creating_space" = "Membuat space";
+"spaces_creation_invite_by_username_message" = "Anda juga dapat mengundang mereka nanti.";
+"spaces_creation_invite_by_username_title" = "Undang tim Anda";
+"spaces_creation_invite_by_username" = "Undang dengan nama pengguna";
+"spaces_creation_add_rooms_message" = "Space ini hanya untuk Anda, tidak akan diberitahukan kepada siapa saja. Anda dapat menambahkan lagi nanti.";
+"spaces_creation_add_rooms_title" = "Apa yang Anda ingin tambahkan?";
+"spaces_creation_sharing_type_me_and_teammates_detail" = "Space privat untuk Anda & tim Anda";
+"spaces_creation_sharing_type_me_and_teammates_title" = "Saya dan tim saya";
+"spaces_creation_sharing_type_just_me_detail" = "Space yang privat untuk mengorganisir ruangan Anda";
+"spaces_creation_sharing_type_just_me_title" = "Hanya saya saja";
+"spaces_creation_sharing_type_message" = "Pastikan orang yang tepat memiliki akses ke %@. Anda dapat mengubahnya nanti.";
+"spaces_creation_sharing_type_title" = "Dengan siapa Anda bekerja?";
+"spaces_creation_email_invites_email_title" = "Email";
+"spaces_creation_email_invites_message" = "Anda juga dapat mengundang mereka nanti.";
+"spaces_creation_email_invites_title" = "Undang tim Anda";
+"spaces_creation_new_rooms_support" = "Dukungan";
+"spaces_creation_new_rooms_random" = "Acakan";
+"spaces_creation_new_rooms_general" = "Umum";
+"spaces_creation_new_rooms_room_name_title" = "Nama ruangan";
+"spaces_creation_new_rooms_message" = "Kami akan membuat ruangan untuk masing-masing.";
+"spaces_creation_new_rooms_title" = "Apa saja diskusi yang akan Anda lakukan?";
+"spaces_creation_cancel_message" = "Kemajuan Anda akan hilang.";
+"spaces_creation_cancel_title" = "Berhenti membuat sebuah space?";
+"spaces_creation_private_space_title" = "Space privat Anda";
+"spaces_creation_public_space_title" = "Space publik Anda";
+"spaces_creation_address_already_exists" = "%@\nsudah ada";
+"spaces_creation_address_invalid_characters" = "%@\nmemiliki karakter yang tidak valid";
+"spaces_creation_address_default_message" = "Space Anda dapat ditampilkan di\n%@";
+"spaces_creation_empty_room_name_error" = "Nama dibutuhkan";
+"spaces_creation_address" = "Alamat";
+"spaces_creation_settings_message" = "Tambahkan detail untuk membuatnya unik. Anda dapat mengubahnya di waktu yang mendatang.";
+"spaces_creation_footer" = "Anda dapat mengubahnya nanti";
+"spaces_creation_visibility_message" = "Untuk bergabung ke space yang sudah ada, Anda harus memiliki sebuah undangan.";
+"spaces_creation_visibility_title" = "Tipe space apa yang Anda ingin buat?";
+
+// Mark: - Space Creation
+
+"spaces_creation_hint" = "Space adalah cara baru untuk mengelompokkan ruangan dan orang.";
+"space_settings_current_address_message" = "Space Anda dapat ditampilkan di\n%@";
+"space_settings_update_failed_message" = "Gagal memperbarui pengaturan space. Apakah Anda ingin mencoba ulang?";
+"space_settings_access_section" = "Siapa saja yang dapat mengakses space ini?";
+"space_topic" = "Deskripsi";
+"space_public_join_rule_detail" = "Terbuka kepada siapa saja, baik untuk komunitas";
+"spaces_add_space" = "Tambahkan space";
+"spaces_add_room" = "Tambahkan ruangan";
+"spaces_invite_people" = "Undang orang";
+"space_private_join_rule_detail" = "Undangan saja, baik untuk Anda sendiri atau tim";
+"spaces_explore_rooms_one_room" = "1 ruangan";
+"spaces_explore_rooms_room_number" = "%@ ruangan";
+"spaces_create_space_title" = "Buat sebuah space";
+"spaces_add_space_title" = "Buat space";
+"space_invite_not_enough_permission" = "Anda tidak memiliki izin untuk mengundang orang-orang ke space ini";
+"room_invite_not_enough_permission" = "Anda tidak memiliki izin untuk mengundang orang-orang ke ruangan ini";
+"room_invite_to_room_option_detail" = "Mereka tidak akan menjadi bagian dari %@.";
+"room_invite_to_room_option_title" = "Ke ruangan ini saja";
+"room_invite_to_space_option_detail" = "Mereka dapat menjelajahi %@, tetapi tidak akan sebagai anggota %@.";
+
+// Mark: - Room invite
+
+"room_invite_to_space_option_title" = "Ke %@";
+"share_invite_link_space_text" = "Hei, bergabung space ini di %@";
+"share_invite_link_room_text" = "Hei, bergabung ruangan ini di %@";
+
+// MARK: - Share invite link
+
+"share_invite_link_action" = "Bagikan tautan undangan";
+"create_room_processing" = "Membuat ruangan";
+"create_room_suggest_room_footer" = "Ruangan yang disarankan dipromosikan kepada anggota space sebagai ruangan yang baik untuk bergabung.";
+"create_room_suggest_room" = "Sarankan kepada anggota space";
+"create_room_show_in_directory_footer" = "Ini akan membantu orang-orang menemukan dan bergabung.";
+"create_room_promotion_header" = "PROMOSI";
+"create_room_section_footer_type_public" = "Hanya orang yang diundang dapat mencari dan bergabung, tidak hanya orang-orang yang berada di nama Space.";
+"create_room_section_footer_type_restricted" = "Siapa saja dalam nama Space dapat menemukan dan bergabung.";
+"create_room_section_footer_type_private" = "Hanya orang yang diundang dapat menemukan dan bergabung.";
+"create_room_type_restricted" = "Anggota space";
+"call_jitsi_unable_to_start" = "Tidak dapat memulai panggilan konferensi";
+"room_suggestion_settings_screen_message" = "Ruangan yang disarankan dipromosikan untuk anggota space sebagai ruangan yang baik untuk bergabung.";
+"room_suggestion_settings_screen_title" = "Buat sebuah ruangan sebagai disarankan dalam sebuah space";
+
+// Room suggestion Settings
+"room_suggestion_settings_screen_nav_title" = "Sarankan ruangan";
+"room_access_space_chooser_other_spaces_section_info" = "Ini mungkin hal-hal yang menjadi bagian dari admin %@ lainnya.";
+"room_access_space_chooser_other_spaces_section" = "Space atau ruangan lainnya";
+"room_access_space_chooser_known_spaces_section" = "Space yang Anda tahu berisi %@";
+"room_access_settings_screen_setting_room_access" = "Menetapkan akses ruangan";
+"room_access_settings_screen_upgrade_alert_upgrading" = "Meningkatkan ruangan";
+"room_access_settings_screen_upgrade_alert_upgrade_button" = "Tingkatkan";
+"room_access_settings_screen_upgrade_alert_auto_invite_switch" = "Undang anggota secara otomatis ke ruangan baru";
+"room_access_settings_screen_upgrade_alert_message" = "Siapa saja dalam nama Space akan dapat menemukan dan bergabung ke ruangan ini — Anda tidak harus mengundang semuanya secara manual. Anda dapat mengubahnya dalam pengaturan ruangan kapan saja.\n\nDicatat bahwa meningkatkan akan membuat versi ruangan baru.  Semua pesan saat ini akan tetap dalam ruangan ini yang terarsip.";
+"room_access_settings_screen_upgrade_alert_title" = "Tingkatkan ruangan";
+"room_access_settings_screen_public_message" = "Siapa saja dapat menemukan dan bergabung.";
+"room_access_settings_screen_edit_spaces" = "Edit space";
+"room_access_settings_screen_upgrade_required" = "Peningkatan diperlukan";
+"room_access_settings_screen_restricted_message" = "Biarkan siapa saja dalam space menemukan dan bergabung.\nAnda akan ditanyakan untuk mengkonfirmasi space apa saja.";
+"room_access_settings_screen_private_message" = "Hanya orang yang diundang dapat menemukan dan bergabung.";
+"room_access_settings_screen_message" = "Tentukan siapa yang dapat menemukan dan bergabung %@.";
+"room_access_settings_screen_title" = "Siapa saja yang dapat mengakses ruangan ini?";
+
+// Room Access Settings
+"room_access_settings_screen_nav_title" = "Akses ruangan";
+"room_details_promote_room_suggest_title" = "Sarankan kepada anggota space";
+"room_details_promote_room_title" = "Promosikan ruangan";
+"room_details_access_row_title" = "Akses";
+"settings_labs_enable_auto_report_decryption_errors" = "Laporkan Kesalahan Pendekripsian Secara Otomatis";
+"room_preview_decline_invitation_options" = "Apakah Anda ingin menolak undangannya atau mengabaikan pengguna ini?";
+"threads_beta_cancel" = "Tidak sekarang";
+"threads_beta_enable" = "Coba";
+"threads_beta_information_link" = "Pelajari lebih lanjut";
+"threads_beta_information" = "Buat diskusi terorganisasi dengan utasan.\n\nUtasan membantu Anda membuat percakapan Anda sesuai topik dan mudah untuk dilacak. ";
+"threads_beta_title" = "Utasan";
+"threads_notice_done" = "Mengerti";
+"threads_notice_information" = "Semua utasan yang dibuat selama periode eksperimental akan <b>ditampilkan sebagai balasan biasa</b>.<br/><br/>Ini adalah transisi sekali, utasan sekarang menjadi bagian dari spesifikasi Matrix.";
+"threads_notice_title" = "Utasan tidak lagi eksperimental 🎉";
+"room_participants_invite_prompt_to_msg" = "Apakah Anda yakin ingin mengundang %@ ke %@?";
+"onboarding_celebration_button" = "Ayo";
+"onboarding_celebration_message" = "Preferensi Anda telah disimpan.";
+"onboarding_celebration_title" = "Anda siap!";
+"onboarding_avatar_accessibility_label" = "Foto profil";
+"onboarding_avatar_message" = "Anda dapat mengubahnya kapan saja.";
+"onboarding_avatar_title" = "Tambahkan foto profil";
+"onboarding_display_name_max_length" = "Nama tampilan Anda harus tidak lebih dari 256 karakter";
+"onboarding_display_name_hint" = "Anda dapat mengubahnya nanti";
+"onboarding_display_name_placeholder" = "Nama Tampilan";
+"onboarding_display_name_message" = "Ini akan ditampilkan ketika Anda mengirim pesan.";
+"onboarding_display_name_title" = "Pilih sebuah nama tampilan";
+"onboarding_personalization_skip" = "Lewati";
+"onboarding_personalization_save" = "Simpan dan lanjutkan";
+"onboarding_congratulations_home_button" = "Kembalikan saya ke beranda";
+"onboarding_congratulations_personalize_button" = "Ubah profil";
+/* The placeholder string contains the user's matrix ID */
+"onboarding_congratulations_message" = "Akun %@ Anda telah dibuat.";
+"onboarding_congratulations_title" = "Selamat!";
+"saving" = "Menyimpan";
+
+// Activities
+"loading" = "Memuat";
+"stop" = "Hentikan";
+"edit" = "Edit";
+"suggest" = "Sarankan";
+"add" = "Tambahkan";
+"existing" = "Sudah ada";
+"new_word" = "Baru";
+"joining" = "Bergabung";
