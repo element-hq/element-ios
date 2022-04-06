@@ -63,10 +63,10 @@ final class PresenceIndicatorView: UIView {
     ///   - presence: `MXPresence` to display
     func setPresence(_ presence: MXPresence) {
         switch presence {
-        case MXPresenceOnline:
+        case .online:
             self.backgroundColor = ThemeService.shared().theme.tintColor
             self.borderLayer.borderColor = self.borderColor.cgColor
-        case MXPresenceOffline, MXPresenceUnavailable:
+        case .offline, .unavailable:
             self.backgroundColor = ThemeService.shared().theme.tabBarUnselectedItemTintColor
             self.borderLayer.borderColor = self.borderColor.cgColor
         default:

@@ -34,7 +34,7 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
     
     private var viewData: RoomInfoListViewData {
         let encryptionImage = EncryptionTrustLevelBadgeImageHelper.roomBadgeImage(for: room.summary.roomEncryptionTrustLevel())
-        let directUserPresence = session.user(withUserId: room.directUserId)?.presence ?? MXPresenceUnknown
+        let directUserPresence = session.user(withUserId: room.directUserId)?.presence ?? .unknown
         
         let basicInfoViewData = RoomInfoBasicViewData(avatarUrl: room.summary.avatar,
                                                       mediaManager: session.mediaManager,

@@ -111,7 +111,7 @@ class RoomInfoBasicView: UIView {
         badgeImageView.isHidden = false
         // Update badge position if it doesn't match expectation.
         // If presence is displayed, badge should be in the name stack.
-        let isPresenceDisplayed = presence != MXPresenceUnknown
+        let isPresenceDisplayed = presence != .unknown
         let isBadgeInRoomNameStackView = roomNameStackView.arrangedSubviews.contains(badgeImageView)
         switch (isPresenceDisplayed, isBadgeInRoomNameStackView) {
         case (true, false):
