@@ -1055,11 +1055,15 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                 sectionHeaderView.accessoryView = updatedSectionHeaderView.accessoryView;
                 sectionHeaderView.rightAccessoryView = updatedSectionHeaderView.rightAccessoryView;
             }
-        } else {
+        }
+        else
+        {
             MXLogDebug(@"[RecentsViewController]: Reloading table view section %ld", indexPath.section);
             [self.recentsTableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationNone];
         }
-    } else if (!changes) {
+    }
+    else if (!changes)
+    {
         MXLogDebug(@"[RecentsViewController]: Reloading the entire table view");
         [self refreshRecentsTable];
     }

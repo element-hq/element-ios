@@ -1503,7 +1503,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 {
     RecentsDataSourceSections *updatedSections = [self makeDataSourceSections];
     BOOL hasChangedSections = ![self.sections isEqual:updatedSections];
-    if (hasChangedSections) {
+    if (hasChangedSections)
+    {
         // If the number or order of sections has changed, we reload all of the data
         [self.delegate dataSource:self didCellChange:nil];
         return;
@@ -1511,7 +1512,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     
     RecentsDataSourceSectionType sectionType = [self sectionTypeForServiceSection:section];
     NSInteger sectionIndex = [self.sections sectionIndexForSectionType:sectionType];
-    if (sectionIndex >= 0) {
+    if (sectionIndex >= 0)
+    {
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:(NSUInteger)sectionIndex];
         [self.delegate dataSource:self didCellChange:indexPath];
     }
