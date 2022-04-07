@@ -294,6 +294,8 @@ final class BuildSettings: NSObject {
     static let settingsSecurityScreenShowCryptographyInfo:Bool = true
     static let settingsSecurityScreenShowCryptographyExport:Bool = true
     static let settingsSecurityScreenShowAdvancedUnverifiedDevices:Bool = true
+    /// A setting to enable the presence configuration settings section.
+    static let settingsScreenPresenceAllowConfiguration: Bool = false
 
     // MARK: - Timeline settings
     static let roomInputToolbarCompressionMode: MediaCompressionMode = .prompt
@@ -427,9 +429,4 @@ final class BuildSettings: NSObject {
         // Do not enable live location sharing atm
         return false
     }
-    
-    // MARK: - Presence
-    
-    /// A setting to enable the presence configuration settings section.
-    static let presenceSettingsAllowConfiguration: Bool = false
 }

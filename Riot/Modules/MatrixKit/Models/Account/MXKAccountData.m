@@ -80,9 +80,10 @@
 
         _warnedAboutEncryption = [coder decodeBoolForKey:@"warnedAboutEncryption"];
         
-        if ([coder decodeIntForKey:@"preferredSyncPresence"])
+        if ([coder decodeObjectOfClass:NSString.class forKey:@"preferredSyncPresence"])
         {
-            _preferredSyncPresence = [coder decodeInt64ForKey:@"preferredSyncPresence"];
+            MXPresenceString presenceString = [coder decodeObjectOfClass:NSString.class forKey:@"preferredSyncPresence"];
+            _preferredSyncPresence = [MXTools presence:presenceString];
         }
         else
         {
@@ -152,7 +153,8 @@
 
     [coder encodeBool:_warnedAboutEncryption forKey:@"warnedAboutEncryption"];
     
-    [coder encodeInt64:_preferredSyncPresence forKey:@"preferredSyncPresence"];
+    MXPresenceString presenceString = [MXTools presenceString:_preferredSyncPresence];
+    [coder encodeObject:presenceString forKey:@"preferredSyncPresence"];
     
     [coder encodeObject:_others forKey:@"others"];
 }

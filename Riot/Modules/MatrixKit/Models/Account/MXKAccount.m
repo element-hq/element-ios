@@ -2173,6 +2173,9 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         self.mxSession.preferredSyncPresence = preferredSyncPresence;
         [self setUserPresence:preferredSyncPresence andStatusMessage:nil completion:nil];
     }
+    
+    // Archive updated field
+    [[MXKAccountManager sharedManager] saveAccounts];
 }
 
 @end

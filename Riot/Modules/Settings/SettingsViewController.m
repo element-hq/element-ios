@@ -526,7 +526,7 @@ TableViewSectionsDelegate>
         
     [tmpSections addObject: sectionUserInterface];
     
-    if(BuildSettings.presenceSettingsAllowConfiguration)
+    if(BuildSettings.settingsScreenPresenceAllowConfiguration)
     {
         Section *sectionPresence = [Section sectionWithTag:SECTION_TAG_PRESENCE];
         [sectionPresence addRowWithTag:PRESENCE_OFFLINE_MODE];
