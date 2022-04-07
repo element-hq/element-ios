@@ -750,6 +750,10 @@ Tap the + to start adding people.";
 
 "settings_enable_room_message_bubbles" = "Message bubbles";
 
+"settings_presence" = "Presence";
+"settings_presence_offline_mode" = "Offline Mode";
+"settings_presence_offline_mode_description" = "If enabled, you will always appear offline to other users, even when using the application.";
+
 // Security settings
 "security_settings_title" = "Security";
 "security_settings_crypto_sessions" = "MY SESSIONS";
