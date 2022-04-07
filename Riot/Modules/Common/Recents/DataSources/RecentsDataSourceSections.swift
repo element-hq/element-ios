@@ -75,4 +75,11 @@ import Foundation
         }
         return item.key
     }
+    
+    override func isEqual(_ object: Any?) -> Bool {
+        guard let other = object as? RecentsDataSourceSections else {
+            return false
+        }
+        return sections == other.sections
+    }
 }
