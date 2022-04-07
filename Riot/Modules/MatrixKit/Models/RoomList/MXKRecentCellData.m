@@ -93,6 +93,19 @@
     return roomSummary.avatar;
 }
 
+- (MXPresence)presence
+{
+    if (self.roomSummary.isDirect)
+    {
+        MXUser *contact = [self.mxSession userWithUserId:self.roomSummary.directUserId];
+        return contact.presence;
+    }
+    else
+    {
+        return MXPresenceUnknown;
+    }
+}
+
 - (NSString *)lastEventTextMessage
 {
     if (self.isSuggestedRoom)

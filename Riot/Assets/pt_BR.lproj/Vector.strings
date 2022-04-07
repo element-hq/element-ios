@@ -2107,3 +2107,5 @@
 "home_syncing" = "Sincando";
 "room_participants_leave_success" = "Saiu de sala";
 "room_participants_leave_processing" = "Saindo";
+"notice_error_unformattable_event" = "** Incapaz de render mensagem. Por favor reporte um bug";
+"settings_labs_use_only_latest_user_avatar_and_name" = "Mostrar avatar e nomes mais recentes para usuárias(os) em histórico de mensagem";

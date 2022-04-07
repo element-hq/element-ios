@@ -19,7 +19,7 @@ import SwiftUI
 import Mapbox
 
 @available(iOS 14, *)
-class UserLocationAnnotatonView: MGLUserLocationAnnotationView {
+class LocationAnnotatonView: MGLUserLocationAnnotationView {
     
     // MARK: Private
     
@@ -39,6 +39,14 @@ class UserLocationAnnotatonView: MGLUserLocationAnnotationView {
         super.init(annotation: userLocationAnnotation, reuseIdentifier: nil)
         
         self.addUserMarkerView(with: userLocationAnnotation.avatarData)
+        
+    }
+    
+    init(pinLocationAnnotation: PinLocationAnnotation) {
+        // TODO: Use a reuseIdentifier
+        super.init(annotation: pinLocationAnnotation, reuseIdentifier: nil)
+        
+        self.addPinMarkerView()
     }
     
     required init?(coder: NSCoder) {
@@ -55,12 +63,26 @@ class UserLocationAnnotatonView: MGLUserLocationAnnotationView {
         }).view else {
             return
         }
+        addMarkerView(with: avatarImageView)
+    }
+    
+    private func addPinMarkerView() {
+        guard let pinImageView = UIHostingController(rootView: LocationSharingMarkerView(backgroundColor: theme.colors.accent) {
+            Image(uiImage: Asset.Images.locationPinIcon.image)
+                .resizable()
+                .shapedBorder(color: theme.colors.accent, borderWidth: 3, shape: Circle())
+        }).view else {
+            return
+        }
+        addMarkerView(with: pinImageView)
+    }
+    
+    private func addMarkerView(with imageView: UIView) {
+        addSubview(imageView)
         
-        addSubview(avatarImageView)
-        
-        addConstraints([topAnchor.constraint(equalTo: avatarImageView.topAnchor),
-                        leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
-                        bottomAnchor.constraint(equalTo: avatarImageView.bottomAnchor),
-                        trailingAnchor.constraint(equalTo: avatarImageView.trailingAnchor)])
+        addConstraints([topAnchor.constraint(equalTo: imageView.topAnchor),
+                        leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+                        bottomAnchor.constraint(equalTo: imageView.bottomAnchor),
+                        trailingAnchor.constraint(equalTo: imageView.trailingAnchor)])
     }
 }

@@ -34,6 +34,7 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
     
     private var viewData: RoomInfoListViewData {
         let encryptionImage = EncryptionTrustLevelBadgeImageHelper.roomBadgeImage(for: room.summary.roomEncryptionTrustLevel())
+        let directUserPresence = session.user(withUserId: room.directUserId)?.presence ?? MXPresenceUnknown
         
         let basicInfoViewData = RoomInfoBasicViewData(avatarUrl: room.summary.avatar,
                                                       mediaManager: session.mediaManager,
@@ -43,7 +44,8 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
                                                       roomTopic: room.summary.topic,
                                                       encryptionImage: encryptionImage,
                                                       isEncrypted: room.summary.isEncrypted,
-                                                      isDirect: room.isDirect)
+                                                      isDirect: room.isDirect,
+                                                      directUserPresence: directUserPresence)
         
         return RoomInfoListViewData(numberOfMembers: Int(room.summary.membersCount.joined),
                                     basicInfoViewData: basicInfoViewData)
@@ -56,10 +58,12 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
         self.room = room
         super.init()
         startObservingSummaryChanges()
+        startObservingPresenceChanges()
     }
     
     deinit {
         stopObservingSummaryChanges()
+        stopObservingPresenceChanges()
     }
     
     // MARK: - Public
@@ -87,8 +91,24 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
         NotificationCenter.default.removeObserver(self, name: .mxRoomSummaryDidChange, object: nil)
     }
     
+    private func startObservingPresenceChanges() {
+        NotificationCenter.default.addObserver(self, selector: #selector(presenceUpdated(_:)), name: .mxkContactManagerMatrixUserPresenceChange, object: nil)
+    }
+    
+    private func stopObservingPresenceChanges() {
+        NotificationCenter.default.removeObserver(self, name: .mxkContactManagerMatrixUserPresenceChange, object: nil)
+    }
+    
     @objc private func roomSummaryUpdated(_ notification: Notification) {
         //  force update view
+        self.update(viewState: .loaded(viewData: viewData))
+    }
+    
+    @objc private func presenceUpdated(_ notification: NSNotification) {
+        guard let updatedUserId = notification.object as? String, updatedUserId == room.directUserId else {
+            return
+        }
+        
         self.update(viewState: .loaded(viewData: viewData))
     }
     

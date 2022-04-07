@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -37,6 +37,19 @@
                             <constraint firstAttribute="width" secondItem="5Yd-df-HbB" secondAttribute="height" multiplier="1:1" constant="1" id="QGp-OT-7yA"/>
                         </constraints>
                     </imageView>
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JjC-wU-vgp" customClass="PresenceIndicatorView" customModule="Riot" customModuleProvider="target">
+                        <rect key="frame" x="52" y="52" width="18" height="18"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="18" id="B0R-l8-aEh"/>
+                            <constraint firstAttribute="height" constant="18" id="VaP-nI-eyF"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                <real key="value" value="1.5"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="RoomTitle" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oxX-IL-dG4">
                         <rect key="frame" x="4" y="74" width="72" height="16"/>
                         <accessibility key="accessibilityConfiguration" identifier="TitleLabel"/>
@@ -81,11 +94,13 @@
                 <constraint firstItem="Jkz-Zp-aaG" firstAttribute="top" secondItem="X8H-1U-wc3" secondAttribute="bottom" id="XDO-yX-Zs5"/>
                 <constraint firstItem="X8H-1U-wc3" firstAttribute="leading" secondItem="eCk-zY-LXq" secondAttribute="leading" constant="7" id="XU5-Lv-9Xn"/>
                 <constraint firstItem="T1Q-RS-8o6" firstAttribute="top" secondItem="eCk-zY-LXq" secondAttribute="top" constant="10" id="cc7-bg-15Z"/>
+                <constraint firstItem="JjC-wU-vgp" firstAttribute="bottom" secondItem="T1Q-RS-8o6" secondAttribute="bottom" id="epD-El-6ls"/>
                 <constraint firstItem="Jkz-Zp-aaG" firstAttribute="leading" secondItem="eCk-zY-LXq" secondAttribute="leading" constant="7" id="fPh-Lb-Bv9"/>
                 <constraint firstItem="scs-Ov-Tjv" firstAttribute="centerX" secondItem="T1Q-RS-8o6" secondAttribute="trailing" priority="750" constant="-6" id="fgA-Sf-Y4E"/>
                 <constraint firstAttribute="trailing" secondItem="oxX-IL-dG4" secondAttribute="trailing" constant="4" id="hDl-X9-M4n"/>
                 <constraint firstItem="T1Q-RS-8o6" firstAttribute="centerX" secondItem="eCk-zY-LXq" secondAttribute="centerX" id="hmB-fl-oN2"/>
                 <constraint firstAttribute="trailing" secondItem="X8H-1U-wc3" secondAttribute="trailing" constant="7" id="o5i-7H-n0G"/>
+                <constraint firstItem="JjC-wU-vgp" firstAttribute="trailing" secondItem="T1Q-RS-8o6" secondAttribute="trailing" id="oSg-8N-1F7"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="scs-Ov-Tjv" secondAttribute="trailing" id="qGg-o0-u1H"/>
                 <constraint firstAttribute="trailing" secondItem="Jkz-Zp-aaG" secondAttribute="trailing" constant="7" id="uQe-FG-3lb"/>
                 <constraint firstItem="X8H-1U-wc3" firstAttribute="top" secondItem="oxX-IL-dG4" secondAttribute="top" id="uTm-3W-QoM"/>
@@ -95,6 +110,7 @@
                 <outlet property="badgeLabel" destination="scs-Ov-Tjv" id="KPV-Qb-cnT"/>
                 <outlet property="editionArrowView" destination="jta-3V-4wL" id="XLj-Cx-3bn"/>
                 <outlet property="encryptedRoomIcon" destination="5Yd-df-HbB" id="5pc-Vi-wMZ"/>
+                <outlet property="presenceIndicatorView" destination="JjC-wU-vgp" id="PfX-eJ-ZWm"/>
                 <outlet property="roomAvatar" destination="T1Q-RS-8o6" id="4sR-Wm-jwz"/>
                 <outlet property="roomTitle" destination="oxX-IL-dG4" id="vff-Fw-AOf"/>
                 <outlet property="roomTitle1" destination="X8H-1U-wc3" id="nnS-Hp-1qV"/>

@@ -2075,3 +2075,5 @@
 "home_syncing" = "Sünkroniseerimine";
 "room_participants_leave_success" = "Sa oled jututoast lahkunud";
 "room_participants_leave_processing" = "Lahkumine";
+"notice_error_unformattable_event" = "** Sõnumi töötlemine ei õnnestu. Palun anna meile sellest veast teada";
+"settings_labs_use_only_latest_user_avatar_and_name" = "Sõnumite ajaloos leiduvate kasutajate puhul näita viimati kasutatud tunnuspilti ning nime";
