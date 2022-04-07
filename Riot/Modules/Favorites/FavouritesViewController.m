@@ -109,7 +109,7 @@
     // Check whether the recents data source is correctly configured.
     if (recentsDataSource.recentsDataSourceMode == RecentsDataSourceModeFavourites)
     {
-        [self scrollToTheTopTheNextRoomWithMissedNotificationsInSection:recentsDataSource.favoritesSection];
+        [self scrollToTheTopTheNextRoomWithMissedNotificationsInSection:[recentsDataSource.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeFavorites]];
     }
 }
 

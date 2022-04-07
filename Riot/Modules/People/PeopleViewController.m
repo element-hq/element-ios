@@ -152,7 +152,7 @@
     // Check whether the recents data source is correctly configured.
     if (recentsDataSource.recentsDataSourceMode == RecentsDataSourceModePeople)
     {
-        [self scrollToTheTopTheNextRoomWithMissedNotificationsInSection:recentsDataSource.peopleSection];
+        [self scrollToTheTopTheNextRoomWithMissedNotificationsInSection:[recentsDataSource.sections sectionIndexForSectionType:RecentsDataSourceSectionTypePeople]];
     }
 }
 
