@@ -287,7 +287,8 @@ extension SpaceExploreRoomViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let viewData = self.itemDataList[indexPath.row]
         return UIContextMenuConfiguration(identifier: nil) {
-            return SpaceRoomPreviewViewController.instantiate(with: viewData.childInfo, avatarViewData: viewData.avatarViewData)
+            let viewModel = SpaceChildContextPreviewViewModel(childInfo: viewData.childInfo)
+            return RoomContextPreviewViewController.instantiate(with: viewModel, mediaManager: self.viewModel.space?.room?.mxSession.mediaManager)
         } actionProvider: { suggestedActions in
             return self.viewModel.contextMenu(for: self.itemDataList[indexPath.row])
         }

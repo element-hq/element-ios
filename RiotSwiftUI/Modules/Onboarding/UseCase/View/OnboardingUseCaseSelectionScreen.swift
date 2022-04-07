@@ -34,6 +34,11 @@ struct OnboardingUseCaseSelectionScreen: View {
     var titleContent: some View {
         VStack(spacing: 8) {
             Image(Asset.Images.onboardingUseCaseIcon.name)
+                .resizable()
+                .renderingMode(.template)
+                .foregroundColor(theme.colors.accent)
+                .frame(width: OnboardingMetrics.iconSize, height: OnboardingMetrics.iconSize)
+                .background(Circle().foregroundColor(.white).padding(2))
                 .padding(.bottom, 8)
                 .accessibilityHidden(true)
             
@@ -99,9 +104,9 @@ struct OnboardingUseCaseSelectionScreen: View {
                         
                         useCaseButtons
                     }
-                    .frame(maxWidth: OnboardingMetrics.maxContentWidth,
-                           maxHeight: OnboardingMetrics.maxContentHeight)
-                    .padding(16)
+                    .frame(maxWidth: OnboardingMetrics.maxContentWidth)
+                    .padding(.top, OnboardingMetrics.topPaddingToNavigationBar)
+                    .padding(.horizontal, 16)
                 }
                 .frame(maxWidth: .infinity)
                 
@@ -120,11 +125,11 @@ struct OnboardingUseCaseSelectionScreen: View {
 @available(iOS 14.0, *)
 struct OnboardingUseCase_Previews: PreviewProvider {
     static let stateRenderer = MockOnboardingUseCaseSelectionScreenState.stateRenderer
+    
     static var previews: some View {
-        NavigationView {
-            stateRenderer.screenGroup()
-                .navigationBarTitleDisplayMode(.inline)
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
+        stateRenderer.screenGroup(addNavigation: true)
+            .theme(.light).preferredColorScheme(.light)
+        stateRenderer.screenGroup(addNavigation: true)
+            .theme(.dark).preferredColorScheme(.dark)
     }
 }

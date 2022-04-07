@@ -20,6 +20,7 @@
 
 // We add here a protocol to handle tap gesture in title view.
 @class RoomTitleView;
+@class PresenceIndicatorView;
 @protocol RoomTitleViewTapGestureDelegate <NSObject>
 
 /**
@@ -37,6 +38,7 @@
 @property (weak, nonatomic) IBOutlet UIView *titleMask;
 @property (weak, nonatomic) IBOutlet UIImageView *badgeImageView;
 @property (weak, nonatomic) IBOutlet MXKImageView *pictureView;
+@property (weak, nonatomic) IBOutlet PresenceIndicatorView *presenceIndicatorView;
 @property (weak, nonatomic) IBOutlet UILabel *missedDiscussionsBadgeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *typingLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *displayNameCenterYConstraint;
@@ -46,6 +48,10 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pictureViewWidthConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *dotViewCenterXConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *dotViewCenterYConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *badgeImageViewToPictureViewTrailingConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *badgeImageViewToPictureViewBottomConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *badgeImageViewLeadingToPictureViewConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *badgeImageViewCenterYToDisplayNameConstraint;
 
 /**
  The room preview data may be used when mxRoom instance is not available

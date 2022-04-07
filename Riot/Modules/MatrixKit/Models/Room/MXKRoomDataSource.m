@@ -2104,6 +2104,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 - (void)sendLocationWithLatitude:(double)latitude
                        longitude:(double)longitude
                      description:(NSString *)description
+                  coordinateType:(MXEventAssetType)coordinateType
                          success:(void (^)(NSString *))success
                          failure:(void (^)(NSError *))failure
 {
@@ -2115,7 +2116,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
                         description:description
                            threadId:self.threadId
                           localEcho:&localEchoEvent
-                          assetType:MXEventAssetTypeGeneric
+                          assetType:coordinateType
                             success:success failure:failure];
     
     if (localEchoEvent)

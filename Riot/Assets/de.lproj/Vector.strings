@@ -56,7 +56,7 @@
 "auth_missing_email_or_phone" = "Fehlende E-Mail-Adresse oder Telefon-Nummer";
 "auth_password_dont_match" = "Passwörter stimmen nicht überein";
 "auth_username_in_use" = "Benutzername bereits verwendet";
-"auth_forgot_password" = "Passwort des Matrix-Kontos vergessen?";
+"auth_forgot_password" = "Passwort deines Matrix-Kontos vergessen?";
 "auth_msisdn_validation_title" = "Verifizierung ausstehend";
 "auth_msisdn_validation_message" = "Bitte gib unten den Aktivierungs-Code ein, den wir per SMS verschickt haben.";
 "auth_msisdn_validation_error" = "Telefonnummer kann nicht verifiziert werden.";
@@ -2138,3 +2138,8 @@
 "attachment_unsupported_preview_title" = "Vorschau kann nicht angezeigt werden";
 "message_reply_to_sender_sent_their_location" = "hat den eigenen Standort geteilt.";
 "room_displayname_all_other_members_left" = "%@ (Verlassen)";
+"notice_error_unformattable_event" = "** Nachricht kann nicht dargestellt werden. Bitte erstelle einen Bug-Report";
+"home_syncing" = "Synchronisiere";
+"settings_labs_use_only_latest_user_avatar_and_name" = "Immer aktuelle Profilbilder und Nicknamen anzeigen";
+"room_participants_leave_success" = "Raum verlassen";
+"room_participants_leave_processing" = "Verlassen";

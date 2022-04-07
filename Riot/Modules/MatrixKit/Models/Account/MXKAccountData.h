@@ -32,6 +32,7 @@
 @protected BOOL _isSoftLogout;
 @protected BOOL _hasPusherForPushNotifications;
 @protected BOOL _hasPusherForPushKitNotifications;
+@protected MXPresence _preferredSyncPresence;
 }
 
 /**
@@ -88,6 +89,12 @@
  Flag to indicate that a PushKit pusher has been set on the homeserver for this device.
  */
 @property (nonatomic, readonly) BOOL hasPusherForPushKitNotifications;
+
+/**
+ The account's preferred Presence status to share while the application is in foreground.
+ Defaults to MXPresenceOnline.
+ */
+@property (nonatomic) MXPresence preferredSyncPresence;
 
 
 /**

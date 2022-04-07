@@ -19,6 +19,7 @@
 import Foundation
 import UIKit
 import CommonKit
+import MatrixSDK
 
 final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
 
@@ -270,14 +271,17 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         }
         
         var location: CLLocationCoordinate2D?
+        var coordinateType: MXEventAssetType = .user
         if let locationContent = event?.location {
             location = CLLocationCoordinate2D(latitude: locationContent.latitude, longitude: locationContent.longitude)
+            coordinateType = locationContent.assetType
         }
         
         let parameters = LocationSharingCoordinatorParameters(roomDataSource: roomViewController.roomDataSource,
                                                               mediaManager: mediaManager,
                                                               avatarData: avatarData,
-                                                              location: location)
+                                                              location: location,
+                                                              coordinateType: coordinateType)
         
         let coordinator = LocationSharingCoordinator(parameters: parameters)
         
