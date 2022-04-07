@@ -93,8 +93,8 @@
                                             target:self
                                             action:@selector(onPlusButtonPressed)];
     
-    // Register table view cell used for rooms collection.
-    [self.recentsTableView registerClass:TableViewCellWithCollectionView.class forCellReuseIdentifier:TableViewCellWithCollectionView.defaultReuseIdentifier];
+    // Register table view cells used for rooms collection.
+    [self registerCellsWithCollectionViews];
 
     // Change the table data source. It must be the home view controller itself.
     self.recentsTableView.dataSource = self;
@@ -302,6 +302,57 @@
 
 #pragma mark - UITableViewDataSource
 
+// Table view cells on the home screen contain nested collection views with their own data source and state.
+// In order to preserve properties such as content offset of each collection view, the parent cells must
+// be directly associated with each section, so that when getting dequed by the table view, the correct cell
+// is reused, rather than cells getting randomly swapped around.
+- (void)registerCellsWithCollectionViews
+{
+    NSArray<NSNumber *> *sections = @[
+        @(RecentsDataSourceSectionTypeDirectory),
+        @(RecentsDataSourceSectionTypeInvites),
+        @(RecentsDataSourceSectionTypeFavorites),
+        @(RecentsDataSourceSectionTypePeople),
+        @(RecentsDataSourceSectionTypeConversation),
+        @(RecentsDataSourceSectionTypeLowPriority),
+        @(RecentsDataSourceSectionTypeServerNotice),
+        @(RecentsDataSourceSectionTypeSuggestedRooms)
+    ];
+    for (NSNumber *section in sections) {
+        NSString *cellIdentifier = [self cellIdentifierForSectionType:section.integerValue];
+        [self.recentsTableView registerClass:TableViewCellWithCollectionView.class forCellReuseIdentifier:cellIdentifier];
+    }
+}
+
+- (NSString *)cellIdentifierForSectionType:(RecentsDataSourceSectionType)sectionType
+{
+    // Create cell identifier unique to each semantic section, e.g. 'favorites' will have different cell
+    // identifier to 'conversations'.
+    return [NSString stringWithFormat:@"%@-%ld", TableViewCellWithCollectionView.defaultReuseIdentifier, sectionType];
+}
+
+- (RecentsDataSourceSectionType)sectionTypeAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == recentsDataSource.directorySection) {
+        return RecentsDataSourceSectionTypeDirectory;
+    } else if (indexPath.section == recentsDataSource.invitesSection) {
+        return RecentsDataSourceSectionTypeInvites;
+    } else if (indexPath.section == recentsDataSource.favoritesSection) {
+        return RecentsDataSourceSectionTypeFavorites;
+    } else if (indexPath.section == recentsDataSource.peopleSection) {
+        return RecentsDataSourceSectionTypePeople;
+    } else if (indexPath.section == recentsDataSource.conversationSection) {
+        return RecentsDataSourceSectionTypeConversation;
+    } else if (indexPath.section == recentsDataSource.lowPrioritySection) {
+        return RecentsDataSourceSectionTypeLowPriority;
+    } else if (indexPath.section == recentsDataSource.serverNoticeSection) {
+        return RecentsDataSourceSectionTypeServerNotice;
+    } else if (indexPath.section == recentsDataSource.suggestedRoomsSection) {
+        return RecentsDataSourceSectionTypeSuggestedRooms;
+    }
+    return -1;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the actual number of sections prepared in recents dataSource.
@@ -335,7 +386,9 @@
         return [recentsDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
     }
     
-    TableViewCellWithCollectionView *tableViewCell = [tableView dequeueReusableCellWithIdentifier:TableViewCellWithCollectionView.defaultReuseIdentifier forIndexPath:indexPath];
+    RecentsDataSourceSectionType sectionType = [self sectionTypeAtIndexPath:indexPath];
+    NSString *cellIdentifier = [self cellIdentifierForSectionType:sectionType];
+    TableViewCellWithCollectionView *tableViewCell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     tableViewCell.collectionView.tag = indexPath.section;
     [tableViewCell.collectionView registerClass:RoomCollectionViewCell.class forCellWithReuseIdentifier:RoomCollectionViewCell.defaultReuseIdentifier];
     tableViewCell.collectionView.delegate = self;
