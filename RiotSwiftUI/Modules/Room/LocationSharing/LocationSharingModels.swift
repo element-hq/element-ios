@@ -19,15 +19,22 @@ import SwiftUI
 import Combine
 import CoreLocation
 
+// This is the equivalent of MXEventAssetType in the MatrixSDK
+enum LocationSharingCoordinateType {
+    case user
+    case pin
+}
+
 enum LocationSharingViewAction {
     case cancel
     case share
-    case shareLiveLocation
+    case sharePinLocation
+    case goToUserLocation
 }
 
 enum LocationSharingViewModelResult {
     case cancel
-    case share(latitude: Double, longitude: Double)
+    case share(latitude: Double, longitude: Double, coordinateType: LocationSharingCoordinateType)
     case shareLiveLocation(timeout: TimeInterval)
 }
 
@@ -47,17 +54,19 @@ struct LocationSharingViewState: BindableState {
     /// Current user avatarData
     let userAvatarData: AvatarInputProtocol
     
-    /// User map annotation to display existing location
-    let userAnnotation: UserLocationAnnotation?
+    /// Shared annotation to display existing location
+    let sharedAnnotation: LocationAnnotation?
     
     /// Map annotations to display on map
-    var annotations: [UserLocationAnnotation]
+    var annotations: [LocationAnnotation]
 
     /// Map annotation to focus on
-    var highlightedAnnotation: UserLocationAnnotation?
+    var highlightedAnnotation: LocationAnnotation?
 
     /// Indicates whether the user has moved around the map to drop a pin somewhere other than their current location
-    var isPinDropSharing: Bool = false
+    var isPinDropSharing: Bool {
+        return bindings.pinLocation != nil
+    }
     
     var showLoadingIndicator: Bool = false
     
@@ -72,7 +81,7 @@ struct LocationSharingViewState: BindableState {
     }
     
     var displayExistingLocation: Bool {
-        return userAnnotation != nil
+        return sharedAnnotation != nil
     }
     
     var shareButtonEnabled: Bool {
@@ -87,6 +96,7 @@ struct LocationSharingViewState: BindableState {
 struct LocationSharingViewStateBindings {
     var alertInfo: AlertInfo<LocationSharingAlertType>?
     var userLocation: CLLocationCoordinate2D?
+    var pinLocation: CLLocationCoordinate2D?
 }
 
 enum LocationSharingAlertType {

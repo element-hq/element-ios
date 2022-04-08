@@ -55,6 +55,14 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         return self.navigationRouter.modules.last is MasterTabBarController
     }
     
+    private var detailUserIndicatorPresenter: UserIndicatorTypePresenterProtocol {
+        guard let presenter = splitViewMasterPresentableDelegate?.detailUserIndicatorPresenter else {
+            MXLog.debug("[TabBarCoordinator]: Missing detaul user indicator presenter")
+            return UserIndicatorTypePresenter(presentingViewController: toPresentable())
+        }
+        return presenter
+    }
+    
     private var indicators = [UserIndicator]()
     
     // MARK: Public
@@ -231,7 +239,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         homeViewController.tabBarItem.tag = Int(TABBAR_HOME_INDEX)
         homeViewController.tabBarItem.image = homeViewController.tabBarItem.image
         homeViewController.accessibilityLabel = VectorL10n.titleHome
-        homeViewController.indicatorPresenter = UserIndicatorPresenterWrapper(presenter: indicatorPresenter)
+        homeViewController.userIndicatorStore = UserIndicatorStore(presenter: indicatorPresenter)
         
         let wrapperViewController = HomeViewControllerWithBannerWrapperViewController(viewController: homeViewController)        
         return wrapperViewController
@@ -241,7 +249,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let favouritesViewController: FavouritesViewController = FavouritesViewController.instantiate()
         favouritesViewController.tabBarItem.tag = Int(TABBAR_FAVOURITES_INDEX)
         favouritesViewController.accessibilityLabel = VectorL10n.titleFavourites
-        favouritesViewController.indicatorPresenter = UserIndicatorPresenterWrapper(presenter: indicatorPresenter)
+        favouritesViewController.userIndicatorStore = UserIndicatorStore(presenter: indicatorPresenter)
         return favouritesViewController
     }
     
@@ -249,7 +257,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let peopleViewController: PeopleViewController = PeopleViewController.instantiate()
         peopleViewController.tabBarItem.tag = Int(TABBAR_PEOPLE_INDEX)
         peopleViewController.accessibilityLabel = VectorL10n.titlePeople
-        peopleViewController.indicatorPresenter = UserIndicatorPresenterWrapper(presenter: indicatorPresenter)
+        peopleViewController.userIndicatorStore = UserIndicatorStore(presenter: indicatorPresenter)
         return peopleViewController
     }
     
@@ -257,7 +265,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let roomsViewController: RoomsViewController = RoomsViewController.instantiate()
         roomsViewController.tabBarItem.tag = Int(TABBAR_ROOMS_INDEX)
         roomsViewController.accessibilityLabel = VectorL10n.titleRooms
-        roomsViewController.indicatorPresenter = UserIndicatorPresenterWrapper(presenter: indicatorPresenter)
+        roomsViewController.userIndicatorStore = UserIndicatorStore(presenter: indicatorPresenter)
         return roomsViewController
     }
     
@@ -415,8 +423,9 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                 displayConfig = .default
             }
             
+            
             let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
-                                                                      userIndicatorPresenter: splitViewMasterPresentableDelegate?.detailUserIndicatorPresenter,
+                                                                      userIndicatorPresenter: detailUserIndicatorPresenter,
                                                                       session: roomNavigationParameters.mxSession,
                                                                       parentSpaceId: self.currentSpaceId,
                                                                       roomId: roomNavigationParameters.roomId,
@@ -435,7 +444,13 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         // RoomCoordinator will be presented by the split view.
         // As we don't know which navigation controller instance will be used,
         // give the NavigationRouterStore instance and let it find the associated navigation controller
-        let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared, session: matrixSession, parentSpaceId: self.currentSpaceId, roomId: roomId, eventId: eventId, showSettingsInitially: false)
+        let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
+                                                                  userIndicatorPresenter: detailUserIndicatorPresenter,
+                                                                  session: matrixSession,
+                                                                  parentSpaceId: self.currentSpaceId,
+                                                                  roomId: roomId,
+                                                                  eventId: eventId,
+                                                                  showSettingsInitially: false)
         
         self.showRoom(with: roomCoordinatorParameters, completion: completion)
     }
@@ -445,7 +460,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         // RoomCoordinator will be presented by the split view
         // We don't which navigation controller instance will be used
         // Give the NavigationRouterStore instance and let it find the associated navigation controller if needed
-        let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared, parentSpaceId: self.currentSpaceId, previewData: previewData)
+        let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
+                                                                  userIndicatorPresenter: detailUserIndicatorPresenter,
+                                                                  parentSpaceId: self.currentSpaceId,
+                                                                  previewData: previewData)
         
         self.showRoom(with: roomCoordinatorParameters)
     }
@@ -453,7 +471,9 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private func showRoomPreview(withNavigationParameters roomPreviewNavigationParameters: RoomPreviewNavigationParameters, completion: (() -> Void)?) {
         
         let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
-                                                                  parentSpaceId: self.currentSpaceId, previewData: roomPreviewNavigationParameters.previewData)
+                                                                  userIndicatorPresenter: detailUserIndicatorPresenter,
+                                                                  parentSpaceId: self.currentSpaceId,
+                                                                  previewData: roomPreviewNavigationParameters.previewData)
         
         self.showRoom(with: roomCoordinatorParameters,
                       stackOnSplitViewDetail: roomPreviewNavigationParameters.presentationParameters.stackAboveVisibleViews,
@@ -501,6 +521,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
 
         //  create room coordinator
         let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
+                                                                  userIndicatorPresenter: detailUserIndicatorPresenter,
                                                                   session: roomNavigationParameters.mxSession,
                                                                   parentSpaceId: self.currentSpaceId,
                                                                   roomId: roomNavigationParameters.roomId,
@@ -518,6 +539,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
 
         //  create thread coordinator
         let threadCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
+                                                                    userIndicatorPresenter: detailUserIndicatorPresenter,
                                                                     session: roomNavigationParameters.mxSession,
                                                                     parentSpaceId: self.currentSpaceId,
                                                                     roomId: roomNavigationParameters.roomId,
@@ -653,7 +675,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         if !RiotSettings.shared.slideMenuRoomsCoachMessageHasBeenDisplayed {
             let isAuthenticated = MXKAccountManager.shared().activeAccounts.first != nil || MXKAccountManager.shared().accounts.first?.isSoftLogout == false
 
-            if isAuthenticated, let spaceService = session.spaceService {
+        if isAuthenticated, let spaceService = session.spaceService, masterTabBarController.presentedViewController == nil, navigationRouter.modules.count == 1 {
                 if spaceService.isInitialised && !spaceService.rootSpaceSummaries.isEmpty {
                     RiotSettings.shared.slideMenuRoomsCoachMessageHasBeenDisplayed = true
                     windowOverlay = WindowOverlayPresenter()
@@ -735,6 +757,7 @@ extension TabBarCoordinator: RoomCoordinatorDelegate {
         }
 
         let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
+                                                                  userIndicatorPresenter: detailUserIndicatorPresenter,
                                                                   session: matrixSession,
                                                                   parentSpaceId: self.currentSpaceId,
                                                                   roomId: roomId,

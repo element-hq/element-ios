@@ -2124,3 +2124,7 @@
 "attachment_unsupported_preview_title" = "S’arrihet të bëhet paraparje";
 "room_displayname_all_other_members_left" = "%@ (Iku)";
 "message_reply_to_sender_sent_their_location" = "ka dhënë vendndodhjen e vet.";
+"room_participants_leave_processing" = "Dalje";
+"notice_error_unformattable_event" = "** S’arrihet të riprodhohet mesazhi. Ju lutemi, njoftoni një të metë";
+"settings_labs_use_only_latest_user_avatar_and_name" = "Shfaq në historik mesazhesh avatarin dhe emrin më të ri të përdoruesve";
+"room_participants_leave_success" = "Doli nga dhoma";

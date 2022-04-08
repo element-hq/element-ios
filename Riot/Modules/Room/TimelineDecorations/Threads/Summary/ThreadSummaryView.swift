@@ -115,7 +115,7 @@ class ThreadSummaryView: UIView {
         room.state { [weak self] roomState in
             guard let self = self else { return }
             let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
-            let lastMessageText = eventFormatter.attributedString(from: lastMessage,
+            let lastMessageText = eventFormatter.attributedString(from: lastMessage.replyStrippedVersion,
                                                                   with: roomState,
                                                                   error: formatterError)
             

@@ -1,1 +1,10 @@
 
+
+"NSLocationWhenInUseUsageDescription" = "Þegar þú deilir staðsetningunni þinni með öðru fólki, þarf Element aðgang að henni til að geta birt hana á landakorti.";
+"NSFaceIDUsageDescription" = "Face ID er notað til að fá aðgang að forritinu þínu.";
+"NSCalendarsUsageDescription" = "Skoðaðu áætlaða fundi þína í forritinu.";
+"NSContactsUsageDescription" = "Element mun birta tengiliðina þína svo þú getir boðið þeim að spjalla.";
+"NSMicrophoneUsageDescription" = "Element þarf að fá aðgang að hljóðnemanum þínum fyrir símtöl, upptöku á myndskeiðum og upptöku talskilaboða.";
+"NSPhotoLibraryUsageDescription" = "Myndasafnið er notað til að senda myndir og myndskeið.";
+// Permissions usage explanations
+"NSCameraUsageDescription" = "Myndavélin er notuð til að taka myndir og myndskeið og fyrir myndsímtöl.";

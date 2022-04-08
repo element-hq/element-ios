@@ -45,16 +45,16 @@ struct OnboardingCelebrationScreen: View {
                         .frame(height: OnboardingMetrics.spacerHeight(in: geometry))
                     
                     mainContent
-                        .padding(.top, 106)
-                        .padding(.horizontal, horizontalPadding)
                         .frame(maxWidth: OnboardingMetrics.maxContentWidth)
+                        .padding(.top, OnboardingMetrics.breakerScreenTopPadding)
+                        .padding(.horizontal, horizontalPadding)
                 }
                 .frame(maxWidth: .infinity)
                 
                 buttons
                     .frame(maxWidth: OnboardingMetrics.maxContentWidth)
                     .padding(.horizontal, horizontalPadding)
-                    .padding(.bottom, 24)
+                    .padding(.bottom, OnboardingMetrics.actionButtonBottomPadding)
                     .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
                 
                 Spacer()
@@ -74,7 +74,7 @@ struct OnboardingCelebrationScreen: View {
             Image(Asset.Images.onboardingCelebrationIcon.name)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 90)
+                .frame(width: OnboardingMetrics.iconSize, height: OnboardingMetrics.iconSize)
                 .foregroundColor(theme.colors.accent)
                 .background(Circle().foregroundColor(.white).padding(2))
                 .padding(.bottom, 42)
@@ -86,7 +86,7 @@ struct OnboardingCelebrationScreen: View {
                 .foregroundColor(theme.colors.primaryContent)
             
             Text(VectorL10n.onboardingCelebrationMessage)
-                .font(theme.fonts.subheadline)
+                .font(theme.fonts.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.secondaryContent)
         }
@@ -104,7 +104,7 @@ struct OnboardingCelebrationScreen: View {
     }
     
     var effects: some View {
-        EffectsView(effectsType: .confetti)
+        EffectsView(effect: .confetti)
             .allowsHitTesting(false)
     }
 }

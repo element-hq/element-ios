@@ -982,6 +982,13 @@ const CGFloat kTypingCellHeight = 24;
         //  no need to reload when paginating back
         return;
     }
+
+    BOOL notify = YES;
+    if (self.threadId)
+    {
+        //  no need to notify the thread screen, it'll cause a flickering
+        notify = NO;
+    }
     NSUInteger count = 0;
     @synchronized (bubbles)
     {
@@ -989,7 +996,7 @@ const CGFloat kTypingCellHeight = 24;
     }
     if (count > 0)
     {
-        [self reload];
+        [self reloadNotifying:notify];
     }
 }
 

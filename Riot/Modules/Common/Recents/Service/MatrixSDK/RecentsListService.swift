@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -610,9 +610,10 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
             multicastDelegate.invoke { $0.recentsListServiceDidChangeData?(self,
                                                                            forSection: section,
                                                                            totalCountsChanged: totalCountsChanged) }
+        } else {
+            multicastDelegate.invoke { $0.recentsListServiceDidChangeData?(self,
+                                                                           totalCountsChanged: totalCountsChanged) }
         }
-        multicastDelegate.invoke { $0.recentsListServiceDidChangeData?(self,
-                                                                       totalCountsChanged: totalCountsChanged) }
     }
     
     deinit {

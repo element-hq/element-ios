@@ -36,7 +36,7 @@
 
 NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewControllerDataReadyNotification";
 
-@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate, SpaceChildRoomDetailBridgePresenterDelegate>
+@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate, SpaceChildRoomDetailBridgePresenterDelegate, RoomContextActionServiceDelegate>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -69,6 +69,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     __weak id kThemeServiceDidChangeThemeNotificationObserver;
+    
+    // Cancel handler of any ongoing loading indicator
+    UserIndicatorCancel loadingIndicatorCancel;
 }
 
 @property (nonatomic, strong) CreateRoomCoordinatorBridgePresenter *createRoomCoordinatorBridgePresenter;
@@ -135,6 +138,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     
     displayedSectionHeaders = [NSMutableArray array];
     
+    _contextMenuProvider = [RecentCellContextMenuProvider new];
+    self.contextMenuProvider.serviceDelegate = self;
+
     // Set itself as delegate by default.
     self.delegate = self;
 }
@@ -360,6 +366,16 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)refreshRecentsTable
 {
+    MXLogDebug(@"[RecentsViewController]: Refreshing recents table view")
+
+    if (!self.recentsUpdateEnabled)
+    {
+        isRefreshNeeded = NO;
+        return;
+    }
+    
+    isRefreshNeeded = NO;
+    
     // Refresh the tabBar icon badges
     [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
     
@@ -1028,49 +1044,54 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
 {
-    BOOL cellReloaded = NO;
-    if ([changes isKindOfClass:RecentsSectionUpdate.class])
-    {
-        RecentsSectionUpdate *update = (RecentsSectionUpdate*)changes;
-        if (update.isValid && !update.totalCountsChanged)
-        {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:update.sectionIndex];
-            UITableViewCell *cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
-            if ([cell isKindOfClass:TableViewCellWithCollectionView.class])
-            {
-                TableViewCellWithCollectionView *collectionViewCell = (TableViewCellWithCollectionView *)cell;
-                [collectionViewCell.collectionView reloadData];
-                cellReloaded = YES;
-
-                CGRect headerFrame = [self.recentsTableView rectForHeaderInSection:update.sectionIndex];
-                UIView *headerView = [self.recentsTableView headerViewForSection:update.sectionIndex];
-                UIView *updatedHeaderView = [self.dataSource viewForHeaderInSection:update.sectionIndex withFrame:headerFrame inTableView:self.recentsTableView];
-                if ([headerView isKindOfClass:SectionHeaderView.class]
-                    && [updatedHeaderView isKindOfClass:SectionHeaderView.class])
-                {
-                    SectionHeaderView *sectionHeaderView = (SectionHeaderView *)headerView;
-                    SectionHeaderView *updatedSectionHeaderView = (SectionHeaderView *)updatedHeaderView;
-                    sectionHeaderView.headerLabel = updatedSectionHeaderView.headerLabel;
-                    sectionHeaderView.accessoryView = updatedSectionHeaderView.accessoryView;
-                    sectionHeaderView.rightAccessoryView = updatedSectionHeaderView.rightAccessoryView;
-                }
-            }
-        }
-    }
-    
-    if (!cellReloaded)
+    if (!self.recentsUpdateEnabled)
     {
         [super dataSource:dataSource didCellChange:changes];
+        return;
     }
-    else
+
+    if ([changes isKindOfClass:NSIndexPath.class])
     {
-        // Since we've enabled room list pagination, `refreshRecentsTable` not called in this case.
-        // Refresh tab bar badges separately.
-        [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
+        NSIndexPath *indexPath = (NSIndexPath *)changes;
+        UITableViewCell *cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
+        if ([cell isKindOfClass:TableViewCellWithCollectionView.class])
+        {
+            MXLogDebug(@"[RecentsViewController]: Reloading nested collection view cell in section %ld", indexPath.section);
+            
+            TableViewCellWithCollectionView *collectionViewCell = (TableViewCellWithCollectionView *)cell;
+            [collectionViewCell.collectionView reloadData];
+
+            CGRect headerFrame = [self.recentsTableView rectForHeaderInSection:indexPath.section];
+            UIView *headerView = [self.recentsTableView headerViewForSection:indexPath.section];
+            UIView *updatedHeaderView = [self.dataSource viewForHeaderInSection:indexPath.section withFrame:headerFrame inTableView:self.recentsTableView];
+            if ([headerView isKindOfClass:SectionHeaderView.class]
+                && [updatedHeaderView isKindOfClass:SectionHeaderView.class])
+            {
+                SectionHeaderView *sectionHeaderView = (SectionHeaderView *)headerView;
+                SectionHeaderView *updatedSectionHeaderView = (SectionHeaderView *)updatedHeaderView;
+                sectionHeaderView.headerLabel = updatedSectionHeaderView.headerLabel;
+                sectionHeaderView.accessoryView = updatedSectionHeaderView.accessoryView;
+                sectionHeaderView.rightAccessoryView = updatedSectionHeaderView.rightAccessoryView;
+            }
+        }
+        else
+        {
+            MXLogDebug(@"[RecentsViewController]: Reloading table view section %ld", indexPath.section);
+            [self.recentsTableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationNone];
+        }
     }
+    else if (!changes)
+    {
+        MXLogDebug(@"[RecentsViewController]: Reloading the entire table view");
+        [self refreshRecentsTable];
+    }
+    
+    // Since we've enabled room list pagination, `refreshRecentsTable` not called in this case.
+    // Refresh tab bar badges separately.
+    [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
     
     [self showEmptyViewIfNeeded];
-    
+
     if (dataSource.state == MXKDataSourceStateReady)
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:RecentsViewControllerDataReadyNotification
@@ -1305,7 +1326,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                          {
                                                                              typeof(self) self = weakSelf;
                                                                              [self stopActivityIndicator];
-                                                                             [self.indicatorPresenter presentSuccessWithLabel:[VectorL10n roomParticipantsLeaveSuccess]];
+                                                                             [self.userIndicatorStore presentSuccessWithLabel:[VectorL10n roomParticipantsLeaveSuccess]];
                                                                              // Force table refresh
                                                                              [self cancelEditionMode:YES];
                                                                          }
@@ -2450,31 +2471,112 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 #pragma mark - Activity Indicator
 
 - (BOOL)providesCustomActivityIndicator {
-    return self.indicatorPresenter != nil;
+    return self.userIndicatorStore != nil;
 }
 
 - (void)startActivityIndicatorWithLabel:(NSString *)label {
-    if (self.indicatorPresenter && isViewVisible) {
-        [self.indicatorPresenter presentLoadingIndicatorWithLabel:label];
+    if (self.userIndicatorStore && isViewVisible) {
+        // The app is very liberal with calling `startActivityIndicator` (often not matched by corresponding `stopActivityIndicator`),
+        // so there is no reason to keep adding new indicators if there is one already showing.
+        if (loadingIndicatorCancel) {
+            return;
+        }
+        
+        MXLogDebug(@"[RecentsViewController] Present loading indicator")
+        loadingIndicatorCancel = [self.userIndicatorStore presentLoadingWithLabel:label isInteractionBlocking:NO];
     } else {
         [super startActivityIndicator];
     }
 }
 
 - (void)startActivityIndicator {
-    if (self.indicatorPresenter && isViewVisible) {
-        [self.indicatorPresenter presentLoadingIndicator];
-    } else {
-        [super startActivityIndicator];
-    }
+    [self startActivityIndicatorWithLabel:[VectorL10n homeSyncing]];
 }
 
 - (void)stopActivityIndicator {
-    if (self.indicatorPresenter) {
-        [self.indicatorPresenter dismissLoadingIndicator];
+    if (self.userIndicatorStore) {
+        if (loadingIndicatorCancel) {
+            MXLogDebug(@"[RecentsViewController] Present loading indicator")
+            loadingIndicatorCancel();
+            loadingIndicatorCancel = nil;
+        }
     } else {
         [super stopActivityIndicator];
     }
+}
+
+#pragma mark - Context Menu
+
+- (UIContextMenuConfiguration *)tableView:(UITableView *)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point API_AVAILABLE(ios(13.0))
+{
+    id<MXKRecentCellDataStoring> cellData = [self.dataSource cellDataAtIndexPath:indexPath];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    if (!cellData || !cell)
+    {
+        return nil;
+    }
+    
+    self.recentsUpdateEnabled = NO;
+    return [self.contextMenuProvider contextMenuConfigurationWith:cellData from:cell session:self.dataSource.mxSession];
+}
+
+- (void)tableView:(UITableView *)tableView willPerformPreviewActionForMenuWithConfiguration:(UIContextMenuConfiguration *)configuration animator:(id<UIContextMenuInteractionCommitAnimating>)animator API_AVAILABLE(ios(13.0))
+{
+    NSString *roomId = [self.contextMenuProvider roomIdFrom:configuration.identifier];
+    
+    if (!roomId)
+    {
+        self.recentsUpdateEnabled = YES;
+        return;
+    }
+    
+    [animator addCompletion:^{
+        self.recentsUpdateEnabled = YES;
+        [self showRoomWithRoomId:roomId inMatrixSession:self.mainSession];
+    }];
+}
+
+- (UITargetedPreview *)tableView:(UITableView *)tableView previewForDismissingContextMenuWithConfiguration:(UIContextMenuConfiguration *)configuration API_AVAILABLE(ios(13.0))
+{
+    self.recentsUpdateEnabled = YES;
+    return nil;
+}
+
+#pragma mark - RoomContextActionServiceDelegate
+
+- (void)roomContextActionServiceDidJoinRoom:(id<RoomContextActionServiceProtocol>)service
+{
+    [self showRoomWithRoomId:service.roomId inMatrixSession:service.session];
+}
+
+- (void)roomContextActionServiceDidLeaveRoom:(id<RoomContextActionServiceProtocol>)service
+{
+    [self.userIndicatorStore presentSuccessWithLabel:VectorL10n.roomParticipantsLeaveSuccess];
+}
+
+- (void)roomContextActionService:(id<RoomContextActionServiceProtocol>)service presentAlert:(UIAlertController *)alertController
+{
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)roomContextActionService:(id<RoomContextActionServiceProtocol>)service updateActivityIndicator:(BOOL)isActive
+{
+    if (isActive)
+    {
+        [self startActivityIndicator];
+    }
+    else if ([self canStopActivityIndicator])
+    {
+        [self stopActivityIndicator];
+    }
+}
+
+- (void)roomContextActionService:(id<RoomContextActionServiceProtocol>)service showRoomNotificationSettingsForRoomWithId:(NSString *)roomId
+{
+    editedRoomId = roomId;
+    [self changeEditedRoomNotificationSettings];
+    editedRoomId = nil;
 }
 
 @end

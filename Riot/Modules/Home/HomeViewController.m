@@ -93,8 +93,8 @@
                                             target:self
                                             action:@selector(onPlusButtonPressed)];
     
-    // Register table view cell used for rooms collection.
-    [self.recentsTableView registerClass:TableViewCellWithCollectionView.class forCellReuseIdentifier:TableViewCellWithCollectionView.defaultReuseIdentifier];
+    // Register table view cells used for rooms collection.
+    [self registerCellsWithCollectionViews];
 
     // Change the table data source. It must be the home view controller itself.
     self.recentsTableView.dataSource = self;
@@ -302,6 +302,35 @@
 
 #pragma mark - UITableViewDataSource
 
+// Table view cells on the home screen contain nested collection views with their own data source and state.
+// In order to preserve properties such as content offset of each collection view, the parent cells must
+// be directly associated with each section, so that when getting dequed by the table view, the correct cell
+// is reused, rather than cells getting randomly swapped around.
+- (void)registerCellsWithCollectionViews
+{
+    NSArray<NSNumber *> *sections = @[
+        @(RecentsDataSourceSectionTypeDirectory),
+        @(RecentsDataSourceSectionTypeInvites),
+        @(RecentsDataSourceSectionTypeFavorites),
+        @(RecentsDataSourceSectionTypePeople),
+        @(RecentsDataSourceSectionTypeConversation),
+        @(RecentsDataSourceSectionTypeLowPriority),
+        @(RecentsDataSourceSectionTypeServerNotice),
+        @(RecentsDataSourceSectionTypeSuggestedRooms)
+    ];
+    for (NSNumber *section in sections) {
+        NSString *cellIdentifier = [self cellIdentifierForSectionType:section.integerValue];
+        [self.recentsTableView registerClass:TableViewCellWithCollectionView.class forCellReuseIdentifier:cellIdentifier];
+    }
+}
+
+- (NSString *)cellIdentifierForSectionType:(RecentsDataSourceSectionType)sectionType
+{
+    // Create cell identifier unique to each semantic section, e.g. 'favorites' will have different cell
+    // identifier to 'conversations'.
+    return [NSString stringWithFormat:@"%@-%ld", TableViewCellWithCollectionView.defaultReuseIdentifier, sectionType];
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the actual number of sections prepared in recents dataSource.
@@ -326,16 +355,18 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ((indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.recentsListService.conversationRoomListData.counts.numberOfRooms)
-        || (indexPath.section == recentsDataSource.peopleSection && !recentsDataSource.recentsListService.peopleRoomListData.counts.numberOfRooms)
-        || (indexPath.section == recentsDataSource.secureBackupBannerSection)
-        || (indexPath.section == recentsDataSource.crossSigningBannerSection)
+    RecentsDataSourceSectionType sectionType = [recentsDataSource.sections sectionTypeForSectionIndex:indexPath.section];
+    if ((sectionType == RecentsDataSourceSectionTypeConversation && !recentsDataSource.recentsListService.conversationRoomListData.counts.numberOfRooms)
+        || (sectionType == RecentsDataSourceSectionTypePeople && !recentsDataSource.recentsListService.peopleRoomListData.counts.numberOfRooms)
+        || (sectionType == RecentsDataSourceSectionTypeSecureBackupBanner)
+        || (sectionType == RecentsDataSourceSectionTypeCrossSigningBanner)
         )
     {
         return [recentsDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
     }
     
-    TableViewCellWithCollectionView *tableViewCell = [tableView dequeueReusableCellWithIdentifier:TableViewCellWithCollectionView.defaultReuseIdentifier forIndexPath:indexPath];
+    NSString *cellIdentifier = [self cellIdentifierForSectionType:sectionType];
+    TableViewCellWithCollectionView *tableViewCell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     tableViewCell.collectionView.tag = indexPath.section;
     [tableViewCell.collectionView registerClass:RoomCollectionViewCell.class forCellWithReuseIdentifier:RoomCollectionViewCell.defaultReuseIdentifier];
     tableViewCell.collectionView.delegate = self;
@@ -418,24 +449,25 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ((indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.recentsListService.conversationRoomListData.counts.numberOfRooms)
-        || (indexPath.section == recentsDataSource.peopleSection && !recentsDataSource.recentsListService.peopleRoomListData.counts.numberOfRooms))
+    RecentsDataSourceSectionType sectionType = [recentsDataSource.sections sectionTypeForSectionIndex:indexPath.section];
+    if ((sectionType == RecentsDataSourceSectionTypeConversation && !recentsDataSource.recentsListService.conversationRoomListData.counts.numberOfRooms)
+        || (sectionType == RecentsDataSourceSectionTypePeople && !recentsDataSource.recentsListService.peopleRoomListData.counts.numberOfRooms))
     {
         return [recentsDataSource cellHeightAtIndexPath:indexPath];
     }
-    else if (indexPath.section == recentsDataSource.secureBackupBannerSection || indexPath.section == recentsDataSource.crossSigningBannerSection)
+    else if (sectionType == RecentsDataSourceSectionTypeSecureBackupBanner || sectionType == RecentsDataSourceSectionTypeCrossSigningBanner)
     {
         CGFloat height = 0.0;
         
         UITableViewCell *sizingCell;
         
-        if (indexPath.section == recentsDataSource.secureBackupBannerSection)
+        if (sectionType == RecentsDataSourceSectionTypeSecureBackupBanner)
         {
             SecureBackupBannerCell *secureBackupBannerCell = self.secureBackupBannerPrototypeCell;
             [secureBackupBannerCell configureFor:recentsDataSource.secureBackupBannerDisplay];
             sizingCell = secureBackupBannerCell;
         }
-        else if (indexPath.section == recentsDataSource.crossSigningBannerSection)
+        else if (sectionType == RecentsDataSourceSectionTypeCrossSigningBanner)
         {
             sizingCell = self.keyVerificationSetupBannerPrototypeCell;
         }
@@ -444,7 +476,7 @@
         
         CGSize fittingSize = UILayoutFittingCompressedSize;
         CGFloat tableViewWidth = CGRectGetWidth(tableView.frame);
-        CGFloat safeAreaWidth = MAX(tableView.safeAreaInsets.left, tableView.safeAreaInsets.right);        
+        CGFloat safeAreaWidth = MAX(tableView.safeAreaInsets.left, tableView.safeAreaInsets.right);
         
         fittingSize.width = tableViewWidth - safeAreaWidth;
         
@@ -469,8 +501,9 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     // No header in key banner section
-    if (section == recentsDataSource.secureBackupBannerSection
-        || section == recentsDataSource.crossSigningBannerSection)
+    RecentsDataSourceSectionType sectionType = [recentsDataSource.sections sectionTypeForSectionIndex:section];
+    if (sectionType == RecentsDataSourceSectionTypeSecureBackupBanner
+        || sectionType == RecentsDataSourceSectionTypeCrossSigningBanner)
     {
         return 0.0;
     }
@@ -482,7 +515,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == recentsDataSource.secureBackupBannerSection)
+    RecentsDataSourceSectionType sectionType = [recentsDataSource.sections sectionTypeForSectionIndex:indexPath.section];
+    if (sectionType == RecentsDataSourceSectionTypeSecureBackupBanner)
     {
         switch (recentsDataSource.secureBackupBannerDisplay) {
             case SecureBackupBannerDisplaySetup:
@@ -492,7 +526,7 @@
                 break;
         }
     }
-    else if (indexPath.section == recentsDataSource.crossSigningBannerSection)
+    else if (sectionType == RecentsDataSourceSectionTypeCrossSigningBanner)
     {
         [self showCrossSigningSetup];
     }
@@ -620,111 +654,6 @@
     // do not hide the searchBar until the view controller disappear
     // on tablets / iphone 6+, the user could expect to search again while looking at a room
     [self.recentsSearchBar resignFirstResponder];
-}
-
-- (UIContextMenuConfiguration *)collectionView:(UICollectionView *)collectionView contextMenuConfigurationForItemAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point API_AVAILABLE(ios(13.0))
-{
-    UIView *cell = [collectionView cellForItemAtIndexPath:indexPath];
-    MXRoom *room = [self.dataSource getRoomAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:collectionView.tag]];
-    NSString *roomId = room.roomId;
-    
-    MXWeakify(self);
-    MXWeakify(room);
-    
-    return [UIContextMenuConfiguration configurationWithIdentifier:roomId previewProvider:^UIViewController * _Nullable {
-        // Add a preview using the cell's data to prevent the avatar and displayname from changing with a room list update.
-        return [[ContextMenuSnapshotPreviewViewController alloc] initWithView:cell];
-        
-    } actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
-        MXStrongifyAndReturnValueIfNil(room, nil);
-        
-        BOOL isDirect = room.isDirect;
-        UIAction *directChatAction = [UIAction actionWithTitle:isDirect ? VectorL10n.homeContextMenuMakeRoom : VectorL10n.homeContextMenuMakeDm
-                                                         image:[UIImage systemImageNamed:isDirect ? @"person.crop.circle.badge.xmark" : @"person.circle"]
-                                                    identifier:nil
-                                                       handler:^(__kindof UIAction * _Nonnull action) {
-            MXStrongifyAndReturnIfNil(self);
-            [self updateRoomWithId:roomId asDirect:!isDirect];
-        }];
-        
-        BOOL isMuted = room.isMute || room.isMentionsOnly;
-        UIImage *notificationsImage;
-        NSString *notificationsTitle;
-        if ([BuildSettings showNotificationsV2])
-        {
-            notificationsTitle = VectorL10n.homeContextMenuNotifications;
-            notificationsImage = [UIImage systemImageNamed:@"bell"];
-        }
-        else
-        {
-            notificationsTitle = isMuted ? VectorL10n.homeContextMenuUnmute : VectorL10n.homeContextMenuMute;
-            notificationsImage = [UIImage systemImageNamed:isMuted ? @"bell.slash": @"bell"];
-        }
-        
-        UIAction *notificationsAction = [UIAction actionWithTitle:notificationsTitle
-                                                            image:notificationsImage
-                                                       identifier:nil
-                                                          handler:^(__kindof UIAction * _Nonnull action) {
-            MXStrongifyAndReturnIfNil(self);
-            [self updateRoomWithId:roomId asMuted:!isMuted];
-        }];
-        
-        
-        // Get the room tag (use only the first one).
-        MXRoomTag* currentTag = nil;
-        if (room.accountData.tags)
-        {
-            NSArray<MXRoomTag*>* tags = room.accountData.tags.allValues;
-            if (tags.count)
-            {
-                currentTag = tags[0];
-            }
-        }
-        
-        BOOL isFavourite = (currentTag && [kMXRoomTagFavourite isEqualToString:currentTag.name]);
-        UIAction *favouriteAction = [UIAction actionWithTitle:isFavourite ? VectorL10n.homeContextMenuUnfavourite : VectorL10n.homeContextMenuFavourite
-                                                        image:[UIImage systemImageNamed:isFavourite ? @"star.slash" : @"star"]
-                                                   identifier:nil
-                                                      handler:^(__kindof UIAction * _Nonnull action) {
-            MXStrongifyAndReturnIfNil(self);
-            [self updateRoomWithId:roomId asFavourite:!isFavourite];
-        }];
-        
-        BOOL isLowPriority = (currentTag && [kMXRoomTagLowPriority isEqualToString:currentTag.name]);
-        UIAction *lowPriorityAction = [UIAction actionWithTitle:isLowPriority ? VectorL10n.homeContextMenuNormalPriority : VectorL10n.homeContextMenuLowPriority
-                                                          image:[UIImage systemImageNamed:isLowPriority ? @"arrow.up" : @"arrow.down"]
-                                                     identifier:nil
-                                                        handler:^(__kindof UIAction * _Nonnull action) {
-            MXStrongifyAndReturnIfNil(self);
-            [self updateRoomWithId:roomId asLowPriority:!isLowPriority];
-        }];
-        
-        UIImage *leaveImage;
-        if (@available(iOS 14.0, *))
-        {
-            leaveImage = [UIImage systemImageNamed:@"rectangle.righthalf.inset.fill.arrow.right"];
-        }
-        else
-        {
-            leaveImage = [UIImage systemImageNamed:@"rectangle.xmark"];
-        }
-        UIAction *leaveAction = [UIAction actionWithTitle:VectorL10n.homeContextMenuLeave
-                                                    image:leaveImage
-                                               identifier:nil
-                                                  handler:^(__kindof UIAction * _Nonnull action) {
-            MXStrongifyAndReturnIfNil(self);
-            [self leaveRoomWithId:roomId];
-        }];
-        leaveAction.attributes = UIMenuElementAttributesDestructive;
-        
-        return [UIMenu menuWithTitle:@"" children:@[
-            directChatAction,
-            notificationsAction,
-            favouriteAction,
-            lowPriorityAction,
-            leaveAction
-        ]];
-    }];
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -863,50 +792,6 @@
     [self leaveEditedRoom];
 }
 
-// MARK: - Context Menu Actions
-
-- (void)updateRoomWithId:(NSString *)roomId asDirect:(BOOL)direct
-{
-    editedRoomId = roomId;
-    [self makeDirectEditedRoom:direct];
-    editedRoomId = nil;
-}
-
-- (void)updateRoomWithId:(NSString *)roomId asMuted:(BOOL)muted
-{
-    editedRoomId = roomId;
-    if ([BuildSettings showNotificationsV2])
-    {
-        [self changeEditedRoomNotificationSettings];
-    }
-    else
-    {
-        [self muteEditedRoomNotifications:muted];
-    }
-    editedRoomId = nil;
-}
-
-- (void)updateRoomWithId:(NSString *)roomId asFavourite:(BOOL)favourite
-{
-    editedRoomId = roomId;
-    [self updateEditedRoomTag:favourite ? kMXRoomTagFavourite : nil];
-    editedRoomId = nil;
-}
-
-- (void)updateRoomWithId:(NSString *)roomId asLowPriority:(BOOL)lowPriority
-{
-    editedRoomId = roomId;
-    [self updateEditedRoomTag:lowPriority ? kMXRoomTagLowPriority : nil];
-    editedRoomId = nil;
-}
-
-- (void)leaveRoomWithId:(NSString *)roomId
-{
-    editedRoomId = roomId;
-    [self leaveEditedRoom];
-    editedRoomId = nil;
-}
-
 #pragma mark - SecureBackupSetupCoordinatorBridgePresenterDelegate
 
 - (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidComplete:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
@@ -1016,7 +901,8 @@
     }
     
     // Check if some banners should be displayed
-    if (recentsDataSource.secureBackupBannerSection != -1 || recentsDataSource.crossSigningBannerSection != -1)
+    if ([recentsDataSource.sections contains:RecentsDataSourceSectionTypeSecureBackupBanner]
+        || [recentsDataSource.sections contains:RecentsDataSourceSectionTypeCrossSigningBanner])
     {
         return NO;
     }
@@ -1032,6 +918,49 @@
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
         self.spaceMembersCoordinatorBridgePresenter = nil;
     }];
+}
+
+#pragma mark - Context Menu
+
+- (UIContextMenuConfiguration *)tableView:(UITableView *)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point API_AVAILABLE(ios(13.0))
+{
+    return nil;
+}
+
+- (UIContextMenuConfiguration *)collectionView:(UICollectionView *)collectionView contextMenuConfigurationForItemAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point API_AVAILABLE(ios(13.0))
+{
+    id<MXKRecentCellDataStoring> cellData = [recentsDataSource cellDataAtIndexPath:[NSIndexPath indexPathForRow:indexPath.item inSection:collectionView.tag]];
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    
+    if (!cellData || !cell)
+    {
+        return nil;
+    }
+    
+    self.recentsUpdateEnabled = NO;
+    return [self.contextMenuProvider contextMenuConfigurationWith:cellData from:cell session:self.dataSource.mxSession];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willPerformPreviewActionForMenuWithConfiguration:(UIContextMenuConfiguration *)configuration animator:(id<UIContextMenuInteractionCommitAnimating>)animator API_AVAILABLE(ios(13.0))
+{
+    NSString *roomId = [self.contextMenuProvider roomIdFrom:configuration.identifier];
+    
+    if (!roomId)
+    {
+        self.recentsUpdateEnabled = YES;
+        return;
+    }
+
+    [animator addCompletion:^{
+        self.recentsUpdateEnabled = YES;
+        [self showRoomWithRoomId:roomId inMatrixSession:self.mainSession];
+    }];
+}
+
+- (UITargetedPreview *)collectionView:(UICollectionView *)collectionView previewForDismissingContextMenuWithConfiguration:(UIContextMenuConfiguration *)configuration API_AVAILABLE(ios(13.0))
+{
+    self.recentsUpdateEnabled = YES;
+    return nil;
 }
 
 @end

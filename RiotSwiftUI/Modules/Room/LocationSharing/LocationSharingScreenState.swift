@@ -38,6 +38,7 @@ enum MockLocationSharingScreenState: MockScreenState, CaseIterable {
         let viewModel = LocationSharingViewModel(mapStyleURL: mapStyleURL,
                                                  avatarData: AvatarInput(mxContentUri: "", matrixItemId: "alice:matrix.org", displayName: "Alice"),
                                                  location: location,
+                                                 coordinateType: .user,
                                                  isLiveLocationSharingEnabled: true)
         return ([viewModel],
                 AnyView(LocationSharingView(context: viewModel.context)

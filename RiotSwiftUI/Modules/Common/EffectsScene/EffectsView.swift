@@ -28,7 +28,7 @@ struct EffectsView: UIViewRepresentable {
     
     // MARK: - Public
     
-    enum EffectsType {
+    enum Effect {
         /// A confetti drop effect from the top centre of the screen.
         case confetti
         /// No effect will be shown.
@@ -36,7 +36,7 @@ struct EffectsView: UIViewRepresentable {
     }
     
     /// The type of effects to be shown in the view.
-    var effectsType: EffectsType = .none
+    var effect: Effect
     
     // MARK: - Lifecycle
     
@@ -52,7 +52,7 @@ struct EffectsView: UIViewRepresentable {
     // MARK: - Private
     
     private func makeScene() -> EffectsScene? {
-        switch effectsType {
+        switch effect {
         case .confetti:
             return EffectsScene.confetti(with: theme)
         case .none:

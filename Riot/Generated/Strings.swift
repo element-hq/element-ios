@@ -935,6 +935,10 @@ public class VectorL10n: NSObject {
   public static var createRoomPlaceholderTopic: String { 
     return VectorL10n.tr("Vector", "create_room_placeholder_topic") 
   }
+  /// Creating room
+  public static var createRoomProcessing: String { 
+    return VectorL10n.tr("Vector", "create_room_processing") 
+  }
   /// PROMOTION
   public static var createRoomPromotionHeader: String { 
     return VectorL10n.tr("Vector", "create_room_promotion_header") 
@@ -2218,6 +2222,10 @@ public class VectorL10n: NSObject {
   /// Joined
   public static var joined: String { 
     return VectorL10n.tr("Vector", "joined") 
+  }
+  /// Joining
+  public static var joining: String { 
+    return VectorL10n.tr("Vector", "joining") 
   }
   /// Done
   public static var keyBackupRecoverDoneAction: String { 
@@ -3766,6 +3774,74 @@ public class VectorL10n: NSObject {
   /// On
   public static var on: String { 
     return VectorL10n.tr("Vector", "on") 
+  }
+  /// Profile picture
+  public static var onboardingAvatarAccessibilityLabel: String { 
+    return VectorL10n.tr("Vector", "onboarding_avatar_accessibility_label") 
+  }
+  /// You can change this anytime.
+  public static var onboardingAvatarMessage: String { 
+    return VectorL10n.tr("Vector", "onboarding_avatar_message") 
+  }
+  /// Add a profile picture
+  public static var onboardingAvatarTitle: String { 
+    return VectorL10n.tr("Vector", "onboarding_avatar_title") 
+  }
+  /// Let's go
+  public static var onboardingCelebrationButton: String { 
+    return VectorL10n.tr("Vector", "onboarding_celebration_button") 
+  }
+  /// Your preferences have been saved.
+  public static var onboardingCelebrationMessage: String { 
+    return VectorL10n.tr("Vector", "onboarding_celebration_message") 
+  }
+  /// You’re all set!
+  public static var onboardingCelebrationTitle: String { 
+    return VectorL10n.tr("Vector", "onboarding_celebration_title") 
+  }
+  /// Take me home
+  public static var onboardingCongratulationsHomeButton: String { 
+    return VectorL10n.tr("Vector", "onboarding_congratulations_home_button") 
+  }
+  /// Your account %@ has been created.
+  public static func onboardingCongratulationsMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "onboarding_congratulations_message", p1)
+  }
+  /// Personalise profile
+  public static var onboardingCongratulationsPersonalizeButton: String { 
+    return VectorL10n.tr("Vector", "onboarding_congratulations_personalize_button") 
+  }
+  /// Congratulations!
+  public static var onboardingCongratulationsTitle: String { 
+    return VectorL10n.tr("Vector", "onboarding_congratulations_title") 
+  }
+  /// You can change this later
+  public static var onboardingDisplayNameHint: String { 
+    return VectorL10n.tr("Vector", "onboarding_display_name_hint") 
+  }
+  /// Your display name must be less than 256 characters
+  public static var onboardingDisplayNameMaxLength: String { 
+    return VectorL10n.tr("Vector", "onboarding_display_name_max_length") 
+  }
+  /// This will be shown when you send messages.
+  public static var onboardingDisplayNameMessage: String { 
+    return VectorL10n.tr("Vector", "onboarding_display_name_message") 
+  }
+  /// Display Name
+  public static var onboardingDisplayNamePlaceholder: String { 
+    return VectorL10n.tr("Vector", "onboarding_display_name_placeholder") 
+  }
+  /// Choose a display name
+  public static var onboardingDisplayNameTitle: String { 
+    return VectorL10n.tr("Vector", "onboarding_display_name_title") 
+  }
+  /// Save and continue
+  public static var onboardingPersonalizationSave: String { 
+    return VectorL10n.tr("Vector", "onboarding_personalization_save") 
+  }
+  /// Skip this step
+  public static var onboardingPersonalizationSkip: String { 
+    return VectorL10n.tr("Vector", "onboarding_personalization_skip") 
   }
   /// I already have an account
   public static var onboardingSplashLoginButtonTitle: String { 
@@ -6819,6 +6895,18 @@ public class VectorL10n: NSObject {
   public static var settingsPinRoomsWithUnread: String { 
     return VectorL10n.tr("Vector", "settings_pin_rooms_with_unread") 
   }
+  /// Presence
+  public static var settingsPresence: String { 
+    return VectorL10n.tr("Vector", "settings_presence") 
+  }
+  /// Offline Mode
+  public static var settingsPresenceOfflineMode: String { 
+    return VectorL10n.tr("Vector", "settings_presence_offline_mode") 
+  }
+  /// If enabled, you will always appear offline to other users, even when using the application.
+  public static var settingsPresenceOfflineModeDescription: String { 
+    return VectorL10n.tr("Vector", "settings_presence_offline_mode_description") 
+  }
   /// Privacy Policy
   public static var settingsPrivacyPolicy: String { 
     return VectorL10n.tr("Vector", "settings_privacy_policy") 
@@ -7583,6 +7671,26 @@ public class VectorL10n: NSObject {
   public static var threadsActionMyThreads: String { 
     return VectorL10n.tr("Vector", "threads_action_my_threads") 
   }
+  /// Not now
+  public static var threadsBetaCancel: String { 
+    return VectorL10n.tr("Vector", "threads_beta_cancel") 
+  }
+  /// Try it out
+  public static var threadsBetaEnable: String { 
+    return VectorL10n.tr("Vector", "threads_beta_enable") 
+  }
+  /// Keep discussions organised with threads.\n\nThreads help keep your conversations on-topic and easy to track. 
+  public static var threadsBetaInformation: String { 
+    return VectorL10n.tr("Vector", "threads_beta_information") 
+  }
+  /// Learn more
+  public static var threadsBetaInformationLink: String { 
+    return VectorL10n.tr("Vector", "threads_beta_information_link") 
+  }
+  /// Threads
+  public static var threadsBetaTitle: String { 
+    return VectorL10n.tr("Vector", "threads_beta_title") 
+  }
   /// Threads help keep your conversations on-topic and easy to track.
   public static var threadsEmptyInfoAll: String { 
     return VectorL10n.tr("Vector", "threads_empty_info_all") 
@@ -7602,6 +7710,18 @@ public class VectorL10n: NSObject {
   /// Keep discussions organised with threads
   public static var threadsEmptyTitle: String { 
     return VectorL10n.tr("Vector", "threads_empty_title") 
+  }
+  /// Got it
+  public static var threadsNoticeDone: String { 
+    return VectorL10n.tr("Vector", "threads_notice_done") 
+  }
+  /// All threads created during the experimental period will now be <b>rendered as regular replies</b>.<br/><br/>This will be a one-off transition, as threads are now part of the Matrix specification.
+  public static var threadsNoticeInformation: String { 
+    return VectorL10n.tr("Vector", "threads_notice_information") 
+  }
+  /// Threads no longer experimental 🎉
+  public static var threadsNoticeTitle: String { 
+    return VectorL10n.tr("Vector", "threads_notice_title") 
   }
   /// Threads
   public static var threadsTitle: String { 
@@ -7966,7 +8086,7 @@ public class VectorL10n: NSObject {
 
 extension VectorL10n {
   static func tr(_ table: String, _ key: String, _ args: CVarArg...) -> String {
-    let format = NSLocalizedString(key, tableName: table, bundle: Bundle(for: BundleToken.self), comment: "")
+    let format = NSLocalizedString(key, tableName: table, bundle: Bundle.app, comment: "")
     let locale: Locale
     if let providedLocale = LocaleProvider.locale {
       locale = providedLocale
@@ -7978,4 +8098,3 @@ extension VectorL10n {
     }
 }
 
-private final class BundleToken {}

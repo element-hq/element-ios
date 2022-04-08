@@ -132,6 +132,7 @@ final class ThreadsCoordinator: NSObject, ThreadsCoordinatorProtocol {
     private func createThreadCoordinator(forThreadId threadId: String) -> RoomCoordinator {
         let parameters = RoomCoordinatorParameters(navigationRouter: navigationRouter,
                                                    navigationRouterStore: nil,
+                                                   userIndicatorPresenter: parameters.userIndicatorPresenter,
                                                    session: parameters.session,
                                                    parentSpaceId: nil,
                                                    roomId: parameters.roomId,

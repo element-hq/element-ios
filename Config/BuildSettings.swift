@@ -90,6 +90,12 @@ final class BuildSettings: NSObject {
     static let applicationWebAppUrlString = "https://app.element.io"
     
     
+    // MARK: - Localization
+    
+    /// Whether to allow the app to use a right to left layout or force left to right for all languages
+    static let disableRightToLeftLayout = true
+    
+    
     // MARK: - Server configuration
     
     // Default servers proposed on the authentication screen
@@ -288,9 +294,15 @@ final class BuildSettings: NSObject {
     static let settingsSecurityScreenShowCryptographyInfo:Bool = true
     static let settingsSecurityScreenShowCryptographyExport:Bool = true
     static let settingsSecurityScreenShowAdvancedUnverifiedDevices:Bool = true
+    /// A setting to enable the presence configuration settings section.
+    static let settingsScreenPresenceAllowConfiguration: Bool = false
 
     // MARK: - Timeline settings
-    static let roomInputToolbarCompressionMode = MXKRoomInputToolbarCompressionModePrompt
+    static let roomInputToolbarCompressionMode: MediaCompressionMode = .prompt
+    
+    enum MediaCompressionMode {
+        case prompt, small, medium, large, none
+    }
     
     // MARK: - Room Creation Screen
     

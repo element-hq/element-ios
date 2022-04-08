@@ -59,6 +59,7 @@
 "send_to" = "Send to %@";
 "close" = "Close";
 "skip" = "Skip";
+"joining" = "Joining";
 "joined" = "Joined";
 "switch" = "Switch";
 "more" = "More";
@@ -116,6 +117,29 @@
 "onboarding_use_case_skip_button" = "skip this question";
 "onboarding_use_case_existing_server_message" = "Looking to join an existing server?";
 "onboarding_use_case_existing_server_button" = "Connect to server";
+
+"onboarding_congratulations_title" = "Congratulations!";
+/* The placeholder string contains the user's matrix ID */
+"onboarding_congratulations_message" = "Your account %@ has been created.";
+"onboarding_congratulations_personalize_button" = "Personalise profile";
+"onboarding_congratulations_home_button" = "Take me home";
+
+"onboarding_personalization_save" = "Save and continue";
+"onboarding_personalization_skip" = "Skip this step";
+
+"onboarding_display_name_title" = "Choose a display name";
+"onboarding_display_name_message" = "This will be shown when you send messages.";
+"onboarding_display_name_placeholder" = "Display Name";
+"onboarding_display_name_hint" = "You can change this later";
+"onboarding_display_name_max_length" = "Your display name must be less than 256 characters";
+
+"onboarding_avatar_title" = "Add a profile picture";
+"onboarding_avatar_message" = "You can change this anytime.";
+"onboarding_avatar_accessibility_label" = "Profile picture";
+
+"onboarding_celebration_title" = "You’re all set!";
+"onboarding_celebration_message" = "Your preferences have been saved.";
+"onboarding_celebration_button" = "Let's go";
 
 // Authentication
 "auth_login" = "Log in";
@@ -475,6 +499,14 @@ Tap the + to start adding people.";
 "threads_empty_tip" = "Tip: Tap a message and use “Thread” to start one.";
 "threads_empty_show_all_threads" = "Show all threads";
 "message_from_a_thread" = "From a thread";
+"threads_notice_title" = "Threads no longer experimental 🎉";
+"threads_notice_information" = "All threads created during the experimental period will now be <b>rendered as regular replies</b>.<br/><br/>This will be a one-off transition, as threads are now part of the Matrix specification.";
+"threads_notice_done" = "Got it";
+"threads_beta_title" = "Threads";
+"threads_beta_information" = "Keep discussions organised with threads.\n\nThreads help keep your conversations on-topic and easy to track. ";
+"threads_beta_information_link" = "Learn more";
+"threads_beta_enable" = "Try it out";
+"threads_beta_cancel" = "Not now";
 
 "media_type_accessibility_image" = "Image";
 "media_type_accessibility_audio" = "Audio";
@@ -717,6 +749,10 @@ Tap the + to start adding people.";
 "settings_show_NSFW_public_rooms" = "Show NSFW public rooms";
 
 "settings_enable_room_message_bubbles" = "Message bubbles";
+
+"settings_presence" = "Presence";
+"settings_presence_offline_mode" = "Offline Mode";
+"settings_presence_offline_mode_description" = "If enabled, you will always appear offline to other users, even when using the application.";
 
 // Security settings
 "security_settings_title" = "Security";
@@ -1766,6 +1802,7 @@ Tap the + to start adding people.";
 "create_room_placeholder_address" = "#testroom:matrix.org";
 "create_room_suggest_room" = "Suggest to space members";
 "create_room_suggest_room_footer" = "Suggested rooms are promoted to space members as good to join.";
+"create_room_processing" = "Creating room";
 
 // MARK: - Room Info
 

@@ -17,12 +17,44 @@
 import Foundation
 import UIKit
 import SwiftUI
+import MatrixSDK
 
 struct LocationSharingCoordinatorParameters {
     let roomDataSource: MXKRoomDataSource
     let mediaManager: MXMediaManager
     let avatarData: AvatarInputProtocol
     let location: CLLocationCoordinate2D?
+    let coordinateType: MXEventAssetType
+}
+
+// Map between type from MatrixSDK and type from SwiftUI target, as we don't want
+// to add the SDK as a dependency to it. We need to translate from one to the other on this level.
+extension MXEventAssetType {
+    func locationSharingCoordinateType() -> LocationSharingCoordinateType {
+        let coordinateType: LocationSharingCoordinateType
+        switch self {
+        case .user, .generic:
+            coordinateType = .user
+        case .pin:
+            coordinateType = .pin
+        @unknown default:
+            coordinateType = .user
+        }
+        return coordinateType
+    }
+}
+
+extension LocationSharingCoordinateType {
+    func eventAssetType() -> MXEventAssetType {
+        let eventAssetType: MXEventAssetType
+        switch self {
+        case .user:
+            eventAssetType = .user
+        case .pin:
+            eventAssetType = .pin
+        }
+        return eventAssetType
+    }
 }
 
 final class LocationSharingCoordinator: Coordinator, Presentable {
@@ -50,6 +82,7 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
         let viewModel = LocationSharingViewModel(mapStyleURL: BuildSettings.tileServerMapStyleURL,
                                                  avatarData: parameters.avatarData,
                                                  location: parameters.location,
+                                                 coordinateType: parameters.coordinateType.locationSharingCoordinateType(),
                                                  isLiveLocationSharingEnabled: BuildSettings.liveLocationSharingEnabled)
         let view = LocationSharingView(context: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
@@ -71,13 +104,26 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
             switch result {
             case .cancel:
                 self.completion?()
-            case .share(let latitude, let longitude):
+            case .share(let latitude, let longitude, let coordinateType):
                 
                 // Show share sheet on existing location display
                 if let location = self.parameters.location {
-                    self.presentShareLocationActivity(with: location)
-                } else {
-                    self.shareStaticLocation(latitude: latitude, longitude: longitude)
+                    self.locationSharingHostingController.present(Self.shareLocationActivityController(location), animated: true)
+                    return
+                }
+                
+                self.locationSharingViewModel.startLoading()
+                
+                self.parameters.roomDataSource.sendLocation(withLatitude: latitude, longitude: longitude, description: nil, coordinateType: coordinateType.eventAssetType()) { [weak self] _ in
+                    guard let self = self else { return }
+                    
+                    self.locationSharingViewModel.stopLoading()
+                    self.completion?()
+                } failure: { [weak self] error in
+                    guard let self = self else { return }
+                    
+                    MXLog.error("[LocationSharingCoordinator] Failed sharing location with error: \(String(describing: error))")
+                    self.locationSharingViewModel.stopLoading(error: .locationSharingError)
                 }
                 
             case .shareLiveLocation(let timeout):

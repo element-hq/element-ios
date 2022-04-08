@@ -68,7 +68,8 @@ public class UserIndicator {
     
     /// Cancel the indicator, triggering any dismissal action / animation
     ///
-    /// Note: clients can call this method directly, if they have access to the `UserIndicator`.
+    /// Note: clients can call this method directly, if they have access to the `UserIndicator`. Alternatively
+    /// deallocating the `UserIndicator` will call `cancel` automatically.
     /// Once cancelled, `UserIndicatorQueue` will automatically start the next `UserIndicator` in the queue.
     public func cancel() {
         complete()

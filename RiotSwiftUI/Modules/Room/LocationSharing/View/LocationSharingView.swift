@@ -33,13 +33,7 @@ struct LocationSharingView: View {
     var body: some View {
         NavigationView {
             ZStack(alignment: .bottom) {
-                LocationSharingMapView(tileServerMapURL: context.viewState.mapStyleURL,
-                                       annotations: context.viewState.annotations,
-                                       highlightedAnnotation: context.viewState.highlightedAnnotation,
-                                       userAvatarData: context.viewState.userAvatarData,
-                                       showsUserLocation: context.viewState.showsUserLocation,
-                                       userLocation: $context.userLocation,
-                                       errorSubject: context.viewState.errorSubject)
+                mapView
                 VStack(spacing: 0) {
                     MapCreditsView()
                     if context.viewState.shareButtonVisible {
@@ -85,6 +79,39 @@ struct LocationSharingView: View {
         .navigationViewStyle(StackNavigationViewStyle())
     }
     
+    var mapView: some View {
+        ZStack(alignment: .topTrailing) {
+            ZStack(alignment: .center) {
+                LocationSharingMapView(tileServerMapURL: context.viewState.mapStyleURL,
+                                       annotations: context.viewState.annotations,
+                                       highlightedAnnotation: context.viewState.highlightedAnnotation,
+                                       userAvatarData: context.viewState.userAvatarData,
+                                       showsUserLocation: context.viewState.showsUserLocation,
+                                       userLocation: $context.userLocation,
+                                       mapCenterCoordinate: $context.pinLocation,
+                                       errorSubject: context.viewState.errorSubject)
+                if context.viewState.isPinDropSharing {
+                    LocationSharingMarkerView(backgroundColor: theme.colors.accent) {
+                        Image(uiImage: Asset.Images.locationPinIcon.image)
+                            .resizable()
+                            .shapedBorder(color: theme.colors.accent, borderWidth: 3, shape: Circle())
+                    }
+                }
+            }
+            Button {
+                context.send(viewAction: .goToUserLocation)
+            } label: {
+                Image(uiImage: Asset.Images.locationCenterMapIcon.image)
+                    .foregroundColor(theme.colors.accent)
+            }
+            .padding(6.0)
+            .background(theme.colors.background)
+            .clipShape(RoundedCornerShape(radius: 4, corners: [.allCorners]))
+            .shadow(radius: 2.0)
+            .offset(x: -11.0, y: 52)
+        }
+    }
+    
     var buttonsView: some View {
         VStack(alignment: .leading, spacing: 15) {
             if !context.viewState.isPinDropSharing {
@@ -107,7 +134,7 @@ struct LocationSharingView: View {
                 }
             } else {
                 LocationSharingOptionButton(text: VectorL10n.locationSharingPinDropShareTitle) {
-                    // TODO: - Pin drop sharing action
+                    context.send(viewAction: .sharePinLocation)
                 } buttonIcon: {
                     Image(uiImage: Asset.Images.locationPinIcon.image)
                         .resizable()

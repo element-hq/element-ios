@@ -364,6 +364,7 @@ Matrix session observer used to detect new opened sessions.
     NSString *actionIdentifier = [response actionIdentifier];
     NSString *roomId = content.userInfo[@"room_id"];
     NSString *threadId = content.userInfo[@"thread_id"];
+    NSString *userId = content.userInfo[@"user_id"];
 
     if ([actionIdentifier isEqualToString:@"inline-reply"])
     {
@@ -403,7 +404,7 @@ Matrix session observer used to detect new opened sessions.
     }
     else if ([actionIdentifier isEqualToString:UNNotificationDefaultActionIdentifier])
     {
-        [self notifyNavigateToRoomById:roomId threadId:threadId];
+        [self notifyNavigateToRoomById:roomId threadId:threadId sender:userId];
         completionHandler();
     }
     else
@@ -567,11 +568,11 @@ Matrix session observer used to detect new opened sessions.
 
 #pragma mark - Delegate Notifiers
 
-- (void)notifyNavigateToRoomById:(NSString *)roomId threadId:(NSString *)threadId
+- (void)notifyNavigateToRoomById:(NSString *)roomId threadId:(NSString *)threadId sender:(NSString *)userId
 {
-    if ([_delegate respondsToSelector:@selector(pushNotificationService:shouldNavigateToRoomWithId:threadId:)])
+    if ([_delegate respondsToSelector:@selector(pushNotificationService:shouldNavigateToRoomWithId:threadId:sender:)])
     {
-        [_delegate pushNotificationService:self shouldNavigateToRoomWithId:roomId threadId:threadId];
+        [_delegate pushNotificationService:self shouldNavigateToRoomWithId:roomId threadId:threadId sender:userId];
     }
 }
 
