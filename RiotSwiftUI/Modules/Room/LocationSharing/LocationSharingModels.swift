@@ -30,6 +30,7 @@ enum LocationSharingViewAction {
     case share
     case sharePinLocation
     case goToUserLocation
+    case shareLiveLocation
 }
 
 enum LocationSharingViewModelResult {

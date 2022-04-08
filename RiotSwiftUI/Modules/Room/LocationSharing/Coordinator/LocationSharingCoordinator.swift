@@ -30,15 +30,15 @@ struct LocationSharingCoordinatorParameters {
 // Map between type from MatrixSDK and type from SwiftUI target, as we don't want
 // to add the SDK as a dependency to it. We need to translate from one to the other on this level.
 extension MXEventAssetType {
-    func locationSharingCoordinateType() -> LocationSharingCoordinateType {
-        let coordinateType: LocationSharingCoordinateType
+    func locationSharingCoordinateType() -> LocationSharingCoordinateType? {
+        let coordinateType: LocationSharingCoordinateType?
         switch self {
-        case .user, .generic:
+        case .user:
             coordinateType = .user
         case .pin:
             coordinateType = .pin
-        @unknown default:
-            coordinateType = .user
+        default:
+            coordinateType = nil
         }
         return coordinateType
     }
@@ -79,10 +79,16 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
     init(parameters: LocationSharingCoordinatorParameters) {
         self.parameters = parameters
         
+        // TODO: Make this check before creating LocationSharingCoordinator
+        // Use LocationSharingCoordinateType in parameters
+        guard let locationSharingCoordinatetype = parameters.coordinateType.locationSharingCoordinateType() else {
+            fatalError("[LocationSharingCoordinator] event asset type is not supported: \(parameters.coordinateType)")
+        }
+        
         let viewModel = LocationSharingViewModel(mapStyleURL: BuildSettings.tileServerMapStyleURL,
                                                  avatarData: parameters.avatarData,
                                                  location: parameters.location,
-                                                 coordinateType: parameters.coordinateType.locationSharingCoordinateType(),
+                                                 coordinateType: locationSharingCoordinatetype,
                                                  isLiveLocationSharingEnabled: BuildSettings.liveLocationSharingEnabled)
         let view = LocationSharingView(context: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
@@ -108,22 +114,9 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
                 
                 // Show share sheet on existing location display
                 if let location = self.parameters.location {
-                    self.locationSharingHostingController.present(Self.shareLocationActivityController(location), animated: true)
-                    return
-                }
-                
-                self.locationSharingViewModel.startLoading()
-                
-                self.parameters.roomDataSource.sendLocation(withLatitude: latitude, longitude: longitude, description: nil, coordinateType: coordinateType.eventAssetType()) { [weak self] _ in
-                    guard let self = self else { return }
-                    
-                    self.locationSharingViewModel.stopLoading()
-                    self.completion?()
-                } failure: { [weak self] error in
-                    guard let self = self else { return }
-                    
-                    MXLog.error("[LocationSharingCoordinator] Failed sharing location with error: \(String(describing: error))")
-                    self.locationSharingViewModel.stopLoading(error: .locationSharingError)
+                    self.presentShareLocationActivity(with: location)
+                } else {
+                    self.shareStaticLocation(latitude: latitude, longitude: longitude, coordinateType: coordinateType)
                 }
                 
             case .shareLiveLocation(let timeout):
@@ -145,10 +138,10 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
         self.locationSharingHostingController.present(Self.shareLocationActivityController(location), animated: true)
     }
     
-    private func shareStaticLocation(latitude: Double, longitude: Double) {
+    private func shareStaticLocation(latitude: Double, longitude: Double, coordinateType: LocationSharingCoordinateType) {
         self.locationSharingViewModel.startLoading()
         
-        self.parameters.roomDataSource.sendLocation(withLatitude: latitude, longitude: longitude, description: nil) { [weak self] _ in
+        self.parameters.roomDataSource.sendLocation(withLatitude: latitude, longitude: longitude, description: nil, coordinateType: coordinateType.eventAssetType()) { [weak self] _ in
             guard let self = self else { return }
             
             self.locationSharingViewModel.stopLoading()
