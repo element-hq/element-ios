@@ -96,6 +96,8 @@ public class MockRoomSummary: NSObject, MXRoomSummaryProtocol {
     
     public var beaconInfoEvents: [MXBeaconInfo] = []
     
+    public var userIdsSharingLiveBeacon: Set<String> = []
+    
     public init(withRoomId roomId: String) {
         self.roomId = roomId
         super.init()
