@@ -79,7 +79,7 @@ final class TemplateUserProfileCoordinator: Coordinator, Presentable {
     ///   - label: The label to show on the indicator.
     ///   - isInteractionBlocking: Whether the indicator should block any user interaction.
     private func startLoading(label: String = VectorL10n.loading, isInteractionBlocking: Bool = true) {
-        loadingIndicator = indicatorPresenter.present(.loading(label: label, isInteractionBlocking: true))
+        loadingIndicator = indicatorPresenter.present(.loading(label: label, isInteractionBlocking: isInteractionBlocking))
     }
     
     /// Hide the currently displayed activity indicator.
