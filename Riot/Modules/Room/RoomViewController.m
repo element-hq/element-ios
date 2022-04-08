@@ -1052,6 +1052,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     _userSuggestionCoordinator.delegate = self;
     
     [self setupUserSuggestionViewIfNeeded];
+    
+    [self updateTopBanners];
 }
 
 - (void)onRoomDataSourceReady
