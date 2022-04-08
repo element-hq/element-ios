@@ -19,7 +19,7 @@ import Foundation
 public extension Bundle {
     /// Returns the real app bundle.
     /// Can also be used in app extensions.
-    @objc static var app: Bundle {
+    @objc static let app: Bundle = {
         let bundle = main
         if bundle.bundleURL.pathExtension == "appex" {
             // Peel off two directory levels - MY_APP.app/PlugIns/MY_APP_EXTENSION.appex
@@ -29,7 +29,7 @@ public extension Bundle {
             }
         }
         return bundle
-    }
+    }()
     
     /// Get an lproj language bundle from the main app bundle.
     /// - Parameter language: The language to try to load.

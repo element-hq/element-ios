@@ -131,4 +131,4 @@
 "MSG_FROM_USER_IN_ROOM_TITLE" = "%@ trong %@";
 /** General **/
 
-"NOTIFICATION" = "Thông báo";
+"Notification" = "Thông báo";
