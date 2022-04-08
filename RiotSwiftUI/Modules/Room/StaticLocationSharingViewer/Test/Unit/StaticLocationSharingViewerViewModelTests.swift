@@ -25,7 +25,6 @@ class StaticLocationSharingViewerViewModelTests: XCTestCase {
     var context: StaticLocationSharingViewerViewModelType.Context!
     
     override func setUpWithError() throws {
-        viewModel = StaticLocationSharingViewerViewModel(promptType: .regular, initialCount: Constants.counterInitialValue)
-        context = viewModel.context
+        
     }
 }
