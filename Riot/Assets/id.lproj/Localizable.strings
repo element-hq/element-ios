@@ -164,7 +164,7 @@
 "MSG_FROM_USER_IN_ROOM_TITLE" = "%@ di %@";
 /** General **/
 
-"NOTIFICATION" = "Notifikasi";
+"Notification" = "Notifikasi";
 
 /* New file message from a specific person, not referencing a room. */
 "LOCATION_FROM_USER" = "%@ membagikan lokasinya";
