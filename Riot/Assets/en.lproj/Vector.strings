@@ -2137,6 +2137,7 @@ Tap the + to start adding people.";
 "live_location_sharing_banner_stop" = "Stop";
 "location_sharing_static_share_title" = "Send my current location";
 "location_sharing_pin_drop_share_title" = "Send this location";
+"location_sharing_live_map_callout_title" = "Share location";
 
 // MARK: - MatrixKit
 

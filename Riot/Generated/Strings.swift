@@ -2759,6 +2759,10 @@ public class VectorL10n: NSObject {
   public static var locationSharingInvalidAuthorizationSettings: String { 
     return VectorL10n.tr("Vector", "location_sharing_invalid_authorization_settings") 
   }
+  /// Share location
+  public static var locationSharingLiveMapCalloutTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_map_callout_title") 
+  }
   /// Share live location
   public static var locationSharingLiveShareTitle: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_share_title") 
