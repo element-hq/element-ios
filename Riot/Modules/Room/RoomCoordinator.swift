@@ -246,8 +246,51 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         
         completion?()
     }
+    
+    private func showLocationCoordinatorWithEvent(_ event: MXEvent, bubbleData: MXKRoomBubbleCellDataStoring) {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+        
+        guard let navigationRouter = self.navigationRouter,
+              let mediaManager = mxSession?.mediaManager,
+              let locationContent = event.location else {
+                  MXLog.error("[RoomCoordinator] Invalid location showing coordinator parameters. Returning.")
+                  return
+              }
+        
+        let avatarData = AvatarInput(mxContentUri: bubbleData.senderAvatarUrl,
+                                     matrixItemId: bubbleData.senderId,
+                                     displayName: bubbleData.senderDisplayName)
+        
+        
+        let location = CLLocationCoordinate2D(latitude: locationContent.latitude, longitude: locationContent.longitude)
+        let coordinateType = locationContent.assetType
+        
+        let parameters = StaticLocationSharingViewerCoordinatorParameters(roomDataSource: roomViewController.roomDataSource,
+                                                                          mediaManager: mediaManager,
+                                                                          avatarData: avatarData,
+                                                                          location: location,
+                                                                          coordinateType: coordinateType)
+        
+        let coordinator = StaticLocationSharingViewerCoordinator(parameters: parameters)
+        
+            coordinator.completion = { [weak self, weak coordinator] in
+            guard let self = self, let coordinator = coordinator else {
+                return
+            }
+            
+            self.navigationRouter?.dismissModule(animated: true, completion: nil)
+            self.remove(childCoordinator: coordinator)
+        }
+        
+        add(childCoordinator: coordinator)
+        
+        navigationRouter.present(coordinator, animated: true)
+        coordinator.start()
+    }
 
-    private func startLocationCoordinatorWithEvent(_ event: MXEvent? = nil, bubbleData: MXKRoomBubbleCellDataStoring? = nil) {
+    private func startLocationCoordinator() {
         guard #available(iOS 14.0, *) else {
             return
         }
@@ -259,29 +302,15 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
             return
         }
         
-        var avatarData: AvatarInputProtocol
-        if event != nil, let bubbleData = bubbleData {
-            avatarData = AvatarInput(mxContentUri: bubbleData.senderAvatarUrl,
-                                     matrixItemId: bubbleData.senderId,
-                                     displayName: bubbleData.senderDisplayName)
-        } else {
-            avatarData = AvatarInput(mxContentUri: user.avatarUrl,
+        let avatarData = AvatarInput(mxContentUri: user.avatarUrl,
                                      matrixItemId: user.userId,
                                      displayName: user.displayname)
-        }
-        
-        var location: CLLocationCoordinate2D?
-        var coordinateType: MXEventAssetType = .user
-        if let locationContent = event?.location {
-            location = CLLocationCoordinate2D(latitude: locationContent.latitude, longitude: locationContent.longitude)
-            coordinateType = locationContent.assetType
-        }
         
         let parameters = LocationSharingCoordinatorParameters(roomDataSource: roomViewController.roomDataSource,
                                                               mediaManager: mediaManager,
                                                               avatarData: avatarData,
-                                                              location: location,
-                                                              coordinateType: coordinateType)
+                                                              location: nil,
+                                                              coordinateType: .user)
         
         let coordinator = LocationSharingCoordinator(parameters: parameters)
         
@@ -411,11 +440,11 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     }
     
     func roomViewControllerDidRequestLocationSharingFormPresentation(_ roomViewController: RoomViewController) {
-        startLocationCoordinatorWithEvent()
+        startLocationCoordinator()
     }
     
     func roomViewController(_ roomViewController: RoomViewController, didRequestLocationPresentationFor event: MXEvent, bubbleData: MXKRoomBubbleCellDataStoring) {
-        startLocationCoordinatorWithEvent(event, bubbleData: bubbleData)
+        showLocationCoordinatorWithEvent(event, bubbleData: bubbleData)
     }
     
     func roomViewController(_ roomViewController: RoomViewController, locationShareActivityViewControllerFor event: MXEvent) -> UIActivityViewController? {
