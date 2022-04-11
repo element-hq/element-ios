@@ -267,11 +267,15 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         let location = CLLocationCoordinate2D(latitude: locationContent.latitude, longitude: locationContent.longitude)
         let coordinateType = locationContent.assetType
         
+        guard let locationSharingCoordinatetype = coordinateType.locationSharingCoordinateType() else {
+            fatalError("[LocationSharingCoordinator] event asset type is not supported: \(coordinateType)")
+        }
+        
         let parameters = StaticLocationSharingViewerCoordinatorParameters(roomDataSource: roomViewController.roomDataSource,
                                                                           mediaManager: mediaManager,
                                                                           avatarData: avatarData,
                                                                           location: location,
-                                                                          coordinateType: coordinateType)
+                                                                          coordinateType: locationSharingCoordinatetype)
         
         let coordinator = StaticLocationSharingViewerCoordinator(parameters: parameters)
         

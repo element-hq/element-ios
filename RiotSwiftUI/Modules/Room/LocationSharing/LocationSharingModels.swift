@@ -30,11 +30,13 @@ enum LocationSharingViewAction {
     case share
     case sharePinLocation
     case goToUserLocation
+    case shareLiveLocation
 }
 
 enum LocationSharingViewModelResult {
     case cancel
     case share(latitude: Double, longitude: Double, coordinateType: LocationSharingCoordinateType)
+    case shareLiveLocation(timeout: TimeInterval)
 }
 
 enum LocationSharingViewError {

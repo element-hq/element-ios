@@ -25,7 +25,7 @@ enum MockRoomUpgradeScreenState: MockScreenState, CaseIterable {
     // with specific, minimal associated data that will allow you
     // mock that screen.
     case initial
-    
+
     /// The associated screen
     var screenType: Any.Type {
         RoomUpgrade.self

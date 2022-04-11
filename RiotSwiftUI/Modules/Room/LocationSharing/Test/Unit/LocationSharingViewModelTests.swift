@@ -49,6 +49,8 @@ class LocationSharingViewModelTests: XCTestCase {
                 XCTFail()
             case .cancel:
                 expectation.fulfill()
+            case .shareLiveLocation(timeout: let timeout):
+                XCTFail()
             }
         }
         

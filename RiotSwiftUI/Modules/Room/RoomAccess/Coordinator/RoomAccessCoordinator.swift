@@ -154,6 +154,7 @@ final class RoomAccessCoordinator: Coordinator {
         let paramaters = RoomUpgradeCoordinatorParameters(
             session: parameters.room.mxSession,
             roomId: roomId,
+            parentSpaceId: parameters.parentSpaceId,
             versionOverride: versionOverride)
         let coordinator = RoomUpgradeCoordinator(parameters: paramaters)
         

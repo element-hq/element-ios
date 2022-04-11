@@ -24,7 +24,7 @@ struct StaticLocationSharingViewerCoordinatorParameters {
     let mediaManager: MXMediaManager
     let avatarData: AvatarInputProtocol
     let location: CLLocationCoordinate2D
-    let coordinateType: MXEventAssetType
+    let coordinateType: LocationSharingCoordinateType
 }
 
 final class StaticLocationSharingViewerCoordinator: Coordinator, Presentable {
@@ -54,7 +54,7 @@ final class StaticLocationSharingViewerCoordinator: Coordinator, Presentable {
         let viewModel = StaticLocationSharingViewerViewModel(mapStyleURL: BuildSettings.tileServerMapStyleURL,
                                                              avatarData: parameters.avatarData,
                                                              location: parameters.location,
-                                                             coordinateType: parameters.coordinateType.locationSharingCoordinateType())
+                                                             coordinateType: parameters.coordinateType)
         let view = StaticLocationSharingViewer(viewModel: viewModel.context)
         staticLocationSharingViewerViewModel = viewModel
         staticLocationSharingViewerHostingController = VectorHostingController(rootView: view)
