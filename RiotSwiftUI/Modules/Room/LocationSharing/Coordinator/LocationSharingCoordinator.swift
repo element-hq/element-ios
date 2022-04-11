@@ -23,8 +23,6 @@ struct LocationSharingCoordinatorParameters {
     let roomDataSource: MXKRoomDataSource
     let mediaManager: MXMediaManager
     let avatarData: AvatarInputProtocol
-    let location: CLLocationCoordinate2D?
-    let coordinateType: MXEventAssetType
 }
 
 // Map between type from MatrixSDK and type from SwiftUI target, as we don't want
@@ -81,8 +79,6 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
         
         let viewModel = LocationSharingViewModel(mapStyleURL: BuildSettings.tileServerMapStyleURL,
                                                  avatarData: parameters.avatarData,
-                                                 location: parameters.location,
-                                                 coordinateType: parameters.coordinateType.locationSharingCoordinateType(),
                                                  isLiveLocationSharingEnabled: BuildSettings.liveLocationSharingEnabled)
         let view = LocationSharingView(context: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
@@ -105,12 +101,6 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
             case .cancel:
                 self.completion?()
             case .share(let latitude, let longitude, let coordinateType):
-                
-                // Show share sheet on existing location display
-                if let location = self.parameters.location {
-                    self.locationSharingHostingController.present(Self.shareLocationActivityController(location), animated: true)
-                    return
-                }
                 
                 self.locationSharingViewModel.startLoading()
                 

@@ -20,7 +20,20 @@ import RiotSwiftUI
 @available(iOS 14.0, *)
 class StaticLocationSharingViewerUITests: MockScreenTest {
 
-    override class var screenType: MockScreenState.Type {
-        return MockStaticLocationSharingViewerScreenState.self
+    private var app: XCUIApplication!
+    
+    override func setUp() {
+        continueAfterFailure = false
+                
+        app = XCUIApplication()
+        app.launch()
+    }
+    
+    func testInitialExistingLocation() {
+        goToScreenWithIdentifier(MockStaticLocationSharingViewerScreenState.showUserLocation.title)
+        
+        XCTAssertTrue(app.buttons["Cancel"].exists)
+        XCTAssertTrue(app.buttons["LocationSharingView.shareButton"].exists)
+        XCTAssertTrue(app.otherElements["Map"].exists)
     }
 }

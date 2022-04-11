@@ -308,9 +308,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         
         let parameters = LocationSharingCoordinatorParameters(roomDataSource: roomViewController.roomDataSource,
                                                               mediaManager: mediaManager,
-                                                              avatarData: avatarData,
-                                                              location: nil,
-                                                              coordinateType: .user)
+                                                              avatarData: avatarData)
         
         let coordinator = LocationSharingCoordinator(parameters: parameters)
         

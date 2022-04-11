@@ -36,14 +36,6 @@ class LocationSharingUITests: XCTestCase {
         XCTAssertTrue(app.otherElements["Map"].exists)
     }
     
-    func testInitialExistingLocation() {
-        goToScreenWithIdentifier(MockLocationSharingScreenState.displayExistingLocation.title)
-        
-        XCTAssertTrue(app.buttons["Cancel"].exists)
-        XCTAssertTrue(app.buttons["LocationSharingView.shareButton"].exists)
-        XCTAssertTrue(app.otherElements["Map"].exists)
-    }
-    
     // Need a delay when showing the map otherwise the simulator breaks
     private func goToScreenWithIdentifier(_ identifier: String) {
         app.goToScreenWithIdentifier(identifier)
