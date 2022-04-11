@@ -46,49 +46,57 @@ struct RoomUpgrade: View {
     
     @ViewBuilder
     private var alertContent: some View {
-        VStack(alignment: .center) {
-            Text(VectorL10n.roomAccessSettingsScreenUpgradeAlertTitle)
-                .font(theme.fonts.title3SB)
-                .foregroundColor(theme.colors.primaryContent)
+        ZStack {
+            VStack(alignment: .center) {
+                Text(VectorL10n.roomAccessSettingsScreenUpgradeAlertTitle)
+                    .font(theme.fonts.title3SB)
+                    .foregroundColor(theme.colors.primaryContent)
+                    .padding(.bottom, 24)
+                if let spaceName = viewModel.viewState.parentSpaceName {
+                    noteText(VectorL10n.roomAccessSettingsScreenUpgradeAlertMessage(spaceName))
+                        .padding(.bottom)
+                } else {
+                    noteText(VectorL10n.roomAccessSettingsScreenUpgradeAlertMessageNoParam)
+                        .padding(.bottom)
+                }
+                noteText(VectorL10n.roomAccessSettingsScreenUpgradeAlertNote)
+                    .padding(.bottom, 35)
+                Toggle(isOn: $autoInviteUsers) {
+                    Text(VectorL10n.roomAccessSettingsScreenUpgradeAlertAutoInviteSwitch)
+                        .font(theme.fonts.body)
+                        .foregroundColor(theme.colors.secondaryContent)
+                }
+                .toggleStyle(SwitchToggleStyle(tint: theme.colors.accent))
+                Divider()
+                Button {
+                    viewModel.send(viewAction: .done(autoInviteUsers))
+                } label: {
+                    Text(VectorL10n.roomAccessSettingsScreenUpgradeAlertUpgradeButton)
+                }
+                .buttonStyle(PrimaryActionButtonStyle())
+                .accessibilityIdentifier("upgradeButton")
                 .padding(.top, 16)
-                .padding(.bottom, 24)
-            Text(VectorL10n.roomAccessSettingsScreenUpgradeAlertMessage)
-                .multilineTextAlignment(.center)
-                .font(theme.fonts.subheadline)
-                .foregroundColor(theme.colors.secondaryContent)
-                .padding(.bottom, 35)
-                .padding(.horizontal, 12)
-            Toggle(isOn: $autoInviteUsers) {
-                Text(VectorL10n.roomAccessSettingsScreenUpgradeAlertAutoInviteSwitch)
-                    .font(theme.fonts.body)
-                    .foregroundColor(theme.colors.secondaryContent)
+                Button {
+                    viewModel.send(viewAction: .cancel)
+                } label: {
+                    Text(VectorL10n.cancel)
+                }
+                .buttonStyle(SecondaryActionButtonStyle())
+                .accessibilityIdentifier("cancelButton")
             }
-            .toggleStyle(SwitchToggleStyle(tint: theme.colors.accent))
-            .padding(.horizontal, 28)
-            Divider()
-                .padding(.horizontal, 28)
-            Button {
-                viewModel.send(viewAction: .done(autoInviteUsers))
-            } label: {
-                Text(VectorL10n.roomAccessSettingsScreenUpgradeAlertUpgradeButton)
-            }
-            .buttonStyle(PrimaryActionButtonStyle())
-            .accessibilityIdentifier("upgradeButton")
-            .padding(.horizontal, 24)
-            .padding(.top, 16)
-            Button {
-                viewModel.send(viewAction: .cancel)
-            } label: {
-                Text(VectorL10n.cancel)
-            }
-            .buttonStyle(SecondaryActionButtonStyle())
-            .accessibilityIdentifier("cancelButton")
             .padding(.horizontal, 24)
             .padding(.vertical, 16)
         }
         .background(RoundedRectangle.init(cornerRadius: 8).foregroundColor(theme.colors.background))
         .padding(.horizontal, 20)
         .frame(minWidth: 0, maxWidth: 500)
+    }
+    
+    private func noteText(_ message: String) -> some View {
+        return Text(message)
+            .multilineTextAlignment(.center)
+            .font(theme.fonts.subheadline)
+            .foregroundColor(theme.colors.secondaryContent)
     }
 }
 

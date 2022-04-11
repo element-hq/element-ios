@@ -4279,9 +4279,17 @@ public class VectorL10n: NSObject {
   public static var roomAccessSettingsScreenUpgradeAlertAutoInviteSwitch: String { 
     return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_auto_invite_switch") 
   }
-  /// Anyone in Space name will be able to find and join this room - no need to manually invite everyone. You’ll be able to change this in room settings anytime.\n\nPlease note upgrading will make a new version of the room.  All current messages will stay in this archived room.
-  public static var roomAccessSettingsScreenUpgradeAlertMessage: String { 
-    return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_message") 
+  /// Anyone in %@ will be able to find and join this room - no need to manually invite everyone. You’ll be able to change this in room settings anytime.
+  public static func roomAccessSettingsScreenUpgradeAlertMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_message", p1)
+  }
+  /// Anyone in a parent space will be able to find and join this room - no need to manually invite everyone. You’ll be able to change this in room settings anytime.
+  public static var roomAccessSettingsScreenUpgradeAlertMessageNoParam: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_message_no_param") 
+  }
+  /// Please note upgrading will make a new version of the room. All current messages will stay in this archived room.
+  public static var roomAccessSettingsScreenUpgradeAlertNote: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_note") 
   }
   /// Upgrade room
   public static var roomAccessSettingsScreenUpgradeAlertTitle: String { 
