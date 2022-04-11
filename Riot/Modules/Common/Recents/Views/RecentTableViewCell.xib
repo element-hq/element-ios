@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -98,9 +98,24 @@
                             <constraint firstAttribute="height" constant="16" id="lNd-8B-gRr"/>
                         </constraints>
                     </imageView>
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RDK-ky-osD" customClass="PresenceIndicatorView" customModule="Riot" customModuleProvider="target">
+                        <rect key="frame" x="43" y="42" width="15" height="15"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="15" id="ZpE-ja-bYB"/>
+                            <constraint firstAttribute="height" constant="15" id="xlV-Rh-dQN"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                <real key="value" value="1.5"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="F6K-PV-15f" firstAttribute="trailing" secondItem="360-Go-RcG" secondAttribute="trailing" id="3qB-Na-Eqs"/>
+                    <constraint firstItem="RDK-ky-osD" firstAttribute="trailing" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="3" id="6kv-0l-fBz"/>
+                    <constraint firstItem="RDK-ky-osD" firstAttribute="bottom" secondItem="RX5-eD-c3c" secondAttribute="bottom" id="HZp-I0-uYd"/>
                     <constraint firstItem="360-Go-RcG" firstAttribute="leading" secondItem="OeZ-wN-eil" secondAttribute="trailing" constant="8" id="KuE-8m-e9A"/>
                     <constraint firstItem="e7r-zL-9bw" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" id="PUW-if-ewh"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="14" id="Pgp-JM-oQd"/>
@@ -120,7 +135,7 @@
                     <constraint firstItem="RX5-eD-c3c" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" constant="13" id="tgy-cX-Wxm"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <accessibility key="accessibilityConfiguration" identifier="RecentTableViewCell"/>
             <connections>
                 <outlet property="encryptedRoomIcon" destination="NAZ-zd-MHS" id="ZsH-Zr-Q4K"/>
@@ -131,6 +146,7 @@
                 <outlet property="missedNotifAndUnreadBadgeBgViewWidthConstraint" destination="86T-0d-rAI" id="KLF-Du-rHT"/>
                 <outlet property="missedNotifAndUnreadBadgeLabel" destination="mbn-A1-1Yw" id="lee-qf-QjM"/>
                 <outlet property="missedNotifAndUnreadIndicator" destination="e7r-zL-9bw" id="jWE-0y-BMv"/>
+                <outlet property="presenceIndicatorView" destination="RDK-ky-osD" id="kj3-j2-QHH"/>
                 <outlet property="roomAvatar" destination="RX5-eD-c3c" id="dIC-8p-inL"/>
                 <outlet property="roomTitle" destination="Lg1-xQ-AGn" id="q7Q-TM-5C8"/>
                 <outlet property="unsentImageView" destination="F6K-PV-15f" id="EnH-mb-j6s"/>

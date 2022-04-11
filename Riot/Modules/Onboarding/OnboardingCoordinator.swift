@@ -64,6 +64,8 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     private var useCaseResult: OnboardingUseCaseViewModelResult?
     private var authenticationType: MXKAuthenticationType?
     private var session: MXSession?
+    /// A place to store the image selected in the avatar screen until it has been saved.
+    private var selectedAvatar: UIImage?
     
     private var shouldShowDisplayNameScreen = false
     private var shouldShowAvatarScreen = false
@@ -255,10 +257,15 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         if #available(iOS 14.0, *) {
             if authenticationType == .register,
                let userId = session.credentials.userId,
-               let userSession = UserSessionsService.shared.userSession(withUserId: userId),
-               BuildSettings.onboardingShowAccountPersonalization {
-                checkHomeserverCapabilities(for: userSession)
-                return
+               let userSession = UserSessionsService.shared.userSession(withUserId: userId) {
+                // If personalisation is to be shown, check that the homeserver supports it otherwise show the congratulations screen
+                if BuildSettings.onboardingShowAccountPersonalization {
+                    checkHomeserverCapabilities(for: userSession)
+                    return
+                } else {
+                    showCongratulationsScreen(for: userSession)
+                    return
+                }
             } else if Analytics.shared.shouldShowAnalyticsPrompt {
                 showAnalyticsPrompt(for: session)
                 return
@@ -373,9 +380,9 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         let parameters = OnboardingDisplayNameCoordinatorParameters(userSession: userSession)
         let coordinator = OnboardingDisplayNameCoordinator(parameters: parameters)
         
-        coordinator.completion = { [weak self, weak coordinator] session in
+        coordinator.completion = { [weak self, weak coordinator] userSession in
             guard let self = self, let coordinator = coordinator else { return }
-            self.displayNameCoordinator(coordinator, didCompleteWith: session)
+            self.displayNameCoordinator(coordinator, didCompleteWith: userSession)
         }
         
         add(childCoordinator: coordinator)
@@ -401,12 +408,20 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     private func showAvatarScreen(for userSession: UserSession) {
         MXLog.debug("[OnboardingCoordinator]: showAvatarScreen")
         
-        let parameters = OnboardingAvatarCoordinatorParameters(userSession: userSession)
+        let parameters = OnboardingAvatarCoordinatorParameters(userSession: userSession, avatar: selectedAvatar)
         let coordinator = OnboardingAvatarCoordinator(parameters: parameters)
         
-        coordinator.completion = { [weak self, weak coordinator] session in
+        coordinator.completion = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
-            self.avatarCoordinator(coordinator, didCompleteWith: session)
+            
+            switch result {
+            case .selectedAvatar(let image):
+                // Store the avatar so that if the user navigates back to the display name
+                // screen we can show the chosen image again when the avatar screen is pushed.
+                self.selectedAvatar = image
+            case .complete(let userSession):
+                self.avatarCoordinator(coordinator, didCompleteWith: userSession)
+            }
         }
         
         add(childCoordinator: coordinator)
@@ -427,6 +442,9 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     @available(iOS 14.0, *)
     private func avatarCoordinator(_ coordinator: OnboardingAvatarCoordinator, didCompleteWith userSession: UserSession) {
         showCelebrationScreen(for: userSession)
+        
+        // It is no longer possible to navigate backwards so forget the selected avatar
+        selectedAvatar = nil
     }
     
     @available(iOS 14.0, *)

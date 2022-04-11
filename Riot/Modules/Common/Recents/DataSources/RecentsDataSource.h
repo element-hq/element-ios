@@ -22,6 +22,7 @@
 @protocol RecentsListServiceProtocol;
 @class DiscussionsCount;
 @class MXSpace;
+@class RecentsDataSourceSections;
 
 /**
  List the different modes used to prepare the recents data source.
@@ -67,16 +68,10 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
  */
 @interface RecentsDataSource : MXKInterleavedRecentsDataSource
 
-@property (nonatomic) NSInteger crossSigningBannerSection;
-@property (nonatomic) NSInteger secureBackupBannerSection;
-@property (nonatomic) NSInteger directorySection;
-@property (nonatomic) NSInteger invitesSection;
-@property (nonatomic) NSInteger favoritesSection;
-@property (nonatomic) NSInteger peopleSection;
-@property (nonatomic) NSInteger conversationSection;
-@property (nonatomic) NSInteger lowPrioritySection;
-@property (nonatomic) NSInteger serverNoticeSection;
-@property (nonatomic) NSInteger suggestedRoomsSection;
+/**
+ A set of sections visible in the current table view and associated with their semantic meaning (e.g. "favorites" = 2)
+ */
+@property (nonatomic, strong, readonly) RecentsDataSourceSections *sections;
 
 @property (nonatomic, readonly) NSInteger totalVisibleItemCount;
 
@@ -126,6 +121,11 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
  The data source used to manage the rooms from directory.
  */
 @property (nonatomic) PublicRoomsDirectoryDataSource *publicRoomsDirectoryDataSource;
+
+/**
+ Make a new sections object that reflects the latest state of the data sources
+ */
+- (RecentsDataSourceSections *)makeDataSourceSections;
 
 /**
  Refresh the recents data source and notify its delegate.

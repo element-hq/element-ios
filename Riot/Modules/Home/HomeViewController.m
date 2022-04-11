@@ -93,8 +93,8 @@
                                             target:self
                                             action:@selector(onPlusButtonPressed)];
     
-    // Register table view cell used for rooms collection.
-    [self.recentsTableView registerClass:TableViewCellWithCollectionView.class forCellReuseIdentifier:TableViewCellWithCollectionView.defaultReuseIdentifier];
+    // Register table view cells used for rooms collection.
+    [self registerCellsWithCollectionViews];
 
     // Change the table data source. It must be the home view controller itself.
     self.recentsTableView.dataSource = self;
@@ -302,6 +302,35 @@
 
 #pragma mark - UITableViewDataSource
 
+// Table view cells on the home screen contain nested collection views with their own data source and state.
+// In order to preserve properties such as content offset of each collection view, the parent cells must
+// be directly associated with each section, so that when getting dequed by the table view, the correct cell
+// is reused, rather than cells getting randomly swapped around.
+- (void)registerCellsWithCollectionViews
+{
+    NSArray<NSNumber *> *sections = @[
+        @(RecentsDataSourceSectionTypeDirectory),
+        @(RecentsDataSourceSectionTypeInvites),
+        @(RecentsDataSourceSectionTypeFavorites),
+        @(RecentsDataSourceSectionTypePeople),
+        @(RecentsDataSourceSectionTypeConversation),
+        @(RecentsDataSourceSectionTypeLowPriority),
+        @(RecentsDataSourceSectionTypeServerNotice),
+        @(RecentsDataSourceSectionTypeSuggestedRooms)
+    ];
+    for (NSNumber *section in sections) {
+        NSString *cellIdentifier = [self cellIdentifierForSectionType:section.integerValue];
+        [self.recentsTableView registerClass:TableViewCellWithCollectionView.class forCellReuseIdentifier:cellIdentifier];
+    }
+}
+
+- (NSString *)cellIdentifierForSectionType:(RecentsDataSourceSectionType)sectionType
+{
+    // Create cell identifier unique to each semantic section, e.g. 'favorites' will have different cell
+    // identifier to 'conversations'.
+    return [NSString stringWithFormat:@"%@-%ld", TableViewCellWithCollectionView.defaultReuseIdentifier, sectionType];
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the actual number of sections prepared in recents dataSource.
@@ -326,16 +355,18 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ((indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.recentsListService.conversationRoomListData.counts.numberOfRooms)
-        || (indexPath.section == recentsDataSource.peopleSection && !recentsDataSource.recentsListService.peopleRoomListData.counts.numberOfRooms)
-        || (indexPath.section == recentsDataSource.secureBackupBannerSection)
-        || (indexPath.section == recentsDataSource.crossSigningBannerSection)
+    RecentsDataSourceSectionType sectionType = [recentsDataSource.sections sectionTypeForSectionIndex:indexPath.section];
+    if ((sectionType == RecentsDataSourceSectionTypeConversation && !recentsDataSource.recentsListService.conversationRoomListData.counts.numberOfRooms)
+        || (sectionType == RecentsDataSourceSectionTypePeople && !recentsDataSource.recentsListService.peopleRoomListData.counts.numberOfRooms)
+        || (sectionType == RecentsDataSourceSectionTypeSecureBackupBanner)
+        || (sectionType == RecentsDataSourceSectionTypeCrossSigningBanner)
         )
     {
         return [recentsDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
     }
     
-    TableViewCellWithCollectionView *tableViewCell = [tableView dequeueReusableCellWithIdentifier:TableViewCellWithCollectionView.defaultReuseIdentifier forIndexPath:indexPath];
+    NSString *cellIdentifier = [self cellIdentifierForSectionType:sectionType];
+    TableViewCellWithCollectionView *tableViewCell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     tableViewCell.collectionView.tag = indexPath.section;
     [tableViewCell.collectionView registerClass:RoomCollectionViewCell.class forCellWithReuseIdentifier:RoomCollectionViewCell.defaultReuseIdentifier];
     tableViewCell.collectionView.delegate = self;
@@ -418,24 +449,25 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ((indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.recentsListService.conversationRoomListData.counts.numberOfRooms)
-        || (indexPath.section == recentsDataSource.peopleSection && !recentsDataSource.recentsListService.peopleRoomListData.counts.numberOfRooms))
+    RecentsDataSourceSectionType sectionType = [recentsDataSource.sections sectionTypeForSectionIndex:indexPath.section];
+    if ((sectionType == RecentsDataSourceSectionTypeConversation && !recentsDataSource.recentsListService.conversationRoomListData.counts.numberOfRooms)
+        || (sectionType == RecentsDataSourceSectionTypePeople && !recentsDataSource.recentsListService.peopleRoomListData.counts.numberOfRooms))
     {
         return [recentsDataSource cellHeightAtIndexPath:indexPath];
     }
-    else if (indexPath.section == recentsDataSource.secureBackupBannerSection || indexPath.section == recentsDataSource.crossSigningBannerSection)
+    else if (sectionType == RecentsDataSourceSectionTypeSecureBackupBanner || sectionType == RecentsDataSourceSectionTypeCrossSigningBanner)
     {
         CGFloat height = 0.0;
         
         UITableViewCell *sizingCell;
         
-        if (indexPath.section == recentsDataSource.secureBackupBannerSection)
+        if (sectionType == RecentsDataSourceSectionTypeSecureBackupBanner)
         {
             SecureBackupBannerCell *secureBackupBannerCell = self.secureBackupBannerPrototypeCell;
             [secureBackupBannerCell configureFor:recentsDataSource.secureBackupBannerDisplay];
             sizingCell = secureBackupBannerCell;
         }
-        else if (indexPath.section == recentsDataSource.crossSigningBannerSection)
+        else if (sectionType == RecentsDataSourceSectionTypeCrossSigningBanner)
         {
             sizingCell = self.keyVerificationSetupBannerPrototypeCell;
         }
@@ -444,7 +476,7 @@
         
         CGSize fittingSize = UILayoutFittingCompressedSize;
         CGFloat tableViewWidth = CGRectGetWidth(tableView.frame);
-        CGFloat safeAreaWidth = MAX(tableView.safeAreaInsets.left, tableView.safeAreaInsets.right);        
+        CGFloat safeAreaWidth = MAX(tableView.safeAreaInsets.left, tableView.safeAreaInsets.right);
         
         fittingSize.width = tableViewWidth - safeAreaWidth;
         
@@ -469,8 +501,9 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     // No header in key banner section
-    if (section == recentsDataSource.secureBackupBannerSection
-        || section == recentsDataSource.crossSigningBannerSection)
+    RecentsDataSourceSectionType sectionType = [recentsDataSource.sections sectionTypeForSectionIndex:section];
+    if (sectionType == RecentsDataSourceSectionTypeSecureBackupBanner
+        || sectionType == RecentsDataSourceSectionTypeCrossSigningBanner)
     {
         return 0.0;
     }
@@ -482,7 +515,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == recentsDataSource.secureBackupBannerSection)
+    RecentsDataSourceSectionType sectionType = [recentsDataSource.sections sectionTypeForSectionIndex:indexPath.section];
+    if (sectionType == RecentsDataSourceSectionTypeSecureBackupBanner)
     {
         switch (recentsDataSource.secureBackupBannerDisplay) {
             case SecureBackupBannerDisplaySetup:
@@ -492,7 +526,7 @@
                 break;
         }
     }
-    else if (indexPath.section == recentsDataSource.crossSigningBannerSection)
+    else if (sectionType == RecentsDataSourceSectionTypeCrossSigningBanner)
     {
         [self showCrossSigningSetup];
     }
@@ -867,7 +901,8 @@
     }
     
     // Check if some banners should be displayed
-    if (recentsDataSource.secureBackupBannerSection != -1 || recentsDataSource.crossSigningBannerSection != -1)
+    if ([recentsDataSource.sections contains:RecentsDataSourceSectionTypeSecureBackupBanner]
+        || [recentsDataSource.sections contains:RecentsDataSourceSectionTypeCrossSigningBanner])
     {
         return NO;
     }
@@ -902,6 +937,7 @@
         return nil;
     }
     
+    self.recentsUpdateEnabled = NO;
     return [self.contextMenuProvider contextMenuConfigurationWith:cellData from:cell session:self.dataSource.mxSession];
 }
 
@@ -911,12 +947,20 @@
     
     if (!roomId)
     {
+        self.recentsUpdateEnabled = YES;
         return;
     }
 
     [animator addCompletion:^{
+        self.recentsUpdateEnabled = YES;
         [self showRoomWithRoomId:roomId inMatrixSession:self.mainSession];
     }];
+}
+
+- (UITargetedPreview *)collectionView:(UICollectionView *)collectionView previewForDismissingContextMenuWithConfiguration:(UIContextMenuConfiguration *)configuration API_AVAILABLE(ios(13.0))
+{
+    self.recentsUpdateEnabled = YES;
+    return nil;
 }
 
 @end

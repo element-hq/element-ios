@@ -490,7 +490,7 @@
 "unknown_devices_verify" = "Overiť…";
 "media_type_accessibility_sticker" = "Nálepka";
 "media_type_accessibility_file" = "Súbor";
-"media_type_accessibility_location" = "Miesto";
+"media_type_accessibility_location" = "Poloha";
 "media_type_accessibility_video" = "Video";
 "media_type_accessibility_audio" = "Audio";
 "media_type_accessibility_image" = "Obrázok";
@@ -644,7 +644,7 @@
 "room_details_low_priority_tag" = "Nízka priorita";
 "room_details_room_name" = "Názov miestnosti";
 "room_details_photo" = "Obrázok miestnosti";
-"room_details_search" = "Hľadať miestnosť";
+"room_details_search" = "Prehľadať miestnosť";
 "identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "Napriek tomu sa odpojiť";
 
 // Identity server settings
@@ -1680,7 +1680,7 @@
 "poll_edit_form_poll_type" = "Typ ankety";
 "poll_edit_form_update_failure_title" = "Nepodarilo sa aktualizovať anketu";
 "poll_edit_form_update_failure_subtitle" = "Prosím, skúste to znova";
-"poll_edit_form_poll_type_open" = "Otvoriť anketu";
+"poll_edit_form_poll_type_open" = "Otvorená anketa";
 "poll_edit_form_poll_type_open_description" = "Hlasujúci uvidia výsledky hneď po hlasovaní";
 "poll_edit_form_poll_type_closed_description" = "Výsledky sa zobrazia až po ukončení ankety";
 "poll_timeline_total_votes_not_voted" = "%lu odovzdaných hlasov. Hlasujte a pozrite si výsledky";
@@ -2320,3 +2320,13 @@
 "notice_event_redacted_by_you" = " vami";
 "home_syncing" = "Synchronizácia";
 "room_participants_leave_success" = "Opustil miestnosť";
+"notice_error_unformattable_event" = "** Správa sa nedá zobraziť. Prosím, nahláste chybu";
+"settings_labs_use_only_latest_user_avatar_and_name" = "Zobraziť posledný obrázok a meno používateľov v histórii správ";
+"room_participants_ago" = "pred";
+"notice_location_attachment" = "umiestnenie prílohy";
+"room_details_fail_to_update_room_direct" = "Nepodarilo sa aktualizovať priamy príznak tejto miestnosti";
+"room_details_flair_section" = "Zobraziť štýl pre komunity";
+"settings_flair" = "Zobraziť štýl, kde je to povolené";
+"room_participants_leave_processing" = "Opustenie";
+"joined" = "Sa pripojil/a";
+"callbar_return" = "Späť";

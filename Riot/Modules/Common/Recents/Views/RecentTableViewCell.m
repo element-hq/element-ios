@@ -128,6 +128,11 @@
                                             roomId:roomCellData.roomIdentifier
                                        displayName:roomCellData.roomDisplayname
                                       mediaManager:roomCellData.mxSession.mediaManager];
+        
+        // Presence indicator
+        self.presenceIndicatorView.borderColor = ThemeService.shared.theme.backgroundColor;
+        self.presenceIndicatorView.presence = roomCellData.presence;
+        self.presenceIndicatorView.hidden = roomCellData.presence == MXPresenceUnknown;
     }
     else
     {
