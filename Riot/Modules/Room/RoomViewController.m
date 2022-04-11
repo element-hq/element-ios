@@ -232,13 +232,6 @@ static CGSize kThreadListBarButtonItemImageSize;
 // scroll state just before the layout change, and restore it after the layout.
 @property (nonatomic) BOOL wasScrollAtBottomBeforeLayout;
 
-/// Handles all banners that should be displayed at the top of the timeline but that should not scroll with the timeline
-@property (weak, nonatomic, nullable) IBOutlet UIStackView *topBannersStackView;
-
-@property (nonatomic) BOOL shouldShowLiveLocationSharingBannerView;
-
-@property (nonatomic, weak) LiveLocationSharingBannerView *liveLocationSharingBannerView;
-
 @end
 
 @implementation RoomViewController
@@ -410,6 +403,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self setupActions];
     
     [self setupUserSuggestionViewIfNeeded];
+    
+    [self.topBannersStackView vc_removeAllSubviews];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -549,6 +544,8 @@ static CGSize kThreadListBarButtonItemImageSize;
         
         notificationTaskProfile = [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:MXTaskProfileNameNotificationsOpenEvent];
     }
+    
+    [self updateTopBanners];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -1055,6 +1052,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     _userSuggestionCoordinator.delegate = self;
     
     [self setupUserSuggestionViewIfNeeded];
+    
+    [self updateTopBanners];
 }
 
 - (void)onRoomDataSourceReady
@@ -1523,6 +1522,11 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     missedDiscussionsBadgeLabel.hidden = missedDiscussionsBadgeHidden;
     missedDiscussionsDotView.hidden = missedDiscussionsBadgeHidden;
+}
+
+- (BOOL)shouldShowLiveLocationSharingBannerView
+{
+    return customizedRoomDataSource.isCurrentUserSharingIsLocation;
 }
 
 #pragma mark - Internals
@@ -2423,12 +2427,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     [self.view bringSubviewToFront:self.topBannersStackView];
     
-    [self.topBannersStackView vc_removeAllSubviews];
-    
-    if (self.shouldShowLiveLocationSharingBannerView)
-    {
-        [self showLiveLocationBannerView];
-    }
+    [self updateLiveLocationBannerViewVisibility];
 }
 
 #pragma mark - Jitsi
@@ -4417,6 +4416,11 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self openThreadWithId:thread.id];
 
     [Analytics.shared trackInteraction:AnalyticsUIElementRoomThreadSummaryItem];
+}
+
+- (void)roomDataSourceDidUpdateCurrentUserSharingLocationStatus:(RoomDataSource *)roomDataSource
+{
+    [self updateLiveLocationBannerViewVisibility];
 }
 
 #pragma mark - Segues
@@ -7482,36 +7486,6 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (void)roomParticipantsInviteCoordinatorBridgePresenterDidEndLoading:(RoomParticipantsInviteCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
     [self stopActivityIndicator];
-}
-
-#pragma mark - Live location sharing
-
-- (void)showLiveLocationBannerView
-{
-    if (self.liveLocationSharingBannerView)
-    {
-        return;
-    }
-    
-    LiveLocationSharingBannerView *bannerView = [LiveLocationSharingBannerView instantiate];
-    
-    [bannerView updateWithTheme:ThemeService.shared.theme];
-    
-    MXWeakify(self);
-    
-    bannerView.didTapBackground = ^{
-        MXStrongifyAndReturnIfNil(self);
-        [self.delegate roomViewControllerDidTapLiveLocationSharingBanner:self];
-    };
-    
-    bannerView.didTapStopButton = ^{
-        MXStrongifyAndReturnIfNil(self);
-        [self.delegate roomViewControllerDidStopLiveLocationSharing:self];
-    };
-    
-    [self.topBannersStackView addArrangedSubview:bannerView];
-    
-    self.liveLocationSharingBannerView = bannerView;
 }
 
 @end

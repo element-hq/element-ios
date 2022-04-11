@@ -51,6 +51,8 @@ class LocationSharingViewModelTests: XCTestCase {
                 XCTFail()
             case .cancel:
                 expectation.fulfill()
+            case .shareLiveLocation(timeout: let timeout):
+                XCTFail()
             }
         }
         
@@ -83,6 +85,8 @@ class LocationSharingViewModelTests: XCTestCase {
                 XCTAssertEqual(longitude, viewModel.context.viewState.sharedAnnotation?.coordinate.longitude)
                 expectation.fulfill()
             case .cancel:
+                XCTFail()
+            case .shareLiveLocation(timeout: let timeout):
                 XCTFail()
             }
         }

@@ -125,7 +125,7 @@ struct LocationSharingView: View {
                 // Hide for now until live location sharing is finished
                 if context.viewState.isLiveLocationSharingEnabled {
                     LocationSharingOptionButton(text: VectorL10n.locationSharingLiveShareTitle) {
-                        // TODO: - Start live location sharing
+                        context.send(viewAction: .shareLiveLocation)
                     } buttonIcon: {
                         Image(uiImage: Asset.Images.locationLiveIcon.image)
                             .resizable()
