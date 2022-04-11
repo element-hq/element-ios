@@ -3837,7 +3837,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         MXRoom *room = [self.mainSession roomWithRoomId:self.roomId];
         
         if (room) {
-            roomAccessPresenter = [[RoomAccessCoordinatorBridgePresenter alloc] initWithRoom:room parentId:self.parentSpaceId];
+            roomAccessPresenter = [[RoomAccessCoordinatorBridgePresenter alloc] initWithRoom:room parentSpaceId:self.parentSpaceId];
             roomAccessPresenter.delegate = self;
             [roomAccessPresenter presentFrom:self animated:YES];
         }

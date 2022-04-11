@@ -26,7 +26,7 @@ class RoomUpgradeService: RoomUpgradeServiceProtocol {
     // MARK: Private
     
     private let session: MXSession
-    private let parentId: String?
+    private let parentSpaceId: String?
     private let versionOverride: String
     private var currentOperation: MXHTTPOperation?
     private var didBuildSpaceGraphObserver: Any?
@@ -38,7 +38,12 @@ class RoomUpgradeService: RoomUpgradeServiceProtocol {
     private(set) var currentRoomId: String
 
     var parentSpaceName: String? {
-        guard let parentId = self.parentId, let parent = session.spaceService?.getSpace(withId: parentId) else {
+        guard let parentId = self.parentSpaceId else {
+            return nil
+        }
+        
+        guard let parent = session.spaceService?.getSpace(withId: parentId) else {
+            MXLog.error("[RoomUpgradeService] parentSpaceName: parent space not found.")
             return nil
         }
         
@@ -47,10 +52,10 @@ class RoomUpgradeService: RoomUpgradeServiceProtocol {
     
     // MARK: - Setup
     
-    init(session: MXSession, roomId: String, parentId: String?, versionOverride: String) {
+    init(session: MXSession, roomId: String, parentSpaceId: String?, versionOverride: String) {
         self.session = session
         self.currentRoomId = roomId
-        self.parentId = parentId
+        self.parentSpaceId = parentSpaceId
         self.versionOverride = versionOverride
         self.upgradingSubject = CurrentValueSubject(false)
         self.errorSubject = CurrentValueSubject(nil)

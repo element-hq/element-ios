@@ -25,7 +25,7 @@ struct RoomAccessCoordinatorParameters {
     let room: MXRoom
     
     /// ID of the currently selected space. `nil` if home space
-    let parentId: String?
+    let parentSpaceId: String?
     
     /// Set this value to false if you want to avoid room to be upgraded
     let allowsRoomUpgrade: Bool
@@ -34,11 +34,11 @@ struct RoomAccessCoordinatorParameters {
     let navigationRouter: NavigationRouterType
     
     init(room: MXRoom,
-         parentId: String?,
+         parentSpaceId: String?,
          allowsRoomUpgrade: Bool = true,
          navigationRouter: NavigationRouterType? = nil) {
         self.room = room
-        self.parentId = parentId
+        self.parentSpaceId = parentSpaceId
         self.allowsRoomUpgrade = allowsRoomUpgrade
         self.navigationRouter = navigationRouter ?? NavigationRouter(navigationController: RiotNavigationController())
     }

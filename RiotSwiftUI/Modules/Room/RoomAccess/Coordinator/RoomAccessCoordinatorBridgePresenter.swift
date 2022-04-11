@@ -35,7 +35,7 @@ final class RoomAccessCoordinatorBridgePresenter: NSObject {
     // MARK: Private
     
     private let room: MXRoom
-    private let parentId: String?
+    private let parentSpaceId: String?
     private let allowsRoomUpgrade: Bool
     private var coordinator: RoomAccessCoordinator?
     
@@ -46,24 +46,24 @@ final class RoomAccessCoordinatorBridgePresenter: NSObject {
     // MARK: - Setup
     
     init(room: MXRoom,
-         parentId: String?,
+         parentSpaceId: String?,
          allowsRoomUpgrade: Bool) {
         self.room = room
-        self.parentId = parentId
+        self.parentSpaceId = parentSpaceId
         self.allowsRoomUpgrade = allowsRoomUpgrade
         super.init()
     }
     
     convenience init(room: MXRoom,
-                     parentId: String?) {
-        self.init(room: room, parentId: parentId, allowsRoomUpgrade: true)
+                     parentSpaceId: String?) {
+        self.init(room: room, parentSpaceId: parentSpaceId, allowsRoomUpgrade: true)
     }
     
     // MARK: - Public
     
     func present(from viewController: UIViewController, animated: Bool) {
         let navigationRouter = NavigationRouter()
-        let coordinator = RoomAccessCoordinator(parameters: RoomAccessCoordinatorParameters(room: room, parentId: parentId, allowsRoomUpgrade: allowsRoomUpgrade, navigationRouter: navigationRouter))
+        let coordinator = RoomAccessCoordinator(parameters: RoomAccessCoordinatorParameters(room: room, parentSpaceId: parentSpaceId, allowsRoomUpgrade: allowsRoomUpgrade, navigationRouter: navigationRouter))
         coordinator.callback = { [weak self] result in
             guard let self = self else { return }
             

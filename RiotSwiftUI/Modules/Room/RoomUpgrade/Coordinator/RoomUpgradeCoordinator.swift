@@ -20,7 +20,7 @@ import MatrixSDK
 struct RoomUpgradeCoordinatorParameters {
     let session: MXSession
     let roomId: String
-    let parentId: String?
+    let parentSpaceId: String?
     let versionOverride: String
 }
 
@@ -45,7 +45,7 @@ final class RoomUpgradeCoordinator: Coordinator, Presentable {
     @available(iOS 14.0, *)
     init(parameters: RoomUpgradeCoordinatorParameters) {
         self.parameters = parameters
-        let viewModel = RoomUpgradeViewModel.makeRoomUpgradeViewModel(roomUpgradeService: RoomUpgradeService(session: parameters.session, roomId: parameters.roomId, parentId: parameters.parentId, versionOverride: parameters.versionOverride))
+        let viewModel = RoomUpgradeViewModel.makeRoomUpgradeViewModel(roomUpgradeService: RoomUpgradeService(session: parameters.session, roomId: parameters.roomId, parentSpaceId: parameters.parentSpaceId, versionOverride: parameters.versionOverride))
         let view = RoomUpgrade(viewModel: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
         roomUpgradeViewModel = viewModel
