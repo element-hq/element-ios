@@ -74,7 +74,7 @@
 "MSG_FROM_USER_IN_ROOM_TITLE" = "%@ v %@";
 /** General **/
 
-"NOTIFICATION" = "Oznámenia";
+"Notification" = "Oznámenia";
 
 /* New message from a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM" = "%@ napísal v %@";

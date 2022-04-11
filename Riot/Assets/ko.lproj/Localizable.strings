@@ -128,4 +128,4 @@
 "MESSAGE" = "메세지";
 /** General **/
 
-"NOTIFICATION" = "알림";
+"Notification" = "알림";

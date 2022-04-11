@@ -1,5 +1,5 @@
 // 
-// Copyright 2020 New Vector Ltd
+// Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,16 +16,17 @@
 
 import Foundation
 
-struct RoomInfoBasicViewData {
-    let avatarUrl: String?
-    let mediaManager: MXMediaManager?
-    
-    let roomId: String
-    let roomDisplayName: String?
-    let mainRoomAlias: String?
-    let roomTopic: String?
-    let encryptionImage: UIImage?
-    let isEncrypted: Bool
-    let isDirect: Bool
-    let directUserPresence: MXPresence
+@objc enum RecentsDataSourceSectionType: Int {
+    case crossSigningBanner
+    case secureBackupBanner
+    case directory
+    case invites
+    case favorites
+    case people
+    case conversation
+    case lowPriority
+    case serverNotice
+    case suggestedRooms
+    case searchedRoom
+    case unknown
 }
