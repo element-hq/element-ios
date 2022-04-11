@@ -321,7 +321,7 @@
 "device_verification_emoji_key" = "Kľúč";
 "device_verification_emoji_lock" = "Zámka";
 "device_verification_emoji_scissors" = "Nožnice";
-"device_verification_emoji_paperclip" = "Kancelárska spinka";
+"device_verification_emoji_paperclip" = "Kancelárska sponka";
 "device_verification_emoji_pencil" = "Ceruzka";
 "device_verification_emoji_book" = "Kniha";
 "device_verification_emoji_gift" = "Darček";
@@ -1365,7 +1365,7 @@
 "file_upload_error_unsupported_file_type_message" = "Nepodporovaný typ súboru.";
 "key_verification_self_verify_unverified_sessions_alert_message" = "Overte všetky vaše relácie, aby ste si boli istý, že sú vaše správy a účet bezpečné.";
 "sign_out_non_existing_key_backup_alert_title" = "Ak sa teraz odhlásite, prídete o zašifrované správy";
-"device_verification_emoji_thumbs up" = "Palec hore";
+"device_verification_emoji_thumbs up" = "Palec nahor";
 
 // Device
 
