@@ -181,8 +181,8 @@ final class BuildSettings: NSObject {
     #if DEBUG
     /// The configuration to use for analytics during development. Set `isEnabled` to false to disable analytics in debug builds.
     static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: BuildSettings.baseBundleIdentifier.starts(with: "im.vector.app"),
-                                                               host: "https://posthog-poc.lab.element.dev",
-                                                               apiKey: "rs-pJjsYJTuAkXJfhaMmPUNBhWliDyTKLOOxike6ck8",
+                                                               host: "https://posthog.element.dev",
+                                                               apiKey: "phc_VtA1L35nw3aeAtHIx1ayrGdzGkss7k1xINeXcoIQzXN",
                                                                termsURL: URL(string: "https://element.io/cookie-policy")!)
     #else
     /// The configuration to use for analytics. Set `isEnabled` to false to disable analytics.
