@@ -1018,9 +1018,13 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
             return;
         }
         
-        // Accept invitation
+        // Accept invitation and show room
         Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerInvite;
-        [self joinRoom:invitedRoom completion:nil];
+        [self joinRoom:invitedRoom completion:^(BOOL succeed) {
+            if (succeed) {
+                [self showRoomWithRoomId:invitedRoom.roomId inMatrixSession:invitedRoom.mxSession];
+            }
+        }];
     }
     else if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellDeclineButtonPressed])
     {
