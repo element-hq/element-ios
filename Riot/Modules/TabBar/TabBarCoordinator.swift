@@ -315,19 +315,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         
         viewControllers.append(homeViewController)
         
-        if let existingVersionCheckCoordinator = self.versionCheckCoordinator {
-            self.remove(childCoordinator: existingVersionCheckCoordinator)
-        }
-        
-        if let masterTabBarController = self.masterTabBarController {
-            
-            let versionCheckCoordinator = self.createVersionCheckCoordinator(withRootViewController: masterTabBarController, bannerPresentrer: homeViewController)
-            versionCheckCoordinator.start()
-            self.add(childCoordinator: versionCheckCoordinator)
-            
-            self.versionCheckCoordinator = versionCheckCoordinator
-        }
-        
         if RiotSettings.shared.homeScreenShowFavouritesTab {
             let favouritesViewController = self.createFavouritesViewController()
             viewControllers.append(favouritesViewController)
@@ -349,6 +336,16 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         }
         
         tabBarController.updateViewControllers(viewControllers)
+        
+        if let existingVersionCheckCoordinator = self.versionCheckCoordinator {
+            self.remove(childCoordinator: existingVersionCheckCoordinator)
+        }
+        
+        let versionCheckCoordinator = self.createVersionCheckCoordinator(withRootViewController: tabBarController, bannerPresentrer: homeViewController)
+        versionCheckCoordinator.start()
+        self.add(childCoordinator: versionCheckCoordinator)
+        
+        self.versionCheckCoordinator = versionCheckCoordinator
     }
     
     // MARK: Navigation
