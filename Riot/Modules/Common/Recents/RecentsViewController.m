@@ -370,7 +370,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
     if (!self.recentsUpdateEnabled)
     {
-        isRefreshNeeded = NO;
+        isRefreshNeeded = YES;
         return;
     }
     

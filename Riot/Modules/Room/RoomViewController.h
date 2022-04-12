@@ -91,8 +91,6 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
  */
 @property (nonatomic, nullable) NSString *parentSpaceId;
 
-@property (nonatomic, getter=isContextPreview) BOOL contextPeview;
-
 /// Handles all banners that should be displayed at the top of the timeline but that should not scroll with the timeline
 @property (weak, nonatomic, nullable) IBOutlet UIStackView *topBannersStackView;
 
