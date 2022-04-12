@@ -36,11 +36,9 @@ struct LocationSharingView: View {
                 mapView
                 VStack(spacing: 0) {
                     MapCreditsView()
-                    if context.viewState.shareButtonVisible {
-                        buttonsView
-                            .background(theme.colors.background)
-                            .clipShape(RoundedCornerShape(radius: 8, corners: [.topLeft, .topRight]))
-                    }
+                    buttonsView
+                        .background(theme.colors.background)
+                        .clipShape(RoundedCornerShape(radius: 8, corners: [.topLeft, .topRight]))
                 }
             }
             .toolbar {
@@ -53,17 +51,6 @@ struct LocationSharingView: View {
                     Text(VectorL10n.locationSharingTitle)
                         .font(.headline)
                         .foregroundColor(theme.colors.primaryContent)
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    if context.viewState.displayExistingLocation {
-                        Button {
-                            context.send(viewAction: .share)
-                        } label: {
-                            Image(uiImage: Asset.Images.locationShareIcon.image)
-                                .accessibilityIdentifier("LocationSharingView.shareButton")
-                        }
-                        .disabled(!context.viewState.shareButtonEnabled)
-                    }
                 }
             }
             .navigationBarTitleDisplayMode(.inline)

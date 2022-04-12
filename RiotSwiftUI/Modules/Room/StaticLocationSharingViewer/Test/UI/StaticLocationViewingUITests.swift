@@ -18,8 +18,8 @@ import XCTest
 import RiotSwiftUI
 
 @available(iOS 14.0, *)
-class LocationSharingUITests: XCTestCase {
-    
+class StaticLocationViewingUITests: MockScreenTest {
+
     private var app: XCUIApplication!
     
     override func setUp() {
@@ -29,16 +29,11 @@ class LocationSharingUITests: XCTestCase {
         app.launch()
     }
     
-    func testInitialUserLocation() {
-        goToScreenWithIdentifier(MockLocationSharingScreenState.shareUserLocation.title)
+    func testInitialExistingLocation() {
+        goToScreenWithIdentifier(MockStaticLocationViewingScreenState.showUserLocation.title)
         
         XCTAssertTrue(app.buttons["Cancel"].exists)
+        XCTAssertTrue(app.buttons["StaticLocationView.shareButton"].exists)
         XCTAssertTrue(app.otherElements["Map"].exists)
-    }
-    
-    // Need a delay when showing the map otherwise the simulator breaks
-    private func goToScreenWithIdentifier(_ identifier: String) {
-        app.goToScreenWithIdentifier(identifier)
-        sleep(2)
     }
 }

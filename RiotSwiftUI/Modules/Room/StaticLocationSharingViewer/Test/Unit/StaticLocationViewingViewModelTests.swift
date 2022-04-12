@@ -1,4 +1,4 @@
-//
+// 
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,8 +21,8 @@ import CoreLocation
 @testable import RiotSwiftUI
 
 @available(iOS 14.0, *)
-class LocationSharingViewModelTests: XCTestCase {
-    
+class StaticLocationViewingViewModelTests: XCTestCase {
+
     var cancellables = Set<AnyCancellable>()
     
     func testInitialState() {
@@ -34,7 +34,6 @@ class LocationSharingViewModelTests: XCTestCase {
         XCTAssertNotNil(viewModel.context.viewState.mapStyleURL)
         XCTAssertNotNil(viewModel.context.viewState.userAvatarData)
         
-        XCTAssertNil(viewModel.context.viewState.bindings.userLocation)
         XCTAssertNil(viewModel.context.viewState.bindings.alertInfo)
     }
     
@@ -47,54 +46,45 @@ class LocationSharingViewModelTests: XCTestCase {
             switch result {
             case .share:
                 XCTFail()
-            case .cancel:
+            case .close:
                 expectation.fulfill()
-            case .shareLiveLocation(timeout: let timeout):
-                XCTFail()
             }
         }
         
-        viewModel.context.send(viewAction: .cancel)
+        viewModel.context.send(viewAction: .close)
         
         waitForExpectations(timeout: 3)
     }
     
-    func testShareNoUserLocation() {
+    func testShareExistingLocation() {
         let viewModel = buildViewModel()
         
-        XCTAssertNil(viewModel.context.viewState.bindings.userLocation)
+        let expectation = self.expectation(description: "Share completion should be invoked")
+        
+        viewModel.completion = { result in
+            switch result {
+            case .share(let coordinate):
+                XCTAssertEqual(coordinate.latitude, viewModel.context.viewState.sharedAnnotation.coordinate.latitude)
+                XCTAssertEqual(coordinate.longitude, viewModel.context.viewState.sharedAnnotation.coordinate.longitude)
+                expectation.fulfill()
+            case .close:
+                XCTFail()
+            }
+        }
+        
+        XCTAssertNotNil(viewModel.context.viewState.sharedAnnotation)
         
         viewModel.context.send(viewAction: .share)
         
-        XCTAssertNotNil(viewModel.context.viewState.bindings.alertInfo)
-        XCTAssertEqual(viewModel.context.viewState.bindings.alertInfo?.id, .userLocatingError)
+        XCTAssertNil(viewModel.context.viewState.bindings.alertInfo)
+        
+        waitForExpectations(timeout: 3)
     }
     
-    func testLoading() {
-        let viewModel = buildViewModel()
-        
-        viewModel.startLoading()
-        
-        XCTAssertFalse(viewModel.context.viewState.shareButtonEnabled)
-        XCTAssertTrue(viewModel.context.viewState.showLoadingIndicator)
-        
-        viewModel.stopLoading()
-        
-        XCTAssertTrue(viewModel.context.viewState.shareButtonEnabled)
-        XCTAssertFalse(viewModel.context.viewState.showLoadingIndicator)
-    }
-    
-    func testInvalidLocationAuthorization() {
-        let viewModel = buildViewModel()
-        
-        viewModel.context.viewState.errorSubject.send(.invalidLocationAuthorization)
-        
-        XCTAssertNotNil(viewModel.context.alertInfo)
-        XCTAssertEqual(viewModel.context.viewState.bindings.alertInfo?.id, .authorizationError)
-    }
-    
-    private func buildViewModel() -> LocationSharingViewModel {
-        LocationSharingViewModel(mapStyleURL: URL(string: "http://empty.com")!,
-                                 avatarData: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: ""))
+    private func buildViewModel() -> StaticLocationViewingViewModel {
+        StaticLocationViewingViewModel(mapStyleURL: URL(string: "http://empty.com")!,
+                                       avatarData: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: ""),
+                                       location: CLLocationCoordinate2D(latitude: 51.4932641, longitude: -0.257096),
+                                       coordinateType: .user)
     }
 }

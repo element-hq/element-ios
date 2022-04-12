@@ -23,8 +23,6 @@ struct LocationSharingCoordinatorParameters {
     let roomDataSource: MXKRoomDataSource
     let mediaManager: MXMediaManager
     let avatarData: AvatarInputProtocol
-    let location: CLLocationCoordinate2D?
-    let coordinateType: MXEventAssetType
 }
 
 // Map between type from MatrixSDK and type from SwiftUI target, as we don't want
@@ -79,16 +77,8 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
     init(parameters: LocationSharingCoordinatorParameters) {
         self.parameters = parameters
         
-        // TODO: Make this check before creating LocationSharingCoordinator
-        // Use LocationSharingCoordinateType in parameters
-        guard let locationSharingCoordinatetype = parameters.coordinateType.locationSharingCoordinateType() else {
-            fatalError("[LocationSharingCoordinator] event asset type is not supported: \(parameters.coordinateType)")
-        }
-        
         let viewModel = LocationSharingViewModel(mapStyleURL: BuildSettings.tileServerMapStyleURL,
                                                  avatarData: parameters.avatarData,
-                                                 location: parameters.location,
-                                                 coordinateType: locationSharingCoordinatetype,
                                                  isLiveLocationSharingEnabled: BuildSettings.liveLocationSharingEnabled)
         let view = LocationSharingView(context: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
@@ -111,14 +101,7 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
             case .cancel:
                 self.completion?()
             case .share(let latitude, let longitude, let coordinateType):
-                
-                // Show share sheet on existing location display
-                if let location = self.parameters.location {
-                    self.presentShareLocationActivity(with: location)
-                } else {
-                    self.shareStaticLocation(latitude: latitude, longitude: longitude, coordinateType: coordinateType)
-                }
-                
+                self.shareStaticLocation(latitude: latitude, longitude: longitude, coordinateType: coordinateType)
             case .shareLiveLocation(let timeout):
                 self.startLiveLocationSharing(with: timeout)
             }
