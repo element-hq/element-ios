@@ -21,12 +21,12 @@ import CoreLocation
 // MARK: View model
 
 enum StaticLocationViewingViewAction {
-    case cancel
+    case close
     case share
 }
 
 enum StaticLocationViewingViewModelResult {
-    case cancel
+    case close
     case share(_ coordinate: CLLocationCoordinate2D)
 }
 

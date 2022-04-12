@@ -63,8 +63,8 @@ class StaticLocationViewingViewModel: StaticLocationViewingViewModelType, Static
 
     override func process(viewAction: StaticLocationViewingViewAction) {
         switch viewAction {
-        case .cancel:
-            completion?(.cancel)
+        case .close:
+            completion?(.close)
         case .share:
             completion?(.share(state.sharedAnnotation.coordinate))
         }
@@ -78,7 +78,7 @@ class StaticLocationViewingViewModel: StaticLocationViewingViewModelType, Static
         }
         
         let alertInfo = mapViewErrorAlertInfoBuilder.build(with: error) { [weak self] in
-            self?.completion?(.cancel)
+            self?.completion?(.close)
         }
         
         state.bindings.alertInfo = alertInfo

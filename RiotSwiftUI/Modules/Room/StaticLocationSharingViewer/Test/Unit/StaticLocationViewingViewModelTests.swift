@@ -46,12 +46,12 @@ class StaticLocationViewingViewModelTests: XCTestCase {
             switch result {
             case .share:
                 XCTFail()
-            case .cancel:
+            case .close:
                 expectation.fulfill()
             }
         }
         
-        viewModel.context.send(viewAction: .cancel)
+        viewModel.context.send(viewAction: .close)
         
         waitForExpectations(timeout: 3)
     }
@@ -67,7 +67,7 @@ class StaticLocationViewingViewModelTests: XCTestCase {
                 XCTAssertEqual(coordinate.latitude, viewModel.context.viewState.sharedAnnotation.coordinate.latitude)
                 XCTAssertEqual(coordinate.longitude, viewModel.context.viewState.sharedAnnotation.coordinate.longitude)
                 expectation.fulfill()
-            case .cancel:
+            case .close:
                 XCTFail()
             }
         }

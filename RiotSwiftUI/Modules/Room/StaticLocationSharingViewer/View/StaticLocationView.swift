@@ -48,7 +48,7 @@ struct StaticLocationView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(VectorL10n.cancel, action: {
-                        viewModel.send(viewAction: .cancel)
+                        viewModel.send(viewAction: .close)
                     })
                 }
                 ToolbarItem(placement: .principal) {

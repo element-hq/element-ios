@@ -67,7 +67,7 @@ final class StaticLocationViewingCoordinator: Coordinator, Presentable {
             guard let self = self else { return }
             MXLog.debug("[StaticLocationSharingViewerCoordinator] StaticLocationSharingViewerViewModel did complete with result: \(result).")
             switch result {
-            case .cancel:
+            case .close:
                 self.completion?()
             case .share(let coordinate):
                 self.presentLocationActivityController(with: coordinate)
