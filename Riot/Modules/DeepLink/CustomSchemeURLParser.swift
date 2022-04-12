@@ -43,6 +43,12 @@ class CustomSchemeURLParser {
             } else {
                 throw CustomSchemeURLParserError.invalidParameters
             }
+        case CustomSchemeURLConstants.Hosts.customServer:
+            if let deepLinkOpt = self.buildDeepLinkCustomServer(from: urlComponents) {
+                deepLinkOption = deepLinkOpt
+            } else {
+                throw CustomSchemeURLParserError.invalidParameters
+            }
         default:
             throw CustomSchemeURLParserError.unknownHost
         }
@@ -64,5 +70,23 @@ class CustomSchemeURLParser {
         }
         
         return DeepLinkOption.connect(loginToken, txnId)
+    }
+    
+    private func buildDeepLinkCustomServer(from urlComponents: URLComponents) -> DeepLinkOption? {
+        guard let queryItems = urlComponents.queryItems, queryItems.isEmpty == false else {
+            return nil
+        }
+        
+        guard let customServerUrl = urlComponents.vc_getQueryItemValue(for: CustomSchemeURLConstants.Parameters.customServerUrl) else {
+            return nil
+        }
+
+        var autoSignIn=false
+        if let autoSignInValue = urlComponents.vc_getQueryItemValue(for: CustomSchemeURLConstants.Parameters.autoSignIn) {
+            autoSignIn=(autoSignInValue=="yes")
+        }
+        
+
+        return DeepLinkOption.customServer(customServerUrl, autoSignIn: autoSignIn)
     }
 }

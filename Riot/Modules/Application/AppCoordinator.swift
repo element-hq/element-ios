@@ -188,6 +188,10 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         switch deepLinkOption {
         case .connect(let loginToken, let transactionId):
             canOpenLink = self.legacyAppDelegate.continueSSOLogin(withToken: loginToken, txnId: transactionId)
+        case .customServer(let customServerUrl, let autoSignIn):
+            MXLog.debug("TODO handle url: \(customServerUrl)")
+            MXLog.debug("TODO handle auto sign in: \(autoSignIn ? "yes":"no")")
+            canOpenLink = false
         }
         
         return canOpenLink
