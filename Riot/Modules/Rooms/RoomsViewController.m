@@ -72,7 +72,16 @@
     {
         // Take the lead on the shared data source.
         recentsDataSource = (RecentsDataSource*)self.dataSource;
-        [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeRooms];
+        
+        if (recentsDataSource.recentsDataSourceMode != RecentsDataSourceModeRooms)
+        {
+            // Take the lead on the shared data source.
+            [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeRooms];
+            
+            // Reset filtering on the shared data source when switching tabs
+            [recentsDataSource searchWithPatterns:nil];
+            [self.recentsSearchBar setText:nil];
+        }
     }
 }
 
