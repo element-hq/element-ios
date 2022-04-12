@@ -21,7 +21,7 @@ import CoreLocation
 /// Using an enum for the screen allows you define the different state cases with
 /// the relevant associated data for each case.
 @available(iOS 14.0, *)
-enum MockStaticLocationSharingViewerScreenState: MockScreenState, CaseIterable {
+enum MockStaticLocationViewingScreenState: MockScreenState, CaseIterable {
     // A case for each state you want to represent
     // with specific, minimal associated data that will allow you
     // mock that screen.
@@ -30,11 +30,11 @@ enum MockStaticLocationSharingViewerScreenState: MockScreenState, CaseIterable {
     
     /// The associated screen
     var screenType: Any.Type {
-        StaticLocationSharingViewer.self
+        StaticLocationView.self
     }
     
     /// A list of screen state definitions
-    static var allCases: [MockStaticLocationSharingViewerScreenState] {
+    static var allCases: [MockStaticLocationViewingScreenState] {
         return [.showUserLocation, .showPinLocation]
     }
     
@@ -44,13 +44,13 @@ enum MockStaticLocationSharingViewerScreenState: MockScreenState, CaseIterable {
         let coordinateType: LocationSharingCoordinateType = self == .showUserLocation ? .user : .pin
         
         let mapStyleURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx")!
-        let viewModel = StaticLocationSharingViewerViewModel(mapStyleURL: mapStyleURL,
-                                                             avatarData: AvatarInput(mxContentUri: "", matrixItemId: "alice:matrix.org", displayName: "Alice"),
-                                                             location: location,
-                                                             coordinateType: coordinateType)
+        let viewModel = StaticLocationViewingViewModel(mapStyleURL: mapStyleURL,
+                                                       avatarData: AvatarInput(mxContentUri: "", matrixItemId: "alice:matrix.org", displayName: "Alice"),
+                                                       location: location,
+                                                       coordinateType: coordinateType)
         
         return ([viewModel],
-                AnyView(StaticLocationSharingViewer(viewModel: viewModel.context)
+                AnyView(StaticLocationView(viewModel: viewModel.context)
                             .addDependency(MockAvatarService.example))
         )
     }

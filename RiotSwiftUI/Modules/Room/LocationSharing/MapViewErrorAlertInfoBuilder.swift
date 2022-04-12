@@ -18,7 +18,7 @@ import Foundation
 
 struct MapViewErrorAlertInfoBuilder {
     
-    func build(with error: LocationSharingViewError, primaryButtonCompletion: (() -> Void)?) -> AlertInfo<LocationSharingAlertType>? {
+    func build(with error: LocationSharingViewError, dimissalCallback: (() -> Void)?) -> AlertInfo<LocationSharingAlertType>? {
         
         let alertInfo: AlertInfo<LocationSharingAlertType>?
         
@@ -26,16 +26,20 @@ struct MapViewErrorAlertInfoBuilder {
         case .failedLoadingMap:
             alertInfo = AlertInfo(id: .mapLoadingError,
                                                  title: VectorL10n.locationSharingLoadingMapErrorTitle(AppInfo.current.displayName),
-                                                 primaryButton: (VectorL10n.ok, primaryButtonCompletion))
+                                                 primaryButton: (VectorL10n.ok, dimissalCallback))
         case .failedLocatingUser:
             alertInfo = AlertInfo(id: .userLocatingError,
                                                  title: VectorL10n.locationSharingLocatingUserErrorTitle(AppInfo.current.displayName),
-                                                 primaryButton: (VectorL10n.ok, primaryButtonCompletion))
+                                                 primaryButton: (VectorL10n.ok, dimissalCallback))
         case .invalidLocationAuthorization:
             alertInfo = AlertInfo(id: .authorizationError,
                                                  title: VectorL10n.locationSharingInvalidAuthorizationErrorTitle(AppInfo.current.displayName),
-                                                 primaryButton: (VectorL10n.locationSharingInvalidAuthorizationNotNow, primaryButtonCompletion),
-                                                 secondaryButton: (VectorL10n.locationSharingInvalidAuthorizationSettings, primaryButtonCompletion))
+                                                 primaryButton: (VectorL10n.locationSharingInvalidAuthorizationNotNow, dimissalCallback),
+                                                 secondaryButton: (VectorL10n.locationSharingInvalidAuthorizationSettings, {
+                if let applicationSettingsURL = URL(string:UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(applicationSettingsURL)
+                }
+            }))
         default:
             alertInfo = nil
         }

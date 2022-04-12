@@ -20,12 +20,12 @@ import CoreLocation
 
 // MARK: View model
 
-enum StaticLocationSharingViewerViewAction {
+enum StaticLocationViewingViewAction {
     case cancel
     case share
 }
 
-enum StaticLocationSharingViewerViewModelResult {
+enum StaticLocationViewingViewModelResult {
     case cancel
     case share(_ coordinate: CLLocationCoordinate2D)
 }
@@ -33,7 +33,7 @@ enum StaticLocationSharingViewerViewModelResult {
 // MARK: View
 
 @available(iOS 14, *)
-struct StaticLocationSharingViewerViewState: BindableState {
+struct StaticLocationViewingViewState: BindableState {
     
     /// Map style URL
     let mapStyleURL: URL
@@ -52,9 +52,9 @@ struct StaticLocationSharingViewerViewState: BindableState {
 
     let errorSubject = PassthroughSubject<LocationSharingViewError, Never>()
     
-    var bindings = StaticLocationSharingViewerViewBindings()
+    var bindings = StaticLocationViewingViewBindings()
 }
 
-struct StaticLocationSharingViewerViewBindings {
+struct StaticLocationViewingViewBindings {
     var alertInfo: AlertInfo<LocationSharingAlertType>?
 }

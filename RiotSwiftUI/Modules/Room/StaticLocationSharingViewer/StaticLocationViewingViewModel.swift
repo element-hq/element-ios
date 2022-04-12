@@ -18,11 +18,11 @@ import SwiftUI
 import CoreLocation
 
 @available(iOS 14, *)
-typealias StaticLocationSharingViewerViewModelType = StateStoreViewModel<StaticLocationSharingViewerViewState,
+typealias StaticLocationViewingViewModelType = StateStoreViewModel<StaticLocationViewingViewState,
                                                                   Never,
-                                                                  StaticLocationSharingViewerViewAction>
+                                                                   StaticLocationViewingViewAction>
 @available(iOS 14, *)
-class StaticLocationSharingViewerViewModel: StaticLocationSharingViewerViewModelType, StaticLocationSharingViewerViewModelProtocol {
+class StaticLocationViewingViewModel: StaticLocationViewingViewModelType, StaticLocationViewingViewModelProtocol {
 
     // MARK: - Properties
 
@@ -31,11 +31,11 @@ class StaticLocationSharingViewerViewModel: StaticLocationSharingViewerViewModel
     private var mapViewErrorAlertInfoBuilder: MapViewErrorAlertInfoBuilder
 
     // MARK: Public
-
-    var completion: ((StaticLocationSharingViewerViewModelResult) -> Void)?
-
+    
+    var completion: ((StaticLocationViewingViewModelResult) -> Void)?
+    
     // MARK: - Setup
-
+    
     init(mapStyleURL: URL, avatarData: AvatarInputProtocol, location: CLLocationCoordinate2D, coordinateType: LocationSharingCoordinateType) {
         let sharedAnnotation: LocationAnnotation
         switch coordinateType {
@@ -45,9 +45,9 @@ class StaticLocationSharingViewerViewModel: StaticLocationSharingViewerViewModel
             sharedAnnotation = PinLocationAnnotation(coordinate: location)
         }
         
-        let viewState = StaticLocationSharingViewerViewState(mapStyleURL: mapStyleURL,
-                                                             userAvatarData: avatarData,
-                                                             sharedAnnotation: sharedAnnotation)
+        let viewState = StaticLocationViewingViewState(mapStyleURL: mapStyleURL,
+                                                       userAvatarData: avatarData,
+                                                       sharedAnnotation: sharedAnnotation)
         
         mapViewErrorAlertInfoBuilder = MapViewErrorAlertInfoBuilder()
         
@@ -61,7 +61,7 @@ class StaticLocationSharingViewerViewModel: StaticLocationSharingViewerViewModel
 
     // MARK: - Public
 
-    override func process(viewAction: StaticLocationSharingViewerViewAction) {
+    override func process(viewAction: StaticLocationViewingViewAction) {
         switch viewAction {
         case .cancel:
             completion?(.cancel)
@@ -78,17 +78,7 @@ class StaticLocationSharingViewerViewModel: StaticLocationSharingViewerViewModel
         }
         
         let alertInfo = mapViewErrorAlertInfoBuilder.build(with: error) { [weak self] in
-         
-            switch error {
-            case .invalidLocationAuthorization:
-                if let applicationSettingsURL = URL(string:UIApplication.openSettingsURLString) {
-                    UIApplication.shared.open(applicationSettingsURL)
-                } else {
-                    self?.completion?(.cancel)
-                }
-            default:
-                self?.completion?(.cancel)
-            }
+            self?.completion?(.cancel)
         }
         
         state.bindings.alertInfo = alertInfo

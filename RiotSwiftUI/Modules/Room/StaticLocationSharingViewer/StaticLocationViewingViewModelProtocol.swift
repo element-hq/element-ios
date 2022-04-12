@@ -16,9 +16,9 @@
 
 import Foundation
 
-protocol StaticLocationSharingViewerViewModelProtocol {
+protocol StaticLocationViewingViewModelProtocol {
     
-    var completion: ((StaticLocationSharingViewerViewModelResult) -> Void)? { get set }
+    var completion: ((StaticLocationViewingViewModelResult) -> Void)? { get set }
     @available(iOS 14, *)
-    var context: StaticLocationSharingViewerViewModelType.Context { get }
+    var context: StaticLocationViewingViewModelType.Context { get }
 }

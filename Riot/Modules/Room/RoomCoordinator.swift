@@ -271,15 +271,14 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
             fatalError("[LocationSharingCoordinator] event asset type is not supported: \(coordinateType)")
         }
         
-        let parameters = StaticLocationSharingViewerCoordinatorParameters(roomDataSource: roomViewController.roomDataSource,
-                                                                          mediaManager: mediaManager,
-                                                                          avatarData: avatarData,
-                                                                          location: location,
-                                                                          coordinateType: locationSharingCoordinatetype)
+        let parameters = StaticLocationViewingCoordinatorParameters(mediaManager: mediaManager,
+                                                                    avatarData: avatarData,
+                                                                    location: location,
+                                                                    coordinateType: locationSharingCoordinatetype)
         
-        let coordinator = StaticLocationSharingViewerCoordinator(parameters: parameters)
+        let coordinator = StaticLocationViewingCoordinator(parameters: parameters)
         
-            coordinator.completion = { [weak self, weak coordinator] in
+        coordinator.completion = { [weak self, weak coordinator] in
             guard let self = self, let coordinator = coordinator else {
                 return
             }

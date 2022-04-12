@@ -17,7 +17,7 @@
 import SwiftUI
 
 @available(iOS 14.0, *)
-struct StaticLocationSharingViewer: View {
+struct StaticLocationView: View {
 
     // MARK: - Properties
     
@@ -27,7 +27,7 @@ struct StaticLocationSharingViewer: View {
     
     // MARK: Public
     
-    @ObservedObject var viewModel: StaticLocationSharingViewerViewModel.Context
+    @ObservedObject var viewModel: StaticLocationViewingViewModel.Context
     
     // MARK: Views
     
@@ -44,6 +44,7 @@ struct StaticLocationSharingViewer: View {
                                        errorSubject: viewModel.viewState.errorSubject)
                 MapCreditsView()
             }
+            .ignoresSafeArea(.all, edges: [.bottom])
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(VectorL10n.cancel, action: {
@@ -90,7 +91,7 @@ struct StaticLocationSharingViewer: View {
 
 @available(iOS 14.0, *)
 struct StaticLocationSharingViewer_Previews: PreviewProvider {
-    static let stateRenderer = MockStaticLocationSharingViewerScreenState.stateRenderer
+    static let stateRenderer = MockStaticLocationViewingScreenState.stateRenderer
     static var previews: some View {
         stateRenderer.screenGroup()
     }

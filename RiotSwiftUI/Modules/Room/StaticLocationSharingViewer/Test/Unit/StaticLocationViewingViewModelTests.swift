@@ -21,7 +21,7 @@ import CoreLocation
 @testable import RiotSwiftUI
 
 @available(iOS 14.0, *)
-class StaticLocationSharingViewerViewModelTests: XCTestCase {
+class StaticLocationViewingViewModelTests: XCTestCase {
 
     var cancellables = Set<AnyCancellable>()
     
@@ -81,10 +81,10 @@ class StaticLocationSharingViewerViewModelTests: XCTestCase {
         waitForExpectations(timeout: 3)
     }
     
-    private func buildViewModel() -> StaticLocationSharingViewerViewModel {
-        StaticLocationSharingViewerViewModel(mapStyleURL: URL(string: "http://empty.com")!,
-                                             avatarData: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: ""),
-                                             location: CLLocationCoordinate2D(latitude: 51.4932641, longitude: -0.257096),
-                                             coordinateType: .user)
+    private func buildViewModel() -> StaticLocationViewingViewModel {
+        StaticLocationViewingViewModel(mapStyleURL: URL(string: "http://empty.com")!,
+                                       avatarData: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: ""),
+                                       location: CLLocationCoordinate2D(latitude: 51.4932641, longitude: -0.257096),
+                                       coordinateType: .user)
     }
 }
