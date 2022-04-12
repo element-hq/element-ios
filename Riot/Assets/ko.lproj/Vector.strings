@@ -1071,7 +1071,7 @@
 
 // AuthenticatedSessionViewControllerFactory
 "authenticated_session_flow_not_supported" = "이 앱은 해당 홈서버의 인증 구조를 지원하지 않습니다.";
-"security_settings_user_password_description" = "신원을 확인하기 위해 계정 비밀번호를 입력해주세요.";
+"security_settings_user_password_description" = "신원을 확인하기 위해 계정 비밀번호를 입력해주세요";
 "event_formatter_widget_removed_by_you" = "위젯을 제거함 : %@";
 
 // Events formatter with you
@@ -1620,3 +1620,26 @@
 // Activities
 "loading" = "로딩 중";
 "edit" = "편집";
+"room_access_settings_screen_setting_room_access" = "방 접근 설정";
+"room_access_settings_screen_upgrade_alert_upgrading" = "방 업그레이드 중";
+"room_access_settings_screen_upgrade_alert_upgrade_button" = "업그레이드";
+"room_access_settings_screen_upgrade_alert_auto_invite_switch" = "새로운 방에 자동으로 친구 초대";
+"room_access_settings_screen_upgrade_alert_message" = "스페이스에 있는 친구는 언제든지 이 방을 찾고 들어올 수 있습니다 - 모두 수동으로 초대하지 않아도 됩니다. 방 설정에서 언제든지 변경할 수 있습니다.\n\n업그레이드하면 새로운 버전의 방이 생성됩니다. 모든 메시지는 기존에 사용하던 방에 모두 보관됩니다.";
+"room_access_settings_screen_upgrade_alert_title" = "방 업그레이드";
+"room_access_settings_screen_private_message" = "초대한 친구만 이 방을 찾고 들어올 수 있습니다.";
+"room_access_settings_screen_restricted_message" = "스페이스에 있는 누구나 이 방을 찾고 들어올 수 있습니다.\n적용 시 어떤 스페이스인지 확인하는 메시지가 표시됩니다.";
+"room_access_settings_screen_public_message" = "누구나 이 방을 찾고 들어올 수 있습니다.";
+"room_access_settings_screen_edit_spaces" = "스페이스 수정";
+"room_access_settings_screen_upgrade_required" = "업그레이드 필요";
+"room_access_settings_screen_message" = "%@을(를) 찾고 들어올 수 있는 친구를 정할 수 있습니다.";
+"room_access_settings_screen_title" = "누가 이 방에 접근할 수 있나요?";
+
+// Room Access Settings
+"room_access_settings_screen_nav_title" = "방 접근";
+"room_details_promote_room_suggest_title" = "스페이스 멤버에게 제안하기";
+"room_details_promote_room_title" = "방 홍보하기";
+"room_details_access_row_title" = "접근";
+"security_settings_coming_soon" = "죄송합니다. 이 작업 %@은 Element iOS에서 사용할 수 없습니다. 다른 Matrix 클라이언트에서 설정해주세요. Element iOS에서 설정은 그대로 유지됩니다.";
+"room_preview_decline_invitation_options" = "초대를 거부하거나 친구를 차단하시겠습니까?";
+"threads_beta_information_link" = "더 알아보기";
+"threads_beta_title" = "스레드";
