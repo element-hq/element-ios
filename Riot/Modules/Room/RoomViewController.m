@@ -3647,7 +3647,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                     activityViewController = [self.delegate roomViewController:self locationShareActivityViewControllerForEvent:selectedEvent];
                 }
                 
-                if (activityViewController == nil) {
+                if (activityViewController == nil && selectedComponent.textMessage) {
                     NSArray *activityItems = @[selectedComponent.textMessage];
                     activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
                 }
