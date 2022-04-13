@@ -55,6 +55,9 @@ struct RoomCoordinatorParameters {
     /// If `true`, the room settings screen will be initially displayed. Default `false`
     let showSettingsInitially: Bool
     
+    /// If `true`, the invited room is automatically joined.
+    let autoJoinInvitedRoom: Bool
+    
     // MARK: - Setup
     
     private init(navigationRouter: NavigationRouterType?,
@@ -67,7 +70,8 @@ struct RoomCoordinatorParameters {
                  threadId: String?,
                  displayConfiguration: RoomDisplayConfiguration,
                  previewData: RoomPreviewData?,
-                 showSettingsInitially: Bool) {
+                 showSettingsInitially: Bool,
+                 autoJoinInvitedRoom: Bool) {
         self.navigationRouter = navigationRouter
         self.navigationRouterStore = navigationRouterStore
         self.userIndicatorPresenter = userIndicatorPresenter
@@ -79,6 +83,7 @@ struct RoomCoordinatorParameters {
         self.displayConfiguration = displayConfiguration
         self.previewData = previewData
         self.showSettingsInitially = showSettingsInitially
+        self.autoJoinInvitedRoom = autoJoinInvitedRoom
     }
     
     /// Init to present a joined room
@@ -91,7 +96,8 @@ struct RoomCoordinatorParameters {
          eventId: String? = nil,
          threadId: String? = nil,
          showSettingsInitially: Bool,
-         displayConfiguration: RoomDisplayConfiguration = .default) {
+         displayConfiguration: RoomDisplayConfiguration = .default,
+         autoJoinInvitedRoom: Bool = false) {
         
         self.init(navigationRouter: navigationRouter,
                   navigationRouterStore: navigationRouterStore,
@@ -103,7 +109,8 @@ struct RoomCoordinatorParameters {
                   threadId: threadId,
                   displayConfiguration: displayConfiguration,
                   previewData: nil,
-                  showSettingsInitially: showSettingsInitially)
+                  showSettingsInitially: showSettingsInitially,
+                  autoJoinInvitedRoom: autoJoinInvitedRoom)
     }
     
     /// Init to present a room preview
@@ -123,6 +130,7 @@ struct RoomCoordinatorParameters {
                   threadId: nil,
                   displayConfiguration: .default,
                   previewData: previewData,
-                  showSettingsInitially: false)
+                  showSettingsInitially: false,
+                  autoJoinInvitedRoom: false)
     }
 }

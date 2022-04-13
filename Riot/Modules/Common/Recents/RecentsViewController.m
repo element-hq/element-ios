@@ -896,6 +896,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)showRoomWithRoomId:(NSString*)roomId inMatrixSession:(MXSession*)matrixSession
 {
+    [self showRoomWithRoomId:roomId andAutoJoinInvitedRoom:false inMatrixSession:matrixSession];
+}
+
+- (void)showRoomWithRoomId:(NSString*)roomId andAutoJoinInvitedRoom:(BOOL)autoJoinInvitedRoom inMatrixSession:(MXSession*)matrixSession
+{
     MXRoom *room = [matrixSession roomWithRoomId:roomId];
     if (room.summary.membership == MXMembershipInvite)
     {
@@ -912,7 +917,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                                     eventId:nil
                                                                                   mxSession:matrixSession
                                                                            threadParameters:nil
-                                                                     presentationParameters:presentationParameters];
+                                                                     presentationParameters:presentationParameters
+                                                                        autoJoinInvitedRoom:autoJoinInvitedRoom];
     
     [[AppDelegate theDelegate] showRoomWithParameters:parameters completion:^{
         self.userInteractionEnabled = YES;
@@ -1018,13 +1024,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
             return;
         }
         
-        // Accept invitation and show room
+        // Accept invitation and display the room
         Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerInvite;
-        [self joinRoom:invitedRoom completion:^(BOOL succeed) {
-            if (succeed) {
-                [self showRoomWithRoomId:invitedRoom.roomId inMatrixSession:invitedRoom.mxSession];
-            }
-        }];
+        [self showRoomWithRoomId:invitedRoom.roomId andAutoJoinInvitedRoom:true inMatrixSession:invitedRoom.mxSession];
     }
     else if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellDeclineButtonPressed])
     {
