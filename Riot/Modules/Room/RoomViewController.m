@@ -5569,6 +5569,15 @@ static CGSize kThreadListBarButtonItemImageSize;
                 continueBlock(threadDataSource, YES);
             }];
         }
+        else if (self.isContextPreview)
+        {
+            [RoomPreviewDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
+                                               andMatrixSession:self.mainSession
+                                                     onComplete:^(RoomPreviewDataSource *roomDataSource)
+             {
+                continueBlock(roomDataSource, YES);
+            }];
+        }
         else
         {
             // Switch back to the room live timeline managed by MXKRoomDataSourceManager

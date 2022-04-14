@@ -2368,6 +2368,12 @@
 
 - (void)updateCurrentEventIdAtTableBottom:(BOOL)acknowledge
 {
+    // Do not update events if the controller is used as context menu preview.
+    if (self.isContextPreview)
+    {
+        return;
+    }
+    
     // Update the identifier of the event displayed at the bottom of the table, except if a rotation or other size transition is in progress.
     if (!isSizeTransitionInProgress && !self.isBubbleTableViewDisplayInTransition)
     {
