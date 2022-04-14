@@ -20,6 +20,28 @@
 
 "image_picker_action_files" = "Choose from files";
 
+// MARK: Onboarding Authentication WIP
+"authentication_registration_title" = "Create your account";
+"authentication_registration_message" = "We’ll need some info to get you set up.";
+"authentication_registration_server_title" = "Choose your server to store your data";
+"authentication_registration_matrix_description" = "Join millions for free on the largest public server";
+"authentication_registration_username" = "Username";
+"authentication_registration_password" = "Password";
+"authentication_registration_username_footer" = "You can’t change this later";
+"authentication_registration_password_footer" = "Must be 8 characters or more";
+
+"authentication_server_selection_title" = "Choose your server";
+"authentication_server_selection_message" = "What is the address of your server? A server is like a home for all your data.";
+"authentication_server_selection_server_url" = "Server URL";
+"authentication_server_selection_server_footer" = "You can only connect to a server that has already been set up";
+"authentication_server_selection_ems_title" = "Want to host your own server?";
+/* This string will be followed by authentication_server_selection_ems_link on the next line. */
+"authentication_server_selection_ems_message" = "Element Matrix Services (EMS) is a robust and reliable hosting service for fast, secure real time communication. Find out how on";
+"authentication_server_selection_ems_link" = "element.io/ems";
+"authentication_server_selection_ems_button" = "Get in touch";
+"authentication_server_selection_generic_error" = "Cannot find a server at this URL, please check it is correct.";
+
+// MARK: Spaces WIP
 "spaces_feature_not_available" = "This feature isn't available here. For now, you can do this with %@ on your computer.";
 
 "leave_space_action" = "Leave space";

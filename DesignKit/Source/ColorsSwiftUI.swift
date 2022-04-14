@@ -47,6 +47,10 @@ public struct ColorSwiftUI: Colors {
     
     public let background: Color
     
+    public var white: Color
+    
+    public var ems: Color
+    
     public let namesAndAvatars: [Color]
     
     init(values: ColorValues) {
@@ -62,6 +66,8 @@ public struct ColorSwiftUI: Colors {
         tile = Color(values.tile)
         navigation = Color(values.navigation)
         background = Color(values.background)
+        white = Color(values.white)
+        ems = Color(values.ems)
         namesAndAvatars = values.namesAndAvatars.map({ Color($0) })
     }
 }
