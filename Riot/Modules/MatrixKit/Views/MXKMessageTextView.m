@@ -15,7 +15,7 @@
  */
 
 #import "MXKMessageTextView.h"
-#import "UITextView+MatrixKit.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface MXKMessageTextView()
 

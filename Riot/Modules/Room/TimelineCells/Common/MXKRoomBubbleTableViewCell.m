@@ -28,7 +28,6 @@
 #import "NSBundle+MatrixKit.h"
 #import "MXRoom+Sync.h"
 #import "MXKMessageTextView.h"
-#import "UITextView+MatrixKit.h"
 
 #import "GeneratedInterface-Swift.h"
 
