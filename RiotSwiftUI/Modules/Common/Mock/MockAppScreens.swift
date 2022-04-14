@@ -21,6 +21,8 @@ import Foundation
 enum MockAppScreens {
     static let appScreens: [MockScreenState.Type] = [
         MockLiveLocationSharingViewerScreenState.self,
+        MockAuthenticationRegistrationScreenState.self,
+        MockAuthenticationServerSelectionScreenState.self,
         MockOnboardingCelebrationScreenState.self,
         MockOnboardingAvatarScreenState.self,
         MockOnboardingDisplayNameScreenState.self,

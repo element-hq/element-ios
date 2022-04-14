@@ -18,8 +18,14 @@
 
 import UIKit
 
-/// A coordinator that handles authentication, verification and setting a PIN.
-final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtocol {
+struct LegacyAuthenticationCoordinatorParameters {
+    let navigationRouter: NavigationRouterType
+    /// Whether or not the coordinator should show the loading spinner, key verification etc.
+    let canPresentAdditionalScreens: Bool
+}
+
+/// A coordinator that handles authentication, verification and setting a PIN using the old UIViewController flow for iOS 12 & 13.
+final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtocol {
     
     // MARK: - Properties
     
@@ -52,7 +58,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     // MARK: - Setup
     
-    init(parameters: AuthenticationCoordinatorParameters) {
+    init(parameters: LegacyAuthenticationCoordinatorParameters) {
         self.navigationRouter = parameters.navigationRouter
         self.canPresentAdditionalScreens = parameters.canPresentAdditionalScreens
         
@@ -121,7 +127,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     private func presentCompleteSecurity() {
         guard let session = session else {
-            MXLog.error("[AuthenticationCoordinator] presentCompleteSecurity: Unable to present security due to missing session.")
+            MXLog.error("[LegacyAuthenticationCoordinator] presentCompleteSecurity: Unable to present security due to missing session.")
             authenticationDidComplete()
             return
         }
@@ -152,7 +158,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
                                       
     @objc private func sessionStateDidChange(_ notification: Notification) {
         guard let session = notification.object as? MXSession else {
-            MXLog.error("[AuthenticationCoordinator] sessionStateDidChange: Missing session in the notification")
+            MXLog.error("[LegacyAuthenticationCoordinator] sessionStateDidChange: Missing session in the notification")
             return
         }
 
@@ -170,7 +176,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
                 crossSigning.refreshState { [weak self] stateUpdated in
                     guard let self = self else { return }
                     
-                    MXLog.debug("[AuthenticationCoordinator] sessionStateDidChange: crossSigning.state: \(crossSigning.state)")
+                    MXLog.debug("[LegacyAuthenticationCoordinator] sessionStateDidChange: crossSigning.state: \(crossSigning.state)")
                     
                     switch crossSigning.state {
                     case .notBootstrapped:
@@ -181,23 +187,23 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
                             // Bootstrap cross-signing on user's account
                             // We do it for both registration and new login as long as cross-signing does not exist yet
                             if let password = self.password, !password.isEmpty {
-                                MXLog.debug("[AuthenticationCoordinator] sessionStateDidChange: Bootstrap with password")
+                                MXLog.debug("[LegacyAuthenticationCoordinator] sessionStateDidChange: Bootstrap with password")
                                 
                                 crossSigning.setup(withPassword: password) {
-                                    MXLog.debug("[AuthenticationCoordinator] sessionStateDidChange: Bootstrap succeeded")
+                                    MXLog.debug("[LegacyAuthenticationCoordinator] sessionStateDidChange: Bootstrap succeeded")
                                     self.authenticationDidComplete()
                                 } failure: { error in
-                                    MXLog.error("[AuthenticationCoordinator] sessionStateDidChange: Bootstrap failed. Error: \(error)")
+                                    MXLog.error("[LegacyAuthenticationCoordinator] sessionStateDidChange: Bootstrap failed. Error: \(error)")
                                     crypto.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
                                     self.authenticationDidComplete()
                                 }
                             } else {
                                 // Try to setup cross-signing without authentication parameters in case if a grace period is enabled
                                 self.crossSigningService.setupCrossSigningWithoutAuthentication(for: session) {
-                                    MXLog.debug("[AuthenticationCoordinator] sessionStateDidChange: Bootstrap succeeded without credentials")
+                                    MXLog.debug("[LegacyAuthenticationCoordinator] sessionStateDidChange: Bootstrap succeeded without credentials")
                                     self.authenticationDidComplete()
                                 } failure: { error in
-                                    MXLog.error("[AuthenticationCoordinator] sessionStateDidChange: Do not know how to bootstrap cross-signing. Skip it.")
+                                    MXLog.error("[LegacyAuthenticationCoordinator] sessionStateDidChange: Do not know how to bootstrap cross-signing. Skip it.")
                                     crypto.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
                                     self.authenticationDidComplete()
                                 }
@@ -208,21 +214,21 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
                         }
                     case .crossSigningExists:
                         guard self.canPresentAdditionalScreens else {
-                            MXLog.debug("[AuthenticationCoordinator] sessionStateDidChange: Delaying presentCompleteSecurity during onboarding.")
+                            MXLog.debug("[LegacyAuthenticationCoordinator] sessionStateDidChange: Delaying presentCompleteSecurity during onboarding.")
                             self.isWaitingToPresentCompleteSecurity = true
                             return
                         }
                         
-                        MXLog.debug("[AuthenticationCoordinator] sessionStateDidChange: Complete security")
+                        MXLog.debug("[LegacyAuthenticationCoordinator] sessionStateDidChange: Complete security")
                         self.presentCompleteSecurity()
                     default:
-                        MXLog.debug("[AuthenticationCoordinator] sessionStateDidChange: Nothing to do")
+                        MXLog.debug("[LegacyAuthenticationCoordinator] sessionStateDidChange: Nothing to do")
                         
                         crypto.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
                         self.authenticationDidComplete()
                     }
                 } failure: { [weak self] error in
-                    MXLog.error("[AuthenticationCoordinator] sessionStateDidChange: Fail to refresh crypto state with error: \(error)")
+                    MXLog.error("[LegacyAuthenticationCoordinator] sessionStateDidChange: Fail to refresh crypto state with error: \(error)")
                     crypto.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
                     self?.authenticationDidComplete()
                 }
@@ -234,7 +240,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
 }
 
 // MARK: - AuthenticationViewControllerDelegate
-extension AuthenticationCoordinator: AuthenticationViewControllerDelegate {
+extension LegacyAuthenticationCoordinator: AuthenticationViewControllerDelegate {
     func authenticationViewController(_ authenticationViewController: AuthenticationViewController!, didLoginWith session: MXSession!, andPassword password: String!) {
         registerSessionStateChangeNotification(for: session)
         
@@ -249,11 +255,11 @@ extension AuthenticationCoordinator: AuthenticationViewControllerDelegate {
 }
 
 // MARK: - KeyVerificationCoordinatorDelegate
-extension AuthenticationCoordinator: KeyVerificationCoordinatorDelegate {
+extension LegacyAuthenticationCoordinator: KeyVerificationCoordinatorDelegate {
     func keyVerificationCoordinatorDidComplete(_ coordinator: KeyVerificationCoordinatorType, otherUserId: String, otherDeviceId: String) {
         if let crypto = session?.crypto,
            !crypto.backup.hasPrivateKeyInCryptoStore || !crypto.backup.enabled {
-            MXLog.debug("[AuthenticationCoordinator][MXKeyVerification] requestAllPrivateKeys: Request key backup private keys")
+            MXLog.debug("[LegacyAuthenticationCoordinator][MXKeyVerification] requestAllPrivateKeys: Request key backup private keys")
             crypto.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
         }
         
@@ -270,7 +276,7 @@ extension AuthenticationCoordinator: KeyVerificationCoordinatorDelegate {
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
-extension AuthenticationCoordinator: UIAdaptivePresentationControllerDelegate {
+extension LegacyAuthenticationCoordinator: UIAdaptivePresentationControllerDelegate {
     func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
         // Prevent Key Verification from using swipe to dismiss
         return false
