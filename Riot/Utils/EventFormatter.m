@@ -85,6 +85,12 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
             }];
         }
     }
+    
+    if (event.eventType == MXEventTypeRoomMessage)
+    {
+        string = [StringPillsUtils insertPillsIn:string withSession:mxSession andRoomState:roomState];
+    }
+
     return string;
 }
 
