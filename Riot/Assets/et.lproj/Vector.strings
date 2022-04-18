@@ -1419,7 +1419,7 @@
 "space_public_join_rule" = "Avalik kogukond";
 "space_private_join_rule" = "Privaatne kogukond";
 "space_participants_action_ban" = "Sea selles kogukonnakeskus suhtluskeeld";
-"space_participants_action_remove" = "Eemalda sellest kogukonnakeskusest";
+"space_participants_action_remove" = "Eemalda sellest kogukonnast";
 "spaces_coming_soon_detail" = "See funktsionaalsus pole siin rakenduses hetkel veel saadaval, aga üsna varsti saab olema. Seni saad sa seda toimingut teha %@'i töölauarakenduses.";
 "spaces_invites_coming_soon_title" = "Varsti lisandub kutsete saatmine";
 "spaces_add_rooms_coming_soon_title" = "Varsti on jututubade lisamine võimalik";
