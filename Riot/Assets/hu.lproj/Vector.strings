@@ -2209,3 +2209,96 @@
 "new_word" = "Új";
 "stop" = "Állj";
 "joining" = "Belépés";
+"room_access_settings_screen_upgrade_alert_message" = "Bárki a Téren megtalálhatja és beléphet a szobába - nem kell egyenként meghívni őket. Ezt bármikor megváltoztathatod a szoba beállításaiban.\n\nFontos megjegyezni, hogy a szoba fejlesztése egy új szobát hoz létre.  Minden eddigi üzenet ebben az archivált szobában marad.";
+"threads_beta_information" = "Tedd a megbeszéléseket átláthatóvá üzenetszálakkal.\n\nAz üzenetszálak segítenek a beszélgetések témánál tartásában és követésében. ";
+"threads_notice_information" = "A kísérleti időszakban készült üzenetszálak ezentúl <b>közönséges válaszokként jelennek meg</b><br/><br/>Ez egy egyszeri konverzió, mivel az üzenetszálak már a Matrix részét képezik.";
+"ignore_user" = "Felhasználó figyelmen kívül hagyása";
+"location_sharing_pin_drop_share_title" = "Ennek a pozíciónak az elküldése";
+"location_sharing_static_share_title" = "Jelenlegi pozícióm elküldése";
+"live_location_sharing_banner_stop" = "Megállítás";
+"live_location_sharing_banner_title" = "Folyamatos pozíció megosztás engedélyezve";
+
+// MARK: Live location sharing
+
+"location_sharing_live_share_title" = "Pozícióm folyamatos megosztása";
+"side_menu_coach_message" = "Húzd jobbra vagy koppints hosszan minden szoba megjelenítéséhez";
+"spaces_add_room_missing_permission_message" = "Nincs jogosultságod szobát hozzáadni ehhez a térhez.";
+"spaces_creation_in_one_space" = "1 térben";
+"spaces_creation_in_many_spaces" = "%@ térben";
+"spaces_creation_in_spacename_plus_many" = "itt: %@ + %@ tér";
+"spaces_creation_in_spacename_plus_one" = "itt: %@ +1 tér";
+"spaces_creation_in_spacename" = "itt: %@";
+"spaces_creation_post_process_inviting_users" = "%@ felhasználó meghívása";
+"spaces_creation_post_process_adding_rooms" = "%@ szoba hozzáadása";
+"spaces_creation_post_process_creating_room" = "Készítés: %@";
+"spaces_creation_post_process_uploading_avatar" = "Profilkép feltöltése";
+"spaces_creation_post_process_creating_space_task" = "Készítés: %@";
+"spaces_creation_post_process_creating_space" = "Tér készítése";
+"spaces_creation_invite_by_username_message" = "Később is meg tudod hívni őket.";
+"spaces_creation_invite_by_username_title" = "Csoporttársak meghívása";
+"spaces_creation_invite_by_username" = "Meghívás felhasználónévvel";
+"spaces_creation_add_rooms_message" = "Ez a tér csak a tied, senki nem lesz értesítve. Később is hozzáadhatsz többet.";
+"spaces_creation_add_rooms_title" = "Mit szeretne hozzáadni?";
+"spaces_creation_sharing_type_me_and_teammates_detail" = "Privát tér neked és a csoporttársaidnak";
+"spaces_creation_sharing_type_me_and_teammates_title" = "Én és a csoporttársaim";
+"spaces_creation_sharing_type_just_me_detail" = "Privát tér a szobáid csoportosításához";
+"spaces_creation_sharing_type_just_me_title" = "Csak én";
+"spaces_creation_sharing_type_message" = "Ellenőrizd, hogy a megfelelő személyeknek van hozzáférése ide: %@. Később ezt megváltoztathatod.";
+"spaces_creation_sharing_type_title" = "Kivel dolgozol együtt?";
+"spaces_creation_email_invites_email_title" = "E-mail";
+"spaces_creation_email_invites_message" = "Később is meg tudod hívni őket.";
+"spaces_creation_email_invites_title" = "Csoporttársak meghívása";
+"spaces_creation_new_rooms_support" = "Támogatás";
+"spaces_creation_new_rooms_random" = "Véletlen";
+"spaces_creation_new_rooms_general" = "Általános";
+"spaces_creation_new_rooms_room_name_title" = "Szoba neve";
+"spaces_creation_new_rooms_message" = "Mindenhez készítünk egy szobát.";
+"spaces_creation_new_rooms_title" = "Milyen beszélgetések lesznek?";
+"spaces_creation_cancel_message" = "Amit eddig beállítottál elveszik.";
+"spaces_creation_cancel_title" = "Megszakítod a tér készítését?";
+"spaces_creation_private_space_title" = "Privát tér";
+"spaces_creation_public_space_title" = "Nyilvános tér";
+"spaces_creation_address_already_exists" = "%@\nmár létezik";
+"spaces_creation_address_invalid_characters" = "%@\nérvénytelen karaktert tartalmaz";
+"spaces_creation_address_default_message" = "A tered látható lesz itt:\n%@";
+"spaces_creation_empty_room_name_error" = "Név szükséges";
+"spaces_creation_address" = "Cím";
+"spaces_creation_settings_message" = "Adj hozzá pár információt, hogy tűnjön ki. Bármikor megváltoztathatod.";
+"spaces_creation_footer" = "Ezt később meg lehet változtatni";
+"spaces_creation_visibility_message" = "Létező térbe való belépéshez meghívó szükséges.";
+"spaces_creation_visibility_title" = "Milyen típusú teret szeretnél készíteni?";
+
+// Mark: - Space Creation
+
+"spaces_creation_hint" = "Szobák és emberek csoportosításának új lehetősége a Terek használata.";
+"space_settings_current_address_message" = "A tered látható itt:\n%@";
+"space_settings_update_failed_message" = "A tér beállításainak megváltoztatása nem sikerült. Megpróbálod újra?";
+"space_settings_access_section" = "Ki tud hozzáférni a térhez?";
+"space_topic" = "Leírás";
+"space_public_join_rule_detail" = "Nyílt tér mindenkinek, a legjobb a közösségeknek";
+"spaces_add_space" = "Tér hozzáadása";
+"spaces_add_room" = "Szoba hozzáadása";
+"spaces_invite_people" = "Személyek meghívása";
+"space_private_join_rule_detail" = "Csak meghívóval, saját célra és csoportoknak ideális";
+"spaces_explore_rooms_one_room" = "1 szoba";
+"spaces_explore_rooms_room_number" = "%@ szoba";
+"spaces_create_space_title" = "Tér készítése";
+"spaces_add_space_title" = "Tér készítése";
+"space_invite_not_enough_permission" = "Nincs jogosultságod embereket meghívni erre a térre";
+"room_invite_not_enough_permission" = "Nincs jogosultságod embereket meghívni ebbe a szobába";
+"room_invite_to_room_option_detail" = "Nem lesznek a részesei ennek: %@.";
+"room_invite_to_room_option_title" = "Csak ehhez a szobához";
+"room_invite_to_space_option_detail" = "Felderíthetik ezt: %@, de nem lesznek a tagsága ennek: %@.";
+
+// Mark: - Room invite
+
+"room_invite_to_space_option_title" = "Ide: %@";
+"share_invite_link_space_text" = "Szia, lépj be ebbe a térbe itt: %@";
+"share_invite_link_room_text" = "Szia, lépj be a szobába itt: %@";
+
+// MARK: - Share invite link
+
+"share_invite_link_action" = "Meghívási link megosztása";
+"create_room_processing" = "Szoba készítés";
+"create_room_suggest_room_footer" = "A javasolt szobák a tér tagság számára csatlakozásra érdemesként lesznek feltüntetve.";
+"room_access_space_chooser_other_spaces_section_info" = "Ezek valószínűleg olyanok, amelyeknek más %@ adminok is tagjai.";
