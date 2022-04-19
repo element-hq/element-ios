@@ -7703,6 +7703,14 @@ public class VectorL10n: NSObject {
   public static var threadsBetaTitle: String { 
     return VectorL10n.tr("Vector", "threads_beta_title") 
   }
+  /// Your homeserver does not currently support threads, so this feature may be unreliable. Some threaded messages may not be reliably available. 
+  public static var threadsDiscourageInformation1: String { 
+    return VectorL10n.tr("Vector", "threads_discourage_information_1") 
+  }
+  /// \n\nDo you want to enable threads anyway?
+  public static var threadsDiscourageInformation2: String { 
+    return VectorL10n.tr("Vector", "threads_discourage_information_2") 
+  }
   /// Threads help keep your conversations on-topic and easy to track.
   public static var threadsEmptyInfoAll: String { 
     return VectorL10n.tr("Vector", "threads_empty_info_all") 

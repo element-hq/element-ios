@@ -507,6 +507,8 @@ Tap the + to start adding people.";
 "threads_beta_information_link" = "Learn more";
 "threads_beta_enable" = "Try it out";
 "threads_beta_cancel" = "Not now";
+"threads_discourage_information_1" = "Your homeserver does not currently support threads, so this feature may be unreliable. Some threaded messages may not be reliably available. ";
+"threads_discourage_information_2" = "\n\nDo you want to enable threads anyway?";
 
 "media_type_accessibility_image" = "Image";
 "media_type_accessibility_audio" = "Audio";

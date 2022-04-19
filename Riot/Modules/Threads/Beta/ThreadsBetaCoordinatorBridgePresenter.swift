@@ -38,6 +38,8 @@ final class ThreadsBetaCoordinatorBridgePresenter: NSObject {
     // MARK: Private
 
     public let threadId: String
+    public let infoText: String
+    public let additionalText: String?
     private let slidingModalPresenter = SlidingModalPresenter()
     private var coordinator: ThreadsBetaCoordinator?
     
@@ -47,8 +49,10 @@ final class ThreadsBetaCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Setup
     
-    init(threadId: String) {
+    init(threadId: String, infoText: String, additionalText: String?) {
         self.threadId = threadId
+        self.infoText = infoText
+        self.additionalText = additionalText
         super.init()
     }
     
@@ -56,7 +60,9 @@ final class ThreadsBetaCoordinatorBridgePresenter: NSObject {
 
     func present(from viewController: UIViewController, animated: Bool) {
         
-        let threadsBetaCoordinator = ThreadsBetaCoordinator(threadId: threadId)
+        let threadsBetaCoordinator = ThreadsBetaCoordinator(threadId: threadId,
+                                                            infoText: infoText,
+                                                            additionalText: additionalText)
         threadsBetaCoordinator.delegate = self
         guard let presentable = threadsBetaCoordinator.toPresentable() as? SlidingModalPresentable.ViewControllerType else {
             MXLog.error("[ThreadsBetaCoordinatorBridgePresenter] Presentable is not 'SlidingModalPresentable'")
