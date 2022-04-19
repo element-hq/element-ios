@@ -26,8 +26,9 @@ final class ThreadsBetaCoordinator: NSObject, ThreadsBetaCoordinatorProtocol {
     // MARK: Private
         
     private let threadId: String
+    private let infoText: String
     private lazy var viewController: ThreadsBetaViewController = {
-        let result = ThreadsBetaViewController.instantiate()
+        let result = ThreadsBetaViewController.instantiate(infoText: infoText)
         result.didTapEnableButton = { [weak self] in
             guard let self = self else { return }
             RiotSettings.shared.enableThreads = true
@@ -50,8 +51,9 @@ final class ThreadsBetaCoordinator: NSObject, ThreadsBetaCoordinatorProtocol {
     
     // MARK: - Setup
     
-    init(threadId: String) {
+    init(threadId: String, infoText: String) {
         self.threadId = threadId
+        self.infoText = infoText
     }    
     
     // MARK: - Public

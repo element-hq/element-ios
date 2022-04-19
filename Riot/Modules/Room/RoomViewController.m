@@ -6850,7 +6850,8 @@ static CGSize kThreadListBarButtonItemImageSize;
         self.threadsBetaBridgePresenter = nil;
     }
 
-    self.threadsBetaBridgePresenter = [[ThreadsBetaCoordinatorBridgePresenter alloc] initWithThreadId:event.eventId];
+    self.threadsBetaBridgePresenter = [[ThreadsBetaCoordinatorBridgePresenter alloc] initWithThreadId:event.eventId
+                                                                                             infoText:VectorL10n.threadsBetaInformation];
     self.threadsBetaBridgePresenter.delegate = self;
 
     [self.threadsBetaBridgePresenter presentFrom:self.presentedViewController?:self animated:YES];
