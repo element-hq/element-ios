@@ -19,17 +19,5 @@ import RiotSwiftUI
 
 @available(iOS 14.0, *)
 class RoomUpgradeUITests: MockScreenTest {
-
-    override class var screenType: MockScreenState.Type {
-        return MockRoomUpgradeScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return RoomUpgradeUITests(selector: #selector(verifyRoomUpgradeScreen))
-    }
-
-    func verifyRoomUpgradeScreen() throws {
-        guard let screenState = screenState as? MockRoomUpgradeScreenState else { fatalError("no screen") }
-    }
-
+    // Tests to be implemented.
 }
