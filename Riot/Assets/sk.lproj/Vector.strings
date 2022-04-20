@@ -1893,7 +1893,7 @@
 "notice_room_join" = "%@ sa pripojil/a";
 "language_picker_default_language" = "Predvolené (%@)";
 "user_id_placeholder" = "napr.: @fero:domovskyserver";
-"power_level" = "Úroveň právomoci";
+"power_level" = "Úroveň oprávnenia";
 
 // Others
 "user_id_title" = "ID používateľa:";
@@ -2134,7 +2134,7 @@
 
 // Attachment
 "attachment_size_prompt" = "Chcete odoslať ako:";
-"room_member_power_level_prompt" = "Túto zmenu nebudete môcť vrátiť späť, pretože tomuto používateľovi udeľujete rovnakú úroveň moci, akú máte vy.\nSte si istí?";
+"room_member_power_level_prompt" = "Túto zmenu nebudete môcť vrátiť späť, pretože tomuto používateľovi udeľujete rovnakú úroveň oprávnenia, akú máte vy.\nSte si istí?";
 
 // Room members
 "room_member_ignore_prompt" = "Ste si istí, že chcete skryť všetky správy od tohto používateľa?";
