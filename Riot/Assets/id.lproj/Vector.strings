@@ -667,7 +667,7 @@
 // GDPR
 "gdpr_consent_not_given_alert_message" = "Untuk terus menggunakan homeserver %@, Anda harus menyetujui syarat dan ketentuannya.";
 "share_extension_failed_to_encrypt" = "Gagal untuk mengirim. Periksa di aplikasi utama pengaturan enkripsi untuk ruangan ini";
-"bug_report_logs_description" = "Untuk mendiagnosis masalah, catat dari klien ini akan dikirim dengan laporan kutu ini. Jika Anda lebih memilih untuk hanya mengirim teks di atas, harap hapus centang:";
+"bug_report_logs_description" = "Untuk mendiagnosis masalah, catatan dari klien ini akan dikirim dengan laporan kutu ini. Jika Anda lebih memilih untuk hanya mengirim teks di atas, harap hapus centang:";
 "bug_report_description" = "Harap jelaskan bugnya. Apa yang Anda lakukan? Apa yang Anda harapkan terjadi? Apa yang sebenarnya terjadi?";
 "e2e_key_backup_wrong_version" = "Cadangan kunci pesan aman baru telah terdeteksi.\n\nJika ini bukan Anda, atur Frasa Keamanan baru di Pengaturan.";
 
