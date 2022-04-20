@@ -26,7 +26,8 @@ import MatrixSDK
 
 /// ThreadsBetaCoordinatorBridgePresenter enables to start ThreadsBetaCoordinator from a view controller.
 /// This bridge is used while waiting for global usage of coordinator pattern.
-/// **WARNING**: This class breaks the Coordinator abstraction and it has been introduced for **Objective-C compatibility only** (mainly for integration in legacy view controllers). Each bridge should be removed once the underlying Coordinator has been integrated by another Coordinator.
+/// **WARNING**: This class breaks the Coordinator abstraction and it has been introduced for **Objective-C compatibility only** (mainly for integration in legacy view controllers).
+/// Each bridge should be removed once the underlying Coordinator has been integrated by another Coordinator.
 @objcMembers
 final class ThreadsBetaCoordinatorBridgePresenter: NSObject {
     
@@ -37,6 +38,8 @@ final class ThreadsBetaCoordinatorBridgePresenter: NSObject {
     // MARK: Private
 
     public let threadId: String
+    public let infoText: String
+    public let additionalText: String?
     private let slidingModalPresenter = SlidingModalPresenter()
     private var coordinator: ThreadsBetaCoordinator?
     
@@ -46,8 +49,10 @@ final class ThreadsBetaCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Setup
     
-    init(threadId: String) {
+    init(threadId: String, infoText: String, additionalText: String?) {
         self.threadId = threadId
+        self.infoText = infoText
+        self.additionalText = additionalText
         super.init()
     }
     
@@ -55,7 +60,9 @@ final class ThreadsBetaCoordinatorBridgePresenter: NSObject {
 
     func present(from viewController: UIViewController, animated: Bool) {
         
-        let threadsBetaCoordinator = ThreadsBetaCoordinator(threadId: threadId)
+        let threadsBetaCoordinator = ThreadsBetaCoordinator(threadId: threadId,
+                                                            infoText: infoText,
+                                                            additionalText: additionalText)
         threadsBetaCoordinator.delegate = self
         guard let presentable = threadsBetaCoordinator.toPresentable() as? SlidingModalPresentable.ViewControllerType else {
             MXLog.error("[ThreadsBetaCoordinatorBridgePresenter] Presentable is not 'SlidingModalPresentable'")

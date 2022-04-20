@@ -622,7 +622,7 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
  @param latitude the location's latitude
  @param longitude the location's longitude
  @param description an optional description
- @param assetType the location's type
+ @param coordinateType the location's type
  @param success A block object called when the operation succeeds. It returns
                 the event id of the event generated on the homeserver
  @param failure A block object called when the operation fails.

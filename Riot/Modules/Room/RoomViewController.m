@@ -232,13 +232,6 @@ static CGSize kThreadListBarButtonItemImageSize;
 // scroll state just before the layout change, and restore it after the layout.
 @property (nonatomic) BOOL wasScrollAtBottomBeforeLayout;
 
-/// Handles all banners that should be displayed at the top of the timeline but that should not scroll with the timeline
-@property (weak, nonatomic, nullable) IBOutlet UIStackView *topBannersStackView;
-
-@property (nonatomic) BOOL shouldShowLiveLocationSharingBannerView;
-
-@property (nonatomic, weak) LiveLocationSharingBannerView *liveLocationSharingBannerView;
-
 @end
 
 @implementation RoomViewController
@@ -410,6 +403,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self setupActions];
     
     [self setupUserSuggestionViewIfNeeded];
+    
+    [self.topBannersStackView vc_removeAllSubviews];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -549,6 +544,8 @@ static CGSize kThreadListBarButtonItemImageSize;
         
         notificationTaskProfile = [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:MXTaskProfileNameNotificationsOpenEvent];
     }
+    
+    [self updateTopBanners];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -1055,6 +1052,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     _userSuggestionCoordinator.delegate = self;
     
     [self setupUserSuggestionViewIfNeeded];
+    
+    [self updateTopBanners];
 }
 
 - (void)onRoomDataSourceReady
@@ -1067,10 +1066,8 @@ static CGSize kThreadListBarButtonItemImageSize;
         // Show preview header
         [self showPreviewHeader:YES];
     }
-    else
-    {
-        [super onRoomDataSourceReady];
-    }
+    
+    [super onRoomDataSourceReady];
 }
 
 - (void)updateViewControllerAppearanceOnRoomDataSourceState
@@ -1523,6 +1520,11 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     missedDiscussionsBadgeLabel.hidden = missedDiscussionsBadgeHidden;
     missedDiscussionsDotView.hidden = missedDiscussionsBadgeHidden;
+}
+
+- (BOOL)shouldShowLiveLocationSharingBannerView
+{
+    return customizedRoomDataSource.isCurrentUserSharingIsLocation;
 }
 
 #pragma mark - Internals
@@ -2423,12 +2425,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     [self.view bringSubviewToFront:self.topBannersStackView];
     
-    [self.topBannersStackView vc_removeAllSubviews];
-    
-    if (self.shouldShowLiveLocationSharingBannerView)
-    {
-        [self showLiveLocationBannerView];
-    }
+    [self updateLiveLocationBannerViewVisibility];
 }
 
 #pragma mark - Jitsi
@@ -3488,9 +3485,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     MXWeakify(self);
     
-    BOOL showThreadOption = RiotSettings.shared.enableThreads
-    && !self.roomDataSource.threadId
-    && !selectedEvent.threadId;
+    BOOL showThreadOption = [self showThreadOptionForEvent:selectedEvent];
     if (showThreadOption && [self canCopyEvent:selectedEvent andCell:cell])
     {
         [self.eventMenuBuilder addItemWithType:EventMenuItemTypeCopy
@@ -3648,7 +3643,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                     activityViewController = [self.delegate roomViewController:self locationShareActivityViewControllerForEvent:selectedEvent];
                 }
                 
-                if (activityViewController == nil) {
+                if (activityViewController == nil && selectedComponent.textMessage) {
                     NSArray *activityItems = @[selectedComponent.textMessage];
                     activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
                 }
@@ -4417,6 +4412,11 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self openThreadWithId:thread.id];
 
     [Analytics.shared trackInteraction:AnalyticsUIElementRoomThreadSummaryItem];
+}
+
+- (void)roomDataSourceDidUpdateCurrentUserSharingLocationStatus:(RoomDataSource *)roomDataSource
+{
+    [self updateLiveLocationBannerViewVisibility];
 }
 
 #pragma mark - Segues
@@ -5565,6 +5565,15 @@ static CGSize kThreadListBarButtonItemImageSize;
                 continueBlock(threadDataSource, YES);
             }];
         }
+        else if (self.isContextPreview)
+        {
+            [RoomPreviewDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
+                                               andMatrixSession:self.mainSession
+                                                     onComplete:^(RoomPreviewDataSource *roomDataSource)
+             {
+                continueBlock(roomDataSource, YES);
+            }];
+        }
         else
         {
             // Switch back to the room live timeline managed by MXKRoomDataSourceManager
@@ -6406,7 +6415,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     BOOL showMoreOption = (event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForStates)
         || (!event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForMessages);
-    BOOL showThreadOption = !self.roomDataSource.threadId && !event.threadId;
+    BOOL showThreadOption = [self showThreadOptionForEvent:event];
     
     NSMutableArray<RoomContextualMenuItem*> *items = [NSMutableArray arrayWithCapacity:5];
     
@@ -6797,6 +6806,13 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 #pragma mark - Threads
 
+- (BOOL)showThreadOptionForEvent:(MXEvent*)event
+{
+    return !self.roomDataSource.threadId
+        && !event.threadId
+        && (RiotSettings.shared.enableThreads || self.mainSession.store.supportedMatrixVersions.supportsThreads);
+}
+
 - (void)showThreadsNotice
 {
     if (!self.threadsNoticeModalPresenter)
@@ -6834,7 +6850,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         self.threadsBetaBridgePresenter = nil;
     }
 
-    self.threadsBetaBridgePresenter = [[ThreadsBetaCoordinatorBridgePresenter alloc] initWithThreadId:event.eventId];
+    self.threadsBetaBridgePresenter = [[ThreadsBetaCoordinatorBridgePresenter alloc] initWithThreadId:event.eventId
+                                                                                             infoText:VectorL10n.threadsBetaInformation
+                                                                                       additionalText:nil];
     self.threadsBetaBridgePresenter.delegate = self;
 
     [self.threadsBetaBridgePresenter presentFrom:self.presentedViewController?:self animated:YES];
@@ -7482,36 +7500,6 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (void)roomParticipantsInviteCoordinatorBridgePresenterDidEndLoading:(RoomParticipantsInviteCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
     [self stopActivityIndicator];
-}
-
-#pragma mark - Live location sharing
-
-- (void)showLiveLocationBannerView
-{
-    if (self.liveLocationSharingBannerView)
-    {
-        return;
-    }
-    
-    LiveLocationSharingBannerView *bannerView = [LiveLocationSharingBannerView instantiate];
-    
-    [bannerView updateWithTheme:ThemeService.shared.theme];
-    
-    MXWeakify(self);
-    
-    bannerView.didTapBackground = ^{
-        MXStrongifyAndReturnIfNil(self);
-        [self.delegate roomViewControllerDidTapLiveLocationSharingBanner:self];
-    };
-    
-    bannerView.didTapStopButton = ^{
-        MXStrongifyAndReturnIfNil(self);
-        [self.delegate roomViewControllerDidStopLiveLocationSharing:self];
-    };
-    
-    [self.topBannersStackView addArrangedSubview:bannerView];
-    
-    self.liveLocationSharingBannerView = bannerView;
 }
 
 @end

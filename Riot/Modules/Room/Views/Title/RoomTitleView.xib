@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -50,6 +50,19 @@
                         <constraint firstAttribute="width" secondItem="Ky3-cy-HAx" secondAttribute="height" multiplier="1:1" id="peq-8l-eJv"/>
                     </constraints>
                 </imageView>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="grc-2K-fj1" customClass="PresenceIndicatorView" customModule="Riot" customModuleProvider="target">
+                    <rect key="frame" x="29" y="26" width="12" height="12"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="12" id="4GW-Bw-ec7"/>
+                        <constraint firstAttribute="height" constant="12" id="j2e-3F-xxL"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                            <real key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Room Name" adjustsFontSizeToFit="NO" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="6uH-I3-RQg">
                     <rect key="frame" x="50" y="11" width="550" height="22"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -68,14 +81,16 @@
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
             <accessibility key="accessibilityConfiguration" identifier="RoomTitle"/>
             <constraints>
-                <constraint firstItem="6uH-I3-RQg" firstAttribute="leading" secondItem="LDd-c1-ILP" secondAttribute="trailing" constant="12" id="0pG-0z-gpD"/>
+                <constraint firstItem="grc-2K-fj1" firstAttribute="centerX" secondItem="LDd-c1-ILP" secondAttribute="trailing" constant="-3" id="2Yp-Gt-LHk"/>
                 <constraint firstItem="LDd-c1-ILP" firstAttribute="centerY" secondItem="BkF-x3-7fX" secondAttribute="centerY" id="33h-dC-S1U"/>
                 <constraint firstAttribute="bottom" secondItem="sD9-l7-azQ" secondAttribute="bottom" id="4rX-5O-LrO"/>
                 <constraint firstItem="yTB-Be-bLN" firstAttribute="centerX" secondItem="SUm-iW-DRR" secondAttribute="trailing" id="7H4-kh-c2g"/>
+                <constraint firstItem="6uH-I3-RQg" firstAttribute="centerY" secondItem="Ky3-cy-HAx" secondAttribute="centerY" priority="250" id="7Yj-CQ-cn7"/>
                 <constraint firstItem="sD9-l7-azQ" firstAttribute="leading" secondItem="BkF-x3-7fX" secondAttribute="leading" id="AJc-Aa-sht"/>
                 <constraint firstItem="SUm-iW-DRR" firstAttribute="centerY" secondItem="BkF-x3-7fX" secondAttribute="centerY" id="Blv-SJ-r6v"/>
                 <constraint firstItem="Ky3-cy-HAx" firstAttribute="bottom" secondItem="LDd-c1-ILP" secondAttribute="bottom" id="HZy-1x-eyX"/>
                 <constraint firstAttribute="trailing" secondItem="6uH-I3-RQg" secondAttribute="trailing" id="Kb4-Vb-TTr"/>
+                <constraint firstItem="6uH-I3-RQg" firstAttribute="leading" secondItem="Ky3-cy-HAx" secondAttribute="trailing" constant="5" id="Nam-GH-8hJ"/>
                 <constraint firstItem="fIP-Sr-o0e" firstAttribute="bottom" secondItem="LDd-c1-ILP" secondAttribute="bottom" id="Urx-H8-DNp"/>
                 <constraint firstItem="sD9-l7-azQ" firstAttribute="top" secondItem="BkF-x3-7fX" secondAttribute="top" id="YrR-1c-h56"/>
                 <constraint firstItem="yTB-Be-bLN" firstAttribute="centerY" secondItem="SUm-iW-DRR" secondAttribute="top" id="ZVB-7x-P0K"/>
@@ -83,12 +98,18 @@
                 <constraint firstItem="Ky3-cy-HAx" firstAttribute="centerX" secondItem="LDd-c1-ILP" secondAttribute="trailing" id="dFD-E8-CjR"/>
                 <constraint firstItem="LDd-c1-ILP" firstAttribute="leading" secondItem="BkF-x3-7fX" secondAttribute="leading" constant="6" id="dyY-AX-IVc"/>
                 <constraint firstItem="6uH-I3-RQg" firstAttribute="centerY" secondItem="BkF-x3-7fX" secondAttribute="centerY" id="fvR-gc-5Ls"/>
+                <constraint firstItem="grc-2K-fj1" firstAttribute="bottom" secondItem="LDd-c1-ILP" secondAttribute="bottom" id="iPt-jb-MVv"/>
                 <constraint firstAttribute="trailing" secondItem="sD9-l7-azQ" secondAttribute="trailing" id="q9f-Hp-g5N"/>
                 <constraint firstItem="fIP-Sr-o0e" firstAttribute="leading" secondItem="6uH-I3-RQg" secondAttribute="leading" id="uQW-MI-dPz"/>
+                <constraint firstItem="Ky3-cy-HAx" firstAttribute="leading" secondItem="LDd-c1-ILP" secondAttribute="trailing" priority="250" constant="8" id="v4O-1P-0ZM"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="badgeImageView" destination="Ky3-cy-HAx" id="fhw-3u-04C"/>
+                <outlet property="badgeImageViewCenterYToDisplayNameConstraint" destination="7Yj-CQ-cn7" id="P0y-Rd-x7K"/>
+                <outlet property="badgeImageViewLeadingToPictureViewConstraint" destination="v4O-1P-0ZM" id="4W9-16-PtZ"/>
+                <outlet property="badgeImageViewToPictureViewBottomConstraint" destination="HZy-1x-eyX" id="tJf-uu-t4Y"/>
+                <outlet property="badgeImageViewToPictureViewTrailingConstraint" destination="dFD-E8-CjR" id="vgq-f0-4OZ"/>
                 <outlet property="displayNameCenterYConstraint" destination="fvR-gc-5Ls" id="hzE-KD-Am7"/>
                 <outlet property="displayNameTextField" destination="6uH-I3-RQg" id="MfX-LQ-C2K"/>
                 <outlet property="dotView" destination="yTB-Be-bLN" id="nr1-Tf-kms"/>
@@ -99,6 +120,7 @@
                 <outlet property="pictureView" destination="LDd-c1-ILP" id="0bS-2V-Sj7"/>
                 <outlet property="pictureViewHeightConstraint" destination="bwy-tq-mM3" id="aaP-ws-FSY"/>
                 <outlet property="pictureViewWidthConstraint" destination="g4Z-ot-kFP" id="6rx-St-TvA"/>
+                <outlet property="presenceIndicatorView" destination="grc-2K-fj1" id="zCN-DO-YCy"/>
                 <outlet property="titleMask" destination="sD9-l7-azQ" id="I9b-wF-iNH"/>
                 <outlet property="typingLabel" destination="fIP-Sr-o0e" id="5IK-Gj-Med"/>
             </connections>

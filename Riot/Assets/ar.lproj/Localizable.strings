@@ -167,4 +167,4 @@
 "REPLY_FROM_USER_TITLE" = "%@ رَد";
 /** General **/
 
-"NOTIFICATION" = "إشعار";
+"Notification" = "إشعار";

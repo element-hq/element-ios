@@ -150,7 +150,9 @@
     if (contact.isMatrixContact)
     {
         // Observe contact presence change
+        MXWeakify(self);
         mxPresenceObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKContactManagerMatrixUserPresenceChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+            MXStrongifyAndReturnIfNil(self);
             
             NSString* matrixId = self.firstMatrixId;
             

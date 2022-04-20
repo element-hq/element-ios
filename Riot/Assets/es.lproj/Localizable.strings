@@ -126,4 +126,4 @@
 "REPLY_FROM_USER_TITLE" = "%@ ha respondido";
 /** General **/
 
-"NOTIFICATION" = "Notificación";
+"Notification" = "Notificación";

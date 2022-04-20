@@ -25,6 +25,12 @@ typealias LocationSharingViewModelType = StateStoreViewModel<LocationSharingView
 @available(iOS 14, *)
 class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingViewModelProtocol {
     
+    // MARK: - Constants
+    
+    private enum Constants {
+        static let liveLocationSharingDefaultTimeout: TimeInterval = 300 // 5 minutes
+    }
+    
     // MARK: - Properties
     
     // MARK: Private
@@ -35,38 +41,12 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
     
     // MARK: - Setup
     
-    init(mapStyleURL: URL, avatarData: AvatarInputProtocol, location: CLLocationCoordinate2D? = nil, coordinateType: LocationSharingCoordinateType, isLiveLocationSharingEnabled: Bool = false) {
-        
-        var sharedAnnotation: LocationAnnotation?
-        var annotations: [LocationAnnotation] = []
-        var highlightedAnnotation: LocationAnnotation?
-        var showsUserLocation: Bool = false
-        
-        // Displaying an existing location
-        if let sharedCoordinate = location {
-            let sharedLocationAnnotation: LocationAnnotation
-            switch coordinateType {
-            case .user:
-                sharedLocationAnnotation = UserLocationAnnotation(avatarData: avatarData, coordinate: sharedCoordinate)
-            case .pin:
-                sharedLocationAnnotation = PinLocationAnnotation(coordinate: sharedCoordinate)
-            }
-            
-            annotations.append(sharedLocationAnnotation)
-            highlightedAnnotation = sharedLocationAnnotation
-            
-            sharedAnnotation = sharedLocationAnnotation
-        } else {
-            // Share current location
-            showsUserLocation = true
-        }
-        
+    init(mapStyleURL: URL, avatarData: AvatarInputProtocol, isLiveLocationSharingEnabled: Bool = false) {
         let viewState = LocationSharingViewState(mapStyleURL: mapStyleURL,
                                                  userAvatarData: avatarData,
-                                                 sharedAnnotation: sharedAnnotation,
-                                                 annotations: annotations,
-                                                 highlightedAnnotation: highlightedAnnotation,
-                                                 showsUserLocation: showsUserLocation,
+                                                 annotations: [],
+                                                 highlightedAnnotation: nil,
+                                                 showsUserLocation: true,
                                                  isLiveLocationSharingEnabled: isLiveLocationSharingEnabled)
         
         super.init(initialViewState: viewState)
@@ -84,12 +64,6 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
         case .cancel:
             completion?(.cancel)
         case .share:
-            // Share existing location
-            if let location = state.sharedAnnotation?.coordinate {
-                completion?(.share(latitude: location.latitude, longitude: location.longitude, coordinateType: .user))
-                return
-            }
-            
             // Share current user location
             guard let location = state.bindings.userLocation else {
                 processError(.failedLocatingUser)
@@ -106,6 +80,8 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
             completion?(.share(latitude: pinLocation.latitude, longitude: pinLocation.longitude, coordinateType: .pin))
         case .goToUserLocation:
             state.bindings.pinLocation = nil
+        case .shareLiveLocation:
+            completion?(.shareLiveLocation(timeout: Constants.liveLocationSharingDefaultTimeout))
         }
     }
     

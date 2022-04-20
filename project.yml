@@ -12,6 +12,7 @@ fileGroups:
     - AUTHORS.rst
     - Podfile
     - project.yml
+    - changelog.d
 
 configFiles:
   Debug: Config/Project-Debug.xcconfig

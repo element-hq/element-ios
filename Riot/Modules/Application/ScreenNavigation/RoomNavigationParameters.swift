@@ -61,13 +61,18 @@ class RoomNavigationParameters: NSObject {
     /// ID of the sender of the notification. Default `nil`
     let senderId: String?
     
+    /// If `true`, the invited room is automatically joined.
+    let autoJoinInvitedRoom: Bool
+    
     // MARK: - Setup
     
     init(roomId: String,
          eventId: String?,
          mxSession: MXSession,
          threadParameters: ThreadParameters?,
-         presentationParameters: ScreenPresentationParameters) {
+         presentationParameters: ScreenPresentationParameters,
+         autoJoinInvitedRoom: Bool
+    ) {
         self.roomId = roomId
         self.eventId = eventId
         self.mxSession = mxSession
@@ -75,8 +80,18 @@ class RoomNavigationParameters: NSObject {
         self.presentationParameters = presentationParameters
         self.showSettingsInitially = false
         self.senderId = nil
+        self.autoJoinInvitedRoom = autoJoinInvitedRoom
         
         super.init()
+    }
+    
+    convenience init(roomId: String,
+                     eventId: String?,
+                     mxSession: MXSession,
+                     threadParameters: ThreadParameters?,
+                     presentationParameters: ScreenPresentationParameters
+    ) {
+        self.init(roomId: roomId, eventId: eventId, mxSession: mxSession, threadParameters: threadParameters, presentationParameters: presentationParameters, autoJoinInvitedRoom: false)
     }
     
     init(roomId: String,
@@ -92,6 +107,7 @@ class RoomNavigationParameters: NSObject {
         self.presentationParameters = presentationParameters
         self.showSettingsInitially = false
         self.senderId = senderId
+        self.autoJoinInvitedRoom = false
         
         super.init()
     }
@@ -108,6 +124,7 @@ class RoomNavigationParameters: NSObject {
         self.showSettingsInitially = showSettingsInitially
         self.threadParameters = nil
         self.senderId = nil
+        self.autoJoinInvitedRoom = false
 
         super.init()
     }

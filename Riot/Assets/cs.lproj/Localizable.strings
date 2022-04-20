@@ -167,4 +167,4 @@
 "MSG_FROM_USER_IN_ROOM_TITLE" = "%@ v %@";
 /** General **/
 
-"NOTIFICATION" = "Oznámení";
+"Notification" = "Oznámení";

@@ -66,6 +66,9 @@
  */
 @property (nonatomic, nullable) NSString *highlightedEventId;
 
+/// Is current user sharing is location in the room
+@property(nonatomic, readonly) BOOL isCurrentUserSharingIsLocation;
+
 /**
  Check if there is an active jitsi widget in the room and return it.
 
@@ -131,5 +134,8 @@
  */
 - (void)roomDataSource:(RoomDataSource * _Nonnull)roomDataSource
           didTapThread:(id<MXThreadProtocol> _Nonnull)thread;
+
+/// Called when current live location sharing status is changing (start or stop location sharing in the room)
+- (void)roomDataSourceDidUpdateCurrentUserSharingLocationStatus:(RoomDataSource * _Nonnull)roomDataSource;
 
 @end

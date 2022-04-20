@@ -27,8 +27,11 @@ class RoomInfoBasicView: UIView {
     }
 
     @IBOutlet private weak var mainStackView: UIStackView!
+    @IBOutlet private weak var avatarContainerView: UIView!
     @IBOutlet private weak var avatarImageView: MXKImageView!
     @IBOutlet private weak var badgeImageView: UIImageView!
+    @IBOutlet private weak var presenceIndicatorView: PresenceIndicatorView!
+    @IBOutlet private weak var roomNameStackView: UIStackView!
     @IBOutlet private weak var roomNameLabel: UILabel!
     @IBOutlet private weak var roomAddressLabel: UILabel!
     @IBOutlet private weak var topicContainerView: UIView!
@@ -95,8 +98,34 @@ class RoomInfoBasicView: UIView {
             VectorL10n.roomParticipantsSecurityInformationRoomEncryptedForDm :
             VectorL10n.roomParticipantsSecurityInformationRoomEncrypted
         securityContainerView.isHidden = !viewData.isEncrypted
+        presenceIndicatorView.setPresence(viewData.directUserPresence)
+        updateBadgeImageViewPosition(with: viewData.encryptionImage, presence: viewData.directUserPresence)
     }
     
+    private func updateBadgeImageViewPosition(with encryptionImage: UIImage?, presence: MXPresence) {
+        guard encryptionImage != nil else {
+            badgeImageView.isHidden = true
+            return
+        }
+
+        badgeImageView.isHidden = false
+        // Update badge position if it doesn't match expectation.
+        // If presence is displayed, badge should be in the name stack.
+        let isPresenceDisplayed = presence != .unknown
+        let isBadgeInRoomNameStackView = roomNameStackView.arrangedSubviews.contains(badgeImageView)
+        switch (isPresenceDisplayed, isBadgeInRoomNameStackView) {
+        case (true, false):
+            badgeImageView.removeFromSuperview()
+            roomNameStackView.insertArrangedSubview(badgeImageView, at: 0)
+        case (false, true):
+            roomNameStackView.removeArrangedSubview(badgeImageView)
+            avatarContainerView.addSubview(badgeImageView)
+            badgeImageView.trailingAnchor.constraint(equalTo: avatarContainerView.trailingAnchor).isActive = true
+            badgeImageView.bottomAnchor.constraint(equalTo: avatarContainerView.bottomAnchor).isActive = true
+        case (_, _):
+            break
+        }
+    }
 }
 
 extension RoomInfoBasicView: NibLoadable {}
@@ -134,6 +163,7 @@ extension RoomInfoBasicView: Themable {
         
         securityTitleLabel.textColor = theme.textSecondaryColor
         securityInformationLabel.textColor = theme.textPrimaryColor
+        presenceIndicatorView.borderColor = theme.headerBackgroundColor
     }
     
 }
