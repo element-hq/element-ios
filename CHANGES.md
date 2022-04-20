@@ -1,3 +1,46 @@
+## Changes in 1.8.13 (2022-04-20)
+
+✨ Features
+
+- Onboarding: Enable profile personalisation screens after registration. ([#5652](https://github.com/vector-im/element-ios/issues/5652))
+
+🙌 Improvements
+
+- SwiftUI Templates: The coordinators now include a basic implementation of the new UserIndicators. ([#6014](https://github.com/vector-im/element-ios/pull/6014))
+- Upgrade MatrixSDK version ([v0.23.3](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.23.3)).
+- Open the room when user accepts an invite from the room list ([#4986](https://github.com/vector-im/element-ios/issues/4986))
+- Display presence indicator on home, DM list & details ([#5933](https://github.com/vector-im/element-ios/issues/5933))
+- Location sharing: Create a screen specific for viewing static shared location ([#5982](https://github.com/vector-im/element-ios/issues/5982))
+- Presence: add an optional setting for offline mode ([#5995](https://github.com/vector-im/element-ios/issues/5995))
+- Context menu: Room preview do not update the read receipt any more ([#6008](https://github.com/vector-im/element-ios/issues/6008))
+- Pods: Stop excluding ARM64 simulator builds following an update to JitsiMeetSDK. ([#6018](https://github.com/vector-im/element-ios/issues/6018))
+- Settings: Add threads discourage view when server doesn't support threads. ([#6038](https://github.com/vector-im/element-ios/issues/6038))
+
+🐛 Bugfixes
+
+- Home: Reduce the number of unnecessary home page reloads ([#5619](https://github.com/vector-im/element-ios/issues/5619))
+- Add button in create room dialog can be pressed multiple times ([#5901](https://github.com/vector-im/element-ios/issues/5901))
+- Rooms: Register unique cells for home screen sections ([#5958](https://github.com/vector-im/element-ios/issues/5958))
+- Wrong copy for upgrade room message ([#5997](https://github.com/vector-im/element-ios/issues/5997))
+- Reset home filters when switching tabs. ([#6004](https://github.com/vector-im/element-ios/issues/6004))
+- Fix contact details view layout to safe area ([#6012](https://github.com/vector-im/element-ios/issues/6012))
+- Element: Fix some crashes after 1.8.10. ([#6023](https://github.com/vector-im/element-ios/issues/6023))
+
+🗣 Translations
+
+- Fix notifications showing NOTIFICATION instead of Notification when a translation isn't available. ([#6011](https://github.com/vector-im/element-ios/pull/6011))
+
+🚧 In development 🚧
+
+- Location sharing: Support live location sharing start. ([#5929](https://github.com/vector-im/element-ios/issues/5929))
+
+Others
+
+- Analytics: Update debug configuration. ([#6020](https://github.com/vector-im/element-ios/pull/6020))
+- Warn users about incoming iOS 12 and 13 support drop. ([#6024](https://github.com/vector-im/element-ios/pull/6024))
+- Fix some warnings. ([#6032](https://github.com/vector-im/element-ios/pull/6032))
+
+
 ## Changes in 1.8.12 (2022-04-06)
 
 🐛 Bugfixes
