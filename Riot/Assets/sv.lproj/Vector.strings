@@ -27,7 +27,7 @@
 "title_people" = "Personer";
 "title_rooms" = "Rum";
 "warning" = "Varning";
-"active_call" = "Aktivt Samtal";
+"active_call" = "Aktivt samtal";
 "active_call_details" = "Aktivt samtal (%@)";
 "rename" = "Döp om";
 "send_to" = "Skicka till %@";
@@ -1558,9 +1558,9 @@
 "settings_about" = "OM";
 "message_from_a_thread" = "Från en tråd";
 "threads_empty_show_all_threads" = "Visa alla trådar";
-"threads_empty_tip" = "Tips: Tryck på ett meddelande och använd “Tråd” för att starta en.";
-"threads_empty_info_my" = "Svara på en pågående tråd eller tryck på ett meddelande och använd “Tråd” för att starta en ny.";
-"threads_empty_info_all" = "Trådar hjälper till att hålla dina konversationer till ämnet och lätta att följa.";
+"threads_empty_tip" = "Tips: Tryck på ett meddelande och använd “Tråd” för att starta en tråd.";
+"threads_empty_info_my" = "Svara i en pågående tråd eller tryck på ett meddelande och välj “Tråd” för att starta en ny tråd.";
+"threads_empty_info_all" = "Trådar hjälper till att hålla dina konversationer till ämnet och gör dem lättare att följa.";
 "threads_empty_title" = "Håll diskussioner organiserade med trådar";
 "threads_action_my_threads" = "Mina trådar";
 "threads_action_all_threads" = "Alla trådar";
