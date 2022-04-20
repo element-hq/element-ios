@@ -19,21 +19,29 @@ import RiotSwiftUI
 
 @available(iOS 14.0, *)
 class StaticLocationViewingUITests: MockScreenTest {
-
-    private var app: XCUIApplication!
     
-    override func setUp() {
-        continueAfterFailure = false
-                
-        app = XCUIApplication()
-        app.launch()
+    override class var screenType: MockScreenState.Type {
+        return MockStaticLocationViewingScreenState.self
+    }
+
+    override class func createTest() -> MockScreenTest {
+        return StaticLocationViewingUITests(selector: #selector(verifyStaticLocationViewingScreen))
+    }
+
+    func verifyStaticLocationViewingScreen() {
+        guard let screenState = screenState as? MockStaticLocationViewingScreenState else { fatalError("no screen") }
+        
+        switch screenState {
+        case .showUserLocation:
+            verifyInitialExistingLocation()
+        case .showPinLocation:
+            verifyInitialExistingLocation()
+        }
     }
     
-    func testInitialExistingLocation() {
-        goToScreenWithIdentifier(MockStaticLocationViewingScreenState.showUserLocation.title)
-        
-        XCTAssertTrue(app.buttons["Cancel"].exists)
-        XCTAssertTrue(app.buttons["StaticLocationView.shareButton"].exists)
-        XCTAssertTrue(app.otherElements["Map"].exists)
+    func verifyInitialExistingLocation() {
+        XCTAssertTrue(app.buttons["Cancel"].exists, "The cancel button should exist.")
+        XCTAssertTrue(app.buttons["shareButton"].exists, "The share button should exist.")
+        XCTAssertTrue(app.otherElements["Map"].exists, "The map view should exist.")
     }
 }
