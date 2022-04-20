@@ -20,6 +20,7 @@ import Combine
 @available(iOS 14.0, *)
 protocol RoomUpgradeServiceProtocol {
     var currentRoomId: String { get }
+    var parentSpaceName: String? { get }
     var upgradingSubject: CurrentValueSubject<Bool, Never> { get }
     var errorSubject: CurrentValueSubject<Error?, Never> { get }
     

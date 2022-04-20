@@ -62,6 +62,7 @@ typedef NS_ENUM(NSUInteger, SECTION_TAG)
     SECTION_TAG_IGNORED_USERS,
     SECTION_TAG_INTEGRATIONS,
     SECTION_TAG_USER_INTERFACE,
+    SECTION_TAG_PRESENCE,
     SECTION_TAG_ADVANCED,
     SECTION_TAG_ABOUT,
     SECTION_TAG_LABS,
@@ -137,6 +138,11 @@ typedef NS_ENUM(NSUInteger, IDENTITY_SERVER)
     IDENTITY_SERVER_INDEX
 };
 
+typedef NS_ENUM(NSUInteger, PRESENCE)
+{
+    PRESENCE_OFFLINE_MODE = 0,
+};
+
 typedef NS_ENUM(NSUInteger, ADVANCED)
 {
     ADVANCED_SHOW_NSFW_ROOMS_INDEX = 0,
@@ -181,7 +187,8 @@ SingleImagePickerPresenterDelegate,
 SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinatorDelegate,
 SettingsIdentityServerCoordinatorBridgePresenterDelegate,
 ServiceTermsModalCoordinatorBridgePresenterDelegate,
-TableViewSectionsDelegate>
+TableViewSectionsDelegate,
+ThreadsBetaCoordinatorBridgePresenterDelegate>
 {
     // Current alert (if any).
     __weak UIAlertController *currentAlert;
@@ -281,6 +288,8 @@ TableViewSectionsDelegate>
 @property (nonatomic, strong) ReauthenticationCoordinatorBridgePresenter *reauthenticationCoordinatorBridgePresenter;
 
 @property (nonatomic, strong) UserInteractiveAuthenticationService *userInteractiveAuthenticationService;
+
+@property (nonatomic, strong) ThreadsBetaCoordinatorBridgePresenter *threadsBetaBridgePresenter;
 
 /**
  Whether or not to check for contacts access after the user accepts the service terms. The value of this property is
@@ -519,6 +528,16 @@ TableViewSectionsDelegate>
     }
         
     [tmpSections addObject: sectionUserInterface];
+    
+    if(BuildSettings.settingsScreenPresenceAllowConfiguration)
+    {
+        Section *sectionPresence = [Section sectionWithTag:SECTION_TAG_PRESENCE];
+        [sectionPresence addRowWithTag:PRESENCE_OFFLINE_MODE];
+        sectionPresence.headerTitle = VectorL10n.settingsPresence;
+        sectionPresence.footerTitle = VectorL10n.settingsPresenceOfflineModeDescription;
+
+        [tmpSections addObject:sectionPresence];
+    }
     
     Section *sectionAdvanced = [Section sectionWithTag:SECTION_TAG_ADVANCED];
     sectionAdvanced.headerTitle = [VectorL10n settingsAdvanced];
@@ -2287,6 +2306,24 @@ TableViewSectionsDelegate>
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
     }
+    else if (section == SECTION_TAG_PRESENCE)
+    {
+        if (row == PRESENCE_OFFLINE_MODE)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            labelAndSwitchCell.mxkLabel.text = VectorL10n.settingsPresenceOfflineMode;
+            
+            MXKAccount *account = MXKAccountManager.sharedManager.accounts.firstObject;
+            
+            labelAndSwitchCell.mxkSwitch.on = account.preferredSyncPresence == MXPresenceOffline;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePresenceOfflineMode:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell = labelAndSwitchCell;
+        }
+    }
     else if (section == SECTION_TAG_ADVANCED)
     {
         if (row == ADVANCED_SHOW_NSFW_ROOMS_INDEX)
@@ -3220,8 +3257,31 @@ TableViewSectionsDelegate>
 
 - (void)toggleEnableThreads:(UISwitch *)sender
 {
-    RiotSettings.shared.enableThreads = sender.isOn;
-    MXSDKOptions.sharedInstance.enableThreads = sender.isOn;
+    if (sender.isOn && !self.mainSession.store.supportedMatrixVersions.supportsThreads)
+    {
+        //  user wants to turn on the threads setting but the server does not support it
+        if (self.threadsBetaBridgePresenter)
+        {
+            [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:nil];
+            self.threadsBetaBridgePresenter = nil;
+        }
+
+        self.threadsBetaBridgePresenter = [[ThreadsBetaCoordinatorBridgePresenter alloc] initWithThreadId:@""
+                                                                                                 infoText:VectorL10n.threadsDiscourageInformation1
+                                                                                           additionalText:VectorL10n.threadsDiscourageInformation2];
+        self.threadsBetaBridgePresenter.delegate = self;
+
+        [self.threadsBetaBridgePresenter presentFrom:self.presentedViewController?:self animated:YES];
+        return;
+    }
+
+    [self enableThreads:sender.isOn];
+}
+
+- (void)enableThreads:(BOOL)enable
+{
+    RiotSettings.shared.enableThreads = enable;
+    MXSDKOptions.sharedInstance.enableThreads = enable;
     [[MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession] reset];
     [[AppDelegate theDelegate] restoreEmptyDetailsViewController];
 }
@@ -3905,6 +3965,19 @@ TableViewSectionsDelegate>
     deactivateAccountViewController.delegate = self;
     
     self.deactivateAccountViewController = deactivateAccountViewController;
+}
+
+- (void)togglePresenceOfflineMode:(UISwitch *)sender
+{
+    MXKAccount *account = MXKAccountManager.sharedManager.accounts.firstObject;
+    if (sender.isOn)
+    {
+        account.preferredSyncPresence = MXPresenceOffline;
+    }
+    else
+    {
+        account.preferredSyncPresence = MXPresenceOnline;
+    }
 }
 
 - (void)toggleNSFWPublicRoomsFiltering:(UISwitch *)sender
@@ -4675,6 +4748,26 @@ TableViewSectionsDelegate>
 - (void)tableViewSectionsDidUpdateSections:(TableViewSections *)sections
 {
     [self.tableView reloadData];
+}
+
+#pragma mark - ThreadsBetaCoordinatorBridgePresenterDelegate
+
+- (void)threadsBetaCoordinatorBridgePresenterDelegateDidTapEnable:(ThreadsBetaCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    MXWeakify(self);
+    [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:^{
+        MXStrongifyAndReturnIfNil(self);
+        [self enableThreads:YES];
+    }];
+}
+
+- (void)threadsBetaCoordinatorBridgePresenterDelegateDidTapCancel:(ThreadsBetaCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    MXWeakify(self);
+    [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:^{
+        MXStrongifyAndReturnIfNil(self);
+        [self updateSections];
+    }];
 }
 
 @end

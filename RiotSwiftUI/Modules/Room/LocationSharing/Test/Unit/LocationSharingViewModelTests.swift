@@ -26,22 +26,20 @@ class LocationSharingViewModelTests: XCTestCase {
     var cancellables = Set<AnyCancellable>()
     
     func testInitialState() {
-        let viewModel = buildViewModel(withLocation: false)
+        let viewModel = buildViewModel()
         
         XCTAssertTrue(viewModel.context.viewState.shareButtonEnabled)
-        XCTAssertTrue(viewModel.context.viewState.shareButtonVisible)
         XCTAssertFalse(viewModel.context.viewState.showLoadingIndicator)
         
         XCTAssertNotNil(viewModel.context.viewState.mapStyleURL)
         XCTAssertNotNil(viewModel.context.viewState.userAvatarData)
         
-        XCTAssertNil(viewModel.context.viewState.sharedAnnotation)
         XCTAssertNil(viewModel.context.viewState.bindings.userLocation)
         XCTAssertNil(viewModel.context.viewState.bindings.alertInfo)
     }
     
     func testCancellation() {
-        let viewModel = buildViewModel(withLocation: false)
+        let viewModel = buildViewModel()
         
         let expectation = self.expectation(description: "Cancellation completion should be invoked")
         
@@ -51,6 +49,8 @@ class LocationSharingViewModelTests: XCTestCase {
                 XCTFail()
             case .cancel:
                 expectation.fulfill()
+            case .shareLiveLocation(timeout: let timeout):
+                XCTFail()
             }
         }
         
@@ -60,10 +60,9 @@ class LocationSharingViewModelTests: XCTestCase {
     }
     
     func testShareNoUserLocation() {
-        let viewModel = buildViewModel(withLocation: false)
+        let viewModel = buildViewModel()
         
         XCTAssertNil(viewModel.context.viewState.bindings.userLocation)
-        XCTAssertNil(viewModel.context.viewState.sharedAnnotation)
         
         viewModel.context.send(viewAction: .share)
         
@@ -71,34 +70,8 @@ class LocationSharingViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.context.viewState.bindings.alertInfo?.id, .userLocatingError)
     }
     
-    func testShareExistingLocation() {
-        let viewModel = buildViewModel(withLocation: true)
-        
-        let expectation = self.expectation(description: "Share completion should be invoked")
-        
-        viewModel.completion = { result in
-            switch result {
-            case .share(let latitude, let longitude, _):
-                XCTAssertEqual(latitude, viewModel.context.viewState.sharedAnnotation?.coordinate.latitude)
-                XCTAssertEqual(longitude, viewModel.context.viewState.sharedAnnotation?.coordinate.longitude)
-                expectation.fulfill()
-            case .cancel:
-                XCTFail()
-            }
-        }
-        
-        XCTAssertNil(viewModel.context.viewState.bindings.userLocation)
-        XCTAssertNotNil(viewModel.context.viewState.sharedAnnotation)
-        
-        viewModel.context.send(viewAction: .share)
-        
-        XCTAssertNil(viewModel.context.viewState.bindings.alertInfo)
-        
-        waitForExpectations(timeout: 3)
-    }
-    
     func testLoading() {
-        let viewModel = buildViewModel(withLocation: false)
+        let viewModel = buildViewModel()
         
         viewModel.startLoading()
         
@@ -112,7 +85,7 @@ class LocationSharingViewModelTests: XCTestCase {
     }
     
     func testInvalidLocationAuthorization() {
-        let viewModel = buildViewModel(withLocation: false)
+        let viewModel = buildViewModel()
         
         viewModel.context.viewState.errorSubject.send(.invalidLocationAuthorization)
         
@@ -120,9 +93,8 @@ class LocationSharingViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.context.viewState.bindings.alertInfo?.id, .authorizationError)
     }
     
-    private func buildViewModel(withLocation: Bool) -> LocationSharingViewModel {
+    private func buildViewModel() -> LocationSharingViewModel {
         LocationSharingViewModel(mapStyleURL: URL(string: "http://empty.com")!,
-                                 avatarData: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: ""),
-                                 location: (withLocation ? CLLocationCoordinate2D(latitude: 51.4932641, longitude: -0.257096) : nil), coordinateType: .user)
+                                 avatarData: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: ""))
     }
 }

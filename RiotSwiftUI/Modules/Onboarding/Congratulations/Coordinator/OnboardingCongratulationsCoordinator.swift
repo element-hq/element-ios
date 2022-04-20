@@ -31,6 +31,7 @@ enum OnboardingCongratulationsCoordinatorResult {
     case takeMeHome(UserSession)
 }
 
+@available(iOS 14.0, *)
 final class OnboardingCongratulationsCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties
@@ -38,7 +39,7 @@ final class OnboardingCongratulationsCoordinator: Coordinator, Presentable {
     // MARK: Private
     
     private let parameters: OnboardingCongratulationsCoordinatorParameters
-    private let onboardingCongratulationsHostingController: UIViewController
+    private let onboardingCongratulationsHostingController: VectorHostingController
     private var onboardingCongratulationsViewModel: OnboardingCongratulationsViewModelProtocol
     
     // MARK: Public
@@ -49,7 +50,6 @@ final class OnboardingCongratulationsCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: OnboardingCongratulationsCoordinatorParameters) {
         self.parameters = parameters
         
@@ -59,6 +59,7 @@ final class OnboardingCongratulationsCoordinator: Coordinator, Presentable {
         let view = OnboardingCongratulationsScreen(viewModel: viewModel.context)
         onboardingCongratulationsViewModel = viewModel
         onboardingCongratulationsHostingController = VectorHostingController(rootView: view)
+        onboardingCongratulationsHostingController.statusBarStyle = .lightContent
     }
     
     // MARK: - Public

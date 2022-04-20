@@ -26,6 +26,9 @@ struct AddRoomSelector: View {
     // MARK: Private
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
+    private var isDoneEnabled: Bool {
+        return !viewModel.viewState.selectedItemIds.isEmpty && !viewModel.viewState.loading
+    }
 
     // MARK: Setup
     
@@ -50,7 +53,7 @@ struct AddRoomSelector: View {
             viewModel.send(viewAction: .done)
         })
         .font(theme.fonts.body)
-        .opacity(viewModel.viewState.selectedItemIds.isEmpty ? 0.7 : 1)
-        .disabled(viewModel.viewState.selectedItemIds.isEmpty)
+        .opacity(isDoneEnabled ? 1 : 0.7)
+        .disabled(!isDoneEnabled)
     }
 }

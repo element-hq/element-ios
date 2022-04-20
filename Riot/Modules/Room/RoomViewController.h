@@ -32,6 +32,7 @@
 @protocol RoomViewControllerDelegate;
 @class RoomDisplayConfiguration;
 @class ThreadsCoordinatorBridgePresenter;
+@class LiveLocationSharingBannerView;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -90,7 +91,14 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
  */
 @property (nonatomic, nullable) NSString *parentSpaceId;
 
-@property (nonatomic, getter=isContextPreview) BOOL contextPeview;
+/// Handles all banners that should be displayed at the top of the timeline but that should not scroll with the timeline
+@property (weak, nonatomic, nullable) IBOutlet UIStackView *topBannersStackView;
+
+/// Indicate YES to show live location sharing banner
+@property (nonatomic, readonly) BOOL shouldShowLiveLocationSharingBannerView;
+
+/// Displayed live location sharing banner if any
+@property (nonatomic, weak) LiveLocationSharingBannerView *liveLocationSharingBannerView;
 
 /**
  Display the preview of a room that is unknown for the user.

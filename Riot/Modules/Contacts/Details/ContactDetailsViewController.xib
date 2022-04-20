@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -45,7 +43,7 @@
                             <rect key="frame" x="137.5" y="0.0" width="100" height="125"/>
                             <subviews>
                                 <view clipsSubviews="YES" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="HFg-gC-lBP" customClass="MXKImageView">
-                                    <rect key="frame" x="7.5" y="31" width="84" height="84"/>
+                                    <rect key="frame" x="8" y="31" width="84" height="84"/>
                                     <color key="backgroundColor" red="0.6886889638" green="1" blue="0.74383144840000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" identifier="MemberAvatar"/>
                                     <constraints>
@@ -133,6 +131,7 @@
                     </connections>
                 </tableView>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="euc-yQ-e63"/>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <accessibility key="accessibilityConfiguration" identifier="ContactDetailsVCView"/>
             <constraints>
@@ -142,11 +141,12 @@
                 <constraint firstItem="R6u-PR-DcU" firstAttribute="top" secondItem="YXr-As-Mqh" secondAttribute="bottom" id="VW4-0P-ALX"/>
                 <constraint firstAttribute="bottom" secondItem="R6u-PR-DcU" secondAttribute="bottom" id="X1a-xq-1Aa"/>
                 <constraint firstAttribute="trailing" secondItem="R6u-PR-DcU" secondAttribute="trailing" id="aMA-vf-GrY"/>
-                <constraint firstItem="YXr-As-Mqh" firstAttribute="top" secondItem="gX8-mM-6Ig" secondAttribute="top" id="l7z-od-LJm"/>
+                <constraint firstItem="YXr-As-Mqh" firstAttribute="top" secondItem="euc-yQ-e63" secondAttribute="top" id="l7z-od-LJm"/>
                 <constraint firstItem="7Dc-jk-9sT" firstAttribute="leading" secondItem="gX8-mM-6Ig" secondAttribute="leading" id="rNt-rC-Pxv"/>
                 <constraint firstItem="R6u-PR-DcU" firstAttribute="leading" secondItem="gX8-mM-6Ig" secondAttribute="leading" id="rbT-O1-m3d"/>
                 <constraint firstAttribute="bottom" secondItem="7Dc-jk-9sT" secondAttribute="bottom" id="yKK-K2-ebi"/>
             </constraints>
+            <point key="canvasLocation" x="140" y="140"/>
         </view>
     </objects>
     <resources>

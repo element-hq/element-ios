@@ -47,11 +47,18 @@ class RecentCellContextMenuProvider: NSObject {
                     }
                     roomViewController.isContextPreview = true
                     
-                    let roomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: session)
-                    roomDataSourceManager?.roomDataSource(forRoom: room.roomId, create: true, onComplete: { roomDataSource in
-                        roomViewController.displayRoom(roomDataSource)
-                    })
-                    
+                    RoomPreviewDataSource.load(withRoomId: room.roomId, andMatrixSession: session) { [weak roomViewController] roomDataSource in
+                        guard let dataSource = roomDataSource as? RoomPreviewDataSource else {
+                            return
+                        }
+
+                        dataSource.markTimelineInitialEvent = false
+                        roomViewController?.displayRoom(dataSource)
+
+                        // Give the data source ownership to the room view controller.
+                        roomViewController?.hasRoomDataSourceOwnership = true
+                    }
+
                     return roomViewController
                 } else {
                     let viewModel = RoomContextPreviewViewModel(room: room)

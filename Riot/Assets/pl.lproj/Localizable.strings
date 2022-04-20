@@ -115,7 +115,7 @@
 "REPLY_FROM_USER_TITLE" = "%@ napisał(-a)";
 /** General **/
 
-"NOTIFICATION" = "Powiadomienie";
+"Notification" = "Powiadomienie";
 
 /* New file message from a specific person, not referencing a room. */
 "LOCATION_FROM_USER" = "%@ udostępnił(-a) swoją lokację";

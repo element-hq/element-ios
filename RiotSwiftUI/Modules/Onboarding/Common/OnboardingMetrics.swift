@@ -22,6 +22,16 @@ struct OnboardingMetrics {
     static let maxContentWidth: CGFloat = 600
     static let maxContentHeight: CGFloat = 750
     
+    /// The padding used to the top of the view for breaker screens that don't have a navigation bar.
+    static let breakerScreenTopPadding: CGFloat = 80
+    /// The padding used between the top of the main content and the navigation bar.
+    static let topPaddingToNavigationBar: CGFloat = 16
+    /// The padding used between the footer and the bottom of the view.
+    static let actionButtonBottomPadding: CGFloat = 24
+    /// The width/height used for the main icon shown in most of the screens.
+    static let iconSize: CGFloat = 90
+    
+    /// The height to use for top/bottom spacers to pad the views to fit the `maxContentHeight`.
     static func spacerHeight(in geometry: GeometryProxy) -> CGFloat {
         max(0, (geometry.size.height - maxContentHeight) / 2)
     }

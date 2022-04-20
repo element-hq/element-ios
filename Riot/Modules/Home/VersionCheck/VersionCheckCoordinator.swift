@@ -18,8 +18,8 @@ import Foundation
 
 class VersionCheckCoordinator: Coordinator, VersionCheckBannerViewDelegate, VersionCheckAlertViewControllerDelegate {
     private enum Constants {
-        static let osVersionToBeDropped = 11
-        static let hasOSVersionBeenDropped = true
+        static let osVersionToBeDropped = 13
+        static let hasOSVersionBeenDropped = false
         static let supportURL = URL(string: "https://support.apple.com/en-gb/guide/iphone/iph3e504502/ios")
     }
     
@@ -52,7 +52,7 @@ class VersionCheckCoordinator: Coordinator, VersionCheckBannerViewDelegate, Vers
     func start() {
         let majorOSVersion = ProcessInfo().operatingSystemVersion.majorVersion
         
-        guard majorOSVersion < Constants.osVersionToBeDropped else {
+        guard majorOSVersion <= Constants.osVersionToBeDropped else {
             return
         }
         
