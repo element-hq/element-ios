@@ -229,7 +229,7 @@
 "room_action_reply" = "Svara";
 "room_replacement_information" = "Det här rummet har ersatts och är inte längre aktivt.";
 "room_replacement_link" = "Konversationen fortsätter här.";
-"room_predecessor_information" = "Detta rum är fortsättningen på en annan konversation.";
+"room_predecessor_information" = "Det här rummet är en fortsättning på en annan konversation.";
 "room_predecessor_link" = "Tryck här för att se äldre meddelanden.";
 "room_message_edits_history_title" = "Meddelanderedigeringar";
 "room_accessibility_search" = "Sök";
