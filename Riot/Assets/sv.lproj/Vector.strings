@@ -27,7 +27,7 @@
 "title_people" = "Personer";
 "title_rooms" = "Rum";
 "warning" = "Varning";
-"active_call" = "Aktivt samtal";
+"active_call" = "Aktivt Samtal";
 "active_call_details" = "Aktivt samtal (%@)";
 "rename" = "Döp om";
 "send_to" = "Skicka till %@";
