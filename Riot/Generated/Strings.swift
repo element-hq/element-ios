@@ -2771,6 +2771,14 @@ public class VectorL10n: NSObject {
   public static var locationSharingLiveShareTitle: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_share_title") 
   }
+  /// Live until %@
+  public static func locationSharingLiveTimerIncoming(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "location_sharing_live_timer_incoming", p1)
+  }
+  /// %@ left
+  public static func locationSharingLiveTimerOutgoing(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "location_sharing_live_timer_outgoing", p1)
+  }
   /// %@ could not load the map. Please try again later.
   public static func locationSharingLoadingMapErrorTitle(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "location_sharing_loading_map_error_title", p1)

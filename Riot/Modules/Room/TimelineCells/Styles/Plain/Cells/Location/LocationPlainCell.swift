@@ -33,11 +33,9 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
         
         locationView.update(theme: ThemeService.shared().theme)
         
-        if event.eventType == __MXEventType.roomMessage {
-            renderStaticLocation(event)
-        } else if event.eventType == __MXEventType.beaconInfo {
-            renderLiveLocation(event)
-        }
+        // Comment this line and uncomment next one to test UI of live location tile
+        renderStaticLocation(event)
+//        renderLiveLocation(event)
     }
     
     private func renderStaticLocation(_ event: MXEvent) {
@@ -65,10 +63,56 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
     }
     
     private func renderLiveLocation(_ event: MXEvent) {
-        guard let locationContent = event.content else {
+        // TODO: - Render live location cell when live location event is handled
+        
+        // This code is only for testing live location cell
+        // Will be completed when the live location event is handled
+        
+        guard let locationContent = event.location else {
             return
         }
+        
+        locationView.locationDescription = locationContent.locationDescription
+        
+        let location = CLLocationCoordinate2D(latitude: locationContent.latitude, longitude: locationContent.longitude)
+        
+        let mapStyleURL = bubbleData.mxSession.vc_homeserverConfiguration().tileServer.mapStyleURL
+        
+        let avatarViewData = AvatarViewData(matrixItemId: bubbleData.senderId,
+                                            displayName: bubbleData.senderDisplayName,
+                                            avatarUrl: bubbleData.senderAvatarUrl,
+                                            mediaManager: bubbleData.mxSession.mediaManager,
+                                            fallbackImage: .matrixItem(bubbleData.senderId, bubbleData.senderDisplayName))
+        let futurDateTimeInterval = Date(timeIntervalSinceNow: 3734).timeIntervalSince1970
+        locationView.displayLocation(location, userAvatarData: avatarViewData, mapStyleURL: mapStyleURL, liveLocationState: .outgoingLive(generateTimerString(for: futurDateTimeInterval, isIncomingLocation: false)))
     }
+    
+    private func generateTimerString(for timestamp: Double,
+                                     isIncomingLocation: Bool) -> String? {
+        let timerString: String?
+        if isIncomingLocation {
+            timerString = VectorL10n.locationSharingLiveTimerIncoming(incomingTimerFormatter.string(from: Date(timeIntervalSince1970: timestamp)))
+        } else if let outgoingTimer = outgoingTimerFormatter.string(from: Date(timeIntervalSince1970: timestamp).timeIntervalSinceNow) {
+            timerString = VectorL10n.locationSharingLiveTimerOutgoing(outgoingTimer)
+        } else {
+            timerString = nil
+        }
+        return timerString
+    }
+    
+    private lazy var incomingTimerFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        return dateFormatter
+    }()
+    
+    private lazy var outgoingTimerFormatter: DateComponentsFormatter = {
+        let formatter = DateComponentsFormatter()
+        formatter.zeroFormattingBehavior = .dropAll
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.unitsStyle = .brief
+        return formatter
+    }()
     
     override func setupViews() {
         super.setupViews()

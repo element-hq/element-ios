@@ -187,12 +187,6 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                 
                 break;
             }
-            case MXEventTypeBeaconInfo:
-            {
-                self.tag = RoomBubbleCellDataTagLocation;
-                self.collapsable = NO;
-                self.collapsed = NO;
-            }
             default:
                 break;
         }

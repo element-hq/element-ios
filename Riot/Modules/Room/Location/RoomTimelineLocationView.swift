@@ -17,11 +17,28 @@
 import UIKit
 import Reusable
 import Mapbox
+import SwiftUI
 
 struct LiveLocationParameter {
+    let bannerImage: UIImage
+    let bannerTitle: String
+    let timer: String?
+    let shouldShowStopButton: Bool
     let isLive: Bool
-    let endTime: Int
-    let isUser: Bool
+}
+
+enum LiveLocationState {
+    case incomingLive(String?)
+    case outgoingLive(String?)
+    
+    func values() -> LiveLocationParameter {
+        switch self {
+        case .incomingLive(let timerString):
+            return LiveLocationParameter(bannerImage: Asset.Images.locationLiveIcon.image, bannerTitle: VectorL10n.liveLocationSharingBannerTitle, timer: timerString, shouldShowStopButton: false, isLive: true)
+        case .outgoingLive(let timerString):
+            return LiveLocationParameter(bannerImage: Asset.Images.locationLiveIcon.image, bannerTitle: VectorL10n.liveLocationSharingBannerTitle, timer: timerString, shouldShowStopButton: true, isLive: true)
+        }
+    }
 }
 
 class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegate {
@@ -48,7 +65,8 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     @IBOutlet private var liveLocationImageView: UIImageView!
     @IBOutlet private var liveLocationStatusLabel: UILabel!
     @IBOutlet private var liveLocationTimerLabel: UILabel!
-    @IBOutlet private var stopSharingContainerView: UIView!
+    @IBOutlet private var stopSharingButton: UIButton!
+    
     
     
     private var mapView: MGLMapView!
@@ -91,7 +109,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     public func displayLocation(_ location: CLLocationCoordinate2D,
                                 userAvatarData: AvatarViewData? = nil,
                                 mapStyleURL: URL,
-                                liveLocationParameter: LiveLocationParameter? = nil) {
+                                liveLocationState: LiveLocationState? = nil) {
         
         mapView.styleURL = mapStyleURL
         
@@ -113,14 +131,21 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
         mapView.addAnnotation(pointAnnotation)
         
         // Configure live location banner
-        guard let liveLocationParameter = liveLocationParameter else {
+        guard let liveLocationParameters = liveLocationState?.values() else {
             liveLocationContainerView.isHidden = true
             return
         }
         
         liveLocationContainerView.isHidden = false
-        stopSharingContainerView.isHidden = !liveLocationParameter.isLive
-        liveLocationTimerLabel.isHidden = !liveLocationParameter.isLive
+        liveLocationImageView.image = liveLocationParameters.bannerImage
+        liveLocationStatusLabel.text = liveLocationParameters.bannerTitle
+        if let timerString = liveLocationParameters.timer {
+            liveLocationTimerLabel.isHidden = false
+            liveLocationTimerLabel.text = timerString
+        } else {
+            liveLocationTimerLabel.isHidden = true
+        }
+        stopSharingButton.isHidden = !liveLocationParameters.shouldShowStopButton
     }
     
     // MARK: - Themable

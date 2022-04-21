@@ -2143,6 +2143,8 @@ Tap the + to start adding people.";
 "location_sharing_static_share_title" = "Send my current location";
 "location_sharing_pin_drop_share_title" = "Send this location";
 "location_sharing_live_map_callout_title" = "Share location";
+"location_sharing_live_timer_outgoing" = "%@ left";
+"location_sharing_live_timer_incoming" = "Live until %@";
 
 // MARK: - MatrixKit
 
