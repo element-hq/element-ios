@@ -18,6 +18,12 @@ import UIKit
 import Reusable
 import Mapbox
 
+struct LiveLocationParameter {
+    let isLive: Bool
+    let endTime: Int
+    let isUser: Bool
+}
+
 class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegate {
 
     // MARK: - Constants
@@ -36,6 +42,14 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     @IBOutlet private var descriptionLabel: UILabel!
     @IBOutlet private var descriptionIcon: UIImageView!
     @IBOutlet private var attributionLabel: UILabel!
+    
+    // MARK: - Live Location
+    @IBOutlet private var liveLocationContainerView: UIView!
+    @IBOutlet private var liveLocationImageView: UIImageView!
+    @IBOutlet private var liveLocationStatusLabel: UILabel!
+    @IBOutlet private var liveLocationTimerLabel: UILabel!
+    @IBOutlet private var stopSharingContainerView: UIView!
+    
     
     private var mapView: MGLMapView!
     private var annotationView: LocationMarkerView?
@@ -76,7 +90,8 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     
     public func displayLocation(_ location: CLLocationCoordinate2D,
                                 userAvatarData: AvatarViewData? = nil,
-                                mapStyleURL: URL) {
+                                mapStyleURL: URL,
+                                liveLocationParameter: LiveLocationParameter? = nil) {
         
         mapView.styleURL = mapStyleURL
         
@@ -96,6 +111,16 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
         let pointAnnotation = MGLPointAnnotation()
         pointAnnotation.coordinate = location
         mapView.addAnnotation(pointAnnotation)
+        
+        // Configure live location banner
+        guard let liveLocationParameter = liveLocationParameter else {
+            liveLocationContainerView.isHidden = true
+            return
+        }
+        
+        liveLocationContainerView.isHidden = false
+        stopSharingContainerView.isHidden = !liveLocationParameter.isLive
+        liveLocationTimerLabel.isHidden = !liveLocationParameter.isLive
     }
     
     // MARK: - Themable
@@ -113,5 +138,11 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     
     func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
         return annotationView
+    }
+    
+    // MARK: - Action
+    
+    @IBAction private func stopSharingAction(_ sender: Any) {
+        // TODO: - Stop sharing action
     }
 }

@@ -2138,6 +2138,7 @@ Tap the + to start adding people.";
 
 "location_sharing_live_share_title" = "Share live location";
 "live_location_sharing_banner_title" = "Live location enabled";
+"live_location_sharing_ended" = "Live location ended";
 "live_location_sharing_banner_stop" = "Stop";
 "location_sharing_static_share_title" = "Send my current location";
 "location_sharing_pin_drop_share_title" = "Send this location";

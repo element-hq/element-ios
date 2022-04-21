@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import MatrixSDK
 
 class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable {
     
@@ -25,14 +26,25 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
         
         guard #available(iOS 14.0, *),
               let bubbleData = cellData as? RoomBubbleCellData,
-              let event = bubbleData.events.last,
-              event.eventType == __MXEventType.roomMessage,
-              let locationContent = event.location
+              let event = bubbleData.events.last
         else {
             return
         }
         
         locationView.update(theme: ThemeService.shared().theme)
+        
+        if event.eventType == __MXEventType.roomMessage {
+            renderStaticLocation(event)
+        } else if event.eventType == __MXEventType.beaconInfo {
+            renderLiveLocation(event)
+        }
+    }
+    
+    private func renderStaticLocation(_ event: MXEvent) {
+        guard let locationContent = event.location else {
+            return
+        }
+        
         locationView.locationDescription = locationContent.locationDescription
         
         let location = CLLocationCoordinate2D(latitude: locationContent.latitude, longitude: locationContent.longitude)
@@ -49,6 +61,12 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
             locationView.displayLocation(location, userAvatarData: avatarViewData, mapStyleURL: mapStyleURL)
         } else {
             locationView.displayLocation(location, mapStyleURL: mapStyleURL)
+        }
+    }
+    
+    private func renderLiveLocation(_ event: MXEvent) {
+        guard let locationContent = event.content else {
+            return
         }
     }
     
