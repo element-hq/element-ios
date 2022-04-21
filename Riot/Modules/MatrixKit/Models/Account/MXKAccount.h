@@ -175,7 +175,7 @@ typedef BOOL (^MXKAccountOnCertificateChange)(MXKAccount *mxAccount, NSData *cer
  
  @param credentials user's credentials
  */
-- (instancetype)initWithCredentials:(MXCredentials*)credentials;
+- (nonnull instancetype)initWithCredentials:(MXCredentials*)credentials;
 
 /**
  Create a matrix session based on the provided store.
