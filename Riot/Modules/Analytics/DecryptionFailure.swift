@@ -45,9 +45,12 @@ import AnalyticsEvents
     let ts: TimeInterval = Date().timeIntervalSince1970
     /// Decryption failure reason.
     let reason: DecryptionFailureReason
+    /// Additional context of failure
+    let context: String
     
-    init(failedEventId: String, reason: DecryptionFailureReason) {
+    init(failedEventId: String, reason: DecryptionFailureReason, context: String) {
         self.failedEventId = failedEventId
         self.reason = reason
+        self.context = context
     }
 }
