@@ -1,7 +1,7 @@
 source 'https://cdn.cocoapods.org/'
 
 # Uncomment this line to define a global platform for your project
-platform :ios, '13.0'
+platform :ios, '14.0'
 
 # Use frameworks to allow usage of pods written in Swift
 use_frameworks!
