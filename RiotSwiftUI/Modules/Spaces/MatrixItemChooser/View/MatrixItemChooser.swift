@@ -90,6 +90,7 @@ struct MatrixItemChooser: View {
             .frame(maxHeight: .infinity, alignment: .top)
             .animation(nil)
         }
+        .animation(nil)
     }
 
     @ViewBuilder
@@ -116,7 +117,7 @@ struct MatrixItemChooser: View {
                 .onChange(of: searchText) { value in
                     viewModel.send(viewAction: .searchTextChanged(searchText))
                 }
-            if let selectionHeader = viewModel.viewState.selectionHeader {
+            if let selectionHeader = viewModel.viewState.selectionHeader, searchText.isEmpty {
                 Spacer().frame(height: spacerHeight)
                 itemSelectionHeader(with: selectionHeader)
             }
