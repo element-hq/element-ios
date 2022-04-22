@@ -1293,7 +1293,7 @@
 "settings_call_invitations" = "Boð um símtöl";
 "settings_room_invitations" = "Boð á spjallrás";
 "settings_messages_containing_keywords" = "Stikkorð";
-"settings_messages_containing_at_room" = "@spjallrás";
+"settings_messages_containing_at_room" = "@room";
 "settings_messages_containing_user_name" = "Notandanafnið mitt";
 "settings_messages_containing_display_name" = "Birtingarnafn mitt";
 "settings_encrypted_group_messages" = "Dulrituð hópskilaboð";
