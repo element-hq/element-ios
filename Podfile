@@ -13,7 +13,7 @@ use_frameworks!
 # - `{ :specHash => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for MatrixSDK repo. Used by Fastfile during CI
 #
 # Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
-$matrixSDKVersion = '= 0.23.1'
+$matrixSDKVersion = '= 0.23.3'
 # $matrixSDKVersion = :local
 # $matrixSDKVersion = { :branch => 'develop'}
 # $matrixSDKVersion = { :specHash => { git: 'https://git.io/fork123', branch: 'fix' } }
@@ -138,9 +138,6 @@ post_install do |installer|
       # Because the WebRTC pod (included by the JingleCallStack pod) does not support it.
       # Plus the app does not enable it
       config.build_settings['ENABLE_BITCODE'] = 'NO'
-
-      # Make fastlane(xcodebuild) happy by preventing it from building for arm64 simulator
-      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
 
       # Force ReadMoreTextView to use Swift 5.2 version (as there is no code changes to perform)
       if target.name.include? 'ReadMoreTextView'

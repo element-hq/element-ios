@@ -25,5 +25,5 @@ class ShareLocationActivityControllerBuilder {
                                         applicationActivities: [ShareToMapsAppActivity(type: .apple, location: location),
                                                                 ShareToMapsAppActivity(type: .google, location: location),
                                                                 ShareToMapsAppActivity(type: .osm, location: location)])
-    }    
+    }
 }

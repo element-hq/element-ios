@@ -19,7 +19,7 @@ import SwiftUI
 import Mapbox
 
 @available(iOS 14, *)
-class LocationAnnotatonView: MGLUserLocationAnnotationView {
+class LocationAnnotationView: MGLUserLocationAnnotationView {
     
     // MARK: - Constants
     

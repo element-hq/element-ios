@@ -207,6 +207,11 @@ typedef NS_ENUM(NSUInteger, MXKRoomViewControllerJoinRoomResult) {
 @property (strong, nonatomic) UserIndicatorStore *userIndicatorStore;
 
 /**
+ YES if the instance is used as context menu preview.
+ */
+@property (nonatomic, getter=isContextPreview) BOOL contextPeview;
+
+/**
  This object is defined when the displayed room is left. It is added into the bubbles table header.
  This label is used to display the reason why the room has been left.
  */

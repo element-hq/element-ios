@@ -120,4 +120,4 @@
 "REPLY_FROM_USER_TITLE" = "%@ 回复了";
 /** General **/
 
-"NOTIFICATION" = "通知";
+"Notification" = "通知";

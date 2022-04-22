@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -123,12 +123,12 @@ extension LocationSharingMapView {
         func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
             
             if let userLocationAnnotation = annotation as? UserLocationAnnotation {
-                return LocationAnnotatonView(userLocationAnnotation: userLocationAnnotation)
+                return LocationAnnotationView(userLocationAnnotation: userLocationAnnotation)
             } else if let pinLocationAnnotation = annotation as? PinLocationAnnotation {
-                return LocationAnnotatonView(pinLocationAnnotation: pinLocationAnnotation)
+                return LocationAnnotationView(pinLocationAnnotation: pinLocationAnnotation)
             } else if annotation is MGLUserLocation && locationSharingMapView.mapCenterCoordinate == nil, let currentUserAvatarData = locationSharingMapView.userAvatarData {
                 // Replace default current location annotation view with a UserLocationAnnotatonView when the map is center on user location
-                return LocationAnnotatonView(avatarData: currentUserAvatarData)
+                return LocationAnnotationView(avatarData: currentUserAvatarData)
             }
 
             return nil

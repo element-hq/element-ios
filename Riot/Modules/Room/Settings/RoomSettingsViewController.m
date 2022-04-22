@@ -3832,23 +3832,29 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
 - (void)showRoomAccessFlow
 {
-    MXRoom *room = [self.mainSession roomWithRoomId:self.roomId];
-    
-    if (room) {
-        roomAccessPresenter = [[RoomAccessCoordinatorBridgePresenter alloc] initWithRoom:room];
-        roomAccessPresenter.delegate = self;
-        [roomAccessPresenter presentFrom:self animated:YES];
+    if (@available(iOS 14.0, *))
+    {
+        MXRoom *room = [self.mainSession roomWithRoomId:self.roomId];
+        
+        if (room) {
+            roomAccessPresenter = [[RoomAccessCoordinatorBridgePresenter alloc] initWithRoom:room parentSpaceId:self.parentSpaceId];
+            roomAccessPresenter.delegate = self;
+            [roomAccessPresenter presentFrom:self animated:YES];
+        }
     }
 }
 
 - (void)showSuggestToSpaceMembers
 {
-    MXRoom *room = [self.mainSession roomWithRoomId:self.roomId];
-    
-    if (room) {
-        roomSuggestionPresenter = [[RoomSuggestionCoordinatorBridgePresenter alloc] initWithRoom:room];
-        roomSuggestionPresenter.delegate = self;
-        [roomSuggestionPresenter presentFrom:self animated:YES];
+    if (@available(iOS 14.0, *))
+    {
+        MXRoom *room = [self.mainSession roomWithRoomId:self.roomId];
+        
+        if (room) {
+            roomSuggestionPresenter = [[RoomSuggestionCoordinatorBridgePresenter alloc] initWithRoom:room];
+            roomSuggestionPresenter.delegate = self;
+            [roomSuggestionPresenter presentFrom:self animated:YES];
+        }
     }
 }
 

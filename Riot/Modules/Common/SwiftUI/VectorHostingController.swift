@@ -32,7 +32,14 @@ class VectorHostingController: UIHostingController<AnyView> {
     
     // MARK: Public
     
+    /// Whether or not to use the iOS 15 style scroll edge appearance when the controller has a navigation bar.
     var enableNavigationBarScrollEdgeAppearance = false
+    /// When non-nil, the style will be applied to the status bar.
+    var statusBarStyle: UIStatusBarStyle?
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        statusBarStyle ?? super.preferredStatusBarStyle
+    }
     
     init<Content>(rootView: Content) where Content: View {
         self.theme = ThemeService.shared().theme

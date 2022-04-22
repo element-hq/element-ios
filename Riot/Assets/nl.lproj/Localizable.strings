@@ -148,7 +148,7 @@
 "REPLY_FROM_USER_TITLE" = "%@ reageerde";
 /** General **/
 
-"NOTIFICATION" = "Meldingen";
+"Notification" = "Meldingen";
 
 /* New file message from a specific person, not referencing a room. */
 "LOCATION_FROM_USER" = "%@ deelde hun locatie";

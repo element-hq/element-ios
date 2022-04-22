@@ -45,7 +45,7 @@ struct OnboardingCongratulationsScreen: View {
                     
                     mainContent
                         .frame(maxWidth: OnboardingMetrics.maxContentWidth)
-                        .padding(.top, 60)
+                        .padding(.top, OnboardingMetrics.breakerScreenTopPadding)
                         .padding(.horizontal, horizontalPadding)
                 }
                 .frame(maxWidth: .infinity)
@@ -53,7 +53,7 @@ struct OnboardingCongratulationsScreen: View {
                 footer
                     .frame(maxWidth: OnboardingMetrics.maxContentWidth)
                     .padding(.horizontal, horizontalPadding)
-                    .padding(.bottom, 24)
+                    .padding(.bottom, OnboardingMetrics.actionButtonBottomPadding)
                     .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
                 
                 Spacer()
@@ -73,7 +73,7 @@ struct OnboardingCongratulationsScreen: View {
         VStack(spacing: 42) {
             Image(Asset.Images.onboardingCongratulationsIcon.name)
                 .resizable()
-                .frame(width: 90, height: 90)
+                .frame(width: OnboardingMetrics.iconSize, height: OnboardingMetrics.iconSize)
                 .accessibilityHidden(true)
             
             VStack(spacing: 8) {
@@ -132,7 +132,7 @@ struct OnboardingCongratulationsScreen: View {
     @ViewBuilder
     var effects: some View {
         if viewModel.viewState.personalizationDisabled {
-            EffectsView(effectsType: .confetti)
+            EffectsView(effect: .confetti)
                 .allowsHitTesting(false)
                 .accessibilityIdentifier("confetti")
         }

@@ -118,6 +118,29 @@
 "onboarding_use_case_existing_server_message" = "Looking to join an existing server?";
 "onboarding_use_case_existing_server_button" = "Connect to server";
 
+"onboarding_congratulations_title" = "Congratulations!";
+/* The placeholder string contains the user's matrix ID */
+"onboarding_congratulations_message" = "Your account %@ has been created.";
+"onboarding_congratulations_personalize_button" = "Personalise profile";
+"onboarding_congratulations_home_button" = "Take me home";
+
+"onboarding_personalization_save" = "Save and continue";
+"onboarding_personalization_skip" = "Skip this step";
+
+"onboarding_display_name_title" = "Choose a display name";
+"onboarding_display_name_message" = "This will be shown when you send messages.";
+"onboarding_display_name_placeholder" = "Display Name";
+"onboarding_display_name_hint" = "You can change this later";
+"onboarding_display_name_max_length" = "Your display name must be less than 256 characters";
+
+"onboarding_avatar_title" = "Add a profile picture";
+"onboarding_avatar_message" = "You can change this anytime.";
+"onboarding_avatar_accessibility_label" = "Profile picture";
+
+"onboarding_celebration_title" = "You’re all set!";
+"onboarding_celebration_message" = "Your preferences have been saved.";
+"onboarding_celebration_button" = "Let's go";
+
 // Authentication
 "auth_login" = "Log in";
 "auth_register" = "Register";
@@ -484,6 +507,8 @@ Tap the + to start adding people.";
 "threads_beta_information_link" = "Learn more";
 "threads_beta_enable" = "Try it out";
 "threads_beta_cancel" = "Not now";
+"threads_discourage_information_1" = "Your homeserver does not currently support threads, so this feature may be unreliable. Some threaded messages may not be reliably available. ";
+"threads_discourage_information_2" = "\n\nDo you want to enable threads anyway?";
 
 "media_type_accessibility_image" = "Image";
 "media_type_accessibility_audio" = "Audio";
@@ -727,6 +752,10 @@ Tap the + to start adding people.";
 
 "settings_enable_room_message_bubbles" = "Message bubbles";
 
+"settings_presence" = "Presence";
+"settings_presence_offline_mode" = "Offline Mode";
+"settings_presence_offline_mode_description" = "If enabled, you will always appear offline to other users, even when using the application.";
+
 // Security settings
 "security_settings_title" = "Security";
 "security_settings_crypto_sessions" = "MY SESSIONS";
@@ -899,7 +928,9 @@ Tap the + to start adding people.";
 "room_access_settings_screen_public_message" = "Anyone can find and join.";
 
 "room_access_settings_screen_upgrade_alert_title" = "Upgrade room";
-"room_access_settings_screen_upgrade_alert_message" = "Anyone in Space name will be able to find and join this room - no need to manually invite everyone. You’ll be able to change this in room settings anytime.\n\nPlease note upgrading will make a new version of the room.  All current messages will stay in this archived room.";
+"room_access_settings_screen_upgrade_alert_message" = "Anyone in %@ will be able to find and join this room - no need to manually invite everyone. You’ll be able to change this in room settings anytime.";
+"room_access_settings_screen_upgrade_alert_message_no_param" = "Anyone in a parent space will be able to find and join this room - no need to manually invite everyone. You’ll be able to change this in room settings anytime.";
+"room_access_settings_screen_upgrade_alert_note" = "Please note upgrading will make a new version of the room. All current messages will stay in this archived room.";
 "room_access_settings_screen_upgrade_alert_auto_invite_switch" = "Automatically invite members to new room";
 "room_access_settings_screen_upgrade_alert_upgrade_button" = "Upgrade";
 "room_access_settings_screen_upgrade_alert_upgrading" = "Upgrading room";
@@ -2111,7 +2142,6 @@ Tap the + to start adding people.";
 "location_sharing_static_share_title" = "Send my current location";
 "location_sharing_pin_drop_share_title" = "Send this location";
 "location_sharing_live_map_callout_title" = "Share location";
-
 "location_sharing_live_viewer_title" = "Location";
 "location_sharing_live_list_item_time_left" = "%@ left";
 "location_sharing_live_list_item_sharing_expired" = "Sharing expired";

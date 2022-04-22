@@ -27,4 +27,5 @@ struct RoomInfoBasicViewData {
     let encryptionImage: UIImage?
     let isEncrypted: Bool
     let isDirect: Bool
+    let directUserPresence: MXPresence
 }

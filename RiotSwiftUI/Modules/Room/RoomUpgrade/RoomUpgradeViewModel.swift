@@ -47,7 +47,7 @@ class RoomUpgradeViewModel: RoomUpgradeViewModelType, RoomUpgradeViewModelProtoc
     }
 
     private static func defaultState(roomUpgradeService: RoomUpgradeServiceProtocol) -> RoomUpgradeViewState {
-        return RoomUpgradeViewState(waitingMessage: nil, isLoading: false)
+        return RoomUpgradeViewState(waitingMessage: nil, isLoading: false, parentSpaceName: roomUpgradeService.parentSpaceName)
     }
     
     private func setupObservers() {

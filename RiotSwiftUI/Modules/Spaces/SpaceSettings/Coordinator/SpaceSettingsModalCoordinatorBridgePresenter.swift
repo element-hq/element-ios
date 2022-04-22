@@ -36,6 +36,7 @@ final class SpaceSettingsModalCoordinatorBridgePresenter: NSObject {
     
     private let spaceId: String
     private let session: MXSession
+    private let parentSpaceId: String?
     private var coordinator: SpaceSettingsModalCoordinator?
     
     // MARK: Public
@@ -44,8 +45,9 @@ final class SpaceSettingsModalCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Setup
     
-    init(spaceId: String, session: MXSession) {
+    init(spaceId: String, parentSpaceId: String?, session: MXSession) {
         self.spaceId = spaceId
+        self.parentSpaceId = parentSpaceId
         self.session = session
         super.init()
     }
@@ -54,7 +56,7 @@ final class SpaceSettingsModalCoordinatorBridgePresenter: NSObject {
     
     func present(from viewController: UIViewController, animated: Bool) {
         let navigationRouter = NavigationRouter()
-        let coordinator = SpaceSettingsModalCoordinator(parameters: SpaceSettingsModalCoordinatorParameters(session: session, spaceId: spaceId, navigationRouter: navigationRouter))
+        let coordinator = SpaceSettingsModalCoordinator(parameters: SpaceSettingsModalCoordinatorParameters(session: session, spaceId: spaceId, parentSpaceId: parentSpaceId, navigationRouter: navigationRouter))
         coordinator.callback = { [weak self] result in
             guard let self = self else { return }
             

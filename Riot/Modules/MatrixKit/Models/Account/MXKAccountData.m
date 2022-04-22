@@ -80,6 +80,16 @@
 
         _warnedAboutEncryption = [coder decodeBoolForKey:@"warnedAboutEncryption"];
         
+        if ([coder decodeObjectOfClass:NSString.class forKey:@"preferredSyncPresence"])
+        {
+            MXPresenceString presenceString = [coder decodeObjectOfClass:NSString.class forKey:@"preferredSyncPresence"];
+            _preferredSyncPresence = [MXTools presence:presenceString];
+        }
+        else
+        {
+            _preferredSyncPresence = MXPresenceOnline;
+        }
+        
         _others = [coder decodeObjectForKey:@"others"];
     }
     
@@ -142,6 +152,9 @@
     [coder encodeBool:_isSoftLogout forKey:@"isSoftLogout"];
 
     [coder encodeBool:_warnedAboutEncryption forKey:@"warnedAboutEncryption"];
+    
+    MXPresenceString presenceString = [MXTools presenceString:_preferredSyncPresence];
+    [coder encodeObject:presenceString forKey:@"preferredSyncPresence"];
     
     [coder encodeObject:_others forKey:@"others"];
 }

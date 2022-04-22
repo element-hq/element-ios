@@ -2387,9 +2387,10 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             {
                 NSMutableDictionary<NSString* /* eventId */, NSArray<MXReceiptData*> *> *updatedCellDataReadReceipts = [NSMutableDictionary dictionary];
 
-                for (NSString *eventId in cellData.readReceipts)
+                NSDictionary<NSString*, NSArray<MXReceiptData*>*> *readReceiptsCopy = [cellData.readReceipts mutableDeepCopy];
+                for (NSString *eventId in readReceiptsCopy)
                 {
-                    for (MXReceiptData *receiptData in cellData.readReceipts[eventId])
+                    for (MXReceiptData *receiptData in readReceiptsCopy[eventId])
                     {
                         for (NSString *senderId in readReceiptSenders)
                         {
@@ -2397,7 +2398,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
                             {
                                 if (!updatedCellDataReadReceipts[eventId])
                                 {
-                                    updatedCellDataReadReceipts[eventId] = cellData.readReceipts[eventId];
+                                    updatedCellDataReadReceipts[eventId] = readReceiptsCopy[eventId];
                                 }
 
                                 NSPredicate *predicate = [NSPredicate predicateWithFormat:@"userId!=%@", receiptData.userId];
