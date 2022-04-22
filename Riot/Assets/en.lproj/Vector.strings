@@ -2142,6 +2142,13 @@ Tap the + to start adding people.";
 "location_sharing_static_share_title" = "Send my current location";
 "location_sharing_pin_drop_share_title" = "Send this location";
 "location_sharing_live_map_callout_title" = "Share location";
+"location_sharing_live_viewer_title" = "Location";
+"location_sharing_live_list_item_time_left" = "%@ left";
+"location_sharing_live_list_item_sharing_expired" = "Sharing expired";
+"location_sharing_live_list_item_last_update" = "Updated %@ ago";
+"location_sharing_live_list_item_last_update_invalid" = "Unknown last update";
+"location_sharing_live_list_item_current_user_display_name" = "You";
+"location_sharing_live_list_item_stop_sharing_action" = "Stop sharing";
 
 // MARK: - MatrixKit
 
