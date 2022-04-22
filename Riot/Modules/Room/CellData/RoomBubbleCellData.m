@@ -297,7 +297,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     
     if (self.tag == RoomBubbleCellDataTagLiveLocation)
     {
-        // If the summary does not exist do show the cell
+        // If the summary does not exist don't show the cell
         if (!self.beaconInfoSummary)
         {
             return YES;
