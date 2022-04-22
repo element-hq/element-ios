@@ -84,6 +84,20 @@ extern NSString *const kMXKRoomBubbleCellTapOnContentView;
 extern NSString *const kMXKRoomBubbleCellUnsentButtonPressed;
 
 /**
+ Action identifier used when the user pressed stop share button displayed in live location cell.
+ 
+ The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the live location event to stop.
+ */
+extern NSString *const kMXKRoomBubbleCellStopShareButtonPressed;
+
+/**
+ Action identifier used when the user pressed retry share button displayed in live location cell.
+ 
+ The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the live location event to retry.
+ */
+extern NSString *const kMXKRoomBubbleCellRetryShareButtonPressed;
+
+/**
  Action identifier used when the user long pressed on a displayed event.
  
  The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the selected event.

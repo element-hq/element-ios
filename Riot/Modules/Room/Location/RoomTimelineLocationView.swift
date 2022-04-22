@@ -19,26 +19,60 @@ import Reusable
 import Mapbox
 import SwiftUI
 
-struct LiveLocationParameter {
-    let bannerImage: UIImage
-    let bannerTitle: String
-    let timer: String?
-    let shouldShowStopButton: Bool
-    let isLive: Bool
+protocol RoomTimelineLocationViewDelegate: AnyObject {
+    func didTapStopButton()
+    func didTapRetryButton()
 }
 
-enum LiveLocationState {
-    case incomingLive(String?)
-    case outgoingLive(String?)
+struct RoomTimelineLocationViewData {
+    let location: CLLocationCoordinate2D
+    let userAvatarData: AvatarViewData?
+    let mapStyleURL: URL
+}
+
+struct LiveLocationBannerViewData {
+    let placeholderImage: UIImage?
+    let iconTint: UIColor
+    let title: String
+    let titleColor: UIColor
+    let timeLeftString: String?
+    let rightButtonTitle: String?
+    let rightButtonTag: RightButtonTag
     
-    func values() -> LiveLocationParameter {
-        switch self {
-        case .incomingLive(let timerString):
-            return LiveLocationParameter(bannerImage: Asset.Images.locationLiveIcon.image, bannerTitle: VectorL10n.liveLocationSharingBannerTitle, timer: timerString, shouldShowStopButton: false, isLive: true)
-        case .outgoingLive(let timerString):
-            return LiveLocationParameter(bannerImage: Asset.Images.locationLiveIcon.image, bannerTitle: VectorL10n.liveLocationSharingBannerTitle, timer: timerString, shouldShowStopButton: true, isLive: true)
-        }
+    var showTimer: Bool {
+        return timeLeftString != nil
     }
+    
+    var showRightButton: Bool {
+        return rightButtonTitle != nil
+    }
+    
+    var showPlaceholderImage: Bool {
+        return placeholderImage != nil
+    }
+}
+
+enum TimelineLiveLocationViewState {
+    case incoming(_ status: IncomingLiveLocationSharingStatus) // live location started by other users
+    case outgoing(_ status: OutgoingLiveLocationSharingStatus) // live location started from current user
+}
+
+
+enum OutgoingLiveLocationSharingStatus {
+    case starting
+    case started(_ timeleft: TimeInterval)
+    case failure
+    case stopped
+}
+
+enum IncomingLiveLocationSharingStatus {
+    case started(_ timeleft: TimeInterval)
+    case stopped
+}
+
+enum RightButtonTag: Int {
+    case stopSharing = 0
+    case retrySharing
 }
 
 class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegate {
@@ -61,17 +95,34 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     @IBOutlet private var attributionLabel: UILabel!
     
     // MARK: - Live Location
+    @IBOutlet private var placeholderImage: UIImageView!
     @IBOutlet private var liveLocationContainerView: UIView!
     @IBOutlet private var liveLocationImageView: UIImageView!
     @IBOutlet private var liveLocationStatusLabel: UILabel!
     @IBOutlet private var liveLocationTimerLabel: UILabel!
-    @IBOutlet private var stopSharingButton: UIButton!
+    @IBOutlet private var rightButton: UIButton!
     
     
     
     private var mapView: MGLMapView!
     private var annotationView: LocationMarkerView?
     private static var usernameColorGenerator = UserNameColorGenerator()
+    
+    private lazy var incomingTimerFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        return dateFormatter
+    }()
+    
+    private lazy var outgoingTimerFormatter: DateComponentsFormatter = {
+        let formatter = DateComponentsFormatter()
+        formatter.zeroFormattingBehavior = .dropAll
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.unitsStyle = .brief
+        return formatter
+    }()
+    
+    weak var delegate: RoomTimelineLocationViewDelegate?
     
     // MARK: Public
     
@@ -84,7 +135,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
             descriptionContainerView.isHidden = (newValue?.count ?? 0 == 0)
         }
     }
-        
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -104,12 +155,12 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
         layer.cornerRadius = Constants.cellCornerRadius
     }
     
-    // MARK: - Public
+    // MARK: - Private
     
-    public func displayLocation(_ location: CLLocationCoordinate2D,
-                                userAvatarData: AvatarViewData? = nil,
-                                mapStyleURL: URL,
-                                liveLocationState: LiveLocationState? = nil) {
+    private func displayLocation(_ location: CLLocationCoordinate2D,
+                                 userAvatarData: AvatarViewData? = nil,
+                                 mapStyleURL: URL,
+                                 bannerViewData: LiveLocationBannerViewData? = nil) {
         
         mapView.styleURL = mapStyleURL
         
@@ -131,22 +182,115 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
         mapView.addAnnotation(pointAnnotation)
         
         // Configure live location banner
-        guard let liveLocationParameters = liveLocationState?.values() else {
+        guard let bannerViewData = bannerViewData else {
             liveLocationContainerView.isHidden = true
             return
         }
         
         liveLocationContainerView.isHidden = false
-        liveLocationImageView.image = liveLocationParameters.bannerImage
-        liveLocationStatusLabel.text = liveLocationParameters.bannerTitle
-        if let timerString = liveLocationParameters.timer {
-            liveLocationTimerLabel.isHidden = false
-            liveLocationTimerLabel.text = timerString
-        } else {
-            liveLocationTimerLabel.isHidden = true
-        }
-        stopSharingButton.isHidden = !liveLocationParameters.shouldShowStopButton
+        
+        liveLocationImageView.image = Asset.Images.locationLiveCellIcon.image
+        liveLocationImageView.tintColor = bannerViewData.iconTint
+        
+        liveLocationStatusLabel.text = bannerViewData.title
+        liveLocationStatusLabel.textColor = bannerViewData.titleColor
+        
+        liveLocationTimerLabel.text = bannerViewData.timeLeftString
+        liveLocationTimerLabel.isHidden = !bannerViewData.showTimer
+        
+        rightButton.setTitle(bannerViewData.rightButtonTitle, for: .normal)
+        rightButton.isHidden = !bannerViewData.showRightButton
+        rightButton.tag = bannerViewData.rightButtonTag.rawValue
+        
+        placeholderImage.image = bannerViewData.placeholderImage
+        placeholderImage.isHidden = !bannerViewData.showPlaceholderImage
+        mapView.isHidden = bannerViewData.showPlaceholderImage
     }
+    
+    private func liveLocationBannerViewData(from viewState: TimelineLiveLocationViewState) -> LiveLocationBannerViewData {
+        let theme = ThemeService.shared().theme
+        
+        let iconTint: UIColor
+        let title: String
+        var titleColor: UIColor = theme.roomCellLocalisationTextColor
+        var placeholderImage: UIImage?
+        var timeLeftString: String?
+        var rightButtonTitle: String?
+        var rightButtonTag: RightButtonTag = .stopSharing
+
+        switch viewState {
+        case .incoming(let liveLocationSharingStatus):
+            switch liveLocationSharingStatus {
+            case .started(let timeLeft):
+                iconTint = theme.roomCellLocalisationStartedColor
+                title = VectorL10n.liveLocationSharingBannerTitle
+                timeLeftString = generateTimerString(for: timeLeft, isIncomingLocation: true)
+            case .stopped:
+                iconTint = theme.roomCellLocalisationEndedColor
+                title = VectorL10n.liveLocationSharingEnded
+                titleColor = theme.roomCellLocalisationEndedColor
+                placeholderImage = Asset.Images.locationLiveCellEndedImage.image
+            }
+        case .outgoing(let liveLocationSharingStatus):
+            switch liveLocationSharingStatus {
+            case .starting:
+                iconTint = theme.roomCellLocalisationEndedColor
+                title = VectorL10n.locationSharingLiveLoading
+                titleColor = theme.roomCellLocalisationEndedColor
+                placeholderImage = Asset.Images.locationLiveCellLoadingImage.image
+            case .started(let timeLeft):
+                iconTint = theme.roomCellLocalisationStartedColor
+                title = VectorL10n.liveLocationSharingBannerTitle
+                timeLeftString = generateTimerString(for: timeLeft, isIncomingLocation: false)
+                rightButtonTitle = VectorL10n.stop
+            case .failure:
+                iconTint = theme.roomCellLocalisationErrorColor
+                title = VectorL10n.locationSharingLiveError
+                titleColor = theme.roomCellLocalisationEndedColor
+                rightButtonTitle = VectorL10n.retry
+                rightButtonTag = .retrySharing
+            case .stopped:
+                iconTint = theme.roomCellLocalisationEndedColor
+                title = VectorL10n.liveLocationSharingEnded
+                titleColor = theme.roomCellLocalisationEndedColor
+                placeholderImage = Asset.Images.locationLiveCellEndedImage.image
+            }
+        }
+        
+        return LiveLocationBannerViewData(placeholderImage: placeholderImage, iconTint: iconTint, title: title, titleColor: titleColor, timeLeftString: timeLeftString, rightButtonTitle: rightButtonTitle, rightButtonTag: rightButtonTag)
+    }
+    
+    private func generateTimerString(for timestamp: Double,
+                                     isIncomingLocation: Bool) -> String? {
+        let timerString: String?
+        if isIncomingLocation {
+            timerString = VectorL10n.locationSharingLiveTimerIncoming(incomingTimerFormatter.string(from: Date(timeIntervalSince1970: timestamp)))
+        } else if let outgoingTimer = outgoingTimerFormatter.string(from: Date(timeIntervalSince1970: timestamp).timeIntervalSinceNow) {
+            timerString = VectorL10n.locationSharingLiveTimerOutgoing(outgoingTimer)
+        } else {
+            timerString = nil
+        }
+        return timerString
+    }
+    
+    // MARK: - Public
+    
+    public func displayStaticLocation(with viewData: RoomTimelineLocationViewData) {
+        displayLocation(viewData.location,
+                        userAvatarData: viewData.userAvatarData,
+                        mapStyleURL: viewData.mapStyleURL,
+                        bannerViewData: nil)
+    }
+    
+    public func displayLiveLocation(with viewData: RoomTimelineLocationViewData, liveLocationViewState: TimelineLiveLocationViewState) {
+        let bannerViewData = liveLocationBannerViewData(from: liveLocationViewState)
+        displayLocation(viewData.location,
+                        userAvatarData: viewData.userAvatarData,
+                        mapStyleURL: viewData.mapStyleURL,
+                        bannerViewData: bannerViewData)
+        
+    }
+    
     
     // MARK: - Themable
     
@@ -167,7 +311,11 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     
     // MARK: - Action
     
-    @IBAction private func stopSharingAction(_ sender: Any) {
-        // TODO: - Stop sharing action
+    @IBAction private func didTapTightButton(_ sender: Any) {
+        if rightButton.tag == RightButtonTag.stopSharing.rawValue {
+            delegate?.didTapStopButton()
+        } else if rightButton.tag == RightButtonTag.retrySharing.rawValue {
+            delegate?.didTapRetryButton()
+        }
     }
 }

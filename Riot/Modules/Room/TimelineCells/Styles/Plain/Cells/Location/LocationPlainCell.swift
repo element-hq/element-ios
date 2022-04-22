@@ -20,6 +20,7 @@ import MatrixSDK
 class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable {
     
     private var locationView: RoomTimelineLocationView!
+    private var event: MXEvent?
     
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
@@ -31,6 +32,7 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
             return
         }
         
+        self.event = event
         locationView.update(theme: ThemeService.shared().theme)
         
         // Comment this line and uncomment next one to test UI of live location tile
@@ -49,17 +51,19 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
         
         let mapStyleURL = bubbleData.mxSession.vc_homeserverConfiguration().tileServer.mapStyleURL
         
+        let avatarViewData: AvatarViewData?
+        
         if locationContent.assetType == .user {
-            let avatarViewData = AvatarViewData(matrixItemId: bubbleData.senderId,
+            avatarViewData = AvatarViewData(matrixItemId: bubbleData.senderId,
                                                 displayName: bubbleData.senderDisplayName,
                                                 avatarUrl: bubbleData.senderAvatarUrl,
                                                 mediaManager: bubbleData.mxSession.mediaManager,
                                                 fallbackImage: .matrixItem(bubbleData.senderId, bubbleData.senderDisplayName))
-            
-            locationView.displayLocation(location, userAvatarData: avatarViewData, mapStyleURL: mapStyleURL)
         } else {
-            locationView.displayLocation(location, mapStyleURL: mapStyleURL)
+            avatarViewData = nil
         }
+        
+        locationView.displayStaticLocation(with: RoomTimelineLocationViewData(location: location, userAvatarData: avatarViewData, mapStyleURL: mapStyleURL))
     }
     
     private func renderLiveLocation(_ event: MXEvent) {
@@ -84,35 +88,10 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
                                             mediaManager: bubbleData.mxSession.mediaManager,
                                             fallbackImage: .matrixItem(bubbleData.senderId, bubbleData.senderDisplayName))
         let futurDateTimeInterval = Date(timeIntervalSinceNow: 3734).timeIntervalSince1970
-        locationView.displayLocation(location, userAvatarData: avatarViewData, mapStyleURL: mapStyleURL, liveLocationState: .outgoingLive(generateTimerString(for: futurDateTimeInterval, isIncomingLocation: false)))
+        
+        locationView.displayLiveLocation(with: RoomTimelineLocationViewData(location: location, userAvatarData: avatarViewData, mapStyleURL: mapStyleURL),
+                                         liveLocationViewState: .outgoing(.failure))
     }
-    
-    private func generateTimerString(for timestamp: Double,
-                                     isIncomingLocation: Bool) -> String? {
-        let timerString: String?
-        if isIncomingLocation {
-            timerString = VectorL10n.locationSharingLiveTimerIncoming(incomingTimerFormatter.string(from: Date(timeIntervalSince1970: timestamp)))
-        } else if let outgoingTimer = outgoingTimerFormatter.string(from: Date(timeIntervalSince1970: timestamp).timeIntervalSinceNow) {
-            timerString = VectorL10n.locationSharingLiveTimerOutgoing(outgoingTimer)
-        } else {
-            timerString = nil
-        }
-        return timerString
-    }
-    
-    private lazy var incomingTimerFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm"
-        return dateFormatter
-    }()
-    
-    private lazy var outgoingTimerFormatter: DateComponentsFormatter = {
-        let formatter = DateComponentsFormatter()
-        formatter.zeroFormattingBehavior = .dropAll
-        formatter.allowedUnits = [.hour, .minute, .second]
-        formatter.unitsStyle = .brief
-        return formatter
-    }()
     
     override func setupViews() {
         super.setupViews()
@@ -129,5 +108,23 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
         locationView = RoomTimelineLocationView.loadFromNib()
         
         contentView.vc_addSubViewMatchingParent(locationView)
+    }
+}
+
+extension LocationPlainCell: RoomTimelineLocationViewDelegate {
+    func didTapStopButton() {
+        guard let event = self.event else {
+            return
+        }
+        
+        delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellStopShareButtonPressed, userInfo: [kMXKRoomBubbleCellEventKey: event])
+    }
+    
+    func didTapRetryButton() {
+        guard let event = self.event else {
+            return
+        }
+        
+        delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellRetryShareButtonPressed, userInfo: [kMXKRoomBubbleCellEventKey: event])
     }
 }
