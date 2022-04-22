@@ -2905,7 +2905,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             }
         }
     }
-    else if (bubbleData.tag == RoomBubbleCellDataTagLocation)
+    else if (bubbleData.tag == RoomBubbleCellDataTagLocation || bubbleData.tag == RoomBubbleCellDataTagLiveLocation)
     {
         if (bubbleData.isIncoming)
         {
