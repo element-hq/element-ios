@@ -23,6 +23,9 @@ class MockRoomUpgradeService: RoomUpgradeServiceProtocol {
     
     var errorSubject: CurrentValueSubject<Error?, Never>
     var upgradingSubject: CurrentValueSubject<Bool, Never>
+    var parentSpaceName: String? {
+        return "Parent space name"
+    }
     
     init() {
         self.errorSubject = CurrentValueSubject(nil)

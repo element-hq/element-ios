@@ -30,11 +30,13 @@ enum LocationSharingViewAction {
     case share
     case sharePinLocation
     case goToUserLocation
+    case shareLiveLocation
 }
 
 enum LocationSharingViewModelResult {
     case cancel
     case share(latitude: Double, longitude: Double, coordinateType: LocationSharingCoordinateType)
+    case shareLiveLocation(timeout: TimeInterval)
 }
 
 enum LocationSharingViewError {
@@ -52,9 +54,6 @@ struct LocationSharingViewState: BindableState {
     
     /// Current user avatarData
     let userAvatarData: AvatarInputProtocol
-    
-    /// Shared annotation to display existing location
-    let sharedAnnotation: LocationAnnotation?
     
     /// Map annotations to display on map
     var annotations: [LocationAnnotation]
@@ -74,14 +73,6 @@ struct LocationSharingViewState: BindableState {
     
     /// Used to hide live location sharing features until is finished
     var isLiveLocationSharingEnabled: Bool = false
-    
-    var shareButtonVisible: Bool {
-        return self.displayExistingLocation == false
-    }
-    
-    var displayExistingLocation: Bool {
-        return sharedAnnotation != nil
-    }
     
     var shareButtonEnabled: Bool {
         !showLoadingIndicator

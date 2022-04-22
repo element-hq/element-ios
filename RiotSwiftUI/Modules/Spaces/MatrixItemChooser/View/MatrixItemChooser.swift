@@ -44,7 +44,7 @@ struct MatrixItemChooser: View {
     var body: some View {
         listContent
             .background(Color.clear)
-            .waitOverlay(show: viewModel.viewState.loading)
+            .waitOverlay(show: viewModel.viewState.loading, message: viewModel.viewState.loadingText, allowUserInteraction: false)
             .alert(isPresented: .constant(viewModel.viewState.error != nil)) {
                 Alert(title: Text(VectorL10n.error), message: Text(viewModel.viewState.error ?? ""), dismissButton: .cancel(Text(VectorL10n.ok)))
             }

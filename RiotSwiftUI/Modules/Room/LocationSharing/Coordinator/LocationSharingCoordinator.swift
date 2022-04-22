@@ -23,22 +23,20 @@ struct LocationSharingCoordinatorParameters {
     let roomDataSource: MXKRoomDataSource
     let mediaManager: MXMediaManager
     let avatarData: AvatarInputProtocol
-    let location: CLLocationCoordinate2D?
-    let coordinateType: MXEventAssetType
 }
 
 // Map between type from MatrixSDK and type from SwiftUI target, as we don't want
 // to add the SDK as a dependency to it. We need to translate from one to the other on this level.
 extension MXEventAssetType {
-    func locationSharingCoordinateType() -> LocationSharingCoordinateType {
-        let coordinateType: LocationSharingCoordinateType
+    func locationSharingCoordinateType() -> LocationSharingCoordinateType? {
+        let coordinateType: LocationSharingCoordinateType?
         switch self {
-        case .user, .generic:
+        case .user:
             coordinateType = .user
         case .pin:
             coordinateType = .pin
-        @unknown default:
-            coordinateType = .user
+        default:
+            coordinateType = nil
         }
         return coordinateType
     }
@@ -81,8 +79,6 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
         
         let viewModel = LocationSharingViewModel(mapStyleURL: BuildSettings.tileServerMapStyleURL,
                                                  avatarData: parameters.avatarData,
-                                                 location: parameters.location,
-                                                 coordinateType: parameters.coordinateType.locationSharingCoordinateType(),
                                                  isLiveLocationSharingEnabled: BuildSettings.liveLocationSharingEnabled)
         let view = LocationSharingView(context: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
@@ -105,28 +101,10 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
             case .cancel:
                 self.completion?()
             case .share(let latitude, let longitude, let coordinateType):
-                
-                // Show share sheet on existing location display
-                if let location = self.parameters.location {
-                    self.locationSharingHostingController.present(Self.shareLocationActivityController(location), animated: true)
-                    return
-                }
-                
-                self.locationSharingViewModel.startLoading()
-                
-                self.parameters.roomDataSource.sendLocation(withLatitude: latitude, longitude: longitude, description: nil, coordinateType: coordinateType.eventAssetType()) { [weak self] _ in
-                    guard let self = self else { return }
-                    
-                    self.locationSharingViewModel.stopLoading()
-                    self.completion?()
-                } failure: { [weak self] error in
-                    guard let self = self else { return }
-                    
-                    MXLog.error("[LocationSharingCoordinator] Failed sharing location with error: \(String(describing: error))")
-                    self.locationSharingViewModel.stopLoading(error: .locationSharingError)
-                }
+                self.shareStaticLocation(latitude: latitude, longitude: longitude, coordinateType: coordinateType)
+            case .shareLiveLocation(let timeout):
+                self.startLiveLocationSharing(with: timeout)
             }
-            
         }
     }
     
@@ -135,6 +113,54 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
                                         applicationActivities: [ShareToMapsAppActivity(type: .apple, location: location),
                                                                 ShareToMapsAppActivity(type: .google, location: location),
                                                                 ShareToMapsAppActivity(type: .osm, location: location)])
+    }
+    
+    // MARK: - Private
+    
+    private func presentShareLocationActivity(with location: CLLocationCoordinate2D) {
+        self.locationSharingHostingController.present(Self.shareLocationActivityController(location), animated: true)
+    }
+    
+    private func shareStaticLocation(latitude: Double, longitude: Double, coordinateType: LocationSharingCoordinateType) {
+        self.locationSharingViewModel.startLoading()
+        
+        self.parameters.roomDataSource.sendLocation(withLatitude: latitude, longitude: longitude, description: nil, coordinateType: coordinateType.eventAssetType()) { [weak self] _ in
+            guard let self = self else { return }
+            
+            self.locationSharingViewModel.stopLoading()
+            self.completion?()
+        } failure: { [weak self] error in
+            guard let self = self else { return }
+            
+            MXLog.error("[LocationSharingCoordinator] Failed sharing location with error: \(String(describing: error))")
+            self.locationSharingViewModel.stopLoading(error: .locationSharingError)
+        }
+    }
+    
+    private func startLiveLocationSharing(with timeout: TimeInterval) {
+        guard let locationService = self.parameters.roomDataSource.mxSession.locationService, let roomId = self.parameters.roomDataSource.roomId else {
+            self.locationSharingViewModel.stopLoading(error: .locationSharingError)
+            return
+        }
+        
+        locationService.startUserLocationSharing(withRoomId: roomId, description: nil, timeout: timeout) { [weak self] response in
+            guard let self = self else { return }
+            
+            switch response {
+            case .success:
+                
+                DispatchQueue.main.async {
+                    self.locationSharingViewModel.stopLoading()
+                    self.completion?()
+                }
+            case .failure(let error):
+                MXLog.error("[LocationSharingCoordinator] Failed to start live location sharing with error: \(String(describing: error))")
+                
+                DispatchQueue.main.async {
+                    self.locationSharingViewModel.stopLoading(error: .locationSharingError)
+                }
+            }
+        }
     }
     
     // MARK: - Presentable

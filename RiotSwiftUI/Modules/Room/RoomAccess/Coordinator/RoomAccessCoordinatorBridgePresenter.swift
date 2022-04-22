@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 import UIKit
+import MatrixSDK
 
 @available(iOS 14.0, *)
 @objc protocol RoomAccessCoordinatorBridgePresenterDelegate {
@@ -34,6 +35,7 @@ final class RoomAccessCoordinatorBridgePresenter: NSObject {
     // MARK: Private
     
     private let room: MXRoom
+    private let parentSpaceId: String?
     private let allowsRoomUpgrade: Bool
     private var coordinator: RoomAccessCoordinator?
     
@@ -44,21 +46,24 @@ final class RoomAccessCoordinatorBridgePresenter: NSObject {
     // MARK: - Setup
     
     init(room: MXRoom,
+         parentSpaceId: String?,
          allowsRoomUpgrade: Bool) {
         self.room = room
+        self.parentSpaceId = parentSpaceId
         self.allowsRoomUpgrade = allowsRoomUpgrade
         super.init()
     }
     
-    convenience init(room: MXRoom) {
-        self.init(room: room, allowsRoomUpgrade: true)
+    convenience init(room: MXRoom,
+                     parentSpaceId: String?) {
+        self.init(room: room, parentSpaceId: parentSpaceId, allowsRoomUpgrade: true)
     }
     
     // MARK: - Public
     
     func present(from viewController: UIViewController, animated: Bool) {
         let navigationRouter = NavigationRouter()
-        let coordinator = RoomAccessCoordinator(parameters: RoomAccessCoordinatorParameters(room: room, allowsRoomUpgrade: allowsRoomUpgrade, navigationRouter: navigationRouter))
+        let coordinator = RoomAccessCoordinator(parameters: RoomAccessCoordinatorParameters(room: room, parentSpaceId: parentSpaceId, allowsRoomUpgrade: allowsRoomUpgrade, navigationRouter: navigationRouter))
         coordinator.callback = { [weak self] result in
             guard let self = self else { return }
             

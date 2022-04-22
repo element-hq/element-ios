@@ -21,7 +21,6 @@ import CoreLocation
 @available(iOS 14.0, *)
 enum MockLocationSharingScreenState: MockScreenState, CaseIterable {
     case shareUserLocation
-    case displayExistingLocation
     
     var screenType: Any.Type {
         LocationSharingView.self
@@ -29,16 +28,9 @@ enum MockLocationSharingScreenState: MockScreenState, CaseIterable {
     
     var screenView: ([Any], AnyView)  {
         
-        var location: CLLocationCoordinate2D?
-        if self == .displayExistingLocation {
-            location = CLLocationCoordinate2D(latitude: 51.4932641, longitude: -0.257096)
-        }
-        
         let mapStyleURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx")!
         let viewModel = LocationSharingViewModel(mapStyleURL: mapStyleURL,
                                                  avatarData: AvatarInput(mxContentUri: "", matrixItemId: "alice:matrix.org", displayName: "Alice"),
-                                                 location: location,
-                                                 coordinateType: .user,
                                                  isLiveLocationSharingEnabled: true)
         return ([viewModel],
                 AnyView(LocationSharingView(context: viewModel.context)

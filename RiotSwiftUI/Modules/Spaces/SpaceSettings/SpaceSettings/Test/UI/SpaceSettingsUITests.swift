@@ -19,17 +19,5 @@ import RiotSwiftUI
 
 @available(iOS 14.0, *)
 class SpaceSettingsUITests: MockScreenTest {
-
-    override class var screenType: MockScreenState.Type {
-        return MockSpaceSettingsScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return SpaceSettingsUITests(selector: #selector(verifySpaceSettingsScreen))
-    }
-
-    func verifySpaceSettingsScreen() throws {
-        guard let screenState = screenState as? MockSpaceSettingsScreenState else { fatalError("no screen") }
-    }
-
+    // Tests to be implemented.
 }

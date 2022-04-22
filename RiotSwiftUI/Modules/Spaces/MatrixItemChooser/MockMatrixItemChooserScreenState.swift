@@ -52,7 +52,10 @@ enum MockMatrixItemChooserScreenState: MockScreenState, CaseIterable {
             selectionHeader = MatrixItemChooserSelectionHeader(title: "Selection Title", selectAllTitle: "Select all items", selectNoneTitle: "Select no items")
             service = MockMatrixItemChooserService(type: .room, sections: MockMatrixItemChooserService.mockSections, selectedItemIndexPaths: [IndexPath(row: 0, section: 0), IndexPath(row: 2, section: 0), IndexPath(row: 1, section: 1)])
         }
-        let viewModel = MatrixItemChooserViewModel.makeMatrixItemChooserViewModel(matrixItemChooserService: service, title: "Some title", detail: "Detail text describing the current screen", selectionHeader: selectionHeader)
+        let viewModel = MatrixItemChooserViewModel.makeMatrixItemChooserViewModel(matrixItemChooserService: service,
+                                                                                  title: VectorL10n.spacesCreationAddRoomsTitle,
+                                                                                  detail: VectorL10n.spacesCreationAddRoomsMessage,
+                                                                                  selectionHeader: selectionHeader)
         
         // can simulate service and viewModel actions here if needs be.
         

@@ -2759,6 +2759,10 @@ public class VectorL10n: NSObject {
   public static var locationSharingInvalidAuthorizationSettings: String { 
     return VectorL10n.tr("Vector", "location_sharing_invalid_authorization_settings") 
   }
+  /// Share location
+  public static var locationSharingLiveMapCalloutTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_map_callout_title") 
+  }
   /// Share live location
   public static var locationSharingLiveShareTitle: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_share_title") 
@@ -4279,9 +4283,17 @@ public class VectorL10n: NSObject {
   public static var roomAccessSettingsScreenUpgradeAlertAutoInviteSwitch: String { 
     return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_auto_invite_switch") 
   }
-  /// Anyone in Space name will be able to find and join this room - no need to manually invite everyone. You’ll be able to change this in room settings anytime.\n\nPlease note upgrading will make a new version of the room.  All current messages will stay in this archived room.
-  public static var roomAccessSettingsScreenUpgradeAlertMessage: String { 
-    return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_message") 
+  /// Anyone in %@ will be able to find and join this room - no need to manually invite everyone. You’ll be able to change this in room settings anytime.
+  public static func roomAccessSettingsScreenUpgradeAlertMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_message", p1)
+  }
+  /// Anyone in a parent space will be able to find and join this room - no need to manually invite everyone. You’ll be able to change this in room settings anytime.
+  public static var roomAccessSettingsScreenUpgradeAlertMessageNoParam: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_message_no_param") 
+  }
+  /// Please note upgrading will make a new version of the room. All current messages will stay in this archived room.
+  public static var roomAccessSettingsScreenUpgradeAlertNote: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_note") 
   }
   /// Upgrade room
   public static var roomAccessSettingsScreenUpgradeAlertTitle: String { 
@@ -7691,6 +7703,14 @@ public class VectorL10n: NSObject {
   public static var threadsBetaTitle: String { 
     return VectorL10n.tr("Vector", "threads_beta_title") 
   }
+  /// Your homeserver does not currently support threads, so this feature may be unreliable. Some threaded messages may not be reliably available. 
+  public static var threadsDiscourageInformation1: String { 
+    return VectorL10n.tr("Vector", "threads_discourage_information_1") 
+  }
+  /// \n\nDo you want to enable threads anyway?
+  public static var threadsDiscourageInformation2: String { 
+    return VectorL10n.tr("Vector", "threads_discourage_information_2") 
+  }
   /// Threads help keep your conversations on-topic and easy to track.
   public static var threadsEmptyInfoAll: String { 
     return VectorL10n.tr("Vector", "threads_empty_info_all") 
@@ -8086,15 +8106,18 @@ public class VectorL10n: NSObject {
 
 extension VectorL10n {
   static func tr(_ table: String, _ key: String, _ args: CVarArg...) -> String {
-    let format = NSLocalizedString(key, tableName: table, bundle: Bundle.app, comment: "")
-    let locale: Locale
-    if let providedLocale = LocaleProvider.locale {
-      locale = providedLocale
-    } else {
-      locale = Locale.current
-    }        
-
-      return String(format: format, locale: locale, arguments: args)
+    let format = NSLocalizedString(key, tableName: table, bundle: bundle, comment: "")
+    let locale = LocaleProvider.locale ?? Locale.current    
+    return String(format: format, locale: locale, arguments: args)
+  }
+  /// The bundle to load strings from. This will be the app's bundle unless running
+  /// the UI tests target, in which case the strings are contained in the tests bundle.
+  static let bundle: Bundle = {
+    if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+      // The tests bundle is embedded inside a runner. Find the bundle for VectorL10n.
+      return Bundle(for: VectorL10n.self)
     }
+    return Bundle.app
+  }()
 }
 

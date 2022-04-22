@@ -187,7 +187,8 @@ SingleImagePickerPresenterDelegate,
 SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinatorDelegate,
 SettingsIdentityServerCoordinatorBridgePresenterDelegate,
 ServiceTermsModalCoordinatorBridgePresenterDelegate,
-TableViewSectionsDelegate>
+TableViewSectionsDelegate,
+ThreadsBetaCoordinatorBridgePresenterDelegate>
 {
     // Current alert (if any).
     __weak UIAlertController *currentAlert;
@@ -287,6 +288,8 @@ TableViewSectionsDelegate>
 @property (nonatomic, strong) ReauthenticationCoordinatorBridgePresenter *reauthenticationCoordinatorBridgePresenter;
 
 @property (nonatomic, strong) UserInteractiveAuthenticationService *userInteractiveAuthenticationService;
+
+@property (nonatomic, strong) ThreadsBetaCoordinatorBridgePresenter *threadsBetaBridgePresenter;
 
 /**
  Whether or not to check for contacts access after the user accepts the service terms. The value of this property is
@@ -3254,8 +3257,31 @@ TableViewSectionsDelegate>
 
 - (void)toggleEnableThreads:(UISwitch *)sender
 {
-    RiotSettings.shared.enableThreads = sender.isOn;
-    MXSDKOptions.sharedInstance.enableThreads = sender.isOn;
+    if (sender.isOn && !self.mainSession.store.supportedMatrixVersions.supportsThreads)
+    {
+        //  user wants to turn on the threads setting but the server does not support it
+        if (self.threadsBetaBridgePresenter)
+        {
+            [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:nil];
+            self.threadsBetaBridgePresenter = nil;
+        }
+
+        self.threadsBetaBridgePresenter = [[ThreadsBetaCoordinatorBridgePresenter alloc] initWithThreadId:@""
+                                                                                                 infoText:VectorL10n.threadsDiscourageInformation1
+                                                                                           additionalText:VectorL10n.threadsDiscourageInformation2];
+        self.threadsBetaBridgePresenter.delegate = self;
+
+        [self.threadsBetaBridgePresenter presentFrom:self.presentedViewController?:self animated:YES];
+        return;
+    }
+
+    [self enableThreads:sender.isOn];
+}
+
+- (void)enableThreads:(BOOL)enable
+{
+    RiotSettings.shared.enableThreads = enable;
+    MXSDKOptions.sharedInstance.enableThreads = enable;
     [[MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession] reset];
     [[AppDelegate theDelegate] restoreEmptyDetailsViewController];
 }
@@ -4722,6 +4748,26 @@ TableViewSectionsDelegate>
 - (void)tableViewSectionsDidUpdateSections:(TableViewSections *)sections
 {
     [self.tableView reloadData];
+}
+
+#pragma mark - ThreadsBetaCoordinatorBridgePresenterDelegate
+
+- (void)threadsBetaCoordinatorBridgePresenterDelegateDidTapEnable:(ThreadsBetaCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    MXWeakify(self);
+    [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:^{
+        MXStrongifyAndReturnIfNil(self);
+        [self enableThreads:YES];
+    }];
+}
+
+- (void)threadsBetaCoordinatorBridgePresenterDelegateDidTapCancel:(ThreadsBetaCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    MXWeakify(self);
+    [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:^{
+        MXStrongifyAndReturnIfNil(self);
+        [self updateSections];
+    }];
 }
 
 @end

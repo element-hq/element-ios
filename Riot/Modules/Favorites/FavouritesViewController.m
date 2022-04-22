@@ -64,10 +64,14 @@
     [super viewWillAppear:animated];
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
-    if (recentsDataSource)
+    if (recentsDataSource.recentsDataSourceMode != RecentsDataSourceModeFavourites)
     {
         // Take the lead on the shared data source.
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeFavourites];
+        
+        // Reset filtering on the shared data source when switching tabs
+        [recentsDataSource searchWithPatterns:nil];
+        [self.recentsSearchBar setText:nil];
     }
 }
 

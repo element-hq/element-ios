@@ -507,6 +507,8 @@ Tap the + to start adding people.";
 "threads_beta_information_link" = "Learn more";
 "threads_beta_enable" = "Try it out";
 "threads_beta_cancel" = "Not now";
+"threads_discourage_information_1" = "Your homeserver does not currently support threads, so this feature may be unreliable. Some threaded messages may not be reliably available. ";
+"threads_discourage_information_2" = "\n\nDo you want to enable threads anyway?";
 
 "media_type_accessibility_image" = "Image";
 "media_type_accessibility_audio" = "Audio";
@@ -926,7 +928,9 @@ Tap the + to start adding people.";
 "room_access_settings_screen_public_message" = "Anyone can find and join.";
 
 "room_access_settings_screen_upgrade_alert_title" = "Upgrade room";
-"room_access_settings_screen_upgrade_alert_message" = "Anyone in Space name will be able to find and join this room - no need to manually invite everyone. You’ll be able to change this in room settings anytime.\n\nPlease note upgrading will make a new version of the room.  All current messages will stay in this archived room.";
+"room_access_settings_screen_upgrade_alert_message" = "Anyone in %@ will be able to find and join this room - no need to manually invite everyone. You’ll be able to change this in room settings anytime.";
+"room_access_settings_screen_upgrade_alert_message_no_param" = "Anyone in a parent space will be able to find and join this room - no need to manually invite everyone. You’ll be able to change this in room settings anytime.";
+"room_access_settings_screen_upgrade_alert_note" = "Please note upgrading will make a new version of the room. All current messages will stay in this archived room.";
 "room_access_settings_screen_upgrade_alert_auto_invite_switch" = "Automatically invite members to new room";
 "room_access_settings_screen_upgrade_alert_upgrade_button" = "Upgrade";
 "room_access_settings_screen_upgrade_alert_upgrading" = "Upgrading room";
@@ -2137,6 +2141,7 @@ Tap the + to start adding people.";
 "live_location_sharing_banner_stop" = "Stop";
 "location_sharing_static_share_title" = "Send my current location";
 "location_sharing_pin_drop_share_title" = "Send this location";
+"location_sharing_live_map_callout_title" = "Share location";
 
 // MARK: - MatrixKit
 

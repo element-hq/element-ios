@@ -39,6 +39,8 @@ class ThreadsBetaViewController: UIViewController {
     // MARK: Private
 
     private var theme: Theme!
+    private var infoText: String!
+    private var additionalText: String?
 
     // MARK: Public
 
@@ -69,9 +71,11 @@ class ThreadsBetaViewController: UIViewController {
 
     // MARK: - Setup
 
-    @objc class func instantiate() -> ThreadsBetaViewController {
+    @objc class func instantiate(infoText: String, additionalText: String?) -> ThreadsBetaViewController {
         let viewController = StoryboardScene.ThreadsBetaViewController.initialScene.instantiate()
         viewController.theme = ThemeService.shared().theme
+        viewController.infoText = infoText
+        viewController.additionalText = additionalText
         return viewController
     }
 
@@ -98,12 +102,17 @@ class ThreadsBetaViewController: UIViewController {
         guard let font = self.informationTextView.font else {
             return
         }
-        let attributedString = NSMutableAttributedString(string: VectorL10n.threadsBetaInformation,
+        let attributedString = NSMutableAttributedString(string: infoText,
                                                          attributes: [.font: font])
         let link = NSAttributedString(string: VectorL10n.threadsBetaInformationLink,
                                       attributes: [.link: Constants.learnMoreLink,
                                                    .font: font])
         attributedString.append(link)
+
+        if let additionalText = additionalText {
+            attributedString.append(NSAttributedString(string: additionalText,
+                                                       attributes: [.font: font]))
+        }
         self.informationTextView.attributedText = attributedString
     }
 
