@@ -1326,7 +1326,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 
 - (void)updateBeaconInfoSummaryWithEventId:(NSString *)eventId
 {
-    MXBeaconInfoSummary *beaconInfoSummary =  [self.mxSession.aggregations.beaconAggegations beaconInfoSummaryFor:eventId inRoomWithId:self.roomId];
+    MXBeaconInfoSummary *beaconInfoSummary = [self.mxSession.aggregations.beaconAggegations beaconInfoSummaryFor:eventId inRoomWithId:self.roomId];
     
     self.beaconInfoSummary = beaconInfoSummary;
 }
