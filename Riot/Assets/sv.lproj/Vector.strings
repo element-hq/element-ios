@@ -1165,8 +1165,8 @@
 "create_room_title" = "Nytt rum";
 "create_room_section_header_name" = "NAMN";
 "create_room_placeholder_name" = "Namn";
-"create_room_section_header_topic" = "Samtalsämne (valfritt)";
-"create_room_placeholder_topic" = "Vad är rummets samtalsämne?";
+"create_room_section_header_topic" = "ÄMNE (VALFRITT)";
+"create_room_placeholder_topic" = "Vad handlar rummet om?";
 "create_room_section_header_encryption" = "KRYPTERING";
 "create_room_enable_encryption" = "Aktivera kryptering";
 "create_room_section_footer_encryption" = "Kryptering kan inte inaktiveras igen.";
@@ -2075,7 +2075,7 @@
 "room_participants_leave_processing" = "Lämnar";
 "spaces_creation_new_rooms_support" = "Support";
 "create_room_promotion_header" = "BEFORDRAN";
-"room_access_settings_screen_upgrade_alert_message" = "Vem som helst i utrymmet kommer kunna hitta och gå med i det här rummet – man behöver inte bjuda in alla manuellt. Du kommer kunna ändra dessa inställningar för rummet när som helst.\n\nNotera att en ny version av rummet kommer skapas vid uppgradering. Alla existerande meddelanden kommer behållas arkiverade i detta rummet.";
+"room_access_settings_screen_upgrade_alert_message" = "Vem som helst i utrymmet kommer kunna hitta och gå med i det här rummet – man behöver inte bjuda in alla manuellt. Du kommer kunna ändra detta i rumsinställningarna när som helst.\n\nObservera att en ny version av rummet kommer skapas vid uppgradering. Alla existerande meddelanden kommer behållas arkiverade i detta rum.";
 "onboarding_celebration_button" = "Nu kör vi";
 "ignore_user" = "Ignorera användare";
 "location_sharing_pin_drop_share_title" = "Skicka denna position";
@@ -2087,7 +2087,7 @@
 
 "location_sharing_live_share_title" = "Dela position i realtid";
 "side_menu_coach_message" = "Svep åt höger eller tryck för att se alla rum";
-"spaces_add_room_missing_permission_message" = "Du har inte behörighet att lägga till rum i detta utrymmet.";
+"spaces_add_room_missing_permission_message" = "Du är inte behörig att lägga till rum i detta utrymme.";
 "spaces_creation_in_one_space" = "i 1 utrymme";
 "spaces_creation_in_many_spaces" = "i %@ utrymmen";
 "spaces_creation_in_spacename_plus_many" = "i %@ + %@ utrymmen";
@@ -2102,9 +2102,9 @@
 "spaces_creation_invite_by_username_message" = "Du kan bjuda in dem senare också.";
 "spaces_creation_invite_by_username_title" = "Bjud in ditt team";
 "spaces_creation_invite_by_username" = "Bjud in genom användarnamn";
-"spaces_creation_add_rooms_message" = "Eftersom detta utrymmet endast är för dig så kommer ingen annan informeras. Du kan lägga till fler senare.";
+"spaces_creation_add_rooms_message" = "Eftersom det här utrymmet endast är för dig så kommer ingen annan informeras. Du kan lägga till fler senare.";
 "spaces_creation_add_rooms_title" = "Vad skulle du vilja lägga till?";
-"spaces_creation_sharing_type_me_and_teammates_detail" = "Ett privat utrymme för dig & dina teamkompisar";
+"spaces_creation_sharing_type_me_and_teammates_detail" = "Ett privat utrymme för dig & dina teamkamrater";
 "spaces_creation_sharing_type_me_and_teammates_title" = "Jag och andra i mitt team";
 "spaces_creation_sharing_type_just_me_detail" = "Ett privat utrymme för att organisera dina rum";
 "spaces_creation_sharing_type_just_me_title" = "Endast jag";
@@ -2125,18 +2125,18 @@
 "spaces_creation_address_already_exists" = "%@\nfinns redan";
 "spaces_creation_address_invalid_characters" = "%@\nhar ogiltiga tecken";
 "spaces_creation_address_default_message" = "Ditt utrymme kommer kunna ses på\n%@";
-"spaces_creation_empty_room_name_error" = "Namn är obligatoriskt";
+"spaces_creation_empty_room_name_error" = "Namn krävs";
 "spaces_creation_address" = "Adress";
 "spaces_creation_settings_message" = "Lägg till lite mer info för att synas. Du kan ändra detta när som helst.";
 "spaces_creation_footer" = "Du kan ändra detta senare";
 "spaces_creation_visibility_message" = "För att gå med i ett existerande utrymme så behöver du en inbjudan.";
-"spaces_creation_visibility_title" = "Vilket typ av utrymme vill du skapa?";
+"spaces_creation_visibility_title" = "Vilken typ av utrymme vill du skapa?";
 
 // Mark: - Space Creation
 
 "spaces_creation_hint" = "Utrymmen är ett nytt sätt att gruppera rum och personer.";
 "space_settings_current_address_message" = "Ditt utrymme kan ses på\n%@";
-"space_settings_update_failed_message" = "Kunde ej uppdatera inställningar för utrymmet. Vill du försöka igen?";
+"space_settings_update_failed_message" = "Misslyckades att uppdatera inställningar för utrymmet. Vill du försöka igen?";
 "space_settings_access_section" = "Vem har åtkomst till detta utrymmet?";
 "space_topic" = "Beskrivning";
 "space_public_join_rule_detail" = "Öppet för alla, passar bäst för öppna grupper";
@@ -2148,10 +2148,10 @@
 "spaces_explore_rooms_room_number" = "%@ rum";
 "spaces_create_space_title" = "Skapa ett utrymme";
 "spaces_add_space_title" = "Skapa utrymme";
-"space_invite_not_enough_permission" = "Du har inte behörighet att bjuda in andra till detta utrymmet";
-"room_invite_not_enough_permission" = "Du har inte behörighet att bjuda in andra till detta rummet";
+"space_invite_not_enough_permission" = "Du är inte behörig att bjuda in andra till detta utrymme";
+"room_invite_not_enough_permission" = "Du är inte behörig att bjuda in andra till detta rum";
 "room_invite_to_room_option_detail" = "De kommer inte bli del av %@.";
-"room_invite_to_room_option_title" = "Endast till detta rummet";
+"room_invite_to_room_option_title" = "Endast till detta rum";
 "room_invite_to_space_option_detail" = "De kommer kunna utforska %@, men kommer inte bli medlemmar i %@.";
 
 // Mark: - Room invite
@@ -2165,13 +2165,13 @@
 "share_invite_link_action" = "Dela inbjudningslänk";
 "create_room_processing" = "Skapar rum";
 "create_room_suggest_room_footer" = "Rekommenderade rum visas för medlemmar i utrymmet som förslag på bra ställen att gå med.";
-"create_room_suggest_room" = "Föreslå medlemmar till utrymmet";
+"create_room_suggest_room" = "Föreslå för utrymmesmedlemmar";
 "create_room_show_in_directory_footer" = "Detta kommer underlätta för andra att hitta och gå med.";
 "create_room_section_footer_type_public" = "Endast inbjudna kan hitta och gå med, inte bara personer i utrymmet.";
 "create_room_section_footer_type_restricted" = "Vem som helst i utrymmet kan hitta och gå med.";
 "create_room_section_footer_type_private" = "Endast inbjudna personer kan hitta och gå med.";
 "create_room_type_restricted" = "Utrymmesmedlemmar";
-"call_jitsi_unable_to_start" = "Kunde ej starta flerpartssamtal";
+"call_jitsi_unable_to_start" = "Kunde inte starta gruppsamtal";
 "room_suggestion_settings_screen_message" = "Rekommenderade rum visas för medlemmar i utrymmet, som bra förslag på bra ställen att gå med i.";
 "room_suggestion_settings_screen_title" = "Gör så att ett rum blir rekommenderat i ett utrymme";
 
@@ -2179,33 +2179,33 @@
 "room_suggestion_settings_screen_nav_title" = "Föreslå rum";
 "room_access_space_chooser_other_spaces_section_info" = "Administratörer i %@ är troligen även med i dessa.";
 "room_access_space_chooser_other_spaces_section" = "Andra utrymmen eller rum";
-"room_access_space_chooser_known_spaces_section" = "Utrymmen som du vet innehåller %@";
-"room_access_settings_screen_setting_room_access" = "Ställ in rumsåtkomst";
-"room_access_settings_screen_upgrade_alert_upgrading" = "Uppdatera rum";
-"room_access_settings_screen_upgrade_alert_upgrade_button" = "Uppdatera";
+"room_access_space_chooser_known_spaces_section" = "Utrymmen du känner till som innehåller %@";
+"room_access_settings_screen_setting_room_access" = "Ställer in rumsåtkomst";
+"room_access_settings_screen_upgrade_alert_upgrading" = "Uppgraderar rum";
+"room_access_settings_screen_upgrade_alert_upgrade_button" = "Uppgradera";
 "room_access_settings_screen_upgrade_alert_auto_invite_switch" = "Bjud automatiskt in medlemmar till nya rum";
 "room_access_settings_screen_upgrade_alert_title" = "Uppgradera rum";
 "room_access_settings_screen_public_message" = "Vem som helst kan hitta och gå med.";
 "room_access_settings_screen_edit_spaces" = "Redigera utrymmen";
-"room_access_settings_screen_upgrade_required" = "Uppdatering krävs";
+"room_access_settings_screen_upgrade_required" = "Uppgradering krävs";
 "room_access_settings_screen_restricted_message" = "Tillåt vem som helst i ett utrymme att hitta och gå med.\nDu kommer behöva bekräfta vilka utrymmen det gäller.";
 "room_access_settings_screen_private_message" = "Endast inbjudna kan hitta och gå med.";
-"room_access_settings_screen_message" = "Välj vem som kan hitta och gå med i %@.";
-"room_access_settings_screen_title" = "Vem kan komma åt detta rummet?";
+"room_access_settings_screen_message" = "Välj vilka som kan hitta och gå med i %@.";
+"room_access_settings_screen_title" = "Vika kan komma åt detta rum?";
 
 // Room Access Settings
 "room_access_settings_screen_nav_title" = "Rumsåtkomst";
 "room_details_promote_room_suggest_title" = "Föreslå utrymme för medlemmar";
 "room_details_promote_room_title" = "Befordra rum";
 "room_details_access_row_title" = "Åtkomst";
-"settings_labs_enable_auto_report_decryption_errors" = "Rapportera krypteringsfel automatiskt";
-"room_preview_decline_invitation_options" = "Vill du avböja inbjudan eller ignorera denna användaren?";
+"settings_labs_enable_auto_report_decryption_errors" = "Rapportera avkrypteringsfel automatiskt";
+"room_preview_decline_invitation_options" = "Vill du avböja inbjudan eller ignorera denna användare?";
 "threads_beta_cancel" = "Inte nu";
 "threads_beta_enable" = "Prova";
 "threads_beta_information_link" = "Läs mer";
 "threads_beta_information" = "Håll diskussioner organiserade med trådar.\n\nTrådar hjälper dig hålla konversationer till ämnet och gör dem lättare att följa. ";
 "threads_beta_title" = "Trådar";
-"threads_notice_done" = "Jag fattar";
+"threads_notice_done" = "Jag förstår";
 "threads_notice_information" = "Alla trådar som skapades under experimentperioden kommer nu att <b>skrivas ut som vanliga svar. </b><br/><br/>Detta kommer vara en engångshändelse under övergången, eftersom trådar nu är en del av Matrix-specen.";
 "threads_notice_title" = "Trådar är inte längre experimentella 🎉";
 "room_participants_invite_prompt_to_msg" = "Är du säker på att du vill bjuda in %@ till %@?";
@@ -2214,12 +2214,12 @@
 "onboarding_avatar_accessibility_label" = "Profilbild";
 "onboarding_avatar_message" = "Du kan ändra detta när som helst.";
 "onboarding_avatar_title" = "Lägg till en profilbild";
-"onboarding_display_name_max_length" = "Ditt visningsnamn måste vara kortare än 256 karaktärer";
+"onboarding_display_name_max_length" = "Ditt visningsnamn måste vara kortare än 256 tecken";
 "onboarding_display_name_hint" = "Du kan ändra detta senare";
 "onboarding_display_name_placeholder" = "Visningsnamn";
 "onboarding_display_name_message" = "Detta kommer visas när du skickar meddelanden.";
 "onboarding_display_name_title" = "Välj visningsnamn";
-"onboarding_personalization_skip" = "Hoppa över steg";
+"onboarding_personalization_skip" = "Hoppa över steget";
 "onboarding_personalization_save" = "Spara och fortsätt";
 "onboarding_congratulations_home_button" = "Ta mig hem";
 "onboarding_congratulations_personalize_button" = "Personifiera profil";
