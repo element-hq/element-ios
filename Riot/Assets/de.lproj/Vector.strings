@@ -224,7 +224,7 @@
 "settings_add_email_address" = "E-Mail-Adresse hinzufügen";
 "settings_remove_phone_prompt_msg" = "Bist du sicher, dass du die Telefon-Nummer %@ entfernen möchtest?";
 "settings_night_mode" = "Nachtmodus";
-"settings_enable_push_notif" = "Benachrichtungen auf diesem Gerät";
+"settings_enable_push_notif" = "Benachrichtigungen auf diesem Gerät";
 "settings_unignore_user" = "Alle Nachrichten von %@ anzeigen?";
 "settings_contacts_phonebook_country" = "Land des Telefonbuches";
 "settings_labs_e2e_encryption" = "Ende-zu-Ende-Verschlüsselung";
@@ -380,7 +380,7 @@
 "call_incoming_voice_prompt" = "Eingehender Sprachanruf von %@";
 "call_incoming_video_prompt" = "Eingehender Videoanruf von %@";
 // No VoIP support
-"no_voip_title" = "Eingehener Anruf";
+"no_voip_title" = "Eingehender Anruf";
 "no_voip" = "%@ ruft dich an, aber %@ unterstützt derzeit keine Anrufe.\nDu kannst diese Benachrichtung ignorieren und den Anruf von einem anderen Gerät annehmen oder ihn abweisen.";
 // Crash report
 "google_analytics_use_prompt" = "Möchtest du helfen %@ zu verbessern, indem du anonyme Absturzberichte und Daten über die Verwendung sendest?";
@@ -531,7 +531,7 @@
 "event_formatter_rerequest_keys_part2" = " von deinen anderen Sitzungen anfragen.";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Anfrage gesendet";
-"rerequest_keys_alert_message" = "Bitte %@ auf einem anderen Gerät öffenen, das die Nachricht entschlüsseln kann, damit es die Schlüssel an diese Sitzung senden kann.";
+"rerequest_keys_alert_message" = "Bitte %@ auf einem anderen Gerät öffnen, das die Nachricht entschlüsseln kann, damit es die Schlüssel an diese Sitzung senden kann.";
 "room_message_reply_to_placeholder" = "Antwort senden (unverschlüsselt)…";
 "encrypted_room_message_reply_to_placeholder" = "Sende eine verschlüsselte Antwort…";
 "room_message_reply_to_short_placeholder" = "Sende eine Antwort…";
@@ -738,7 +738,7 @@
 "auth_softlogout_recover_encryption_keys" = "Melde dich an, um ausschließlich auf diesem Gerät gespeicherte Verschlüsselungsschlüssel wiederherzustellen. Du benötigst sie, um deine verschlüsselten Nachrichten auf jedem Gerät zu lesen.";
 "auth_softlogout_clear_data" = "Persönliche Daten löschen";
 "auth_softlogout_clear_data_message_1" = "Warnung: Deine persönlichen Daten (einschließlich Verschlüsselungsschlüssel) sind noch auf diesem Gerät gespeichert.";
-"auth_softlogout_clear_data_message_2" = "Deaktiviere es, wenn du dieses Gerät nicht mehr verwendest oder du dich mit einem anderen Konto anmelden möchtst.";
+"auth_softlogout_clear_data_message_2" = "Deaktiviere es, wenn du dieses Gerät nicht mehr verwendest oder du dich mit einem anderen Konto anmelden möchtest.";
 "auth_softlogout_clear_data_button" = "Lösche alle Daten";
 "auth_softlogout_clear_data_sign_out_title" = "Bist du sicher?";
 "auth_softlogout_clear_data_sign_out_msg" = "Möchtest du wirklich alle derzeit auf diesem Gerät gespeicherten Daten löschen? Melde dich erneut an, um auf deine Kontodaten und Nachrichten zuzugreifen.";
@@ -1371,7 +1371,7 @@
 
 "user_avatar_view_accessibility_label" = "Avatar";
 "secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Zum Fortfahren gib deinen Sicherheitsschlüssel ein.";
-"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Zum Forfahren gib deine Passphrase ein.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Zum Fortfahren gib deine Passphrase ein.";
 
 // Success from secure backup
 "key_backup_setup_success_from_secure_backup_info" = "Deine Schlüssel werden gesichert.";
@@ -1644,8 +1644,8 @@
 /* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
 "onboarding_use_case_not_sure_yet" = "Noch nicht sicher? Du kannst";
 "onboarding_use_case_skip_button" = "diese Frage überspringen";
-"onboarding_use_case_existing_server_message" = "Willst du einen existierenden Server beitreten?";
-"onboarding_use_case_existing_server_button" = "MIt Server verbinden";
+"onboarding_use_case_existing_server_message" = "Willst du einem existierenden Server beitreten?";
+"onboarding_use_case_existing_server_button" = "Mit Server verbinden";
 "search_filter_placeholder" = "Filtern";
 
 
@@ -1855,8 +1855,8 @@
 "room_please_select" = "Bitte wähle einen Raum";
 "room_error_join_failed_title" = "Konnte Raum nicht betreten";
 "room_error_join_failed_empty_room" = "Es ist aktuell nicht möglich einen leeren Raum zu betreten.";
-"room_error_name_edition_not_authorized" = "Du bist nicht authorisiert den Raumnamen zu ändern";
-"room_error_topic_edition_not_authorized" = "Du bist nicht authorisiert das Raumthema zu ändern";
+"room_error_name_edition_not_authorized" = "Du bist nicht autorisiert den Raumnamen zu ändern";
+"room_error_topic_edition_not_authorized" = "Du bist nicht autorisiert das Raumthema zu ändern";
 "room_error_cannot_load_timeline" = "Konnte Verlauf nicht laden";
 "room_error_timeline_event_not_found_title" = "Konnte Position im Verlauf nicht laden";
 "room_error_timeline_event_not_found" = "Konnte spezifischen Punkt im Verlauf dieses Raumes nicht finden";
@@ -1872,7 +1872,7 @@
 "message_reply_to_message_to_reply_to_prefix" = "Als Antwort auf";
 // Room members
 "room_member_ignore_prompt" = "Sicher, dass alle Nachrichten von diesem Benutzer versteckt werden sollen?";
-"room_member_power_level_prompt" = "Du kannst diese Änderung nicht rückgangig machen, weil du dem Benutzer die gleiche Berechtigungsstufe gibst, die du selbst hast.\nBist du sicher?";
+"room_member_power_level_prompt" = "Du kannst diese Änderung nicht rückgängig machen, weil du dem Benutzer die gleiche Berechtigungsstufe gibst, die du selbst hast.\nBist du sicher?";
 // Attachment
 "attachment_size_prompt" = "Möchtest du senden als:";
 "attachment_original" = "Originalgröße (%@)";
@@ -1904,7 +1904,7 @@
 "e2e_passphrase_enter" = "Passphrase eingeben";
 // E2E export
 "e2e_export_room_keys" = "Exportiere Raumschlüssel";
-"e2e_export_prompt" = "Dieser Prozeß erlaubt den Export von Schlüsseln, die du in verschlüsselten Räumen empfangen hast, in eine lokale Datei. Du kannst dann die Datei in einem anderen Matrixclient in Zukunft importieren, so dass dieser Client die Nachrichten auch entschlüsseln kann.\nDie exportierte Datei wird jedem der sie lesen kann erlauben, alle verschlüsselten Nachrichten sehen können, also verwahre die Datei sicher.";
+"e2e_export_prompt" = "Dieser Prozess erlaubt den Export von Schlüsseln, die du in verschlüsselten Räumen empfangen hast, in eine lokale Datei. Du kannst dann die Datei in einem anderen Matrixclient in Zukunft importieren, so dass dieser Client die Nachrichten auch entschlüsseln kann.\nDie exportierte Datei wird jedem der sie lesen kann erlauben, alle verschlüsselten Nachrichten sehen können, also verwahre die Datei sicher.";
 "e2e_export" = "Exportiere";
 "e2e_passphrase_confirm" = "Passphrase bestätigen";
 "e2e_passphrase_empty" = "Die Passphrase darf nicht leer sein";
@@ -2086,7 +2086,7 @@
 "notification_settings_receive_a_call" = "Benachrichtige, wenn ich einen Anruf erhalte";
 "notification_settings_suppress_from_bots" = "Unterdrücke Benachrichtigungen von Bots";
 "notification_settings_by_default" = "Als Standard...";
-"notification_settings_notify_all_other" = "Benachrichtige für alle andereren Nachrichten/Räume";
+"notification_settings_notify_all_other" = "Benachrichtige für alle anderen Nachrichten/Räume";
 // gcm section
 // Settings keys
 
@@ -2114,7 +2114,7 @@
 "call_more_actions_change_audio_device" = "Audiogerät ändern";
 "call_more_actions_unhold" = "Fortsetzen";
 "call_more_actions_hold" = "Halten";
-"call_holded" = "Du hast den Anurf pausiert";
+"call_holded" = "Du hast den Anruf pausiert";
 "call_remote_holded" = "%@ hat den Anruf pausiert";
 "notice_declined_video_call_by_you" = "Du hast den Anruf abgelehnt";
 "notice_declined_video_call" = "%@ hat den Anruf abgelehnt";
