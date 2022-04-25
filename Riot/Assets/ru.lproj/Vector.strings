@@ -384,8 +384,8 @@
 "bug_report_progress_zipping" = "Сбор журналов";
 "bug_report_progress_uploading" = "Отправка отчета";
 "bug_report_send" = "Отправить";
-"on" = "Включить";
-"off" = "Выключить";
+"on" = "Вкл";
+"off" = "Выкл";
 "preview" = "Просмотр";
 "room_creation_account" = "Учетная запись";
 "directory_searching_title" = "Поиск в каталоге…";
@@ -1979,3 +1979,19 @@
 "attachment_unsupported_preview_message" = "Этот тип файла не поддерживается.";
 "attachment_unsupported_preview_title" = "Не удалось показать предварительный просмотр";
 "message_reply_to_sender_sent_their_location" = "поделились своим местоположением.";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Создать учетную запись";
+"accessibility_button_label" = "кнопка";
+"saving" = "Сохранение";
+
+// Activities
+"loading" = "Загрузка";
+"edit" = "Редактировать";
+"suggest" = "Предложить";
+"add" = "Добавить";
+"existing" = "Существующее";
+"new_word" = "Новое";
+"stop" = "Остановить";
+"joining" = "Соединение";
+"enable" = "Включить";
