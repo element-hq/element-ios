@@ -569,7 +569,6 @@
 // unrecognized SSL certificate
 "ssl_trust" = "Treysta";
 "call_transfer_to_user" = "Færa á %@";
-"call_video_with_user" = "Myndsímtal við %s@";
 "call_voice_with_user" = "Raddsímtal við %@";
 "call_more_actions_dialpad" = "Talnaborð";
 "call_more_actions_transfer" = "Flutningur";

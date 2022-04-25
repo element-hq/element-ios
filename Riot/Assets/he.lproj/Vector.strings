@@ -307,7 +307,6 @@
 "event_formatter_widget_removed" = "יישומון %@ הוסר ע\"י %@";
 
 // Events formatter
-"event_formatter_member_updates" = "% שינויי חברות";
 "directory_server_placeholder" = "matrix.org";
 "directory_server_type_homeserver" = "הקלד שרת בית על מנת להציג רשימת חדרים ממנו";
 "directory_server_all_native_rooms" = "כל חדרי מטריקס המקוריים";
@@ -347,9 +346,7 @@
 // Group participants
 "group_participants_add_participant" = "הוסף משתתף";
 "group_invitation_format" = "%@ הזמין אותך להצטרף לקהילה זו";
-"group_home_multi_rooms_format" = "% חדרים";
 "group_home_one_room_format" = "חדר 1";
-"group_home_multi_members_format" = "% חברים";
 
 // Group Home
 "group_home_one_member_format" = "חבר 1";
@@ -778,8 +775,6 @@
 "room_many_users_are_typing" = "%@, %@ וגם אחרים מקלידים…";
 "room_two_users_are_typing" = "%@ & %@ מקלידים…";
 "room_one_user_is_typing" = "%@ מקליד…";
-"room_new_messages_notification" = "%@ הודעות חדשות";
-"room_new_message_notification" = "%@ הודעה חדשה";
 "room_accessiblity_scroll_to_bottom" = "גלול לתחתית";
 "room_jump_to_first_unread" = "עבור ללא נקרא";
 
@@ -845,7 +840,6 @@
 "room_participants_leave_prompt_msg" = "האם אתה בטוח שברצונך לעזוב את החדר?";
 "room_participants_leave_prompt_title_for_dm" = "עזוב";
 "room_participants_leave_prompt_title" = "עזוב חדר";
-"room_participants_multi_participants" = "%@ משתתפים";
 "room_participants_one_participant" = "משתתף 1";
 "room_participants_add_participant" = "הוסף משתתף";
 
@@ -869,10 +863,7 @@
 // Contacts
 "contacts_address_book_section" = "אנשי קשר מקומיים";
 "directory_searching_title" = "מחפש ספריות…";
-"directory_search_results_more_than" = ">% תוצאות נמצאו עבור %@";
-"directory_search_results" = "% תוצאות נמצאו עבור %@";
 "directory_search_results_title" = "דפדף תוצאות ספרייה";
-"directory_cell_description" = "% חדרים";
 
 // Directory
 "directory_cell_title" = "דפדף תיקייה";
@@ -927,7 +918,6 @@
 "auth_softlogout_clear_data_message_2" = "מחק אותו שם סיימת להשתמש במכשיר זה, או אם אתה מעוניין להתחבר לחשבון אחר.";
 "auth_softlogout_clear_data_message_1" = "זהירות:המידע האישי שלך (כולל מפתחות הצפנה) עדיין שמור במכשיר זה.";
 "auth_softlogout_recover_encryption_keys" = "התחבר על מנת לשחזר את מפתחות ההצפנה השמור בצורה בלעדית במכשיר זה. תצטרך אותם על מנת לקרא את כל ההודעות המאובטחות שלך בכל מכשיר.";
-"auth_softlogout_reason" = "מנהל שרת הבית שלך (% 1 $@) הוציא אותך החוצה מהחשבון שלך % 2 $@ (% 3 $@).";
 "auth_autodiscover_invalid_response" = "תגובת חשיפה לא חוקית של שרת הבית";
 "auth_accept_policies" = "אנא עבור ואשר את המדיניות בשרת הבית הזה:";
 "auth_add_email_and_phone_warning" = "רישום באמצעות מייל ומספר טלפון יחד לא נתמך עדיין עד שה API קיים. רק מספר הטלפון יילקח בחשבון. תוכל להוסיף את כתובת המייל שלך בהגדרות הפרופיל שלך.";

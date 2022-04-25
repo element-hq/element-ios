@@ -11,7 +11,6 @@
 /* New action message from a specific person in a named room. */
 "ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
 /* New action message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@님이 사진을 보냈습니다 %@";
 /* A single unread message in a room */
 "SINGLE_UNREAD_IN_ROOM" = "%@ 에서 메시지를 받았습니다";
 /* A single unread message */

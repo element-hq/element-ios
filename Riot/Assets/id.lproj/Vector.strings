@@ -675,7 +675,6 @@
 "e2e_enabling_on_app_update" = "%@ sekarang mendukung enkripsi ujung-ke-ujung tetapi Anda harus masuk lagi untuk mengaktifkannya.\n\nAnda dapat melakukannya sekarang atau nanti di pengaturan aplikasi.";
 
 // Crash report
-"google_analytics_use_prompt" = "Apakah Anda ingin membantu meningkatkan %@ dengan secara otomatis melaporkan laporan kerusakan dan data penggunaan secara anonim?";
 "no_voip" = "%@ sedang memanggil Anda tetapi %@ belum mendukung panggilan.\nAnda dapat mengabaikan notifikasi ini dan jawab panggilannya di perangkat yang lain atau menolak panggilannya.";
 "call_no_stun_server_error_message_1" = "Mohon hubungi administrator homeserver %@ Anda untuk mengatur sebuah server TURN supaya panggilan dapat bekerja dengan handal.";
 "rage_shake_prompt" = "Anda tampaknya menggoyangkan telepon dengan frustrasi. Apakah Anda ingin mengirimkan laporan bug?";
@@ -2070,7 +2069,6 @@
 "notice_room_third_party_revoked_invite_by_you_for_dm" = "Anda menghilangkan undangannya %@";
 "notice_room_third_party_registered_invite_by_you" = "Anda menerima undangan untuk %@";
 "notice_room_third_party_invite_by_you_for_dm" = "Anda mengundang %@";
-"notice_room_third_party_invite_by_you" = "Anda mengirim sebuah undangan ke @% untuk bergabung ke ruangan ini";
 "notice_room_invite_you" = "%@ mengundang Anda";
 
 // Notice Events with "You"
@@ -2444,7 +2442,6 @@
 "room_access_settings_screen_upgrade_alert_upgrading" = "Meningkatkan ruangan";
 "room_access_settings_screen_upgrade_alert_upgrade_button" = "Tingkatkan";
 "room_access_settings_screen_upgrade_alert_auto_invite_switch" = "Undang anggota secara otomatis ke ruangan baru";
-"room_access_settings_screen_upgrade_alert_message" = "Siapa saja dalam nama Space akan dapat menemukan dan bergabung ke ruangan ini — Anda tidak harus mengundang semuanya secara manual. Anda dapat mengubahnya dalam pengaturan ruangan kapan saja.\n\nDicatat bahwa meningkatkan akan membuat versi ruangan baru.  Semua pesan saat ini akan tetap dalam ruangan ini yang terarsip.";
 "room_access_settings_screen_upgrade_alert_title" = "Tingkatkan ruangan";
 "room_access_settings_screen_public_message" = "Siapa saja dapat menemukan dan bergabung.";
 "room_access_settings_screen_edit_spaces" = "Edit space";

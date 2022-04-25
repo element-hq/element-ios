@@ -214,8 +214,6 @@
 "directory_cell_title" = "瀏覽目錄";
 "directory_cell_description" = "%tu 個聊天室";
 "directory_search_results_title" = "聊天室目錄搜尋結果";
-"directory_search_results" = "搜尋 %@ 有 %tu 個結果";
-"directory_search_results_more_than" = "搜尋 %@ 有超過 %tu 個結果";
 "directory_searching_title" = "搜尋聊天室目錄中……";
 "directory_search_fail" = "無法取得資料";
 // Contacts
@@ -263,7 +261,6 @@
 "room_new_messages_notification" = "%d 條未讀訊息";
 "room_one_user_is_typing" = "%@ 正在輸入…";
 "room_two_users_are_typing" = "%@ 和 %@ 正在輸入…";
-"room_many_users_are_typing" = "%@、%@ 和 %@ 正在輸入…";
 "room_message_short_placeholder" = "傳送訊息…";
 "room_unsent_messages_notification" = "訊息未被傳送。";
 "room_unsent_messages_unknown_devices_notification" = "由於存在未知的工作階段導致訊息未被傳送。";
@@ -345,7 +342,6 @@
 "settings_pin_rooms_with_missed_notif" = "釘選含有錯過的通知的聊天室";
 "settings_pin_rooms_with_unread" = "釘選含有未讀訊息的聊天室";
 "settings_enable_callkit" = "整合式通話";
-"settings_callkit_info" = "在鎖定畫面接聽 %@ 來電、在通話紀錄中顯示 %@ 通話。 如果您已啟用 iCloud ，則這些通話紀錄會與蘋果公司共享。";
 "settings_ui_language" = "語言";
 "settings_ui_theme" = "主題";
 "settings_ui_theme_auto" = "自動";
@@ -486,7 +482,6 @@
 "no_voip_title" = "來電";
 "no_voip" = "%@ 正在撥打給您，但 %@ 尚不支援通話。\n您可以忽略此通知透過其他裝置接聽或拒絕接聽。";
 // Crash report
-"google_analytics_use_prompt" = "您願意透過自動送出匿名的崩潰報告和使用資料來幫住%@進步嗎?";
 // Crypto
 "e2e_enabling_on_app_update" = "%@ 目前支援點對點加密，但您需要重新登入來啟用它。\n\n您可以現在重新登入或稍後在應用程式設定中進行。";
 // Bug report
@@ -513,7 +508,6 @@
 "e2e_room_key_request_message_new_device" = "您新增的工作階段 '%@'， 正在請求加密密鑰。";
 "e2e_room_key_request_message" = "您未驗證的工作階段 '%@' 正在請求加密密鑰。";
 // GDPR
-"gdpr_consent_not_given_alert_message" = "如要繼續使用此家伺服器，您必須同意該合約條款。";
 "gdpr_consent_not_given_alert_review_now_action" = "現在重新檢視";
 "deactivate_account_title" = "註銷帳號";
 "deactivate_account_informations_part1" = "這會使您的帳號永久無法使用。 您將不能以此帳號登入且任何人都將無法以此帳號的ID重新進行註冊。這會使您的帳號立即離開所有參加的聊天室，並從身份伺服器上將您帳號的詳細資料移除。 ";
@@ -560,7 +554,6 @@
 // Intro
 
 "secure_key_backup_setup_intro_title" = "安全備份";
-"service_terms_modal_message_identity_server" = "接受身份伺服器（%@）的條款以尋找聯繫人。";
 
 
 // MARK: Key backup setup
@@ -1123,7 +1116,6 @@
 // room display name
 "room_displayname_empty_room" = "空的聊天室";
 "room_displayname_two_members" = "%@ 和 %@";
-"room_displayname_more_than_two_members" = "%@ 和 %u 個其他人";
 // Settings
 "settings" = "設定";
 "settings_enable_push_notifications" = "啟用推播通知";
@@ -1140,7 +1132,6 @@
 "notice_room_power_level_event_requirement" = "事件相關的最小權限級別是：";
 "notice_room_aliases" = "此聊天室別名是：%@";
 "notice_room_related_groups" = "此聊天室關聯的群組是：%@";
-"notice_encryption_enabled" = "%@ 開啓了端對端加密 （演算法 %@）";
 "notice_feedback" = "回報事件 （id：%@）：%@";
 "notice_redaction" = "%@ 取消了一个事件 (id: %@)";
 "notice_error_unsupported_event" = "不支援的事件";

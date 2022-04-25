@@ -495,7 +495,6 @@
 "no_voip_title" = "Chamada entrante";
 "no_voip" = "%@ está chamando você mas %@ não suporta chamadas ainda.\nVocê pode ignorar esta notificação e atender a chamada de um outro dispositivo ou você pode rejeitá-la.";
 // Crash report
-"google_analytics_use_prompt" = "Você gostaria de ajudar a melhorar %@ ao reportar automaticamente reportes de crash e dados de uso anônimos?";
 // Crypto
 "e2e_enabling_on_app_update" = "%@ agora suporta encriptação ponta-a-ponta mas você precisa fazer login de novo para habilitá-la.\n\nVocê pode fazê-lo agora ou mais tarde desde os ajustes do aplicativo.";
 "e2e_need_log_in_again" = "Você precisa fazer login de volta para gerar chaves de encriptação ponta-a-ponta para esta sessão e submeter a chave pública a seu servidorcasa.\nIsto é só desta vez; desculpe pela inconveniência.";
@@ -930,12 +929,10 @@
 "room_widget_permission_room_id_permission" = "ID de sala";
 // Service terms
 "service_terms_modal_title" = "Termos De Serviço";
-"service_terms_modal_message" = "Para continuar você precisa aceitar os termos deste serviço (%@).";
 "service_terms_modal_accept_button" = "Aceitar";
 "service_terms_modal_decline_button" = "Declinar";
 // Service terms - Variant for identity server when displayed out of a context
 "service_terms_modal_title_identity_server" = "Descoberta de contatos";
-"service_terms_modal_message_identity_server" = "Aceite os termos do servidor de identidade (%@) para descobrir contatos.";
 "service_terms_modal_policy_checkbox_accessibility_hint" = "Marque para aceitar %@";
 "secure_key_backup_setup_intro_title" = "Backup Seguro";
 "secure_key_backup_setup_intro_info" = "Salvaguardar-se contra perda de acesso a mensagens & dados encriptados ao fazer backup de chaves de encriptação em seu servidor.";
@@ -1731,7 +1728,6 @@
 "notice_encrypted_message" = "Mensagem encriptada";
 "set_power_level" = "Definir Nível de Poder";
 "power_level" = "Nível de Poder";
-"notice_encryption_enabled" = "%@ ativou a criptografia de ponta a ponta (algorithm %@)";
 "notice_image_attachment" = "anexo de imagem";
 "notice_audio_attachment" = "anexo de áudio";
 "notice_video_attachment" = "anexo de vídeo";
@@ -2099,7 +2095,6 @@
 "attachment_small_with_resolution" = "Pequeno %@ (~%@)";
 "attachment_size_prompt_message" = "Você pode desligar isto em ajustes.";
 "attachment_size_prompt_title" = "Confirmar tamanho para enviar";
-"room_displayname_all_other_participants_left" = "%@ (Saiu)";
 "room_displayname_all_other_members_left" = "%@ (Saiu)";
 "attachment_unsupported_preview_message" = "Este tipo de arquivo não é suportado.";
 "attachment_unsupported_preview_title" = "Incapaz de previsualizar";
@@ -2201,7 +2196,6 @@
 "create_room_suggest_room" = "Sugerir para membros de espaço";
 "create_room_show_in_directory_footer" = "Isto vai ajudar pessoas achar e se juntar.";
 "create_room_promotion_header" = "PROMOÇÃO";
-"room_access_settings_screen_upgrade_alert_message" = "Qualquer pessoa em Nome de espaço vai ser capaz de achar e se juntar a esta sala - não precisa manualmente convidar todo mundo. Você vai ser capaz de mudar isto em configurações de sala a qualquer hora.\n\nPor favor note que fazer upgrade vai criar uma nova versão da sala.  Todas as mensagens atuais vão ficar nesta sala arquivada.";
 "create_room_section_footer_type_public" = "Somente pessoas convidadas podem achar e se juntar, não apenas pessoas em Nome de espaço.";
 "create_room_section_footer_type_restricted" = "Qualquer pessoa em Nome de espaço pode achar e se juntar.";
 "create_room_section_footer_type_private" = "Somente pessoas convidadas podem achar e se juntar.";

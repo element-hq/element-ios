@@ -142,10 +142,8 @@
 "room_participants_leave_prompt_title" = "Lämna rum";
 "room_participants_leave_prompt_msg" = "Är du säker på att du vill lämna rummet?";
 "room_participants_remove_prompt_title" = "Bekräftelse";
-"room_participants_remove_prompt_msg" = "Är du säker på att du vill ta bort %s från den här chatten?";
 "room_participants_remove_third_party_invite_prompt_msg" = "Är du säker på att du vill återkalla den här inbjudan?";
 "room_participants_invite_prompt_title" = "Bekräftelse";
-"room_participants_invite_prompt_msg" = "Är du säker på att du vill bjuda in %s till den här chatten?";
 "room_participants_invite_another_user" = "Sök / bjud in efter användar-ID, namn eller e-postadress";
 "room_participants_invite_malformed_id" = "Felformaterat ID. Ska vara en e-postadress eller ett Matrix-ID som '@lokaldel:domän'";
 "room_participants_online" = "Online";
@@ -184,7 +182,6 @@
 // Chat
 "room_jump_to_first_unread" = "Hoppa till oläst";
 "room_new_message_notification" = "%d nytt meddelande";
-"room_new_messages_notification" = "%u nya meddelanden";
 "room_one_user_is_typing" = "%@ skriver…";
 "room_two_users_are_typing" = "%@ och %@ skriver…";
 "room_many_users_are_typing" = "%@, %@ och andra skriver…";
@@ -438,7 +435,6 @@
 "room_accessibility_hangup" = "Lägg på";
 "media_type_accessibility_image" = "Bild";
 // Room Preview
-"room_preview_invitation_format" = "Du har blivit inbjuden till det här rummet av %s";
 "settings_global_settings_info" = "Globala aviseringsinställningar är tillgängliga i webbklienten för %@";
 "settings_third_party_notices" = "Tredjepartslicenser";
 "settings_crypto_device_name" = "Sessionsnamn: ";
@@ -510,9 +506,7 @@
 "group_participants_leave_prompt_title" = "Lämna grupp";
 "group_participants_leave_prompt_msg" = "Är du säker på att du vill lämna gruppen?";
 "group_participants_remove_prompt_title" = "Bekräftelse";
-"group_participants_remove_prompt_msg" = "Är du säker på att du vill ta bort %s från den här gruppen?";
 "group_participants_invite_prompt_title" = "Bekräftelse";
-"group_participants_invite_prompt_msg" = "Är du säker på att du vill bjuda in %s till den här gruppen?";
 "group_participants_filter_members" = "Filtrera gemenskapsmedlemmar";
 "group_participants_invite_another_user" = "Sök / bjud in efter användar-ID eller namn";
 "group_participants_invite_malformed_id_title" = "Fel vid inbjudan";
@@ -619,7 +613,6 @@
 "identity_server_settings_alert_disconnect" = "Koppla från identitetsservern %@?";
 "identity_server_settings_alert_error_terms_not_accepted" = "Du måste acceptera villkoren hos %@ för att kunna ställa in den som identitetsserver.";
 "identity_server_settings_alert_error_invalid_identity_server" = "%@ är inte en giltig identitetsserver.";
-"service_terms_modal_message_identity_server" = "Acceptera villkoren hos identitetsservern (%@) för att upptäcka kontakter.";
 "device_verification_self_verify_wait_additional_information" = "Detta funkar med %@ och andra Matrix-klienter som stöder korssignering.";
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Lägg till en identitetsserver i dina inställningar för att bjuda in via e-post.";
@@ -737,7 +730,6 @@
 "e2e_room_key_request_share_without_verifying" = "Dela utan att verifiera";
 // GDPR
 "gdpr_consent_not_given_alert_message" = "För att fortsätta använda hemservern %@ behöver du ta del av och godkänna villkoren.";
-"service_terms_modal_message" = "För att fortsätta behöver du godkänna villkoren för den här tjänsten (%@).";
 "service_terms_modal_description_for_identity_server_2" = "Hitta mig via telefon eller e-post";
 // Service terms - Variant for identity server when displayed out of a context
 "service_terms_modal_title_identity_server" = "Upptäckt av kontakter";
@@ -822,10 +814,8 @@
 "call_jitsi_error" = "Misslyckades att gå med i gruppsamtalet.";
 "call_no_stun_server_error_title" = "Samtalet misslyckades p.g.a. felkonfigurerad server";
 "call_no_stun_server_error_message_1" = "Vänligen be administratören för hemservern %@ att konfigurera en TURN-server för att samtal ska funka tillförlitligt.";
-"call_no_stun_server_error_message_2" = "Alternativt kan du försöka använda den offentliga servern på% @, men det här är inte lika tillförlitligt och det delar din IP-adress med den servern. Du kan också hantera detta i inställningarna";
 "no_voip" = "%@ ringer dig men %@ stöder inte samtal än.\nDu kan ignorera den här aviseringen och svara på samtalet med en annan enhet eller avvisa det.";
 // Crash report
-"google_analytics_use_prompt" = "Vill du hjälpa till att förbättra %@ genom att automatiskt skicka anonyma kraschrapporter och användningsdata?";
 "e2e_need_log_in_again" = "Du behöver logga in igen för att generera nycklar för totalsträckskryptering för den här sessionen och skicka den publika nyckeln till din hemserver.\nDet behövs bara en gång; beklagar olägenheten.";
 "e2e_key_backup_wrong_version" = "En ny säkerhetskopia för säkra meddelandenycklar har upptäckts.\n\nOm det inte var du, ställ in en ny säkerhetsfras i inställningarna.";
 "bug_report_description" = "Vänligen beskriv buggen. Vad gjorde du? Vad förväntade du dig att hända? Vad hände egentligen?";
@@ -1725,7 +1715,6 @@
 "settings" = "Inställningar";
 "settings_enable_inapp_notifications" = "Aktivera aviseringar i appen";
 "settings_enable_push_notifications" = "Aktivera pushnotiser";
-"settings_enter_validation_token_for" = "Ange valideringstoken för &@:";
 "notification_settings_room_rule_title" = "Rum: '%@'";
 // Devices
 "device_details_title" = "Sessionsinformation\n";
@@ -2063,7 +2052,6 @@
 "attachment_small_with_resolution" = "Liten %@ (~%@)";
 "attachment_size_prompt_message" = "Du kan stänga av detta i inställningarna.";
 "attachment_size_prompt_title" = "Bekräfta storlek att skicka";
-"room_displayname_all_other_participants_left" = "%@ (Kvar)";
 "attachment_unsupported_preview_message" = "Den här filtypen stöds inte.";
 "attachment_unsupported_preview_title" = "Kunde inte förhandsgranska";
 "room_displayname_all_other_members_left" = "%@ (Kvar)";
@@ -2075,7 +2063,6 @@
 "room_participants_leave_processing" = "Lämnar";
 "spaces_creation_new_rooms_support" = "Support";
 "create_room_promotion_header" = "BEFORDRAN";
-"room_access_settings_screen_upgrade_alert_message" = "Vem som helst i utrymmet kommer kunna hitta och gå med i det här rummet – man behöver inte bjuda in alla manuellt. Du kommer kunna ändra detta i rumsinställningarna när som helst.\n\nObservera att en ny version av rummet kommer skapas vid uppgradering. Alla existerande meddelanden kommer behållas arkiverade i detta rum.";
 "onboarding_celebration_button" = "Nu kör vi";
 "ignore_user" = "Ignorera användare";
 "location_sharing_pin_drop_share_title" = "Skicka denna position";

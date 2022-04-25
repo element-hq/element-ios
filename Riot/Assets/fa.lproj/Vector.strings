@@ -217,7 +217,6 @@
 // Room Preview
 "room_preview_invitation_format" = "شما توسط %@ برای پیوستن به این اتاق دعوت شده اید";
 "room_title_one_member" = "۱ عضو";
-"room_title_members" = "٪@ اعضا";
 "room_title_invite_members" = "دعوت از اعضا";
 "room_title_one_active_member" = "%@/%@ عضو فعال";
 "room_title_multiple_active_members" = "%@/%@ اعضای فعال";
@@ -228,7 +227,6 @@
 "unknown_devices_answer_anyway" = "به هر حال پاسخ دهید";
 "unknown_devices_call_anyway" = "به هر حال تماس بگیرید";
 "unknown_devices_send_anyway" = "به هر حال ارسال کنید";
-"room_multiple_typing_notification" = "٪@ و دیگران";
 "external_link_confirmation_message" = "پیوند %@ شما را به سایت دیگری انتقال می دهد: %@\n\nآیا مطمئن هستید که میخواهید ادامه دهید؟";
 "external_link_confirmation_title" = "این لینک را دوبار بررسی کنید";
 "media_type_accessibility_sticker" = "استیکر";
@@ -393,7 +391,6 @@
 
 // Call
 "call_incoming_voice_prompt" = "تماس صوتی ورودی از %@";
-"room_does_not_exist" = "٪@ وجود ندارد";
 "photo_library_access_not_granted" = "%@ اجازه دسترسی به عکس های دستگاه شما را ندارد، لطفاً تنظیمات حریم خصوصی را تغییر دهید";
 "camera_unavailable" = "دوربین در دستگاه شما قابل دسترسی نیست";
 "camera_access_not_granted" = "%@ اجازه استفاده از دوربین را ندارد، لطفاً تنظیمات حریم خصوصی را تغییر دهید";
@@ -410,11 +407,8 @@
 "or" = "یا";
 "event_formatter_jitsi_widget_removed_by_you" = "کنفرانس VoIP را حذف کردید";
 "event_formatter_jitsi_widget_added_by_you" = "شما کنفرانس VoIP را اضافه کردید";
-"event_formatter_widget_removed_by_you" = "ویجت را حذف کردید:@%";
 
 // Events formatter with you
-"event_formatter_widget_added_by_you" = "ویجت را اضافه کردید:@ %";
-"event_formatter_group_call_incoming" = "@٪ در@ ٪";
 "event_formatter_group_call_leave" = "ترک";
 "event_formatter_group_call_join" = "پیوستن";
 "event_formatter_group_call" = "تماس گروهی";

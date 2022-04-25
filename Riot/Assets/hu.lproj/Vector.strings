@@ -472,10 +472,8 @@
 "camera_access_not_granted" = "%@ -nak/nek nincs joga a kamerát használni, kérlek változtasd meg az adatvédelmi beállításokat";
 "large_badge_value_k_format" = "%.1fK";
 // room display name
-"room_displayname_invite_from" = "Meghívó innen: %@";
 "room_displayname_room_invite" = "Szoba meghívó";
 "room_displayname_two_members" = "%@ és %@";
-"room_displayname_more_than_two_members" = "%@ és %u mások";
 "room_displayname_no_title" = "Üres szoba";
 // Call
 "call_incoming_voice_prompt" = "Bejövő hanghívás innen: %@";
@@ -488,7 +486,6 @@
 "no_voip_title" = "Bejövő hívás";
 "no_voip" = "%@ hív téged de %@ egyenlőre nem támogatja a hívásokat.\nFigyelmen kívül hagyhatod ezt az értesítést és másik eszközről válaszolhatsz a hívásra vagy elutasíthatod azt.";
 // Crash report
-"google_analytics_use_prompt" = "Szeretnél segíteni személytelen összeomlás és felhasználási adatok küldésével a(z) %@ fejlesztésében?";
 // Crypto
 "e2e_enabling_on_app_update" = "%@ most már támogatja a végponttól végpontig titkosítást de újra be kell jelentkezned.\n\nMegteheted most vagy később az alkalmazás beállításainál.";
 "e2e_need_log_in_again" = "Vissza kell jelentkezned, hogy a munkamenetedhez a végponttól végpontig titkosítási kulcsokat létrehozzuk és a nyilvános kulcsokat elküldjük a Matrix szerverednek.\nEz egy egyszeri alkalom; elnézést a kellemetlenségért.";
@@ -566,7 +563,6 @@
 "settings_key_backup_info_not_valid" = "Ez a munkamenet nem menti el a kulcsaidat, de van létező mentésed ahonnan vissza  tudsz állni és továbbléphetsz.";
 "settings_key_backup_info_progress" = "%@ kulcsok mentése…";
 "settings_key_backup_info_progress_done" = "Minden kulcs elmentve";
-"settings_key_backup_info_not_trusted_from_verifiable_device_fix_action" = "A Biztonságos Üzenet Visszaállítás használatához ellenőrizd ezt: %@.";
 "settings_key_backup_info_not_trusted_fix_action" = "Ha a Biztonságos Üzenete Visszaállítást ezen az eszközön használni szeretnéd, akkor most add meg a jelmondatodat vagy a visszaállítási kulcsot.";
 "settings_key_backup_info_trust_signature_unknown" = "A mentés aláírással rendelkezik az alábbi munkamenet azonosítóval: %@";
 "settings_key_backup_info_trust_signature_valid" = "A mentés érvényes aláírással rendelkezik ettől a munkamenetről";
@@ -677,10 +673,6 @@
 "auth_autodiscover_invalid_response" = "Matrix szerver felderítésénél érvénytelen válasz érkezett";
 "room_event_action_reply" = "Válasz";
 "room_event_action_edit" = "Szerkeszt";
-"room_event_action_reaction_agree" = "Egyetért %@";
-"room_event_action_reaction_disagree" = "Ellentmond %@";
-"room_event_action_reaction_like" = "Kedveli %@";
-"room_event_action_reaction_dislike" = "Nem kedveli %@";
 "room_action_reply" = "Válasz";
 "settings_labs_message_reaction" = "Emoji reakció az üzenetre";
 "settings_key_backup_button_connect" = "Munkamenet csatlakoztatása a Kulcs Mentéshez";
@@ -826,7 +818,6 @@
 "photo_library_access_not_granted" = "A fénykép könyvár eléréséhez %@ nem rendelkezik engedéllyel, kérlek változtasd meg az adatvédelmi beállításokat";
 // Service terms
 "service_terms_modal_title" = "Felhasználási feltételek";
-"service_terms_modal_message" = "A folytatáshoz el kell fogadnod a Felhasználási feltételeket (%@).";
 "service_terms_modal_accept_button" = "Elfogad";
 "service_terms_modal_description_for_identity_server" = "Látható mások számára";
 "service_terms_modal_description_for_integration_manager" = "Használjon botokat, hidakat, kisalkalmazásokat és matrica csomagokat";
@@ -910,7 +901,6 @@
 "service_terms_modal_description_for_identity_server_2" = "Legyél megtalálható telefonszámmal vagy e-mail címmel";
 // Service terms - Variant for identity server when displayed out of a context
 "service_terms_modal_title_identity_server" = "Ismerősök keresése";
-"service_terms_modal_message_identity_server" = "Az azonosítási szerver (%@) felhasználási feltételeit el kell fogadnod, hogy ismerősöket kereshess.";
 "settings_add_3pid_password_title_email" = "E-mail cím hozzáadása";
 "settings_add_3pid_password_title_msidsn" = "Telefonszám hozzáadása";
 "settings_add_3pid_password_message" = "A folytatáshoz add meg a Matrix fiók jelszavadat";
@@ -1755,7 +1745,6 @@
 "notice_room_aliases" = "A szoba becenevei: %@";
 "notice_room_related_groups" = "A szobához kapcsolódó csoportok: %@";
 "notice_encrypted_message" = "Titkosított üzenet";
-"notice_encryption_enabled" = "%@ bekapcsolta a végponttól végpontig titkosítást (algoritmus: %@)";
 "notice_image_attachment" = "képmelléklet";
 "notice_audio_attachment" = "hangmelléklet";
 "notice_video_attachment" = "videómelléklet";
@@ -2128,7 +2117,6 @@
 "attachment_small_with_resolution" = "Kicsi %@ (~%@)";
 "attachment_size_prompt_message" = "Ezt a beállításokban kikapcsolhatod.";
 "attachment_size_prompt_title" = "Méret megerősítése küldéshez";
-"room_displayname_all_other_participants_left" = "%@ (Bal)";
 "room_displayname_all_other_members_left" = "%@ (Bal)";
 "attachment_unsupported_preview_message" = "Ez a fájl típus nem támogatott.";
 "attachment_unsupported_preview_title" = "Az előnézetet nem lehet megjeleníteni";
@@ -2209,7 +2197,6 @@
 "new_word" = "Új";
 "stop" = "Állj";
 "joining" = "Belépés";
-"room_access_settings_screen_upgrade_alert_message" = "Bárki a Téren megtalálhatja és beléphet a szobába - nem kell egyenként meghívni őket. Ezt bármikor megváltoztathatod a szoba beállításaiban.\n\nFontos megjegyezni, hogy a szoba fejlesztése egy új szobát hoz létre.  Minden eddigi üzenet ebben az archivált szobában marad.";
 "threads_beta_information" = "Tedd a megbeszéléseket átláthatóvá üzenetszálakkal.\n\nAz üzenetszálak segítenek a beszélgetések témánál tartásában és követésében. ";
 "threads_notice_information" = "A kísérleti időszakban készült üzenetszálak ezentúl <b>közönséges válaszokként jelennek meg</b><br/><br/>Ez egy egyszeri konverzió, mivel az üzenetszálak már a Matrix részét képezik.";
 "ignore_user" = "Felhasználó figyelmen kívül hagyása";

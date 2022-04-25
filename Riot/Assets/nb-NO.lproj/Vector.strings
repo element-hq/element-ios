@@ -811,7 +811,6 @@
 "room_member_power_level_custom_in" = "Tilpasset (%@) av %@";
 "pin_protection_confirm_pin_to_disable" = "Bekreft PIN-kode for å deaktivere PIN-kode";
 "pin_protection_choose_pin" = "Opprett en PIN-kode for sikkerhet";
-"device_verification_self_verify_alert_message" = "Verifiser den nye påloggingen som vil ha tilgang til kontoen din:% @";
 
 // Service terms - Variant for identity server when displayed out of a context
 "service_terms_modal_title_identity_server" = "Finne kontakter";
@@ -845,7 +844,6 @@
 // MARK: Sign out warning
 
 "sign_out_existing_key_backup_alert_title" = "Er du sikker på at du vil logge ut?";
-"service_terms_modal_message_identity_server" = "Godta brukervilkårene til identitetsserveren (%@) for å finne kontakter.";
 "event_formatter_call_back" = "Ring tilbake";
 "room_details_advanced_e2e_encryption_disabled" = "Kryptering er ikke aktivert i dette rommet.";
 "room_details_flair_section" = "Vis assosiasjon for samfunn";
@@ -866,7 +864,6 @@
 "settings_discovery_no_identity_server" = "Du bruker for øyeblikket ikke en identitetsserver. Legg til en for at dine eksisterende kontakter skal kunne finne deg.";
 "settings_unignore_user" = "Vis alle meldinger fra %@?";
 "device_verification_cancelled" = "Den andre parten avbrøt verifiseringen.";
-"settings_callkit_info" = "Motta innkommende samtale på låst skjerm. Se dine anrop i systemets anropshistorikk. Hvis iCloud er aktivert, vil anropshistorikken bli delt med Apple.";
 //"settings_enable_all_notif" = "Enable all notifications";
 //"settings_messages_my_display_name" = "Msg containing my display name";
 //"settings_messages_my_user_name" = "Msg containing my user name";
@@ -1055,7 +1052,6 @@
 "e2e_enabling_on_app_update" = "%@ støtter nå ende-til-ende kryptering, men du må logge inn igjen for å aktivere det.\n\nDu kan gjøre det nå eller senere fra applikasjonsinnstillingene.";
 
 // Crash report
-"google_analytics_use_prompt" = "Vil du hjelpe til med å forbedre %@ ved automatisk og anonymt sende inn krasj-rapporter og brukerdata?";
 "no_voip" = "%@ ringer deg men %@ støtter ikke anrop enda.\nDu kan overse denne varselen og svare anropet fra en annen enhet eller du kan avvise det.";
 "call_actions_unhold" = "Gjenoppta";
 "bug_report_description" = "Vennligst beskriv feilen. Hva gjorde du? Hva forventet du skulle skje? Hva skjedde faktisk?";
@@ -1107,7 +1103,6 @@
 // GDPR
 "gdpr_consent_not_given_alert_message" = "For å fortsette å bruke %@ hjemmeserveren må du se gjennom og godta brukervilkårene.";
 "e2e_room_key_request_ignore_request" = "Ignorer forespørsel";
-"service_terms_modal_message" = "For å fortsette må du godta brukervilkårene for denne tjenesten (%@).";
 "gdpr_consent_not_given_alert_review_now_action" = "Se gjennom nå";
 "service_terms_modal_description_for_identity_server_1" = "Finn andre vha. telefonnummer og e-post";
 "service_terms_modal_description_for_identity_server_2" = "Bli funnet vha. telefonnummer eller e-post";
@@ -1116,7 +1111,6 @@
 "service_terms_modal_description_for_integration_manager" = "Bruk Bots, bridges, widgets og sticker packs";
 "deactivate_account_informations_part5" = "Hvis du ønsker at vi skal glemme dine meldinger, kryss av i boksen under.\n\nMeldingssynlighet er sammenlignbar med e-post. Når vi glemmer dine meldinger betyr det at meldinger du har sendt ikke vil bli delt med nye eller uregistrerte brukere, men registrerte brukere som allerede har tilgang til disse meldingene vil fremdeles har tilgang på sin kopi.";
 "deactivate_account_informations_part4_emphasize" = "vil som standard ikke få oss til å glemme meldinger du har sendt. ";
-"rerequest_keys_alert_message" = "Start appen på en annen enhet som kan dekryptere meldingen, slik at den kan sende nøklene til denne økten.";
 "deactivate_account_password_alert_message" = "For å fortsette, vennligst skriv inn passordet ditt";
 "deactivate_account_forget_messages_information_part3" = ": dette vil føre til at fremtidige brukere ser en ufullstendig visning av samtaler)";
 "deactivate_account_forget_messages_information_part1" = "Vennligst glem alle meldingene jeg har sendt når kontoen min er deaktivert (";
@@ -1221,7 +1215,6 @@
 // Unverified sessions
 
 "key_verification_self_verify_unverified_sessions_alert_title" = "Gjennomgå dine innlogginger";
-"device_verification_self_verify_wait_information" = "Bekreft denne økten fra en av de andre øktene dine, og gi den tilgang til krypterte meldinger.\n\nBruk siste versjon av appen på de andre enhetene dine:";
 "key_verification_self_verify_unverified_sessions_alert_message" = "Bekreft alle øktene dine for å sikre at kontoen og meldingene dine er trygge.";
 "device_verification_self_verify_wait_additional_information" = "Dette fungerer med %@ og andre klienter som støtter kryssignering.";
 "key_verification_verify_sas_additional_information" = "For ytterligere sikkerhet, bruk en annen pålitelig kommunikasjonskanal eller snakk direkte med personen.";
@@ -1795,7 +1788,6 @@
 
 // Permissions
 "camera_access_not_granted_for_call" = "Videosamtaler krever tilgang til kameraet, men %@ har ikke tillatelse til å bruke det";
-"ssl_homeserver_url" = "Hjemmeserver-URL:% @";
 
 /* -*- 
    Automatic localization for en

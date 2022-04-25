@@ -23,7 +23,6 @@
 /* Look, stuff's happened, alright? Just open the app. */
 "MSGS_IN_TWO_PLUS_ROOMS" = "%@ nowych wiadomości w %@, %@ i innych";
 /* New action message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@ wysłał(-a) zdjęcie %@";
 /* New action message from a specific person in a named room. */
 "IMAGE_FROM_USER_IN_ROOM" = "%@ wysłał(-a) zdjęcie %@ w %@";
 /* Multiple unread messages from a specific person, not referencing a room */

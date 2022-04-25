@@ -631,7 +631,6 @@
 "pin_protection_settings_change_pin" = "Змінити PIN-код";
 "pin_protection_settings_enable_pin" = "Увімкнути PIN-код";
 "pin_protection_settings_enabled_forced" = "PIN-код увімкнено";
-"pin_protection_settings_section_header_x" = "PIN-код і %@";
 "pin_protection_mismatch_error_message" = "Повторіть спробу";
 "pin_protection_mismatch_error_title" = "PIN-коди відрізняються";
 "pin_protection_reset_alert_action_reset" = "Скинути";
@@ -1062,7 +1061,6 @@
 "settings_config_user_id" = "Ви ввійшли як %@";
 "unknown_devices_alert" = "Кімната містить сеанси, які досі не пройшли звірку.\nТобто нема гарантії, що ці сеанси належать користувачам, від імені яких вони створені.\nРадимо звірити кожен сеанс, перш ніж продовжити; але за потреби можете повторити надсилання повідомлення без звірки.";
 "room_action_camera" = "Зробити світлину або відео";
-"room_ongoing_conference_call_with_close" = "Відбувається конференц-виклик. Приєднатись як %1$s чи %2$s. %@ його.";
 "room_member_power_level_short_custom" = "Інше";
 "room_member_power_level_custom_in" = "Інше (%@) у %@";
 "room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Поки жоден сервер ідентифікації не налаштований, ви не можете почати бесіду з кимось за адресою е-пошти.";
@@ -1196,7 +1194,6 @@
 "room_resource_usage_limit_reached_message_1_monthly_active_user" = "Цей домашній сервер досяг свого місячного обмеження активних користувачів, тож ";
 "room_resource_usage_limit_reached_message_1_default" = "Цей домашній сервер досягнув одного зі своїх лімітів ресурсів, тож ";
 "room_conference_call_no_power" = "Для керування конференц-викликами у цій кімнаті потрібен дозвіл";
-"room_ongoing_conference_call" = "Відбувається конференц-виклик. Приєднатись як %1$s чи %2$s.";
 "room_participants_security_information_room_encrypted_for_dm" = "Повідомлення тут захищені наскрізним шифруванням.\n\nВаші повідомлення захищені замками, тож лише ви та отримувач маєте унікальні ключі для їхнього відмикання.";
 "room_participants_security_information_room_encrypted" = "Повідомлення тут захищені наскрізним шифруванням.\n\nВаші повідомлення захищені замками, тож лише ви та отримувачі мають унікальні ключі для їхнього відмикання.";
 "room_participants_action_security_status_complete_security" = "Завершити налаштування безпеки";
@@ -1211,7 +1208,6 @@
 "room_preview_subtitle" = "Це попередній перегляд кімнати. Ви в режимі лише читання.";
 
 // Room Preview
-"room_preview_invitation_format" = "%s запрошує вас приєднатися до цієї кімнати";
 
 // Unknown devices
 "unknown_devices_alert_title" = "Кімната містить невідомі сеанси";
@@ -2188,7 +2184,6 @@
 "settings_enter_validation_token_for" = "Введіть токен підтвердження для %@:";
 "settings_enable_push_notifications" = "Увімкнути push-сповіщення";
 "settings_enable_inapp_notifications" = "Увімкнути сповіщення в застосунку";
-"room_displayname_all_other_participants_left" = "%@ (виходить)";
 "notice_crypto_error_unknown_inbound_session_id" = "Сеанс відправника не надіслав нам ключі для цього повідомлення.";
 "notice_room_power_level_event_requirement" = "Найнижчий рівень повноважень пов'язаний з подією:";
 "notification_settings_global_info" = "Налаштування сповіщень зберігаються у вашому обліковому записі й спільні для всіх клієнтів, які їх підтримують (включно зі сповіщеннями стільниці).\n\nПравила застосовуються по черзі; спочатку надсилається повідомлення першого збігу з правилом.\nОтже: сповіщення для кожного слова важливіші за сповіщення для кожної кімнати, які важливіші за сповіщення від кожного відправника.\nДля кількох правил одного виду важливіше перше у списку.";
@@ -2426,7 +2421,6 @@
 "create_room_promotion_header" = "РЕКОМЕНДАЦІЯ";
 "create_room_section_footer_type_public" = "Знайти й приєднатись можуть лише запрошені, а не всі у Space name.";
 "create_room_section_footer_type_restricted" = "Будь-хто в Space name може знайти й приєднатися.";
-"room_access_settings_screen_upgrade_alert_message" = "Будь-хто в Space name зможе знайти цю кімнату й приєднатися — не потрібно запрошувати всіх вручну. Можете згодом змінити це в налаштуваннях кімнати.\n\nЗауважте, поліпшення кімнати створить нову її версію. Всі наявні повідомлення залишаться в архівованій кімнаті.";
 "create_room_section_footer_type_private" = "Лише запрошені можуть знайти й приєднатися.";
 "create_room_type_restricted" = "Учасники простору";
 "call_jitsi_unable_to_start" = "Не вдається розпочати конференцію";
