@@ -15,7 +15,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vuV-BV-bbx">
-                    <rect key="frame" x="0.0" y="0.0" width="395" height="202"/>
+                    <rect key="frame" x="0.0" y="0.0" width="395" height="250"/>
                 </imageView>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="0D1-Km-vTu">
                     <rect key="frame" x="0.0" y="182" width="395" height="68"/>
@@ -143,10 +143,10 @@
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="Hpx-8P-nCb" firstAttribute="top" secondItem="vuV-BV-bbx" secondAttribute="bottom" id="CIR-rY-ESf"/>
                 <constraint firstAttribute="trailing" secondItem="vuV-BV-bbx" secondAttribute="trailing" id="Gck-1z-j8f"/>
                 <constraint firstItem="vuV-BV-bbx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="NhI-xD-L7V"/>
                 <constraint firstAttribute="trailing" secondItem="0D1-Km-vTu" secondAttribute="trailing" id="QHD-xv-nfX"/>
+                <constraint firstAttribute="bottom" secondItem="vuV-BV-bbx" secondAttribute="bottom" id="eKg-25-HDW"/>
                 <constraint firstAttribute="bottom" secondItem="0D1-Km-vTu" secondAttribute="bottom" id="ea5-xx-V3s"/>
                 <constraint firstItem="vuV-BV-bbx" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="tJb-jf-9mX"/>
                 <constraint firstItem="0D1-Km-vTu" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="yJw-DU-ien"/>

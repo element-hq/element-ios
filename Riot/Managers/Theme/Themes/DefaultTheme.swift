@@ -105,11 +105,7 @@ class DefaultTheme: NSObject, Theme {
     
     var roomCellOutgoingBubbleBackgroundColor: UIColor = UIColor(rgb: 0xE7F8F3)
     
-    var roomCellLocalisationTextColor: UIColor = UIColor(rgb: 0x17191C)
-    
     var roomCellLocalisationIconStartedColor: UIColor = UIColor(rgb: 0x5C56F5)
-    
-    var roomCellLocalisationEndedColor: UIColor = UIColor(rgb: 0xC1C6CD)
     
     var roomCellLocalisationErrorColor: UIColor = UIColor(rgb: 0xFF5B55)
     
