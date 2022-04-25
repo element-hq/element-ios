@@ -30,11 +30,18 @@ struct ScreenList: View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(0..<allStates.count) { i in
-                    let state = allStates[i]
-                    NavigationLink(destination: state.view) {
-                        Text(state.screenTitle)
+                SwiftUI.Section {
+                    ForEach(0..<allStates.count, id: \.self) { i in
+                        let state = allStates[i]
+                        NavigationLink(destination: state.view) {
+                            Text(state.screenTitle)
+                        }
                     }
+                }
+                
+                SwiftUI.Section {
+                    Text("Last Item")
+                        .accessibilityIdentifier("lastItem")
                 }
             }
         }

@@ -170,6 +170,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
             self.stopLoading()
 
             if let roomDataSource = roomDataSource {
+                self.roomViewController.autoJoinInvitedRoom = self.parameters.autoJoinInvitedRoom
                 self.roomViewController.displayRoom(roomDataSource)
             }
             

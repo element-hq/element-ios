@@ -1066,10 +1066,8 @@ static CGSize kThreadListBarButtonItemImageSize;
         // Show preview header
         [self showPreviewHeader:YES];
     }
-    else
-    {
-        [super onRoomDataSourceReady];
-    }
+    
+    [super onRoomDataSourceReady];
 }
 
 - (void)updateViewControllerAppearanceOnRoomDataSourceState
@@ -3487,9 +3485,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     MXWeakify(self);
     
-    BOOL showThreadOption = RiotSettings.shared.enableThreads
-    && !self.roomDataSource.threadId
-    && !selectedEvent.threadId;
+    BOOL showThreadOption = [self showThreadOptionForEvent:selectedEvent];
     if (showThreadOption && [self canCopyEvent:selectedEvent andCell:cell])
     {
         [self.eventMenuBuilder addItemWithType:EventMenuItemTypeCopy
@@ -6419,7 +6415,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     BOOL showMoreOption = (event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForStates)
         || (!event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForMessages);
-    BOOL showThreadOption = !self.roomDataSource.threadId && !event.threadId;
+    BOOL showThreadOption = [self showThreadOptionForEvent:event];
     
     NSMutableArray<RoomContextualMenuItem*> *items = [NSMutableArray arrayWithCapacity:5];
     
@@ -6810,6 +6806,13 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 #pragma mark - Threads
 
+- (BOOL)showThreadOptionForEvent:(MXEvent*)event
+{
+    return !self.roomDataSource.threadId
+        && !event.threadId
+        && (RiotSettings.shared.enableThreads || self.mainSession.store.supportedMatrixVersions.supportsThreads);
+}
+
 - (void)showThreadsNotice
 {
     if (!self.threadsNoticeModalPresenter)
@@ -6847,7 +6850,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         self.threadsBetaBridgePresenter = nil;
     }
 
-    self.threadsBetaBridgePresenter = [[ThreadsBetaCoordinatorBridgePresenter alloc] initWithThreadId:event.eventId];
+    self.threadsBetaBridgePresenter = [[ThreadsBetaCoordinatorBridgePresenter alloc] initWithThreadId:event.eventId
+                                                                                             infoText:VectorL10n.threadsBetaInformation
+                                                                                       additionalText:nil];
     self.threadsBetaBridgePresenter.delegate = self;
 
     [self.threadsBetaBridgePresenter presentFrom:self.presentedViewController?:self animated:YES];

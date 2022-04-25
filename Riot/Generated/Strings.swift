@@ -2759,6 +2759,30 @@ public class VectorL10n: NSObject {
   public static var locationSharingInvalidAuthorizationSettings: String { 
     return VectorL10n.tr("Vector", "location_sharing_invalid_authorization_settings") 
   }
+  /// You
+  public static var locationSharingLiveListItemCurrentUserDisplayName: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_list_item_current_user_display_name") 
+  }
+  /// Updated %@ ago
+  public static func locationSharingLiveListItemLastUpdate(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "location_sharing_live_list_item_last_update", p1)
+  }
+  /// Unknown last update
+  public static var locationSharingLiveListItemLastUpdateInvalid: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_list_item_last_update_invalid") 
+  }
+  /// Sharing expired
+  public static var locationSharingLiveListItemSharingExpired: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_list_item_sharing_expired") 
+  }
+  /// Stop sharing
+  public static var locationSharingLiveListItemStopSharingAction: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_list_item_stop_sharing_action") 
+  }
+  /// %@ left
+  public static func locationSharingLiveListItemTimeLeft(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "location_sharing_live_list_item_time_left", p1)
+  }
   /// Share location
   public static var locationSharingLiveMapCalloutTitle: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_map_callout_title") 
@@ -2766,6 +2790,10 @@ public class VectorL10n: NSObject {
   /// Share live location
   public static var locationSharingLiveShareTitle: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_share_title") 
+  }
+  /// Location
+  public static var locationSharingLiveViewerTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_viewer_title") 
   }
   /// %@ could not load the map. Please try again later.
   public static func locationSharingLoadingMapErrorTitle(_ p1: String) -> String {
@@ -7703,6 +7731,14 @@ public class VectorL10n: NSObject {
   public static var threadsBetaTitle: String { 
     return VectorL10n.tr("Vector", "threads_beta_title") 
   }
+  /// Your homeserver does not currently support threads, so this feature may be unreliable. Some threaded messages may not be reliably available. 
+  public static var threadsDiscourageInformation1: String { 
+    return VectorL10n.tr("Vector", "threads_discourage_information_1") 
+  }
+  /// \n\nDo you want to enable threads anyway?
+  public static var threadsDiscourageInformation2: String { 
+    return VectorL10n.tr("Vector", "threads_discourage_information_2") 
+  }
   /// Threads help keep your conversations on-topic and easy to track.
   public static var threadsEmptyInfoAll: String { 
     return VectorL10n.tr("Vector", "threads_empty_info_all") 
@@ -8098,15 +8134,18 @@ public class VectorL10n: NSObject {
 
 extension VectorL10n {
   static func tr(_ table: String, _ key: String, _ args: CVarArg...) -> String {
-    let format = NSLocalizedString(key, tableName: table, bundle: Bundle.app, comment: "")
-    let locale: Locale
-    if let providedLocale = LocaleProvider.locale {
-      locale = providedLocale
-    } else {
-      locale = Locale.current
-    }        
-
-      return String(format: format, locale: locale, arguments: args)
+    let format = NSLocalizedString(key, tableName: table, bundle: bundle, comment: "")
+    let locale = LocaleProvider.locale ?? Locale.current    
+    return String(format: format, locale: locale, arguments: args)
+  }
+  /// The bundle to load strings from. This will be the app's bundle unless running
+  /// the UI tests target, in which case the strings are contained in the tests bundle.
+  static let bundle: Bundle = {
+    if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+      // The tests bundle is embedded inside a runner. Find the bundle for VectorL10n.
+      return Bundle(for: VectorL10n.self)
     }
+    return Bundle.app
+  }()
 }
 

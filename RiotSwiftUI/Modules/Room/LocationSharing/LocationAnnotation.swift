@@ -17,25 +17,35 @@
 import Foundation
 import Mapbox
 
+/// Base class to handle a map annotation
 class LocationAnnotation: NSObject, MGLAnnotation {
     
     // MARK: - Properties
+    
+    // Title property is needed to enable annotation selection and callout view showing
+    var title: String?
     
     let coordinate: CLLocationCoordinate2D
     
     // MARK: - Setup
     
     init(coordinate: CLLocationCoordinate2D) {
-        
         self.coordinate = coordinate
+        super.init()
     }
 }
 
+/// POI map annotation
 class PinLocationAnnotation: LocationAnnotation {}
 
+/// User map annotation
 class UserLocationAnnotation: LocationAnnotation {
     
     // MARK: - Properties
+    
+    var userId: String {
+        return avatarData.matrixItemId
+    }
     
     let avatarData: AvatarInputProtocol
     
@@ -45,7 +55,8 @@ class UserLocationAnnotation: LocationAnnotation {
          coordinate: CLLocationCoordinate2D) {
 
         self.avatarData = avatarData
-        
+                        
         super.init(coordinate: coordinate)
+        super.title = self.avatarData.displayName ?? self.userId
     }
 }

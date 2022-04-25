@@ -61,9 +61,9 @@ struct StaticLocationView: View {
                         viewModel.send(viewAction: .share)
                     } label: {
                         Image(uiImage: Asset.Images.locationShareIcon.image)
-                            .accessibilityIdentifier("LocationSharingView.shareButton")
                     }
                     .disabled(!viewModel.viewState.shareButtonEnabled)
+                    .accessibilityIdentifier("shareButton")
                 }
             }
             .navigationBarTitleDisplayMode(.inline)

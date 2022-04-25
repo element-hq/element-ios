@@ -39,6 +39,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: org.matrix.RiotSwiftUITests$(rfc1034identifier)
         SWIFT_OBJC_BRIDGING_HEADER: $(SRCROOT)/RiotSwiftUI/RiotSwiftUI-Bridging-Header.h
         SWIFT_OBJC_INTERFACE_HEADER_NAME: GeneratedInterface-Swift.h
+        GENERATE_INFOPLIST_FILE: YES
     sources:
       # Source included/excluded here here are similar to RiotSwiftUI as we
       # need access to ScreenStates
@@ -60,6 +61,7 @@ targets:
     - path: ../Riot/Categories/Character.swift
     - path: ../Riot/Categories/UIColor.swift
     - path: ../Riot/Categories/UISearchBar.swift
+    - path: ../Riot/Categories/UIView.swift
     - path: ../Riot/Assets/en.lproj/Vector.strings
     - path: ../Riot/Modules/Analytics/AnalyticsScreen.swift
     - path: ../Riot/Assets/en.lproj/Untranslated.strings

@@ -428,7 +428,9 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                                                                       roomId: roomNavigationParameters.roomId,
                                                                       eventId: roomNavigationParameters.eventId,
                                                                       threadId: threadId,
-                                                                      showSettingsInitially: roomNavigationParameters.showSettingsInitially, displayConfiguration: displayConfig)
+                                                                      showSettingsInitially: roomNavigationParameters.showSettingsInitially,
+                                                                      displayConfiguration: displayConfig,
+                                                                      autoJoinInvitedRoom: roomNavigationParameters.autoJoinInvitedRoom)
             
             self.showRoom(with: roomCoordinatorParameters,
                           stackOnSplitViewDetail: roomNavigationParameters.presentationParameters.stackAboveVisibleViews,

@@ -1,1 +1,0 @@
-Pods: Stop excluding ARM64 simulator builds following an update to JitsiMeetSDK.
