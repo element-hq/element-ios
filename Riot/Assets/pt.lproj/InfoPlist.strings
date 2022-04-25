@@ -5,3 +5,6 @@
 "NSPhotoLibraryUsageDescription" = "A biblioteca de fotos é usada para enviar fotos e vídeos.";
 // Permissions usage explanations
 "NSCameraUsageDescription" = "A câmara é usada para tirar fotos e vídeos e fazer videochamadas.";
+"NSLocationWhenInUseUsageDescription" = "Quando partilha a sua localização com outros, o Element necessita de acesso para lhes mostrar um mapa.";
+"NSFaceIDUsageDescription" = "O Face ID é usado para aceder à sua app.";
+"NSCalendarsUsageDescription" = "Veja as suas reuniões na app.";
