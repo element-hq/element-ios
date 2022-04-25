@@ -57,7 +57,7 @@ targets:
       script: |
         # homebrew uses a non-standard directory on M1
         if [[ $(arch) = arm64 ]]; then export PATH="$PATH:/opt/homebrew/bin"; fi
-        mint run Asana/locheck@0.9.6 discoverlproj --treat-warnings-as-errors --ignore-missing --ignore lproj_file_missing_from_translation $PROJECT_DIR/Riot/Assets
+        xcrun --sdk macosx mint run Asana/locheck@0.9.6 discoverlproj --treat-warnings-as-errors --ignore-missing --ignore lproj_file_missing_from_translation $PROJECT_DIR/Riot/Assets
 
     sources:
     - path: ../RiotSwiftUI/Modules
