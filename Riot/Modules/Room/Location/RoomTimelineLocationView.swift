@@ -20,8 +20,8 @@ import Mapbox
 import SwiftUI
 
 protocol RoomTimelineLocationViewDelegate: AnyObject {
-    func didTapStopButton()
-    func didTapRetryButton()
+    func roomTimelineLocationViewDidTapStopButton(_ roomTimelineLocationView: RoomTimelineLocationView)
+    func roomTimelineLocationViewDidTapRetryButton(_ roomTimelineLocationView: RoomTimelineLocationView)
 }
 
 struct RoomTimelineLocationViewData {
@@ -66,6 +66,7 @@ enum OutgoingLiveLocationSharingStatus {
 }
 
 enum IncomingLiveLocationSharingStatus {
+    case starting
     case started(_ timeleft: TimeInterval)
     case stopped
 }
@@ -221,8 +222,13 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
         switch viewState {
         case .incoming(let liveLocationSharingStatus):
             switch liveLocationSharingStatus {
+            case .starting:
+                iconTint = theme.roomCellLocalisationEndedColor
+                title = VectorL10n.locationSharingLiveLoading
+                titleColor = theme.roomCellLocalisationEndedColor
+                placeholderImage = Asset.Images.locationLiveCellLoadingImage.image
             case .started(let timeLeft):
-                iconTint = theme.roomCellLocalisationStartedColor
+                iconTint = theme.roomCellLocalisationIconStartedColor
                 title = VectorL10n.liveLocationSharingBannerTitle
                 timeLeftString = generateTimerString(for: timeLeft, isIncomingLocation: true)
             case .stopped:
@@ -239,7 +245,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
                 titleColor = theme.roomCellLocalisationEndedColor
                 placeholderImage = Asset.Images.locationLiveCellLoadingImage.image
             case .started(let timeLeft):
-                iconTint = theme.roomCellLocalisationStartedColor
+                iconTint = theme.roomCellLocalisationIconStartedColor
                 title = VectorL10n.liveLocationSharingBannerTitle
                 timeLeftString = generateTimerString(for: timeLeft, isIncomingLocation: false)
                 rightButtonTitle = VectorL10n.stop
@@ -262,11 +268,12 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     
     private func generateTimerString(for timestamp: Double,
                                      isIncomingLocation: Bool) -> String? {
+        let timerInSec = timestamp / 1000 // Timestamp is in millisecond in the SDK
         let timerString: String?
         if isIncomingLocation {
-            timerString = VectorL10n.locationSharingLiveTimerIncoming(incomingTimerFormatter.string(from: Date(timeIntervalSince1970: timestamp)))
-        } else if let outgoingTimer = outgoingTimerFormatter.string(from: Date(timeIntervalSince1970: timestamp).timeIntervalSinceNow) {
-            timerString = VectorL10n.locationSharingLiveTimerOutgoing(outgoingTimer)
+            timerString = VectorL10n.locationSharingLiveTimerIncoming(incomingTimerFormatter.string(from: Date(timeIntervalSince1970: timerInSec)))
+        } else if let outgoingTimer = outgoingTimerFormatter.string(from: Date(timeIntervalSince1970: timerInSec).timeIntervalSinceNow) {
+            timerString = VectorL10n.locationSharingLiveListItemTimeLeft(outgoingTimer)
         } else {
             timerString = nil
         }
@@ -313,9 +320,9 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     
     @IBAction private func didTapTightButton(_ sender: Any) {
         if rightButton.tag == RightButtonTag.stopSharing.rawValue {
-            delegate?.didTapStopButton()
+            delegate?.roomTimelineLocationViewDidTapStopButton(self)
         } else if rightButton.tag == RightButtonTag.retrySharing.rawValue {
-            delegate?.didTapRetryButton()
+            delegate?.roomTimelineLocationViewDidTapRetryButton(self)
         }
     }
 }

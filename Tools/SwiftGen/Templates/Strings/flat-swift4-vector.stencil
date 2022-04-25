@@ -64,17 +64,20 @@ import Foundation
 
 extension {{className}} {
   static func tr(_ table: String, _ key: String, _ args: CVarArg...) -> String {
-    let format = NSLocalizedString(key, tableName: table, bundle: Bundle.app, comment: "")
-    let locale: Locale
-        
-    if let providedLocale = LocaleProvider.locale {
-      locale = providedLocale
-    } else {
-      locale = Locale.current
-    }        
-
-      return String(format: format, locale: locale, arguments: args)
+    let format = NSLocalizedString(key, tableName: table, bundle: bundle, comment: "")
+    let locale = LocaleProvider.locale ?? Locale.current    
+    
+    return String(format: format, locale: locale, arguments: args)
+  }
+  /// The bundle to load strings from. This will be the app's bundle unless running
+  /// the UI tests target, in which case the strings are contained in the tests bundle.
+  static let bundle: Bundle = {
+    if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+      // The tests bundle is embedded inside a runner. Find the bundle for VectorL10n.
+      return Bundle(for: VectorL10n.self)
     }
+    return Bundle.app
+  }()
 }
 
 {% else %}

@@ -2767,6 +2767,30 @@ public class VectorL10n: NSObject {
   public static var locationSharingLiveError: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_error") 
   }
+  /// You
+  public static var locationSharingLiveListItemCurrentUserDisplayName: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_list_item_current_user_display_name") 
+  }
+  /// Updated %@ ago
+  public static func locationSharingLiveListItemLastUpdate(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "location_sharing_live_list_item_last_update", p1)
+  }
+  /// Unknown last update
+  public static var locationSharingLiveListItemLastUpdateInvalid: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_list_item_last_update_invalid") 
+  }
+  /// Sharing expired
+  public static var locationSharingLiveListItemSharingExpired: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_list_item_sharing_expired") 
+  }
+  /// Stop sharing
+  public static var locationSharingLiveListItemStopSharingAction: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_list_item_stop_sharing_action") 
+  }
+  /// %@ left
+  public static func locationSharingLiveListItemTimeLeft(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "location_sharing_live_list_item_time_left", p1)
+  }
   /// Loading Live location...
   public static var locationSharingLiveLoading: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_loading") 
@@ -2783,9 +2807,9 @@ public class VectorL10n: NSObject {
   public static func locationSharingLiveTimerIncoming(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "location_sharing_live_timer_incoming", p1)
   }
-  /// %@ left
-  public static func locationSharingLiveTimerOutgoing(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "location_sharing_live_timer_outgoing", p1)
+  /// Location
+  public static var locationSharingLiveViewerTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_viewer_title") 
   }
   /// %@ could not load the map. Please try again later.
   public static func locationSharingLoadingMapErrorTitle(_ p1: String) -> String {
@@ -8126,15 +8150,18 @@ public class VectorL10n: NSObject {
 
 extension VectorL10n {
   static func tr(_ table: String, _ key: String, _ args: CVarArg...) -> String {
-    let format = NSLocalizedString(key, tableName: table, bundle: Bundle.app, comment: "")
-    let locale: Locale
-    if let providedLocale = LocaleProvider.locale {
-      locale = providedLocale
-    } else {
-      locale = Locale.current
-    }        
-
-      return String(format: format, locale: locale, arguments: args)
+    let format = NSLocalizedString(key, tableName: table, bundle: bundle, comment: "")
+    let locale = LocaleProvider.locale ?? Locale.current    
+    return String(format: format, locale: locale, arguments: args)
+  }
+  /// The bundle to load strings from. This will be the app's bundle unless running
+  /// the UI tests target, in which case the strings are contained in the tests bundle.
+  static let bundle: Bundle = {
+    if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+      // The tests bundle is embedded inside a runner. Find the bundle for VectorL10n.
+      return Bundle(for: VectorL10n.self)
     }
+    return Bundle.app
+  }()
 }
 

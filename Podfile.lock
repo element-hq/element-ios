@@ -20,6 +20,7 @@ PODS:
   - BlueRSA (1.0.200)
   - DGCollectionViewLeftAlignFlowLayout (1.0.4)
   - Down (0.11.0)
+  - DSBottomSheet (0.3.0)
   - DSWaveformImage (6.1.1)
   - DTCoreText (1.6.26):
     - DTCoreText/Core (= 1.6.26)
@@ -105,6 +106,7 @@ DEPENDENCIES:
   - AnalyticsEvents (from `https://github.com/matrix-org/matrix-analytics-events.git`, branch `release/swift`)
   - DGCollectionViewLeftAlignFlowLayout (~> 1.0.4)
   - Down (~> 0.11.0)
+  - DSBottomSheet (~> 0.3)
   - DSWaveformImage (~> 6.1.1)
   - DTCoreText (~> 1.6.25)
   - ffmpeg-kit-ios-audio (= 4.5.1)
@@ -139,6 +141,7 @@ SPEC REPOS:
     - BlueRSA
     - DGCollectionViewLeftAlignFlowLayout
     - Down
+    - DSBottomSheet
     - DSWaveformImage
     - DTCoreText
     - DTFoundation
@@ -191,6 +194,7 @@ SPEC CHECKSUMS:
   BlueRSA: dfeef51db96bcc4edec654956c1581adbda4e6a3
   DGCollectionViewLeftAlignFlowLayout: a0fa58797373ded039cafba8133e79373d048399
   Down: b6ba1bc985c9d2f4e15e3b293d2207766fa12612
+  DSBottomSheet: ca0ac37eb5af2dd54663f86b84382ed90a59be2a
   DSWaveformImage: 3c718a0cf99291887ee70d1d0c18d80101d3d9ce
   DTCoreText: ec749e013f2e1f76de5e7c7634642e600a7467ce
   DTFoundation: a53f8cda2489208cbc71c648be177f902ee17536
@@ -225,6 +229,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 8055bae15b82bd29b1d12c64ff038fe6f86a8ca0
+PODFILE CHECKSUM: 39feedaf75b9a9287e4fe5309200e0493a9251a3
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

@@ -87,10 +87,10 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
                                             avatarUrl: bubbleData.senderAvatarUrl,
                                             mediaManager: bubbleData.mxSession.mediaManager,
                                             fallbackImage: .matrixItem(bubbleData.senderId, bubbleData.senderDisplayName))
-        let futurDateTimeInterval = Date(timeIntervalSinceNow: 3734).timeIntervalSince1970
+        let futurDateTimeInterval = Date(timeIntervalSinceNow: 3734).timeIntervalSince1970 * 1000
         
         locationView.displayLiveLocation(with: RoomTimelineLocationViewData(location: location, userAvatarData: avatarViewData, mapStyleURL: mapStyleURL),
-                                         liveLocationViewState: .outgoing(.failure))
+                                         liveLocationViewState: .outgoing(.started(futurDateTimeInterval)))
     }
     
     override func setupViews() {
@@ -112,7 +112,7 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
 }
 
 extension LocationPlainCell: RoomTimelineLocationViewDelegate {
-    func didTapStopButton() {
+    func roomTimelineLocationViewDidTapStopButton(_ roomTimelineLocationView: RoomTimelineLocationView) {
         guard let event = self.event else {
             return
         }
@@ -120,7 +120,7 @@ extension LocationPlainCell: RoomTimelineLocationViewDelegate {
         delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellStopShareButtonPressed, userInfo: [kMXKRoomBubbleCellEventKey: event])
     }
     
-    func didTapRetryButton() {
+    func roomTimelineLocationViewDidTapRetryButton(_ roomTimelineLocationView: RoomTimelineLocationView) {
         guard let event = self.event else {
             return
         }

@@ -108,7 +108,7 @@ import DesignKit
     
     var roomCellLocalisationTextColor: UIColor { get }
     
-    var roomCellLocalisationStartedColor: UIColor { get }
+    var roomCellLocalisationIconStartedColor: UIColor { get }
     
     var roomCellLocalisationEndedColor: UIColor { get }
     

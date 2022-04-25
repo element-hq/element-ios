@@ -101,7 +101,7 @@ class DarkTheme: NSObject, Theme {
     
     var roomCellLocalisationTextColor: UIColor = UIColor(rgb: 0x17191C)
     
-    var roomCellLocalisationStartedColor: UIColor = UIColor(rgb: 0x5C56F5)
+    var roomCellLocalisationIconStartedColor: UIColor = UIColor(rgb: 0x5C56F5)
     
     var roomCellLocalisationEndedColor: UIColor = UIColor(rgb: 0xC1C6CD)
     
