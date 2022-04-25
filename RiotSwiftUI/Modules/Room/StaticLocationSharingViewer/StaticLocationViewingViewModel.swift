@@ -78,7 +78,17 @@ class StaticLocationViewingViewModel: StaticLocationViewingViewModelType, Static
         }
         
         let alertInfo = mapViewErrorAlertInfoBuilder.build(with: error) { [weak self] in
-            self?.completion?(.close)
+            
+            switch error {
+            case .invalidLocationAuthorization:
+                if let applicationSettingsURL = URL(string:UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(applicationSettingsURL)
+                } else {
+                    self?.completion?(.close)
+                }
+            default:
+                self?.completion?(.close)
+            }
         }
         
         state.bindings.alertInfo = alertInfo

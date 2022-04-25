@@ -2759,6 +2759,30 @@ public class VectorL10n: NSObject {
   public static var locationSharingInvalidAuthorizationSettings: String { 
     return VectorL10n.tr("Vector", "location_sharing_invalid_authorization_settings") 
   }
+  /// You
+  public static var locationSharingLiveListItemCurrentUserDisplayName: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_list_item_current_user_display_name") 
+  }
+  /// Updated %@ ago
+  public static func locationSharingLiveListItemLastUpdate(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "location_sharing_live_list_item_last_update", p1)
+  }
+  /// Unknown last update
+  public static var locationSharingLiveListItemLastUpdateInvalid: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_list_item_last_update_invalid") 
+  }
+  /// Sharing expired
+  public static var locationSharingLiveListItemSharingExpired: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_list_item_sharing_expired") 
+  }
+  /// Stop sharing
+  public static var locationSharingLiveListItemStopSharingAction: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_list_item_stop_sharing_action") 
+  }
+  /// %@ left
+  public static func locationSharingLiveListItemTimeLeft(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "location_sharing_live_list_item_time_left", p1)
+  }
   /// Share location
   public static var locationSharingLiveMapCalloutTitle: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_map_callout_title") 
@@ -2766,6 +2790,10 @@ public class VectorL10n: NSObject {
   /// Share live location
   public static var locationSharingLiveShareTitle: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_share_title") 
+  }
+  /// Location
+  public static var locationSharingLiveViewerTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_viewer_title") 
   }
   /// %@ could not load the map. Please try again later.
   public static func locationSharingLoadingMapErrorTitle(_ p1: String) -> String {

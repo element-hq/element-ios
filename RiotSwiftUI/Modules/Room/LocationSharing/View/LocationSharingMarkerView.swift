@@ -40,7 +40,6 @@ struct LocationSharingMarkerView<Content: View>: View {
             markerImage
                 .frame(width: 40, height: 40)
         }
-        .offset(x: 0, y: -23)
     }
 }
 

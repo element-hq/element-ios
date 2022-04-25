@@ -21,30 +21,41 @@ import Mapbox
 @available(iOS 14, *)
 class LocationAnnotationView: MGLUserLocationAnnotationView {
     
+    // MARK: - Constants
+    
+    private enum Constants {
+        static let defaultFrame = CGRect(x: 0, y: 0, width: 46, height: 46)
+    }
+    
     // MARK: Private
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     // MARK: - Setup
     
-    init(avatarData: AvatarInputProtocol) {
-        super.init(frame: .zero)
-        
+    override init(annotation: MGLAnnotation?, reuseIdentifier: String?) {
+        super.init(annotation: annotation, reuseIdentifier:
+                    reuseIdentifier)
+        self.frame = Constants.defaultFrame
+    }
+    
+    convenience init(avatarData: AvatarInputProtocol) {
+        self.init(annotation: nil, reuseIdentifier: nil)
         self.addUserMarkerView(with: avatarData)
     }
     
-    init(userLocationAnnotation: UserLocationAnnotation) {
+    convenience init(userLocationAnnotation: UserLocationAnnotation) {
         
         // TODO: Use a reuseIdentifier
-        super.init(annotation: userLocationAnnotation, reuseIdentifier: nil)
+        self.init(annotation: userLocationAnnotation, reuseIdentifier: nil)
         
         self.addUserMarkerView(with: userLocationAnnotation.avatarData)
-        
     }
     
-    init(pinLocationAnnotation: PinLocationAnnotation) {
+    convenience init(pinLocationAnnotation: PinLocationAnnotation) {
+        
         // TODO: Use a reuseIdentifier
-        super.init(annotation: pinLocationAnnotation, reuseIdentifier: nil)
+        self.init(annotation: pinLocationAnnotation, reuseIdentifier: nil)
         
         self.addPinMarkerView()
     }
@@ -57,32 +68,34 @@ class LocationAnnotationView: MGLUserLocationAnnotationView {
     
     private func addUserMarkerView(with avatarData: AvatarInputProtocol) {
         
-        guard let avatarImageView = UIHostingController(rootView: LocationSharingMarkerView(backgroundColor: theme.userColor(for: avatarData.matrixItemId)) {
+        guard let avatarMarkerView = UIHostingController(rootView: LocationSharingMarkerView(backgroundColor: theme.userColor(for: avatarData.matrixItemId)) {
             AvatarImage(avatarData: avatarData, size: .medium)
                 .border()
         }).view else {
             return
         }
-        addMarkerView(with: avatarImageView)
+        
+        addMarkerView(avatarMarkerView)
     }
     
     private func addPinMarkerView() {
-        guard let pinImageView = UIHostingController(rootView: LocationSharingMarkerView(backgroundColor: theme.colors.accent) {
+        guard let pinMarkerView = UIHostingController(rootView: LocationSharingMarkerView(backgroundColor: theme.colors.accent) {
             Image(uiImage: Asset.Images.locationPinIcon.image)
                 .resizable()
                 .shapedBorder(color: theme.colors.accent, borderWidth: 3, shape: Circle())
         }).view else {
             return
         }
-        addMarkerView(with: pinImageView)
+        
+        addMarkerView(pinMarkerView)
     }
     
-    private func addMarkerView(with imageView: UIView) {
-        addSubview(imageView)
+    private func addMarkerView(_ markerView: UIView) {
         
-        addConstraints([topAnchor.constraint(equalTo: imageView.topAnchor),
-                        leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
-                        bottomAnchor.constraint(equalTo: imageView.bottomAnchor),
-                        trailingAnchor.constraint(equalTo: imageView.trailingAnchor)])
+        markerView.backgroundColor = .clear
+        
+        addSubview(markerView)
+        
+        markerView.frame = self.bounds
     }
 }
