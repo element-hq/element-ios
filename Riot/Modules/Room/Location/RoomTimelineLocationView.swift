@@ -108,6 +108,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     private var mapView: MGLMapView!
     private var annotationView: LocationMarkerView?
     private static var usernameColorGenerator = UserNameColorGenerator()
+    private static var theme = ThemeService.shared().theme
     
     private lazy var incomingTimerFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
@@ -189,6 +190,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
         }
         
         liveLocationContainerView.isHidden = false
+        liveLocationContainerView.backgroundColor = Self.theme.colors.background.withAlphaComponent(0.85)
         
         liveLocationImageView.image = Asset.Images.locationLiveCellIcon.image
         liveLocationImageView.tintColor = bannerViewData.iconTint
@@ -197,6 +199,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
         liveLocationStatusLabel.textColor = bannerViewData.titleColor
         
         liveLocationTimerLabel.text = bannerViewData.timeLeftString
+        liveLocationTimerLabel.textColor = Self.theme.colors.tertiaryContent
         liveLocationTimerLabel.isHidden = !bannerViewData.showTimer
         
         rightButton.setTitle(bannerViewData.rightButtonTitle, for: .normal)
@@ -209,11 +212,10 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     }
     
     private func liveLocationBannerViewData(from viewState: TimelineLiveLocationViewState) -> LiveLocationBannerViewData {
-        let theme = ThemeService.shared().theme
         
         let iconTint: UIColor
         let title: String
-        var titleColor: UIColor = theme.roomCellLocalisationTextColor
+        var titleColor: UIColor = Self.theme.colors.primaryContent
         var placeholderImage: UIImage?
         var timeLeftString: String?
         var rightButtonTitle: String?
@@ -223,42 +225,42 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
         case .incoming(let liveLocationSharingStatus):
             switch liveLocationSharingStatus {
             case .starting:
-                iconTint = theme.roomCellLocalisationEndedColor
+                iconTint = Self.theme.roomCellLocalisationEndedColor
                 title = VectorL10n.locationSharingLiveLoading
-                titleColor = theme.roomCellLocalisationEndedColor
+                titleColor = Self.theme.roomCellLocalisationEndedColor
                 placeholderImage = Asset.Images.locationLiveCellLoadingImage.image
             case .started(let timeLeft):
-                iconTint = theme.roomCellLocalisationIconStartedColor
+                iconTint = Self.theme.roomCellLocalisationIconStartedColor
                 title = VectorL10n.liveLocationSharingBannerTitle
                 timeLeftString = generateTimerString(for: timeLeft, isIncomingLocation: true)
             case .stopped:
-                iconTint = theme.roomCellLocalisationEndedColor
+                iconTint = Self.theme.roomCellLocalisationEndedColor
                 title = VectorL10n.liveLocationSharingEnded
-                titleColor = theme.roomCellLocalisationEndedColor
+                titleColor = Self.theme.roomCellLocalisationEndedColor
                 placeholderImage = Asset.Images.locationLiveCellEndedImage.image
             }
         case .outgoing(let liveLocationSharingStatus):
             switch liveLocationSharingStatus {
             case .starting:
-                iconTint = theme.roomCellLocalisationEndedColor
+                iconTint = Self.theme.roomCellLocalisationEndedColor
                 title = VectorL10n.locationSharingLiveLoading
-                titleColor = theme.roomCellLocalisationEndedColor
+                titleColor = Self.theme.roomCellLocalisationEndedColor
                 placeholderImage = Asset.Images.locationLiveCellLoadingImage.image
             case .started(let timeLeft):
-                iconTint = theme.roomCellLocalisationIconStartedColor
+                iconTint = Self.theme.roomCellLocalisationIconStartedColor
                 title = VectorL10n.liveLocationSharingBannerTitle
                 timeLeftString = generateTimerString(for: timeLeft, isIncomingLocation: false)
                 rightButtonTitle = VectorL10n.stop
             case .failure:
-                iconTint = theme.roomCellLocalisationErrorColor
+                iconTint = Self.theme.roomCellLocalisationErrorColor
                 title = VectorL10n.locationSharingLiveError
-                titleColor = theme.roomCellLocalisationEndedColor
+                titleColor = Self.theme.roomCellLocalisationEndedColor
                 rightButtonTitle = VectorL10n.retry
                 rightButtonTag = .retrySharing
             case .stopped:
-                iconTint = theme.roomCellLocalisationEndedColor
+                iconTint = Self.theme.roomCellLocalisationEndedColor
                 title = VectorL10n.liveLocationSharingEnded
-                titleColor = theme.roomCellLocalisationEndedColor
+                titleColor = Self.theme.roomCellLocalisationEndedColor
                 placeholderImage = Asset.Images.locationLiveCellEndedImage.image
             }
         }
