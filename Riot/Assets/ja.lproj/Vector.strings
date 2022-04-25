@@ -159,7 +159,7 @@
 "room_participants_remove_third_party_invite_msg" = "サードパーティの招待を削除することは、APIが存在するまでサポートされていません";
 "room_participants_invite_prompt_title" = "確認";
 "room_participants_invite_prompt_msg" = "%@をチャットに招待してよろしいですか？";
-"room_participants_filter_room_members" = "ルームメンバーを現在";
+"room_participants_filter_room_members" = "ルームメンバーを検索";
 "room_participants_invite_another_user" = "ユーザーID、名前、電子メールで検索、招待";
 "room_participants_invite_malformed_id_title" = "招待エラー";
 "room_participants_invite_malformed_id" = "不正なIDです。メールアドレスを用いるか、'@localpart:domain'のようなMatrix IDを使用してください";
@@ -516,13 +516,13 @@
 "group_participants_remove_prompt_msg" = "このグループから%@を削除してよろしいですか？";
 "group_participants_invite_prompt_title" = "確認";
 "group_participants_invite_prompt_msg" = "このグループに%@を招待してよろしいですか？";
-"group_participants_filter_members" = "コミュニティーのメンバーを絞り込む";
+"group_participants_filter_members" = "コミュニティーメンバーを検索";
 "group_participants_invite_another_user" = "ユーザーIDまたは名前による検索/招待";
 "group_participants_invite_malformed_id_title" = "招待エラー";
 "group_participants_invite_malformed_id" = "不正なID。'@localpart:domain'のようなMatrix IDでなければなりません";
 "group_participants_invited_section" = "招待中";
 // Group rooms
-"group_rooms_filter_rooms" = "コミュニティールームをフィルタリング";
+"group_rooms_filter_rooms" = "コミュニティールームを絞り込む";
 "event_formatter_rerequest_keys_part1_link" = "暗号鍵を再要求";
 "event_formatter_rerequest_keys_part2" = " あなたの他のセッションに。";
 "homeserver_connection_lost" = "ホームサーバーに接続できませんでした。";
@@ -599,7 +599,7 @@
 "room_intro_cell_add_participants_action" = "参加者を追加";
 "room_participants_security_information_room_encrypted" = "このルームのメッセージはエンドツーエンド暗号化されています。\n\nメッセージは安全に保護されており、メッセージのロックを解除するための固有の鍵は、あなたと受信者だけが持っています。";
 "room_participants_security_information_room_not_encrypted" = "このルームのメッセージはエンドツーエンド暗号化されていません。";
-"room_intro_cell_information_dm_sentence1_part3" = ". ";
+"room_intro_cell_information_dm_sentence1_part3" = "とのダイレクトメッセージの始まりです。 ";
 "callbar_active_and_single_paused" = "1つのアクティブな通話（%@）· 1つの一時停止された通話";
 
 // Call Bar
@@ -746,7 +746,7 @@
 "room_participants_action_security_status_verified" = "認証済";
 "room_participants_action_section_security" = "セキュリティー";
 "room_participants_start_new_chat_error_using_user_email_without_identity_server" = "IDサーバーが設定されていないため、メールアドレスを使って連絡先とチャットを開始することができません。";
-"room_participants_filter_room_members_for_dm" = "メンバーを絞り込む";
+"room_participants_filter_room_members_for_dm" = "メンバーを検索";
 "room_participants_remove_third_party_invite_prompt_msg" = "招待を取り消してよろしいですか？";
 "room_participants_leave_prompt_msg_for_dm" = "退出してよろしいですか？";
 "room_participants_leave_prompt_title_for_dm" = "退出";
@@ -1549,7 +1549,7 @@
 "notice_room_history_visible_to_members_from_joined_point_for_dm" = "%@が今後のメッセージを「全員 （参加した時点以降）」閲覧可能に設定しました。";
 "notice_room_history_visible_to_members_from_invited_point_for_dm" = "%@が今後のメッセージを「メンバーのみ （招待された時点以降）」閲覧可能に設定しました。";
 "notice_room_history_visible_to_members_for_dm" = "%@が今後のメッセージを「メンバーのみ」閲覧可能に設定しました。";
-"room_intro_cell_information_room_without_topic_sentence2_part2" = " と、このルームの目的が分かりやすくなります。";
+"room_intro_cell_information_room_without_topic_sentence2_part2" = " すると、このルームの目的が分かりやすくなります。";
 "room_intro_cell_information_room_without_topic_sentence2_part1" = "トピックを追加";
 "security_settings_secure_backup_restore" = "バックアップから復元";
 "settings_device_notifications" = "端末の通知";
@@ -1614,3 +1614,20 @@
 "settings_confirm_media_size_description" = "この機能をオンにすると、画像や動画をどのサイズで送信するか確認する画面が表示されます。";
 "settings_contacts_enable_sync_description" = "IDサーバーを使用して連絡先を探すと同時に、連絡先があなたを探せるようにします。";
 "home_syncing" = "同期中";
+"search_filter_placeholder" = "絞り込む";
+
+// MARK: - Share invite link
+
+"share_invite_link_action" = "招待リンクを共有";
+"room_intro_cell_information_room_with_topic_sentence2" = "トピック: %@";
+"room_intro_cell_information_room_sentence1_part3" = "の始まりです。 ";
+"room_intro_cell_information_room_sentence1_part1" = "ここが ";
+"room_intro_cell_information_dm_sentence1_part1" = "ここが ";
+"settings_labs_enable_auto_report_decryption_errors" = "復号エラーを自動で報告";
+"spaces_create_space_title" = "スペースを作成";
+"spaces_add_space_title" = "スペースを作成";
+"spaces_creation_address" = "アドレス";
+"spaces_creation_visibility_message" = "既存のスペースに参加するには、招待が必要です。";
+"spaces_creation_footer" = "この設定は後から変更できます";
+"onboarding_display_name_hint" = "この設定は後から変更できます";
+"spaces_creation_visibility_title" = "作成するスペースの種類を選択してください";

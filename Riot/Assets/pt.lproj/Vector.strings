@@ -5,3 +5,93 @@
 
 
 
+
+"onboarding_splash_page_2_title" = "Está no controlo.";
+"onboarding_splash_page_1_message" = "Comunicação segura e independente que lhe confere o mesmo nível de privacidade que uma conversa cara-a-cara na sua própria casa.";
+"onboarding_splash_page_1_title" = "Seja dono das suas conversas.";
+"onboarding_splash_login_button_title" = "Já tenho uma conta";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Criar conta";
+"accessibility_button_label" = "botão";
+
+// Accessibility
+"accessibility_checkbox_label" = "caixa de seleção";
+"callbar_only_single_active_group" = "Toque para aderir à chamada de grupo (%@)";
+"callbar_return" = "Regressar";
+"callbar_only_multiple_paused" = "%@ chamadas em pausa";
+"callbar_only_single_paused" = "Chamada em pausa";
+"callbar_active_and_multiple_paused" = "1 chamada ativa (%@) · %@ chamadas em pausa";
+"callbar_active_and_single_paused" = "1 chamada ativa (%@) · 1 chamada em pausa";
+
+// Call Bar
+"callbar_only_single_active" = "Toque para voltar à chamada (%@)";
+"saving" = "A guardar";
+"sending" = "A enviar";
+
+// Activities
+"loading" = "A carregar";
+"edit" = "Editar";
+"suggest" = "Sugerir";
+"error" = "Erro";
+"ok" = "OK";
+"add" = "Adicionar";
+"existing" = "Existente";
+"new_word" = "Novo";
+"stop" = "Parar";
+"public" = "Público";
+"private" = "Privado";
+"done" = "Concluido";
+"open" = "Abrir";
+"less" = "Menos";
+"more" = "Mais";
+"switch" = "Alterar";
+"store_promotional_text" = "Aplicação de mensagens e colaboração que preserva a sua privacidade. Descentralizada para o pôr em controlo. Sem exploração de dados, backdoors e sem acesso de terceiros.";
+"settings_callkit_info" = "Receba chamadas diretamente no seu ecrã de bloqueio. Veja as suas chamadas do %@ no histórico de chamadas do seu sistema. Se o iCloud estiver ativado, o seu histórico de chamadas será partilhado com a Apple.";
+"submit_code" = "Submeter código";
+"submit" = "Submeter";
+"store_full_description" = "O Element é um novo tipo de aplicação de mensagens e colaboração que:\n\n1. Põe-no em controlo para preservar a sua privacidade\n2. Permite-lhe comunicar com qualquer pessoa na rede Matrix e vai mais além através da integração com apps como o Slack\n3. Protege-o de anúncios, exploração de dados, backdoors e jardins murados\n4. Mantém-no seguro através de encriptação ponta-a-ponta, com assinaturas cruzadas para verificar os outros.\n\nO Element é completamente diferente das outras aplicações de mensagens e colaboração porque é descentralizado e de código aberto.\n\nO Element permita que o aloje por si próprio - ou escolha um anfitrião - para que tenha privacidade, posse e controlo dos seus dados e das suas conversas. Confere-lhe acesso a uma rede aberta; para que não fique preso apenas aos outros utilizadores do Element, para além de ser muito seguro.\n\nO Element é capaz de fazer tudo isto porque opera no Matrix - o padrão para comunicação aberta e descentralizada.\n\nO Element põe-no no controlo, permitindo-lhe escolher quem aloja as suas conversas. Através da aplicação do Element, pode escolher o alojamento de diferentes formas:\n\n1. Registe uma conta gratuita no servidor público matrix.org\n2. Aloje você mesmo a sua própria conta, correndo um servidor no seu próprio hardware\n3. Registe uma conta num servidor personalizado, bastando-lhe apenas subscrever a plataforma de alojamento Element Matrix Services\n\nPorquê escolher o Element?\n\nSEJA DONO DOS SEUS DADOS: Você decide onde quer manter os seus dados e as suas mensagens. Você é o dono e é quem está no controlo, por oposição a uma MEGACORPORAÇÃO que explora ou permite que terceiros tenham acesso aos seus dados.\n\nMENSAGENS E COLABORAÇÃO ABERTAS: Pode conversar com qualquer pessoa na rede Matrix, quer estejam a usar o Element ou outra app Matrix, e mesmo se estiverem a usar outro sistema de mensagens como o Slack, IRC ou XMPP.\n\nSUPERSEGURO: Encriptação ponta-a-ponta real (apenas os envolvidos na conversa conseguem desencriptar mensagens) e encriptação cruzada para verificar os dispositivos dos participantes na conversa.\n\nCOMUNICAÇÃO COMPLETA: Mensagens, chamadas de voz e vídeo, partilha de ficheiros, partilha de ecrã e mais um data de integrações, bots e widgets. Crie salas e comunidades, mantenha o contacto e realize as suas tarefas.\n\nONDE QUER QUE ESTEJA: Mantenha o contacto onde quer que esteja com a sincronização do histórico de mensagens através de todos os seus dispositivos e na web em https://element.io/app.";
+// String for App Store
+"store_short_description" = "Chat/VoIP descentralizado seguro";
+"joined" = "Aderido";
+"join" = "Aderir";
+"joining" = "Aderindo";
+"skip" = "Saltar";
+"close" = "Fechar";
+"send_to" = "Enviar para %@";
+"collapse" = "colapsar";
+"rename" = "Mudar o nome";
+"later" = "Mais tarde";
+"active_call_details" = "Chamada Ativa (%@)";
+"active_call" = "Chamada Ativa";
+"video" = "Vídeo";
+"voice" = "Voz";
+"camera" = "Câmera";
+"preview" = "Pré-visualização";
+"accept" = "Aceitar";
+"decline" = "Declinar";
+"save" = "Guardar";
+"cancel" = "Cancelar";
+"enable" = "Ativar";
+"off" = "Desligado";
+"on" = "Ligado";
+"retry" = "Tentar novamente";
+"invite" = "Convidar";
+"remove" = "Remover";
+"leave" = "Sair";
+"start" = "Iniciar";
+"create" = "Criar";
+"continue" = "Continuar";
+"back" = "Anterior";
+"next" = "Próximo";
+
+// Actions
+"view" = "Ver";
+"warning" = "Aviso";
+"title_groups" = "Comunidades";
+"title_rooms" = "Salas";
+"title_people" = "Pessoas";
+"title_favourites" = "Favoritos";
+
+// Titles
+"title_home" = "Página inicial";

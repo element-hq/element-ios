@@ -1180,19 +1180,19 @@
 "searchable_directory_x_network" = "Rete %@";
 "searchable_directory_search_placeholder" = "Nome o ID";
 "create_room_title" = "Nuova stanza";
-"create_room_section_header_name" = "Nome stanza";
+"create_room_section_header_name" = "NOME";
 "create_room_placeholder_name" = "Nome";
-"create_room_section_header_topic" = "Argomento stanza (facoltativo)";
-"create_room_placeholder_topic" = "Argomento";
-"create_room_section_header_encryption" = "Crittografia stanza";
+"create_room_section_header_topic" = "ARGOMENTO (FACOLTATIVO)";
+"create_room_placeholder_topic" = "Di cosa parla questa stanza?";
+"create_room_section_header_encryption" = "CRITTOGRAFIA";
 "create_room_enable_encryption" = "Attiva crittografia";
 "create_room_section_footer_encryption" = "La crittografia non può essere disattivata in seguito.";
-"create_room_section_header_type" = "Tipo stanza";
-"create_room_type_private" = "Stanza privata";
-"create_room_type_public" = "Stanza pubblica";
+"create_room_section_header_type" = "CHI PUÒ ACCEDERE";
+"create_room_type_private" = "Stanza privata (solo a invito)";
+"create_room_type_public" = "Stanza pubblica (chiunque)";
 "create_room_section_footer_type" = "Le persone entrano in una stanza privata solo su invito.";
-"create_room_show_in_directory" = "Mostra la stanza nell'elenco";
-"create_room_section_header_address" = "Indirizzo stanza";
+"create_room_show_in_directory" = "Mostra nell'elenco stanze";
+"create_room_section_header_address" = "INDIRIZZO";
 "create_room_placeholder_address" = "#stanzatest:matrix.org";
 "room_info_list_room_encrypted" = "I messaggi in questa stanza sono cifrati end-to-end";
 "room_info_list_one_member" = "1 membro";
@@ -2111,3 +2111,167 @@
 "room_participants_leave_processing" = "Uscita in corso";
 "notice_error_unformattable_event" = "** Impossibile visualizzare il messaggio. Si prega di segnalare l'errore";
 "settings_labs_use_only_latest_user_avatar_and_name" = "Mostra avatar e nome più recenti per gli utenti nella cronologia dei messaggi";
+"ignore_user" = "Ignora utente";
+"location_sharing_pin_drop_share_title" = "Invia questa posizione";
+"location_sharing_static_share_title" = "Invia la mia posizione attuale";
+"live_location_sharing_banner_stop" = "Ferma";
+"live_location_sharing_banner_title" = "Posizione in tempo reale attivata";
+
+// MARK: Live location sharing
+
+"location_sharing_live_share_title" = "Condividi posizione in tempo reale";
+"side_menu_coach_message" = "Scorri a destra o tocca per vedere tutte le stanze";
+"spaces_add_room_missing_permission_message" = "Non hai i permessi per aggiungere stanze in questo spazio.";
+"spaces_creation_in_one_space" = "in 1 spazio";
+"spaces_creation_in_many_spaces" = "in %@ spazi";
+"spaces_creation_in_spacename_plus_many" = "in %@ + %@ spazi";
+"spaces_creation_in_spacename_plus_one" = "in %@ + 1 spazio";
+"spaces_creation_in_spacename" = "in %@";
+"spaces_creation_post_process_inviting_users" = "Invito di %@ utenti";
+"spaces_creation_post_process_adding_rooms" = "Aggiunta di %@ stanze";
+"spaces_creation_post_process_creating_room" = "Creazione di %@";
+"spaces_creation_post_process_uploading_avatar" = "Invio dell'avatar";
+"spaces_creation_post_process_creating_space_task" = "Creazione di %@";
+"spaces_creation_post_process_creating_space" = "Creazione spazio";
+"spaces_creation_invite_by_username_message" = "Puoi invitarli anche più tardi.";
+"spaces_creation_invite_by_username_title" = "Invita la tua squadra";
+"spaces_creation_invite_by_username" = "Invita per nome utente";
+"spaces_creation_add_rooms_message" = "Dato che questo spazio è solo per te, nessuno verrà informato. Puoi aggiungerne altri più tardi.";
+"spaces_creation_add_rooms_title" = "Cosa vuoi aggiungere?";
+"spaces_creation_sharing_type_me_and_teammates_detail" = "Uno spazio privato per te e i tuoi compagni di squadra";
+"spaces_creation_sharing_type_me_and_teammates_title" = "Io e i compagni di squadra";
+"spaces_creation_sharing_type_just_me_detail" = "Uno spazio privato per organizzare le tue stanze";
+"spaces_creation_sharing_type_just_me_title" = "Solo io";
+"spaces_creation_sharing_type_message" = "Assicurati che le giuste persone abbiano accesso %@. Puoi cambiarlo in seguito.";
+"spaces_creation_sharing_type_title" = "Con chi stai lavorando?";
+"spaces_creation_email_invites_email_title" = "Email";
+"spaces_creation_email_invites_message" = "Puoi invitarli anche più tardi.";
+"spaces_creation_email_invites_title" = "Invita la tua squadra";
+"spaces_creation_new_rooms_support" = "Supporto";
+"spaces_creation_new_rooms_random" = "Casuale";
+"spaces_creation_new_rooms_general" = "Generale";
+"spaces_creation_new_rooms_room_name_title" = "Nome stanza";
+"spaces_creation_new_rooms_message" = "Creeremo una stanza per ognuna di esse.";
+"spaces_creation_new_rooms_title" = "Quali sono alcune delle discussioni che porterai?";
+"spaces_creation_cancel_message" = "I progressi verranno persi.";
+"spaces_creation_cancel_title" = "Interrompere la creazione dello spazio?";
+"spaces_creation_private_space_title" = "Il tuo spazio privato";
+"spaces_creation_public_space_title" = "Il tuo spazio pubblico";
+"spaces_creation_address_already_exists" = "%@\nesiste già";
+"spaces_creation_address_invalid_characters" = "%@\nha caratteri non validi";
+"spaces_creation_address_default_message" = "Il tuo spazio sarà visibile su\n%@";
+"spaces_creation_empty_room_name_error" = "Nome necessario";
+"spaces_creation_address" = "Indirizzo";
+"spaces_creation_settings_message" = "Aggiungi qualche dettaglio per farlo risaltare. Puoi cambiarli in qualsiasi momento.";
+"spaces_creation_footer" = "Puoi cambiarlo in seguito";
+"spaces_creation_visibility_message" = "Per entrare in uno spazio esistente, ti serve un invito.";
+"spaces_creation_visibility_title" = "Che tipo di spazio vuoi creare?";
+
+// Mark: - Space Creation
+
+"spaces_creation_hint" = "Gli spazi sono un nuovo modo di raggruppare stanze e persone.";
+"space_settings_current_address_message" = "Il tuo spazio è visibile su\n%@";
+"space_settings_update_failed_message" = "Aggiornamento impostazioni spazio fallito. Vuoi riprovare?";
+"space_settings_access_section" = "Chi può accedere a questo spazio?";
+"space_topic" = "Descrizione";
+"space_public_join_rule_detail" = "Aperto a chiunque, adatto per comunità";
+"spaces_add_space" = "Aggiungi spazio";
+"spaces_add_room" = "Aggiungi stanza";
+"spaces_invite_people" = "Invita persone";
+"space_private_join_rule_detail" = "Solo a invito, adatto per te stesso o squadre";
+"spaces_explore_rooms_one_room" = "1 stanza";
+"spaces_explore_rooms_room_number" = "%@ stanze";
+"spaces_create_space_title" = "Crea uno spazio";
+"spaces_add_space_title" = "Crea spazio";
+"space_invite_not_enough_permission" = "Non hai l'autorizzazione di invitare persone in questo spazio";
+"room_invite_not_enough_permission" = "Non hai l'autorizzazione di invitare persone in questa stanza";
+"room_invite_to_room_option_detail" = "Non faranno parte di %@.";
+"room_invite_to_room_option_title" = "Solo in questa stanza";
+"room_invite_to_space_option_detail" = "Possono esplorare %@, ma non saranno membri di %@.";
+
+// Mark: - Room invite
+
+"room_invite_to_space_option_title" = "In %@";
+"share_invite_link_space_text" = "Ehi, unisciti a questo spazio su %@";
+"share_invite_link_room_text" = "Ehi, unisciti a questa stanza su %@";
+
+// MARK: - Share invite link
+
+"share_invite_link_action" = "Condividi collegamento di invito";
+"create_room_processing" = "Creazione stanza";
+"create_room_suggest_room_footer" = "Le stanze consigliate vengono sponsorizzate ai membri dello spazio come buone.";
+"create_room_suggest_room" = "Consiglia ai membri dello spazio";
+"create_room_show_in_directory_footer" = "Aiuterà le persone a trovarla ed entrare.";
+"create_room_promotion_header" = "SPONSORIZZAZIONE";
+"room_suggestion_settings_screen_message" = "Le stanze consigliate vengono sponsorizzate ai membri dello spazio come buone.";
+"create_room_section_footer_type_public" = "Solo le persone invitate possono trovarla ed entrare, non le persone nello spazio.";
+"create_room_section_footer_type_restricted" = "Chiunque nello spazio può trovarla ed entrare.";
+"create_room_section_footer_type_private" = "Solo le persone invitate possono trovarla ed entrare.";
+"create_room_type_restricted" = "Membri dello spazio";
+"call_jitsi_unable_to_start" = "Impossibile iniziare la teleconferenza";
+"room_suggestion_settings_screen_title" = "Segna una stanza come consigliata in uno spazio";
+
+// Room suggestion Settings
+"room_suggestion_settings_screen_nav_title" = "Consiglia stanza";
+"room_access_space_chooser_other_spaces_section_info" = "Queste probabilmente sono cose di cui altri admin di %@ fanno parte.";
+"room_access_space_chooser_other_spaces_section" = "Altri spazi o stanze";
+"room_access_space_chooser_known_spaces_section" = "Spazi conosciuti che contengono %@";
+"room_access_settings_screen_setting_room_access" = "Impostando accesso stanza";
+"room_access_settings_screen_upgrade_alert_upgrading" = "Aggiornamento stanza";
+"room_access_settings_screen_upgrade_alert_upgrade_button" = "Aggiorna";
+"room_access_settings_screen_upgrade_alert_auto_invite_switch" = "Invita automaticamente i membri nella stanza nuova";
+"room_access_settings_screen_upgrade_alert_message" = "Chiunque nello spazio potrà trovare ed entrare in questa stanza - non serve invitare tutti a mano. Potrai cambiarlo nelle impostazioni della stanza in qualsiasi momento.\n\nNota che l'aggiornamento creerà una nuova versione della stanza.  Tutti i messaggi attuali resteranno in questa stanza archiviata.";
+"room_access_settings_screen_upgrade_alert_title" = "Aggiorna stanza";
+"room_access_settings_screen_public_message" = "Chiunque può trovare ed entrare.";
+"room_access_settings_screen_edit_spaces" = "Modifica spazi";
+"room_access_settings_screen_upgrade_required" = "Aggiornamento necessario";
+"room_access_settings_screen_restricted_message" = "Permetti a chiunque in uno spazio di trovare ed entrare.\nTi verrà chiesto di confermare quali spazi.";
+"room_access_settings_screen_private_message" = "Solo gli invitati possono trovare ed entrare.";
+"room_access_settings_screen_message" = "Decidi chi può trovare ed entrare in %@.";
+"room_access_settings_screen_title" = "Chi può accedere a questa stanza?";
+
+// Room Access Settings
+"room_access_settings_screen_nav_title" = "Accesso alla stanza";
+"room_details_promote_room_suggest_title" = "Consiglia ai membri dello spazio";
+"room_details_promote_room_title" = "Promuovi stanza";
+"room_details_access_row_title" = "Accesso";
+"settings_labs_enable_auto_report_decryption_errors" = "Auto-segnala errori di decifrazione";
+"room_preview_decline_invitation_options" = "Vuoi rifiutare l'invito o ignorare l'utente?";
+"threads_beta_cancel" = "Non ora";
+"threads_beta_enable" = "Provale";
+"threads_beta_information_link" = "Maggiori informazioni";
+"threads_beta_information" = "Tieni le discussioni organizzate in conversazioni.\n\nLe conversazioni aiutano a tenere le discussioni in tema e rintracciabili. ";
+"threads_beta_title" = "Conversazioni";
+"threads_notice_done" = "Capito";
+"threads_notice_information" = "Tutte le conversazioni create durante il periodo sperimentale verranno <b>visualizzate come normali risposte</b>.<br/><br/>Sarà una transizione una-tantum, dato che le conversazioni ora fanno parte delle specifiche Matrix.";
+"threads_notice_title" = "I messaggi in conversazioni non sono più sperimentali! 🎉";
+"room_participants_invite_prompt_to_msg" = "Vuoi davvero invitare %@ in %@?";
+"onboarding_celebration_button" = "Andiamo";
+"onboarding_celebration_message" = "Le tue preferenze sono state salvate.";
+"onboarding_celebration_title" = "Tutto pronto!";
+"onboarding_avatar_accessibility_label" = "Immagine del profilo";
+"onboarding_avatar_message" = "Puoi cambiarla in qualsiasi momento.";
+"onboarding_avatar_title" = "Aggiungi un'immagine del profilo";
+"onboarding_display_name_max_length" = "Il nome da mostrare deve avere meno di 256 caratteri";
+"onboarding_display_name_hint" = "Puoi cambiarlo in seguito";
+"onboarding_display_name_placeholder" = "Nome da mostrare";
+"onboarding_display_name_message" = "Verrà mostrato quando invii messaggi.";
+"onboarding_display_name_title" = "Scegli un nome da mostrare";
+"onboarding_personalization_skip" = "Salta questo passo";
+"onboarding_personalization_save" = "Salva e continua";
+"onboarding_congratulations_home_button" = "Portami a casa";
+"onboarding_congratulations_personalize_button" = "Personalizza profilo";
+/* The placeholder string contains the user's matrix ID */
+"onboarding_congratulations_message" = "Il tuo account %@ è stato creato.";
+"onboarding_congratulations_title" = "Congratulazioni!";
+"saving" = "Salvando";
+
+// Activities
+"loading" = "Caricamento";
+"edit" = "Modifica";
+"suggest" = "Consiglia";
+"add" = "Aggiungi";
+"existing" = "Esistente";
+"new_word" = "Nuovo";
+"stop" = "Ferma";
+"joining" = "Ingresso";
