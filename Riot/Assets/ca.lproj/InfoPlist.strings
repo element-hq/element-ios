@@ -1,5 +1,8 @@
 // Permissions usage explanations
 "NSCameraUsageDescription" = "La càmera s'utilitza per fer fotos i vídeos, fer vídeo conferència.";
 "NSPhotoLibraryUsageDescription" = "La fototeca s'utilitza per enviar fotos i vídeos.";
-"NSMicrophoneUsageDescription" = "El micròfon s'utilitza per fer vídeos, fer trucades.";
-"NSContactsUsageDescription" = "Per tal de mostrar-vos quins dels vostres contactes ja són usuaris de Element o Matrix, podem enviar les seves adreces i números de telèfon desades a la vostra agenda cap al vostre servidor d'identitats de Matrix. El nou Vector no emmagatzema aquestes dades ni les usa per a cap altra finalitat. Per a més informació, si us plau visiteu l'apartat de política de privacitat als paràmetres de l'aplicació.";
+"NSMicrophoneUsageDescription" = "Element necessita accedir al vostre micròfon per a fer i rebre trucades, vídeos i gravar missatges de veu.";
+"NSContactsUsageDescription" = "Element us mostrarà els vostres contactes per si els voleu convidar a xatejar.";
+"NSLocationWhenInUseUsageDescription" = "Quan compartiu la vostra localització amb altres, Element en necessita accés per mostrar-lis un mapa.";
+"NSFaceIDUsageDescription" = "Face ID es fa servir per accedir a la vostra app.";
+"NSCalendarsUsageDescription" = "Consulteu la vostra agenda de reunions a l'app.";
