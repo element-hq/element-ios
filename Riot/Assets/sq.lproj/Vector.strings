@@ -518,7 +518,6 @@
 "large_badge_value_k_format" = "%.1fK";
 "no_voip" = "%@ po ju thërret, por %@ nuk mbulon ende thirrje.\nMund ta shpërfillni këtë njoftim dhe t’i përgjigjeni thirrjes prej një tjetër pajisjeje, ose mund të mos e pranoni.";
 // Crash report
-"google_analytics_use_prompt" = "Do të donit të ndihmoni në përmirësimin e %@-it duke parashtruar automatikisht dhe në mënyrë anonime raporte vithisjesh dhe të dhëna përdorimi?";
 // Crypto
 "e2e_enabling_on_app_update" = "%@ tani mbulon fshehtëzim skaj-më-skaj, por lypset të ribëni hyrjen që ta aktivizoni.\n\nMund ta bëni tani ose më vonë, që prej rregullimeve të aplikacionit.";
 "bug_report_description" = "Ju lutemi, përshkruajeni të metën. Ç’po bënit? Ç’prisnit të ndodhte? Ç’ndodhi në fakt?";
@@ -557,7 +556,6 @@
 "settings_key_backup_info_not_valid" = "Ky sesion nuk po bën kopjeruajtje të kyçeve tuaja, por keni një kopjeruajtje ekzistuese që mund ta përdorni për rimarrje dhe ta shtoni më tej.";
 "settings_key_backup_info_progress" = "Po kopjeruhen kyçet për %@…";
 "settings_key_backup_info_progress_done" = "U kopjeruajtën krejt kyçet";
-"settings_key_backup_info_not_trusted_from_verifiable_device_fix_action" = "Për të përdorur Rikthim Mesazhesh të Sigurt në këtë pajisje, verifikoni tani %@.";
 "settings_key_backup_info_not_trusted_fix_action" = "Për të përdorur Rikthim Mesazhesh të Sigurt në këtë pajisje, jepni tani një frazëkalim ose një kyç rikthimesh.";
 "settings_key_backup_info_trust_signature_unknown" = "Kopjeruajtja ka një nënshkrim nga një sesion me ID: %@";
 "settings_key_backup_info_trust_signature_valid" = "Kopjeruajtja ka një nënshkrim të vlefshëm prej këtij sesioni";
@@ -669,10 +667,6 @@
 "room_details_fail_to_update_room_direct" = "S’arrihet të përditësohet shenja si e drejtpërdrejtë e kësaj dhome";
 "room_event_action_reply" = "Përgjigjuni";
 "room_event_action_edit" = "Përpunoni";
-"room_event_action_reaction_agree" = "Pajtohem me %@";
-"room_event_action_reaction_disagree" = "S’pajtohem me %@";
-"room_event_action_reaction_like" = "Pëlqejeni %@";
-"room_event_action_reaction_dislike" = "Shpëlqejeni %@";
 "room_action_reply" = "Përgjigjuni";
 "settings_labs_message_reaction" = "Reagoni ndaj mesazhesh me emoji";
 "settings_key_backup_button_connect" = "Lidhe këtë sesion me Kopjeruajtje Kyçesh";
@@ -817,7 +811,6 @@
 "room_participants_start_new_chat_error_using_user_email_without_identity_server" = "S’ka shërbyes identitetesh të formësuar, ndaj s’mund të nisni një fjalosje me një kontakt duke përdorur një email.";
 // Service terms
 "service_terms_modal_title" = "Kushte Shërbimi";
-"service_terms_modal_message" = "Që të vazhdohet, lypset të pranoni kushtet e këtij shërbimi (%@).";
 "service_terms_modal_accept_button" = "Pranoji";
 "service_terms_modal_description_for_identity_server" = "Jini i zbulueshëm nga të tjerët";
 "service_terms_modal_description_for_integration_manager" = "Përdorni Robotë, ura, widget-e dhe paketa ngjitësish";
@@ -901,7 +894,6 @@
 "service_terms_modal_description_for_identity_server_2" = "Bëhuni i gjetshëm përmes telefoni ose email-i";
 // Service terms - Variant for identity server when displayed out of a context
 "service_terms_modal_title_identity_server" = "Zbulim kontaktesh";
-"service_terms_modal_message_identity_server" = "Që të zbuloni kontakte, pranoni kushtet e shërbyesit të identiteteve (%@).";
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Që të ftoni me email, shtoni një shërbyes identitetesh, që nga rregullimet tuaja.";
 "error_not_supported_on_mobile" = "Këtë s’mund ta bëni nga %@ për celular.";
@@ -1733,7 +1725,6 @@
 "notice_room_aliases" = "Aliaset e dhomës janë: %@";
 "notice_room_related_groups" = "Grupet përshoqëruar kësaj dhome janë: %@";
 "notice_encrypted_message" = "Mesazhi i fshehtëzuar";
-"notice_encryption_enabled" = "%@ aktivizoi fshehtëzimin skaj-më-skaj (algoritëm %@)";
 "notice_image_attachment" = "bashkëngjitje figurash";
 "notice_audio_attachment" = "bashkëngjitje audio";
 "notice_video_attachment" = "bashkëngjitje videosh";
@@ -2205,7 +2196,6 @@
 "room_invite_not_enough_permission" = "S’keni leje të ftoni njerëz në këtë dhomë";
 "room_invite_to_room_option_detail" = "S’do të jenë pjesë e %@.";
 "room_invite_to_room_option_title" = "Thjesht te kjo dhomë";
-"room_invite_to_space_option_detail" = "Mund të eksplorojnë %@, por s’do të jenë anëtarë të@.";
 
 // Mark: - Room invite
 
@@ -2239,7 +2229,6 @@
 "room_access_settings_screen_upgrade_alert_upgrading" = "Përmirësim dhome";
 "room_access_settings_screen_upgrade_alert_upgrade_button" = "Përmirësoje";
 "room_access_settings_screen_upgrade_alert_auto_invite_switch" = "Fto vetvetiu anëtarë te dhomë e re";
-"room_access_settings_screen_upgrade_alert_message" = "Cilido në Emër hapësirë do të jetë në gjendje ta gjejë këtë dhomë dhe hyjë në të - s’ka nevojë të ftohet kush dorazi. Do të jeni në gjendje ta ndryshoni këtë kurdo, që nga rregullimet e dhomës.\n\nJu lutemi, mbani shënim se përmirësimi do të krijojë një version të ri të dhomës.  Krejt mesazhet e tanishëm do të mbeten te kjo dhomë e arkivuar.";
 "room_access_settings_screen_upgrade_alert_title" = "Përmirësoni dhomën";
 "room_access_settings_screen_edit_spaces" = "Përpunoni hapësira";
 "room_access_settings_screen_upgrade_required" = "Lypset domosdo përmirësim";

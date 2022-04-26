@@ -161,8 +161,6 @@
 "directory_cell_title" = "목록 찾기";
 "directory_cell_description" = "%tu개의 방";
 "directory_search_results_title" = "목록 결과 찾기";
-"directory_search_results" = "%@(으)로 찾은 %tu개의 결과";
-"directory_search_results_more_than" = ">%@(으)로 찾은 %tu개의 결과";
 "directory_searching_title" = "목록 검색 중…";
 "directory_search_fail" = "데이터 가져오기에 실패함";
 // Contacts
@@ -233,8 +231,6 @@
 "room_offline_notification" = "서버와의 연결이 끊겼습니다.";
 "room_unsent_messages_notification" = "메시지가 보내지지 않았습니다.";
 "room_unsent_messages_unknown_devices_notification" = "알 수 없는 기기가 있어 메시지 전송이 실패했습니다.";
-"room_ongoing_conference_call" = "회의 전화가 진행 중입니다. %1$s 또는 %2$s로 참가하세요.";
-"room_ongoing_conference_call_with_close" = "회의 전화가 진행 중입니다. %1$s 또는 %2$s로 참가하세요. %@.";
 "room_ongoing_conference_call_close" = "닫기";
 "room_conference_call_no_power" = "이 방에서 회의 전화를 관리할 권한이 필요합니다";
 "room_prompt_resend" = "모두 다시 보내기";
@@ -352,7 +348,6 @@
 "settings_global_settings_info" = "당신의 %@ 웹 클라이언트에 전역 알림 설정이 켜졌습니다";
 "settings_pin_rooms_with_missed_notif" = "알림을 놓친 방을 고정";
 "settings_pin_rooms_with_unread" = "읽지 않은 메시지가 있는 방을 고정";
-"settings_on_denied_notification" = "%@에 의해 알림이 거부됬습니다, 기기 설정에서 %@을(를) 허용해주세요";
 "settings_enable_callkit" = "통합 전화";
 "settings_callkit_info" = "잠금 화면에서 수신 전화를 받습니다. 시스템의 통화 내역에서 %@ 통화를 확인하세요. iCloud가 켜져있다면, 이 통화 기록은 Apple과 공유됩니다.";
 "settings_ui_language" = "언어";
@@ -558,7 +553,6 @@
 "no_voip_title" = "수신 전화";
 "no_voip" = "%@님이 당신에게 전화를 걸고 있지만 %@은(는) 아직 전화를 지원하지 않습니다.\n이 알림을 무시하고 다른 기기에서 전화를 받거나 전화를 거절할 수 있습니다.";
 // Crash report
-"google_analytics_use_prompt" = "%@이(가) 개선하도록 자동으로 익명의 충돌 보고서와 사용 데이터를 제공하겠습니까?";
 // Crypto
 "e2e_enabling_on_app_update" = "%@는 이제 종단간 암호화를 지원하지만 암호화를 켜려면 다시 로그인해야 합니다.\n\n지금 다시 로그인하거나 나중에 애플리케이션 설정에서 할 수 있습니다.";
 "e2e_need_log_in_again" = "이 세션에 종단간 암호화 키를 생성하고 공개 키를 홈서버에 제출하려면 다시 로그인해야 함니다.\n한 번만 하면 됩니다. 불편을 드려 죄송합니다.";
@@ -611,7 +605,6 @@
 "gdpr_consent_not_given_alert_review_now_action" = "지금 검토";
 // Service terms
 "service_terms_modal_title" = "서비스 약관";
-"service_terms_modal_message" = "계속하려면 이 서비스 약관 (%@)에 동의해야 합니다.";
 "service_terms_modal_accept_button" = "수락";
 "service_terms_modal_description_for_identity_server" = "다른 사용자가 검색할 수 있음";
 "service_terms_modal_description_for_integration_manager" = "봇, 브릿지, 위젯과 스티커팩을 사용";
@@ -883,7 +876,6 @@
 "service_terms_modal_description_for_identity_server_2" = "전화나 이메일로 다른 사람들이 찾을 수 있도록 하기";
 // Service terms - Variant for identity server when displayed out of a context
 "service_terms_modal_title_identity_server" = "연락처 탐색";
-"service_terms_modal_message_identity_server" = "연락처를 탐색하려면 ID 서버 (%@)의 약관에 동의해야 합니다.";
 "settings_add_3pid_password_title_email" = "이메일 주소 추가";
 "settings_add_3pid_password_title_msidsn" = "전화번호 추가";
 "settings_add_3pid_password_message" = "계속하려면, 비밀번호를 입력해주세요";
@@ -1262,7 +1254,6 @@
 "notice_room_aliases" = "방의 별칭: %@";
 "notice_room_related_groups" = "이 방과 관련된 그룹: %@";
 "notice_encrypted_message" = "암호화된 메시지";
-"notice_encryption_enabled" = "%@님이 종단간 암호화를 켰습니다 (알고리즘 %@)";
 "notice_image_attachment" = "사진 첨부";
 "notice_audio_attachment" = "소리 첨부";
 "notice_video_attachment" = "영상 첨부";
@@ -1624,7 +1615,6 @@
 "room_access_settings_screen_upgrade_alert_upgrading" = "방 업그레이드 중";
 "room_access_settings_screen_upgrade_alert_upgrade_button" = "업그레이드";
 "room_access_settings_screen_upgrade_alert_auto_invite_switch" = "새로운 방에 자동으로 친구 초대";
-"room_access_settings_screen_upgrade_alert_message" = "스페이스에 있는 친구는 언제든지 이 방을 찾고 들어올 수 있습니다 - 모두 수동으로 초대하지 않아도 됩니다. 방 설정에서 언제든지 변경할 수 있습니다.\n\n업그레이드하면 새로운 버전의 방이 생성됩니다. 모든 메시지는 기존에 사용하던 방에 모두 보관됩니다.";
 "room_access_settings_screen_upgrade_alert_title" = "방 업그레이드";
 "room_access_settings_screen_private_message" = "초대한 친구만 이 방을 찾고 들어올 수 있습니다.";
 "room_access_settings_screen_restricted_message" = "스페이스에 있는 누구나 이 방을 찾고 들어올 수 있습니다.\n적용 시 어떤 스페이스인지 확인하는 메시지가 표시됩니다.";
@@ -1639,7 +1629,6 @@
 "room_details_promote_room_suggest_title" = "스페이스 멤버에게 제안하기";
 "room_details_promote_room_title" = "방 홍보하기";
 "room_details_access_row_title" = "접근";
-"security_settings_coming_soon" = "죄송합니다. 이 작업 %@은 Element iOS에서 사용할 수 없습니다. 다른 Matrix 클라이언트에서 설정해주세요. Element iOS에서 설정은 그대로 유지됩니다.";
 "room_preview_decline_invitation_options" = "초대를 거부하거나 친구를 차단하시겠습니까?";
 "threads_beta_information_link" = "더 알아보기";
 "threads_beta_title" = "스레드";

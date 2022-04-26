@@ -260,7 +260,6 @@
 "settings_report_bug" = "Informa d'un error";
 "settings_config_home_server" = "El servidor hoste és %@";
 "settings_config_identity_server" = "El servidor d'identitat és %@";
-"settings_config_user_id" = "Sessió iniciada com";
 "settings_user_settings" = "Ajustos d'usuari";
 "settings_notifications_settings" = "Ajustos de notificacions";
 "settings_calls_settings" = "Trucades";
@@ -463,7 +462,6 @@
 "no_voip_title" = "Trucada entrant";
 "no_voip" = "%@ t'està trucant però %@ encara no suporta trucades.\nPots ignorar aquesta notificació i respondre la trucada des de un altre dispositiu o pots rebutjar-la.";
 // Crash report
-"google_analytics_use_prompt" = "T'agradaria ajudar a millorar %@ enviant automàticament informes de bloquejos i ús de dades?";
 // Crypto
 "e2e_enabling_on_app_update" = "%@ ara permet l'ús de xifrat punt a punt però has de tornar a connectar-te per tal d'activar-lo.\n\nPots fer-ho ara o més tard des de les preferències de l'aplicació.";
 "e2e_need_log_in_again" = "Has de tornar a iniciar sessió per tal de generar claus de xifrat punt a punt per a aquest dispositiu i enviar la clau pública al servidor.\nAixò només s'ha de fer un cop, disculpa les molèsties.";
@@ -647,7 +645,6 @@
 "notice_room_aliases" = "Els àlies de la sala són: %@";
 "notice_room_related_groups" = "Els grups associats amb aquesta sala són: %@";
 "notice_encrypted_message" = "Missatge xifrat";
-"notice_encryption_enabled" = "%@ ha activat el xifrat punt a punt (algoritme %@)";
 "notice_image_attachment" = "adjunt d'imatge";
 "notice_audio_attachment" = "adjunt d'àudio";
 "notice_video_attachment" = "adjunt de vídeo";
@@ -669,7 +666,6 @@
 // room display name
 "room_displayname_empty_room" = "Sala buida";
 "room_displayname_two_members" = "%@ i %@";
-"room_displayname_more_than_two_members" = "%@ i %u més";
 // Settings
 "settings" = "Configuració";
 "settings_enable_inapp_notifications" = "Habilitar les notificacions de les App integrades";

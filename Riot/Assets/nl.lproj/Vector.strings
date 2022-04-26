@@ -404,7 +404,6 @@
 "no_voip_title" = "Inkomende oproep";
 "no_voip" = "%@ belt u %@ maar ondersteunt nog geen oproepen.\nU kunt deze melding negeren en vanaf een ander apparaat opnemen, of de oproep afwijzen.";
 // Crash report
-"google_analytics_use_prompt" = "Wilt u helpen met het verbeteren van %@ door anonieme crashrapporten en gebruiksstatistieken te versturen?";
 // Crypto
 "e2e_enabling_on_app_update" = "%@ ondersteunt nu eind-tot-eind-versleuteling, maar u moet zich opnieuw aanmelden om het in te schakelen.\n\nU kunt dit nu of later doen vanuit de app-instellingen.";
 "e2e_need_log_in_again" = "U moet zich opnieuw aanmelden om sleutels voor eind-tot-eind-versleuteling te genereren voor dit apparaat, en om de publieke sleutel naar uw server te sturen.\nDit is eenmalig; excuses voor het ongemak.";
@@ -678,10 +677,6 @@
 "sign_out_key_backup_in_progress_alert_cancel_action" = "Ik wacht wel";
 "room_event_action_reply" = "Beantwoorden";
 "room_event_action_edit" = "Bewerken";
-"room_event_action_reaction_agree" = "Akkoord met %@";
-"room_event_action_reaction_disagree" = "Niet akkoord met %@";
-"room_event_action_reaction_like" = "Duim omhoog voor %@";
-"room_event_action_reaction_dislike" = "Duim omlaag voor %@";
 "room_action_reply" = "Beantwoorden";
 "settings_labs_message_reaction" = "Beantwoord berichten met emoticons";
 "settings_key_backup_button_connect" = "Dit apparaat verbinden met sleutelback-up";
@@ -1238,7 +1233,6 @@
 
 "secure_key_backup_setup_intro_title" = "Veilige Back-up";
 "service_terms_modal_policy_checkbox_accessibility_hint" = "Aanvinken om te aanvaarden %@";
-"service_terms_modal_message_identity_server" = "Aanvaard de gebruikersvoorwaarden van de identiteitsserver (%@), om contacten te vinden.";
 
 // Service terms - Variant for identity server when displayed out of a context
 "service_terms_modal_title_identity_server" = "Contacten ontdekken";
@@ -1376,7 +1370,6 @@
 "settings_add_3pid_password_message" = "Geef uw Matrix account wachtwoord om verder te gaan";
 "settings_add_3pid_password_title_msidsn" = "Telefoonnummer toevoegen";
 "settings_add_3pid_password_title_email" = "E-mailadres toevoegen";
-"settings_integrations_allow_description" = "Gebruik een integratiebeheerder om bots, bruggen, widgets en stickerpakketten te beheren.\n\nIntegratiebeheerders ontvangen configuratiedata en kunnen widgets aanpassen, kameruitnodigingen versturen en bestuursniveaus instellen namens u.";
 "settings_integrations_allow_button" = "Beheer integraties";
 "settings_calls_stun_server_fallback_description" = "Sta de terugvalserver voor oproepbijstand %@ toe wanneer uw server er geen aanbiedt (uw IP-adres wordt gedeeld gedurende een oproep).";
 "settings_calls_stun_server_fallback_button" = "Terugvalserver voor oproepen toestaan";
@@ -1859,7 +1852,6 @@
 "notice_room_power_level_event_requirement" = "De minimale machtsniveaus gerelateerd aan gebeurtenissen zijn:";
 "notice_room_aliases" = "De gespreksbijnamen zijn: %@";
 "notice_encrypted_message" = "Versleuteld bericht";
-"notice_encryption_enabled" = "%@ heeft eind-tot-eind-versleuteling aangezet (%@-algoritme)";
 "notice_image_attachment" = "afbeeldingsbijlage";
 "notice_audio_attachment" = "audiobijlage";
 "notice_video_attachment" = "videobijlage";
@@ -2278,7 +2270,6 @@
 "attachment_small_with_resolution" = "Klein %@ (~%@)";
 "attachment_size_prompt_message" = "U kunt dit uitzetten in uw instellingen.";
 "attachment_size_prompt_title" = "Bevestig de afmeting om te versturen";
-"room_displayname_all_other_participants_left" = "%@ (vertrok)";
 "attachment_unsupported_preview_message" = "Dit bestandstype wordt niet ondersteund.";
 "attachment_unsupported_preview_title" = "Kan geen voorbeeld geven";
 "room_displayname_all_other_members_left" = "%@ (Vertrok)";
@@ -2399,7 +2390,6 @@
 "room_access_settings_screen_upgrade_alert_upgrading" = "Kamer upgraden";
 "room_access_settings_screen_upgrade_alert_upgrade_button" = "Upgrade";
 "room_access_settings_screen_upgrade_alert_auto_invite_switch" = "Leden automatisch uitnodigen voor nieuwe chatruimte";
-"room_access_settings_screen_upgrade_alert_message" = "Iedereen in Space naam kan deze ruimte vinden en er lid van worden - het is niet nodig om iedereen handmatig uit te nodigen. U kunt dit op elk moment wijzigen in de kamerinstellingen.\n\nHoud er rekening mee dat bij het upgraden een nieuwe versie van de kamer wordt gemaakt. Alle huidige berichten blijven in deze gearchiveerde ruimte.";
 "room_access_settings_screen_upgrade_alert_title" = "Upgrade kamer";
 "room_access_settings_screen_public_message" = "Iedereen kan vinden en meedoen.";
 "room_access_settings_screen_edit_spaces" = "Bewerk spaces";
@@ -2443,11 +2433,9 @@
 "onboarding_congratulations_home_button" = "Breng me het begin";
 "onboarding_congratulations_personalize_button" = "Personaliseer profiel";
 /* The placeholder string contains the user's matrix ID */
-"onboarding_congratulations_message" = "Uw account is aangemaakt.";
 "onboarding_congratulations_title" = "Gefeliciteerd!";
 "onboarding_use_case_existing_server_button" = "Verbinding maken met server";
 "onboarding_use_case_existing_server_message" = "Wilt u lid worden van een bestaande server?";
-"onboarding_use_case_skip_button" = "Nog niet zeker? U kunt %@";
 "onboarding_use_case_community_messaging" = "Gemeenschappen";
 "onboarding_use_case_work_messaging" = "Teams";
 "onboarding_use_case_personal_messaging" = "Vrienden en familie";

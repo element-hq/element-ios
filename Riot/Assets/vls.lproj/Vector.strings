@@ -187,7 +187,6 @@
 "notice_room_aliases" = "De gespreksbynoamn zyn: %@";
 "notice_room_related_groups" = "De groepn da geassocieerd zyn me da gesprek hier zyn: %@";
 "notice_encrypted_message" = "Versleuterd bericht";
-"notice_encryption_enabled" = "%@ èt end-tout-end-versleuterienge angezet (%@-algoritme)";
 "notice_image_attachment" = "fotobylage";
 "notice_audio_attachment" = "geluudsbylage";
 "notice_video_attachment" = "videobylage";

@@ -9,7 +9,6 @@
 "collapse" = "zbaliť";
 "rename" = "Premenovať";
 "later" = "Neskôr";
-"active_call_details" = "Prebiehajúci hovor (%s)";
 "active_call" = "Aktívny hovor";
 "video" = "Video";
 "voice" = "Hlas";
@@ -109,7 +108,6 @@
 "people_invites_section" = "POZVANIA";
 "auth_reset_password_error_unauthorized" = "Nepodarilo sa overiť emailovú adresu: Uistite sa, že ste správne klikli na odkaz v emailovej správe";
 "auth_reset_password_next_step_button" = "Overil som svoju emailovú adresu";
-"auth_reset_password_email_validation_message" = "Na adresu %s bola odoslaná správa. Po kliknutí na odkaz, ktorý obsahuje, kliknite nižšie.";
 "auth_reset_password_missing_password" = "Musíte zadať nové heslo.";
 "auth_reset_password_missing_email" = "Musíte zadať emailovú adresu prepojenú s vašim účtom.";
 "auth_reset_password_message" = "Ak chcete obnoviť vaše heslo k účtu Matrix, zadajte emailovú adresu prepojenú s vašim účtom:";
@@ -178,7 +176,6 @@
 "settings_old_password" = "staré heslo";
 "settings_third_party_notices" = "Poznámky tretích strán";
 "settings_privacy_policy" = "Zásady ochrany súkromia";
-"settings_version" = "Verzia %s";
 "settings_labs_e2e_encryption" = "End-to-End šifrovanie";
 "settings_integrations_allow_button" = "Spravovať integrácie";
 "settings_room_upgrades" = "Aktualizácia miestnosti";
@@ -562,9 +559,7 @@
 "room_participants_action_section_admin_tools" = "Nástroje správcu";
 "room_participants_filter_room_members_for_dm" = "Filtrovať členov";
 "room_participants_filter_room_members" = "Filtrovať členov v miestnosti";
-"room_participants_invite_prompt_msg" = "Ste si istí, že chcete pozvať používateľa %s do tejto konverzácie?";
 "room_participants_remove_third_party_invite_prompt_msg" = "Ste si istí, že chcete odvolať toto pozvanie?";
-"room_participants_remove_prompt_msg" = "Ste si istí, že chcete používateľa %s odstrániť z tejto konverzácie?";
 "room_participants_leave_prompt_msg_for_dm" = "Ste si istí, že chcete odísť?";
 "room_participants_leave_prompt_msg" = "Ste si istí, že chcete opustiť miestnosť?";
 "room_participants_leave_prompt_title" = "Opustiť miestnosť";
@@ -833,8 +828,6 @@
 "settings_config_user_id" = "Prihlásený ako %@";
 "settings_mark_all_as_read" = "Označiť všetky správy ako prečítané";
 "settings_config_no_build_info" = "Žiadne informácie o zostavení";
-"room_preview_try_join_an_unknown_room" = "Pokúšate sa zobraziť %s. Chcete vstúpiť a pridať sa k diskusii?";
-"room_preview_unlinked_email_warning" = "Toto pozvanie bolo odoslané na emailovú adresu %s, ktorá nie je priradená k tomuto účtu. Môžete sa prihlásiť k inému účtu, alebo pridať túto emailovú adresu do vášho účtu.";
 "room_preview_subtitle" = "Toto je náhľad do miestnosti. Všetky akcie pre túto miestnosť sú zakázané.";
 
 // Room Preview
@@ -933,7 +926,6 @@
 "widget_menu_open_outside" = "Otvoriť v prehliadači";
 "bug_report_background_mode" = "Pokračovať v pozadí";
 "e2e_key_backup_wrong_version_button_wasme" = "Bol(a) som to ja";
-"call_no_stun_server_error_use_fallback_button" = "Skúste použiť %s";
 "call_incoming_video" = "Prichádzajúci video hovor…";
 "event_formatter_group_call_incoming" = "%@ v %@";
 "event_formatter_call_active_video" = "Aktívny video hovor";
@@ -990,7 +982,6 @@
 "room_unsent_messages_cancel_title" = "Vymazať neodoslané správy";
 "room_message_reply_to_short_placeholder" = "Odoslať odpoveď…";
 "room_message_short_placeholder" = "Odoslať správu…";
-"room_one_user_is_typing" = "%s píše…";
 "room_new_messages_notification" = "%d nových správ";
 "room_new_message_notification" = "%d nová správa";
 "room_jump_to_first_unread" = "Preskočiť na neprečítanú";
@@ -1013,8 +1004,6 @@
 "poll_edit_form_create_poll" = "Vytvoriť anketu";
 "version_check_modal_action_title_supported" = "Rozumiem";
 "voice_message_lock_screen_placeholder" = "Hlasová správa";
-"voice_message_remaining_recording_time" = "%1$s ostáva";
-"side_menu_app_version" = "Verzia %s";
 "side_menu_action_invite_friends" = "Pozvať priateľov";
 
 // Mark: - Side menu
@@ -1475,7 +1464,6 @@
 "room_widget_permission_webview_information_title" = "Používaním prijímate cookies od a zdieľate údaje %@:\n";
 "room_widget_permission_creator_info_title" = "Tento widget pridal:";
 "widget_integration_manager_disabled" = "V nastaveniach je potrebné povoliť správcu integrácie";
-"widget_integration_room_not_visible" = "Miestnosť %s nie je viditeľná.";
 "widget_integration_missing_user_id" = "V požiadavke chýba user_id.";
 "widget_integration_missing_room_id" = "V požiadavke chýba room_id.";
 "widget_integration_no_permission_in_room" = "V tejto miestnosti na to nemáte povolenie.";
@@ -1519,7 +1507,6 @@
 "event_formatter_widget_added" = "%@ widget pridal %@";
 "directory_server_type_homeserver" = "Zadajte domovský server, z ktorého chcete zobraziť zoznam verejných miestností";
 "directory_server_all_native_rooms" = "Všetky natívne miestnosti Matrix";
-"directory_server_all_rooms" = "Všetky miestnosti na serveri %s";
 "directory_server_picker_title" = "Vybrať adresár";
 
 // Media picker
@@ -1861,7 +1848,6 @@
 "login_user_id_placeholder" = "Matrix ID (napr. @fero:matrix.org alebo fero)";
 "login_identity_server_info" = "Matrix poskytuje servery totožnosti na sledovanie, ktoré e-maily atď. patria k jednotlivým Matrix ID. V súčasnosti existuje iba stránka https://matrix.org.";
 "login_home_server_info" = "Váš domovský server ukladá všetky vaše konverzácie a údaje o účte";
-"ssl_fingerprint_hash" = "Odtlačok (%s):";
 "call_more_actions_dialpad" = "Číselník";
 "call_ended" = "Hovor ukončený";
 
@@ -2062,7 +2048,6 @@
 "notice_conference_call_started" = "Začala sa VoIP konferencia";
 "notice_conference_call_request" = "%@ požiadal/a o VoIP konferenciu";
 "notice_declined_video_call" = "%@ odmietol hovor";
-"notice_ended_video_call" = "%s ukončil/a hovor";
 "notice_room_name_changed_for_dm" = "%@ zmenil/a svoje meno na %@.";
 "notice_room_name_changed" = "%@ zmenil názov miestnosti na %@.";
 "notice_topic_changed" = "%@ zmenil tému na \"%@\".";
@@ -2440,7 +2425,6 @@
 "room_access_settings_screen_upgrade_alert_upgrading" = "Aktualizácia miestnosti";
 "room_access_settings_screen_upgrade_alert_upgrade_button" = "Aktualizovať";
 "room_access_settings_screen_upgrade_alert_auto_invite_switch" = "Automaticky pozvať členov do novej miestnosti";
-"room_access_settings_screen_upgrade_alert_message" = "Ktokoľvek v názve priestoru bude môcť nájsť túto miestnosť a pripojiť sa k nej - nie je potrebné každého ručne pozývať. V nastaveniach miestnosti to budete môcť kedykoľvek zmeniť.\n\nUpozorňujeme, že aktualizáciou sa vytvorí nová verzia miestnosti.  Všetky aktuálne správy zostanú v tejto archivovanej miestnosti.";
 "room_access_settings_screen_upgrade_alert_title" = "Aktualizovať miestnosť";
 "room_access_settings_screen_public_message" = "Ktokoľvek môže nájsť a pripojiť sa.";
 "room_access_settings_screen_edit_spaces" = "Upraviť priestory";

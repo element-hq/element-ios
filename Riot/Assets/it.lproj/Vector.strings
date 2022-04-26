@@ -154,7 +154,6 @@
 "contacts_address_book_section" = "CONTATTI LOCALI";
 "contacts_address_book_matrix_users_toggle" = "Solo utenti Matrix";
 "contacts_address_book_no_contact" = "Nessun contatto locale";
-"contacts_address_book_permission_required" = "%@ deve essere autorizzato per poter accedere alla Rubrica locale";
 "contacts_address_book_permission_denied" = "Non hai autorizzato %@ ad accedere alla rubrica locale";
 "contacts_user_directory_section" = "ELENCO UTENTI";
 "contacts_user_directory_offline_section" = "ELENCO UTENTI (offline)";
@@ -520,7 +519,6 @@
 "no_voip_title" = "Chiamata in arrivo";
 "no_voip" = "%@ ti sta chiamando, ma %@ non supporta ancora le chiamate.\nPuoi ignorare questa notifica e rispondere alla chiamata da un altro dispositivo oppure puoi rifiutare la chiamata.";
 // Crash report
-"google_analytics_use_prompt" = "Vuoi aiutare a migliorare %@ inviando automaticamente in modo anonimo i dati di utilizzo e le segnalazioni di crash?";
 // Crypto
 "e2e_enabling_on_app_update" = "%@ ora supporta la crittografia da-utente-a-utente ma devi eseguire nuovamente l'accesso per abilitarla.\n\nPuoi farlo ora o più tardi dalle impostazioni dell'applicazione.";
 "e2e_need_log_in_again" = "È necessario eseguire nuovamente l'accesso per generare le chiavi di crittografia end-to-end per questa sessione ed inviare la chiave pubblica all'homeserver.\nVa fatto una sola volta; ci scusiamo per il disturbo.";
@@ -534,7 +532,6 @@
 "bug_report_description" = "Per favore descrivi l'errore. Cosa hai fatto? Cosa ti aspettavi dovesse accadere? Cosa è effettivamente successo?";
 "bug_crash_report_title" = "Segnalazione del crash";
 "bug_crash_report_description" = "Per favore descrivi cosa hai fatto prima del crash:";
-"bug_report_logs_description" = "Al fine di diagnosticare i problemi, i registri %@ di questo dispositivo saranno inviati con il rapporto dell'errore. Se preferisci inviare solo il testo soprastante, deseleziona:";
 "bug_report_send_logs" = "Invia registri";
 "bug_report_send_screenshot" = "Invia screenshot";
 "bug_report_progress_zipping" = "Ottenimento registri";
@@ -690,7 +687,6 @@
 "widget_integrations_server_failed_to_connect" = "La connessione al Server Integrazioni é fallita";
 // Service terms
 "service_terms_modal_title" = "Termini del servizio";
-"service_terms_modal_message" = "Per continuare devi accettare i Termini di servizio (%@).";
 "service_terms_modal_accept_button" = "Accetta";
 "service_terms_modal_description_for_identity_server" = "Gli altri utenti possono trovarti";
 "service_terms_modal_description_for_integration_manager" = "Usa bot, widget e stickers";
@@ -878,7 +874,6 @@
 "service_terms_modal_description_for_identity_server_2" = "Fatti trovare attraverso il tuo numero di telefono e la tua email";
 // Service terms - Variant for identity server when displayed out of a context
 "service_terms_modal_title_identity_server" = "Trova contatti";
-"service_terms_modal_message_identity_server" = "Accetta i termini di servizio del server d'identità (%@) per trovare altri contatti.";
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Aggiungi un server d'identità nelle impostazioni per poter invitare utenti tramite email.";
 "settings_add_3pid_password_title_email" = "Aggiungi indirizzo email";
@@ -1735,7 +1730,6 @@
 "notice_room_aliases" = "Gli alias di questo canale sono: %@";
 "notice_room_related_groups" = "I gruppi associati a questo canale sono: %@";
 "notice_encrypted_message" = "Messaggio criptato";
-"notice_encryption_enabled" = "%@ ha attivato la crittografia end-to-end (algoritmo %@)";
 "notice_image_attachment" = "allegato immagine";
 "notice_audio_attachment" = "allegato audio";
 "notice_video_attachment" = "allegato video";
@@ -2220,7 +2214,6 @@
 "room_access_settings_screen_upgrade_alert_upgrading" = "Aggiornamento stanza";
 "room_access_settings_screen_upgrade_alert_upgrade_button" = "Aggiorna";
 "room_access_settings_screen_upgrade_alert_auto_invite_switch" = "Invita automaticamente i membri nella stanza nuova";
-"room_access_settings_screen_upgrade_alert_message" = "Chiunque nello spazio potrà trovare ed entrare in questa stanza - non serve invitare tutti a mano. Potrai cambiarlo nelle impostazioni della stanza in qualsiasi momento.\n\nNota che l'aggiornamento creerà una nuova versione della stanza.  Tutti i messaggi attuali resteranno in questa stanza archiviata.";
 "room_access_settings_screen_upgrade_alert_title" = "Aggiorna stanza";
 "room_access_settings_screen_public_message" = "Chiunque può trovare ed entrare.";
 "room_access_settings_screen_edit_spaces" = "Modifica spazi";

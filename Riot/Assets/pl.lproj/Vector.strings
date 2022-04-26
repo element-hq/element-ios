@@ -774,7 +774,6 @@
 "call_jitsi_error" = "Nie udało się dołączyć do rozmowy konferencyjnej.";
 "no_voip" = "%@ dzwoni do Ciebie ale %@ nie obsługuje jeszcze połączeń\nMożesz zignorować to powiadomienie i odebrać rozmowę na innym urządzeniu, bądź odrzucić je.";
 // Crash report
-"google_analytics_use_prompt" = "Chcesz pomóc nam w ulepszaniu %@ przez automatyczne wysyłanie anonimowych raportów o błędach i danych użytkowania?";
 // Key backup wrong version
 "e2e_key_backup_wrong_version_title" = "Nowy Klucz Kopii Zapasowej";
 "room_participants_remove_third_party_invite_prompt_msg" = "Czy jesteś pewien, że chcesz odrzucić to zaproszenie?";
@@ -791,7 +790,6 @@
 "share_extension_failed_to_encrypt" = "Nie udało się wysłać. Sprawdź w głównej aplikacji ustawienia szyfrowania dla tego pokoju";
 // Service terms
 "service_terms_modal_title" = "Warunki usługi";
-"service_terms_modal_message" = "Aby kontynuować musisz zaakceptować warunki usługi (%@).";
 "service_terms_modal_accept_button" = "Akceptuj";
 "service_terms_modal_description_for_identity_server" = "Być wykrywalnym dla innych";
 "service_terms_modal_description_for_integration_manager" = "Używaj Botów, mostków, widżetów i naklejek";
@@ -1159,7 +1157,6 @@
 "key_verification_manually_verify_device_key_title" = "Klucz sesji";
 "key_verification_manually_verify_device_id_title" = "Identyfikator sesji";
 "key_verification_manually_verify_device_name_title" = "Nazwa sesji";
-"key_verification_manually_verify_device_instruction" = "Potwierdź zgodność poniższych informacji porównując następujące %@y z ustawieniami użytkownika w drugiej sesji:";
 
 // MARK: Manually Verify Device
 
@@ -1243,7 +1240,6 @@
 
 "secure_key_backup_setup_intro_title" = "Bezpieczna kopia zapasowa";
 "service_terms_modal_policy_checkbox_accessibility_hint" = "Zaznacz, aby zaakceptować %@";
-"service_terms_modal_message_identity_server" = "Zaakceptuj warunki serwera tożsamości (%@), aby móc wyszukiwać kontakty.";
 
 // Service terms - Variant for identity server when displayed out of a context
 "service_terms_modal_title_identity_server" = "Odkrywanie kontaktów";
@@ -1503,10 +1499,8 @@
 "room_recents_unknown_room_error_message" = "Nie mogę znaleźć tego pokoju. Upewnij się, że on istnieje";
 "room_creation_dm_error" = "Nie mogliśmy utworzyć pokoju. Sprawdź użytkowników, których chcesz zaprosić, i spróbuj ponownie.";
 "version_check_modal_action_title_deprecated" = "Dowiedz się jak";
-"version_check_modal_subtitle_deprecated" = "Pracowaliśmy nad ulepszeniem %@u, aby polepszyć korzystanie z aplikacji. Niestety Twoja aktualna wersja systemu iOS nie jest zgodna z niektórymi z tych poprawek i nie jest już obsługiwana.\nRadzimy uaktualnić system operacyjny, aby w pełni wykorzystać jego potencjał.";
 "version_check_modal_title_deprecated" = "Nie obsługujemy już iOS %@";
 "version_check_modal_action_title_supported" = "Rozumiem";
-"version_check_modal_subtitle_supported" = "Pracowaliśmy nad ulepszeniem %@u, aby polepszyć korzystanie z aplikacji. Niestety Twoja obecna wersja systemu iOS nie jest zgodna z niektórymi z tych poprawek i nie będzie już obsługiwana.\nRadzimy uaktualnić system operacyjny, aby w pełni wykorzystać jego potencjał.";
 "version_check_modal_title_supported" = "Kończymy wsparcie dla iOS %@";
 "version_check_banner_subtitle_deprecated" = "Nie obsługujemy już %@u na iOS %@. Aby nadal korzystać z pełnego potencjału %@u, radzimy uaktualnić swoją wersję systemu iOS.";
 "version_check_banner_title_deprecated" = "Nie obsługujemy już iOS %@";
@@ -1563,7 +1557,6 @@
 /* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
 "analytics_prompt_terms_new_user" = "Tutaj możesz przeczytać nasze warunki użytkowania %@.";
 "analytics_prompt_message_upgrade" = "Wcześniej dostaliśmy Twoją zgodę na używanie zanonimizowanych danych na temat użytkowania. Teraz, by zrozumieć jak użytkownicy korzystają z wielu urządzeń, wygenerujemy identyfikator używany przez nie wszystkie.";
-"analytics_prompt_message_new_user" = "Pomóż nam zidentyfikować problemy i poprawić @% udostępniając zanonimizowane dane o użytkowaniu. W celu zrozumienia jak użytkownicy korzystają z wielu urządzeń wygenerujemy identyfikator używany przez nie wszystkie.";
 
 // Analytics
 "analytics_prompt_title" = "Pomóż ulepszyć %@";
@@ -1646,7 +1639,6 @@
 "notice_event_redacted_reason" = " [powód: %@]";
 "notice_profile_change_redacted" = "%@ zaktualizował(-a) swój profil %@";
 "notice_encrypted_message" = "Wiadomość zaszyfrowana";
-"notice_encryption_enabled" = "%@ włączył(a) szyfrowanie end-to-end (algorytm %@)";
 "ssl_only_accept" = "Akceptuj certyfikat TYLKO wtedy gdy administrator opublikował odcisk palca pasujący do tego powyżej.";
 "ssl_unexpected_existing_expl" = "Certyfikat zmienił stan z zaufanego na niezaufany. Jest to NIEZWYKLE RZADKIE. Zalecane jest NIE AKCEPTOWANIE nowego certyfikatu.";
 "ssl_cert_not_trust" = "Może to oznaczać że ktoś zakłóca twoje połączenie, lub Twój telefon nie ufa certyfikatowi dostarczonemu przez zdalny serwer.";
