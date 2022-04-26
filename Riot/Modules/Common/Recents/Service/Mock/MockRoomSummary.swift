@@ -36,6 +36,8 @@ public class MockRoomSummary: NSObject, MXRoomSummaryProtocol {
     
     public var joinRule: String? = kMXRoomJoinRuleInvite
     
+    public var historyVisibility: String?
+    
     public var membership: MXMembership = .join
     
     public var membershipTransitionState: MXMembershipTransitionState = .joined
