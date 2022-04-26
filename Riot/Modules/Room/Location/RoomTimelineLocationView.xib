@@ -14,8 +14,15 @@
             <rect key="frame" x="0.0" y="0.0" width="395" height="250"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vuV-BV-bbx">
+                <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="location_placeholder_background_image" translatesAutoresizingMaskIntoConstraints="NO" id="vuV-BV-bbx" userLabel="Placeholder BackGround Image">
                     <rect key="frame" x="0.0" y="0.0" width="395" height="250"/>
+                </imageView>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4WL-gT-HBV">
+                    <rect key="frame" x="172.5" y="75" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="c7D-e5-dkZ"/>
+                        <constraint firstAttribute="width" constant="50" id="q3h-Mg-lG4"/>
+                    </constraints>
                 </imageView>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="0D1-Km-vTu">
                     <rect key="frame" x="0.0" y="182" width="395" height="68"/>
@@ -147,7 +154,9 @@
                 <constraint firstItem="vuV-BV-bbx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="NhI-xD-L7V"/>
                 <constraint firstAttribute="trailing" secondItem="0D1-Km-vTu" secondAttribute="trailing" id="QHD-xv-nfX"/>
                 <constraint firstAttribute="bottom" secondItem="vuV-BV-bbx" secondAttribute="bottom" id="eKg-25-HDW"/>
+                <constraint firstItem="4WL-gT-HBV" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="eRF-LN-Evm"/>
                 <constraint firstAttribute="bottom" secondItem="0D1-Km-vTu" secondAttribute="bottom" id="ea5-xx-V3s"/>
+                <constraint firstItem="4WL-gT-HBV" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="-25" id="nKg-p6-0mc"/>
                 <constraint firstItem="vuV-BV-bbx" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="tJb-jf-9mX"/>
                 <constraint firstItem="0D1-Km-vTu" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="yJw-DU-ien"/>
             </constraints>
@@ -163,7 +172,8 @@
                 <outlet property="liveLocationImageView" destination="pgy-lK-ehN" id="1Th-PJ-G0p"/>
                 <outlet property="liveLocationStatusLabel" destination="X9R-EV-RDT" id="HJr-cE-icv"/>
                 <outlet property="liveLocationTimerLabel" destination="U75-c5-got" id="RkO-6a-ABU"/>
-                <outlet property="placeholderImage" destination="vuV-BV-bbx" id="QYU-6R-SI8"/>
+                <outlet property="placeholderBackground" destination="vuV-BV-bbx" id="9PW-RW-tFh"/>
+                <outlet property="placeholderIcon" destination="4WL-gT-HBV" id="pqw-gN-2Q7"/>
                 <outlet property="rightButton" destination="k5H-UE-ygH" id="nz0-Eb-SRp"/>
             </connections>
             <point key="canvasLocation" x="165.94202898550725" y="-101.11607142857143"/>
@@ -172,6 +182,7 @@
     <resources>
         <image name="location_live_cell_icon" width="32" height="32"/>
         <image name="location_marker_icon" width="24" height="24"/>
+        <image name="location_placeholder_background_image" width="312" height="156"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

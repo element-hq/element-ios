@@ -31,7 +31,7 @@ struct RoomTimelineLocationViewData {
 }
 
 struct LiveLocationBannerViewData {
-    let placeholderImage: UIImage?
+    let placeholderIcon: UIImage?
     let iconTint: UIColor
     let title: String
     let titleColor: UIColor
@@ -48,7 +48,7 @@ struct LiveLocationBannerViewData {
     }
     
     var showPlaceholderImage: Bool {
-        return placeholderImage != nil
+        return placeholderIcon != nil
     }
 }
 
@@ -96,7 +96,8 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     @IBOutlet private var attributionLabel: UILabel!
     
     // MARK: - Live Location
-    @IBOutlet private var placeholderImage: UIImageView!
+    @IBOutlet private var placeholderBackground: UIImageView!
+    @IBOutlet private var placeholderIcon: UIImageView!
     @IBOutlet private var liveLocationContainerView: UIView!
     @IBOutlet private var liveLocationImageView: UIImageView!
     @IBOutlet private var liveLocationStatusLabel: UILabel!
@@ -208,8 +209,10 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
         rightButton.isHidden = !bannerViewData.showRightButton
         rightButton.tag = bannerViewData.rightButtonTag.rawValue
         
-        placeholderImage.image = bannerViewData.placeholderImage
-        placeholderImage.isHidden = !bannerViewData.showPlaceholderImage
+        placeholderBackground.isHidden = !bannerViewData.showPlaceholderImage
+        placeholderIcon.image = bannerViewData.placeholderIcon
+        placeholderIcon.isHidden = !bannerViewData.showPlaceholderImage
+        placeholderBackground.isHidden = !bannerViewData.showPlaceholderImage
         mapView.isHidden = bannerViewData.showPlaceholderImage
     }
     
@@ -218,7 +221,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
         let iconTint: UIColor
         let title: String
         var titleColor: UIColor = theme.colors.primaryContent
-        var placeholderImage: UIImage?
+        var placeholderIcon: UIImage?
         var timeLeftString: String?
         var rightButtonTitle: String?
         var rightButtonTag: RightButtonTag = .stopSharing
@@ -230,7 +233,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
                 iconTint = theme.colors.tertiaryContent
                 title = VectorL10n.locationSharingLiveLoading
                 titleColor = theme.colors.tertiaryContent
-                placeholderImage = Asset.Images.locationLiveCellLoadingImage.image
+                placeholderIcon = Asset.Images.locationLiveCellLoadingIcon.image
             case .started(let timeLeft):
                 iconTint = theme.roomCellLocalisationIconStartedColor
                 title = VectorL10n.liveLocationSharingBannerTitle
@@ -239,7 +242,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
                 iconTint = theme.colors.tertiaryContent
                 title = VectorL10n.liveLocationSharingEnded
                 titleColor = theme.colors.tertiaryContent
-                placeholderImage = Asset.Images.locationLiveCellEndedImage.image
+                placeholderIcon = Asset.Images.locationLiveCellEndedIcon.image
             }
         case .outgoing(let liveLocationSharingStatus):
             switch liveLocationSharingStatus {
@@ -247,7 +250,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
                 iconTint = theme.colors.tertiaryContent
                 title = VectorL10n.locationSharingLiveLoading
                 titleColor = theme.colors.tertiaryContent
-                placeholderImage = Asset.Images.locationLiveCellLoadingImage.image
+                placeholderIcon = Asset.Images.locationLiveCellLoadingIcon.image
             case .started(let timeLeft):
                 iconTint = theme.roomCellLocalisationIconStartedColor
                 title = VectorL10n.liveLocationSharingBannerTitle
@@ -262,11 +265,11 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
                 iconTint = theme.colors.tertiaryContent
                 title = VectorL10n.liveLocationSharingEnded
                 titleColor = theme.colors.tertiaryContent
-                placeholderImage = Asset.Images.locationLiveCellEndedImage.image
+                placeholderIcon = Asset.Images.locationLiveCellEndedIcon.image
             }
         }
         
-        return LiveLocationBannerViewData(placeholderImage: placeholderImage, iconTint: iconTint, title: title, titleColor: titleColor, timeLeftString: timeLeftString, rightButtonTitle: rightButtonTitle, rightButtonTag: rightButtonTag)
+        return LiveLocationBannerViewData(placeholderIcon: placeholderIcon, iconTint: iconTint, title: title, titleColor: titleColor, timeLeftString: timeLeftString, rightButtonTitle: rightButtonTitle, rightButtonTag: rightButtonTag)
     }
     
     private func generateTimerString(for timestamp: Double,
@@ -311,6 +314,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
         descriptionIcon.tintColor = theme.colors.accent
         attributionLabel.textColor = theme.colors.accent
         layer.borderColor = theme.colors.quinaryContent.cgColor
+        self.theme = theme
     }
     
     // MARK: - MGLMapViewDelegate
