@@ -15,41 +15,82 @@
 //
 
 import Foundation
+import MatrixSDK
 
 class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable {
     
     private var locationView: RoomTimelineLocationView!
+    private var event: MXEvent?
     
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
         
         guard #available(iOS 14.0, *),
               let bubbleData = cellData as? RoomBubbleCellData,
-              let event = bubbleData.events.last,
-              event.eventType == __MXEventType.roomMessage,
-              let locationContent = event.location
+              let event = bubbleData.events.last
         else {
             return
         }
         
+        self.event = event
         locationView.update(theme: ThemeService.shared().theme)
+        
+        // Comment this line and uncomment next one to test UI of live location tile
+        renderStaticLocation(event)
+//        renderLiveLocation(event)
+    }
+    
+    private func renderStaticLocation(_ event: MXEvent) {
+        guard let locationContent = event.location else {
+            return
+        }
+        
         locationView.locationDescription = locationContent.locationDescription
         
         let location = CLLocationCoordinate2D(latitude: locationContent.latitude, longitude: locationContent.longitude)
         
         let mapStyleURL = bubbleData.mxSession.vc_homeserverConfiguration().tileServer.mapStyleURL
         
+        let avatarViewData: AvatarViewData?
+        
         if locationContent.assetType == .user {
-            let avatarViewData = AvatarViewData(matrixItemId: bubbleData.senderId,
+            avatarViewData = AvatarViewData(matrixItemId: bubbleData.senderId,
                                                 displayName: bubbleData.senderDisplayName,
                                                 avatarUrl: bubbleData.senderAvatarUrl,
                                                 mediaManager: bubbleData.mxSession.mediaManager,
                                                 fallbackImage: .matrixItem(bubbleData.senderId, bubbleData.senderDisplayName))
-            
-            locationView.displayLocation(location, userAvatarData: avatarViewData, mapStyleURL: mapStyleURL)
         } else {
-            locationView.displayLocation(location, mapStyleURL: mapStyleURL)
+            avatarViewData = nil
         }
+        
+        locationView.displayStaticLocation(with: RoomTimelineLocationViewData(location: location, userAvatarData: avatarViewData, mapStyleURL: mapStyleURL))
+    }
+    
+    private func renderLiveLocation(_ event: MXEvent) {
+        // TODO: - Render live location cell when live location event is handled
+        
+        // This code is only for testing live location cell
+        // Will be completed when the live location event is handled
+        
+        guard let locationContent = event.location else {
+            return
+        }
+        
+        locationView.locationDescription = locationContent.locationDescription
+        
+        let location = CLLocationCoordinate2D(latitude: locationContent.latitude, longitude: locationContent.longitude)
+        
+        let mapStyleURL = bubbleData.mxSession.vc_homeserverConfiguration().tileServer.mapStyleURL
+        
+        let avatarViewData = AvatarViewData(matrixItemId: bubbleData.senderId,
+                                            displayName: bubbleData.senderDisplayName,
+                                            avatarUrl: bubbleData.senderAvatarUrl,
+                                            mediaManager: bubbleData.mxSession.mediaManager,
+                                            fallbackImage: .matrixItem(bubbleData.senderId, bubbleData.senderDisplayName))
+        let futurDateTimeInterval = Date(timeIntervalSinceNow: 3734).timeIntervalSince1970 * 1000
+        
+        locationView.displayLiveLocation(with: RoomTimelineLocationViewData(location: location, userAvatarData: avatarViewData, mapStyleURL: mapStyleURL),
+                                         liveLocationViewState: .outgoing(.started(futurDateTimeInterval)))
     }
     
     override func setupViews() {
@@ -67,5 +108,23 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
         locationView = RoomTimelineLocationView.loadFromNib()
         
         contentView.vc_addSubViewMatchingParent(locationView)
+    }
+}
+
+extension LocationPlainCell: RoomTimelineLocationViewDelegate {
+    func roomTimelineLocationViewDidTapStopButton(_ roomTimelineLocationView: RoomTimelineLocationView) {
+        guard let event = self.event else {
+            return
+        }
+        
+        delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellStopShareButtonPressed, userInfo: [kMXKRoomBubbleCellEventKey: event])
+    }
+    
+    func roomTimelineLocationViewDidTapRetryButton(_ roomTimelineLocationView: RoomTimelineLocationView) {
+        guard let event = self.event else {
+            return
+        }
+        
+        delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellRetryShareButtonPressed, userInfo: [kMXKRoomBubbleCellEventKey: event])
     }
 }

@@ -2138,6 +2138,7 @@ Tap the + to start adding people.";
 
 "location_sharing_live_share_title" = "Share live location";
 "live_location_sharing_banner_title" = "Live location enabled";
+"live_location_sharing_ended" = "Live location ended";
 "live_location_sharing_banner_stop" = "Stop";
 "location_sharing_static_share_title" = "Send my current location";
 "location_sharing_pin_drop_share_title" = "Send this location";
@@ -2149,6 +2150,9 @@ Tap the + to start adding people.";
 "location_sharing_live_list_item_last_update_invalid" = "Unknown last update";
 "location_sharing_live_list_item_current_user_display_name" = "You";
 "location_sharing_live_list_item_stop_sharing_action" = "Stop sharing";
+"location_sharing_live_timer_incoming" = "Live until %@";
+"location_sharing_live_loading" = "Loading Live location...";
+"location_sharing_live_error" = "Live location error";
 
 // MARK: - MatrixKit
 

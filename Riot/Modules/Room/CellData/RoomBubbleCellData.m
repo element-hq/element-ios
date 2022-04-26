@@ -195,6 +195,8 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                     self.collapsable = NO;
                     self.collapsed = NO;
                 }
+                
+                break;
             }
             default:
                 break;
