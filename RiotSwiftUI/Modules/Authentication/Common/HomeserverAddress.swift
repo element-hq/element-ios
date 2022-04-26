@@ -16,13 +16,15 @@
 
 import Foundation
 
-class HomeserverAddress {
+struct HomeserverAddress {
     /// Ensures the address contains a scheme, otherwise makes it `https`.
-    static func sanitize(_ address: String) -> String {
+    static func sanitized(_ address: String) -> String {
         !address.contains("://") ? "https://\(address.lowercased())" : address.lowercased()
     }
     
     /// Strips the `https://` away from the address (but leaves `http://`) for display in labels.
+    ///
+    /// `http://` is left in the string to make it clear when a chosen server doesn't use SSL.
     static func displayable(_ address: String) -> String {
         address.replacingOccurrences(of: "https://", with: "")
     }

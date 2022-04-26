@@ -46,13 +46,13 @@ class AuthenticationService: NSObject {
     
     /// The address of the homeserver that the service is using.
     var homeserverAddress: String {
-        state.homeserverAddress ?? RiotSettings.shared.homeserverUrlString
+        state.selectedHomeserver.address
     }
     
     
     // MARK: Android OnboardingViewModel
     /// The current state of the authentication flow.
-    private var state = AuthenticationCoordinatorState()
+    private var state: AuthenticationCoordinatorState
     /// The currently executing async task.
     private var currentTask: Task<Void, Error>? {
         willSet {
@@ -64,62 +64,53 @@ class AuthenticationService: NSObject {
     // MARK: - Setup
     
     override init() {
-        guard let homeserverURL = URL(string: RiotSettings.shared.homeserverUrlString) else {
-            fatalError("[AuthenticationService]: Failed to create URL from default homeserver URL string.")
+        if let homeserverURL = URL(string: RiotSettings.shared.homeserverUrlString) {
+            // Use the same homeserver that was last used.
+            state = AuthenticationCoordinatorState(selectedHomeserver: .init(address: RiotSettings.shared.homeserverUrlString))
+            client = MXRestClient(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
+            
+        } else if let homeserverURL = URL(string: BuildSettings.serverConfigDefaultHomeserverUrlString) {
+            // Fall back to the default homeserver if the stored one is invalid.
+            state = AuthenticationCoordinatorState(selectedHomeserver: .init(address: BuildSettings.serverConfigDefaultHomeserverUrlString))
+            client = MXRestClient(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
+            
+        } else {
+            MXLog.failure("[AuthenticationService]: Failed to create URL from default homeserver URL string.")
+            fatalError("Invalid default homeserver URL string.")
         }
-        
-        client = MXRestClient(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
         
         super.init()
     }
     
     // MARK: - Android OnboardingViewModel
     
-    func loginFlow(homeserverAddress: String) async {
+    func startFlow(for homeserverAddress: String, as authenticationMode: AuthenticationMode) async throws {
         currentTask = Task {
             cancelPendingLoginOrRegistration()
             
-            do {
-                let data = try await loginFlow(for: homeserverAddress)
-                
-                guard !Task.isCancelled else { return }
-                
-                // Valid Homeserver, add it to the history.
-                // Note: we add what the user has input, as the data can contain a different value.
-                RiotSettings.shared.homeserverUrlString = homeserverAddress
-                
-                let loginMode: LoginMode
-                
-                if data.supportedLoginTypes.contains(where: { $0.type == kMXLoginFlowTypeSSO }),
-                   data.supportedLoginTypes.contains(where: { $0.type == kMXLoginFlowTypePassword }) {
-                    loginMode = .ssoAndPassword(ssoIdentityProviders: data.ssoIdentityProviders)
-                } else if data.supportedLoginTypes.contains(where: { $0.type == kMXLoginFlowTypeSSO }) {
-                    loginMode = .sso(ssoIdentityProviders: data.ssoIdentityProviders)
-                } else if data.supportedLoginTypes.contains(where: { $0.type == kMXLoginFlowTypePassword }) {
-                    loginMode = .password
-                } else {
-                    loginMode = .unsupported
-                }
-                
-                state.homeserverAddressFromUser = homeserverAddress
-                state.homeserverAddress = data.homeserverAddress
-                state.loginMode = loginMode
-                state.loginModeSupportedTypes = data.supportedLoginTypes
-            } catch {
-                #warning("Show an error message and/or handle the error?")
-                return
+            let loginFlows = try await loginFlow(for: homeserverAddress)
+            
+            var registrationFlow: RegistrationResult?
+            if authenticationMode == .registration {
+                let wizard = try registrationWizard()
+                registrationFlow = try await wizard.registrationFlow()
             }
+            
+            guard !Task.isCancelled else { return }
+            
+            // Valid Homeserver, add it to the history.
+            // Note: we add what the user has input, as the data can contain a different value.
+            RiotSettings.shared.homeserverUrlString = homeserverAddress
+            
+            state.selectedHomeserver = .init(address: loginFlows.homeserverAddress,
+                                             addressFromUser: homeserverAddress,
+                                             preferredLoginMode: loginFlows.loginMode,
+                                             loginModeSupportedTypes: loginFlows.supportedLoginTypes)
+            
+            pendingData?.currentRegistrationResult = registrationFlow
         }
-    }
-    
-    func refreshServer(homeserverAddress: String) async throws -> (LoginFlowResult, RegistrationResult) {
-        let loginFlows = try await loginFlow(for: homeserverAddress)
-        let wizard = try registrationWizard()
-        let registrationFlow = try await wizard.registrationFlow()
         
-        state.homeserverAddress = homeserverAddress
-        
-        return (loginFlows, registrationFlow)
+        try await currentTask?.value
     }
     
     // MARK: - Public
@@ -148,18 +139,13 @@ class AuthenticationService: NSObject {
         MXKAccountManager.shared().activeAccounts?.first?.mxSession
     }
     
-    enum AuthenticationMode {
-        case login
-        case registration
-    }
-    
     /// Request the supported login flows for this homeserver.
     /// This is the first method to call to be able to get a wizard to login or to create an account
     /// - Parameter homeserverAddress: The homeserver string entered by the user.
     func loginFlow(for homeserverAddress: String) async throws -> LoginFlowResult {
         pendingData = nil
         
-        let homeserverAddress = HomeserverAddress.sanitize(homeserverAddress)
+        let homeserverAddress = HomeserverAddress.sanitized(homeserverAddress)
         
         guard var homeserverURL = URL(string: homeserverAddress) else {
             throw AuthenticationError.invalidHomeserver

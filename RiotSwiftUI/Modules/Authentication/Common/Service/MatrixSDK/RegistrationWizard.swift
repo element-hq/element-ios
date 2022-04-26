@@ -93,7 +93,7 @@ class RegistrationWizard {
     /// - Parameter response: The response from ReCaptcha
     func performReCaptcha(response: String) async throws -> RegistrationResult {
         guard let session = pendingData.currentSession else {
-            throw AuthenticationError.createAccountNotCalled
+            throw RegistrationError.createAccountNotCalled
         }
         
         let parameters = RegistrationParameters(auth: AuthenticationParameters.captchaParameters(session: session, captchaResponse: response))
@@ -103,7 +103,7 @@ class RegistrationWizard {
     /// Perform the "m.login.terms" stage.
     func acceptTerms() async throws -> RegistrationResult {
         guard let session = pendingData.currentSession else {
-            throw AuthenticationError.createAccountNotCalled
+            throw RegistrationError.createAccountNotCalled
         }
         
         let parameters = RegistrationParameters(auth: AuthenticationParameters(type: kMXLoginFlowTypeTerms, session: session))
@@ -113,7 +113,7 @@ class RegistrationWizard {
     /// Perform the "m.login.dummy" stage.
     func dummy() async throws -> RegistrationResult {
         guard let session = pendingData.currentSession else {
-            throw AuthenticationError.createAccountNotCalled
+            throw RegistrationError.createAccountNotCalled
         }
         
         let parameters = RegistrationParameters(auth: AuthenticationParameters(type: kMXLoginFlowTypeDummy, session: session))
@@ -132,7 +132,7 @@ class RegistrationWizard {
     /// Ask the homeserver to send again the current threePID (email or msisdn).
     func sendAgainThreePID() async throws -> RegistrationResult {
         guard let threePID = pendingData.currentThreePIDData?.threePID else {
-            throw AuthenticationError.createAccountNotCalled
+            throw RegistrationError.createAccountNotCalled
         }
         return try await sendThreePID(threePID: threePID)
     }
@@ -147,51 +147,46 @@ class RegistrationWizard {
     /// Once the email is validated, this method will return successfully.
     /// - Parameter delay How long to wait before sending the request.
     func checkIfEmailHasBeenValidated(delay: TimeInterval) async throws -> RegistrationResult {
+        MXLog.failure("The delay on this method is no longer available. Move this to the object handling the polling.")
         guard let parameters = pendingData.currentThreePIDData?.registrationParameters else {
-            throw AuthenticationError.noPendingThreePID
+            throw RegistrationError.noPendingThreePID
         }
 
-        return try await performRegistrationRequest(parameters: parameters, delay: delay)
+        return try await performRegistrationRequest(parameters: parameters)
     }
     
     // MARK: - Private
     
     private func validateThreePid(code: String) async throws -> RegistrationResult {
         guard let threePIDData = pendingData.currentThreePIDData else {
-            throw AuthenticationError.noPendingThreePID
+            throw RegistrationError.noPendingThreePID
         }
         
-        guard let url = threePIDData.registrationResponse.submitURL else {
-            throw AuthenticationError.missingThreePIDURL
+        guard let submitURL = threePIDData.registrationResponse.submitURL else {
+            throw RegistrationError.missingThreePIDURL
         }
         
         
         let validationBody = ThreePIDValidationCodeBody(clientSecret: pendingData.clientSecret,
                                                         sessionID: threePIDData.registrationResponse.sessionID,
                                                         code: code)
-        let validationDictionary = try validationBody.dictionary()
         
         #warning("Seems odd to pass a nil baseURL and then the url as the path, yet this is how MXK3PID works")
         guard let httpClient = MXHTTPClient(baseURL: nil, andOnUnrecognizedCertificateBlock: nil) else {
-            throw AuthenticationError.threePIDClientFailure
+            throw RegistrationError.threePIDClientFailure
         }
-        let responseDictionary = try await httpClient.request(withMethod: "POST", path: url, parameters: validationDictionary)
+        guard try await httpClient.validateThreePIDCode(submitURL: submitURL, validationBody: validationBody) else {
+            throw RegistrationError.threePIDValidationFailure
+        }
         
-        // Response is a json dictionary with a single success parameter
-        if responseDictionary["success"] as? Bool == true {
-            // The entered code is correct
-            // Same than validate email
-            let parameters = threePIDData.registrationParameters
-            return try await performRegistrationRequest(parameters: parameters, delay: 3)
-        } else {
-            // The code is not correct
-            throw AuthenticationError.threePIDValidationFailure
-        }
+        let parameters = threePIDData.registrationParameters
+        MXLog.failure("This method used to add a 3-second delay to the request. This should be moved to the caller of `handleValidateThreePID`.")
+        return try await performRegistrationRequest(parameters: parameters)
     }
     
     private func sendThreePID(threePID: RegisterThreePID) async throws -> RegistrationResult {
         guard let session = pendingData.currentSession else {
-            throw AuthenticationError.createAccountNotCalled
+            throw RegistrationError.createAccountNotCalled
         }
         
         let response = try await client.requestTokenDuringRegistration(for: threePID,
@@ -217,17 +212,9 @@ class RegistrationWizard {
         return try await performRegistrationRequest(parameters: parameters)
     }
     
-    private func performRegistrationRequest(parameters: RegistrationParameters,
-                                            delay: TimeInterval = 0) async throws -> RegistrationResult {
-        try await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
-        
-        let jsonData = try JSONEncoder().encode(parameters)
-        guard let dictionary = try JSONSerialization.jsonObject(with: jsonData) as? [String: Any] else {
-            throw MXRestClient.ClientError.decodingError
-        }
-        
+    private func performRegistrationRequest(parameters: RegistrationParameters) async throws -> RegistrationResult {
         do {
-            let response = try await client.register(parameters: dictionary)
+            let response = try await client.register(parameters: parameters)
             let credentials = MXCredentials(loginResponse: response, andDefaultCredentials: client.credentials)
             return .success(sessionCreator.createSession(credentials: credentials, client: client))
         } catch {

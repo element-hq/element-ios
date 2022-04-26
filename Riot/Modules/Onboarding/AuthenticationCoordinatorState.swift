@@ -24,18 +24,25 @@ struct AuthenticationCoordinatorState {
     // var signMode: SignMode = .unknown
     var resetPasswordEmail: String?
     
-    /// The homeserver address as returned by the server.
-    var homeserverAddress: String?
-    /// The homeserver address as input by the user (it can differ to the well-known request).
-    var homeserverAddressFromUser: String?
+    /// Information about the currently selected homeserver.
+    var selectedHomeserver: SelectedHomeserver
     
     /// For SSO session recovery
     var deviceId: String?
     
-    // MARK: Network result
-    var loginMode: LoginMode = .unknown
-    /// Supported types for the login.
-    var loginModeSupportedTypes = [MXLoginFlow]()
     var knownCustomHomeServersUrls = [String]()
     var isForceLoginFallbackEnabled = false
+    
+    struct SelectedHomeserver {
+        /// The homeserver address as returned by the server.
+        var address: String
+        /// The homeserver address as input by the user (it can differ to the well-known request).
+        var addressFromUser: String?
+        
+        /// The preferred login mode for the server
+        var preferredLoginMode: LoginMode = .unknown
+        /// Supported types for the login.
+        var loginModeSupportedTypes = [MXLoginFlow]()
+    }
+    
 }

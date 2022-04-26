@@ -16,22 +16,34 @@
 
 import Foundation
 
-/// Errors that can be thrown from `AuthenticationService`, `RegistrationWizard` and `LoginWizard`.
+/// A value that dictates the authentication flow that will be used.
+enum AuthenticationMode {
+    case login
+    case registration
+}
+
+/// Errors that can be thrown from `AuthenticationService`.
 enum AuthenticationError: String, Error {
-    // MARK: AuthenticationService
     /// A failure to convert a struct into a dictionary.
     case dictionaryError
     case invalidHomeserver
     case loginFlowNotCalled
     case missingRegistrationWizard
     case missingMXRestClient
-    
-    // MARK: RegistrationWizard
+}
+
+/// Errors that can be thrown from `RegistrationWizard`
+enum RegistrationError: String, Error {
     case createAccountNotCalled
     case noPendingThreePID
     case missingThreePIDURL
     case threePIDValidationFailure
     case threePIDClientFailure
+}
+
+/// Errors that can be thrown from `LoginWizard`
+enum LoginError: String, Error {
+    case unimplemented
 }
 
 /// Represents an SSO Identity Provider as provided in a login flow.

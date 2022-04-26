@@ -20,6 +20,19 @@ struct LoginFlowResult {
     let supportedLoginTypes: [MXLoginFlow]
     let ssoIdentityProviders: [SSOIdentityProvider]
     let homeserverAddress: String
+    
+    var loginMode: LoginMode {
+        if supportedLoginTypes.contains(where: { $0.type == kMXLoginFlowTypeSSO }),
+           supportedLoginTypes.contains(where: { $0.type == kMXLoginFlowTypePassword }) {
+            return .ssoAndPassword(ssoIdentityProviders: ssoIdentityProviders)
+        } else if supportedLoginTypes.contains(where: { $0.type == kMXLoginFlowTypeSSO }) {
+            return .sso(ssoIdentityProviders: ssoIdentityProviders)
+        } else if supportedLoginTypes.contains(where: { $0.type == kMXLoginFlowTypePassword }) {
+            return .password
+        } else {
+            return .unsupported
+        }
+    }
 }
 
 enum LoginMode {

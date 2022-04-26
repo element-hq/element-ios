@@ -33,6 +33,7 @@ class AuthenticationPendingData {
     
     var currentSession: String?
     var isRegistrationStarted = false
+    var currentRegistrationResult: RegistrationResult?
     var currentThreePIDData: ThreePIDData?
     
     // MARK: - Setup

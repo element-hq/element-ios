@@ -36,36 +36,9 @@ struct ThreePIDCredentials: Codable {
 }
 
 struct ThreePIDData {
-    let email: String
-    let msisdn: String
-    let country: String
+    let threePID: RegisterThreePID
     let registrationResponse: RegistrationThreePIDTokenResponse
     let registrationParameters: RegistrationParameters
-    
-    var threePID: RegisterThreePID {
-        email.isEmpty ? .msisdn(msisdn: msisdn, countryCode: country) : .email(email)
-    }
-}
-
-extension ThreePIDData {
-    init(threePID: RegisterThreePID,
-         registrationResponse: RegistrationThreePIDTokenResponse,
-         registrationParameters: RegistrationParameters) {
-        switch threePID {
-        case .email(let email):
-            self.init(email: email,
-                      msisdn: "",
-                      country: "",
-                      registrationResponse: registrationResponse,
-                      registrationParameters: registrationParameters)
-        case .msisdn(let msisdn, let countryCode):
-            self.init(email: "",
-                      msisdn: msisdn,
-                      country: countryCode,
-                      registrationResponse: registrationResponse,
-                      registrationParameters: registrationParameters)
-        }
-    }
 }
 
 // TODO: This could potentially become an MXJSONModel?
@@ -110,13 +83,7 @@ struct ThreePIDValidationCodeBody: Codable {
         case code = "token"
     }
     
-    func dictionary() throws -> [AnyHashable: Any] {
-        let jsonData = try JSONEncoder().encode(self)
-        let object = try JSONSerialization.jsonObject(with: jsonData)
-        guard let dictionary = object as? [AnyHashable: Any] else {
-            throw AuthenticationError.dictionaryError
-        }
-        
-        return dictionary
+    func jsonData() throws -> Data {
+        try JSONEncoder().encode(self)
     }
 }
