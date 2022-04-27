@@ -18,6 +18,8 @@ import SwiftUI
 
 struct LiveLocationSharingViewerCoordinatorParameters {
     let session: MXSession
+    let roomId: String
+    let navigationRouter: NavigationRouterType?
 }
 
 final class LiveLocationSharingViewerCoordinator: Coordinator, Presentable {
@@ -27,6 +29,7 @@ final class LiveLocationSharingViewerCoordinator: Coordinator, Presentable {
     // MARK: Private
     
     private let parameters: LiveLocationSharingViewerCoordinatorParameters
+    private let navigationRouter: NavigationRouterType
     private let liveLocationSharingViewerHostingController: UIViewController
     private var liveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelProtocol
     
@@ -36,6 +39,7 @@ final class LiveLocationSharingViewerCoordinator: Coordinator, Presentable {
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
+    
     var completion: (() -> Void)?
     
     // MARK: - Setup
@@ -44,13 +48,15 @@ final class LiveLocationSharingViewerCoordinator: Coordinator, Presentable {
     init(parameters: LiveLocationSharingViewerCoordinatorParameters) {
         self.parameters = parameters
         
-        let service = LiveLocationSharingViewerService(session: parameters.session)
+        let service = LiveLocationSharingViewerService(session: parameters.session, roomId: parameters.roomId)
         
         let viewModel = LiveLocationSharingViewerViewModel(mapStyleURL: BuildSettings.tileServerMapStyleURL, service: service)
         let view = LiveLocationSharingViewer(viewModel: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
         liveLocationSharingViewerViewModel = viewModel
         liveLocationSharingViewerHostingController = VectorHostingController(rootView: view)
+        
+        navigationRouter = parameters.navigationRouter ?? NavigationRouter()
     }
     
     // MARK: - Public
@@ -68,10 +74,19 @@ final class LiveLocationSharingViewerCoordinator: Coordinator, Presentable {
                 self.stopLocationSharing()
             }
         }
+        
+        let viewController: UIViewController = self.liveLocationSharingViewerHostingController
+        
+        if navigationRouter.modules.count > 1 {
+            navigationRouter.push(viewController, animated: true, popCompletion: nil)
+        } else {
+            navigationRouter.setRootModule(viewController)
+        }
     }
     
     func toPresentable() -> UIViewController {
-        return self.liveLocationSharingViewerHostingController
+        return navigationRouter.toPresentable()
+            .vc_setModalFullScreen(true) // Set fullscreen as DSBottomSheet is not working with modal pan gesture recognizer
     }
     
     func presentLocationActivityController(with coordinate: CLLocationCoordinate2D) {
