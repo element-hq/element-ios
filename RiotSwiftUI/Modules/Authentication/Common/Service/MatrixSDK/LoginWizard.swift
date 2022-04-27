@@ -17,5 +17,15 @@
 import Foundation
 
 class LoginWizard {
+    struct State {
+        /// For SSO session recovery
+        var deviceId: String?
+        var resetPasswordEmail: String?
+        // var resetPasswordData: ResetPasswordData?
+        
+        var clientSecret = UUID().uuidString
+        var sendAttempt: UInt = 0
+    }
+    
     // TODO
 }

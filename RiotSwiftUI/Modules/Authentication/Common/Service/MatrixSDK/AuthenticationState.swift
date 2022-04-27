@@ -18,22 +18,23 @@ import Foundation
 import MatrixSDK
 
 @available(iOS 14.0, *)
-struct AuthenticationCoordinatorState {
-    // MARK: User choices
+struct AuthenticationState {
     // var serverType: ServerType = .unknown
-    // var signMode: SignMode = .unknown
-    var resetPasswordEmail: String?
+    var authenticationMode: AuthenticationMode
     
     /// Information about the currently selected homeserver.
-    var selectedHomeserver: SelectedHomeserver
-    
-    /// For SSO session recovery
-    var deviceId: String?
-    
-    var knownCustomHomeServersUrls = [String]()
+    var homeserver: Homeserver
     var isForceLoginFallbackEnabled = false
     
-    struct SelectedHomeserver {
+    /// The registration flow response returned when calling `startFlow` for `.registration`.
+    var initialRegistrationFlow: RegistrationResult?
+    
+    init(authenticationMode: AuthenticationMode, homeserverAddress: String) {
+        self.authenticationMode = authenticationMode
+        self.homeserver = Homeserver(address: homeserverAddress)
+    }
+    
+    struct Homeserver {
         /// The homeserver address as returned by the server.
         var address: String
         /// The homeserver address as input by the user (it can differ to the well-known request).
@@ -44,5 +45,4 @@ struct AuthenticationCoordinatorState {
         /// Supported types for the login.
         var loginModeSupportedTypes = [MXLoginFlow]()
     }
-    
 }

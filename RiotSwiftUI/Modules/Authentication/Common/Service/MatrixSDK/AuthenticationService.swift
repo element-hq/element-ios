@@ -33,45 +33,29 @@ class AuthenticationService: NSObject {
     
     /// The rest client used to make authentication requests.
     private var client: MXRestClient
-    /// Pending data collected as the authentication flow progresses.
-    private var pendingData: AuthenticationPendingData?
-    /// The current registration wizard or `nil` if `registrationWizard()` hasn't been called.
-    private var currentRegistrationWizard: RegistrationWizard?
-    /// The current login wizard or `nil` if `loginWizard()` hasn't been called.
-    private var currentLoginWizard: LoginWizard?
     /// The object used to create a new `MXSession` when authentication has completed.
     private var sessionCreator = SessionCreator()
     
     // MARK: Public
     
-    /// The address of the homeserver that the service is using.
-    var homeserverAddress: String {
-        state.selectedHomeserver.address
-    }
-    
-    
-    // MARK: Android OnboardingViewModel
     /// The current state of the authentication flow.
-    private var state: AuthenticationCoordinatorState
-    /// The currently executing async task.
-    private var currentTask: Task<Void, Error>? {
-        willSet {
-            currentTask?.cancel()
-        }
-    }
-    
+    private(set) var state: AuthenticationState
+    /// The current login wizard or `nil` if `startFlow` hasn't been called.
+    private(set) var loginWizard: LoginWizard?
+    /// The current registration wizard or `nil` if `startFlow` hasn't been called for `.registration`.
+    private(set) var registrationWizard: RegistrationWizard?
     
     // MARK: - Setup
     
     override init() {
         if let homeserverURL = URL(string: RiotSettings.shared.homeserverUrlString) {
             // Use the same homeserver that was last used.
-            state = AuthenticationCoordinatorState(selectedHomeserver: .init(address: RiotSettings.shared.homeserverUrlString))
+            state = AuthenticationState(authenticationMode: .login, homeserverAddress: RiotSettings.shared.homeserverUrlString)
             client = MXRestClient(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
             
         } else if let homeserverURL = URL(string: BuildSettings.serverConfigDefaultHomeserverUrlString) {
             // Fall back to the default homeserver if the stored one is invalid.
-            state = AuthenticationCoordinatorState(selectedHomeserver: .init(address: BuildSettings.serverConfigDefaultHomeserverUrlString))
+            state = AuthenticationState(authenticationMode: .login, homeserverAddress: BuildSettings.serverConfigDefaultHomeserverUrlString)
             client = MXRestClient(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
             
         } else {
@@ -85,32 +69,27 @@ class AuthenticationService: NSObject {
     // MARK: - Android OnboardingViewModel
     
     func startFlow(for homeserverAddress: String, as authenticationMode: AuthenticationMode) async throws {
-        currentTask = Task {
-            cancelPendingLoginOrRegistration()
-            
-            let loginFlows = try await loginFlow(for: homeserverAddress)
-            
-            var registrationFlow: RegistrationResult?
-            if authenticationMode == .registration {
-                let wizard = try registrationWizard()
-                registrationFlow = try await wizard.registrationFlow()
-            }
-            
-            guard !Task.isCancelled else { return }
-            
-            // Valid Homeserver, add it to the history.
-            // Note: we add what the user has input, as the data can contain a different value.
-            RiotSettings.shared.homeserverUrlString = homeserverAddress
-            
-            state.selectedHomeserver = .init(address: loginFlows.homeserverAddress,
-                                             addressFromUser: homeserverAddress,
-                                             preferredLoginMode: loginFlows.loginMode,
-                                             loginModeSupportedTypes: loginFlows.supportedLoginTypes)
-            
-            pendingData?.currentRegistrationResult = registrationFlow
-        }
+        reset()
         
-        try await currentTask?.value
+        let loginFlows = try await loginFlow(for: homeserverAddress)
+        
+        // Valid Homeserver, add it to the history.
+        // Note: we add what the user has input, as the data can contain a different value.
+        RiotSettings.shared.homeserverUrlString = homeserverAddress
+        
+        state.homeserver = .init(address: loginFlows.homeserverAddress,
+                                         addressFromUser: homeserverAddress,
+                                         preferredLoginMode: loginFlows.loginMode,
+                                         loginModeSupportedTypes: loginFlows.supportedLoginTypes)
+        
+        let loginWizard = LoginWizard()
+        self.loginWizard = loginWizard
+        
+        if authenticationMode == .registration {
+            let registrationWizard = RegistrationWizard(client: client)
+            state.initialRegistrationFlow = try await registrationWizard.registrationFlow()
+            self.registrationWizard = registrationWizard
+        }
     }
     
     // MARK: - Public
@@ -142,16 +121,14 @@ class AuthenticationService: NSObject {
     /// Request the supported login flows for this homeserver.
     /// This is the first method to call to be able to get a wizard to login or to create an account
     /// - Parameter homeserverAddress: The homeserver string entered by the user.
-    func loginFlow(for homeserverAddress: String) async throws -> LoginFlowResult {
-        pendingData = nil
-        
+    private func loginFlow(for homeserverAddress: String) async throws -> LoginFlowResult {
         let homeserverAddress = HomeserverAddress.sanitized(homeserverAddress)
         
         guard var homeserverURL = URL(string: homeserverAddress) else {
             throw AuthenticationError.invalidHomeserver
         }
         
-        let pendingData = AuthenticationPendingData(homeserverAddress: homeserverAddress)
+        let state = AuthenticationState(authenticationMode: .login, homeserverAddress: homeserverAddress)
         
         if let wellKnown = try? await wellKnown(for: homeserverURL),
            let baseURL = URL(string: wellKnown.homeServer.baseUrl) {
@@ -164,7 +141,7 @@ class AuthenticationService: NSObject {
         let loginFlow = try await getLoginFlowResult(client: client)
         
         self.client = client
-        self.pendingData = pendingData
+        self.state = state
         
         return loginFlow
     }
@@ -172,16 +149,14 @@ class AuthenticationService: NSObject {
     /// Request the supported login flows for the corresponding session.
     /// This method is used to get the flows for a server after a soft-logout.
     /// - Parameter session: The MXSession where a soft-logout has occurred.
-    func loginFlow(for session: MXSession) async throws -> LoginFlowResult {
-        pendingData = nil
-        
+    private func loginFlow(for session: MXSession) async throws -> LoginFlowResult {
         guard let client = session.matrixRestClient else { throw AuthenticationError.missingMXRestClient }
-        let pendingData = AuthenticationPendingData(homeserverAddress: client.homeserver)
+        let state = AuthenticationState(authenticationMode: .login, homeserverAddress: client.homeserver)
         
         let loginFlow = try await getLoginFlowResult(client: session.matrixRestClient)
         
         self.client = client
-        self.pendingData = pendingData
+        self.state = state
         
         return loginFlow
     }
@@ -201,66 +176,18 @@ class AuthenticationService: NSObject {
         }
     }
     
-    /// Return a LoginWizard, to login to the homeserver. The login flow has to be retrieved first.
-    ///
-    /// See ``LoginWizard`` for more details
-    func loginWizard() throws -> LoginWizard {
-        if let currentLoginWizard = currentLoginWizard {
-            return currentLoginWizard
-        }
-        
-        guard let pendingData = pendingData else {
-            throw AuthenticationError.loginFlowNotCalled
-        }
-        
-        let wizard = LoginWizard()
-        return wizard
-    }
-    
-    /// Return a RegistrationWizard, to create a matrix account on the homeserver. The login flow has to be retrieved first.
-    ///
-    /// See ``RegistrationWizard`` for more details.
-    func registrationWizard() throws -> RegistrationWizard {
-        if let currentRegistrationWizard = currentRegistrationWizard {
-            return currentRegistrationWizard
-        }
-        
-        guard let pendingData = pendingData else {
-            throw AuthenticationError.loginFlowNotCalled
-        }
-
-        
-        let wizard = RegistrationWizard(client: client, pendingData: pendingData)
-        currentRegistrationWizard = wizard
-        return wizard
-    }
-    
     /// True when login and password has been sent with success to the homeserver
     var isRegistrationStarted: Bool {
-        currentRegistrationWizard?.isRegistrationStarted ?? false
+        registrationWizard?.isRegistrationStarted ?? false
     }
     
-    /// Cancel pending login or pending registration
-    func cancelPendingLoginOrRegistration() {
-        currentTask?.cancel()
-        
-        currentLoginWizard = nil
-        currentRegistrationWizard = nil
-
-        // Keep only the homesever config
-        guard let pendingData = pendingData else {
-            // Should not happen
-            return
-        }
-
-        self.pendingData = AuthenticationPendingData(homeserverAddress: pendingData.homeserverAddress)
-    }
-    
-    /// Reset all pending settings, including current HomeServerConnectionConfig
+    /// Reset the service to a fresh state.
     func reset() {
-        pendingData = nil
-        currentRegistrationWizard = nil
-        currentLoginWizard = nil
+        loginWizard = nil
+        registrationWizard = nil
+        
+        // The previously used homeserver is re-used as `startFlow` will be called again a replace it anyway.
+        self.state = AuthenticationState(authenticationMode: .login, homeserverAddress: state.homeserver.address)
     }
 
     /// Create a session after a SSO successful login
@@ -291,7 +218,7 @@ class AuthenticationService: NSObject {
     
     // MARK: - Private
     
-    private func getLoginFlowResult(client: MXRestClient/*, versions: Versions*/) async throws -> LoginFlowResult {
+    private func getLoginFlowResult(client: MXRestClient) async throws -> LoginFlowResult {
         // Get the login flow
         let loginFlowResponse = try await client.getLoginSession()
         

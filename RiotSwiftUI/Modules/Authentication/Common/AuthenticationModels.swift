@@ -35,7 +35,7 @@ enum AuthenticationError: String, Error {
 /// Errors that can be thrown from `RegistrationWizard`
 enum RegistrationError: String, Error {
     case createAccountNotCalled
-    case noPendingThreePID
+    case missingThreePIDData
     case missingThreePIDURL
     case threePIDValidationFailure
     case threePIDClientFailure

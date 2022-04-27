@@ -27,33 +27,44 @@ import Foundation
 /// More documentation can be found in the file https://github.com/vector-im/element-android/blob/main/docs/signup.md
 /// and https://matrix.org/docs/spec/client_server/latest#account-registration-and-management
 class RegistrationWizard {
+    struct State {
+        var currentSession: String?
+        var isRegistrationStarted = false
+        var currentThreePIDData: ThreePIDData?
+        
+        var clientSecret = UUID().uuidString
+        var sendAttempt: UInt = 0
+    }
+    
     let client: MXRestClient
     let sessionCreator: SessionCreator
-    let pendingData: AuthenticationPendingData
+    
+    private(set) var state: State
     
     /// This is the current ThreePID, waiting for validation. The SDK will store it in database, so it can be
     /// restored even if the app has been killed during the registration
     var currentThreePID: String? {
-        guard let threePid = pendingData.currentThreePIDData?.threePID else { return nil }
+        guard let threePid = state.currentThreePIDData?.threePID else { return nil }
         
         switch threePid {
         case .email(let string):
             return string
         case .msisdn(let msisdn, _):
-            return pendingData.currentThreePIDData?.registrationResponse.formattedMSISDN ?? msisdn
+            return state.currentThreePIDData?.registrationResponse.formattedMSISDN ?? msisdn
         }
     }
 
     /// True when login and password have been sent with success to the homeserver,
     /// i.e. `createAccount` has been called successfully.
     var isRegistrationStarted: Bool {
-        pendingData.isRegistrationStarted
+        state.isRegistrationStarted
     }
     
-    init(client: MXRestClient, sessionCreator: SessionCreator = SessionCreator(), pendingData: AuthenticationPendingData) {
+    init(client: MXRestClient, sessionCreator: SessionCreator = SessionCreator()) {
         self.client = client
         self.sessionCreator = sessionCreator
-        self.pendingData = pendingData
+        
+        self.state = State()
     }
     
     /// Call this method to get the possible registration flow of the current homeserver.
@@ -84,7 +95,7 @@ class RegistrationWizard {
                        initialDeviceDisplayName: String?) async throws -> RegistrationResult {
         let parameters = RegistrationParameters(username: username, password: password, initialDeviceDisplayName: initialDeviceDisplayName)
         let result = try await performRegistrationRequest(parameters: parameters)
-        pendingData.isRegistrationStarted = true
+        state.isRegistrationStarted = true
         return result
     }
 
@@ -92,7 +103,7 @@ class RegistrationWizard {
     ///
     /// - Parameter response: The response from ReCaptcha
     func performReCaptcha(response: String) async throws -> RegistrationResult {
-        guard let session = pendingData.currentSession else {
+        guard let session = state.currentSession else {
             throw RegistrationError.createAccountNotCalled
         }
         
@@ -102,7 +113,7 @@ class RegistrationWizard {
 
     /// Perform the "m.login.terms" stage.
     func acceptTerms() async throws -> RegistrationResult {
-        guard let session = pendingData.currentSession else {
+        guard let session = state.currentSession else {
             throw RegistrationError.createAccountNotCalled
         }
         
@@ -112,7 +123,7 @@ class RegistrationWizard {
 
     /// Perform the "m.login.dummy" stage.
     func dummy() async throws -> RegistrationResult {
-        guard let session = pendingData.currentSession else {
+        guard let session = state.currentSession else {
             throw RegistrationError.createAccountNotCalled
         }
         
@@ -125,13 +136,13 @@ class RegistrationWizard {
     /// - Parameter threePID the threePID to add to the account. If this is an email, the homeserver will send an email
     /// to validate it. For a msisdn a SMS will be sent.
     func addThreePID(threePID: RegisterThreePID) async throws -> RegistrationResult {
-        pendingData.currentThreePIDData = nil
+        state.currentThreePIDData = nil
         return try await sendThreePID(threePID: threePID)
     }
 
     /// Ask the homeserver to send again the current threePID (email or msisdn).
     func sendAgainThreePID() async throws -> RegistrationResult {
-        guard let threePID = pendingData.currentThreePIDData?.threePID else {
+        guard let threePID = state.currentThreePIDData?.threePID else {
             throw RegistrationError.createAccountNotCalled
         }
         return try await sendThreePID(threePID: threePID)
@@ -148,8 +159,8 @@ class RegistrationWizard {
     /// - Parameter delay How long to wait before sending the request.
     func checkIfEmailHasBeenValidated(delay: TimeInterval) async throws -> RegistrationResult {
         MXLog.failure("The delay on this method is no longer available. Move this to the object handling the polling.")
-        guard let parameters = pendingData.currentThreePIDData?.registrationParameters else {
-            throw RegistrationError.noPendingThreePID
+        guard let parameters = state.currentThreePIDData?.registrationParameters else {
+            throw RegistrationError.missingThreePIDData
         }
 
         return try await performRegistrationRequest(parameters: parameters)
@@ -158,8 +169,8 @@ class RegistrationWizard {
     // MARK: - Private
     
     private func validateThreePid(code: String) async throws -> RegistrationResult {
-        guard let threePIDData = pendingData.currentThreePIDData else {
-            throw RegistrationError.noPendingThreePID
+        guard let threePIDData = state.currentThreePIDData else {
+            throw RegistrationError.missingThreePIDData
         }
         
         guard let submitURL = threePIDData.registrationResponse.submitURL else {
@@ -167,7 +178,7 @@ class RegistrationWizard {
         }
         
         
-        let validationBody = ThreePIDValidationCodeBody(clientSecret: pendingData.clientSecret,
+        let validationBody = ThreePIDValidationCodeBody(clientSecret: state.clientSecret,
                                                         sessionID: threePIDData.registrationResponse.sessionID,
                                                         code: code)
         
@@ -185,17 +196,17 @@ class RegistrationWizard {
     }
     
     private func sendThreePID(threePID: RegisterThreePID) async throws -> RegistrationResult {
-        guard let session = pendingData.currentSession else {
+        guard let session = state.currentSession else {
             throw RegistrationError.createAccountNotCalled
         }
         
         let response = try await client.requestTokenDuringRegistration(for: threePID,
-                                                                       clientSecret: pendingData.clientSecret,
-                                                                       sendAttempt: pendingData.sendAttempt)
+                                                                       clientSecret: state.clientSecret,
+                                                                       sendAttempt: state.sendAttempt)
         
-        pendingData.sendAttempt += 1
+        state.sendAttempt += 1
         
-        let threePIDCredentials = ThreePIDCredentials(clientSecret: pendingData.clientSecret, sessionID: response.sessionID)
+        let threePIDCredentials = ThreePIDCredentials(clientSecret: state.clientSecret, sessionID: response.sessionID)
         let authenticationParameters: AuthenticationParameters
         switch threePID {
         case .email:
@@ -206,7 +217,7 @@ class RegistrationWizard {
         
         let parameters = RegistrationParameters(auth: authenticationParameters)
         
-        pendingData.currentThreePIDData = ThreePIDData(threePID: threePID, registrationResponse: response, registrationParameters: parameters)
+        state.currentThreePIDData = ThreePIDData(threePID: threePID, registrationResponse: response, registrationParameters: parameters)
 
         // Send the session id for the first time
         return try await performRegistrationRequest(parameters: parameters)
@@ -225,7 +236,7 @@ class RegistrationWizard {
                 let authenticationSession = MXAuthenticationSession(fromJSON: jsonResponse)
             else { throw error }
             
-            pendingData.currentSession = authenticationSession.session
+            state.currentSession = authenticationSession.session
             return .flowResponse(authenticationSession.flowResult)
         }
     }
