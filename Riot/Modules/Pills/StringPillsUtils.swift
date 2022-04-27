@@ -24,14 +24,14 @@ class StringPillsUtils: NSObject {
         // TODO: replace this with a solution handling any kind of custom permalinks.
         static let matrixToURL: String = "https://matrix.to/#/"
     }
-    
+
     // MARK: - Internal Methods
     static func insertPills(in attributedString: NSAttributedString,
                             withRoomState roomState: MXRoomState) -> NSAttributedString {
         // TODO: Improve algorithm & cleanup this method
         let newAttr = NSMutableAttributedString(attributedString: attributedString)
         var lastIndex: Int = 0
-        
+
         while lastIndex < newAttr.length {
             var url: NSURL?
             let linkRange = newAttr.rangeOfLink(at: UInt(lastIndex), url: &url)

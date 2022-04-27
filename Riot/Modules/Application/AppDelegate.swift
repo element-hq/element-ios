@@ -61,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Register pills provider.
         if #available(iOS 15.0, *) {
-            NSTextAttachment.registerViewProviderClass(PillTextAttachmentProvider.self, forFileType: "im.vector.app.pills")
+            NSTextAttachment.registerViewProviderClass(PillAttachmentViewProvider.self, forFileType: "im.vector.app.pills")
         }
         
         // Create AppCoordinator

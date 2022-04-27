@@ -22,13 +22,10 @@ import Foundation
     
     convenience init(withRoomMember roomMember: MXRoomMember) {
         self.init(data: nil, ofType: "im.vector.app.pills")
-        
         let image = PillSnapshoter.snapshotView(forRoomMember: roomMember)
-        
         self.roomMember = roomMember
-        
         // FIXME: handle vertical offset better
-        self.bounds = CGRect(x: 0.0, y: -6.0, width: image.frame.width, height: image.frame.height)
+        self.bounds = CGRect(x: 0.0, y: -6.5, width: image.frame.width, height: image.frame.height)
     }
 }
 
@@ -52,7 +49,7 @@ import Foundation
         return mutable
     }
     
-    static func snapshotView(forRoomMember roomMember: MXRoomMember) -> UIView {
+    static func snapshotView(forRoomMember roomMember: MXRoomMember) -> PillAttachmentView {
         let label = UILabel(frame: .zero)
         label.text = roomMember.displayname
         label.font = ThemeService.shared().theme.fonts.body.withSize(ThemeService.shared().theme.fonts.body.pointSize * 0.7)
@@ -85,39 +82,17 @@ import Foundation
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = Constants.avatarSideLength / 2.0
         view.addSubview(imageView)
-
         view.addSubview(label)
-        
+
         view.backgroundColor = ThemeService.shared().theme.secondaryCircleButtonBackgroundColor
         view.layer.cornerRadius = Constants.pillBackgroundHeight / 2.0
-        
-        let pillView = UIView(frame: CGRect(x: 0,
-                                            y: 0,
-                                            width: labelSize.width + Constants.totalWidthWithoutLabel,
-                                            height: Constants.pillHeight))
+
+        let pillView = PillAttachmentView(frame: CGRect(x: 0,
+                                              y: 0,
+                                              width: labelSize.width + Constants.totalWidthWithoutLabel,
+                                              height: Constants.pillHeight))
         pillView.addSubview(view)
-        
+
         return pillView
-    }
-}
-
-
-@available(iOS 15.0, *)
-@objc class PillTextAttachmentProvider: NSTextAttachmentViewProvider {
-    override func loadView() {
-        super.loadView()
-        
-        guard let textAttachment = self.textAttachment as? PillTextAttachment else {
-            MXLog.debug("[PillTextAttachmentProvider]: attachment is not of correct class")
-            return
-        }
-        
-        guard let roomMember = textAttachment.roomMember else {
-            MXLog.debug("[PillTextAttachmentProvider]: attachment misses room member")
-            return
-        }
-        
-        view = PillSnapshoter.snapshotView(forRoomMember: roomMember)
-        view?.alpha = textAttachment.alpha
     }
 }
