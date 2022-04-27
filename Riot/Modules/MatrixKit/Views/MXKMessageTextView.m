@@ -51,7 +51,7 @@
         return NO;
     }
     
-    return [self isThereALinkNearPoint:point];
+    return [self isThereALinkNearLocation:point];
 }
 
 @end

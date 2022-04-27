@@ -16,72 +16,108 @@
 
 import Foundation
 
-// TODO: replace this with directly creating NSAttributedString with both link and attachment (removes weird interaction between two objects here)
 @objcMembers class PillTextAttachment: NSTextAttachment {
-    convenience init(withSession session: MXSession, url: NSURL, andRoomMember roomMember: MXRoomMember) {
-        self.init()
+    var roomMember: MXRoomMember?
+    var alpha: CGFloat = 1.0
+    
+    convenience init(withRoomMember roomMember: MXRoomMember) {
+        self.init(data: nil, ofType: "im.vector.app.pills")
         
-        let image = PillSnapshoter.snapshot(withSession: session, andRoomMember: roomMember)
-        self.image = image
+        let image = PillSnapshoter.snapshotView(forRoomMember: roomMember)
+        
+        self.roomMember = roomMember
+        
         // FIXME: handle vertical offset better
-        self.bounds = CGRect(x: 0.0, y: -5.0, width: image.size.width * 0.3, height: image.size.height * 0.3)
+        self.bounds = CGRect(x: 0.0, y: -6.0, width: image.frame.width, height: image.frame.height)
     }
 }
 
 @objcMembers class PillSnapshoter: NSObject {
-    static func mentionPill(withSession session: MXSession, url: NSURL, andRoomMember roomMember: MXRoomMember) -> NSAttributedString {
-        let attachment = PillTextAttachment(withSession: session, url: url, andRoomMember: roomMember)
+    private enum Constants {
+        static let commonVerticalMargin: CGFloat = 1.0
+        static let commonHorizontalMargin: CGFloat = 4.0
+        static let avatarSideLength: CGFloat = 16.0
+        static let pillBackgroundHeight: CGFloat = avatarSideLength + 2 * commonVerticalMargin
+        static let displaynameLabelLeading: CGFloat = avatarSideLength + 2 * commonHorizontalMargin
+        static let pillHeight: CGFloat = pillBackgroundHeight + 2 * commonVerticalMargin
+        static let displaynameLabelTrailing: CGFloat = 1 * commonHorizontalMargin
+        static let totalWidthWithoutLabel: CGFloat = displaynameLabelLeading + displaynameLabelTrailing
+    }
+    
+    static func mentionPill(withRoomMember roomMember: MXRoomMember, andUrl url: URL) -> NSAttributedString {
+        let attachment = PillTextAttachment(withRoomMember: roomMember)
         let string = NSAttributedString(attachment: attachment)
         let mutable = NSMutableAttributedString(attributedString: string)
         mutable.addAttribute(.link, value: url, range: .init(location: 0, length: mutable.length))
         return mutable
     }
     
-    static func snapshot(withSession session: MXSession, andRoomMember roomMember: MXRoomMember) -> UIImage {
-        let view = snapshotView(withSession: session, andRoomMember: roomMember)
-        let rect: CGRect = view.frame
-
-        UIGraphicsBeginImageContext(rect.size)
-        let context: CGContext = UIGraphicsGetCurrentContext()!
-        view.layer.render(in: context)
-        let img = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return img!
-    }
-    
-    // TODO: Improve how image scale is handled
-    // TODO: Implement a solution with image cache to increase performance
-    private static func snapshotView(withSession session: MXSession, andRoomMember roomMember: MXRoomMember) -> UIView {
+    static func snapshotView(forRoomMember roomMember: MXRoomMember) -> UIView {
         let label = UILabel(frame: .zero)
         label.text = roomMember.displayname
-        label.font = ThemeService.shared().theme.fonts.body.withSize(ThemeService.shared().theme.fonts.body.pointSize * 2.0)
+        label.font = ThemeService.shared().theme.fonts.body.withSize(ThemeService.shared().theme.fonts.body.pointSize * 0.7)
         label.textColor = ThemeService.shared().theme.textPrimaryColor
         let labelSize = label.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude,
                                                   height: CGFloat.greatestFiniteMagnitude))
-        label.frame = CGRect(x: 52 + 16, y: 0, width: labelSize.width, height: 60)
+        label.frame = CGRect(x: Constants.displaynameLabelLeading,
+                             y: 0,
+                             width: labelSize.width,
+                             height: Constants.pillBackgroundHeight)
         
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: labelSize.width + 16 + 52 + 16, height: 60))
+        let view = UIView(frame: CGRect(x: 0,
+                                        y: Constants.commonVerticalMargin,
+                                        width: labelSize.width + Constants.totalWidthWithoutLabel,
+                                        height: Constants.pillBackgroundHeight))
         
-        // FIXME: handle avatar not being in cache at snapshot time
-        let imageView = MXKImageView(frame: CGRect(x: 8, y: 4, width: 60, height: 60))
+        let imageView = MXKImageView(frame: CGRect(x: Constants.commonHorizontalMargin,
+                                                   y: Constants.commonVerticalMargin,
+                                                   width: Constants.avatarSideLength,
+                                                   height: Constants.avatarSideLength))
         imageView.setImageURI(roomMember.avatarUrl,
                               withType: nil,
                               andImageOrientation: .up,
                               toFitViewSize: imageView.frame.size,
                               with: MXThumbnailingMethodCrop,
                               previewImage: Asset.Images.userIcon.image,
-                              mediaManager: session.mediaManager)
+                              // Pills rely only on cached images since `MXKImageView` image loading
+                              // is not handled properly for a `NSTextAttachment` view.
+                              mediaManager: nil)
         imageView.clipsToBounds = true
-        imageView.frame = CGRect(x: 8, y: 4, width: 52, height: 52)
-        imageView.layer.cornerRadius = 26.0
+        imageView.layer.cornerRadius = Constants.avatarSideLength / 2.0
         view.addSubview(imageView)
 
         view.addSubview(label)
         
         view.backgroundColor = ThemeService.shared().theme.secondaryCircleButtonBackgroundColor
-        view.layer.cornerRadius = 30
+        view.layer.cornerRadius = Constants.pillBackgroundHeight / 2.0
         
-        return view
+        let pillView = UIView(frame: CGRect(x: 0,
+                                            y: 0,
+                                            width: labelSize.width + Constants.totalWidthWithoutLabel,
+                                            height: Constants.pillHeight))
+        pillView.addSubview(view)
+        
+        return pillView
+    }
+}
+
+
+@available(iOS 15.0, *)
+@objc class PillTextAttachmentProvider: NSTextAttachmentViewProvider {
+    override func loadView() {
+        super.loadView()
+        
+        guard let textAttachment = self.textAttachment as? PillTextAttachment else {
+            MXLog.debug("[PillTextAttachmentProvider]: attachment is not of correct class")
+            return
+        }
+        
+        guard let roomMember = textAttachment.roomMember else {
+            MXLog.debug("[PillTextAttachmentProvider]: attachment misses room member")
+            return
+        }
+        
+        view = PillSnapshoter.snapshotView(forRoomMember: roomMember)
+        view?.alpha = textAttachment.alpha
     }
 }

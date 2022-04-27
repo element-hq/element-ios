@@ -16,6 +16,7 @@
 
 import Foundation
 
+@available (iOS 15.0, *)
 @objcMembers
 class StringPillsUtils: NSObject {
     // MARK: - Private Constants
@@ -26,8 +27,7 @@ class StringPillsUtils: NSObject {
     
     // MARK: - Internal Methods
     static func insertPills(in attributedString: NSAttributedString,
-                            withSession session: MXSession,
-                            andRoomState roomState: MXRoomState) -> NSAttributedString {
+                            withRoomState roomState: MXRoomState) -> NSAttributedString {
         // TODO: Improve algorithm & cleanup this method
         let newAttr = NSMutableAttributedString(attributedString: attributedString)
         var lastIndex: Int = 0
@@ -53,7 +53,7 @@ class StringPillsUtils: NSObject {
                     lastIndex += linkRange.length
                     continue
                 }
-                let attachmentString = PillSnapshoter.mentionPill(withSession: session, url: url, andRoomMember: roomMember)
+                let attachmentString = PillSnapshoter.mentionPill(withRoomMember: roomMember, andUrl: url as URL)
                 newAttr.replaceCharacters(in: linkRange, with: attachmentString)
                 lastIndex += attachmentString.length
             } else {

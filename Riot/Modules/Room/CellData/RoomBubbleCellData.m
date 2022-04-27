@@ -433,6 +433,12 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             {
                 // Apply alpha to blur this component
                 componentString = [Tools setTextColorAlpha:.2 inAttributedString:componentString];
+                [Tools setPillAlpha:.2 inAttributedString:componentString];
+            }
+            else
+            {
+                // PillTextAttachment are not created again every time, we have to set alpha back to standard if needed.
+                [Tools setPillAlpha:1.f inAttributedString:componentString];
             }
             
             // Check whether the timestamp is displayed for this component, and check whether a vertical whitespace is required
@@ -472,6 +478,12 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             {
                 // Apply alpha to blur this component
                 componentString = [Tools setTextColorAlpha:.2 inAttributedString:componentString];
+                [Tools setPillAlpha:.2 inAttributedString:componentString];
+            }
+            else
+            {
+                // PillTextAttachment are not created again every time, we have to set alpha back to standard if needed.
+                [Tools setPillAlpha:1.f inAttributedString:componentString];
             }
             
             // Check whether the timestamp is displayed
