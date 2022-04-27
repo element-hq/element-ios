@@ -102,9 +102,9 @@ class AuthenticationService: NSObject {
         RiotSettings.shared.homeserverUrlString = homeserverAddress
         
         state.homeserver = .init(address: loginFlows.homeserverAddress,
-                                         addressFromUser: homeserverAddress,
-                                         preferredLoginMode: loginFlows.loginMode,
-                                         loginModeSupportedTypes: loginFlows.supportedLoginTypes)
+                                 addressFromUser: homeserverAddress,
+                                 preferredLoginMode: loginFlows.loginMode,
+                                 loginModeSupportedTypes: loginFlows.supportedLoginTypes)
         
         let loginWizard = LoginWizard()
         self.loginWizard = loginWizard

@@ -28,7 +28,6 @@ enum AuthenticationError: String, Error {
     case dictionaryError
     case invalidHomeserver
     case loginFlowNotCalled
-    case missingRegistrationWizard
     case missingMXRestClient
 }
 

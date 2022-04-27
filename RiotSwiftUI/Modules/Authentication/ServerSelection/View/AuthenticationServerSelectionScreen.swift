@@ -157,12 +157,12 @@ struct AuthenticationServerSelectionScreen: View {
     
     @ToolbarContentBuilder
     var toolbar: some ToolbarContent {
-        ToolbarItem(placement: .confirmationAction) {
+        ToolbarItem(placement: .cancellationAction) {
             if viewModel.viewState.hasModalPresentation {
                 Button { viewModel.send(viewAction: .dismiss) } label: {
-                    Image(Asset.Images.spacesModalClose.name)
+                    Text(VectorL10n.cancel)
                 }
-                .accessibilityLabel(VectorL10n.close)
+                .accessibilityLabel(VectorL10n.cancel)
                 .accessibilityIdentifier("dismissButton")
             }
         }

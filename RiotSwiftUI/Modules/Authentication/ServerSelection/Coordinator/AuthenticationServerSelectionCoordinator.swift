@@ -25,7 +25,7 @@ struct AuthenticationServerSelectionCoordinatorParameters {
 }
 
 enum AuthenticationServerSelectionCoordinatorResult {
-    case updated(loginFlow: LoginFlowResult, registrationResult: RegistrationResult)
+    case updated
     case dismiss
 }
 
@@ -57,7 +57,8 @@ final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
     @MainActor init(parameters: AuthenticationServerSelectionCoordinatorParameters) {
         self.parameters = parameters
         
-        let viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: parameters.authenticationService.homeserverAddress,
+        let homeserver = parameters.authenticationService.state.homeserver
+        let viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: homeserver.addressFromUser ?? homeserver.address,
                                                                hasModalPresentation: parameters.hasModalPresentation)
         let view = AuthenticationServerSelectionScreen(viewModel: viewModel.context)
         authenticationServerSelectionViewModel = viewModel
@@ -113,14 +114,15 @@ final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
         startLoading()
         authenticationService.reset()
         
-        let homeserverAddress = HomeserverAddress.sanitize(homeserverAddress)
+        let homeserverAddress = HomeserverAddress.sanitized(homeserverAddress)
         
         Task {
             do {
-                let (loginFlow, registrationResult) = try await authenticationService.refreshServer(homeserverAddress: homeserverAddress)
+                #warning("The screen should be configuration for .login too.")
+                try await authenticationService.startFlow(.registration, for: homeserverAddress)
                 stopLoading()
                 
-                completion?(.updated(loginFlow: loginFlow, registrationResult: registrationResult))
+                completion?(.updated)
             } catch {
                 stopLoading()
                 

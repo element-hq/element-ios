@@ -22,10 +22,10 @@ import MatrixSDK
 struct AuthenticationRegistrationCoordinatorParameters {
     let navigationRouter: NavigationRouterType
     let authenticationService: AuthenticationService
-    /// The registration flows that are to be displayed.
-    let registrationResult: RegistrationResult
-    /// The login flows to allow for SSO sign up.
-    let loginFlowResult: LoginFlowResult
+    /// The registration flow that is available for the chosen server.
+    let registrationFlow: RegistrationResult?
+    /// The login mode to allow SSO buttons to be shown when available.
+    let loginMode: LoginMode
 }
 
 enum AuthenticationRegistrationCoordinatorResult {
@@ -72,24 +72,23 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
     // MARK: - Setup
     
     @MainActor init(parameters: AuthenticationRegistrationCoordinatorParameters) {
-        self.parameters = parameters
-        
-        do {
-            let registrationWizard = try parameters.authenticationService.registrationWizard()
-            self.registrationWizard = registrationWizard
-            
-            let viewModel = AuthenticationRegistrationViewModel(homeserverAddress: registrationWizard.pendingData.homeserverAddress,
-                                                                ssoIdentityProviders: parameters.loginFlowResult.ssoIdentityProviders)
-            authenticationRegistrationViewModel = viewModel
-            
-            let view = AuthenticationRegistrationScreen(viewModel: viewModel.context)
-            authenticationRegistrationHostingController = VectorHostingController(rootView: view)
-            authenticationRegistrationHostingController.vc_removeBackTitle()
-            authenticationRegistrationHostingController.enableNavigationBarScrollEdgeAppearance = true
-        } catch {
+        guard let registrationWizard = parameters.authenticationService.registrationWizard else {
             MXLog.failure("[AuthenticationRegistrationCoordinator] The registration wizard was requested before getting the login flow.")
-            fatalError(error.localizedDescription)
+            fatalError("The registration wizard was requested before getting the login flow.")
         }
+        
+        self.parameters = parameters
+        self.registrationWizard = registrationWizard
+        
+        let homeserver = parameters.authenticationService.state.homeserver
+        let viewModel = AuthenticationRegistrationViewModel(homeserverAddress: homeserver.addressFromUser ?? homeserver.address,
+                                                            ssoIdentityProviders: parameters.loginMode.ssoIdentityProviders ?? [])
+        authenticationRegistrationViewModel = viewModel
+        
+        let view = AuthenticationRegistrationScreen(viewModel: viewModel.context)
+        authenticationRegistrationHostingController = VectorHostingController(rootView: view)
+        authenticationRegistrationHostingController.vc_removeBackTitle()
+        authenticationRegistrationHostingController.enableNavigationBarScrollEdgeAppearance = true
         
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: authenticationRegistrationHostingController)
     }
@@ -179,13 +178,17 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
                 authenticationRegistrationViewModel.displayError(.invalidHomeserver)
             case .dictionaryError:
                 authenticationRegistrationViewModel.displayError(.unknown)
-            case .loginFlowNotCalled, .missingRegistrationWizard, .createAccountNotCalled:
+            case .loginFlowNotCalled:
                 #warning("Reset the flow")
-                break
             case .missingMXRestClient:
                 #warning("Forget the soft logout session")
-                break
-            case .noPendingThreePID, .missingThreePIDURL, .threePIDClientFailure, .threePIDValidationFailure:
+            }
+            return
+        }
+        
+        if let registrationError = error as? RegistrationError {
+            switch registrationError {
+            case .createAccountNotCalled, .missingThreePIDData, .missingThreePIDURL, .threePIDClientFailure, .threePIDValidationFailure:
                 // Shouldn't happen at this stage
                 authenticationRegistrationViewModel.displayError(.unknown)
             }
@@ -218,16 +221,17 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
     /// Handles the result from the server selection modal, dismissing it after updating the view.
     @MainActor private func serverSelectionCoordinator(_ coordinator: AuthenticationServerSelectionCoordinator,
                                                        didCompleteWith result: AuthenticationServerSelectionCoordinatorResult) {
-        if case let .updated(loginFlow, registrationResult) = result {
+        if result == .updated {
+            let homeserver = authenticationService.state.homeserver
+            authenticationRegistrationViewModel.update(homeserverAddress: homeserver.addressFromUser ?? homeserver.address,
+                                                       ssoIdentityProviders: homeserver.preferredLoginMode.ssoIdentityProviders ?? [])
             
-            authenticationRegistrationViewModel.update(homeserverAddress: authenticationService.homeserverAddress,
-                                                       ssoIdentityProviders: loginFlow.ssoIdentityProviders)
-            
-            do {
-                registrationWizard = try authenticationService.registrationWizard()
-            } catch {
-                MXLog.failure("[AuthenticationRegistrationCoordinator] The registration wizard was requested before getting the login flow: \(error.localizedDescription)")
+            guard let registrationWizard = authenticationService.registrationWizard else {
+                MXLog.failure("[AuthenticationRegistrationCoordinator] The registration wizard was requested before getting the login flow.")
+                return
             }
+            
+            self.registrationWizard = registrationWizard
         }
         
         navigationRouter.dismissModule(animated: true) { [weak self] in
