@@ -117,3 +117,6 @@
 
 /* New file message from a specific person, not referencing a room. */
 "LOCATION_FROM_USER" = "%@ megosztotta a földrajzi helyzetét";
+
+/* New video message from a specific person, not referencing a room. */
+"VIDEO_FROM_USER" = "%@ videót küldött";
