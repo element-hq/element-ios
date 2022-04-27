@@ -349,6 +349,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         // the selected room (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
     }
+
+    if (self.recentsDataSource)
+    {
+        [self showEmptyViewIfNeeded];
+    }
 }
 
 - (void)viewDidLayoutSubviews
