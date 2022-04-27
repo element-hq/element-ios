@@ -27,13 +27,6 @@ enum MatrixItemChooserType {
 
 // MARK: View model
 
-enum MatrixItemChooserStateAction {
-    case loadingState(Bool)
-    case updateError(Error?)
-    case updateSections([MatrixListItemSectionData])
-    case updateSelection(Set<String>)
-}
-
 enum MatrixItemChooserViewModelResult {
     case cancel
     case done([String])
@@ -77,15 +70,23 @@ struct MatrixListItemData {
 
 extension MatrixListItemData: Identifiable, Equatable {}
 
+struct MatrixItemChooserSelectionHeader {
+    var title: String
+    var selectAllTitle: String
+    var selectNoneTitle: String
+}
+
 struct MatrixItemChooserViewState: BindableState {
     var title: String?
     var message: String?
     var emptyListMessage: String
     var sections: [MatrixListItemSectionData]
+    var itemCount: Int
     var selectedItemIds: Set<String>
     var loadingText: String?
     var loading: Bool
     var error: String?
+    var selectionHeader: MatrixItemChooserSelectionHeader?
 }
 
 enum MatrixItemChooserViewAction {
@@ -94,4 +95,6 @@ enum MatrixItemChooserViewAction {
     case done
     case cancel
     case back
+    case selectAll
+    case selectNone
 }

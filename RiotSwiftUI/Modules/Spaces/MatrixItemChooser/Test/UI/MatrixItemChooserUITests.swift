@@ -37,6 +37,8 @@ class MatrixItemChooserUITests: MockScreenTest {
             verifyPopulatedScreen()
         case .selectedItems:
             verifyPopulatedWithSelectionScreen()
+        case .selectionHeader:
+            break
         }
     }
     

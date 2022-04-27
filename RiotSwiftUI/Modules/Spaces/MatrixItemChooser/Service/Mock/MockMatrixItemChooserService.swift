@@ -39,6 +39,13 @@ class MockMatrixItemChooserService: MatrixItemChooserServiceProtocol {
     var loadingText: String? {
         nil
     }
+    var itemCount: Int {
+        var itemCount = 0
+        for section in sectionsSubject.value {
+            itemCount += section.items.count
+        }
+        return itemCount
+    }
 
     init(type: MatrixItemChooserType = .room, sections: [MatrixListItemSectionData] = mockSections, selectedItemIndexPaths: [IndexPath] = []) {
         sectionsSubject = CurrentValueSubject(sections)
@@ -78,5 +85,21 @@ class MockMatrixItemChooserService: MatrixItemChooserServiceProtocol {
     
     func refresh() {
         
+    }
+    
+    func selectAllItems() {
+        var newSelection: Set<String> = Set()
+        for section in sectionsSubject.value {
+            for item in section.items {
+                newSelection.insert(item.id)
+            }
+        }
+        self.selectedItemIds = newSelection
+        selectedItemIdsSubject.send(selectedItemIds)
+    }
+    
+    func deselectAllItems() {
+        self.selectedItemIds = Set()
+        selectedItemIdsSubject.send(selectedItemIds)
     }
 }
