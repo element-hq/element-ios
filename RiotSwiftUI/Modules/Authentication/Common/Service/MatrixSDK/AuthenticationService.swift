@@ -50,12 +50,12 @@ class AuthenticationService: NSObject {
     override init() {
         if let homeserverURL = URL(string: RiotSettings.shared.homeserverUrlString) {
             // Use the same homeserver that was last used.
-            state = AuthenticationState(authenticationMode: .login, homeserverAddress: RiotSettings.shared.homeserverUrlString)
+            state = AuthenticationState(flow: .login, homeserverAddress: RiotSettings.shared.homeserverUrlString)
             client = MXRestClient(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
             
         } else if let homeserverURL = URL(string: BuildSettings.serverConfigDefaultHomeserverUrlString) {
             // Fall back to the default homeserver if the stored one is invalid.
-            state = AuthenticationState(authenticationMode: .login, homeserverAddress: BuildSettings.serverConfigDefaultHomeserverUrlString)
+            state = AuthenticationState(flow: .login, homeserverAddress: BuildSettings.serverConfigDefaultHomeserverUrlString)
             client = MXRestClient(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
             
         } else {
@@ -64,32 +64,6 @@ class AuthenticationService: NSObject {
         }
         
         super.init()
-    }
-    
-    // MARK: - Android OnboardingViewModel
-    
-    func startFlow(for homeserverAddress: String, as authenticationMode: AuthenticationMode) async throws {
-        reset()
-        
-        let loginFlows = try await loginFlow(for: homeserverAddress)
-        
-        // Valid Homeserver, add it to the history.
-        // Note: we add what the user has input, as the data can contain a different value.
-        RiotSettings.shared.homeserverUrlString = homeserverAddress
-        
-        state.homeserver = .init(address: loginFlows.homeserverAddress,
-                                         addressFromUser: homeserverAddress,
-                                         preferredLoginMode: loginFlows.loginMode,
-                                         loginModeSupportedTypes: loginFlows.supportedLoginTypes)
-        
-        let loginWizard = LoginWizard()
-        self.loginWizard = loginWizard
-        
-        if authenticationMode == .registration {
-            let registrationWizard = RegistrationWizard(client: client)
-            state.initialRegistrationFlow = try await registrationWizard.registrationFlow()
-            self.registrationWizard = registrationWizard
-        }
     }
     
     // MARK: - Public
@@ -118,47 +92,30 @@ class AuthenticationService: NSObject {
         MXKAccountManager.shared().activeAccounts?.first?.mxSession
     }
     
-    /// Request the supported login flows for this homeserver.
-    /// This is the first method to call to be able to get a wizard to login or to create an account
-    /// - Parameter homeserverAddress: The homeserver string entered by the user.
-    private func loginFlow(for homeserverAddress: String) async throws -> LoginFlowResult {
-        let homeserverAddress = HomeserverAddress.sanitized(homeserverAddress)
+    func startFlow(_ flow: AuthenticationFlow, for homeserverAddress: String) async throws {
+        reset()
         
-        guard var homeserverURL = URL(string: homeserverAddress) else {
-            throw AuthenticationError.invalidHomeserver
+        let loginFlows = try await loginFlow(for: homeserverAddress)
+        
+        // Valid Homeserver, add it to the history.
+        // Note: we add what the user has input, as the data can contain a different value.
+        RiotSettings.shared.homeserverUrlString = homeserverAddress
+        
+        state.homeserver = .init(address: loginFlows.homeserverAddress,
+                                         addressFromUser: homeserverAddress,
+                                         preferredLoginMode: loginFlows.loginMode,
+                                         loginModeSupportedTypes: loginFlows.supportedLoginTypes)
+        
+        let loginWizard = LoginWizard()
+        self.loginWizard = loginWizard
+        
+        if flow == .registration {
+            let registrationWizard = RegistrationWizard(client: client)
+            state.initialRegistrationFlow = try await registrationWizard.registrationFlow()
+            self.registrationWizard = registrationWizard
         }
         
-        let state = AuthenticationState(authenticationMode: .login, homeserverAddress: homeserverAddress)
-        
-        if let wellKnown = try? await wellKnown(for: homeserverURL),
-           let baseURL = URL(string: wellKnown.homeServer.baseUrl) {
-            homeserverURL = baseURL
-        }
-        
-        #warning("Add an unrecognized certificate handler.")
-        let client = MXRestClient(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
-        
-        let loginFlow = try await getLoginFlowResult(client: client)
-        
-        self.client = client
-        self.state = state
-        
-        return loginFlow
-    }
-    
-    /// Request the supported login flows for the corresponding session.
-    /// This method is used to get the flows for a server after a soft-logout.
-    /// - Parameter session: The MXSession where a soft-logout has occurred.
-    private func loginFlow(for session: MXSession) async throws -> LoginFlowResult {
-        guard let client = session.matrixRestClient else { throw AuthenticationError.missingMXRestClient }
-        let state = AuthenticationState(authenticationMode: .login, homeserverAddress: client.homeserver)
-        
-        let loginFlow = try await getLoginFlowResult(client: session.matrixRestClient)
-        
-        self.client = client
-        self.state = state
-        
-        return loginFlow
+        state.flow = flow
     }
     
     /// Get a SSO url
@@ -167,8 +124,8 @@ class AuthenticationService: NSObject {
     }
     
     /// Get the sign in or sign up fallback URL
-    func fallbackURL(for authenticationMode: AuthenticationMode) -> URL {
-        switch authenticationMode {
+    func fallbackURL(for flow: AuthenticationFlow) -> URL {
+        switch flow {
         case .login:
             return client.loginFallbackURL
         case .registration:
@@ -187,7 +144,7 @@ class AuthenticationService: NSObject {
         registrationWizard = nil
         
         // The previously used homeserver is re-used as `startFlow` will be called again a replace it anyway.
-        self.state = AuthenticationState(authenticationMode: .login, homeserverAddress: state.homeserver.address)
+        self.state = AuthenticationState(flow: .login, homeserverAddress: state.homeserver.address)
     }
 
     /// Create a session after a SSO successful login
@@ -217,6 +174,49 @@ class AuthenticationService: NSObject {
 //    }
     
     // MARK: - Private
+    
+    /// Request the supported login flows for this homeserver.
+    /// This is the first method to call to be able to get a wizard to login or to create an account
+    /// - Parameter homeserverAddress: The homeserver string entered by the user.
+    private func loginFlow(for homeserverAddress: String) async throws -> LoginFlowResult {
+        let homeserverAddress = HomeserverAddress.sanitized(homeserverAddress)
+        
+        guard var homeserverURL = URL(string: homeserverAddress) else {
+            throw AuthenticationError.invalidHomeserver
+        }
+        
+        let state = AuthenticationState(flow: .login, homeserverAddress: homeserverAddress)
+        
+        if let wellKnown = try? await wellKnown(for: homeserverURL),
+           let baseURL = URL(string: wellKnown.homeServer.baseUrl) {
+            homeserverURL = baseURL
+        }
+        
+        #warning("Add an unrecognized certificate handler.")
+        let client = MXRestClient(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
+        
+        let loginFlow = try await getLoginFlowResult(client: client)
+        
+        self.client = client
+        self.state = state
+        
+        return loginFlow
+    }
+    
+    /// Request the supported login flows for the corresponding session.
+    /// This method is used to get the flows for a server after a soft-logout.
+    /// - Parameter session: The MXSession where a soft-logout has occurred.
+    private func loginFlow(for session: MXSession) async throws -> LoginFlowResult {
+        guard let client = session.matrixRestClient else { throw AuthenticationError.missingMXRestClient }
+        let state = AuthenticationState(flow: .login, homeserverAddress: client.homeserver)
+        
+        let loginFlow = try await getLoginFlowResult(client: session.matrixRestClient)
+        
+        self.client = client
+        self.state = state
+        
+        return loginFlow
+    }
     
     private func getLoginFlowResult(client: MXRestClient) async throws -> LoginFlowResult {
         // Get the login flow

@@ -16,8 +16,8 @@
 
 import Foundation
 
-/// A value that dictates the authentication flow that will be used.
-enum AuthenticationMode {
+/// A value that represents the type of authentication flow being used.
+enum AuthenticationFlow {
     case login
     case registration
 }

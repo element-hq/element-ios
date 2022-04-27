@@ -20,7 +20,7 @@ import MatrixSDK
 @available(iOS 14.0, *)
 struct AuthenticationState {
     // var serverType: ServerType = .unknown
-    var authenticationMode: AuthenticationMode
+    var flow: AuthenticationFlow
     
     /// Information about the currently selected homeserver.
     var homeserver: Homeserver
@@ -29,8 +29,8 @@ struct AuthenticationState {
     /// The registration flow response returned when calling `startFlow` for `.registration`.
     var initialRegistrationFlow: RegistrationResult?
     
-    init(authenticationMode: AuthenticationMode, homeserverAddress: String) {
-        self.authenticationMode = authenticationMode
+    init(flow: AuthenticationFlow, homeserverAddress: String) {
+        self.flow = flow
         self.homeserver = Homeserver(address: homeserverAddress)
     }
     
