@@ -623,7 +623,6 @@
 "no_voip_title" = "Galwad sy'n dod i mewn";
 "no_voip" = "Mae %@ yn eich ffonio ond nid yw %@ yn cefnogi galwadau eto.\nGallwch anwybyddu'r hysbysiad hwn ac ateb yr alwad o ddyfais arall neu gallwch ei wrthod.";
 // Crash report
-"google_analytics_use_prompt" = "Hoffech chi helpu i wella %@ trwy gyrru adroddiadau pall a data defnydd dienw yn awtomatig?";
 // Crypto
 "e2e_enabling_on_app_update" = "Mae %@ bellach yn cefnogi amgryptio o'r dechrau i'r diwedd ond mae angen i chi fewngofnodi eto i'w alluogi.\n\nGallwch ei wneud nawr neu'n hwyrach o'r gosodiadau.";
 "e2e_need_log_in_again" = "Mae angen i chi fewngofnodi i gynhyrchu allweddi amgryptio o'r dechrau i'r diwedd ar gyfer y sesiwn hon a chyflwyno'r allwedd gyhoeddus i'ch hafanweinydd\nDim ond unwaith fydd rhaid gwneud hyn; sori am yr anghyfleustra.";
@@ -678,7 +677,6 @@
 "gdpr_consent_not_given_alert_review_now_action" = "Adolygu rwan";
 // Service terms
 "service_terms_modal_title" = "Telerau Gwasanaeth";
-"service_terms_modal_message" = "I barhau maen' rhaid i chi dderbyn telerau y gwasanaeth hwn (%@).";
 "service_terms_modal_accept_button" = "Derbyn";
 "service_terms_modal_decline_button" = "Gwrthod";
 "service_terms_modal_description_for_identity_server_1" = "Dod o hyd i eraill dros y ffôn neu e-bost";
@@ -686,7 +684,6 @@
 "service_terms_modal_description_for_integration_manager" = "Defnyddiwch Botiau, pontydd, teclynnau a phecynnau sticeri";
 // Service terms - Variant for identity server when displayed out of a context
 "service_terms_modal_title_identity_server" = "Darganfod Cysylltiadau";
-"service_terms_modal_message_identity_server" = "Derbyn telerau'r gweinydd adnabod (%@) i ddarganfod cysylltiadau.";
 "deactivate_account_title" = "Dad-actifadu Cyfrif";
 "deactivate_account_informations_part1" = "Bydd hyn yn golygu na ellir defnyddio'ch cyfrif yn barhaol. Ni fyddwch yn gallu mewngofnodi, ac ni fydd unrhyw un yn gallu ailgofrestru'r un dynodwr defnyddiwr. Bydd hyn yn achosi i'ch cyfrif adael yr holl ystafelloedd y mae'n cymryd rhan ynddynt, a bydd yn tynnu manylion eich cyfrif o'ch gweinydd adnabod. ";
 "deactivate_account_informations_part2_emphasize" = "Ni ellir gwrthdroi'r weithred hon.";
@@ -1098,7 +1095,6 @@
 "notice_room_aliases" = "Arallenwau'r ystafell yw: %@";
 "notice_room_related_groups" = "Y grwpiau sy'n gysylltiedig â'r ystafell hon yw: %@";
 "notice_encrypted_message" = "Neges amgryptiedig";
-"notice_encryption_enabled" = "Trodd %@ ar amgryptio o'r dechrau i'r diwedd (algorithm %@)";
 "notice_image_attachment" = "atodiad llun";
 "notice_audio_attachment" = "atodiad sain";
 "notice_video_attachment" = "atodiad fideo";

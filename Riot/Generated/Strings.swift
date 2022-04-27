@@ -2727,6 +2727,10 @@ public class VectorL10n: NSObject {
   public static var liveLocationSharingBannerTitle: String { 
     return VectorL10n.tr("Vector", "live_location_sharing_banner_title") 
   }
+  /// Live location ended
+  public static var liveLocationSharingEnded: String { 
+    return VectorL10n.tr("Vector", "live_location_sharing_ended") 
+  }
   /// Loading
   public static var loading: String { 
     return VectorL10n.tr("Vector", "loading") 
@@ -2759,6 +2763,10 @@ public class VectorL10n: NSObject {
   public static var locationSharingInvalidAuthorizationSettings: String { 
     return VectorL10n.tr("Vector", "location_sharing_invalid_authorization_settings") 
   }
+  /// Live location error
+  public static var locationSharingLiveError: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_error") 
+  }
   /// You
   public static var locationSharingLiveListItemCurrentUserDisplayName: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_list_item_current_user_display_name") 
@@ -2783,6 +2791,10 @@ public class VectorL10n: NSObject {
   public static func locationSharingLiveListItemTimeLeft(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "location_sharing_live_list_item_time_left", p1)
   }
+  /// Loading Live location...
+  public static var locationSharingLiveLoading: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_loading") 
+  }
   /// Share location
   public static var locationSharingLiveMapCalloutTitle: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_map_callout_title") 
@@ -2790,6 +2802,10 @@ public class VectorL10n: NSObject {
   /// Share live location
   public static var locationSharingLiveShareTitle: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_share_title") 
+  }
+  /// Live until %@
+  public static func locationSharingLiveTimerIncoming(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "location_sharing_live_timer_incoming", p1)
   }
   /// Location
   public static var locationSharingLiveViewerTitle: String { 

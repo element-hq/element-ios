@@ -144,7 +144,6 @@
 "contacts_address_book_matrix_users_toggle" = "Chỉ người dùng của matrix";
 "contacts_address_book_no_contact" = "Không có danh bạ nội bộ";
 "contacts_address_book_permission_required" = "Quyền được yêu cầu để truy cập danh bạ nội bộ";
-"contacts_address_book_permission_denied" = "Bạn chưa cho phép Element truy cập danh bạ nội bộ của bạn";
 "contacts_user_directory_section" = "DANH MỤC NGƯỜI DÙNG";
 "contacts_user_directory_offline_section" = "DANH MỤC NGƯỜI DÙNG (ngoại tuyến)";
 // Chat participants
@@ -291,7 +290,6 @@
 "settings_pin_rooms_with_missed_notif" = "Ghim các phòng có thông báo bị bỏ lỡ";
 "settings_pin_rooms_with_unread" = "Ghim các phòng có các tin nhắn chưa đọc";
 "settings_enable_callkit" = "Cuộc gọi tích hợp";
-"settings_callkit_info" = "Nhận cuộc gọi tới trên màn hình khóa. Xem lịch sử cuộc gọi trong lịch sử cuộc gọi của hệ thống. Nếu iCloud được kích hoạt, lịch sử cuộc gọi sẽ được chia sẻ với Apple.";
 "settings_ui_language" = "Ngôn ngữ";
 "settings_ui_theme" = "Chủ đề";
 "settings_ui_theme_auto" = "Tự động";
@@ -426,9 +424,7 @@
 "no_voip_title" = "Cuộc gọi tới";
 "no_voip" = "%@ đang gọi nhưng %@ chưa hỗ trợ gọi thoại.\nBạn có thể bỏ qua thông báo này và trả lời cuộc gọi từ thiết bị khác hoặc từ chối nó.";
 // Crash report
-"google_analytics_use_prompt" = "Bạn có muốn giúp cải thiện %@ bằng cách tự động báo cáo sự cố vô danh và dữ liệu sử dụng?";
 // Crypto
-"e2e_enabling_on_app_update" = "Element đã hỗ trợ mã hóa end-to-end nhưng bạn cần phải đăng nhập lại để kích hoạt.\n\nBạn có thể thực hiện ngay bây giờ hoặc sau đó từ cài đặt của ứng dụng.";
 "e2e_need_log_in_again" = "Bạn cần phải đăng nhập lại để tạo các khoá mã hóa end-to-end cho thiết bị này và gửi khoá chung tới máy chủ nhà của bạn.\nĐây là một lần duy nhất; xin lỗi vì sự bất tiện.";
 // Bug report
 "bug_report_title" = "Báo cáo lỗi";
@@ -502,7 +498,6 @@
 "space_private_join_rule" = "Space riêng tư";
 "space_participants_action_ban" = "Cấm từ space này";
 "space_participants_action_remove" = "Loại bỏ khỏi space này";
-"spaces_coming_soon_detail" = "Tính năng này chưa được triển khai ở đây, nhưng nó đang được tiến hành. Bây giờ, bạn có thể làm với Element trên máy tính của bạn.";
 "spaces_invites_coming_soon_title" = "Mời sắp có";
 "spaces_add_rooms_coming_soon_title" = "Thêm phòng sắp có";
 "spaces_coming_soon_title" = "Sắp có";
@@ -1711,9 +1706,7 @@
 "notice_room_power_level_intro" = "Công suất của thành viên trong phòng:";
 "notice_room_power_level_acting_requirement" = "Mức công suất tối thiểu mà người dùng phải có trước khi hoạt động là:";
 "notice_room_power_level_event_requirement" = "Mức công suất tối thiểu liên quan đến sự kiện là:";
-"notice_room_aliases" = "Các bí danh phòng là:% @";
 "notice_encrypted_message" = "Tin nhắn đã được mã hoá";
-"notice_encryption_enabled" = "%@ đã bật mã hoá end-to-end (thuật toán %@)";
 "notice_image_attachment" = "hình ảnh đính kèm";
 "notice_audio_attachment" = "âm thanh đính kèm";
 "notice_video_attachment" = "video đính kèm";
@@ -1735,7 +1728,6 @@
 // room display name
 "room_displayname_empty_room" = "Phòng trống";
 "room_displayname_two_members" = "%@ và %@";
-"room_displayname_more_than_two_members" = "%@ và %u người khác";
 // Settings
 "settings" = "Cài đặt";
 "settings_enable_inapp_notifications" = "Bật thông báo bên trong ứng dụng";

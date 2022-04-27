@@ -369,7 +369,6 @@
 // No VoIP support
 "no_voip_title" = "Входящий вызов";
 // Crash report
-"google_analytics_use_prompt" = "Вы хотите помочь улучшить %@, автоматически отправляя анонимные отчеты о сбоях и данные об использовании?";
 // Crypto
 "e2e_enabling_on_app_update" = "%@ теперь поддерживает сквозное шифрование, но вам нужно снова войти в систему, чтобы активировать его.\n\nВы можете сделать это сейчас или позже из настроек приложения.";
 "e2e_need_log_in_again" = "Вам нужно войти в систему, чтобы сгенерировать ключи шифрования для этого устройства и отправлять публичный ключ вашему серверу.\nЭто необходимо только один раз; просим прощения за неудобства.";
@@ -384,8 +383,8 @@
 "bug_report_progress_zipping" = "Сбор журналов";
 "bug_report_progress_uploading" = "Отправка отчета";
 "bug_report_send" = "Отправить";
-"on" = "Включить";
-"off" = "Выключить";
+"on" = "Вкл";
+"off" = "Выкл";
 "preview" = "Просмотр";
 "room_creation_account" = "Учетная запись";
 "directory_searching_title" = "Поиск в каталоге…";
@@ -562,7 +561,6 @@
 "settings_key_backup_info_not_valid" = "Этот сеанс не делает резервное копирование ваших ключей, но у вас есть существующая резервная копия, которую вы можете восстановить и добавить в дальнейшем.";
 "settings_key_backup_info_progress" = "Резервное копирование %@ ключей…";
 "settings_key_backup_info_progress_done" = "Все ключи сохранены";
-"settings_key_backup_info_not_trusted_from_verifiable_device_fix_action" = "Для Безопасного Восстановления Сообщений на этом устройстве, проверьте %@.";
 "settings_key_backup_info_not_trusted_fix_action" = "Для Безопасного Восстановления Сообщений на этом устройстве, требуется пароль или ключ восстановления.";
 "settings_key_backup_info_trust_signature_unknown" = "Резервное копирование имеет подпись от сеанса со следующим ID: %@";
 "settings_key_backup_info_trust_signature_valid" = "Резервная копия имеет действующую подпись этой сессии";
@@ -673,10 +671,6 @@
 "auth_autodiscover_invalid_response" = "Неверный ответ обнаружения сервера";
 "room_event_action_reply" = "Ответ";
 "room_event_action_edit" = "Редактировать";
-"room_event_action_reaction_agree" = "%@ согласен";
-"room_event_action_reaction_disagree" = "%@ несогласен";
-"room_event_action_reaction_like" = "%@ согласен";
-"room_event_action_reaction_dislike" = "%@ не согласны";
 "room_action_reply" = "Ответ";
 "settings_labs_message_reaction" = "Реагировать на сообщения с Emoji";
 "settings_key_backup_button_connect" = "Подключите этот сеанс к резервному копированию ключей";
@@ -703,7 +697,6 @@
 "widget_integrations_server_failed_to_connect" = "Не удалось подключиться к серверу интеграции";
 // Service terms
 "service_terms_modal_title" = "Условия пользования";
-"service_terms_modal_message" = "Для продолжения Вам необходимо принять условия данной услуги (%@).";
 "service_terms_modal_accept_button" = "Принять";
 "service_terms_modal_description_for_identity_server" = "Быть открытыми для других";
 "service_terms_modal_description_for_integration_manager" = "Используйте боты, мосты, виджеты и стикеры";
@@ -988,7 +981,6 @@
 "room_widget_permission_theme_permission" = "Ваша тема";
 "room_widget_permission_widget_id_permission" = "ID виджета";
 "room_widget_permission_room_id_permission" = "ID комнаты";
-"service_terms_modal_message_identity_server" = "Примите условия сервера идентификации (%@) для обнаружения контактов.";
 "service_terms_modal_policy_checkbox_accessibility_hint" = "Отметьте, чтобы принять %@";
 "secure_key_backup_setup_intro_title" = "Безопасное резервное копирование";
 "secure_key_backup_setup_intro_info" = "Защитите себя от потери доступа к зашифрованным сообщениям и данным, создав резервную копию ключей шифрования на своём сервере.";
@@ -1465,7 +1457,6 @@
 "space_public_join_rule" = "Публичное пространство";
 "space_private_join_rule" = "Приватное пространство";
 "space_participants_action_remove" = "Удалить из этого пространства";
-"spaces_coming_soon_detail" = "Эта функция еще не реализована здесь, но она уже на подходе. Пока вы можете сделать это с помощью Element на вашем компьютере.";
 "spaces_invites_coming_soon_title" = "Приглашения скоро будут";
 "spaces_add_rooms_coming_soon_title" = "Добавление комнат скоро будет";
 "spaces_coming_soon_title" = "Скоро будет";
@@ -1588,7 +1579,6 @@
 "notice_room_power_level_acting_requirement" = "Минимальные уровни доступа пользователя для совершения действия:";
 "notice_room_power_level_event_requirement" = "Минимальные уровни доступа, связанные с событиями:";
 "notice_encrypted_message" = "Зашифрованное сообщение";
-"notice_encryption_enabled" = "%@ включил(а) сквозное шифрование (алгоритм %@)";
 "notice_image_attachment" = "прикрепленное изображение";
 "notice_audio_attachment" = "прикрепленное аудио";
 "notice_video_attachment" = "прикрепленное видео";
@@ -1609,7 +1599,6 @@
 // room display name
 "room_displayname_empty_room" = "Пустая комната";
 "room_displayname_two_members" = "%@ и %@";
-"room_displayname_more_than_two_members" = "%@ и %u другие";
 // Settings
 "settings" = "Настройки";
 "settings_enable_inapp_notifications" = "Включить уведомления в приложении";
@@ -1890,7 +1879,6 @@
 "notice_room_invite_by_you" = "Вы пригласили %@";
 "notice_room_invite_you" = "%@ пригласил Вас";
 "notice_room_third_party_invite_by_you" = "Вы отправили приглашение %@ вступить в комнату";
-"notice_room_third_party_registered_invite_by_you" = "Вы приняли приглашение для @%";
 "notice_room_third_party_revoked_invite_by_you" = "Вы отозвали приглашение для %@ вступить в комнату";
 "notice_room_join_by_you" = "Вы вошли";
 "notice_room_leave_by_you" = "Вы вышли";
@@ -1979,3 +1967,19 @@
 "attachment_unsupported_preview_message" = "Этот тип файла не поддерживается.";
 "attachment_unsupported_preview_title" = "Не удалось показать предварительный просмотр";
 "message_reply_to_sender_sent_their_location" = "поделились своим местоположением.";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Создать учетную запись";
+"accessibility_button_label" = "кнопка";
+"saving" = "Сохранение";
+
+// Activities
+"loading" = "Загрузка";
+"edit" = "Редактировать";
+"suggest" = "Предложить";
+"add" = "Добавить";
+"existing" = "Существующее";
+"new_word" = "Новое";
+"stop" = "Остановить";
+"joining" = "Соединение";
+"enable" = "Включить";

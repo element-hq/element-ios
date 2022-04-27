@@ -66,7 +66,6 @@
 "deactivate_account_password_alert_message" = "Para continuar, introduce la contraseña de tu cuenta de Matrix";
 "deactivate_account_forget_messages_information_part2_emphasize" = "Advertencia";
 "deactivate_account_informations_part2_emphasize" = "Esta acción es irreversible.";
-"rerequest_keys_alert_message" = "Por favor, abre Element en otro dispositivo que pueda descifrar el mensaje para que envíe las claves a esta sesión.";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Solicitud Enviada";
 "auth_password_dont_match" = "Las contraseñas no coinciden";
@@ -495,9 +494,7 @@
 "no_voip_title" = "Llamada entrante";
 "no_voip" = "%@ te está llamando pero %@ aún no admite llamadas.\nPuedes ignorar esta notificación y contestar la llamada desde otro dispositivo o puedes rechazarla.";
 // Crash report
-"google_analytics_use_prompt" = "¿Te gustaría ayudar a mejorar %@ enviando automáticamente informes de fallas y datos de uso anónimos?";
 // Crypto
-"e2e_enabling_on_app_update" = "Element ahora admite cifrado de extremo a extremo, pero debes volver a iniciar sesión para activarlo.\n\nPuedes hacerlo ahora o más tarde desde los ajustes de la aplicación.";
 "e2e_need_log_in_again" = "Tienes que volver a iniciar sesión para generar claves de cifrado de extremo a extremo para este dispositivo y enviar la clave pública a tu servidor base.\nSolo hay que hacer esto una vez, disculpa las molestias.";
 // Bug report
 "bug_report_title" = "Informe de Error";
@@ -740,7 +737,6 @@
 "notice_room_aliases" = "Los aliases de la sala son: %@";
 "notice_room_related_groups" = "Los grupos asociados a esta sala son: %@";
 "notice_encrypted_message" = "Mensaje cifrado";
-"notice_encryption_enabled" = "%@ activó el cifrado de extremo a extremo (algoritmo %@)";
 "notice_image_attachment" = "imagen adjunta";
 "notice_audio_attachment" = "audio adjunto";
 "notice_video_attachment" = "vídeo adjunto";
@@ -764,7 +760,6 @@
 // room display name
 "room_displayname_empty_room" = "Sala vacía";
 "room_displayname_two_members" = "%@ y %@";
-"room_displayname_more_than_two_members" = "%@ y otros %u";
 // Settings
 "settings" = "Ajustes";
 "settings_enable_inapp_notifications" = "Habilitar notificaciones de la aplicación";

@@ -40,7 +40,10 @@ NSString *const kMXKRoomBubbleCellTapOnAttachmentView = @"kMXKRoomBubbleCellTapO
 NSString *const kMXKRoomBubbleCellTapOnOverlayContainer = @"kMXKRoomBubbleCellTapOnOverlayContainer";
 NSString *const kMXKRoomBubbleCellTapOnContentView = @"kMXKRoomBubbleCellTapOnContentView";
 
+
 NSString *const kMXKRoomBubbleCellUnsentButtonPressed = @"kMXKRoomBubbleCellUnsentButtonPressed";
+NSString *const kMXKRoomBubbleCellStopShareButtonPressed = @"kMXKRoomBubbleCellStopShareButtonPressed";
+NSString *const kMXKRoomBubbleCellRetryShareButtonPressed = @"kMXKRoomBubbleCellRetryShareButtonPressed";
 
 NSString *const kMXKRoomBubbleCellLongPressOnEvent = @"kMXKRoomBubbleCellLongPressOnEvent";
 NSString *const kMXKRoomBubbleCellLongPressOnProgressView = @"kMXKRoomBubbleCellLongPressOnProgressView";

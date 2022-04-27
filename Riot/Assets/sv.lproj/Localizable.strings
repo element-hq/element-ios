@@ -13,7 +13,6 @@
 /* New action message from a specific person in a named room. */
 "ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
 /* New action message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@ skickade en bild %@";
 /* New action message from a specific person in a named room. */
 "IMAGE_FROM_USER_IN_ROOM" = "%@ skickade en bild %@ i %@";
 /* A single unread message in a room */

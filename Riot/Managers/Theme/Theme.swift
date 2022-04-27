@@ -104,6 +104,12 @@ import DesignKit
     
     var roomCellOutgoingBubbleBackgroundColor: UIColor { get }
     
+    // Localisation Cells
+    
+    var roomCellLocalisationIconStartedColor: UIColor { get }
+    
+    var roomCellLocalisationErrorColor: UIColor { get }
+    
     // MARK: - Customisation methods
 
     

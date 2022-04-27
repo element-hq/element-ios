@@ -177,7 +177,6 @@
 "contacts_address_book_matrix_users_toggle" = "کاربران ماتریسی";
 "contacts_address_book_no_contact" = "بدون مخاطب محلی";
 "contacts_address_book_permission_required" = "برای دسترسی به مخاطبین محلی مجوز نیاز است.";
-"contacts_address_book_permission_denied" = "شما دسترسی به برنامه را نداده اید.";
 "contacts_user_directory_section" = "مسیر کاربر";
 "contacts_user_directory_offline_section" = "مسیر کاربر(آفلاین) ";
 
@@ -241,8 +240,6 @@
 "room_message_short_placeholder" = "ارسال یک پیام... ";
 "room_message_reply_to_short_placeholder" = "ارسال یک پاسخ... ";
 "room_offline_notification" = "اتصال به سرور از دست رفت.";
-"room_unsent_messages_notification" = "پیام ارسال نشد %@ یا %@ هم اکنون";
-"room_unsent_messages_unknown_devices_notification" = "پیام ارسال نشد %@ یا %@ هم اکنون";
 "room_ongoing_conference_call" = "رفتن به تماس کنفرانسی به عنوان %@ یا %@.";
 "room_ongoing_conference_call_with_close" = "رفتن به تماس کنفرانسی %@ یا %@. %@ آن.";
 "room_ongoing_conference_call_close" = "بستن";
@@ -360,7 +357,6 @@
 "settings_global_settings_info" = "تنظیمات اعلان های عمومی در  %@ کلاینت وب شما موجود است";
 "settings_pin_rooms_with_missed_notif" = "پین کردن گفتگوها با اعلان از دست رفته";
 "settings_pin_rooms_with_unread" = "پین کردن گفتگوها با پیام های خوانده نشده";
-"settings_on_denied_notification" = "اعلان ها برای  %@ محدود شده است, لطفا در تنظیمات تلفن ان ها را مجاز کنید. ";
 //"settings_enable_all_notif" = "فعال سازی همه ی اعلان ها";
 //"settings_messages_my_display_name" = "پیام شامل نام نمایشی من است";
 //"settings_messages_my_user_name" = "پیام شاما نام کاربری من است. ";
@@ -370,7 +366,6 @@
 //"settings_call_invitations" = "صدا زدن دعوت ها";
 
 "settings_enable_callkit" = "تماس گیری مجتمع";
-"settings_callkit_info" = "دریافت تماس ها در صفحه ی قفل، اگر فضای ابری فعال باشد تاریخچه با اپل به اشتراک گذاشته می شود.";
 "settings_ui_language" = "زبان";
 "settings_ui_theme" = "تم";
 "settings_ui_theme_auto" = "خودکار";
@@ -564,10 +559,8 @@
 "no_voip" = "%@ در حال تماس باشماست اما %@ تماس ها را پشتیبانی نمی کند. \nشما می توانید تماس را در دستگاه دیر جواب دهید یا رد کنید. ";
 
 // Crash report
-"google_analytics_use_prompt" = "آیا می خواهید بهبود دهید %@ با استفاده از ارسال گزارش توقف و داده ها";
 
 // Crypto
-"e2e_enabling_on_app_update" = "نرم افزار رمزنگاری را پشتبانی میکند. \n\nYشما  می تواند آن را فعال کنید ";
 "e2e_need_log_in_again" = "شما باید کلید را برای این دستگاه بسازید و برای سرور ارسال کنید";
 
 // Bug report
@@ -637,4 +630,3 @@
 
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "ارسال درخواست ";
-"rerequest_keys_alert_message" = "لطفا برنامه را در دستگاهی دیگر که رمزنگاری دارد فعال کنید. ";

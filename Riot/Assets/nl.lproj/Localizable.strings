@@ -33,7 +33,6 @@
 /** Image Messages **/
 
 /* New action message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@ heeft een afbeelding gestuurd %@";
 /* New action message from a specific person in a named room. */
 "IMAGE_FROM_USER_IN_ROOM" = "%@ heeft een afbeelding %@ in %@ geplaatst";
 /** Coalesced messages **/

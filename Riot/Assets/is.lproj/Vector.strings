@@ -511,9 +511,9 @@
 // MARK: - Home
 
 "home_empty_view_title" = "Velkomin í %@,\n%@";
-"create_room_type_private" = "Einkaspjallrás";
-"create_room_section_header_type" = "Tegund spjallrásar";
-"create_room_section_header_encryption" = "Dulritun spjallrásar";
+"create_room_type_private" = "Einkaspjallrás (einungis með boði)";
+"create_room_section_header_type" = "HVER HEFUR AÐGANG";
+"create_room_section_header_encryption" = "DULRITUN";
 "searchable_directory_search_placeholder" = "Nafn eða auðkenni";
 "biometrics_cant_unlocked_alert_message_login" = "Skráðu þig aftur inn";
 "biometrics_mode_face_id" = "Face ID";
@@ -569,7 +569,6 @@
 // unrecognized SSL certificate
 "ssl_trust" = "Treysta";
 "call_transfer_to_user" = "Færa á %@";
-"call_video_with_user" = "Myndsímtal við %s@";
 "call_voice_with_user" = "Raddsímtal við %@";
 "call_more_actions_dialpad" = "Talnaborð";
 "call_more_actions_transfer" = "Flutningur";
@@ -895,10 +894,10 @@
 // MARK: - Room Info
 
 "room_info_list_one_member" = "1 meðlimur";
-"create_room_section_header_address" = "Vistfang spjallrásar";
-"create_room_type_public" = "Almenningsspjallrás";
+"create_room_section_header_address" = "VISTFANG";
+"create_room_type_public" = "Almenningsspjallrás (hver sem er)";
 "create_room_enable_encryption" = "Þvinga dulritun";
-"create_room_placeholder_topic" = "Umfjöllunarefni";
+"create_room_placeholder_topic" = "Um hvað er rætt á þessari spjallrás?";
 "key_verification_tile_request_incoming_approval_decline" = "Hafna";
 "key_verification_tile_request_incoming_approval_accept" = "Samþykkja";
 "key_verification_tile_request_status_cancelled" = "Hætt við %@";
@@ -1293,7 +1292,7 @@
 "settings_call_invitations" = "Boð um símtöl";
 "settings_room_invitations" = "Boð á spjallrás";
 "settings_messages_containing_keywords" = "Stikkorð";
-"settings_messages_containing_at_room" = "@spjallrás";
+"settings_messages_containing_at_room" = "@room";
 "settings_messages_containing_user_name" = "Notandanafnið mitt";
 "settings_messages_containing_display_name" = "Birtingarnafn mitt";
 "settings_encrypted_group_messages" = "Dulrituð hópskilaboð";
@@ -1381,9 +1380,9 @@
 "room_recents_suggested_rooms_section" = "TILLÖGUR AÐ SPJALLRÁSUM";
 "room_recents_server_notice_section" = "AÐVARANIR KERFIS";
 "social_login_button_title_sign_up" = "Skrá inn með %@";
-"create_room_section_header_topic" = "Umfjöllunarefni spjallrásar (valkvætt)";
+"create_room_section_header_topic" = "UMFJÖLLUNAREFNI (VALKVÆTT)";
 "create_room_placeholder_name" = "Heiti";
-"create_room_section_header_name" = "Heiti spjallrásar";
+"create_room_section_header_name" = "NAFN";
 
 // MARK: - Create Room
 
@@ -1535,7 +1534,7 @@
 
 "invite_friends_action" = "Bjóða vinum á %@";
 "call_transfer_error_message" = "Flutningur símtals mistókst";
-"create_room_show_in_directory" = "Birta spjallrás í spjallrásalistanum";
+"create_room_show_in_directory" = "Birta spjallrás í spjallrásalista";
 "create_room_section_footer_encryption" = "Ekki er hægt að gera dulritun óvirka eftirá.";
 "biometrics_cant_unlocked_alert_title" = "Get ekki aflæst forriti";
 "biometrics_usage_reason" = "Þú þarft að auðkenna þig til að fá aðgang að forritinu þínu";

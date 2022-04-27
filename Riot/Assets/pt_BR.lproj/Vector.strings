@@ -495,7 +495,6 @@
 "no_voip_title" = "Chamada entrante";
 "no_voip" = "%@ está chamando você mas %@ não suporta chamadas ainda.\nVocê pode ignorar esta notificação e atender a chamada de um outro dispositivo ou você pode rejeitá-la.";
 // Crash report
-"google_analytics_use_prompt" = "Você gostaria de ajudar a melhorar %@ ao reportar automaticamente reportes de crash e dados de uso anônimos?";
 // Crypto
 "e2e_enabling_on_app_update" = "%@ agora suporta encriptação ponta-a-ponta mas você precisa fazer login de novo para habilitá-la.\n\nVocê pode fazê-lo agora ou mais tarde desde os ajustes do aplicativo.";
 "e2e_need_log_in_again" = "Você precisa fazer login de volta para gerar chaves de encriptação ponta-a-ponta para esta sessão e submeter a chave pública a seu servidorcasa.\nIsto é só desta vez; desculpe pela inconveniência.";
@@ -553,7 +552,7 @@
 "deactivate_account_password_alert_message" = "Para continuar, por favor entre a senha de sua conta Matrix";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Requisição Enviada";
-"rerequest_keys_alert_message" = "Por favor lance %@ num outro dispositivo que possa decriptar a mensagem para que ele possa enviar as chaves para esta sessão.";
+"rerequest_keys_alert_message" = "Por favor lance %@ em um outro dispositivo que possa decriptar a mensagem para que ele possa enviar as chaves para esta sessão.";
 // String for App Store
 "store_short_description" = "Chat/VoIP descentralizado e seguro";
 "store_full_description" = "Element is um novo tipo de mensageiro e app de colaboração que:\n\n1. Põe você em controle para preservar sua privacidade\n2. Permite você se comunicar com qualquer pessoa na rede Matrix, e até além ao integrar-se com apps como Slack\n3. Protege você de publicidade, datamining, backdoors e jardins murados\n4. Assegura você através de encriptação ponta-a-pontam com assinatura cruzada para verificar ouras(os)\n\nElement é completamente diferente de outros apps de mensageria e colaboração porque ele é descentralizado e open source.\n\nElement permite você auto-hospedar - ou escolher um host - para que você tenha privacidade, propriedade e controle de seus dados e conversas. Ele dá a você acesso a uma rede aberta; então você não está simplesmente preso falando com outras(os) usuárias(os) Element somente. E ele é muito seguro.\n\nElement é capaz de fazer tudo isso porque ele opera em Matrix - o padrão para comunicação aberta e descentralizada.\n\nElement põe você em controle ao permitir você escolher quem hospeda suas conversas. De seu app Element, você pode escolher hospedar de diferentes maneiras:\n\n1. Pegar uma conta grátis no servidor público matrix.org\n2. Auto-hospedar sua conta ao rodar um servidor em seu próprio hardware\n3. Registrar-se para uma conta num servidor personalizado ao simplesmente assinar a plataforma de hospedagem Element Matrix Services\n\nPorquê escolher Element?\n\nTENHA POSSE DE SEUS DADOS: Você decide onde manter seus dados e mensagens. Você os possui e controla, não alguma MEGACORP que mina seus dados ou dá acesso a terceiros.\n\nMENSAGERIA E COLABORAÇÃO ABERTOS: Você pode conversar com qualquer outra pessoa na rede Matrix, caso ela esteja usando Element ou um outro app Matrix, e mesmo se ela estiver usando um sistema de mensageria diferente, do tipo de Slack, IRC ou XMPP.\n\nSUPER-SEGURO: Encriptação ponta-a-ponta real (somente aquelas/es na conversa podem decriptar mensagens), e assinatura cruzada para verificar os dispositivos de participantes de conversa.\n\nCOMUNICAÇÃO COMPLETA: Mensageria, chamadas de voz e vídeo, compartilhamento de arquivo, compartilhamento de tela e um monte de integrações, bots e widgets. Construa salas, comunidades, fique em contato e tenha as coisas feitas.\n\nEM TODO LUGAR ONDE VOCÊ ESTEJA: Fique em contato onde quer que você esteja com histórico de mensagem sincronizado por todos os dispositivos e na web em https://element.io/app.";
@@ -930,12 +929,10 @@
 "room_widget_permission_room_id_permission" = "ID de sala";
 // Service terms
 "service_terms_modal_title" = "Termos De Serviço";
-"service_terms_modal_message" = "Para continuar você precisa aceitar os termos deste serviço (%@).";
 "service_terms_modal_accept_button" = "Aceitar";
 "service_terms_modal_decline_button" = "Declinar";
 // Service terms - Variant for identity server when displayed out of a context
 "service_terms_modal_title_identity_server" = "Descoberta de contatos";
-"service_terms_modal_message_identity_server" = "Aceite os termos do servidor de identidade (%@) para descobrir contatos.";
 "service_terms_modal_policy_checkbox_accessibility_hint" = "Marque para aceitar %@";
 "secure_key_backup_setup_intro_title" = "Backup Seguro";
 "secure_key_backup_setup_intro_info" = "Salvaguardar-se contra perda de acesso a mensagens & dados encriptados ao fazer backup de chaves de encriptação em seu servidor.";
@@ -1128,7 +1125,7 @@
 "cross_signing_setup_banner_title" = "Configurar encriptação";
 "cross_signing_setup_banner_subtitle" = "Verifique seus outros dispositivos mais fácil";
 "major_update_title" = "Riot agora é %@";
-"major_update_learn_more_action" = "Saiba mais";
+"major_update_learn_more_action" = "Saber mais";
 "major_update_done_action" = "Entendido";
 "pin_protection_choose_pin" = "Crie um PIN por segurança";
 "pin_protection_confirm_pin" = "Confirme seu PIN";
@@ -1178,19 +1175,19 @@
 
 "room_info_list_one_member" = "1 membro";
 "create_room_placeholder_address" = "#salateste:matrix.org";
-"create_room_section_header_address" = "Endereço de sala";
-"create_room_show_in_directory" = "Mostrar a sala no diretório";
+"create_room_section_header_address" = "ENDEREÇO";
+"create_room_show_in_directory" = "Mostrar em diretório de sala";
 "create_room_section_footer_type" = "Pessoas se juntam a uma sala privada somente com o convite da sala.";
-"create_room_type_public" = "Sala Pública";
-"create_room_type_private" = "Sala Privada";
-"create_room_section_header_type" = "Tipo de sala";
+"create_room_type_public" = "Sala Pública (qualquer pessoa)";
+"create_room_type_private" = "Sala Privada (convite somente)";
+"create_room_section_header_type" = "QUEM PODE ACESSAR";
 "create_room_section_footer_encryption" = "Encriptação não pode ser desabilitada em seguida.";
 "create_room_enable_encryption" = "Habilitar Encriptação";
-"create_room_section_header_encryption" = "Encriptação de sala";
-"create_room_placeholder_topic" = "Tópico";
-"create_room_section_header_topic" = "Tópico de sala (opcional)";
+"create_room_section_header_encryption" = "ENCRIPTAÇÃO";
+"create_room_placeholder_topic" = "Sobre o quê é esta sala?";
+"create_room_section_header_topic" = "TÓPICO (OPCIONAL)";
 "create_room_placeholder_name" = "Nome";
-"create_room_section_header_name" = "Nome de sala";
+"create_room_section_header_name" = "NOME";
 
 // MARK: - Create Room
 
@@ -1576,7 +1573,7 @@
 "ok" = "OK";
 "onboarding_splash_page_1_message" = "Comunicação segura e independente que lhe dá o mesmo nível de privacidade que uma conversa face-a-face em sua própria casa.";
 "settings_enable_room_message_bubbles" = "Bolhas de mensagem";
-"onboarding_splash_page_4_message" = "Element também é ótimo para o lugar de trabalho. É confiado pelas organizações mais seguras do mundo.";
+"onboarding_splash_page_4_message" = "Element também é ótimo para o lugar de trabalho. Ele é confiado pelas organizações mais seguras do mundo.";
 "onboarding_splash_page_4_title_no_pun" = "Mensageria para seu time.";
 "onboarding_splash_page_3_message" = "Encriptado ponta-a-ponta e nenhum número de telefone requerido. Sem publicidade ou datamining.";
 "onboarding_splash_page_3_title" = "Mensageria segura.";
@@ -1731,7 +1728,6 @@
 "notice_encrypted_message" = "Mensagem encriptada";
 "set_power_level" = "Definir Nível de Poder";
 "power_level" = "Nível de Poder";
-"notice_encryption_enabled" = "%@ ativou a criptografia de ponta a ponta (algorithm %@)";
 "notice_image_attachment" = "anexo de imagem";
 "notice_audio_attachment" = "anexo de áudio";
 "notice_video_attachment" = "anexo de vídeo";
@@ -2099,13 +2095,175 @@
 "attachment_small_with_resolution" = "Pequeno %@ (~%@)";
 "attachment_size_prompt_message" = "Você pode desligar isto em ajustes.";
 "attachment_size_prompt_title" = "Confirmar tamanho para enviar";
-"room_displayname_all_other_participants_left" = "%@ (Saiu)";
 "room_displayname_all_other_members_left" = "%@ (Saiu)";
 "attachment_unsupported_preview_message" = "Este tipo de arquivo não é suportado.";
 "attachment_unsupported_preview_title" = "Incapaz de previsualizar";
 "message_reply_to_sender_sent_their_location" = "tem compartilhado a localização dela(e).";
-"home_syncing" = "Sincando";
+"home_syncing" = "Sincronizando";
 "room_participants_leave_success" = "Saiu de sala";
 "room_participants_leave_processing" = "Saindo";
 "notice_error_unformattable_event" = "** Incapaz de render mensagem. Por favor reporte um bug";
 "settings_labs_use_only_latest_user_avatar_and_name" = "Mostrar avatar e nomes mais recentes para usuárias(os) em histórico de mensagem";
+"ignore_user" = "Ignorar Usuária(o)";
+"location_sharing_pin_drop_share_title" = "Enviar esta localização";
+"location_sharing_static_share_title" = "Enviar minha localização atual";
+"live_location_sharing_banner_stop" = "Parar";
+"live_location_sharing_banner_title" = "Localização ao vivo habilitada";
+
+// MARK: Live location sharing
+
+"location_sharing_live_share_title" = "Compartilhar localização ao vivo";
+"side_menu_coach_message" = "Deslize para a direita ou toque para ver todas as salas";
+"spaces_add_room_missing_permission_message" = "Você não tem permissões para adicionar salas a este espaço.";
+"spaces_creation_in_one_space" = "em 1 espaço";
+"spaces_creation_in_many_spaces" = "em %@ espaços";
+"spaces_creation_in_spacename_plus_many" = "em %@ + %@ espaços";
+"spaces_creation_in_spacename_plus_one" = "em %@ + 1 espaço";
+"spaces_creation_in_spacename" = "em %@";
+"spaces_creation_post_process_inviting_users" = "Convidando %@ usuárias(os)";
+"spaces_creation_post_process_adding_rooms" = "Adicionando %@ salas";
+"spaces_creation_post_process_creating_room" = "Criando %@";
+"spaces_creation_post_process_uploading_avatar" = "Fazendo upload de avatar";
+"spaces_creation_post_process_creating_space_task" = "Criando %@";
+"spaces_creation_post_process_creating_space" = "Criando espaço";
+"spaces_creation_invite_by_username_message" = "Você pode convidá-las(os) mais tarde também.";
+"spaces_creation_invite_by_username_title" = "Convide seu time";
+"spaces_creation_invite_by_username" = "Convide por nome de usuária(o)";
+"spaces_creation_add_rooms_message" = "Como este espaço é apenas para você, ninguém vai ser informado. Você pode adicionar outras mais tarde.";
+"spaces_creation_add_rooms_title" = "O que você quer adicionar?";
+"spaces_creation_sharing_type_me_and_teammates_detail" = "Um espaço privado para você e suas/seus colegas de time";
+"spaces_creation_sharing_type_me_and_teammates_title" = "Eu e minhas/meus colegas de time";
+"spaces_creation_sharing_type_just_me_detail" = "Um espaço privado para organizar suas salas";
+"spaces_creation_sharing_type_just_me_title" = "Apenas eu";
+"spaces_creation_sharing_type_message" = "Assegure-se que as pessoas certas têm acesso %@. Você pode mudar isto mais tarde.";
+"spaces_creation_sharing_type_title" = "Com quem você está trabalhando?";
+"spaces_creation_email_invites_email_title" = "Email";
+"spaces_creation_email_invites_message" = "Você pode convidá-las(os) mais tarde também.";
+"spaces_creation_email_invites_title" = "Convide seu time";
+"spaces_creation_new_rooms_support" = "Suporte";
+"spaces_creation_new_rooms_random" = "Aleatório";
+"spaces_creation_new_rooms_general" = "Geral";
+"spaces_creation_new_rooms_room_name_title" = "Nome de sala";
+"spaces_creation_new_rooms_message" = "Nós vamos criar uma sala para cada uma.";
+"spaces_creation_new_rooms_title" = "Quais são algumas discussões que você vai ter?";
+"spaces_creation_cancel_message" = "Seu progresso vai ser perdido.";
+"spaces_creation_cancel_title" = "Parar de criar um espaço?";
+"spaces_creation_private_space_title" = "Seu espaço privado";
+"spaces_creation_public_space_title" = "Seu espaço público";
+"spaces_creation_address_already_exists" = "%@\njá existe";
+"spaces_creation_address_invalid_characters" = "%@\ntem caracteres inválidos";
+"spaces_creation_address_default_message" = "Seu espaço vai ser visualizável em\n%@";
+"spaces_creation_empty_room_name_error" = "Nome requerido";
+"spaces_creation_address" = "Endereço";
+"spaces_creation_settings_message" = "Adicione alguns detalhes para ajudá-lo a se destacar. Você pode mudar estes a qualquer ponto.";
+"spaces_creation_footer" = "Você pode mudar isto mais tarde";
+"spaces_creation_visibility_message" = "Para se juntar a um espaço existente, você precisa de um convite.";
+"spaces_creation_visibility_title" = "Que tipo de espaço você quer criar?";
+
+// Mark: - Space Creation
+
+"spaces_creation_hint" = "Espaços são uma nova maneira de agrupar salas e pessoas.";
+"space_settings_current_address_message" = "Seu espaço está visível em\n%@";
+"space_settings_update_failed_message" = "Falha para atualizar definições de espaço. Você quer retentar?";
+"space_settings_access_section" = "Quem pode acessar este espaço?";
+"space_topic" = "Descrição";
+"space_public_join_rule_detail" = "Aberto para qualquer pessoa, melhor para comunidades";
+"spaces_add_space" = "Adicionar espaço";
+"spaces_add_room" = "Adicionar sala";
+"spaces_invite_people" = "Convidar pessoas";
+"space_private_join_rule_detail" = "Convite somente, melhor para você mesma(o) ou times";
+"spaces_explore_rooms_one_room" = "1 sala";
+"spaces_explore_rooms_room_number" = "%@ salas";
+"spaces_create_space_title" = "Criar um espaço";
+"spaces_add_space_title" = "Criar espaço";
+"space_invite_not_enough_permission" = "Você não tem permissão para convidar pessoas para este espaço";
+"room_invite_not_enough_permission" = "Você não tem permissão para convidar pessoas para esta sala";
+"room_invite_to_room_option_detail" = "Ela/ele não vai ser uma parte de %@.";
+"room_invite_to_room_option_title" = "Para apenas esta sala";
+"room_invite_to_space_option_detail" = "Ela/ele pode explorar %@, mas não vai ser um membro de %@.";
+
+// Mark: - Room invite
+
+"room_invite_to_space_option_title" = "Para %@";
+"share_invite_link_space_text" = "Hey, junte-se a este espaço em %@";
+"share_invite_link_room_text" = "Hey, junte-se a esta sala em %@";
+
+// MARK: - Share invite link
+
+"share_invite_link_action" = "Compartilhar link de convite";
+"create_room_processing" = "Criando sala";
+"create_room_suggest_room_footer" = "Salas sugeridas são promovidas a membros de espaço como boas para se juntarem.";
+"create_room_suggest_room" = "Sugerir para membros de espaço";
+"create_room_show_in_directory_footer" = "Isto vai ajudar pessoas achar e se juntar.";
+"create_room_promotion_header" = "PROMOÇÃO";
+"create_room_section_footer_type_public" = "Somente pessoas convidadas podem achar e se juntar, não apenas pessoas em Nome de espaço.";
+"create_room_section_footer_type_restricted" = "Qualquer pessoa em Nome de espaço pode achar e se juntar.";
+"create_room_section_footer_type_private" = "Somente pessoas convidadas podem achar e se juntar.";
+"create_room_type_restricted" = "Membros de espaço";
+"call_jitsi_unable_to_start" = "Incapaz de começar chamada de conferência";
+"room_suggestion_settings_screen_message" = "Salas sugeridas são promovidas para membros de espaço como boas para se juntarem.";
+"room_suggestion_settings_screen_title" = "Fazer uma sala sugerida em um espaço";
+
+// Room suggestion Settings
+"room_suggestion_settings_screen_nav_title" = "Sugerir sala";
+"room_access_space_chooser_other_spaces_section_info" = "Estas são provavelmente coisas das quais outras(os) admins de %@ são uma parte.";
+"room_access_space_chooser_other_spaces_section" = "Outros espaços ou salas";
+"room_access_space_chooser_known_spaces_section" = "Espaços que você conhece contendo %@";
+"room_access_settings_screen_setting_room_access" = "Definindo acesso de sala";
+"room_access_settings_screen_upgrade_alert_upgrading" = "Fazer upgrade de sala";
+"room_access_settings_screen_upgrade_alert_upgrade_button" = "Fazer upgrade";
+"room_access_settings_screen_upgrade_alert_auto_invite_switch" = "Convidar automaticamente membros para nova sala";
+"room_access_settings_screen_public_message" = "Qualquer pessoa pode encontrar e se juntar.";
+"room_access_settings_screen_private_message" = "Somente pessoas convidadas podem achar e se juntar.";
+"room_access_settings_screen_message" = "Decida quem pode achar e se juntar a %@.";
+"room_access_settings_screen_restricted_message" = "Deixar qualquer pessoa em um espaço achar e se juntar.\nVocê vai ser pedida(o) para confirmar quais espaços.";
+"room_access_settings_screen_upgrade_alert_title" = "Fazer upgrade de sala";
+"room_access_settings_screen_edit_spaces" = "Editar espaços";
+"room_access_settings_screen_upgrade_required" = "Upgrade requerido";
+"room_access_settings_screen_title" = "Quem pode acessar esta sala?";
+
+// Room Access Settings
+"room_access_settings_screen_nav_title" = "Acesso de sala";
+"room_details_promote_room_suggest_title" = "Sugerir para membros de espaço";
+"room_details_promote_room_title" = "Promover sala";
+"room_details_access_row_title" = "Acesso";
+"settings_labs_enable_auto_report_decryption_errors" = "Auto Reportar Erros de Decriptação";
+"room_preview_decline_invitation_options" = "Você quer declinar o convite ou ignorar esta(e) usuária(o)?";
+"threads_beta_cancel" = "Não agora";
+"threads_beta_enable" = "Teste aí";
+"threads_beta_information_link" = "Saber mais";
+"threads_beta_information" = "Mantenha discussões organizadas com threads.\n\nThreads ajudam manter suas conversas em-tópico e fáceis de rastrear. ";
+"threads_beta_title" = "Threads";
+"threads_notice_done" = "Entendido";
+"threads_notice_information" = "Todas as threads criadas durante o período experimental não vão ser <b>rendidas como respostas regulares</b>.<br/><br/>Isto vai ser uma transição única, visto que threads são agora parte da especificação Matrix.";
+"threads_notice_title" = "Threads não mais experimentais 🎉";
+"room_participants_invite_prompt_to_msg" = "Você tem certeza que você quer convidar %@ para %@?";
+"onboarding_celebration_button" = "Vamo lá";
+"onboarding_celebration_message" = "Suas preferências têm sido salvas.";
+"onboarding_celebration_title" = "Você está pronta(o)!";
+"onboarding_avatar_accessibility_label" = "Imagem de perfil";
+"onboarding_avatar_message" = "Você pode mudar isto a qualquer hora.";
+"onboarding_avatar_title" = "Adicione uma imagem de perfil";
+"onboarding_display_name_max_length" = "Seu nome de exibição deve ser menos que 256 caracteres";
+"onboarding_display_name_hint" = "Você pode mudar isto mais tarde";
+"onboarding_display_name_placeholder" = "Nome de Exibição";
+"onboarding_display_name_message" = "Isto vai ser mostrado quando você enviar mensagens.";
+"onboarding_display_name_title" = "Escolha um nome de exibição";
+"onboarding_personalization_skip" = "Pular este passo";
+"onboarding_personalization_save" = "Salvar e continuar";
+"onboarding_congratulations_home_button" = "Me leve para casa";
+"onboarding_congratulations_personalize_button" = "Personalizar perfil";
+/* The placeholder string contains the user's matrix ID */
+"onboarding_congratulations_message" = "Sua conta %@ tem sido criada.";
+"onboarding_congratulations_title" = "Parabéns!";
+"saving" = "Salvando";
+
+// Activities
+"loading" = "Carregando";
+"edit" = "Editar";
+"suggest" = "Sugerir";
+"new_word" = "Nova(o)";
+"add" = "Adicionar";
+"existing" = "Existente";
+"stop" = "Parar";
+"joining" = "Juntando-Se";

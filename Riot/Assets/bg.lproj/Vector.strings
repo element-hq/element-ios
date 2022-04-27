@@ -445,7 +445,6 @@
 "network_offline_prompt" = "Интернет връзката изглежда не работи.";
 "public_room_section_title" = "Публични стаи (в %@):";
 "bug_report_prompt" = "Приложението спря да работи последния път. Искате ли да изпратите съобщение за грешка?";
-"rage_shake_prompt" = "Изглежда, че разклащате телефона, което ни кара да мислим, че не сте доволни от %@. Искате ли да изпратите съобщение за грешка?";
 "do_not_ask_again" = "Не питай отново";
 "camera_access_not_granted" = "%@ няма разрешение да използва камерата. Моля, проверете настройките за сигурност";
 "large_badge_value_k_format" = "%.1fK";
@@ -469,7 +468,6 @@
 "bug_report_send" = "Изпрати";
 "no_voip" = "%@ Ви се обажда, но %@ все още не поддържа разговори.\nМожете да пренебрегнете това известие и да отговорите на това позвъняване от друго устройство или да го откажете.";
 // Crash report
-"google_analytics_use_prompt" = "Искате ли да помогнете за подобрението на %@ като анонимно изпращате съобщения за грешки и данни за използване?";
 // Crypto
 "e2e_enabling_on_app_update" = "%@ поддържа шифроване от край до край, но за да го включите трябва да влезете в профила си отново.\n\nМоже да го направите сега или по-късно от настройките на приложението.";
 "e2e_need_log_in_again" = "Трябва да влезете обратно в профила си, за да се създадат ключове за шифроване от-край-до-край за тази сесия и да се изпрати публичния ключ към Home сървъра.\nТова е еднократно. Извинете за неудобството.";
@@ -560,7 +558,6 @@
 "settings_key_backup_info_not_valid" = "Тази сесия не прави резервно копие на ключовете Ви, но имате съществуващо резервно копие, от което да възстановявате или допълвате в бъдеще.";
 "settings_key_backup_info_progress" = "Правене на резервно копие на %@ ключа…";
 "settings_key_backup_info_progress_done" = "Има резервно копие на всички ключове";
-"settings_key_backup_info_not_trusted_from_verifiable_device_fix_action" = "За да използвате Възстановяване на Защитени Съобщения на това устройство, потвърдете %@ сега.";
 "settings_key_backup_info_not_trusted_fix_action" = "За да използвате Възстановяване на Защитени Съобщения на това устройство, въведете паролата си или ключа за възстановяване.";
 "settings_key_backup_info_trust_signature_unknown" = "Резервното копие има подпис от сесия с идентификатор: %@";
 "settings_key_backup_info_trust_signature_valid" = "Резервното копие има валиден подпис от текущата сесия";
@@ -671,10 +668,6 @@
 "room_event_action_reply" = "Отговори";
 "room_event_action_edit" = "Редактирай";
 "auth_login_single_sign_on" = "Вход";
-"room_event_action_reaction_agree" = "Съгласи се с %@";
-"room_event_action_reaction_disagree" = "Противоречи на %@";
-"room_event_action_reaction_like" = "Харесай %@";
-"room_event_action_reaction_dislike" = "Не харесай %@";
 "room_action_reply" = "Отговори";
 "settings_labs_message_reaction" = "Реагирай на съобщения с емоджи";
 "settings_key_backup_button_connect" = "Свържи сесията към резервно копие на ключове";
@@ -820,7 +813,6 @@
 "room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Не е конфигуриран сървър за самоличност, така че не можете да започнете чат с контакт посредством имейл адрес.";
 // Service terms
 "service_terms_modal_title" = "Условия за ползване";
-"service_terms_modal_message" = "За да продължите, трябва да приемете Условията за ползване на тази услуга (%@).";
 "service_terms_modal_accept_button" = "Приеми";
 "service_terms_modal_description_for_identity_server" = "Бъдете откриваеми от потребители";
 "service_terms_modal_description_for_integration_manager" = "Използвайте ботове, връзки към други мрежи и стикери";
@@ -879,7 +871,6 @@
 "settings_identity_server_no_is_description" = "В момента не използвате сървър за самоличност. Добавете такъв по-горе, за да откривате и бъдете откриваеми от съществуващи ваши контакти.";
 // Identity server settings
 "identity_server_settings_title" = "Сървър за самоличност";
-"identity_server_settings_description" = "В момента използвате %2 за да откривате и да бъдете открити от съществуващи ваши контакти.";
 "identity_server_settings_no_is_description" = "В момента не използвате сървър за самоличност. Добавете такъв по-горе, за да откривате и бъдете открити от съществуващи ваши контакти.";
 "identity_server_settings_place_holder" = "Въведете сървър за самоличност";
 "identity_server_settings_add" = "Добави";
@@ -906,7 +897,6 @@
 "service_terms_modal_description_for_identity_server_2" = "Бъдете откриваеми по телефон или имейл";
 // Service terms - Variant for identity server when displayed out of a context
 "service_terms_modal_title_identity_server" = "Откриване на контакти";
-"service_terms_modal_message_identity_server" = "Приемете условията на сървъра за самоличност (%@) за да откривате контакти.";
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Добавете сървър за самоличност в настройки за да каните по имейл.";
 "error_not_supported_on_mobile" = "Не може да правите това от %@ мобилен телефон.";
@@ -1348,7 +1338,6 @@
 "event_formatter_call_you_missed" = "Пропуснахте това обаждане";
 "event_formatter_call_you_declined" = "Отказахте разговора";
 "event_formatter_call_you_currently_in" = "Активен разговор";
-"event_formatter_call_has_ended" = "Прекратяване на %@";
 "event_formatter_call_ringing" = "Звънене…";
 "event_formatter_call_connecting" = "Свързване…";
 "event_formatter_call_video" = "Видео разговор";
@@ -1481,7 +1470,6 @@
 "notice_room_aliases" = "Адресите на стаята са: %@";
 "notice_room_related_groups" = "Групите, асоциирани с тази стая, са: %@";
 "notice_encrypted_message" = "Шифровано съобщение";
-"notice_encryption_enabled" = "%@ включи шифроването от край до край (алгоритъм %@)";
 "notice_image_attachment" = "прикачена снимка";
 "notice_audio_attachment" = "прикачено аудио";
 "notice_video_attachment" = "прикачено видео";
@@ -1503,7 +1491,6 @@
 // room display name
 "room_displayname_empty_room" = "Празна стая";
 "room_displayname_two_members" = "%@ и %@";
-"room_displayname_more_than_two_members" = "%@ и %u други";
 // Settings
 "settings" = "Настройки";
 "settings_enable_inapp_notifications" = "Включване на известия в приложението";

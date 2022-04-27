@@ -39,7 +39,6 @@
 /** Image Messages **/
 
 /* New action message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@ برای شما یک تصویر ارسال کرد %@";
 
 /* New action message from a specific person in a named room. */
 "IMAGE_FROM_USER_IN_ROOM" = "%@ یک تصویر پست کرد %@ in %@";

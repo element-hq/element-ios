@@ -125,7 +125,6 @@
 "directory_cell_title" = "浏览目录";
 "directory_cell_description" = "%tu 个聊天室";
 "directory_search_results_title" = "浏览目录结果";
-"directory_search_results" = "搜索%@，找到了%tu个结果";
 "directory_search_results_more_than" = ">找到了%tu个 %@的搜索结果";
 "directory_searching_title" = "正在搜索目录…";
 "directory_search_fail" = "获取数据失败";
@@ -183,7 +182,6 @@
 "room_new_messages_notification" = "%d 条未读消息";
 "room_one_user_is_typing" = "%@ 正在输入…";
 "room_two_users_are_typing" = "%@ 和 %@ 正在输入…";
-"room_many_users_are_typing" = "%@、%@ 和 %@ 正在输入…";
 "room_message_placeholder" = "发送消息（未加密）…";
 "encrypted_room_message_placeholder" = "发送加密消息…";
 "room_message_short_placeholder" = "发送消息…";
@@ -385,7 +383,6 @@
 "no_voip_title" = "来电";
 "no_voip" = "%@ 正在请求与您通话然而 %@ 尚不支持通话。\n您可以忽略此通知并通过其他设备接听，或者您可以拒绝接听。";
 // Crash report
-"google_analytics_use_prompt" = "您打算通过自动报告匿名的崩溃报告和使用数据来帮助提升 %@ 吗？";
 // Crypto
 "e2e_enabling_on_app_update" = "%@ 现在支持端到端加密，但是您需要重新登录以启用它。\n\n您可以现在重新登录，也可以之后从应用程序设置中选择开启。";
 "e2e_need_log_in_again" = "您需要登录回来以便为此会话生成端对端加密密钥并提交公钥到您的主服务器。\n这只需要做一次；很抱歉造成打扰。";
@@ -822,7 +819,6 @@
 "room_widget_permission_room_id_permission" = "聊天室ID";
 // Service terms
 "service_terms_modal_title" = "服务条款";
-"service_terms_modal_message" = "你需要接受此服务（%@）的条款以继续。";
 "service_terms_modal_accept_button" = "接受";
 "service_terms_modal_decline_button" = "拒绝";
 "service_terms_modal_description_for_identity_server_1" = "用电话或邮箱找到别人";
@@ -830,7 +826,6 @@
 "service_terms_modal_description_for_integration_manager" = "使用机器人，桥接，小插件和贴图包";
 // Service terms - Variant for identity server when displayed out of a context
 "service_terms_modal_title_identity_server" = "通讯录发现";
-"service_terms_modal_message_identity_server" = "接受此身份认证服务器（%@）的条款以发现联系人。";
 "service_terms_modal_policy_checkbox_accessibility_hint" = "查看以接受%@";
 "key_backup_setup_intro_setup_connect_action_with_existing_backup" = "关联此设备到“密钥备份”";
 "key_backup_recover_connent_banner_subtitle" = "关联此会话到“密钥备份”";
@@ -1001,7 +996,6 @@
 "security_settings_cryptography" = "加密";
 "security_settings_complete_security_alert_title" = "绝对安全";
 "security_settings_complete_security_alert_message" = "您应该先完成当前会话的安全防护。";
-"security_settings_coming_soon" = "对不起。这个操作在 %@ iOS 版本上还不可用。请使用另一个 Matrix 客户端来设置它。Elment iOS 会沿用其他客户端的设置。";
 // Recover from private key
 "key_backup_recover_from_private_key_info" = "备份恢复中…";
 // MARK: - Device Verification
@@ -1499,7 +1493,6 @@
 "space_private_join_rule" = "私密空间";
 "space_participants_action_ban" = "禁止进入这个空间";
 "space_participants_action_remove" = "从这个空间删除";
-"spaces_coming_soon_detail" = "此特性尚未实现，还在开发。现在，您可以在计算机上使用 Element 来体验。";
 "spaces_invites_coming_soon_title" = "邀请即将到来";
 "spaces_coming_soon_title" = "即将到来";
 "spaces_no_member_found_detail" = "寻找不在 %@ 中的某人？现在，你可以通过网页或桌面端邀请他们。";
@@ -1598,7 +1591,6 @@
 /* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
 "analytics_prompt_terms_new_user" = "你可以阅读我们所有的条款 %@。";
 "analytics_prompt_message_upgrade" = "您之前同意与我们共享匿名使用数据。 现在，为了帮助了解人们如何使用多个设备，我们将生成一个随机标识符，由您的设备共享。";
-"analytics_prompt_message_new_user" = "通过共享匿名使用数据帮助我们发现问题并改进 Element。 为了了解人们如何使用多个设备，我们将生成一个随机标识符，由您的设备共享。";
 
 // Analytics
 "analytics_prompt_title" = "帮助改进 %@";
@@ -1690,7 +1682,6 @@
 "notice_room_power_level_event_requirement" = "事件所需的最小权限级别：";
 "notice_room_aliases" = "此聊天室的别名是：%@";
 "notice_encrypted_message" = "已加密消息";
-"notice_encryption_enabled" = "%@ 打开了端对端加密（算法 %@）";
 "notice_image_attachment" = "图片附件";
 "notice_audio_attachment" = "音频附件";
 "notice_video_attachment" = "视频附件";
@@ -1708,7 +1699,6 @@
 "notice_error_unknown_event_type" = "未知的事件类型";
 "notice_room_history_visible_to_anyone" = "%@ 将未来的聊天室消息历史设为对所有人可见。";
 "notice_room_history_visible_to_members" = "%@ 将未来的聊天室消息历史设为对所有聊天室成员可见。";
-"notice_room_history_visible_to_members_from_invited_point" = "你将未来的聊天室消息历史设为对所有聊天室成员可见，从他们被邀请时开始。";
 "notice_room_history_visible_to_members_from_joined_point" = "%@ 将未来的聊天室消息历史设为对所有聊天室成员可见，从他们加入时开始。";
 "notice_crypto_unable_to_decrypt" = "** 无法解密：%@ **";
 "notice_crypto_error_unknown_inbound_session_id" = "发送者的会话没有向我们发送此消息的密钥。";
@@ -2073,7 +2063,6 @@
 "attachment_small_with_resolution" = "小 %@ (~%@)";
 "attachment_size_prompt_message" = "你可以在设置中关闭这个。";
 "attachment_size_prompt_title" = "确认要发送的大小";
-"room_displayname_all_other_participants_left" = "%@ (离开)";
 "room_displayname_all_other_members_left" = "%@ (离开)";
 "attachment_unsupported_preview_message" = "文件类型不受支持。";
 "attachment_unsupported_preview_title" = "无法预览";
