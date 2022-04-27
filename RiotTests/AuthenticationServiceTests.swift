@@ -36,14 +36,14 @@ class AuthenticationServiceTests: XCTestCase {
         // Given a fresh service.
         let service = AuthenticationService()
         XCTAssertNil(service.registrationWizard, "A new service shouldn't provide a registration wizard.")
-        XCTAssertNil(service.state.initialRegistrationFlow, "A new service shouldn't provide an initial registration flow.")
+        XCTAssertNil(service.state.homeserver.registrationFlow, "A new service shouldn't provide a registration flow for the homeserver.")
         
         // When starting a new registration flow.
         try await service.startFlow(.registration, for: "https://matrix.org")
         
         // Then a registration wizard should be available for use.
         XCTAssertNotNil(service.registrationWizard, "The registration wizard should exist after starting a registration flow.")
-        XCTAssertNotNil(service.state.initialRegistrationFlow, "The result from setting up a registration wizard should be available in the service.")
+        XCTAssertNotNil(service.state.homeserver.registrationFlow, "The supported registration flow should be stored after starting a registration flow.")
     }
     
     func testReset() async throws {
@@ -51,9 +51,9 @@ class AuthenticationServiceTests: XCTestCase {
         let service = AuthenticationService()
         try await service.startFlow(.registration, for: "https://matrix.org")
         _ = try await service.registrationWizard?.createAccount(username: UUID().uuidString, password: UUID().uuidString, initialDeviceDisplayName: "Test")
-        XCTAssertNotNil(service.loginWizard, "The login wizard should exist after startFlow has been called.")
+        XCTAssertNotNil(service.loginWizard, "The login wizard should exist after starting a registration flow.")
         XCTAssertNotNil(service.registrationWizard, "The registration wizard should exist after starting a registration flow.")
-        XCTAssertNotNil(service.state.initialRegistrationFlow, "An initial registration flow should exist after starting a registration flow.")
+        XCTAssertNotNil(service.state.homeserver.registrationFlow, "The supported registration flow should be stored after starting a registration flow.")
         XCTAssertTrue(service.isRegistrationStarted, "The service should show as having started registration.")
         XCTAssertEqual(service.state.flow, .registration, "The service should show as using a registration flow.")
         
@@ -63,7 +63,7 @@ class AuthenticationServiceTests: XCTestCase {
         // Then the wizards should no longer exist.
         XCTAssertNil(service.loginWizard, "The login wizard should be cleared after calling reset.")
         XCTAssertNil(service.registrationWizard, "The registration wizard should be cleared after calling reset.")
-        XCTAssertNil(service.state.initialRegistrationFlow, "The initial registration flow should be cleared when calling reset.")
+        XCTAssertNil(service.state.homeserver.registrationFlow, "The supported registration flow should be cleared when calling reset.")
         XCTAssertFalse(service.isRegistrationStarted, "The service should not indicate it has started registration after calling reset.")
         XCTAssertEqual(service.state.flow, .login, "The flow should have been set back to login when calling reset.")
     }

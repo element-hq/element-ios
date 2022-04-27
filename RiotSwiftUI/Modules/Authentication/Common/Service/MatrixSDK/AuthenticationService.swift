@@ -111,7 +111,7 @@ class AuthenticationService: NSObject {
         
         if flow == .registration {
             let registrationWizard = RegistrationWizard(client: client)
-            state.initialRegistrationFlow = try await registrationWizard.registrationFlow()
+            state.homeserver.registrationFlow = try await registrationWizard.registrationFlow()
             self.registrationWizard = registrationWizard
         }
         

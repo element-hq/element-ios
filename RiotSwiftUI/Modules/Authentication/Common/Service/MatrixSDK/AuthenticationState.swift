@@ -26,9 +26,6 @@ struct AuthenticationState {
     var homeserver: Homeserver
     var isForceLoginFallbackEnabled = false
     
-    /// The registration flow response returned when calling `startFlow` for `.registration`.
-    var initialRegistrationFlow: RegistrationResult?
-    
     init(flow: AuthenticationFlow, homeserverAddress: String) {
         self.flow = flow
         self.homeserver = Homeserver(address: homeserverAddress)
@@ -44,5 +41,8 @@ struct AuthenticationState {
         var preferredLoginMode: LoginMode = .unknown
         /// Supported types for the login.
         var loginModeSupportedTypes = [MXLoginFlow]()
+        
+        /// The response returned when querying the homeserver for registration flows.
+        var registrationFlow: RegistrationResult?
     }
 }
