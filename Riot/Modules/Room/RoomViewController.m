@@ -3215,6 +3215,10 @@ static CGSize kThreadListBarButtonItemImageSize;
                         [self selectEventWithId:tappedEvent.eventId];
                     }
                 }
+                else if (bubbleData.tag == RoomBubbleCellDataTagLiveLocation)
+                {
+                    [self.delegate roomViewController:self didRequestLiveLocationPresentationForEvent:tappedEvent bubbleData:bubbleData];
+                }
                 else
                 {
                     // Show contextual menu on single tap if bubble is not collapsed

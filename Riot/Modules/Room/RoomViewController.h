@@ -249,6 +249,11 @@ handleUniversalLinkWithParameters:(UniversalLinkParameters*)parameters;
 didRequestLocationPresentationForEvent:(MXEvent *)event
                 bubbleData:(id<MXKRoomBubbleCellDataStoring>)bubbleData;
 
+/// Ask the coordinator to present the live location sharing viewer.
+- (void)roomViewController:(RoomViewController *)roomViewController
+didRequestLiveLocationPresentationForEvent:(MXEvent *)event
+                bubbleData:(id<MXKRoomBubbleCellDataStoring>)bubbleData;
+
 - (nullable UIActivityViewController *)roomViewController:(RoomViewController *)roomViewController
               locationShareActivityViewControllerForEvent:(MXEvent *)event;
 
