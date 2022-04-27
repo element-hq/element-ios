@@ -36,12 +36,20 @@ struct AlertInfo<T: Hashable>: Identifiable {
     var secondaryButton: (title: String, action: (() -> Void)?)? = nil
 }
 
-extension AlertInfo where T == Int {
+extension AlertInfo {
     /// Initialises the type with the title and message from an `NSError` along with the default Ok button.
-    init?(error: NSError? = nil) {
+    init?(error: NSError? = nil) where T == Int {
+        self.init(id: error?.code ?? -1, error: error)
+    }
+    
+    /// Initialises the type with the title and message from an `NSError` along with the default Ok button.
+    /// - Parameters:
+    ///   - id: An ID that identifies the error.
+    ///   - error: The Error that occurred.
+    init?(id: T, error: NSError? = nil) {
         guard error?.domain != NSURLErrorDomain && error?.code != NSURLErrorCancelled else { return nil }
         
-        id = error?.code ?? -1
+        self.id = id
         title = error?.userInfo[NSLocalizedFailureReasonErrorKey] as? String ?? VectorL10n.error
         message = error?.userInfo[NSLocalizedDescriptionKey] as? String ?? VectorL10n.errorCommonMessage
     }
