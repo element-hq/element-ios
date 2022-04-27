@@ -16,6 +16,7 @@
 
 import Foundation
 import CoreLocation
+import MatrixSDK
 
 @available(iOS 14.0, *)
 class LiveLocationSharingViewerService: LiveLocationSharingViewerServiceProtocol {
@@ -31,12 +32,44 @@ class LiveLocationSharingViewerService: LiveLocationSharingViewerServiceProtocol
     // MARK: Public
     
     func isCurrentUserId(_ userId: String) -> Bool {
-        return false
+        return self.session.myUserId == userId
     }
     
     // MARK: - Setup
     
-    init(session: MXSession) {
+    init(session: MXSession, roomId: String) {
         self.session = session
+        
+        let beaconInfoSummaries = self.session.locationService.getLiveBeaconInfoSummaries(inRoomWithId: roomId)
+        
+        self.usersLiveLocation = Self.usersLiveLocation(fromBeaconInfoSummaries: beaconInfoSummaries, session: session)
+    }
+    
+    // MARK: - Private
+    
+    class private func usersLiveLocation(fromBeaconInfoSummaries beaconInfoSummaries: [MXBeaconInfoSummaryProtocol], session: MXSession) -> [UserLiveLocation] {
+        
+        return beaconInfoSummaries.compactMap { beaconInfoSummary in
+            
+            let beaconInfo = beaconInfoSummary.beaconInfo
+            
+            guard let lastBeacon = beaconInfoSummary.lastBeacon else {
+                return nil
+            }
+            
+            let avatarData = session.avatarInput(for: beaconInfoSummary.userId)
+            
+            let timestamp = TimeInterval(beaconInfo.timestamp/1000)
+            let timeout = TimeInterval(beaconInfo.timeout/1000)
+            let lastUpdate = TimeInterval(lastBeacon.timestamp/1000)
+            
+            let coordinate = CLLocationCoordinate2D(latitude: lastBeacon.location.latitude, longitude: lastBeacon.location.longitude)
+            
+            return UserLiveLocation(avatarData: avatarData,
+                                    timestamp: timestamp,
+                                    timeout: timeout,
+                                    lastUpdate: lastUpdate,
+                                    coordinate: coordinate)
+        }
     }
 }
