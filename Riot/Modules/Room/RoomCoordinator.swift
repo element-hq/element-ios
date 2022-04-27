@@ -248,6 +248,31 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         completion?()
     }
     
+    private func showLiveLocationViewer(withEvent event: MXEvent, bubbleData: MXKRoomBubbleCellDataStoring) {
+        
+        guard let mxSession = self.mxSession, let navigationRouter = self.navigationRouter, let roomId = event.roomId else {
+            return
+        }
+        
+        let parameters = LiveLocationSharingViewerCoordinatorParameters(session: mxSession, roomId: roomId, navigationRouter: nil)
+        
+        let coordinator = LiveLocationSharingViewerCoordinator(parameters: parameters)
+        
+        coordinator.completion = { [weak self, weak coordinator] in
+            guard let self = self, let coordinator = coordinator else {
+                return
+            }
+            
+            self.navigationRouter?.dismissModule(animated: true, completion: nil)
+            self.remove(childCoordinator: coordinator)
+        }
+        
+        add(childCoordinator: coordinator)
+        
+        navigationRouter.present(coordinator, animated: true)
+        coordinator.start()
+    }
+    
     private func showLocationCoordinatorWithEvent(_ event: MXEvent, bubbleData: MXKRoomBubbleCellDataStoring) {
         guard #available(iOS 14.0, *) else {
             return
@@ -447,6 +472,11 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     
     func roomViewController(_ roomViewController: RoomViewController, didRequestLocationPresentationFor event: MXEvent, bubbleData: MXKRoomBubbleCellDataStoring) {
         showLocationCoordinatorWithEvent(event, bubbleData: bubbleData)
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, didRequestLiveLocationPresentationFor event: MXEvent, bubbleData: MXKRoomBubbleCellDataStoring) {
+        
+        showLiveLocationViewer(withEvent: event, bubbleData: bubbleData)
     }
     
     func roomViewController(_ roomViewController: RoomViewController, locationShareActivityViewControllerFor event: MXEvent) -> UIActivityViewController? {

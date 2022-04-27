@@ -422,6 +422,10 @@ extension ExploreRoomCoordinator: RoomViewControllerDelegate {
         // TODO:
     }
     
+    func roomViewController(_ roomViewController: RoomViewController, didRequestLiveLocationPresentationFor event: MXEvent, bubbleData: MXKRoomBubbleCellDataStoring) {
+        // TODO:
+    }
+    
     func roomViewController(_ roomViewController: RoomViewController, didRequestLocationPresentationFor event: MXEvent, bubbleData: MXKRoomBubbleCellDataStoring) {
         // TODO:
     }
