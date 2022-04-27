@@ -77,17 +77,13 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     func start() {
         Task {
             #warning("Catch any errors and handle them")
-            let (loginFlowResult, registrationResult) = try await authenticationService.refreshServer(homeserverAddress: authenticationService.homeserverAddress)
-            
-            if case let .success(session) = registrationResult {
-                onSessionCreated(session: session, isAccountCreated: true)
-                return
-            }
+            let flow: AuthenticationFlow = initialScreen == .login ? .login : .registration
+            try await authenticationService.startFlow(flow, for: authenticationService.state.homeserver.address)
             
             await MainActor.run {
                 switch initialScreen {
                 case .registration:
-                    showRegistrationScreen(registrationResult: registrationResult, loginFlowResult: loginFlowResult)
+                    showRegistrationScreen()
                 case .selectServerForRegistration:
                     showServerSelectionScreen()
                 case .login:
@@ -142,20 +138,21 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     @MainActor private func serverSelectionCoordinator(_ coordinator: AuthenticationServerSelectionCoordinator,
                                                        didCompleteWith result: AuthenticationServerSelectionCoordinatorResult) {
         switch result {
-        case .updated(let loginFlow, let registrationResult):
-            showRegistrationScreen(registrationResult: registrationResult, loginFlowResult: loginFlow)
+        case .updated:
+            showRegistrationScreen()
         case .dismiss:
             MXLog.failure("[AuthenticationCoordinator] AuthenticationServerSelectionScreen is requesting dismiss when part of a stack.")
         }
     }
     
     /// Shows the registration screen.
-    @MainActor private func showRegistrationScreen(registrationResult: RegistrationResult, loginFlowResult: LoginFlowResult) {
+    @MainActor private func showRegistrationScreen() {
         MXLog.debug("[AuthenticationCoordinator] showRegistrationScreen")
+        let homeserver = authenticationService.state.homeserver
         let parameters = AuthenticationRegistrationCoordinatorParameters(navigationRouter: navigationRouter,
                                                                          authenticationService: authenticationService,
-                                                                         registrationResult: registrationResult,
-                                                                         loginFlowResult: loginFlowResult)
+                                                                         registrationFlow: homeserver.registrationFlow,
+                                                                         loginMode: homeserver.preferredLoginMode)
         let coordinator = AuthenticationRegistrationCoordinator(parameters: parameters)
         coordinator.completion = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
