@@ -25,7 +25,7 @@ protocol RoomTimelineLocationViewDelegate: AnyObject {
 }
 
 struct RoomTimelineLocationViewData {
-    let location: CLLocationCoordinate2D
+    let location: CLLocationCoordinate2D?
     let userAvatarData: AvatarViewData?
     let mapStyleURL: URL
 }
@@ -162,29 +162,33 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     
     // MARK: - Private
     
-    private func displayLocation(_ location: CLLocationCoordinate2D,
+    private func displayLocation(_ location: CLLocationCoordinate2D?,
                                  userAvatarData: AvatarViewData? = nil,
                                  mapStyleURL: URL,
                                  bannerViewData: LiveLocationBannerViewData? = nil) {
         
-        mapView.styleURL = mapStyleURL
-        
-        annotationView = LocationMarkerView.loadFromNib()
-        
-        if let userAvatarData = userAvatarData {
-            let avatarBackgroundColor = Self.usernameColorGenerator.color(from: userAvatarData.matrixItemId)
-            annotationView?.setAvatarData(userAvatarData, avatarBackgroundColor: avatarBackgroundColor)
+        if let location = location {
+            mapView.styleURL = mapStyleURL
+            
+            annotationView = LocationMarkerView.loadFromNib()
+            
+            if let userAvatarData = userAvatarData {
+                let avatarBackgroundColor = Self.usernameColorGenerator.color(from: userAvatarData.matrixItemId)
+                annotationView?.setAvatarData(userAvatarData, avatarBackgroundColor: avatarBackgroundColor)
+            }
+            
+            if let annotations = mapView.annotations {
+                mapView.removeAnnotations(annotations)
+            }
+            
+            mapView.setCenter(location, zoomLevel: Constants.mapZoomLevel, animated: false)
+            
+            let pointAnnotation = MGLPointAnnotation()
+            pointAnnotation.coordinate = location
+            mapView.addAnnotation(pointAnnotation)
+        } else {
+            mapView.isHidden = true
         }
-        
-        if let annotations = mapView.annotations {
-            mapView.removeAnnotations(annotations)
-        }
-        
-        mapView.setCenter(location, zoomLevel: Constants.mapZoomLevel, animated: false)
-        
-        let pointAnnotation = MGLPointAnnotation()
-        pointAnnotation.coordinate = location
-        mapView.addAnnotation(pointAnnotation)
         
         // Configure live location banner
         guard let bannerViewData = bannerViewData else {

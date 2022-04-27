@@ -427,6 +427,6 @@ final class BuildSettings: NSObject {
         }
         
         // Do not enable live location sharing atm
-        return false
+        return true
     }
 }

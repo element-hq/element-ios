@@ -26,18 +26,26 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
         super.render(cellData)
         
         guard #available(iOS 14.0, *),
-              let bubbleData = cellData as? RoomBubbleCellData,
-              let event = bubbleData.events.last
+              let bubbleData = cellData as? RoomBubbleCellData
         else {
             return
         }
         
-        self.event = event
         locationView.update(theme: ThemeService.shared().theme)
         
-        // Comment this line and uncomment next one to test UI of live location tile
-        renderStaticLocation(event)
-//        renderLiveLocation(event)
+        if bubbleData.cellDataTag == .location,
+           let event = bubbleData.events.last {
+            self.event = event
+            renderStaticLocation(event)
+        } else if bubbleData.cellDataTag == .liveLocation,
+                  let beaconInfoSummary = bubbleData.beaconInfoSummary {
+            if bubbleData.mxSession.myUserId == beaconInfoSummary.userId {
+                renderOutgoingLiveLocation(beaconInfoSummary)
+            } else if bubbleData.senderId == beaconInfoSummary.userId {
+                renderIncomingLiveLocation(beaconInfoSummary)
+            }
+            
+        }
     }
     
     private func renderStaticLocation(_ event: MXEvent) {
@@ -55,10 +63,10 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
         
         if locationContent.assetType == .user {
             avatarViewData = AvatarViewData(matrixItemId: bubbleData.senderId,
-                                                displayName: bubbleData.senderDisplayName,
-                                                avatarUrl: bubbleData.senderAvatarUrl,
-                                                mediaManager: bubbleData.mxSession.mediaManager,
-                                                fallbackImage: .matrixItem(bubbleData.senderId, bubbleData.senderDisplayName))
+                                            displayName: bubbleData.senderDisplayName,
+                                            avatarUrl: bubbleData.senderAvatarUrl,
+                                            mediaManager: bubbleData.mxSession.mediaManager,
+                                            fallbackImage: .matrixItem(bubbleData.senderId, bubbleData.senderDisplayName))
         } else {
             avatarViewData = nil
         }
@@ -66,31 +74,56 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
         locationView.displayStaticLocation(with: RoomTimelineLocationViewData(location: location, userAvatarData: avatarViewData, mapStyleURL: mapStyleURL))
     }
     
-    private func renderLiveLocation(_ event: MXEvent) {
-        // TODO: - Render live location cell when live location event is handled
-        
-        // This code is only for testing live location cell
-        // Will be completed when the live location event is handled
-        
-        guard let locationContent = event.location else {
-            return
-        }
-        
-        locationView.locationDescription = locationContent.locationDescription
-        
-        let location = CLLocationCoordinate2D(latitude: locationContent.latitude, longitude: locationContent.longitude)
-        
-        let mapStyleURL = bubbleData.mxSession.vc_homeserverConfiguration().tileServer.mapStyleURL
-        
+    private func renderIncomingLiveLocation(_ beaconInfoSummary: MXBeaconInfoSummaryProtocol) {
+        let liveLocationStatus: IncomingLiveLocationSharingStatus
+        var location: CLLocationCoordinate2D?
         let avatarViewData = AvatarViewData(matrixItemId: bubbleData.senderId,
                                             displayName: bubbleData.senderDisplayName,
                                             avatarUrl: bubbleData.senderAvatarUrl,
                                             mediaManager: bubbleData.mxSession.mediaManager,
                                             fallbackImage: .matrixItem(bubbleData.senderId, bubbleData.senderDisplayName))
-        let futurDateTimeInterval = Date(timeIntervalSinceNow: 3734).timeIntervalSince1970 * 1000
+        let mapStyleURL = bubbleData.mxSession.vc_homeserverConfiguration().tileServer.mapStyleURL
+        
+        if beaconInfoSummary.lastBeacon == nil {
+            liveLocationStatus = .starting
+        } else if beaconInfoSummary.hasStopped || beaconInfoSummary.hasExpired {
+            liveLocationStatus = .stopped
+        } else {
+            liveLocationStatus = .started(TimeInterval(beaconInfoSummary.expiryTimestamp))
+        }
+        
+        if let mxLocation = beaconInfoSummary.lastBeacon?.location {
+            location = CLLocationCoordinate2D(latitude: mxLocation.latitude, longitude: mxLocation.longitude)
+        }
         
         locationView.displayLiveLocation(with: RoomTimelineLocationViewData(location: location, userAvatarData: avatarViewData, mapStyleURL: mapStyleURL),
-                                         liveLocationViewState: .outgoing(.started(futurDateTimeInterval)))
+                                         liveLocationViewState: .incoming(liveLocationStatus))
+    }
+    
+    private func renderOutgoingLiveLocation(_ beaconInfoSummary: MXBeaconInfoSummaryProtocol) {
+        let liveLocationStatus: OutgoingLiveLocationSharingStatus
+        var location: CLLocationCoordinate2D?
+        let avatarViewData = AvatarViewData(matrixItemId: bubbleData.senderId,
+                                            displayName: bubbleData.senderDisplayName,
+                                            avatarUrl: bubbleData.senderAvatarUrl,
+                                            mediaManager: bubbleData.mxSession.mediaManager,
+                                            fallbackImage: .matrixItem(bubbleData.senderId, bubbleData.senderDisplayName))
+        let mapStyleURL = bubbleData.mxSession.vc_homeserverConfiguration().tileServer.mapStyleURL
+        
+        if beaconInfoSummary.lastBeacon == nil {
+            liveLocationStatus = .starting
+        } else if beaconInfoSummary.hasStopped || beaconInfoSummary.hasExpired {
+            liveLocationStatus = .stopped
+        } else {
+            liveLocationStatus = .started(TimeInterval(beaconInfoSummary.expiryTimestamp))
+        }
+        
+        if let mxLocation = beaconInfoSummary.lastBeacon?.location {
+            location = CLLocationCoordinate2D(latitude: mxLocation.latitude, longitude: mxLocation.longitude)
+        }
+        
+        locationView.displayLiveLocation(with: RoomTimelineLocationViewData(location: location, userAvatarData: avatarViewData, mapStyleURL: mapStyleURL),
+                                         liveLocationViewState: .outgoing(liveLocationStatus))
     }
     
     override func setupViews() {
@@ -102,8 +135,8 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
         
         guard #available(iOS 14.0, *),
               let contentView = roomCellContentView?.innerContentView else {
-            return
-        }
+                  return
+              }
         
         locationView = RoomTimelineLocationView.loadFromNib()
         
