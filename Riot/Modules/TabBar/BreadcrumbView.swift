@@ -17,7 +17,7 @@
 import Foundation
 import UIKit
 
-/// `BreadcrumbView` can be used to display a path into a  simgle line of text and manages ellipsis.
+/// `BreadcrumbView` can be used to display a path into a  single line of text and manages ellipsis.
 @objcMembers
 class BreadcrumbView: UIView, Themable {
     
