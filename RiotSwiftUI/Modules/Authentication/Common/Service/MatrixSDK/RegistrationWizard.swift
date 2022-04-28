@@ -74,7 +74,15 @@ class RegistrationWizard {
     /// See `AuthenticationService.getFallbackUrl`
     func registrationFlow() async throws -> RegistrationResult {
         let parameters = RegistrationParameters()
-        return try await performRegistrationRequest(parameters: parameters)
+        
+        do {
+            let result = try await performRegistrationRequest(parameters: parameters)
+            return result
+        } catch {
+            // Map M_FORBIDDEN into a registration error.
+            guard let mxError = MXError(nsError: error), mxError.errcode == kMXErrCodeStringForbidden else { throw error }
+            throw RegistrationError.registrationDisabled
+        }
     }
 
     /// Can be call to check is the desired username is available for registration on the current homeserver.

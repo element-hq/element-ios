@@ -34,9 +34,10 @@ class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelTy
 
     // MARK: - Setup
 
-    init(homeserverAddress: String, ssoIdentityProviders: [SSOIdentityProvider]) {
+    init(homeserverAddress: String, showRegistrationForm: Bool = true, ssoIdentityProviders: [SSOIdentityProvider]) {
         let bindings = AuthenticationRegistrationBindings()
         let viewState = AuthenticationRegistrationViewState(homeserverAddress: HomeserverAddress.displayable(homeserverAddress),
+                                                            showRegistrationForm: showRegistrationForm,
                                                             ssoIdentityProviders: ssoIdentityProviders,
                                                             bindings: bindings)
         
@@ -68,8 +69,9 @@ class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelTy
         }
     }
     
-    @MainActor func update(homeserverAddress: String, ssoIdentityProviders: [SSOIdentityProvider]) {
+    @MainActor func update(homeserverAddress: String, showRegistrationForm: Bool, ssoIdentityProviders: [SSOIdentityProvider]) {
         state.homeserverAddress = HomeserverAddress.displayable(homeserverAddress)
+        state.showRegistrationForm = showRegistrationForm
         state.ssoIdentityProviders = ssoIdentityProviders
     }
     
@@ -85,6 +87,10 @@ class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelTy
             state.bindings.alertInfo = AlertInfo(id: type,
                                                  title: VectorL10n.error,
                                                  message: VectorL10n.authenticationServerSelectionGenericError)
+        case .registrationDisabled:
+            state.bindings.alertInfo = AlertInfo(id: type,
+                                                 title: VectorL10n.error,
+                                                 message: VectorL10n.loginErrorRegistrationIsNotSupported)
         case .unknown:
             state.bindings.alertInfo = AlertInfo(id: type)
         }

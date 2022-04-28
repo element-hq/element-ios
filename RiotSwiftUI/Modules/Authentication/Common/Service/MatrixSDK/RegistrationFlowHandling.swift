@@ -20,7 +20,7 @@ import Foundation
 /// A protocol with a default implementation that allows a coordinator to execute and handle registration flow steps.
 protocol RegistrationFlowHandling {
     var authenticationService: AuthenticationService { get }
-    var registrationWizard: RegistrationWizard { get }
+    var registrationWizard: RegistrationWizard? { get }
     @MainActor var completion: ((AuthenticationRegistrationCoordinatorResult) -> Void)? { get }
     
     /// Executes a registration step using the `RegistrationWizard` to complete any additional steps automatically.
@@ -31,6 +31,11 @@ protocol RegistrationFlowHandling {
 @MainActor extension RegistrationFlowHandling {
     func executeRegistrationStep(step: @escaping (RegistrationWizard) async throws -> RegistrationResult) -> Task<Void, Error> {
         return Task {
+            guard let registrationWizard = registrationWizard else {
+                MXLog.failure("[RegistrationFlowHandling] executeRegistrationStep: The registration wizard is nil.")
+                return
+            }
+            
             do {
                 let result = try await step(registrationWizard)
                 

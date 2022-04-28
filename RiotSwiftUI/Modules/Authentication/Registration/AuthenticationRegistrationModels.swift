@@ -32,6 +32,8 @@ enum AuthenticationRegistrationViewModelResult {
 struct AuthenticationRegistrationViewState: BindableState {
     /// The address of the homeserver.
     var homeserverAddress: String
+    /// Whether or not to show the username and password text fields with the next button
+    var showRegistrationForm: Bool
     /// An array containing the available SSO options for login.
     var ssoIdentityProviders: [SSOIdentityProvider]
     /// View state that can be bound to from SwiftUI.
@@ -57,11 +59,6 @@ struct AuthenticationRegistrationViewState: BindableState {
     var serverDescription: String? {
         guard homeserverAddress == "matrix.org" else { return nil }
         return VectorL10n.authenticationRegistrationMatrixDescription
-    }
-    
-    /// Whether or not to allow username and password text input.
-    var showRegistrationForm: Bool {
-        true
     }
     
     /// Whether to show any SSO buttons.
@@ -119,6 +116,8 @@ enum AuthenticationRegistrationErrorType: Hashable {
     case invalidHomeserver
     /// The response from the homeserver was unexpected.
     case invalidResponse
+    /// The homeserver doesn't support registration.
+    case registrationDisabled
     /// An unknown error occurred.
     case unknown
 }

@@ -20,7 +20,7 @@ import Foundation
 
 enum AuthenticationServerSelectionViewModelResult {
     /// The user would like to use the homeserver at the given address.
-    case next(homeserverAddress: String)
+    case confirm(homeserverAddress: String)
     /// Dismiss the view without using the entered address.
     case dismiss
 }
@@ -40,12 +40,17 @@ struct AuthenticationServerSelectionViewState: BindableState {
         footerErrorMessage ?? VectorL10n.authenticationServerSelectionServerFooter
     }
     
+    /// The title shown on the confirm button.
+    var buttonTitle: String {
+        hasModalPresentation ? VectorL10n.confirm : VectorL10n.next
+    }
+    
     /// The text field is showing an error.
     var isShowingFooterError: Bool {
         footerErrorMessage != nil
     }
     
-    /// Whether it is possible to continue by tapping the Next button.
+    /// Whether it is possible to continue when tapping the confirmation button.
     var hasValidationError: Bool {
         bindings.homeserverAddress.isEmpty || isShowingFooterError
     }
@@ -60,7 +65,7 @@ struct AuthenticationServerSelectionBindings: BindableState {
 
 enum AuthenticationServerSelectionViewAction {
     /// The user would like to use the homeserver at the input address.
-    case next
+    case confirm
     /// Dismiss the view without using the entered address.
     case dismiss
     /// Open the EMS link.

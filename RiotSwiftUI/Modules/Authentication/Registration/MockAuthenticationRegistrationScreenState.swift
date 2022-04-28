@@ -62,10 +62,9 @@ enum MockAuthenticationRegistrationScreenState: MockScreenState, CaseIterable {
                 }
             }
         case .ssoOnly:
-            // TODO: As part of the login flow the screen should be shared and made be more configurable. Right now password registration is hard coded in.
-            viewModel = AuthenticationRegistrationViewModel(homeserverAddress: "https://company.com", ssoIdentityProviders: [
-                SSOIdentityProvider(id: "test", name: "SAML", brand: nil, iconURL: nil)
-            ])
+            viewModel = AuthenticationRegistrationViewModel(homeserverAddress: "https://company.com",
+                                                            showRegistrationForm: false,
+                                                            ssoIdentityProviders: [SSOIdentityProvider(id: "test", name: "SAML", brand: nil, iconURL: nil)])
         }
         
 

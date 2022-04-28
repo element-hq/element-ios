@@ -45,8 +45,8 @@ class AuthenticationServerSelectionViewModel: AuthenticationServerSelectionViewM
         Task {
             await MainActor.run {
                 switch viewAction {
-                case .next:
-                    completion?(.next(homeserverAddress: state.bindings.homeserverAddress))
+                case .confirm:
+                    completion?(.confirm(homeserverAddress: state.bindings.homeserverAddress))
                 case .dismiss:
                     completion?(.dismiss)
                 case .getInTouch:
