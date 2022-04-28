@@ -16,14 +16,14 @@
 
 import UIKit
 
-@available(iOS 15.0, *)
 /// Provider for mention Pills attachment view.
+@available(iOS 15.0, *)
 @objc class PillAttachmentViewProvider: NSTextAttachmentViewProvider {
     override func loadView() {
         super.loadView()
 
         guard let textAttachment = self.textAttachment as? PillTextAttachment else {
-            MXLog.debug("[PillAttachmentViewProvider]: attachment is not of expected class")
+            MXLog.debug("[PillAttachmentViewProvider]: attachment is missing or not of expected class")
             return
         }
 
@@ -32,7 +32,8 @@ import UIKit
             return
         }
 
-        view = PillSnapshoter.snapshotView(forRoomMember: roomMember)
+        view = PillAttachmentView(withRoomMember: roomMember,
+                                  isCurrentUser: textAttachment.isCurrentUser)
         view?.alpha = textAttachment.alpha
     }
 }

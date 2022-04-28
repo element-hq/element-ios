@@ -16,6 +16,7 @@
 
 import Foundation
 
+/// Provides utilities funcs to handle Pills inside attributed strings.
 @available (iOS 15.0, *)
 @objcMembers
 class StringPillsUtils: NSObject {
@@ -26,8 +27,16 @@ class StringPillsUtils: NSObject {
     }
 
     // MARK: - Internal Methods
+    /// Insert text attachments for pills inside given message attributed string.
+    ///
+    /// - Parameters:
+    ///   - attributedString: message string to update
+    ///   - session: current session
+    ///   - roomState: room state for message
+    /// - Returns: new attributed string with pills
     static func insertPills(in attributedString: NSAttributedString,
-                            withRoomState roomState: MXRoomState) -> NSAttributedString {
+                            withSession session: MXSession,
+                            andRoomState roomState: MXRoomState) -> NSAttributedString {
         // TODO: Improve algorithm & cleanup this method
         let newAttr = NSMutableAttributedString(attributedString: attributedString)
         var lastIndex: Int = 0
@@ -53,7 +62,10 @@ class StringPillsUtils: NSObject {
                     lastIndex += linkRange.length
                     continue
                 }
-                let attachmentString = PillSnapshoter.mentionPill(withRoomMember: roomMember, andUrl: url as URL)
+                let isCurrentUser = roomMember.userId == session.myUserId
+                let attachmentString = mentionPill(withRoomMember: roomMember,
+                                                   andUrl: url as URL,
+                                                   isCurrentUser: isCurrentUser)
                 newAttr.replaceCharacters(in: linkRange, with: attachmentString)
                 lastIndex += attachmentString.length
             } else {
@@ -62,5 +74,22 @@ class StringPillsUtils: NSObject {
         }
         
         return newAttr
+    }
+
+
+    /// Creates an attributed string containing a pill for given room member.
+    ///
+    /// - Parameters:
+    ///   - roomMember: the room member
+    ///   - url: url to room member profile
+    ///   - isCurrentUser: true to indicate that the room member is the current user
+    /// - Returns: attributed string with a pill attachment and a link
+    static func mentionPill(withRoomMember roomMember: MXRoomMember,
+                            andUrl url: URL,
+                            isCurrentUser: Bool) -> NSAttributedString {
+        let attachment = PillTextAttachment(withRoomMember: roomMember, isCurrentUser: isCurrentUser)
+        let string = NSMutableAttributedString(attachment: attachment)
+        string.addAttribute(.link, value: url, range: .init(location: 0, length: string.length))
+        return string
     }
 }
