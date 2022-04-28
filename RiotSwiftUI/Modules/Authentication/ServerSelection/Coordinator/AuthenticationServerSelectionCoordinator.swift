@@ -80,7 +80,7 @@ final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
                     MXLog.debug("[AuthenticationServerSelectionCoordinator] AuthenticationServerSelectionViewModel did complete with result: \(result).")
                     
                     switch result {
-                    case .next(let homeserverAddress):
+                    case .confirm(let homeserverAddress):
                         self.useHomeserver(homeserverAddress)
                     case .dismiss:
                         self.completion?(.dismiss)
@@ -126,9 +126,13 @@ final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
             } catch {
                 stopLoading()
                 
-                // Show the MXError message if possible otherwise use a generic server error
-                let message = MXError(nsError: error)?.error ?? VectorL10n.authenticationServerSelectionGenericError
-                authenticationServerSelectionViewModel.displayError(.footerMessage(message))
+                if let error = error as? RegistrationError {
+                    authenticationServerSelectionViewModel.displayError(.footerMessage(error.localizedDescription))
+                } else {
+                    // Show the MXError message if possible otherwise use a generic server error
+                    let message = MXError(nsError: error)?.error ?? VectorL10n.authenticationServerSelectionGenericError
+                    authenticationServerSelectionViewModel.displayError(.footerMessage(message))
+                }
             }
         }
     }

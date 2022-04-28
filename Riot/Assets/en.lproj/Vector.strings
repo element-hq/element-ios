@@ -76,6 +76,7 @@
 "error" = "Error";
 "suggest" = "Suggest";
 "edit" = "Edit";
+"confirm" = "Confirm";
 
 // Activities
 "loading" = "Loading";

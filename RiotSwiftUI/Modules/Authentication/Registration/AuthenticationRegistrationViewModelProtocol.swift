@@ -25,8 +25,9 @@ protocol AuthenticationRegistrationViewModelProtocol {
     /// Update the view with new homeserver information.
     /// - Parameters:
     ///   - homeserverAddress: The homeserver string to be shown to the user.
+    ///   - showRegistrationForm: Whether or not to display the username and password text fields.
     ///   - ssoIdentityProviders: The supported SSO login options.
-    @MainActor func update(homeserverAddress: String, ssoIdentityProviders: [SSOIdentityProvider])
+    @MainActor func update(homeserverAddress: String, showRegistrationForm: Bool, ssoIdentityProviders: [SSOIdentityProvider])
     
     /// Display an error to the user.
     @MainActor func displayError(_ type: AuthenticationRegistrationErrorType)

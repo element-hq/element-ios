@@ -76,9 +76,13 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     func start() {
         Task {
-            #warning("Catch any errors and handle them")
-            let flow: AuthenticationFlow = initialScreen == .login ? .login : .registration
-            try await authenticationService.startFlow(flow, for: authenticationService.state.homeserver.address)
+            do {
+                let flow: AuthenticationFlow = initialScreen == .login ? .login : .registration
+                try await authenticationService.startFlow(flow, for: authenticationService.state.homeserver.address)
+            } catch {
+                await MainActor.run { displayError(error) }
+                return
+            }
             
             await MainActor.run {
                 switch initialScreen {
@@ -106,6 +110,18 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             isWaitingToPresentCompleteSecurity = false
             presentCompleteSecurity()
         }
+    }
+    
+    // MARK: - Private
+    
+    @MainActor func displayError(_ error: Error) {
+        let alert = UIAlertController(title: VectorL10n.error,
+                                      message: error.localizedDescription,
+                                      preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: VectorL10n.ok, style: .default))
+        
+        toPresentable().present(alert, animated: true)
     }
     
     // MARK: - Registration

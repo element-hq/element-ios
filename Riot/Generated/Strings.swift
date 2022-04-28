@@ -847,6 +847,10 @@ public class VectorL10n: NSObject {
   public static var collapse: String { 
     return VectorL10n.tr("Vector", "collapse") 
   }
+  /// Confirm
+  public static var confirm: String { 
+    return VectorL10n.tr("Vector", "confirm") 
+  }
   /// Local Contacts
   public static var contactLocalContacts: String { 
     return VectorL10n.tr("Vector", "contact_local_contacts") 

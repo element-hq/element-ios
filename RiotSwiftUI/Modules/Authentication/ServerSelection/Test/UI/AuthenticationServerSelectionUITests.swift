@@ -46,9 +46,10 @@ class AuthenticationServerSelectionUITests: MockScreenTest {
         let serverTextField = app.textFields.element
         XCTAssertEqual(serverTextField.value as? String, "https://matrix.org", "The server shown should be matrix.org with the https scheme.")
         
-        let nextButton = app.buttons["nextButton"]
-        XCTAssertTrue(nextButton.exists, "The next button should always be shown.")
-        XCTAssertTrue(nextButton.isEnabled, "The next button should be enabled when there is an address.")
+        let confirmButton = app.buttons["confirmButton"]
+        XCTAssertEqual(confirmButton.label, VectorL10n.confirm, "The confirm button should say Confirm when in modal presentation.")
+        XCTAssertTrue(confirmButton.exists, "The confirm button should always be shown.")
+        XCTAssertTrue(confirmButton.isEnabled, "The confirm button should be enabled when there is an address.")
         
         let textFieldFooter = app.staticTexts["addressTextField"]
         XCTAssertTrue(textFieldFooter.exists)
@@ -62,18 +63,18 @@ class AuthenticationServerSelectionUITests: MockScreenTest {
         let serverTextField = app.textFields.element
         XCTAssertEqual(serverTextField.value as? String, "", "The text field should be empty in this state.")
         
-        let nextButton = app.buttons["nextButton"]
-        XCTAssertTrue(nextButton.exists, "The next button should always be shown.")
-        XCTAssertFalse(nextButton.isEnabled, "The next button should be disabled when the address is empty.")
+        let confirmButton = app.buttons["confirmButton"]
+        XCTAssertTrue(confirmButton.exists, "The confirm button should always be shown.")
+        XCTAssertFalse(confirmButton.isEnabled, "The confirm button should be disabled when the address is empty.")
     }
     
     func verifyInvalidAddress() {
         let serverTextField = app.textFields.element
         XCTAssertEqual(serverTextField.value as? String, "thisisbad", "The text field should show the entered server.")
         
-        let nextButton = app.buttons["nextButton"]
-        XCTAssertTrue(nextButton.exists, "The next button should always be shown.")
-        XCTAssertFalse(nextButton.isEnabled, "The next button should be disabled when there is an error.")
+        let confirmButton = app.buttons["confirmButton"]
+        XCTAssertTrue(confirmButton.exists, "The confirm button should always be shown.")
+        XCTAssertFalse(confirmButton.isEnabled, "The confirm button should be disabled when there is an error.")
         
         let textFieldFooter = app.staticTexts["addressTextField"]
         XCTAssertTrue(textFieldFooter.exists)
@@ -83,5 +84,8 @@ class AuthenticationServerSelectionUITests: MockScreenTest {
     func verifyNonModalPresentation() {
         let dismissButton = app.buttons["dismissButton"]
         XCTAssertFalse(dismissButton.exists, "The dismiss button should be hidden when not in modal presentation.")
+        
+        let confirmButton = app.buttons["confirmButton"]
+        XCTAssertEqual(confirmButton.label, VectorL10n.next, "The confirm button should say Next when not in modal presentation.")
     }
 }

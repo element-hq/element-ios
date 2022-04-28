@@ -63,9 +63,9 @@ struct AuthenticationServerSelectionScreen: View {
         }
         .ignoresSafeArea(.keyboard)
         .background(theme.colors.background.ignoresSafeArea())
-        .accentColor(theme.colors.accent)
-        .alert(item: $viewModel.alertInfo) { $0.alert }
         .toolbar { toolbar }
+        .alert(item: $viewModel.alertInfo) { $0.alert }
+        .accentColor(theme.colors.accent)
     }
     
     /// The title, message and icon at the top of the screen.
@@ -92,7 +92,7 @@ struct AuthenticationServerSelectionScreen: View {
         }
     }
     
-    /// The text field and submit button where the user enters a server URL.
+    /// The text field and confirm button where the user enters a server URL.
     var serverForm: some View {
         VStack(alignment: .leading, spacing: 12) {
             RoundedBorderTextField(title: nil,
@@ -111,12 +111,12 @@ struct AuthenticationServerSelectionScreen: View {
             .id(Constants.textFieldID)
             .accessibilityIdentifier("addressTextField")
             
-            Button { viewModel.send(viewAction: .next) } label: {
-                Text(VectorL10n.next)
+            Button { viewModel.send(viewAction: .confirm) } label: {
+                Text(viewModel.viewState.buttonTitle)
             }
             .buttonStyle(PrimaryActionButtonStyle())
             .disabled(viewModel.viewState.hasValidationError)
-            .accessibilityIdentifier("nextButton")
+            .accessibilityIdentifier("confirmButton")
         }
     }
     

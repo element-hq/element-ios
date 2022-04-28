@@ -63,8 +63,7 @@ class AuthenticationRegistrationUITests: MockScreenTest {
             validateUsernameError(for: state)
         case .ssoOnly:
             let state = "an SSO only server"
-            // TODO: The SSO only configuration still needs implementation.
-            // validateRegistrationFormIsHidden(for: state)
+            validateRegistrationFormIsHidden(for: state)
             validateSSOButtonsAreShown(for: state)
         }
     }

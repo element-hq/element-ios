@@ -60,8 +60,8 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
     
     /// The authentication service used for the registration.
     var authenticationService: AuthenticationService { parameters.authenticationService }
-    /// The wizard used to handle the registration flow.
-    var registrationWizard: RegistrationWizard
+    /// The wizard used to handle the registration flow. May be `nil` when only SSO is supported.
+    var registrationWizard: RegistrationWizard?
     
     // MARK: Public
 
@@ -72,16 +72,12 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
     // MARK: - Setup
     
     @MainActor init(parameters: AuthenticationRegistrationCoordinatorParameters) {
-        guard let registrationWizard = parameters.authenticationService.registrationWizard else {
-            MXLog.failure("[AuthenticationRegistrationCoordinator] The registration wizard was requested before getting the login flow.")
-            fatalError("The registration wizard was requested before getting the login flow.")
-        }
-        
         self.parameters = parameters
-        self.registrationWizard = registrationWizard
+        self.registrationWizard = parameters.authenticationService.registrationWizard
         
         let homeserver = parameters.authenticationService.state.homeserver
         let viewModel = AuthenticationRegistrationViewModel(homeserverAddress: homeserver.addressFromUser ?? homeserver.address,
+                                                            showRegistrationForm: homeserver.registrationFlow != nil,
                                                             ssoIdentityProviders: parameters.loginMode.ssoIdentityProviders ?? [])
         authenticationRegistrationViewModel = viewModel
         
@@ -132,6 +128,11 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
     
     /// Asks the homeserver to check the supplied username's format and availability.
     @MainActor private func validateUsername(_ username: String) {
+        guard let registrationWizard = registrationWizard else {
+            MXLog.failure("[AuthenticationRegistrationCoordinator] The registration wizard was requested before getting the login flow.")
+            return
+        }
+        
         currentTask = Task {
             do {
                 _ = try await registrationWizard.registrationAvailable(username: username)
@@ -188,6 +189,8 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
         
         if let registrationError = error as? RegistrationError {
             switch registrationError {
+            case .registrationDisabled:
+                authenticationRegistrationViewModel.displayError(.registrationDisabled)
             case .createAccountNotCalled, .missingThreePIDData, .missingThreePIDURL, .threePIDClientFailure, .threePIDValidationFailure:
                 // Shouldn't happen at this stage
                 authenticationRegistrationViewModel.displayError(.unknown)
@@ -224,14 +227,10 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
         if result == .updated {
             let homeserver = authenticationService.state.homeserver
             authenticationRegistrationViewModel.update(homeserverAddress: homeserver.addressFromUser ?? homeserver.address,
+                                                       showRegistrationForm: homeserver.registrationFlow != nil,
                                                        ssoIdentityProviders: homeserver.preferredLoginMode.ssoIdentityProviders ?? [])
             
-            guard let registrationWizard = authenticationService.registrationWizard else {
-                MXLog.failure("[AuthenticationRegistrationCoordinator] The registration wizard was requested before getting the login flow.")
-                return
-            }
-            
-            self.registrationWizard = registrationWizard
+            self.registrationWizard = authenticationService.registrationWizard
         }
         
         navigationRouter.dismissModule(animated: true) { [weak self] in
