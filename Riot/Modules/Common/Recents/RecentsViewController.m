@@ -352,6 +352,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
     if (self.recentsDataSource)
     {
+        [self refreshRecentsTable];
         [self showEmptyViewIfNeeded];
     }
 }
