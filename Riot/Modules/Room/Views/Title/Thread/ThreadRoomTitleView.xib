@@ -102,6 +102,7 @@
                 <outlet property="roomAvatarView" destination="FJB-2F-rrQ" id="SUd-p8-VCH"/>
                 <outlet property="roomEncryptionBadgeView" destination="Mli-PC-WUh" id="MuX-Qw-DfQ"/>
                 <outlet property="roomNameLabel" destination="8lk-sN-3IP" id="wFm-R4-fBo"/>
+                <outlet property="roomNameLeadingConstraint" destination="Y1z-dr-Y0X" id="dWJ-U0-inJ"/>
                 <outlet property="titleLabel" destination="BnG-NU-7Mg" id="gDw-Pr-oR8"/>
             </connections>
             <point key="canvasLocation" x="10.869565217391305" y="-256.47321428571428"/>

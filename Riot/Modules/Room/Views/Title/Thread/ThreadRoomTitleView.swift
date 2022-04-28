@@ -24,6 +24,11 @@ enum ThreadRoomTitleViewMode {
 
 @objcMembers
 class ThreadRoomTitleView: RoomTitleView {
+
+    private enum Constants {
+        static let roomNameLeadingMarginForEncryptedRoom: CGFloat = 10
+        static let roomNameLeadingMarginForPlainRoom: CGFloat = 4
+    }
     
     var mode: ThreadRoomTitleViewMode = .allThreads {
         didSet {
@@ -35,6 +40,7 @@ class ThreadRoomTitleView: RoomTitleView {
     @IBOutlet private weak var roomAvatarView: RoomAvatarView!
     @IBOutlet private weak var roomEncryptionBadgeView: UIImageView!
     @IBOutlet private weak var roomNameLabel: UILabel!
+    @IBOutlet private weak var roomNameLeadingConstraint: NSLayoutConstraint!
     
     //  MARK: - Methods
     
@@ -45,6 +51,11 @@ class ThreadRoomTitleView: RoomTitleView {
             roomAvatarView.avatarImageView.image = nil
         }
         roomEncryptionBadgeView.image = model.roomEncryptionBadge
+        if roomEncryptionBadgeView.image == nil {
+            roomNameLeadingConstraint.constant = Constants.roomNameLeadingMarginForPlainRoom
+        } else {
+            roomNameLeadingConstraint.constant = Constants.roomNameLeadingMarginForEncryptedRoom
+        }
         roomEncryptionBadgeView.isHidden = model.roomEncryptionBadge == nil
         roomNameLabel.text = model.roomDisplayName
     }
