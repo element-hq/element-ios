@@ -732,7 +732,7 @@
         if (firstRootAncestor)
         {
             rootName = [mxSession roomSummaryWithRoomId:firstRootAncestor.spaceId].displayname;
-            [breadcrumbs addObject:rootName];
+            [breadcrumbs insertObject:rootName atIndex:0];
         }
         titleView.breadcrumbView.breadcrumbs = breadcrumbs;
     }

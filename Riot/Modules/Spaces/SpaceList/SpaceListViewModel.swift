@@ -119,15 +119,8 @@ final class SpaceListViewModel: SpaceListViewModelType {
         var foundIndexPath: IndexPath?
         
         if let spaceService = self.userSessionsService.mainUserSession?.matrixSession.spaceService,
-           let ancestorIds = spaceService.ancestorsPerRoomId[spaceId] {
-            for ancestorId in ancestorIds {
-                if spaceService.ancestorsPerRoomId[ancestorId] == nil {
-                    if let indexPath = indexPathOf(spaceWithId: ancestorId) {
-                        foundIndexPath = indexPath
-                        break
-                    }
-                }
-            }
+           let firstRootAncestor = spaceService.firstRootAncestorForRoom(withId: spaceId) {
+            foundIndexPath = indexPathOf(spaceWithId: firstRootAncestor.spaceId)
         } else {
             foundIndexPath = indexPathOf(spaceWithId: spaceId)
         }
