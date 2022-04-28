@@ -38,7 +38,7 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
             self.event = event
             renderStaticLocation(event)
         } else if bubbleData.cellDataTag == .liveLocation,
-                  let beaconInfoSummaryL MXBeaconInfoSummary = bubbleData.beaconInfoSummary {
+                  let beaconInfoSummary: MXBeaconInfoSummary = bubbleData.beaconInfoSummary as? MXBeaconInfoSummary {
             renderLiveLocation(beaconInfoSummary)
         }
     }
