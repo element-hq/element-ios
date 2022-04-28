@@ -38,7 +38,7 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
             self.event = event
             renderStaticLocation(event)
         } else if bubbleData.cellDataTag == .liveLocation,
-                  let beaconInfoSummary: MXBeaconInfoSummary = bubbleData.beaconInfoSummary as? MXBeaconInfoSummary {
+                  let beaconInfoSummary = bubbleData.beaconInfoSummary {
             renderLiveLocation(beaconInfoSummary)
         }
     }
@@ -69,7 +69,7 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
         locationView.displayStaticLocation(with: RoomTimelineLocationViewData(location: location, userAvatarData: avatarViewData, mapStyleURL: mapStyleURL))
     }
     
-    private func renderLiveLocation(_ beaconInfoSummary: MXBeaconInfoSummary) {
+    private func renderLiveLocation(_ beaconInfoSummary: MXBeaconInfoSummaryProtocol) {
         let liveLocationState: TimelineLiveLocationViewState = locationSharingViewState(from: beaconInfoSummary)
         let avatarViewData = AvatarViewData(matrixItemId: bubbleData.senderId,
                                             displayName: bubbleData.senderDisplayName,
@@ -82,7 +82,7 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
                                          liveLocationViewState: liveLocationState)
     }
     
-    private func locationSharingViewState(from beaconInfoSummary: MXBeaconInfoSummary) -> TimelineLiveLocationViewState {
+    private func locationSharingViewState(from beaconInfoSummary: MXBeaconInfoSummaryProtocol) -> TimelineLiveLocationViewState {
         
         let viewState: TimelineLiveLocationViewState
         
