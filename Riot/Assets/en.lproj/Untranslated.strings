@@ -21,3 +21,10 @@
 "image_picker_action_files" = "Choose from files";
 
 "spaces_feature_not_available" = "This feature isn't available here. For now, you can do this with %@ on your computer.";
+
+"leave_space_action" = "Leave space";
+"leave_space_and_one_room" = "Leave space and 1 room";
+"leave_space_and_more_rooms" = "Leave space and %@ rooms";
+"leave_space_selection_title" = "SELECT ROOMS";
+"leave_space_selection_all_rooms" = "Select all rooms";
+"leave_space_selection_no_rooms" = "Select no rooms";

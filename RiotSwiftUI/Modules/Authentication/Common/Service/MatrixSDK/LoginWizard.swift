@@ -1,5 +1,5 @@
 // 
-// Copyright 2021 New Vector Ltd
+// Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,11 +16,16 @@
 
 import Foundation
 
-protocol MatrixItemChooserViewModelProtocol {
+class LoginWizard {
+    struct State {
+        /// For SSO session recovery
+        var deviceId: String?
+        var resetPasswordEmail: String?
+        // var resetPasswordData: ResetPasswordData?
+        
+        var clientSecret = UUID().uuidString
+        var sendAttempt: UInt = 0
+    }
     
-    var completion: ((MatrixItemChooserViewModelResult) -> Void)? { get set }
-    @available(iOS 14, *)
-    static func makeMatrixItemChooserViewModel(matrixItemChooserService: MatrixItemChooserServiceProtocol, title: String?, detail: String?, selectionHeader: MatrixItemChooserSelectionHeader?) -> MatrixItemChooserViewModelProtocol
-    @available(iOS 14, *)
-    var context: MatrixItemChooserViewModelType.Context { get }
+    // TODO
 }
