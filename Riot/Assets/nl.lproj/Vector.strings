@@ -2452,3 +2452,23 @@
 "new_word" = "Nieuw";
 "stop" = "Stop";
 "joining" = "Meedoen";
+"location_sharing_live_list_item_stop_sharing_action" = "Stop delen";
+"location_sharing_live_list_item_current_user_display_name" = "U";
+"location_sharing_live_list_item_last_update_invalid" = "Onbekende laatste update";
+"location_sharing_live_list_item_last_update" = "%@ geleden bijgewerkt";
+"location_sharing_live_list_item_sharing_expired" = "Delen verlopen";
+"location_sharing_live_list_item_time_left" = "%@ over";
+"location_sharing_live_viewer_title" = "Locatie";
+"location_sharing_live_map_callout_title" = "Deel locatie";
+"room_access_settings_screen_upgrade_alert_note" = "Houd er rekening mee dat bij het upgraden een nieuwe versie van de kamer wordt gemaakt. Alle huidige berichten blijven in deze gearchiveerde ruimte.";
+"room_access_settings_screen_upgrade_alert_message_no_param" = "Iedereen in een bovenliggende space kan deze ruimte vinden en er lid van worden. Het is niet nodig om iedereen handmatig uit te nodigen. U kunt dit op elk moment wijzigen in de kamerinstellingen.";
+"room_access_settings_screen_upgrade_alert_message" = "Iedereen in %@ kan deze ruimte vinden en er lid van worden - het is niet nodig om iedereen handmatig uit te nodigen. U kunt dit op elk moment wijzigen in de kamerinstellingen.";
+"settings_presence_offline_mode_description" = "Indien ingeschakeld, verschijnt u altijd offline voor andere personen, zelfs wanneer u de applicatie gebruikt.";
+"settings_presence_offline_mode" = "Offline modus";
+"settings_presence" = "Aanwezigheid";
+"settings_integrations_allow_description" = "Gebruik een integratiebeheerder om bots, bruggen, widgets en stickerpakketten te beheren.\n\nIntegratiebeheerders ontvangen configuratiedata en kunnen widgets aanpassen, kameruitnodigingen versturen en bestuursniveaus instellen namens u.";
+"threads_discourage_information_2" = "\n\nWilt u toch threads inschakelen?";
+"threads_discourage_information_1" = "Uw server ondersteunt momenteel geen discussies, dus deze functie kan onbetrouwbaar zijn. Sommige berichten in een discussie zijn mogelijk niet betrouwbaar beschikbaar. ";
+/* The placeholder string contains the user's matrix ID */
+"onboarding_congratulations_message" = "Uw account %@ is aangemaakt.";
+"onboarding_use_case_skip_button" = "sla deze vraag over";
