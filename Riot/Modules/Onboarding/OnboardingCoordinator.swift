@@ -63,7 +63,10 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     // MARK: Screen results
     private var splashScreenResult: OnboardingSplashScreenViewModelResult?
     private var useCaseResult: OnboardingUseCaseViewModelResult?
-    private var authenticationType: MXKAuthenticationType?
+    /// The flow being used for authentication.
+    private var authenticationFlow: AuthenticationFlow?
+    /// The type of authentication used to login/register.
+    private var authenticationType: AuthenticationType?
     private var session: MXSession?
     /// A place to store the image selected in the avatar screen until it has been saved.
     private var selectedAvatar: UIImage?
@@ -154,7 +157,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         splashScreenResult = result
         
         // Set the auth type early to allow network requests to finish during display of the use case screen.
-        authenticationCoordinator.update(authenticationType: result.mxkAuthenticationType)
+        authenticationCoordinator.update(authenticationFlow: result.flow)
         
         switch result {
         case .register:
@@ -219,8 +222,8 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             guard let self = self, let coordinator = coordinator else { return }
             
             switch result {
-            case .didLogin(let session, let authenticationType):
-                self.authenticationCoordinator(coordinator, didLoginWith: session, and: authenticationType)
+            case .didLogin(let session, let authenticationFlow, let authenticationType):
+                self.authenticationCoordinator(coordinator, didLoginWith: session, and: authenticationFlow, using: authenticationType)
             case .didComplete:
                 self.authenticationCoordinatorDidComplete(coordinator)
             }
@@ -241,8 +244,8 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             guard let self = self, let coordinator = coordinator else { return }
             
             switch result {
-            case .didLogin(let session, let authenticationType):
-                self.authenticationCoordinator(coordinator, didLoginWith: session, and: authenticationType)
+            case .didLogin(let session, let authenticationFlow, let authenticationType):
+                self.authenticationCoordinator(coordinator, didLoginWith: session, and: authenticationFlow, using: authenticationType)
             case .didComplete:
                 self.authenticationCoordinatorDidComplete(coordinator)
             }
@@ -284,13 +287,15 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     /// whilst crypto and the rest of the app is launching in the background.
     private func authenticationCoordinator(_ coordinator: AuthenticationCoordinatorProtocol,
                                            didLoginWith session: MXSession,
-                                           and authenticationType: MXKAuthenticationType) {
+                                           and authenticationFlow: AuthenticationFlow,
+                                           using authenticationType: AuthenticationType) {
         self.session = session
+        self.authenticationFlow = authenticationFlow
         self.authenticationType = authenticationType
         
         // Check whether another screen should be shown.
         if #available(iOS 14.0, *) {
-            if authenticationType == .register,
+            if authenticationFlow == .register,
                let userId = session.credentials.userId,
                let userSession = UserSessionsService.shared.userSession(withUserId: userId) {
                 // If personalisation is to be shown, check that the homeserver supports it otherwise show the congratulations screen
@@ -335,7 +340,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         isShowingLegacyAuthentication = false
         
         // Handle the chosen use case where applicable
-        if authenticationType == .register,
+        if authenticationFlow == .register,
            let useCase = useCaseResult?.userSessionPropertyValue,
            let userSession = UserSessionsService.shared.mainUserSession {
             // Store the value in the user's session
@@ -559,15 +564,28 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             return
         }
         
+        trackSignup()
+        
         completion?()
+    }
+    
+    /// Sends a signup event to the Analytics class if onboarding has completed via the register flow.
+    private func trackSignup() {
+        guard authenticationFlow == .register else { return }
+        guard let authenticationType = authenticationType else {
+            MXLog.warning("[OnboardingCoordinator] sendSignedEvent: Registration finished without collecting an authentication type.")
+            return
+        }
+        
+        Analytics.shared.trackSignup(authenticationType: authenticationType.analyticsType)
     }
 }
 
 // MARK: - Helpers
 
 extension OnboardingSplashScreenViewModelResult {
-    /// The result converted into the MatrixKit authentication type to use.
-    var mxkAuthenticationType: MXKAuthenticationType {
+    /// The result converted into an authentication flow.
+    var flow: AuthenticationFlow {
         switch self {
         case .login:
             return .login
