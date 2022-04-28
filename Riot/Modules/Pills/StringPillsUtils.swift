@@ -20,12 +20,6 @@ import Foundation
 @available (iOS 15.0, *)
 @objcMembers
 class StringPillsUtils: NSObject {
-    // MARK: - Private Constants
-    private enum Constants {
-        // TODO: replace this with a solution handling any kind of custom permalinks.
-        static let matrixToURL: String = "https://matrix.to/#/"
-    }
-
     // MARK: - Internal Methods
     /// Insert text attachments for pills inside given message attributed string.
     ///
@@ -41,15 +35,13 @@ class StringPillsUtils: NSObject {
         let totalRange = NSRange(location: 0, length: newAttr.length)
 
         newAttr.vc_enumerateAttribute(.link, in: totalRange) { (url: URL, range: NSRange, _) in
-            if url.absoluteString.starts(with: Constants.matrixToURL) {
-                let userId = String(url.absoluteString.dropFirst(Constants.matrixToURL.count))
-                if let roomMember = roomState.members.member(withUserId: userId) {
-                    let isCurrentUser = roomMember.userId == session.myUserId
-                    let attachmentString = mentionPill(withRoomMember: roomMember,
-                                                       andUrl: url,
-                                                       isCurrentUser: isCurrentUser)
-                    newAttr.replaceCharacters(in: range, with: attachmentString)
-                }
+            if let userId = userIdFromPermalink(url.absoluteString),
+               let roomMember = roomState.members.member(withUserId: userId) {
+                let isCurrentUser = roomMember.userId == session.myUserId
+                let attachmentString = mentionPill(withRoomMember: roomMember,
+                                                   andUrl: url,
+                                                   isCurrentUser: isCurrentUser)
+                newAttr.replaceCharacters(in: range, with: attachmentString)
             }
         }
 
@@ -70,5 +62,18 @@ class StringPillsUtils: NSObject {
         let string = NSMutableAttributedString(attachment: attachment)
         string.addAttribute(.link, value: url, range: .init(location: 0, length: string.length))
         return string
+    }
+
+    /// Extract user id from given permalink
+    /// - Parameter permalink: the permalink
+    /// - Returns: userId, if any
+    private static func userIdFromPermalink(_ permalink: String) -> String? {
+        let baseUrl: String
+        if let clientBaseUrl = BuildSettings.clientPermalinkBaseUrl {
+            baseUrl = String(format: "%@/#/user/", clientBaseUrl)
+        } else {
+            baseUrl = String(format: "%@/#/", kMXMatrixDotToUrl)
+        }
+        return permalink.starts(with: baseUrl) ? String(permalink.dropFirst(baseUrl.count)) : nil
     }
 }
