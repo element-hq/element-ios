@@ -85,18 +85,24 @@ class SpaceMenuViewModel: SpaceMenuViewModelType {
     }
 
     private func leaveSpace() {
-        guard let room = self.session.room(withRoomId: self.spaceId), let displayName = room.summary?.displayname else {
+        guard #available(iOS 14, *) else {
+            guard let room = self.session.room(withRoomId: self.spaceId), let displayName = room.summary?.displayname else {
+                return
+            }
+
+            var isAdmin = false
+            if let roomState = room.dangerousSyncState, let powerLevels = roomState.powerLevels {
+                let powerLevel = powerLevels.powerLevelOfUser(withUserID: self.session.myUserId)
+                let roomPowerLevel = RoomPowerLevelHelper.roomPowerLevel(from: powerLevel)
+                isAdmin = roomPowerLevel == .admin
+            }
+
+            self.viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .leaveOptions(displayName, isAdmin))
             return
         }
-
-        var isAdmin = false
-        if let roomState = room.dangerousSyncState, let powerLevels = roomState.powerLevels {
-            let powerLevel = powerLevels.powerLevelOfUser(withUserID: self.session.myUserId)
-            let roomPowerLevel = RoomPowerLevelHelper.roomPowerLevel(from: powerLevel)
-            isAdmin = roomPowerLevel == .admin
-        }
-
-        self.viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .leaveOptions(displayName, isAdmin))
+        
+        self.viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .deselect)
+        self.coordinatorDelegate?.spaceMenuViewModel(self, didSelectItemWith: .leaveSpaceAndChooseRooms)
     }
     
     private func leaveSpaceAndKeepRooms() {

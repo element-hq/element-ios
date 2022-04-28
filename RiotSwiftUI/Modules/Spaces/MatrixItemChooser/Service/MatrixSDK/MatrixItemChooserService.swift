@@ -61,6 +61,13 @@ class MatrixItemChooserService: MatrixItemChooserServiceProtocol {
     var loadingText: String? {
         itemsProcessor.loadingText
     }
+    var itemCount: Int {
+        var itemCount = 0
+        for section in sections {
+            itemCount += section.items.count
+        }
+        return itemCount
+    }
 
     // MARK: - Setup
     
@@ -117,6 +124,22 @@ class MatrixItemChooserService: MatrixItemChooserServiceProtocol {
                 self.filteredSections = filteredSections
             }
         }
+    }
+    
+    func selectAllItems() {
+        var newSelection: Set<String> = Set()
+        for section in sections {
+            for item in section.items {
+                newSelection.insert(item.id)
+            }
+        }
+        self.selectedItemIds = newSelection
+        selectedItemIdsSubject.send(selectedItemIds)
+    }
+    
+    func deselectAllItems() {
+        self.selectedItemIds = Set()
+        selectedItemIdsSubject.send(selectedItemIds)
     }
 
     // MARK: - Private
