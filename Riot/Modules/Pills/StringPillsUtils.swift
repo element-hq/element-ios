@@ -37,45 +37,24 @@ class StringPillsUtils: NSObject {
     static func insertPills(in attributedString: NSAttributedString,
                             withSession session: MXSession,
                             andRoomState roomState: MXRoomState) -> NSAttributedString {
-        // TODO: Improve algorithm & cleanup this method
         let newAttr = NSMutableAttributedString(attributedString: attributedString)
-        var lastIndex: Int = 0
+        let totalRange = NSRange(location: 0, length: newAttr.length)
 
-        while lastIndex < newAttr.length {
-            var url: NSURL?
-            let linkRange = newAttr.rangeOfLink(at: UInt(lastIndex), url: &url)
-
-            guard let url = url,
-                  // FIXME: remove this check if only encrypted message replacer sets non-URL objects in NSLink attributes
-                  url.isKind(of: NSURL.self),
-                  let absoluteString = url.absoluteString,
-                  absoluteString.starts(with: Constants.matrixToURL)
-            else {
-                lastIndex += 1
-                continue
-            }
-            
-            let userId = String(absoluteString.dropFirst(Constants.matrixToURL.count))
-            
-            if linkRange.length > 0 {
-                guard let roomMember = roomState.members.member(withUserId: userId) else {
-                    lastIndex += linkRange.length
-                    continue
+        newAttr.vc_enumerateAttribute(.link, in: totalRange) { (url: URL, range: NSRange, _) in
+            if url.absoluteString.starts(with: Constants.matrixToURL) {
+                let userId = String(url.absoluteString.dropFirst(Constants.matrixToURL.count))
+                if let roomMember = roomState.members.member(withUserId: userId) {
+                    let isCurrentUser = roomMember.userId == session.myUserId
+                    let attachmentString = mentionPill(withRoomMember: roomMember,
+                                                       andUrl: url,
+                                                       isCurrentUser: isCurrentUser)
+                    newAttr.replaceCharacters(in: range, with: attachmentString)
                 }
-                let isCurrentUser = roomMember.userId == session.myUserId
-                let attachmentString = mentionPill(withRoomMember: roomMember,
-                                                   andUrl: url as URL,
-                                                   isCurrentUser: isCurrentUser)
-                newAttr.replaceCharacters(in: linkRange, with: attachmentString)
-                lastIndex += attachmentString.length
-            } else {
-                lastIndex += 1
             }
         }
-        
+
         return newAttr
     }
-
 
     /// Creates an attributed string containing a pill for given room member.
     ///
