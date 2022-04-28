@@ -349,6 +349,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         // the selected room (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
     }
+
+    if (self.recentsDataSource)
+    {
+        [self refreshRecentsTable];
+        [self showEmptyViewIfNeeded];
+    }
 }
 
 - (void)viewDidLayoutSubviews
@@ -2251,6 +2257,17 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     [self.recentsSearchBar setImage:filterIcon
                    forSearchBarIcon:UISearchBarIconSearch
                               state:UIControlStateNormal];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [self.recentsSearchBar resignFirstResponder];
+    [self hideSearchBar:YES];
+    self.recentsTableView.contentOffset = CGPointMake(0, self.recentsSearchBar.frame.size.height);
+    self.recentsTableView.tableHeaderView = nil;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self refreshRecentsTable];
+    });
 }
 
 #pragma mark - CreateRoomCoordinatorBridgePresenterDelegate
