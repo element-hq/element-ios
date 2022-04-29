@@ -82,7 +82,7 @@ struct AuthenticationRegistrationViewState: BindableState {
     }
 }
 
-struct AuthenticationRegistrationBindings: BindableState {
+struct AuthenticationRegistrationBindings {
     /// The username input by the user.
     var username = ""
     /// The password input by the user.

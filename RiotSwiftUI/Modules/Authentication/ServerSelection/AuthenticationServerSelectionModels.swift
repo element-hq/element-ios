@@ -56,7 +56,7 @@ struct AuthenticationServerSelectionViewState: BindableState {
     }
 }
 
-struct AuthenticationServerSelectionBindings: BindableState {
+struct AuthenticationServerSelectionBindings {
     /// The homeserver address input by the user.
     var homeserverAddress: String
     /// Information describing the currently displayed alert.
