@@ -100,12 +100,12 @@ abstract_target 'RiotPods' do
     
     pod 'FLEX', '~> 4.5.0', :inhibit_warnings => true
     
-    # pod "HyperioniOS/Core",
-    # pod 'HyperioniOS/AttributesInspector' # Optional plugin
-    # pod 'HyperioniOS/Measurements' # Optional plugin
-    # pod 'HyperioniOS/SlowAnimations' # Optional plugin
+    pod "HyperioniOS/Core",
+    pod 'HyperioniOS/AttributesInspector' # Optional plugin
+    pod 'HyperioniOS/Measurements' # Optional plugin
+    pod 'HyperioniOS/SlowAnimations' # Optional plugin
     
-    # pod 'Reveal-SDK'
+    pod 'Reveal-SDK'
 
     target 'RiotTests' do
       inherit! :search_paths
