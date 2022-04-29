@@ -98,7 +98,14 @@ abstract_target 'RiotPods' do
     pod 'DSWaveformImage', '~> 6.1.1'
     pod 'ffmpeg-kit-ios-audio', '4.5.1'
     
-    pod 'FLEX', '~> 4.5.0', :configurations => ['Debug'], :inhibit_warnings => true
+    pod 'FLEX', '~> 4.5.0', :inhibit_warnings => true
+    
+    # pod "HyperioniOS/Core",
+    # pod 'HyperioniOS/AttributesInspector' # Optional plugin
+    # pod 'HyperioniOS/Measurements' # Optional plugin
+    # pod 'HyperioniOS/SlowAnimations' # Optional plugin
+    
+    # pod 'Reveal-SDK'
 
     target 'RiotTests' do
       inherit! :search_paths
