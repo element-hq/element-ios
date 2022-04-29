@@ -92,7 +92,7 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
             liveLocationStatus = .stopped
         } else if let lastBeacon = beaconInfoSummary.lastBeacon {
             
-            let expiryTimeinterval = TimeInterval(beaconInfoSummary.expiryTimestamp/1000)
+            let expiryTimeinterval = TimeInterval(beaconInfoSummary.expiryTimestamp/1000) // Timestamp is in millisecond in the SDK
             
             let coordinate = CLLocationCoordinate2D(latitude: lastBeacon.location.latitude, longitude: lastBeacon.location.longitude)
             
@@ -102,9 +102,9 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
         }
         
         if beaconInfoSummary.userId == bubbleData.mxSession.myUserId {
-            viewState = .incoming(liveLocationStatus)
-        } else {
             viewState = .outgoing(liveLocationStatus)
+        } else {
+            viewState = .incoming(liveLocationStatus)
         }
         
         return viewState

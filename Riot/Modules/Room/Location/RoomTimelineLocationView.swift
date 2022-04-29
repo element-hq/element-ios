@@ -276,12 +276,19 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
             }
         }
         
-        return LiveLocationBannerViewData(placeholderIcon: placeholderIcon, iconTint: iconTint, title: title, titleColor: titleColor, timeLeftString: timeLeftString, rightButtonTitle: rightButtonTitle, rightButtonTag: rightButtonTag, coordinate: liveCoordinate)
+        return LiveLocationBannerViewData(placeholderIcon: placeholderIcon,
+                                          iconTint: iconTint,
+                                          title: title,
+                                          titleColor: titleColor,
+                                          timeLeftString: timeLeftString,
+                                          rightButtonTitle: rightButtonTitle,
+                                          rightButtonTag: rightButtonTag,
+                                          coordinate: liveCoordinate)
     }
     
     private func generateTimerString(for timestamp: Double,
                                      isIncomingLocation: Bool) -> String? {
-        let timerInSec = timestamp / 1000 // Timestamp is in millisecond in the SDK
+        let timerInSec = timestamp
         let timerString: String?
         if isIncomingLocation {
             timerString = VectorL10n.locationSharingLiveTimerIncoming(incomingTimerFormatter.string(from: Date(timeIntervalSince1970: timerInSec)))
