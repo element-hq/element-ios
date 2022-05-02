@@ -48,6 +48,25 @@ class StringPillsUtils: NSObject {
         return newAttr
     }
 
+    /// Creates a string with all pills of given attributed string replaced by common display names.
+    ///
+    /// - Parameter attributedString: attributed string with pills
+    /// - Returns: string with display names
+    static func stringByReplacingPills(in attributedString: NSAttributedString, asMarkdown: Bool = false) -> String {
+        let newAttr = NSMutableAttributedString(attributedString: attributedString)
+        let totalRange = NSRange(location: 0, length: newAttr.length)
+
+        newAttr.vc_enumerateAttribute(.attachment, in: totalRange) { (attachment: PillTextAttachment, range: NSRange, _) in
+            if let displayname = attachment.roomMember?.displayname,
+               let url = newAttr.attribute(.link, at: range.location, effectiveRange: nil) as? URL {
+                let pillString = asMarkdown ? "[\(displayname)](\(url.absoluteString))" : "\(displayname)"
+                newAttr.replaceCharacters(in: range, with: pillString)
+            }
+        }
+
+        return newAttr.string
+    }
+
     /// Creates an attributed string containing a pill for given room member.
     ///
     /// - Parameters:

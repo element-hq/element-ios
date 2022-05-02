@@ -171,6 +171,11 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
 @property (nonatomic) NSString *partialTextMessage;
 
 /**
+ The current attributed text message partially typed in text input (use nil to reset it).
+ */
+@property (nonatomic) NSAttributedString *attributedPartialTextMessage;
+
+/**
  The current thread id for the data source. If provided, data source displays the specified thread, otherwise the whole room messages.
  */
 @property (nonatomic, readonly) NSString *threadId;
@@ -471,6 +476,8 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
                  success:(void (^)(NSString *))success
                  failure:(void (^)(NSError *))failure;
 
+- (void)updateEventWithReplaceEvent:(MXEvent*)replaceEvent;
+
 /**
  Indicates if replying to the provided event is supported.
  Only event of type 'MXEventTypeRoomMessage' are supported for the moment, and for certain msgtype.
@@ -734,6 +741,25 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
 - (BOOL)shouldQueueEventForProcessing:(MXEvent*)event
                             roomState:(MXRoomState*)roomState
                             direction:(MXTimelineDirection)direction;
+
+/**
+ Queue an event in order to process its display later.
+
+ @param event the event to process.
+ @param roomState the state of the room when the event fired.
+ @param direction the order of the events in the arrays
+ */
+- (void)queueEventForProcessing:(MXEvent*)event
+                  withRoomState:(MXRoomState*)roomState
+                      direction:(MXTimelineDirection)direction;
+
+/**
+ Start processing pending events.
+
+ @param onComplete a block called (on the main thread) when the processing has been done. Can be nil.
+ Note this block returns the number of added cells in first and last positions.
+ */
+- (void)processQueuedEvents:(void (^)(NSUInteger addedHistoryCellNb, NSUInteger addedLiveCellNb))onComplete;
 
 #pragma mark - Bubble collapsing
 

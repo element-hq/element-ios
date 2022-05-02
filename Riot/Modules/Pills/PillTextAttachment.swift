@@ -23,11 +23,45 @@ import MatrixSDK
     var isCurrentUser: Bool = false
     var alpha: CGFloat = 1.0
 
-    convenience init(withRoomMember roomMember: MXRoomMember, isCurrentUser: Bool) {
-        self.init(data: nil, ofType: "im.vector.app.pills")
+    private enum Constants {
+        static let roomMemberKey: String = "roomMember"
+        static let isCurrentUserKey: String = "isCurrentUser"
+        static let alphaKey: String = "alpha"
+    }
+
+    override init(data contentData: Data?, ofType uti: String?) {
+        super.init(data: contentData, ofType: uti)
+    }
+
+    init(withRoomMember roomMember: MXRoomMember, isCurrentUser: Bool) {
+        super.init(data: nil, ofType: "im.vector.app.pills")
         self.roomMember = roomMember
         self.isCurrentUser = isCurrentUser
         let pillSize = PillAttachmentView.size(forRoomMember: roomMember)
         self.bounds = CGRect(origin: CGPoint(x: 0.0, y: -6.5), size: pillSize)
+    }
+
+    required init?(coder: NSCoder) {
+        guard let roomMember = coder.decodeObject(of: MXRoomMember.self, forKey: Constants.roomMemberKey) else {
+            return nil
+        }
+
+        super.init(coder: coder)
+        self.fileType = "im.vector.app.pills"
+
+        self.roomMember = roomMember
+        self.isCurrentUser = coder.decodeBool(forKey: Constants.isCurrentUserKey)
+        self.alpha = CGFloat(coder.decodeFloat(forKey: Constants.alphaKey))
+
+        let pillSize = PillAttachmentView.size(forRoomMember: roomMember)
+        self.bounds = CGRect(origin: CGPoint(x: 0.0, y: -6.5), size: pillSize)
+    }
+
+    override func encode(with coder: NSCoder) {
+        super.encode(with: coder)
+
+        coder.encode(roomMember, forKey: Constants.roomMemberKey)
+        coder.encode(isCurrentUser, forKey: Constants.isCurrentUserKey)
+        coder.encode(Float(alpha), forKey: Constants.alphaKey)
     }
 }

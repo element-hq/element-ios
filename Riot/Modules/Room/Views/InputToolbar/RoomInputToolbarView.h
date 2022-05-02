@@ -19,6 +19,7 @@
 #import "MediaPickerViewController.h"
 
 @class RoomActionsBar;
+@class RoomInputToolbarView;
 
 /**
  Destination of the message in the composer
@@ -53,6 +54,8 @@ typedef enum : NSUInteger
  @param toolbarView the room input toolbar view
  */
 - (void)roomInputToolbarViewDidOpenActionMenu:(MXKRoomInputToolbarView*)toolbarView;
+
+- (void)roomInputToolbarView:(RoomInputToolbarView *)toolbarView sendAttributedTextMessage:(NSAttributedString *)attributedTextMessage;
 
 @end
 
@@ -101,6 +104,13 @@ typedef enum : NSUInteger
  The attach media button
  */
 @property (nonatomic, weak, readonly) UIButton *attachMediaButton;
+
+/**
+ The current attributed text message in message composer.
+ */
+@property (nonatomic) NSAttributedString *attributedTextMessage;
+
+@property (nonatomic, readonly) UIFont *textDefaultFont;
 
 /**
  Adds a voice message toolbar view to be displayed inside this input toolbar

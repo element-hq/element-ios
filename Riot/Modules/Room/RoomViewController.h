@@ -100,6 +100,13 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 /// Displayed live location sharing banner if any
 @property (nonatomic, weak) LiveLocationSharingBannerView *liveLocationSharingBannerView;
 
+// The customized room data source for Vector
+@property (nonatomic, nullable) RoomDataSource *customizedRoomDataSource;
+
+- (void)setupRoomDataSourceToResolveEvent: (void (^)(MXKRoomDataSource *roomDataSource))onComplete;
+
+- (void)cancelEventSelection;
+
 /**
  Display the preview of a room that is unknown for the user.
 
