@@ -19,16 +19,19 @@ import MatrixSDK
 
 /// Text attachment for pills display.
 @objcMembers class PillTextAttachment: NSTextAttachment {
+    // MARK: - Internal Properties
     var roomMember: MXRoomMember?
     var isCurrentUser: Bool = false
     var alpha: CGFloat = 1.0
 
+    // MARK: - Constants
     private enum Constants {
         static let roomMemberKey: String = "roomMember"
         static let isCurrentUserKey: String = "isCurrentUser"
         static let alphaKey: String = "alpha"
     }
 
+    // MARK: - Init
     override init(data contentData: Data?, ofType uti: String?) {
         super.init(data: contentData, ofType: uti)
     }
@@ -41,6 +44,7 @@ import MatrixSDK
         self.bounds = CGRect(origin: CGPoint(x: 0.0, y: -6.5), size: pillSize)
     }
 
+    // MARK: - NSCoding
     required init?(coder: NSCoder) {
         guard let roomMember = coder.decodeObject(of: MXRoomMember.self, forKey: Constants.roomMemberKey) else {
             return nil

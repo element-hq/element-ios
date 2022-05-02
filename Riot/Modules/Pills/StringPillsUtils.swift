@@ -48,9 +48,11 @@ class StringPillsUtils: NSObject {
         return newAttr
     }
 
-    /// Creates a string with all pills of given attributed string replaced by common display names.
+    /// Creates a string with all pills of given attributed string replaced by display names.
     ///
-    /// - Parameter attributedString: attributed string with pills
+    /// - Parameters:
+    ///   - attributedString: attributed string with pills
+    ///   - asMarkdown: wether pill should be replaced by markdown links or raw text
     /// - Returns: string with display names
     static func stringByReplacingPills(in attributedString: NSAttributedString, asMarkdown: Bool = false) -> String {
         let newAttr = NSMutableAttributedString(attributedString: attributedString)

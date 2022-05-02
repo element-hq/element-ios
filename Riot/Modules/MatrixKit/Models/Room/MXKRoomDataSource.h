@@ -476,6 +476,12 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
                  success:(void (^)(NSString *))success
                  failure:(void (^)(NSError *))failure;
 
+/**
+ Updates an event with replacement event.
+ @note the original event is defined in the `MXEventContentRelatesTo` object.
+
+ @param replaceEvent the new event to display
+ */
 - (void)updateEventWithReplaceEvent:(MXEvent*)replaceEvent;
 
 /**

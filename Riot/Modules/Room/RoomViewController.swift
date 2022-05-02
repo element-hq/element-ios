@@ -17,9 +17,10 @@
 import UIKit
 
 extension RoomViewController {
+    // MARK: - Override
     open override func mention(_ roomMember: MXRoomMember) {
         guard #available(iOS 15.0, *),
-              let inputToolbar = inputToolbarView as? RoomInputToolbarView,
+              let inputToolbar = inputToolbar,
               let permalink = URL(string: MXTools.permalinkToUser(withUserId: roomMember.userId)) else {
             super.mention(roomMember)
             return
@@ -51,6 +52,10 @@ extension RoomViewController {
         inputToolbar.becomeFirstResponder()
     }
 
+
+    /// Send given attributed text message to the room
+    /// 
+    /// - Parameter attributedTextMsg: the attributed text message
     @objc func sendAttributedTextMessage(_ attributedTextMsg: NSAttributedString) {
         let eventModified = self.roomDataSource.event(withEventId: customizedRoomDataSource?.selectedEventId)
         self.setupRoomDataSource { roomDataSource in
@@ -94,6 +99,7 @@ extension RoomViewController {
     }
 }
 
+// MARK: - Private Helpers
 private extension RoomViewController {
     var inputToolbar: RoomInputToolbarView? {
         return self.inputToolbarView as? RoomInputToolbarView

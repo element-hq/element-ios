@@ -17,6 +17,14 @@
 import Foundation
 
 extension RoomDataSource {
+    // MARK: - NSAttributedString Sending
+    /// Send a text message to the room.
+    /// While sending, a fake event will be echoed in the messages list.
+    /// Once complete, this local echo will be replaced by the event saved by the homeserver.
+    ///
+    /// - Parameters:
+    ///   - attributedText: the attributed text to send
+    ///   - completion: http operation completion block
     func sendAttributedTextMessage(_ attributedText: NSAttributedString,
                                    completion: @escaping (MXResponse<String?>) -> Void) {
         var localEcho: MXEvent?
@@ -43,6 +51,15 @@ extension RoomDataSource {
         }
     }
 
+    /// Send a reply to an event with text message to the room.
+    ///
+    /// While sending, a fake event will be echoed in the messages list.
+    /// Once complete, this local echo will be replaced by the event saved by the homeserver.
+    ///
+    /// - Parameters:
+    ///   - eventToReply: the event to reply
+    ///   - attributedText: the attributed text to send
+    ///   - completion: http operation completion block
     func sendReply(to eventToReply: MXEvent,
                    withAttributedTextMessage attributedText: NSAttributedString,
                    completion: @escaping (MXResponse<String?>) -> Void) {
@@ -73,6 +90,13 @@ extension RoomDataSource {
         }
     }
 
+    /// Replace a text in an event.
+    ///
+    /// - Parameters:
+    ///   - event: The event to replace
+    ///   - attributedText: The new attributed message text
+    ///   - success: A block object called when the operation succeeds. It returns the event id of the event generated on the homeserver
+    ///   - failure: A block object called when the operation fails
     func replaceAttributedTextMessage(for event: MXEvent,
                                       withAttributedTextMessage attributedText: NSAttributedString,
                                       success: @escaping ((String?) -> Void),
@@ -109,7 +133,10 @@ extension RoomDataSource {
             failure(nil)
         }
     }
+}
 
+// MARK: - Private Helpers
+private extension RoomDataSource {
     func sanitizedAttributedMessageText(_ attributedString: NSAttributedString) -> NSAttributedString {
         let newAttr = NSMutableAttributedString(attributedString: attributedString)
         newAttr.mutableString.replaceOccurrences(of: String(format: "%C", 0x00000000), with: "", range: .init(location: 0, length: newAttr.length))

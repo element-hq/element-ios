@@ -55,6 +55,12 @@ typedef enum : NSUInteger
  */
 - (void)roomInputToolbarViewDidOpenActionMenu:(MXKRoomInputToolbarView*)toolbarView;
 
+/**
+ Tells the delegate that the user wants to send an attributed text message.
+
+ @param toolbarView the room input toolbar view.
+ @param attributedTextMessage the attributed string to send.
+ */
 - (void)roomInputToolbarView:(RoomInputToolbarView *)toolbarView sendAttributedTextMessage:(NSAttributedString *)attributedTextMessage;
 
 @end

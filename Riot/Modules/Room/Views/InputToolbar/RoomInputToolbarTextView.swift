@@ -52,7 +52,6 @@ class RoomInputToolbarTextView: UITextView {
     
     override var text: String! {
         didSet {
-            assert(false)
             updateUI()
         }
     }

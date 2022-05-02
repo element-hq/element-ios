@@ -269,7 +269,9 @@ typedef enum : NSUInteger
  */
 - (IBAction)onTouchUpInside:(UIButton*)button;
 
-
+/**
+ Send message currently displayed inside toolbar's ` UITextView`.
+ */
 - (void)sendCurrentMessage;
 
 /**
