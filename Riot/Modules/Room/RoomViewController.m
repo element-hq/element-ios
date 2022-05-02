@@ -6731,11 +6731,19 @@ static CGSize kThreadListBarButtonItemImageSize;
             }
             selectedComponent = nil;
         }
-        NSString *textMessage = selectedComponent.textMessage;
+
+        NSAttributedString *attributedTextMessage = selectedComponent.attributedTextMessage;
         
-        if (textMessage)
+        if (attributedTextMessage)
         {
-            MXKPasteboardManager.shared.pasteboard.string = textMessage;
+            if (@available(iOS 15.0, *))
+            {
+                MXKPasteboardManager.shared.pasteboard.string = [StringPillsUtils stringByReplacingPillsIn:attributedTextMessage asMarkdown:YES];
+            }
+            else
+            {
+                MXKPasteboardManager.shared.pasteboard.string = attributedTextMessage.string;
+            }
         }
         else
         {
