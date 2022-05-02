@@ -25,7 +25,7 @@ protocol RoomTimelineLocationViewDelegate: AnyObject {
 }
 
 struct RoomTimelineLocationViewData {
-    let location: CLLocationCoordinate2D
+    let location: CLLocationCoordinate2D?
     let userAvatarData: AvatarViewData?
     let mapStyleURL: URL
 }
@@ -38,6 +38,7 @@ struct LiveLocationBannerViewData {
     let timeLeftString: String?
     let rightButtonTitle: String?
     let rightButtonTag: RightButtonTag
+    let coordinate: CLLocationCoordinate2D?
     
     var showTimer: Bool {
         return timeLeftString != nil
@@ -53,21 +54,15 @@ struct LiveLocationBannerViewData {
 }
 
 enum TimelineLiveLocationViewState {
-    case incoming(_ status: IncomingLiveLocationSharingStatus) // live location started by other users
-    case outgoing(_ status: OutgoingLiveLocationSharingStatus) // live location started from current user
+    case incoming(_ status: LiveLocationSharingStatus) // live location started by other users
+    case outgoing(_ status: LiveLocationSharingStatus) // live location started from current user
 }
 
 
-enum OutgoingLiveLocationSharingStatus {
+enum LiveLocationSharingStatus {
     case starting
-    case started(_ timeleft: TimeInterval)
+    case started(_ coordinate: CLLocationCoordinate2D, _ timeleft: TimeInterval)
     case failure
-    case stopped
-}
-
-enum IncomingLiveLocationSharingStatus {
-    case starting
-    case started(_ timeleft: TimeInterval)
     case stopped
 }
 
@@ -162,29 +157,33 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     
     // MARK: - Private
     
-    private func displayLocation(_ location: CLLocationCoordinate2D,
+    private func displayLocation(_ location: CLLocationCoordinate2D?,
                                  userAvatarData: AvatarViewData? = nil,
                                  mapStyleURL: URL,
                                  bannerViewData: LiveLocationBannerViewData? = nil) {
         
-        mapView.styleURL = mapStyleURL
-        
-        annotationView = LocationMarkerView.loadFromNib()
-        
-        if let userAvatarData = userAvatarData {
-            let avatarBackgroundColor = Self.usernameColorGenerator.color(from: userAvatarData.matrixItemId)
-            annotationView?.setAvatarData(userAvatarData, avatarBackgroundColor: avatarBackgroundColor)
+        if let location = location {
+            mapView.styleURL = mapStyleURL
+            
+            annotationView = LocationMarkerView.loadFromNib()
+            
+            if let userAvatarData = userAvatarData {
+                let avatarBackgroundColor = Self.usernameColorGenerator.color(from: userAvatarData.matrixItemId)
+                annotationView?.setAvatarData(userAvatarData, avatarBackgroundColor: avatarBackgroundColor)
+            }
+            
+            if let annotations = mapView.annotations {
+                mapView.removeAnnotations(annotations)
+            }
+            
+            mapView.setCenter(location, zoomLevel: Constants.mapZoomLevel, animated: false)
+            
+            let pointAnnotation = MGLPointAnnotation()
+            pointAnnotation.coordinate = location
+            mapView.addAnnotation(pointAnnotation)
+        } else {
+            mapView.isHidden = true
         }
-        
-        if let annotations = mapView.annotations {
-            mapView.removeAnnotations(annotations)
-        }
-        
-        mapView.setCenter(location, zoomLevel: Constants.mapZoomLevel, animated: false)
-        
-        let pointAnnotation = MGLPointAnnotation()
-        pointAnnotation.coordinate = location
-        mapView.addAnnotation(pointAnnotation)
         
         // Configure live location banner
         guard let bannerViewData = bannerViewData else {
@@ -225,6 +224,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
         var timeLeftString: String?
         var rightButtonTitle: String?
         var rightButtonTag: RightButtonTag = .stopSharing
+        var liveCoordinate: CLLocationCoordinate2D?
 
         switch viewState {
         case .incoming(let liveLocationSharingStatus):
@@ -234,10 +234,16 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
                 title = VectorL10n.locationSharingLiveLoading
                 titleColor = theme.colors.tertiaryContent
                 placeholderIcon = Asset.Images.locationLiveCellLoadingIcon.image
-            case .started(let timeLeft):
+            case .started(let coordinate, let timeLeft):
                 iconTint = theme.roomCellLocalisationIconStartedColor
                 title = VectorL10n.liveLocationSharingBannerTitle
                 timeLeftString = generateTimerString(for: timeLeft, isIncomingLocation: true)
+                liveCoordinate = coordinate
+            case .failure:
+                iconTint = theme.roomCellLocalisationErrorColor
+                title = VectorL10n.locationSharingLiveError
+                rightButtonTitle = VectorL10n.retry
+                rightButtonTag = .retrySharing
             case .stopped:
                 iconTint = theme.colors.tertiaryContent
                 title = VectorL10n.liveLocationSharingEnded
@@ -251,11 +257,12 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
                 title = VectorL10n.locationSharingLiveLoading
                 titleColor = theme.colors.tertiaryContent
                 placeholderIcon = Asset.Images.locationLiveCellLoadingIcon.image
-            case .started(let timeLeft):
+            case .started(let coordinate, let timeLeft):
                 iconTint = theme.roomCellLocalisationIconStartedColor
                 title = VectorL10n.liveLocationSharingBannerTitle
                 timeLeftString = generateTimerString(for: timeLeft, isIncomingLocation: false)
                 rightButtonTitle = VectorL10n.stop
+                liveCoordinate = coordinate
             case .failure:
                 iconTint = theme.roomCellLocalisationErrorColor
                 title = VectorL10n.locationSharingLiveError
@@ -269,12 +276,19 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
             }
         }
         
-        return LiveLocationBannerViewData(placeholderIcon: placeholderIcon, iconTint: iconTint, title: title, titleColor: titleColor, timeLeftString: timeLeftString, rightButtonTitle: rightButtonTitle, rightButtonTag: rightButtonTag)
+        return LiveLocationBannerViewData(placeholderIcon: placeholderIcon,
+                                          iconTint: iconTint,
+                                          title: title,
+                                          titleColor: titleColor,
+                                          timeLeftString: timeLeftString,
+                                          rightButtonTitle: rightButtonTitle,
+                                          rightButtonTag: rightButtonTag,
+                                          coordinate: liveCoordinate)
     }
     
     private func generateTimerString(for timestamp: Double,
                                      isIncomingLocation: Bool) -> String? {
-        let timerInSec = timestamp / 1000 // Timestamp is in millisecond in the SDK
+        let timerInSec = timestamp
         let timerString: String?
         if isIncomingLocation {
             timerString = VectorL10n.locationSharingLiveTimerIncoming(incomingTimerFormatter.string(from: Date(timeIntervalSince1970: timerInSec)))
@@ -297,7 +311,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     
     public func displayLiveLocation(with viewData: RoomTimelineLocationViewData, liveLocationViewState: TimelineLiveLocationViewState) {
         let bannerViewData = liveLocationBannerViewData(from: liveLocationViewState)
-        displayLocation(viewData.location,
+        displayLocation(bannerViewData.coordinate,
                         userAvatarData: viewData.userAvatarData,
                         mapStyleURL: viewData.mapStyleURL,
                         bannerViewData: bannerViewData)

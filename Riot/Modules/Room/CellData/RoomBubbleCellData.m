@@ -168,8 +168,8 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                 self.collapsed = NO;
                 
                 [self updateBeaconInfoSummaryWithEventId:event.eventId];
-            }
                 break;
+            }
             case MXEventTypeCustom:
             {
                 if ([event.type isEqualToString:kWidgetMatrixEventTypeString]
