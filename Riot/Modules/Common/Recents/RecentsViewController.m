@@ -1088,8 +1088,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         }
         else
         {
-            MXLogDebug(@"[RecentsViewController]: Reloading table view section %ld", indexPath.section);
-            [self.recentsTableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationNone];
+            // Ideally we would call tableView.reloadSections, but this can lead to crashes if multiple sections need such an update and they
+            // vertically depend on each other. It is unclear whether this is due to further issues in the data model (e.g. data race)
+            // or some undocumented table view behavior. To avoid this we reload the entire table view, even if this means reloading
+            // multiple times for several section updates.
+            MXLogDebug(@"[RecentsViewController]: Reloading the entire table view due to updates in section %ld", indexPath.section);
+            [self refreshRecentsTable];
         }
     }
     else if (!changes)
