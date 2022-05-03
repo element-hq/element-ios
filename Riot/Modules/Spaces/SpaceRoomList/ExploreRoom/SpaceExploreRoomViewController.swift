@@ -190,7 +190,7 @@ final class SpaceExploreRoomViewController: UIViewController {
         case .loading:
             self.renderLoading()
         case .spaceNameFound(let spaceName):
-            self.titleView.subtitleLabel.text = spaceName
+            self.titleView.breadcrumbView.breadcrumbs = [spaceName]
         case .loaded(let children, let hasMore):
             self.hasMore = hasMore
             self.renderLoaded(children: children)
