@@ -114,6 +114,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     // MARK: - Private
     
+    /// Presents an alert on top of the navigation router, using the supplied error's `localizedDescription`.
     @MainActor func displayError(_ error: Error) {
         let alert = UIAlertController(title: VectorL10n.error,
                                       message: error.localizedDescription,

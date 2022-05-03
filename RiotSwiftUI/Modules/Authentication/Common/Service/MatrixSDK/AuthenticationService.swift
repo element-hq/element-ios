@@ -178,6 +178,7 @@ class AuthenticationService: NSObject {
         let homeserverAddress = HomeserverAddress.sanitized(homeserverAddress)
         
         guard var homeserverURL = URL(string: homeserverAddress) else {
+            MXLog.error("[AuthenticationService] Unable to create a URL from the supplied homeserver address when calling loginFlow.")
             throw AuthenticationError.invalidHomeserver
         }
         
@@ -203,7 +204,10 @@ class AuthenticationService: NSObject {
     /// This method is used to get the flows for a server after a soft-logout.
     /// - Parameter session: The MXSession where a soft-logout has occurred.
     private func loginFlow(for session: MXSession) async throws -> LoginFlowResult {
-        guard let client = session.matrixRestClient else { throw AuthenticationError.missingMXRestClient }
+        guard let client = session.matrixRestClient else {
+            MXLog.error("[AuthenticationService] loginFlow called on a session that doesn't have a matrixRestClient.")
+            throw AuthenticationError.missingMXRestClient
+        }
         let state = AuthenticationState(flow: .login, homeserverAddress: client.homeserver)
         
         let loginFlow = try await getLoginFlowResult(client: session.matrixRestClient)

@@ -46,8 +46,6 @@ public struct ColorValues: Colors {
     
     public let background: UIColor
     
-    public let white: UIColor
-    
     public let ems: UIColor
     
     public let namesAndAvatars: [UIColor]
