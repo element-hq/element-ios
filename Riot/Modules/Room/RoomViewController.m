@@ -194,7 +194,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 @property (nonatomic, strong) RoomContextualMenuViewController *roomContextualMenuViewController;
 @property (nonatomic, strong) RoomContextualMenuPresenter *roomContextualMenuPresenter;
 @property (nonatomic, strong) MXKErrorAlertPresentation *errorPresenter;
-@property (nonatomic, strong) NSString *textMessageBeforeEditing;
+@property (nonatomic, strong) NSAttributedString *textMessageBeforeEditing;
 @property (nonatomic, strong) EditHistoryCoordinatorBridgePresenter *editHistoryPresenter;
 @property (nonatomic, strong) MXKDocumentPickerPresenter *documentPickerPresenter;
 @property (nonatomic, strong) EmojiPickerCoordinatorBridgePresenter *emojiPickerCoordinatorBridgePresenter;
@@ -4374,8 +4374,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     if (roomInputToolbarView)
     {
-        self.textMessageBeforeEditing = roomInputToolbarView.textMessage;
-        roomInputToolbarView.textMessage = [self.roomDataSource editableTextMessageForEvent:event];
+        self.textMessageBeforeEditing = roomInputToolbarView.attributedTextMessage;
+        roomInputToolbarView.attributedTextMessage = [self.customizedRoomDataSource editableAttributedTextMessageFor:event];
     }
     
     [self selectEventWithId:eventId inputToolBarSendMode:RoomInputToolbarViewSendModeEdit showTimestamp:YES];
@@ -4387,7 +4387,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     if (self.textMessageBeforeEditing)
     {
-        roomInputToolbarView.textMessage = self.textMessageBeforeEditing;
+        roomInputToolbarView.attributedTextMessage = self.textMessageBeforeEditing;
     }
     
     self.textMessageBeforeEditing = nil;

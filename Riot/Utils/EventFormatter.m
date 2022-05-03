@@ -88,9 +88,9 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     
     if (@available(iOS 15.0, *))
     {
-        if (event.eventType == MXEventTypeRoomMessage)
+        if (roomState && event.eventType == MXEventTypeRoomMessage)
         {
-            string = [StringPillsUtils insertPillsIn:string withSession:mxSession andRoomState:roomState];
+            string = [StringPillsUtils insertPillsIn:string withSession:mxSession event:event andRoomState:roomState];
         }
     }
 

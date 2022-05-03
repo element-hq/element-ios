@@ -30,6 +30,7 @@ class StringPillsUtils: NSObject {
     /// - Returns: new attributed string with pills
     static func insertPills(in attributedString: NSAttributedString,
                             withSession session: MXSession,
+                            event: MXEvent,
                             andRoomState roomState: MXRoomState) -> NSAttributedString {
         let newAttr = NSMutableAttributedString(attributedString: attributedString)
         let totalRange = NSRange(location: 0, length: newAttr.length)
@@ -37,7 +38,7 @@ class StringPillsUtils: NSObject {
         newAttr.vc_enumerateAttribute(.link, in: totalRange) { (url: URL, range: NSRange, _) in
             if let userId = userIdFromPermalink(url.absoluteString),
                let roomMember = roomState.members.member(withUserId: userId) {
-                let isCurrentUser = roomMember.userId == session.myUserId
+                let isCurrentUser = roomMember.userId == session.myUserId && event.sender != session.myUserId
                 let attachmentString = mentionPill(withRoomMember: roomMember,
                                                    andUrl: url,
                                                    isCurrentUser: isCurrentUser)

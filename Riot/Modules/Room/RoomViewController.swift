@@ -36,7 +36,7 @@ extension RoomViewController {
                                            attributes: [.font: inputToolbar.textDefaultFont ?? ThemeService.shared().theme.fonts.body])
             newAttributedString.append(empty)
         } else if roomMember.userId == self.mainSession.myUser.userId {
-            let selfMentionString = NSAttributedString(string: "/me",
+            let selfMentionString = NSAttributedString(string: "/me ",
                                                        attributes: [.font: inputToolbar.textDefaultFont ?? ThemeService.shared().theme.fonts.body])
             newAttributedString.append(selfMentionString)
         } else {
