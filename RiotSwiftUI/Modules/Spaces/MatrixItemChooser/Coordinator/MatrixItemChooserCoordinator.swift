@@ -31,11 +31,13 @@ struct MatrixItemChooserCoordinatorParameters {
     let selectedItemsIds: [String]
     let viewProvider: MatrixItemChooserCoordinatorViewProvider?
     let itemsProcessor: MatrixItemChooserProcessorProtocol
+    let selectionHeader: MatrixItemChooserSelectionHeader?
     
     init(session: MXSession,
          title: String? = nil,
          detail: String? = nil,
          selectedItemsIds: [String] = [],
+         selectionHeader: MatrixItemChooserSelectionHeader? = nil,
          viewProvider: MatrixItemChooserCoordinatorViewProvider? = nil,
          itemsProcessor: MatrixItemChooserProcessorProtocol) {
         self.session = session
@@ -44,6 +46,7 @@ struct MatrixItemChooserCoordinatorParameters {
         self.selectedItemsIds = selectedItemsIds
         self.viewProvider = viewProvider
         self.itemsProcessor = itemsProcessor
+        self.selectionHeader = selectionHeader
     }
 }
 
@@ -69,7 +72,7 @@ final class MatrixItemChooserCoordinator: Coordinator, Presentable {
     @available(iOS 14.0, *)
     init(parameters: MatrixItemChooserCoordinatorParameters) {
         self.parameters = parameters
-        let viewModel = MatrixItemChooserViewModel.makeMatrixItemChooserViewModel(matrixItemChooserService: MatrixItemChooserService(session: parameters.session, selectedItemIds: parameters.selectedItemsIds, itemsProcessor: parameters.itemsProcessor), title: parameters.title, detail: parameters.detail)
+        let viewModel = MatrixItemChooserViewModel.makeMatrixItemChooserViewModel(matrixItemChooserService: MatrixItemChooserService(session: parameters.session, selectedItemIds: parameters.selectedItemsIds, itemsProcessor: parameters.itemsProcessor), title: parameters.title, detail: parameters.detail, selectionHeader: parameters.selectionHeader)
         matrixItemChooserViewModel = viewModel
         if let viewProvider = parameters.viewProvider {
             let view = viewProvider.view(with: viewModel.context).addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))

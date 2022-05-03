@@ -19,7 +19,7 @@ import Combine
 
 @available(iOS 14, *)
 typealias MatrixItemChooserViewModelType = StateStoreViewModel<MatrixItemChooserViewState,
-                                                                 MatrixItemChooserStateAction,
+                                                                 Never,
                                                                  MatrixItemChooserViewAction>
 @available(iOS 14, *)
 class MatrixItemChooserViewModel: MatrixItemChooserViewModelType, MatrixItemChooserViewModelProtocol {
@@ -30,40 +30,49 @@ class MatrixItemChooserViewModel: MatrixItemChooserViewModelType, MatrixItemChoo
 
     private var matrixItemChooserService: MatrixItemChooserServiceProtocol
 
+    private var isLoading: Bool = false {
+        didSet {
+            state.loading = isLoading
+            if isLoading {
+                state.error = nil
+            }
+        }
+    }
+    
     // MARK: Public
 
     var completion: ((MatrixItemChooserViewModelResult) -> Void)?
 
     // MARK: - Setup
 
-    static func makeMatrixItemChooserViewModel(matrixItemChooserService: MatrixItemChooserServiceProtocol, title: String?, detail: String?) -> MatrixItemChooserViewModelProtocol {
-        return MatrixItemChooserViewModel(matrixItemChooserService: matrixItemChooserService, title: title, detail: detail)
+    static func makeMatrixItemChooserViewModel(matrixItemChooserService: MatrixItemChooserServiceProtocol, title: String?, detail: String?, selectionHeader: MatrixItemChooserSelectionHeader?) -> MatrixItemChooserViewModelProtocol {
+        return MatrixItemChooserViewModel(matrixItemChooserService: matrixItemChooserService, title: title, detail: detail, selectionHeader: selectionHeader)
     }
 
-    private init(matrixItemChooserService: MatrixItemChooserServiceProtocol, title: String?, detail: String?) {
+    private init(matrixItemChooserService: MatrixItemChooserServiceProtocol, title: String?, detail: String?, selectionHeader: MatrixItemChooserSelectionHeader?) {
         self.matrixItemChooserService = matrixItemChooserService
-        super.init(initialViewState: Self.defaultState(matrixItemChooserService: matrixItemChooserService, title: title, detail: detail))
+        super.init(initialViewState: Self.defaultState(service: matrixItemChooserService, title: title, detail: detail, selectionHeader: selectionHeader))
         startObservingItems()
     }
 
-    private static func defaultState(matrixItemChooserService: MatrixItemChooserServiceProtocol, title: String?, detail: String?) -> MatrixItemChooserViewState {
+    private static func defaultState(service: MatrixItemChooserServiceProtocol, title: String?, detail: String?, selectionHeader: MatrixItemChooserSelectionHeader?) -> MatrixItemChooserViewState {
         let title = title
         let message = detail
         let emptyListMessage = VectorL10n.spacesNoResultFoundTitle
 
-        return MatrixItemChooserViewState(title: title, message: message, emptyListMessage: emptyListMessage, sections: matrixItemChooserService.sectionsSubject.value, selectedItemIds: matrixItemChooserService.selectedItemIdsSubject.value, loadingText: matrixItemChooserService.loadingText, loading: false)
+        return MatrixItemChooserViewState(title: title, message: message, emptyListMessage: emptyListMessage, sections: service.sectionsSubject.value, itemCount: service.itemCount, selectedItemIds: service.selectedItemIdsSubject.value, loadingText: service.loadingText, loading: false, selectionHeader: selectionHeader)
     }
 
     private func startObservingItems() {
-        let sectionsUpdatePublisher = matrixItemChooserService.sectionsSubject
-            .map(MatrixItemChooserStateAction.updateSections)
-            .eraseToAnyPublisher()
-        dispatch(actionPublisher: sectionsUpdatePublisher)
-        
-        let selectionPublisher = matrixItemChooserService.selectedItemIdsSubject
-            .map(MatrixItemChooserStateAction.updateSelection)
-            .eraseToAnyPublisher()
-        dispatch(actionPublisher: selectionPublisher)
+        matrixItemChooserService.sectionsSubject.sink { [weak self] sections in
+            self?.state.sections = sections
+            self?.state.itemCount = self?.matrixItemChooserService.itemCount ?? 0
+        }
+        .store(in: &cancellables)
+        matrixItemChooserService.selectedItemIdsSubject.sink { [weak self] selectedItemIds in
+            self?.state.selectedItemIds = selectedItemIds
+        }
+        .store(in: &cancellables)
     }
 
     // MARK: - Public
@@ -75,11 +84,11 @@ class MatrixItemChooserViewModel: MatrixItemChooserViewModelType, MatrixItemChoo
         case .back:
             back()
         case .done:
-            dispatch(action: .loadingState(true))
+            isLoading = true
             matrixItemChooserService.processSelection { [weak self] result in
                 guard let self = self else { return }
                 
-                self.dispatch(action: .loadingState(false))
+                self.isLoading = false
 
                 switch result {
                 case .success:
@@ -87,31 +96,20 @@ class MatrixItemChooserViewModel: MatrixItemChooserViewModelType, MatrixItemChoo
                     self.done(selectedItemsId: selectedItemsId)
                 case .failure(let error):
                     self.matrixItemChooserService.refresh()
-                    self.dispatch(action: .updateError(error))
+                    self.state.error = error.localizedDescription
                 }
             }
         case .searchTextChanged(let searchText):
             self.matrixItemChooserService.searchText = searchText
         case .itemTapped(let itemId):
             self.matrixItemChooserService.reverseSelectionForItem(withId: itemId)
+        case .selectAll:
+            self.matrixItemChooserService.selectAllItems()
+        case .selectNone:
+            self.matrixItemChooserService.deselectAllItems()
         }
     }
-
-    override class func reducer(state: inout MatrixItemChooserViewState, action: MatrixItemChooserStateAction) {
-        switch action {
-        case .updateSections(let sections):
-            state.sections = sections
-        case .updateSelection(let selectedItemIds):
-            state.selectedItemIds = selectedItemIds
-        case .loadingState(let loading):
-            state.loading = loading
-            state.error = nil
-        case .updateError(let error):
-            state.error = error?.localizedDescription
-        }
-        UILog.debug("[MatrixItemChooserViewModel] reducer with action \(action) produced state: \(state)")
-    }
-
+    
     private func done(selectedItemsId: [String]) {
         completion?(.done(selectedItemsId))
     }

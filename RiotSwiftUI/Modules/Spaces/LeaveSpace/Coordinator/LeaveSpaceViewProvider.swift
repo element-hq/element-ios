@@ -14,20 +14,18 @@
 // limitations under the License.
 //
 
-import Foundation
-import Combine
+import SwiftUI
 
-@available(iOS 14.0, *)
-protocol MatrixItemChooserServiceProtocol {
-    var sectionsSubject: CurrentValueSubject<[MatrixListItemSectionData], Never> { get }
-    var selectedItemIdsSubject: CurrentValueSubject<Set<String>, Never> { get }
-    var searchText: String { get set }
-    var loadingText: String? { get }
-    var itemCount: Int { get }
-
-    func reverseSelectionForItem(withId itemId: String)
-    func processSelection(completion: @escaping (Result<Void, Error>) -> Void)
-    func refresh()
-    func selectAllItems()
-    func deselectAllItems()
+class LeaveSpaceViewProvider: MatrixItemChooserCoordinatorViewProvider {
+    
+    private let navTitle: String?
+    
+    init(navTitle: String?) {
+        self.navTitle = navTitle
+    }
+    
+    @available(iOS 14, *)
+    func view(with viewModel: MatrixItemChooserViewModelType.Context) -> AnyView {
+        return AnyView(LeaveSpace(viewModel: viewModel, navTitle: navTitle))
+    }
 }
