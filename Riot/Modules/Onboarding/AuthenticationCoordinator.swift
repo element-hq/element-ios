@@ -189,14 +189,13 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     /// Displays the next view in the flow after the registration screen.
     @available(iOS 14.0, *)
-    @MainActor private func registrationCoordinator(_ coordinator: AuthenticationRegistrationCoordinator, didCompleteWith result: AuthenticationRegistrationCoordinatorResult) {
+    @MainActor private func registrationCoordinator(_ coordinator: AuthenticationRegistrationCoordinator,
+                                                    didCompleteWith result: AuthenticationRegistrationCoordinatorResult) {
         switch result {
         case .selectServer:
             showServerSelectionScreen()
-        case .flowResponse(let flowResult):
-            showNextScreen(for: flowResult)
-        case .sessionCreated(let session, let isAccountCreated):
-            onSessionCreated(session: session, isAccountCreated: isAccountCreated)
+        case .completed(let result):
+            handleRegistrationResult(result)
         }
     }
     
@@ -208,8 +207,14 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     // MARK: - Registration Handlers
     /// Determines the next screen to show from the flow result and pushes it.
-    func showNextScreen(for flowResult: FlowResult) {
-        // TODO
+    func handleRegistrationResult(_ result: RegistrationResult) {
+        switch result {
+        case .success(let mxSession):
+            onSessionCreated(session: mxSession, isAccountCreated: true)
+        case .flowResponse(let flowResult):
+            // TODO
+            break
+        }
     }
     
     /// Handles the creation of a new session following on from a successful authentication.
