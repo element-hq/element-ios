@@ -64,9 +64,6 @@ public protocol Colors {
     /// Background UI color
     var background: ColorType { get }
     
-    /// Global color: The color white.
-    var white: ColorType { get }
-    
     /// Global color: The EMS brand's purple colour.
     var ems: ColorType { get }
     

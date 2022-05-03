@@ -81,6 +81,7 @@ class RegistrationWizard {
         } catch {
             // Map M_FORBIDDEN into a registration error.
             guard let mxError = MXError(nsError: error), mxError.errcode == kMXErrCodeStringForbidden else { throw error }
+            MXLog.warning("[RegistrationWizard] Registration is disabled for the selected server.")
             throw RegistrationError.registrationDisabled
         }
     }
@@ -112,6 +113,7 @@ class RegistrationWizard {
     /// - Parameter response: The response from ReCaptcha
     func performReCaptcha(response: String) async throws -> RegistrationResult {
         guard let session = state.currentSession else {
+            MXLog.error("[RegistrationWizard] performReCaptcha: Missing authentication session, createAccount hasn't been called.")
             throw RegistrationError.createAccountNotCalled
         }
         
@@ -122,6 +124,7 @@ class RegistrationWizard {
     /// Perform the "m.login.terms" stage.
     func acceptTerms() async throws -> RegistrationResult {
         guard let session = state.currentSession else {
+            MXLog.error("[RegistrationWizard] acceptTerms: Missing authentication session, createAccount hasn't been called.")
             throw RegistrationError.createAccountNotCalled
         }
         
@@ -132,6 +135,7 @@ class RegistrationWizard {
     /// Perform the "m.login.dummy" stage.
     func dummy() async throws -> RegistrationResult {
         guard let session = state.currentSession else {
+            MXLog.error("[RegistrationWizard] dummy: Missing authentication session, createAccount hasn't been called.")
             throw RegistrationError.createAccountNotCalled
         }
         
@@ -151,6 +155,7 @@ class RegistrationWizard {
     /// Ask the homeserver to send again the current threePID (email or msisdn).
     func sendAgainThreePID() async throws -> RegistrationResult {
         guard let threePID = state.currentThreePIDData?.threePID else {
+            MXLog.error("[RegistrationWizard] sendAgainThreePID: Missing authentication session, createAccount hasn't been called.")
             throw RegistrationError.createAccountNotCalled
         }
         return try await sendThreePID(threePID: threePID)
@@ -168,6 +173,7 @@ class RegistrationWizard {
     func checkIfEmailHasBeenValidated(delay: TimeInterval) async throws -> RegistrationResult {
         MXLog.failure("The delay on this method is no longer available. Move this to the object handling the polling.")
         guard let parameters = state.currentThreePIDData?.registrationParameters else {
+            MXLog.error("[RegistrationWizard] checkIfEmailHasBeenValidated: The current 3pid data hasn't been stored in the state.")
             throw RegistrationError.missingThreePIDData
         }
 
@@ -178,10 +184,12 @@ class RegistrationWizard {
     
     private func validateThreePid(code: String) async throws -> RegistrationResult {
         guard let threePIDData = state.currentThreePIDData else {
+            MXLog.error("[RegistrationWizard] validateThreePid: There is no third party ID data stored in the state.")
             throw RegistrationError.missingThreePIDData
         }
         
         guard let submitURL = threePIDData.registrationResponse.submitURL else {
+            MXLog.error("[RegistrationWizard] validateThreePid: The third party ID data doesn't contain a submitURL.")
             throw RegistrationError.missingThreePIDURL
         }
         
@@ -192,9 +200,11 @@ class RegistrationWizard {
         
         #warning("Seems odd to pass a nil baseURL and then the url as the path, yet this is how MXK3PID works")
         guard let httpClient = MXHTTPClient(baseURL: nil, andOnUnrecognizedCertificateBlock: nil) else {
+            MXLog.error("[RegistrationWizard] validateThreePid: Failed to create an MXHTTPClient.")
             throw RegistrationError.threePIDClientFailure
         }
         guard try await httpClient.validateThreePIDCode(submitURL: submitURL, validationBody: validationBody) else {
+            MXLog.error("[RegistrationWizard] validateThreePid: Third party ID validation failed.")
             throw RegistrationError.threePIDValidationFailure
         }
         
@@ -205,6 +215,7 @@ class RegistrationWizard {
     
     private func sendThreePID(threePID: RegisterThreePID) async throws -> RegistrationResult {
         guard let session = state.currentSession else {
+            MXLog.error("[RegistrationWizard] sendThreePID: Missing authentication session, createAccount hasn't been called.")
             throw RegistrationError.createAccountNotCalled
         }
         

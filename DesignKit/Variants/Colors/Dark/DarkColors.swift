@@ -33,7 +33,6 @@ public class DarkColors {
         tile: UIColor(rgb:0x394049),
         navigation: UIColor(rgb:0x21262C),
         background: UIColor(rgb:0x15191E),
-        white: UIColor(rgb: 0xFFFFFF),
         ems: UIColor(rgb: 0x7E69FF),
         namesAndAvatars: [
             UIColor(rgb:0x368BD6),
