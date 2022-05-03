@@ -65,14 +65,9 @@ struct OnboardingDisplayNameScreen: View {
     /// The icon, title and message views.
     var header: some View {
         VStack(spacing: 8) {
-            Image(Asset.Images.onboardingCongratulationsIcon.name)
-                .resizable()
-                .renderingMode(.template)
-                .foregroundColor(theme.colors.accent)
-                .frame(width: OnboardingMetrics.iconSize, height: OnboardingMetrics.iconSize)
-                .background(Circle().foregroundColor(.white).padding(2))
+            
+            OnboardingIconImage(image: Asset.Images.onboardingCongratulationsIcon)
                 .padding(.bottom, 8)
-                .accessibilityHidden(true)
             
             Text(VectorL10n.onboardingDisplayNameTitle)
                 .font(theme.fonts.title2B)
