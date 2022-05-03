@@ -21,11 +21,13 @@ import CoreLocation
 @available(iOS 14.0, *)
 class MockLiveLocationSharingViewerService: LiveLocationSharingViewerServiceProtocol {
     
+    // MARK: Properties
+    
     private(set) var usersLiveLocation: [UserLiveLocation] = []
     
-    func isCurrentUserId(_ userId: String) -> Bool {
-        return "@alice:matrix.org" == userId
-    }
+    var didUpdateUsersLiveLocation: (([UserLiveLocation]) -> Void)?
+    
+    // MARK: Setup
     
     init(generateRandomUsers: Bool = false) {
         
@@ -45,6 +47,26 @@ class MockLiveLocationSharingViewerService: LiveLocationSharingViewerServiceProt
 
         self.usersLiveLocation = usersLiveLocation
     }
+    
+    // MARK: Public
+    
+    func isCurrentUserId(_ userId: String) -> Bool {
+        return "@alice:matrix.org" == userId
+    }
+    
+    func startListenningLiveLocationUpdates() {
+        
+    }
+    
+    func stopListenningLiveLocationUpdates() {
+        
+    }
+    
+    func stopUserLiveLocationSharing(completion: @escaping (Result<Void, Error>) -> Void) {
+        
+    }
+    
+    // MARK: Private
     
     private func createFirstUserLiveLocation() -> UserLiveLocation {
         let userAvatarData = AvatarInput(mxContentUri: nil, matrixItemId: "@alice:matrix.org", displayName: "Alice")

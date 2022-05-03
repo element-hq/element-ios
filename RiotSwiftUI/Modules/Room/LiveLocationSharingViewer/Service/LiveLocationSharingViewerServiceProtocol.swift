@@ -23,5 +23,13 @@ protocol LiveLocationSharingViewerServiceProtocol {
     
     var usersLiveLocation: [UserLiveLocation] { get }
     
+    var didUpdateUsersLiveLocation: (([UserLiveLocation]) -> Void)? { get set }
+    
     func isCurrentUserId(_ userId: String) -> Bool
+    
+    func startListenningLiveLocationUpdates()
+    
+    func stopListenningLiveLocationUpdates()
+    
+    func stopUserLiveLocationSharing(completion: @escaping (Result<Void, Error>) -> Void)
 }

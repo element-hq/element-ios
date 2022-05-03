@@ -24,6 +24,8 @@ class LiveLocationSharingViewerService: LiveLocationSharingViewerServiceProtocol
     // MARK: - Properties
     
     private(set) var usersLiveLocation: [UserLiveLocation] = []
+    private let roomId: String
+    private var beaconInfoSummaryListener: Any?
     
     // MARK: Private
     
@@ -31,21 +33,58 @@ class LiveLocationSharingViewerService: LiveLocationSharingViewerServiceProtocol
     
     // MARK: Public
     
-    func isCurrentUserId(_ userId: String) -> Bool {
-        return self.session.myUserId == userId
-    }
+    var didUpdateUsersLiveLocation: (([UserLiveLocation]) -> Void)?
     
     // MARK: - Setup
     
     init(session: MXSession, roomId: String) {
         self.session = session
+        self.roomId = roomId
         
-        let beaconInfoSummaries = self.session.locationService.getLiveBeaconInfoSummaries(inRoomWithId: roomId)
-        
-        self.usersLiveLocation = Self.usersLiveLocation(fromBeaconInfoSummaries: beaconInfoSummaries, session: session)
+        self.updateUsersLiveLocation(notifyUpdate: false)
+    }
+    
+    // MARK: - Public
+    
+    func isCurrentUserId(_ userId: String) -> Bool {
+        return self.session.myUserId == userId
+    }
+    
+    func startListenningLiveLocationUpdates() {
+        self.beaconInfoSummaryListener = self.session.aggregations.beaconAggegations.listenToBeaconInfoSummaryUpdateInRoom(withId: self.roomId) { [weak self] _ in
+
+            self?.updateUsersLiveLocation(notifyUpdate: true)
+        }
+    }
+    
+    func stopListenningLiveLocationUpdates() {
+        if let listener = beaconInfoSummaryListener {
+            self.session.aggregations.removeListener(listener)
+        }
+    }
+    
+    func stopUserLiveLocationSharing(completion: @escaping (Result<Void, Error>) -> Void) {
+        self.session.locationService.stopUserLocationSharing(inRoomWithId: roomId) { response in
+            
+            switch response {
+            case .success:
+                completion(.success(Void()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
     
     // MARK: - Private
+    
+    private func updateUsersLiveLocation(notifyUpdate: Bool) {
+        let beaconInfoSummaries = self.session.locationService.getDisplayableBeaconInfoSummaries(inRoomWithId: roomId)
+        self.usersLiveLocation = Self.usersLiveLocation(fromBeaconInfoSummaries: beaconInfoSummaries, session: session)
+        
+        if notifyUpdate {
+            self.didUpdateUsersLiveLocation?(self.usersLiveLocation)
+        }
+    }
     
     class private func usersLiveLocation(fromBeaconInfoSummaries beaconInfoSummaries: [MXBeaconInfoSummaryProtocol], session: MXSession) -> [UserLiveLocation] {
         
