@@ -4700,17 +4700,17 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
 }
 
-- (void)roomInputToolbarViewDidTapCancel:(MXKRoomInputToolbarView*)toolbarView
+- (void)roomInputToolbarViewDidTapCancel:(RoomInputToolbarView*)toolbarView
 {
     [self cancelEventSelection];
 }
  
-- (void)roomInputToolbarViewDidChangeTextMessage:(MXKRoomInputToolbarView *)toolbarView
+- (void)roomInputToolbarViewDidChangeTextMessage:(RoomInputToolbarView *)toolbarView
 {
     [self.userSuggestionCoordinator processTextMessage:toolbarView.textMessage];
 }
 
-- (void)roomInputToolbarViewDidOpenActionMenu:(MXKRoomInputToolbarView*)toolbarView
+- (void)roomInputToolbarViewDidOpenActionMenu:(RoomInputToolbarView*)toolbarView
 {
     // Consider opening the action menu as beginning to type and share encryption keys if requested.
     if ([MXKAppSettings standardAppSettings].outboundGroupSessionKeyPreSharingStrategy == MXKKeyPreSharingWhenTyping)
@@ -7447,13 +7447,14 @@ static CGSize kThreadListBarButtonItemImageSize;
              didRequestMentionForMember:(MXRoomMember *)member
                             textTrigger:(NSString *)textTrigger
 {
-    if (textTrigger.length) {
-        NSString *textMessage = [self.inputToolbarView textMessage];
-        textMessage = [textMessage stringByReplacingOccurrencesOfString:textTrigger
-                                                             withString:@""
-                                                                options:NSBackwardsSearch | NSAnchoredSearch
-                                                                  range:NSMakeRange(0, textMessage.length)];
-        [self.inputToolbarView setTextMessage:textMessage];
+    RoomInputToolbarView *toolbar = (RoomInputToolbarView *)self.inputToolbarView;
+    if (toolbar && textTrigger.length) {
+        NSMutableAttributedString *attributedTextMessage = [[NSMutableAttributedString alloc] initWithAttributedString:toolbar.attributedTextMessage];
+        [[attributedTextMessage mutableString] replaceOccurrencesOfString:textTrigger
+                                                               withString:@""
+                                                                  options:NSBackwardsSearch | NSAnchoredSearch
+                                                                    range:NSMakeRange(0, attributedTextMessage.length)];
+        [toolbar setAttributedTextMessage:attributedTextMessage];
     }
     
     [self mention:member];

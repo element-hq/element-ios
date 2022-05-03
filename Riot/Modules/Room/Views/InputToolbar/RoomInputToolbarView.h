@@ -39,21 +39,21 @@ typedef enum : NSUInteger
  
  @param toolbarView the room input toolbar view
  */
-- (void)roomInputToolbarViewDidTapCancel:(MXKRoomInputToolbarView*)toolbarView;
+- (void)roomInputToolbarViewDidTapCancel:(RoomInputToolbarView*)toolbarView;
 
 /**
  Inform the delegate that the text message has changed.
  
  @param toolbarView the room input toolbar view
  */
-- (void)roomInputToolbarViewDidChangeTextMessage:(MXKRoomInputToolbarView*)toolbarView;
+- (void)roomInputToolbarViewDidChangeTextMessage:(RoomInputToolbarView*)toolbarView;
 
 /**
  Inform the delegate that the action menu was opened.
  
  @param toolbarView the room input toolbar view
  */
-- (void)roomInputToolbarViewDidOpenActionMenu:(MXKRoomInputToolbarView*)toolbarView;
+- (void)roomInputToolbarViewDidOpenActionMenu:(RoomInputToolbarView*)toolbarView;
 
 /**
  Tells the delegate that the user wants to send an attributed text message.
