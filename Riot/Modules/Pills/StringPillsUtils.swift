@@ -61,8 +61,9 @@ class StringPillsUtils: NSObject {
 
         newAttr.vc_enumerateAttribute(.attachment, in: totalRange) { (attachment: PillTextAttachment, range: NSRange, _) in
             if let displayname = attachment.roomMember?.displayname,
-               let url = newAttr.attribute(.link, at: range.location, effectiveRange: nil) as? URL {
-                let pillString = asMarkdown ? "[\(displayname)](\(url.absoluteString))" : "\(displayname)"
+               let userId = attachment.roomMember?.userId,
+               let permalink = MXTools.permalinkToUser(withUserId: userId) {
+                let pillString = asMarkdown ? "[\(displayname)](\(permalink))" : "\(displayname)"
                 newAttr.replaceCharacters(in: range, with: pillString)
             }
         }
@@ -74,15 +75,17 @@ class StringPillsUtils: NSObject {
     ///
     /// - Parameters:
     ///   - roomMember: the room member
-    ///   - url: url to room member profile
+    ///   - url: URL to room member profile. Should be provided to make pill act as a link.
     ///   - isCurrentUser: true to indicate that the room member is the current user
-    /// - Returns: attributed string with a pill attachment and a link
+    /// - Returns: attributed string with a pill attachment and an optional link
     static func mentionPill(withRoomMember roomMember: MXRoomMember,
-                            andUrl url: URL,
+                            andUrl url: URL? = nil,
                             isCurrentUser: Bool) -> NSAttributedString {
         let attachment = PillTextAttachment(withRoomMember: roomMember, isCurrentUser: isCurrentUser)
         let string = NSMutableAttributedString(attachment: attachment)
-        string.addAttribute(.link, value: url, range: .init(location: 0, length: string.length))
+        if let url = url {
+            string.addAttribute(.link, value: url, range: .init(location: 0, length: string.length))
+        }
         return string
     }
 

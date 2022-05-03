@@ -20,8 +20,7 @@ extension RoomViewController {
     // MARK: - Override
     open override func mention(_ roomMember: MXRoomMember) {
         guard #available(iOS 15.0, *),
-              let inputToolbar = inputToolbar,
-              let permalink = URL(string: MXTools.permalinkToUser(withUserId: roomMember.userId)) else {
+              let inputToolbar = inputToolbar else {
             super.mention(roomMember)
             return
         }
@@ -30,7 +29,6 @@ extension RoomViewController {
 
         if inputToolbar.attributedTextMessage.length > 0 {
             newAttributedString.append(StringPillsUtils.mentionPill(withRoomMember: roomMember,
-                                                                    andUrl: permalink,
                                                                     isCurrentUser: false))
             let empty = NSAttributedString(string: " ",
                                            attributes: [.font: inputToolbar.textDefaultFont ?? ThemeService.shared().theme.fonts.body])
@@ -41,7 +39,6 @@ extension RoomViewController {
             newAttributedString.append(selfMentionString)
         } else {
             newAttributedString.append(StringPillsUtils.mentionPill(withRoomMember: roomMember,
-                                                                    andUrl: permalink,
                                                                     isCurrentUser: false))
             let colon = NSAttributedString(string: ": ",
                                            attributes: [.font: inputToolbar.textDefaultFont ?? ThemeService.shared().theme.fonts.body])
