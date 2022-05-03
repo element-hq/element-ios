@@ -32,6 +32,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     private let userIndicatorStore: UserIndicatorStore
     private var selectedEventId: String?
     private var loadingCancel: UserIndicatorCancel?
+    private var secondaryIndicatorCancel: UserIndicatorCancel? // Used for low priority advertizements
     
     private var roomDataSourceManager: MXKRoomDataSourceManager {
         return MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.parameters.session)
@@ -248,9 +249,21 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         completion?()
     }
     
-    private func showLiveLocationViewer(withEvent event: MXEvent, bubbleData: MXKRoomBubbleCellDataStoring) {
+    private func showLiveLocationViewer() {
+        guard let roomId = self.roomId else {
+            return
+        }
         
-        guard let mxSession = self.mxSession, let navigationRouter = self.navigationRouter, let roomId = event.roomId else {
+        self.showLiveLocationViewer(for: roomId)
+    }
+    
+    private func showLiveLocationViewer(for roomId: String) {
+        
+        guard let mxSession = self.mxSession, let navigationRouter = self.navigationRouter else {
+            return
+        }
+        
+        guard mxSession.locationService.isSomeoneSharingDisplayableLocation(inRoomWithId: roomId) else {
             return
         }
         
@@ -271,6 +284,50 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         
         navigationRouter.present(coordinator, animated: true)
         coordinator.start()
+    }
+    
+    private func stopLiveLocationSharing(forBeaconInfoEventId beaconInfoEventId: String? = nil, inRoomWithId roomId: String) {
+        guard let session = self.mxSession else {
+            return
+        }
+        
+        let errorHandler: (Error) -> Void = { error in
+            
+            let viewController = self.roomViewController
+            
+            viewController.errorPresenter.presentError(from: viewController, title: VectorL10n.error, message: VectorL10n.locationSharingLiveStopSharingError, animated: true) {
+            }
+        }
+        
+        // TODO: Handle loading state on the banner by replacing stop button with a spinner
+        self.startSecondaryLoading(withMessage: VectorL10n.locationSharingLiveStopSharingProgress)
+        
+        if let beaconInfoEventId = beaconInfoEventId {
+            session.locationService.stopUserLocationSharing(withBeaconInfoEventId: beaconInfoEventId, roomId: roomId) {
+                [weak self] response in
+                
+                self?.stopSecondaryLoading()
+                
+                switch response {
+                case .success:
+                    break
+                case .failure(let error):
+                    errorHandler(error)
+                }
+            }
+        } else {
+            session.locationService.stopUserLocationSharing(inRoomWithId: roomId) { [weak self] response in
+                
+                self?.stopSecondaryLoading()
+                
+                switch response {
+                case .success:
+                    break
+                case .failure(let error):
+                    errorHandler(error)
+                }
+            }
+        }
     }
     
     private func showLocationCoordinatorWithEvent(_ event: MXEvent, bubbleData: MXKRoomBubbleCellDataStoring) {
@@ -396,6 +453,19 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         loadingCancel?()
         loadingCancel = nil
     }
+    
+    private func startSecondaryLoading(withMessage message: String) {
+        guard secondaryIndicatorCancel == nil else {
+            return
+        }
+        
+        secondaryIndicatorCancel = userIndicatorStore.present(type: .loading(label: message, isInteractionBlocking: false))
+    }
+    
+    private func stopSecondaryLoading() {
+        secondaryIndicatorCancel?()
+        secondaryIndicatorCancel = nil
+    }
 }
 
 // MARK: - RoomIdentifiable
@@ -474,9 +544,13 @@ extension RoomCoordinator: RoomViewControllerDelegate {
         showLocationCoordinatorWithEvent(event, bubbleData: bubbleData)
     }
     
-    func roomViewController(_ roomViewController: RoomViewController, didRequestLiveLocationPresentationFor event: MXEvent, bubbleData: MXKRoomBubbleCellDataStoring) {
+    func roomViewController(_ roomViewController: RoomViewController, didRequestLiveLocationPresentationForBubbleData bubbleData: MXKRoomBubbleCellDataStoring) {
         
-        showLiveLocationViewer(withEvent: event, bubbleData: bubbleData)
+        guard let roomId = bubbleData.roomId else {
+            return
+        }
+        
+        showLiveLocationViewer(for: roomId)
     }
     
     func roomViewController(_ roomViewController: RoomViewController, locationShareActivityViewControllerFor event: MXEvent) -> UIActivityViewController? {
@@ -524,11 +598,17 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     }
     
     func roomViewControllerDidTapLiveLocationSharingBanner(_ roomViewController: RoomViewController) {
-        // TODO:
+        
+        showLiveLocationViewer()
     }
     
-    func roomViewControllerDidStopLiveLocationSharing(_ roomViewController: RoomViewController) {
-        // TODO:
+    func roomViewControllerDidStopLiveLocationSharing(_ roomViewController: RoomViewController, beaconInfoEventId: String?) {
+        
+        guard let roomId = self.roomId else {
+            return
+        }
+        
+        self.stopLiveLocationSharing(forBeaconInfoEventId: beaconInfoEventId, inRoomWithId: roomId)
     }
     
     func threadsCoordinator(for roomViewController: RoomViewController, threadId: String?) -> ThreadsCoordinatorBridgePresenter? {

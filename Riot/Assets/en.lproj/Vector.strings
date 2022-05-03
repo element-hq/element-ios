@@ -2153,6 +2153,9 @@ Tap the + to start adding people.";
 "location_sharing_live_timer_incoming" = "Live until %@";
 "location_sharing_live_loading" = "Loading Live location...";
 "location_sharing_live_error" = "Live location error";
+"location_sharing_live_no_user_locations_error_title" = "No user locations available";
+"location_sharing_live_stop_sharing_error" = "Fail to stop sharing location";
+"location_sharing_live_stop_sharing_progress" = "Stop location sharing";
 
 // MARK: - MatrixKit
 
