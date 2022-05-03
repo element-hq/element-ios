@@ -31,10 +31,8 @@ struct AuthenticationRegistrationCoordinatorParameters {
 enum AuthenticationRegistrationCoordinatorResult {
     /// The user would like to select another server.
     case selectServer
-    /// The screen completed but there are remaining authentication steps.
-    case flowResponse(FlowResult)
-    /// The screen completed with a successful login.
-    case sessionCreated(session: MXSession, isAccountCreated: Bool)
+    /// The screen completed with the associated registration result.
+    case completed(RegistrationResult)
 }
 
 @available(iOS 14.0, *)
@@ -149,19 +147,27 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
     
     /// Creates an account on the homeserver with the supplied username and password.
     @MainActor private func createAccount(username: String, password: String) {
+        guard let registrationWizard = registrationWizard else {
+            MXLog.failure("[AuthenticationRegistrationCoordinator] createAccount: The registration wizard is nil.")
+            return
+        }
+        
         // reAuthHelper.data = state.password
         let deviceDisplayName = UIDevice.current.isPhone ? VectorL10n.loginMobileDevice : VectorL10n.loginTabletDevice
         
         startLoading()
         
-        currentTask = executeRegistrationStep { [weak self] wizard in
-            defer { Task { [weak self] in await self?.stopLoading() } }
-            
+        currentTask = Task { [weak self] in
             do {
-                return try await wizard.createAccount(username: username, password: password, initialDeviceDisplayName: deviceDisplayName)
+                let result = try await registrationWizard.createAccount(username: username, password: password, initialDeviceDisplayName: deviceDisplayName)
+                
+                guard !Task.isCancelled else { return }
+                completion?(.completed(result))
+                
+                self?.stopLoading()
             } catch {
+                self?.stopLoading()
                 self?.handleError(error)
-                throw error // Throw the error as there is nothing to return (it will be swallowed up by executeRegistrationStep).
             }
         }
     }
@@ -238,6 +244,3 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
         }
     }
 }
-
-@available(iOS 14, *)
-extension AuthenticationRegistrationCoordinator: RegistrationFlowHandling { }

@@ -34,7 +34,7 @@ class AuthenticationServerSelectionViewModel: AuthenticationServerSelectionViewM
     // MARK: - Setup
 
     init(homeserverAddress: String, hasModalPresentation: Bool) {
-        let bindings = AuthenticationServerSelectionBindings(homeserverAddress: homeserverAddress)
+        let bindings = AuthenticationServerSelectionBindings(homeserverAddress: HomeserverAddress.displayable(homeserverAddress))
         super.init(initialViewState: AuthenticationServerSelectionViewState(bindings: bindings,
                                                                             hasModalPresentation: hasModalPresentation))
     }

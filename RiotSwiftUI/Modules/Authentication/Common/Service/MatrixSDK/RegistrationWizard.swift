@@ -102,7 +102,7 @@ class RegistrationWizard {
                        password: String?,
                        initialDeviceDisplayName: String?) async throws -> RegistrationResult {
         let parameters = RegistrationParameters(username: username, password: password, initialDeviceDisplayName: initialDeviceDisplayName)
-        let result = try await performRegistrationRequest(parameters: parameters)
+        let result = try await performRegistrationRequest(parameters: parameters, isCreatingAccount: true)
         state.isRegistrationStarted = true
         return result
     }
@@ -231,7 +231,7 @@ class RegistrationWizard {
         return try await performRegistrationRequest(parameters: parameters)
     }
     
-    private func performRegistrationRequest(parameters: RegistrationParameters) async throws -> RegistrationResult {
+    private func performRegistrationRequest(parameters: RegistrationParameters, isCreatingAccount: Bool = false) async throws -> RegistrationResult {
         do {
             let response = try await client.register(parameters: parameters)
             let credentials = MXCredentials(loginResponse: response, andDefaultCredentials: client.credentials)
@@ -245,7 +245,20 @@ class RegistrationWizard {
             else { throw error }
             
             state.currentSession = authenticationSession.session
-            return .flowResponse(authenticationSession.flowResult)
+            let flowResult = authenticationSession.flowResult
+            
+            if isCreatingAccount || isRegistrationStarted {
+                return try await handleMandatoryDummyStage(flowResult: flowResult)
+            }
+            
+            return .flowResponse(flowResult)
         }
+    }
+    
+    /// Checks for a mandatory dummy stage and handles it automatically when possible.
+    private func handleMandatoryDummyStage(flowResult: FlowResult) async throws -> RegistrationResult {
+        // If the dummy stage is mandatory, do the dummy stage now
+        guard flowResult.missingStages.contains(where: { $0.isDummyAndMandatory }) else { return .flowResponse(flowResult) }
+        return try await dummy()
     }
 }
