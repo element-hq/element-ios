@@ -25,12 +25,6 @@ typealias LocationSharingViewModelType = StateStoreViewModel<LocationSharingView
 @available(iOS 14, *)
 class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingViewModelProtocol {
     
-    // MARK: - Constants
-    
-    private enum Constants {
-        static let liveLocationSharingDefaultTimeout: TimeInterval = 300 // 5 minutes
-    }
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -80,8 +74,8 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
             completion?(.share(latitude: pinLocation.latitude, longitude: pinLocation.longitude, coordinateType: .pin))
         case .goToUserLocation:
             state.bindings.pinLocation = nil
-        case .shareLiveLocation:
-            completion?(.shareLiveLocation(timeout: Constants.liveLocationSharingDefaultTimeout))
+        case .shareLiveLocation(let timeout):
+            completion?(.shareLiveLocation(timeout: timeout))
         }
     }
     

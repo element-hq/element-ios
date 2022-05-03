@@ -30,7 +30,7 @@ enum LocationSharingViewAction {
     case share
     case sharePinLocation
     case goToUserLocation
-    case shareLiveLocation
+    case shareLiveLocation(timeout: TimeInterval)
 }
 
 enum LocationSharingViewModelResult {
