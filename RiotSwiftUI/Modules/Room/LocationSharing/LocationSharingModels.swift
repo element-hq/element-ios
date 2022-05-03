@@ -94,4 +94,5 @@ enum LocationSharingAlertType {
     case userLocatingError
     case authorizationError
     case locationSharingError
+    case stopLocationSharingError
 }

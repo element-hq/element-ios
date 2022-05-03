@@ -70,8 +70,6 @@ final class LiveLocationSharingViewerCoordinator: Coordinator, Presentable {
                 self.completion?()
             case .share(let coordinate):
                 self.presentLocationActivityController(with: coordinate)
-            case .stopLocationSharing:
-                self.stopLocationSharing()
             }
         }
         
@@ -94,9 +92,5 @@ final class LiveLocationSharingViewerCoordinator: Coordinator, Presentable {
         let shareActivityController = shareLocationActivityControllerBuilder.build(with: coordinate)
         
         self.liveLocationSharingViewerHostingController.present(shareActivityController, animated: true)
-    }
-    
-    func stopLocationSharing() {
-        // TODO: Handle stop location sharing
     }
 }
