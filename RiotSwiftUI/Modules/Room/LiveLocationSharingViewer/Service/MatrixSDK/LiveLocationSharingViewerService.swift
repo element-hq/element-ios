@@ -60,6 +60,7 @@ class LiveLocationSharingViewerService: LiveLocationSharingViewerServiceProtocol
     func stopListeningLiveLocationUpdates() {
         if let listener = beaconInfoSummaryListener {
             self.session.aggregations.removeListener(listener)
+            self.beaconInfoSummaryListener = nil
         }
     }
     
