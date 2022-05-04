@@ -112,7 +112,7 @@ struct LocationSharingView: View {
                 // Hide for now until live location sharing is finished
                 if context.viewState.isLiveLocationSharingEnabled {
                     LocationSharingOptionButton(text: VectorL10n.locationSharingLiveShareTitle) {
-                        context.send(viewAction: .shareLiveLocation)
+                        context.send(viewAction: .startLiveSharing)
                     } buttonIcon: {
                         Image(uiImage: Asset.Images.locationLiveIcon.image)
                             .resizable()
@@ -128,6 +128,24 @@ struct LocationSharingView: View {
                 }
                 .disabled(!context.viewState.shareButtonEnabled)
             }
+        }
+        .actionSheet(isPresented: $context.showingTimerSelector) {
+            ActionSheet(title: Text(VectorL10n.locationSharingLiveTimerSelectorTitle),
+                        buttons: [
+                            .default(Text(VectorL10n.locationSharingLiveTimerSelectorShort)) {
+                                context.send(viewAction: .shareLiveLocation(timeout: .short))
+                                
+                            },
+                            .default(Text(VectorL10n.locationSharingLiveTimerSelectorMedium)) {
+                                context.send(viewAction: .shareLiveLocation(timeout: .medium))
+                                
+                            },
+                            .default(Text(VectorL10n.locationSharingLiveTimerSelectorLong)) {
+                                context.send(viewAction: .shareLiveLocation(timeout: .long))
+                                
+                            },
+                            .cancel()
+                        ])
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()

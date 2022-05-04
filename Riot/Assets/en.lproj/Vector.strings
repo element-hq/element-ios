@@ -2153,6 +2153,10 @@ Tap the + to start adding people.";
 "location_sharing_live_timer_incoming" = "Live until %@";
 "location_sharing_live_loading" = "Loading Live location...";
 "location_sharing_live_error" = "Live location error";
+"location_sharing_live_timer_selector_title" = "Choose for how long others will see your accurate location.";
+"location_sharing_live_timer_selector_short" = "for 15 minutes";
+"location_sharing_live_timer_selector_medium" = "for 1 hour";
+"location_sharing_live_timer_selector_long" = "for 8 hours";
 
 // MARK: - MatrixKit
 
