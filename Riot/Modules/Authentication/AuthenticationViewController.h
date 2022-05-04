@@ -68,7 +68,7 @@
  @param password Optional password used for authentication (to be handed to the verification flow).
  @param identityProvider Optional SSO identity provider used for authentication.
  */
-- (void)authenticationViewController:(AuthenticationViewController *)authenticationViewController
+- (void)authenticationViewController:(AuthenticationViewController * _Nonnull)authenticationViewController
                  didLoginWithSession:(MXSession *)session
                          andPassword:(NSString * _Nullable)password
                orSSOIdentityProvider:(SSOIdentityProvider * _Nullable)identityProvider;

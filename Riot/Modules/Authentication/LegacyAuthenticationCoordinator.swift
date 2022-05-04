@@ -149,10 +149,15 @@ final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinator
 
 // MARK: - AuthenticationViewControllerDelegate
 extension LegacyAuthenticationCoordinator: AuthenticationViewControllerDelegate {
-    func authenticationViewController(_ authenticationViewController: AuthenticationViewController!,
+    func authenticationViewController(_ authenticationViewController: AuthenticationViewController,
                                       didLoginWith session: MXSession!,
                                       andPassword password: String?,
                                       orSSOIdentityProvider identityProvider: SSOIdentityProvider?) {
+        // Sanity check
+        guard let session = session else {
+            MXLog.failure("[LegacyAuthenticationCoordinator] authenticationViewController(_:didLoginWith:) The MXSession should not be nil.")
+            return
+        }
         
         self.session = session
         
