@@ -50,14 +50,14 @@ class LiveLocationSharingViewerService: LiveLocationSharingViewerServiceProtocol
         return self.session.myUserId == userId
     }
     
-    func startListenningLiveLocationUpdates() {
-        self.beaconInfoSummaryListener = self.session.aggregations.beaconAggegations.listenToBeaconInfoSummaryUpdateInRoom(withId: self.roomId) { [weak self] _ in
+    func startListeningLiveLocationUpdates() {
+        self.beaconInfoSummaryListener = self.session.aggregations.beaconAggregations.listenToBeaconInfoSummaryUpdateInRoom(withId: self.roomId) { [weak self] _ in
 
             self?.updateUsersLiveLocation(notifyUpdate: true)
         }
     }
     
-    func stopListenningLiveLocationUpdates() {
+    func stopListeningLiveLocationUpdates() {
         if let listener = beaconInfoSummaryListener {
             self.session.aggregations.removeListener(listener)
         }

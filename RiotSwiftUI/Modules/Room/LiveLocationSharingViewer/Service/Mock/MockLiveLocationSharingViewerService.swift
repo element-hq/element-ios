@@ -54,11 +54,11 @@ class MockLiveLocationSharingViewerService: LiveLocationSharingViewerServiceProt
         return "@alice:matrix.org" == userId
     }
     
-    func startListenningLiveLocationUpdates() {
+    func startListeningLiveLocationUpdates() {
         
     }
     
-    func stopListenningLiveLocationUpdates() {
+    func stopListeningLiveLocationUpdates() {
         
     }
     

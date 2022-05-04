@@ -82,7 +82,7 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
         liveLocationSharingViewerService.didUpdateUsersLiveLocation = { [weak self] liveLocations in
             self?.update(with: liveLocations, highlightFirstLocation: false)
         }
-        self.liveLocationSharingViewerService.startListenningLiveLocationUpdates()
+        self.liveLocationSharingViewerService.startListeningLiveLocationUpdates()
     }
     
     private func updateUsersLiveLocation(highlightFirstLocation: Bool) {
