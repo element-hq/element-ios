@@ -20,21 +20,11 @@ import CoreLocation
 @available(iOS 14.0, *)
 struct LocationSharingView: View {
     
-    // MARK: - Constants
-    
-    private enum Constants {
-        // Timer are in milliseconde because timestamp are in millisecond in Matrix SDK
-        static let liveLocationSharingShortTimeout: TimeInterval = 900000 // 15 minutes
-        static let liveLocationSharingMediumTimeout: TimeInterval = 3600000 // 1 hour
-        static let liveLocationSharingLongTimeout: TimeInterval = 28800000 // 8 hours
-    }
-    
     // MARK: - Properties
     
     // MARK: Private
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
-    @State private var showingTimerSelector = false
     
     // MARK: Public
     
@@ -122,7 +112,7 @@ struct LocationSharingView: View {
                 // Hide for now until live location sharing is finished
                 if context.viewState.isLiveLocationSharingEnabled {
                     LocationSharingOptionButton(text: VectorL10n.locationSharingLiveShareTitle) {
-                        showingTimerSelector = true
+                        context.send(viewAction: .startLiveSharing)
                     } buttonIcon: {
                         Image(uiImage: Asset.Images.locationLiveIcon.image)
                             .resizable()
@@ -139,20 +129,20 @@ struct LocationSharingView: View {
                 .disabled(!context.viewState.shareButtonEnabled)
             }
         }
-        .actionSheet(isPresented: $showingTimerSelector) {
+        .actionSheet(isPresented: $context.showingTimerSelector) {
             ActionSheet(title: Text(VectorL10n.locationSharingLiveTimerSelectorTitle),
                         buttons: [
                             .default(Text(VectorL10n.locationSharingLiveTimerSelectorShort)) {
-                                context.send(viewAction: .shareLiveLocation(timeout: Constants.liveLocationSharingShortTimeout))
-
+                                context.send(viewAction: .shareLiveLocation(timeout: .short))
+                                
                             },
                             .default(Text(VectorL10n.locationSharingLiveTimerSelectorMedium)) {
-                                context.send(viewAction: .shareLiveLocation(timeout: Constants.liveLocationSharingMediumTimeout))
-
+                                context.send(viewAction: .shareLiveLocation(timeout: .medium))
+                                
                             },
                             .default(Text(VectorL10n.locationSharingLiveTimerSelectorLong)) {
-                                context.send(viewAction: .shareLiveLocation(timeout: Constants.liveLocationSharingLongTimeout))
-
+                                context.send(viewAction: .shareLiveLocation(timeout: .long))
+                                
                             },
                             .cancel()
                         ])

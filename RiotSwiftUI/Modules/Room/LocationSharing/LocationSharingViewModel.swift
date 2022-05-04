@@ -74,8 +74,11 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
             completion?(.share(latitude: pinLocation.latitude, longitude: pinLocation.longitude, coordinateType: .pin))
         case .goToUserLocation:
             state.bindings.pinLocation = nil
+        case .startLiveSharing:
+            state.bindings.showingTimerSelector = true
         case .shareLiveLocation(let timeout):
-            completion?(.shareLiveLocation(timeout: timeout))
+            state.bindings.showingTimerSelector = false
+            completion?(.shareLiveLocation(timeout: timeout.rawValue))
         }
     }
     
