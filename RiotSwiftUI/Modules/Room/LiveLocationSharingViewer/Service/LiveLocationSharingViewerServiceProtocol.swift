@@ -27,9 +27,9 @@ protocol LiveLocationSharingViewerServiceProtocol {
     
     func isCurrentUserId(_ userId: String) -> Bool
     
-    func startListenningLiveLocationUpdates()
+    func startListeningLiveLocationUpdates()
     
-    func stopListenningLiveLocationUpdates()
+    func stopListeningLiveLocationUpdates()
     
     func stopUserLiveLocationSharing(completion: @escaping (Result<Void, Error>) -> Void)
 }
