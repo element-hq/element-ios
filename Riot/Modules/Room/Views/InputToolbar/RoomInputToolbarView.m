@@ -419,6 +419,11 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     [super onTouchUpInside:button];
 }
 
+- (BOOL)isFirstResponder
+{
+    return [self.textView isFirstResponder];
+}
+
 - (BOOL)becomeFirstResponder
 {
     return [self.textView becomeFirstResponder];

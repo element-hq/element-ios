@@ -15,10 +15,19 @@
 //
 
 import Foundation
+import UIKit
 
 extension RoomInputToolbarView {
     open override func sendCurrentMessage() {
-        // TODO: trigger auto correct ?
+        // Triggers auto-correct if needed.
+        if self.isFirstResponder {
+            let temp = UITextField(frame: .zero)
+            temp.isHidden = true
+            self.addSubview(temp)
+            temp.becomeFirstResponder()
+            self.becomeFirstResponder()
+            temp.removeFromSuperview()
+        }
 
         // Send message if any.
         if let messageToSend = self.attributedTextMessage, messageToSend.length > 0 {
