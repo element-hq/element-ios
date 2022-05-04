@@ -25,12 +25,20 @@ enum LocationSharingCoordinateType {
     case pin
 }
 
+enum LiveLocationSharingTimeout: TimeInterval {
+    // Timer are in milliseconde because timestamp are in millisecond in Matrix SDK
+    case short = 900000 // 15 minutes
+    case medium = 3600000 // 1 hour
+    case long = 28800000 // 8 hours
+}
+
 enum LocationSharingViewAction {
     case cancel
     case share
     case sharePinLocation
     case goToUserLocation
-    case shareLiveLocation
+    case startLiveSharing
+    case shareLiveLocation(timeout: LiveLocationSharingTimeout)
 }
 
 enum LocationSharingViewModelResult {
@@ -87,6 +95,7 @@ struct LocationSharingViewStateBindings {
     var alertInfo: AlertInfo<LocationSharingAlertType>?
     var userLocation: CLLocationCoordinate2D?
     var pinLocation: CLLocationCoordinate2D?
+    var showingTimerSelector = false
 }
 
 enum LocationSharingAlertType {

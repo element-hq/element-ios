@@ -142,7 +142,11 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
     private func renderLoaded(space: MXSpace) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.mxRoom = space.room
-        self.titleView.subtitleLabel.text = space.summary?.displayname
+        if let spaceName = space.summary?.displayname {
+            self.titleView.breadcrumbView.breadcrumbs = [spaceName]
+        } else {
+            self.titleView.breadcrumbView.breadcrumbs = []
+        }
     }
     
     private func render(error: Error) {
