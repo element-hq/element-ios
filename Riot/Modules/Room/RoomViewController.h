@@ -70,6 +70,9 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 // Remove Jitsi widget container
 @property (weak, nonatomic, nullable) IBOutlet UIView *removeJitsiWidgetContainer;
 
+// Error presenter
+@property (nonatomic, strong, readonly) MXKErrorAlertPresentation *errorPresenter;
+
 /**
  Preview data for a room invitation received by email, or a link to a room.
  */
@@ -249,6 +252,10 @@ handleUniversalLinkWithParameters:(UniversalLinkParameters*)parameters;
 didRequestLocationPresentationForEvent:(MXEvent *)event
                 bubbleData:(id<MXKRoomBubbleCellDataStoring>)bubbleData;
 
+/// Ask the coordinator to present the live location sharing viewer.
+- (void)roomViewController:(RoomViewController *)roomViewController
+didRequestLiveLocationPresentationForBubbleData:(id<MXKRoomBubbleCellDataStoring>)bubbleData;
+
 - (nullable UIActivityViewController *)roomViewController:(RoomViewController *)roomViewController
               locationShareActivityViewControllerForEvent:(MXEvent *)event;
 
@@ -281,7 +288,7 @@ didRequestEditForPollWithStartEvent:(MXEvent *)startEvent;
 - (void)roomViewControllerDidStopLoading:(RoomViewController *)roomViewController;
 
 /// User tap live location sharing stop action
-- (void)roomViewControllerDidStopLiveLocationSharing:(RoomViewController *)roomViewController;
+- (void)roomViewControllerDidStopLiveLocationSharing:(RoomViewController *)roomViewController beaconInfoEventId:(nullable NSString*)beaconInfoEventId;
 
 /// User tap live location sharing banner
 - (void)roomViewControllerDidTapLiveLocationSharingBanner:(RoomViewController *)roomViewController;

@@ -2157,6 +2157,9 @@ Tap the + to start adding people.";
 "location_sharing_live_timer_selector_short" = "for 15 minutes";
 "location_sharing_live_timer_selector_medium" = "for 1 hour";
 "location_sharing_live_timer_selector_long" = "for 8 hours";
+"location_sharing_live_no_user_locations_error_title" = "No user locations available";
+"location_sharing_live_stop_sharing_error" = "Fail to stop sharing location";
+"location_sharing_live_stop_sharing_progress" = "Stop location sharing";
 
 // MARK: - MatrixKit
 

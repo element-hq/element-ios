@@ -25,7 +25,6 @@ import CoreLocation
 enum LiveLocationSharingViewerViewModelResult {    
     case done
     case share(_ coordinate: CLLocationCoordinate2D)
-    case stopLocationSharing
 }
 
 // MARK: View
