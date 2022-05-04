@@ -31,15 +31,55 @@ class AuthenticationVerifyEmailUITests: MockScreenTest {
     func verifyAuthenticationVerifyEmailScreen() throws {
         guard let screenState = screenState as? MockAuthenticationVerifyEmailScreenState else { fatalError("no screen") }
         switch screenState {
-        case .promptType(let promptType):
-            verifyAuthenticationVerifyEmailPromptType(promptType: promptType)
+        case .emptyAddress:
+            verifyEmptyAddress()
+        case .enteredAddress:
+            verifyEnteredAddress()
+        case .hasSentEmail:
+            verifyWaitingForEmailLink()
         }
     }
     
-    func verifyAuthenticationVerifyEmailPromptType(promptType: AuthenticationVerifyEmailPromptType) {
-        let title = app.staticTexts["title"]
-        XCTAssert(title.exists)
-        XCTAssertEqual(title.label, promptType.title)
+    func verifyEmptyAddress() {
+        XCTAssertTrue(app.staticTexts["titleLabel"].exists)
+        XCTAssertTrue(app.staticTexts["messageLabel"].exists)
+        
+        let addressTextField = app.textFields["addressTextField"]
+        XCTAssertTrue(addressTextField.exists)
+        XCTAssertEqual(addressTextField.value as? String, "")
+        
+        let nextButton = app.buttons["nextButton"]
+        XCTAssertTrue(nextButton.exists)
+        XCTAssertFalse(nextButton.isEnabled)
+        
+        XCTAssertFalse(app.staticTexts["waitingTitleLabel"].exists)
+        XCTAssertFalse(app.staticTexts["waitingMessageLabel"].exists)
+    }
+    
+    func verifyEnteredAddress() {
+        XCTAssertTrue(app.staticTexts["titleLabel"].exists)
+        XCTAssertTrue(app.staticTexts["messageLabel"].exists)
+        
+        let addressTextField = app.textFields["addressTextField"]
+        XCTAssertTrue(addressTextField.exists)
+        XCTAssertEqual(addressTextField.value as? String, "test@example.com")
+        
+        let nextButton = app.buttons["nextButton"]
+        XCTAssertTrue(nextButton.exists)
+        XCTAssertTrue(nextButton.isEnabled)
+        
+        XCTAssertFalse(app.staticTexts["waitingTitleLabel"].exists)
+        XCTAssertFalse(app.staticTexts["waitingMessageLabel"].exists)
+    }
+    
+    func verifyWaitingForEmailLink() {
+        XCTAssertFalse(app.staticTexts["titleLabel"].exists)
+        XCTAssertFalse(app.staticTexts["messageLabel"].exists)
+        XCTAssertFalse(app.textFields["addressTextField"].exists)
+        XCTAssertFalse(app.buttons["nextButton"].exists)
+        
+        XCTAssertTrue(app.staticTexts["waitingTitleLabel"].exists)
+        XCTAssertTrue(app.staticTexts["waitingMessageLabel"].exists)
     }
 
 }

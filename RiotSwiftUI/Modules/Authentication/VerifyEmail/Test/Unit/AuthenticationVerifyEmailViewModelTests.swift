@@ -20,30 +20,26 @@ import XCTest
 
 @available(iOS 14.0, *)
 class AuthenticationVerifyEmailViewModelTests: XCTestCase {
-//    private enum Constants {
-//        static let counterInitialValue = 0
-//    }
-//    
-//    var viewModel: AuthenticationVerifyEmailViewModelProtocol!
-//    var context: AuthenticationVerifyEmailViewModelType.Context!
-//    
-//    override func setUpWithError() throws {
-//        viewModel = AuthenticationVerifyEmailViewModel(promptType: .regular, initialCount: Constants.counterInitialValue)
-//        context = viewModel.context
-//    }
-//
-//    func testInitialState() {
-//        XCTAssertEqual(context.viewState.count, Constants.counterInitialValue)
-//    }
-//
-//    func testCounter() throws {
-//        context.send(viewAction: .incrementCount)
-//        XCTAssertEqual(context.viewState.count, 1)
-//        
-//        context.send(viewAction: .incrementCount)
-//        XCTAssertEqual(context.viewState.count, 2)
-//        
-//        context.send(viewAction: .decrementCount)
-//        XCTAssertEqual(context.viewState.count, 1)
-//    }
+    private enum Constants {
+        static let counterInitialValue = 0
+    }
+    
+    var viewModel: AuthenticationVerifyEmailViewModelProtocol!
+    var context: AuthenticationVerifyEmailViewModelType.Context!
+    
+    override func setUpWithError() throws {
+        viewModel = AuthenticationVerifyEmailViewModel()
+        context = viewModel.context
+    }
+
+    func testSentEmailState() {
+        // Given a view model where the user hasn't yet sent the verification email.
+        XCTAssertFalse(context.viewState.hasSentEmail, "The view model should start with hasSentEmail equal to false")
+        
+        // When updating to indicate that an email has been send.
+        viewModel.updateForSentEmail()
+        
+        // Then the view model should update to reflect a sent email.
+        XCTAssertTrue(context.viewState.hasSentEmail, "The view model should start with hasSentEmail equal to false")
+    }
 }

@@ -51,11 +51,13 @@ struct AuthenticationVerifyEmailForm: View {
                 .font(theme.fonts.title2B)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.primaryContent)
+                .accessibilityIdentifier("titleLabel")
             
             Text(VectorL10n.authenticationVerifyEmailInputMessage)
                 .font(theme.fonts.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.secondaryContent)
+                .accessibilityIdentifier("messageLabel")
         }
     }
     

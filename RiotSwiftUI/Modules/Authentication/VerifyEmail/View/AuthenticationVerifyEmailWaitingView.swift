@@ -49,11 +49,13 @@ struct AuthenticationVerifyEmailWaitingView: View {
                 .font(theme.fonts.title2B)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.primaryContent)
+                .accessibilityIdentifier("waitingTitleLabel")
             
             Text(VectorL10n.authenticationVerifyEmailWaitingMessage(viewModel.emailAddress))
                 .font(theme.fonts.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.secondaryContent)
+                .accessibilityIdentifier("waitingMessageLabel")
         }
     }
 }
