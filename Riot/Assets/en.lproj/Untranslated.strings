@@ -49,6 +49,9 @@
 "authentication_verify_email_waiting_hint" = "Did not receive an email?";
 "authentication_verify_email_waiting_button" = "Resend email";
 
+"authentication_terms_title" = "Privacy policy";
+"authentication_terms_message" = "Please read through T&C. You must accept in order to continue.";
+
 // MARK: Spaces WIP
 "spaces_feature_not_available" = "This feature isn't available here. For now, you can do this with %@ on your computer.";
 

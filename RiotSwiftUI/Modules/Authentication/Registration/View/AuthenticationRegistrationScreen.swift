@@ -39,7 +39,9 @@ struct AuthenticationRegistrationScreen: View {
                 serverInfo
                     .padding(.leading, 12)
                 
-                Divider()
+                Rectangle()
+                    .fill(theme.colors.quinaryContent)
+                    .frame(height: 1)
                     .padding(.vertical, 21)
                 
                 if viewModel.viewState.showRegistrationForm {
@@ -63,9 +65,9 @@ struct AuthenticationRegistrationScreen: View {
             .padding(.horizontal, 16)
             .padding(.bottom, 16)
         }
-        .accentColor(theme.colors.accent)
         .background(theme.colors.background.ignoresSafeArea())
         .alert(item: $viewModel.alertInfo) { $0.alert }
+        .accentColor(theme.colors.accent)
     }
     
     /// The header containing the icon, title and message.

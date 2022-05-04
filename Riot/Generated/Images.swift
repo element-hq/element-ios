@@ -39,6 +39,7 @@ internal class Asset: NSObject {
     internal static let authenticationSsoIconGitlab = ImageAsset(name: "authentication_sso_icon_gitlab")
     internal static let authenticationSsoIconGoogle = ImageAsset(name: "authentication_sso_icon_google")
     internal static let authenticationSsoIconTwitter = ImageAsset(name: "authentication_sso_icon_twitter")
+    internal static let authenticationTermsIcon = ImageAsset(name: "authentication_terms_icon")
     internal static let callAudioMuteOffIcon = ImageAsset(name: "call_audio_mute_off_icon")
     internal static let callAudioMuteOnIcon = ImageAsset(name: "call_audio_mute_on_icon")
     internal static let callAudioRouteBuiltin = ImageAsset(name: "call_audio_route_builtin")
