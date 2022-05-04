@@ -55,5 +55,5 @@ jobs:
         run: bundle exec fastlane point_dependencies_to_related_branches
 
       # Main step
-      - name: Unit tests
+      - name: UI tests
         run: bundle exec fastlane uitest
