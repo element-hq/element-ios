@@ -19,17 +19,10 @@ import Foundation
 extension MXSession {
     
     func avatarInput(for userId: String) -> AvatarInput {
-                
-        var displayName: String?
-        var avatarURL: String?
+        let user = self.user(withUserId: userId)
         
-        if let user = self.user(withUserId: userId) {
-            displayName = user.displayname
-            avatarURL = user.avatarUrl
-        }
-        
-        return AvatarInput(mxContentUri: avatarURL,
+        return AvatarInput(mxContentUri: user?.avatarUrl,
                            matrixItemId: userId,
-                           displayName: displayName)
+                           displayName: user?.displayname)
     }
 }
