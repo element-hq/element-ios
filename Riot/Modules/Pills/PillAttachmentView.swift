@@ -17,6 +17,8 @@
 import UIKit
 
 /// Base view class for mention Pills.
+@available (iOS 15.0, *)
+@objcMembers
 class PillAttachmentView: UIView {
     /// Computes size required to display a pill for given room member.
     ///

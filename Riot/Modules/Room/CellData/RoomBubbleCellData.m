@@ -433,9 +433,11 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             {
                 // Apply alpha to blur this component
                 componentString = [Tools setTextColorAlpha:.2 inAttributedString:componentString];
-                [Tools setPillAlpha:.2 inAttributedString:componentString];
+                if (@available(iOS 15.0, *)) {
+                    [Tools setPillAlpha:.2 inAttributedString:componentString];
+                }
             }
-            else
+            else if (@available(iOS 15.0, *))
             {
                 // PillTextAttachment are not created again every time, we have to set alpha back to standard if needed.
                 [Tools setPillAlpha:1.f inAttributedString:componentString];
@@ -478,9 +480,11 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             {
                 // Apply alpha to blur this component
                 componentString = [Tools setTextColorAlpha:.2 inAttributedString:componentString];
-                [Tools setPillAlpha:.2 inAttributedString:componentString];
+                if (@available(iOS 15.0, *)) {
+                    [Tools setPillAlpha:.2 inAttributedString:componentString];
+                }
             }
-            else
+            else if (@available(iOS 15.0, *))
             {
                 // PillTextAttachment are not created again every time, we have to set alpha back to standard if needed.
                 [Tools setPillAlpha:1.f inAttributedString:componentString];

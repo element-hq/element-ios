@@ -41,6 +41,7 @@ extension Tools {
     /// - Parameters:
     ///   - alpha: Alpha value to apply
     ///   - attributedString: Attributed string containing the pills
+    @available (iOS 15.0, *)
     @objc static func setPillAlpha(_ alpha: CGFloat, inAttributedString attributedString: NSAttributedString) {
         let totalRange = NSRange(location: 0, length: attributedString.length)
         attributedString.vc_enumerateAttribute(.attachment,

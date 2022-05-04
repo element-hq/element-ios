@@ -21,6 +21,10 @@ import UIKit
 @available (iOS 15.0, *)
 @objcMembers
 class StringPillsUtils: NSObject {
+    // MARK: - Internal Properties
+    /// UTType identifier for pills. Should be declared as Document type & Exported type identifier inside Info.plist
+    static let pillUTType: String = "im.vector.app.pills"
+
     // MARK: - Internal Methods
     /// Insert text attachments for pills inside given message attributed string.
     ///

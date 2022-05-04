@@ -18,7 +18,9 @@ import UIKit
 import MatrixSDK
 
 /// Text attachment for pills display.
-@objcMembers class PillTextAttachment: NSTextAttachment {
+@available (iOS 15.0, *)
+@objcMembers
+class PillTextAttachment: NSTextAttachment {
     // MARK: - Internal Properties
     var roomMember: MXRoomMember?
     var isCurrentUser: Bool = false
@@ -38,7 +40,7 @@ import MatrixSDK
     }
 
     init(withRoomMember roomMember: MXRoomMember, isCurrentUser: Bool) {
-        super.init(data: nil, ofType: "im.vector.app.pills")
+        super.init(data: nil, ofType: StringPillsUtils.pillUTType)
         self.roomMember = roomMember
         self.isCurrentUser = isCurrentUser
         let pillSize = PillAttachmentView.size(forRoomMember: roomMember)
@@ -52,7 +54,7 @@ import MatrixSDK
         }
 
         super.init(coder: coder)
-        self.fileType = "im.vector.app.pills"
+        self.fileType = StringPillsUtils.pillUTType
 
         self.roomMember = roomMember
         self.isCurrentUser = coder.decodeBool(forKey: Constants.isCurrentUserKey)
