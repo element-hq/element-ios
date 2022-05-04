@@ -41,6 +41,5 @@ class StaticLocationViewingUITests: MockScreenTest {
     
     func verifyInitialExistingLocation() {
         XCTAssertTrue(app.buttons["Cancel"].exists, "The cancel button should exist.")
-        XCTAssertTrue(app.buttons["shareButton"].exists, "The share button should exist.")
     }
 }
