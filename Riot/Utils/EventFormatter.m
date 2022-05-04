@@ -90,7 +90,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     {
         if (roomState && event.eventType == MXEventTypeRoomMessage)
         {
-            string = [StringPillsUtils insertPillsIn:string withSession:mxSession event:event andRoomState:roomState];
+            string = [StringPillsUtils insertPillsIn:string withSession:mxSession event:event andRoomState:roomState isEditMode:NO];
         }
     }
 

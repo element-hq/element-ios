@@ -29,6 +29,7 @@ import MatrixSDK
         static let roomMemberKey: String = "roomMember"
         static let isCurrentUserKey: String = "isCurrentUser"
         static let alphaKey: String = "alpha"
+        static let pillVerticalOffset: CGFloat = -7.5
     }
 
     // MARK: - Init
@@ -41,7 +42,7 @@ import MatrixSDK
         self.roomMember = roomMember
         self.isCurrentUser = isCurrentUser
         let pillSize = PillAttachmentView.size(forRoomMember: roomMember)
-        self.bounds = CGRect(origin: CGPoint(x: 0.0, y: -6.5), size: pillSize)
+        self.bounds = CGRect(origin: CGPoint(x: 0.0, y: Constants.pillVerticalOffset), size: pillSize)
     }
 
     // MARK: - NSCoding

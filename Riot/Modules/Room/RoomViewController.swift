@@ -31,17 +31,17 @@ extension RoomViewController {
             newAttributedString.append(StringPillsUtils.mentionPill(withRoomMember: roomMember,
                                                                     isCurrentUser: false))
             let empty = NSAttributedString(string: " ",
-                                           attributes: [.font: inputToolbar.textDefaultFont ?? ThemeService.shared().theme.fonts.body])
+                                           attributes: [.font: inputToolbar.textDefaultFont])
             newAttributedString.append(empty)
         } else if roomMember.userId == self.mainSession.myUser.userId {
             let selfMentionString = NSAttributedString(string: "/me ",
-                                                       attributes: [.font: inputToolbar.textDefaultFont ?? ThemeService.shared().theme.fonts.body])
+                                                       attributes: [.font: inputToolbar.textDefaultFont])
             newAttributedString.append(selfMentionString)
         } else {
             newAttributedString.append(StringPillsUtils.mentionPill(withRoomMember: roomMember,
                                                                     isCurrentUser: false))
             let colon = NSAttributedString(string: ": ",
-                                           attributes: [.font: inputToolbar.textDefaultFont ?? ThemeService.shared().theme.fonts.body])
+                                           attributes: [.font: inputToolbar.textDefaultFont])
             newAttributedString.append(colon)
         }
 
@@ -58,7 +58,7 @@ extension RoomViewController {
         self.setupRoomDataSource { roomDataSource in
             guard let roomDataSource = roomDataSource as? RoomDataSource else { return }
 
-            if self.inputToolbar?.sendMode == RoomInputToolbarViewSendModeReply, let eventModified = eventModified {
+            if self.inputToolbar?.sendMode == .reply, let eventModified = eventModified {
                 roomDataSource.sendReply(to: eventModified,
                                          withAttributedTextMessage: attributedTextMsg) { response in
                     switch response {
@@ -68,7 +68,7 @@ extension RoomViewController {
                         MXLog.error("[RoomViewController] sendAttributedTextMessage failed while updating event: \(eventModified.eventId ?? "N/A")")
                     }
                 }
-            } else if self.inputToolbar?.sendMode == RoomInputToolbarViewSendModeEdit, let eventModified = eventModified {
+            } else if self.inputToolbar?.sendMode == .edit, let eventModified = eventModified {
                 roomDataSource.replaceAttributedTextMessage(
                     for: eventModified,
                     withAttributedTextMessage: attributedTextMsg,

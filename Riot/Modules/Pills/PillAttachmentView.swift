@@ -35,7 +35,7 @@ class PillAttachmentView: UIView {
 
     // MARK: - Private Enums
     private enum Constants {
-        static let pillLabelFont: UIFont = ThemeService.shared().theme.fonts.body
+        static let pillLabelFont: UIFont = UIFont.systemFont(ofSize: 15)
         static let commonVerticalMargin: CGFloat = 2.0
         static let commonHorizontalMargin: CGFloat = 4.0
         static let avatarSideLength: CGFloat = 16.0

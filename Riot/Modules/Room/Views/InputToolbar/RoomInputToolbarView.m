@@ -185,7 +185,7 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     }
     else
     {
-        return ThemeService.shared.theme.fonts.body;
+        return [UIFont systemFontOfSize:15.f];
     }
 }
 

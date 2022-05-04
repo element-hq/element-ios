@@ -159,23 +159,25 @@ extension RoomDataSource {
             let replyEventParts = parser.parse(event)
 
             let body: String = replyEventParts?.formattedBodyParts?.replyText ?? replyEventParts?.bodyParts.replyText ?? ""
-            let attributed = eventFormatter.renderHTMLString(body, for: event, with: self.roomState)
+            let attributed = eventFormatter.renderHTMLString(body, for: event, with: self.roomState, isEditMode: true)
             if let attributed = attributed, #available(iOS 15.0, *) {
                 editableTextMessage = StringPillsUtils.insertPills(in: attributed,
                                                                    withSession: self.mxSession,
                                                                    event: event,
-                                                                   andRoomState: self.roomState)
+                                                                   andRoomState: self.roomState,
+                                                                   isEditMode: true)
             } else {
                 editableTextMessage = attributed
             }
         } else {
             let body: String = event.content["formatted_body"] as? String ?? event.content["body"] as? String ?? ""
-            let attributed = eventFormatter.renderHTMLString(body, for: event, with: self.roomState)
+            let attributed = eventFormatter.renderHTMLString(body, for: event, with: self.roomState, isEditMode: true)
             if let attributed = attributed, #available(iOS 15.0, *) {
                 editableTextMessage = StringPillsUtils.insertPills(in: attributed,
                                                                    withSession: self.mxSession,
                                                                    event: event,
-                                                                   andRoomState: self.roomState)
+                                                                   andRoomState: self.roomState,
+                                                                   isEditMode: true)
             } else {
                 editableTextMessage = attributed
             }

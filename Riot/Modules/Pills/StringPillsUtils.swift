@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Provides utilities funcs to handle Pills inside attributed strings.
 @available (iOS 15.0, *)
@@ -26,12 +27,15 @@ class StringPillsUtils: NSObject {
     /// - Parameters:
     ///   - attributedString: message string to update
     ///   - session: current session
+    ///   - event: the event
     ///   - roomState: room state for message
+    ///   - isEditMode: whether this string will be used in the composer
     /// - Returns: new attributed string with pills
     static func insertPills(in attributedString: NSAttributedString,
                             withSession session: MXSession,
                             event: MXEvent,
-                            andRoomState roomState: MXRoomState) -> NSAttributedString {
+                            andRoomState roomState: MXRoomState,
+                            isEditMode: Bool = false) -> NSAttributedString {
         let newAttr = NSMutableAttributedString(attributedString: attributedString)
         let totalRange = NSRange(location: 0, length: newAttr.length)
 
@@ -40,7 +44,7 @@ class StringPillsUtils: NSObject {
                let roomMember = roomState.members.member(withUserId: userId) {
                 let isCurrentUser = roomMember.userId == session.myUserId && event.sender != session.myUserId
                 let attachmentString = mentionPill(withRoomMember: roomMember,
-                                                   andUrl: url,
+                                                   andUrl: isEditMode ? nil : url,
                                                    isCurrentUser: isCurrentUser)
                 newAttr.replaceCharacters(in: range, with: attachmentString)
             }
@@ -83,6 +87,7 @@ class StringPillsUtils: NSObject {
                             isCurrentUser: Bool) -> NSAttributedString {
         let attachment = PillTextAttachment(withRoomMember: roomMember, isCurrentUser: isCurrentUser)
         let string = NSMutableAttributedString(attachment: attachment)
+        string.addAttribute(.font, value: UIFont.systemFont(ofSize: 15.0), range: .init(location: 0, length: string.length))
         if let url = url {
             string.addAttribute(.link, value: url, range: .init(location: 0, length: string.length))
         }

@@ -24,12 +24,12 @@
 /**
  Destination of the message in the composer
  */
-typedef enum : NSUInteger
+typedef NS_ENUM(NSUInteger, RoomInputToolbarViewSendMode)
 {
     RoomInputToolbarViewSendModeSend,
     RoomInputToolbarViewSendModeReply,
     RoomInputToolbarViewSendModeEdit
-} RoomInputToolbarViewSendMode;
+};
 
 
 @protocol RoomInputToolbarViewDelegate <MXKRoomInputToolbarViewDelegate>
@@ -116,7 +116,7 @@ typedef enum : NSUInteger
  */
 @property (nonatomic) NSAttributedString *attributedTextMessage;
 
-@property (nonatomic, readonly) UIFont *textDefaultFont;
+@property (nonatomic, readonly, nonnull) UIFont *textDefaultFont;
 
 /**
  Adds a voice message toolbar view to be displayed inside this input toolbar
