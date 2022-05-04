@@ -32,7 +32,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     private let userIndicatorStore: UserIndicatorStore
     private var selectedEventId: String?
     private var loadingCancel: UserIndicatorCancel?
-    private var secondaryIndicatorCancel: UserIndicatorCancel? // Used for low priority advertizements
+    private var locationSharingIndicatorCancel: UserIndicatorCancel? // Used for location sharing advertizements
     
     private var roomDataSourceManager: MXKRoomDataSourceManager {
         return MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.parameters.session)
@@ -300,13 +300,13 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         }
         
         // TODO: Handle loading state on the banner by replacing stop button with a spinner
-        self.startSecondaryLoading(withMessage: VectorL10n.locationSharingLiveStopSharingProgress)
+        self.showLocationSharingIndicator(withMessage: VectorL10n.locationSharingLiveStopSharingProgress)
         
         if let beaconInfoEventId = beaconInfoEventId {
             session.locationService.stopUserLocationSharing(withBeaconInfoEventId: beaconInfoEventId, roomId: roomId) {
                 [weak self] response in
                 
-                self?.stopSecondaryLoading()
+                self?.hideLocationSharingIndicator()
                 
                 switch response {
                 case .success:
@@ -318,7 +318,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         } else {
             session.locationService.stopUserLocationSharing(inRoomWithId: roomId) { [weak self] response in
                 
-                self?.stopSecondaryLoading()
+                self?.hideLocationSharingIndicator()
                 
                 switch response {
                 case .success:
@@ -454,17 +454,17 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         loadingCancel = nil
     }
     
-    private func startSecondaryLoading(withMessage message: String) {
-        guard secondaryIndicatorCancel == nil else {
+    private func showLocationSharingIndicator(withMessage message: String) {
+        guard locationSharingIndicatorCancel == nil else {
             return
         }
         
-        secondaryIndicatorCancel = userIndicatorStore.present(type: .loading(label: message, isInteractionBlocking: false))
+        locationSharingIndicatorCancel = userIndicatorStore.present(type: .loading(label: message, isInteractionBlocking: false))
     }
     
-    private func stopSecondaryLoading() {
-        secondaryIndicatorCancel?()
-        secondaryIndicatorCancel = nil
+    private func hideLocationSharingIndicator() {
+        locationSharingIndicatorCancel?()
+        locationSharingIndicatorCancel = nil
     }
 }
 
