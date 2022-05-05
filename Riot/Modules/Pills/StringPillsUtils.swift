@@ -46,10 +46,10 @@ class StringPillsUtils: NSObject {
         newAttr.vc_enumerateAttribute(.link, in: totalRange) { (url: URL, range: NSRange, _) in
             if let userId = userIdFromPermalink(url.absoluteString),
                let roomMember = roomState.members.member(withUserId: userId) {
-                let isCurrentUser = roomMember.userId == session.myUserId && event.sender != session.myUserId
+                let isHighlighted = roomMember.userId == session.myUserId && event.sender != session.myUserId
                 let attachmentString = mentionPill(withRoomMember: roomMember,
                                                    andUrl: isEditMode ? nil : url,
-                                                   isCurrentUser: isCurrentUser)
+                                                   isHighlighted: isHighlighted)
                 newAttr.replaceCharacters(in: range, with: attachmentString)
             }
         }
@@ -84,12 +84,12 @@ class StringPillsUtils: NSObject {
     /// - Parameters:
     ///   - roomMember: the room member
     ///   - url: URL to room member profile. Should be provided to make pill act as a link.
-    ///   - isCurrentUser: true to indicate that the room member is the current user
+    ///   - isHighlighted: true to indicate that the pill should be highlighted
     /// - Returns: attributed string with a pill attachment and an optional link
     static func mentionPill(withRoomMember roomMember: MXRoomMember,
                             andUrl url: URL? = nil,
-                            isCurrentUser: Bool) -> NSAttributedString {
-        let attachment = PillTextAttachment(withRoomMember: roomMember, isCurrentUser: isCurrentUser)
+                            isHighlighted: Bool) -> NSAttributedString {
+        let attachment = PillTextAttachment(withRoomMember: roomMember, isHighlighted: isHighlighted)
         let string = NSMutableAttributedString(attachment: attachment)
         string.addAttribute(.font, value: UIFont.systemFont(ofSize: 15.0), range: .init(location: 0, length: string.length))
         if let url = url {

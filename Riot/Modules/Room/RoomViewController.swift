@@ -28,7 +28,7 @@ extension RoomViewController {
         if inputToolbar.attributedTextMessage.length > 0 {
             if #available(iOS 15.0, *) {
                 newAttributedString.append(StringPillsUtils.mentionPill(withRoomMember: roomMember,
-                                                                        isCurrentUser: false))
+                                                                        isHighlighted: false))
             } else {
                 newAttributedString.appendString(roomMember.displayname.count > 0 ? roomMember.displayname : roomMember.userId)
             }
@@ -42,7 +42,7 @@ extension RoomViewController {
         } else {
             if #available(iOS 15.0, *) {
                 newAttributedString.append(StringPillsUtils.mentionPill(withRoomMember: roomMember,
-                                                                        isCurrentUser: false))
+                                                                        isHighlighted: false))
             } else {
                 newAttributedString.appendString(roomMember.displayname.count > 0 ? roomMember.displayname : roomMember.userId)
             }

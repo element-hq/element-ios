@@ -37,7 +37,7 @@ class StringPillsUtilsTests: XCTestCase {
         XCTAssert(messageWithPills.attribute(.attachment, at: messageWithPills.length - 1, effectiveRange: nil) is PillTextAttachment)
 
         let pillTextAttachment = messageWithPills.attribute(.attachment, at: messageWithPills.length - 1, effectiveRange: nil) as? PillTextAttachment
-        XCTAssert(pillTextAttachment?.isCurrentUser == true) // Alice is highlighted
+        XCTAssert(pillTextAttachment?.isHighlighted == true) // Alice is highlighted
         XCTAssert(pillTextAttachment?.fileType == StringPillsUtils.pillUTType)
     }
 

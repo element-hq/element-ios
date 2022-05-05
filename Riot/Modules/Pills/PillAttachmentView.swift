@@ -49,14 +49,18 @@ class PillAttachmentView: UIView {
     }
 
     // MARK: - Init
-    convenience init(withRoomMember roomMember: MXRoomMember, isCurrentUser: Bool) {
+    /// Create a Mention Pill view for given room member.
+    ///
+    /// - Parameters:
+    ///   - roomMember: the room member
+    ///   - isHighlighted: whether this pill should be highlighted
+    convenience init(withRoomMember roomMember: MXRoomMember, isHighlighted: Bool) {
         self.init(frame: CGRect(origin: CGPoint(x: 0.0, y: 0.0),
                                 size: Self.size(forRoomMember: roomMember)))
-
         let label = UILabel(frame: .zero)
         label.text = roomMember.displayname.count > 0 ? roomMember.displayname : roomMember.userId
         label.font = Constants.pillLabelFont
-        label.textColor = isCurrentUser ? ThemeService.shared().theme.baseTextPrimaryColor : ThemeService.shared().theme.textPrimaryColor
+        label.textColor = isHighlighted ? ThemeService.shared().theme.baseTextPrimaryColor : ThemeService.shared().theme.textPrimaryColor
         let labelSize = label.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude,
                                                   height: CGFloat.greatestFiniteMagnitude))
         label.frame = CGRect(x: Constants.displaynameLabelLeading,
@@ -88,7 +92,7 @@ class PillAttachmentView: UIView {
         pillBackgroundView.addSubview(imageView)
         pillBackgroundView.addSubview(label)
 
-        pillBackgroundView.backgroundColor = isCurrentUser ? ThemeService.shared().theme.colors.alert : ThemeService.shared().theme.colors.quinaryContent
+        pillBackgroundView.backgroundColor = isHighlighted ? ThemeService.shared().theme.colors.alert : ThemeService.shared().theme.colors.quinaryContent
         pillBackgroundView.layer.cornerRadius = Constants.pillBackgroundHeight / 2.0
 
         self.addSubview(pillBackgroundView)

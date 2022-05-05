@@ -33,7 +33,7 @@ import UIKit
         }
 
         view = PillAttachmentView(withRoomMember: roomMember,
-                                  isCurrentUser: textAttachment.isCurrentUser)
+                                  isHighlighted: textAttachment.isHighlighted)
         view?.alpha = textAttachment.alpha
     }
 }

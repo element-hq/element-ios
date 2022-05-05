@@ -23,13 +23,13 @@ import MatrixSDK
 class PillTextAttachment: NSTextAttachment {
     // MARK: - Internal Properties
     var roomMember: MXRoomMember?
-    var isCurrentUser: Bool = false
+    var isHighlighted: Bool = false
     var alpha: CGFloat = 1.0
 
     // MARK: - Constants
     private enum Constants {
         static let roomMemberKey: String = "roomMember"
-        static let isCurrentUserKey: String = "isCurrentUser"
+        static let isHighlightedKey: String = "isHighlighted"
         static let alphaKey: String = "alpha"
         static let pillVerticalOffset: CGFloat = -7.5
     }
@@ -39,10 +39,15 @@ class PillTextAttachment: NSTextAttachment {
         super.init(data: contentData, ofType: uti)
     }
 
-    init(withRoomMember roomMember: MXRoomMember, isCurrentUser: Bool) {
+    /// Create a Mention Pill text attachment for given room member.
+    ///
+    /// - Parameters:
+    ///   - roomMember: the room member
+    ///   - isHighlighted: whether this pill should be highlighted
+    init(withRoomMember roomMember: MXRoomMember, isHighlighted: Bool) {
         super.init(data: nil, ofType: StringPillsUtils.pillUTType)
         self.roomMember = roomMember
-        self.isCurrentUser = isCurrentUser
+        self.isHighlighted = isHighlighted
         let pillSize = PillAttachmentView.size(forRoomMember: roomMember)
         self.bounds = CGRect(origin: CGPoint(x: 0.0, y: Constants.pillVerticalOffset), size: pillSize)
     }
@@ -57,7 +62,7 @@ class PillTextAttachment: NSTextAttachment {
         self.fileType = StringPillsUtils.pillUTType
 
         self.roomMember = roomMember
-        self.isCurrentUser = coder.decodeBool(forKey: Constants.isCurrentUserKey)
+        self.isHighlighted = coder.decodeBool(forKey: Constants.isHighlightedKey)
         self.alpha = CGFloat(coder.decodeFloat(forKey: Constants.alphaKey))
 
         let pillSize = PillAttachmentView.size(forRoomMember: roomMember)
@@ -68,7 +73,7 @@ class PillTextAttachment: NSTextAttachment {
         super.encode(with: coder)
 
         coder.encode(roomMember, forKey: Constants.roomMemberKey)
-        coder.encode(isCurrentUser, forKey: Constants.isCurrentUserKey)
+        coder.encode(isHighlighted, forKey: Constants.isHighlightedKey)
         coder.encode(Float(alpha), forKey: Constants.alphaKey)
     }
 }
