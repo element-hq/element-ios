@@ -21,7 +21,18 @@ import CoreLocation
 @available(iOS 14.0, *)
 protocol LiveLocationSharingViewerServiceProtocol {
     
+    /// All shared users live location
     var usersLiveLocation: [UserLiveLocation] { get }
     
+    /// Called when users live location are updated (new location, location stopped, …).
+    var didUpdateUsersLiveLocation: (([UserLiveLocation]) -> Void)? { get set }
+    
     func isCurrentUserId(_ userId: String) -> Bool
+    
+    func startListeningLiveLocationUpdates()
+    
+    func stopListeningLiveLocationUpdates()
+    
+    /// Stop current user location sharing
+    func stopUserLiveLocationSharing(completion: @escaping (Result<Void, Error>) -> Void)
 }

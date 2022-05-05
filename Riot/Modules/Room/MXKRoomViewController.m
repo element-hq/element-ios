@@ -3045,22 +3045,6 @@
             [self promptUserToResendEvent:selectedEvent.eventId];
         }
     }
-    else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellStopShareButtonPressed])
-    {
-        MXEvent *selectedEvent = userInfo[kMXKRoomBubbleCellEventKey];
-        if (selectedEvent)
-        {
-            // TODO: - Implement stop live location action
-        }
-    }
-    else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellRetryShareButtonPressed])
-    {
-        MXEvent *selectedEvent = userInfo[kMXKRoomBubbleCellEventKey];
-        if (selectedEvent)
-        {
-            // TODO: - Implement retry live location action
-        }
-    }
 }
 
 #pragma mark - Clipboard

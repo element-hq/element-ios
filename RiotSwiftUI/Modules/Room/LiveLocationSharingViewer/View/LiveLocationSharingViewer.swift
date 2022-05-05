@@ -56,6 +56,13 @@ struct LiveLocationSharingViewer: View {
             }
         }
         .navigationTitle(VectorL10n.locationSharingLiveViewerTitle)
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button(VectorL10n.cancel) {
+                    viewModel.send(viewAction: .done)
+                }
+            }
+        }
         .accentColor(theme.colors.accent)
         .bottomSheet(sheet, if: isBottomSheetVisible)
         .alert(item: $viewModel.alertInfo) { info in

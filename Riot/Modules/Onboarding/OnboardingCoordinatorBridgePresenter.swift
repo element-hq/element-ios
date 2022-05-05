@@ -61,15 +61,7 @@ final class OnboardingCoordinatorBridgePresenter: NSObject {
     // MARK: - Public
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let onboardingCoordinatorParameters = OnboardingCoordinatorParameters(softLogoutCredentials: parameters.softLogoutCredentials)
-        
-        let onboardingCoordinator = OnboardingCoordinator(parameters: onboardingCoordinatorParameters)
-        onboardingCoordinator.completion = { [weak self] in
-            self?.completion?()
-        }
-        if let externalRegistrationParameters = parameters.externalRegistrationParameters {
-            onboardingCoordinator.update(externalRegistrationParameters: externalRegistrationParameters)
-        }
+        let onboardingCoordinator = makeOnboardingCoordinator()
         
         let presentable = onboardingCoordinator.toPresentable()
         presentable.modalPresentationStyle = .fullScreen
@@ -86,16 +78,7 @@ final class OnboardingCoordinatorBridgePresenter: NSObject {
                 
         let navigationRouter = NavigationRouterStore.shared.navigationRouter(for: navigationController)
         
-        let onboardingCoordinatorParameters = OnboardingCoordinatorParameters(router: navigationRouter,
-                                                                              softLogoutCredentials: parameters.softLogoutCredentials)
-        
-        let onboardingCoordinator = OnboardingCoordinator(parameters: onboardingCoordinatorParameters)
-        onboardingCoordinator.completion = { [weak self] in
-            self?.completion?()
-        }
-        if let externalRegistrationParameters = parameters.externalRegistrationParameters {
-            onboardingCoordinator.update(externalRegistrationParameters: externalRegistrationParameters)
-        }
+        let onboardingCoordinator = makeOnboardingCoordinator(navigationRouter: navigationRouter)
 
         onboardingCoordinator.start() // Will trigger the view controller push
         
@@ -147,5 +130,23 @@ final class OnboardingCoordinatorBridgePresenter: NSObject {
                 completion()
             }
         }
+    }
+    
+    // MARK: - Private
+    
+    /// Makes an `OnboardingCoordinator` using the supplied navigation router, or creating one if needed.
+    private func makeOnboardingCoordinator(navigationRouter: NavigationRouterType? = nil) -> OnboardingCoordinator {
+        let onboardingCoordinatorParameters = OnboardingCoordinatorParameters(router: navigationRouter,
+                                                                              softLogoutCredentials: parameters.softLogoutCredentials)
+        
+        let onboardingCoordinator = OnboardingCoordinator(parameters: onboardingCoordinatorParameters)
+        onboardingCoordinator.completion = { [weak self] in
+            self?.completion?()
+        }
+        if let externalRegistrationParameters = parameters.externalRegistrationParameters {
+            onboardingCoordinator.update(externalRegistrationParameters: externalRegistrationParameters)
+        }
+        
+        return onboardingCoordinator
     }
 }

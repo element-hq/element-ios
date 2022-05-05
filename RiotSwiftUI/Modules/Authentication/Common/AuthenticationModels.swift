@@ -23,22 +23,40 @@ enum AuthenticationFlow {
 }
 
 /// Errors that can be thrown from `AuthenticationService`.
-enum AuthenticationError: String, Error {
+enum AuthenticationError: String, LocalizedError {
     /// A failure to convert a struct into a dictionary.
     case dictionaryError
     case invalidHomeserver
     case loginFlowNotCalled
-    case missingRegistrationWizard
     case missingMXRestClient
+    
+    var errorDescription: String? {
+        switch self {
+        case .invalidHomeserver:
+            return VectorL10n.authenticationServerSelectionGenericError
+        default:
+            return VectorL10n.errorCommonMessage
+        }
+    }
 }
 
 /// Errors that can be thrown from `RegistrationWizard`
-enum RegistrationError: String, Error {
+enum RegistrationError: String, LocalizedError {
+    case registrationDisabled
     case createAccountNotCalled
     case missingThreePIDData
     case missingThreePIDURL
     case threePIDValidationFailure
     case threePIDClientFailure
+    
+    var errorDescription: String? {
+        switch self {
+        case .registrationDisabled:
+            return VectorL10n.loginErrorRegistrationIsNotSupported
+        default:
+            return VectorL10n.errorCommonMessage
+        }
+    }
 }
 
 /// Errors that can be thrown from `LoginWizard`

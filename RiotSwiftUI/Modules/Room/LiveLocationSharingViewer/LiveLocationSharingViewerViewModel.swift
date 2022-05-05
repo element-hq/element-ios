@@ -29,9 +29,11 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
 
     // MARK: Private
 
-    private let liveLocationSharingViewerService: LiveLocationSharingViewerServiceProtocol
+    private var liveLocationSharingViewerService: LiveLocationSharingViewerServiceProtocol
     
     private var mapViewErrorAlertInfoBuilder: MapViewErrorAlertInfoBuilder
+    
+    private var screenUpdateTimer: Timer?
 
     // MARK: Public
 
@@ -53,7 +55,8 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
             self.processError(error)
         }.store(in: &cancellables)
         
-        self.update(with: service.usersLiveLocation)
+        self.setupLocationSharingService()
+        self.setupScreenUpdateTimer()
     }
     
     // MARK: - Public
@@ -63,7 +66,7 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
         case .done:
             completion?(.done)
         case .stopSharing:
-            completion?(.stopLocationSharing)
+            stopUserLocationSharing()
         case .tapListItem(let userId):
             self.highlighAnnotation(with: userId)
         case .share(let userLocationAnnotation):
@@ -72,6 +75,34 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
     }
     
     // MARK: - Private
+    
+    private func setupLocationSharingService() {
+        self.updateUsersLiveLocation(highlightFirstLocation: true)
+        
+        liveLocationSharingViewerService.didUpdateUsersLiveLocation = { [weak self] liveLocations in
+            self?.update(with: liveLocations, highlightFirstLocation: false)
+        }
+        self.liveLocationSharingViewerService.startListeningLiveLocationUpdates()
+    }
+    
+    private func updateUsersLiveLocation(highlightFirstLocation: Bool) {
+        self.update(with: liveLocationSharingViewerService.usersLiveLocation, highlightFirstLocation: highlightFirstLocation)
+    }
+    
+    private func setupScreenUpdateTimer() {
+        self.screenUpdateTimer =  Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { [weak self] timer in
+            
+            self?.updateUsersLiveLocation(highlightFirstLocation: false)
+        }
+    }
+    
+    private func showNoUserLocationsAlert() {
+        let alertInfo: AlertInfo<LocationSharingAlertType> = AlertInfo(id: .userLocatingError, title: VectorL10n.locationSharingLiveNoUserLocationsErrorTitle, primaryButton:(VectorL10n.ok, { [weak self] in
+            self?.completion?(.done)
+        }))
+        
+        state.bindings.alertInfo = alertInfo
+    }
     
     private func processError(_ error: LocationSharingViewError) {
         guard state.bindings.alertInfo == nil else {
@@ -154,17 +185,27 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
         return LiveLocationListItemViewData(userId: userLiveLocation.userId, isCurrentUser: isCurrentUser, avatarData: userLiveLocation.avatarData, displayName: userLiveLocation.displayName, expirationDate: expirationDate, lastUpdate: userLiveLocation.lastUpdate)
     }
     
-    private func update(with usersLiveLocation: [UserLiveLocation]) {
+    private func update(with usersLiveLocation: [UserLiveLocation], highlightFirstLocation: Bool) {
         
         let annotations: [UserLocationAnnotation] = self.userLocationAnnotations(from: usersLiveLocation)
         
-        let highlightedAnnotation = self.getHighlightedAnnotation(from: annotations)
+        var highlightedAnnotation: UserLocationAnnotation?
+        
+        if highlightFirstLocation {
+            highlightedAnnotation = self.getHighlightedAnnotation(from: annotations)
+        }
         
         let listViewItems = self.listItemsViewData(from: usersLiveLocation)
         
         self.state.annotations = annotations
         self.state.highlightedAnnotation = highlightedAnnotation
         self.state.listItemsViewData = listViewItems
+        
+        if usersLiveLocation.isEmpty {
+            // Advertize user that there is no locations
+            // Avoid to let the screen empty
+            self.showNoUserLocationsAlert()
+        }
     }
     
     private func highlighAnnotation(with userId: String) {
@@ -177,5 +218,24 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
         }
         
         self.state.highlightedAnnotation = foundUserAnnotation
+    }
+    
+    private func stopUserLocationSharing() {
+        
+        self.state.showLoadingIndicator = true
+        
+        self.liveLocationSharingViewerService.stopUserLiveLocationSharing { result in
+            self.state.showLoadingIndicator = false
+            
+            switch result {
+            case .success:
+                break
+            case.failure:
+                self.state.bindings.alertInfo = AlertInfo(id: .stopLocationSharingError,
+                                                          title: VectorL10n.error,
+                                                          message: VectorL10n.locationSharingLiveStopSharingError,
+                                                          primaryButton: (VectorL10n.ok, nil))
+            }
+        }
     }
 }

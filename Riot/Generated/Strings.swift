@@ -847,6 +847,10 @@ public class VectorL10n: NSObject {
   public static var collapse: String { 
     return VectorL10n.tr("Vector", "collapse") 
   }
+  /// Confirm
+  public static var confirm: String { 
+    return VectorL10n.tr("Vector", "confirm") 
+  }
   /// Local Contacts
   public static var contactLocalContacts: String { 
     return VectorL10n.tr("Vector", "contact_local_contacts") 
@@ -2799,9 +2803,21 @@ public class VectorL10n: NSObject {
   public static var locationSharingLiveMapCalloutTitle: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_map_callout_title") 
   }
+  /// No user locations available
+  public static var locationSharingLiveNoUserLocationsErrorTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_no_user_locations_error_title") 
+  }
   /// Share live location
   public static var locationSharingLiveShareTitle: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_share_title") 
+  }
+  /// Fail to stop sharing location
+  public static var locationSharingLiveStopSharingError: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_stop_sharing_error") 
+  }
+  /// Stop location sharing
+  public static var locationSharingLiveStopSharingProgress: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_stop_sharing_progress") 
   }
   /// Live until %@
   public static func locationSharingLiveTimerIncoming(_ p1: String) -> String {
