@@ -25,6 +25,8 @@ struct AuthenticationVerifyEmailForm: View {
     
     @Environment(\.theme) private var theme
     
+    @State private var isEditingTextField = false
+    
     // MARK: Public
     
     @ObservedObject var viewModel: AuthenticationVerifyEmailViewModel.Context
@@ -64,17 +66,13 @@ struct AuthenticationVerifyEmailForm: View {
     /// The text field and submit button where the user enters an email address.
     var mainContent: some View {
         VStack(alignment: .leading, spacing: 12) {
-            RoundedBorderTextField(title: nil,
-                                   placeHolder: VectorL10n.authenticationVerifyEmailTextFieldPlaceholder,
-                                   text: $viewModel.emailAddress,
-                                   footerText: nil,
-                                   isError: false,
-                                   configuration: UIKitTextInputConfiguration(keyboardType: .emailAddress,
-                                                                              returnKeyType: .default,
-                                                                              autocapitalizationType: .none,
-                                                                              autocorrectionType: .no),
-                                   onTextChanged: nil,
-                                   onEditingChanged: nil)
+            TextField(VectorL10n.authenticationVerifyEmailTextFieldPlaceholder, text: $viewModel.emailAddress) {
+                isEditingTextField = $0
+            }
+            .textFieldStyle(BorderedInputFieldStyle(isEditing: isEditingTextField, isError: false))
+            .keyboardType(.emailAddress)
+            .autocapitalization(.none)
+            .disableAutocorrection(true)
             .accessibilityIdentifier("addressTextField")
             
             Button { viewModel.send(viewAction: .send) } label: {

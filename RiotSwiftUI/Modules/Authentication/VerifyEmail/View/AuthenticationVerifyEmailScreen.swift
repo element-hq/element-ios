@@ -121,5 +121,8 @@ struct AuthenticationVerifyEmailScreen_Previews: PreviewProvider {
     static var previews: some View {
         stateRenderer.screenGroup(addNavigation: true)
             .navigationViewStyle(.stack)
+        stateRenderer.screenGroup(addNavigation: true)
+            .navigationViewStyle(.stack)
+            .theme(.dark).preferredColorScheme(.dark)
     }
 }
