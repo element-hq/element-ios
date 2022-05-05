@@ -84,7 +84,7 @@ struct AuthenticationVerifyEmailScreen: View {
             ZStack(alignment: .top) {
                 theme.colors.background
                 
-                if viewModel.viewState.hasSentEmail {
+                if viewModel.viewState.hasSentEmail && !theme.isDark {
                     gradient
                         .frame(height: geometry.size.height * 0.65)
                 }
@@ -93,7 +93,7 @@ struct AuthenticationVerifyEmailScreen: View {
     }
     
     var gradient: some View {
-        LinearGradient(gradient: viewModel.viewState.baseGradient,
+        LinearGradient(gradient: viewModel.viewState.gradient,
                        startPoint: .leading,
                        endPoint: .trailing)
             .opacity(0.3)

@@ -78,7 +78,7 @@ public extension VectorL10n {
   static var authenticationServerSelectionTitle: String { 
     return VectorL10n.tr("Untranslated", "authentication_server_selection_title") 
   }
-  /// This will helps verify your account and enables password recovery.
+  /// This will help verify your account and enables password recovery.
   static var authenticationVerifyEmailInputMessage: String { 
     return VectorL10n.tr("Untranslated", "authentication_verify_email_input_message") 
   }

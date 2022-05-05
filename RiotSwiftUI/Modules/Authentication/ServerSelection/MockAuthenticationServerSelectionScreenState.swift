@@ -47,11 +47,7 @@ enum MockAuthenticationServerSelectionScreenState: MockScreenState, CaseIterable
         case .invalidAddress:
             viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: "thisisbad",
                                                                hasModalPresentation: true)
-            Task {
-                await MainActor.run {
-                    viewModel.displayError(.footerMessage(VectorL10n.errorCommonMessage))
-                }
-            }
+            Task { await viewModel.displayError(.footerMessage(VectorL10n.errorCommonMessage)) }
         case .nonModal:
             viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: "https://matrix.org",
                                                                hasModalPresentation: false)

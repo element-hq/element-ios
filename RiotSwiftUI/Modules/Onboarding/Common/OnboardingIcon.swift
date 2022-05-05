@@ -28,7 +28,7 @@ struct OnboardingIconImage: View {
             .renderingMode(.template)
             .foregroundColor(theme.colors.accent)
             .frame(width: OnboardingMetrics.iconSize, height: OnboardingMetrics.iconSize)
-            .background(Circle().foregroundColor(theme.colors.white).padding(2))
+            .background(Circle().foregroundColor(.white).padding(2))
             .accessibilityHidden(true)
     }
 }

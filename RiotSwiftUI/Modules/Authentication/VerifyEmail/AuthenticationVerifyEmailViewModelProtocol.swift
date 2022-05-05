@@ -18,10 +18,12 @@ import Foundation
 
 protocol AuthenticationVerifyEmailViewModelProtocol {
     
-    var completion: ((AuthenticationVerifyEmailViewModelResult) -> Void)? { get set }
-    @available(iOS 14, *)
+    @MainActor var completion: ((AuthenticationVerifyEmailViewModelResult) -> Void)? { get set }
     var context: AuthenticationVerifyEmailViewModelType.Context { get }
     
     /// Updates the view to reflect that a verification email was successfully sent.
-    func updateForSentEmail()
+    @MainActor func updateForSentEmail()
+    
+    /// Display an error to the user.
+    @MainActor func displayError(_ type: AuthenticationVerifyEmailErrorType)
 }

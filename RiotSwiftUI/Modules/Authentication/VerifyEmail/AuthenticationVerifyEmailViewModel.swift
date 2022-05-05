@@ -29,7 +29,7 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
 
     // MARK: Public
 
-    var completion: ((AuthenticationVerifyEmailViewModelResult) -> Void)?
+    @MainActor var completion: ((AuthenticationVerifyEmailViewModelResult) -> Void)?
 
     // MARK: - Setup
 
@@ -39,19 +39,30 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
     }
 
     // MARK: - Public
-
+    
     override func process(viewAction: AuthenticationVerifyEmailViewAction) {
         switch viewAction {
         case .send:
-            completion?(.send(state.bindings.emailAddress))
+            Task { await completion?(.send(state.bindings.emailAddress)) }
         case .resend:
-            completion?(.resend)
+            Task { await completion?(.resend) }
         case .cancel:
-            completion?(.cancel)
+            Task { await completion?(.cancel) }
         }
     }
     
-    func updateForSentEmail() {
+    @MainActor func updateForSentEmail() {
         state.hasSentEmail = true
+    }
+    
+    @MainActor func displayError(_ type: AuthenticationVerifyEmailErrorType) {
+        switch type {
+        case .mxError(let message):
+            state.bindings.alertInfo = AlertInfo(id: type,
+                                                 title: VectorL10n.error,
+                                                 message: message)
+        case .unknown:
+            state.bindings.alertInfo = AlertInfo(id: type)
+        }
     }
 }

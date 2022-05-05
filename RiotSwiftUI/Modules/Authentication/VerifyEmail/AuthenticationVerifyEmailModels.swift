@@ -19,8 +19,11 @@ import SwiftUI
 // MARK: View model
 
 enum AuthenticationVerifyEmailViewModelResult {
+    /// Send an email to the associated address.
     case send(String)
+    /// Send the email once more.
     case resend
+    /// Cancel the flow.
     case cancel
 }
 
@@ -35,26 +38,38 @@ struct AuthenticationVerifyEmailViewState: BindableState {
         ]
     }
     
+    /// The background gradient used with light mode.
+    let gradient = Gradient (colors: Constants.gradientColors)
+    /// An email has been sent and the app is waiting for the user to tap the link.
     var hasSentEmail = false
+    /// View state that can be bound to from SwiftUI.
     var bindings: AuthenticationVerifyEmailBindings
-    let baseGradient = Gradient (colors: Constants.gradientColors)
     
+    /// Whether the email address is valid and the user can continue.
     var hasInvalidAddress: Bool {
         bindings.emailAddress.isEmpty
     }
 }
 
 struct AuthenticationVerifyEmailBindings {
+    /// The email address input by the user.
     var emailAddress: String
+    /// Information describing the currently displayed alert.
     var alertInfo: AlertInfo<AuthenticationVerifyEmailErrorType>?
 }
 
 enum AuthenticationVerifyEmailViewAction {
+    /// Send an email to the entered address.
     case send
+    /// Send the email once more.
     case resend
+    /// Cancel the flow.
     case cancel
 }
 
 enum AuthenticationVerifyEmailErrorType: Hashable {
+    /// An error response from the homeserver.
+    case mxError(String)
+    /// An unknown error occurred.
     case unknown
 }

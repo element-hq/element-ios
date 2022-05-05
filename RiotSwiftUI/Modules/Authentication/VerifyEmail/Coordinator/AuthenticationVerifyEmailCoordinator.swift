@@ -18,7 +18,8 @@ import SwiftUI
 import CommonKit
 
 struct AuthenticationVerifyEmailCoordinatorParameters {
-    let promptType: AuthenticationVerifyEmailPromptType
+    let authenticationService: AuthenticationService
+    let registrationWizard: RegistrationWizard
 }
 
 @available(iOS 14.0, *)
@@ -34,6 +35,17 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol
     private var loadingIndicator: UserIndicator?
+    
+    /// The authentication service used for the registration.
+    var authenticationService: AuthenticationService { parameters.authenticationService }
+    /// The wizard used to handle the registration flow.
+    var registrationWizard: RegistrationWizard { parameters.registrationWizard }
+    
+    private var currentTask: Task<Void, Error>? {
+        willSet {
+            currentTask?.cancel()
+        }
+    }
     
     // MARK: Public
 
@@ -60,19 +72,7 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     
     func start() {
         MXLog.debug("[AuthenticationVerifyEmailCoordinator] did start.")
-        authenticationVerifyEmailViewModel.completion = { [weak self] result in
-            guard let self = self else { return }
-            MXLog.debug("[AuthenticationVerifyEmailCoordinator] AuthenticationVerifyEmailViewModel did complete with result: \(result).")
-            
-            switch result {
-            case .send(let emailAddress):
-                break
-            case .resend:
-                break
-            case .cancel:
-                break
-            }
-        }
+        Task { await setupViewModel() }
     }
     
     func toPresentable() -> UIViewController {
@@ -80,6 +80,23 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     }
     
     // MARK: - Private
+    
+    /// Set up the view model. This method is extracted from `start()` so it can run on the `MainActor`.
+    @MainActor private func setupViewModel() {
+        authenticationVerifyEmailViewModel.completion = { [weak self] result in
+            guard let self = self else { return }
+            MXLog.debug("[AuthenticationVerifyEmailCoordinator] AuthenticationVerifyEmailViewModel did complete with result: \(result).")
+            
+            switch result {
+            case .send(let emailAddress):
+                self.sendEmail(emailAddress)
+            case .resend:
+                self.resentEmail()
+            case .cancel:
+                #warning("Reset the flow.")
+            }
+        }
+    }
     
     /// Show an activity indicator whilst loading.
     /// - Parameters:
@@ -92,5 +109,60 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     /// Hide the currently displayed activity indicator.
     @MainActor private func stopLoading() {
         loadingIndicator = nil
+    }
+    
+    @MainActor private func sendEmail(_ address: String) {
+        let threePID = RegisterThreePID.email(address)
+        
+        startLoading()
+        
+        currentTask = Task { [weak self] in
+            do {
+                _ = try await registrationWizard.addThreePID(threePID: threePID)
+                
+                guard !Task.isCancelled else { return }
+                
+                authenticationVerifyEmailViewModel.updateForSentEmail()
+                pollForEmailValidation()
+                self?.stopLoading()
+            } catch {
+                self?.stopLoading()
+                self?.handleError(error)
+            }
+        }
+    }
+    
+    @MainActor private func resentEmail() {
+        startLoading()
+        
+        currentTask = Task { [weak self] in
+            do {
+                _ = try await registrationWizard.sendAgainThreePID()
+                
+                guard !Task.isCancelled else { return }
+                
+                pollForEmailValidation()
+                self?.stopLoading()
+            } catch {
+                self?.stopLoading()
+                self?.handleError(error)
+            }
+        }
+    }
+    
+    @MainActor private func pollForEmailValidation() {
+        // TODO
+    }
+    
+    /// Processes an error to either update the flow or display it to the user.
+    @MainActor private func handleError(_ error: Error) {
+        if let mxError = MXError(nsError: error as NSError) {
+            authenticationVerifyEmailViewModel.displayError(.mxError(mxError.error))
+            return
+        }
+        
+        // TODO: Handle another other error types as needed.
+        
+        authenticationVerifyEmailViewModel.displayError(.unknown)
     }
 }

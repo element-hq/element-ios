@@ -43,7 +43,7 @@ enum MockAuthenticationVerifyEmailScreenState: MockScreenState, CaseIterable {
             viewModel = AuthenticationVerifyEmailViewModel(emailAddress: "test@example.com")
         case .hasSentEmail:
             viewModel = AuthenticationVerifyEmailViewModel(emailAddress: "test@example.com")
-            viewModel.updateForSentEmail()
+            Task { await viewModel.updateForSentEmail() }
         }
         
         // can simulate service and viewModel actions here if needs be.
