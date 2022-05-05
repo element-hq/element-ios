@@ -1,0 +1,34 @@
+
+
+"video" = "ວີດີໂອ";
+"voice" = "ສຽງ";
+"camera" = "ກ້ອງ";
+"preview" = "ເບິ່ງຕົວຢ່າງ";
+"accept" = "ຍອມຮັບ";
+"decline" = "ປະຕິດເສດ";
+"join" = "ເຂົ້າຮ່ວມ";
+"save" = "ບັນທຶກ";
+"cancel" = "ຍົກເລີກ";
+"enable" = "ເປີດໃຊ້";
+"off" = "ປິດ";
+"on" = "ເປີດ";
+"retry" = "ລອງໃໝ່";
+"invite" = "ເຊີນ";
+"remove" = "ເອົາອອກ";
+"leave" = "ອອກ";
+"start" = "ເລີ່ມຕົ້ນ";
+"create" = "ສ້າງ";
+"continue" = "ສືບຕໍ່";
+"back" = "ກັບຄືນ";
+"next" = "ຕໍ່ໄປ";
+
+// Actions
+"view" = "ເບິ່ງ";
+"warning" = "ຄຳເຕືອນ";
+"title_groups" = "ຊຸມຊົນ";
+"title_rooms" = "ຫ້ອງ";
+"title_people" = "ໝູ່ເພື່ອນ";
+"title_favourites" = "ໃຊ້ປະຈຳ";
+
+// Titles
+"title_home" = "ໜ້າຫຼັກ";

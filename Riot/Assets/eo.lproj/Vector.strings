@@ -312,8 +312,6 @@
 "joined" = "Aliĝita";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Uzi rehavajn pasfrazon aŭ ŝlosilon";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Uzi rehavan ŝlosilon";
-"device_verification_self_verify_wait_additional_information" = "Ĉi tio funkcias por Element kaj aliaj klientoj kapablaj je delegaj subskriboj.";
-"device_verification_self_verify_wait_information" = "Kontrolu ĉi tiun saluton per unu el viaj aliaj salutaĵoj, dononte al ĝi aliron al ĉifritaj mesaĝoj.\n\nUzu la plej freŝan version de Element per viaj aliaj aparatoj:";
 "device_verification_self_verify_wait_new_sign_in_title" = "Kontrolu ĉi tiun saluton";
 
 // MARK: Self verification wait
@@ -347,7 +345,6 @@
 "device_verification_incoming_description_2" = "Kontrolo de ĉi tiu salutaĵo markos ĝin fidata, kaj markos ankaŭ vian salutaĵon fidata por la kunulo.";
 "secure_key_backup_setup_intro_use_security_key_title" = "Uzi Sekurecan ŝlosilon";
 "secure_key_backup_setup_intro_info" = "Malhelpu perdon de aliro al ĉifritaj mesaĝoj kaj datumoj per savkopiado de ŝlosiloj al via servilo.";
-"rerequest_keys_alert_message" = "Bonvolu ruli Elementon per alia aparato, kiu povas malĉifri la mesaĝon, por ke ĝi povu resendi la ŝlosilojn al ĉi tiu salutaĵo.";
 
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Peto sendiĝis";
@@ -367,7 +364,6 @@
 
 "deactivate_account_title" = "Malaktivigi konton";
 "service_terms_modal_policy_checkbox_accessibility_hint" = "Kontrolu por akcepti %@";
-"service_terms_modal_message_identity_server" = "Akceptu la uzokondiĉojn de la identiga servilo (%@) por trovi kontaktojn.";
 
 // Service terms - Variant for identity server when displayed out of a context
 "service_terms_modal_title_identity_server" = "Trovado de kontaktoj";
@@ -376,7 +372,6 @@
 "service_terms_modal_description_for_identity_server_1" = "Trovi aliajn per telefono aŭ retpoŝtadreso";
 "service_terms_modal_decline_button" = "Rifuzi";
 "service_terms_modal_accept_button" = "Akcepti";
-"service_terms_modal_message" = "Por daŭrigi, vi devas akcepti la uzokondiĉojn de ĉi tiu servo (%@).";
 
 // Service terms
 "service_terms_modal_title" = "Uzokondiĉoj";
@@ -452,10 +447,8 @@
 "e2e_need_log_in_again" = "Vi bezonas resaluti por estigi tutvoje ĉifrajn ŝlosilojn porĉi tiu salutaĵo, kaj sendi la publikan ŝlosilon al via hejmservilo.\nTio necesas nur unufoje; pardonu la ĝenon.";
 
 // Crypto
-"e2e_enabling_on_app_update" = "Element nun subtenas tutvojan ĉifradon, sed vi bezonas resaluti por ŝalti ĝin.\n\nVi povas fari tion nun, aŭ pli poste per agordoj de la aplikaĵo.";
 
 // Crash report
-"google_analytics_use_prompt" = "Ĉu vi volus nin helpi pri plibonigoj al %@ per memaga kaj sennoma raportado de fiaskoj kaj datumoj pri uzado?";
 "no_voip" = "%@ vin vokas, sed %@ ankoraŭ ne subtenas vokojn.\nVi povas malatenti ĉi tiun sciigon kaj respondi la vokon per alia aparato, aŭ vi povas ĝin rifuzi.";
 
 // No VoIP support
@@ -656,7 +649,6 @@
 
 // MARK: - Major update
 
-"major_update_title" = "Riot nun estas Element";
 "cross_signing_setup_banner_subtitle" = "Kontrolu aliajn viajn aparatojn pli facile";
 
 // MARK: - Cross-signing
@@ -975,7 +967,6 @@
 "settings_integrations_allow_button" = "Administri kunigojn";
 "settings_calls_stun_server_fallback_description" = "Permesi repaŝan servilon %@ asistan je vokoj, kiam la hejmservilo ne provizas servilon (via IP-adreso ne doniĝus dum voko).";
 "settings_calls_stun_server_fallback_button" = "Permesi repaŝan servilon asistan je vokoj";
-"settings_callkit_info" = "Ricevi vokpetojn ĉe via ŝlosa ekrano. Vidi viajn vokojn de Element ĉe la sistema vokhistorio. Se iCloud estas ŝaltita, la vokhistorio doniĝas ankaŭ al Apple.";
 "settings_pin_rooms_with_unread" = "Alpingli ĉambrojn kun nelegitaj mesaĝoj";
 "settings_pin_rooms_with_missed_notif" = "Alpinigli ĉambrojn kun nerimarkitaj sciigoj";
 "settings_show_decrypted_content" = "Montri malĉifritajn enhavojn";
@@ -1145,7 +1136,6 @@
 "identity_server_settings_alert_error_terms_not_accepted" = "Vi devas akcepti la uzokondiĉojn de %@, por uzi ĝin kiel identiga servilo.";
 "identity_server_settings_alert_disconnect" = "Ĉu malkonektu de la identiga servilo %@?";
 "identity_server_settings_alert_disconnect_title" = "Malkonektu identigan servilon";
-"identity_server_settings_alert_change" = "Ĉu malkonektu de identiga servilo %1$@ kaj anstataŭe konektu al %@$A?";
 "identity_server_settings_alert_change_title" = "Ŝanĝu identigan servilon";
 "identity_server_settings_alert_no_terms" = "Via elektita identiga servilo ne havas uzokondiĉojn. Daŭrigu nur se vi fidas la posedanton de tiu servilo.";
 "identity_server_settings_alert_no_terms_title" = "Identiga servilo ne havas uzokondiĉojn";
@@ -1171,7 +1161,6 @@
 // Manage session
 "manage_session_title" = "Administru salutaĵon";
 "security_settings_user_password_description" = "Konfirmi vian identon per enigo de via pasvorto";
-"security_settings_coming_soon" = "Bedaŭron. Ĉi tiu funkcio ne jam estas subtenata por Element iOS. Bonvolu uzi alian Matrix klienton por agordi ĝin. Element iOS sekvos ĝin.";
 "security_settings_complete_security_alert_message" = "Vi kompletigu sekurigon je ĉi tiu salutaĵo unue.";
 "security_settings_complete_security_alert_title" = "Kompletigi sekurigon";
 "security_settings_blacklist_unverified_devices_description" = "Kontroli ĉiujn salutaĵojn de uzanto, por marki ilin fidata kaj sendi mesaĝojn al ĝi.";
@@ -1268,7 +1257,6 @@
 "room_participants_filter_room_members_for_dm" = "Filtri ĉambranojn";
 "room_participants_add_participant" = "Aldoni partoprenanton";
 "contacts_user_directory_offline_section" = "KATALOGO DE UZANTOJ (nefunkcia)";
-"contacts_address_book_permission_denied" = "Vi ne permesis al Element aliri viajn lokajn kontaktojn";
 "rooms_empty_view_information" = "Ĉambroj taŭgas por ajna grupbabilo, privata aŭ publika. Premu la + por trovi ekzistantaj ĉambroj, aŭ fari novajn.";
 "rooms_empty_view_title" = "Ĉambroj";
 "people_empty_view_information" = "Sekure babili kun iu ajn.Premu la + por inviti personojn.";
@@ -1416,7 +1404,6 @@
 "event_formatter_call_back" = "Revoki";
 "event_formatter_call_you_declined" = "Vi rifuzis ĉi tiun vokon";
 "event_formatter_call_you_currently_in" = "Aktiva voko";
-"event_formatter_call_has_ended" = "Finiĝis %@";
 "event_formatter_call_video" = "Vidvoko";
 "event_formatter_call_voice" = "Voĉvoko";
 

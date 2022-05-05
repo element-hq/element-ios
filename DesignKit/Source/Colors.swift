@@ -55,7 +55,7 @@ public protocol Colors {
     /// Separating line
     var separator: ColorType { get }
     
-    //  Cards, tiles
+    /// Cards, tiles
     var tile: ColorType { get }
     
     /// Top navigation background on iOS
@@ -63,6 +63,9 @@ public protocol Colors {
     
     /// Background UI color
     var background: ColorType { get }
+    
+    /// Global color: The EMS brand's purple colour.
+    var ems: ColorType { get }
     
     /// - Names in chat timeline
     /// - Avatars default states that include first name letter

@@ -90,6 +90,7 @@ struct MatrixItemChooser: View {
             .frame(maxHeight: .infinity, alignment: .top)
             .animation(nil)
         }
+        .animation(nil)
     }
 
     @ViewBuilder
@@ -116,7 +117,35 @@ struct MatrixItemChooser: View {
                 .onChange(of: searchText) { value in
                     viewModel.send(viewAction: .searchTextChanged(searchText))
                 }
+            if let selectionHeader = viewModel.viewState.selectionHeader, searchText.isEmpty {
+                Spacer().frame(height: spacerHeight)
+                itemSelectionHeader(with: selectionHeader)
+            }
         }
+    }
+    
+    private func itemSelectionHeader(with selectionHeader: MatrixItemChooserSelectionHeader) -> some View {
+        VStack(alignment:.leading) {
+            HStack {
+                Text(selectionHeader.title)
+                    .font(theme.fonts.calloutSB)
+                    .foregroundColor(theme.colors.primaryContent)
+                Text("\(viewModel.viewState.itemCount)")
+                    .font(theme.fonts.calloutSB)
+                    .foregroundColor(theme.colors.tertiaryContent)
+            }
+            HStack {
+                RadioButton(title: selectionHeader.selectAllTitle, selected: viewModel.viewState.itemCount > 0 && viewModel.viewState.selectedItemIds.count == viewModel.viewState.itemCount) {
+                    viewModel.send(viewAction: .selectAll)
+                }
+                RadioButton(title: selectionHeader.selectNoneTitle, selected: viewModel.viewState.selectedItemIds.isEmpty) {
+                    viewModel.send(viewAction: .selectNone)
+                }
+            }
+        }
+        .padding(.vertical, 4)
+        .padding(.horizontal)
+        .background(theme.colors.tile)
     }
 }
 
@@ -127,9 +156,9 @@ struct MatrixItemChooser_Previews: PreviewProvider {
     
     static let stateRenderer = MockMatrixItemChooserScreenState.stateRenderer
     static var previews: some View {
-        stateRenderer.screenGroup(addNavigation: true)
+        stateRenderer.screenGroup(addNavigation: false)
             .theme(.light).preferredColorScheme(.light)
-        stateRenderer.screenGroup(addNavigation: true)
+        stateRenderer.screenGroup(addNavigation: false)
             .theme(.dark).preferredColorScheme(.dark)
     }
 }

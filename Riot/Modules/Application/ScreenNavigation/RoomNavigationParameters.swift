@@ -85,13 +85,22 @@ class RoomNavigationParameters: NSObject {
         super.init()
     }
     
-    convenience init(roomId: String,
-                     eventId: String?,
-                     mxSession: MXSession,
-                     threadParameters: ThreadParameters?,
-                     presentationParameters: ScreenPresentationParameters
+    init(roomId: String,
+         eventId: String?,
+         mxSession: MXSession,
+         threadParameters: ThreadParameters?,
+         presentationParameters: ScreenPresentationParameters
     ) {
-        self.init(roomId: roomId, eventId: eventId, mxSession: mxSession, threadParameters: threadParameters, presentationParameters: presentationParameters, autoJoinInvitedRoom: false)
+        self.roomId = roomId
+        self.eventId = eventId
+        self.mxSession = mxSession
+        self.threadParameters = threadParameters
+        self.presentationParameters = presentationParameters
+        self.showSettingsInitially = false
+        self.senderId = nil
+        self.autoJoinInvitedRoom = false
+
+        super.init()
     }
     
     init(roomId: String,

@@ -261,12 +261,10 @@ extension Analytics {
     /// Track an E2EE error that occurred
     /// - Parameters:
     ///   - reason: The error that occurred.
-    ///   - count: The number of times that error occurred.
-    func trackE2EEError(_ reason: DecryptionFailureReason, count: Int) {
-        for _ in 0..<count {
-            let event = AnalyticsEvent.Error(context: nil, domain: .E2EE, name: reason.errorName)
-            capture(event: event)
-        }
+    ///   - context: Additional context of the error that occured
+    func trackE2EEError(_ reason: DecryptionFailureReason, context: String) {
+        let event = AnalyticsEvent.Error(context: context, domain: .E2EE, name: reason.errorName)
+        capture(event: event)
     }
     
     /// Track when a user becomes unauthenticated without pressing the `sign out` button.

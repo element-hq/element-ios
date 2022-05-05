@@ -76,6 +76,7 @@
 "error" = "Error";
 "suggest" = "Suggest";
 "edit" = "Edit";
+"confirm" = "Confirm";
 
 // Activities
 "loading" = "Loading";
@@ -2138,10 +2139,28 @@ Tap the + to start adding people.";
 
 "location_sharing_live_share_title" = "Share live location";
 "live_location_sharing_banner_title" = "Live location enabled";
+"live_location_sharing_ended" = "Live location ended";
 "live_location_sharing_banner_stop" = "Stop";
 "location_sharing_static_share_title" = "Send my current location";
 "location_sharing_pin_drop_share_title" = "Send this location";
 "location_sharing_live_map_callout_title" = "Share location";
+"location_sharing_live_viewer_title" = "Location";
+"location_sharing_live_list_item_time_left" = "%@ left";
+"location_sharing_live_list_item_sharing_expired" = "Sharing expired";
+"location_sharing_live_list_item_last_update" = "Updated %@ ago";
+"location_sharing_live_list_item_last_update_invalid" = "Unknown last update";
+"location_sharing_live_list_item_current_user_display_name" = "You";
+"location_sharing_live_list_item_stop_sharing_action" = "Stop sharing";
+"location_sharing_live_timer_incoming" = "Live until %@";
+"location_sharing_live_loading" = "Loading Live location...";
+"location_sharing_live_error" = "Live location error";
+"location_sharing_live_timer_selector_title" = "Choose for how long others will see your accurate location.";
+"location_sharing_live_timer_selector_short" = "for 15 minutes";
+"location_sharing_live_timer_selector_medium" = "for 1 hour";
+"location_sharing_live_timer_selector_long" = "for 8 hours";
+"location_sharing_live_no_user_locations_error_title" = "No user locations available";
+"location_sharing_live_stop_sharing_error" = "Fail to stop sharing location";
+"location_sharing_live_stop_sharing_progress" = "Stop location sharing";
 
 // MARK: - MatrixKit
 

@@ -58,6 +58,7 @@ struct RoundedBorderTextField: View {
                         .font(theme.fonts.callout)
                         .foregroundColor(theme.colors.tertiaryContent)
                         .lineLimit(1)
+                        .accessibilityHidden(true)
                 }
                 if isEnabled {
                     ThemableTextField(placeholder: "", text: $text, configuration: configuration, onEditingChanged: { edit in
@@ -66,22 +67,24 @@ struct RoundedBorderTextField: View {
                     })
                     .makeFirstResponder(isFirstResponder)
                     .showClearButton(text: $text)
-                    .onChange(of: text, perform: { newText in
+                    .onChange(of: text) { newText in
                         onTextChanged?(newText)
-                    })
+                    }
                     .frame(height: 30)
+                    .accessibilityLabel(text.isEmpty ? placeHolder : "")
                 } else {
                     ThemableTextField(placeholder: "", text: $text, configuration: configuration, onEditingChanged: { edit in
                         self.editing = edit
                         onEditingChanged?(edit)
                     })
                     .makeFirstResponder(isFirstResponder)
-                    .onChange(of: text, perform: { newText in
+                    .onChange(of: text) { newText in
                         onTextChanged?(newText)
-                    })
+                    }
                     .frame(height: 30)
                     .allowsHitTesting(false)
                     .opacity(0.5)
+                    .accessibilityLabel(text.isEmpty ? placeHolder : "")
                 }
             }
             .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: text.isEmpty ? 8 : 0))

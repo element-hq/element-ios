@@ -21,7 +21,6 @@
 /** Image Messages **/
 
 /* New action message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@ ได้ส่งรูปภาพ %@";
 
 /* Incoming named video conference invite from a specific person */
 "VIDEO_CONF_NAMED_FROM_USER" = "การโทรกลุ่มวิดีโอจาก %@: '%@'";

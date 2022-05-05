@@ -51,6 +51,13 @@ targets:
       runOnlyWhenInstalling: false
       shell: /bin/sh
       script: "\"${PODS_ROOT}/SwiftGen/bin/swiftgen\" config run --config \"Tools/SwiftGen/swiftgen-config.yml\"\n"
+    - name: 📖 locheck
+      runOnlyWhenInstalling: false
+      shell: /bin/sh
+      script: |
+        # homebrew uses a non-standard directory on M1
+        if [[ $(arch) = arm64 ]]; then export PATH="$PATH:/opt/homebrew/bin"; fi
+        xcrun --sdk macosx mint run Asana/locheck@0.9.6 discoverlproj --treat-warnings-as-errors --ignore-missing --ignore lproj_file_missing_from_translation $PROJECT_DIR/Riot/Assets
 
     sources:
     - path: ../RiotSwiftUI/Modules

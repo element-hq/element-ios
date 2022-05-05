@@ -11,7 +11,6 @@
 /* New action message from a specific person in a named room. */
 "ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
 /* New action message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@ képet küldött neked %@";
 /* New action message from a specific person in a named room. */
 "IMAGE_FROM_USER_IN_ROOM" = "%@ képet küldött %@ ide: %@";
 /* A single unread message in a room */
@@ -101,7 +100,6 @@
 "AUDIO_FROM_USER" = "%@ hang fájlt küldött: %@";
 
 /* New video message from a specific person, not referencing a room. */
-"VIDEO_FROM_USER" = "% videót küldött";
 
 /** Media Messages **/
 
@@ -119,3 +117,6 @@
 
 /* New file message from a specific person, not referencing a room. */
 "LOCATION_FROM_USER" = "%@ megosztotta a földrajzi helyzetét";
+
+/* New video message from a specific person, not referencing a room. */
+"VIDEO_FROM_USER" = "%@ videót küldött";

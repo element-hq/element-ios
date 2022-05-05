@@ -422,6 +422,10 @@ extension ExploreRoomCoordinator: RoomViewControllerDelegate {
         // TODO:
     }
     
+    func roomViewController(_ roomViewController: RoomViewController, didRequestLiveLocationPresentationForBubbleData bubbleData: MXKRoomBubbleCellDataStoring) {
+        // TODO:
+    }
+    
     func roomViewController(_ roomViewController: RoomViewController, didRequestLocationPresentationFor event: MXEvent, bubbleData: MXKRoomBubbleCellDataStoring) {
         // TODO:
     }
@@ -474,7 +478,7 @@ extension ExploreRoomCoordinator: RoomViewControllerDelegate {
         // TODO:
     }
     
-    func roomViewControllerDidStopLiveLocationSharing(_ roomViewController: RoomViewController) {
+    func roomViewControllerDidStopLiveLocationSharing(_ roomViewController: RoomViewController, beaconInfoEventId: String?) {
         // TODO:
     }
     

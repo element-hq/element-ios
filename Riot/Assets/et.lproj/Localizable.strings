@@ -7,7 +7,6 @@
 /* New message from a specific person in a named room. Content included. */
 "MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ kirjutas jututoas %@: %@";
 /* New action message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@ saatis pildi %@";
 /* A single unread message in a room */
 "SINGLE_UNREAD_IN_ROOM" = "Sa said sõnumi jututoas %@";
 /* A single unread message */

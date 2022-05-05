@@ -115,8 +115,10 @@ NSString *const kDecryptionFailureTrackerAnalyticsCategory = @"e2e.failure";
             break;
     }
 
+    NSString *context = [NSString stringWithFormat:@"code: %ld, description: %@", event.decryptionError.code, event.decryptionError.localizedDescription];
     reportedFailures[event.eventId] = [[DecryptionFailure alloc] initWithFailedEventId:failedEventId
-                                                                                reason:reason];
+                                                                                reason:reason
+                                                                               context:context];
 }
 
 - (void)dispatch
@@ -158,14 +160,10 @@ NSString *const kDecryptionFailureTrackerAnalyticsCategory = @"e2e.failure";
         for (DecryptionFailure *failure in failuresToTrack)
         {
             failuresCounts[@(failure.reason)] = @(failuresCounts[@(failure.reason)].unsignedIntegerValue + 1);
+            [self.delegate trackE2EEError:failure.reason context:failure.context];
         }
 
         MXLogDebug(@"[DecryptionFailureTracker] trackFailures: %@", failuresCounts);
-        
-        for (NSNumber *reason in failuresCounts)
-        {
-            [self.delegate trackE2EEError:reason.integerValue count:failuresCounts[reason].integerValue];
-        }
     }
 }
 

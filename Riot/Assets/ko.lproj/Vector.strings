@@ -24,7 +24,7 @@
 "camera" = "카메라";
 // String for App Store
 "store_short_description" = "안전한 분산 대화/VoIP";
-"store_full_description" = "여러분의 통제 하에 완전히 유연한 대화 앱. Riot은 여러분이 원하는 방식으로 대화할 수 있도록 합니다. 개방형 분산 커뮤니티의 표준 - [matrix]를 위해 제작됨. \n \n무료 matrix.org 계정을 만들고, https://modular.im에서 자신만의 서버, 혹은 다른 Matrix 서버를 얻으세요. \n \n왜 Riot.im을 선택해야 하나요? \n \n완전한 대화: 원하는 대로 팀이나 친구, 커뮤니티를 중심으로 방을 만드세요! 대화, 파일 공유, 위젯 추가와 음성 및 영상 통화 - 모두 무료입니다. \n \n강력한 통합: 여러분이 알고 사랑하는 도구와 함께 Riot.im을 사용하세요. Riot.im이라면 다른 대화 앱의 사용자와 그룹까지도 대화할 수 있습니다. \n \n개인 및 보안: 대화를 비밀로 유지하세요. 최첨단 종단간 암호화로 비밀 대화를 은밀하게 유지해줍니다. \n \n오픈 소스: Matrix로 만들어진 오픈 소스입니다. 자신의 데이터를 자신의 서버에 소유하거나, 신뢰하는 서버에 맡기세요. \n \n어디에 있든: 모든 기기나 https://riot.im에서 완전히 동기화된 메시지 기록으로 연락을 유지합니다.";
+"store_full_description" = "Element는 다음과 같은 기능을 제공하는 새로운 유형의 메신저입니다.\n\n1. 프라이버시를 관리할 수 있는 권한을 제공합니다.\n2. Matrix 네트워크의 사용자와 통신할 수 있을 뿐만 아니라 Slack 등의 \n앱을 연계하여 다른 네트워크와도 통신할 수 있습니다.\n3. 광고, 데이터마이닝, 백도어와 클로즈 플랫폼으로부터의 사용자를 보호합니다.\n4. 교차 검증과 강력한 종단간 암호화을 통해 사용자를 보호합니다.\n\nElement는 탈중앙화이며 오픈 소스이기 때문에 다른 메신저 앱과는 완전히 다릅니다.\n\nElement에서는 데이터 및 대화에 대한 소유권 및 제어 권한을 가질 수 있도록 자체 호스팅을 통해 \n직접 메신저 서버를 운영할 수 있고, 다른 사용자가 제공하고 있는 서버를 선택할 수 있습니다. 또한 개방형 네트워크에 액세스할 수 있으므로 Element 이외의 사용자와도 이야기할 수 있습니다. 그리고 매우 안전합니다.\n\nElement는 개방-분산형 통신의 표준인 Matrix에서 동작하기 때문에 이 모든 것을 수행할 수 있습니다.\n\nElement는 어떤 서버를 사용할지 사용자가 직접 Element 앱에서 결정할 수 있습니다.\n\n1. matrix.org의 공식 서버에서 무료 계정을 생성한다.\n2. 자체 호스팅을 통해 직접 서버를 운영하고 계정을 관리한다.\n3. Element Matrix Services의 호스팅 플랫폼에 가입하여 사용자 커스텀 서버에서 계정을 만든다.\n\n왜 Element를 선택해야합니까?\n\n내 데이터를 내가 소유함: 데이터나 메시지를 보관할 곳을 스스로 정할 수 있습니다. 데이터를 수집하거나 제 3자에게 데이터를 제공하는 거대 IT 기업이 아닌, 사용자가 스스로 데이터를 소유하고 제어할 수 있습니다.\n\n개방적인 메시징 및 협업: Element 또는 다른 Matrix 앱을 사용하든, 심지어 Slack, IRC, XMPP와 같은 다른 메시징 시스템을 사용하던 상관없이 Matrix 네트워크 상의 다른 사용자와 채팅할 수 있습니다.\n\n매우 안전함: 강력한 종단간 암호화(대화에 참여하고 있는 사람만 메시지를 복호화할 수 있습니다) 및 대화 참가자의 장치를 확인하기 위한 교차 검증을 실시할 수 있습니다.\n\n완벽한 커뮤니케이션: 메시징, 음성 및 화상 통화, 파일 공유, 화면 공유 및 다양한 통합, 봇, 위젯 등을 제공합니다. 방이나 커뮤니티를 만들어 서로 연락하고 일을 원활하게 해낼 수 있습니다.\n\n언제 어디서나: 모든 장치 및 웹(https://element.io/app)에서 메시지가 완전히 동기화되므로 언제 어디서나 연락을 취할 수 있습니다.";
 "join" = "참가";
 "decline" = "끊기";
 "accept" = "수락";
@@ -92,7 +92,7 @@
 "auth_reset_password_next_step_button" = "저는 제 이메일 주소를 확인했습니다";
 "auth_reset_password_error_unauthorized" = "이메일 주소 확인에 실패함: 이메일에 있는 링크를 클릭했는 지 확인하세요";
 "auth_reset_password_error_not_found" = "이메일 주소가 이 홈서버의 Matrix ID에 연결되어 있지 않습니다.";
-"auth_reset_password_success_message" = "비밀번호가 다시 설정되었습니다.\n\n모든 기기에서 로그아웃되며 더 이상 푸시 알림을 받을 수 없습니다. 알림을 다시 켜려면 각 기기마다 다시 로그인하세요.";
+"auth_reset_password_success_message" = "비밀번호가 재설정되었습니다.\n\n모든 기기에서 로그아웃되며 더 이상 푸시 알림을 받을 수 없습니다. 알림을 다시 켜려면 각 기기마다 다시 로그인하세요.";
 "auth_add_email_and_phone_warning" = "API가 있기 전까진 이메일과 전화번호를 동시에 등록하는 것을 지원하지 않습니다. 오직 계정에는 전화번호만 들어갑니다. 설정에서 프로필에 이메일을 추가할 수 있습니다.";
 "auth_accept_policies" = "이 홈서버의 정책을 검토하고 수락해주세요:";
 "auth_autodiscover_invalid_response" = "잘못된 홈서버 검색 응답";
@@ -161,8 +161,6 @@
 "directory_cell_title" = "목록 찾기";
 "directory_cell_description" = "%tu개의 방";
 "directory_search_results_title" = "목록 결과 찾기";
-"directory_search_results" = "%@(으)로 찾은 %tu개의 결과";
-"directory_search_results_more_than" = ">%@(으)로 찾은 %tu개의 결과";
 "directory_searching_title" = "목록 검색 중…";
 "directory_search_fail" = "데이터 가져오기에 실패함";
 // Contacts
@@ -233,8 +231,6 @@
 "room_offline_notification" = "서버와의 연결이 끊겼습니다.";
 "room_unsent_messages_notification" = "메시지가 보내지지 않았습니다.";
 "room_unsent_messages_unknown_devices_notification" = "알 수 없는 기기가 있어 메시지 전송이 실패했습니다.";
-"room_ongoing_conference_call" = "회의 전화가 진행 중입니다. %1$s 또는 %2$s로 참가하세요.";
-"room_ongoing_conference_call_with_close" = "회의 전화가 진행 중입니다. %1$s 또는 %2$s로 참가하세요. %@.";
 "room_ongoing_conference_call_close" = "닫기";
 "room_conference_call_no_power" = "이 방에서 회의 전화를 관리할 권한이 필요합니다";
 "room_prompt_resend" = "모두 다시 보내기";
@@ -352,7 +348,6 @@
 "settings_global_settings_info" = "당신의 %@ 웹 클라이언트에 전역 알림 설정이 켜졌습니다";
 "settings_pin_rooms_with_missed_notif" = "알림을 놓친 방을 고정";
 "settings_pin_rooms_with_unread" = "읽지 않은 메시지가 있는 방을 고정";
-"settings_on_denied_notification" = "%@에 의해 알림이 거부됬습니다, 기기 설정에서 %@을(를) 허용해주세요";
 "settings_enable_callkit" = "통합 전화";
 "settings_callkit_info" = "잠금 화면에서 수신 전화를 받습니다. 시스템의 통화 내역에서 %@ 통화를 확인하세요. iCloud가 켜져있다면, 이 통화 기록은 Apple과 공유됩니다.";
 "settings_ui_language" = "언어";
@@ -386,8 +381,8 @@
 "settings_old_password" = "이전 비밀번호";
 "settings_new_password" = "새 비밀번호";
 "settings_confirm_password" = "비밀번호 확인";
-"settings_fail_to_update_password" = "비밀번호 업데이트에 실패함";
-"settings_password_updated" = "비밀번호가 업데이트되었습니다";
+"settings_fail_to_update_password" = "비밀번호 변경에 실패하였습니다";
+"settings_password_updated" = "비밀번호가 변경되었습니다";
 "settings_crypto_device_name" = "세션 이름: ";
 "settings_crypto_device_id" = "\n세션 ID: ";
 "settings_crypto_device_key" = "\n세션 키:\n";
@@ -558,7 +553,6 @@
 "no_voip_title" = "수신 전화";
 "no_voip" = "%@님이 당신에게 전화를 걸고 있지만 %@은(는) 아직 전화를 지원하지 않습니다.\n이 알림을 무시하고 다른 기기에서 전화를 받거나 전화를 거절할 수 있습니다.";
 // Crash report
-"google_analytics_use_prompt" = "%@이(가) 개선하도록 자동으로 익명의 충돌 보고서와 사용 데이터를 제공하겠습니까?";
 // Crypto
 "e2e_enabling_on_app_update" = "%@는 이제 종단간 암호화를 지원하지만 암호화를 켜려면 다시 로그인해야 합니다.\n\n지금 다시 로그인하거나 나중에 애플리케이션 설정에서 할 수 있습니다.";
 "e2e_need_log_in_again" = "이 세션에 종단간 암호화 키를 생성하고 공개 키를 홈서버에 제출하려면 다시 로그인해야 함니다.\n한 번만 하면 됩니다. 불편을 드려 죄송합니다.";
@@ -611,7 +605,6 @@
 "gdpr_consent_not_given_alert_review_now_action" = "지금 검토";
 // Service terms
 "service_terms_modal_title" = "서비스 약관";
-"service_terms_modal_message" = "계속하려면 이 서비스 약관 (%@)에 동의해야 합니다.";
 "service_terms_modal_accept_button" = "수락";
 "service_terms_modal_description_for_identity_server" = "다른 사용자가 검색할 수 있음";
 "service_terms_modal_description_for_integration_manager" = "봇, 브릿지, 위젯과 스티커팩을 사용";
@@ -640,8 +633,8 @@
 "key_backup_setup_intro_setup_connect_action_with_existing_backup" = "이 기기를 키 백업에 연결";
 "key_backup_setup_intro_manual_export_info" = "(고급)";
 "key_backup_setup_intro_manual_export_action" = "수동으로 키 내보내기";
-"key_backup_setup_passphrase_title" = "백업을 암호로 보호하기";
-"key_backup_setup_passphrase_info" = "암호화된 키의 사본을 서버에 보관합니다. 암호로 된 백업을 보호하며 안전하게 유지해줍니다.\n\n보안을 최대화하려면, 암호는 계정 비밀번호와 달라야 합니다.";
+"key_backup_setup_passphrase_title" = "백업을 보안 암호로 보호하기";
+"key_backup_setup_passphrase_info" = "암호화된 키의 사본을 서버에 보관합니다. 암호로 된 백업을 보호하며 안전하게 유지해줍니다.\n\n보안을 최대화하려면, 암호는 Matrix 계정의 비밀번호와 달라야 합니다.";
 "key_backup_setup_passphrase_passphrase_title" = "입력";
 "key_backup_setup_passphrase_passphrase_placeholder" = "암호 입력";
 "key_backup_setup_passphrase_passphrase_valid" = "좋아요!";
@@ -652,34 +645,34 @@
 "key_backup_setup_passphrase_confirm_passphrase_invalid" = "암호가 틀렸습니다";
 "key_backup_setup_passphrase_set_passphrase_action" = "암호 설정";
 "key_backup_setup_passphrase_setup_recovery_key_info" = "또는, 안전한 곳에 저장해 둘 복구 키로 백업을 보호합니다.";
-"key_backup_setup_passphrase_setup_recovery_key_action" = "(고급) 복구 키로 설정";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "(고급) 보안 키로 설정";
 "key_backup_setup_success_title" = "성공!";
 // Success from passphrase
-"key_backup_setup_success_from_passphrase_info" = "키가 백업되었습니다.\n\n복구 키는 안전망입니다 - 이것으로 암호를 잊어버려도 암호화된 메시지에 접근할 수 있습니다.\n\n복구키를 비밀번호 관리자 (혹은 금고)같은 안전한 장소에 두세요.";
-"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "복구 키 저장";
+"key_backup_setup_success_from_passphrase_info" = "키가 백업되었습니다.\n\n보안 키는 안전망입니다 - 암호를 잊어버려도 암호화된 메시지에 접근할 수 있습니다.\n\n보안 키를 비밀번호 관리자 (혹은 금고)같은 안전한 장소에 두세요.";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "보안 키 저장";
 "key_backup_setup_success_from_passphrase_done_action" = "끝";
 // Success from recovery key
-"key_backup_setup_success_from_recovery_key_info" = "키가 백업되었습니다.\n\n이 복구 키의 사본을 만들어 안전하게 보관하세요.";
-"key_backup_setup_success_from_recovery_key_recovery_key_title" = "복구 키";
+"key_backup_setup_success_from_recovery_key_info" = "키가 백업되었습니다.\n\n보안 키의 사본을 만들어 안전하게 보관하세요.";
+"key_backup_setup_success_from_recovery_key_recovery_key_title" = "보안 키";
 "key_backup_setup_success_from_recovery_key_make_copy_action" = "사본 만들기";
 "key_backup_setup_success_from_recovery_key_made_copy_action" = "사본을 만들었습니다";
 "key_backup_recover_title" = "보안 메시지";
-"key_backup_recover_invalid_passphrase_title" = "맞지 않는 복구 암호";
-"key_backup_recover_invalid_passphrase" = "이 암호로 백업을 복호화할 수 없습니다: 올바른 복구 암호를 입력해서 확인해주세요.";
-"key_backup_recover_invalid_recovery_key_title" = "복구 키가 맞지 않음";
-"key_backup_recover_invalid_recovery_key" = "이 키로 백업을 복호화할 수 없습니다: 올바른 복구 키를 입력해서 확인해주세요.";
-"key_backup_recover_from_passphrase_info" = "복구 암호를 사용해 보안 메시지 기록을 푸세요";
+"key_backup_recover_invalid_passphrase_title" = "보안 키가 올바르지 않음";
+"key_backup_recover_invalid_passphrase" = "이 암호로 백업을 복호화할 수 없습니다: 올바른 보안 암호를 입력해서 확인해주세요.";
+"key_backup_recover_invalid_recovery_key_title" = "보안 키가 맞지 않음";
+"key_backup_recover_invalid_recovery_key" = "이 키로 백업을 복호화할 수 없습니다: 올바른 보안 키를 입력해서 확인해주세요.";
+"key_backup_recover_from_passphrase_info" = "보안 암호를 사용하여 보안 메시지 기록의 잠금을 해제하세요";
 "key_backup_recover_from_passphrase_passphrase_title" = "입력";
 "key_backup_recover_from_passphrase_passphrase_placeholder" = "암호 입력";
 "key_backup_recover_from_passphrase_recover_action" = "기록 풀기";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "복구 암호가 기억나지 않나요? ";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "복구 키를 사용하세요";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "보안 암호가 기억나지 않나요? ";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "보안 키를 사용하세요";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
-"key_backup_recover_from_recovery_key_info" = "복구 키를 사용해 보안 메시지 기록을 풉니다";
+"key_backup_recover_from_recovery_key_info" = "보안 키를 사용해 보안 메시지 기록의 잠금을 해제합니다";
 "key_backup_recover_from_recovery_key_recovery_key_title" = "입력";
-"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "복구 키 입력";
+"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "보안 키 입력";
 "key_backup_recover_from_recovery_key_recover_action" = "기록 풀기";
-"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "복구 키를 잃어버렸나요? 설정에서 새 것을 설정할 수 있어요.";
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "보안 키를 잃어버렸다면 설정에서 새로 설정할 수 있습니다.";
 "key_backup_recover_success_info" = "백업이 복구되었습니다!";
 "key_backup_recover_done_action" = "끝";
 "key_backup_setup_banner_title" = "절대 암호화된 메시지를 잃지 마세요";
@@ -711,7 +704,7 @@
 // MARK: Start
 "device_verification_start_title" = "짧은 문장을 비교하여 확인";
 "device_verification_start_wait_partner" = "상대방이 수락하기를 기다리는 중…";
-"device_verification_start_use_legacy" = "아무것도 안 나타나나요? 일부 클라이언트는 아직 상호작용 확인을 지원하지 않습니다. 예전 확인 방식을 사용하세요.";
+"device_verification_start_use_legacy" = "아무것도 나타나지 않습니까? 일부 클라이언트는 아직 상호작용 확인을 지원하지 않습니다. 예전 확인 방식을 사용하세요.";
 "device_verification_start_verify_button" = "확인 시작";
 "device_verification_start_use_legacy_action" = "예전 확인 방식 사용";
 // MARK: Verify
@@ -883,7 +876,6 @@
 "service_terms_modal_description_for_identity_server_2" = "전화나 이메일로 다른 사람들이 찾을 수 있도록 하기";
 // Service terms - Variant for identity server when displayed out of a context
 "service_terms_modal_title_identity_server" = "연락처 탐색";
-"service_terms_modal_message_identity_server" = "연락처를 탐색하려면 ID 서버 (%@)의 약관에 동의해야 합니다.";
 "settings_add_3pid_password_title_email" = "이메일 주소 추가";
 "settings_add_3pid_password_title_msidsn" = "전화번호 추가";
 "settings_add_3pid_password_message" = "계속하려면, 비밀번호를 입력해주세요";
@@ -953,7 +945,7 @@
 "security_settings_secure_backup_info_checking" = "확인 중…";
 "security_settings_secure_backup_description" = "세션에 액세스할 수 없는 경우에 대비하여 계정 데이터로 암호화 키를 백업하십시오. 귀하의 키는 고유한 보안 키로 보호됩니다.";
 "security_settings_secure_backup" = "보안 백업";
-"security_settings_crypto_sessions_description_2" = "로그인을 인식 하지 못하는 경우 비밀번호를 변경하고 보안 백업을 재설정하세요.";
+"security_settings_crypto_sessions_description_2" = "로그인을 인식하지 못할 경우 비밀번호를 변경하고 보안 백업을 재설정하세요.";
 "security_settings_crypto_sessions_loading" = "세션 로딩 중…";
 "security_settings_crypto_sessions" = "내 세션";
 
@@ -1071,7 +1063,7 @@
 
 // AuthenticatedSessionViewControllerFactory
 "authenticated_session_flow_not_supported" = "이 앱은 해당 홈서버의 인증 구조를 지원하지 않습니다.";
-"security_settings_user_password_description" = "신원을 확인하기 위해 계정 비밀번호를 입력해주세요.";
+"security_settings_user_password_description" = "신원을 확인하기 위해 계정 비밀번호를 입력해주세요";
 "event_formatter_widget_removed_by_you" = "위젯을 제거함 : %@";
 
 // Events formatter with you
@@ -1181,8 +1173,8 @@
 "answer_call" = "전화 받기";
 "reject_call" = "전화 거부";
 "end_call" = "전화 끝내기";
-"ignore" = "무시";
-"unignore" = "무시하지 않기";
+"ignore" = "차단";
+"unignore" = "차단 해제";
 "notice_sticker" = "스티커";
 // room display name
 "room_displayname_empty_room" = "빈 방";
@@ -1262,7 +1254,6 @@
 "notice_room_aliases" = "방의 별칭: %@";
 "notice_room_related_groups" = "이 방과 관련된 그룹: %@";
 "notice_encrypted_message" = "암호화된 메시지";
-"notice_encryption_enabled" = "%@님이 종단간 암호화를 켰습니다 (알고리즘 %@)";
 "notice_image_attachment" = "사진 첨부";
 "notice_audio_attachment" = "소리 첨부";
 "notice_video_attachment" = "영상 첨부";
@@ -1530,3 +1521,114 @@
 
 // Onboarding
 "onboarding_splash_register_button_title" = "계정 만들기";
+"security_settings_complete_security_alert_title" = "보안 확인";
+"settings_enable_room_message_bubbles" = "메시지 버블";
+"settings_labs_use_only_latest_user_avatar_and_name" = "대화 기록에서 사용자의 최신 프로필 사진 및 이름 표시";
+"settings_labs_enable_auto_report_decryption_errors" = "복호화 오류 자동 보고";
+"settings_labs_enable_threads" = "스레드 메시징";
+"room_participants_invite_prompt_to_msg" = "%@을(를) %@에 초대하시겠습니까?";
+"rooms_empty_view_information" = "방은 비공개와 공개 모두 그룹채팅에 적합합니다. +를 눌러 기존에 개설된 방을 찾거나, 새로 개설할 수 있습니다.";
+"onboarding_celebration_button" = "출발";
+"onboarding_celebration_message" = "설정이 저장되었습니다.";
+"onboarding_celebration_title" = "모두 설정했어요!";
+"onboarding_avatar_accessibility_label" = "프로필 사진";
+"onboarding_avatar_message" = "언제든지 수정할 수 있습니다.";
+"onboarding_avatar_title" = "프로필 사진 추가";
+"onboarding_display_name_max_length" = "프로필 이름은 256자 미만이어야 합니다";
+"onboarding_display_name_hint" = "나중에 수정할 수 있습니다";
+"onboarding_display_name_placeholder" = "프로필 이름";
+"onboarding_display_name_message" = "프로필 이름은 메시지를 보낼 때 표시됩니다.";
+"onboarding_display_name_title" = "프로필 이름을 정해주세요";
+"onboarding_personalization_skip" = "이 과정 넘기기";
+"onboarding_personalization_save" = "저장 및 계속";
+"onboarding_congratulations_home_button" = "홈 화면으로 이동";
+"onboarding_congratulations_personalize_button" = "프로필 설정";
+/* The placeholder string contains the user's matrix ID */
+"onboarding_congratulations_message" = "계정 %@이(가) 새롭게 생성되었습니다.";
+"onboarding_congratulations_title" = "축하합니다!";
+"onboarding_use_case_existing_server_message" = "기존 서버에 가입하려고 하시나요?";
+"onboarding_use_case_skip_button" = "질문 넘기기";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "아직 확실하지 않으신가요? %@";
+"onboarding_use_case_personal_messaging" = "친구와 가족";
+"onboarding_use_case_message" = "연결할 수 있도록 도와드릴게요.";
+"onboarding_use_case_title" = "누구와 가장 많이 대화하나요?";
+"onboarding_splash_page_2_message" = "데이터 및 대화가 저장될 서버를 선택하여 내 정보에 대한 통제력과 독립성을 확보하세요. Matrix를 통해 연결됩니다.";
+"onboarding_splash_page_1_title" = "대화 내용을 소유하세요.";
+"onboarding_use_case_work_messaging" = "팀";
+"existing" = "기존의";
+"user_verification_session_details_additional_information_untrusted_current_user" = "이 세션에 로그인하고 있지 않은 경우, 계정이 도용되고 있을 가능성이 있습니다.";
+"user_verification_session_details_additional_information_untrusted_other_user" = "이 세션을 검증하기 전까지 송수신되는 메시지에 경고 마크가 표시됩니다. 또는, 수동으로 검증할 수 있습니다.";
+"user_verification_session_details_information_untrusted_current_user" = "이 세션을 검증한 것으로 표시하고 암호화된 메시지에 접근할 권한을 부여하려면:";
+"user_verification_session_details_information_trusted_current_user" = "이 세션은 검증되어 안전한 메시징이 적용되고 있습니다:";
+"user_verification_session_details_untrusted_title" = "검증되지 않음";
+
+// Session details
+
+"user_verification_session_details_trusted_title" = "검증됨";
+"user_verification_sessions_list_session_untrusted" = "검증되지 않음";
+"user_verification_sessions_list_session_trusted" = "검증됨";
+"user_verification_sessions_list_table_title" = "세션";
+"user_verification_sessions_list_information" = "이 방의 모든 메시지는 종단간 암호화가 적용되어 제 3자가 읽을 수 없습니다.";
+"user_verification_sessions_list_user_trust_level_unknown_title" = "알 수 없음";
+"user_verification_sessions_list_user_trust_level_warning_title" = "경고";
+
+// Sessions list
+
+"user_verification_sessions_list_user_trust_level_trusted_title" = "검증됨";
+"user_verification_start_additional_information" = "안전을 위해 직접 만나거나 다른 방법을 사용하여 통신하십시오.";
+"user_verification_start_waiting_partner" = "%@를 기다리는 중…";
+"user_verification_start_information_part2" = " 두 장치에서 일회용 코드를 사용하여 확인하십시오.";
+"user_verification_start_information_part1" = "보안을 향상시키기 위해 ";
+
+// MARK: - User verification
+
+// Start
+
+"user_verification_start_verify_action" = "검증 시작하기";
+"key_verification_user_title" = "검증";
+"key_verification_tile_request_outgoing_title" = "검증 전송됨";
+"widget_picker_manage_integrations" = "통합 관리하기…";
+"room_widget_permission_room_id_permission" = "방 ID";
+"room_widget_permission_widget_id_permission" = "위젯 ID";
+"room_widget_permission_user_id_permission" = "아이디";
+"room_widget_permission_avatar_url_permission" = "프로필 사진 URL";
+"room_widget_permission_display_name_permission" = "닉네임";
+"room_widget_permission_information_title" = "%@와 데이터를 공유할 수 있습니다:\n";
+"room_widget_permission_webview_information_title" = "쿠키를 설정하고 데이터를 %@와 공유할 수 있습니다:\n";
+"room_widget_permission_creator_info_title" = "새로운 위젯이 추가되었습니다:";
+
+// Room widget permissions
+"room_widget_permission_title" = "위젯 불러오기";
+"notice_room_created_for_dm" = "%@님이 참가했습니다.";
+"notice_room_name_removed_for_dm" = "%@님이 이름을 삭제했습니다";
+"suggest" = "제안";
+"add" = "추가";
+"stop" = "중단";
+"new_word" = "신규";
+"saving" = "저장 중";
+
+// Activities
+"loading" = "로딩 중";
+"edit" = "편집";
+"room_access_settings_screen_setting_room_access" = "방 접근 설정";
+"room_access_settings_screen_upgrade_alert_upgrading" = "방 업그레이드 중";
+"room_access_settings_screen_upgrade_alert_upgrade_button" = "업그레이드";
+"room_access_settings_screen_upgrade_alert_auto_invite_switch" = "새로운 방에 자동으로 친구 초대";
+"room_access_settings_screen_upgrade_alert_title" = "방 업그레이드";
+"room_access_settings_screen_private_message" = "초대한 친구만 이 방을 찾고 들어올 수 있습니다.";
+"room_access_settings_screen_restricted_message" = "스페이스에 있는 누구나 이 방을 찾고 들어올 수 있습니다.\n적용 시 어떤 스페이스인지 확인하는 메시지가 표시됩니다.";
+"room_access_settings_screen_public_message" = "누구나 이 방을 찾고 들어올 수 있습니다.";
+"room_access_settings_screen_edit_spaces" = "스페이스 수정";
+"room_access_settings_screen_upgrade_required" = "업그레이드 필요";
+"room_access_settings_screen_message" = "%@을(를) 찾고 들어올 수 있는 친구를 정할 수 있습니다.";
+"room_access_settings_screen_title" = "누가 이 방에 접근할 수 있나요?";
+
+// Room Access Settings
+"room_access_settings_screen_nav_title" = "방 접근";
+"room_details_promote_room_suggest_title" = "스페이스 멤버에게 제안하기";
+"room_details_promote_room_title" = "방 홍보하기";
+"room_details_access_row_title" = "접근";
+"room_preview_decline_invitation_options" = "초대를 거부하거나 친구를 차단하시겠습니까?";
+"threads_beta_information_link" = "더 알아보기";
+"threads_beta_title" = "스레드";

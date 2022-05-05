@@ -70,7 +70,6 @@
 "REACTION_FROM_USER" = "%@ brást við með %@";
 
 /* Look, stuff's happened, alright? Just open the app. */
-"MSGS_IN_TWO_PLUS_ROOMS" = "@ ný skilaboð í %@, %@ og víðar";
 
 /* Multiple messages in two rooms */
 "MSGS_IN_TWO_ROOMS" = "%@ ný skilaboð í %@ og %@";

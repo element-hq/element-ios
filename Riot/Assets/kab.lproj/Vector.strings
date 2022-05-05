@@ -38,7 +38,6 @@
 // Intro
 
 "secure_key_backup_setup_intro_title" = "Aḥraz aɣelsan";
-"rerequest_keys_alert_message" = "Ma ulac aɣilif err Element deg yibenk-nniḍen i izemren ad yekkes awgelhen i yiznan, akken ad yizmir ad yazen tisura ɣer tɣimit-a.";
 "deactivate_account_password_alert_title" = "Sens amiḍan";
 "deactivate_account_validate_action" = "Sens amiḍan";
 "deactivate_account_forget_messages_information_part2_emphasize" = "Asmigel";
@@ -829,7 +828,6 @@
 
 // MARK: - Major update
 
-"major_update_title" = "Riot tura d Element";
 "secrets_reset_authentication_message" = "Sekcem awal uffir n umiḍan-ik·im i usentem";
 "secrets_reset_warning_title" = "Ma yella twennzeḍ kullec";
 
@@ -915,7 +913,6 @@
 "deactivate_account_forget_messages_information_part3" = ":aya ad yerr iseqdacen ara d-yernun ad walin taskant n yidiwenniyen ur nemmid ara)";
 "deactivate_account_forget_messages_information_part1" = "Ttxil-k·m ttu akk iznan i yuzneɣ mi akken senseɣ amiḍan-iw (";
 "deactivate_account_informations_part1" = "Aya ad yerr amiḍan-ik·im ad yuɣal ur yettwaseqdac ara i lebda. Ur tettizmireḍ ara ad tkecmeḍ, daɣen ulac win ara yizmiren ad yales asekles s usulay-a n useqdac.  Ad yerr amiḍan-ik·im ad yettwakkes seg meṛṛa tixxamin ideg tettekkaḍ, rnu ad yekkes akk talqayt seg uqeddac-ik·im n timagit. ";
-"service_terms_modal_message" = "I wakken ad tkemmleḍ tesriḍ ad tqebleḍ tiwtilin n umeẓlu-a (%@).";
 
 // Service terms
 "service_terms_modal_title" = "Tiwtilin n umeẓlu";
@@ -1047,7 +1044,6 @@
 "settings_key_backup_info_trust_signature_unknown" = "Aḥraz ɣer-s azmul seg tɣimit s usulay: %@";
 "settings_key_backup_info_progress" = "Aḥraz n tsura %@…";
 "settings_key_backup_info_valid" = "Tiɣimit-a tḥerrez tisura-inek·inem.";
-"settings_key_backup_info_algorithm" = "Alguritm: ù@";
 "settings_key_backup_info_version" = "Lqem n uḥraz n tsarut: %@";
 "settings_crypto_export" = "Sifeḍ tisura";
 "settings_crypto_device_key" = "\nTasarut n tɣimit:\n";
@@ -1132,8 +1128,6 @@
 "room_conference_call_no_power" = "Tesriḍ tisirag i wakken ad tesferkeḍ asarag s usiwel deg texxamt-a";
 "room_ongoing_conference_call_with_close" = "Asarag s usiwel iteddu. Rnu d %@ neɣ %@. %@ .";
 "room_ongoing_conference_call" = "Asarag s usiwel iteddu. Rnu d %@ neɣ %@.";
-"room_unsent_messages_unknown_devices_notification" = "Ur yettwazen ara yizen acku llant tɣimiyin ur nettwassen ara. %@ neɣ %@ tura?";
-"room_unsent_messages_notification" = "Iznan ur ttwaznen ara. %@ neɣ %@ tura?";
 "room_message_unable_open_link_error_message" = "Yegguma ad yeldi useɣwen.";
 "room_one_user_is_typing" = "%@ yettaru…";
 "room_accessiblity_scroll_to_bottom" = "Senkez d akessar";
@@ -1209,7 +1203,6 @@
 "active_call_details" = "Asiwel urmid (%@)";
 "active_call" = "Rmed asiwel";
 "store_full_description" = "Element d anaw amaynut n usnas n tirawt d umɛiwen i:\n\n1. Ad ak·akem-yeǧǧ ad tsedduḍ aḍman n tudert-ik·im tabaḍnit\n2. Ad ak·akem-yeǧǧ ad teqqneḍ d yal win·tin yellan deg uzeṭṭa n Matrix, ula beṛṛa-ines s usleɣ n yisnasen am Slack\n3. Ad ak·akem-iḥrez seg udellel, seg yilɣa, seg tewwura yeffren d telmatin ifergen\n4. Ad tettuɣellseḍ s uwgelhen seg yixef ɣer yixef, s uzmul anmidag swayes ara tesneqdeḍ wiyaḍ\n\nElement yemgarad akk ɣef yisnasen-nniḍen n tirawt d umɛiwen yerna n uɣbalu yeldin.\n\nElement ad ak·akem-yeǧǧ ad tzedɣeḍ s wudem awurman - neɣ ad tferneḍ asenneftaɣ - i wakken ad tesɛuḍ tabaḍnit, ad tesɛuḍ ayla, ad tsedduḍ yisefka-inek·inem d yidewenniyen akken i tebɣiḍ. Ad ak·am-imudd anekcum ɣer uzeṭṭa yeldin; akken mačči kan d ameslay ara temmeslayeḍ d yiseqdacen-nniḍen n Element. Rnu d aɣellsan aṭas.\n\nElement yezmer ad yeg akk aya acku iteddu ɣef Matrix - alugen i teywalt yeldin.\n\nElement ad ak·am-imudd asenqed, ad ak·akem-yeǧǧ ad tferneḍ anwa ara yeɣren idiwenniyen-inek·inem. Seg usnas n Element, tzemreḍ ad tferneḍ iwumi ara tmuddeḍ tanezduɣt s yiberdan yemgaraden:\n\n1. Awi amiḍan baṭel ɣef uqeddac azayaz n matrix.org\n2. Sezdeɣ s timmad-ik·im amiḍan-inek·inem s uselkem n uqeddac ɣef yibenk-inek·inem\n3. Rnu amiḍan ɣef uqeddac udmawan s umulteɣ ɣer tɣerɣert n tnezduɣt n Element Matrix Services\n\nI wacu ara tferneḍ Element?\n\nILI-IK·IKEM D BAB N YISEFKA-INEK·INEM: D kečč·kemm ara ifernen adeg anida ara terreḍ isefka-inek·inem d yiznan-inek·inem. D ayla-inek·inem, ad t-tsedduḍ akken i tebɣiḍ. Mačči d kra n MEGACORP ara d-isuffɣen isefka-inek·inem neɣ ad imudd anekcum i wis kraḍ.\n\nTIRAWT YELDIN D UMƐIWEN: Tzemreḍ ad temmeslayeḍ d umdan-nniḍen akk n uzeṭṭa Matrix, isseqdac Element neɣ asnas-nniḍen n Matrix, ɣas ulamma isseqdac anagraw-nniḍen yemgarraden ɣef Slack, IRC neɣ XMPP.\n\nD AƔELLSAN ALMI DAYEN: d awgelhen n tidet seg yixef ɣer yixef (ala imttekkiyen deg udiwenni i izemren ad kksen awgelhen i yiznan) d uzmul anmidag i usenqed n yibenkan n yimttekkiyen deg udiwenni.\n\nTAYWALT YEMMDEN: Tirawt, isawalen s taɣect d tvidyut, beṭṭu n yifuyla, beṭṭu n ugdil d tegrumma yemmden n yimsidaf, n yibuten d yiwiǧiten. Rnu tixxamin, timɣiwnin, qqim mmeslay rnu seddu lecɣl.\n\nANIDA YEƔU TILIḌ: Ili-k·ikem d wid tettmeslayeḍ anida yebɣu tiliḍ s uzray n yiznan yemtawan akken iwata ɣef meṛṛa ibenkan-inek·inem akked ɣef web deg https://element.io/app.";
-"settings_callkit_info" = "Nermes-d isawalen i d-ikecmen ɣef ugdil-inek·inem isekkṛen. Wali isawalen-inek·inem n Element deg uzray n yisawalen n unagraw. Ma yella iCloud yetturmed, azray-a n yisawalen ad yettwabḍu akked Apple.";
 "store_promotional_text" = "Nermes-d isawalen i d-ikecmen ɣef ugdil-inek·inem isekkṛen. Wali isawalen-inek·inem n Element deg uzray n yisawalen n unagraw. Ma yella iCloud yetturmed, azray-a n yisawalen ad yettwabḍu akked Apple.";
 "major_update_information" = "S tumert ara awen-d-nini nbeddel isem! Asnas-inek·inem yettwaleqqem, aql-ak·akem teqqneḍ ɣer umiḍan-inek·inem.";
 "bug_report_logs_description" = "I wakken ad nessiweḍ ad d-naf uguren, iɣmisen n umsaɣ-a ad ttwaznen s uneqqis-a n wabug. Ma yella tebɣiḍ ad tazneḍ kan aḍris yellan nnig, ttxil-k·m ṛcem tabewwaḍt:";
@@ -1237,7 +1230,6 @@
 "pin_protection_not_allowed_pin" = "I ssebbat n tɣellist, tangalt-a PIN ulac-itt. Ttxil-k·m ɛreḍ tangalt-nniḍen n PIN";
 "user_verification_sessions_list_information" = "Iznan akked useqdac-a deg texxamt-a ttwawgelhen seg yixef ɣer yixef, ur zmiren ara ad ttwaɣren sɣur wis kraḍ.";
 "key_verification_verified_other_session_information" = "Tzemreḍ tura ad teɣreḍ iznan iɣellsanen deg tɣimit-inek·inem-nniḍen, ula d iseqdacen-nniḍen ad ẓren belli zemren ad tteklen fell-as.";
-"device_verification_self_verify_wait_information" = "Senqed tiɣimit-a seg yiwet gar tɣimiyin-inek·inem-nniḍen, serreḥ-as ad tekcem ɣer yiznan yettwawgelhen.\n\nSeqdec Element aneggaru ɣef yibenkan-inek·inem-nniḍen:";
 "key_backup_setup_passphrase_info" = "Ad nekles anɣal yettwawgelhen n tsura-inek·inem ɣef uqeddac-nneɣ. Mmesten aḥraz-inek·inem s tefyirt tuffirt i wakken ad yeqqim d aɣellsan.\n\nI wugar n tɣellistt, ilaq ad yemgarad ɣef wawal uffir n umiḍan-ik·im.";
 "share_extension_failed_to_encrypt" = "Tuzna ur teddi ara. Senqed deg usnas agejdan iɣewwaren n uwgelhen n texxamt-a";
 
@@ -1248,10 +1240,8 @@
 "e2e_key_backup_wrong_version" = "Aḥraz amaynut n tsarut n yiznan iɣellsanen yettwaf-d.\n\nWagi mačči d kečč·kemm, sbadu tafyirt tuffirt tamaynut deg yiɣewwaren.";
 
 // Crypto
-"e2e_enabling_on_app_update" = "Element tura issefrak awgelhen seg yixef ɣer yixef maca tesriḍ ad tkecmeḍ i tikkelt-nniḍen i wakken ad t-tremdeḍ.\n\nTzemreḍ ad tgeḍ aya tura neɣ ticki deg yiɣewwaren n usnas.";
 
 // Crash report
-"google_analytics_use_prompt" = "Tebɣiḍ ad talleḍ i usnerni n %@ s tuzna s wudem awurman n yineqqisen udrigen n truẓi d yisefka n useqdec?";
 "room_details_addresses_disable_main_address_prompt_msg" = "Ulac ɣur-k·m tansa n yimayl tagejdant i yettwafernen. Tansa n yimayl tamezwert i texxamt-a ad tettwafran kan akka";
 "identity_server_settings_alert_disconnect_still_sharing_3pid" = "Tebdiḍ tbeṭṭuḍ isefka-inek·inem udmawanen ɣef uqeddac n timagit %@.\n\nAd ak·akem-nweṣṣi ad tekkseḍ tansiwin-inek·inem n yimayl d wuṭṭunen n tiliɣri seg uqeddac n timagit send ad teffɣeḍ seg tuqqna.";
 "identity_server_settings_description" = "Aql-ak·akem akka tura tesseqdaceḍ %@ i wakken ad d-tafeḍ, dɣen ad tettwafeḍ sɣur inermisen i yella i tessneḍ.";
@@ -1287,12 +1277,10 @@
 "key_verification_bootstrap_not_setup_message" = "Tesriḍ ad tgeḍ tazwart s uzmul anmidag qbel.";
 "key_verification_verified_this_session_information" = "Tzemreḍ tura ad teɣreḍ iznan iɣellsanen ɣef yibenk-a, ula d iseqdacen-nniḍen ad ẓren belli zemren ad tteklen fell-as.";
 "key_verification_verified_new_session_information" = "Tzemreḍ tura ad teɣreḍ iznan iɣellsanen ɣef yibenk-inek·inem amaynut, ula d iseqdacen-nniḍen ad ẓren belli zemren ad tteklen fell-as.";
-"device_verification_self_verify_wait_additional_information" = "Aya iteddu akked Element d yimsaɣen-nniḍen n Matrix yemṣadan d uzmul anmidag.";
 
 // Success from recovery key
 "key_backup_setup_success_from_recovery_key_info" = "Tisura-inek·inem ad ttwaḥerzent.\n\nEg tanɣalt n tsarut-a n tririt, rnu err-itt deg wadeg yettwaḍmanen.";
 "secure_key_backup_setup_existing_backup_error_info" = "Kkes-as asekkeṛ i wakken ad talseḍ aseqdec-ines deg uḥraz aɣellsan neɣ kkes-it i tmerna n uḥraz n yiznan imaynuten deg uḥraz aɣellsan.";
-"service_terms_modal_message_identity_server" = "Qbel tiwital n uqeddac n timagit (%@) i usnirem n yinermisen.";
 "no_voip" = "%@ yessawal-ak·am-d maca %@ ur isefrak ara isawalen akka tura.\nTzemreḍ ad tzegleḍ alɣu-a, ad terreḍ ɣef usiwel seg yibenk-nniḍen neɣ tzemreḍ ad t-tagiḍ.";
 "photo_library_access_not_granted" = "%@ ur yesɛi ara tisirag ad ikcem ɣer temkarḍit n tewlafin, ttxil-k·m beddel-it deg yiɣewwaren n tbaḍnit";
 "camera_access_not_granted" = "%@ ur yesɛi ara tisirag ad iseqdec takamiṛat, ttxil-k·m beddel-it deg yiɣewwaren n tbaḍnit";
@@ -1300,7 +1288,6 @@
 
 // AuthenticatedSessionViewControllerFactory
 "authenticated_session_flow_not_supported" = "Asnas-a ur isefrak ara amtawi n usesteb ɣef uqeddac-inek·inem agejdan.";
-"security_settings_coming_soon" = "Nesḥassef. Tigawt-a ulac-itt ɣef Elemnt iOS akka tura. Ttxil-k·m seqdec amsaɣ-nniḍen n Matrix i usbadu-ines. Element iOS ad t-iseqdec.";
 "security_settings_complete_security_alert_message" = "Ilaq deg tazwara ad temmed tɣellist deg tɣimit-agi-inek·inem tamirant.";
 "security_settings_blacklist_unverified_devices_description" = "Senqed meṛṛa tiɣimiyin n yiseqdac i wakken ad tcerḍeḍ fell-asent ttwattkalent, azen-asen daɣen iznan.";
 "security_settings_blacklist_unverified_devices" = "Ɣur-k·m ad tazneḍ akk iznan ɣer tɣimiyin ur nettwattkal ara";
@@ -1418,7 +1405,6 @@
 "room_participants_invite_malformed_id_title" = "Tuccḍa deg uncd";
 "room_participants_invite_another_user" = "Nadi / snubget s usulay n useqdac, Isem neɣ imayl";
 "room_participants_remove_third_party_invite_prompt_msg" = "Tebɣiḍ s tidet ad tesfesxeḍ tinnubga-a?";
-"contacts_address_book_permission_denied" = "Ur teǧǧiḍ ara Element ad yekcem ɣer yinermisen-ik·im idiganen";
 "directory_search_fail" = "Alqaḍ n yisefka yecceḍ";
 "room_creation_invite_another_user" = "Nadi / snubget s usulay n useqdac, Isem neɣ imayl";
 "auth_softlogout_clear_data_message_1" = "Ɣur-k·m: Isefka-inek·inem udmawanen (rnu ɣer-sen tisura n uwgelhen) mazal ttukelsent ɣef yibenk-a.";

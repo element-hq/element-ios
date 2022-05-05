@@ -464,7 +464,7 @@
 "deactivate_account_forget_messages_information_part2_emphasize" = "Kujdes";
 "deactivate_account_validate_action" = "Çaktivizoje llogarinë";
 "deactivate_account_password_alert_title" = "Çaktivizoni Llogarinë";
-"deactivate_account_password_alert_message" = "Që të vazhdohet, ju lutemi, jepni fjalëkalimin e llogarisë tuaj Matrix.";
+"deactivate_account_password_alert_message" = "Që të vazhdohet, ju lutemi, jepni fjalëkalimin e llogarisë tuaj Matrix";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Kërkesa u Dërgua";
 "auth_reset_password_success_message" = "Fjalëkalimi i llogarisë tuaj Matrix u ricaktua.\n\nËshtë bërë dalja juaj nga llogaria në krejt sesionet dhe s’do të merrni më njoftime push. Për riaktivizim të njoftimeve, ribëni hyrjen në çdo pajisje.";
@@ -518,7 +518,6 @@
 "large_badge_value_k_format" = "%.1fK";
 "no_voip" = "%@ po ju thërret, por %@ nuk mbulon ende thirrje.\nMund ta shpërfillni këtë njoftim dhe t’i përgjigjeni thirrjes prej një tjetër pajisjeje, ose mund të mos e pranoni.";
 // Crash report
-"google_analytics_use_prompt" = "Do të donit të ndihmoni në përmirësimin e %@-it duke parashtruar automatikisht dhe në mënyrë anonime raporte vithisjesh dhe të dhëna përdorimi?";
 // Crypto
 "e2e_enabling_on_app_update" = "%@ tani mbulon fshehtëzim skaj-më-skaj, por lypset të ribëni hyrjen që ta aktivizoni.\n\nMund ta bëni tani ose më vonë, që prej rregullimeve të aplikacionit.";
 "bug_report_description" = "Ju lutemi, përshkruajeni të metën. Ç’po bënit? Ç’prisnit të ndodhte? Ç’ndodhi në fakt?";
@@ -557,7 +556,6 @@
 "settings_key_backup_info_not_valid" = "Ky sesion nuk po bën kopjeruajtje të kyçeve tuaja, por keni një kopjeruajtje ekzistuese që mund ta përdorni për rimarrje dhe ta shtoni më tej.";
 "settings_key_backup_info_progress" = "Po kopjeruhen kyçet për %@…";
 "settings_key_backup_info_progress_done" = "U kopjeruajtën krejt kyçet";
-"settings_key_backup_info_not_trusted_from_verifiable_device_fix_action" = "Për të përdorur Rikthim Mesazhesh të Sigurt në këtë pajisje, verifikoni tani %@.";
 "settings_key_backup_info_not_trusted_fix_action" = "Për të përdorur Rikthim Mesazhesh të Sigurt në këtë pajisje, jepni tani një frazëkalim ose një kyç rikthimesh.";
 "settings_key_backup_info_trust_signature_unknown" = "Kopjeruajtja ka një nënshkrim nga një sesion me ID: %@";
 "settings_key_backup_info_trust_signature_valid" = "Kopjeruajtja ka një nënshkrim të vlefshëm prej këtij sesioni";
@@ -669,10 +667,6 @@
 "room_details_fail_to_update_room_direct" = "S’arrihet të përditësohet shenja si e drejtpërdrejtë e kësaj dhome";
 "room_event_action_reply" = "Përgjigjuni";
 "room_event_action_edit" = "Përpunoni";
-"room_event_action_reaction_agree" = "Pajtohem me %@";
-"room_event_action_reaction_disagree" = "S’pajtohem me %@";
-"room_event_action_reaction_like" = "Pëlqejeni %@";
-"room_event_action_reaction_dislike" = "Shpëlqejeni %@";
 "room_action_reply" = "Përgjigjuni";
 "settings_labs_message_reaction" = "Reagoni ndaj mesazhesh me emoji";
 "settings_key_backup_button_connect" = "Lidhe këtë sesion me Kopjeruajtje Kyçesh";
@@ -817,7 +811,6 @@
 "room_participants_start_new_chat_error_using_user_email_without_identity_server" = "S’ka shërbyes identitetesh të formësuar, ndaj s’mund të nisni një fjalosje me një kontakt duke përdorur një email.";
 // Service terms
 "service_terms_modal_title" = "Kushte Shërbimi";
-"service_terms_modal_message" = "Që të vazhdohet, lypset të pranoni kushtet e këtij shërbimi (%@).";
 "service_terms_modal_accept_button" = "Pranoji";
 "service_terms_modal_description_for_identity_server" = "Jini i zbulueshëm nga të tjerët";
 "service_terms_modal_description_for_integration_manager" = "Përdorni Robotë, ura, widget-e dhe paketa ngjitësish";
@@ -850,7 +843,7 @@
 "settings_three_pids_management_information_part3" = ".";
 "settings_add_3pid_password_title_email" = "Shtoni adresë email";
 "settings_add_3pid_password_title_msidsn" = "Shtoni numër telefoni";
-"settings_add_3pid_password_message" = "Që të vazhdohet, ju lutemi, jepni fjalëkalimin e llogarisë tuaj Matrix.";
+"settings_add_3pid_password_message" = "Që të vazhdohet, ju lutemi, jepni fjalëkalimin e llogarisë tuaj Matrix";
 "settings_add_3pid_invalid_password_message" = "Kredenciale të pavlefshme";
 "settings_devices_description" = "Emri publik i një sesioni është i dukshëm për persona me të cilët komunikoni";
 "settings_discovery_no_identity_server" = "S’po përdorni ndonjë shërbyes identitetesh. Që të jeni i zbulueshëm nga kontakte ekzistuese që njihni, shtoni një të tillë.";
@@ -901,7 +894,6 @@
 "service_terms_modal_description_for_identity_server_2" = "Bëhuni i gjetshëm përmes telefoni ose email-i";
 // Service terms - Variant for identity server when displayed out of a context
 "service_terms_modal_title_identity_server" = "Zbulim kontaktesh";
-"service_terms_modal_message_identity_server" = "Që të zbuloni kontakte, pranoni kushtet e shërbyesit të identiteteve (%@).";
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Që të ftoni me email, shtoni një shërbyes identitetesh, që nga rregullimet tuaja.";
 "error_not_supported_on_mobile" = "Këtë s’mund ta bëni nga %@ për celular.";
@@ -1192,19 +1184,19 @@
 "searchable_directory_x_network" = "Rrjet %@";
 "searchable_directory_search_placeholder" = "Emër ose ID";
 "create_room_title" = "Dhomë e Re";
-"create_room_section_header_name" = "Emër dhome";
+"create_room_section_header_name" = "EMËR";
 "create_room_placeholder_name" = "Emër";
-"create_room_section_header_topic" = "Temë dhome (në daçi)";
-"create_room_placeholder_topic" = "Temë";
-"create_room_section_header_encryption" = "Fshehtëzim dhome";
+"create_room_section_header_topic" = "TEMË (NË DAÇI)";
+"create_room_placeholder_topic" = "Përse është kjo dhomë?";
+"create_room_section_header_encryption" = "FSHEHTËZIM";
 "create_room_enable_encryption" = "Aktivizoni Fshehtëzim";
 "create_room_section_footer_encryption" = "Fshehtëzimi s’mund të çaktivizohet më pas.";
-"create_room_section_header_type" = "Lloj dhome";
-"create_room_type_private" = "Dhomë Private";
-"create_room_type_public" = "Dhomë Publike";
+"create_room_section_header_type" = "KUSH MUND TË HYJË";
+"create_room_type_private" = "Dhomë Private (vetëm me ftesa)";
+"create_room_type_public" = "Dhomë Publike (kushdo)";
 "create_room_section_footer_type" = "Njerëzit marrin pjesë në një dhomë vetëm me ftesën për te dhoma.";
-"create_room_show_in_directory" = "Shfaqe dhomën te lista";
-"create_room_section_header_address" = "Adresë dhome";
+"create_room_show_in_directory" = "Shfaqe te listë dhomash";
+"create_room_section_header_address" = "ADRESË";
 "create_room_placeholder_address" = "#provëdhome:matrix.org";
 "room_info_list_room_encrypted" = "Mesazhet në këtë dhomë janë të fshehtëzuar skaj më skaj";
 "room_info_list_one_member" = "1 anëtar";
@@ -1540,7 +1532,7 @@
 "poll_edit_form_add_option" = "Shtoni mundësi";
 "poll_edit_form_option_number" = "Mundësia %lu";
 "poll_edit_form_create_options" = "Krijo mundësi";
-"poll_edit_form_input_placeholder" = "Shkruani diçka!";
+"poll_edit_form_input_placeholder" = "Shkruani diçka";
 "poll_edit_form_question_or_topic" = "Pyetje ose temë";
 "poll_edit_form_poll_question_or_topic" = "Pyetje ose temë pyetësori";
 
@@ -1733,7 +1725,6 @@
 "notice_room_aliases" = "Aliaset e dhomës janë: %@";
 "notice_room_related_groups" = "Grupet përshoqëruar kësaj dhome janë: %@";
 "notice_encrypted_message" = "Mesazhi i fshehtëzuar";
-"notice_encryption_enabled" = "%@ aktivizoi fshehtëzimin skaj-më-skaj (algoritëm %@)";
 "notice_image_attachment" = "bashkëngjitje figurash";
 "notice_audio_attachment" = "bashkëngjitje audio";
 "notice_video_attachment" = "bashkëngjitje videosh";
@@ -2128,3 +2119,166 @@
 "notice_error_unformattable_event" = "** S’arrihet të riprodhohet mesazhi. Ju lutemi, njoftoni një të metë";
 "settings_labs_use_only_latest_user_avatar_and_name" = "Shfaq në historik mesazhesh avatarin dhe emrin më të ri të përdoruesve";
 "room_participants_leave_success" = "Doli nga dhoma";
+"space_invite_not_enough_permission" = "S’keni leje të ftoni njerëz në këtë hapësirë";
+"room_access_settings_screen_public_message" = "Kushdo mund ta gjejë dhe hyjë në të.";
+"ignore_user" = "Shpërfille Përdoruesin";
+"location_sharing_pin_drop_share_title" = "Dërgoje këtë vendndodhje";
+"location_sharing_static_share_title" = "Dërgo vendndodhjen time të tanishme";
+"live_location_sharing_banner_stop" = "Ndale";
+"live_location_sharing_banner_title" = "Vendndodhje Live e aktivizuar";
+
+// MARK: Live location sharing
+
+"location_sharing_live_share_title" = "Jepe vendndodhjen “live”";
+"side_menu_coach_message" = "Fërkojeni për djathtas, ose prekeni që të shihni krejt dhomat";
+"spaces_add_room_missing_permission_message" = "S’keni leje të shtoni dhoma në këtë hapësirë.";
+"spaces_creation_in_one_space" = "në 1 hapësirë";
+"spaces_creation_in_many_spaces" = "në %@ hapësira";
+"spaces_creation_in_spacename_plus_many" = "te %@ + %@ hapësira";
+"spaces_creation_in_spacename_plus_one" = "te %@ + 1 hapësirë";
+"spaces_creation_in_spacename" = "në %@";
+"spaces_creation_post_process_inviting_users" = "Po ftohen përdorues %@";
+"spaces_creation_post_process_adding_rooms" = "Po shtohen dhoma %@";
+"spaces_creation_post_process_creating_room" = "Po krijohet %@";
+"spaces_creation_post_process_uploading_avatar" = "Po ngarkohet avatari";
+"spaces_creation_post_process_creating_space_task" = "Po krijohet %@";
+"spaces_creation_post_process_creating_space" = "Po krijohet hapësirë";
+"spaces_creation_invite_by_username_message" = "Mund t’i ftoni edhe ata më vonë.";
+"spaces_creation_invite_by_username_title" = "Ftoni ekipin tuaj";
+"spaces_creation_invite_by_username" = "Ftoni përmes emri përdoruesi";
+"spaces_creation_add_rooms_message" = "Ngaqë kjo hapësirë është vetëm për ju, askush s’do të njoftohet. Më vonë mund të shtoni më tepër.";
+"spaces_creation_add_rooms_title" = "Ç’doni të shtoni?";
+"spaces_creation_sharing_type_me_and_teammates_detail" = "Një hapësirë private për ju & anëtarët e ekipit tuaj";
+"spaces_creation_sharing_type_me_and_teammates_title" = "Unë dhe anëtarët e ekipit tim";
+"spaces_creation_sharing_type_just_me_detail" = "Një hapësirë private për të sistemuar dhomat tuaja";
+"spaces_creation_sharing_type_just_me_title" = "Vetëm unë";
+"spaces_creation_sharing_type_message" = "Siguroni që te %@ të kenë hyrje personat e duhur. Këtë mund të ndryshoni më vonë.";
+"spaces_creation_sharing_type_title" = "Me cilët po punoni?";
+"spaces_creation_email_invites_email_title" = "Email";
+"spaces_creation_email_invites_message" = "Mund t’i ftoni edhe ata më vonë.";
+"spaces_creation_email_invites_title" = "Ftoni ekipin tuaj";
+"spaces_creation_new_rooms_support" = "Asistencë";
+"spaces_creation_new_rooms_random" = "Kuturu";
+"spaces_creation_new_rooms_general" = "Të Përgjithshme";
+"spaces_creation_new_rooms_room_name_title" = "Emër dhome";
+"spaces_creation_new_rooms_message" = "Do të krijojmë një dhomë për secilin.";
+"spaces_creation_new_rooms_title" = "Cilat janë disa nga gjërat që doni të diskutoni?";
+"spaces_creation_cancel_message" = "Ecuria juaj do të humbë.";
+"spaces_creation_cancel_title" = "Të ndalet krijimi i një hapësire?";
+"spaces_creation_private_space_title" = "Hapësira juaj private";
+"spaces_creation_public_space_title" = "Hapësira juaj publike";
+"spaces_creation_address_already_exists" = "%@\nekziston tashmë";
+"spaces_creation_address_invalid_characters" = "%@\nka shenja të pavlefshme";
+"spaces_creation_address_default_message" = "Hapësira juaj do të jetë e dukshme te\n%@";
+"spaces_creation_empty_room_name_error" = "Emri është i domosdoshëm";
+"spaces_creation_address" = "Adresë";
+"spaces_creation_settings_message" = "Shtoni ndonjë hollësi për të ndihmuar të dalë në pah. Këto mund t’i ndryshoni kur të doni.";
+"spaces_creation_footer" = "Këtë mund ta ndryshoni më vonë";
+"spaces_creation_visibility_message" = "Që të hyni në një hapësirë ekzistuese, ju duhet një ftesë.";
+"spaces_creation_visibility_title" = "Ç’lloj hapësire doni të krijoni?";
+
+// Mark: - Space Creation
+
+"spaces_creation_hint" = "Hapësirat janë një rrugë e re për të grupuar dhoma dhe persona.";
+"space_settings_current_address_message" = "Hapësira juaj do të jetë e dukshme te\n%@";
+"space_settings_update_failed_message" = "S’u arrit të përditësohen rregullimet e hapësirës. Doni të riprovohet?";
+"space_settings_access_section" = "Kush mund të hyjë në këtë hapësirë?";
+"space_topic" = "Përshkrim";
+"space_public_join_rule_detail" = "E hapur për këdo, më e mira për bashkësi";
+"spaces_add_space" = "Shtoni hapësirë";
+"spaces_add_room" = "Shtoni dhomë";
+"spaces_invite_people" = "Ftoni njerëz";
+"space_private_join_rule_detail" = "Vetëm me ftesa, më e mira për ju, ose ekipe";
+"spaces_explore_rooms_one_room" = "1 dhomë";
+"spaces_explore_rooms_room_number" = "%@ dhoma";
+"spaces_create_space_title" = "Krijoni një hapësirë";
+"spaces_add_space_title" = "Krijo hapësirën";
+"room_invite_not_enough_permission" = "S’keni leje të ftoni njerëz në këtë dhomë";
+"room_invite_to_room_option_detail" = "S’do të jenë pjesë e %@.";
+"room_invite_to_room_option_title" = "Thjesht te kjo dhomë";
+
+// Mark: - Room invite
+
+"room_invite_to_space_option_title" = "Te %@";
+"share_invite_link_space_text" = "Hej, ejani te kjo hapësirë në %@";
+"share_invite_link_room_text" = "Hej, ejani te kjo dhomë në %@";
+
+// MARK: - Share invite link
+
+"share_invite_link_action" = "Jepuni lidhje ftese";
+"home_syncing" = "Njëkohësim";
+"create_room_processing" = "Po krijohet dhomë";
+"create_room_suggest_room_footer" = "Dhomat e sugjeruara promovohen te anëtarë të hapësirës si të mira për të hyrë.";
+"create_room_suggest_room" = "Sugjerojuani anëtarëve të hapësirës";
+"create_room_show_in_directory_footer" = "Kjo do t’i ndihmojë personat ta gjejnë dhe hyjnë në të.";
+"create_room_promotion_header" = "PROMOCION";
+"create_room_section_footer_type_public" = "Vetëm personat e ftuar mund ta gjejnë dhe hyjnë në të, jo thjesht persona në Emër hapësire.";
+"create_room_section_footer_type_restricted" = "Cilido në Emër hapësire mund ta gjejë dhe hyjë në të.";
+"create_room_section_footer_type_private" = "Vetëm personat e ftuar mund ta gjejnë dhe hyjnë në të.";
+"create_room_type_restricted" = "Anëtarë hapësire";
+"call_jitsi_unable_to_start" = "S’arrihet të niset thirrje konferencë";
+"room_suggestion_settings_screen_message" = "Dhomat e sugjeruara u promovohen anëtarëve të hapësirës si të mira për të hyrë.";
+"room_suggestion_settings_screen_title" = "Krijoni një dhomë të sugjeruar në një hapësirë";
+
+// Room suggestion Settings
+"room_suggestion_settings_screen_nav_title" = "Sugjeroni dhomë";
+"room_access_space_chooser_other_spaces_section_info" = "Këto ka shumë mundësi të jenë gjëra ku përgjegjës të tjerë të %@ janë pjesë.";
+"room_access_space_chooser_other_spaces_section" = "Hapësira ose dhoma të tjera";
+"room_access_space_chooser_known_spaces_section" = "Hapësirat që njihni, përmbajnë %@";
+"room_access_settings_screen_setting_room_access" = "Rregullim hyrjeje në dhomë";
+"room_access_settings_screen_upgrade_alert_upgrading" = "Përmirësim dhome";
+"room_access_settings_screen_upgrade_alert_upgrade_button" = "Përmirësoje";
+"room_access_settings_screen_upgrade_alert_auto_invite_switch" = "Fto vetvetiu anëtarë te dhomë e re";
+"room_access_settings_screen_upgrade_alert_title" = "Përmirësoni dhomën";
+"room_access_settings_screen_edit_spaces" = "Përpunoni hapësira";
+"room_access_settings_screen_upgrade_required" = "Lypset domosdo përmirësim";
+"room_access_settings_screen_restricted_message" = "Lejoni këdo në një hapësirë të gjejë dhe hyjë.\nDo t’ju kërkohet të ripohoni cilat hapësira.";
+"room_access_settings_screen_private_message" = "Vetëm personat e ftuar mund ta gjejnë dhe hyjnë në të.";
+"room_access_settings_screen_message" = "Vendosni se cilët mund të gjejnë dhe hyjnë te %@.";
+"room_access_settings_screen_title" = "Kush mund të hyjë në këtë dhomë?";
+
+// Room Access Settings
+"room_access_settings_screen_nav_title" = "Leje mbi dhomën";
+"room_details_promote_room_suggest_title" = "Sugjerojuani anëtarëve të hapësirës";
+"room_details_promote_room_title" = "Promovoni dhomën";
+"room_details_access_row_title" = "Hyrje";
+"settings_labs_enable_auto_report_decryption_errors" = "Raporto Vetvetiu Gabime Shfshehtëzimi";
+"room_preview_decline_invitation_options" = "Doni të hidhni poshtë ftesën, apo të shpërfillni këtë përdorues?";
+"threads_beta_cancel" = "Jo tani";
+"threads_beta_enable" = "Provojeni";
+"threads_beta_information_link" = "Mësoni më tepër";
+"threads_beta_information" = "Mbajini diskutimet të sistemuara me rrjedha.\n\nRrjedhat ndihmojnë të mbahen bisedat tuaja brenda temës dhe që të ndiqen kollaj. ";
+"threads_beta_title" = "Rrjedha";
+"threads_notice_done" = "E kuptova";
+"threads_notice_information" = "Krejt rrjedhat e krijuara gjatë periudhës eksperimentale tani do të <b>shfaqen si përgjigje të rregullta</b>.<br/><br/>Ky do të jetë një tranzicion vetëm për një herë, ngaqë tanimë rrjedhat janë pjesë e protokollit Matrix.";
+"threads_notice_title" = "Rrjedhat s’janë më eksperimentale 🎉";
+"room_participants_invite_prompt_to_msg" = "Jeni i sigurt se doni të ftohet %@ te %@?";
+"onboarding_celebration_button" = "Shkojmë";
+"onboarding_celebration_message" = "Parapëlqimet tuaja u ruajtën.";
+"onboarding_celebration_title" = "Kaq qe!";
+"onboarding_avatar_accessibility_label" = "Foto profili";
+"onboarding_avatar_message" = "Këtë mund ta ndryshoni në çfarëdo kohe..";
+"onboarding_avatar_title" = "Shtoni një foto profili";
+"onboarding_display_name_max_length" = "Emri juaj për në ekran duhet të jetë më pak se 256 shenja";
+"onboarding_display_name_hint" = "Këtë mund ta ndryshoni më vonë";
+"onboarding_display_name_placeholder" = "Emër Në Ekran";
+"onboarding_display_name_message" = "Kjo do të shfaqet kur dërgoni mesazhe.";
+"onboarding_display_name_title" = "Zgjidhni një emër për në ekran";
+"onboarding_personalization_skip" = "Anashkalojeni këtë hap";
+"onboarding_personalization_save" = "Ruajeni dhe vazhdoni";
+"onboarding_congratulations_home_button" = "Shpjemëni në shtëpi";
+"onboarding_congratulations_personalize_button" = "Personalizoni profilin";
+/* The placeholder string contains the user's matrix ID */
+"onboarding_congratulations_message" = "Llogaria juaj %@ u krijua.";
+"onboarding_congratulations_title" = "Përgëzime!";
+"saving" = "Ruajtje";
+
+// Activities
+"loading" = "Po ngarkohet";
+"edit" = "Përpunojeni";
+"suggest" = "Sugjeroni";
+"add" = "Shtoni";
+"existing" = "Ekzistues";
+"new_word" = "E re";
+"stop" = "Ndale";
+"joining" = "Po hyhet";

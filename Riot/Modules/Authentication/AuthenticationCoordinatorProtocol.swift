@@ -18,12 +18,6 @@
 
 import Foundation
 
-struct AuthenticationCoordinatorParameters {
-    let navigationRouter: NavigationRouterType
-    /// Whether or not the coordinator should show the loading spinner, key verification etc.
-    let canPresentAdditionalScreens: Bool
-}
-
 enum AuthenticationCoordinatorResult {
     /// The user has authenticated but key verification is yet to happen. The session value is
     /// for a fresh session that still needs to load, sync etc before being ready.

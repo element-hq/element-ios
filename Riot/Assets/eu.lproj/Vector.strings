@@ -280,7 +280,6 @@
 // Chat
 "room_jump_to_first_unread" = "Jauzi irakurri gabeko lehen mezura";
 "room_new_message_notification" = "mezu berri %d";
-"room_new_messages_notification" = "$d mezu berri";
 "room_one_user_is_typing" = "%@ idazten ari da…";
 "room_two_users_are_typing" = "%@ eta %@ idazten ari dira…";
 "room_many_users_are_typing" = "%@, %@, eta beste batzuk idazten ari dira…";
@@ -404,7 +403,6 @@
 "no_voip_title" = "Deia jasotzen";
 "no_voip" = "%@ zu deitzen ari da baina %@(e)k ez ditu deiak onartzen oraindik.\nJakinarazpen hau ezikusi dezakezu eta deia beste gailu batetik hartu, edo deia baztertu.";
 // Crash report
-"google_analytics_use_prompt" = "%@ hobetzen lagundu nahi duzu kraskatze-txosten era erabilera datu anonimoak automatikoki bidaliz?";
 "e2e_need_log_in_again" = "Berriro hasi behar duzu saioa muturretik muturrerako zifratzerako saio honek gakoak sortzeko eta gako publikoa zure hasiera zerbitzarira bidali behar duzu.\nHau behin bakarrik egin behar duzu, barkatu eragozpenak.";
 "bug_crash_report_title" = "Kraskatze-txostena";
 "bug_crash_report_description" = "Azaldu zer zeunden egiten programa kraskatu aurretik:";
@@ -660,10 +658,6 @@
 "room_message_unable_open_link_error_message" = "Ezin izan da esteka ireki.";
 "room_event_action_reply" = "Erantzun";
 "room_event_action_edit" = "Editatu";
-"room_event_action_reaction_agree" = "Ados  %@";
-"room_event_action_reaction_disagree" = "Ez ados %@";
-"room_event_action_reaction_like" = "Gogokoa  %@";
-"room_event_action_reaction_dislike" = "Ez gogokoa %@";
 "room_action_reply" = "Erantzun";
 "settings_key_backup_button_connect" = "Konektatu saio hau gakoen babes-kopiara";
 "key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Konektatu gailu hau gakoen babes-kopiara";
@@ -807,7 +801,6 @@
 "photo_library_access_not_granted" = "%@(e)k ez du argazki liburutegia erabiltzeko baimenik, aldatu pribatutasun ezarpenak";
 // Service terms
 "service_terms_modal_title" = "Erabilera baldintzak";
-"service_terms_modal_message" = "Jarraitzeko, zerbitzu honen erabilera baldintzak onartu behar dituzu (%@).";
 "service_terms_modal_accept_button" = "Onartu";
 "service_terms_modal_description_for_identity_server" = "Izan besteentzat aurkigarria";
 "service_terms_modal_description_for_integration_manager" = "Erabili botak, zubiak, trepetak eta eranskailu multzoak";
@@ -891,7 +884,6 @@
 "service_terms_modal_description_for_identity_server_2" = "Izan telefonoa edo e-maila erabiliz aurkigarria";
 // Service terms - Variant for identity server when displayed out of a context
 "service_terms_modal_title_identity_server" = "Kontaktuak aurkitzea";
-"service_terms_modal_message_identity_server" = "Onartu %@ identitate-zerbitzariaren baldintzak kontaktuak aurkitzeko.";
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Gehitu identitate-zerbitzari bat zure ezarpenetan e-maila erabiliz gonbidatzeko.";
 "settings_add_3pid_password_title_email" = "Gehitu e-mail helbidea";
@@ -901,7 +893,6 @@
 "error_not_supported_on_mobile" = "Ezin duzu hau %@ mugikorretik egin.";
 "settings_integrations" = "INTEGRAZIOAK";
 "settings_integrations_allow_button" = "Kudeatu integrazioak";
-"settings_integrations_allow_description" = "Erabili integrazio kudeatzaileren bat botak, zubiak, trepetak eta eranskailu multzoak kudeatzeko.\n\nIntegrazio kudeatzaileek konfigurazio datuak jasotzen dituzte, eta trepetak aldatu ditzakete, gelarako gonbidapenak bidali, eta botere mailak zure izenean ezarri.";
 "widget_menu_refresh" = "Freskatu";
 "widget_menu_open_outside" = "Ireki nabigatzailean";
 "widget_menu_revoke_permission" = "Indargabetu sarbidea niretzat";
@@ -1033,7 +1024,6 @@
 "security_settings_complete_security_alert_message" = "Aurretik segurtasuna osatu beharko zenuke oraingo saioan.";
 "security_settings_coming_soon" = "Sentitzen dugu. Ekintza hau ez dago iOS plataformarako %@ bezeroan eskuragarri oraindik. Erabili beste Matrix bezero bat ezartzeko. %@ iOS-ek erabili egingo du.";
 "device_verification_self_verify_wait_new_sign_in_title" = "Egiaztatu saio hau";
-"device_verification_self_verify_wait_additional_information" = "edo zeharkako sinadurarako gai den beste Matrix bezero bat";
 // Scanning
 "key_verification_scan_confirmation_scanning_title" = "Ia bukatu duzu! Baieztapenaren zain…";
 "key_verification_scan_confirmation_scanning_user_waiting_other" = "%@ itxaroten…";
@@ -1114,7 +1104,6 @@
 // room display name
 "room_displayname_empty_room" = "Gela hutsa";
 "room_displayname_two_members" = "%@ eta %@";
-"room_displayname_more_than_two_members" = "%@ eta beste %u";
 // Settings
 "settings" = "Ezarpenak";
 // button names 
@@ -1253,7 +1242,6 @@
 "unignore" = "Berriro aintzat hartu";
 "notice_room_name_removed" = "%@ erabiltzaileak gelaren izena kendu du";
 "notice_room_topic_removed" = "%@ erabiltzaileak gelaren mintzagaia kendu du";
-"notice_event_redacted" = "<kenduta %1$s>";
 "notice_event_redacted_by" = " nork: %@";
 "notice_event_redacted_reason" = " [arrazoia: %@]";
 "notice_room_created" = "%@ erabiltzaileak gela sortu du";
@@ -1322,7 +1310,6 @@
 "notification_settings_people_join_leave_rooms" = "Jakinarazi niri jendea gelera elkartu edo gelatik ateratzean";
 "notice_room_power_level_event_requirement" = "Gertaerekin lotutako gutxieneko botere maila:";
 "notice_room_aliases" = "Gelaren ezizenak: %@";
-"notice_encryption_enabled" = "%@ erabiltzaileak muturretik muturrera zifratzea gaitu du (%@ algoritmoa)";
 "notice_redaction" = "%@ erabiltzaileak gertaera bat kendu du (id: %@)";
 "notice_error_unsupported_event" = "Onartu gabeko gertaera";
 "notice_error_unexpected_event" = "Ustekabeko gertaera";
