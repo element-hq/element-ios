@@ -2194,10 +2194,14 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
             cellData = [self.dataSource cellDataAtIndexPath:nextIndexPath];
         }
         
-        if (!cellData && [self.recentsTableView numberOfRowsInSection:section] > 0)
+        if (!cellData && section < self.recentsTableView.numberOfSections && [self.recentsTableView numberOfRowsInSection:section] > 0)
         {
             // Scroll back to the top.
             [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
+        else if (section >= self.recentsTableView.numberOfSections)
+        {
+            MXLogFailure(@"[RecentsViewController] Section %ld is invalid in a table view with only %ld sections", section, self.recentsTableView.numberOfSections);
         }
     }
 }
