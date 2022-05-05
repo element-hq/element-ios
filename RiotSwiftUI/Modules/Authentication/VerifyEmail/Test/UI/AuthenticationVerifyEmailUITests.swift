@@ -41,45 +41,45 @@ class AuthenticationVerifyEmailUITests: MockScreenTest {
     }
     
     func verifyEmptyAddress() {
-        XCTAssertTrue(app.staticTexts["titleLabel"].exists)
-        XCTAssertTrue(app.staticTexts["messageLabel"].exists)
+        XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown before an email is sent.")
+        XCTAssertTrue(app.staticTexts["messageLabel"].exists, "The message should be shown before an email is sent.")
         
         let addressTextField = app.textFields["addressTextField"]
-        XCTAssertTrue(addressTextField.exists)
-        XCTAssertEqual(addressTextField.value as? String, "")
+        XCTAssertTrue(addressTextField.exists, "The text field should be shown before an email is sent.")
+        XCTAssertEqual(addressTextField.value as? String, "Email Address", "The text field should be showing the placeholder before text is input.")
         
         let nextButton = app.buttons["nextButton"]
-        XCTAssertTrue(nextButton.exists)
-        XCTAssertFalse(nextButton.isEnabled)
+        XCTAssertTrue(nextButton.exists, "The next button should be shown before an email is sent.")
+        XCTAssertFalse(nextButton.isEnabled, "The next button should be disabled before text is input.")
         
-        XCTAssertFalse(app.staticTexts["waitingTitleLabel"].exists)
-        XCTAssertFalse(app.staticTexts["waitingMessageLabel"].exists)
+        XCTAssertFalse(app.staticTexts["waitingTitleLabel"].exists, "The waiting title should be hidden until an email is sent.")
+        XCTAssertFalse(app.staticTexts["waitingMessageLabel"].exists, "The waiting message should be hidden until an email is sent.")
     }
     
     func verifyEnteredAddress() {
-        XCTAssertTrue(app.staticTexts["titleLabel"].exists)
-        XCTAssertTrue(app.staticTexts["messageLabel"].exists)
+        XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown before an email is sent.")
+        XCTAssertTrue(app.staticTexts["messageLabel"].exists, "The message should be shown before an email is sent.")
         
         let addressTextField = app.textFields["addressTextField"]
-        XCTAssertTrue(addressTextField.exists)
-        XCTAssertEqual(addressTextField.value as? String, "test@example.com")
+        XCTAssertTrue(addressTextField.exists, "The text field should be shown before an email is sent.")
+        XCTAssertEqual(addressTextField.value as? String, "test@example.com", "The text field should show the email address that was input.")
         
         let nextButton = app.buttons["nextButton"]
-        XCTAssertTrue(nextButton.exists)
-        XCTAssertTrue(nextButton.isEnabled)
+        XCTAssertTrue(nextButton.exists, "The next button should be shown before an email is sent.")
+        XCTAssertTrue(nextButton.isEnabled, "The next button should be enabled once an address has been input.")
         
-        XCTAssertFalse(app.staticTexts["waitingTitleLabel"].exists)
-        XCTAssertFalse(app.staticTexts["waitingMessageLabel"].exists)
+        XCTAssertFalse(app.staticTexts["waitingTitleLabel"].exists, "The waiting title should be hidden until an email is sent.")
+        XCTAssertFalse(app.staticTexts["waitingMessageLabel"].exists, "The waiting message should be hidden until an email is sent.")
     }
     
     func verifyWaitingForEmailLink() {
-        XCTAssertFalse(app.staticTexts["titleLabel"].exists)
-        XCTAssertFalse(app.staticTexts["messageLabel"].exists)
-        XCTAssertFalse(app.textFields["addressTextField"].exists)
-        XCTAssertFalse(app.buttons["nextButton"].exists)
+        XCTAssertFalse(app.staticTexts["titleLabel"].exists, "The title should be hidden once an email has been sent.")
+        XCTAssertFalse(app.staticTexts["messageLabel"].exists, "The message should be hidden once an email has been sent.")
+        XCTAssertFalse(app.textFields["addressTextField"].exists, "The text field should be hidden once an email has been sent.")
+        XCTAssertFalse(app.buttons["nextButton"].exists, "The next button should be hidden once an email has been sent.")
         
-        XCTAssertTrue(app.staticTexts["waitingTitleLabel"].exists)
-        XCTAssertTrue(app.staticTexts["waitingMessageLabel"].exists)
+        XCTAssertTrue(app.staticTexts["waitingTitleLabel"].exists, "The waiting title should be shown once an email has been sent.")
+        XCTAssertTrue(app.staticTexts["waitingMessageLabel"].exists, "The waiting title should be shown once an email has been sent.")
     }
 
 }
