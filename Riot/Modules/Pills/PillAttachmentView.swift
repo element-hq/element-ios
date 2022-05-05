@@ -54,7 +54,7 @@ class PillAttachmentView: UIView {
                                 size: Self.size(forRoomMember: roomMember)))
 
         let label = UILabel(frame: .zero)
-        label.text = roomMember.displayname
+        label.text = roomMember.displayname.count > 0 ? roomMember.displayname : roomMember.userId
         label.font = Constants.pillLabelFont
         label.textColor = isCurrentUser ? ThemeService.shared().theme.baseTextPrimaryColor : ThemeService.shared().theme.textPrimaryColor
         let labelSize = label.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude,

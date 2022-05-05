@@ -19,17 +19,19 @@ import UIKit
 extension RoomViewController {
     // MARK: - Override
     open override func mention(_ roomMember: MXRoomMember) {
-        guard #available(iOS 15.0, *),
-              let inputToolbar = inputToolbar else {
-            super.mention(roomMember)
+        guard let inputToolbar = inputToolbar else {
             return
         }
 
         let newAttributedString = NSMutableAttributedString(attributedString: inputToolbar.attributedTextMessage)
 
         if inputToolbar.attributedTextMessage.length > 0 {
-            newAttributedString.append(StringPillsUtils.mentionPill(withRoomMember: roomMember,
-                                                                    isCurrentUser: false))
+            if #available(iOS 15.0, *) {
+                newAttributedString.append(StringPillsUtils.mentionPill(withRoomMember: roomMember,
+                                                                        isCurrentUser: false))
+            } else {
+                newAttributedString.appendString(roomMember.displayname.count > 0 ? roomMember.displayname : roomMember.userId)
+            }
             let empty = NSAttributedString(string: " ",
                                            attributes: [.font: inputToolbar.textDefaultFont])
             newAttributedString.append(empty)
@@ -38,8 +40,12 @@ extension RoomViewController {
                                                        attributes: [.font: inputToolbar.textDefaultFont])
             newAttributedString.append(selfMentionString)
         } else {
-            newAttributedString.append(StringPillsUtils.mentionPill(withRoomMember: roomMember,
-                                                                    isCurrentUser: false))
+            if #available(iOS 15.0, *) {
+                newAttributedString.append(StringPillsUtils.mentionPill(withRoomMember: roomMember,
+                                                                        isCurrentUser: false))
+            } else {
+                newAttributedString.appendString(roomMember.displayname.count > 0 ? roomMember.displayname : roomMember.userId)
+            }
             let colon = NSAttributedString(string: ": ",
                                            attributes: [.font: inputToolbar.textDefaultFont])
             newAttributedString.append(colon)
