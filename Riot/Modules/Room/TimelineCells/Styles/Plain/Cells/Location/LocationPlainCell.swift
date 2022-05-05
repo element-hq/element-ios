@@ -15,41 +15,99 @@
 //
 
 import Foundation
+import MatrixSDK
 
 class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable {
     
     private var locationView: RoomTimelineLocationView!
+    private var event: MXEvent?
     
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
         
         guard #available(iOS 14.0, *),
-              let bubbleData = cellData as? RoomBubbleCellData,
-              let event = bubbleData.events.last,
-              event.eventType == __MXEventType.roomMessage,
-              let locationContent = event.location
+              let bubbleData = cellData as? RoomBubbleCellData
         else {
             return
         }
         
         locationView.update(theme: ThemeService.shared().theme)
+        
+        if bubbleData.cellDataTag == .location,
+           let event = bubbleData.events.last {
+            self.event = event
+            renderStaticLocation(event)
+        } else if bubbleData.cellDataTag == .liveLocation,
+                  let beaconInfoSummary = bubbleData.beaconInfoSummary {
+            renderLiveLocation(beaconInfoSummary)
+        }
+    }
+    
+    private func renderStaticLocation(_ event: MXEvent) {
+        guard let locationContent = event.location else {
+            return
+        }
+        
         locationView.locationDescription = locationContent.locationDescription
         
         let location = CLLocationCoordinate2D(latitude: locationContent.latitude, longitude: locationContent.longitude)
         
         let mapStyleURL = bubbleData.mxSession.vc_homeserverConfiguration().tileServer.mapStyleURL
         
+        let avatarViewData: AvatarViewData?
+        
         if locationContent.assetType == .user {
-            let avatarViewData = AvatarViewData(matrixItemId: bubbleData.senderId,
-                                                displayName: bubbleData.senderDisplayName,
-                                                avatarUrl: bubbleData.senderAvatarUrl,
-                                                mediaManager: bubbleData.mxSession.mediaManager,
-                                                fallbackImage: .matrixItem(bubbleData.senderId, bubbleData.senderDisplayName))
-            
-            locationView.displayLocation(location, userAvatarData: avatarViewData, mapStyleURL: mapStyleURL)
+            avatarViewData = AvatarViewData(matrixItemId: bubbleData.senderId,
+                                            displayName: bubbleData.senderDisplayName,
+                                            avatarUrl: bubbleData.senderAvatarUrl,
+                                            mediaManager: bubbleData.mxSession.mediaManager,
+                                            fallbackImage: .matrixItem(bubbleData.senderId, bubbleData.senderDisplayName))
         } else {
-            locationView.displayLocation(location, mapStyleURL: mapStyleURL)
+            avatarViewData = nil
         }
+        
+        locationView.displayStaticLocation(with: RoomTimelineLocationViewData(location: location, userAvatarData: avatarViewData, mapStyleURL: mapStyleURL))
+    }
+    
+    private func renderLiveLocation(_ beaconInfoSummary: MXBeaconInfoSummaryProtocol) {
+        let liveLocationState: TimelineLiveLocationViewState = locationSharingViewState(from: beaconInfoSummary)
+        let avatarViewData = AvatarViewData(matrixItemId: bubbleData.senderId,
+                                            displayName: bubbleData.senderDisplayName,
+                                            avatarUrl: bubbleData.senderAvatarUrl,
+                                            mediaManager: bubbleData.mxSession.mediaManager,
+                                            fallbackImage: .matrixItem(bubbleData.senderId, bubbleData.senderDisplayName))
+        let mapStyleURL = bubbleData.mxSession.vc_homeserverConfiguration().tileServer.mapStyleURL
+        
+        locationView.displayLiveLocation(with: RoomTimelineLocationViewData(location: nil, userAvatarData: avatarViewData, mapStyleURL: mapStyleURL),
+                                         liveLocationViewState: liveLocationState)
+    }
+    
+    private func locationSharingViewState(from beaconInfoSummary: MXBeaconInfoSummaryProtocol) -> TimelineLiveLocationViewState {
+        
+        let viewState: TimelineLiveLocationViewState
+        
+        let liveLocationStatus: LiveLocationSharingStatus
+        
+        if beaconInfoSummary.hasStopped || beaconInfoSummary.hasExpired {
+            liveLocationStatus = .stopped
+        } else if let lastBeacon = beaconInfoSummary.lastBeacon {
+            
+            let expiryTimeinterval = TimeInterval(beaconInfoSummary.expiryTimestamp/1000) // Timestamp is in millisecond in the SDK
+            
+            let coordinate = CLLocationCoordinate2D(latitude: lastBeacon.location.latitude, longitude: lastBeacon.location.longitude)
+            
+            liveLocationStatus = .started(coordinate, expiryTimeinterval)
+        } else {
+            liveLocationStatus = .starting
+        }
+        
+        if beaconInfoSummary.userId == bubbleData.mxSession.myUserId {
+            viewState = .outgoing(liveLocationStatus)
+        } else {
+            viewState = .incoming(liveLocationStatus)
+        }
+        
+        return viewState
     }
     
     override func setupViews() {
@@ -61,11 +119,29 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
         
         guard #available(iOS 14.0, *),
               let contentView = roomCellContentView?.innerContentView else {
-            return
-        }
+                  return
+              }
         
         locationView = RoomTimelineLocationView.loadFromNib()
         
         contentView.vc_addSubViewMatchingParent(locationView)
+    }
+}
+
+extension LocationPlainCell: RoomTimelineLocationViewDelegate {
+    func roomTimelineLocationViewDidTapStopButton(_ roomTimelineLocationView: RoomTimelineLocationView) {
+        guard let event = self.event else {
+            return
+        }
+        
+        delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellStopShareButtonPressed, userInfo: [kMXKRoomBubbleCellEventKey: event])
+    }
+    
+    func roomTimelineLocationViewDidTapRetryButton(_ roomTimelineLocationView: RoomTimelineLocationView) {
+        guard let event = self.event else {
+            return
+        }
+        
+        delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellRetryShareButtonPressed, userInfo: [kMXKRoomBubbleCellEventKey: event])
     }
 }

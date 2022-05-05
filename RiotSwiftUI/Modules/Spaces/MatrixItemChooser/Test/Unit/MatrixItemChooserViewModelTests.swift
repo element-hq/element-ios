@@ -28,7 +28,7 @@ class MatrixItemChooserViewModelTests: XCTestCase {
     
     override func setUpWithError() throws {
         service = MockMatrixItemChooserService(type: .room)
-        viewModel = MatrixItemChooserViewModel.makeMatrixItemChooserViewModel(matrixItemChooserService: service, title: VectorL10n.spacesCreationAddRoomsTitle, detail: VectorL10n.spacesCreationAddRoomsMessage)
+        viewModel = MatrixItemChooserViewModel.makeMatrixItemChooserViewModel(matrixItemChooserService: service, title: VectorL10n.spacesCreationAddRoomsTitle, detail: VectorL10n.spacesCreationAddRoomsMessage, selectionHeader: nil)
         context = viewModel.context
     }
     

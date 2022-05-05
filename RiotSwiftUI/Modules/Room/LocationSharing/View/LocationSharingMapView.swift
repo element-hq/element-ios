@@ -43,12 +43,18 @@ struct LocationSharingMapView: UIViewRepresentable {
     
     /// True to indicate to show and follow current user location
     var showsUserLocation: Bool = false
+    
+    /// True to indicate that a touch on user annotation can show a callout
+    var userAnnotationCanShowCallout: Bool = false
 
     /// Last user location if `showsUserLocation` has been enabled
     @Binding var userLocation: CLLocationCoordinate2D?
     
     /// Coordinate of the center of the map
     @Binding var mapCenterCoordinate: CLLocationCoordinate2D?
+    
+    /// Called when an annotation callout view is tapped
+    var onCalloutTap: ((MGLAnnotation) -> Void)?
     
     /// Publish view errors if any
     let errorSubject: PassthroughSubject<LocationSharingViewError, Never>
@@ -159,6 +165,27 @@ extension LocationSharingMapView {
                 return
             }
             locationSharingMapView.mapCenterCoordinate = mapCenterCoordinate
+        }
+        
+        // MARK: Callout
+                
+        func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
+            return annotation is UserLocationAnnotation && locationSharingMapView.userAnnotationCanShowCallout
+        }
+        
+        func mapView(_ mapView: MGLMapView, calloutViewFor annotation: MGLAnnotation) -> MGLCalloutView? {
+            if let userLocationAnnotation = annotation as? UserLocationAnnotation {
+                return UserAnnotationCalloutView(userLocationAnnotation: userLocationAnnotation)
+            }
+            
+            return nil
+        }
+         
+        func mapView(_ mapView: MGLMapView, tapOnCalloutFor annotation: MGLAnnotation) {
+            
+            locationSharingMapView.onCalloutTap?(annotation)
+            // Hide the callout
+            mapView.deselectAnnotation(annotation, animated: true)
         }
     }
 }

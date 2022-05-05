@@ -45,7 +45,9 @@ class SpaceMenuPresenter: NSObject {
     private weak var selectedSpace: MXSpace?
     private var session: MXSession!
     private var spaceId: String!
-
+    private weak var spaceMenuViewController: SpaceMenuViewController?
+    private var leaveSpaceCoordinator: Coordinator?
+    
     // MARK: - Public
     
     func present(forSpaceWithId spaceId: String,
@@ -74,6 +76,7 @@ class SpaceMenuPresenter: NSObject {
     private func showMenu(for spaceId: String, session: MXSession) {
         let menuViewController = SpaceMenuViewController.instantiate(forSpaceWithId: spaceId, matrixSession: session, viewModel: self.viewModel)
         self.present(menuViewController, animated: true)
+        self.spaceMenuViewController = menuViewController
     }
     
     private func present(_ viewController: SpaceMenuViewController, animated: Bool) {
@@ -95,6 +98,29 @@ class SpaceMenuPresenter: NSObject {
 
             self.presentingViewController?.present(viewController, animated: animated, completion: nil)
         }
+    }
+    
+    @available(iOS 14.0, *)
+    private func showLeaveSpace() {
+        let name = session.spaceService.getSpace(withId: spaceId)?.summary?.displayname ?? VectorL10n.spaceTag
+        
+        let selectionHeader = MatrixItemChooserSelectionHeader(title: VectorL10n.leaveSpaceSelectionTitle,
+                                                               selectAllTitle: VectorL10n.leaveSpaceSelectionAllRooms,
+                                                               selectNoneTitle: VectorL10n.leaveSpaceSelectionNoRooms)
+        let paramaters = MatrixItemChooserCoordinatorParameters(session: session,
+                                                                title: VectorL10n.leaveSpaceTitle(name),
+                                                                detail: VectorL10n.leaveSpaceMessage(name),
+                                                                selectionHeader: selectionHeader,
+                                                                viewProvider: LeaveSpaceViewProvider(navTitle: nil),
+                                                                itemsProcessor: LeaveSpaceItemsProcessor(spaceId: spaceId, session: session))
+        let coordinator = MatrixItemChooserCoordinator(parameters: paramaters)
+        coordinator.start()
+        self.leaveSpaceCoordinator = coordinator
+        coordinator.completion = { [weak self] result in
+            self?.spaceMenuViewController?.dismiss(animated: true)
+            self?.leaveSpaceCoordinator = nil
+        }
+        self.spaceMenuViewController?.present(coordinator.toPresentable(), animated: true)
     }
 }
 
@@ -120,6 +146,10 @@ extension SpaceMenuPresenter: SpaceMenuModelViewModelCoordinatorDelegate {
             self.delegate?.spaceMenuPresenter(self, didCompleteWith: .settings, forSpaceWithId: self.spaceId, with: self.session)
         case .invite:
             self.delegate?.spaceMenuPresenter(self, didCompleteWith: .invite, forSpaceWithId: self.spaceId, with: self.session)
+        case .leaveSpaceAndChooseRooms:
+            if #available(iOS 14.0, *) {
+                self.showLeaveSpace()
+            }
         default:
             MXLog.error("[SpaceMenuPresenter] spaceListViewModel didSelectItem: invalid action \(action)")
         }

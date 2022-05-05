@@ -22,7 +22,7 @@ class MainTitleView: UIStackView, Themable {
     // MARK: - Properties
     
     public private(set) var titleLabel: UILabel!
-    public private(set) var subtitleLabel: UILabel!
+    public private(set) var breadcrumbView: BreadcrumbView!
     
     // MARK: - Lifecycle
     
@@ -42,8 +42,7 @@ class MainTitleView: UIStackView, Themable {
         self.titleLabel.textColor = theme.colors.primaryContent
         self.titleLabel.font = theme.fonts.calloutSB
         
-        self.subtitleLabel.textColor = theme.colors.tertiaryContent
-        self.subtitleLabel.font = theme.fonts.footnote
+        self.breadcrumbView.update(theme: theme)
     }
     
     // MARK: - Private
@@ -52,11 +51,10 @@ class MainTitleView: UIStackView, Themable {
         self.titleLabel = UILabel(frame: .zero)
         self.titleLabel.backgroundColor = .clear
 
-        self.subtitleLabel = UILabel(frame: .zero)
-        self.subtitleLabel.backgroundColor = .clear
+        self.breadcrumbView = BreadcrumbView(frame: .zero)
 
         self.addArrangedSubview(titleLabel)
-        self.addArrangedSubview(subtitleLabel)
+        self.addArrangedSubview(breadcrumbView)
         self.distribution = .equalCentering
         self.axis = .vertical
         self.alignment = .center

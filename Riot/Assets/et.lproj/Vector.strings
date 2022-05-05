@@ -742,8 +742,6 @@
 "directory_cell_title" = "Sirvi kataloogi";
 "directory_cell_description" = "%tu jututuba";
 "directory_search_results_title" = "Sirvi tulemusi kataloogist";
-"directory_search_results" = "%@ kohta leidsin %tu tulemust";
-"directory_search_results_more_than" = ">%@ kohta leidsin %tu tulemust";
 "directory_searching_title" = "Otsin kataaloogist…";
 "directory_search_fail" = "Andmete laadimine ei õnnestunud";
 // Contacts
@@ -777,7 +775,6 @@
 "gdpr_consent_not_given_alert_review_now_action" = "Vaata üle";
 // Service terms
 "service_terms_modal_title" = "Kasutustingimused";
-"service_terms_modal_message" = "Jätkamaks pead nõustuma selle teenuse kasutustingimustega(%@).";
 "service_terms_modal_accept_button" = "Nõustu";
 "service_terms_modal_decline_button" = "Keeldu";
 "service_terms_modal_description_for_identity_server_1" = "Leia teisi kasutajaid telefoninumbri või e-posti aadressi alusel";
@@ -785,7 +782,6 @@
 "service_terms_modal_description_for_integration_manager" = "Kasuta roboteid, võrgusildu, vidinaid või kleepsupakke";
 // Service terms - Variant for identity server when displayed out of a context
 "service_terms_modal_title_identity_server" = "Kasutajate leidmine";
-"service_terms_modal_message_identity_server" = "Väliste kasutajate leidmiseks pead nõustuma isikutuvastusserveri (%@) kasutustingimustega.";
 "service_terms_modal_policy_checkbox_accessibility_hint" = "Nõustumaks %@ tingimustega tee siia märge";
 "key_backup_setup_skip_alert_message" = "Kui sa logid välja või kaotad seadme, siis sa ei saa enam lugeda oma krüptitud sõnumeid.";
 "key_backup_setup_intro_info" = "Sõnumid krüptitud jututubades kasutavad läbivat krüptimist. Ainult sinul ja saaja(te)l on võtmed selliste sõnumite lugemiseks.\n\nVältimaks krüptovõtmete kadumist, varunda nad turvaliselt.";
@@ -988,7 +984,6 @@
 "room_details_addresses_disable_main_address_prompt_msg" = "Sel jututoal ei saa olema põhiaadressi. Seetõttu valitakse vaikimisi põhiaadress juhuslikult";
 "room_details_flair_section" = "Näita kogukondade rinnasilte";
 // Crash report
-"google_analytics_use_prompt" = "Kas sa soovid aitata parandada %@ rakendust saates arendajatele automaatseid ja anonüümsed veateateid ning kasutusteavet?";
 // Crypto
 "e2e_enabling_on_app_update" = "%@ nüüd toetab läbivat krüptimist ning selle kasutusele võtmiseks peaksid sa uuesti sisse logima.\n\nSa võid teha seda kohe või määrata rakenduse seadistustes.";
 "e2e_need_log_in_again" = "Selle sessiooni läbiva krüptimise võtmete loomiseks ja avaliku võtme salvestamiseks koduserverisse peaksid sa uuesti sisse logima.\nVabandame ebamugavuse pärast, aga see õnneks on ühekordne toiming.";
@@ -1146,19 +1141,19 @@
 "searchable_directory_x_network" = "%@ võrk";
 "searchable_directory_search_placeholder" = "Nimi või Matrix'i tunnus";
 "create_room_title" = "Uus jututuba";
-"create_room_section_header_name" = "Jututoa nimi";
+"create_room_section_header_name" = "NIMI";
 "create_room_placeholder_name" = "Nimi";
-"create_room_section_header_topic" = "Jututoa teema (kui soovid lisada)";
-"create_room_placeholder_topic" = "Jututoa teema";
-"create_room_section_header_encryption" = "Krüptimine jututoas";
+"create_room_section_header_topic" = "TEEMA (kui soovid lisada)";
+"create_room_placeholder_topic" = "Millest siin jututoas räägitakse?";
+"create_room_section_header_encryption" = "KRÜPTIMINE";
 "create_room_enable_encryption" = "Võta krüptimine kasutusele";
 "create_room_section_footer_encryption" = "Krüptimist ei saa hiljem välja lülitada.";
-"create_room_section_header_type" = "Jututoa tüüp";
-"create_room_type_private" = "Omavaheline jututuba";
-"create_room_type_public" = "Avalik jututuba";
+"create_room_section_header_type" = "KES PÄÄSEB SIIA LIGI";
+"create_room_type_private" = "Privaatne jututuba (kutse alusel)";
+"create_room_type_public" = "Avalik jututuba (kõigile)";
 "create_room_section_footer_type" = "Omavahelise jututoaga saab liituda vaid kutsega.";
-"create_room_show_in_directory" = "Näita jututubade loendit";
-"create_room_section_header_address" = "Jututoa aadress";
+"create_room_show_in_directory" = "Näita jututubade loendis";
+"create_room_section_header_address" = "AADRESS";
 "create_room_placeholder_address" = "#torenimi:domeen.ee";
 "room_info_list_room_encrypted" = "See jututuba on läbivalt krüptitud";
 "room_info_list_one_member" = "1 liige";
@@ -1306,12 +1301,10 @@
 // Chat
 "room_slide_to_end_group_call" = "Viipa kõne lõpetamiseks kõigi jaoks";
 "callbar_only_single_active_group" = "Rühmakõnega liitumiseks puuduta (%@)";
-"space_beta_announce_information" = "Kogukonnakeskused on uus viis inimeste ja jututubade sidumiseks. Neid veel ei saa iOS'is kasutada, kuid nad on olemas %@'i veebirakenduses ja töölauarakenduses.";
 "space_beta_announce_subtitle" = "Uus versioon senistest kogukondadest";
 "space_beta_announce_title" = "Kogukonnakeskused saavad varsti olema ka siin";
 "space_beta_announce_badge" = "BEETA";
 "space_feature_unavailable_information" = "Kogukonnakeskused on uus viis inimeste ja jututubade sidumiseks.\n\nNad saavad varsti olema kasutusel ka siin keskkonnas. Kui praegu liitud mõne kogukonnakeskusega mõnes muus keskkonnas, siis pääsed ligi kõikidele seotud jututubadele ka siin.";
-"space_feature_unavailable_subtitle" = "Kogukonnakeskuseid ei saa iOS'is kasutada, kuid nad on olemas %@'i veebirakenduses ja töölauarakenduses";
 
 // Mark: - Spaces
 
@@ -1380,9 +1373,7 @@
 "version_check_modal_action_title_supported" = "Selge lugu";
 "version_check_modal_subtitle_supported" = "Me oleme arendanud %@'i kiiremaks ja mugavamaks. Sinu praegune iOS'i versioon ei oska kõiki neid uuendusi kasutada ja tema tugi on lõppemas.\nKui soovid kasutada %@'i kõiki võimalusi, siis palun uuenda oma iOS'i versiooni.";
 "version_check_modal_title_supported" = "Rakenduse kasutamise võimalus iOS'i versioonis %@ on lõppemas";
-"version_check_banner_subtitle_deprecated" = "Me oleme lõpetanud selle rakenduse toe IOS'i versioonis %@. Kui soovid kasutada %@'i kõiki võimalusi, siis palun uuenda oma iOS'i versiooni.";
 "version_check_banner_title_deprecated" = "Rakenduse kasutamise võimalus iOS'i versioonis %@ on lõppenud";
-"version_check_banner_subtitle_supported" = "Me üsna varsti lõpetame selle rakenduse toe IOS'i versioonis %@. Kui soovid kasutada %@'i kõiki võimalusi, siis palun uuenda oma iOS'i versiooni.";
 
 // Mark: - Version check
 
@@ -1419,7 +1410,7 @@
 "space_public_join_rule" = "Avalik kogukond";
 "space_private_join_rule" = "Privaatne kogukond";
 "space_participants_action_ban" = "Sea selles kogukonnakeskus suhtluskeeld";
-"space_participants_action_remove" = "Eemalda sellest kogukonnakeskusest";
+"space_participants_action_remove" = "Eemalda sellest kogukonnast";
 "spaces_coming_soon_detail" = "See funktsionaalsus pole siin rakenduses hetkel veel saadaval, aga üsna varsti saab olema. Seni saad sa seda toimingut teha %@'i töölauarakenduses.";
 "spaces_invites_coming_soon_title" = "Varsti lisandub kutsete saatmine";
 "spaces_add_rooms_coming_soon_title" = "Varsti on jututubade lisamine võimalik";
@@ -2067,7 +2058,6 @@
 "attachment_small_with_resolution" = "Väiksena %@ (~%@)";
 "attachment_size_prompt_message" = "Seadistustest saad määrata, et see funktsionaalsus pole kasutusel.";
 "attachment_size_prompt_title" = "Saatmiseks kinnita meedia suurus";
-"room_displayname_all_other_participants_left" = "%@ (lahkus(id))";
 "room_displayname_all_other_members_left" = "%@ (lahkus(id))";
 "attachment_unsupported_preview_message" = "See failitüüp ei ole toetatud.";
 "attachment_unsupported_preview_title" = "Eelvaate kuvamine ei õnnestu";
@@ -2077,3 +2067,186 @@
 "room_participants_leave_processing" = "Lahkumine";
 "notice_error_unformattable_event" = "** Sõnumi töötlemine ei õnnestu. Palun anna meile sellest veast teada";
 "settings_labs_use_only_latest_user_avatar_and_name" = "Sõnumite ajaloos leiduvate kasutajate puhul näita viimati kasutatud tunnuspilti ning nime";
+"ignore_user" = "Eira kasutajat";
+"location_sharing_pin_drop_share_title" = "Jaga seda asukohta";
+"location_sharing_static_share_title" = "Jaga minu praegust asukohta";
+"live_location_sharing_banner_stop" = "Lõpeta asukoha jagamine";
+"live_location_sharing_banner_title" = "Reaalajas asukoha jagamine on kasutusel";
+
+// MARK: Live location sharing
+
+"location_sharing_live_share_title" = "Jaga asukohta reaalajas";
+"side_menu_coach_message" = "Kõikide jututubade nägemiseks viipa paremale või klõpsi";
+"spaces_add_room_missing_permission_message" = "Sul pole õigusi siia kogukonda lisada jututubasid.";
+"spaces_creation_in_one_space" = "1's kogukonnas";
+"spaces_creation_in_many_spaces" = "%@ kogukonnas";
+"spaces_creation_in_spacename_plus_many" = "%@ ja veel %@'s kogukonnas";
+"spaces_creation_in_spacename_plus_one" = "%@ ja veel 1's kogukonnas";
+"spaces_creation_in_spacename" = "%@ kogukonnas";
+"spaces_creation_post_process_inviting_users" = "Kutsun kasutajaid %@ kogukonda";
+"spaces_creation_post_process_adding_rooms" = "%@ jututubade lisamine";
+"spaces_creation_post_process_creating_room" = "%@ loomine";
+"spaces_creation_post_process_uploading_avatar" = "Profiilipildi ehk avatari üleslaadimine";
+"spaces_creation_post_process_creating_space_task" = "%@ loomine";
+"spaces_creation_post_process_creating_space" = "Loon kogukonda";
+"spaces_creation_invite_by_username_message" = "Sa saad neile ka hiljem kutse saata.";
+"spaces_creation_invite_by_username_title" = "Kutsu oma kaasteelisi";
+"spaces_creation_invite_by_username" = "Kutsu kasutajanime alusel";
+"spaces_creation_add_rooms_message" = "Kuna see kogukond on vaid sinu jaoks, siis keegi teine ei saa sellest hetkel teada. Küll aga saad hiljem huvilisi lisada.";
+"spaces_creation_add_rooms_title" = "Mida sa soovid lisada?";
+"spaces_creation_sharing_type_me_and_teammates_detail" = "Privaatne kogukond sinu ja sinu kaasteeliste jaoks";
+"spaces_creation_sharing_type_me_and_teammates_title" = "Mina ja minu kaasteelised";
+"spaces_creation_sharing_type_just_me_detail" = "Privaatne kogukond jututubade koondamiseks";
+"spaces_creation_sharing_type_just_me_title" = "Vaid mina";
+"spaces_creation_sharing_type_message" = "Kontrolli, et vajalikel inimestel oleks ligipääs %@ kogukonda Sa võid seda hiljem muuta.";
+"spaces_creation_sharing_type_title" = "Kellega sa koos töötad?";
+"spaces_creation_email_invites_email_title" = "E-posti aadress";
+"spaces_creation_email_invites_message" = "Sa saad neile ka hiljem kutse saata.";
+"spaces_creation_email_invites_title" = "Kutsu oma kaasteelisi";
+"spaces_creation_new_rooms_support" = "Kasutajatugi";
+"spaces_creation_new_rooms_random" = "Juhuslik";
+"spaces_creation_new_rooms_general" = "Üldist";
+"spaces_creation_new_rooms_room_name_title" = "Jututoa nimi";
+"spaces_creation_new_rooms_message" = "Loome siis igaühe jaoks oma jututoa.";
+"spaces_creation_new_rooms_title" = "Mis teemal te kavatsete suhelda?";
+"spaces_creation_cancel_message" = "Sinu senitehtud muudatused jäävad salvestamata.";
+"spaces_creation_cancel_title" = "Kas jätame kogukonna loomise pooleli?";
+"spaces_creation_private_space_title" = "Sinu privaatne kogukond";
+"spaces_creation_public_space_title" = "Sinu avalik kogukond";
+"spaces_creation_address_already_exists" = "%@\nselline nimi on juba olemas";
+"spaces_creation_address_invalid_characters" = "%@\nsiin leidub valesid tähemärke";
+"spaces_creation_address_default_message" = "Sinu kogukond on nähtav siin\n%@";
+"spaces_creation_empty_room_name_error" = "Nimi on nõutav";
+"spaces_creation_address" = "Aadress";
+"spaces_creation_settings_message" = "Eristumiseks palun lisa natuke teavet. Sa saad seda hiljem muuta ja täiendada.";
+"spaces_creation_footer" = "Sa võid seda hiljem muuta";
+"spaces_creation_visibility_message" = "Olemasoleva kogukonnaga liitumiseks vajad sa kutset.";
+"spaces_creation_visibility_title" = "Missugust kogukonda sooviksid sa luua?";
+
+// Mark: - Space Creation
+
+"spaces_creation_hint" = "Kogukonnad on uus viis jututubade ja inimeste ühendamiseks.";
+"space_settings_current_address_message" = "Sinu kogukond on nähtav siin\n%@";
+"space_settings_update_failed_message" = "Kogukonna seadistuste muutmine ei õnnestunud. Kas proovime uuesti?";
+"space_settings_access_section" = "Kes pääsevad ligi siia kogukonda?";
+"space_topic" = "Kirjeldus";
+"space_public_join_rule_detail" = "Avaliku ligipääsuga kogukond";
+"spaces_add_space" = "Lisa kogukond";
+"spaces_add_room" = "Lisa jututuba";
+"spaces_invite_people" = "Kutsu teisi kasutajaid";
+"space_private_join_rule_detail" = "Liitumine vaid kutse alusel, sobib sulle ja sinu lähematele kaaslastele";
+"spaces_explore_rooms_one_room" = "1 jututuba";
+"spaces_explore_rooms_room_number" = "%@ jututuba";
+"spaces_create_space_title" = "Loo kogukond";
+"spaces_add_space_title" = "Loo kogukond";
+"space_invite_not_enough_permission" = "Sul pole õigusi siia kogukonda osalejate kutsumiseks";
+"room_invite_not_enough_permission" = "Sul pole õigusi siia jututuppa osalejate kutsumiseks";
+"room_invite_to_room_option_detail" = "Nad ei saa osalema %@ jututoas.";
+"room_invite_to_room_option_title" = "Vaid selle jututoaga";
+"room_invite_to_space_option_detail" = "Huvilised saavad uurida %@ kogukonda, kuid ei saa %@ kogukonnaga liituda.";
+"share_invite_link_space_text" = "Hei, liitu selle kogukonnaga - %@";
+"share_invite_link_room_text" = "Hei, liitu selle jututoaga - %@";
+
+// MARK: - Share invite link
+
+"share_invite_link_action" = "Jaga kutse linki";
+"create_room_processing" = "Loon jututuba";
+"create_room_suggest_room_footer" = "Soovitatavaid jututube tutvustatakse kogukonnas kui sellised, millega liitumine oleks hea mõte.";
+"create_room_suggest_room" = "Soovita kogukonna liikmetele";
+"create_room_show_in_directory_footer" = "See aitab kasutajatel jututuba leida ja sellega liituda.";
+"create_room_promotion_header" = "REKLAAM";
+"create_room_section_footer_type_restricted" = "Kõik kogukonna liikmed saavad leida ja liituda.";
+"create_room_section_footer_type_private" = "Jututuba saab leida ja sellega liituda vaid kutsete alusel.";
+"create_room_type_restricted" = "Kogukonna liikmed";
+"call_jitsi_unable_to_start" = "Rühmakõne alustamine ei õnnestunud";
+"room_suggestion_settings_screen_message" = "Soovitatavaid jututube tutvustatakse kogukonnas kui sellised, millega liitumine oleks hea mõte.";
+"room_suggestion_settings_screen_title" = "Lisa jututuba kogukonnas soovitatavate hulka";
+
+// Room suggestion Settings
+"room_suggestion_settings_screen_nav_title" = "Soovita jututuba";
+"room_access_space_chooser_other_spaces_section_info" = "Ilmselt on tegemist millegagi, kus %@ haldajad veel osalevad.";
+"room_access_space_chooser_other_spaces_section" = "Muud kogukonnad või jututoad";
+"room_access_space_chooser_known_spaces_section" = "Sulle teadaolevad kogukonnad, milles leidub %@";
+"room_access_settings_screen_setting_room_access" = "Seadistame ligipääsu jututuppa";
+"room_access_settings_screen_upgrade_alert_upgrading" = "Uuendan jututoa versiooni";
+"room_access_settings_screen_upgrade_alert_upgrade_button" = "Uuenda";
+"room_access_settings_screen_upgrade_alert_auto_invite_switch" = "Kutsu huvilisi automaatselt uude jututuppa";
+"room_access_settings_screen_upgrade_alert_title" = "Uuendan jututoa versiooni";
+"room_access_settings_screen_public_message" = "Kõik saavad jututuba leida ja sellega liituda.";
+"room_access_settings_screen_edit_spaces" = "Muuda kogukondi";
+"room_access_settings_screen_upgrade_required" = "Vajalik on uuendus";
+"room_access_settings_screen_restricted_message" = "Kõik kogukonna liikmed saavad leida ja liituda.\nJärgmisena pead valima lubatavad kogukonnad.";
+"room_access_settings_screen_private_message" = "Leidmine ja liitumine toimub vaid kutse alusel.";
+"room_access_settings_screen_message" = "Vali kes saavad %@ jututuba leida ja võivad temaga liituda.";
+"room_access_settings_screen_title" = "Kes pääsevad ligi siia jututuppa?";
+
+// Room Access Settings
+"room_access_settings_screen_nav_title" = "Ligipääs jututuppa";
+"room_details_promote_room_suggest_title" = "Soovita kogukonna liikmetele";
+"room_details_promote_room_title" = "Reklaami jututuba";
+"threads_notice_information" = "Kõik testperioodil loodud jutulõngad kuvatakse <b>tavaliste vastustena</b>.<br/><br/>Kuna jutulõngad on nüüd osa Matrix'i spetsifikatsioonist, siis see on ühekordne muudatus.";
+"room_details_access_row_title" = "Ligipääs";
+"settings_labs_enable_auto_report_decryption_errors" = "Automaatselt teata dekrüptimise vigadest";
+"room_preview_decline_invitation_options" = "Kas sa soovid keelduda kutsest või eirata kasutajat?";
+"threads_beta_cancel" = "Mitte praegu";
+"threads_beta_enable" = "Proovi nüüd";
+"threads_beta_information_link" = "Lisateave";
+"threads_beta_information" = "Halda vestlusi jutulõngadena.\n\nJutulõngad aitavad hoida vestlused teemakohastena ning mugavalt loetavatena. ";
+"threads_beta_title" = "Jutulõngad";
+"threads_notice_done" = "Selge lugu";
+"threads_notice_title" = "Jutulõngad ei ole enam katsetusjärgus! 🎉";
+"room_participants_invite_prompt_to_msg" = "Kas sa oled kindel, et soovid kutsuda %@ %@ jututuppa?";
+"onboarding_celebration_button" = "Alustame nüüd";
+"onboarding_celebration_message" = "Sinu eelistused on salvestatud.";
+"onboarding_celebration_title" = "Kõik on valmis!";
+"onboarding_avatar_accessibility_label" = "Profiilipilt";
+"onboarding_avatar_message" = "Sa võid seda hiljem alati muuta.";
+"onboarding_avatar_title" = "Lisa profiilipilt";
+"onboarding_display_name_max_length" = "Sinu kuvatav nimi peab olema lühem, kui 256 tähemärki";
+"onboarding_display_name_hint" = "Sa võid seda hiljem muuta";
+"onboarding_display_name_placeholder" = "Kuvatav nimi";
+"onboarding_display_name_message" = "Seda näidatakse sõnumite saatmisel.";
+"onboarding_display_name_title" = "Vali kuvatav nimi";
+"onboarding_personalization_skip" = "Jäta see samm vahele";
+"onboarding_personalization_save" = "Salvesta ja jätka";
+"onboarding_congratulations_home_button" = "Mine avalehele";
+"onboarding_congratulations_personalize_button" = "Isikupärasta oma profiili";
+/* The placeholder string contains the user's matrix ID */
+"onboarding_congratulations_message" = "Sinu kasutajakonto %@ on nüüd olemas.";
+"onboarding_congratulations_title" = "Õnnitlused!";
+"saving" = "Salvestame";
+
+// Activities
+"loading" = "Laadime";
+"edit" = "Muuda";
+"suggest" = "Soovita";
+"add" = "Lisa";
+"existing" = "Olemasolev";
+"new_word" = "Uus";
+"stop" = "Peata";
+"joining" = "Liitun";
+
+// Mark: - Room invite
+
+"room_invite_to_space_option_title" = "Kasutajale %@";
+"location_sharing_live_list_item_last_update" = "Uuendamise välp: %@";
+"location_sharing_live_list_item_stop_sharing_action" = "Lõpeta asukoha jagamine";
+"location_sharing_live_list_item_current_user_display_name" = "Sina";
+"location_sharing_live_list_item_last_update_invalid" = "Viimase uuendamise aeg pole teada";
+"location_sharing_live_list_item_sharing_expired" = "Asukoha jagamine aegus";
+"location_sharing_live_list_item_time_left" = "kuvamisaega jäänud %@s";
+"location_sharing_live_viewer_title" = "Asukoht";
+"location_sharing_live_map_callout_title" = "Jaga asukohta";
+"create_room_section_footer_type_public" = "Jututuba saavad leida ja sellega liituda vaid need, kellel on kutse. See puudutab ka neid, kes pole kogukonna liikmed.";
+"version_check_banner_subtitle_deprecated" = "Me oleme lõpetanud selle rakenduse (%@) toe IOS'i versioonis %@. Kui soovid kasutada%@'i kõiki võimalusi, siis palun uuenda oma iOS'i versiooni.";
+"version_check_banner_subtitle_supported" = "Me üsna varsti lõpetame selle rakenduse (%@) toe IOS'i versioonis %@. Kui soovid kasutada %@'i kõiki võimalusi, siis palun uuenda oma iOS'i versiooni.";
+"space_beta_announce_information" = "Kogukonnad on uus viis inimeste ja jututubade sidumiseks. Neid veel ei saa iOS'is kasutada, kuid nad on olemas Element'i veebirakenduses ja töölauarakenduses.";
+"space_feature_unavailable_subtitle" = "Kogukondi ei saa iOS'is kasutada, kuid nad on olemas Element'i veebirakenduses ja töölauarakenduses";
+"room_access_settings_screen_upgrade_alert_note" = "Palun arvesta, et uuendusega tehakse jututoast uus variant. Kõik senised sõnumid jäävad sellesse jututuppa arhiveeritud olekus.";
+"room_access_settings_screen_upgrade_alert_message_no_param" = "Kõik hõlmava kogukonna liikmed saavad antud jututuba leida ja sellega liituda - sa ei pea kedagi ükshaaval kutsuma. Neid jututoa seadistusi saad igal hetkel muuta.";
+"room_access_settings_screen_upgrade_alert_message" = "Kõik %@ jututoa liikmed saavad antud jututuba leida ja sellega liituda - sa ei pea kedagi ükshaaval kutsuma. Neid jututoa seadistusi saad igal hetkel muuta.";
+"settings_presence_offline_mode_description" = "Kui see valik on kasutusel, siis sa alati oled teiste jaoks võrgust väljas. Seda ka siis, kui kasutad rakendust.";
+"settings_presence_offline_mode" = "Ei ole võrgus";
+"settings_presence" = "Olek võrgus";
+"threads_discourage_information_2" = "\n\nKas sa ikkagi soovid jutulõngad kasutusele võtta?";
+"threads_discourage_information_1" = "Sinu koduserver hetkel ei toeta jutulõngasid ning seega antud funktsionaalsus ei pruugi toimida korralikult. Kõik sõnumid jutulõngas ilmselt ei ole loetavad. ";

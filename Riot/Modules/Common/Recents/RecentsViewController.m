@@ -349,6 +349,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         // the selected room (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
     }
+
+    if (self.recentsDataSource)
+    {
+        [self refreshRecentsTable];
+        [self showEmptyViewIfNeeded];
+    }
 }
 
 - (void)viewDidLayoutSubviews
@@ -1082,8 +1088,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         }
         else
         {
-            MXLogDebug(@"[RecentsViewController]: Reloading table view section %ld", indexPath.section);
-            [self.recentsTableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationNone];
+            // Ideally we would call tableView.reloadSections, but this can lead to crashes if multiple sections need such an update and they
+            // vertically depend on each other. It is unclear whether this is due to further issues in the data model (e.g. data race)
+            // or some undocumented table view behavior. To avoid this we reload the entire table view, even if this means reloading
+            // multiple times for several section updates.
+            MXLogDebug(@"[RecentsViewController]: Reloading the entire table view due to updates in section %ld", indexPath.section);
+            [self refreshRecentsTable];
         }
     }
     else if (!changes)
@@ -2184,10 +2194,14 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
             cellData = [self.dataSource cellDataAtIndexPath:nextIndexPath];
         }
         
-        if (!cellData && [self.recentsTableView numberOfRowsInSection:section] > 0)
+        if (!cellData && section < self.recentsTableView.numberOfSections && [self.recentsTableView numberOfRowsInSection:section] > 0)
         {
             // Scroll back to the top.
             [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
+        else if (section >= self.recentsTableView.numberOfSections)
+        {
+            MXLogFailure(@"[RecentsViewController] Section %ld is invalid in a table view with only %ld sections", section, self.recentsTableView.numberOfSections);
         }
     }
 }
@@ -2251,6 +2265,17 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     [self.recentsSearchBar setImage:filterIcon
                    forSearchBarIcon:UISearchBarIconSearch
                               state:UIControlStateNormal];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [self.recentsSearchBar resignFirstResponder];
+    [self hideSearchBar:YES];
+    self.recentsTableView.contentOffset = CGPointMake(0, self.recentsSearchBar.frame.size.height);
+    self.recentsTableView.tableHeaderView = nil;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self refreshRecentsTable];
+    });
 }
 
 #pragma mark - CreateRoomCoordinatorBridgePresenterDelegate

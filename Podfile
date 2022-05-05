@@ -1,7 +1,7 @@
 source 'https://cdn.cocoapods.org/'
 
 # Uncomment this line to define a global platform for your project
-platform :ios, '12.1'
+platform :ios, '14.0'
 
 # Use frameworks to allow usage of pods written in Swift
 use_frameworks!
@@ -13,7 +13,7 @@ use_frameworks!
 # - `{ :specHash => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for MatrixSDK repo. Used by Fastfile during CI
 #
 # Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
-$matrixSDKVersion = '= 0.23.3'
+$matrixSDKVersion = '= 0.23.4'
 # $matrixSDKVersion = :local
 # $matrixSDKVersion = { :branch => 'develop'}
 # $matrixSDKVersion = { :specHash => { git: 'https://git.io/fork123', branch: 'fix' } }
@@ -57,6 +57,7 @@ end
 
 def import_SwiftUI_pods
     pod 'Introspect', '~> 0.1'
+    pod 'DSBottomSheet', '~> 0.3'
 end
 
 abstract_target 'RiotPods' do

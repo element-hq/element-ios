@@ -420,7 +420,6 @@
 "no_voip_title" = "Appel entrant";
 "no_voip" = "%@ vous appelle mais %@ ne prend pas encore en charge les appels.\nVous pouvez ignorer cette notification et répondre à l’appel depuis un autre appareil, ou bien le rejeter.";
 // Crash report
-"google_analytics_use_prompt" = "Souhaitez-vous aider à améliorer %@ en envoyant automatiquement des rapports d’anomalie et des statistiques d’utilisation ?";
 // Crypto
 "e2e_enabling_on_app_update" = "%@ prend désormais en charge le chiffrement de bout en bout, mais vous devez vous reconnecter pour l’activer.\n\nVous pouvez le faire maintenant ou plus tard à partir des paramètres de l’application.";
 "e2e_need_log_in_again" = "Vous devez vous reconnecter pour générer les clés de chiffrement de bout en bout pour cette session et envoyer la clé publique vers votre serveur d’accueil.\nCeci ne se produira qu’une fois. Veuillez nous excuser pour ce désagrément.";
@@ -561,7 +560,6 @@
 "settings_key_backup_info_not_valid" = "Cette session ne sauvegarde pas vos clés, mais vous avez une sauvegarde existante que vous pouvez restaurer et joindre.";
 "settings_key_backup_info_progress" = "Sauvegarde de %@ clés…";
 "settings_key_backup_info_progress_done" = "Toutes les clés ont été sauvegardées";
-"settings_key_backup_info_not_trusted_from_verifiable_device_fix_action" = "Pour utiliser la récupération de messages sécurisée sur cet appareil, vérifiez %@ maintenant.";
 "settings_key_backup_info_not_trusted_fix_action" = "Pour utiliser la récupération de messages sécurisée sur cet appareil, fournissez votre phrase de passe ou votre clé de récupération maintenant.";
 "settings_key_backup_info_trust_signature_unknown" = "La sauvegarde a une signature de la session ayant pour identifiant : %@";
 "settings_key_backup_info_trust_signature_valid" = "La sauvegarde a une signature valide depuis cette session";
@@ -672,10 +670,6 @@
 "auth_autodiscover_invalid_response" = "Réponse de découverte du serveur d’accueil non valide";
 "room_event_action_reply" = "Répondre";
 "room_event_action_edit" = "Modifier";
-"room_event_action_reaction_agree" = "D’accord %@";
-"room_event_action_reaction_disagree" = "Pas d’accord %@";
-"room_event_action_reaction_like" = "J’aime %@";
-"room_event_action_reaction_dislike" = "J’aime pas %@";
 "room_action_reply" = "Répondre";
 "settings_labs_message_reaction" = "Réagir aux messages avec des émojis";
 "settings_key_backup_button_connect" = "Connecter cette session à la sauvegarde de clés";
@@ -821,7 +815,6 @@
 "room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Aucun serveur d’identité n’est configuré donc vous ne pouvez pas commencer de discussion avec un contact en utilisant un e-mail.";
 // Service terms
 "service_terms_modal_title" = "Conditions de service";
-"service_terms_modal_message" = "Pour continuer vous devez accepter les conditions de ce service (%@).";
 "service_terms_modal_accept_button" = "Accepter";
 "service_terms_modal_description_for_identity_server" = "Se rendre découvrable pour les autres";
 "service_terms_modal_description_for_integration_manager" = "Utiliser des robots, des passerelles, des widgets et des jeux d’autocollants";
@@ -905,7 +898,6 @@
 "service_terms_modal_description_for_identity_server_2" = "Être trouvé par téléphone ou par e-mail";
 // Service terms - Variant for identity server when displayed out of a context
 "service_terms_modal_title_identity_server" = "Découverte des contacts";
-"service_terms_modal_message_identity_server" = "Acceptez les conditions du serveur d’identité (%@) pour découvrir des contacts.";
 "settings_add_3pid_password_title_email" = "Ajouter une adresse e-mail";
 "settings_add_3pid_password_title_msidsn" = "Ajouter un numéro de téléphone";
 "settings_add_3pid_password_message" = "Pour continuer, saisissez le mot de passe de votre compte Matrix";
@@ -921,7 +913,6 @@
 "widget_integration_manager_disabled" = "Vous devez activer le gestionnaire d’intégrations dans les paramètres";
 "widget_room_permission_title" = "Charger le widget";
 "widget_room_permission_creator_info_title" = "Ce widget a été ajouté par :";
-"widget_room_permission_information" = "Son utilisation peut utiliser des cookies et partager des données avec %@ :\n\n• Votre nom affiché\n• L’URL de votre avatar\n• Votre identifiant d’utilisateur\n• Votre thème\n• L’identifiant du salon\n• L’identifiant du widget";
 // Room widget permissions
 "room_widget_permission_title" = "Charger un widget";
 "room_widget_permission_creator_info_title" = "Ce widget a été ajouté par :";
@@ -1640,7 +1631,6 @@
 "poll_edit_form_update_failure_subtitle" = "Veuillez réessayer";
 "poll_edit_form_update_failure_title" = "Échec lors de la mise à jour du sondage";
 "poll_edit_form_poll_type" = "Type de sondage";
-"location_sharing_post_failure_subtitle" = "%# n’a pas pu envoyer votre localisation. Merci de réessayer plus tard.";
 "location_sharing_post_failure_title" = "Nous n’avons pas pu envoyer votre localisation";
 "home_context_menu_leave" = "Partir";
 "home_context_menu_unfavourite" = "Retirer des favoris";
@@ -1768,7 +1758,6 @@
 "notice_room_aliases" = "Les alias du salon sont : %@";
 "notice_room_related_groups" = "Les groupes associés à ce salon sont : %@";
 "notice_encrypted_message" = "Message chiffré";
-"notice_encryption_enabled" = "%@ a activé le chiffrement de bout en bout (algorithme %@)";
 "notice_image_attachment" = "image en pièce-jointe";
 "notice_audio_attachment" = "audio en pièce-jointe";
 "notice_video_attachment" = "vidéo en pièce-jointe";
@@ -1789,7 +1778,6 @@
 // room display name
 "room_displayname_empty_room" = "Salon vide";
 "room_displayname_two_members" = "%@ et %@";
-"room_displayname_more_than_two_members" = "%@ et %u autres";
 // Settings
 "settings" = "Paramètres";
 "settings_enable_inapp_notifications" = "Activer les notifications dans l’application";

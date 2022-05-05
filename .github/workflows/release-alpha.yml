@@ -25,7 +25,7 @@ jobs:
           if: "${{ env.P12_KEY != '' || env.P12_PASSWORD_KEY != '' }}"
           run: echo "::set-output name=defined::true"
   build:
-    # Run job if secrets are avilable (not avaiable for forks).
+    # Run job if secrets are available (not available for forks).
     needs: [check-secret]
     if: needs.check-secret.outputs.out-key == 'true'
     name: Release
@@ -63,11 +63,12 @@ jobs:
 
       # Common setup
       # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
+      - name: Brew bundle
+        run: brew bundle
       - name: Bundle install
         run: |
           bundle config path vendor/bundle
           bundle install --jobs 4 --retry 3
-
       - name: Use right MatrixSDK versions
         run: bundle exec fastlane point_dependencies_to_related_branches
 
@@ -84,7 +85,7 @@ jobs:
       - name: Build Ad-hoc release and send it to Diawi
         run: bundle exec fastlane alpha
         env:
-          # Automaticaly bypass 2FA upgrade if possible on Apple account.
+          # Automatically bypass 2FA upgrade if possible on Apple account.
           SPACESHIP_SKIP_2FA_UPGRADE: true
           APPLE_ID: ${{ secrets.FASTLANE_USER }}
           FASTLANE_USER: ${{ secrets.FASTLANE_USER }}

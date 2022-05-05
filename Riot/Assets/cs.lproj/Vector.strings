@@ -139,7 +139,6 @@
 "contacts_address_book_section" = "LOKÁLNÍ KONTAKTY";
 "contacts_address_book_matrix_users_toggle" = "Pouze Matrix uživatelé";
 "contacts_address_book_no_contact" = "Žádné lokální kontakty";
-"contacts_address_book_permission_denied" = "Nepovolil jste přístup aplikace Element k místním kontaktům";
 "contacts_user_directory_section" = "UŽIVATELSKÝ ADRESÁŘ";
 "contacts_user_directory_offline_section" = "UŽIVATELSKÝ ADRESÁŘ (offline)";
 // Chat participants
@@ -269,7 +268,6 @@
 "room_participants_action_ban" = "Vyhodit z této místnosti";
 "room_creation_error_invite_user_by_email_without_identity_server" = "Není nakonfigurován žádný server identity, takže nemůžete přidat účastníka pomocí e-mailu.";
 "auth_softlogout_recover_encryption_keys" = "Přihlaste se a obnovte šifrovací klíče uložené výhradně v tomto zařízení. Potřebujete je ke čtení všech zabezpečených zpráv na jakémkoli zařízení.";
-"auth_softlogout_reason" = "Váš správce domovského serveru (%1$@) vás odhlásil z vašeho účtu %2 @ (%3$@).";
 "auth_softlogout_signed_out" = "Jste odhlášeni";
 "auth_autodiscover_invalid_response" = "Neplatná odpověď na objevení domovského serveru";
 "auth_accept_policies" = "Přečtěte si a přijměte zásady tohoto domovského serveru:";

@@ -1,0 +1,16 @@
+
+
+
+/* New message reply from a specific person in a named room. */
+"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ ຕອບກັບໃນ %@";
+
+/* New message reply from a specific person, not referencing a room. */
+"REPLY_FROM_USER_TITLE" = "%@ ຕອບກັບ";
+
+/** Titles **/
+
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ ໃນ %@";
+/** General **/
+
+"Notification" = "ແຈ້ງເຕືອນ";

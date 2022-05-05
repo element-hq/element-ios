@@ -65,13 +65,11 @@
 "REACTION_FROM_USER" = "%@ mereaksi %@";
 
 /* Look, stuff's happened, alright? Just open the app. */
-"MSGS_IN_TWO_PLUS_ROOMS" = "%@ pesan baru di %@, %@ dan %@ lainnya";
 
 /* Multiple messages in two rooms */
 "MSGS_IN_TWO_ROOMS" = "%@ pesan baru di %@ dan %@";
 
 /* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
-"MSGS_FROM_TWO_PLUS_USERS" = "%@ pesan baru dari %@, %@ dan %@ lainnya";
 
 /* Multiple unread messages from three people */
 "MSGS_FROM_THREE_USERS" = "%@ pesan baru dari %@, %@ dan %@";
@@ -168,3 +166,9 @@
 
 /* New file message from a specific person, not referencing a room. */
 "LOCATION_FROM_USER" = "%@ membagikan lokasinya";
+
+/* Look, stuff's happened, alright? Just open the app. */
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@ pesan baru dalam %@, %@ dan lainnya";
+
+/* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
+"MSGS_FROM_TWO_PLUS_USERS" = "%@ pesan baru dari %@, %@ dan lainnya";

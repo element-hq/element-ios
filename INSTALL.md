@@ -8,6 +8,7 @@ To build Element iOS project you need:
 - [Ruby](https://www.ruby-lang.org/), a dynamic programming language used by several build tools.
 - [CocoaPods](https://cocoapods.org), library dependencies manager for Xcode projects.
 - [XcodeGen](https://github.com/yonaskolb/XcodeGen), an Xcode project generator.
+- [Mint](https://github.com/yonaskolb/Mint), a package manager that installs and runs executable Swift packages
 - [bundler](https://bundler.io/) (optional), is also a dependency manager used to manage build tools dependency (CocoaPods, Fastlane).
 
 ### Install Ruby
@@ -26,12 +27,12 @@ $ gem install cocoapods
 
 In the last case please ensure that you are using the same version as indicated at the end of the `Podfile.lock` file.
 
-### Install XcodeGen
+### Install XcodeGen and Mint
 
-You can directly install XcodeGen with [Homebrew](https://brew.sh) or RubyGems:
+You can install XcodeGen and Mint using the included [Homebrew](https://brew.sh) Brewfile:
 
 ```
-$ brew install xcodegen
+$ brew bundle
 ```
 
 ### Install bundler (optional)

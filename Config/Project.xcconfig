@@ -25,10 +25,10 @@
 KEYCHAIN_ACCESS_GROUP = $(AppIdentifierPrefix)$(BASE_BUNDLE_IDENTIFIER).keychain.shared
 
 // Build settings
-IPHONEOS_DEPLOYMENT_TARGET = 12.1
+IPHONEOS_DEPLOYMENT_TARGET = 14.0
 SDKROOT = iphoneos
 TARGETED_DEVICE_FAMILY = 1,2
-SWIFT_VERSION = 5.3.1
+SWIFT_VERSION = 5.6
 ENABLE_BITCODE = NO
 
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks

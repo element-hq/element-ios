@@ -27,6 +27,7 @@ enum MockMatrixItemChooserScreenState: MockScreenState, CaseIterable {
     case noItems
     case items
     case selectedItems
+    case selectionHeader
     
     /// The associated screen
     var screenType: Any.Type {
@@ -36,15 +37,25 @@ enum MockMatrixItemChooserScreenState: MockScreenState, CaseIterable {
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView) {
         let service: MockMatrixItemChooserService
+        let selectionHeader: MatrixItemChooserSelectionHeader?
         switch self {
         case .noItems:
+            selectionHeader = nil
             service = MockMatrixItemChooserService(type: .room, sections: [MatrixListItemSectionData()])
         case .items:
+            selectionHeader = nil
             service = MockMatrixItemChooserService()
         case .selectedItems:
+            selectionHeader = nil
+            service = MockMatrixItemChooserService(type: .room, sections: MockMatrixItemChooserService.mockSections, selectedItemIndexPaths: [IndexPath(row: 0, section: 0), IndexPath(row: 2, section: 0), IndexPath(row: 1, section: 1)])
+        case .selectionHeader:
+            selectionHeader = MatrixItemChooserSelectionHeader(title: "Selection Title", selectAllTitle: "Select all items", selectNoneTitle: "Select no items")
             service = MockMatrixItemChooserService(type: .room, sections: MockMatrixItemChooserService.mockSections, selectedItemIndexPaths: [IndexPath(row: 0, section: 0), IndexPath(row: 2, section: 0), IndexPath(row: 1, section: 1)])
         }
-        let viewModel = MatrixItemChooserViewModel.makeMatrixItemChooserViewModel(matrixItemChooserService: service, title: "Some title", detail: "Detail text describing the current screen")
+        let viewModel = MatrixItemChooserViewModel.makeMatrixItemChooserViewModel(matrixItemChooserService: service,
+                                                                                  title: VectorL10n.spacesCreationAddRoomsTitle,
+                                                                                  detail: VectorL10n.spacesCreationAddRoomsMessage,
+                                                                                  selectionHeader: selectionHeader)
         
         // can simulate service and viewModel actions here if needs be.
         

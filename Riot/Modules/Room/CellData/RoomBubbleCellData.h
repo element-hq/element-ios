@@ -16,6 +16,8 @@
 
 #import "MatrixKit.h"
 
+@protocol MXBeaconInfoSummaryProtocol;
+
 extern NSString *const URLPreviewDidUpdateNotification;
 
 // Custom tags for MXKRoomBubbleCellDataStoring.tag
@@ -33,7 +35,8 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
     RoomBubbleCellDataTagGroupCall,
     RoomBubbleCellDataTagRoomCreationIntro,
     RoomBubbleCellDataTagPoll,
-    RoomBubbleCellDataTagLocation
+    RoomBubbleCellDataTagLocation,
+    RoomBubbleCellDataTagLiveLocation
 };
 
 /**
@@ -91,6 +94,8 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
  Indicate if there is a pending operation that updates `keyVerification` property.
  */
 @property(nonatomic) BOOL isKeyVerificationOperationPending;
+
+@property(nonatomic, strong, readonly) id<MXBeaconInfoSummaryProtocol> beaconInfoSummary;
 
 /**
  Index of the component which needs a sent tick displayed. -1 if none.
