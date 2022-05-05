@@ -2466,7 +2466,6 @@
 "settings_presence_offline_mode_description" = "Indien ingeschakeld, verschijnt u altijd offline voor andere personen, zelfs wanneer u de applicatie gebruikt.";
 "settings_presence_offline_mode" = "Offline modus";
 "settings_presence" = "Aanwezigheid";
-"settings_integrations_allow_description" = "Gebruik een integratiebeheerder om bots, bruggen, widgets en stickerpakketten te beheren.\n\nIntegratiebeheerders ontvangen configuratiedata en kunnen widgets aanpassen, kameruitnodigingen versturen en bestuursniveaus instellen namens u.";
 "threads_discourage_information_2" = "\n\nWilt u toch threads inschakelen?";
 "threads_discourage_information_1" = "Uw server ondersteunt momenteel geen discussies, dus deze functie kan onbetrouwbaar zijn. Sommige berichten in een discussie zijn mogelijk niet betrouwbaar beschikbaar. ";
 /* The placeholder string contains the user's matrix ID */

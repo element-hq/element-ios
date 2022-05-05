@@ -2250,5 +2250,3 @@
 "settings_presence" = "Olek võrgus";
 "threads_discourage_information_2" = "\n\nKas sa ikkagi soovid jutulõngad kasutusele võtta?";
 "threads_discourage_information_1" = "Sinu koduserver hetkel ei toeta jutulõngasid ning seega antud funktsionaalsus ei pruugi toimida korralikult. Kõik sõnumid jutulõngas ilmselt ei ole loetavad. ";
-"directory_search_results_more_than" = ">%@ kohta leidsin %tu tulemust";
-"directory_search_results" = "%@ kohta leidsin %tu tulemust";
