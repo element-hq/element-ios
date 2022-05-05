@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
+/// The form shown to enter an email address.
 struct AuthenticationVerifyEmailForm: View {
     
     // MARK: - Properties

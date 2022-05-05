@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct AuthenticationVerifyEmailScreen: View {
 
     // MARK: - Properties
@@ -42,7 +41,7 @@ struct AuthenticationVerifyEmailScreen: View {
                 }
                 
                 if viewModel.viewState.hasSentEmail {
-                    resendFooter
+                    waitingFooter
                         .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 20 : 36)
                 }
             }
@@ -56,13 +55,36 @@ struct AuthenticationVerifyEmailScreen: View {
     @ViewBuilder
     var mainContent: some View {
         if viewModel.viewState.hasSentEmail {
-            AuthenticationVerifyEmailWaitingView(viewModel: viewModel)
+            waitingHeader
+                .padding(.top, OnboardingMetrics.breakerScreenTopPadding)
+                .padding(.bottom, 36)
         } else {
             AuthenticationVerifyEmailForm(viewModel: viewModel)
         }
     }
     
-    var resendFooter: some View {
+    /// The instructions shown whilst waiting for the user to tap the link in the email.
+    var waitingHeader: some View {
+        VStack(spacing: 8) {
+            OnboardingIconImage(image: Asset.Images.authenticationEmailIcon)
+                .padding(.bottom, OnboardingMetrics.breakerScreenIconBottomPadding)
+            
+            OnboardingTintedFullStopText(VectorL10n.authenticationVerifyEmailWaitingTitle)
+                .font(theme.fonts.title2B)
+                .multilineTextAlignment(.center)
+                .foregroundColor(theme.colors.primaryContent)
+                .accessibilityIdentifier("waitingTitleLabel")
+            
+            Text(VectorL10n.authenticationVerifyEmailWaitingMessage(viewModel.emailAddress))
+                .font(theme.fonts.body)
+                .multilineTextAlignment(.center)
+                .foregroundColor(theme.colors.secondaryContent)
+                .accessibilityIdentifier("waitingMessageLabel")
+        }
+    }
+    
+    /// The footer shown whilst waiting for the user to tap the link in the email.
+    var waitingFooter: some View {
         VStack(spacing: 14) {
             Text(VectorL10n.authenticationVerifyEmailWaitingHint)
                 .font(theme.fonts.body)
@@ -79,6 +101,7 @@ struct AuthenticationVerifyEmailScreen: View {
     }
     
     @ViewBuilder
+    /// The view's background, which will show a gradient in light mode after sending the email.
     var background: some View {
         GeometryReader { geometry in
             ZStack(alignment: .top) {
@@ -92,6 +115,7 @@ struct AuthenticationVerifyEmailScreen: View {
         }
     }
     
+    /// The background gradient shown after sending the email.
     var gradient: some View {
         LinearGradient(gradient: viewModel.viewState.gradient,
                        startPoint: .leading,
@@ -115,7 +139,6 @@ struct AuthenticationVerifyEmailScreen: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct AuthenticationVerifyEmailScreen_Previews: PreviewProvider {
     static let stateRenderer = MockAuthenticationVerifyEmailScreenState.stateRenderer
     static var previews: some View {
