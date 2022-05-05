@@ -2496,7 +2496,6 @@
 "existing" = "Sudah ada";
 "new_word" = "Baru";
 "joining" = "Bergabung";
-"notice_room_third_party_invite_by_you" = "Anda mengirimkan undangan ke %1$s untuk bergabung ruangan";
 "location_sharing_live_list_item_stop_sharing_action" = "Berhenti membagikan";
 "location_sharing_live_list_item_current_user_display_name" = "Anda";
 "location_sharing_live_list_item_last_update_invalid" = "Pembaruan terakhir tidak diketahui";
