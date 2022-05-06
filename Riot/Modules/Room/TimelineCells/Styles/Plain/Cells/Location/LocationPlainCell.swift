@@ -32,6 +32,7 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
         }
         
         locationView.update(theme: ThemeService.shared().theme)
+        locationView.delegate = self
         
         if bubbleData.cellDataTag == .location,
            let event = bubbleData.events.last {
@@ -130,18 +131,10 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
 
 extension LocationPlainCell: RoomTimelineLocationViewDelegate {
     func roomTimelineLocationViewDidTapStopButton(_ roomTimelineLocationView: RoomTimelineLocationView) {
-        guard let event = self.event else {
-            return
-        }
-        
-        delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellStopShareButtonPressed, userInfo: [kMXKRoomBubbleCellEventKey: event])
+        delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellStopShareButtonPressed, userInfo: nil)
     }
     
     func roomTimelineLocationViewDidTapRetryButton(_ roomTimelineLocationView: RoomTimelineLocationView) {
-        guard let event = self.event else {
-            return
-        }
-        
-        delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellRetryShareButtonPressed, userInfo: [kMXKRoomBubbleCellEventKey: event])
+        delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellRetryShareButtonPressed, userInfo: nil)
     }
 }
