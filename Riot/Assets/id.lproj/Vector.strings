@@ -2512,3 +2512,16 @@
 "settings_presence" = "Presensi";
 "threads_discourage_information_2" = "\n\nApakah Anda ingin mengaktifkan utasan?";
 "threads_discourage_information_1" = "Homeserver Anda saat ini tidak mendukung utasan, jadi fitur ini mungkin tidak andal. Beberapa pesan yang diutas mungkin tidak tersedia. ";
+"notice_room_third_party_invite_by_you" = "Anda mengirim sebuah undangan ke %@ untuk bergabung ruangan";
+"location_sharing_live_stop_sharing_progress" = "Hentikan pembagian lokasi";
+"location_sharing_live_stop_sharing_error" = "Gagal menghentikan pembagian lokasi";
+"location_sharing_live_no_user_locations_error_title" = "Tidak ada lokasi pengguna yang tersedia";
+"location_sharing_live_timer_selector_long" = "untuk 8 jam";
+"location_sharing_live_timer_selector_medium" = "untuk 1 jam";
+"location_sharing_live_timer_selector_short" = "untuk 15 menit";
+"location_sharing_live_timer_selector_title" = "Pilih berapa lama orang lain akan dapat melihat lokasi akurat Anda.";
+"location_sharing_live_error" = "Terjadi kesalahan lokasi langsung";
+"location_sharing_live_loading" = "Memuat lokasi langsung…";
+"location_sharing_live_timer_incoming" = "Langsung sampai %@";
+"live_location_sharing_ended" = "Lokasi langsung berakhir";
+"confirm" = "Konfirmasi";
