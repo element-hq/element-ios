@@ -226,6 +226,13 @@ extension Analytics {
         client.updateUserProperties(userProperties)
     }
     
+    /// Track the registration of a new user.
+    /// - Parameter authenticationType: The type of authentication that was used.
+    func trackSignup(authenticationType: AnalyticsEvent.Signup.AuthenticationType) {
+        let event = AnalyticsEvent.Signup(authenticationType: authenticationType)
+        capture(event: event)
+    }
+    
     /// Track the presentation of a screen
     /// - Parameters:
     ///   - screen: The screen that was shown.

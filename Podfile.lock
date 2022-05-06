@@ -183,7 +183,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   AnalyticsEvents:
-    :commit: f37a2f243270bffdcddfa5cbaeb4379e0db581c2
+    :commit: b275ccb194a219a61b3100159d51cadbf7c9020c
     :git: https://github.com/matrix-org/matrix-analytics-events.git
 
 SPEC CHECKSUMS:

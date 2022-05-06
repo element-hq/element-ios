@@ -18,7 +18,7 @@ import UIKit
 import Reusable
 
 @objc protocol SocialLoginListViewDelegate: AnyObject {
-    func socialLoginListView(_ socialLoginListView: SocialLoginListView, didTapSocialButtonWithIdentifier identifier: String)
+    func socialLoginListView(_ socialLoginListView: SocialLoginListView, didTapSocialButtonWithProvider identityProvider: SSOIdentityProvider)
 }
 
 /// SocialLoginListView displays a list of social login buttons according to a given array of SSO Identity Providers.
@@ -139,10 +139,10 @@ final class SocialLoginListView: UIView, NibLoadable {
     // MARK: - Action
     
     @objc private func socialButtonAction(_ socialLoginButton: SocialLoginButton) {
-        guard let identifier = socialLoginButton.identifier else {
+        guard let provider = socialLoginButton.identityProvider else {
             return
         }
-        self.delegate?.socialLoginListView(self, didTapSocialButtonWithIdentifier: identifier)
+        self.delegate?.socialLoginListView(self, didTapSocialButtonWithProvider: provider)
     }
 }
 

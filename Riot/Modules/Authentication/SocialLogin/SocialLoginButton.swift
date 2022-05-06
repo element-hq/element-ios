@@ -42,7 +42,10 @@ final class SocialLoginButton: UIButton, Themable {
     // MARK: Public
     
     var identifier: String? {
-        return self.viewData?.identifier
+        viewData?.identityProvider.id
+    }
+    var identityProvider: SSOIdentityProvider? {
+        viewData?.identityProvider
     }
     
     // MARK: Setup

@@ -19,8 +19,8 @@ import Foundation
 /// SocialLoginButton view data
 struct SocialLoginButtonViewData {
     
-    /// Identify provider identifier
-    let identifier: String
+    /// Identity provider identifier
+    let identityProvider: SSOIdentityProvider
     
     /// Button title
     let title: String
