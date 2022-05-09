@@ -63,7 +63,25 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     [timeFormatter setDateFormat:kEventFormatterTimeFormat];
 }
 
-- (NSAttributedString *)attributedStringFromEvent:(MXEvent *)event withRoomState:(MXRoomState *)roomState error:(MXKEventFormatterError *)error
+- (NSString *)stringFromEvent:(MXEvent *)event withRoomState:(MXRoomState *)roomState error:(MXKEventFormatterError *)error
+{
+    NSString *stringFromEvent;
+    NSAttributedString *attributedStringFromEvent = [self attributedStringFromEvent:event
+                                                                      withRoomState:roomState
+                                                                       displayPills:NO
+                                                                              error:error];
+    if (*error == MXKEventFormatterErrorNone)
+    {
+        stringFromEvent = attributedStringFromEvent.string;
+    }
+
+    return stringFromEvent;
+}
+
+- (NSAttributedString *)attributedStringFromEvent:(MXEvent *)event
+                                    withRoomState:(MXRoomState *)roomState
+                                     displayPills:(BOOL)displayPills
+                                            error:(MXKEventFormatterError *)error
 {
     NSAttributedString *string = [self unsafeAttributedStringFromEvent:event withRoomState:roomState error:error];
     if (!string)
@@ -75,7 +93,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                    roomState != nil,
                    roomState.membersCount.members,
                    *error);
-        
+
         // If we cannot create attributed string, but the message is nevertheless meant for display, show generic error
         // instead of a missing message on a timeline.
         if ([self shouldDisplayEvent:event]) {
@@ -85,16 +103,21 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
             }];
         }
     }
-    
+
     if (@available(iOS 15.0, *))
     {
-        if (roomState && [self shouldDisplayEvent:event])
+        if (displayPills && roomState && [self shouldDisplayEvent:event])
         {
             string = [StringPillsUtils insertPillsIn:string withSession:mxSession event:event andRoomState:roomState isEditMode:NO];
         }
     }
 
     return string;
+}
+
+- (NSAttributedString *)attributedStringFromEvent:(MXEvent *)event withRoomState:(MXRoomState *)roomState error:(MXKEventFormatterError *)error
+{
+    return [self attributedStringFromEvent:event withRoomState:roomState displayPills:YES error:error];
 }
 
 - (BOOL)shouldDisplayEvent:(MXEvent *)event {
