@@ -37,8 +37,11 @@ import UIKit
             return
         }
 
+        let mainSession = AppDelegate.theDelegate().mxSessions.first as? MXSession
+
         view = PillAttachmentView(frame: CGRect(origin: .zero, size: Self.size(forDisplayText: pillData.displayText)),
                                   parameters: Self.pillAttachmentViewParameters,
+                                  mediaManager: mainSession?.mediaManager,
                                   andPillData: pillData)
         view?.alpha = pillData.alpha
     }

@@ -48,9 +48,11 @@ class PillAttachmentView: UIView {
     /// - Parameters:
     ///   - frame: the frame of the view
     ///   - parameters: additional size & font parameters
+    ///   - mediaManager: the media manager if available
     ///   - pillData: the pill data
     convenience init(frame: CGRect,
                      parameters: Parameters,
+                     mediaManager: MXMediaManager?,
                      andPillData pillData: PillTextAttachmentData) {
         self.init(frame: frame)
         let label = UILabel(frame: .zero)
@@ -69,23 +71,18 @@ class PillAttachmentView: UIView {
                                         width: labelSize.width + parameters.totalWidthWithoutLabel,
                                         height: parameters.pillBackgroundHeight))
 
-        let imageView = MXKImageView(frame: CGRect(x: parameters.horizontalMargin,
-                                                   y: parameters.verticalMargin,
-                                                   width: parameters.avatarSideLength,
-                                                   height: parameters.avatarSideLength))
-        imageView.setImageURI(pillData.avatarUrl,
-                              withType: nil,
-                              andImageOrientation: .up,
-                              toFitViewSize: imageView.frame.size,
-                              with: MXThumbnailingMethodCrop,
-                              previewImage: Asset.Images.userIcon.image,
-                              // Pills rely only on cached images since `MXKImageView` image loading
-                              // is not handled properly for a `NSTextAttachment` view.
-                              mediaManager: nil)
-        imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = parameters.avatarSideLength / 2.0
-        imageView.backgroundColor = .clear
-        pillBackgroundView.addSubview(imageView)
+        let avatarView = UserAvatarView(frame: CGRect(x: parameters.horizontalMargin,
+                                                      y: parameters.verticalMargin,
+                                                      width: parameters.avatarSideLength,
+                                                      height: parameters.avatarSideLength))
+
+        avatarView.fill(with: AvatarViewData(matrixItemId: pillData.matrixItemId,
+                                             displayName: pillData.displayName,
+                                             avatarUrl: pillData.avatarUrl,
+                                             mediaManager: mediaManager,
+                                             fallbackImage: .matrixItem(pillData.matrixItemId, pillData.displayName)))
+
+        pillBackgroundView.addSubview(avatarView)
         pillBackgroundView.addSubview(label)
 
         pillBackgroundView.backgroundColor = pillData.isHighlighted ? ThemeService.shared().theme.colors.alert : ThemeService.shared().theme.colors.quinaryContent
