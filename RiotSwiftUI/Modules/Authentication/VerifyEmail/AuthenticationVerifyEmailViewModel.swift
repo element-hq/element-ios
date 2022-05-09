@@ -16,11 +16,9 @@
 
 import SwiftUI
 
-@available(iOS 14, *)
 typealias AuthenticationVerifyEmailViewModelType = StateStoreViewModel<AuthenticationVerifyEmailViewState,
-                                                                  Never,
-                                                                  AuthenticationVerifyEmailViewAction>
-@available(iOS 14, *)
+                                                                       Never,
+                                                                       AuthenticationVerifyEmailViewAction>
 class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType, AuthenticationVerifyEmailViewModelProtocol {
 
     // MARK: - Properties
@@ -29,7 +27,7 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
 
     // MARK: Public
 
-    @MainActor var completion: ((AuthenticationVerifyEmailViewModelResult) -> Void)?
+    @MainActor var callback: ((AuthenticationVerifyEmailViewModelResult) -> Void)?
 
     // MARK: - Setup
 
@@ -43,11 +41,11 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
     override func process(viewAction: AuthenticationVerifyEmailViewAction) {
         switch viewAction {
         case .send:
-            Task { await completion?(.send(state.bindings.emailAddress)) }
+            Task { await callback?(.send(state.bindings.emailAddress)) }
         case .resend:
-            Task { await completion?(.resend) }
+            Task { await callback?(.resend) }
         case .cancel:
-            Task { await completion?(.cancel) }
+            Task { await callback?(.cancel) }
         }
     }
     

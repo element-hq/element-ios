@@ -51,7 +51,7 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    @MainActor var completion: ((AuthenticationVerifyEmailViewModelResult) -> Void)?
+    @MainActor var callback: ((AuthenticationVerifyEmailViewModelResult) -> Void)?
     
     // MARK: - Setup
     
@@ -83,7 +83,7 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     
     /// Set up the view model. This method is extracted from `start()` so it can run on the `MainActor`.
     @MainActor private func setupViewModel() {
-        authenticationVerifyEmailViewModel.completion = { [weak self] result in
+        authenticationVerifyEmailViewModel.callback = { [weak self] result in
             guard let self = self else { return }
             MXLog.debug("[AuthenticationVerifyEmailCoordinator] AuthenticationVerifyEmailViewModel did complete with result: \(result).")
             
@@ -99,11 +99,8 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     }
     
     /// Show an activity indicator whilst loading.
-    /// - Parameters:
-    ///   - label: The label to show on the indicator.
-    ///   - isInteractionBlocking: Whether the indicator should block any user interaction.
-    @MainActor private func startLoading(label: String = VectorL10n.loading, isInteractionBlocking: Bool = true) {
-        loadingIndicator = indicatorPresenter.present(.loading(label: label, isInteractionBlocking: isInteractionBlocking))
+    @MainActor private func startLoading() {
+        loadingIndicator = indicatorPresenter.present(.loading(label: VectorL10n.loading, isInteractionBlocking: true))
     }
     
     /// Hide the currently displayed activity indicator.
