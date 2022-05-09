@@ -10,6 +10,10 @@ import Foundation
 
 // swiftlint:disable function_parameter_count identifier_name line_length type_body_length
 public extension VectorL10n {
+  /// This server would like to make sure you are not a robot
+  static var authenticationRecaptchaMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_recaptcha_message") 
+  }
   /// Join millions for free on the largest public server
   static var authenticationRegistrationMatrixDescription: String { 
     return VectorL10n.tr("Untranslated", "authentication_registration_matrix_description") 
