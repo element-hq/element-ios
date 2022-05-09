@@ -432,15 +432,15 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             if (selectedComponentIndex != NSNotFound && selectedComponentIndex != index && componentString.length)
             {
                 // Apply alpha to blur this component
-                componentString = [Tools setTextColorAlpha:.2 inAttributedString:componentString];
+                componentString = [componentString withTextColorAlpha:.2];
                 if (@available(iOS 15.0, *)) {
-                    [Tools setPillAlpha:.2 inAttributedString:componentString];
+                    [PillsFormatter setPillAlpha:.2 inAttributedString:componentString];
                 }
             }
             else if (@available(iOS 15.0, *))
             {
                 // PillTextAttachment are not created again every time, we have to set alpha back to standard if needed.
-                [Tools setPillAlpha:1.f inAttributedString:componentString];
+                [PillsFormatter setPillAlpha:1.f inAttributedString:componentString];
             }
             
             // Check whether the timestamp is displayed for this component, and check whether a vertical whitespace is required
@@ -479,15 +479,15 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             if (selectedComponentIndex != NSNotFound && selectedComponentIndex != index && componentString.length)
             {
                 // Apply alpha to blur this component
-                componentString = [Tools setTextColorAlpha:.2 inAttributedString:componentString];
+                componentString = [componentString withTextColorAlpha:.2];
                 if (@available(iOS 15.0, *)) {
-                    [Tools setPillAlpha:.2 inAttributedString:componentString];
+                    [PillsFormatter setPillAlpha:.2 inAttributedString:componentString];
                 }
             }
             else if (@available(iOS 15.0, *))
             {
                 // PillTextAttachment are not created again every time, we have to set alpha back to standard if needed.
-                [Tools setPillAlpha:1.f inAttributedString:componentString];
+                [PillsFormatter setPillAlpha:1.f inAttributedString:componentString];
             }
             
             // Check whether the timestamp is displayed

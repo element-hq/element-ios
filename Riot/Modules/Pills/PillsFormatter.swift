@@ -100,6 +100,20 @@ class PillsFormatter: NSObject {
         return string
     }
 
+    /// Update alpha of all `PillTextAttachment` contained in given attributed string.
+    ///
+    /// - Parameters:
+    ///   - alpha: Alpha value to apply
+    ///   - attributedString: Attributed string containing the pills
+    @objc static func setPillAlpha(_ alpha: CGFloat, inAttributedString attributedString: NSAttributedString) {
+        let totalRange = NSRange(location: 0, length: attributedString.length)
+        attributedString.vc_enumerateAttribute(.attachment,
+                                               in: totalRange) { (pill: PillTextAttachment, range: NSRange, _) in
+            pill.data?.alpha = alpha
+        }
+    }
+
+    // MARK: - Private Methods
     /// Extract user id from given permalink
     /// - Parameter permalink: the permalink
     /// - Returns: userId, if any

@@ -44,4 +44,21 @@ public extension NSAttributedString {
             block(typedAttr, range, stop)
         }
     }
+
+    /// Creates a new attributed string with given alpha applied to all texts.
+    ///
+    /// - Parameters:
+    ///   - alpha: Alpha value to apply
+    /// - Returns: New attributed string with updated alpha
+    @objc func withTextColorAlpha(_ alpha: CGFloat) -> NSAttributedString {
+        let mutableString = NSMutableAttributedString(attributedString: self)
+        let totalRange = NSRange(location: 0, length: mutableString.length)
+        mutableString.vc_enumerateAttribute(.foregroundColor,
+                                            in: totalRange) { (color: UIColor, range: NSRange, _) in
+            let colorWithAlpha = color.withAlphaComponent(alpha)
+            mutableString.addAttribute(.foregroundColor, value: colorWithAlpha, range: range)
+        }
+
+        return mutableString
+    }
 }
