@@ -19,6 +19,7 @@
 #import "MatrixKit.h"
 
 @protocol AuthenticationViewControllerDelegate;
+@class SSOIdentityProvider;
 
 
 @interface AuthenticationViewController : MXKAuthenticationViewController <MXKAuthenticationViewControllerDelegate>
@@ -60,8 +61,16 @@
 
 @protocol AuthenticationViewControllerDelegate <NSObject>
 
-- (void)authenticationViewController:(AuthenticationViewController *)authenticationViewController
+/**
+ Notifies the delegate that authentication has succeeded.
+ @param authenticationViewController The view controller that handled the authentication.
+ @param session The session for the authenticated account.
+ @param password Optional password used for authentication (to be handed to the verification flow).
+ @param identityProvider Optional SSO identity provider used for authentication.
+ */
+- (void)authenticationViewController:(AuthenticationViewController * _Nonnull)authenticationViewController
                  didLoginWithSession:(MXSession *)session
-                         andPassword:(NSString *)password;
+                         andPassword:(NSString * _Nullable)password
+               orSSOIdentityProvider:(SSOIdentityProvider * _Nullable)identityProvider;
 
 @end;

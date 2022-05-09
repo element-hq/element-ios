@@ -76,7 +76,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     func start() {
         Task {
             do {
-                let flow: AuthenticationFlow = initialScreen == .login ? .login : .registration
+                let flow: AuthenticationFlow = initialScreen == .login ? .login : .register
                 try await authenticationService.startFlow(flow, for: authenticationService.state.homeserver.address)
             } catch {
                 MXLog.error("[AuthenticationCoordinator] start: Failed to start")
@@ -211,7 +211,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     func handleRegistrationResult(_ result: RegistrationResult) {
         switch result {
         case .success(let mxSession):
-            onSessionCreated(session: mxSession, isAccountCreated: true)
+            onSessionCreated(session: mxSession, flow: .register)
         case .flowResponse(let flowResult):
             // TODO
             break
@@ -219,7 +219,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     }
     
     /// Handles the creation of a new session following on from a successful authentication.
-    func onSessionCreated(session: MXSession, isAccountCreated: Bool) {
+    func onSessionCreated(session: MXSession, flow: AuthenticationFlow) {
         self.session = session
         // self.password = password
         
@@ -249,7 +249,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         verificationListener.start()
         self.verificationListener = verificationListener
         
-        completion?(.didLogin(session: session, authenticationType: isAccountCreated ? .register : .login))
+        #warning("Add authentication type to the new flow")
+        completion?(.didLogin(session: session, authenticationFlow: flow, authenticationType: .other))
     }
     
     // MARK: - Additional Screens
@@ -331,7 +332,7 @@ extension AuthenticationCoordinator {
         set { /* no-op */ }
     }
     
-    func update(authenticationType: MXKAuthenticationType) {
+    func update(authenticationFlow: AuthenticationFlow) {
         // unused
     }
     

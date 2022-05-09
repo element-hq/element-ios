@@ -119,7 +119,7 @@ final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
         Task {
             do {
                 #warning("The screen should be configuration for .login too.")
-                try await authenticationService.startFlow(.registration, for: homeserverAddress)
+                try await authenticationService.startFlow(.register, for: homeserverAddress)
                 stopLoading()
                 
                 completion?(.updated)
