@@ -59,11 +59,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
         
-        // Register pills provider.
-        if #available(iOS 15.0, *) {
-            NSTextAttachment.registerViewProviderClass(PillAttachmentViewProvider.self, forFileType: StringPillsUtils.pillUTType)
-        }
-        
         // Create AppCoordinator
         self.rootRouter = RootRouter(window: window)
         
