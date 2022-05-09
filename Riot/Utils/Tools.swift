@@ -46,7 +46,7 @@ extension Tools {
         let totalRange = NSRange(location: 0, length: attributedString.length)
         attributedString.vc_enumerateAttribute(.attachment,
                                                in: totalRange) { (pill: PillTextAttachment, range: NSRange, _) in
-            pill.alpha = alpha
+            pill.data?.alpha = alpha
         }
     }
 }

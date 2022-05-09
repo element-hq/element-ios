@@ -24,9 +24,9 @@ class PillAttachmentView: UIView {
     ///
     /// - Parameter roomMember: room member to display in the pill
     /// - Returns: required size for pill
-    static func size(forRoomMember roomMember: MXRoomMember) -> CGSize {
+    static func size(forDisplayname displayname: String) -> CGSize {
         let label = UILabel(frame: .zero)
-        label.text = roomMember.displayname
+        label.text = displayname
         label.font = Constants.pillLabelFont
         let labelSize = label.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude,
                                                   height: Constants.pillBackgroundHeight))
@@ -54,13 +54,13 @@ class PillAttachmentView: UIView {
     /// - Parameters:
     ///   - roomMember: the room member
     ///   - isHighlighted: whether this pill should be highlighted
-    convenience init(withRoomMember roomMember: MXRoomMember, isHighlighted: Bool) {
+    convenience init(withPillData pillData: PillTextAttachmentData) {
         self.init(frame: CGRect(origin: CGPoint(x: 0.0, y: 0.0),
-                                size: Self.size(forRoomMember: roomMember)))
+                                size: Self.size(forDisplayname: pillData.displayText)))
         let label = UILabel(frame: .zero)
-        label.text = roomMember.displayname.count > 0 ? roomMember.displayname : roomMember.userId
+        label.text = pillData.displayText
         label.font = Constants.pillLabelFont
-        label.textColor = isHighlighted ? ThemeService.shared().theme.baseTextPrimaryColor : ThemeService.shared().theme.textPrimaryColor
+        label.textColor = pillData.isHighlighted ? ThemeService.shared().theme.baseTextPrimaryColor : ThemeService.shared().theme.textPrimaryColor
         let labelSize = label.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude,
                                                   height: CGFloat.greatestFiniteMagnitude))
         label.frame = CGRect(x: Constants.displaynameLabelLeading,
@@ -77,7 +77,7 @@ class PillAttachmentView: UIView {
                                                    y: Constants.commonVerticalMargin,
                                                    width: Constants.avatarSideLength,
                                                    height: Constants.avatarSideLength))
-        imageView.setImageURI(roomMember.avatarUrl,
+        imageView.setImageURI(pillData.avatarUrl,
                               withType: nil,
                               andImageOrientation: .up,
                               toFitViewSize: imageView.frame.size,
@@ -92,7 +92,7 @@ class PillAttachmentView: UIView {
         pillBackgroundView.addSubview(imageView)
         pillBackgroundView.addSubview(label)
 
-        pillBackgroundView.backgroundColor = isHighlighted ? ThemeService.shared().theme.colors.alert : ThemeService.shared().theme.colors.quinaryContent
+        pillBackgroundView.backgroundColor = pillData.isHighlighted ? ThemeService.shared().theme.colors.alert : ThemeService.shared().theme.colors.quinaryContent
         pillBackgroundView.layer.cornerRadius = Constants.pillBackgroundHeight / 2.0
 
         self.addSubview(pillBackgroundView)

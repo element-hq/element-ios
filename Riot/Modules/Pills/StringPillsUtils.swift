@@ -68,10 +68,10 @@ class StringPillsUtils: NSObject {
         let totalRange = NSRange(location: 0, length: newAttr.length)
 
         newAttr.vc_enumerateAttribute(.attachment, in: totalRange) { (attachment: PillTextAttachment, range: NSRange, _) in
-            if let displayname = attachment.roomMember?.displayname,
-               let userId = attachment.roomMember?.userId,
+            if let displayText = attachment.data?.displayText,
+               let userId = attachment.data?.matrixItemId,
                let permalink = MXTools.permalinkToUser(withUserId: userId) {
-                let pillString = asMarkdown ? "[\(displayname)](\(permalink))" : "\(displayname)"
+                let pillString = asMarkdown ? "[\(displayText)](\(permalink))" : "\(displayText)"
                 newAttr.replaceCharacters(in: range, with: pillString)
             }
         }
@@ -89,7 +89,9 @@ class StringPillsUtils: NSObject {
     static func mentionPill(withRoomMember roomMember: MXRoomMember,
                             andUrl url: URL? = nil,
                             isHighlighted: Bool) -> NSAttributedString {
-        let attachment = PillTextAttachment(withRoomMember: roomMember, isHighlighted: isHighlighted)
+        guard let attachment = PillTextAttachment(withRoomMember: roomMember, isHighlighted: isHighlighted) else {
+            return NSAttributedString(string: roomMember.displayname)
+        }
         let string = NSMutableAttributedString(attachment: attachment)
         string.addAttribute(.font, value: UIFont.systemFont(ofSize: 15.0), range: .init(location: 0, length: string.length))
         if let url = url {

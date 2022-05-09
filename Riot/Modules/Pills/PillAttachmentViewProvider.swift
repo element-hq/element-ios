@@ -27,13 +27,12 @@ import UIKit
             return
         }
 
-        guard let roomMember = textAttachment.roomMember else {
+        guard let pillData = textAttachment.data else {
             MXLog.debug("[PillAttachmentViewProvider]: attachment misses room member data")
             return
         }
 
-        view = PillAttachmentView(withRoomMember: roomMember,
-                                  isHighlighted: textAttachment.isHighlighted)
-        view?.alpha = textAttachment.alpha
+        view = PillAttachmentView(withPillData: pillData)
+        view?.alpha = pillData.alpha
     }
 }

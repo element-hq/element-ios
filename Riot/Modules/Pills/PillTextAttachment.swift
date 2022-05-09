@@ -21,22 +21,29 @@ import MatrixSDK
 @available (iOS 15.0, *)
 @objcMembers
 class PillTextAttachment: NSTextAttachment {
-    // MARK: - Internal Properties
-    var roomMember: MXRoomMember?
-    var isHighlighted: Bool = false
-    var alpha: CGFloat = 1.0
-
-    // MARK: - Constants
-    private enum Constants {
-        static let roomMemberKey: String = "roomMember"
-        static let isHighlightedKey: String = "isHighlighted"
-        static let alphaKey: String = "alpha"
-        static let pillVerticalOffset: CGFloat = -7.5
+    // MARK: - Properties
+    /// Return `PillTextAttachmentData` contained in the text attachment.
+    var data: PillTextAttachmentData? {
+        get {
+            guard let contents = contents else { return nil }
+            return try? Self.serializationService.deserialize(contents)
+        }
+        set {
+            guard let newValue = newValue else {
+                contents = nil
+                return
+            }
+            contents = try? Self.serializationService.serialize(newValue)
+        }
     }
+    private static let serializationService: SerializationServiceType = SerializationService()
+    private static let pillVerticalOffset: CGFloat = -7.5
 
     // MARK: - Init
     override init(data contentData: Data?, ofType uti: String?) {
         super.init(data: contentData, ofType: uti)
+
+        updateBounds()
     }
 
     /// Create a Mention Pill text attachment for given room member.
@@ -44,36 +51,30 @@ class PillTextAttachment: NSTextAttachment {
     /// - Parameters:
     ///   - roomMember: the room member
     ///   - isHighlighted: whether this pill should be highlighted
-    init(withRoomMember roomMember: MXRoomMember, isHighlighted: Bool) {
-        super.init(data: nil, ofType: StringPillsUtils.pillUTType)
-        self.roomMember = roomMember
-        self.isHighlighted = isHighlighted
-        let pillSize = PillAttachmentView.size(forRoomMember: roomMember)
-        self.bounds = CGRect(origin: CGPoint(x: 0.0, y: Constants.pillVerticalOffset), size: pillSize)
+    convenience init?(withRoomMember roomMember: MXRoomMember, isHighlighted: Bool) {
+        let data = PillTextAttachmentData(matrixItemId: roomMember.userId,
+                                          displayName: roomMember.displayname,
+                                          avatarUrl: roomMember.avatarUrl,
+                                          isHighlighted: isHighlighted,
+                                          alpha: 1.0)
+
+        guard let encodedData = try? Self.serializationService.serialize(data) else { return nil }
+        self.init(data: encodedData, ofType: StringPillsUtils.pillUTType)
     }
 
-    // MARK: - NSCoding
     required init?(coder: NSCoder) {
-        guard let roomMember = coder.decodeObject(of: MXRoomMember.self, forKey: Constants.roomMemberKey) else {
-            return nil
-        }
-
         super.init(coder: coder)
-        self.fileType = StringPillsUtils.pillUTType
 
-        self.roomMember = roomMember
-        self.isHighlighted = coder.decodeBool(forKey: Constants.isHighlightedKey)
-        self.alpha = CGFloat(coder.decodeFloat(forKey: Constants.alphaKey))
-
-        let pillSize = PillAttachmentView.size(forRoomMember: roomMember)
-        self.bounds = CGRect(origin: CGPoint(x: 0.0, y: -6.5), size: pillSize)
+        updateBounds()
     }
+}
 
-    override func encode(with coder: NSCoder) {
-        super.encode(with: coder)
-
-        coder.encode(roomMember, forKey: Constants.roomMemberKey)
-        coder.encode(isHighlighted, forKey: Constants.isHighlightedKey)
-        coder.encode(Float(alpha), forKey: Constants.alphaKey)
+// MARK: - Private
+@available (iOS 15.0, *)
+private extension PillTextAttachment {
+    func updateBounds() {
+        guard let data = data else { return }
+        let pillSize = PillAttachmentView.size(forDisplayname: data.displayText)
+        self.bounds = CGRect(origin: CGPoint(x: 0.0, y: Self.pillVerticalOffset), size: pillSize)
     }
 }
