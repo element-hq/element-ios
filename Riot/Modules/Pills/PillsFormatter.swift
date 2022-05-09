@@ -105,7 +105,7 @@ class PillsFormatter: NSObject {
     /// - Parameters:
     ///   - alpha: Alpha value to apply
     ///   - attributedString: Attributed string containing the pills
-    @objc static func setPillAlpha(_ alpha: CGFloat, inAttributedString attributedString: NSAttributedString) {
+    static func setPillAlpha(_ alpha: CGFloat, inAttributedString attributedString: NSAttributedString) {
         let totalRange = NSRange(location: 0, length: attributedString.length)
         attributedString.vc_enumerateAttribute(.attachment,
                                                in: totalRange) { (pill: PillTextAttachment, range: NSRange, _) in

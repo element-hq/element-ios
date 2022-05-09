@@ -33,7 +33,7 @@ import UIKit
         }
 
         guard let pillData = textAttachment.data else {
-            MXLog.debug("[PillAttachmentViewProvider]: attachment misses room member data")
+            MXLog.debug("[PillAttachmentViewProvider]: attachment misses pill data")
             return
         }
 
