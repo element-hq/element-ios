@@ -30,36 +30,36 @@ private enum Inputs {
 
 // MARK: - Tests
 @available(iOS 15.0, *)
-class StringPillsUtilsTests: XCTestCase {
+class PillsFormatterTests: XCTestCase {
     func testPillsInsertion() {
         let messageWithPills = createMessageWithMentionFromBobToAlice()
         XCTAssertEqual(messageWithPills.length, Inputs.messageStart.count + 1) // +1 non-unicode character for the pill/textAttachment
         XCTAssert(messageWithPills.attribute(.attachment, at: messageWithPills.length - 1, effectiveRange: nil) is PillTextAttachment)
 
         let pillTextAttachment = messageWithPills.attribute(.attachment, at: messageWithPills.length - 1, effectiveRange: nil) as? PillTextAttachment
-        XCTAssert(pillTextAttachment?.isHighlighted == true) // Alice is highlighted
-        XCTAssert(pillTextAttachment?.fileType == StringPillsUtils.pillUTType)
+        XCTAssert(pillTextAttachment?.data?.isHighlighted == true) // Alice is highlighted
+        XCTAssert(pillTextAttachment?.fileType == PillsFormatter.pillUTType)
     }
 
     func testPillsToMarkdown() {
         let messageWithPills = createMessageWithMentionFromBobToAlice()
-        let markdownMessage = StringPillsUtils.stringByReplacingPills(in: messageWithPills, asMarkdown: true)
+        let markdownMessage = PillsFormatter.stringByReplacingPills(in: messageWithPills, asMarkdown: true)
         XCTAssertEqual(markdownMessage, Inputs.messageStart + Inputs.markdownLinkToAlice)
     }
 
     func testPillsToRawBody() {
         let messageWithPills = createMessageWithMentionFromBobToAlice()
-        let rawMessage = StringPillsUtils.stringByReplacingPills(in: messageWithPills, asMarkdown: false)
+        let rawMessage = PillsFormatter.stringByReplacingPills(in: messageWithPills, asMarkdown: false)
         XCTAssertEqual(rawMessage, Inputs.messageStart + Inputs.aliceDisplayname)
     }
 }
 
 @available(iOS 15.0, *)
-private extension StringPillsUtilsTests {
+private extension PillsFormatterTests {
     func createMessageWithMentionFromBobToAlice() -> NSAttributedString {
         let formattedMessage = NSMutableAttributedString(string: Inputs.messageStart)
         formattedMessage.append(Inputs.mentionToAlice)
-        let messageWithPills = StringPillsUtils.insertPills(in: formattedMessage,
+        let messageWithPills = PillsFormatter.insertPills(in: formattedMessage,
                                                             withSession: FakeMXSession(myUserId: Inputs.aliceMember.userId),
                                                             event: FakeMXEvent(sender: Inputs.bobMember.userId),
                                                             andRoomState: FakeMXRoomState())

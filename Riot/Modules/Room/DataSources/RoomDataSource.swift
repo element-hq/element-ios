@@ -39,7 +39,7 @@ extension RoomDataSource {
         let rawText: String
         let html: String? = htmlMessageFromSanitizedAttributedText(sanitized)
         if #available(iOS 15.0, *) {
-            rawText = StringPillsUtils.stringByReplacingPills(in: sanitized)
+            rawText = PillsFormatter.stringByReplacingPills(in: sanitized)
         } else {
             rawText = sanitized.string
         }
@@ -82,7 +82,7 @@ extension RoomDataSource {
         let rawText: String
         let html: String? = htmlMessageFromSanitizedAttributedText(sanitized)
         if #available(iOS 15.0, *) {
-            rawText = StringPillsUtils.stringByReplacingPills(in: sanitized)
+            rawText = PillsFormatter.stringByReplacingPills(in: sanitized)
         } else {
             rawText = sanitized.string
         }
@@ -118,7 +118,7 @@ extension RoomDataSource {
         let rawText: String
         let html: String? = htmlMessageFromSanitizedAttributedText(sanitized)
         if #available(iOS 15.0, *) {
-            rawText = StringPillsUtils.stringByReplacingPills(in: sanitized)
+            rawText = PillsFormatter.stringByReplacingPills(in: sanitized)
         } else {
             rawText = sanitized.string
         }
@@ -161,7 +161,7 @@ extension RoomDataSource {
             let body: String = replyEventParts?.formattedBodyParts?.replyText ?? replyEventParts?.bodyParts.replyText ?? ""
             let attributed = eventFormatter.renderHTMLString(body, for: event, with: self.roomState, isEditMode: true)
             if let attributed = attributed, #available(iOS 15.0, *) {
-                editableTextMessage = StringPillsUtils.insertPills(in: attributed,
+                editableTextMessage = PillsFormatter.insertPills(in: attributed,
                                                                    withSession: self.mxSession,
                                                                    event: event,
                                                                    andRoomState: self.roomState,
@@ -173,7 +173,7 @@ extension RoomDataSource {
             let body: String = event.content["formatted_body"] as? String ?? event.content["body"] as? String ?? ""
             let attributed = eventFormatter.renderHTMLString(body, for: event, with: self.roomState, isEditMode: true)
             if let attributed = attributed, #available(iOS 15.0, *) {
-                editableTextMessage = StringPillsUtils.insertPills(in: attributed,
+                editableTextMessage = PillsFormatter.insertPills(in: attributed,
                                                                    withSession: self.mxSession,
                                                                    event: event,
                                                                    andRoomState: self.roomState,
@@ -207,7 +207,7 @@ private extension RoomDataSource {
     func htmlMessageFromSanitizedAttributedText(_ sanitizedText: NSAttributedString) -> String? {
         let rawText: String
         if #available(iOS 15.0, *) {
-            rawText = StringPillsUtils.stringByReplacingPills(in: sanitizedText, asMarkdown: true)
+            rawText = PillsFormatter.stringByReplacingPills(in: sanitizedText, asMarkdown: true)
         } else {
             rawText = sanitizedText.string
         }

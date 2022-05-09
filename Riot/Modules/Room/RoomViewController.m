@@ -281,9 +281,9 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     if (@available(iOS 15.0, *))
     {
-        if (![NSTextAttachment textAttachmentViewProviderClassForFileType:StringPillsUtils.pillUTType])
+        if (![NSTextAttachment textAttachmentViewProviderClassForFileType:PillsFormatter.pillUTType])
         {
-            [NSTextAttachment registerTextAttachmentViewProviderClass:PillAttachmentViewProvider.class forFileType:StringPillsUtils.pillUTType];
+            [NSTextAttachment registerTextAttachmentViewProviderClass:PillAttachmentViewProvider.class forFileType:PillsFormatter.pillUTType];
         }
     }
 }
@@ -6776,7 +6776,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         {
             if (@available(iOS 15.0, *))
             {
-                MXKPasteboardManager.shared.pasteboard.string = [StringPillsUtils stringByReplacingPillsIn:attributedTextMessage asMarkdown:YES];
+                MXKPasteboardManager.shared.pasteboard.string = [PillsFormatter stringByReplacingPillsIn:attributedTextMessage asMarkdown:YES];
             }
             else
             {

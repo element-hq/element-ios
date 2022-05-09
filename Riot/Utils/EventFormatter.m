@@ -108,7 +108,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     {
         if (displayPills && roomState && [self shouldDisplayEvent:event])
         {
-            string = [StringPillsUtils insertPillsIn:string withSession:mxSession event:event andRoomState:roomState isEditMode:NO];
+            string = [PillsFormatter insertPillsIn:string withSession:mxSession event:event andRoomState:roomState isEditMode:NO];
         }
     }
 

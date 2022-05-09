@@ -59,7 +59,7 @@ class PillTextAttachment: NSTextAttachment {
                                           alpha: 1.0)
 
         guard let encodedData = try? Self.serializationService.serialize(data) else { return nil }
-        self.init(data: encodedData, ofType: StringPillsUtils.pillUTType)
+        self.init(data: encodedData, ofType: PillsFormatter.pillUTType)
     }
 
     required init?(coder: NSCoder) {
