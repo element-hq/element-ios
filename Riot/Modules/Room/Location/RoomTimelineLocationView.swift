@@ -163,6 +163,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
                                  bannerViewData: LiveLocationBannerViewData? = nil) {
         
         if let location = location {
+            mapView.isHidden = false
             mapView.styleURL = mapStyleURL
             
             annotationView = LocationMarkerView.loadFromNib()
@@ -188,6 +189,8 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
         // Configure live location banner
         guard let bannerViewData = bannerViewData else {
             liveLocationContainerView.isHidden = true
+            placeholderBackground.isHidden = true
+            placeholderIcon.isHidden = true
             return
         }
         
