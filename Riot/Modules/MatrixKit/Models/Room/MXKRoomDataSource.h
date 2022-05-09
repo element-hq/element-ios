@@ -173,7 +173,7 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
 /**
  The current attributed text message partially typed in text input (use nil to reset it).
  */
-@property (nonatomic) NSAttributedString *attributedPartialTextMessage;
+@property (nonatomic) NSAttributedString *partialAttributedTextMessage;
 
 /**
  The current thread id for the data source. If provided, data source displays the specified thread, otherwise the whole room messages.

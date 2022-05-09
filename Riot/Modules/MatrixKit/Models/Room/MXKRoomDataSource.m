@@ -990,14 +990,14 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     _room.partialTextMessage = partialTextMessage;
 }
 
-- (NSAttributedString *)attributedPartialTextMessage
+- (NSAttributedString *)partialAttributedTextMessage
 {
-    return _room.attributedPartialTextMessage;
+    return _room.partialAttributedTextMessage;
 }
 
-- (void)setAttributedPartialTextMessage:(NSAttributedString *)attributedPartialTextMessage
+- (void)setPartialAttributedTextMessage:(NSAttributedString *)partialAttributedTextMessage
 {
-    _room.attributedPartialTextMessage = attributedPartialTextMessage;
+    _room.partialAttributedTextMessage = partialAttributedTextMessage;
 }
 
 - (void)refreshEventListeners:(NSArray *)liveEventTypesFilterForMessages

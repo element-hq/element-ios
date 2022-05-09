@@ -680,7 +680,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         // Note: We have to wait for viewDidAppear before updating growingTextView (viewWillAppear is too early)
         RoomInputToolbarView *inputToolbar = (RoomInputToolbarView *)self.inputToolbarView;
 
-        inputToolbar.attributedTextMessage = self.roomDataSource.attributedPartialTextMessage;
+        inputToolbar.attributedTextMessage = self.roomDataSource.partialAttributedTextMessage;
     }
 }
 
@@ -4698,7 +4698,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     if (self.saveProgressTextInput && self.roomDataSource && inputToolbar)
     {
         // Store the potential message partially typed in text input
-        self.roomDataSource.attributedPartialTextMessage = inputToolbar.attributedTextMessage;
+        self.roomDataSource.partialAttributedTextMessage = inputToolbar.attributedTextMessage;
     }
 
     // Cancel potential selected event (to leave edition mode)
