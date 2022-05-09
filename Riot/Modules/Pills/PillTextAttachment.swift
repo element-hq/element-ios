@@ -74,7 +74,7 @@ class PillTextAttachment: NSTextAttachment {
 private extension PillTextAttachment {
     func updateBounds() {
         guard let data = data else { return }
-        let pillSize = PillAttachmentView.size(forDisplayname: data.displayText)
+        let pillSize = PillAttachmentViewProvider.size(forDisplayText: data.displayText)
         self.bounds = CGRect(origin: CGPoint(x: 0.0, y: Self.pillVerticalOffset), size: pillSize)
     }
 }
