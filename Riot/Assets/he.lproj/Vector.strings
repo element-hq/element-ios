@@ -1093,3 +1093,32 @@
 "settings_ui_theme" = "נושא";
 "settings_ui_language" = "שפה";
 "settings_integrations_allow_description" = "השתמש במנהל שילובים (%@) לניהול בוטים, גשרי ועידה, וו'ידגטים ומדבקות.\n\nמנהלי שילובים מקבלים נתוני תצורה, ויכולים להגדיר וו'ידגטים, לשלוח הזמנות חדרים ורמות הספק בשמך.";
+"onboarding_celebration_message" = "העדפות שלך נשמרו.";
+"onboarding_celebration_title" = "אתה מוכן!";
+"onboarding_avatar_accessibility_label" = "תמונת פרופיל";
+"onboarding_avatar_message" = "ניתן לשנות בכל זמן.";
+"onboarding_avatar_title" = "תוסיף תמונת פרופיל";
+"onboarding_display_name_max_length" = "שם התצוגה חייב להכיל פחות מ 256 תווים";
+"onboarding_display_name_hint" = "ניתן לשנות זאת מאוחר יותר";
+"onboarding_display_name_placeholder" = "שם שמופיע";
+"onboarding_display_name_message" = "זה יופיע כאשר תשלח הודעה.";
+"onboarding_display_name_title" = "בחר שם לתצוגה";
+"onboarding_personalization_skip" = "דלג על שלב זה";
+"onboarding_personalization_save" = "שמור והמשך";
+"onboarding_congratulations_home_button" = "קח אותי הביתה";
+"onboarding_congratulations_personalize_button" = "פרופיל מותאם אישית";
+/* The placeholder string contains the user's matrix ID */
+"onboarding_congratulations_message" = "חשבונך %@ נוצר.";
+"onboarding_congratulations_title" = "מזל טוב !";
+"saving" = "שומר";
+
+// Activities
+"loading" = "טוען";
+"confirm" = "מאושר";
+"edit" = "עריכה";
+"suggest" = "הצעה";
+"error" = "שגיאה";
+"add" = "הוסף";
+"existing" = "קיים";
+"new_word" = "חדש";
+"stop" = "עצור";
