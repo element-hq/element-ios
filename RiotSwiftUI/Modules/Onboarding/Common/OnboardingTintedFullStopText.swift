@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 /// A view that displays text, highlighting the first occurrence of
 /// the character `.` in the theme's accent color.
 struct OnboardingTintedFullStopText: View {

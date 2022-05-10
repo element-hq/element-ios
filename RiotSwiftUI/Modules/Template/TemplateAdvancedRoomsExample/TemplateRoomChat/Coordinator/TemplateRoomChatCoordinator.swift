@@ -38,7 +38,6 @@ final class TemplateRoomChatCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: TemplateRoomChatCoordinatorParameters) {
         self.parameters = parameters
         let viewModel = TemplateRoomChatViewModel(templateRoomChatService: TemplateRoomChatService(room: parameters.room))

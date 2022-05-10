@@ -20,7 +20,6 @@ protocol OnboardingSplashScreenCoordinatorProtocol: Coordinator, Presentable {
     var completion: ((OnboardingSplashScreenViewModelResult) -> Void)? { get set }
 }
 
-@available(iOS 14.0, *)
 final class OnboardingSplashScreenCoordinator: OnboardingSplashScreenCoordinatorProtocol {
     
     // MARK: - Properties

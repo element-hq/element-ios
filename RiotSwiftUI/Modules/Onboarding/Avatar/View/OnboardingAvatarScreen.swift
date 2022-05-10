@@ -17,7 +17,6 @@
 import SwiftUI
 import DesignKit
 
-@available(iOS 14.0, *)
 struct OnboardingAvatarScreen: View {
 
     // MARK: - Properties

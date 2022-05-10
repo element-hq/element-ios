@@ -18,7 +18,6 @@ import XCTest
 
 @testable import RiotSwiftUI
 
-@available(iOS 14.0, *)
 class OnboardingUseCaseViewModelTests: XCTestCase {
     // The view model has nothing to test.
 }

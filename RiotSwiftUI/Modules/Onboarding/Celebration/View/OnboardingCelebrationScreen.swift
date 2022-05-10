@@ -17,7 +17,6 @@
 import SwiftUI
 import SceneKit
 
-@available(iOS 14.0, *)
 struct OnboardingCelebrationScreen: View {
 
     // MARK: - Properties

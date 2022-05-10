@@ -16,12 +16,10 @@
 
 import Foundation
 
-@available(iOS 14.0, *)
 protocol AuthenticationServiceDelegate: AnyObject {
     func authenticationServiceDidUpdateRegistrationParameters(_ authenticationService: AuthenticationService)
 }
 
-@available(iOS 14.0, *)
 class AuthenticationService: NSObject {
     
     /// The shared service object.

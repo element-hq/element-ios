@@ -17,7 +17,6 @@
 import SwiftUI
 import CommonKit
 
-@available(iOS 14.0, *)
 struct AuthenticationServerSelectionCoordinatorParameters {
     let authenticationService: AuthenticationService
     /// Whether the screen is presented modally or within a navigation stack.
@@ -29,7 +28,6 @@ enum AuthenticationServerSelectionCoordinatorResult {
     case dismiss
 }
 
-@available(iOS 14.0, *)
 final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties

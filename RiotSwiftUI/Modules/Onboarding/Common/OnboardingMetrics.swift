@@ -17,7 +17,6 @@
 import SwiftUI
 
 /// Metrics used across the entire onboarding flow.
-@available(iOS 14.0, *)
 struct OnboardingMetrics {
     static let maxContentWidth: CGFloat = 600
     static let maxContentHeight: CGFloat = 750

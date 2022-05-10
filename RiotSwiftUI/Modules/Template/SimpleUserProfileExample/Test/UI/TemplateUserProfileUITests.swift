@@ -17,7 +17,6 @@
 import XCTest
 import RiotSwiftUI
 
-@available(iOS 14.0, *)
 class TemplateUserProfileUITests: MockScreenTest {
 
     override class var screenType: MockScreenState.Type {

@@ -18,7 +18,6 @@
 
 import UIKit
 
-@available(iOS 14.0, *)
 struct AuthenticationCoordinatorParameters {
     let navigationRouter: NavigationRouterType
     /// The screen that should be shown when starting the flow.
@@ -28,7 +27,6 @@ struct AuthenticationCoordinatorParameters {
 }
 
 /// A coordinator that handles authentication, verification and setting a PIN.
-@available(iOS 14.0, *)
 final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtocol {
     
     enum EntryPoint {
@@ -150,7 +148,6 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         }
     }
     
-    @available(iOS 14.0, *)
     /// Shows the next screen in the flow after the server selection screen.
     @MainActor private func serverSelectionCoordinator(_ coordinator: AuthenticationServerSelectionCoordinator,
                                                        didCompleteWith result: AuthenticationServerSelectionCoordinatorResult) {
@@ -189,7 +186,6 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     }
     
     /// Displays the next view in the flow after the registration screen.
-    @available(iOS 14.0, *)
     @MainActor private func registrationCoordinator(_ coordinator: AuthenticationRegistrationCoordinator,
                                                     didCompleteWith result: AuthenticationRegistrationCoordinatorResult) {
         switch result {
@@ -292,7 +288,6 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
 }
 
 // MARK: - KeyVerificationCoordinatorDelegate
-@available(iOS 14.0, *)
 extension AuthenticationCoordinator: KeyVerificationCoordinatorDelegate {
     func keyVerificationCoordinatorDidComplete(_ coordinator: KeyVerificationCoordinatorType, otherUserId: String, otherDeviceId: String) {
         if let crypto = session?.crypto,
@@ -314,7 +309,6 @@ extension AuthenticationCoordinator: KeyVerificationCoordinatorDelegate {
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
-@available(iOS 14.0, *)
 extension AuthenticationCoordinator: UIAdaptivePresentationControllerDelegate {
     func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
         // Prevent Key Verification from using swipe to dismiss
@@ -325,7 +319,6 @@ extension AuthenticationCoordinator: UIAdaptivePresentationControllerDelegate {
 
 
 // MARK: - Unused conformances
-@available(iOS 14.0, *)
 extension AuthenticationCoordinator {
     var customServerFieldsVisible: Bool {
         get { false }

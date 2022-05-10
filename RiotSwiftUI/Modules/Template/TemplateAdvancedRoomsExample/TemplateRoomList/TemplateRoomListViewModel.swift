@@ -16,12 +16,11 @@
 
 import SwiftUI
 import Combine
-    
-@available(iOS 14, *)
+
 typealias TemplateRoomListViewModelType = StateStoreViewModel<TemplateRoomListViewState,
                                                               Never,
                                                               TemplateRoomListViewAction>
-@available(iOS 14.0, *)
+
 class TemplateRoomListViewModel: TemplateRoomListViewModelType, TemplateRoomListViewModelProtocol {
     
     // MARK: - Properties

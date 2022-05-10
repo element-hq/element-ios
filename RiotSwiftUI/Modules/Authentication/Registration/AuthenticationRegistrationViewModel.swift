@@ -17,13 +17,10 @@
 import SwiftUI
 import Combine
 
-@available(iOS 14, *)
 typealias AuthenticationRegistrationViewModelType = StateStoreViewModel<AuthenticationRegistrationViewState,
                                                                         Never,
                                                                         AuthenticationRegistrationViewAction>
 
-
-@available(iOS 14, *)
 class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelType, AuthenticationRegistrationViewModelProtocol {
 
     // MARK: - Properties

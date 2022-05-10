@@ -18,7 +18,6 @@ import SwiftUI
 import CommonKit
 import MatrixSDK
 
-@available(iOS 14.0, *)
 struct AuthenticationRegistrationCoordinatorParameters {
     let navigationRouter: NavigationRouterType
     let authenticationService: AuthenticationService
@@ -35,7 +34,6 @@ enum AuthenticationRegistrationCoordinatorResult {
     case completed(RegistrationResult)
 }
 
-@available(iOS 14.0, *)
 final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties
