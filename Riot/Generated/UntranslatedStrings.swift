@@ -78,6 +78,14 @@ public extension VectorL10n {
   static var authenticationServerSelectionTitle: String { 
     return VectorL10n.tr("Untranslated", "authentication_server_selection_title") 
   }
+  /// Please read through T&C. You must accept in order to continue.
+  static var authenticationTermsMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_terms_message") 
+  }
+  /// Privacy policy
+  static var authenticationTermsTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_terms_title") 
+  }
   /// This will help verify your account and enables password recovery.
   static var authenticationVerifyEmailInputMessage: String { 
     return VectorL10n.tr("Untranslated", "authentication_verify_email_input_message") 
