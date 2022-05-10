@@ -37,10 +37,12 @@ struct OnboardingUseCaseSelectionScreen: View {
             
             Text(VectorL10n.onboardingUseCaseTitle)
                 .font(theme.fonts.title2B)
+                .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.primaryContent)
             
             Text(VectorL10n.onboardingUseCaseMessage)
                 .font(theme.fonts.body)
+                .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.secondaryContent)
         }
     }
@@ -68,6 +70,8 @@ struct OnboardingUseCaseSelectionScreen: View {
                 viewModel.send(viewAction: .answer(.skipped))
             }
             .font(theme.fonts.subheadline)
+            .multilineTextAlignment(.center)
+            .fixedSize(horizontal: false, vertical: true)
             .foregroundColor(theme.colors.tertiaryContent)
             .padding(.top, 8)
         }
@@ -78,6 +82,7 @@ struct OnboardingUseCaseSelectionScreen: View {
         VStack(spacing: 14) {
             Text(VectorL10n.onboardingUseCaseExistingServerMessage)
                 .font(theme.fonts.subheadline)
+                .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.tertiaryContent)
             
             Button { viewModel.send(viewAction: .answer(.customServer)) } label: {
@@ -99,12 +104,14 @@ struct OnboardingUseCaseSelectionScreen: View {
                     }
                     .frame(maxWidth: OnboardingMetrics.maxContentWidth)
                     .padding(.top, OnboardingMetrics.topPaddingToNavigationBar)
+                    .padding(.bottom, 8)
                     .padding(.horizontal, 16)
                 }
                 .frame(maxWidth: .infinity)
                 
                 serverFooter
                     .padding(.horizontal, 16)
+                    .padding(.top, 8)
                     .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 20 : 36)
             }
         }
