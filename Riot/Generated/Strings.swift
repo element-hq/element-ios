@@ -847,6 +847,10 @@ public class VectorL10n: NSObject {
   public static var collapse: String { 
     return VectorL10n.tr("Vector", "collapse") 
   }
+  /// Confirm
+  public static var confirm: String { 
+    return VectorL10n.tr("Vector", "confirm") 
+  }
   /// Local Contacts
   public static var contactLocalContacts: String { 
     return VectorL10n.tr("Vector", "contact_local_contacts") 
@@ -2799,13 +2803,41 @@ public class VectorL10n: NSObject {
   public static var locationSharingLiveMapCalloutTitle: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_map_callout_title") 
   }
+  /// No user locations available
+  public static var locationSharingLiveNoUserLocationsErrorTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_no_user_locations_error_title") 
+  }
   /// Share live location
   public static var locationSharingLiveShareTitle: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_share_title") 
   }
+  /// Fail to stop sharing location
+  public static var locationSharingLiveStopSharingError: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_stop_sharing_error") 
+  }
+  /// Stop location sharing
+  public static var locationSharingLiveStopSharingProgress: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_stop_sharing_progress") 
+  }
   /// Live until %@
   public static func locationSharingLiveTimerIncoming(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "location_sharing_live_timer_incoming", p1)
+  }
+  /// for 8 hours
+  public static var locationSharingLiveTimerSelectorLong: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_timer_selector_long") 
+  }
+  /// for 1 hour
+  public static var locationSharingLiveTimerSelectorMedium: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_timer_selector_medium") 
+  }
+  /// for 15 minutes
+  public static var locationSharingLiveTimerSelectorShort: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_timer_selector_short") 
+  }
+  /// Choose for how long others will see your accurate location.
+  public static var locationSharingLiveTimerSelectorTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_timer_selector_title") 
   }
   /// Location
   public static var locationSharingLiveViewerTitle: String { 

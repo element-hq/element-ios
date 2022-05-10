@@ -53,7 +53,7 @@ import Foundation
             guard let self = self else {
                 return
             }
-            self.delegate?.roomViewControllerDidStopLiveLocationSharing(self)
+            self.delegate?.roomViewControllerDidStopLiveLocationSharing(self, beaconInfoEventId: nil)
         }
         
         self.topBannersStackView?.addArrangedSubview(bannerView)

@@ -102,7 +102,7 @@ struct LiveLocationListItem: View {
         let formatter = DateComponentsFormatter()
 
         formatter.unitsStyle = .abbreviated
-        formatter.allowedUnits = [.hour, .minute]
+        formatter.allowedUnits = [.hour, .minute, .second]
         
         let date = Date(timeIntervalSince1970: timestamp)
         

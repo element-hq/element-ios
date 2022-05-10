@@ -56,13 +56,17 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     }
     // Keep a strong ref as we need to init authVC early to preload its view
     private let authenticationCoordinator: AuthenticationCoordinatorProtocol
+    #warning("This might be removable when SSO comes through the AuthenticationService?")
     /// A boolean to prevent authentication being shown when already in progress.
-    private var isShowingAuthentication = false
+    private var isShowingLegacyAuthentication = false
     
     // MARK: Screen results
     private var splashScreenResult: OnboardingSplashScreenViewModelResult?
     private var useCaseResult: OnboardingUseCaseViewModelResult?
-    private var authenticationType: MXKAuthenticationType?
+    /// The flow being used for authentication.
+    private var authenticationFlow: AuthenticationFlow?
+    /// The type of authentication used to login/register.
+    private var authenticationType: AuthenticationType?
     private var session: MXSession?
     /// A place to store the image selected in the avatar screen until it has been saved.
     private var selectedAvatar: UIImage?
@@ -87,8 +91,8 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         self.parameters = parameters
         
         // Preload the authVC (it is *really* slow to load in realtime)
-        let authenticationParameters = AuthenticationCoordinatorParameters(navigationRouter: parameters.router, canPresentAdditionalScreens: false)
-        authenticationCoordinator = AuthenticationCoordinator(parameters: authenticationParameters)
+        let authenticationParameters = LegacyAuthenticationCoordinatorParameters(navigationRouter: parameters.router, canPresentAdditionalScreens: false)
+        authenticationCoordinator = LegacyAuthenticationCoordinator(parameters: authenticationParameters)
         
         super.init()
     }    
@@ -100,7 +104,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         if #available(iOS 14.0, *), parameters.softLogoutCredentials == nil, BuildSettings.authScreenShowRegister {
             showSplashScreen()
         } else {
-            showAuthenticationScreen()
+            showLegacyAuthenticationScreen()
         }
     }
     
@@ -124,7 +128,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     
     /// When SSO login succeeded, when SFSafariViewController is used, continue login with success parameters.
     func continueSSOLogin(withToken loginToken: String, transactionID: String) -> Bool {
-        guard isShowingAuthentication else { return false }
+        guard isShowingLegacyAuthentication else { return false }
         return authenticationCoordinator.continueSSOLogin(withToken: loginToken, transactionID: transactionID)
     }
     
@@ -153,13 +157,13 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         splashScreenResult = result
         
         // Set the auth type early to allow network requests to finish during display of the use case screen.
-        authenticationCoordinator.update(authenticationType: result.mxkAuthenticationType)
+        authenticationCoordinator.update(authenticationFlow: result.flow)
         
         switch result {
         case .register:
             showUseCaseSelectionScreen()
         case .login:
-            showAuthenticationScreen()
+            showLegacyAuthenticationScreen()
         }
     }
     
@@ -190,24 +194,58 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     @available(iOS 14.0, *)
     private func useCaseSelectionCoordinator(_ coordinator: OnboardingUseCaseSelectionCoordinator, didCompleteWith result: OnboardingUseCaseViewModelResult) {
         useCaseResult = result
-        showAuthenticationScreen()
+        
+        guard BuildSettings.onboardingEnableNewAuthenticationFlow else {
+            showLegacyAuthenticationScreen()
+            return
+        }
+        
+        if result == .customServer {
+            beginAuthentication(with: .selectServerForRegistration)
+        } else {
+            beginAuthentication(with: .registration)
+        }
     }
     
     // MARK: - Authentication
     
-    /// Show the authentication screen. Any parameters that have been set in previous screens are be applied.
-    private func showAuthenticationScreen() {
-        guard !isShowingAuthentication else { return }
+    /// Show the authentication flow, starting at the specified initial screen.
+    @available(iOS 14.0, *)
+    private func beginAuthentication(with initialScreen: AuthenticationCoordinator.EntryPoint) {
+        MXLog.debug("[OnboardingCoordinator] beginAuthentication")
         
-        MXLog.debug("[OnboardingCoordinator] showAuthenticationScreen")
+        let parameters = AuthenticationCoordinatorParameters(navigationRouter: navigationRouter,
+                                                             initialScreen: initialScreen,
+                                                             canPresentAdditionalScreens: false)
+        let coordinator = AuthenticationCoordinator(parameters: parameters)
+        coordinator.completion = { [weak self, weak coordinator] result in
+            guard let self = self, let coordinator = coordinator else { return }
+            
+            switch result {
+            case .didLogin(let session, let authenticationFlow, let authenticationType):
+                self.authenticationCoordinator(coordinator, didLoginWith: session, and: authenticationFlow, using: authenticationType)
+            case .didComplete:
+                self.authenticationCoordinatorDidComplete(coordinator)
+            }
+        }
+        
+        add(childCoordinator: coordinator)
+        coordinator.start()
+    }
+    
+    /// Show the legacy authentication screen. Any parameters that have been set in previous screens are be applied.
+    private func showLegacyAuthenticationScreen() {
+        guard !isShowingLegacyAuthentication else { return }
+        
+        MXLog.debug("[OnboardingCoordinator] showLegacyAuthenticationScreen")
         
         let coordinator = authenticationCoordinator
         coordinator.completion = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
             
             switch result {
-            case .didLogin(let session, let authenticationType):
-                self.authenticationCoordinator(coordinator, didLoginWith: session, and: authenticationType)
+            case .didLogin(let session, let authenticationFlow, let authenticationType):
+                self.authenticationCoordinator(coordinator, didLoginWith: session, and: authenticationFlow, using: authenticationType)
             case .didComplete:
                 self.authenticationCoordinatorDidComplete(coordinator)
             }
@@ -239,23 +277,25 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         } else {
             navigationRouter.push(coordinator, animated: true) { [weak self] in
                 self?.remove(childCoordinator: coordinator)
-                self?.isShowingAuthentication = false
+                self?.isShowingLegacyAuthentication = false
             }
         }
-        isShowingAuthentication = true
+        isShowingLegacyAuthentication = true
     }
     
-    /// Displays the next view in the flow after the authentication screen,
+    /// Displays the next view in the flow after the authentication screens,
     /// whilst crypto and the rest of the app is launching in the background.
     private func authenticationCoordinator(_ coordinator: AuthenticationCoordinatorProtocol,
                                            didLoginWith session: MXSession,
-                                           and authenticationType: MXKAuthenticationType) {
+                                           and authenticationFlow: AuthenticationFlow,
+                                           using authenticationType: AuthenticationType) {
         self.session = session
+        self.authenticationFlow = authenticationFlow
         self.authenticationType = authenticationType
         
         // Check whether another screen should be shown.
         if #available(iOS 14.0, *) {
-            if authenticationType == .register,
+            if authenticationFlow == .register,
                let userId = session.credentials.userId,
                let userSession = UserSessionsService.shared.userSession(withUserId: userId) {
                 // If personalisation is to be shown, check that the homeserver supports it otherwise show the congratulations screen
@@ -295,12 +335,12 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         }
     }
     
-    /// Displays the next view in the flow after the authentication screen.
+    /// Completes the onboarding flow if possible, otherwise waits for any remaining screens.
     private func authenticationCoordinatorDidComplete(_ coordinator: AuthenticationCoordinatorProtocol) {
-        isShowingAuthentication = false
+        isShowingLegacyAuthentication = false
         
         // Handle the chosen use case where applicable
-        if authenticationType == .register,
+        if authenticationFlow == .register,
            let useCase = useCaseResult?.userSessionPropertyValue,
            let userSession = UserSessionsService.shared.mainUserSession {
             // Store the value in the user's session
@@ -519,20 +559,33 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         }
         
         guard authenticationFinished else {
-            MXLog.debug("[OnboardingCoordinator] Allowing AuthenticationCoordinator to display any remaining screens.")
+            MXLog.debug("[OnboardingCoordinator] Allowing LegacyAuthenticationCoordinator to display any remaining screens.")
             authenticationCoordinator.presentPendingScreensIfNecessary()
             return
         }
         
+        trackSignup()
+        
         completion?()
+    }
+    
+    /// Sends a signup event to the Analytics class if onboarding has completed via the register flow.
+    private func trackSignup() {
+        guard authenticationFlow == .register else { return }
+        guard let authenticationType = authenticationType else {
+            MXLog.warning("[OnboardingCoordinator] sendSignedEvent: Registration finished without collecting an authentication type.")
+            return
+        }
+        
+        Analytics.shared.trackSignup(authenticationType: authenticationType.analyticsType)
     }
 }
 
 // MARK: - Helpers
 
 extension OnboardingSplashScreenViewModelResult {
-    /// The result converted into the MatrixKit authentication type to use.
-    var mxkAuthenticationType: MXKAuthenticationType {
+    /// The result converted into an authentication flow.
+    var flow: AuthenticationFlow {
         switch self {
         case .login:
             return .login

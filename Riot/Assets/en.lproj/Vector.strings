@@ -76,6 +76,7 @@
 "error" = "Error";
 "suggest" = "Suggest";
 "edit" = "Edit";
+"confirm" = "Confirm";
 
 // Activities
 "loading" = "Loading";
@@ -2153,6 +2154,13 @@ Tap the + to start adding people.";
 "location_sharing_live_timer_incoming" = "Live until %@";
 "location_sharing_live_loading" = "Loading Live location...";
 "location_sharing_live_error" = "Live location error";
+"location_sharing_live_timer_selector_title" = "Choose for how long others will see your accurate location.";
+"location_sharing_live_timer_selector_short" = "for 15 minutes";
+"location_sharing_live_timer_selector_medium" = "for 1 hour";
+"location_sharing_live_timer_selector_long" = "for 8 hours";
+"location_sharing_live_no_user_locations_error_title" = "No user locations available";
+"location_sharing_live_stop_sharing_error" = "Fail to stop sharing location";
+"location_sharing_live_stop_sharing_progress" = "Stop location sharing";
 
 // MARK: - MatrixKit
 

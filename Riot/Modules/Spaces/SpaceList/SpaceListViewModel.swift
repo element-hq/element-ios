@@ -116,18 +116,19 @@ final class SpaceListViewModel: SpaceListViewModelType {
     }
     
     func select(spaceWithId spaceId: String) {
-        for (sectionIndex, section) in self.sections.enumerated() {
-            switch section {
-            case .home: break
-            case .addSpace:  break
-            case .spaces(let viewDataList):
-                for (row, itemViewData) in viewDataList.enumerated() where itemViewData.spaceId == spaceId {
-                    let indexPath = IndexPath(row: row, section: sectionIndex)
-                    self.selectSpace(with: spaceId)
-                    self.selectedIndexPath = indexPath
-                    self.update(viewState: .selectionChanged(indexPath))
-                }
-            }
+        var foundIndexPath: IndexPath?
+        
+        if let spaceService = self.userSessionsService.mainUserSession?.matrixSession.spaceService,
+           let firstRootAncestor = spaceService.firstRootAncestorForRoom(withId: spaceId) {
+            foundIndexPath = indexPathOf(spaceWithId: firstRootAncestor.spaceId)
+        } else {
+            foundIndexPath = indexPathOf(spaceWithId: spaceId)
+        }
+        
+        if let indexPath = foundIndexPath {
+            self.selectSpace(with: spaceId)
+            self.selectedIndexPath = indexPath
+            self.update(viewState: .selectionChanged(indexPath))
         }
     }
     
@@ -303,4 +304,20 @@ final class SpaceListViewModel: SpaceListViewModelType {
         
         self.update(viewState: .loaded([]))
     }
+    
+    private func indexPathOf(spaceWithId spaceId: String) -> IndexPath? {
+        for (sectionIndex, section) in self.sections.enumerated() {
+            switch section {
+            case .home: break
+            case .addSpace:  break
+            case .spaces(let viewDataList):
+                for (row, itemViewData) in viewDataList.enumerated() where itemViewData.spaceId == spaceId {
+                    return IndexPath(row: row, section: sectionIndex)
+                }
+            }
+        }
+        
+        return nil
+    }
+    
 }

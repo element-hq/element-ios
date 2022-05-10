@@ -26,6 +26,7 @@ import AnalyticsEvents
     case slashCommand
     case spaceHierarchy
     case timeline
+    case permalink
     
     var trigger: AnalyticsEvent.JoinedRoom.Trigger? {
         switch self {
@@ -45,6 +46,8 @@ import AnalyticsEvents
             return .SpaceHierarchy
         case .timeline:
             return .Timeline
+        case .permalink:
+            return .MobilePermalink
         }
     }
 }

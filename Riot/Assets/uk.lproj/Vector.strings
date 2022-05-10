@@ -1158,7 +1158,7 @@
 "settings_third_party_notices" = "Примітки третіх сторін";
 "settings_labs_enable_ringing_for_group_calls" = "Дзвінок групових викликів";
 "settings_labs_enabled_polls" = "Опитування";
-"settings_labs_create_conference_with_jitsi" = "Створити конференц-виклик за допомогою jitsi";
+"settings_labs_create_conference_with_jitsi" = "Створити груповий виклик за допомогою jitsi";
 "settings_labs_e2e_encryption_prompt_message" = "Щоб завершити налаштування шифрування вам потрібно повторно увійти.";
 "settings_labs_e2e_encryption" = "Наскрізне шифрування";
 "settings_unignore_user" = "Показати всі повідомлення від %@?";
@@ -1193,7 +1193,7 @@
 "room_message_edits_history_title" = "Редагування повідомлення";
 "room_resource_usage_limit_reached_message_1_monthly_active_user" = "Цей домашній сервер досяг свого місячного обмеження активних користувачів, тож ";
 "room_resource_usage_limit_reached_message_1_default" = "Цей домашній сервер досягнув одного зі своїх лімітів ресурсів, тож ";
-"room_conference_call_no_power" = "Для керування конференц-викликами у цій кімнаті потрібен дозвіл";
+"room_conference_call_no_power" = "Для керування груповими викликами у цій кімнаті потрібен дозвіл";
 "room_participants_security_information_room_encrypted_for_dm" = "Повідомлення тут захищені наскрізним шифруванням.\n\nВаші повідомлення захищені замками, тож лише ви та отримувач маєте унікальні ключі для їхнього відмикання.";
 "room_participants_security_information_room_encrypted" = "Повідомлення тут захищені наскрізним шифруванням.\n\nВаші повідомлення захищені замками, тож лише ви та отримувачі мають унікальні ключі для їхнього відмикання.";
 "room_participants_action_security_status_complete_security" = "Завершити налаштування безпеки";
@@ -1464,7 +1464,7 @@
 "analytics_prompt_point_3" = "Можете вимкнути це коли завгодно в налаштуваннях";
 "analytics_prompt_not_now" = "Відкласти";
 "analytics_prompt_yes" = "Так, усе гаразд";
-"analytics_prompt_stop" = "Більше не надсилати";
+"analytics_prompt_stop" = "Припинити надсилання";
 "analytics_prompt_terms_link_upgrade" = "тут";
 /* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
 "analytics_prompt_terms_upgrade" = "Прочитайте всі наші умови %@. Згодні з ними?";
@@ -1505,7 +1505,7 @@
 "call_no_stun_server_error_message_2" = "Також ви можете спробувати публічний сервер %@, але це буде менш надійно й сервер бачитиме вашу IP-адресу. Ви можете керувати цим у налаштуваннях";
 "call_no_stun_server_error_message_1" = "Запропонуйте адміністратору вашого домашнього сервера %@ налаштувати сервер TURN для надійної роботи викликів.";
 "call_no_stun_server_error_title" = "Не вдалося зателефонувати через неправильно налаштований сервер";
-"call_jitsi_error" = "Не вдалося приєднатися до конференції.";
+"call_jitsi_error" = "Не вдалося приєднатися до групового виклику.";
 "call_already_displayed" = "Виклик уже триває.";
 "photo_library_access_not_granted" = "%@ не має доступу до медіатеки, просимо змінити налаштування приватності";
 "camera_unavailable" = "Камера недоступна на вашому пристрої";
@@ -1513,12 +1513,12 @@
 "rage_shake_prompt" = "Схоже, ви розчаровано струсили телефон. Бажаєте надіслати звіт про ваду?";
 "bug_report_prompt" = "При останньому запуску застосунок закрився з помилкою. Бажаєте надіслати звіт про помилку?";
 "homeserver_connection_lost" = "Не вдалося з'єднатися з домашнім сервером.";
-"event_formatter_jitsi_widget_removed_by_you" = "Ви вилучаєте голосову конференцію";
-"event_formatter_jitsi_widget_added_by_you" = "Ви додаєте голосову конференцію";
+"event_formatter_jitsi_widget_removed_by_you" = "Ви вилучили груповий голосовий виклик";
+"event_formatter_jitsi_widget_added_by_you" = "Ви додали груповий голосовий виклик";
 "event_formatter_rerequest_keys_part2" = " ваших інших сеансів.";
 "event_formatter_rerequest_keys_part1_link" = "Повторити запит ключів шифрування";
-"event_formatter_jitsi_widget_removed" = "%@ вилучає голосову конференцію";
-"event_formatter_jitsi_widget_added" = "%@ додає голосову конференцію";
+"event_formatter_jitsi_widget_removed" = "%@ вилучає голосовий груповий виклик";
+"event_formatter_jitsi_widget_added" = "%@ додає груповий голосовий виклик";
 "event_formatter_widget_removed" = "%@ віджет видалено %@";
 "event_formatter_widget_added" = "%@ віджет додано %@";
 
@@ -2254,7 +2254,7 @@
 "notice_room_topic_removed_by_you" = "Ви вилучили тему";
 "notice_room_name_removed_by_you_for_dm" = "Ви вилучили назву";
 "notice_room_name_removed_by_you" = "Ви вилучили назву кімнати";
-"notice_conference_call_request_by_you" = "Ви запитали VoIP-конференцію";
+"notice_conference_call_request_by_you" = "Ви запросили на голосовий груповий виклик";
 "notice_answered_video_call_by_you" = "Ви відповіли на виклик";
 "notice_placed_video_call_by_you" = "Ви розпочали відеовиклик";
 "notice_placed_voice_call_by_you" = "Ви розпочали голосовий виклик";
@@ -2264,9 +2264,9 @@
 "notice_display_name_removed_by_you" = "Ви вилучили показуване ім'я";
 "notice_display_name_changed_from_by_you" = "Ви змінили показуване ім'я з %@ на %@";
 "notice_display_name_set_by_you" = "Ви вказали показуваним іменем %@";
-"notice_conference_call_finished" = "VoIP-конференція завершилася";
-"notice_conference_call_started" = "VoIP-конференція розпочалася";
-"notice_conference_call_request" = "%@ запитує VoIP-конференцію";
+"notice_conference_call_finished" = "Голосовий груповий виклик завершено";
+"notice_conference_call_started" = "Груповий голосовий виклик розпочато";
+"notice_conference_call_request" = "%@ запрошує до групового голосового виклику";
 "notice_declined_video_call" = "%@ відхиляє виклик";
 "notice_ended_video_call" = "%@ завершує виклик";
 "notice_answered_video_call" = "%@ відповідає на виклик";
@@ -2275,7 +2275,7 @@
 
 // Room members
 "room_member_ignore_prompt" = "Ви впевнені, що хочете сховати всі повідомлення від цього користувача?";
-"room_no_conference_call_in_encrypted_rooms" = "Кімнати з шифруванням не підтримують конференцвиклики";
+"room_no_conference_call_in_encrypted_rooms" = "Кімнати з шифруванням не підтримують групові виклики";
 "room_error_topic_edition_not_authorized" = "Ви не маєте повноважень змінювати тему цієї кімнати";
 "room_error_name_edition_not_authorized" = "Ви не маєте повноважень змінювати назву цієї кімнати";
 "room_error_join_failed_empty_room" = "На цю мить неможливо приєднатися до порожньої кімнати.";
@@ -2293,7 +2293,7 @@
 "attachment_small_with_resolution" = "Малий %@ (~%@)";
 "attachment_size_prompt_message" = "Ви можете вимкнути це у налаштуваннях.";
 "attachment_size_prompt_title" = "Підтвердити розмір, щоб надіслати";
-"room_no_power_to_create_conference_call" = "Вам потрібен дозвіл, щоб надсилати запрошення, щоб розпочати конференцію в цій кімнаті";
+"room_no_power_to_create_conference_call" = "Вам потрібен дозвіл на надсилання запрошення, щоб розпочати груповий виклик у цій кімнаті";
 "room_event_encryption_verify_message" = "Щоб переконатися, що цьому сеансу можна довіряти, зв’яжіться з його власником іншим способом (наприклад, особисто чи телефоном) і запитайте його, чи збігається ключ, який вони бачать у налаштуваннях користувача для цього сеансу, з ключем нижче:\n\nНазва сеансу: %@\nID сеансу: %@\nКлюч сеансу: %@\n\nЯкщо він збігається, натисніть кнопку підтвердження внизу. Якщо ні, значить хтось інший перехоплює цей сеанс, і ви, ймовірно, хочете натиснути кнопку чорного списку.\n\nУ майбутньому цей процес перевірки буде ускладнено.";
 "call_more_actions_hold" = "Утримувати";
 "call_holded" = "Ви утримуєте виклик";
@@ -2423,7 +2423,7 @@
 "create_room_section_footer_type_restricted" = "Будь-хто в Space name може знайти й приєднатися.";
 "create_room_section_footer_type_private" = "Лише запрошені можуть знайти й приєднатися.";
 "create_room_type_restricted" = "Учасники простору";
-"call_jitsi_unable_to_start" = "Не вдається розпочати конференцію";
+"call_jitsi_unable_to_start" = "Не вдалося розпочати груповий виклик";
 "room_suggestion_settings_screen_message" = "Пропоновані кімнати рекомендуються учасникам простору як варті приєднання.";
 "room_suggestion_settings_screen_title" = "Зробіть кімнату пропонованою для простору";
 
@@ -2490,3 +2490,24 @@
 "new_word" = "Нове";
 "stop" = "Зупинити";
 "joining" = "Приєднання";
+"location_sharing_live_list_item_stop_sharing_action" = "Припинити надсилання";
+"location_sharing_live_list_item_current_user_display_name" = "Ви";
+"location_sharing_live_list_item_last_update_invalid" = "Час останнього оновлення невідомий";
+"location_sharing_live_list_item_last_update" = "Оновлено %@ тому";
+"location_sharing_live_list_item_sharing_expired" = "Надсилання завершено";
+"location_sharing_live_list_item_time_left" = "%@ виходить";
+"location_sharing_live_viewer_title" = "Місцеперебування";
+"location_sharing_live_map_callout_title" = "Поділитися місцеперебуванням";
+"room_access_settings_screen_upgrade_alert_note" = "Зауважте, що оновлення створить нову версію кімнати. Усі поточні повідомлення залишаться в цій архівованій кімнаті.";
+"room_access_settings_screen_upgrade_alert_message_no_param" = "Будь-хто з батьківського простору зможе знайти цю кімнату та приєднатися до неї — не потрібно вручну запрошувати всіх. Ви зможете будь-коли змінити це в налаштуваннях кімнати.";
+"room_access_settings_screen_upgrade_alert_message" = "Будь-хто в %@ зможе знайти та приєднатися до цієї кімнати — не потрібно вручну запрошувати всіх. Ви зможете змінити це в налаштуваннях кімнати у будь-який час.";
+"settings_presence_offline_mode_description" = "Якщо ввімкнено, ваш статус завжди будете офлайн для інших користувачів, навіть коли вони користуються іншим застосунком.";
+"settings_presence_offline_mode" = "Офлайн-режим";
+"settings_presence" = "Присутність";
+
+// Room Preview
+"room_preview_invitation_format" = "%@ запрошує вас приєднатися до цієї кімнати";
+"threads_discourage_information_2" = "\n\nУсе одно увімкнути треди?";
+"threads_discourage_information_1" = "Наразі ваш домашній сервер не підтримує треди, тому ця функція може працювати нестабільно. Деякі повідомлення у тредах можуть бути недоступними. ";
+"room_ongoing_conference_call_with_close" = "Поточний груповий виклик. Приєднатися як %@ або %@. %@.";
+"room_ongoing_conference_call" = "Поточний груповий виклик. Приєднатися як %@ або %@.";

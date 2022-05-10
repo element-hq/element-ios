@@ -135,7 +135,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     }
 }
 
-- (instancetype)initWithCredentials:(MXCredentials*)credentials
+- (nonnull instancetype)initWithCredentials:(MXCredentials*)credentials
 {
     if (self = [super init])
     {

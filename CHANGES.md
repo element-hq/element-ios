@@ -1,3 +1,37 @@
+## Changes in 1.8.14 (2022-05-05)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.23.4](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.23.4)).
+- Spaces: Bring leaving space experience in line with Web ([#4850](https://github.com/vector-im/element-ios/issues/4850))
+- Location sharing: Add cell for live location sharing in timeline ([#6029](https://github.com/vector-im/element-ios/issues/6029))
+- Location sharing: Add timer selector when start live location sharing ([#6071](https://github.com/vector-im/element-ios/issues/6071))
+- Location sharing: Connect SDK to location sharing timeline cell ([#6077](https://github.com/vector-im/element-ios/issues/6077))
+
+🐛 Bugfixes
+
+- RoomNavigationParameters: Fix initializer by not defining convenience. ([#5883](https://github.com/vector-im/element-ios/issues/5883))
+- Fail to open a sub space ([#5965](https://github.com/vector-im/element-ios/issues/5965))
+- RecentsViewController: Fix disappearing filter on search cancellation & empty view on the first screen appearing. ([#6076](https://github.com/vector-im/element-ios/issues/6076))
+- RoomsViewController: Avoid crash by fixing section index to scroll. ([#6086](https://github.com/vector-im/element-ios/issues/6086))
+- Search: Prevent crash when searching ([#6115](https://github.com/vector-im/element-ios/issues/6115))
+
+🗣 Translations
+
+- Localisations: Remove strings with bad formatting and add a run script to detect errors at compile time. ([#5990](https://github.com/vector-im/element-ios/issues/5990))
+
+🧱 Build
+
+- UI Tests: Fix broken tests and add a check on PRs. ([#6050](https://github.com/vector-im/element-ios/issues/6050))
+
+🚧 In development 🚧
+
+- Authentication: Begin implementing authentication flow with a Service, Registration screen and Server Selection screen. ([#5648](https://github.com/vector-im/element-ios/issues/5648))
+- Location sharing: Add live location viewer screen. ([#5723](https://github.com/vector-im/element-ios/issues/5723))
+- Location sharing: Support live location event in the timeline. ([#6057](https://github.com/vector-im/element-ios/issues/6057))
+- Location sharing: Integrate live location viewer screen with room screen. ([#6081](https://github.com/vector-im/element-ios/issues/6081))
+
+
 ## Changes in 1.8.13 (2022-04-20)
 
 ✨ Features

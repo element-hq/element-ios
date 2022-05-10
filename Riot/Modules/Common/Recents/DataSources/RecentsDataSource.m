@@ -931,9 +931,9 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     sectionHeader.headerLabel = headerLabel;
     
     if (self.recentsListService.space == nil && _recentsDataSourceMode == RecentsDataSourceModeHome && sectionType == RecentsDataSourceSectionTypeConversation) {
-        if (!self.allChatOptionsView) {
+//        if (!self.allChatOptionsView) {
             self.allChatOptionsView = [self.allChatFilterOptions createFilterListView];
-        }
+//        }
         sectionHeader.bottomView = self.allChatOptionsView;
     }
 

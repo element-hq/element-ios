@@ -2229,3 +2229,24 @@
 // Mark: - Room invite
 
 "room_invite_to_space_option_title" = "Kasutajale %@";
+"location_sharing_live_list_item_last_update" = "Uuendamise välp: %@";
+"location_sharing_live_list_item_stop_sharing_action" = "Lõpeta asukoha jagamine";
+"location_sharing_live_list_item_current_user_display_name" = "Sina";
+"location_sharing_live_list_item_last_update_invalid" = "Viimase uuendamise aeg pole teada";
+"location_sharing_live_list_item_sharing_expired" = "Asukoha jagamine aegus";
+"location_sharing_live_list_item_time_left" = "kuvamisaega jäänud %@s";
+"location_sharing_live_viewer_title" = "Asukoht";
+"location_sharing_live_map_callout_title" = "Jaga asukohta";
+"create_room_section_footer_type_public" = "Jututuba saavad leida ja sellega liituda vaid need, kellel on kutse. See puudutab ka neid, kes pole kogukonna liikmed.";
+"version_check_banner_subtitle_deprecated" = "Me oleme lõpetanud selle rakenduse (%@) toe IOS'i versioonis %@. Kui soovid kasutada%@'i kõiki võimalusi, siis palun uuenda oma iOS'i versiooni.";
+"version_check_banner_subtitle_supported" = "Me üsna varsti lõpetame selle rakenduse (%@) toe IOS'i versioonis %@. Kui soovid kasutada %@'i kõiki võimalusi, siis palun uuenda oma iOS'i versiooni.";
+"space_beta_announce_information" = "Kogukonnad on uus viis inimeste ja jututubade sidumiseks. Neid veel ei saa iOS'is kasutada, kuid nad on olemas Element'i veebirakenduses ja töölauarakenduses.";
+"space_feature_unavailable_subtitle" = "Kogukondi ei saa iOS'is kasutada, kuid nad on olemas Element'i veebirakenduses ja töölauarakenduses";
+"room_access_settings_screen_upgrade_alert_note" = "Palun arvesta, et uuendusega tehakse jututoast uus variant. Kõik senised sõnumid jäävad sellesse jututuppa arhiveeritud olekus.";
+"room_access_settings_screen_upgrade_alert_message_no_param" = "Kõik hõlmava kogukonna liikmed saavad antud jututuba leida ja sellega liituda - sa ei pea kedagi ükshaaval kutsuma. Neid jututoa seadistusi saad igal hetkel muuta.";
+"room_access_settings_screen_upgrade_alert_message" = "Kõik %@ jututoa liikmed saavad antud jututuba leida ja sellega liituda - sa ei pea kedagi ükshaaval kutsuma. Neid jututoa seadistusi saad igal hetkel muuta.";
+"settings_presence_offline_mode_description" = "Kui see valik on kasutusel, siis sa alati oled teiste jaoks võrgust väljas. Seda ka siis, kui kasutad rakendust.";
+"settings_presence_offline_mode" = "Ei ole võrgus";
+"settings_presence" = "Olek võrgus";
+"threads_discourage_information_2" = "\n\nKas sa ikkagi soovid jutulõngad kasutusele võtta?";
+"threads_discourage_information_1" = "Sinu koduserver hetkel ei toeta jutulõngasid ning seega antud funktsionaalsus ei pruugi toimida korralikult. Kõik sõnumid jutulõngas ilmselt ei ole loetavad. ";

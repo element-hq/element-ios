@@ -33,14 +33,8 @@ struct OnboardingUseCaseSelectionScreen: View {
     /// The screen's title and instructions.
     var titleContent: some View {
         VStack(spacing: 8) {
-            Image(Asset.Images.onboardingUseCaseIcon.name)
-                .resizable()
-                .renderingMode(.template)
-                .foregroundColor(theme.colors.accent)
-                .frame(width: OnboardingMetrics.iconSize, height: OnboardingMetrics.iconSize)
-                .background(Circle().foregroundColor(.white).padding(2))
+            OnboardingIconImage(image: Asset.Images.onboardingUseCaseIcon)
                 .padding(.bottom, 8)
-                .accessibilityHidden(true)
             
             Text(VectorL10n.onboardingUseCaseTitle)
                 .font(theme.fonts.title2B)

@@ -71,14 +71,8 @@ struct OnboardingCelebrationScreen: View {
     /// The main content of the view to be shown in a scroll view.
     var mainContent: some View {
         VStack(spacing: 8) {
-            Image(Asset.Images.onboardingCelebrationIcon.name)
-                .resizable()
-                .scaledToFit()
-                .frame(width: OnboardingMetrics.iconSize, height: OnboardingMetrics.iconSize)
-                .foregroundColor(theme.colors.accent)
-                .background(Circle().foregroundColor(.white).padding(2))
-                .padding(.bottom, 42)
-                .accessibilityHidden(true)
+            OnboardingIconImage(image: Asset.Images.onboardingCelebrationIcon)
+                .padding(.bottom, OnboardingMetrics.breakerScreenIconBottomPadding)
             
             Text(VectorL10n.onboardingCelebrationTitle)
                 .font(theme.fonts.title2B)

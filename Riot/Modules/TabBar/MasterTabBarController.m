@@ -726,8 +726,24 @@
 - (void)filterRoomsWithParentId:(NSString*)roomParentId
                 inMatrixSession:(MXSession*)mxSession
 {
-    titleView.subtitleLabel.text = roomParentId ? [mxSession roomSummaryWithRoomId:roomParentId].displayname : nil;
+    if (roomParentId) {
+        NSString *parentName = [mxSession roomSummaryWithRoomId:roomParentId].displayname;
+        NSMutableArray<NSString *> *breadcrumbs = [[NSMutableArray alloc] initWithObjects:parentName, nil];
 
+        MXSpace *firstRootAncestor = roomParentId ? [mxSession.spaceService firstRootAncestorForRoomWithId:roomParentId] : nil;
+        NSString *rootName = nil;
+        if (firstRootAncestor)
+        {
+            rootName = [mxSession roomSummaryWithRoomId:firstRootAncestor.spaceId].displayname;
+            [breadcrumbs insertObject:rootName atIndex:0];
+        }
+        titleView.breadcrumbView.breadcrumbs = breadcrumbs;
+    }
+    else
+    {
+        titleView.breadcrumbView.breadcrumbs = @[];
+    }
+    
     recentsDataSource.currentSpace = [mxSession.spaceService getSpaceWithId:roomParentId];
     [self updateSideMenuNotifcationIcon];
 }

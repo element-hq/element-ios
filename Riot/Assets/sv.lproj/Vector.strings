@@ -2224,3 +2224,29 @@
 "add" = "Lägg till";
 "existing" = "Existerande";
 "stop" = "Stopp";
+"settings_enter_validation_token_for" = "Ange valideringstoken för %@:";
+"location_sharing_live_list_item_stop_sharing_action" = "Sluta dela";
+"location_sharing_live_list_item_current_user_display_name" = "Du";
+"location_sharing_live_list_item_last_update_invalid" = "Okänd senast uppdatering";
+"location_sharing_live_list_item_last_update" = "Uppdaterades för %@ sen";
+"location_sharing_live_list_item_sharing_expired" = "Delning löpte ut";
+"location_sharing_live_list_item_time_left" = "%@ kvar";
+"location_sharing_live_viewer_title" = "Plats";
+"location_sharing_live_map_callout_title" = "Dela plats";
+"call_no_stun_server_error_message_2" = "Alternativt kan du testa den offentliga servern på %@, men det här är inte lika tillförlitligt och det delar din IP-adress med den servern. Du kan också hantera detta i inställningarna";
+"group_participants_invite_prompt_msg" = "Är du säker på att du vill bjuda in %@ till den här gruppen?";
+"group_participants_remove_prompt_msg" = "Är du säker på att du vill ta bort %@ från den här gruppen?";
+"room_access_settings_screen_upgrade_alert_note" = "Observera att uppgradering kommer att skapa en ny version av rummet. Alla nuvarande meddelanden kommer att bli kvar i det här arkiverade rummet.";
+"room_access_settings_screen_upgrade_alert_message_no_param" = "Vem som helst i överutrymmet kommer kunna hitta och gå med i rummet - du behöver inte bjuda in någon manuellt. Du kan ändra detta i inställningarna när som helst.";
+"room_access_settings_screen_upgrade_alert_message" = "Vem som helst i %@ kommer kunna hitta och gå med i rummet - du behöver inte bjuda in någon manuellt. Du kan ändra detta i inställningarna när som helst.";
+"settings_presence_offline_mode_description" = "Om det är aktiverat så kommer du alltid visas som offline för andra användare, även när du använder applikationen.";
+"settings_presence_offline_mode" = "Offlineläge";
+"settings_presence" = "Närvaro";
+
+// Room Preview
+"room_preview_invitation_format" = "Du har blivit inbjuden till det här rummet av %@";
+"threads_discourage_information_2" = "\n\nVill du aktivera trådar ändå?";
+"threads_discourage_information_1" = "Din hemserver stöder för tillfället inte trådar, så den här funktionen kan vara opålitlig. Vissa trådade meddelanden kanske inte alltid är tillgängliga. ";
+"room_new_messages_notification" = "%d nya meddelanden";
+"room_participants_invite_prompt_msg" = "Är du säker på att du vill bjuda in %@ till den här chatten?";
+"room_participants_remove_prompt_msg" = "Är du säker på att du vill ta bort %@ från den här chatten?";
