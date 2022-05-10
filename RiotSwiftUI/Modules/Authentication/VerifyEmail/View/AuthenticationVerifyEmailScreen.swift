@@ -35,8 +35,7 @@ struct AuthenticationVerifyEmailScreen: View {
             VStack {
                 ScrollView {
                     mainContent
-                        .frame(maxWidth: OnboardingMetrics.maxContentWidth)
-                        .frame(maxWidth: .infinity)
+                        .readableFrame()
                         .padding(.horizontal, 16)
                 }
                 
