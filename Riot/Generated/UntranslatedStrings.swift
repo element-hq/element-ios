@@ -78,6 +78,34 @@ public extension VectorL10n {
   static var authenticationServerSelectionTitle: String { 
     return VectorL10n.tr("Untranslated", "authentication_server_selection_title") 
   }
+  /// This will help verify your account and enables password recovery.
+  static var authenticationVerifyEmailInputMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_email_input_message") 
+  }
+  /// Enter your email address
+  static var authenticationVerifyEmailInputTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_email_input_title") 
+  }
+  /// Email Address
+  static var authenticationVerifyEmailTextFieldPlaceholder: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_email_text_field_placeholder") 
+  }
+  /// Resend email
+  static var authenticationVerifyEmailWaitingButton: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_email_waiting_button") 
+  }
+  /// Did not receive an email?
+  static var authenticationVerifyEmailWaitingHint: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_email_waiting_hint") 
+  }
+  /// To confirm your email address, tap the button in the email we just sent to %@
+  static func authenticationVerifyEmailWaitingMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Untranslated", "authentication_verify_email_waiting_message", p1)
+  }
+  /// Check your email to verify.
+  static var authenticationVerifyEmailWaitingTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_email_waiting_title") 
+  }
   /// Choose from files
   static var imagePickerActionFiles: String { 
     return VectorL10n.tr("Untranslated", "image_picker_action_files") 

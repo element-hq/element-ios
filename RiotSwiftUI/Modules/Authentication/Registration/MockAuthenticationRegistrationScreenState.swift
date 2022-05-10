@@ -56,11 +56,7 @@ enum MockAuthenticationRegistrationScreenState: MockScreenState, CaseIterable {
         case .passwordWithUsernameError:
             viewModel = AuthenticationRegistrationViewModel(homeserverAddress: "https://example.com", ssoIdentityProviders: [])
             viewModel.state.hasEditedUsername = true
-            Task {
-                await MainActor.run {
-                    viewModel.displayError(.usernameUnavailable(VectorL10n.authInvalidUserName))
-                }
-            }
+            Task { await viewModel.displayError(.usernameUnavailable(VectorL10n.authInvalidUserName)) }
         case .ssoOnly:
             viewModel = AuthenticationRegistrationViewModel(homeserverAddress: "https://company.com",
                                                             showRegistrationForm: false,

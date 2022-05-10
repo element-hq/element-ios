@@ -70,9 +70,10 @@ struct OnboardingCongratulationsScreen: View {
     
     /// The main content of the view to be shown in a scroll view.
     var mainContent: some View {
-        VStack(spacing: 42) {
+        VStack(spacing: OnboardingMetrics.breakerScreenIconBottomPadding) {
             Image(Asset.Images.onboardingCongratulationsIcon.name)
                 .resizable()
+                .scaledToFit()
                 .frame(width: OnboardingMetrics.iconSize, height: OnboardingMetrics.iconSize)
                 .accessibilityHidden(true)
             
