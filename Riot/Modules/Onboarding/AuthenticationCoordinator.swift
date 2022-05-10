@@ -131,7 +131,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         let parameters = AuthenticationServerSelectionCoordinatorParameters(authenticationService: authenticationService,
                                                                             hasModalPresentation: false)
         let coordinator = AuthenticationServerSelectionCoordinator(parameters: parameters)
-        coordinator.completion = { [weak self, weak coordinator] result in
+        coordinator.callback = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
             self.serverSelectionCoordinator(coordinator, didCompleteWith: result)
         }
@@ -168,7 +168,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
                                                                          registrationFlow: homeserver.registrationFlow,
                                                                          loginMode: homeserver.preferredLoginMode)
         let coordinator = AuthenticationRegistrationCoordinator(parameters: parameters)
-        coordinator.completion = { [weak self, weak coordinator] result in
+        coordinator.callback = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
             self.registrationCoordinator(coordinator, didCompleteWith: result)
         }
@@ -189,8 +189,6 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     @MainActor private func registrationCoordinator(_ coordinator: AuthenticationRegistrationCoordinator,
                                                     didCompleteWith result: AuthenticationRegistrationCoordinatorResult) {
         switch result {
-        case .selectServer:
-            showServerSelectionScreen()
         case .completed(let result):
             handleRegistrationResult(result)
         }

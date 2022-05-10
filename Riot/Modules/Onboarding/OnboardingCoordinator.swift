@@ -437,7 +437,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         let parameters = OnboardingAvatarCoordinatorParameters(userSession: userSession, avatar: selectedAvatar)
         let coordinator = OnboardingAvatarCoordinator(parameters: parameters)
         
-        coordinator.completion = { [weak self, weak coordinator] result in
+        coordinator.callback = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
             
             switch result {
