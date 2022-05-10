@@ -42,7 +42,7 @@ const CGFloat kTypingCellHeight = 24;
 @property (nonatomic, weak) id keyVerificationTransactionDidChangeNotificationObserver;
 
 // Listen to location beacon received
-@property (nonatomic, weak) id beaconInfoSummaryListner;
+@property (nonatomic, weak) id beaconInfoSummaryListener;
 
 // Timer used to debounce cells refresh
 @property (nonatomic, strong) NSTimer *refreshCellsTimer;
@@ -185,9 +185,9 @@ const CGFloat kTypingCellHeight = 24;
     
     [self.mxSession.threadingService removeDelegate:self];
     
-    if (self.beaconInfoSummaryListner)
+    if (self.beaconInfoSummaryListener)
     {
-        [self.mxSession.aggregations.beaconAggregations removeListener:self.beaconInfoSummaryListner];
+        [self.mxSession.aggregations.beaconAggregations removeListener:self.beaconInfoSummaryListener];
     }
     
     [super destroy];
@@ -764,7 +764,9 @@ const CGFloat kTypingCellHeight = 24;
 
 - (void)registerBeaconInfoSummaryListner
 {
-    self.beaconInfoSummaryListner = [self.mxSession.aggregations.beaconAggregations listenToBeaconInfoSummaryUpdateInRoomWithId:self.roomId handler:^(id<MXBeaconInfoSummaryProtocol> beaconInfoSummary) {
+    MXWeakify(self);
+    self.beaconInfoSummaryListener = [self.mxSession.aggregations.beaconAggregations listenToBeaconInfoSummaryUpdateInRoomWithId:self.roomId handler:^(id<MXBeaconInfoSummaryProtocol> beaconInfoSummary) {
+        MXStrongifyAndReturnIfNil(self);
         @synchronized (self->bubbles)
         {
             [self refreshFirstCellWithBeaconInfoSummary:beaconInfoSummary];
@@ -780,6 +782,7 @@ const CGFloat kTypingCellHeight = 24;
             RoomBubbleCellData *roomBubbleCellData = (RoomBubbleCellData*)cellData;
             if ([roomBubbleCellData.beaconInfoSummary.id isEqualToString:beaconInfoSummary.id])
             {
+                roomBubbleCellData.beaconInfoSummary = beaconInfoSummary;
                 *stop = YES;
                 return YES;
             }
