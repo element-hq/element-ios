@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct TemplateRoomChatBubbleMessage: View {
 
     // MARK: - Properties
@@ -39,7 +38,6 @@ struct TemplateRoomChatBubbleMessage: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct TemplateRoomChatBubbleMessage_Previews: PreviewProvider {
     static let message = TemplateRoomChatMessageTextContent(body: "Hello")
     static var previews: some View {

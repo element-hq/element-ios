@@ -19,6 +19,5 @@ import Foundation
 protocol OnboardingCelebrationViewModelProtocol {
     
     var completion: (() -> Void)? { get set }
-    @available(iOS 14, *)
     var context: OnboardingCelebrationViewModelType.Context { get }
 }

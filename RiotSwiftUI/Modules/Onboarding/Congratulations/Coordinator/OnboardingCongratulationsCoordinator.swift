@@ -31,7 +31,6 @@ enum OnboardingCongratulationsCoordinatorResult {
     case takeMeHome(UserSession)
 }
 
-@available(iOS 14.0, *)
 final class OnboardingCongratulationsCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties

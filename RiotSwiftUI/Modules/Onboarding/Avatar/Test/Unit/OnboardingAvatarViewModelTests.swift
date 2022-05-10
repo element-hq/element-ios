@@ -19,7 +19,6 @@ import Combine
 
 @testable import RiotSwiftUI
 
-@available(iOS 14.0, *)
 class OnboardingAvatarViewModelTests: XCTestCase {
     private enum Constants {
         static let userId = "@user:matrix.org"

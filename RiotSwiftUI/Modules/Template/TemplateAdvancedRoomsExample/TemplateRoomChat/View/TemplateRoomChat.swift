@@ -17,7 +17,6 @@
 import SwiftUI
 import Combine
 
-@available(iOS 14.0, *)
 struct TemplateRoomChat: View {
     
     // MARK: - Properties
@@ -127,7 +126,6 @@ struct TemplateRoomChat: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct TemplateRoomChat_Previews: PreviewProvider {
     static let stateRenderer = MockTemplateRoomChatScreenState.stateRenderer
     static var previews: some View {

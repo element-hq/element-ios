@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct TemplateUserProfilePresenceView: View {
     
     // MARK: - Properties
@@ -53,7 +52,6 @@ struct TemplateUserProfilePresenceView: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct TemplateUserProfilePresenceView_Previews: PreviewProvider {
     static var previews: some View {
         VStack(alignment:.leading){

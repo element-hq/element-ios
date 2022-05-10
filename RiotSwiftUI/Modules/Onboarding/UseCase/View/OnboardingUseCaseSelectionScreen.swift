@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 /// The screen shown to a new user to select their use case for the app.
 struct OnboardingUseCaseSelectionScreen: View {
 
@@ -116,7 +115,6 @@ struct OnboardingUseCaseSelectionScreen: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct OnboardingUseCase_Previews: PreviewProvider {
     static let stateRenderer = MockOnboardingUseCaseSelectionScreenState.stateRenderer
     

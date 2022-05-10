@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct OnboardingCongratulationsScreen: View {
 
     // MARK: - Properties
@@ -142,7 +141,6 @@ struct OnboardingCongratulationsScreen: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct OnboardingCongratulationsScreen_Previews: PreviewProvider {
     static let stateRenderer = MockOnboardingCongratulationsScreenState.stateRenderer
     static var previews: some View {

@@ -19,6 +19,5 @@ import Foundation
 protocol TemplateSimpleScreenViewModelProtocol {
     
     var completion: ((TemplateSimpleScreenViewModelResult) -> Void)? { get set }
-    @available(iOS 14, *)
     var context: TemplateSimpleScreenViewModelType.Context { get }
 }

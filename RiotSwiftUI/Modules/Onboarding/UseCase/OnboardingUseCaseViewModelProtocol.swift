@@ -19,6 +19,5 @@ import Foundation
 protocol OnboardingUseCaseViewModelProtocol {
     
     var completion: ((OnboardingUseCaseViewModelResult) -> Void)? { get set }
-    @available(iOS 14, *)
     var context: OnboardingUseCaseViewModelType.Context { get }
 }

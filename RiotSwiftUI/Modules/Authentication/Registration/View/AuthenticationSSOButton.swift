@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 /// An button that displays the icon and name of an SSO provider.
 struct AuthenticationSSOButton: View {
     

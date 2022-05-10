@@ -18,7 +18,6 @@ import XCTest
 
 @testable import RiotSwiftUI
 
-@available(iOS 14.0, *)
 class OnboardingCelebrationViewModelTests: XCTestCase {
     // Nothing to test as there is no mutable state
 }

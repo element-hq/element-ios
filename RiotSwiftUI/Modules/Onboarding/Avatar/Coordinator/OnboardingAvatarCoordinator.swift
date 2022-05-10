@@ -30,7 +30,6 @@ enum OnboardingAvatarCoordinatorResult {
     case complete(UserSession)
 }
 
-@available(iOS 14.0, *)
 final class OnboardingAvatarCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties
@@ -178,7 +177,6 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
 
 // MARK: - MediaPickerPresenterDelegate
 
-@available(iOS 14.0, *)
 extension OnboardingAvatarCoordinator: MediaPickerPresenterDelegate {
     /// **Note:** MediaPickerPresenter fails to load images on the simulator as of Xcode 13.3 (at least on an M1 Mac),
     /// so whilst this method may not appear to be called, everything works fine when run on a device.
@@ -195,7 +193,6 @@ extension OnboardingAvatarCoordinator: MediaPickerPresenterDelegate {
 
 // MARK: - CameraPresenterDelegate
 
-@available(iOS 14.0, *)
 extension OnboardingAvatarCoordinator: CameraPresenterDelegate {
     func cameraPresenter(_ presenter: CameraPresenter, didSelectImage image: UIImage) {
         onboardingAvatarViewModel.updateAvatarImage(with: image)

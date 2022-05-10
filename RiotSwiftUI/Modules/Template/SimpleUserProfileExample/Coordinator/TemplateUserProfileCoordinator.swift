@@ -42,7 +42,6 @@ final class TemplateUserProfileCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: TemplateUserProfileCoordinatorParameters) {
         self.parameters = parameters
         let viewModel = TemplateUserProfileViewModel.makeTemplateUserProfileViewModel(templateUserProfileService: TemplateUserProfileService(session: parameters.session))
