@@ -60,6 +60,7 @@ struct AnalyticsPrompt: View {
             
             AnalyticsPromptCheckmarkItem(string: VectorL10n.analyticsPromptPoint3)
         }
+        .fixedSize(horizontal: false, vertical: true)
         .font(theme.fonts.body)
         .frame(maxWidth: .infinity)
     }
@@ -118,14 +119,13 @@ struct AnalyticsPrompt: View {
                         .frame(height: OnboardingMetrics.spacerHeight(in: geometry))
                     
                     mainContent
-                        .frame(maxWidth: OnboardingMetrics.maxContentWidth)
+                        .readableFrame()
                         .padding(.horizontal, horizontalPadding)
                         .padding(.top, OnboardingMetrics.breakerScreenTopPadding)
                 }
-                .frame(maxWidth: .infinity)
                 
                 buttons
-                    .frame(maxWidth: OnboardingMetrics.maxContentWidth)
+                    .readableFrame()
                     .padding(.horizontal, horizontalPadding)
                     .padding(.bottom, OnboardingMetrics.actionButtonBottomPadding)
                     .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)

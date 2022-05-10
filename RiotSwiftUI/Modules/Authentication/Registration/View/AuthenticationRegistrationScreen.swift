@@ -59,8 +59,7 @@ struct AuthenticationRegistrationScreen: View {
                 }
                 
             }
-            .frame(maxWidth: OnboardingMetrics.maxContentWidth)
-            .frame(maxWidth: .infinity)
+            .readableFrame()
             .padding(.horizontal, 16)
             .padding(.bottom, 16)
         }
@@ -72,14 +71,8 @@ struct AuthenticationRegistrationScreen: View {
     /// The header containing the icon, title and message.
     var header: some View {
         VStack(spacing: 8) {
-            Image(Asset.Images.onboardingCongratulationsIcon.name)
-                .resizable()
-                .renderingMode(.template)
-                .foregroundColor(theme.colors.accent)
-                .frame(width: 90, height: 90)
-                .background(Circle().foregroundColor(.white).padding(2))
+            OnboardingIconImage(image: Asset.Images.onboardingCongratulationsIcon)
                 .padding(.bottom, 8)
-                .accessibilityHidden(true)
             
             Text(VectorL10n.authenticationRegistrationTitle)
                 .font(theme.fonts.title2B)

@@ -53,8 +53,8 @@ struct AuthenticationServerSelectionScreen: View {
                         emsBanner
                             .padding(.vertical, 16)
                     }
-                    .frame(maxWidth: OnboardingMetrics.maxContentWidth, minHeight: geometry.size.height)
-                    .frame(maxWidth: .infinity)
+                    .readableFrame()
+                    .frame(minHeight: geometry.size.height)
                     .padding(.horizontal, 16)
                     .onAppear { scrollView = reader }
                 }
@@ -70,14 +70,8 @@ struct AuthenticationServerSelectionScreen: View {
     /// The title, message and icon at the top of the screen.
     var header: some View {
         VStack(spacing: 8) {
-            Image(Asset.Images.authenticationServerSelectionIcon.name)
-                .resizable()
-                .renderingMode(.template)
-                .foregroundColor(theme.colors.accent)
-                .frame(width: 90, height: 90)
-                .background(Circle().foregroundColor(.white).padding(4))
+            OnboardingIconImage(image: Asset.Images.authenticationServerSelectionIcon)
                 .padding(.bottom, 8)
-                .accessibilityHidden(true)
             
             Text(VectorL10n.authenticationServerSelectionTitle)
                 .font(theme.fonts.title2B)

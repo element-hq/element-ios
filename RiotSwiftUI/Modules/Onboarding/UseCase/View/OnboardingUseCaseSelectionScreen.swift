@@ -102,12 +102,11 @@ struct OnboardingUseCaseSelectionScreen: View {
                         
                         useCaseButtons
                     }
-                    .frame(maxWidth: OnboardingMetrics.maxContentWidth)
+                    .readableFrame()
                     .padding(.top, OnboardingMetrics.topPaddingToNavigationBar)
                     .padding(.bottom, 8)
                     .padding(.horizontal, 16)
                 }
-                .frame(maxWidth: .infinity)
                 
                 serverFooter
                     .padding(.horizontal, 16)
@@ -128,7 +127,9 @@ struct OnboardingUseCase_Previews: PreviewProvider {
     static var previews: some View {
         stateRenderer.screenGroup(addNavigation: true)
             .theme(.light).preferredColorScheme(.light)
+            .navigationViewStyle(.stack)
         stateRenderer.screenGroup(addNavigation: true)
             .theme(.dark).preferredColorScheme(.dark)
+            .navigationViewStyle(.stack)
     }
 }
