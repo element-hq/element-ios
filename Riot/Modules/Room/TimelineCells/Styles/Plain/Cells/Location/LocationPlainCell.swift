@@ -26,17 +26,17 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
         super.render(cellData)
         
         guard #available(iOS 14.0, *),
-              let bubbleData = cellData as? RoomBubbleCellData
+              let bubbleData = cellData as? RoomBubbleCellData,
+              let event = bubbleData.events.last
         else {
             return
         }
         
         locationView.update(theme: ThemeService.shared().theme)
         locationView.delegate = self
+        self.event = event
         
-        if bubbleData.cellDataTag == .location,
-           let event = bubbleData.events.last {
-            self.event = event
+        if bubbleData.cellDataTag == .location {
             renderStaticLocation(event)
         } else if bubbleData.cellDataTag == .liveLocation,
                   let beaconInfoSummary = bubbleData.beaconInfoSummary {
@@ -126,6 +126,11 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
         locationView = RoomTimelineLocationView.loadFromNib()
         
         contentView.vc_addSubViewMatchingParent(locationView)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.event = nil
     }
 }
 
