@@ -126,6 +126,30 @@ extension UIViewController {
         return fabImageView
     }
     
+    @discardableResult
+    @objc func vc_addFAB(withImage image: UIImage, menu: UIMenu) -> UIButton {
+        let button = UIButton()
+        button.setImage(image, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.contentMode = .center
+        button.layer.shadowOpacity = 0.3
+        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        button.showsMenuAsPrimaryAction = true
+        button.menu = menu
+        
+        self.view.addSubview(button)
+        
+        button.widthAnchor.constraint(equalToConstant: UIViewControllerConstants.fabButtonSize.width).isActive = true
+        button.heightAnchor.constraint(equalToConstant: UIViewControllerConstants.fabButtonSize.height).isActive = true
+        button.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor,
+                                               constant: UIViewControllerConstants.fabButtonTrailingMargin).isActive = true
+        self.view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: button.bottomAnchor,
+                                                              constant: UIViewControllerConstants.fabButtonBottomMargin).isActive = true
+        
+        return button
+    }
+    
     /// Set leftBarButtonItem with split view display mode button if there is no leftBarButtonItem defined and splitViewController exists.
     /// To be Used when view controller is displayed as detail controller in split view.
     func vc_setupDisplayModeLeftBarButtonItemIfNeeded() {

@@ -25,4 +25,5 @@ public enum RecentsListServiceSection: Int {
     case lowPriority
     case serverNotice
     case suggested
+    case recents
 }

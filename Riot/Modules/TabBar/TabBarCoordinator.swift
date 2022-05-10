@@ -18,6 +18,7 @@
 
 import UIKit
 import CommonKit
+import MatrixSDK
 
 @objcMembers
 final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
@@ -119,6 +120,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         }
         
         self.currentSpaceId = spaceId
+        createRightButtonItem()
     }
     
     func toPresentable() -> UIViewController {
@@ -217,16 +219,93 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             tabBarController.navigationItem.leftBarButtonItem = settingsBarButtonItem
         }
         
-        let searchBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.searchIcon.image, style: .plain) { [weak self] in
-            self?.showUnifiedSearch()
-        }
-        searchBarButtonItem.accessibilityLabel = VectorL10n.searchDefaultPlaceholder
+//        let settingsItem = UIAction(title: VectorL10n.settings, image: UIImage(systemName: "gearshape")) { [weak self] action in
+//            self?.showSettings()
+//        }
+//
+//        let editLayoutItem = UIAction(title: VectorL10n.allChatEditLayout, image: Asset.Images.allChatEditLayout.image) { [weak self] action in
+//            self?.showAllChatEditLayout()
+//        }
+//
+//        let inviteUserItem = UIAction(title: VectorL10n.sideMenuActionInviteFriends, image: UIImage(systemName: "square.and.arrow.up.fill")) { [weak self] action in
+//            self?.showInviteFriends(from: nil)
+//        }
+//
+//        let searchItem = UIAction(title: VectorL10n.roomAccessibilitySearch, image: UIImage(systemName: "magnifyingglass")) { [weak self] action in
+//            self?.showUnifiedSearch()
+//        }
+//
+//        let feedbackItem = UIAction(title: VectorL10n.sideMenuActionFeedback, image: UIImage(systemName: "exclamationmark.bubble")) { [weak self] action in
+//            self?.showBugReport()
+//        }
+//
+//        let avatar = userAvatarViewData(from: currentMatrixSession)
+//
+//        let menu = UIMenu(options: .displayInline, children: [settingsItem , editLayoutItem, inviteUserItem, feedbackItem , searchItem])
+
         
-        tabBarController.navigationItem.rightBarButtonItem = searchBarButtonItem    
+//        tabBarController.navigationItem.rightBarButtonItems = navItems
+        
+//        let avatarView = UserAvatarView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+//        if let session = currentMatrixSession, let avatar = userAvatarViewData(from: session) {
+//            avatarView.fill(with: avatar)
+//        }
+//        let navItem = UIBarButtonItem(customView: avatarView)
+//        tabBarController.navigationItem.rightBarButtonItem = navItem
+        
+//        var button: UIButton = UIButton()
+//        button.setImage(Asset.Images.tabPeople.image, for: .normal)
+//        button.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+//        button.menu = menu
+//        button.showsMenuAsPrimaryAction = true
+//        tabBarController.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
+        
+//        let searchBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.searchIcon.image, style: .plain) { [weak self] in
+//            self?.showUnifiedSearch()
+//        }
+//        searchBarButtonItem.accessibilityLabel = VectorL10n.allChatEditLayout
+//
+//        let allChatEditLayout: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.allChatEditLayout.image, style: .plain) { [weak self] in
+//            self?.showAllChatEditLayout()
+//        }
+//        allChatEditLayout.accessibilityLabel = VectorL10n.sideMenuRevealActionAccessibilityLabel
+//
+//        tabBarController.navigationItem.rightBarButtonItems = [searchBarButtonItem, allChatEditLayout]
         
         return tabBarController
     }
     
+    private func showInviteFriends(from sourceView: UIView?) {
+        let myUserId = self.parameters.userSessionsService.mainUserSession?.userId ?? ""
+        
+        let inviteFriendsPresenter = InviteFriendsPresenter()
+        inviteFriendsPresenter.present(for: myUserId, from: self.navigationRouter.toPresentable(), sourceView: sourceView, animated: true)
+    }
+    
+    private func showBugReport() {
+        let bugReportViewController = BugReportViewController()
+        
+        // Show in fullscreen to animate presentation along side menu dismiss
+        bugReportViewController.modalPresentationStyle = .fullScreen
+        bugReportViewController.modalTransitionStyle = .crossDissolve
+        
+        self.navigationRouter.present(bugReportViewController, animated: true)
+    }
+
+    private func userAvatarViewData(from mxSession: MXSession?) -> UserAvatarViewData? {
+        guard let mxSession = mxSession, let userId = mxSession.myUserId, let mediaManager = mxSession.mediaManager, let myUser = mxSession.myUser else {
+            return nil
+        }
+        
+        let userDisplayName = myUser.displayname
+        let avatarUrl = myUser.avatarUrl
+        
+        return UserAvatarViewData(userId: userId,
+                                  displayName: userDisplayName,
+                                  avatarUrl: avatarUrl,
+                                  mediaManager: mediaManager)
+    }
+
     private func createVersionCheckCoordinator(withRootViewController rootViewController: UIViewController, bannerPresentrer: BannerPresentationProtocol) -> VersionCheckCoordinator {
         let versionCheckCoordinator = VersionCheckCoordinator(rootViewController: rootViewController,
                                                               bannerPresenter: bannerPresentrer,
@@ -238,7 +317,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let homeViewController: HomeViewController = HomeViewController.instantiate()
         homeViewController.tabBarItem.tag = Int(TABBAR_HOME_INDEX)
         homeViewController.tabBarItem.image = homeViewController.tabBarItem.image
-        homeViewController.accessibilityLabel = VectorL10n.titleHome
+        homeViewController.accessibilityLabel = VectorL10n.allChatsTitle
         homeViewController.userIndicatorStore = UserIndicatorStore(presenter: indicatorPresenter)
         
         let wrapperViewController = HomeViewControllerWithBannerWrapperViewController(viewController: homeViewController)        
@@ -356,6 +435,34 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     private func dismissSideMenu(animated: Bool) {
         self.parameters.appNavigator.sideMenu.dismiss(animated: animated)
+    }
+    
+    private func showAllChatEditLayout() {
+        guard let session = currentMatrixSession else {
+            return
+        }
+
+        let settings = AllChatLayoutSettingsManager.shared.allChatLayoutSettings
+        let coordinator = AllChatLayoutEditorCoordinator(parameters: AllChatLayoutEditorCoordinatorParameters(settings: settings, session: session))
+        coordinator.start()
+        coordinator.completion = {  [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .cancel:
+                break
+            case .done(let newSettings):
+                AllChatLayoutSettingsManager.shared.allChatLayoutSettings = newSettings
+            }
+            
+            self.remove(childCoordinator: coordinator)
+            self.navigationRouter.dismissModule(animated: true, completion: nil)
+        }
+        self.add(childCoordinator: coordinator)
+        
+        let navigationRouter = NavigationRouter()
+        navigationRouter.setRootModule(coordinator.toPresentable())
+        self.navigationRouter.present(navigationRouter, animated: true)
     }
     
     // FIXME: Should be displayed per tab.
@@ -664,6 +771,59 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         if let session = notification.object as? MXSession {
             showCoachMessageIfNeeded(with: session)
         }
+        
+        createRightButtonItem()
+    }
+    
+    private func createRightButtonItem() {
+        var actions: [UIAction] = []
+        
+        actions.append(UIAction(title: VectorL10n.settings, image: UIImage(systemName: "gearshape")) { [weak self] action in
+            self?.showSettings()
+        })
+        
+        if currentSpaceId == nil {
+            actions.append(UIAction(title: VectorL10n.allChatsEditLayout, image: Asset.Images.allChatEditLayout.image) { [weak self] action in
+                self?.showAllChatEditLayout()
+            })
+        }
+        
+        if BuildSettings.sideMenuShowInviteFriends {
+            actions.append(UIAction(title: VectorL10n.sideMenuActionInviteFriends, image: UIImage(systemName: "square.and.arrow.up.fill")) { [weak self] action in
+                        self?.showInviteFriends(from: nil)
+            })
+        }
+
+        actions.append(UIAction(title: VectorL10n.roomAccessibilitySearch, image: UIImage(systemName: "magnifyingglass")) { [weak self] action in
+            self?.showUnifiedSearch()
+        })
+
+        actions.append(UIAction(title: VectorL10n.sideMenuActionFeedback, image: Asset.Images.sideMenuActionIconFeedback.image) { [weak self] action in
+            self?.showBugReport()
+        })
+        
+        let menu = UIMenu(options: .displayInline, children: actions)
+        
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        view.backgroundColor = .clear
+        
+        let button: UIButton = UIButton(frame: view.frame)
+        button.setImage(Asset.Images.tabPeople.image, for: .normal)
+        button.menu = menu
+        button.showsMenuAsPrimaryAction = true
+        button.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        view.addSubview(button)
+        
+        if let avatar = userAvatarViewData(from: currentMatrixSession) {
+            let avatarView = UserAvatarView(frame: view.frame.inset(by: UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)))
+            avatarView.isUserInteractionEnabled = false
+            avatarView.fill(with: avatar)
+            avatarView.update(theme: ThemeService.shared().theme)
+            avatarView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+            view.addSubview(avatarView)
+        }
+        
+        self.masterTabBarController.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: view)
     }
     
     // MARK: Coach Message

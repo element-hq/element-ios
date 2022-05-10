@@ -28,3 +28,20 @@
 "leave_space_selection_title" = "SELECT ROOMS";
 "leave_space_selection_all_rooms" = "Select all rooms";
 "leave_space_selection_no_rooms" = "Select no rooms";
+
+// MARK: All Chat
+
+"all_chats_title" = "All chats";
+"all_chats_edit_layout" = "Edit layout";
+"all_chats_edit_layout_recents" = "Recents";
+"all_chats_edit_layout_unreads" = "Unreads";
+"all_chats_edit_layout_activity_order" = "Activity";
+"all_chats_edit_layout_alphabetical_order" = "A-Z";
+"all_chats_edit_layout_add_section_title" = "Add section to home";
+"all_chats_edit_layout_add_section_message" = "Pin sections to home for easy access";
+"all_chats_edit_layout_add_filters_title" = "Filter your messages";
+"all_chats_edit_layout_add_filters_message" = "Automatically filter your messages into the categories of your choice";
+"all_chats_edit_layout_pin_spaces_title" = "Pin your spaces";
+"all_chats_edit_layout_sorting_options_title" = "Sort messages by";
+
+"room_recents_recently_viewed_section" = "Recently viewed";

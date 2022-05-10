@@ -149,6 +149,8 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
     
     public var suggestedRoomListData: MXRoomListData?
     
+    public var recentRoomListData: MXRoomListData?
+    
     public var favoritedMissedDiscussionsCount: DiscussionsCount = .zero
     
     public var peopleMissedDiscussionsCount: DiscussionsCount = .zero

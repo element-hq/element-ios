@@ -120,7 +120,7 @@
     [self vc_removeBackTitle];
     
     [self setupTitleView];
-    titleView.titleLabel.text = [VectorL10n titleHome];
+    titleView.titleLabel.text = [VectorL10n allChatsTitle];
     
     childViewControllers = [NSMutableArray array];
     
@@ -171,6 +171,8 @@
         }];
         [self userInterfaceThemeDidChange];
     }
+    
+    self.tabBar.hidden = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -340,6 +342,7 @@
         RecentsListService *recentsListService = [[RecentsListService alloc] initWithSession:mainSession];
         recentsDataSource = [[RecentsDataSource alloc] initWithMatrixSession:mainSession
                                                           recentsListService:recentsListService];
+        recentsDataSource.areSectionsShrinkable = NO;
         
         [self.homeViewController displayList:recentsDataSource];
         [self.favouritesViewController displayList:recentsDataSource];

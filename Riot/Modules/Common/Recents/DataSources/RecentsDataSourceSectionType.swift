@@ -27,6 +27,7 @@ import Foundation
     case lowPriority
     case serverNotice
     case suggestedRooms
+    case recentRooms
     case searchedRoom
     case unknown
 }

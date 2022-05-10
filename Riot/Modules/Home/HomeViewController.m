@@ -50,6 +50,7 @@
 @property (nonatomic, strong) MXThrottler *collectionViewPaginationThrottler;
 
 @property(nonatomic) SpaceMembersCoordinatorBridgePresenter *spaceMembersCoordinatorBridgePresenter;
+@property (nonatomic, strong) MXThrottler *tableViewPaginationThrottler;
 
 @end
 
@@ -72,6 +73,7 @@
     
     self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenHome];
     self.collectionViewPaginationThrottler = [[MXThrottler alloc] initWithMinimumDelay:0.1];
+    self.tableViewPaginationThrottler = [[MXThrottler alloc] initWithMinimumDelay:0.1];
 }
 
 - (void)viewDidLoad
@@ -89,9 +91,26 @@
     self.recentsTableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     
     // Add the (+) button programmatically
-    plusButtonImageView = [self vc_addFABWithImage:AssetImages.plusFloatingAction.image
-                                            target:self
-                                            action:@selector(onPlusButtonPressed)];
+//    plusButtonImageView = [self vc_addFABWithImage:AssetImages.plusFloatingAction.image
+//                                            target:self
+//                                            action:@selector(onPlusButtonPressed)];
+
+    MXWeakify(self);
+    UIMenu *menu = [UIMenu menuWithChildren:@[
+        [UIAction actionWithTitle:VectorL10n.roomRecentsJoinRoom image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+            MXStrongifyAndReturnIfNil(self);
+            [self joinARoom];
+        }],
+        [UIAction actionWithTitle:VectorL10n.roomRecentsCreateEmptyRoom image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+            MXStrongifyAndReturnIfNil(self);
+            [self createNewRoom];
+        }],
+        [UIAction actionWithTitle:VectorL10n.roomRecentsStartChatWith image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+            MXStrongifyAndReturnIfNil(self);
+            [self startChat];
+        }],
+    ]];
+    [self vc_addFABWithImage:AssetImages.plusFloatingAction.image menu:menu];
     
     // Register table view cells used for rooms collection.
     [self registerCellsWithCollectionViews];
@@ -320,7 +339,8 @@
         @(RecentsDataSourceSectionTypeConversation),
         @(RecentsDataSourceSectionTypeLowPriority),
         @(RecentsDataSourceSectionTypeServerNotice),
-        @(RecentsDataSourceSectionTypeSuggestedRooms)
+        @(RecentsDataSourceSectionTypeSuggestedRooms),
+        @(RecentsDataSourceSectionTypeRecentRooms)
     ];
     for (NSNumber *section in sections) {
         NSString *cellIdentifier = [self cellIdentifierForSectionType:section.integerValue];
@@ -353,12 +373,23 @@
     else
     {
         // Each rooms section is represented by only one collection view.
+        NSInteger index = [recentsDataSource.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeConversation];
+        if (section == index)
+        {
+            return [self.dataSource tableView:tableView numberOfRowsInSection:section];
+        }
         return 1;
     }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSInteger index = [recentsDataSource.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeConversation];
+    if (indexPath.section == index)
+    {
+        return [self.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
+    }
+
     RecentsDataSourceSectionType sectionType = [recentsDataSource.sections sectionTypeForSectionIndex:indexPath.section];
     if ((sectionType == RecentsDataSourceSectionTypeConversation && !recentsDataSource.recentsListService.conversationRoomListData.counts.numberOfRooms)
         || (sectionType == RecentsDataSourceSectionTypePeople && !recentsDataSource.recentsListService.peopleRoomListData.counts.numberOfRooms)
@@ -446,6 +477,12 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSInteger index = [recentsDataSource.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeConversation];
+    if (indexPath.section == index)
+    {
+        return [self.dataSource tableView:tableView canEditRowAtIndexPath:indexPath];
+    }
+
     return NO;
 }
 
@@ -453,6 +490,12 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSInteger index = [recentsDataSource.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeConversation];
+    if (indexPath.section == index)
+    {
+        return [super tableView:tableView heightForRowAtIndexPath:indexPath];
+    }
+
     RecentsDataSourceSectionType sectionType = [recentsDataSource.sections sectionTypeForSectionIndex:indexPath.section];
     if ((sectionType == RecentsDataSourceSectionTypeConversation && !recentsDataSource.recentsListService.conversationRoomListData.counts.numberOfRooms)
         || (sectionType == RecentsDataSourceSectionTypePeople && !recentsDataSource.recentsListService.peopleRoomListData.counts.numberOfRooms))
@@ -513,7 +556,7 @@
     }
     else
     {
-        return [super tableView:tableView heightForHeaderInSection:section];
+        return [(RecentsDataSource *)self.dataSource heightForHeaderInSection:section];//[super tableView:tableView heightForHeaderInSection:section];
     }
 }
 
@@ -534,6 +577,38 @@
     {
         [self showCrossSigningSetup];
     }
+    else if (sectionType == RecentsDataSourceSectionTypeConversation)
+    {
+        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    RecentsDataSourceSectionType sectionType = [recentsDataSource.sections sectionTypeForSectionIndex:indexPath.section];
+    if (sectionType != RecentsDataSourceSectionTypeConversation)
+    {
+        return;
+    }
+    
+    if ([super respondsToSelector:@selector(tableView:willDisplayCell:forRowAtIndexPath:)])
+    {
+        [super tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
+    }
+    
+    [self.tableViewPaginationThrottler throttle:^{
+        NSInteger section = indexPath.section;
+        if (tableView.numberOfSections <= section)
+        {
+            return;
+        }
+
+        NSInteger numberOfRowsInSection = [tableView numberOfRowsInSection:section];
+        if (indexPath.row == numberOfRowsInSection - 1)
+        {
+            [self->recentsDataSource paginateInSection:section];
+        }
+    }];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -928,6 +1003,12 @@
 
 - (UIContextMenuConfiguration *)tableView:(UITableView *)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point API_AVAILABLE(ios(13.0))
 {
+    RecentsDataSourceSectionType sectionType = [recentsDataSource.sections sectionTypeForSectionIndex:indexPath.section];
+    if (sectionType == RecentsDataSourceSectionTypeConversation)
+    {
+        return [super tableView:tableView contextMenuConfigurationForRowAtIndexPath:indexPath point:point];
+    }
+    
     return nil;
 }
 

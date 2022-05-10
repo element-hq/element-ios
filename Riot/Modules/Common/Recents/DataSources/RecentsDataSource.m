@@ -36,12 +36,14 @@
 #define RECENTSDATASOURCE_SECTION_SERVERNOTICE  0x20
 #define RECENTSDATASOURCE_SECTION_PEOPLE        0x40
 #define RECENTSDATASOURCE_SECTION_SUGGESTED     0x80
+#define RECENTSDATASOURCE_SECTION_RECENTS       0x100
 
-#define RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT     30.0
+#define RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT             30.0
+#define RECENTSDATASOURCE_ALL_CHATS_SECTION_BOTTOM_VIEW_HEIGHT      50//32.0
 
 NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSourceTapOnDirectoryServerChange";
 
-@interface RecentsDataSource() <SecureBackupBannerCellDelegate, CrossSigningSetupBannerCellDelegate, RecentsListServiceDelegate>
+@interface RecentsDataSource() <SecureBackupBannerCellDelegate, CrossSigningSetupBannerCellDelegate, RecentsListServiceDelegate, AllChatFilterOptionsDelegate, SpaceSelectorBottomSheetCoordinatorBridgePresenterDelegate>
 {
     dispatch_queue_t processingQueue;
     
@@ -60,6 +62,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 @property (nonatomic, readwrite) id<RecentsListServiceProtocol> recentsListService;
 
 @property (nonatomic, strong) CrossSigningService *crossSigningService;
+
+@property (nonatomic, strong) AllChatFilterOptions *allChatFilterOptions;
+@property (nonatomic, strong) SpaceSelectorBottomSheetCoordinatorBridgePresenter *spaceSelectorPresenter;
+@property (nonatomic, strong) UIView *allChatOptionsView;
 
 @end
 
@@ -90,6 +96,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         [self registerSpaceServiceDidBuildGraphNotification];
         self.recentsListService = theRecentsListService;
         [self.recentsListService addDelegate:self];
+        
+        [self registerAllChatSettingsUpdateNotification];
+        self.allChatFilterOptions = [AllChatFilterOptions new];
+        self.allChatFilterOptions.delegate = self;
     }
     return self;
 }
@@ -97,6 +107,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 - (void)dealloc
 {
     [self unregisterSpaceServiceDidBuildGraphNotification];
+    [self unregisterAllChatSettingsUpdateNotification];
 }
 
 #pragma mark - Properties
@@ -128,6 +139,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 - (NSArray<id<MXRoomSummaryProtocol>> *)suggestedRoomCellDataArray
 {
     return self.recentsListService.suggestedRoomListData.rooms;
+}
+- (NSArray<id<MXRoomSummaryProtocol>> *)recentRoomCellDataArray
+{
+    return self.recentsListService.recentRoomListData.rooms;
 }
 
 - (NSInteger)totalVisibleItemCount
@@ -163,20 +178,45 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         [types addObject:@(RecentsDataSourceSectionTypeSecureBackupBanner)];
     }
-
-    if (self.invitesCellDataArray.count > 0)
+    
+    if (self.currentSpace == nil && self.recentRoomCellDataArray.count > 0 && _recentsDataSourceMode == RecentsDataSourceModeHome)
     {
-        [types addObject:@(RecentsDataSourceSectionTypeInvites)];
+        AllChatLayoutSettings *settings = AllChatLayoutSettingsManager.shared.allChatLayoutSettings;
+        if ((settings.sections & AllChatLayoutSectionTypeRecents) == AllChatLayoutSectionTypeRecents)
+        {
+            [types addObject:@(RecentsDataSourceSectionTypeRecentRooms)];
+        }
     }
 
     if (self.favoriteCellDataArray.count > 0)
     {
-        [types addObject:@(RecentsDataSourceSectionTypeFavorites)];
+        if (_recentsDataSourceMode != RecentsDataSourceModeHome || self.currentSpace != nil)
+        {
+            [types addObject:@(RecentsDataSourceSectionTypeFavorites)];
+        }
+        else
+        {
+            AllChatLayoutSettings *settings = AllChatLayoutSettingsManager.shared.allChatLayoutSettings;
+            if ((settings.sections & AllChatLayoutSectionTypeFavourites) == AllChatLayoutSectionTypeFavourites)
+            {
+                [types addObject:@(RecentsDataSourceSectionTypeFavorites)];
+            }
+        }
     }
-
-    if (self.peopleCellDataArray.count > 0 || _recentsDataSourceMode == RecentsDataSourceModeHome)
+    
+    if (self.suggestedRoomCellDataArray.count > 0)
+    {
+        [types addObject:@(RecentsDataSourceSectionTypeSuggestedRooms)];
+    }
+    
+    if (self.peopleCellDataArray.count > 0 && _recentsDataSourceMode != RecentsDataSourceModeHome)
     {
         [types addObject:@(RecentsDataSourceSectionTypePeople)];
+    }
+
+    if (self.invitesCellDataArray.count > 0)
+    {
+        [types addObject:@(RecentsDataSourceSectionTypeInvites)];
     }
 
     // Keep visible the main rooms section even if it is empty, except on favourites screen.
@@ -195,11 +235,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         [types addObject:@(RecentsDataSourceSectionTypeServerNotice)];
     }
 
-    if (self.suggestedRoomCellDataArray.count > 0)
-    {
-        [types addObject:@(RecentsDataSourceSectionTypeSuggestedRooms)];
-    }
-    
     return [[RecentsDataSourceSections alloc] initWithSectionTypes:types.copy];
 }
 
@@ -253,6 +288,21 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     shrinkedSectionsBitMask = savedShrinkedSectionsBitMask;
 
     return stickyHeader;
+}
+
+- (void)registerAllChatSettingsUpdateNotification
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allChatSettingsWillUpdateNotification:) name:AllChatLayoutSettingsManager.willUpdateSettings object:nil];
+}
+
+- (void)allChatSettingsWillUpdateNotification:(NSNotification*)notification
+{
+    self.allChatOptionsView = nil;
+}
+
+- (void)unregisterAllChatSettingsUpdateNotification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:AllChatLayoutSettingsManager.willUpdateSettings object:nil];
 }
 
 #pragma mark - Space Service notifications
@@ -567,6 +617,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         count = self.suggestedRoomCellDataArray.count;
     }
+    else if (sectionType == RecentsDataSourceSectionTypeRecentRooms && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_RECENTS))
+    {
+        count = self.recentRoomCellDataArray.count;
+    }
     
     // Adjust this count according to the potential dragged cell.
     if ([self isMovingCellSection:section])
@@ -590,6 +644,14 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         return 0.0;
     }
 
+    if (self.recentsListService.space == nil && sectionType == RecentsDataSourceSectionTypeConversation && _recentsDataSourceMode == RecentsDataSourceModeHome)
+    {
+        if (self.allChatFilterOptions.optionsCount)
+        {
+            return RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT + RECENTSDATASOURCE_ALL_CHATS_SECTION_BOTTOM_VIEW_HEIGHT;
+        }
+    }
+    
     return RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT;
 }
 
@@ -617,6 +679,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         if (_recentsDataSourceMode == RecentsDataSourceModePeople)
         {
             title = [VectorL10n peopleConversationSection];
+        }
+        else if (_recentsDataSourceMode == RecentsDataSourceModeHome)
+        {
+            title = [[VectorL10n allChatsTitle] uppercaseString];
         }
         else
         {
@@ -654,6 +720,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         count = self.recentsListService.suggestedRoomListData.counts.total.numberOfRooms;
         title = [VectorL10n roomRecentsSuggestedRoomsSection];
+    }
+    else if (sectionType == RecentsDataSourceSectionTypeRecentRooms)
+    {
+        count = self.recentsListService.recentRoomListData.counts.total.numberOfRooms;
+        title = [[VectorL10n roomRecentsRecentlyViewedSection] uppercaseString];
     }
     
     if (count && !(sectionType == RecentsDataSourceSectionTypeInvites))
@@ -770,7 +841,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
     sectionHeader.backgroundView = [UIView new];
     sectionHeader.frame = frame;
-    sectionHeader.backgroundView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    sectionHeader.backgroundView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     sectionHeader.topViewHeight = RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT;
     NSInteger sectionBitwise = 0;
 
@@ -807,6 +878,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         else if (sectionType == RecentsDataSourceSectionTypeSuggestedRooms)
         {
             sectionBitwise = RECENTSDATASOURCE_SECTION_SUGGESTED;
+        }
+        else if (sectionType == RecentsDataSourceSectionTypeRecentRooms)
+        {
+            sectionBitwise = RECENTSDATASOURCE_SECTION_RECENTS;
         }
     }
     
@@ -854,6 +929,13 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     headerLabel.backgroundColor = [UIColor clearColor];
     headerLabel.attributedText = [self attributedStringForHeaderTitleInSection:section];
     sectionHeader.headerLabel = headerLabel;
+    
+    if (self.recentsListService.space == nil && _recentsDataSourceMode == RecentsDataSourceModeHome && sectionType == RecentsDataSourceSectionTypeConversation) {
+        if (!self.allChatOptionsView) {
+            self.allChatOptionsView = [self.allChatFilterOptions createFilterListView];
+        }
+        sectionHeader.bottomView = self.allChatOptionsView;
+    }
 
     return sectionHeader;
 }
@@ -1012,7 +1094,14 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             summary = self.suggestedRoomCellDataArray[cellDataIndex];
         }
     }
-    
+    else if (sectionType == RecentsDataSourceSectionTypeRecentRooms)
+    {
+        if (cellDataIndex < self.recentRoomCellDataArray.count)
+        {
+            summary = self.recentRoomCellDataArray[cellDataIndex];
+        }
+    }
+
     if (summary)
     {
         return [[MXKRecentCellData alloc] initWithRoomSummary:summary dataSource:self];
@@ -1189,6 +1278,22 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                 return nil;
             }
             NSInteger sectionIndex = [self.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeSuggestedRooms];
+            indexPath = [NSIndexPath indexPathForRow:index inSection:sectionIndex];
+        }
+    }
+    
+    if (!indexPath && ([self.sections contains:RecentsDataSourceSectionTypeRecentRooms]))
+    {
+        index = [self cellIndexPosWithRoomId:roomId andMatrixSession:matrixSession within:self.recentRoomCellDataArray];
+
+        if (index != NSNotFound)
+        {
+            // Check whether the low priority rooms are shrinked
+            if (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_RECENTS)
+            {
+                return nil;
+            }
+            NSInteger sectionIndex = [self.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeRecentRooms];
             indexPath = [NSIndexPath indexPathForRow:index inSection:sectionIndex];
         }
     }
@@ -1537,6 +1642,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             return RecentsDataSourceSectionTypeServerNotice;
         case RecentsListServiceSectionSuggested:
             return RecentsDataSourceSectionTypeSuggestedRooms;
+        case RecentsListServiceSectionRecents:
+            return RecentsDataSourceSectionTypeRecentRooms;
     }
 }
 
@@ -1589,7 +1696,42 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         return YES;
     }
 
+    if (sectionType == RecentsDataSourceSectionTypeRecentRooms && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_RECENTS))
+    {
+        return YES;
+    }
+
     return NO;
+}
+
+#pragma mark - AllChatFilterOptionsDelegate
+
+- (void)allChatFilterOptions:(AllChatFilterOptions *)allChatFilterOptions presentSpaceSelectorForSpacesWithIds:(NSArray<NSString *> *)spaceIds
+{
+    SpaceSelectorBottomSheetCoordinatorBridgePresenter *presenter = [[SpaceSelectorBottomSheetCoordinatorBridgePresenter alloc] initWithSession:self.mxSession spaceIds:spaceIds];
+    [presenter presentFrom:(UIViewController *)self.delegate animated:YES];
+    presenter.delegate = self;
+    self.spaceSelectorPresenter = presenter;
+}
+
+- (NSString *)allChatFilterOptions:(AllChatFilterOptions *)allChatFilterOptions nameForSpaceWithId:(NSString *)spaceId
+{
+    return [self.mxSession roomSummaryWithRoomId:spaceId].displayname;
+}
+
+#pragma mark - SpaceSelectorBottomSheetCoordinatorBridgePresenterDelegate
+
+- (void)spaceSelectorBottomSheetCoordinatorBridgePresenterDidCancel:(SpaceSelectorBottomSheetCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    self.spaceSelectorPresenter = nil;
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+}
+
+- (void)spaceSelectorBottomSheetCoordinatorBridgePresenter:(SpaceSelectorBottomSheetCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectSpaceWithId:(NSString *)spaceId
+{
+    [self.allChatFilterOptions updateActivePinnedSpaceWithId:spaceId];
+    self.spaceSelectorPresenter = nil;
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
 }
 
 @end

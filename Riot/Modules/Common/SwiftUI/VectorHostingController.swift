@@ -28,6 +28,7 @@ class VectorHostingController: UIHostingController<AnyView> {
     
     var isNavigationBarHidden: Bool = false
     var hidesBackTitleWhenPushed: Bool = false
+    var isBottomSheet: Bool = false
     private var theme: Theme
     
     // MARK: Public
@@ -59,6 +60,15 @@ class VectorHostingController: UIHostingController<AnyView> {
         
         self.registerThemeServiceDidChangeThemeNotification()
         self.update(theme: self.theme)
+        
+        if isBottomSheet {
+            if #available(iOS 15.0, *) {
+                if let sheetController = self.presentationController as? UISheetPresentationController {
+                    sheetController.detents = [.medium(), .large()]
+                    sheetController.prefersGrabberVisible = true
+                }
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

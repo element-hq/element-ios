@@ -10,6 +10,54 @@ import Foundation
 
 // swiftlint:disable function_parameter_count identifier_name line_length type_body_length
 public extension VectorL10n {
+  /// Edit layout
+  static var allChatsEditLayout: String { 
+    return VectorL10n.tr("Untranslated", "all_chats_edit_layout") 
+  }
+  /// Activity
+  static var allChatsEditLayoutActivityOrder: String { 
+    return VectorL10n.tr("Untranslated", "all_chats_edit_layout_activity_order") 
+  }
+  /// Automatically filter your messages into the categories of your choice
+  static var allChatsEditLayoutAddFiltersMessage: String { 
+    return VectorL10n.tr("Untranslated", "all_chats_edit_layout_add_filters_message") 
+  }
+  /// Filter your messages
+  static var allChatsEditLayoutAddFiltersTitle: String { 
+    return VectorL10n.tr("Untranslated", "all_chats_edit_layout_add_filters_title") 
+  }
+  /// Pin sections to home for easy access
+  static var allChatsEditLayoutAddSectionMessage: String { 
+    return VectorL10n.tr("Untranslated", "all_chats_edit_layout_add_section_message") 
+  }
+  /// Add section to home
+  static var allChatsEditLayoutAddSectionTitle: String { 
+    return VectorL10n.tr("Untranslated", "all_chats_edit_layout_add_section_title") 
+  }
+  /// A-Z
+  static var allChatsEditLayoutAlphabeticalOrder: String { 
+    return VectorL10n.tr("Untranslated", "all_chats_edit_layout_alphabetical_order") 
+  }
+  /// Pin your spaces
+  static var allChatsEditLayoutPinSpacesTitle: String { 
+    return VectorL10n.tr("Untranslated", "all_chats_edit_layout_pin_spaces_title") 
+  }
+  /// Recents
+  static var allChatsEditLayoutRecents: String { 
+    return VectorL10n.tr("Untranslated", "all_chats_edit_layout_recents") 
+  }
+  /// Sort messages by
+  static var allChatsEditLayoutSortingOptionsTitle: String { 
+    return VectorL10n.tr("Untranslated", "all_chats_edit_layout_sorting_options_title") 
+  }
+  /// Unreads
+  static var allChatsEditLayoutUnreads: String { 
+    return VectorL10n.tr("Untranslated", "all_chats_edit_layout_unreads") 
+  }
+  /// All chats
+  static var allChatsTitle: String { 
+    return VectorL10n.tr("Untranslated", "all_chats_title") 
+  }
   /// Choose from files
   static var imagePickerActionFiles: String { 
     return VectorL10n.tr("Untranslated", "image_picker_action_files") 
@@ -37,6 +85,10 @@ public extension VectorL10n {
   /// SELECT ROOMS
   static var leaveSpaceSelectionTitle: String { 
     return VectorL10n.tr("Untranslated", "leave_space_selection_title") 
+  }
+  /// Recently viewed
+  static var roomRecentsRecentlyViewedSection: String { 
+    return VectorL10n.tr("Untranslated", "room_recents_recently_viewed_section") 
   }
   /// This feature isn't available here. For now, you can do this with %@ on your computer.
   static func spacesFeatureNotAvailable(_ p1: String) -> String {

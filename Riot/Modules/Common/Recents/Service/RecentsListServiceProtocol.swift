@@ -53,6 +53,8 @@ public protocol RecentsListServiceProtocol {
     /// Suggested rooms for current mode
     var suggestedRoomListData: MXRoomListData? { get }
     
+    var recentRoomListData: MXRoomListData? { get }
+
     // MARK: Discussion counts
     
     /// Counts for favorite screen
