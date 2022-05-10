@@ -51,12 +51,16 @@ class PillTextAttachment: NSTextAttachment {
     /// - Parameters:
     ///   - roomMember: the room member
     ///   - isHighlighted: whether this pill should be highlighted
-    convenience init?(withRoomMember roomMember: MXRoomMember, isHighlighted: Bool) {
+    ///   - font: the text font
+    convenience init?(withRoomMember roomMember: MXRoomMember,
+                      isHighlighted: Bool,
+                      font: UIFont) {
         let data = PillTextAttachmentData(matrixItemId: roomMember.userId,
                                           displayName: roomMember.displayname,
                                           avatarUrl: roomMember.avatarUrl,
                                           isHighlighted: isHighlighted,
-                                          alpha: 1.0)
+                                          alpha: 1.0,
+                                          font: font)
 
         guard let encodedData = try? Self.serializationService.serialize(data) else { return nil }
         self.init(data: encodedData, ofType: PillsFormatter.pillUTType)
@@ -74,7 +78,7 @@ class PillTextAttachment: NSTextAttachment {
 private extension PillTextAttachment {
     func updateBounds() {
         guard let data = data else { return }
-        let pillSize = PillAttachmentViewProvider.size(forDisplayText: data.displayText)
+        let pillSize = PillAttachmentViewProvider.size(forDisplayText: data.displayText, andFont: data.font)
         self.bounds = CGRect(origin: CGPoint(x: 0.0, y: Self.pillVerticalOffset), size: pillSize)
     }
 }

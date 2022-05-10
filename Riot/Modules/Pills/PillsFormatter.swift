@@ -31,12 +31,14 @@ class PillsFormatter: NSObject {
     /// - Parameters:
     ///   - attributedString: message string to update
     ///   - session: current session
+    ///   - eventFormatter: the event formatter
     ///   - event: the event
     ///   - roomState: room state for message
     ///   - isEditMode: whether this string will be used in the composer
     /// - Returns: new attributed string with pills
     static func insertPills(in attributedString: NSAttributedString,
                             withSession session: MXSession,
+                            eventFormatter: MXKEventFormatter,
                             event: MXEvent,
                             andRoomState roomState: MXRoomState,
                             isEditMode: Bool = false) -> NSAttributedString {
@@ -49,7 +51,8 @@ class PillsFormatter: NSObject {
                 let isHighlighted = roomMember.userId == session.myUserId && event.sender != session.myUserId
                 let attachmentString = mentionPill(withRoomMember: roomMember,
                                                    andUrl: isEditMode ? nil : url,
-                                                   isHighlighted: isHighlighted)
+                                                   isHighlighted: isHighlighted,
+                                                   font: eventFormatter.defaultTextFont)
                 newAttr.replaceCharacters(in: range, with: attachmentString)
             }
         }
@@ -85,15 +88,17 @@ class PillsFormatter: NSObject {
     ///   - roomMember: the room member
     ///   - url: URL to room member profile. Should be provided to make pill act as a link.
     ///   - isHighlighted: true to indicate that the pill should be highlighted
+    ///   - font: the text font
     /// - Returns: attributed string with a pill attachment and an optional link
     static func mentionPill(withRoomMember roomMember: MXRoomMember,
                             andUrl url: URL? = nil,
-                            isHighlighted: Bool) -> NSAttributedString {
-        guard let attachment = PillTextAttachment(withRoomMember: roomMember, isHighlighted: isHighlighted) else {
+                            isHighlighted: Bool,
+                            font: UIFont) -> NSAttributedString {
+        guard let attachment = PillTextAttachment(withRoomMember: roomMember, isHighlighted: isHighlighted, font: font) else {
             return NSAttributedString(string: roomMember.displayname)
         }
         let string = NSMutableAttributedString(attachment: attachment)
-        string.addAttribute(.font, value: UIFont.systemFont(ofSize: 15.0), range: .init(location: 0, length: string.length))
+        string.addAttribute(.font, value: font, range: .init(location: 0, length: string.length))
         if let url = url {
             string.addAttribute(.link, value: url, range: .init(location: 0, length: string.length))
         }

@@ -21,9 +21,8 @@ import UIKit
 @objcMembers
 class PillAttachmentView: UIView {
     // MARK: - Internal Structs
-    /// Parameters provided alongside frame to build `PillAttachmentView` layout.
-    struct Parameters {
-        var font: UIFont
+    /// Sizes provided alongside frame to build `PillAttachmentView` layout.
+    struct Sizes {
         var verticalMargin: CGFloat
         var horizontalMargin: CGFloat
         var avatarSideLength: CGFloat
@@ -47,34 +46,36 @@ class PillAttachmentView: UIView {
     ///
     /// - Parameters:
     ///   - frame: the frame of the view
-    ///   - parameters: additional size & font parameters
+    ///   - sizes: additional size parameters
+    ///   - theme: current theme
     ///   - mediaManager: the media manager if available
     ///   - pillData: the pill data
     convenience init(frame: CGRect,
-                     parameters: Parameters,
+                     sizes: Sizes,
+                     theme: Theme,
                      mediaManager: MXMediaManager?,
                      andPillData pillData: PillTextAttachmentData) {
         self.init(frame: frame)
         let label = UILabel(frame: .zero)
         label.text = pillData.displayText
-        label.font = parameters.font
-        label.textColor = pillData.isHighlighted ? ThemeService.shared().theme.baseTextPrimaryColor : ThemeService.shared().theme.textPrimaryColor
+        label.font = pillData.font
+        label.textColor = pillData.isHighlighted ? theme.baseTextPrimaryColor : theme.textPrimaryColor
         let labelSize = label.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude,
-                                                  height: parameters.pillBackgroundHeight))
-        label.frame = CGRect(x: parameters.displaynameLabelLeading,
+                                                  height: sizes.pillBackgroundHeight))
+        label.frame = CGRect(x: sizes.displaynameLabelLeading,
                              y: 0,
                              width: labelSize.width,
-                             height: parameters.pillBackgroundHeight)
+                             height: sizes.pillBackgroundHeight)
 
         let pillBackgroundView = UIView(frame: CGRect(x: 0,
-                                        y: parameters.verticalMargin,
-                                        width: labelSize.width + parameters.totalWidthWithoutLabel,
-                                        height: parameters.pillBackgroundHeight))
+                                        y: sizes.verticalMargin,
+                                        width: labelSize.width + sizes.totalWidthWithoutLabel,
+                                        height: sizes.pillBackgroundHeight))
 
-        let avatarView = UserAvatarView(frame: CGRect(x: parameters.horizontalMargin,
-                                                      y: parameters.verticalMargin,
-                                                      width: parameters.avatarSideLength,
-                                                      height: parameters.avatarSideLength))
+        let avatarView = UserAvatarView(frame: CGRect(x: sizes.horizontalMargin,
+                                                      y: sizes.verticalMargin,
+                                                      width: sizes.avatarSideLength,
+                                                      height: sizes.avatarSideLength))
 
         avatarView.fill(with: AvatarViewData(matrixItemId: pillData.matrixItemId,
                                              displayName: pillData.displayName,
@@ -85,8 +86,8 @@ class PillAttachmentView: UIView {
         pillBackgroundView.addSubview(avatarView)
         pillBackgroundView.addSubview(label)
 
-        pillBackgroundView.backgroundColor = pillData.isHighlighted ? ThemeService.shared().theme.colors.alert : ThemeService.shared().theme.colors.quinaryContent
-        pillBackgroundView.layer.cornerRadius = parameters.pillBackgroundHeight / 2.0
+        pillBackgroundView.backgroundColor = pillData.isHighlighted ? theme.colors.alert : theme.colors.quinaryContent
+        pillBackgroundView.layer.cornerRadius = sizes.pillBackgroundHeight / 2.0
 
         self.addSubview(pillBackgroundView)
     }

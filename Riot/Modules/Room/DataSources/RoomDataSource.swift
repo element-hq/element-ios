@@ -162,10 +162,11 @@ extension RoomDataSource {
             let attributed = eventFormatter.renderHTMLString(body, for: event, with: self.roomState, isEditMode: true)
             if let attributed = attributed, #available(iOS 15.0, *) {
                 editableTextMessage = PillsFormatter.insertPills(in: attributed,
-                                                                   withSession: self.mxSession,
-                                                                   event: event,
-                                                                   andRoomState: self.roomState,
-                                                                   isEditMode: true)
+                                                                 withSession: self.mxSession,
+                                                                 eventFormatter: self.eventFormatter,
+                                                                 event: event,
+                                                                 andRoomState: self.roomState,
+                                                                 isEditMode: true)
             } else {
                 editableTextMessage = attributed
             }
@@ -174,10 +175,11 @@ extension RoomDataSource {
             let attributed = eventFormatter.renderHTMLString(body, for: event, with: self.roomState, isEditMode: true)
             if let attributed = attributed, #available(iOS 15.0, *) {
                 editableTextMessage = PillsFormatter.insertPills(in: attributed,
-                                                                   withSession: self.mxSession,
-                                                                   event: event,
-                                                                   andRoomState: self.roomState,
-                                                                   isEditMode: true)
+                                                                 withSession: self.mxSession,
+                                                                 eventFormatter: self.eventFormatter,
+                                                                 event: event,
+                                                                 andRoomState: self.roomState,
+                                                                 isEditMode: true)
             } else {
                 editableTextMessage = attributed
             }

@@ -19,10 +19,9 @@ import UIKit
 /// Provider for mention Pills attachment view.
 @available(iOS 15.0, *)
 @objc class PillAttachmentViewProvider: NSTextAttachmentViewProvider {
-    private static let pillAttachmentViewParameters = PillAttachmentView.Parameters(font: UIFont.systemFont(ofSize: 15),
-                                                                                    verticalMargin: 2.0,
-                                                                                    horizontalMargin: 4.0,
-                                                                                    avatarSideLength: 16.0)
+    private static let pillAttachmentViewSizes = PillAttachmentView.Sizes(verticalMargin: 2.0,
+                                                                          horizontalMargin: 4.0,
+                                                                          avatarSideLength: 16.0)
 
     override func loadView() {
         super.loadView()
@@ -39,8 +38,10 @@ import UIKit
 
         let mainSession = AppDelegate.theDelegate().mxSessions.first as? MXSession
 
-        view = PillAttachmentView(frame: CGRect(origin: .zero, size: Self.size(forDisplayText: pillData.displayText)),
-                                  parameters: Self.pillAttachmentViewParameters,
+        view = PillAttachmentView(frame: CGRect(origin: .zero, size: Self.size(forDisplayText: pillData.displayText,
+                                                                               andFont: pillData.font)),
+                                  sizes: Self.pillAttachmentViewSizes,
+                                  theme: ThemeService.shared().theme,
                                   mediaManager: mainSession?.mediaManager,
                                   andPillData: pillData)
         view?.alpha = pillData.alpha
@@ -51,16 +52,18 @@ import UIKit
 extension PillAttachmentViewProvider {
     /// Computes size required to display a pill for given display text.
     ///
-    /// - Parameter displayText: display text for the pill
+    /// - Parameters:
+    ///   - displayText: display text for the pill
+    ///   - font: the text font
     /// - Returns: required size for pill
-    static func size(forDisplayText displayText: String) -> CGSize {
+    static func size(forDisplayText displayText: String, andFont font: UIFont) -> CGSize {
         let label = UILabel(frame: .zero)
         label.text = displayText
-        label.font = pillAttachmentViewParameters.font
+        label.font = font
         let labelSize = label.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude,
-                                                  height: pillAttachmentViewParameters.pillBackgroundHeight))
+                                                  height: pillAttachmentViewSizes.pillBackgroundHeight))
 
-        return CGSize(width: labelSize.width + pillAttachmentViewParameters.totalWidthWithoutLabel,
-                      height: pillAttachmentViewParameters.pillHeight)
+        return CGSize(width: labelSize.width + pillAttachmentViewSizes.totalWidthWithoutLabel,
+                      height: pillAttachmentViewSizes.pillHeight)
     }
 }
