@@ -767,31 +767,34 @@ const CGFloat kTypingCellHeight = 24;
     MXWeakify(self);
     self.beaconInfoSummaryListener = [self.mxSession.aggregations.beaconAggregations listenToBeaconInfoSummaryUpdateInRoomWithId:self.roomId handler:^(id<MXBeaconInfoSummaryProtocol> beaconInfoSummary) {
         MXStrongifyAndReturnIfNil(self);
-        @synchronized (self->bubbles)
-        {
-            [self refreshFirstCellWithBeaconInfoSummary:beaconInfoSummary];
-        }
+        [self refreshFirstCellWithBeaconInfoSummary:beaconInfoSummary];
     }];
 }
 
 - (void)refreshFirstCellWithBeaconInfoSummary:(id<MXBeaconInfoSummaryProtocol>)beaconInfoSummary
 {
-    NSUInteger cellIndex = [bubbles indexOfObjectPassingTest:^BOOL(id<MXKRoomBubbleCellDataStoring>  _Nonnull cellData, NSUInteger idx, BOOL * _Nonnull stop) {
-        if ([cellData isKindOfClass:[RoomBubbleCellData class]])
-        {
-            RoomBubbleCellData *roomBubbleCellData = (RoomBubbleCellData*)cellData;
-            if ([roomBubbleCellData.beaconInfoSummary.id isEqualToString:beaconInfoSummary.id])
+    NSUInteger cellIndex;
+    __block RoomBubbleCellData *roomBubbleCellData;
+    
+    @synchronized (bubbles)
+    {
+        cellIndex = [bubbles indexOfObjectPassingTest:^BOOL(id<MXKRoomBubbleCellDataStoring>  _Nonnull cellData, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([cellData isKindOfClass:[RoomBubbleCellData class]])
             {
-                roomBubbleCellData.beaconInfoSummary = beaconInfoSummary;
-                *stop = YES;
-                return YES;
+                roomBubbleCellData = (RoomBubbleCellData*)cellData;
+                if ([roomBubbleCellData.beaconInfoSummary.id isEqualToString:beaconInfoSummary.id])
+                {
+                    *stop = YES;
+                    return YES;
+                }
             }
-        }
-        return NO;
-    }];
+            return NO;
+        }];
+    }
     
     if (cellIndex != NSNotFound)
     {
+        roomBubbleCellData.beaconInfoSummary = beaconInfoSummary;
         [self refreshCells];
     }
 }
