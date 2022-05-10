@@ -43,14 +43,14 @@ struct OnboardingAvatarScreen: View {
                 
                 buttons
             }
-            .frame(maxWidth: OnboardingMetrics.maxContentWidth)
+            .readableFrame()
             .padding(.horizontal)
             .padding(.top, OnboardingMetrics.topPaddingToNavigationBar)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .accentColor(theme.colors.accent)
+        .frame(maxHeight: .infinity)
         .background(theme.colors.background.ignoresSafeArea())
         .alert(item: $viewModel.alertInfo) { $0.alert }
+        .accentColor(theme.colors.accent)
     }
     
     
