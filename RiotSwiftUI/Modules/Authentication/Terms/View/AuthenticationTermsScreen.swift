@@ -37,7 +37,7 @@ struct AuthenticationTermsScreen: View {
                     .padding(.top, OnboardingMetrics.topPaddingToNavigationBar)
                     .padding(.horizontal)
                 
-                termsList   // No horizontal padding as the list should span edge-to-edge.
+                termsList // No horizontal padding as the list should span edge-to-edge.
                 
                 button
                     .padding(.horizontal)
