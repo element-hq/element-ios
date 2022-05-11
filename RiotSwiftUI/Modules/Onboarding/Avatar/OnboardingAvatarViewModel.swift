@@ -29,7 +29,7 @@ class OnboardingAvatarViewModel: OnboardingAvatarViewModelType, OnboardingAvatar
 
     // MARK: Public
 
-    var completion: ((OnboardingAvatarViewModelResult) -> Void)?
+    var callback: ((OnboardingAvatarViewModelResult) -> Void)?
 
     // MARK: - Setup
 
@@ -46,13 +46,13 @@ class OnboardingAvatarViewModel: OnboardingAvatarViewModelType, OnboardingAvatar
     override func process(viewAction: OnboardingAvatarViewAction) {
         switch viewAction {
         case .pickImage:
-            completion?(.pickImage)
+            callback?(.pickImage)
         case .takePhoto:
-            completion?(.takePhoto)
+            callback?(.takePhoto)
         case .save:
-            completion?(.save(state.avatar))
+            callback?(.save(state.avatar))
         case .skip:
-            completion?(.skip)
+            callback?(.skip)
         }
     }
     

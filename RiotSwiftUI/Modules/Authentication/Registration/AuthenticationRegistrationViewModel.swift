@@ -27,7 +27,7 @@ class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelTy
 
     // MARK: Public
 
-    @MainActor var completion: ((AuthenticationRegistrationViewModelResult) -> Void)?
+    @MainActor var callback: ((AuthenticationRegistrationViewModelResult) -> Void)?
 
     // MARK: - Setup
 
@@ -44,25 +44,19 @@ class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelTy
     // MARK: - Public
 
     override func process(viewAction: AuthenticationRegistrationViewAction) {
-        Task {
-            await MainActor.run {
-                switch viewAction {
-                case .selectServer:
-                    completion?(.selectServer)
-                case .validateUsername:
-                    state.hasEditedUsername = true
-                    completion?(.validateUsername(state.bindings.username))
-                case .enablePasswordValidation:
-                    state.hasEditedPassword = true
-                case .clearUsernameError:
-                    guard state.usernameErrorMessage != nil else { return }
-                    state.usernameErrorMessage = nil
-                case .next:
-                    completion?(.createAccount(username: state.bindings.username, password: state.bindings.password))
-                case .continueWithSSO(let id):
-                    break
-                }
-            }
+        switch viewAction {
+        case .selectServer:
+            Task { await callback?(.selectServer) }
+        case .validateUsername:
+            Task { await validateUsername() }
+        case .enablePasswordValidation:
+            Task { await enablePasswordValidation() }
+        case .clearUsernameError:
+            Task { await clearUsernameError() }
+        case .next:
+            Task { await callback?(.createAccount(username: state.bindings.username, password: state.bindings.password)) }
+        case .continueWithSSO(let id):
+            break
         }
     }
     
@@ -91,5 +85,28 @@ class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelTy
         case .unknown:
             state.bindings.alertInfo = AlertInfo(id: type)
         }
+    }
+    
+    // MARK: - Private
+    
+    /// Validate the supplied username with the homeserver.
+    @MainActor private func validateUsername() {
+        if !state.hasEditedUsername {
+            state.hasEditedUsername = true
+        }
+        
+        callback?(.validateUsername(state.bindings.username))
+    }
+    
+    /// Allows password validation to take place.
+    @MainActor private func enablePasswordValidation() {
+        guard !state.hasEditedPassword else { return }
+        state.hasEditedPassword = true
+    }
+    
+    /// Clear any errors being shown in the username text field footer.
+    @MainActor private func clearUsernameError() {
+        guard state.usernameErrorMessage != nil else { return }
+        state.usernameErrorMessage = nil
     }
 }
