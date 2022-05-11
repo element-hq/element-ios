@@ -51,6 +51,8 @@ targets:
     - path: ../Riot/Managers/Locale/LocaleProviderType.swift
     - path: ../Riot/Managers/Locale/LocaleProvider.swift
     - path: ../Riot/Modules/MatrixKit
+      excludes:
+        - "**/MXKAuthenticationRecaptchaWebView.*"
     - path: ../Riot/Modules/Analytics
     - path: ../Riot/Managers/UserSessions
     - path: ../Riot/Managers/AppInfo/
