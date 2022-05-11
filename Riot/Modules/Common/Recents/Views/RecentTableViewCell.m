@@ -170,6 +170,27 @@
     self.presenceIndicatorView.hidden = presence == MXPresenceUnknown;
 }
 
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+
+    [self removePresenceObserver];
+}
+
+- (void)dealloc
+{
+    [self removePresenceObserver];
+}
+
+- (void)removePresenceObserver
+{
+    if (mxDirectUserPresenceObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:mxDirectUserPresenceObserver];
+        mxDirectUserPresenceObserver = nil;
+    }
+}
+
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
 {
     // The height is fixed

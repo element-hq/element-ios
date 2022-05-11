@@ -202,7 +202,9 @@
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    
+
+    [self removePresenceObserver];
+
     // Remove all gesture recognizers
     while (self.gestureRecognizers.count)
     {
@@ -216,9 +218,23 @@
     roomCellData = nil;
 }
 
+- (void)dealloc
+{
+    [self removePresenceObserver];
+}
+
 - (NSString*)roomId
 {
     return roomCellData.roomIdentifier;
+}
+
+- (void)removePresenceObserver
+{
+    if (mxDirectUserPresenceObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:mxDirectUserPresenceObserver];
+        mxDirectUserPresenceObserver = nil;
+    }
 }
 
 @end
