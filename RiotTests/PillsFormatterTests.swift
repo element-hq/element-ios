@@ -59,10 +59,12 @@ private extension PillsFormatterTests {
     func createMessageWithMentionFromBobToAlice() -> NSAttributedString {
         let formattedMessage = NSMutableAttributedString(string: Inputs.messageStart)
         formattedMessage.append(Inputs.mentionToAlice)
+        let session = FakeMXSession(myUserId: Inputs.aliceMember.userId)
         let messageWithPills = PillsFormatter.insertPills(in: formattedMessage,
-                                                            withSession: FakeMXSession(myUserId: Inputs.aliceMember.userId),
-                                                            event: FakeMXEvent(sender: Inputs.bobMember.userId),
-                                                            andRoomState: FakeMXRoomState())
+                                                          withSession: session,
+                                                          eventFormatter: EventFormatter(matrixSession: session),
+                                                          event: FakeMXEvent(sender: Inputs.bobMember.userId),
+                                                          andRoomState: FakeMXRoomState())
         return messageWithPills
     }
 }
