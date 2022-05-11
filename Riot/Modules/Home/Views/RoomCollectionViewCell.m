@@ -26,6 +26,15 @@
 
 #import "MXTools.h"
 
+@interface RoomCollectionViewCell()
+{
+    /**
+     The observer of the presence for direct user.
+    */
+    id mxDirectUserPresenceObserver;
+}
+@end
+
 @implementation RoomCollectionViewCell
 
 #pragma mark - Class methods
@@ -146,11 +155,32 @@
                                             roomId:roomCellData.roomIdentifier
                                        displayName:roomCellData.roomDisplayname
                                       mediaManager:roomCellData.mxSession.mediaManager];
-        
-        // Presence indicator
-        self.presenceIndicatorView.presence = roomCellData.presence;
-        self.presenceIndicatorView.hidden = roomCellData.presence == MXPresenceUnknown;
+
+        if (!mxDirectUserPresenceObserver && roomCellData.directUserId)
+        {
+            // Observe contact presence change
+            MXWeakify(self);
+            mxDirectUserPresenceObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKContactManagerMatrixUserPresenceChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+                MXStrongifyAndReturnIfNil(self);
+
+                NSString* directUserId = self->roomCellData.directUserId;
+
+                if (directUserId && [directUserId isEqualToString:notif.object])
+                {
+                    MXPresence presence = [MXTools presence:[notif.userInfo objectForKey:kMXKContactManagerMatrixPresenceKey]];
+                    [self refreshContactPresence:presence];
+                }
+            }];
+
+            [self refreshContactPresence:roomCellData.presence];
+        }
     }
+}
+
+- (void)refreshContactPresence:(MXPresence)presence
+{
+    self.presenceIndicatorView.presence = presence;
+    self.presenceIndicatorView.hidden = presence == MXPresenceUnknown;
 }
 
 - (MXKCellData*)renderedCellData
