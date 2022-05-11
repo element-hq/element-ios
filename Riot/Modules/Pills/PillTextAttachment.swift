@@ -37,7 +37,6 @@ class PillTextAttachment: NSTextAttachment {
         }
     }
     private static let serializationService: SerializationServiceType = SerializationService()
-    private static let pillVerticalOffset: CGFloat = -7.5
 
     // MARK: - Init
     override init(data contentData: Data?, ofType uti: String?) {
@@ -79,6 +78,8 @@ private extension PillTextAttachment {
     func updateBounds() {
         guard let data = data else { return }
         let pillSize = PillAttachmentViewProvider.size(forDisplayText: data.displayText, andFont: data.font)
-        self.bounds = CGRect(origin: CGPoint(x: 0.0, y: Self.pillVerticalOffset), size: pillSize)
+        // Offset to align pill centerY with text centerY.
+        let offset = data.font.descender + (data.font.lineHeight - pillSize.height) / 2.0
+        self.bounds = CGRect(origin: CGPoint(x: 0.0, y: offset), size: pillSize)
     }
 }
