@@ -134,7 +134,7 @@ struct FlowResult {
         case dummy(mandatory: Bool)
         
         /// The stage with the type `m.login.terms`.
-        case terms(mandatory: Bool, policies: [String: String])
+        case terms(mandatory: Bool, policies: [AnyHashable: Any])
         
         /// A stage of an unknown type.
         case other(mandatory: Bool, type: String, params: [AnyHashable: Any])
@@ -166,7 +166,7 @@ extension MXAuthenticationSession {
             case kMXLoginFlowTypeDummy:
                 stage = .dummy(mandatory: isMandatory)
             case kMXLoginFlowTypeTerms:
-                let parameters = params[flow] as? [String: String]
+                let parameters = params[flow] as? [AnyHashable: Any]
                 stage = .terms(mandatory: isMandatory, policies: parameters ?? [:])
             case kMXLoginFlowTypeMSISDN:
                 stage = .msisdn(mandatory: isMandatory)

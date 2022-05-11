@@ -51,7 +51,7 @@ struct OnboardingSplashScreenPage: View {
                     .accessibilityHidden(true)
                 
                 VStack(spacing: 8) {
-                    OnboardingSplashScreenTitleText(content.title)
+                    OnboardingTintedFullStopText(content.title)
                         .font(theme.fonts.title2B)
                         .foregroundColor(theme.colors.primaryContent)
                     Text(content.message)

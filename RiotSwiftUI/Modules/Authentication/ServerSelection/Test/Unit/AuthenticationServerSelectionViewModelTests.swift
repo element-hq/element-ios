@@ -27,9 +27,9 @@ class AuthenticationServerSelectionViewModelTests: XCTestCase {
     var viewModel: AuthenticationServerSelectionViewModelProtocol!
     var context: AuthenticationServerSelectionViewModelType.Context!
     
-    override func setUp() async throws {
-        viewModel = await AuthenticationServerSelectionViewModel(homeserverAddress: "", hasModalPresentation: true)
-        context = await viewModel.context
+    override func setUp() {
+        viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: "", hasModalPresentation: true)
+        context = viewModel.context
     }
 
     @MainActor func testErrorMessage() async {

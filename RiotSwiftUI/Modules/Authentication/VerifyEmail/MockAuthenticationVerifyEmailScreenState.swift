@@ -20,43 +20,36 @@ import SwiftUI
 /// Using an enum for the screen allows you define the different state cases with
 /// the relevant associated data for each case.
 @available(iOS 14.0, *)
-enum MockAuthenticationServerSelectionScreenState: MockScreenState, CaseIterable {
+enum MockAuthenticationVerifyEmailScreenState: MockScreenState, CaseIterable {
     // A case for each state you want to represent
     // with specific, minimal associated data that will allow you
     // mock that screen.
-    case matrix
     case emptyAddress
-    case invalidAddress
-    case nonModal
+    case enteredAddress
+    case hasSentEmail
     
     /// The associated screen
     var screenType: Any.Type {
-        AuthenticationServerSelectionScreen.self
+        AuthenticationVerifyEmailScreen.self
     }
     
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView)  {
-        let viewModel: AuthenticationServerSelectionViewModel
+        let viewModel: AuthenticationVerifyEmailViewModel
         switch self {
-        case .matrix:
-            viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: "https://matrix.org",
-                                                               hasModalPresentation: true)
         case .emptyAddress:
-            viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: "",
-                                                               hasModalPresentation: true)
-        case .invalidAddress:
-            viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: "thisisbad",
-                                                               hasModalPresentation: true)
-            Task { await viewModel.displayError(.footerMessage(VectorL10n.errorCommonMessage)) }
-        case .nonModal:
-            viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: "https://matrix.org",
-                                                               hasModalPresentation: false)
+            viewModel = AuthenticationVerifyEmailViewModel(emailAddress: "")
+        case .enteredAddress:
+            viewModel = AuthenticationVerifyEmailViewModel(emailAddress: "test@example.com")
+        case .hasSentEmail:
+            viewModel = AuthenticationVerifyEmailViewModel(emailAddress: "test@example.com")
+            Task { await viewModel.updateForSentEmail() }
         }
         
         // can simulate service and viewModel actions here if needs be.
         
         return (
-            [viewModel], AnyView(AuthenticationServerSelectionScreen(viewModel: viewModel.context))
+            [viewModel], AnyView(AuthenticationVerifyEmailScreen(viewModel: viewModel.context))
         )
     }
 }
