@@ -951,8 +951,9 @@
         PHFetchResult *assets = [PHAsset fetchAssetsInAssetCollection:collection options:options];
         cell.albumCountLabel.text = [NSString stringWithFormat:@"%tu", assets.count];
         
-        // Report first asset thumbnail (except for 'Recently Deleted' album)
-        if (assets.count && collection.assetCollectionSubtype != 1000000201)
+        // Report first asset thumbnail (except for 'Recently Deleted' and 'Hidden' albums)
+        BOOL isSensitiveCollection = collection.assetCollectionSubtype == 1000000201 || collection.assetCollectionSubtype == PHAssetCollectionSubtypeSmartAlbumAllHidden;
+        if (assets.count && !isSensitiveCollection)
         {
             PHAsset *asset = assets[0];
             
