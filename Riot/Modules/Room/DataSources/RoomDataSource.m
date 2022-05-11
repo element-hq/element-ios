@@ -59,7 +59,7 @@ const CGFloat kTypingCellHeight = 24;
 
 @property (nonatomic) NSInteger typingCellIndex;
 
-@property(nonatomic, readwrite) BOOL isCurrentUserSharingIsLocation;
+@property(nonatomic, readwrite) BOOL isCurrentUserSharingActiveLocation;
 
 @end
 
@@ -794,6 +794,7 @@ const CGFloat kTypingCellHeight = 24;
     
     if (cellIndex != NSNotFound)
     {
+        [self updateCurrentUserLocationSharingStatus];
         roomBubbleCellData.beaconInfoSummary = beaconInfoSummary;
         [self refreshCells];
     }
@@ -1203,11 +1204,11 @@ const CGFloat kTypingCellHeight = 24;
         return;
     }
     
-    BOOL isUserSharingIsLocation = [locationService isCurrentUserSharingIsLocationInRoomWithId:self.roomId];
+    BOOL isUserSharingActiveLocation = [locationService isCurrentUserSharingActiveLocationInRoomWithId:self.roomId];
     
-    if (isUserSharingIsLocation != self.isCurrentUserSharingIsLocation)
+    if (isUserSharingActiveLocation != self.isCurrentUserSharingActiveLocation)
     {
-        self.isCurrentUserSharingIsLocation = [locationService isCurrentUserSharingIsLocationInRoomWithId:self.roomId];
+        self.isCurrentUserSharingActiveLocation = [locationService isCurrentUserSharingActiveLocationInRoomWithId:self.roomId];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.roomDataSourceDelegate roomDataSourceDidUpdateCurrentUserSharingLocationStatus:self];
