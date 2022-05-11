@@ -42,8 +42,7 @@ struct AuthenticationTermsScreen: View {
                 button
                     .padding(.horizontal)
             }
-            .frame(maxWidth: OnboardingMetrics.maxContentWidth)
-            .frame(maxWidth: .infinity)
+            .readableFrame()
             .padding(.bottom, 16)
         }
         .background(theme.colors.background.ignoresSafeArea())

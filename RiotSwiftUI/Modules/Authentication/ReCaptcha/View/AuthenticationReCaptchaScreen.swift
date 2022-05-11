@@ -44,8 +44,8 @@ struct AuthenticationReCaptchaScreen: View {
                     recaptcha
                         .frame(minHeight: 500)
                 }
-                .frame(maxWidth: OnboardingMetrics.maxContentWidth, minHeight: geometry.size.height)
-                .frame(maxWidth: .infinity)
+                .readableFrame()
+                .frame(minHeight: geometry.size.height)
                 .ignoresSafeArea(.all, edges: .bottom)
             }
         }
