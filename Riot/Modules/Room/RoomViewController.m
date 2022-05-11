@@ -276,23 +276,10 @@ static CGSize kThreadListBarButtonItemImageSize;
     return result;
 }
 
-/// Register provider for Pills.
-+ (void)registerPillAttachmentViewProviderIfNeeded
-{
-    if (@available(iOS 15.0, *))
-    {
-        if (![NSTextAttachment textAttachmentViewProviderClassForFileType:PillsFormatter.pillUTType])
-        {
-            [NSTextAttachment registerTextAttachmentViewProviderClass:PillAttachmentViewProvider.class forFileType:PillsFormatter.pillUTType];
-        }
-    }
-}
-
 #pragma mark -
 
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil
 {
-    [RoomViewController registerPillAttachmentViewProviderIfNeeded];
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self)
     {
@@ -308,7 +295,6 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (nullable instancetype)initWithCoder:(NSCoder *)aDecoder
 {
-    [RoomViewController registerPillAttachmentViewProviderIfNeeded];
     self = [super initWithCoder:aDecoder];
     if (self)
     {
@@ -327,7 +313,8 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (void)finalizeInit
 {
     [super finalizeInit];
-    
+
+    [self registerPillAttachmentViewProviderIfNeeded];
     self.resizeComposerAnimationDuration = kResizeComposerAnimationDuration;
     
     // Setup `MXKViewControllerHandling` properties
@@ -7567,6 +7554,19 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (void)roomParticipantsInviteCoordinatorBridgePresenterDidEndLoading:(RoomParticipantsInviteCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
     [self stopActivityIndicator];
+}
+
+#pragma mark - Pills
+/// Register provider for Pills.
+- (void)registerPillAttachmentViewProviderIfNeeded
+{
+    if (@available(iOS 15.0, *))
+    {
+        if (![NSTextAttachment textAttachmentViewProviderClassForFileType:PillsFormatter.pillUTType])
+        {
+            [NSTextAttachment registerTextAttachmentViewProviderClass:PillAttachmentViewProvider.class forFileType:PillsFormatter.pillUTType];
+        }
+    }
 }
 
 @end
