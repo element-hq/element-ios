@@ -38,8 +38,6 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 // Flags to "Show All" reactions for an event
 @property(nonatomic) NSMutableSet<NSString* /* eventId */> *eventsToShowAllReactions;
 
-@property(nonatomic, strong, readwrite) id<MXBeaconInfoSummaryProtocol> beaconInfoSummary;
-
 @end
 
 @implementation RoomBubbleCellData
