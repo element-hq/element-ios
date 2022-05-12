@@ -114,5 +114,33 @@
 	<string>$(BASE_BUNDLE_IDENTIFIER)</string>
 	<key>keychainAccessGroup</key>
 	<string>$(KEYCHAIN_ACCESS_GROUP)</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Mention Pills</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>im.vector.app.pills</string>
+			</array>
+		</dict>
+	</array>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.text</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Mention Pills</string>
+			<key>UTTypeIdentifier</key>
+			<string>im.vector.app.pills</string>
+		</dict>
+	</array>
 </dict>
 </plist>

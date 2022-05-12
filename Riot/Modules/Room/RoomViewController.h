@@ -103,6 +103,21 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 /// Displayed live location sharing banner if any
 @property (nonatomic, weak) LiveLocationSharingBannerView *liveLocationSharingBannerView;
 
+// The customized room data source for Vector
+@property (nonatomic, nullable) RoomDataSource *customizedRoomDataSource;
+
+/**
+ Retrieve the live data source in cases where the timeline is not live.
+
+ @param onComplete completion block
+ */
+- (void)setupRoomDataSourceToResolveEvent: (void (^)(MXKRoomDataSource *roomDataSource))onComplete;
+
+/**
+ Cancels current event selection inside the timeline.
+ */
+- (void)cancelEventSelection;
+
 /**
  Display the preview of a room that is unknown for the user.
 
