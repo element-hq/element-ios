@@ -58,6 +58,7 @@ enum RegistrationError: String, LocalizedError {
     case missingThreePIDURL
     case threePIDValidationFailure
     case threePIDClientFailure
+    case waitingForThreePIDValidation
     
     var errorDescription: String? {
         switch self {

@@ -101,6 +101,14 @@ struct AuthenticationParameters: Codable {
     }
 }
 
+/// The result from a registration screen's coordinator
+enum AuthenticationRegistrationStageResult {
+    /// The screen completed with the associated registration result.
+    case completed(RegistrationResult)
+    /// The user would like to cancel the registration.
+    case cancel
+}
+
 /// The result from a response of a registration flow step.
 enum RegistrationResult {
     /// Registration has completed, creating an `MXSession` for the account.
@@ -119,30 +127,73 @@ struct FlowResult {
     /// A stage in the authentication flow.
     enum Stage {
         /// The stage with the type `m.login.recaptcha`.
-        case reCaptcha(mandatory: Bool, publicKey: String)
+        case reCaptcha(isMandatory: Bool, siteKey: String)
         
         /// The stage with the type `m.login.email.identity`.
-        case email(mandatory: Bool)
+        case email(isMandatory: Bool)
         
         /// The stage with the type `m.login.msisdn`.
-        case msisdn(mandatory: Bool)
+        case msisdn(isMandatory: Bool)
         
         /// The stage with the type `m.login.dummy`.
         ///
         /// This stage can be mandatory if there is no other stages. In this case the account cannot
         /// be created by just sending a username and a password, the dummy stage has to be completed.
-        case dummy(mandatory: Bool)
+        case dummy(isMandatory: Bool)
         
         /// The stage with the type `m.login.terms`.
-        case terms(mandatory: Bool, policies: [AnyHashable: Any])
+        case terms(isMandatory: Bool, terms: MXLoginTerms?)
         
         /// A stage of an unknown type.
-        case other(mandatory: Bool, type: String, params: [AnyHashable: Any])
+        case other(isMandatory: Bool, type: String, params: [AnyHashable: Any])
         
-        /// Whether the stage is a dummy stage that is also mandatory.
-        var isDummyAndMandatory: Bool {
-            guard case let .dummy(isMandatory) = self else { return false }
-            return isMandatory
+        /// Whether the stage is mandatory.
+        var isMandatory: Bool {
+            switch self {
+            case .reCaptcha(let isMandatory, _):
+                return isMandatory
+            case .email(let isMandatory):
+                return isMandatory
+            case .msisdn(let isMandatory):
+                return isMandatory
+            case .dummy(let isMandatory):
+                return isMandatory
+            case .terms(let isMandatory, _):
+                return isMandatory
+            case .other(let isMandatory, _, _):
+                return isMandatory
+            }
+        }
+        
+        /// Whether the stage is the dummy stage.
+        var isDummy: Bool {
+            guard case .dummy = self else { return false }
+            return true
+        }
+    }
+    
+    /// Determines the next stage to be completed in the flow.
+    var nextUncompletedStage: Stage? {
+        if let emailStage = missingStages.first(where: { if case .email = $0 { return true } else { return false } }) {
+            return emailStage
+        }
+        if let termsStage = missingStages.first(where: { if case .terms = $0 { return true } else { return false } }) {
+            return termsStage
+        }
+        if let reCaptchaStage = missingStages.first(where: { if case .reCaptcha = $0 { return true } else { return false } }) {
+            return reCaptchaStage
+        }
+        if let msisdnStage = missingStages.first(where: { if case .msisdn = $0 { return true } else { return false } }) {
+            return msisdnStage
+        }
+        
+        MXLog.failure("[FlowResult.Stage] nextUncompletedStage: The dummy stage should be handled silently and any other stages should trigger the fallback flow.")
+        return missingStages.first
+    }
+    
+    var needsFallback : Bool {
+        missingStages.filter { $0.isMandatory }.contains { stage in
+            if case .other = stage { return true } else { return false }
         }
     }
 }
@@ -150,7 +201,7 @@ struct FlowResult {
 extension MXAuthenticationSession {
     /// The flows from the session mapped as a `FlowResult` value.
     var flowResult: FlowResult {
-        let allFlowTypes = Set(flows.flatMap { $0.stages ?? [] })
+        let allFlowTypes = Set(flows.flatMap { $0.stages ?? [] }) // Using a Set here loses the order, but an order is forced during presentation anyway.
         var missingStages = [FlowResult.Stage]()
         var completedStages = [FlowResult.Stage]()
         
@@ -162,19 +213,20 @@ extension MXAuthenticationSession {
             case kMXLoginFlowTypeRecaptcha:
                 let parameters = params[flow] as? [AnyHashable: Any]
                 let publicKey = parameters?["public_key"] as? String
-                stage = .reCaptcha(mandatory: isMandatory, publicKey: publicKey ?? "")
+                stage = .reCaptcha(isMandatory: isMandatory, siteKey: publicKey ?? "")
             case kMXLoginFlowTypeDummy:
-                stage = .dummy(mandatory: isMandatory)
+                stage = .dummy(isMandatory: isMandatory)
             case kMXLoginFlowTypeTerms:
                 let parameters = params[flow] as? [AnyHashable: Any]
-                stage = .terms(mandatory: isMandatory, policies: parameters ?? [:])
+                let terms = MXLoginTerms(fromJSON: parameters)
+                stage = .terms(isMandatory: isMandatory, terms: terms)
             case kMXLoginFlowTypeMSISDN:
-                stage = .msisdn(mandatory: isMandatory)
+                stage = .msisdn(isMandatory: isMandatory)
             case kMXLoginFlowTypeEmailIdentity:
-                stage = .email(mandatory: isMandatory)
+                stage = .email(isMandatory: isMandatory)
             default:
                 let parameters = params[flow] as? [AnyHashable: Any]
-                stage = .other(mandatory: isMandatory, type: flow, params: parameters ?? [:])
+                stage = .other(isMandatory: isMandatory, type: flow, params: parameters ?? [:])
             }
             
             if let completed = completed, completed.contains(flow) {
@@ -185,14 +237,5 @@ extension MXAuthenticationSession {
         }
         
         return FlowResult(missingStages: missingStages, completedStages: completedStages)
-    }
-    
-    /// Determines the next stage to be completed in the flow.
-    func nextUncompletedStage(flowIndex: Int = 0) -> String? {
-        guard flows.count < flowIndex else { return nil }
-        return flows[flowIndex].stages.first {
-            guard let completed = completed else { return false }
-            return !completed.contains($0)
-        }
     }
 }

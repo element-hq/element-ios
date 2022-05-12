@@ -38,7 +38,7 @@ struct PollEditFormAnswerOptionView: View {
                 TextField(VectorL10n.pollEditFormInputPlaceholder, text: $text, onEditingChanged: { edit in
                     self.focused = edit
                 })
-                .textFieldStyle(BorderedInputFieldStyle(theme: _theme, isEditing: focused))
+                .textFieldStyle(BorderedInputFieldStyle(isEditing: focused))
                 Button(action: onDelete) {
                     Image(uiImage:Asset.Images.pollDeleteOptionIcon.image)
                 }

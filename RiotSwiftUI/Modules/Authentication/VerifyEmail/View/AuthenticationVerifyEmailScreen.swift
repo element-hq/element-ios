@@ -46,19 +46,27 @@ struct AuthenticationVerifyEmailScreen: View {
             }
         }
         .background(background.ignoresSafeArea())
-        .alert(item: $viewModel.alertInfo) { $0.alert }
         .toolbar { toolbar }
+        .alert(item: $viewModel.alertInfo) { $0.alert }
         .accentColor(theme.colors.accent)
     }
     
     @ViewBuilder
     var mainContent: some View {
         if viewModel.viewState.hasSentEmail {
-            waitingHeader
-                .padding(.top, OnboardingMetrics.breakerScreenTopPadding)
-                .padding(.bottom, 36)
+            waitingContent
         } else {
             AuthenticationVerifyEmailForm(viewModel: viewModel)
+        }
+    }
+    
+    var waitingContent: some View {
+        VStack(spacing: 36) {
+            waitingHeader
+                .padding(.top, OnboardingMetrics.breakerScreenTopPadding)
+            ProgressView()
+                .scaleEffect(1.3)
+                .progressViewStyle(CircularProgressViewStyle(tint: theme.colors.secondaryContent))
         }
     }
     
@@ -125,13 +133,12 @@ struct AuthenticationVerifyEmailScreen: View {
                                  endPoint: .bottom))
     }
     
+    /// A simple toolbar with a cancel button.
     var toolbar: some ToolbarContent {
         ToolbarItem(placement: .cancellationAction) {
-            Button { viewModel.send(viewAction: .cancel) } label: {
-                Image(systemName: "chevron.backward")
+            Button(VectorL10n.cancel) {
+                viewModel.send(viewAction: .cancel)
             }
-            .accessibilityLabel(VectorL10n.close)
-            .accessibilityIdentifier("cancelButton")
         }
     }
 }

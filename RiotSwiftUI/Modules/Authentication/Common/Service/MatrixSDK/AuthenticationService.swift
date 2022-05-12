@@ -138,7 +138,8 @@ class AuthenticationService: NSObject {
         registrationWizard = nil
         
         // The previously used homeserver is re-used as `startFlow` will be called again a replace it anyway.
-        self.state = AuthenticationState(flow: .login, homeserverAddress: state.homeserver.address)
+        let address = state.homeserver.addressFromUser ?? state.homeserver.address
+        self.state = AuthenticationState(flow: .login, homeserverAddress: address)
     }
 
     /// Create a session after a SSO successful login

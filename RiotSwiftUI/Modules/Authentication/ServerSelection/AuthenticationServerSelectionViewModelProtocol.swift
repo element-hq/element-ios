@@ -18,7 +18,7 @@ import Foundation
 
 protocol AuthenticationServerSelectionViewModelProtocol {
     
-    @MainActor var callback: ((AuthenticationServerSelectionViewModelResult) -> Void)? { get set }
+    var callback: (@MainActor (AuthenticationServerSelectionViewModelResult) -> Void)? { get set }
     var context: AuthenticationServerSelectionViewModelType.Context { get }
     
     /// Displays an error to the user.

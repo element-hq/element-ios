@@ -36,6 +36,8 @@
 "authentication_server_selection_server_footer" = "You can only connect to a server that has already been set up";
 "authentication_server_selection_generic_error" = "Cannot find a server at this URL, please check it is correct.";
 
+"authentication_cancel_flow_confirmation_message" = "Your account is not created yet. Stop the registration process?";
+
 "authentication_verify_email_input_title" = "Enter your email address";
 "authentication_verify_email_input_message" = "This will help verify your account and enables password recovery.";
 "authentication_verify_email_text_field_placeholder" = "Email Address";
@@ -46,6 +48,7 @@
 
 "authentication_terms_title" = "Privacy policy";
 "authentication_terms_message" = "Please read through T&C. You must accept in order to continue.";
+"authentication_terms_policy_url_error" = "Unable to find the selected policy. Please try again later.";
 
 "authentication_recaptcha_message" = "This server would like to make sure you are not a robot";
 

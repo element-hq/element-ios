@@ -18,7 +18,7 @@ import Foundation
 
 protocol AuthenticationVerifyEmailViewModelProtocol {
     
-    @MainActor var callback: ((AuthenticationVerifyEmailViewModelResult) -> Void)? { get set }
+    var callback: (@MainActor (AuthenticationVerifyEmailViewModelResult) -> Void)? { get set }
     var context: AuthenticationVerifyEmailViewModelType.Context { get }
     
     /// Updates the view to reflect that a verification email was successfully sent.

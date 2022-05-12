@@ -18,17 +18,11 @@ import SwiftUI
 import CommonKit
 
 struct AuthenticationReCaptchaCoordinatorParameters {
-    let authenticationService: AuthenticationService
     let registrationWizard: RegistrationWizard
     /// The ReCaptcha widget's site key.
     let siteKey: String
-}
-
-enum AuthenticationReCaptchaCoordinatorResult {
-    /// The screen completed with the associated registration result.
-    case completed(RegistrationResult)
-    /// The user would like to cancel the registration.
-    case cancel
+    /// The homeserver URL, used for displaying the ReCaptcha.
+    let homeserverURL: URL
 }
 
 final class AuthenticationReCaptchaCoordinator: Coordinator, Presentable {
@@ -38,7 +32,7 @@ final class AuthenticationReCaptchaCoordinator: Coordinator, Presentable {
     // MARK: Private
     
     private let parameters: AuthenticationReCaptchaCoordinatorParameters
-    private let authenticationReCaptchaHostingController: UIViewController
+    private let authenticationReCaptchaHostingController: VectorHostingController
     private var authenticationReCaptchaViewModel: AuthenticationReCaptchaViewModelProtocol
     
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol
@@ -54,24 +48,22 @@ final class AuthenticationReCaptchaCoordinator: Coordinator, Presentable {
     }
     
     // MARK: Public
-
+    
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    @MainActor var callback: ((AuthenticationReCaptchaCoordinatorResult) -> Void)?
+    var callback: (@MainActor (AuthenticationRegistrationStageResult) -> Void)?
     
     // MARK: - Setup
     
     @MainActor init(parameters: AuthenticationReCaptchaCoordinatorParameters) {
         self.parameters = parameters
         
-        guard let homeserverURL = URL(string: parameters.authenticationService.state.homeserver.address) else {
-            fatalError()
-        }
-        
-        let viewModel = AuthenticationReCaptchaViewModel(siteKey: parameters.siteKey, homeserverURL: homeserverURL)
+        let viewModel = AuthenticationReCaptchaViewModel(siteKey: parameters.siteKey, homeserverURL: parameters.homeserverURL)
         let view = AuthenticationReCaptchaScreen(viewModel: viewModel.context)
         authenticationReCaptchaViewModel = viewModel
         authenticationReCaptchaHostingController = VectorHostingController(rootView: view)
+        authenticationReCaptchaHostingController.vc_removeBackTitle()
+        authenticationReCaptchaHostingController.enableNavigationBarScrollEdgeAppearance = true
         
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: authenticationReCaptchaHostingController)
     }
@@ -99,7 +91,7 @@ final class AuthenticationReCaptchaCoordinator: Coordinator, Presentable {
             case .validate(let response):
                 self.performReCaptcha(response)
             case .cancel:
-                #warning("Reset the flow")
+                self.callback?(.cancel)
             }
         }
     }
@@ -131,7 +123,20 @@ final class AuthenticationReCaptchaCoordinator: Coordinator, Presentable {
                 self?.stopLoading()
             } catch {
                 self?.stopLoading()
+                self?.handleError(error)
             }
         }
+    }
+    
+    /// Processes an error to either update the flow or display it to the user.
+    @MainActor private func handleError(_ error: Error) {
+        if let mxError = MXError(nsError: error as NSError) {
+            authenticationReCaptchaViewModel.displayError(.mxError(mxError.error))
+            return
+        }
+        
+        // TODO: Handle any other error types as needed.
+        
+        authenticationReCaptchaViewModel.displayError(.unknown)
     }
 }
