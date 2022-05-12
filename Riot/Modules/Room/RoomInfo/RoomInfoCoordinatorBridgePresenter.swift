@@ -23,6 +23,7 @@ import Foundation
     func roomInfoCoordinatorBridgePresenter(_ coordinatorBridgePresenter: RoomInfoCoordinatorBridgePresenter, didRequestMentionForMember member: MXRoomMember)
     func roomInfoCoordinatorBridgePresenterDelegateDidLeaveRoom(_ coordinatorBridgePresenter: RoomInfoCoordinatorBridgePresenter)
     func roomInfoCoordinatorBridgePresenter(_ coordinatorBridgePresenter: RoomInfoCoordinatorBridgePresenter, didReplaceRoomWithReplacementId roomId: String)
+    func roomInfoCoordinatorBridgePresenterDelegateResetRoomSession(_ coordinatorBridgePresenter: RoomInfoCoordinatorBridgePresenter)
 }
 
 /// RoomInfoCoordinatorBridgePresenter enables to start RoomInfoCoordinator from a view controller.
@@ -113,6 +114,9 @@ final class RoomInfoCoordinatorBridgePresenter: NSObject {
 
 // MARK: - RoomInfoCoordinatorDelegate
 extension RoomInfoCoordinatorBridgePresenter: RoomInfoCoordinatorDelegate {
+    func roomInfoCoordinatorResetRoomSession(_ coordinator: RoomInfoCoordinatorType) {
+        self.delegate?.roomInfoCoordinatorBridgePresenterDelegateResetRoomSession(self)
+    }
     
     func roomInfoCoordinatorDidComplete(_ coordinator: RoomInfoCoordinatorType) {
         self.delegate?.roomInfoCoordinatorBridgePresenterDelegateDidComplete(self)

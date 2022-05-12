@@ -78,6 +78,8 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
             self.leave()
         case .cancel:
             self.coordinatorDelegate?.roomInfoListViewModelDidCancel(self)
+        case .resetSession:
+            self.coordinatorDelegate?.roomInfoListViewModelResetRoomSession(self)
         }
     }
     

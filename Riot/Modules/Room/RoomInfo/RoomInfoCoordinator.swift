@@ -199,7 +199,7 @@ extension RoomInfoCoordinator: RoomInfoListCoordinatorDelegate {
     }
     
     func roomInfoListCoordinatorDidCancel(_ coordinator: RoomInfoListCoordinatorType) {
-        self.delegate?.roomInfoCoordinatorDidComplete(self)
+        self.delegate?.roomInfoCoordinatorResetRoomSession(self)
     }
     
     func roomInfoListCoordinatorDidLeaveRoom(_ coordinator: RoomInfoListCoordinatorType) {

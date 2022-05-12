@@ -62,6 +62,9 @@ final class RoomInfoListCoordinator: RoomInfoListCoordinatorType {
 
 // MARK: - RoomInfoListViewModelCoordinatorDelegate
 extension RoomInfoListCoordinator: RoomInfoListViewModelCoordinatorDelegate {
+    func roomInfoListViewModelResetRoomSession(_ viewModel: RoomInfoListViewModelType) {
+        self.delegate?.roomInfoListCoordinatorDidCancel(self)
+    }
     
     func roomInfoListViewModel(_ viewModel: RoomInfoListViewModelType, wantsToNavigateTo target: RoomInfoListTarget) {
         self.delegate?.roomInfoListCoordinator(self, wantsToNavigateTo: target)
@@ -74,5 +77,5 @@ extension RoomInfoListCoordinator: RoomInfoListViewModelCoordinatorDelegate {
     func roomInfoListViewModelDidLeaveRoom(_ viewModel: RoomInfoListViewModelType) {
         self.delegate?.roomInfoListCoordinatorDidLeaveRoom(self)
     }
-
+    
 }

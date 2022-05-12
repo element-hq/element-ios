@@ -205,13 +205,21 @@ final class RoomInfoListViewController: UIViewController {
         let rowLeave = Row(type: .destructive, icon: Asset.Images.roomActionLeave.image, text: leaveTitle, accessoryType: .none) {
             self.present(self.leaveAlertController, animated: true, completion: nil)
         }
+        let rowResetSession = Row(type: .default, icon: Asset.Images.roomContextMenuRetry.image, text: VectorL10n.widgetMenuRefresh, accessoryType: .none) {
+            self.viewModel.process(viewAction: .resetSession)
+        }
         let sectionLeave = Section(header: nil,
                                    rows: [rowLeave],
                                    footer: nil)
         
-        tmpSections.append(sectionSettings)
-        tmpSections.append(sectionLeave)
+        let sectionRefresh = Section(header: nil,
+                                   rows: [rowResetSession],
+                                   footer: nil)
         
+        tmpSections.append(sectionSettings)
+        tmpSections.append(sectionRefresh)
+        tmpSections.append(sectionLeave)
+
         sections = tmpSections
     }
     

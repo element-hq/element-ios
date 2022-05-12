@@ -7357,6 +7357,12 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
 }
 
+- (void)roomInfoCoordinatorBridgePresenterDelegateResetRoomSession:(RoomInfoCoordinatorBridgePresenter *)coordinatorBridgePresenter {
+    [self.mainSession.crypto discardOutboundGroupSessionForRoomWithRoomId:self.roomDataSource.roomId onComplete:^{
+        
+    }];
+}
+
 #pragma mark - RemoveJitsiWidgetViewDelegate
 
 - (void)removeJitsiWidgetViewDidCompleteSliding:(RemoveJitsiWidgetView *)view

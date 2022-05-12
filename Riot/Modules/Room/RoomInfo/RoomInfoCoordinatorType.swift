@@ -23,6 +23,7 @@ protocol RoomInfoCoordinatorDelegate: AnyObject {
     func roomInfoCoordinator(_ coordinator: RoomInfoCoordinatorType, didRequestMentionForMember member: MXRoomMember)
     func roomInfoCoordinatorDidLeaveRoom(_ coordinator: RoomInfoCoordinatorType)
     func roomInfoCoordinator(_ coordinator: RoomInfoCoordinatorType, didReplaceRoomWithReplacementId roomId: String)
+    func roomInfoCoordinatorResetRoomSession(_ coordinator: RoomInfoCoordinatorType)
 }
 
 /// `RoomInfoCoordinatorType` is a protocol describing a Coordinator that handle keybackup setup navigation flow.
