@@ -26,15 +26,6 @@
 
 #import "MXTools.h"
 
-@interface RoomCollectionViewCell()
-{
-    /**
-     The observer of the presence for direct user.
-    */
-    id mxDirectUserPresenceObserver;
-}
-@end
-
 @implementation RoomCollectionViewCell
 
 #pragma mark - Class methods
@@ -156,31 +147,15 @@
                                        displayName:roomCellData.roomDisplayname
                                       mediaManager:roomCellData.mxSession.mediaManager];
 
-        if (!mxDirectUserPresenceObserver && roomCellData.directUserId)
+        if (roomCellData.directUserId)
         {
-            // Observe contact presence change
-            MXWeakify(self);
-            mxDirectUserPresenceObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKContactManagerMatrixUserPresenceChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-                MXStrongifyAndReturnIfNil(self);
-
-                NSString* directUserId = self->roomCellData.directUserId;
-
-                if (directUserId && [directUserId isEqualToString:notif.object])
-                {
-                    MXPresence presence = [MXTools presence:[notif.userInfo objectForKey:kMXKContactManagerMatrixPresenceKey]];
-                    [self refreshContactPresence:presence];
-                }
-            }];
-
-            [self refreshContactPresence:roomCellData.presence];
+            [self.presenceIndicatorView configureWithUserId:roomCellData.directUserId presence:roomCellData.presence];
+        }
+        else
+        {
+            [self.presenceIndicatorView stopListeningPresenceUpdates];
         }
     }
-}
-
-- (void)refreshContactPresence:(MXPresence)presence
-{
-    self.presenceIndicatorView.presence = presence;
-    self.presenceIndicatorView.hidden = presence == MXPresenceUnknown;
 }
 
 - (MXKCellData*)renderedCellData
@@ -203,7 +178,7 @@
 {
     [super prepareForReuse];
 
-    [self removePresenceObserver];
+    [self.presenceIndicatorView stopListeningPresenceUpdates];
 
     // Remove all gesture recognizers
     while (self.gestureRecognizers.count)
@@ -218,23 +193,9 @@
     roomCellData = nil;
 }
 
-- (void)dealloc
-{
-    [self removePresenceObserver];
-}
-
 - (NSString*)roomId
 {
     return roomCellData.roomIdentifier;
-}
-
-- (void)removePresenceObserver
-{
-    if (mxDirectUserPresenceObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:mxDirectUserPresenceObserver];
-        mxDirectUserPresenceObserver = nil;
-    }
 }
 
 @end

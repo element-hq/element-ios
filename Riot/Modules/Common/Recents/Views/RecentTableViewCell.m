@@ -27,15 +27,6 @@
 
 #import "MXRoomSummary+Riot.h"
 
-@interface RecentTableViewCell()
-{
-    /**
-     The observer of the presence for direct user.
-    */
-    id mxDirectUserPresenceObserver;
-}
-@end
-
 @implementation RecentTableViewCell
 
 #pragma mark - Class methods
@@ -139,23 +130,13 @@
                                        displayName:roomCellData.roomDisplayname
                                       mediaManager:roomCellData.mxSession.mediaManager];
 
-        if (!mxDirectUserPresenceObserver && roomCellData.directUserId)
+        if (roomCellData.directUserId)
         {
-            // Observe contact presence change
-            MXWeakify(self);
-            mxDirectUserPresenceObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKContactManagerMatrixUserPresenceChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-                MXStrongifyAndReturnIfNil(self);
-
-                NSString* directUserId = self->roomCellData.directUserId;
-
-                if (directUserId && [directUserId isEqualToString:notif.object])
-                {
-                    MXPresence presence = [MXTools presence:[notif.userInfo objectForKey:kMXKContactManagerMatrixPresenceKey]];
-                    [self refreshContactPresence:presence];
-                }
-            }];
-
-            [self refreshContactPresence:roomCellData.presence];
+            [self.presenceIndicatorView configureWithUserId:roomCellData.directUserId presence:roomCellData.presence];
+        }
+        else
+        {
+            [self.presenceIndicatorView stopListeningPresenceUpdates];
         }
     }
     else
@@ -164,31 +145,11 @@
     }
 }
 
-- (void)refreshContactPresence:(MXPresence)presence
-{
-    self.presenceIndicatorView.presence = presence;
-    self.presenceIndicatorView.hidden = presence == MXPresenceUnknown;
-}
-
 - (void)prepareForReuse
 {
     [super prepareForReuse];
 
-    [self removePresenceObserver];
-}
-
-- (void)dealloc
-{
-    [self removePresenceObserver];
-}
-
-- (void)removePresenceObserver
-{
-    if (mxDirectUserPresenceObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:mxDirectUserPresenceObserver];
-        mxDirectUserPresenceObserver = nil;
-    }
+    [self.presenceIndicatorView stopListeningPresenceUpdates];
 }
 
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth

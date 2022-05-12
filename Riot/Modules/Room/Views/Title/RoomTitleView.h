@@ -21,6 +21,7 @@
 // We add here a protocol to handle tap gesture in title view.
 @class RoomTitleView;
 @class PresenceIndicatorView;
+@protocol PresenceIndicatorViewDelegate;
 @protocol RoomTitleViewTapGestureDelegate <NSObject>
 
 /**
@@ -33,7 +34,7 @@
 
 @end
 
-@interface RoomTitleView : MXKRoomTitleView <UIGestureRecognizerDelegate>
+@interface RoomTitleView : MXKRoomTitleView <UIGestureRecognizerDelegate, PresenceIndicatorViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *titleMask;
 @property (weak, nonatomic) IBOutlet UIImageView *badgeImageView;
