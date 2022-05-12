@@ -47,14 +47,8 @@ struct AuthenticationServerSelectionScreen: View {
                             .padding(.bottom, 36)
                         
                         serverForm
-                        
-                        Spacer()
-                        
-                        emsBanner
-                            .padding(.vertical, 16)
                     }
                     .readableFrame()
-                    .frame(minHeight: geometry.size.height)
                     .padding(.horizontal, 16)
                     .onAppear { scrollView = reader }
                 }
@@ -111,41 +105,6 @@ struct AuthenticationServerSelectionScreen: View {
             .disabled(viewModel.viewState.hasValidationError)
             .accessibilityIdentifier("confirmButton")
         }
-    }
-    
-    /// A banner shown beneath the server form with information about hosting your own server.
-    var emsBanner: some View {
-        VStack(spacing: 12) {
-            Image(Asset.Images.authenticationServerSelectionEmsLogo.name)
-                .padding(.top, 8)
-                .accessibilityHidden(true)
-            
-            Text(VectorL10n.authenticationServerSelectionEmsTitle)
-                .font(theme.fonts.title3SB)
-                .multilineTextAlignment(.center)
-                .foregroundColor(theme.colors.primaryContent)
-            
-            VStack(spacing: 2) {
-                Text(VectorL10n.authenticationServerSelectionEmsMessage)
-                    .font(theme.fonts.callout)
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(theme.colors.secondaryContent)
-                Text(VectorL10n.authenticationServerSelectionEmsLink)
-                    .font(theme.fonts.callout)
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(theme.colors.primaryContent)
-            }
-            .padding(.bottom, 4)
-            .accessibilityElement(children: .combine)
-            
-            Button { viewModel.send(viewAction: .getInTouch) } label: {
-                Text(VectorL10n.authenticationServerSelectionEmsButton)
-                    .font(theme.fonts.body)
-            }
-            .buttonStyle(PrimaryActionButtonStyle(customColor: theme.colors.ems))
-        }
-        .padding(16)
-        .background(RoundedRectangle(cornerRadius: 9).foregroundColor(theme.colors.system))
     }
     
     @ToolbarContentBuilder

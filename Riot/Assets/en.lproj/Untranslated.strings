@@ -34,11 +34,6 @@
 "authentication_server_selection_message" = "What is the address of your server? A server is like a home for all your data.";
 "authentication_server_selection_server_url" = "Server URL";
 "authentication_server_selection_server_footer" = "You can only connect to a server that has already been set up";
-"authentication_server_selection_ems_title" = "Want to host your own server?";
-/* This string will be followed by authentication_server_selection_ems_link on the next line. */
-"authentication_server_selection_ems_message" = "Element Matrix Services (EMS) is a robust and reliable hosting service for fast, secure real time communication. Find out how on";
-"authentication_server_selection_ems_link" = "element.io/ems";
-"authentication_server_selection_ems_button" = "Get in touch";
 "authentication_server_selection_generic_error" = "Cannot find a server at this URL, please check it is correct.";
 
 "authentication_verify_email_input_title" = "Enter your email address";
