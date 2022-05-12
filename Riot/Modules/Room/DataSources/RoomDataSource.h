@@ -67,7 +67,7 @@
 @property (nonatomic, nullable) NSString *highlightedEventId;
 
 /// Is current user sharing is location in the room
-@property(nonatomic, readonly) BOOL isCurrentUserSharingIsLocation;
+@property(nonatomic, readonly) BOOL isCurrentUserSharingActiveLocation;
 
 /**
  Check if there is an active jitsi widget in the room and return it.

@@ -1531,7 +1531,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (BOOL)shouldShowLiveLocationSharingBannerView
 {
-    return self.customizedRoomDataSource.isCurrentUserSharingIsLocation;
+    return self.customizedRoomDataSource.isCurrentUserSharingActiveLocation;
 }
 
 #pragma mark - Internals
