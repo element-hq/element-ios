@@ -51,6 +51,7 @@ struct AuthenticationReCaptchaScreen: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .background(theme.colors.background.ignoresSafeArea())
+        .toolbar { toolbar }
         .alert(item: $viewModel.alertInfo) { $0.alert }
         .accentColor(theme.colors.accent)
     }
@@ -79,6 +80,15 @@ struct AuthenticationReCaptchaScreen: View {
                                        homeserverURL: viewModel.viewState.homeserverURL,
                                        isLoading: $isLoading) { response in
             viewModel.send(viewAction: .validate(response))
+        }
+    }
+    
+    /// A simple toolbar with a cancel button.
+    var toolbar: some ToolbarContent {
+        ToolbarItem(placement: .cancellationAction) {
+            Button(VectorL10n.cancel) {
+                viewModel.send(viewAction: .cancel)
+            }
         }
     }
 }

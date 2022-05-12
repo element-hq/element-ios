@@ -18,6 +18,9 @@ import Foundation
 
 protocol AuthenticationReCaptchaViewModelProtocol {
     
-    @MainActor var callback: ((AuthenticationReCaptchaViewModelResult) -> Void)? { get set }
+    var callback: (@MainActor (AuthenticationReCaptchaViewModelResult) -> Void)? { get set }
     var context: AuthenticationReCaptchaViewModelType.Context { get }
+    
+    /// Display an error to the user.
+    @MainActor func displayError(_ type: AuthenticationReCaptchaErrorType)
 }

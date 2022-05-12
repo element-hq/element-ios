@@ -28,7 +28,7 @@ class AuthenticationReCaptchaViewModel: AuthenticationReCaptchaViewModelType, Au
 
     // MARK: Public
 
-    @MainActor var callback: ((AuthenticationReCaptchaViewModelResult) -> Void)?
+    var callback: (@MainActor (AuthenticationReCaptchaViewModelResult) -> Void)?
 
     // MARK: - Setup
 
@@ -45,6 +45,17 @@ class AuthenticationReCaptchaViewModel: AuthenticationReCaptchaViewModelType, Au
             Task { await callback?(.cancel) }
         case .validate(let response):
             Task { await callback?(.validate(response)) }
+        }
+    }
+    
+    @MainActor func displayError(_ type: AuthenticationReCaptchaErrorType) {
+        switch type {
+        case .mxError(let message):
+            state.bindings.alertInfo = AlertInfo(id: type,
+                                                 title: VectorL10n.error,
+                                                 message: message)
+        case .unknown:
+            state.bindings.alertInfo = AlertInfo(id: type)
         }
     }
 }

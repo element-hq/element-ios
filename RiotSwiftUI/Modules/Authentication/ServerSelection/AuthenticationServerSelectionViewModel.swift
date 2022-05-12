@@ -28,7 +28,7 @@ class AuthenticationServerSelectionViewModel: AuthenticationServerSelectionViewM
 
     // MARK: Public
 
-    @MainActor var callback: ((AuthenticationServerSelectionViewModelResult) -> Void)?
+    var callback: (@MainActor (AuthenticationServerSelectionViewModelResult) -> Void)?
 
     // MARK: - Setup
 

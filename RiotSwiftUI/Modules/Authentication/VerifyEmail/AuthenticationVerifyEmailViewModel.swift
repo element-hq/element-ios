@@ -27,7 +27,7 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
 
     // MARK: Public
 
-    @MainActor var callback: ((AuthenticationVerifyEmailViewModelResult) -> Void)?
+    var callback: (@MainActor (AuthenticationVerifyEmailViewModelResult) -> Void)?
 
     // MARK: - Setup
 

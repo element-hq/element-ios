@@ -24,11 +24,13 @@ enum AuthenticationCoordinatorResult {
     case didLogin(session: MXSession, authenticationFlow: AuthenticationFlow, authenticationType: AuthenticationType)
     /// All of the required authentication steps including key verification is complete.
     case didComplete
+    /// The user has cancelled the associated authentication flow.
+    case cancel(AuthenticationFlow)
 }
 
 /// `AuthenticationCoordinatorProtocol` is a protocol describing a Coordinator that handle's the authentication navigation flow.
 protocol AuthenticationCoordinatorProtocol: Coordinator, Presentable {
-    var completion: ((AuthenticationCoordinatorResult) -> Void)? { get set }
+    var callback: ((AuthenticationCoordinatorResult) -> Void)? { get set }
     
     /// Whether the custom homeserver checkbox is enabled for the user to enter a homeserver URL.
     var customServerFieldsVisible: Bool { get set }

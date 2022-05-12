@@ -10,6 +10,10 @@ import Foundation
 
 // swiftlint:disable function_parameter_count identifier_name line_length type_body_length
 public extension VectorL10n {
+  /// Your account is not created yet. Stop the registration process?
+  static var authenticationCancelFlowConfirmationMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_cancel_flow_confirmation_message") 
+  }
   /// This server would like to make sure you are not a robot
   static var authenticationRecaptchaMessage: String { 
     return VectorL10n.tr("Untranslated", "authentication_recaptcha_message") 
@@ -69,6 +73,10 @@ public extension VectorL10n {
   /// Please read through T&C. You must accept in order to continue.
   static var authenticationTermsMessage: String { 
     return VectorL10n.tr("Untranslated", "authentication_terms_message") 
+  }
+  /// Unable to find the selected policy. Please try again later.
+  static var authenticationTermsPolicyUrlError: String { 
+    return VectorL10n.tr("Untranslated", "authentication_terms_policy_url_error") 
   }
   /// Privacy policy
   static var authenticationTermsTitle: String { 

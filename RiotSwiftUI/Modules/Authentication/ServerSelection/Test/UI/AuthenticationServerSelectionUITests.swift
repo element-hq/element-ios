@@ -50,7 +50,7 @@ class AuthenticationServerSelectionUITests: MockScreenTest {
         XCTAssertTrue(confirmButton.exists, "The confirm button should always be shown.")
         XCTAssertTrue(confirmButton.isEnabled, "The confirm button should be enabled when there is an address.")
         
-        let textFieldFooter = app.staticTexts["addressTextField"]
+        let textFieldFooter = app.staticTexts["textFieldFooter"]
         XCTAssertTrue(textFieldFooter.exists)
         XCTAssertEqual(textFieldFooter.label, VectorL10n.authenticationServerSelectionServerFooter)
         
@@ -60,7 +60,7 @@ class AuthenticationServerSelectionUITests: MockScreenTest {
     
     func verifyEmptyAddress() {
         let serverTextField = app.textFields.element
-        XCTAssertEqual(serverTextField.value as? String, "", "The text field should be empty in this state.")
+        XCTAssertEqual(serverTextField.value as? String, VectorL10n.authenticationServerSelectionServerUrl, "The text field should show placeholder text in this state.")
         
         let confirmButton = app.buttons["confirmButton"]
         XCTAssertTrue(confirmButton.exists, "The confirm button should always be shown.")
@@ -75,7 +75,7 @@ class AuthenticationServerSelectionUITests: MockScreenTest {
         XCTAssertTrue(confirmButton.exists, "The confirm button should always be shown.")
         XCTAssertFalse(confirmButton.isEnabled, "The confirm button should be disabled when there is an error.")
         
-        let textFieldFooter = app.staticTexts["addressTextField"]
+        let textFieldFooter = app.staticTexts["textFieldFooter"]
         XCTAssertTrue(textFieldFooter.exists)
         XCTAssertEqual(textFieldFooter.label, VectorL10n.errorCommonMessage)
     }
