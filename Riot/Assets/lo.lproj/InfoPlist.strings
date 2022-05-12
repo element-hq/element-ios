@@ -1,1 +1,10 @@
 
+
+"NSLocationWhenInUseUsageDescription" = "ເມື່ອທ່ານແບ່ງປັນສະຖານທີ່ຂອງທ່ານໃຫ້ກັບຄົນອື່ນ, ລະບົບຕ້ອງສາມາດເຂົ້າເຖິງໄດ້ເພື່ອສະແດງແຜນທີ່ໃຫ້ເຂົາເຈົ້າ.";
+"NSFaceIDUsageDescription" = "Face ID ຖືກໃຊ້ເພື່ອເຂົ້າເຖິງແອັບຂອງທ່ານ.";
+"NSCalendarsUsageDescription" = "ເບິ່ງຕາຕະລາງປະຊຸມຕາມກຳນົດຂອງທ່ານໃນແອັບ.";
+"NSMicrophoneUsageDescription" = "ລະບົບຕ້ອງເຂົ້າເຖິງໄມໂຄຣໂຟນຂອງທ່ານເພື່ອໂທອອກ ແລະຮັບສາຍ, ຖ່າຍວິດີໂອ ແລະບັນທຶກຂໍ້ຄວາມສຽງ.";
+"NSContactsUsageDescription" = "ລະບົບຈະສະແດງລາຍຊື່ຜູ້ຕິດຕໍ່ຂອງທ່ານເພື່ອໃຫ້ທ່ານສາມາດເຊີນເຂົາເຈົ້າມາສົນທະນາໄດ້.";
+"NSPhotoLibraryUsageDescription" = "ຄັງຮູບພາບຖືກນໍາໃຊ້ເພື່ອສົ່ງຮູບພາບແລະວິດີໂອ.";
+// Permissions usage explanations
+"NSCameraUsageDescription" = "ກ້ອງຖ່າຍຮູບຖືກນໍາໃຊ້ເພື່ອຖ່າຍຮູບແລະວິດີໂອ, ເລີ່ມໂທວິດີໂອ.";
