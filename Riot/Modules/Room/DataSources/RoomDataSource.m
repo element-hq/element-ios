@@ -767,6 +767,7 @@ const CGFloat kTypingCellHeight = 24;
     MXWeakify(self);
     self.beaconInfoSummaryListener = [self.mxSession.aggregations.beaconAggregations listenToBeaconInfoSummaryUpdateInRoomWithId:self.roomId handler:^(id<MXBeaconInfoSummaryProtocol> beaconInfoSummary) {
         MXStrongifyAndReturnIfNil(self);
+        [self updateCurrentUserLocationSharingStatus];
         [self refreshFirstCellWithBeaconInfoSummary:beaconInfoSummary];
     }];
 }
@@ -794,7 +795,6 @@ const CGFloat kTypingCellHeight = 24;
     
     if (cellIndex != NSNotFound)
     {
-        [self updateCurrentUserLocationSharingStatus];
         roomBubbleCellData.beaconInfoSummary = beaconInfoSummary;
         [self refreshCells];
     }
