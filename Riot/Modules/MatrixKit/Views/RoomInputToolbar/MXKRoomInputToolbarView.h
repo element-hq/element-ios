@@ -270,6 +270,11 @@ typedef enum : NSUInteger
 - (IBAction)onTouchUpInside:(UIButton*)button;
 
 /**
+ Send message currently displayed inside toolbar's ` UITextView`.
+ */
+- (void)sendCurrentMessage;
+
+/**
  Handle image attachment
  Save the image in user's photos library when 'isPhotoLibraryAsset' flag is NO and auto saving is enabled.
  

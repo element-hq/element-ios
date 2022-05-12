@@ -15,7 +15,7 @@
  */
 
 #import "MXKMessageTextView.h"
-#import "UITextView+MatrixKit.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface MXKMessageTextView()
 
@@ -51,7 +51,7 @@
         return NO;
     }
     
-    return [self isThereALinkNearPoint:point];
+    return [self isThereALinkNearLocation:point];
 }
 
 @end

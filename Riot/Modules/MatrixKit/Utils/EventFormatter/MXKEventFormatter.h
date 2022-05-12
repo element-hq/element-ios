@@ -229,6 +229,18 @@ typedef enum : NSUInteger {
 - (NSAttributedString*)renderHTMLString:(NSString*)htmlString forEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState;
 
 /**
+ Render a random html string into an attributed string with the font and the text color
+ that correspond to the passed event.
+
+ @param htmlString the HTLM string to render.
+ @param event the event associated to the string.
+ @param roomState the room state right before the event.
+ @param isEditMode wether string will be used for edition in the composer
+ @return an attributed string.
+ */
+- (NSAttributedString*)renderHTMLString:(NSString*)htmlString forEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState isEditMode:(BOOL)isEditMode;
+
+/**
  Same as [self renderString:forEvent:] but add a prefix.
  The prefix will be rendered with 'prefixTextFont' and 'prefixTextColor'.
  
