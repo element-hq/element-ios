@@ -46,8 +46,6 @@ class AuthenticationServerSelectionViewModel: AuthenticationServerSelectionViewM
             Task { await callback?(.confirm(homeserverAddress: state.bindings.homeserverAddress)) }
         case .dismiss:
             Task { await callback?(.dismiss) }
-        case .getInTouch:
-            Task { await getInTouch() }
         case .clearFooterError:
             Task { await clearFooterError() }
         }
@@ -70,15 +68,5 @@ class AuthenticationServerSelectionViewModel: AuthenticationServerSelectionViewM
     @MainActor private func clearFooterError() {
         guard state.footerErrorMessage != nil else { return }
         withAnimation { state.footerErrorMessage = nil }
-    }
-    
-    /// Opens the EMS link in the user's browser.
-    @MainActor private func getInTouch() {
-        let url = BuildSettings.onboardingHostYourOwnServerLink
-        
-        UIApplication.shared.open(url) { [weak self] success in
-            guard !success, let self = self else { return }
-            self.displayError(.openURLAlert)
-        }
     }
 }

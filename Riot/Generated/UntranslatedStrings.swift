@@ -46,22 +46,6 @@ public extension VectorL10n {
   static var authenticationRegistrationUsernameFooter: String { 
     return VectorL10n.tr("Untranslated", "authentication_registration_username_footer") 
   }
-  /// Get in touch
-  static var authenticationServerSelectionEmsButton: String { 
-    return VectorL10n.tr("Untranslated", "authentication_server_selection_ems_button") 
-  }
-  /// element.io/ems
-  static var authenticationServerSelectionEmsLink: String { 
-    return VectorL10n.tr("Untranslated", "authentication_server_selection_ems_link") 
-  }
-  /// Element Matrix Services (EMS) is a robust and reliable hosting service for fast, secure real time communication. Find out how on
-  static var authenticationServerSelectionEmsMessage: String { 
-    return VectorL10n.tr("Untranslated", "authentication_server_selection_ems_message") 
-  }
-  /// Want to host your own server?
-  static var authenticationServerSelectionEmsTitle: String { 
-    return VectorL10n.tr("Untranslated", "authentication_server_selection_ems_title") 
-  }
   /// Cannot find a server at this URL, please check it is correct.
   static var authenticationServerSelectionGenericError: String { 
     return VectorL10n.tr("Untranslated", "authentication_server_selection_generic_error") 
