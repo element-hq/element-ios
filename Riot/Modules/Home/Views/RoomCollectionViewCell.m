@@ -146,10 +146,15 @@
                                             roomId:roomCellData.roomIdentifier
                                        displayName:roomCellData.roomDisplayname
                                       mediaManager:roomCellData.mxSession.mediaManager];
-        
-        // Presence indicator
-        self.presenceIndicatorView.presence = roomCellData.presence;
-        self.presenceIndicatorView.hidden = roomCellData.presence == MXPresenceUnknown;
+
+        if (roomCellData.directUserId)
+        {
+            [self.presenceIndicatorView configureWithUserId:roomCellData.directUserId presence:roomCellData.presence];
+        }
+        else
+        {
+            [self.presenceIndicatorView stopListeningPresenceUpdates];
+        }
     }
 }
 
@@ -172,7 +177,9 @@
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    
+
+    [self.presenceIndicatorView stopListeningPresenceUpdates];
+
     // Remove all gesture recognizers
     while (self.gestureRecognizers.count)
     {

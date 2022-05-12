@@ -93,6 +93,11 @@
     return roomSummary.avatar;
 }
 
+- (NSString *)directUserId
+{
+    return self.roomSummary.directUserId;
+}
+
 - (MXPresence)presence
 {
     if (self.roomSummary.isDirect)
