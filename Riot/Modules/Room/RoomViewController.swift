@@ -33,13 +33,9 @@ extension RoomViewController {
             } else {
                 newAttributedString.appendString(roomMember.displayname.count > 0 ? roomMember.displayname : roomMember.userId)
             }
-            let empty = NSAttributedString(string: " ",
-                                           attributes: [.font: inputToolbar.textDefaultFont])
-            newAttributedString.append(empty)
+            newAttributedString.appendString(" ")
         } else if roomMember.userId == self.mainSession.myUser.userId {
-            let selfMentionString = NSAttributedString(string: "/me ",
-                                                       attributes: [.font: inputToolbar.textDefaultFont])
-            newAttributedString.append(selfMentionString)
+            newAttributedString.appendString("/me ")
         } else {
             if #available(iOS 15.0, *) {
                 newAttributedString.append(PillsFormatter.mentionPill(withRoomMember: roomMember,
@@ -48,9 +44,7 @@ extension RoomViewController {
             } else {
                 newAttributedString.appendString(roomMember.displayname.count > 0 ? roomMember.displayname : roomMember.userId)
             }
-            let colon = NSAttributedString(string: ": ",
-                                           attributes: [.font: inputToolbar.textDefaultFont])
-            newAttributedString.append(colon)
+            newAttributedString.appendString(": ")
         }
 
         inputToolbar.attributedTextMessage = newAttributedString
