@@ -167,11 +167,16 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
 - (void)setAttributedTextMessage:(NSAttributedString *)attributedTextMessage
 {
-    NSMutableAttributedString *mutableTextMessage = [[NSMutableAttributedString alloc] initWithAttributedString:attributedTextMessage];
-    [mutableTextMessage addAttributes:@{ NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor,
-                                         NSFontAttributeName: self.textDefaultFont }
-                                range:NSMakeRange(0, mutableTextMessage.length)];
-    self.textView.attributedText = mutableTextMessage;
+    if (attributedTextMessage)
+    {
+        NSMutableAttributedString *mutableTextMessage = [[NSMutableAttributedString alloc] initWithAttributedString:attributedTextMessage];
+        [mutableTextMessage addAttributes:@{ NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor,
+                                             NSFontAttributeName: self.textDefaultFont }
+                                    range:NSMakeRange(0, mutableTextMessage.length)];
+        attributedTextMessage = mutableTextMessage;
+    }
+
+    self.textView.attributedText = attributedTextMessage;
     [self updateUIWithAttributedTextMessage:attributedTextMessage animated:YES];
     [self textViewDidChange:self.textView];
 }
