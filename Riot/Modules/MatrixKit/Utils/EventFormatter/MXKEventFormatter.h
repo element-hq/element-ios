@@ -241,6 +241,13 @@ typedef enum : NSUInteger {
 - (NSAttributedString*)renderHTMLString:(NSString*)htmlString forEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState isEditMode:(BOOL)isEditMode;
 
 /**
+ Defines the replacement attributed string for a redacted message.
+
+ @return attributed string describing redacted message.
+ */
+- (NSAttributedString*)redactedMessageReplacementAttributedString;
+
+/**
  Same as [self renderString:forEvent:] but add a prefix.
  The prefix will be rendered with 'prefixTextFont' and 'prefixTextColor'.
  
