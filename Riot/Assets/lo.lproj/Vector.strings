@@ -930,3 +930,950 @@
 // Contacts
 "contacts_address_book_section" = "ຕິດຕໍ່ໃນເຄື່ອງ";
 "auth_reset_password_success_message" = "ລະຫັດຜ່ານບັນຊີ Matrix ຂອງທ່ານໄດ້ຖືກຕັ້ງຄືນໃຫມ່.\n\nທ່ານໄດ້ອອກຈາກລະບົບນທັງໝົດ ແລະ ຈະບໍ່ໄດ້ຮັບການແຈ້ງເຕືອນ push ອີກຕໍ່ໄປ. ເພື່ອເປີດໃຊ້ການແຈ້ງເຕືອນຄືນໃໝ່, ເຂົ້າສູ່ລະບົບຄືນໃໝ່ໃນແຕ່ລະອຸປະກອນ.";
+"version_check_banner_title_deprecated" = "ພວກເຮົາບໍ່ຮອງຮັບ iOS %@ ອີກຕໍ່ໄປ";
+"version_check_banner_subtitle_supported" = "ພວກເຮົາຈະຢຸດການຮອງຮັບ %@ ໃນ iOS %@ ໃນໄວໆນີ້. ຫາກຕ້ອງການໃຊ້ %@ ໃຫ້ເຕັມປະສິດທິພາບ, ພວກເຮົາແນະນຳໃຫ້ທ່ານອັບເກຣດ iOS ເວີຊັນຂອງທ່ານ.";
+
+// Mark: - Version check
+
+"version_check_banner_title_supported" = "ພວກເຮົາກຳລັງສິ້ນສຸດການຮອງຮັບ iOS %@";
+"voice_message_lock_screen_placeholder" = "ຂໍ້ຄວາມສຽງ";
+"voice_message_stop_locked_mode_recording" = "ແຕະໃສ່ການບັນທຶກຂອງທ່ານເພື່ອຢຸດ ຫຼືຟັງ";
+
+// Mark: - Voice Messages
+
+"voice_message_release_to_send" = "ກົດຄ້າງໄວ້ເພື່ອບັນທຶກ, ປ່ອຍເພື່ອສົ່ງ";
+"voice_message_remaining_recording_time" = "ຍັງເຫຼືອ %@s";
+"side_menu_coach_message" = "ປັດຂວາ ຫຼື ແຕະເພື່ອເບິ່ງທຸກຫ້ອງ";
+"side_menu_app_version" = "ເວີຊັ່ນ %@";
+"side_menu_action_feedback" = "ຄໍາຕິຊົມ";
+"side_menu_action_help" = "ຊ່ວຍເຫຼືອ";
+"side_menu_action_settings" = "ການຕັ້ງຄ່າ";
+"side_menu_action_invite_friends" = "ເຊີນເພື່ອນ";
+
+// Mark: - Side menu
+
+"side_menu_reveal_action_accessibility_label" = "ກະດານຊ້າຍ";
+"user_avatar_view_accessibility_hint" = "ປ່ຽນຮູບແທນຕົວຜູ້ໃຊ້";
+
+// Mark: - User avatar view
+
+"user_avatar_view_accessibility_label" = "ຮູບແທນຕົວ";
+"space_avatar_view_accessibility_hint" = "ປ່ຽນຮູບແທນຕົວ";
+
+// Mark: Avatar
+
+"space_avatar_view_accessibility_label" = "ຮູບແທນຕົວ";
+"spaces_add_room_missing_permission_message" = "ທ່ານບໍ່ມີສິດໃນການເພີ່ມຫ້ອງໃສ່ພື້ນທີ່ນີ້.";
+"spaces_creation_in_one_space" = "ໃນ 1 ພື້ນທີ່";
+"spaces_creation_in_many_spaces" = "ໃນ %@ພຶ້ນທີ່";
+"spaces_creation_in_spacename_plus_many" = "ໃນ %@ + %@ ພື້ນທີ່";
+"spaces_creation_in_spacename_plus_one" = "ໃນ %@ + 1 ພື້ນທີ່";
+"spaces_creation_in_spacename" = "ໃນ %@";
+"spaces_creation_post_process_inviting_users" = "ກຳລັງເຊີນຜູ້ໃຊ້ %@";
+"spaces_creation_post_process_adding_rooms" = "ກຳລັງເພີ່ມ %@ ຫ້ອງ";
+"spaces_creation_post_process_creating_room" = "ກຳລັງສ້າງ %@";
+"spaces_creation_post_process_uploading_avatar" = "ກຳລັງອັບໂຫຼດຮູບແທນຕົວ";
+"spaces_creation_post_process_creating_space_task" = "ກຳລັງສ້າງ %@";
+"spaces_creation_post_process_creating_space" = "ການສ້າງພື້ນທີ່";
+"spaces_creation_invite_by_username_message" = "ທ່ານສາມາດເຊີນເຂົາເຈົ້າໄດ້ໃນພາຍຫຼັງ.";
+"spaces_creation_invite_by_username_title" = "ເຊີນທີມງານຂອງທ່ານ";
+"spaces_creation_invite_by_username" = "ເຊີນໂດຍຊື່ຜູ້ໃຊ້";
+"spaces_creation_add_rooms_message" = "ເນື່ອງຈາກພື້ນທີ່ນີ້ແມ່ນສະເພາະແຕ່ທ່ານເທົ່ານັ້ນ, ບໍ່ມີໃຜຈະໄດ້ຮັບການແຈ້ງໃຫ້ຊາບ. ທ່ານສາມາດເພີ່ມຕື່ມອີກໃນພາຍຫຼັງ.";
+"spaces_creation_add_rooms_title" = "ທ່ານຕ້ອງການເພີ່ມຫຍັງ?";
+"spaces_creation_sharing_type_me_and_teammates_detail" = "ພື້ນທີ່ສ່ວນຕົວສຳລັບທ່ານ ແລະ ເພື່ອນຮ່ວມທີມ";
+"spaces_creation_sharing_type_me_and_teammates_title" = "ຂ້ອຍແລະເພື່ອນຮ່ວມທີມ";
+"spaces_creation_sharing_type_just_me_detail" = "ພື້ນທີ່ສ່ວນຕົວເພື່ອຈັດລະບຽບຫ້ອງຂອງທ່ານ";
+"spaces_creation_sharing_type_just_me_title" = "ພຽງແຕ່ຂ້ອຍ";
+"spaces_creation_sharing_type_message" = "ໃຫ້ແນ່ໃຈວ່າຄົນທີ່ເໝາະສົມມີການເຂົ້າເຖິງ %@. ທ່ານສາມາດປ່ຽນອັນນີ້ໃນພາຍຫຼັງ.";
+"spaces_creation_sharing_type_title" = "ທ່ານເຮັດວຽກກັບໃຜ?";
+"spaces_creation_email_invites_email_title" = "ອີເມວ";
+"spaces_creation_email_invites_message" = "ທ່ານສາມາດເຊີນເຂົາເຈົ້າໄດ້ໃນພາຍຫຼັງ.";
+"spaces_creation_email_invites_title" = "ເຊີນທີມງານຂອງທ່ານ";
+"spaces_creation_new_rooms_support" = "ສະຫນັບສະຫນູນ";
+"spaces_creation_new_rooms_random" = "ສຸ່ມ";
+"spaces_creation_new_rooms_general" = "ທົ່ວໄປ";
+"spaces_creation_new_rooms_room_name_title" = "ຊື່ຫ້ອງ";
+"spaces_creation_new_rooms_message" = "ພວກເຮົາຈະສ້າງຫ້ອງສໍາລັບແຕ່ລະຄົນ.";
+"spaces_creation_new_rooms_title" = "ທ່ານມີການສົນທະນາຫຍັງແດ່?";
+"spaces_creation_cancel_message" = "ຄວາມຄືບຫນ້າຂອງທ່ານຈະສູນເສຍໄປ.";
+"spaces_creation_cancel_title" = "ຢຸດການສ້າງພື້ນທີ່ບໍ?";
+"spaces_creation_private_space_title" = "ພື້ນທີ່ສ່ວນຕົວຂອງທ່ານ";
+"spaces_creation_public_space_title" = "ພື້ນທີ່ສາທາລະນະຂອງທ່ານ";
+"spaces_creation_address_already_exists" = "%@\nມີຢູ່ແລ້ວ";
+"spaces_creation_address_invalid_characters" = "%@\nມີຕົວອັກສອນທີ່ບໍ່ຖືກຕ້ອງ";
+"spaces_creation_address_default_message" = "ພື້ນທີ່ຂອງທ່ານຈະສາມາດເບິ່ງໄດ້ຢູ່\n%@";
+"spaces_creation_empty_room_name_error" = "ຕ້ອງການຊື່";
+"spaces_creation_address" = "ທີ່ຢູ່";
+"spaces_creation_settings_message" = "ເພີ່ມລາຍລະອຽດບາງຢ່າງເພື່ອຊ່ວຍໃຫ້ມັນໂດດເດັ່ນ. ທ່ານສາມາດປ່ຽນສິ່ງເຫຼົ່ານີ້ໄດ້ທຸກເວລາ.";
+"spaces_creation_footer" = "ທ່ານສາມາດປ່ຽນອັນນີ້ໃນພາຍຫຼັງ";
+"spaces_creation_visibility_message" = "ເພື່ອເຂົ້າຮ່ວມພື້ນທີ່ທີ່ມີຢູ່, ທ່ານຕ້ອງການເຊີນ.";
+"spaces_creation_visibility_title" = "ທ່ານຕ້ອງການສ້າງພື້ນທີ່ປະເພດໃດ?";
+
+// Mark: - Space Creation
+
+"spaces_creation_hint" = "ພື້ນທີ່ ເປັນວິທີໃໝ່ໃນການຈັດກຸ່ມຫ້ອງ ແລະຄົນ.";
+"space_settings_current_address_message" = "ພື້ນທີ່ຂອງທ່ານສາມາດເບິ່ງໄດ້ທີ່\n%@";
+"space_settings_update_failed_message" = "ອັບເດດການຕັ້ງຄ່າພື້ນທີ່ບໍ່ສຳເລັດ. ທ່ານຕ້ອງການລອງໃຫມ່ບໍ?";
+"space_settings_access_section" = "ໃຜສາມາດເຂົ້າເຖິງພື້ນທີ່ນີ້?";
+"space_topic" = "ລາຍລະອຽດ";
+"space_public_join_rule_detail" = "ເປີດໃຫ້ທຸກຄົນ, ດີທີ່ສຸດສຳລັບຊຸມຊົນ";
+"spaces_add_space" = "ເພີ່ມພື້ນທີ່";
+"spaces_add_room" = "ເພີ່ມຫ້ອງ";
+"spaces_invite_people" = "ເຊີນຄົນ";
+"space_public_join_rule" = "ພື້ນທີ່ສາທາລະນະ";
+"space_private_join_rule_detail" = "ເຊີນເທົ່ານັ້ນ, ດີທີ່ສຸດສຳລັບຕົວທ່ານເອງ ຫຼືທີມງານ";
+"space_private_join_rule" = "ພື້ນທີ່ສ່ວນຕົວ";
+"space_home_show_all_rooms" = "ສະແດງຫ້ອງທັງໝົດ";
+"spaces_invites_coming_soon_title" = "ເຊີນມາໄວໆນີ້";
+"spaces_add_rooms_coming_soon_title" = "ກຳລັງເພີ່ມຫ້ອງໃນໄວໆນີ້";
+"spaces_coming_soon_title" = "ໄວໆນີ້";
+"spaces_no_member_found_detail" = "ຊອກຫາຄົນທີ່ບໍ່ໄດ້ຢູ່ໃນ %@? ສຳລັບຕອນນີ້, ທ່ານສາມາດເຊີນເຂົາເຈົ້າຢູ່ໃນເວັບ ຫຼື ເດັສທັອບໄດ້.";
+"spaces_no_room_found_detail" = "ຜົນການຊອກຫາບາງລາຍການອາດຈະຖືກເຊື່ອງໄວ້ ເພາະວ່າພວກມັນເປັນສ່ວນຕົວ ແລະ ທ່ານຕ້ອງການເຊີນເຂົ້າຮ່ວມ.";
+"spaces_no_result_found_title" = "ບໍ່ພົບຜົນການຊອກຫາ";
+"spaces_empty_space_detail" = "ບາງຫ້ອງອາດຈະຖືກເຊື່ອງໄວ້ເພາະວ່າພວກມັນເປັນສ່ວນຕົວ ແລະ ທ່ານຕ້ອງການເຊີນ.";
+"spaces_empty_space_title" = "ພື້ນທີ່ນີ້ບໍ່ມີຫ້ອງ (ເທື່ອ)";
+"space_tag" = "ພື້ນທີ່";
+"spaces_explore_rooms_one_room" = "1 ຫ້ອງ";
+"spaces_explore_rooms_room_number" = "%@ ຫ້ອງ";
+"spaces_suggested_room" = "ໄດ້ແນະນຳ";
+"leave_space_only_action" = "ຢ່າອອກຈາກຫ້ອງໃດຫນຶ່ງ";
+"leave_space_message_admin_warning" = "ທ່ານເປັນຜູ້ເບິ່ງແຍງພື້ນທີ່ນີ້, ໃຫ້ແນ່ໃຈວ່າທ່ານໄດ້ໂອນສິດຜູ້ເບິ່ງແຍງລະບົບ ໄປຫາສະມາຊິກອື່ນກ່ອນທີ່ຈະອອກໄປ.";
+"leave_space_message" = "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການອອກຈາກ %@? ທ່ານຕ້ອງການອອກຈາກຫ້ອງ ແລະ ພື້ນທີ່ທັງໝົດຂອງພື້ນທີ່ນີ້ບໍ່?";
+"leave_space_title" = "ອອກຈາກ %@";
+"spaces_left_panel_title" = "ພື້ນທີ່";
+"spaces_create_space_title" = "ສ້າງພື້ນທີ່";
+"spaces_add_space_title" = "ສ້າງພື້ນທີ່";
+"spaces_home_space_title" = "ຫນ້າທໍາອິດ";
+"space_beta_announce_information" = "ພື້ນທີ່ເປັນວິທີໃໝ່ໃນການຈັດກຸ່ມຫ້ອງ ແລະ ຄົນ. ຍັງບໍ່ມີຢູ່ໃນລະບົບ iOS, ແຕ່ທ່ານສາມາດໃຊ້ໄດ້ໃນເວັບ ແລະ ເດັສທັອບ.";
+"space_beta_announce_subtitle" = "ຊຸມຊົນເວີຊັ້ນໃໝ່";
+"space_beta_announce_title" = "ພື້ນທີ່ກຳລັງຈະມີໃນໄວໆນີ້";
+"space_beta_announce_badge" = "ເບຕ້າ";
+"space_feature_unavailable_subtitle" = "ພື້ນທີ່ ຍັງບໍ່ມີສຳລັບ iOS, ແຕ່ທ່ານສາມາດໃຊ້ໄດ້ໃນເວັບ ແລະເດັສທັອບ";
+
+// Mark: - Spaces
+
+"space_feature_unavailable_title" = "ພື້ນທີ່ບໍ່ມີຢູ່ນີ້";
+"space_invite_not_enough_permission" = "ທ່ານບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ເຊີນຄົນເຂົ້າຮ່ວມໃນພື້ນທີ່ນີ້";
+"room_invite_not_enough_permission" = "ທ່ານບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ເຊີນຄົນເຂົ້າຫ້ອງນີ້";
+"room_invite_to_room_option_detail" = "ເຂົາເຈົ້າຈະບໍ່ເປັນສ່ວນໜຶ່ງຂອງ %@.";
+"room_invite_to_room_option_title" = "ພຽງແຕ່ຫ້ອງນີ້";
+"room_invite_to_space_option_detail" = "ເຂົາເຈົ້າສາມາດສຳຫຼວດ %@, ແຕ່ຈະບໍ່ເປັນສະມາຊິກຂອງ %@.";
+
+// Mark: - Room invite
+
+"room_invite_to_space_option_title" = "ເຖິງ %@";
+"room_intro_cell_information_multiple_dm_sentence2" = "ພຽງແຕ່ທ່ານຢູ່ໃນການສົນທະນານີ້, ເວັ້ນເສຍແຕ່ວ່າທ່ານຈະເຊີນໃຜຜູ້ຫນຶ່ງໃຫ້ເຂົ້າຮ່ວມ.";
+"room_intro_cell_information_dm_sentence2" = "ມີແຕ່ທ່ານທັງສອງຢູ່ໃນການສົນທະນານີ້, ບໍ່ມີໃຜສາມາດເຂົ້າຮ່ວມໄດ້.";
+"room_intro_cell_information_dm_sentence1_part3" = ". ";
+"room_intro_cell_information_dm_sentence1_part1" = "ນີ້ແມ່ນຈຸດເລີ່ມຕົ້ນຂອງຂໍ້ຄວາມໂດຍກົງຂອງທ່ານກັບ ";
+"room_intro_cell_information_room_without_topic_sentence2_part2" = " ເພື່ອໃຫ້ຄົນຮູ້ວ່າຫ້ອງນີ້ແມ່ນກ່ຽວກັບຫຍັງ.";
+"room_intro_cell_information_room_without_topic_sentence2_part1" = "ເພີ່ມຫົວຂໍ້";
+"room_intro_cell_information_room_with_topic_sentence2" = "ຫົວຂໍ້: %@";
+"room_intro_cell_information_room_sentence1_part3" = ". ";
+"room_intro_cell_information_room_sentence1_part1" = "ນີ້ແມ່ນຈຸດເລີ່ມຕົ້ນຂອງ ";
+
+// Mark: - Room creation introduction cell
+
+"room_intro_cell_add_participants_action" = "ເພີ່ມຄົນ";
+"room_avatar_view_accessibility_hint" = "ປ່ຽນຮູບແທນຕົວຂອງຫ້ອງ";
+
+// Mark: - Room avatar view
+
+"room_avatar_view_accessibility_label" = "ຮູບແທນຕົວ";
+"share_invite_link_space_text" = "ສະບາຍດີ, ເຂົ້າຮ່ວມພື້ນທີ່ນີ້ໃນ %@";
+"share_invite_link_room_text" = "ສະບາຍດີ, ເຂົ້າຮ່ວມຫ້ອງນີ້ໃນ %@";
+
+// MARK: - Share invite link
+
+"share_invite_link_action" = "ແບ່ງປັນລິງເຊີນ";
+"invite_friends_share_text" = "ສະບາຍດີ, ລົມກັບຂ້ອຍຢູ່ %@: %@";
+
+// MARK: - Invite friends
+
+"invite_friends_action" = "ເຊີນໝູ່ເຂົ້າ %@";
+"favourites_empty_view_information" = "ທ່ານສາມາດຕັ້ງລາຍການທີ່ໃຊ້ຫຼາຍໄດ້ສອງສາມວິທີ - ວິທີທີ່ໄວທີ່ສຸດແມ່ນໃຫ້ກົດຄ້າງໄວ້. ແຕະໃສ່ດາວ ແລະ ພວກມັນຈະປາກົດຢູ່ບ່ອນນີ້ໂດຍອັດຕະໂນມັດເພື່ອຄວາມປອດໄພ.";
+
+// MARK: - Favourites
+
+"favourites_empty_view_title" = "ຫ້ອງທີ່ໃຊ້ຫຼາຍ ແລະ ຜູ້ຄົນ";
+"home_syncing" = "ກຳລັງຊິງຄ໌";
+"home_context_menu_leave" = "ອອກຈາກ";
+"home_context_menu_normal_priority" = "ບູລິມະສິດທົ່ວໄປ";
+"home_context_menu_low_priority" = "ບູລິມະສິດຕໍ່າ";
+"home_context_menu_unfavourite" = "ລຶບອອກຈາກລາຍການທີ່ໃຊ້ຫຼາຍ";
+"home_context_menu_favourite" = "ລາຍການທີ່ໃຊ້ຫຼາຍ";
+"home_context_menu_unmute" = "ເປີດສຽງ";
+"home_context_menu_mute" = "ປິດສຽງ";
+"home_context_menu_notifications" = "ການແຈ້ງເຕືອນ";
+"home_context_menu_make_room" = "ຍ້າຍໄປຫາຫ້ອງ";
+"home_context_menu_make_dm" = "ຍ້າຍໄປຫາຜູ້ຄົນ";
+"home_empty_view_information" = "ແອັບສົນທະນາທີ່ປອດໄພທັງໝົດສຳລັບທີມງານ, ໝູ່ເພື່ອນ ແລະ ອົງການຕ່າງໆ. ແຕະປຸ່ມ + ດ້ານລຸ່ມເພື່ອເພີ່ມຄົນ ແລະຫ້ອງ.";
+
+// MARK: - Home
+
+"home_empty_view_title" = "ຍິນດີຕ້ອນຮັບ%@,\n%@";
+"call_transfer_error_message" = "ໂອນສາຍບໍ່ສຳເລັດ";
+"call_transfer_error_title" = "ຜິດພາດ";
+"call_transfer_contacts_all" = "ທັງໝົດ";
+"call_transfer_contacts_recent" = "ວ່າງບໍ່ດົນມານີ້";
+"call_transfer_dialpad" = "ປຸ່ມກົດ";
+"call_transfer_users" = "ຊື່ຜູ້ໃຊ້";
+
+// MARK: - Call Transfer
+"call_transfer_title" = "ໂອນ";
+
+// MARK: - Dial Pad
+"dialpad_title" = "ປຸ່ມກົດ";
+"room_info_list_section_other" = "ອື່ນໆ";
+"room_info_list_several_members" = "ສະມາຊິກ %@";
+
+// MARK: - Room Info
+
+"room_info_list_one_member" = "ສະມາຊິກ 1 ຄົນ";
+"create_room_processing" = "ການສ້າງຫ້ອງ";
+"create_room_suggest_room_footer" = "ຫ້ອງທີ່ແນະນໍາແມ່ນໄດ້ຮັບການສົ່ງເສີມໃຫ້ສະມາຊິກພາຍນອກເຂົ້າຮ່ວມໄດ້.";
+"create_room_suggest_room" = "ແນະນໍາໃຫ້ສະມາຊິກພາຍນອກ";
+"create_room_placeholder_address" = "#testroom: matrix.org";
+"create_room_section_header_address" = "ທີ່ຢູ່";
+"create_room_show_in_directory_footer" = "ນີ້ຈະຊ່ວຍໃຫ້ຄົນຊອກຫາແລະເຂົ້າຮ່ວມ.";
+"create_room_show_in_directory" = "ສະແດງຢູ່ໃນລາຍຊື່ຫ້ອງ";
+"create_room_promotion_header" = "ການສົ່ງເສີມ";
+"create_room_section_footer_type_public" = "ສະເພາະຄົນທີ່ຖືກເຊີນສາມາດຊອກຫາ ແລະເຂົ້າຮ່ວມໄດ້, ແຕ່ບໍ່ແມ່ນຄົນທີ່ມີຊື່ພື້ນທີ່.";
+"create_room_section_footer_type_restricted" = "ທຸກຄົນໃນຊື່ພຶ້ນທີ່ ສາມາດຊອກຫາ ແລະເຂົ້າຮ່ວມໄດ້.";
+"create_room_section_footer_type_private" = "ສະເພາະຄົນທີ່ຖືກເຊີນສາມາດຊອກຫາ ແລະເຂົ້າຮ່ວມໄດ້.";
+"pin_protection_reset_alert_action_reset" = "ຕັ້ງຄ່າຄືນໃໝ່";
+"create_room_type_public" = "ຫ້ອງສາທາລະນະ (ທຸກຄົນ)";
+"create_room_type_restricted" = "ພື້ທີ່ສະມາຊິກ";
+"create_room_type_private" = "ຫ້ອງສ່ວນຕົວ (ເຊີນເທົ່ານັ້ນ)";
+"create_room_section_header_type" = "ໃຜສາມາດເຂົ້າໄດ້";
+"create_room_section_footer_encryption" = "ການເຂົ້າລະຫັດບໍ່ສາມາດປິດໄດ້ຫຼັງຈາກນັ້ນ.";
+"create_room_enable_encryption" = "ເປີດໃຊ້ການເຂົ້າລະຫັດ";
+"create_room_section_header_encryption" = "ການເຂົ້າລະຫັດ";
+"create_room_placeholder_topic" = "ຫ້ອງນີ້ກ່ຽວກັບຫຍັງ?";
+"create_room_section_header_topic" = "ຫົວຂໍ້ (ທາງເລືອກ)";
+"create_room_placeholder_name" = "ຊື່";
+"create_room_section_header_name" = "ຊື່";
+
+// MARK: - Create Room
+
+"create_room_title" = "ຫ້ອງໃຫມ່";
+"searchable_directory_search_placeholder" = "ຊື່ ຫຼື ID";
+"searchable_directory_x_network" = "%@ ເຄືອຂ່າຍ";
+
+// MARK: - Searchable Directory View Controller
+
+"searchable_directory_create_new_room" = "ສ້າງຫ້ອງໃຫມ່";
+"biometrics_cant_unlocked_alert_message_retry" = "ລອງໃໝ່";
+"biometrics_cant_unlocked_alert_message_login" = "ເຂົ້າສູ່ລະບົບຄືນ";
+"biometrics_cant_unlocked_alert_message_x" = "ເພື່ອປົດລັອກ, ໃຫ້ໃຊ້ %@ ຫຼື ເຂົ້າສູ່ລະບົບຄືນ ແລະເປີດໃຊ້ %@ ອີກຄັ້ງ";
+"pin_protection_mismatch_error_title" = "ລະຫັດ PIN ບໍ່ກົງກັນ";
+"ssl_only_accept" = "ຍອມຮັບໃບຢັ້ງຢືນເທົ່ານັ້ນໃນກໍລະນີທີ່ຜູ້ເບິ່ງແຍງເຊີບເວີໄດ້ເຜີຍແຜ່ລາຍນິ້ວມືທີ່ກົງກັບລາຍນິ້ວມືຂ້າງເທິງ.";
+"biometrics_cant_unlocked_alert_title" = "ບໍ່ສາມາດປົດລັອກແອັບໄດ້";
+"biometrics_usage_reason" = "ຈໍາເປັນຕ້ອງມີການກວດສອບຄວາມຖືກຕ້ອງເພື່ອເຂົ້າເຖິງແອັບຯຂອງທ່ານ";
+"biometrics_desetup_disable_button_title_x" = "ປິດໃຊ້ງານ %@";
+"biometrics_desetup_title_x" = "ປິດໃຊ້ງານ %@";
+"biometrics_setup_subtitle" = "ຊ່ວຍປະຢັດເວລາຂອງທ່ານເອງ";
+"biometrics_setup_enable_button_title_x" = "ເປີດໃຊ້ %@";
+"biometrics_setup_title_x" = "ເປີດໃຊ້ %@";
+"biometrics_settings_enable_x" = "ເປີດໃຊ້ %@";
+"biometrics_mode_face_id" = "ໄອດີໃບໜ້າ";
+
+// MARK: - Biometrics Protection
+
+"biometrics_mode_touch_id" = "ID ສຳພັດ";
+"pin_protection_kick_user_alert_message" = "ມີຂໍ້ຜິດພາດຫຼາຍເກີນໄປ, ທ່ານໄດ້ອອກຈາກລະບົບແລ້ວ";
+"pin_protection_explanatory" = "ການຕັ້ງຄ່າລະຫັດ PIN ເຮັດໃຫ້ທ່ານປົກປ້ອງຂໍ້ມູນເຊັ່ນ: ຂໍ້ຄວາມ ແລະ ລາຍຊື່ຕິດຕໍ່, ດັ່ງນັ້ນພຽງແຕ່ທ່ານສາມາດເຂົ້າເຖິງໂດຍການໃສ່ລະຫັດ PIN ໃນຕອນເລີ່ມຕົ້ນຂອງແອັບຯ.";
+"pin_protection_not_allowed_pin" = "ດ້ວຍເຫດຜົນດ້ານຄວາມປອດໄພ, ລະຫັດ PIN ນີ້ບໍ່ສາມາດໃຊ້ໄດ້. ກະລຸນາລອງລະຫັດ PIN ອື່ນ";
+"pin_protection_settings_change_pin" = "ປ່ຽນລະຫັດ PIN";
+"pin_protection_settings_enable_pin" = "ເປີດໃຊ້ລະຫັດ PIN";
+"pin_protection_settings_enabled_forced" = "ເປີດໃຊ້ລະຫັດ PIN ແລ້ວ";
+"pin_protection_settings_section_footer" = "ເພື່ອຕັ້ງຄ່າຄືນ PIN ຂອງທ່ານ, ທ່ານຈະຕ້ອງເຂົ້າສູ່ລະບົບໃໝ່ ແລະສ້າງລະຫັດ PIN ໃໝ່.";
+"pin_protection_settings_section_header_with_biometrics" = "ລະຫັດ PIN ແລະ %@";
+"pin_protection_settings_section_header" = "ລະຫັດ PIN";
+"pin_protection_mismatch_too_many_times_error_message" = "ຖ້າທ່ານບໍ່ສາມາດຈື່ PIN ຂອງທ່ານໄດ້, ໃຫ້ແຕະທີ່ປຸ່ມ PIN ລືມ.";
+"pin_protection_mismatch_error_message" = "ກະລຸນາລອງອີກຄັ້ງ";
+"pin_protection_reset_alert_message" = "ເພື່ອຕັ້ງຄ່າຄືນ PIN ຂອງທ່ານ, ທ່ານຈະຕ້ອງເຂົ້າສູ່ລະບົບໃໝ່ ແລະສ້າງລະຫັດ PIN ໃໝ່";
+"pin_protection_reset_alert_title" = "ຕັ້ງຄ່າ PIN ຄືນໃໝ່";
+"pin_protection_forgot_pin" = "ລືມ PIN";
+"pin_protection_enter_pin" = "ໃສ່ລະຫັດ PIN ຂອງທ່ານ";
+"pin_protection_confirm_pin_to_change" = "ຢືນຢັນ PIN ເພື່ອປ່ຽນ PIN";
+"pin_protection_confirm_pin_to_disable" = "ຢືນຢັນ PIN ເພື່ອປິດການນຳໃຊ້ PIN";
+"pin_protection_confirm_pin" = "ຢືນຢັນ PIN ຂອງທ່ານ";
+"pin_protection_choose_pin" = "ສ້າງ PIN ເພື່ອຄວາມປອດໄພ";
+
+// MARK: - PIN Protection
+
+"pin_protection_choose_pin_welcome_after_login" = "ຍິນດີຕ້ອນຮັບກັບຄືນ.";
+"pin_protection_choose_pin_welcome_after_register" = "ຍິນດີຕ້ອນຮັບ.";
+"major_update_done_action" = "ເຂົ້າໃຈແລ້ວ";
+"major_update_learn_more_action" = "ສຶກສາເພີ່ມເຕີມ";
+"major_update_information" = "ພວກເຮົາຕື່ນເຕັ້ນທີ່ແຈ້ງວ່າພວກເຮົາໄດ້ປ່ຽນຊື່ແລ້ວ! ແອັບຂອງທ່ານອັບເດດແລ້ວ ແລະທ່ານເຂົ້າສູ່ລະບົບບັນຊີຂອງທ່ານແລ້ວ.";
+
+// MARK: - Major update
+
+"major_update_title" = "ດຽວນີ້ກຳລັງຈະລາຈົນ %@";
+"cross_signing_setup_banner_subtitle" = "ຢັ້ງຢືນອຸປະກອນອື່ນຂອງທ່ານງ່າຍຂຶ້ນ";
+
+// MARK: - Cross-signing
+
+// Banner
+
+"cross_signing_setup_banner_title" = "ຕັ້ງຄ່າການເຂົ້າລະຫັດ";
+"secrets_reset_authentication_message" = "ໃສ່ລະຫັດຜ່ານບັນຊີ Matrix ຂອງທ່ານເພື່ອຢືນຢັນ";
+"secrets_reset_reset_action" = "ຕັ້ງຄ່າຄືນໃໝ່";
+"secrets_reset_warning_message" = "ທ່ານຈະປິດເປີດໃໝ່ໂດຍບໍ່ມີປະຫວັດ, ບໍ່ມີຂໍ້ຄວາມ, ອຸປະກອນທີ່ເຊື່ອຖືໄດ້ ຫຼື ຜູ້ໃຊ້ທີ່ເຊື່ອຖືໄດ້.";
+"secrets_reset_warning_title" = "ຖ້າຫາກວ່າທ່ານກູ້ຄືນທຸກສິ່ງທຸກຢ່າງ";
+"secrets_reset_information" = "ເຮັດສິ່ງນີ້ຖ້າຫາກທ່ານບໍ່ມີອຸປະກອນອື່ນທີ່ທ່ານສາມາດຢືນຢັນອຸປະກອນນີ້ດ້ວຍ.";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "ກູ້ຄືນທຸກຢ່າງ";
+"secrets_setup_recovery_passphrase_summary_information" = "ຈື່ປະໂຫຍກຄວາມປອດໄພຂອງທ່ານ. ໄວ້ໃຊ້ເພື່ອປົດລັອກຂໍ້ຄວາມ ແລະຂໍ້ມູນທີ່ທ່ານເຂົ້າລະຫັດໄວ້.";
+
+
+"secrets_setup_recovery_passphrase_summary_title" = "ບັນທຶກປະໂຫຍກຄວາມປອດໄພຂອງທ່ານ";
+"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "ຢືນຢັນປະໂຫຍກ";
+"secrets_setup_recovery_passphrase_confirm_passphrase_title" = "ຢືນຢັນ";
+"secrets_setup_recovery_passphrase_confirm_information" = "ກະລຸນາໃສ່ປະໂຫຍກຄວາມປອດໄພຂອງທ່ານອີກຄັ້ງເພື່ອຢືນຢັນ.";
+"secrets_setup_recovery_passphrase_validate_action" = "ສຳເລັດແລ້ວ";
+"secrets_setup_recovery_passphrase_additional_information" = "ຢ່າໃຊ້ລະຫັດຜ່ານບັນຊີ Matrix ຂອງທ່ານ.";
+"secrets_setup_recovery_passphrase_information" = "ກະລຸນາໃສ່ປະໂຫຍກຄວາມປອດໄພພຽງແຕ່ທ່ານຮູ້, ໃຊ້ເພື່ອຮັບປະກັນຄວາມລັບຢູ່ໃນເຊີບເວີຂອງທ່ານ.";
+
+// Recovery passphrase
+
+"secrets_setup_recovery_passphrase_title" = "ຕັ້ງຄ່າປະໂຫຍກຄວາມປອດໄພ";
+"secrets_setup_recovery_key_storage_alert_message" = "✓ ພິມແລະເກັບຮັກສາມັນໄວ້ບ່ອນທີ່ປອດໄພ\n✓ ບັນທຶກໄວ້ໃນກະແຈ USB ຫຼື ບ່ອນເກັບສໍາຮອງຂໍ້ມູນ\n✓ ສຳ ເນົາມັນໃສ່ບ່ອນເກັບມ້ຽນສ່ວນຕົວຂອງທ່ານ";
+"secrets_setup_recovery_key_storage_alert_title" = "ຮັກສາຄວາມປອດໄພ";
+"secrets_setup_recovery_key_done_action" = "ສຳເລັດແລ້ວ";
+"secrets_setup_recovery_key_export_action" = "ບັນທຶກ";
+"secrets_setup_recovery_key_loading" = "ກຳລັງໂຫລດ…";
+"secrets_setup_recovery_key_information" = "ເກັບຮັກສາກະແຈຄວາມປອດໄພຂອງທ່ານໄວ້ບ່ອນໃດບ່ອນໜຶ່ງທີ່ປອດໄພ. ມັນສາມາດໃຊ້ເພື່ອປົດລັອກຂໍ້ຄວາມ ແລະຂໍ້ມູນທີ່ທ່ານເຂົ້າລະຫັດໄວ້.";
+
+// MARK: - Secrets set up
+
+// Recovery Key
+
+"secrets_setup_recovery_key_title" = "ບັນທຶກກະແຈຄວາມປອດໄພຂອງທ່ານ";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "ກະລຸນາກວດສອບວ່າທ່ານໃສ່ກະແຈຄວາມປອດໄພຖືກຕ້ອງແລ້ວ.";
+"secrets_recovery_with_key_invalid_recovery_key_title" = "ບໍ່ສາມາດເຂົ້າເຖິງບ່ອນເກັບຂໍ້ມູນລັບໄດ້";
+"secrets_recovery_with_key_recover_action" = "ໃຊ້ກະເເຈ";
+"secrets_recovery_with_key_recovery_key_placeholder" = "ໃສ່ກະແຈຄວາມປອດໄພ";
+"secrets_recovery_with_key_recovery_key_title" = "ປ້ອນ";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "ໃສ່ກະແຈຄວາມປອດໄພຂອງທ່ານເພື່ອສືບຕໍ່.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "ກະລຸນາໃສ່ປະໂຫຍກຄວາມປອດໄພຂອງທ່ານເພື່ອສືບຕໍ່.";
+"secrets_recovery_with_key_information_verify_device" = "ໃຊ້ກະແຈຄວາມປອດໄພຂອງທ່ານເພື່ອຢັ້ງຢືນອຸປະກອນນີ້.";
+"secrets_recovery_with_key_information_default" = "ເຂົ້າເຖິງປະຫວັດຂໍ້ຄວາມທີ່ປອດໄພຂອງທ່ານແລະcross-signingຂອງທ່ານເພື່ອຢືນຢັນລະບົບອື່ນໂດຍການໃສ່ກະແຈຄວາມປອດໄພຂອງທ່ານ.";
+
+// Recover with key
+
+"secrets_recovery_with_key_title" = "ກະແຈຄວາມປອດໄພ";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "ກະລຸນາກວດສອບວ່າທ່ານໃສ່ປະໂຫຍກຄວາມປອດໄພທີ່ຖືກຕ້ອງ.";
+"secrets_recovery_with_passphrase_invalid_passphrase_title" = "ບໍ່ສາມາດເຂົ້າເຖິງບ່ອນເກັບຂໍ້ມູນລັບໄດ້";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "ໃຊ້ກະແຈຄວາມປອດໄພຂອງທ່ານ";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "ບໍ່ຮູ້ປະໂຫຍກຄວາມປອດໄພຂອງທ່ານບໍ? ທ່ານສາມາດ ";
+"secrets_recovery_with_passphrase_recover_action" = "ໃຊ້ປະໂຫຍກ";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "ໃສ່ປະໂຫຍກຄວາມປອດໄພ";
+"secrets_recovery_with_passphrase_passphrase_title" = "ປ້ອນ";
+"secrets_recovery_with_passphrase_information_verify_device" = "ໃຊ້ປະໂຫຍກຄວາມປອດໄພຂອງທ່ານເພື່ອຢັ້ງຢືນອຸປະກອນນີ້.";
+"secrets_recovery_with_passphrase_information_default" = "ເຂົ້າເຖິງປະຫວັດຂໍ້ຄວາມທີ່ປອດໄພຂອງທ່ານ ແລະ ຕົວຕົນການcross-signing ຂອງທ່ານເພື່ອຢືນຢັນລະບົບອື່ນໂດຍການໃສ່ປະໂຫຍກຄວາມປອດໄພຂອງທ່ານ.";
+
+// Recover with passphrase
+
+"secrets_recovery_with_passphrase_title" = "ປະໂຫຍກຄວາມປອດໄພ";
+"secrets_recovery_reset_action_part_2" = "ກູ້ຄືນໃໝ່ທຸກຢ່າງ";
+
+// MARK: - Secrets recovery
+
+"secrets_recovery_reset_action_part_1" = "ລືມ ຫຼື ເສຍຕົວເລືອກການກູ້ຂໍ້ມູນທັງໝົດບໍ? ";
+"user_verification_session_details_verify_action_other_user" = "ກວດສອບດ້ວຍຕົນເອງ";
+"user_verification_session_details_verify_action_current_user_manually" = "ຢືນຢັນດ້ວຍຂໍ້ຄວາມດ້ວຍຕົນເອງ";
+"user_verification_session_details_verify_action_current_user" = "ຢືນຢັນແບບໂຕ້ຕອບ";
+"user_verification_session_details_additional_information_untrusted_current_user" = "ຖ້າທ່ານບໍ່ໄດ້ເຂົ້າສູ່ລະບົບນີ້, ບັນຊີຂອງທ່ານອາດຈະຖືກບຸກລຸກ.";
+"user_verification_session_details_additional_information_untrusted_other_user" = "ຈົນກ່ວາຜູ້ໃຊ້ນີ້ໄວ້ວາງໃຈໃນລະບົບນີ້, ຂໍ້ຄວາມທີ່ສົ່ງໄປຫາ ແລະຈະຖືກຕິດສະຫຼາກດ້ວຍຄໍາເຕືອນ. ອີກທາງເລືອກ, ທ່ານສາມາດກວດສອບໄດ້ດ້ວຍຕົນເອງ.";
+"user_verification_session_details_information_untrusted_other_user" = " ເຂົ້າສູ່ລະບົບໂດຍໃຊ້ລະບົບໃໝ່:";
+"user_verification_session_details_information_untrusted_current_user" = "ຢືນຢັນລະບົບນີ້ເພື່ອໝາຍວ່າມັນເຊື່ອຖືໄດ້ ແລະໃຫ້ມັນເຂົ້າເຖິງຂໍ້ຄວາມທີ່ເຂົ້າລະຫັດໄວ້:";
+"user_verification_session_details_information_trusted_other_user_part2" = " ໄດ້ຢືນຢັນ:";
+"user_verification_session_details_information_trusted_other_user_part1" = "ລະບົບນີ້ແມ່ນເຊື່ອຖືໄດ້ສໍາລັບການສົ່ງຂໍ້ຄວາມທີ່ປອດໄພເພາະວ່າ ";
+"user_verification_session_details_information_trusted_current_user" = "ລະບົບນີ້ເຊື່ອຖືໄດ້ສໍາລັບການສົ່ງຂໍ້ຄວາມທີ່ປອດໄພ ເພາະວ່າທ່ານໄດ້ຢັ້ງຢືນແລ້ວ:";
+"user_verification_session_details_untrusted_title" = "ບໍ່ໜ້າເຊື່ອຖື";
+
+// Session details
+
+"user_verification_session_details_trusted_title" = "ເຊື່ອຖືໄດ້";
+"user_verification_sessions_list_session_untrusted" = "ບໍ່ໜ້າເຊື່ອຖື";
+"user_verification_sessions_list_session_trusted" = "ເຊື່ອຖືໄດ້";
+"user_verification_sessions_list_table_title" = "ລະບົບ";
+"user_verification_sessions_list_information" = "ຂໍ້ຄວາມກັບຜູ້ໃຊ້ນີ້ຢູ່ໃນຫ້ອງນີ້ແມ່ນຖືກເຂົ້າລະຫັດແຕ່ຕົ້ນທາງຮອດປາຍທາງ ແລະບໍ່ສາມາດອ່ານໄດ້ໂດຍບຸກຄົນທີສາມ.";
+"user_verification_sessions_list_user_trust_level_unknown_title" = "ບໍ່ຮູ້ຈັກ";
+"user_verification_sessions_list_user_trust_level_warning_title" = "ຄຳເຕືອນ";
+
+// Sessions list
+
+"user_verification_sessions_list_user_trust_level_trusted_title" = "ເຊື່ອຖືໄດ້";
+"user_verification_start_additional_information" = "ເພື່ອຄວາມປອດໄພ, ເຮັດແບບນີ້ດ້ວຍຕົນເອງ ຫຼື ໃຊ້ວິທີອື່ນເພື່ອຕິດຕໍ່ສື່ສານ.";
+"user_verification_start_waiting_partner" = "ກຳລັງລໍຖ້າ %@…";
+"user_verification_start_information_part2" = " ໂດຍການກວດສອບລະຫັດຄັ້ງດຽວໃນທັງສອງອຸປະກອນຂອງທ່ານ.";
+"user_verification_start_information_part1" = "ເພື່ອຄວາມປອດໄພພິເສດ, ກະລຸນາກວດສອບ ";
+
+// MARK: - User verification
+
+// Start
+
+"user_verification_start_verify_action" = "ເລີ່ມການຢັ້ງຢືນ";
+"key_verification_scan_confirmation_scanned_device_information" = "ອຸປະກອນອື່ນສະແດງເກາະປ້ອງກັນບໍ?";
+"key_verification_scan_confirmation_scanned_user_information" = "%@ ສະແດງເກາະປ້ອງກັນ?";
+
+// Scanned
+"key_verification_scan_confirmation_scanned_title" = "ເກືອບຈະ!";
+"key_verification_scan_confirmation_scanning_device_waiting_other" = "ກຳລັງລໍຖ້າອຸປະກອນອື່ນ…";
+"key_verification_scan_confirmation_scanning_user_waiting_other" = "ກຳລັງລໍຖ້າ %@…";
+
+// MARK: Scan confirmation
+
+// Scanning
+"key_verification_scan_confirmation_scanning_title" = "ເກືອບແລ້ວ! ກຳລັງລໍຖ້າການຢືນຢັນ…";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "ລະຫັດ QR ໄດ້ຖືກກວດສອບສຳເລັດແລ້ວ.";
+"key_verification_verify_qr_code_scan_other_code_success_title" = "ລະຫັດຢືນຢັນແລ້ວ!";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "ຜູ້ໃຊ້ອື່ນສາມາດສະແກນລະຫັດ QR ໄດ້ສຳເລັດບໍ?";
+"key_verification_verify_qr_code_start_emoji_action" = "ຢືນຢັນໂດຍ emoji";
+"key_verification_verify_qr_code_cannot_scan_action" = "ບໍ່ສາມາດສະແກນໄດ້?";
+"key_verification_verify_qr_code_scan_code_other_device_action" = "ສະແກນດ້ວຍອຸປະກອນນີ້";
+"key_verification_verify_qr_code_scan_code_action" = "ສະແກນລະຫັດຂອງພວກເຂົາ";
+"key_verification_verify_qr_code_emoji_information" = "ຢັ້ງຢືນໂດຍການປຽບທຽບ emoji ເປັນເອກະລັກ.";
+"key_verification_verify_qr_code_information_other_device" = "ສະແກນລະຫັດຂ້າງລຸ່ມນີ້ເພື່ອຢືນຢັນ:";
+"key_verification_verify_qr_code_information" = "ສະແກນລະຫັດເພື່ອຢືນຢັນຄວາມປອດໄພ.";
+
+// MARK: QR code
+
+"key_verification_verify_qr_code_title" = "ກວດສອບໂດຍການສະແກນ";
+
+// Incoming key verification request
+
+"key_verification_incoming_request_incoming_alert_message" = "%@ ຕ້ອງການຢືນຢັນ";
+"key_verification_tile_conclusion_warning_title" = "ເຂົ້າສູ່ລະບົບທີ່ບໍ່ໜ້າເຊື່ອຖື";
+"key_verification_tile_conclusion_done_title" = "ຢັ້ງຢືນແລ້ວ";
+"key_verification_tile_request_incoming_approval_decline" = "ຫຼຸດລົງ";
+"key_verification_tile_request_incoming_approval_accept" = "ຍອມຮັບ";
+"key_verification_tile_request_status_accepted" = "ທ່ານໄດ້ຍອມຮັບ";
+"key_verification_tile_request_status_cancelled" = "%@ ຍົກເລີກແລ້ວ";
+"key_verification_tile_request_status_cancelled_by_me" = "ທ່ານໄດ້ຍົກເລີກ";
+"key_verification_tile_request_status_expired" = "ໝົດອາຍຸແລ້ວ";
+"key_verification_tile_request_status_waiting" = "ກຳລັງລໍຖ້າ…";
+"key_verification_tile_request_status_data_loading" = "ກຳລັງໂຫຼດຂໍ້ມູນ…";
+"key_verification_tile_request_outgoing_title" = "ສົ່ງການຢັ້ງຢືນແລ້ວ";
+
+// Tiles
+
+"key_verification_tile_request_incoming_title" = "ການຮ້ອງຂໍການຢັ້ງຢືນ";
+"key_verification_bootstrap_not_setup_message" = "ທ່ານຈໍາເປັນຕ້ອງ bootstrap cross-signing ກ່ອນ.";
+
+// MARK: - Key Verification
+
+"key_verification_bootstrap_not_setup_title" = "ຜິດພາດ";
+"error_not_supported_on_mobile" = "ທ່ານບໍ່ສາມາດເຮັດສິ່ງນີ້ໄດ້ຈາກ %@ ມືຖື.";
+
+
+// Generic errors
+"error_invite_3pid_with_no_identity_server" = "ເພີ່ມເຊີບເວີໃນການຕັ້ງຄ່າຂອງທ່ານເພື່ອເຊີນທາງອີເມວ.";
+
+// MARK: Reaction history
+"reaction_history_title" = "ປະຕິກິລິຍາ";
+"emoji_picker_flags_category" = "ທຸງ";
+"emoji_picker_symbols_category" = "ສັນຍາລັກ";
+"emoji_picker_objects_category" = "ສິ່ງຂອງ";
+"emoji_picker_places_category" = "ການເດີນທາງ & ສະຖານທີ່";
+"emoji_picker_activity_category" = "ກິດຈະກໍາ";
+"emoji_picker_foods_category" = "ອາຫານ ແລະ ເຄື່ອງດື່ມ";
+"emoji_picker_nature_category" = "ສັດ & ທໍາມະຊາດ";
+"emoji_picker_people_category" = "ຮອຍຍິ້ມ & ຄົນ";
+
+// MARK: Emoji picker
+"emoji_picker_title" = "ປະຕິກິລິຍາ";
+"file_upload_error_unsupported_file_type_message" = "ປະເພດໄຟລ໌ບໍ່ຮອງຮັບ.";
+
+// MARK: File upload
+"file_upload_error_title" = "ອັບໂຫຼດໄຟລ໌";
+"device_verification_emoji_pin" = "ປັກໝຸດ";
+"device_verification_emoji_folder" = "ໂຟນເດີ";
+"device_verification_emoji_headphones" = "ຫູຟັງ";
+"device_verification_emoji_anchor" = "ສະມໍ";
+"device_verification_emoji_bell" = "ກະດິ່ງ";
+"device_verification_emoji_trumpet" = "ແກ";
+"device_verification_emoji_guitar" = "ກີຕ້າ";
+"device_verification_emoji_ball" = "ບານ";
+"device_verification_emoji_trophy" = "ຖ້ວຍລາງວັນ";
+"device_verification_emoji_rocket" = "ບັ້ງໄຟ";
+"device_verification_emoji_aeroplane" = "ຍົນ";
+"device_verification_emoji_bicycle" = "ລົດຖີບ";
+"device_verification_emoji_train" = "ລົດໄຟ";
+"device_verification_emoji_flag" = "ທຸງ";
+"device_verification_emoji_telephone" = "ໂທລະສັບ";
+"device_verification_emoji_hammer" = "ຄ້ອນຕີ";
+"device_verification_emoji_key" = "ລູກກຸນແຈ";
+"device_verification_emoji_lock" = "ກະແຈ";
+"device_verification_emoji_scissors" = "ມີດຕັດ";
+"device_verification_emoji_paperclip" = "ເຫຼັກໜີບເຈັ້ຽ";
+"device_verification_emoji_pencil" = "ສໍ";
+"device_verification_emoji_book" = "ປື້ມບັນທຶກ";
+"device_verification_emoji_light bulb" = "ດອກໄຟ";
+"device_verification_emoji_gift" = "ຂອງຂວັນ";
+"device_verification_emoji_clock" = "ໂມງ";
+"device_verification_emoji_hourglass" = "ໂມງເມັດຊາຍ";
+"device_verification_emoji_umbrella" = "ຄັນຮົ່ມ";
+"device_verification_emoji_thumbs up" = "ຍົກໂປ້";
+"device_verification_emoji_santa" = "ຊານຕາ";
+"device_verification_emoji_spanner" = "ກະເເຈເລື່ອນ";
+"device_verification_emoji_glasses" = "ແວ່ນຕາ";
+"device_verification_emoji_hat" = "ໝວກ";
+"device_verification_emoji_robot" = "ຫຸ່ນຍົນ";
+"device_verification_emoji_smiley" = "ຍິ້ມ";
+"device_verification_emoji_heart" = "ຫົວໃຈ";
+"device_verification_emoji_cake" = "ເຄັກ";
+"device_verification_emoji_pizza" = "ພິດຊ້າ";
+"device_verification_emoji_corn" = "ສາລີ";
+"device_verification_emoji_strawberry" = "ໝາກສະຕໍເບີລີ";
+"device_verification_emoji_apple" = "ໝາກແອັບເປິ້ນ";
+"device_verification_emoji_banana" = "ໝາກກ້ວຍ";
+"device_verification_emoji_fire" = "ໄຟ";
+"device_verification_emoji_cloud" = "ລະບົບສຳຮອງຂໍ້ມູນ";
+"device_verification_emoji_moon" = "ດວງເດືອນ";
+"device_verification_emoji_globe" = "ໂລກ";
+"device_verification_emoji_mushroom" = "ເຫັດ";
+"device_verification_emoji_cactus" = "ກົກຕະບອງເພັດ";
+"device_verification_emoji_tree" = "ຕົ້ນໄມ້";
+"device_verification_emoji_flower" = "ດອກໄມ້";
+"device_verification_emoji_butterfly" = "ແມງກະເບື້ອ";
+"device_verification_emoji_octopus" = "ປາມຶກ";
+"device_verification_emoji_fish" = "ປາ";
+"device_verification_emoji_turtle" = "ເຕົ່າ";
+"device_verification_emoji_penguin" = "ນົກເພັນກິວນ";
+"device_verification_emoji_rooster" = "ໄກ່ຜູ້";
+"device_verification_emoji_panda" = "ໝີເເພນດ້າ";
+"device_verification_emoji_rabbit" = "ກະຕ່າຍ";
+"device_verification_emoji_elephant" = "ຊ້າງ";
+"device_verification_emoji_pig" = "ໝູ";
+"device_verification_emoji_unicorn" = "ມ້າຢູ່ນິຄອນ";
+"device_verification_emoji_horse" = "ມ້າ";
+"device_verification_emoji_lion" = "ສິງ";
+"device_verification_emoji_cat" = "ແມວ";
+
+// MARK: Emoji
+"device_verification_emoji_dog" = "ໝາ";
+
+// User
+
+"key_verification_verified_user_information" = "ຂໍ້ຄວາມກັບຜູ້ໃຊ້ນີ້ແມ່ນຖືກເຂົ້າລະຫັດແຕ່ຕົ້ນທາງເຖິງປາຍທາງ ແລະ ບໍ່ສາມາດອ່ານໄດ້ໂດຍພາກສ່ວນທີສາມ.";
+"key_verification_verified_this_session_information" = "ດຽວນີ້ທ່ານສາມາດອ່ານຂໍ້ຄວາມທີ່ປອດໄພຢູ່ໃນອຸປະກອນນີ້, ແລະ ຜູ້ໃຊ້ອື່ນໆຈະຮູ້ວ່າພວກເຂົາສາມາດໄວ້ວາງໃຈໄດ້.";
+"key_verification_verified_new_session_information" = "ດຽວນີ້ທ່ານສາມາດອ່ານຂໍ້ຄວາມທີ່ປອດໄພຢູ່ໃນອຸປະກອນໃໝ່ຂອງທ່ານ, ແລະ ຜູ້ໃຊ້ອື່ນໆຈະຮູ້ວ່າເຂົາເຈົ້າສາມາດເຊື່ອຖືໄດ້.";
+"key_verification_verified_other_session_information" = "ດຽວນີ້ທ່ານສາມາດອ່ານຂໍ້ຄວາມທີ່ປອດໄພຢູ່ໃນລະບົບອື່ນຂອງທ່ານ, ແລະ ຜູ້ໃຊ້ອື່ນໆຈະຮູ້ວ່າພວກເຂົາສາມາດໄວ້ວາງໃຈໄດ້.";
+"key_verification_verified_new_session_title" = "ລະບົບໃໝ່ຢືນຢັນແລ້ວ!";
+"device_verification_verified_got_it_button" = "ເຂົ້າໃຈແລ້ວ";
+
+// MARK: Verified
+
+// Device
+
+"device_verification_verified_title" = "ຢືນຢັນແລ້ວ!";
+
+// Device
+
+"device_verification_verify_wait_partner" = "ກຳລັງລໍຖ້າໃຫ້ຄູ່ຮ່ວມງານຢືນຢັນ…";
+"key_verification_manually_verify_device_validate_action" = "ຢືນຢັນ";
+"key_verification_manually_verify_device_additional_information" = "ຖ້າລະຫັດບໍ່ກົງກັນ, ຄວາມປອດໄພຂອງການສື່ສານຂອງທ່ານອາດຈະຖືກທໍາລາຍ.";
+"key_verification_manually_verify_device_key_title" = "ລະຫັດລະບົບ";
+"key_verification_manually_verify_device_id_title" = "IDລະບົບ";
+"key_verification_manually_verify_device_name_title" = "ຊື່ລະບົບ";
+"key_verification_manually_verify_device_instruction" = "ຢືນຢັນໂດຍການປຽບທຽບສິ່ງຕໍ່ໄປນີ້ກັບການຕັ້ງຄ່າຜູ້ໃຊ້ໃນລະບົບອື່ນຂອງທ່ານ:";
+
+// MARK: Manually Verify Device
+
+"key_verification_manually_verify_device_title" = "ຢືນຢັນດ້ວຍຂໍ້ຄວາມດ້ວຍຕົນເອງ";
+"key_verification_verify_sas_additional_information" = "ເພື່ອຄວາມປອດໄພສູງສຸດ, ໃຫ້ໃຊ້ວິທີການສື່ສານທີ່ເຊື່ອຖືໄດ້ ຫຼື ເຮັດສິ່ງນີ້ດ້ວຍຕົນເອງ.";
+"key_verification_verify_sas_validate_action" = "ລະຫັດກົງກັນ";
+"key_verification_verify_sas_cancel_action" = "ລະຫັດບໍ່ກົງກັນ";
+"key_verification_verify_sas_title_number" = "ປຽບທຽບຕົວເລກ";
+
+// MARK: Verify
+
+"key_verification_verify_sas_title_emoji" = "ປຽບທຽບ emoji";
+"device_verification_self_verify_wait_recover_secrets_checking_availability" = "ກຳລັງກວດສອບຄວາມສາມາດໃນການກວດສອບອື່ນໆ...";
+"device_verification_self_verify_wait_recover_secrets_additional_information" = "ຖ້າທ່ານບໍ່ສາມາດເຂົ້າເຖິງລະບົບທີ່ມີຢູ່ແລ້ວ";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "ໃຊ້ປະໂຫຍກຄວາມປອດໄພ ຫຼື ກະແຈ";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "ໃຊ້ກະແຈຄວາມປອດໄພ";
+"device_verification_self_verify_wait_additional_information" = "ອັນນີ້ໃຊ້ໄດ້ກັບ %@ ແລະ ລູກຄ້າ Matrix ທີ່ມີຄວາມສາມາດໃນການ cross-signing ອື່ນໆ.";
+"device_verification_self_verify_wait_information" = "ຢືນຢັນລະບົບນີ້ຈາກໜຶ່ງໃນລະບົບອື່ນຂອງທ່ານ, ໃຫ້ເຂົ້າເຖິງຂໍ້ຄວາມທີ່ເຂົ້າລະຫັດໄວ້.\n\nໃຊ້ %@ ຫຼ້າສຸດໃນອຸປະກອນອື່ນຂອງທ່ານ:";
+"device_verification_self_verify_wait_new_sign_in_title" = "ຢືນຢັນການເຂົ້າສູ່ລະບົບນີ້";
+
+// MARK: Self verification wait
+
+"device_verification_self_verify_wait_title" = "ຄວາມປອດໄພທີ່ສົມບູນ";
+"key_verification_self_verify_unverified_sessions_alert_validate_action" = "ທົບທວນຄືນ";
+"key_verification_self_verify_unverified_sessions_alert_message" = "ຢັ້ງຢືນທຸກລະບົບຂອງທ່ານເພື່ອໃຫ້ແນ່ໃຈວ່າບັນຊີ ແລະ ຂໍ້ຄວາມຂອງທ່ານປອດໄພ.";
+
+// Unverified sessions
+
+"key_verification_self_verify_unverified_sessions_alert_title" = "ກວດເບິ່ງບ່ອນທີ່ທ່ານເຂົ້າສູ່ລະບົບ";
+"key_verification_self_verify_current_session_alert_validate_action" = "ຢືນຢັນ";
+"key_verification_self_verify_current_session_alert_message" = "ຜູ້ໃຊ້ອື່ນໆອາດຈະບໍ່ໄວ້ວາງໃຈ.";
+
+// Current session
+
+"key_verification_self_verify_current_session_alert_title" = "ຢືນຢັນລະບົບນີ້";
+"device_verification_self_verify_start_waiting" = "ກຳລັງລໍຖ້າ…";
+"device_verification_self_verify_start_information" = "ໃຊ້ລະບົບນີ້ເພື່ອຢືນຢັນອັນໃໝ່ຂອງທ່ານ, ໃຫ້ເຂົ້າເຖິງຂໍ້ຄວາມທີ່ເຂົ້າລະຫັດໄວ້.";
+"device_verification_self_verify_start_verify_action" = "ເລີ່ມການຢັ້ງຢືນ";
+"device_verification_self_verify_alert_validate_action" = "ຢັ້ງຢືນ";
+"device_verification_self_verify_alert_message" = "ຢືນຢັນການເຂົ້າສູ່ລະບົບໃໝ່ທີ່ເຂົ້າເຖິງບັນຊີຂອງທ່ານ: %@";
+
+// MARK: Self verification start
+
+// New login
+"device_verification_self_verify_alert_title" = "ເຂົ້າສູ່ລະບົບໃໝ່. ນີ້ແມ່ນທ່ານບໍ?";
+"device_verification_start_use_legacy_action" = "ໃຊ້ການຢັ້ງຢືນແບບເດີມ";
+"device_verification_start_verify_button" = "ເລີ່ມການຢັ້ງຢືນ";
+"device_verification_start_use_legacy" = "ບໍ່ມີຫຍັງປະກົດ? ລູກຄ້າທັງໝົດຍັງບໍ່ຮອງຮັບການຢັ້ງຢືນແບບໂຕ້ຕອບ. ໃຊ້ການຢັ້ງຢືນແບບເກົ່າ.";
+"device_verification_start_wait_partner" = "ກຳລັງລໍຖ້າຄູ່ຮ່ວມງານຍອມຮັບ…";
+
+// MARK: Start
+"device_verification_start_title" = "ກວດສອບໂດຍການປຽບທຽບສະຕຣິງຂໍ້ຄວາມສັ້ນ";
+"device_verification_incoming_description_2" = "ການຢັ້ງຢືນລະບົບນີ້ຈະໝາຍຄວາມໜ້າເຊື່ອຖືໄດ້, ແລະ ໝາຍເຖິງລະບົບຂອງທ່ານວ່າເຊື່ອຖືໄດ້ຕໍ່ກັບຄູ່ຮ່ວມງານ.";
+"device_verification_incoming_description_1" = "ຢືນຢັນລະບົບນີ້ເພື່ອໝາຍຄວາມໜ້າເຊື່ອຖືໄດ້. ລະບົບການໄວ້ວາງໃຈຂອງຮຸ້ນສ່ວນເຮັດໃຫ້ທ່ານອຸ່ນໃຈຫຼາຍຂຶ້ນໃນເວລາໃຊ້ຂໍ້ຄວາມເຂົ້າລະຫັດແຕ່ຕົ້ນທາງຮອດປາຍທາງ.";
+
+// Mark: Incoming
+"device_verification_incoming_title" = "ການຮ້ອງຂໍການຢັ້ງຢືນຂາເຂົ້າ";
+"device_verification_error_cannot_load_device" = "ບໍ່ສາມາດໂຫຼດຂໍ້ມູນລະບົບໄດ້.";
+"device_verification_cancelled_by_me" = "ການຢັ້ງຢືນໄດ້ຖືກຍົກເລີກ. ເຫດຜົນ: %@";
+"device_verification_cancelled" = "ພາກສ່ວນອື່ນໄດ້ຍົກເລີກການຢັ້ງຢືນ.";
+
+// Passphrase
+
+"key_backup_setup_passphrase_title" = "ຮັບປະກັນການສໍາຮອງຂໍ້ມູນຂອງທ່ານດ້ວຍປະໂຫຍກຄວາມປອດໄພ";
+"device_verification_security_advice_number" = "ປຽບທຽບຕົວເລກ, ໃຫ້ແນ່ໃຈວ່າພວກມັນປາກົດຢູ່ໃນລໍາດັບດຽວກັນ.";
+"device_verification_security_advice_emoji" = "ປຽບທຽບ emoji ທີ່ເປັນເອກະລັກ, ໃຫ້ແນ່ໃຈວ່າພວກມັນປາກົດຢູ່ໃນລໍາດັບດຽວກັນ.";
+"key_verification_user_title" = "ກວດສອບພວກເຂົາ";
+"key_verification_this_session_title" = "ຢືນຢັນລະບົບນີ້";
+"key_verification_new_session_title" = "ຢືນຢັນລະບົບໃໝ່ຂອງທ່ານ";
+
+// MARK: - Device Verification
+"key_verification_other_session_title" = "ຢືນຢັນລະບົບ";
+"sign_out_key_backup_in_progress_alert_cancel_action" = "ຂ້າພະເຈົ້າຈະລໍຖ້າ";
+"sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "ຂ້ອຍບໍ່ຕ້ອງການຂໍ້ຄວາມທີ່ຖືກເຂົ້າລະຫັດຂອງຂ້ອຍ";
+"sign_out_key_backup_in_progress_alert_title" = "ການສຳຮອງຂໍ້ມູນກະແຈກຳລັງດຳເນີນຢູ່. ຖ້າທ່ານອອກຈາກລະບົບດຽວນີ້, ທ່ານຈະສູນເສຍການເຂົ້າເຖິງຂໍ້ຄວາມທີ່ຖືກເຂົ້າລະຫັດຂອງທ່ານ.";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_backup_action" = "ສຳຮອງ";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_sign_out_action" = "ອອກຈາກລະບົບ";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_message" = "ທ່ານຈະສູນເສຍການເຂົ້າເຖິງຂໍ້ຄວາມທີ່ຖືກເຂົ້າລະຫັດຂອງທ່ານ ເວັ້ນເສຍແຕ່ວ່າທ່ານສຳຮອງຂໍ້ມູນລະຫັດຂອງທ່ານກ່ອນທີ່ຈະອອກຈາກລະບົບ.";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "ທ່ານຈະສູນເສຍຂໍ້ຄວາມທີ່ເຂົ້າລະຫັດຂອງທ່ານ";
+"sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "ຂ້ອຍບໍ່ຕ້ອງການຂໍ້ຄວາມທີ່ຖືກເຂົ້າລະຫັດຂອງຂ້ອຍ";
+"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "ເລີ່ມໃຊ້ການສຳຮອງຂໍ້ມູນທີ່ປອດໄພ";
+"sign_out_non_existing_key_backup_alert_title" = "ທ່ານຈະສູນເສຍການເຂົ້າເຖິງຂໍ້ຄວາມທີ່ຖືກເຂົ້າລະຫັດຂອງທ່ານຖ້າທ່ານອອກຈາກລະບົບດຽວນີ້";
+"sign_out_existing_key_backup_alert_sign_out_action" = "ອອກຈາກລະບົບ";
+
+// MARK: Sign out warning
+
+"sign_out_existing_key_backup_alert_title" = "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການອອກຈາກລະບົບ?";
+"key_backup_recover_done_action" = "ສຳເລັດແລ້ວ";
+
+// Success
+
+"key_backup_recover_success_info" = "ກູ້ຄືນການສຳຮອງຂໍ້ມູນແລ້ວ!";
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "ລືມກະແຈຄວາມປອດໄພຂອງທ່ານ ທ່ານສາມາດຕັ້ງອັນໃໝ່ໄດ້ໃນການຕັ້ງຄ່າ.";
+"key_backup_recover_from_recovery_key_recover_action" = "ປົດລັອກປະຫວັດ";
+"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "ໃສ່ກະແຈຄວາມປອດໄພ";
+"key_backup_recover_from_recovery_key_recovery_key_title" = "ປ້ອນ";
+
+// Recover from recovery key
+
+"key_backup_recover_from_recovery_key_info" = "ໃຊ້ກະແຈຄວາມປອດໄພຂອງທ່ານເພື່ອປົດລັອກປະຫວັດຂໍ້ຄວາມທີ່ປອດໄພຂອງທ່ານ";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "ໃຊ້ກະແຈຄວາມປອດໄພຂອງທ່ານ";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "ບໍ່ຮູ້ປະໂຫຍກຄວາມປອດໄພຂອງທ່ານບໍ?ທ່ານສາມາດ ";
+"key_backup_recover_from_passphrase_recover_action" = "ປົດລັອກປະຫວັດ";
+"key_backup_recover_from_passphrase_passphrase_placeholder" = "ໃສ່ປະໂຫຍກ";
+"key_backup_recover_from_passphrase_passphrase_title" = "ປ້ອນ";
+
+// Recover from passphrase
+
+"key_backup_recover_from_passphrase_info" = "ໃຊ້ປະໂຫຍກຄວາມປອດໄພຂອງທ່ານເພື່ອປົດລັອກປະຫວັດຂໍ້ຄວາມທີ່ປອດໄພຂອງທ່ານ";
+
+// Recover from private key
+"key_backup_recover_from_private_key_info" = "ກຳລັງກູ້ຂໍ້ມູນສຳຮອງຄືນມາ…";
+"key_backup_recover_invalid_recovery_key" = "ການສຳຮອງຂໍ້ມູນບໍ່ສາມາດຖອດລະຫັດດ້ວຍກະແຈນີ້: ກະລຸນາກວດສອບວ່າທ່ານໃສ່ກະແຈຄວາມປອດໄພຖືກຕ້ອງແລ້ວ.";
+"key_backup_recover_invalid_recovery_key_title" = "ກະແຈຄວາມປອດໄພບໍ່ກົງກັນ";
+"key_backup_recover_invalid_passphrase" = "ການສຳຮອງຂໍ້ມູນບໍ່ສາມາດຖອດລະຫັດດ້ວຍປະໂຫຍກນີ້: ກະລຸນາກວດສອບວ່າທ່ານໃສ່ປະໂຫຍກຄວາມປອດໄພທີ່ຖືກຕ້ອງ.";
+"key_backup_recover_invalid_passphrase_title" = "ປະໂຫຍກຄວາມປອດໄພບໍ່ຖືກຕ້ອງ";
+
+// MARK: Key backup recover
+
+"key_backup_recover_title" = "ຂໍ້ຄວາມທີ່ປອດໄພ";
+
+// Success from secure backup
+"key_backup_setup_success_from_secure_backup_info" = "ກະແຈຂອງທ່ານກຳລັງຖືກສຳຮອງຂໍ້ມູນ.";
+"key_backup_setup_success_from_recovery_key_made_copy_action" = "ຂ້ອຍໄດ້ເຮັດສໍາເນົາ";
+"key_backup_setup_success_from_recovery_key_make_copy_action" = "ສ້າງສຳເນົາ";
+"spaces_explore_rooms" = "ສຳຫຼວດຫ້ອງ";
+"leave_space_and_all_rooms_action" = "ອອກຈາກຫ້ອງ ແລະພື້ນທີ່ທັງໝົດ";
+"key_backup_setup_success_from_recovery_key_recovery_key_title" = "ກະແຈຄວາມປອດໄພ";
+
+// Success from recovery key
+"key_backup_setup_success_from_recovery_key_info" = "ກະແຈຂອງທ່ານກຳລັງຖືກສຳຮອງໄວ້.\n\nເຮັດສຳເນົາຂອງກະແຈຄວາມປອດໄພນີ້ ແລະ ຮັກສາມັນໃຫ້ປອດໄພ.";
+"key_backup_setup_success_from_passphrase_done_action" = "ສຳເລັດແລ້ວ";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "ບັນທຶກກະແຈຄວາມປອດໄພ";
+
+// Success
+
+"key_backup_setup_success_title" = "ຄວາມສໍາເລັດ!";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "(ຂັ້ນສູງ) ຕັ້ງຄ່າດ້ວຍກະແຈຄວາມປອດໄພ";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "ຫຼື, ຮັບປະກັນການສຳຮອງຂໍ້ມູນຂອງທ່ານດ້ວຍກະແຈຄວາມປອດໄພ, ບັນທຶກມັນໄວ້ບ່ອນໃດບ່ອນໜຶ່ງທີ່ປອດໄພ.";
+"key_backup_setup_passphrase_set_passphrase_action" = "ກໍານົດປະໂຫຍກ";
+"key_backup_setup_passphrase_confirm_passphrase_invalid" = "ປະໂຫຍກຄວາມປອດໄພບໍ່ກົງກັນ";
+"key_backup_setup_passphrase_confirm_passphrase_valid" = "ດີເລີດ!";
+"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "ຢືນຢັນປະໂຫຍກຄວາມປອດໄພ";
+"key_backup_setup_passphrase_confirm_passphrase_title" = "ຢືນຢັນ";
+"key_backup_setup_passphrase_passphrase_invalid" = "ລອງເພີ່ມຄຳສັບ";
+"key_backup_setup_passphrase_passphrase_valid" = "ດີເລີດ!";
+"key_backup_setup_passphrase_passphrase_placeholder" = "ໃສ່ປະໂຫຍກ";
+"key_backup_setup_passphrase_passphrase_title" = "ປ້ອນ";
+"key_backup_setup_intro_manual_export_action" = "ສົ່ງອອກກະແຈດ້ວຍຕົນເອງ";
+"key_backup_setup_intro_manual_export_info" = "(ຂັ້ນສູງ)";
+"key_backup_setup_intro_setup_connect_action_with_existing_backup" = "ເຊື່ອມຕໍ່ອຸປະກອນນີ້ກັບການສຳຮອງກະເເຈ";
+"key_backup_setup_intro_setup_action_without_existing_backup" = "ເລີ່ມຕົ້ນການນໍາໃຊ້ ການສຳຮອງຂໍ້ມູນກະເເຈ";
+
+// Intro
+
+"key_backup_setup_intro_title" = "ບໍ່ເຄີຍສູນເສຍຂໍ້ຄວາມເຂົ້າລະຫັດ";
+"key_backup_setup_skip_alert_skip_action" = "ຂ້າມ";
+"key_backup_setup_skip_alert_message" = "ທ່ານອາດຈະສູນເສຍຂໍ້ຄວາມທີ່ປອດໄພຖ້າທ່ານອອກຈາກລະບົບ ຫຼື ການສູນເສຍອຸປະກອນຂອງທ່ານ.";
+"key_backup_setup_skip_alert_title" = "ທ່ານແນ່ໃຈບໍ່?";
+
+
+// MARK: Key backup setup
+
+"key_backup_setup_title" = "ການສໍາຮອງຂໍ້ມູນກະແຈ";
+"secure_backup_setup_banner_subtitle" = "ປ້ອງກັນການສູນເສຍການເຂົ້າເຖິງຂໍ້ຄວາມ ແລະ ຂໍ້ມູນທີ່ຖືກເຂົ້າລະຫັດ";
+
+// Banner
+
+"secure_backup_setup_banner_title" = "ການສໍາຮອງທີ່ປອດໄພ";
+
+
+// Cancel
+
+"secure_key_backup_setup_cancel_alert_title" = "ທ່ານແນ່ໃຈບໍ່?";
+"secure_key_backup_setup_existing_backup_error_delete_it" = "ລຶບ";
+"secure_key_backup_setup_existing_backup_error_unlock_it" = "ປົດລັອກ";
+"secure_key_backup_setup_existing_backup_error_info" = "ປົດລັອກເພື່ອໃຊ້ມັນຄືນໃໝ່ໃນການສຳຮອງຂໍ້ມູນທີ່ປອດໄພ ຫຼື ລຶບມັນເພື່ອສ້າງການສຳຮອງຂໍ້ມູນຂໍ້ຄວາມໃໝ່ໃນການສຳຮອງຂໍ້ມູນທີ່ປອດໄພ.";
+"secure_key_backup_setup_existing_backup_error_title" = "ມີຂໍ້ມູນສຳຮອງສຳລັບຂໍ້ຄວາມຢູ່ກ່ອນແລ້ວ";
+"secure_key_backup_setup_intro_use_security_passphrase_info" = "ກະລຸນາໃສ່ປະໂຫຍກລັບທີ່ທ່ານຮູ້, ແລະ ສ້າງລະຫັດສໍາລັບການສໍາຮອງຂໍ້ມູນ.";
+"secure_key_backup_setup_intro_use_security_passphrase_title" = "ໃຊ້ປະໂຫຍກຄວາມປອດໄພ";
+"secure_key_backup_setup_intro_use_security_key_info" = "ສ້າງກະແຈຄວາມປອດໄພເພື່ອເກັບຮັກສາໄວ້ບ່ອນໃດບ່ອນໜຶ່ງທີ່ປອດໄພ ເຊັ່ນ: ຕົວຈັດການລະຫັດຜ່ານ ຫຼື ບ່ອນປອດໄພ.";
+"secure_key_backup_setup_intro_use_security_key_title" = "ໃຊ້ກະແຈຄວາມປອດໄພ";
+"secure_key_backup_setup_intro_info" = "ປ້ອງກັນການສູນເສຍການເຂົ້າເຖິງຂໍ້ຄວາມ & ຂໍ້ມູນທີ່ຖືກເຂົ້າລະຫັດໂດຍການສໍາຮອງການເຂົ້າລະຫັດຢູ່ໃນເຊີບເວີຂອງທ່ານ.";
+
+// MARK: Secure backup setup
+
+// Intro
+
+"secure_key_backup_setup_intro_title" = "ການສໍາຮອງທີ່ປອດໄພ";
+"rerequest_keys_alert_message" = "ກະລຸນາເປີດ %@ ໃນອຸປະກອນອື່ນທີ່ສາມາດຖອດລະຫັດຂໍ້ຄວາມເພື່ອໃຫ້ມັນສາມາດສົ່ງກະແຈໄປຫາລະບົບນີ້ໄດ້.";
+
+// Re-request confirmation dialog
+"rerequest_keys_alert_title" = "ສົ່ງຄຳຮ້ອງຂໍແລ້ວ";
+"deactivate_account_password_alert_message" = "ເພື່ອສືບຕໍ່, ກະລຸນາໃສ່ລະຫັດຜ່ານບັນຊີ Matrix ຂອງທ່ານ";
+"deactivate_account_password_alert_title" = "ປິດການນຳໃຊ້ບັນຊີ";
+"deactivate_account_validate_action" = "ປິດການນຳໃຊ້ບັນຊີ";
+"deactivate_account_forget_messages_information_part3" = ": ນີ້ຈະເຮັດໃຫ້ຜູ້ໃຊ້ໃນອະນາຄົດເຫັນການສົນທະນາທີ່ບໍ່ຄົບຖ້ວນ)";
+"deactivate_account_forget_messages_information_part2_emphasize" = "ຄຳເຕືອນ";
+"deactivate_account_forget_messages_information_part1" = "ກະລຸນາລືມຂໍ້ຄວາມທັງໝົດທີ່ຂ້ອຍໄດ້ສົ່ງເມື່ອບັນຊີຂອງຂ້ອຍຖືກປິດການນຳໃຊ້ (";
+"deactivate_account_informations_part4_emphasize" = "ໂດຍຄ່າເລີ່ມຕົ້ນບໍ່ໄດ້ເຮັດໃຫ້ພວກເຮົາລືມຂໍ້ຄວາມທີ່ທ່ານໄດ້ສົ່ງ. ";
+"deactivate_account_informations_part3" = "\n\nກຳລັງປິດການນຳໃຊ້ບັນຊີຂອງທ່ານ ";
+"deactivate_account_informations_part2_emphasize" = "ການປະຕິບັດນີ້ແມ່ນບໍ່ສາມາດປີ້ນກັບກັນໄດ້.";
+
+// Deactivate account
+
+"deactivate_account_title" = "ປິດການນຳໃຊ້ບັນຊີ";
+"service_terms_modal_policy_checkbox_accessibility_hint" = "ກວດເບິ່ງເພື່ອຍອມຮັບ %@";
+"service_terms_modal_information_description_integration_manager" = "ຜູ້ຈັດການການເຊື່ອມໂຍງສາມາດເຮັດໃຫ້ທ່ານເພີ່ມຄຸນສົມບັດຈາກພາກສ່ວນທີສາມໄດ້.";
+"service_terms_modal_information_description_identity_server" = "ເຄື່ອງເຊີບເວີຊ່ວຍໃຫ້ທ່ານຊອກຫາລາຍຊື່ຕິດຕໍ່ຂອງທ່ານ, ໂດຍການຊອກຫາເບີໂທລະສັບ ຫຼື ທີ່ຢູ່ອີເມວຂອງພວກເຂົາ, ເພື່ອເບິ່ງວ່າພວກເຂົາມີບັນຊີຢູ່ແລ້ວ.";
+"service_terms_modal_information_title_integration_manager" = "ຜູ້ຈັດການການຊື່ອມໂຍງ";
+
+// Alert explaining what an identity server / integration manager is.
+"service_terms_modal_information_title_identity_server" = "ເຊີບເວີ";
+"service_terms_modal_description_integration_manager" = "ນີ້ຈະຊ່ວຍໃຫ້ທ່ານໃຊ້ bots, bridges, widget ແລະ ຊຸດສະຕິກເກີ.";
+"service_terms_modal_description_identity_server" = "ອັນນີ້ຈະເຮັດໃຫ້ບາງຄົນສາມາດຊອກຫາທ່ານໄດ້ ຖ້າເຂົາເຈົ້າມີເບີໂທລະສັບ ຫຼື ອີເມວຂອງທ່ານຖືກບັນທຶກໄວ້ໃນລາຍຊື່ຜູ້ຕິດຕໍ່ໂທລະສັບຂອງເຂົາເຈົ້າ.";
+"service_terms_modal_table_header_integration_manager" = "ຂໍ້ກໍານົດຂອງຜູ້ຈັດການການເຊື່ອມໂຍງ";
+"service_terms_modal_table_header_identity_server" = "ເງື່ອນໄຂເຊີບເວີ";
+"service_terms_modal_footer" = "ນີ້ສາມາດຖືກປິດໃຊ້ງານໄດ້ທຸກເວລາໃນການຕັ້ງຄ່າ.";
+"service_terms_modal_decline_button" = "ຫຼຸດລົງ";
+"service_terms_modal_accept_button" = "ຍອມຮັບ";
+
+// Service terms
+"service_terms_modal_title_message" = "ເພື່ອສືບຕໍ່, ຍອມຮັບຂໍ້ກຳນົດ ແລະເງື່ອນໄຂຂ້າງລຸ່ມນີ້";
+"gdpr_consent_not_given_alert_review_now_action" = "ກວດເບິ່ງດຽວນີ້";
+
+// GDPR
+"gdpr_consent_not_given_alert_message" = "ເພື່ອສືບຕໍ່ນຳໃຊ້ %@ homeserver ທ່ານຕ້ອງທົບທວນຄືນ ແລະ ຕົກລົງເຫັນດີກັບຂໍ້ກຳນົດ ແລະເງື່ອນໄຂ.";
+"e2e_room_key_request_ignore_request" = "ບໍ່ສົນໃຈການຮ້ອງຂໍ";
+"e2e_room_key_request_share_without_verifying" = "ແບ່ງປັນໂດຍບໍ່ມີການຢັ້ງຢືນ";
+"e2e_room_key_request_start_verification" = "ເລີ່ມການຢັ້ງຢືນ…";
+"e2e_room_key_request_message" = "ລະບົບທີ່ບໍ່ໄດ້ຮັບການຢືນຢັນຂອງທ່ານ '%@' ກໍາລັງຮ້ອງຂໍການເຂົ້າລະຫັດ.";
+"e2e_room_key_request_message_new_device" = "ທ່ານໄດ້ເພີ່ມລະບົບໃໝ່ '%@', ເຊິ່ງກຳລັງຮ້ອງການເຂົ້າລະຫັດ.";
+
+// Room key request dialog
+"e2e_room_key_request_title" = "ການຮ້ອງຂໍການເຂົ້າລະຫັດ";
+"share_extension_send_now" = "ສົ່ງດຽວນີ້";
+"share_extension_low_quality_video_message" = "ສົ່ງໃນ %@ ສໍາລັບຄຸນນະພາບທີ່ດີກວ່າ, ຫຼື ສົ່ງໃນຄຸນນະພາບຕ່ໍາຂ້າງລຸ່ມນີ້.";
+"share_extension_low_quality_video_title" = "ວິດີໂອຈະຖືກສົ່ງໃນຄຸນນະພາບຕ່ໍາ";
+"share_extension_failed_to_encrypt" = "ການສົ່ງບໍ່ສຳເລັດ. ກວດເບິ່ງການຕັ້ງຄ່າການເຂົ້າລະຫັດລັບສຳລັບຫ້ອງນີ້";
+
+// Share extension
+"share_extension_auth_prompt" = "ເຂົ້າສູ່ລະບົບໃນແອັບຫຼັກເພື່ອແບ່ງປັນເນື້ອໃນ";
+"room_widget_permission_room_id_permission" = "ID ຫ້ອງ";
+"room_widget_permission_widget_id_permission" = "ໄອດີວິດເຈັດ";
+"room_widget_permission_theme_permission" = "ຫົວຂໍ້ຂອງທ່ານ";
+"room_widget_permission_user_id_permission" = "ID ຜູ້ໃຊ້ຂອງທ່ານ";
+"room_widget_permission_avatar_url_permission" = "URL ຮູບແທນຕົວຂອງທ່ານ";
+"room_widget_permission_display_name_permission" = "ຊື່ສະແດງຂອງທ່ານ";
+"room_widget_permission_information_title" = "ການໃຊ້ມັນອາດຈະແບ່ງປັນຂໍ້ມູນກັບ %@:\n";
+"room_widget_permission_webview_information_title" = "ການໃຊ້ມັນອາດຈະຕັ້ງ cookies ແລະ ແບ່ງປັນຂໍ້ມູນກັບ %@:\n";
+"room_widget_permission_creator_info_title" = "widget ນີ້ຖືກເພີ່ມໂດຍ:";
+
+// Room widget permissions
+"room_widget_permission_title" = "ໂຫຼດ Widget";
+"widget_picker_manage_integrations" = "ຈັດການການເຊື່ອມໂຍງ…";
+
+// Widget Picker
+"widget_picker_title" = "ການເຊື່ອມໂຢງ";
+"widget_integration_manager_disabled" = "ທ່ານຈໍາເປັນຕ້ອງເປີດໃຊ້ຕົວຈັດການການເຊື່ອມໂຍງໃນການຕັ້ງຄ່າ";
+"widget_integration_room_not_visible" = "ຫ້ອງ %@ ບໍ່ເຫັນ.";
+"widget_integration_missing_user_id" = "ບໍ່ມີ user_id ໃນການຮ້ອງຂໍ.";
+"widget_integration_missing_room_id" = "ບໍ່ມີການຮ້ອຂໍ room_id.";
+"widget_integration_no_permission_in_room" = "ທ່ານບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ເຮັດສິ່ງນັ້ນຢູ່ໃນຫ້ອງນີ້.";
+"widget_integration_must_be_in_room" = "ທ່ານບໍ່ໄດ້ຢູ່ໃນຫ້ອງນີ້.";
+"widget_integration_positive_power_level" = "ລະດັບພະລັງງານຈະຕ້ອງເປັນຈຳນວນບວກ.";
+"widget_integration_room_not_recognised" = "ຫ້ອງນີ້ບໍ່ຖືກຮັບຮູ້.";
+"widget_integration_failed_to_send_request" = "ສົ່ງຄຳຮ້ອງຂໍບໍ່ສຳເລັດ.";
+"widget_integration_unable_to_create" = "ບໍ່ສາມາດສ້າງ widget ໄດ້.";
+
+// Widget Integration Manager
+"widget_integration_need_to_be_able_to_invite" = "ທ່ານຈໍາເປັນຕ້ອງເຊີນຜູ້ໃຊ້ໃຫ້ເຮັດແນວນັ້ນ.";
+"widget_menu_remove" = "ລຶບອອກສຳລັບທຸກຄົນ";
+"widget_menu_revoke_permission" = "ຖອນການເຂົ້າເຖິງສໍາລັບຂ້ອຍ";
+"widget_menu_open_outside" = "ເປີດໃນ browser";
+"widget_menu_refresh" = "ໂຫຼດຫນ້າຈໍຄືນ";
+"widget_sticker_picker_no_stickerpacks_alert_add_now" = "ເພີ່ມບາງອັນດຽວນີ້ບໍ?";
+"widget_sticker_picker_no_stickerpacks_alert" = "ໃນປັດຈຸບັນທ່ານບໍ່ໄດ້ເປີດໃຊ້ສະຕິກເກີແພັກເກັດໃດໆ.";
+"widget_creation_failure" = "ການສ້າງວິດເຈັດບໍ່ສຳເລັດ";
+"widget_no_power_to_manage" = "ທ່ານຕ້ອງການການອະນຸຍາດເພື່ອຈັດການ widget ຢູ່ໃນຫ້ອງນີ້";
+"widget_integrations_server_failed_to_connect" = "ການເຊື່ອມຕໍ່ກັບເຊີບເວີບໍ່ສຳເລັດ";
+
+// Widget
+"widget_no_integrations_server_configured" = "ບໍ່ມີການກຳນົດຄ່າເຊີບເວີການເຊື່ອມໂຍງ";
+"bug_report_background_mode" = "ສືບຕໍ່ຢູ່ໃນພື້ນຫຼັງ";
+"bug_report_send" = "ສົ່ງ";
+"bug_report_progress_uploading" = "ກຳລັງອັບໂຫລດລາຍງານ";
+"bug_report_progress_zipping" = "ເກັບກຳບັນທຶກ";
+"bug_report_send_screenshot" = "ສົ່ງພາບໜ້າຈໍ";
+"bug_report_send_logs" = "ສົ່ງບັນທຶກ";
+"bug_report_logs_description" = "ເພື່ອວິໃຈບັນຫາ, ບັນທຶກຈາກລູກຄ້ານີ້ຈະຖືກສົ່ງພ້ອມກັບລາຍງານຂໍ້ຜິດພາດນີ້. ຖ້າທ່ານຕ້ອງການພຽງແຕ່ສົ່ງຂໍ້ຄວາມຂ້າງເທິງ, ກະລຸນາຢ່າຕິກເຄື່ອງໝາຍຖືກ:";
+"bug_crash_report_description" = "ກະລຸນາອະທິບາຍສິ່ງທີ່ທ່ານໄດ້ດຳເນີນກ່ອນທີ່ຈະເກີດອຸປະຕິເຫດ:";
+"bug_crash_report_title" = "ລາຍງານການຂັດຂ້ອງ";
+"bug_report_description" = "ກະລຸນາອະທິບາຍຂໍ້ບົກພ່ອງ. ທ່ານເຮັດຫຍັງ?ທ່ານຄາດຫວັງວ່າຈະເກີດຫຍັງຂຶ້ນ? ຕົວຈິງແລ້ວເກີດຫຍັງຂຶ້ນ?";
+
+// Bug report
+"bug_report_title" = "ລາຍງານຂໍ້ຜິດພາດ";
+"e2e_key_backup_wrong_version_button_wasme" = "ມັນແມ່ນຂ້ອຍ";
+"e2e_key_backup_wrong_version_button_settings" = "ການຕັ້ງຄ່າ";
+"e2e_key_backup_wrong_version" = "ກວດພົບການສຳຮອງຂໍ້ມູນລະຫັດຂໍ້ຄວາມທີ່ປອດໄພໃໝ່.\n\nຖ້ານີ້ບໍ່ແມ່ນທ່ານ, ໃຫ້ຕັ້ງປະໂຫຍກຄວາມປອດໄພໃໝ່ໃນການຕັ້ງຄ່າ.";
+
+// Key backup wrong version
+"e2e_key_backup_wrong_version_title" = "ການສຳຮອງລະຫັດໃໝ່";
+
+// Crypto
+"e2e_enabling_on_app_update" = "%@ ຕອນນີ້ຮອງຮັບການເຂົ້າລະຫັດແຕ່ຕົ້ນທາງຮອດປາຍທາງ ແຕ່ທ່ານຕ້ອງເຂົ້າສູ່ລະບົບອີກຄັ້ງເພື່ອເປີດໃຊ້ມັນ.\n\nທ່ານສາມາດເຮັດມັນໄດ້ໃນປັດຈຸບັນ ຫຼື ຫຼັງຈາກນັ້ນຈາກການຕັ້ງຄ່າແອັບພລິເຄຊັນ.";
+"analytics_prompt_stop" = "ຢຸດການແບ່ງປັນ";
+"analytics_prompt_yes" = "ແມ່ນແລ້ວ, ດີແລ້ວ";
+"analytics_prompt_not_now" = "ບໍ່ແມ່ນຕອນນີ້";
+"analytics_prompt_point_3" = "ທ່ານສາມາດປິດສິ່ງນີ້ໄດ້ທຸກເວລາໃນການຕັ້ງຄ່າ";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "ພວກເຮົາ <b>ບໍ່</b> ແບ່ງປັນຂໍ້ມູນກັບພາກສ່ວນທີສາມ";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "ພວກເຮົາ <b>ບໍ່</b> ບັນທຶກ ຫຼື ບັນທຶກຂໍ້ມູນບັນຊີໃດໆ";
+"analytics_prompt_terms_link_upgrade" = "ທີ່ນີ້";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "ອ່ານເງື່ອນໄຂທັງໝົດຂອງພວກເຮົາ %@. ຕົກລົງບໍ່?";
+"analytics_prompt_terms_link_new_user" = "ທີ່ນີ້";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "ທ່ານສາມາດອ່ານເງື່ອນໄຂທັງໝົດຂອງພວກເຮົາໄດ້ %@.";
+
+// Analytics
+"analytics_prompt_title" = "ຊ່ວຍປັບປຸງ %@";
+"no_voip" = "%@ ກຳລັງໂທຫາທ່ານ ແຕ່ %@ ບໍ່ຮອງຮັບການໂທເທື່ອ.\nທ່ານສາມາດບໍ່ສົນການແຈ້ງເຕືອນນີ້ ແລະ ຮັບສາຍຈາກອຸປະກອນອື່ນ ຫຼື ທ່ານສາມາດປະຕິເສດມັນໄດ້.";
+
+// No VoIP support
+"no_voip_title" = "ສາຍໂທເຂົ້າ";
+"call_actions_unhold" = "ປະຫວັດຫຍໍ້";
+"call_no_stun_server_error_use_fallback_button" = "ລອງໃຊ້ %@";
+"call_no_stun_server_error_message_2" = "ອີກທາງເລືອກ, ທ່ານສາມາດພະຍາຍາມໃຊ້ເຊີບເວີສາທາລະນະຢູ່ທີ່ %@, ແຕ່ນີ້ບໍ່ຫນ້າເຊື່ອຖື, ແລະ ມັນຈະແບ່ງປັນທີ່ຢູ່ IP ຂອງທ່ານກັບເຊີບເວີນັ້ນ. ທ່ານຍັງສາມາດຈັດການສິ່ງນີ້ໄດ້ໃນການຕັ້ງຄ່າ";
+"call_no_stun_server_error_message_1" = "ກະລຸນາຮ້ອງຂໍໃຫ້ຜູ້ບໍລິຫານຂອງ homeserver %@ ຂອງທ່ານເພື່ອກໍານົດຄ່າເຊີບເວີ TURN ເພື່ອໃຫ້ການໂທເຮັດວຽກໄດ້ຢ່າງຫມັ້ນຄົງ.";
+"call_no_stun_server_error_title" = "ການໂທບໍ່ສຳເັດເນື່ອງຈາກເຊີບເວີຕັ້ງຄ່າບໍ່ຖືກຕ້ອງ";
+"call_jitsi_unable_to_start" = "ບໍ່ສາມາດເລີ່ມການປະຊຸມການໂທໄດ້";
+"call_jitsi_error" = "ເຂົ້າຮ່ວມໂທປະຊຸມບໍ່ສຳເລັດ.";
+"call_already_displayed" = "ມີການໂທຢູ່ໃນຄວາມຄືບໜ້າຢູ່ແລ້ວ.";
+"call_incoming_video" = "ສາຍໂທວິດີໂອເຂົ້າມາ…";
+"call_incoming_voice" = "ສາຍໂທເຂົ້າ…";
+"call_incoming_video_prompt" = "ສາຍໂທວິດີໂອເຂົ້າມາຈາກ %@";
+
+// Call
+"call_incoming_voice_prompt" = "ສາຍໂທເຂົ້າຈາກ %@";
+"room_does_not_exist" = "%@ ບໍ່ມີ";
+"large_badge_value_k_format" = "%.1fK";
+"photo_library_access_not_granted" = "%@ ບໍ່ມີການອະນຸຍາດໃຫ້ເຂົ້າເຖິງຫ້ອງສະຫມຸດຮູບພາບ, ກະລຸນາປ່ຽນການຕັ້ງຄ່າຄວາມເປັນສ່ວນຕົວ";
+"camera_unavailable" = "ກ້ອງຖ່າຍຮູບບໍ່ສາມາດໃຊ້ໄດ້ໃນອຸປະກອນຂອງທ່ານ";
+"camera_access_not_granted" = "%@ ບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ໃຊ້ກ້ອງຖ່າຍຮູບ, ກະລຸນາປ່ຽນການຕັ້ງຄ່າຄວາມເປັນສ່ວນຕົວ";
+"do_not_ask_again" = "ຢ່າຖາມອີກ";
+"rage_shake_prompt" = "ເບິ່ງຄືວ່າເຈົ້າກຳລັງສັ່ນໂທລະສັບດ້ວຍຄວາມຂັຫດຂ້ອງ. ທ່ານຕ້ອງການສົ່ງລາຍງານຂໍ້ຜິດພາດບໍ?";
+"bug_report_prompt" = "ແອັບພລິເຄຊັນໄດ້ຂັດຂ້ອງໃນຄັ້ງທີ່ຜ່ານມາ. ທ່ານຕ້ອງການສົ່ງລາຍງານການຂັດຂ້ອງບໍ?";
+"public_room_section_title" = "ຫ້ອງສາທາລະນະ (ຢູ່ທີ່ %@):";
+"homeserver_connection_lost" = "ບໍ່ສາມາດເຊື່ອມຕໍ່ກັບ homeserver ໄດ້.";
+"network_offline_prompt" = "ການເຊື່ອມຕໍ່ອິນເຕີເນັດອອັບລາຍ.";
+"yesterday" = "ມື້ວານນີ້";
+"today" = "ມື້ນີ້";
+"you" = "ເຈົ້າ";
+
+// Others
+"or" = "ຫຼື";
+"event_formatter_jitsi_widget_removed_by_you" = "ທ່ານໄດ້ລຶບກອງປະຊຸມ VoIP ອອກ";
+"event_formatter_jitsi_widget_added_by_you" = "ທ່ານໄດ້ເພີ່ມກອງປະຊຸມ VoIP";
+"event_formatter_widget_removed_by_you" = "ທ່ານລຶບວິດເຈັດອອກແລ້ວ: %@";
+
+// Events formatter with you
+"event_formatter_widget_added_by_you" = "ທ່ານໄດ້ເພີ່ມວິດເຈັດ: %@";
+"event_formatter_message_deleted" = "ຂໍ້ຄວາມຖືກລຶບ";
+"event_formatter_group_call_incoming" = "%@ ໃນ %@";
+"event_formatter_group_call_leave" = "ອອກຈາກ";
+"event_formatter_group_call_join" = "ເຂົ້າຮ່ວມ";
+"event_formatter_group_call" = "ໂທກຸ່ມ";
+"event_formatter_call_end_call" = "ສິ້ນສຸດການໂທ";
+"event_formatter_call_retry" = "ລອງໃໝ່";
+"event_formatter_call_answer" = "ຄໍາຕອບ";
+"event_formatter_call_decline" = "ຫຼຸດລົງ";
+"event_formatter_call_back" = "ໂທກັບ";
+"event_formatter_call_connection_failed" = "ການເຊື່ອມຕໍ່ບໍ່ສຳເລັດ";
+"event_formatter_call_missed_video" = "ສາຍວິດີໂອທີ່ບໍ່ໄດ້ຮັບ";
+"event_formatter_call_missed_voice" = "ບໍ່ໄດ້ຮັບສາຍ";
+"event_formatter_call_you_declined" = "ປະຕິເສດການໂທ";
+"event_formatter_call_active_video" = "ການໂທວິດີໂອທີ່ໃຊ້ງານຢູ່";
+"event_formatter_call_active_voice" = "ການໂທສຽງທີ່ໃຊ້ງານຢຸ່";
+"event_formatter_call_incoming_video" = "ໂທວິດີໂອເຂົ້າມາ";
+"event_formatter_call_incoming_voice" = "ສາຍໂທເຂົ້າ";
+"event_formatter_call_has_ended_with_time" = "ສິ້ນສຸດການໂທ • %@";
+"event_formatter_call_has_ended" = "ສິ້ນສຸດການໂທ";
+"event_formatter_call_ringing" = "ສຽງດັງ…";
+"event_formatter_call_connecting" = "ກຳລັງເຊື່ອມຕໍ່…";
+"event_formatter_message_edited_mention" = "(ດັດແກ້)";
+"event_formatter_rerequest_keys_part2" = " ຈາກລະບົບອື່ນໆຂອງທ່ານ.";
+"event_formatter_rerequest_keys_part1_link" = "ຂໍລະຫັດການເຂົ້າລະຫັດຄືນໃໝ່";
+"event_formatter_jitsi_widget_removed" = "ການປະຊຸມ VoIP ຖືກລຶບອອກໂດຍ %@";
+"event_formatter_jitsi_widget_added" = "ກອງປະຊຸມ VoIP ເພີ່ມໂດຍ %@";
+"room_details_promote_room_suggest_title" = "ແນະນໍາໃຫ້ພື້ນທີ່ຂອງສະມາຊິກ";
