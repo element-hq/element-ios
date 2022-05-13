@@ -23,7 +23,7 @@ import UIKit
     private static let pillAttachmentViewSizes = PillAttachmentView.Sizes(verticalMargin: 2.0,
                                                                           horizontalMargin: 4.0,
                                                                           avatarSideLength: 16.0)
-    private var messageTextView: MXKMessageTextView?
+    private weak var messageTextView: MXKMessageTextView?
 
     // MARK: - Override
     override init(textAttachment: NSTextAttachment, parentView: UIView?, textLayoutManager: NSTextLayoutManager?, location: NSTextLocation) {
