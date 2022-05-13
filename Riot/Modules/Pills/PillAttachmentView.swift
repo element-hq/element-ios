@@ -90,6 +90,7 @@ class PillAttachmentView: UIView {
         pillBackgroundView.layer.cornerRadius = sizes.pillBackgroundHeight / 2.0
 
         self.addSubview(pillBackgroundView)
+        self.alpha = pillData.alpha
     }
 
     // MARK: - Override

@@ -19,9 +19,18 @@ import UIKit
 /// Provider for mention Pills attachment view.
 @available(iOS 15.0, *)
 @objc class PillAttachmentViewProvider: NSTextAttachmentViewProvider {
+    // MARK: - Properties
     private static let pillAttachmentViewSizes = PillAttachmentView.Sizes(verticalMargin: 2.0,
                                                                           horizontalMargin: 4.0,
                                                                           avatarSideLength: 16.0)
+    private var messageTextView: MXKMessageTextView?
+
+    // MARK: - Override
+    override init(textAttachment: NSTextAttachment, parentView: UIView?, textLayoutManager: NSTextLayoutManager?, location: NSTextLocation) {
+        super.init(textAttachment: textAttachment, parentView: parentView, textLayoutManager: textLayoutManager, location: location)
+
+        self.messageTextView = parentView?.superview as? MXKMessageTextView
+    }
 
     override func loadView() {
         super.loadView()
@@ -38,13 +47,14 @@ import UIKit
 
         let mainSession = AppDelegate.theDelegate().mxSessions.first as? MXSession
 
-        view = PillAttachmentView(frame: CGRect(origin: .zero, size: Self.size(forDisplayText: pillData.displayText,
-                                                                               andFont: pillData.font)),
-                                  sizes: Self.pillAttachmentViewSizes,
-                                  theme: ThemeService.shared().theme,
-                                  mediaManager: mainSession?.mediaManager,
-                                  andPillData: pillData)
-        view?.alpha = pillData.alpha
+        let pillView = PillAttachmentView(frame: CGRect(origin: .zero, size: Self.size(forDisplayText: pillData.displayText,
+                                                                                       andFont: pillData.font)),
+                                          sizes: Self.pillAttachmentViewSizes,
+                                          theme: ThemeService.shared().theme,
+                                          mediaManager: mainSession?.mediaManager,
+                                          andPillData: pillData)
+        view = pillView
+        messageTextView?.registerPillView(pillView)
     }
 }
 

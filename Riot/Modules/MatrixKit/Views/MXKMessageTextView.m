@@ -20,6 +20,7 @@
 @interface MXKMessageTextView()
 
 @property (nonatomic, readwrite) CGPoint lastHitTestLocation;
+@property (nonatomic) NSArray *pillViews;
 
 @end
 
@@ -52,6 +53,42 @@
     }
     
     return [self isThereALinkNearLocation:point];
+}
+
+#pragma mark - Pills Flushing
+
+- (void)setText:(NSString *)text
+{
+    if (@available(iOS 15.0, *)) {
+        [self flushPills];
+    }
+    [super setText:text];
+}
+
+- (void)setAttributedText:(NSAttributedString *)attributedText
+{
+    if (@available(iOS 15.0, *)) {
+        [self flushPills];
+    }
+    [super setAttributedText:attributedText];
+}
+
+- (void)registerPillView:(UIView *)pillView
+{
+    NSMutableArray *pills = [NSMutableArray arrayWithArray:self.pillViews];
+    [pills addObject:pillView];
+    self.pillViews = pills;
+}
+
+/// Flushes all previously registered Pills from their hierarchy.
+- (void)flushPills API_AVAILABLE(ios(15))
+{
+    for (UIView* view in self.pillViews)
+    {
+        view.alpha = 0.0;
+        [view removeFromSuperview];
+    }
+    self.pillViews = [NSArray new];
 }
 
 @end

@@ -26,6 +26,14 @@ NS_ASSUME_NONNULL_BEGIN
 // The last hit test location received by the view.
 @property (nonatomic, readonly) CGPoint lastHitTestLocation;
 
+
+/// Register a view that has been added as a pill to this text view.
+/// This is needed in order to flush pills that are not always removed properly by the system.
+/// All registered views will be manually removed from hierarchy on attributedText or text updates.
+///
+/// @param pillView pill view to register
+- (void)registerPillView:(UIView *)pillView API_AVAILABLE(ios(15));
+
 @end
 
 NS_ASSUME_NONNULL_END
