@@ -20,7 +20,7 @@
 @interface MXKMessageTextView()
 
 @property (nonatomic, readwrite) CGPoint lastHitTestLocation;
-@property (nonatomic) NSPointerArray *pillViews;
+@property (nonatomic) NSHashTable *pillViews;
 
 @end
 
@@ -75,7 +75,7 @@
 
 - (void)registerPillView:(UIView *)pillView
 {
-    [self.pillViews addPointer:(__bridge void * _Nullable)(pillView)];
+    [self.pillViews addObject:pillView];
 }
 
 /// Flushes all previously registered Pills from their hierarchy.
@@ -83,13 +83,10 @@
 {
     for (UIView* view in self.pillViews)
     {
-        if (view)
-        {
-            view.alpha = 0.0;
-            [view removeFromSuperview];
-        }
+        view.alpha = 0.0;
+        [view removeFromSuperview];
     }
-    self.pillViews = [NSPointerArray weakObjectsPointerArray];
+    self.pillViews = [NSHashTable weakObjectsHashTable];
 }
 
 @end
