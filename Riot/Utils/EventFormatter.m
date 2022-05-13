@@ -470,9 +470,10 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         self.emojiOnlyTextFont = [UIFont systemFontOfSize:48];
         self.editionMentionTextFont = [UIFont systemFontOfSize:12];
         
-        // Handle space room type, enables to show space in room list
+        // Handle space and video room types, enables their display in the room list
         defaultRoomSummaryUpdater.showRoomTypeStrings = @[
-            MXRoomTypeStringSpace
+            MXRoomTypeStringSpace,
+            MXRoomTypeStringVideo
         ];
     }
     return self;
