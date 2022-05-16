@@ -48,6 +48,7 @@
     self.lastEventDescription.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.lastEventDate.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.missedNotifAndUnreadBadgeLabel.textColor = ThemeService.shared.theme.baseTextPrimaryColor;
+    self.presenceIndicatorView.borderColor = ThemeService.shared.theme.backgroundColor;
     
     self.roomAvatar.defaultBackgroundColor = [UIColor clearColor];
 }
@@ -128,16 +129,27 @@
                                             roomId:roomCellData.roomIdentifier
                                        displayName:roomCellData.roomDisplayname
                                       mediaManager:roomCellData.mxSession.mediaManager];
-        
-        // Presence indicator
-        self.presenceIndicatorView.borderColor = ThemeService.shared.theme.backgroundColor;
-        self.presenceIndicatorView.presence = roomCellData.presence;
-        self.presenceIndicatorView.hidden = roomCellData.presence == MXPresenceUnknown;
+
+        if (roomCellData.directUserId)
+        {
+            [self.presenceIndicatorView configureWithUserId:roomCellData.directUserId presence:roomCellData.presence];
+        }
+        else
+        {
+            [self.presenceIndicatorView stopListeningPresenceUpdates];
+        }
     }
     else
     {
         self.lastEventDescription.text = @"";
     }
+}
+
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+
+    [self.presenceIndicatorView stopListeningPresenceUpdates];
 }
 
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth

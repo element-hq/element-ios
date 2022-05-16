@@ -37,9 +37,9 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     private var loadingIndicator: UserIndicator?
     
     /// The authentication service used for the registration.
-    var authenticationService: AuthenticationService { parameters.authenticationService }
+    private var authenticationService: AuthenticationService { parameters.authenticationService }
     /// The wizard used to handle the registration flow.
-    var registrationWizard: RegistrationWizard { parameters.registrationWizard }
+    private var registrationWizard: RegistrationWizard { parameters.registrationWizard }
     
     private var currentTask: Task<Void, Error>? {
         willSet {

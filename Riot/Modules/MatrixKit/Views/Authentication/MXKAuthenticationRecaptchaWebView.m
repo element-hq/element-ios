@@ -16,10 +16,12 @@
  */
 
 #import "MXKAuthenticationRecaptchaWebView.h"
+#import "ThemeService.h"
 
 NSString *kMXKRecaptchaHTMLString = @"<html> \
 <head> \
 <meta name='viewport' content='initial-scale=1.0' /> \
+<style>@media (prefers-color-scheme: dark) { body { background-color: #15191E; } }</style> \
 <script type=\"text/javascript\"> \
 var verifyCallback = function(response) { \
     /* Generic method to make a bridge between JS and the WKWebView*/ \
@@ -33,7 +35,8 @@ var verifyCallback = function(response) { \
 var onloadCallback = function() { \
     grecaptcha.render('recaptcha_widget', { \
         'sitekey' : '%@', \
-        'callback': verifyCallback \
+        'callback': verifyCallback, \
+        'theme': '%@' \
     }); \
 }; \
 </script> \
@@ -78,7 +81,9 @@ var onloadCallback = function() { \
     [self addSubview:activityIndicator];
     [activityIndicator startAnimating];
     
-    NSString *htmlString = [NSString stringWithFormat:kMXKRecaptchaHTMLString, siteKey];
+    NSString *theme = ThemeService.shared.isCurrentThemeDark ? @"dark" : @"light";
+    
+    NSString *htmlString = [NSString stringWithFormat:kMXKRecaptchaHTMLString, siteKey, theme];
     
     [self loadHTMLString:htmlString baseURL:[NSURL URLWithString:homeServer]];
 }

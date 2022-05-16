@@ -52,6 +52,8 @@
 "authentication_terms_title" = "Privacy policy";
 "authentication_terms_message" = "Please read through T&C. You must accept in order to continue.";
 
+"authentication_recaptcha_message" = "This server would like to make sure you are not a robot";
+
 // MARK: Spaces WIP
 "spaces_feature_not_available" = "This feature isn't available here. For now, you can do this with %@ on your computer.";
 

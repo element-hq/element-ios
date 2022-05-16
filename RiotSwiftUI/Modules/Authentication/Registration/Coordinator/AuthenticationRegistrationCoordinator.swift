@@ -28,8 +28,6 @@ struct AuthenticationRegistrationCoordinatorParameters {
 }
 
 enum AuthenticationRegistrationCoordinatorResult {
-    /// The user would like to select another server.
-    case selectServer
     /// The screen completed with the associated registration result.
     case completed(RegistrationResult)
 }
@@ -63,7 +61,7 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    @MainActor var completion: ((AuthenticationRegistrationCoordinatorResult) -> Void)?
+    @MainActor var callback: ((AuthenticationRegistrationCoordinatorResult) -> Void)?
     
     // MARK: - Setup
     
@@ -87,23 +85,8 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
     
     // MARK: - Public
     func start() {
-        Task {
-            await MainActor.run {
-                MXLog.debug("[AuthenticationRegistrationCoordinator] did start.")
-                authenticationRegistrationViewModel.completion = { [weak self] result in
-                    guard let self = self else { return }
-                    MXLog.debug("[AuthenticationRegistrationCoordinator] AuthenticationRegistrationViewModel did complete with result: \(result).")
-                    switch result {
-                    case .selectServer:
-                        self.presentServerSelectionScreen()
-                    case.validateUsername(let username):
-                        self.validateUsername(username)
-                    case .createAccount(let username, let password):
-                        self.createAccount(username: username, password: password)
-                    }
-                }
-            }
-        }
+        MXLog.debug("[AuthenticationRegistrationCoordinator] did start.")
+        Task { await setupViewModel() }
     }
     
     func toPresentable() -> UIViewController {
@@ -111,6 +94,22 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
     }
     
     // MARK: - Private
+    
+    /// Set up the view model. This method is extracted from `start()` so it can run on the `MainActor`.
+    @MainActor private func setupViewModel() {
+        authenticationRegistrationViewModel.callback = { [weak self] result in
+            guard let self = self else { return }
+            MXLog.debug("[AuthenticationRegistrationCoordinator] AuthenticationRegistrationViewModel did complete with result: \(result).")
+            switch result {
+            case .selectServer:
+                self.presentServerSelectionScreen()
+            case.validateUsername(let username):
+                self.validateUsername(username)
+            case .createAccount(let username, let password):
+                self.createAccount(username: username, password: password)
+            }
+        }
+    }
     
     /// Show a blocking activity indicator whilst saving.
     @MainActor private func startLoading(label: String? = nil) {
@@ -160,7 +159,7 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
                 let result = try await registrationWizard.createAccount(username: username, password: password, initialDeviceDisplayName: deviceDisplayName)
                 
                 guard !Task.isCancelled else { return }
-                completion?(.completed(result))
+                callback?(.completed(result))
                 
                 self?.stopLoading()
             } catch {
@@ -211,7 +210,7 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
         let parameters = AuthenticationServerSelectionCoordinatorParameters(authenticationService: authenticationService,
                                                                             hasModalPresentation: true)
         let coordinator = AuthenticationServerSelectionCoordinator(parameters: parameters)
-        coordinator.completion = { [weak self, weak coordinator] result in
+        coordinator.callback = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
             self.serverSelectionCoordinator(coordinator, didCompleteWith: result)
         }

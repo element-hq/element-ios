@@ -55,6 +55,12 @@ class RoomInputToolbarTextView: UITextView {
             updateUI()
         }
     }
+
+    override var attributedText: NSAttributedString! {
+        didSet {
+            updateUI()
+        }
+    }
     
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
@@ -89,7 +95,7 @@ class RoomInputToolbarTextView: UITextView {
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         
-        guard text.isEmpty, let placeholder = placeholder else {
+        guard attributedText.length == 0, let placeholder = placeholder else {
             return
         }
         
