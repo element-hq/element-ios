@@ -117,6 +117,11 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     self.textView.tintColor = ThemeService.shared.theme.tintColor;
     self.textView.placeholderColor = ThemeService.shared.theme.textTertiaryColor;
     self.textView.showsVerticalScrollIndicator = NO;
+
+    // Trigger textView redraw using proper color/font.
+    NSAttributedString *newText = self.textView.attributedText;
+    self.textView.attributedText = nil;
+    self.textView.attributedText = newText;
     
     self.textView.keyboardAppearance = ThemeService.shared.theme.keyboardAppearance;
     if (self.textView.isFirstResponder)
@@ -162,6 +167,15 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
 - (void)setAttributedTextMessage:(NSAttributedString *)attributedTextMessage
 {
+    if (attributedTextMessage)
+    {
+        NSMutableAttributedString *mutableTextMessage = [[NSMutableAttributedString alloc] initWithAttributedString:attributedTextMessage];
+        [mutableTextMessage addAttributes:@{ NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor,
+                                             NSFontAttributeName: self.textDefaultFont }
+                                    range:NSMakeRange(0, mutableTextMessage.length)];
+        attributedTextMessage = mutableTextMessage;
+    }
+
     self.textView.attributedText = attributedTextMessage;
     [self updateUIWithAttributedTextMessage:attributedTextMessage animated:YES];
     [self textViewDidChange:self.textView];

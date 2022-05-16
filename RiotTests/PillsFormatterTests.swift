@@ -80,7 +80,7 @@ private class FakeMXSession: MXSession {
     }
 
     override var myUserId: String! {
-        return Inputs.aliceMember.userId
+        return mockMyUserId
     }
 }
 
