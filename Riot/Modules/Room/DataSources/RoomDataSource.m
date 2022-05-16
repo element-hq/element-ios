@@ -1203,11 +1203,11 @@ const CGFloat kTypingCellHeight = 24;
         return;
     }
     
-    BOOL isUserSharingIsLocation = [locationService isCurrentUserSharingIsLocationInRoomWithId:self.roomId];
+    BOOL isUserSharingIsLocation = [locationService isCurrentUserSharingActiveLocationInRoomWithId:self.roomId];
     
     if (isUserSharingIsLocation != self.isCurrentUserSharingIsLocation)
     {
-        self.isCurrentUserSharingIsLocation = [locationService isCurrentUserSharingIsLocationInRoomWithId:self.roomId];
+        self.isCurrentUserSharingIsLocation = [locationService isCurrentUserSharingActiveLocationInRoomWithId:self.roomId];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.roomDataSourceDelegate roomDataSourceDidUpdateCurrentUserSharingLocationStatus:self];
