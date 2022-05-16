@@ -21,16 +21,6 @@ protocol LocationManagerDelegate: AnyObject {
     func locationManager(_ manager: LocationManager, didUpdateLocation location: CLLocation)
 }
 
-typealias LocationAuthorizationHandler = (_ authorizationStatus: LocationAuthorizationStatus) -> Void
-
-/// Location authorization status
-enum LocationAuthorizationStatus {
-    case unknown
-    case denied
-    case authorizedInForeground
-    case authorizedAlways
-}
-
 /// Location accuracy
 enum LocationManagerAccuracy {
     case full

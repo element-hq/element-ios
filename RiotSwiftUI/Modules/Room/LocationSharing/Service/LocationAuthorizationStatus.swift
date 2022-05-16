@@ -1,5 +1,5 @@
 // 
-// Copyright 2021 New Vector Ltd
+// Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,14 +15,19 @@
 //
 
 import Foundation
-import Combine
-import CoreLocation
 
-/// Location authorization request handler
-typealias LocationAuthorizationHandler = (_ authorizationStatus: LocationAuthorizationStatus) -> Void
-
-protocol LocationSharingServiceProtocol {
-        
-    /// Request location authorization
-    func requestAuthorization(_ handler: @escaping LocationAuthorizationHandler)
+/// Location authorization status
+enum LocationAuthorizationStatus {
+    
+    /// Location status unknown
+    case unknown
+    
+    /// Location access is denied
+    case denied
+    
+    /// Location only authorized in foreground
+    case authorizedInForeground
+    
+    /// Location only authorized in foreground and background
+    case authorizedAlways
 }
