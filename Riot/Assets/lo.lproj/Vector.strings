@@ -1877,3 +1877,642 @@
 "event_formatter_jitsi_widget_removed" = "ການປະຊຸມ VoIP ຖືກລຶບອອກໂດຍ %@";
 "event_formatter_jitsi_widget_added" = "ກອງປະຊຸມ VoIP ເພີ່ມໂດຍ %@";
 "room_details_promote_room_suggest_title" = "ແນະນໍາໃຫ້ພື້ນທີ່ຂອງສະມາຊິກ";
+"call_holded" = "ທ່ານໄດ້ຮັບການໂທ";
+"call_remote_holded" = "%@ ຮັບສາຍ";
+"call_invite_expired" = "ການໂທເຊີນໝົດອາຍຸແລ້ວ";
+"incoming_voice_call" = "ສາຍໂທເຂົ້າ";
+"incoming_video_call" = "ໂທວິດີໂອເຂົ້າມາ";
+"call_ended" = "ສິ້ນສຸດການໂທ";
+"call_ringing" = "ກຳລັງດັງ…";
+
+// Settings keys
+
+// call string
+"call_connecting" = "ກຳລັງເຊື່ອມຕໍ່…";
+
+// gcm section
+"settings_config_identity_server" = "ເຊີບເວີ: %@";
+"notification_settings_notify_all_other" = "ແຈ້ງເຕືອນສຳລັບຂໍ້ຄວາມ/ຫ້ອງອື່ນໆທັງໝົດ";
+"notification_settings_by_default" = "ໂດຍຄ່າເລີ່ມຕົ້ນ...";
+"notification_settings_suppress_from_bots" = "ລະງັບການແຈ້ງເຕືອນຈາກ bots";
+"notification_settings_receive_a_call" = "ແຈ້ງເຕືອນຂ້ອຍເມື່ອຂ້ອຍໄດ້ຮັບສາຍ";
+"notification_settings_people_join_leave_rooms" = "ແຈ້ງເຕືອນຂ້ອຍເມື່ອມີຄົນເຂົ້າຮ່ວມ ຫຼື ອອກຈາກຫ້ອງ";
+"notification_settings_invite_to_a_new_room" = "ແຈ້ງເຕືອນຂ້ອຍເມື່ອຂ້ອຍຖືກເຊີນໄປຫ້ອງໃໝ່";
+"notification_settings_just_sent_to_me" = "ແຈ້ງເຕືອນຂ້ອຍດ້ວຍສຽງກ່ຽວກັບຂໍ້ຄວາມທີ່ສົ່ງຫາຂ້ອຍ";
+"notification_settings_contain_my_display_name" = "ແຈ້ງເຕືອນຂ້ອຍດ້ວຍສຽງກ່ຽວກັບຂໍ້ຄວາມທີ່ມີຊື່ສະແດງຂອງຂ້ອຍ";
+"notification_settings_contain_my_user_name" = "ແຈ້ງເຕືອນຂ້ອຍດ້ວຍສຽງກ່ຽວກັບຂໍ້ຄວາມທີ່ມີຊື່ຜູ້ໃຊ້ຂອງຂ້ອຍ";
+"notification_settings_other_alerts" = "ການແຈ້ງເຕືອນອື່ນໆ";
+"notification_settings_select_room" = "ເລືອກຫ້ອງ";
+"notification_settings_sender_hint" = "@user:domain.com";
+"notification_settings_per_sender_notifications" = "ການແຈ້ງເຕືອນຕໍ່ຜູ້ສົ່ງ";
+"notification_settings_per_room_notifications" = "ການແຈ້ງເຕືອນຕໍ່ຫ້ອງ";
+"notification_settings_custom_sound" = "ສຽງທີ່ກໍາຫນົດເອງ";
+"notification_settings_highlight" = "ຈຸດເດັ່ນ";
+"notification_settings_word_to_match" = "ຄໍາທີ່ກົງກັນ";
+"notification_settings_never_notify" = "ບໍ່ແຈ້ງເຕືອນ";
+"notification_settings_always_notify" = "ແຈ້ງເຕືອນທຸກຄັ້ງ";
+"notification_settings_per_word_info" = "ຄໍາຕ່າງໆກົງກັນກັບຕົວພິມນ້ອຍ ແລະ ຕົວພິມໃຫຍ່, ແລະ ອາດຈະລວມທັງ * wildcard. ດັ່ງນັ້ນ:\nfoo ກົງກັບສະຕຣິງ foo ອ້ອມຮອບດ້ວຍຕົວແບ່ງຄຳ (ເຊັ່ນ: ເຄື່ອງໝາຍວັກຕອນ ແລະ ຍະຫວ່າງ ຫຼື ຈຸດເລີ່ມຕົ້ນ/ທ້າຍແຖວ).\nfoo* ກົງກັບຄຳສັບໃດນຶ່ງທີ່ເລີ່ມຕົ້ນ foo.\n*foo* ກົງກັບຄໍາສັບໃດຫນຶ່ງທີ່ມີ 3 ຕົວອັກສອນ foo.";
+"notification_settings_per_word_notifications" = "ການແຈ້ງເຕືອນຕໍ່ຄໍາຕ່າງໆ";
+"notification_settings_global_info" = "ການຕັ້ງຄ່າການແຈ້ງເຕື່ອນໄດ້ຖືກບັນທຶກໄວ້ໃນບັນຊີຜູ້ໃຊ້ຂອງທ່ານ ແລະ ຖືກແບ່ງປັນລະຫວ່າງລູກຄ້າທັງຫມົດທີ່ສະຫນັບສະຫນູນເຂົາເຈົ້າ (ລວມທັງການແຈ້ງເຕືອນ desktop).\n\nກົດລະບຽບຖືກນໍາໃຊ້ໃນຄໍາສັ່ງ; ກົດລະບຽບທໍາອິດທີ່ກົງກັນທີ່ກໍານົດຜົນໄດ້ຮັບສໍາລັບຂໍ້ຄວາມ.\nດັ່ງນັ້ນ: ການແຈ້ງເຕືອນຕໍ່ຄໍາແມ່ນມີຄວາມສໍາຄັນຫຼາຍກ່ວາການແຈ້ງເຕືອນຕໍ່ຫ້ອງທີ່ມີຄວາມສໍາຄັນກວ່າການແຈ້ງເຕືອນຕໍ່ຜູ້ສົ່ງ.\nສໍາລັບຫຼາຍກົດລະບຽບຂອງປະເພດດຽວກັນ, ອັນທໍາອິດໃນບັນຊີລາຍຊື່ທີ່ກົງກັນແມ່ນມີຄວາມສໍາຄັນ.";
+"notification_settings_enable_notifications_warning" = "ການແຈ້ງເຕືອນທັງໝົດຖືກປິດນຳໃຊ້ໃນທຸກອຸປະກອນ.";
+"notification_settings_enable_notifications" = "ເປີດໃຊ້ການແຈ້ງເຕືອນ";
+
+// Notification settings screen
+"notification_settings_disable_all" = "ປິດການແຈ້ງເຕືອນທັງໝົດ";
+"settings_title_notifications" = "ການແຈ້ງເຕືອນ";
+
+// Settings screen
+"settings_title_config" = "ການກຳນົດຄ່າ";
+
+// members list Screen
+
+// accounts list Screen
+
+// image size selection
+
+// invitation members list Screen
+
+// room creation dialog Screen
+
+// room info dialog Screen
+
+// room details dialog screen
+
+// contacts list screen
+"invitation_message" = "ຂ້ອຍຢາກສົນທະນາກັບທ່ານດ້ວຍ matrix. ກະລຸນາເຂົ້າເບິ່ງເວັບໄຊທ໌ http://matrix.org ເພື່ອເບິ່ງຂໍ້ມູນເພີ່ມເຕີມ.";
+"login_error_must_start_http" = "URL ຕ້ອງເລີ່ມຕົ້ນດ້ວຍ http[s]://";
+
+// Login Screen
+"login_error_already_logged_in" = "ເຂົ້າສູ່ລະບົບແລ້ວ";
+"message_unsaved_changes" = "ມີການປ່ຽນແປງທີ່ບໍ່ໄດ້ບັນທຶກໄວ້. ການອອກໄປພວກມັນຈະຖືກຍົກເລີກ.";
+"unban" = "ຍົກເລີກການຫ້າມ";
+"ban" = "ຫ້າມ";
+"kick" = "ເອົາອອກຈາກການສົນທະນາ";
+"num_members_other" = "%@ ຜູ້ໃຊ້";
+"num_members_one" = "%@ ຜູ້ໃຊ້";
+"membership_ban" = "ຖືກຫ້າມ";
+"membership_leave" = "ເບື້ອງຊ້າຍ";
+"membership_invite" = "ເຊີນແລ້ວ";
+"create_account" = "ສ້າງບັນຊີ";
+"login" = "ເຂົ້າສູ່ລະບົບ";
+"create_room" = "ສ້າງຫ້ອງ";
+
+// actions
+"action_logout" = "ອກຈາກລະບົບ";
+"delete" = "ລຶບ";
+"share" = "ແບ່ງປັນ";
+"redact" = "ລຶບອອກ";
+"resend" = "ສົ່ງໃຫມ່";
+"copy_button_name" = "ສຳເນົາ";
+
+// Room Screen
+
+// general errors
+
+// Home Screen
+
+// Last seen time
+
+// call events
+
+/* -*-
+   Automatic localization for en
+
+   The following key/value pairs were extracted from the android i18n file:
+    /console/src/main/res/values/strings.xml.
+*/
+
+
+// titles
+
+// button names
+"send" = "ສົ່ງ";
+"notice_room_history_visible_to_members_from_joined_point_by_you_for_dm" = "ທ່ານໄດ້ເຮັດໃຫ້ທຸກຄົນເຫັນຂໍ້ຄວາມໃນອະນາຄົດ, ເມື່ອທີ່ເຂົາເຈົ້າໄດ້ເຂົ້າຮ່ວມ.";
+"notice_room_history_visible_to_members_from_joined_point_by_you" = "ທ່ານໄດ້ເຮັດໃຫ້ປະຫວັດຫ້ອງໃນອະນາຄົດເຫັນໄດ້ໂດຍສະມາຊິກຫ້ອງທັງໝົດ, ຈາກຈຸດທີ່ເຂົາເຈົ້າເຂົ້າຮ່ວມ.";
+"notice_room_history_visible_to_members_from_invited_point_by_you_for_dm" = "ທ່ານໄດ້ເຮັດໃຫ້ທຸກຄົນເຫັນຂໍ້ຄວາມໃນອະນາຄົດ, ເມື່ອເຂົາເຈົ້າໄດ້ຮັບເຊີນ.";
+"notice_room_history_visible_to_members_from_invited_point_by_you" = "ທ່ານໄດ້ເຮັດໃຫ້ປະຫວັດຫ້ອງໃນອະນາຄົດເຫັນໄດ້ໂດຍສະມາຊິກຫ້ອງທັງໝົດ, ຈາກຈຸດທີ່ເຂົາເຈົ້າໄດ້ຖືກເຊີນ.";
+"notice_room_history_visible_to_members_by_you_for_dm" = "ທ່ານໄດ້ເຮັດໃຫ້ຂໍ້ຄວາມໃນອະນາຄົດເຫັນໄດ້ໂດຍສະມາຊິກຫ້ອງທັງໝົດ.";
+"notice_room_history_visible_to_members_by_you" = "ທ່ານໄດ້ສ້າງປະຫວັດຫ້ອງໃນອະນາຄົດໃຫ້ສະມາຊິກຫ້ອງທຸກຄົນເຫັນໄດ້.";
+"notice_room_history_visible_to_anyone_by_you" = "ທ່ານໄດ້ສ້າງປະຫວັດຫ້ອງໃນອະນາຄົດໃຫ້ທຸກຄົນເຫັນໄດ້.";
+"notice_redaction_by_you" = "ທ່ານໄດ້ແກ້ໄຂເຫດການໃດໜຶ່ງ (id: %@)";
+"notice_encryption_enabled_unknown_algorithm_by_you" = "ທ່ານໄດ້ເປີດການເຂົ້າລະຫັດແຕ່ຕົ້ນທາງຮອດປາຍທາງ (ລະບົບທີ່ບໍ່ສາມາດຮັບຮູ້ໄດ້ %@).";
+"notice_encryption_enabled_ok_by_you" = "ທ່ານໄດ້ເປີດການເຂົ້າລະຫັດແຕ່ຕົ້ນທາງຮອດປາຍທາງ.";
+"notice_room_created_by_you_for_dm" = "ທ່ານເຂົ້າຮ່ວມ.";
+"notice_room_created_by_you" = "ທ່ານສ້າງ ແລະກຳນົດຄ່າຫ້ອງ.";
+"notice_profile_change_redacted_by_you" = "ທ່ານໄດ້ອັບເດດໂປຣໄຟລ໌ຂອງທ່ານ %@";
+"notice_event_redacted_by_you" = " ໂດຍທ່ານ";
+"notice_room_topic_removed_by_you" = "ທ່ານໄດ້ລຶບຫົວຂໍ້ອອກແລ້ວ";
+"notice_room_name_removed_by_you_for_dm" = "ທ່ານໄດ້ລຶບຊື່ອອກແລ້ວ";
+"notice_room_name_removed_by_you" = "ທ່ານໄດ້ລຶບຊື່ຫ້ອງອອກ";
+"notice_conference_call_request_by_you" = "ທ່ານໄດ້ຮ້ອງຂໍໃຫ້ມີກອງປະຊຸມ VoIP";
+"notice_declined_video_call_by_you" = "ທ່ານໄດ້ປະຕິເສດການໂທ";
+"notice_ended_video_call_by_you" = "ທ່ານສິ້ນສຸດການໂທ";
+"notice_answered_video_call_by_you" = "ທ່ານໄດ້ຮັບສາຍ";
+"notice_placed_video_call_by_you" = "ທ່ານໂທດ້ວຍວິດີໂອ";
+"notice_placed_voice_call_by_you" = "ທ່ານໄດ້ໂທດ້ວຍສຽງ";
+"notice_room_name_changed_by_you_for_dm" = "ທ່ານໄດ້ປ່ຽນຊື່ເປັນ %@.";
+"notice_room_name_changed_by_you" = "ທ່ານໄດ້ປ່ຽນຊື່ຫ້ອງເປັນ %@.";
+"notice_topic_changed_by_you" = "ທ່ານໄດ້ປ່ຽນຫົວຂໍ້ເປັນ \"%@\".";
+"notice_display_name_removed_by_you" = "ທ່ານລຶບຊື່ສະແດງຂອງທ່ານອອກ";
+"notice_display_name_changed_from_by_you" = "ທ່ານໄດ້ປ່ຽນຊື່ສະແດງຂອງທ່ານຈາກ %@ ເປັນ %@";
+"notice_display_name_set_by_you" = "ທ່ານຕັ້ງຊື່ສະແດງຂອງທ່ານເປັນ %@";
+"notice_avatar_url_changed_by_you" = "ທ່ານໄດ້ປ່ຽນຮູບແທນຕົວຂອງທ່ານ";
+"notice_room_withdraw_by_you" = "ທ່ານໄດ້ຖອນຄຳເຊີນຂອງ %@ ແລ້ວ";
+"notice_room_ban_by_you" = "ທ່ານໄດ້ຫ້າມ %@";
+"notice_room_unban_by_you" = "ທ່ານຍົກເລີກການຫ້າມ %@";
+"notice_room_kick_by_you" = "ທ່ານລຶບ %@ ອອກແລ້ວ";
+"notice_room_reject_by_you" = "ທ່ານໄດ້ປະຕິເສດການເຊີນ";
+"notice_room_leave_by_you" = "ເຈົ້າອອກໄປແລ້ວ";
+"notice_room_join_by_you" = "ທ່ານໄດ້ເຂົ້າຮ່ວມແລ້ວ";
+"notice_room_third_party_revoked_invite_by_you_for_dm" = "ທ່ານໄດ້ຍົກເລີກຄຳເຊີນຂອງ %@ ແລ້ວ";
+
+// E2E export
+"e2e_export_room_keys" = "ສົ່ງອອກກະແຈຫ້ອງ";
+"e2e_passphrase_enter" = "ໃສ່ປະໂຫຍກລະຫັດຜ່ານ";
+"e2e_import" = "ນໍາເຂົ້າ";
+"e2e_import_prompt" = "ຂະບວນການນີ້ອະນຸຍາດໃຫ້ທ່ານນໍາເຂົ້າລະຫັດທີ່ທ່ານໄດ້ສົ່ງອອກຜ່ານມາຈາກລູກຄ້າ Matrix ອື່ນ. ຈາກນັ້ນທ່ານຈະສາມາດຖອດລະຫັດຂໍ້ຄວາມໃດໆທີ່ລູກຄ້າອື່ນສາມາດຖອດລະຫັດໄດ້.\nໄຟລ໌ສົ່ງອອກຖືກປ້ອງກັນດ້ວຍປະໂຫຍກລະຫັດຜ່ານ. ທ່ານຄວນໃສ່ລະຫັດຜ່ານທີ່ນີ້, ເພື່ອຖອດລະຫັດໄຟລ໌.";
+
+// Attachment
+"attachment_size_prompt" = "ທ່ານຕ້ອງການສົ່ງເປັນ:";
+"room_event_encryption_verify_message" = "ເພື່ອກວດສອບວ່າລະບົບນີ້ສາມາດເຊື່ອຖືໄດ້, ກະລຸນາຕິດຕໍ່ເຈົ້າຂອງໂດຍໃຊ້ວິທີອື່ນ (ເຊັ່ນ: ດ້ວຍຕົນເອງ ຫຼືທາງໂທລະສັບ) ແລະຖາມເຂົາເຈົ້າວ່າກະແຈທີ່ເຂົາເຈົ້າເຫັນຢູ່ໃນການຕັ້ງຄ່າຜູ້ໃຊ້ຂອງເຂົາເຈົ້າສໍາລັບລະບົບນີ້ກົງກັບກະແຈຂ້າງລຸ່ມນີ້ບໍ:\n\nຊື່ລະບົບ: %@\nIDລະບົບ: %@\nກະແຈລະບົບ: %@\n\nຖ້າມັນກົງກັນ, ກົດປຸ່ມຢືນຢັນຂ້າງລຸ່ມນີ້. ຖ້າບໍ່ກົງກັນ, ຄົນອື່ນກໍາລັງຂັດຂວາງກອງປະຊຸມນີ້ແລະທ່ານອາດຈະຕ້ອງການກົດປຸ່ມບັນຊີດໍາແທນ.\n\nໃນອະນາຄົດຂະບວນການກວດສອບນີ້ຈະມີຄວາມຊັບຊ້ອນຫຼາຍຂຶ້ນ.";
+"version_check_modal_subtitle_deprecated" = "ພວກເຮົາໄດ້ເຮັດວຽກໃນການປັບປຸງ %@ ເພື່ອປະສົບການທີ່ໄວຂຶ້ນແລະງາມຫຼາຍຂຶ້ນ. ຂໍອະໄພ, iOS ເວີຊັນປັດຈຸບັນຂອງທ່ານບໍ່ເຂົ້າກັນໄດ້ກັບບາງການແກ້ໄຂເຫຼົ່ານັ້ນ ແລະບໍ່ໄດ້ຮັບການຮອງຮັບອີກຕໍ່ໄປ.\nພວກເຮົາແນະນຳໃຫ້ທ່ານຍົກລະບົບປະຕິບັດການຂອງທ່ານເພື່ອໃຊ້ %@ ຢ່າງເຕັມທີ່.";
+"notice_room_third_party_invite_by_you" = "ທ່ານໄດ້ສົ່ງຄຳເຊີນໄປຫາ %@ ເພື່ອເຂົ້າຮ່ວມຫ້ອງ";
+"notice_room_invite_you" = "%@ ເຊີນທ່ານ";
+
+// Notice Events with "You"
+"notice_room_invite_by_you" = "ທ່ານໄດ້ເຊີນ %@";
+"notice_conference_call_finished" = "ກອງປະຊຸມ VoIP ສໍາເລັດ";
+"notice_conference_call_started" = "ກອງປະຊຸມ VoIP ໄດ້ເລີ່ມຕົ້ນ";
+"notice_conference_call_request" = "%@ ຮ້ອງຂໍໃຫ້ມີກອງປະຊຸມ VoIP";
+"notice_declined_video_call" = "%@ ປະຕິເສດການໂທ";
+"notice_ended_video_call" = "%@ ວາງສາຍ";
+"notice_answered_video_call" = "%@ ຮັບສາຍ";
+"notice_placed_video_call" = "%@ ໂທວິດີໂອ";
+"notice_placed_voice_call" = "%@ ໂທອອກ";
+"notice_room_name_changed_for_dm" = "%@ ໄດ້ປ່ຽນຊື່ເປັນ %@.";
+"notice_room_name_changed" = "%@ ໄດ້ປ່ຽນຊື່ຫ້ອງເປັນ %@.";
+"notice_topic_changed" = "%@ ໄດ້ປ່ຽນຫົວຂໍ້ເປັນ \"%@\".";
+"notice_display_name_removed" = "%@ ລຶບຊື່ສະແດງຂອງເຂົາເຈົ້າອອກ";
+"notice_display_name_changed_from" = "%@ ໄດ້ປ່ຽນຊື່ສະແດງຂອງເຂົາເຈົ້າຈາກ %@ ເປັນ %@";
+"notice_display_name_set" = "%@ ຕັ້ງຊື່ສະແດງຂອງເຂົາເຈົ້າເປັນ %@";
+"notice_avatar_url_changed" = "%@ ໄດ້ປ່ຽນຮູບແທນຕົວຂອງເຂົາເຈົ້າ";
+"notice_room_reason" = ". ເຫດຜົນ: %@";
+"notice_room_withdraw" = "%@ ຖອນຄຳເຊີນຂອງ %@ ແລ້ວ";
+"notice_room_ban" = "%@ ຫ້າມ %@";
+"notice_room_unban" = "%@ ບໍ່ໄດ້ຫ້າມ %@";
+"notice_room_kick" = "%@ ຖືກລຶບອອກແລ້ວ %@";
+"notice_room_reject" = "%@ ປະຕິເສດຄຳເຊີນ";
+"notice_room_leave" = "%@ ຊ້າຍ";
+"notice_room_join" = "%@ ເຂົ້າຮ່ວມ";
+"notice_room_third_party_revoked_invite_for_dm" = "%@ ຖອນຄຳເຊີນຂອງ %@ ແລ້ວ";
+"notice_room_third_party_revoked_invite" = "%@ ຖອນຄຳເຊີນສຳລັບ %@ ເຂົ້າຮ່ວມຫ້ອງ";
+"notice_room_third_party_registered_invite" = "%@ ຍອມຮັບຄຳເຊີນສຳລັບ %@";
+"notice_room_third_party_invite_for_dm" = "%@ ເຊີນ %@";
+"notice_room_third_party_invite" = "%@ ສົ່ງຄຳເຊີນຫາ %@ ເພື່ອເຂົ້າຮ່ວມຫ້ອງ";
+
+/* -*-
+   Automatic localization for en
+
+   The following key/value pairs were extracted from the android i18n file:
+    /matrix-sdk/src/main/res/values/strings.xml.
+*/
+
+"notice_room_invite" = "%@ ເຊີນ %@";
+"language_picker_default_language" = "ຄ່າເລີ່ມຕົ້ນ (%@)";
+
+// Language picker
+"language_picker_title" = "ເລືອກພາສາ";
+
+// Country picker
+"country_picker_title" = "ເລືອກປະເທດ";
+"microphone_access_not_granted_for_voice_message" = "ຂໍ້ຄວາມສຽງຈຳເປັນຕ້ອງເຂົ້າເຖິງໄມໂຄຣໂຟນ ແຕ່ %@ ບໍ່ມີການອະນຸຍາດໃຫ້ໃຊ້ມັນ";
+"local_contacts_access_discovery_warning" = "ເພື່ອຄົ້ນຫາຜູ້ຕິດຕໍ່ທີ່ໃຊ້ Matrix ແລ້ວ, %@ ສາມາດສົ່ງທີ່ຢູ່ອີເມວ ແລະເບີໂທລະສັບໃນບັນທຶກທີ່ຢູ່ຂອງທ່ານໄປຫາເຊີບເວີ Matrix ທີ່ທ່ານເລືອກ. ບ່ອນທີ່ສະຫນັບສະຫນູນ, ຂໍ້ມູນສ່ວນຕົວຈະຖືກ hash ກ່ອນທີ່ຈະສົ່ງ - ກະລຸນາກວດເບິ່ງນະໂຍບາຍຄວາມເປັນສ່ວນຕົວຂອງເຊີບເວີຂອງທ່ານສໍາລັບລາຍລະອຽດເພີ່ມເຕີມ.";
+"local_contacts_access_discovery_warning_title" = "ການຄົ້ນພົບຜູ້ໃຊ້";
+"local_contacts_access_not_granted" = "ການຄົ້ນຫາຜູ້ໃຊ້ຈາກຜູ້ຕິດຕໍ່ໃນຕົວເຄື່ອງຈຳເປັນຕ້ອງເຂົ້າເຖິງຜູ້ຕິດຕໍ່ຂອງທ່ານ ແຕ່ %@ ບໍ່ມີການອະນຸຍາດໃຫ້ໃຊ້ມັນ";
+"microphone_access_not_granted_for_call" = "ການໂທຕ້ອງເຂົ້າເຖິງໄມໂຄຣໂຟນ ແຕ່ %@ ບໍ່ມີການອະນຸຍາດໃຫ້ໃຊ້ມັນ";
+
+// Permissions
+"camera_access_not_granted_for_call" = "ການໂທດ້ວຍວິດີໂອຕ້ອງການການເຂົ້າເຖິງກ້ອງຖ່າຍຮູບ ແຕ່ %@ ບໍ່ມີການອະນຸຍາດໃຫ້ໃຊ້ມັນ";
+"ssl_homeserver_url" = "Homeserver URL: %@";
+"user_id_placeholder" = "ຕົວຢ່າງ: @bob:homeserver";
+"network_error_not_reachable" = "ກະລຸນາກວດສອບການເຊື່ອມຕໍ່ເຊີບເວີຂອງທ່ານ";
+"power_level" = "ລະດັບພະລັງງານ";
+"default" = "ຄ່າເລີ່ມຕົ້ນ";
+"not_supported_yet" = "ບໍ່ຮອງຮັບເທື່ອ";
+"error_common_message" = "ຄວາມຜິດພາດເກີດຂຶ້ນ. ກະລຸນາລອງໃໝ່ໃນພາຍຫຼັງ.";
+"unsent" = "ຍັງບໍ່ໄດ້ສົ່ງ";
+"offline" = "ອອບໄລນ໌";
+
+// Others
+"user_id_title" = "ID ຜູ້ໃຊ້:";
+"e2e_passphrase_create" = "ສ້າງລະຫັດຜ່ານ";
+"e2e_passphrase_not_match" = "ລະຫັດຜ່ານຈະຕ້ອງກົງກັນ";
+"e2e_passphrase_too_short" = "ປະໂຫຍກລະຫັດຜ່ານສັ້ນເກີນໄປ (ຕ້ອງມີຄວາມຍາວຢ່າງໜ້ອຍ %d ຕົວອັກສອນ)";
+"e2e_passphrase_empty" = "ປະໂຫຍກລະຫັດຜ່ານຈະຕ້ອງບໍ່ຫວ່າງເປົ່າ";
+"e2e_passphrase_confirm" = "ຢືນຢັນລະຫັດຜ່ານ";
+"e2e_export" = "ສົ່ງອອກ";
+"e2e_export_prompt" = "ຂະບວນການນີ້ຊ່ວຍໃຫ້ທ່ານສາມາດສົ່ງອອກລະຫັດຂໍ້ຄວາມທີ່ທ່ານໄດ້ຮັບໃນຫ້ອງທີ່ຖືກເຂົ້າລະຫັດໄປຫາໄຟລ໌ໃນເຄື່ອງ. ຫຼັງຈາກນັ້ນທ່ານຈະສາມາດນໍາເຂົ້າໄຟລ໌ເຂົ້າໄປໃນລູກຄ້າ Matrix ອື່ນໃນອະນາຄົດ, ດັ່ງນັ້ນລູກຄ້ານັ້ນຈະສາມາດຖອດລະຫັດຂໍ້ຄວາມເຫຼົ່ານີ້ໄດ້.\nໄຟລ໌ທີ່ສົ່ງອອກຈະຊ່ວຍໃຫ້ທຸກຄົນທີ່ສາມາດອ່ານມັນຖອດລະຫັດຂໍ້ຄວາມທີ່ຖືກເຂົ້າລະຫັດໃດໆທີ່ທ່ານສາມາດເຫັນໄດ້, ດັ່ງນັ້ນທ່ານຄວນລະມັດລະວັງເພື່ອຮັກສາມັນໃຫ້ປອດໄພ.";
+"room_participants_idle" = "ຊັກຊ້າ";
+
+// E2E import
+"e2e_import_room_keys" = "ນຳເຂົ້າກະແຈຫ້ອງ";
+"format_time_d" = "ມື້";
+"format_time_m" = "ນາທີ";
+
+// Time
+"format_time_s" = "ວິນາທີ";
+"format_time_h" = "ຊົ່ວໂມງ";
+"search_searching" = "ກຳລັງຊອກຫາຢູ່...";
+
+// Groups
+
+// Search
+"search_no_results" = "ບໍ່ມີຜົນຮັບ";
+"contact_local_contacts" = "ຕິດຕໍ່ພົວພັນຕົວເຄື່ອງ";
+
+// Contacts
+"contact_mx_users" = "ຜູ້ໃຊ້ Matrix";
+"attachment_unsupported_preview_message" = "ບໍ່ຮອງຮັບໄຟລ໌ປະເພດນີ້.";
+"attachment_unsupported_preview_title" = "ບໍ່ສາມາດເບິ່ງຕົວຢ່າງໄດ້";
+"attachment_e2e_keys_import" = "ນຳເຂົ້າ...";
+"attachment_e2e_keys_file_prompt" = "ໄຟລ໌ນີ້ມີລະຫັດການເຂົ້າລະຫັດທີ່ສົ່ງອອກມາຈາກລູກຄ້າ Matrix.\nທ່ານຕ້ອງການເບິ່ງເນື້ອຫາຂອງໄຟລ໌ຫຼືນໍາເຂົ້າກະແຈທີ່ມັນປະກອບດ້ວຍ?";
+"attachment_multiselection_original" = "ຂະໜາດຕົວຈິງ";
+"attachment_multiselection_size_prompt" = "ທ່ານຕ້ອງການທີ່ຈະສົ່ງຮູບພາບເປັນ:";
+"attachment_cancel_upload" = "ຍົກເລີກການອັບໂຫລດບໍ?";
+"attachment_cancel_download" = "ຍົກເລີກການດາວໂຫຼດບໍ?";
+"attachment_large_with_resolution" = "ໃຫຍ່ %@ (~%@)";
+"attachment_medium_with_resolution" = "ປານກາງ %@ (~%@)";
+"attachment_small_with_resolution" = "ນ້ອຍ %@ (~%@)";
+"attachment_large" = "ໃຫຍ່ (~%@)";
+"attachment_medium" = "ປານກາງ (~%@)";
+"attachment_small" = "ນ້ອຍ (~%@)";
+"attachment_original" = "ຂະໜາດຕົວຈິງ (%@)";
+"attachment_size_prompt_message" = "ທ່ານສາມາດປິດສິ່ງນີ້ໄດ້ໂດຍການຕັ້ງຄ່າ.";
+"attachment_size_prompt_title" = "ຢືນຢັນຂະຫນາດທີ່ຈະສົ່ງ";
+"ssl_expected_existing_expl" = "ໃບຢັ້ງຢືນໄດ້ປ່ຽນຈາກອັນທີ່ເຊື່ອຖືໄດ້ຜ່ານມາ ໄດ້ກາຍມາເປັນອັນໜຶ່ງທີ່ບໍ່ໜ້າເຊື່ອຖື. ເຊີບເວີອາດຈະໄດ້ຕໍ່ອາຍຸໃບຢັ້ງຢືນ. ຕິດຕໍ່ຜູ້ເບິ່ງແຍງເຊີບເວີສໍາລັບລາຍນິ້ວມືທີ່ຄາດໄວ້.";
+"ssl_unexpected_existing_expl" = "ໃບຮັບຮອງໄດ້ປ່ຽນຈາກອັນທີ່ໜ້າເຊື່ອຖືໄດ້. ນີ້ແມ່ນຜິດປົກກະຕິຫຼາຍ. ຂໍແນະນຳໃຫ້ທ່ານຢ່າຍອມຮັບໃບຮັບຮອງໃໝ່ນີ້.";
+"ssl_could_not_verify" = "ບໍ່ສາມາດຢືນຢັນເຊີບເວີທາງໄກໄດ້.";
+"ssl_fingerprint_hash" = "ລາຍນິ້ວມື (%@):";
+"ssl_remain_offline" = "ບໍ່ສົນໃຈ";
+"ssl_logout_account" = "ອອກຈາກລະບົບ";
+
+// unrecognized SSL certificate
+"ssl_trust" = "ໄວ້ໃຈ";
+"call_transfer_to_user" = "ໂອນໄປ %@";
+"call_consulting_with_user" = "ໃຫ້ຄໍາປຶກສາກັບ %@";
+"call_video_with_user" = "ໂທວິດີໂອກັບ %@";
+"call_voice_with_user" = "ໂທດ້ວຍ %@";
+"call_more_actions_dialpad" = "ປຸ່ມກົດ";
+"call_more_actions_transfer" = "ໂອນຍ້າຍ";
+"call_more_actions_audio_use_device" = "ລຳໂພງອຸປະກອນ";
+"call_more_actions_change_audio_device" = "ປ່ຽນອຸປະກອນສຽງ";
+"call_more_actions_unhold" = "ປະຫວັດຫຍໍ້";
+"call_more_actions_hold" = "ຖືໄວ້";
+"ssl_cert_not_trust" = "ນີ້ອາດໝາຍຄວາມວ່າມີຄົນຂັດຂວາງການຮັບ-ສົ່ງຂໍ້ມູນ, ຫຼືວ່າໃບຢັ້ງຢືນໂທລະສັບຂອງທ່ານທີ່ສະໜອງໃຫ້ໂດຍເຊີບເວີທາງໄກບໍ່ໜ້າເຊື່ອຖື.";
+"ssl_cert_new_account_expl" = "ຖ້າຜູ້ເບິ່ງແຍງເຊີບເວີໄດ້ບອກວ່າເປັນແບບນີ້, ກວດໃຫ້ແນ່ໃຈວ່າລາຍນິ້ວມືຂ້າງລຸ່ມນີ້ກົງກັບລາຍນິ້ວມືທີ່ເຂົາເຈົ້າສະໜອງໃຫ້ມາ.";
+"room_member_power_level_prompt" = "ທ່ານຈະບໍ່ສາມາດຍົກເລີກການປ່ຽນແປງນີ້ໄດ້ເນື່ອງຈາກທ່ານກໍາລັງສົ່ງເສີມຜູ້ໃຊ້ໃຫ້ມີລະດັບພະລັງງານດຽວກັນກັບຕົວທ່ານເອງ.\nທ່ານແນ່ໃຈບໍ່?";
+
+// Room members
+"room_member_ignore_prompt" = "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການເຊື່ອງຂໍ້ຄວາມທັງໝົດຈາກຜູ້ໃຊ້ນີ້?";
+"message_reply_to_message_to_reply_to_prefix" = "ໃນການຕອບກັບ";
+"message_reply_to_sender_sent_their_location" = "ໄດ້ແບ່ງປັນສະຖານທີ່ຂອງພວກເຂົາ.";
+"message_reply_to_sender_sent_a_file" = "ສົ່ງໄຟລ໌.";
+"message_reply_to_sender_sent_a_voice_message" = "ສົ່ງຂໍ້ຄວາມສຽງ.";
+"message_reply_to_sender_sent_an_audio_file" = "ສົ່ງໄຟລ໌ສຽງ.";
+"message_reply_to_sender_sent_a_video" = "ສົ່ງວິດີໂອ.";
+
+// Reply to message
+"message_reply_to_sender_sent_an_image" = "ສົ່ງຮູບ.";
+"room_no_conference_call_in_encrypted_rooms" = "ບໍ່ຮອງຮັບການໂທປະຊຸມຢູ່ໃນຫ້ອງທີ່ເຂົ້າລະຫັດໄວ້";
+"room_no_power_to_create_conference_call" = "ທ່ານຕ້ອງການການອະນຸຍາດເພື່ອເຊີນໃນການເລີ່ມກອງປະຊຸມຢູ່ໃນຫ້ອງນີ້";
+"room_left_for_dm" = "ເຈົ້າອອກໄປແລ້ວ";
+"room_left" = "ເຈົ້າອອກຈາກຫ້ອງ";
+"room_error_timeline_event_not_found" = "ແອັບພລິເຄຊັນກຳລັງພະຍາຍາມໂຫຼດຈຸດສະເພາະໃນທາມລາຍຂອງຫ້ອງນີ້ ແຕ່ຫາບໍ່ເຫັນ";
+"room_error_timeline_event_not_found_title" = "ໂຫຼດຕໍາແໜ່ງທາມລາຍບໍ່ສຳເລັດ";
+"room_error_cannot_load_timeline" = "ໂຫຼດທາມລາຍບໍ່ສຳເລັດ";
+"room_error_topic_edition_not_authorized" = "ທ່ານບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ແກ້ໄຂຫົວຂໍ້ຫ້ອງນີ້";
+"room_error_name_edition_not_authorized" = "ທ່ານບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ແກ້ໄຂຊື່ຫ້ອງນີ້";
+"room_error_join_failed_empty_room" = "ຕອນນີ້ບໍ່ສາມາດເຂົ້າຮ່ວມຫ້ອງຫວ່າງໄດ້.";
+"room_error_join_failed_title" = "ເຂົ້າຮ່ວມຫ້ອງບໍ່ສຳເລັດ";
+
+// Room
+"room_please_select" = "ກະລຸນາເລືອກຫ້ອງ";
+"room_creation_participants_placeholder" = "(ເຊັ່ນ: @bob:homeserver1; @john:homeserver2...)";
+"room_creation_participants_title" = "ຜູ້ເຂົ້າຮ່ວມ:";
+"room_creation_alias_placeholder_with_homeserver" = "(ເຊັ່ນ: #foo%@)";
+"room_creation_alias_placeholder" = "(ເຊັ່ນ: #foo:example.org)";
+"room_creation_alias_title" = "ນາມສົມມຸດຫ້ອງ:";
+"room_creation_name_placeholder" = "(ເຊັ່ນ: ກຸ່ມອາຫານທ່ຽງ)";
+
+// Room creation
+"room_creation_name_title" = "ຊື່ຫ້ອງ:";
+"account_error_push_not_allowed" = "ບໍ່ອະນຸຍາດໃຫ້ແຈ້ງເຕືອນ";
+"account_error_msisdn_wrong_description" = "ເບິ່ງຄືວ່າບໍ່ແມ່ນເບີໂທລະສັບທີ່ຖືກຕ້ອງ";
+"account_error_msisdn_wrong_title" = "ເບີໂທລະສັບບໍ່ຖືກຕ້ອງ";
+"account_error_email_wrong_description" = "ອັນນີ້ເບິ່ງຄືວ່າບໍ່ແມ່ນທີ່ຢູ່ອີເມວທີ່ຖືກຕ້ອງ";
+"account_error_email_wrong_title" = "ທີ່ຢູ່ອີເມວບໍ່ຖືກຕ້ອງ";
+"account_error_matrix_session_is_not_opened" = "ບໍ່ໄດ້ເປີດລະບົບ Matrix";
+"account_error_picture_change_failed" = "ການປ່ຽນແປງຮູບບໍ່ສໍາເລັດ";
+"account_error_display_name_change_failed" = "ການປ່ຽນຊື່ສະແດງບໍ່ສຳເລັດ";
+"account_msisdn_validation_error" = "ບໍ່ສາມາດຢັ້ງຢືນເບີໂທລະສັບໄດ້.";
+"account_msisdn_validation_message" = "ພວກເຮົາໄດ້ສົ່ງ SMS ທີ່ມີລະຫັດເປີດໃຊ້ງານ. ກະລຸນາໃສ່ລະຫັດຂ້າງລຸ່ມນີ້.";
+"account_msisdn_validation_title" = "ລໍຖ້າການຢັ້ງຢືນ";
+"account_email_validation_error" = "ບໍ່ສາມາດຢັ້ງຢືນທີ່ຢູ່ອີເມວໄດ້. ກະລຸນາກວດເບິ່ງອີເມວຂອງທ່ານ ແລະ ກົດໃສ່ການເຊື່ອມຕໍ່ທີ່ມີ. ເມື່ອອັນນີ້ສຳເລັດແລ້ວ, ກົດສືບຕໍ່";
+"account_email_validation_message" = "ກະລຸນາກວດເບິ່ງອີເມວຂອງທ່ານ ແລະ ກົດໃສ່ການເຊື່ອມຕໍ່. ເມື່ອອັນນີ້ສຳເລັດແລ້ວ, ກົດສືບຕໍ່.";
+"account_email_validation_title" = "ລໍຖ້າການຢັ້ງຢືນ";
+"account_linked_emails" = "ອີເມວທີ່ເຊື່ອມຕໍ່";
+"account_link_email" = "ເຊື່ອມຕໍ່ອີເມວ";
+
+// Account
+"account_save_changes" = "ບັນທຶກການປ່ຽນແປງ";
+"room_event_encryption_verify_ok" = "ຢືນຢັນ";
+"room_event_encryption_verify_title" = "ຢືນຢັນລະບົບ\n\n";
+"room_event_encryption_info_unblock" = "ຍົກເລີກບັນຊີດໍາ";
+"room_event_encryption_info_block" = "ບັນຊີດໍາ";
+"room_event_encryption_info_unverify" = "ຍົກເລີກການຢັ້ງຢືນ";
+"room_event_encryption_info_verify" = "ກຳລັງຢືນຢັນ...";
+"room_event_encryption_info_device_blocked" = "ບັນຊີດຳ";
+"room_event_encryption_info_device_not_verified" = "ບໍ່ມີການຍືນຍັນ";
+"room_event_encryption_info_device_verified" = "ຢັ້ງຢືນແລ້ວ";
+"room_event_encryption_info_device_fingerprint" = "Ed25519 ລາຍນິ້ວມື\n";
+"room_event_encryption_info_device_verification" = "ການຢັ້ງຢືນ\n";
+"room_event_encryption_info_device_id" = "ID\n";
+"room_event_encryption_info_device_name" = "ຊື່ສາທາລະນະ\n";
+"room_event_encryption_info_device_unknown" = "ລະບົບທີ່ບໍ່ຮູ້\n";
+"room_event_encryption_info_device" = "\nຂໍ້ມູນລະບົບຜູ້ສົ່ງ\n";
+"room_event_encryption_info_event_none" = "ບໍ່ມີ";
+"room_event_encryption_info_event_unencrypted" = "ບໍ່ໄດ້ເຂົ້າລະຫັດ";
+"room_event_encryption_info_event_decryption_error" = "ການຖອດລະຫັດຜິດພາດ\n";
+"room_event_encryption_info_event_session_id" = "ID ລະບົບ\n";
+"room_event_encryption_info_event_algorithm" = "ສູດການຄິດໄລ່\n";
+"room_event_encryption_info_event_fingerprint_key" = "ອ້າງສິດລະຫັດລາຍນິ້ວມື Ed25519\n";
+"room_event_encryption_info_event_identity_key" = "ລະຫັດປະຈໍາຕົວ Curve25519\n";
+"room_event_encryption_info_event_user_id" = "ID ຜູ້ໃຊ້\n";
+"room_event_encryption_info_event" = "ຂໍ້ມູນເຫດການ\n";
+
+// Encryption information
+"room_event_encryption_info_title" = "ຂໍ້ມູນການເຂົ້າລະຫັດແຕ່ຕົ້ນທາງເຖິງປາຍທາງ\n\n";
+"device_details_delete_prompt_message" = "ການປະຕິບັດງານນີ້ຕ້ອງການການພິສູດຢືນຢັນເພີ່ມເຕີມ.\nເພື່ອສືບຕໍ່, ກະລຸນາໃສ່ລະຫັດຜ່ານຂອງທ່ານ.";
+"device_details_delete_prompt_title" = "ການຢືນຢັນ";
+"device_details_rename_prompt_message" = "ຊື່ສາທາລະນະຂອງລະບົບແມ່ນເບິ່ງເຫັນໄດ້ຕໍ່ກັບຄົນທີ່ທ່ານຕິດຕໍ່ສື່ສານ";
+"device_details_rename_prompt_title" = "ຊື່ລະບົບ";
+"device_details_last_seen_format" = "%@ @ %@\n";
+"device_details_last_seen" = "ເຫັນຄັ້ງສຸດທ້າຍ\n";
+"device_details_identifier" = "ID\n";
+"device_details_name" = "ຊື່ສາທາລະນະ\n";
+
+// Devices
+"device_details_title" = "ຂໍ້ມູນລະບົບ\n";
+"notification_settings_room_rule_title" = "ຫ້ອງ: '%@'";
+"settings_enter_validation_token_for" = "ປ້ອນ token ການກວດສອບສໍາລັບ %@:";
+"settings_enable_push_notifications" = "ເປີດໃຊ້ການແຈ້ງເຕືອນ push";
+"settings_enable_inapp_notifications" = "ເປີດໃຊ້ການແຈ້ງເຕືອນໃນແອັບ";
+
+// Settings
+"settings" = "ການຕັ້ງຄ່າ";
+"room_displayname_all_other_members_left" = "%@ (ຊ້າຍ)";
+"room_displayname_more_than_two_members" = "%@ ແລະ%@ອື່ນໆ";
+"room_displayname_two_members" = "%@ ແລະ %@";
+
+// room display name
+"room_displayname_empty_room" = "ຫ້ອງຫວ່າງ";
+"notice_in_reply_to" = "ໃນການຕອບກັບ";
+"notice_sticker" = "ສະຕິກເກີ";
+"notice_crypto_error_unknown_inbound_session_id" = "ລະບົບຂອງຜູ້ສົ່ງບໍ່ໄດ້ສົ່ງກະແຈໃຫ້ພວກເຮົາສໍາລັບຂໍ້ຄວາມນີ້.";
+"notice_crypto_unable_to_decrypt" = "** ບໍ່ສາມາດຖອດລະຫັດໄດ້: %@ **";
+"space_feature_unavailable_information" = "ພື້ນທີ່ ເປັນວິທີໃໝ່ໃນການຈັດກຸ່ມຫ້ອງ ແລະຄົນ.\n\nພວກເຂົາຈະຢູ່ທີ່ນີ້ໃນໄວໆນີ້. ສໍາລັບຕອນນີ້, ຖ້າຫາກທ່ານເຂົ້າຮ່ວມໃນພັລດຟອມອຶ່ນ, ທ່ານຈະສາມາດເຂົ້າເຖິງຫ້ອງໃດໜຶ່ງກໍ່ໄດ້ທີ່ທ່ານເຂົ້າຮ່ວມໃນທີ່ນີ້.";
+"analytics_prompt_message_upgrade" = "ກ່ອນໜ້ານີ້ທ່ານໄດ້ຍິນຍອມທີ່ຈະແບ່ງປັນຂໍ້ມູນການນຳໃຊ້ທີ່ບໍ່ເປີດເຜີຍຊື່ກັບພວກເຮົາ. ດຽວນີ້, ເພື່ອຊ່ວຍເຂົ້າໃຈວິທີທີ່ຄົນໃຊ້ຫຼາຍອຸປະກອນ, ພວກເຮົາຈະສ້າງຕົວລະບຸແບບສຸ່ມ, ແບ່ງປັນໂດຍອຸປະກອນຂອງທ່ານ.";
+"notice_room_history_visible_to_members_from_joined_point_for_dm" = "%@ ເຮັດໃຫ້ທຸກຄົນເຫັນຂໍ້ຄວາມໃນອະນາຄົດ, ນັບແຕ່ເວລາທີ່ເຂົາເຈົ້າໄດ້ເຂົ້າຮ່ວມ.";
+"notice_room_history_visible_to_members_from_joined_point" = "%@ ເຮັດໃຫ້ປະຫວັດຫ້ອງໃນອະນາຄົດສາມາດເຫັນໄດ້ໂດຍສະມາຊິກຫ້ອງທັງໝົດ, ຈາກຈຸດທີ່ເຂົາເຈົ້າເຂົ້າຮ່ວມ.";
+"notice_room_history_visible_to_members_from_invited_point_for_dm" = "%@ ໄດ້ເຮັດໃຫ້ທຸກຄົນເຫັນຂໍ້ຄວາມໃນອະນາຄົດ, ເມື່ອເຂົາເຈົ້າໄດ້ຮັບເຊີນ.";
+"notice_room_history_visible_to_members_from_invited_point" = "%@ ເຮັດໃຫ້ປະຫວັດຫ້ອງໃນອະນາຄົດສາມາດເຫັນໄດ້ໂດຍສະມາຊິກຫ້ອງທັງໝົດ, ຈາກຈຸດທີ່ເຂົາເຈົ້າໄດ້ຖືກເຊີນ.";
+"notice_room_history_visible_to_members_for_dm" = "%@ ເຮັດໃຫ້ຂໍ້ຄວາມໃນອະນາຄົດເຫັນໄດ້ໂດຍສະມາຊິກຫ້ອງທັງໝົດ.";
+"notice_room_history_visible_to_members" = "%@ ເຮັດໃຫ້ປະຫວັດຫ້ອງໃນອະນາຄົດເຫັນໄດ້ໂດຍສະມາຊິກຫ້ອງທັງໝົດ.";
+"notice_room_history_visible_to_anyone" = "%@ ເຮັດໃຫ້ປະຫວັດສາດຫ້ອງໃນອະນາຄົດສາມາດເບິ່ງເຫັນໄດ້ໂດຍໃຜຜູ້ຫນຶ່ງ.";
+"notice_error_unformattable_event" = "** ບໍ່ສາມາດສະແດງຂໍ້ຄວາມໄດ້. ກະລຸນາລາຍງານຂໍ້ຜິດພາດ";
+"notice_error_unknown_event_type" = "ປະເພດກໍລະນີທີ່ບໍ່ຮູ້ຈັກ";
+"notice_error_unexpected_event" = "ກໍລະນີທີ່ບໍ່ຄາດຄິດ";
+"notice_error_unsupported_event" = "ກໍລະນີທີ່ບໍ່ຮອງຮັບ";
+"notice_redaction" = "%@ ແກ້ໄຂກໍລະນີໃດໜຶ່ງ (id: %@)";
+"notice_feedback" = "ກໍລະນີການຕິຊົມ (id: %@): %@";
+"notice_unsupported_attachment" = "ບໍ່ຮອງຮັບໄຟລ໌ແນບ: %@";
+"notice_invalid_attachment" = "ໄຟລ໌ແນບບໍ່ຖືກຕ້ອງ";
+"notice_file_attachment" = "ໄຟລ໌ແນບ";
+"notice_location_attachment" = "ໄຟລ໌ແນບສະຖານທີ່";
+"notice_video_attachment" = "ໄຟລ໌ແນບວິດີໂອ";
+"notice_audio_attachment" = "ໄຟລ໌ແນບສຽງ";
+"notice_image_attachment" = "ໄຟລ໌ແນບຮູບພາບ";
+"notice_encryption_enabled_unknown_algorithm" = "%1$@ ເປີດໃຊ້ການເຂົ້າລະຫັດແຕ່ຕົ້ນທາງຮອດປາຍທາງ ( algorithmບໍ່ສາມາດຮັບຮູ້ໄດ້ %2$@).";
+"notice_encryption_enabled_ok" = "%@ ໄດ້ເປີດການເຂົ້າລະຫັດແຕ່ຕົ້ນທາງຮອດປາຍທາງ.";
+"notice_encrypted_message" = "ຂໍ້ຄວາມເຂົ້າລະຫັດ";
+"notice_room_related_groups" = "ກຸ່ມທີ່ເຊື່ອມໂຍງກັບຫ້ອງນີ້ແມ່ນ: %@";
+"notice_room_aliases_for_dm" = "ນາມສົມມຸດແມ່ນ: %@";
+"notice_room_aliases" = "ນາມສົມມຸດຂອງຫ້ອງແມ່ນ: %@";
+"notice_room_power_level_event_requirement" = "ລະດັບພະລັງງານຕໍ່າສຸດທີ່ກ່ຽວຂ້ອງກັບເຫດການແມ່ນ:";
+"notice_room_power_level_acting_requirement" = "ລະດັບພະລັງງານຕໍ່າສຸດທີ່ຜູ້ໃຊ້ຕ້ອງມີກ່ອນທີ່ຈະປະຕິບັດແມ່ນ:";
+"notice_room_power_level_intro_for_dm" = "ລະດັບພະລັງງານຂອງສະມາຊິກຫ້ອງແມ່ນ:";
+"notice_room_power_level_intro" = "ລະດັບພະລັງງານຂອງສະມາຊິກຫ້ອງແມ່ນ:";
+"notice_room_join_rule_public_by_you_for_dm" = "ທ່ານໄດ້ເຮັດໃຫ້ເປັນສາທາລະນະນີ້.";
+"notice_room_join_rule_public_by_you" = "ທ່ານເຮັດໃຫ້ຫ້ອງເປັນສາທາລະນະ.";
+"notice_room_join_rule_public_for_dm" = "%@ ໄດ້ເປີດໃຫ້ສາທາລະນະຊົນ.";
+"notice_room_join_rule_public" = "%@ ເຮັດໃຫ້ຫ້ອງເປັນສາທາລະນະ.";
+"notice_room_join_rule_invite_by_you_for_dm" = "ທ່ານໄດ້ເຊີນເທົ່ານັ້ນ.";
+"notice_room_join_rule_invite_by_you" = "ທ່ານໄດ້ເຊີນຫ້ອງເທົ່ານັ້ນ.";
+"notice_room_join_rule_invite_for_dm" = "%@ເຊີນນີ້ເທົ່ານັ້ນ.";
+//  New
+"notice_room_join_rule_invite" = "%@ ໄດ້ເຊີນຫ້ອງເທົ່ານັ້ນ.";
+//  Old
+"notice_room_join_rule" = "ກົດລະບຽບການເຂົ້າຮ່ວມແມ່ນ: %@";
+"notice_room_created_for_dm" = "%@ ເຂົ້າຮ່ວມ.";
+"notice_room_created" = "%@ ສ້າງ ແລະ ປັບຄ່າຫ້ອງ.";
+"notice_profile_change_redacted" = "%@ ອັບເດດໂປຣໄຟລ໌ຂອງເຂົາເຈົ້າ %@";
+"notice_event_redacted_reason" = " [ເຫດຜົນ: %@]";
+"notice_event_redacted_by" = " ໂດຍ %@";
+"notice_event_redacted" = "<redacted%@>";
+"notice_room_topic_removed" = "%@ ລຶບຫົວຂໍ້ອອກ";
+"notice_room_name_removed_for_dm" = "%@ ລຶບຊື່ອອກແລ້ວ";
+"notice_room_name_removed" = "%@ ລຶບຊື່ຫ້ອງອອກແລ້ວ";
+
+// Events formatter
+"notice_avatar_changed_too" = "(ຕົວແທນທີ່ມີການປ່ຽນແປງເຊັ່ນດຽວກັນ)";
+"unignore" = "ບໍ່ສົນໃຈ";
+"ignore_user" = "ບໍ່ສົນໃຈຜູ້ໃຊ້";
+"ignore" = "ບໍ່ສົນໃຈ";
+"resume_call" = "ປະຫວັດຫຍໍ້";
+"end_call" = "ສິ້ນສຸດການໂທ";
+"reject_call" = "ປະຕິເສດການໂທ";
+"answer_call" = "ຮັບສາຍ";
+"show_details" = "ສະແດງລາຍລະອຽດ";
+"cancel_download" = "ຍົກເລີກການດາວໂຫຼດ";
+"cancel_upload" = "ຍົກເລີກການອັບໂຫລດ";
+"select_all" = "ເລືອກທັງຫມົດ";
+"resend_message" = "ສົ່ງຂໍ້ຄວາມຄືນໃໝ່";
+"reset_to_default" = "ປັບເປັນຄ່າເລີ່ມຕົ້ນ";
+"invite_user" = "ເຊີນຜູ້ໃຊ້ matrix";
+"capture_media" = "ຖ່າຍຮູບ/ວິດີໂອ";
+"attach_media" = "ຄັດຕິດສື່ຈາກຫ້ອງສະໝຸດ";
+"select_account" = "ເລືອກບັນຊີ";
+"mention" = "ກ່າວເຖິງ";
+"start_video_call" = "ເລີ່ມການໂທດ້ວຍວິດີໂອ";
+"start_voice_call" = "ລີ່ມໂທດ້ວຍສຽງ";
+"start_chat" = "ເລີ່ມການສົນທະນາ";
+"set_admin" = "ຕັ້ງຄ່າຜູ້ເບິ່ງແຍງລະບົບ";
+"set_moderator" = "ຕັ້ງຜູ້ຄວບຄຸມ";
+"set_default_power_level" = "ຕັ້ງຄ່າລະດັບພະລັງງານຄືນໃໝ່";
+"set_power_level" = "ຕັ້ງລະດັບພະລັງງານ";
+"submit_code" = "ສົ່ງລະຫັດ";
+"submit" = "ສົ່ງ";
+"sign_up" = "ລົງທະບຽນ";
+"dismiss" = "ປິດ";
+"discard" = "ຖິ້ມ";
+"abort" = "ຍົກເລີກ";
+"yes" = "ແມ່ນແລ້ວ";
+
+// Action
+"no" = "ບໍ່";
+"login_error_resource_limit_exceeded_contact_button" = "ຕິດຕໍ່ຜູ້ບໍລິຫານ";
+"login_error_resource_limit_exceeded_message_contact" = "\n\nກະລຸນາຕິດຕໍ່ຜູ້ເບິ່ງແຍງການບໍລິການຂອງທ່ານເພື່ອສືບຕໍ່ໃຊ້ບໍລິການນີ້.";
+"login_error_resource_limit_exceeded_message_monthly_active_user" = "homeserver ນີ້ຮອດຂີດຈຳກັດຜູ້ໃຊ້ປະຈຳເດືອນແລ້ວ.";
+"login_error_resource_limit_exceeded_message_default" = "homeserver ນີ້ໃຊ້ເກີນຂີດຈຳກັດຊັບພະຍາກອນ.";
+"login_error_resource_limit_exceeded_title" = "ເກີນຂີດຈຳກັດຊັບພະຍາກອນ";
+"login_desktop_device" = "ເດັສທັອບ";
+"login_tablet_device" = "ແທັບເລັດ";
+"login_mobile_device" = "ມືຖື";
+"login_error_forgot_password_is_not_supported" = "ລືມລະຫັດຜ່ານບໍ່ຮອງຮັບໃນຂະນະນີ້";
+"register_error_title" = "ການລົງທະບຽນບໍ່ສຳເລັດ";
+"login_invalid_param" = "ພາຣາມິເຕີບໍ່ຖືກຕ້ອງ";
+"login_leave_fallback" = "ຍົກເລີກ";
+"login_use_fallback" = "ໃຊ້ໜ້າ fallback";
+"login_error_login_email_not_yet" = "ການເຊື່ອມຕໍ່ອີເມລ໌ທີ່ຍັງບໍ່ທັນໄດ້ກົດໃສ່ເທື່ອ";
+"login_error_user_in_use" = "ຊື່ຜູ້ໃຊ້ນີ້ຖືກໃຊ້ແລ້ວ";
+"login_error_limit_exceeded" = "ສົ່ງຄຳຮ້ອງຂໍຫຼາຍເກີນໄປ";
+"login_error_not_json" = "ບໍ່ມີ JSON ທີ່ຖືກຕ້ອງ";
+"login_error_bad_json" = "JSON ບໍ່ຖືກຕ້ອງ";
+"login_error_unknown_token" = "ບໍ່ຮູ້ຈັກໂທເຄັນທີ່ເຂົ້າເຖິງນັ້ນບໍ່ຖືກຮັບຮູ້";
+"login_error_forbidden" = "ຊື່ຜູ້ໃຊ້/ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ";
+"login_error_registration_is_not_supported" = "ການລົງທະບຽນບໍ່ຮອງຮັບໃນປັດຈຸບັນ";
+"login_error_do_not_support_login_flows" = "ໃນປັດຈຸບັນພວກເຮົາບໍ່ຮອງຮັບການເຂົ້າສູ່ລະບົບໃດໆ ຫຼື ທັງໝົດທີ່ກຳນົດໂດຍ homeserver ນີ້";
+"login_error_no_login_flow" = "ພວກເຮົາບໍ່ສາມາດດຶ່ງຂໍ້ມູນການພິສູດຢືນຢັນຈາກ homeserver ນີ້ໄດ້";
+"login_error_title" = "ເຂົ້າສູ່ລະບົບບໍ່ສໍາເລັດ";
+"login_prompt_email_token" = "ກະລຸນາໃສ່ໂທເຄັນການເພື່ອກວດສອບອີເມລ໌ຂອງທ່ານ:";
+"login_email_placeholder" = "ທີ່ຢູ່ອີເມວ";
+"login_email_info" = "ການລະບຸທີ່ຢູ່ອີເມວເຮັດໃຫ້ຜູ້ໃຊ້ອື່ນສາມາດຊອກຫາທ່ານຢູ່ໃນ Matrix ໄດ້ງ່າຍຂຶ້ນ, ແລະຈະໃຫ້ວິທີການຕັ້ງລະຫັດຜ່ານຂອງທ່ານໃໝ່ໃນອະນາຄົດ.";
+"login_display_name_placeholder" = "ຊື່ສະແດງ (ເຊັ່ນ: Bob Obson)";
+"login_optional_field" = "ທາງເລືອກ";
+"login_password_placeholder" = "ລະຫັດຜ່ານ";
+"login_user_id_placeholder" = "Matrix ID (ເຊັ່ນ: @bob:matrix.org ຫຼື bob)";
+"login_identity_server_info" = "Matrix ໃຫ້ເຊີບເວີເພື່ອຕິດຕາມວ່າອີເມລ໌ໃດເປັນຂອງ Matrix IDs ໃດ. ມີພຽງແຕ່ https://matrix.org ໃນປັດຈຸບັນເທົ່ານັ້ນ.";
+"login_identity_server_title" = "URL ເຊີບເວີ:";
+"login_home_server_info" = "homeserver ຂອງທ່ານທີ່ເກັບຮັກສາການສົນທະນາແລະຂໍ້ມູນບັນຊີຂອງທ່ານທັງຫມົດ";
+"login_home_server_title" = "URLຂອງ Homeserver :";
+"login_server_url_placeholder" = "URL (ເຊັ່ນ: https://matrix.org)";
+
+// Login Screen
+"login_create_account" = "ສ້າງບັນຊີ:";
+
+// MARK: - MatrixKit
+
+
+/* *********************** */
+/*      iOS specific       */
+/* *********************** */
+
+"matrix" = "ເມທຣິກ";
+"location_sharing_live_stop_sharing_progress" = "ຢຸດການແບ່ງປັນສະຖານທີ່";
+"location_sharing_live_stop_sharing_error" = "ຢຸດການແບ່ງປັນສະຖານທີ່ບໍ່ສຳເລັດ";
+"location_sharing_live_no_user_locations_error_title" = "ບໍ່ມີສະຖານທີ່ຜູ້ໃຊ້";
+"location_sharing_live_timer_selector_long" = "ເປັນເວລາ 8 ຊົ່ວໂມງ";
+"location_sharing_live_timer_selector_medium" = "ເປັນເວລາ 1 ຊົ່ວໂມງ";
+"location_sharing_live_timer_selector_short" = "ເປັນເວລາ 15 ນາທີ";
+"location_sharing_live_timer_selector_title" = "ເລືອກໄລຍະເວລາທີ່ຄົນອື່ນຈະເຫັນສະຖານທີ່ທີ່ຖືກຕ້ອງຂອງທ່ານ.";
+"location_sharing_live_error" = "ສະຖານທີ່ປັດຈຸບັນຜິດພາດ";
+"location_sharing_live_loading" = "ກຳລັງໂຫຼດສະຖານທີ່ປັດຈຸບັນ...";
+"location_sharing_live_timer_incoming" = "ຢູ່ຈົນກ່ວາ %@";
+"location_sharing_live_list_item_stop_sharing_action" = "ຢຸດການແບ່ງປັນ";
+"location_sharing_live_list_item_current_user_display_name" = "ທ່ານ";
+"location_sharing_live_list_item_last_update_invalid" = "ບໍ່ຮູ້ຈັກອັບເດດຫຼ້າສຸດ";
+"location_sharing_live_list_item_last_update" = "ອັບເດດ %@ ທີ່ຜ່ານມາ";
+"location_sharing_live_list_item_sharing_expired" = "ການແບ່ງປັນໝົດອາຍຸແລ້ວ";
+"location_sharing_live_list_item_time_left" = "ເຫຼືອ %@";
+"location_sharing_live_viewer_title" = "ສະຖານທີ່";
+"location_sharing_live_map_callout_title" = "ແບ່ງປັນສະຖານທີ່";
+"location_sharing_pin_drop_share_title" = "ສົ່ງສະຖານທີ່ນີ້";
+"location_sharing_static_share_title" = "ສົ່ງສະຖານທີ່ປະຈຸບັນຂອງຂ້ອຍ";
+"live_location_sharing_banner_stop" = "ຢຸດ";
+"live_location_sharing_ended" = "ສະຖານທີ່ປັດຈຸບັນສິ້ນສຸດລົງ";
+"live_location_sharing_banner_title" = "ເປີດການນຳໃຊ້ສະຖານທີ່ປັດຈຸບັນແລ້ວ";
+
+// MARK: Live location sharing
+
+"location_sharing_live_share_title" = "ແບ່ງປັນສະຖານທີ່ປັດຈຸບັນ";
+"location_sharing_settings_toggle_title" = "ເປີດໃຊ້ການແບ່ງປັນສະຖານທີ່";
+"location_sharing_settings_header" = "ການແບ່ງປັນສະຖານທີ່";
+"location_sharing_open_open_street_maps" = "ເປີດໃນ OpenStreetMap";
+"location_sharing_open_google_maps" = "ເປີດໃນ Google Maps";
+"location_sharing_open_apple_maps" = "ເປີດໃນ Apple Maps";
+"location_sharing_invalid_authorization_settings" = "ການຕັ້ງຄ່າ";
+"location_sharing_invalid_authorization_not_now" = "ບໍ່ແມ່ນຕອນນີ້";
+"location_sharing_invalid_authorization_error_title" = "%@ ບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ເຂົ້າເຖິງສະຖານທີ່ຂອງທ່ານ. ທ່ານສາມາດເປີດໃຊ້ການເຂົ້າເຖິງໄດ້ໃນການຕັ້ງຄ່າ > ສະຖານທີ່";
+"location_sharing_locating_user_error_title" = "%@ ບໍ່ສາມາດເຂົ້າເຖິງສະຖານທີ່ຂອງທ່ານໄດ້. ກະລຸນາລອງໃໝ່ໃນພາຍຫຼັງ.";
+"location_sharing_loading_map_error_title" = "%@ ບໍ່ສາມາດໂຫຼດແຜນທີ່ໄດ້. ກະລຸນາລອງໃໝ່ໃນພາຍຫຼັງ.";
+"location_sharing_post_failure_subtitle" = "%@ ບໍ່ສາມາດສົ່ງສະຖານທີ່ຂອງທ່ານໄດ້. ກະລຸນາລອງໃໝ່ໃນພາຍຫຼັງ.";
+"location_sharing_post_failure_title" = "ພວກເຮົາບໍ່ສາມາດສົ່ງສະຖານທີ່ຂອງທ່ານໄດ້";
+"location_sharing_close_action" = "ປິດ";
+
+// MARK: - Location sharing
+
+"location_sharing_title" = "ສະຖານທີ່";
+"poll_timeline_not_closed_subtitle" = "ກະລຸນາລອງອີກຄັ້ງ";
+"poll_timeline_not_closed_title" = "ບໍ່ສາມາດສິ້ນສຸດແບບສຳຫຼວດໄດ້";
+"poll_timeline_vote_not_registered_subtitle" = "ຂໍອະໄພ, ການລົງຄະແນນສຽງຂອງທ່ານບໍ່ໄດ້ລົງທະບຽນ, ກະລຸນາລອງໃໝ່ອີກຄັ້ງ";
+"poll_timeline_vote_not_registered_title" = "ລົງຄະແນນສຽງບໍ່ໄດ້ລົງທະບຽນ";
+"poll_timeline_total_final_results" = "ຜົນໄດ້ຮັບສຸດທ້າຍໂດຍອີງໃສ່ %lu ຄະແນນສຽງ";
+"poll_timeline_total_final_results_one_vote" = "ຜົນສຸດທ້າຍໂດຍອີງໃສ່ 1 ຄະແນນສຽງ";
+"poll_timeline_total_votes_not_voted" = "%lu ລົງຄະແນນສຽງ. ລົງຄະແນນສຽງເພື່ອເບິ່ງຜົນໄດ້ຮັບ";
+"poll_timeline_total_one_vote_not_voted" = "1 ສຽງໂຫວດ. ລົງຄະແນນສຽງເພື່ອເບິ່ງຜົນໄດ້ຮັບ";
+"poll_timeline_total_votes" = "%lu ລົງຄະແນນສຽງ";
+"poll_timeline_total_one_vote" = "1 ສຽງໂຫວດ";
+"poll_timeline_total_no_votes" = "ບໍ່ມີການລົງຄະແນນສຽງ";
+"poll_timeline_votes_count" = "%lu ຄະແນນສຽງ";
+"poll_timeline_one_vote" = "1 ຄະແນນສຽງ";
+"poll_edit_form_poll_type_closed_description" = "ຜົນໄດ້ຮັບຈະຖືກເປີດເຜີຍເມື່ອທ່ານສິ້ນສຸດແບບສຳຫຼວດເທົ່ານັ້ນ";
+"poll_edit_form_poll_type_closed" = "ປິດແບບສຳຫຼວດ";
+"poll_edit_form_poll_type_open_description" = "ຜູ້ລົງຄະແນນສຽງເຫັນຜົນທັນທີທີ່ເຂົາເຈົ້າລົງຄະແນນສຽງ";
+"poll_edit_form_poll_type_open" = "ເປີດແບບສຳຫຼວດ";
+"poll_edit_form_update_failure_subtitle" = "ກະລຸນາລອງອີກຄັ້ງ";
+"poll_edit_form_update_failure_title" = "ອັບເດດແບບສຳຫຼວດບໍ່ສຳເລັດ";
+"poll_edit_form_post_failure_subtitle" = "ກະລຸນາລອງອີກຄັ້ງ";
+"poll_edit_form_post_failure_title" = "ການໂພສແບບສຳຫຼວດບໍ່ສຳເລັດ";
+"poll_edit_form_add_option" = "ເພີ່ມທາງເລືອກ";
+"poll_edit_form_option_number" = "ທາງເລືອກ %lu";
+"poll_edit_form_create_options" = "ສ້າງທາງເລືອກ";
+"poll_edit_form_input_placeholder" = "ຂຽນບາງສິ່ງບາງຢ່າງ";
+"poll_edit_form_question_or_topic" = "ຄໍາຖາມຫຼືຫົວຂໍ້";
+"poll_edit_form_poll_question_or_topic" = "ຄໍາຖາມແບບສໍາຫຼວດ ຫຼື ຫົວຂໍ້";
+"poll_edit_form_poll_type" = "ປະເພດແບບສຳຫຼວດ";
+
+// Mark: - Polls
+
+"poll_edit_form_create_poll" = "ສ້າງແບບສຳຫຼວດ";
+"version_check_modal_action_title_deprecated" = "ຊອກຫາວິທີການ";
+"version_check_modal_title_deprecated" = "ພວກເຮົາບໍ່ຮອງຮັບ iOS %@ ອີກຕໍ່ໄປ";
+"version_check_modal_action_title_supported" = "ເຂົ້າໃຈແລ້ວ";
+"version_check_modal_title_supported" = "ພວກເຮົາກຳລັງສິ້ນສຸດການຮອງຮັບ iOS %@";
+"version_check_banner_subtitle_deprecated" = "ພວກເຮົາບໍ່ໄດ້ຮອງຮັບ %@ ໃນ iOS %@ ອີກຕໍ່ໄປ. ເພື່ອສືບຕໍ່ນຳໃຊ້ %@ ໃຫ້ເຕັມປະສິດທິພາບ, ພວກເຮົາແນະນຳໃຫ້ທ່ານຍົກລະດັບ iOS ເວີຊັນຂອງທ່ານ.";
+"space_participants_action_ban" = "ຫ້າມຈາກພື້ນທີ່ນີ້";
+"space_participants_action_remove" = "ລຶບອອກຈາກພື້ນທີ່ນີ້";
+"spaces_coming_soon_detail" = "ຄຸນນະສົມບັດນີ້ຍັງບໍ່ໄດ້ຮັບການປະຕິບັດຢູ່ທີ່ນີ້, ແຕ່ວ່າຢູ່ໃນການດຳເນີນການ. ສໍາລັບຕອນນີ້, ທ່ານສາມາດເຮັດສິ່ງນັ້ນກັບ %@ ໃນຄອມພິວເຕີຂອງທ່ານ.";
+"secure_key_backup_setup_cancel_alert_message" = "ຖ້າທ່ານຍົກເລີກດຽວນີ້, ທ່ານອາດຈະສູນເສຍຂໍ້ຄວາມ & ຂໍ້ມູນທີ່ເຂົ້າລະຫັດຖ້າທ່ານສູນເສຍການເຂົ້າເຖິງການເຂົ້າສູ່ລະບົບຂອງທ່ານ.\n\nນອກນັ້ນທ່ານຍັງສາມາດຕັ້ງຄ່າການສໍາຮອງຂໍ້ມູນທີ່ປອດໄພ & ຈັດການກະແຈຂອງທ່ານໃນການຕັ້ງຄ່າ.";
+"deactivate_account_informations_part5" = "ຖ້າທ່ານຕ້ອງການໃຫ້ພວກເຮົາລືມຂໍ້ຄວາມຂອງທ່ານ, ກະລຸນາຫມາຍໃສ່ໃນປ່ອງຂ້າງລຸ່ມນີ້\n\nການເບິ່ງເຫັນຂໍ້ຄວາມໃນ Matrix ແມ່ນຄ້າຍຄືກັນກັບອີເມວ. ການລືມຂໍ້ຄວາມຂອງພວກເຮົາຫມາຍຄວາມວ່າຂໍ້ຄວາມທີ່ທ່ານໄດ້ສົ່ງໄປຈະບໍ່ຖືກແບ່ງປັນກັບຜູ້ໃຊ້ໃຫມ່ ຫຼື ບໍ່ໄດ້ລົງທະບຽນ, ແຕ່ຜູ້ໃຊ້ທີ່ລົງທະບຽນແລ້ວທີ່ມີການເຂົ້າເຖິງຂໍ້ຄວາມເຫຼົ່ານີ້ຈະຍັງຄົງມີການເຂົ້າເຖິງສໍາເນົາຂອງພວກເຂົາ.";
+"deactivate_account_informations_part1" = "ອັນນີ້ຈະເຮັດໃຫ້ບັນຊີຂອງທ່ານບໍ່ສາມາດນຳໃຊ້ໄດ້ຢ່າງຖາວອນ. ທ່ານຈະບໍ່ສາມາດເຂົ້າສູ່ລະບົບໄດ້, ແລະບໍ່ມີໃຜຈະສາມາດລົງທະບຽນ ID ຜູ້ໃຊ້ດຽວກັນໄດ້. ນີ້ຈະເຮັດໃຫ້ບັນຊີຂອງທ່ານອອກຈາກຫ້ອງທັງຫມົດທີ່ເຂົ້າຮ່ວມ, ແລະ ມັນຈະເອົາລາຍລະອຽດບັນຊີຂອງທ່ານອອກຈາກເຊີບເວີຂອງທ່ານ. ";
+"e2e_need_log_in_again" = "ທ່ານຕ້ອງເຂົ້າສູ່ລະບົບຄືນໃໝ່ເພື່ອສ້າງການເຂົ້າລະຫັດແຕ່ຕົ້ນທາງເຖິງປາຍທາງສຳລັບລະບົບນີ້ ແລະ ສົ່ງລະຫັດສາທາລະນະໃຫ້ກັບ homeserver ຂອງທ່ານ.\nນີ້ແມ່ນຄັ້ງດຽວ; ຂໍອະໄພໃນຄວາມບໍ່ສະດວກ.";
+"version_check_modal_subtitle_supported" = "ພວກເຮົາໄດ້ເຮັດການປັບປຸງ %@ ເພື່ອໃຫ້ໄວຂຶ້ນ ແລະ ງາມຫຼາຍຂຶ້ນ. ຂໍອະໄພ, iOS ເວີຊັນປັດຈຸບັນຂອງທ່ານບໍ່ເຂົ້າກັນໄດ້ກັບບາງການແກ້ໄຂເຫຼົ່ານັ້ນ ແລະຈະບໍ່ຖືກຮອງຮັບອີກຕໍ່ໄປ.\nພວກເຮົາແນະນຳໃຫ້ທ່ານຍົກລະບົບປະຕິບັດການຂອງທ່ານເພື່ອໃຊ້ %@ ຢ່າງເຕັມທີ່.";
+
+// Success from passphrase
+"key_backup_setup_success_from_passphrase_info" = "ກະແຈຂອງທ່ານກຳລັງຖືກສຳຮອງໄວ້.\n\nກະແຈຄວາມປອດໄພຂອງທ່ານເປັນຕາໜ່າງຄວາມປອດໄພ - ທ່ານສາມາດໃຊ້ມັນເພື່ອກູ້ຄືນການເຂົ້າເຖິງຂໍ້ຄວາມທີ່ເຂົ້າລະຫັດໄວ້ຂອງທ່ານໄດ້ ຖ້າທ່ານລືມປະໂຫຍກລະຫັດຜ່ານຂອງທ່ານ.\n\nຮັກສາກະແຈຄວາມປອດໄພຂອງທ່ານໄວ້ບ່ອນໃດບ່ອນໜຶ່ງທີ່ປອດໄພຫຼາຍ ເຊັ່ນ: ຕົວຈັດການລະຫັດຜ່ານ (ຫຼືບ່ອນປອດໄພ).";
+"key_backup_setup_passphrase_info" = "ພວກເຮົາຈະເກັບຮັກສາລະຫັດລັບຂອງທ່ານໄວ້ໃນເຊີບເວີຂອງພວກເຮົາ. ປົກປ້ອງການສໍາຮອງຂໍ້ມູນຂອງທ່ານດ້ວຍປະໂຫຍກຄວາມປອດໄພເພື່ອຮັກສາມັນໃຫ້ປອດໄພ.\n\nເພື່ອຄວາມປອດໄພສູງສຸດ, ອັນນີ້ຄວນຈະແຕກຕ່າງຈາກລະຫັດຜ່ານບັນຊີ Matrix ຂອງທ່ານ.";
+"key_backup_setup_intro_info" = "ຂໍ້ຄວາມຢູ່ໃນຫ້ອງທີ່ເຂົ້າລະຫັດໄວ້ແມ່ນປອດໄພດ້ວຍການເຂົ້າລະຫັດແຕ່ຕົ້ນທາງເຖິງປາຍ. ພຽງແຕ່ທ່ານ ແລະ ຜູ້ຮັບເທົ່ານັ້ນທີ່ມີກະແຈເພື່ອອ່ານຂໍ້ຄວາມເຫຼົ່ານີ້.\n\nສຳຮອງຂໍ້ມູນກະແຈຂອງທ່ານຢ່າງປອດໄພເພື່ອຫຼີກເວັ້ນການສູນເສຍພວກມັນ.";
+"analytics_prompt_message_new_user" = "ຊ່ວຍພວກເຮົາລະບຸບັນຫາ ແລະປັບປຸງ %@ ໂດຍການແບ່ງປັນຂໍ້ມູນການນຳໃຊ້ທີ່ບໍ່ເປີດເຜີຍຊື່. ເພື່ອເຂົ້າໃຈວິທີທີ່ຄົນໃຊ້ຫຼາຍອຸປະກອນ, ພວກເຮົາຈະສ້າງຕົວລະບຸແບບສຸ່ມ, ແບ່ງປັນໂດຍອຸປະກອນຂອງທ່ານ.";
+"notice_room_third_party_revoked_invite_by_you" = "ທ່ານໄດ້ຖອນຄຳເຊີນສຳລັບ %@ ເຂົ້າຮ່ວມຫ້ອງແລ້ວ";
+"notice_room_third_party_registered_invite_by_you" = "ທ່ານຍອມຮັບຄຳເຊີນສຳລັບ %@";
+"notice_room_third_party_invite_by_you_for_dm" = "ທ່ານໄດ້ເຊີນ %@";
