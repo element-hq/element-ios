@@ -159,6 +159,7 @@ final class RoomInfoListViewController: UIViewController {
     // MARK: - Private
     
     private func updateSections(with viewData: RoomInfoListViewData) {
+        isRoomDirect = viewData.isDirect
         basicInfoView.configure(withViewData: viewData.basicInfoViewData)
         
         var tmpSections: [Section] = []
@@ -193,7 +194,9 @@ final class RoomInfoListViewController: UIViewController {
         }
         rows.append(rowMembers)
         rows.append(rowUploads)
-        rows.append(rowSearch)
+        if !viewData.isEncrypted {
+            rows.append(rowSearch)
+        }
 
         let sectionSettings = Section(header: VectorL10n.roomInfoListSectionOther,
                                       rows: rows,
