@@ -44,6 +44,7 @@ class LocationManager: NSObject {
     
     private enum Constants {
         static let distanceFiler: CLLocationDistance = 200.0
+        static let waitForAuthorizationStatusDelay: TimeInterval = 0.5
     }
     
     // MARK: - Properties
@@ -134,14 +135,32 @@ class LocationManager: NSObject {
                 
         switch status {
         case .notDetermined, .authorizedWhenInUse:
-            self.authorizationHandler = handler
-            self.locationManager.requestAlwaysAuthorization()
+            // Try to resquest always authorization
+            self.tryToRequestAlwaysAuthorization(handler: handler)
         default:
             handler(self.locationAuthorizationStatus(from: status))
         }
     }
     
     // MARK: - Private
+    
+    // Try to request always authorization and if `locationManagerDidChangeAuthorization` is not called within `Constants.waitForAuthorizationStatusDelay` call the input handler.
+    // NOTE: As pointed in the Apple doc:
+    // - Core Location limits calls to requestAlwaysAuthorization(). After your app calls this method, further calls have no effect.
+    // - If the user responded to requestWhenInUseAuthorization() with Allow Once, then Core Location ignores further calls to requestAlwaysAuthorization() due to the temporary authorization.
+    // See https://developer.apple.com/documentation/corelocation/cllocationmanager/1620551-requestalwaysauthorization?changes=_6_6
+    private func tryToRequestAlwaysAuthorization(handler: @escaping LocationAuthorizationHandler) {
+        self.authorizationHandler = handler
+        self.locationManager.requestAlwaysAuthorization()
+        
+        Timer.scheduledTimer(withTimeInterval: Constants.waitForAuthorizationStatusDelay, repeats: false) { [weak self] _ in
+            guard let self = self else {
+                return
+            }
+            
+            self.authorizationRequestDidComplete(with: self.locationManager.authorizationStatus)
+        }
+    }
     
     private func locationAuthorizationStatus(from clLocationAuthorizationStatus: CLAuthorizationStatus) -> LocationAuthorizationStatus {
         
@@ -164,7 +183,11 @@ class LocationManager: NSObject {
     }
     
     private func authorizationRequestDidComplete(with status: CLAuthorizationStatus) {
-        self.authorizationHandler?(self.locationAuthorizationStatus(from: status))
+        guard let authorizationHandler = self.authorizationHandler else {
+            return
+        }
+
+        authorizationHandler(self.locationAuthorizationStatus(from: status))
         self.authorizationHandler = nil
     }
 }
