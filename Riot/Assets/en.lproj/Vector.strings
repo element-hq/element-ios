@@ -2135,6 +2135,12 @@ Tap the + to start adding people.";
 
 "location_sharing_settings_toggle_title" = "Enable location sharing";
 
+"location_sharing_allow_background_location_title" = "Allow access";
+"location_sharing_allow_background_location_message" = "If you’d like to share your Live location, Element needs location access when the app is in the background.
+To enable access, tap Settings> Location and select Always";
+"location_sharing_allow_background_location_validate_action" = "Settings";
+"location_sharing_allow_background_location_cancel_action" = "Not now";
+
 // MARK: Live location sharing
 
 "location_sharing_live_share_title" = "Share live location";
