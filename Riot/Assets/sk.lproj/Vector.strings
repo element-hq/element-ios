@@ -886,8 +886,8 @@
 "contacts_address_book_permission_denied_alert_message" = "Ak chcete povoliť kontakty, prejdite do nastavení zariadenia.";
 "contacts_address_book_permission_denied_alert_title" = "Kontakty sú vypnuté";
 "contacts_address_book_permission_required" = "Povolenie potrebné na prístup k lokálnym kontaktom";
-"directory_search_results_more_than" = ">%tu nájdených výsledkov pre %@";
-"directory_search_results" = "%tu nájdených výsledkov pre %@";
+"directory_search_results_more_than" = ">%1$tu nájdených výsledkov pre %2$@";
+"directory_search_results" = "%1$tu nájdených výsledkov pre %2$@";
 "search_people_placeholder" = "Vyhľadať podľa ID používateľa, mena alebo e-mailu";
 "rooms_empty_view_information" = "Miestnosti sú skvelé na akýkoľvek skupinový rozhovor, súkromný alebo verejný. Ťuknutím na tlačidlo + vyhľadajte existujúce miestnosti alebo vytvorte nové.";
 "people_empty_view_information" = "Bezpečne komunikujte s kýmkoľvek.Ťuknutím na tlačidlo + začnite pridávať ľudí.";
