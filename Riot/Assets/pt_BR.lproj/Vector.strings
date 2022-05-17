@@ -2283,3 +2283,15 @@
 "settings_presence" = "Presença";
 "threads_discourage_information_2" = "\n\nVocê quer habilitar threads mesmo assim?";
 "threads_discourage_information_1" = "Seu servidorcasa não atualmente suporta threads, então esta funcionalidade pode ser inconfiável. Algumas mensagens de thread podem não estar confiavelmente disponíveis. ";
+"location_sharing_live_stop_sharing_progress" = "Parar compartilhamento de localização";
+"location_sharing_live_stop_sharing_error" = "Falha para parar de compartilhar localização";
+"location_sharing_live_no_user_locations_error_title" = "Nenhuma outra localização de usuária(o) disponível";
+"location_sharing_live_timer_selector_long" = "por 8 horas";
+"location_sharing_live_timer_selector_medium" = "por 1 hora";
+"location_sharing_live_timer_selector_short" = "por 15 minutos";
+"location_sharing_live_timer_selector_title" = "Escolha por quanto tempo outras(os) vão ver sua localização precisa.";
+"location_sharing_live_error" = "Erro de localização ao vivo";
+"location_sharing_live_loading" = "Carregando localização Ao Vivo...";
+"location_sharing_live_timer_incoming" = "Ao vivo até %@";
+"live_location_sharing_ended" = "Localização ao vivo terminou";
+"confirm" = "Confirmar";

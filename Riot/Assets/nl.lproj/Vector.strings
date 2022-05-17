@@ -2471,3 +2471,16 @@
 /* The placeholder string contains the user's matrix ID */
 "onboarding_congratulations_message" = "Uw account %@ is aangemaakt.";
 "onboarding_use_case_skip_button" = "sla deze vraag over";
+"location_sharing_live_stop_sharing_progress" = "Stop locatie delen";
+"location_sharing_live_stop_sharing_error" = "Kan locatie delen niet stoppen";
+"location_sharing_live_no_user_locations_error_title" = "Geen persoonslocaties beschikbaar";
+"location_sharing_live_timer_selector_long" = "voor 8 uur";
+"location_sharing_live_timer_selector_medium" = "voor 1 uur";
+"location_sharing_live_timer_selector_short" = "voor 15 minuten";
+"location_sharing_live_timer_selector_title" = "Kies hoe lang anderen uw nauwkeurige locatie kunnen zien.";
+"location_sharing_live_error" = "Live locatie error";
+"location_sharing_live_loading" = "Live locatie wordt geladen...";
+"location_sharing_live_timer_incoming" = "Live tot %@";
+"live_location_sharing_ended" = "Live locatie beëindigd";
+"settings_integrations_allow_description" = "Gebruik een integratiebeheerder om bots, bruggen, widgets en stickerpakketten te beheren.\n\nIntegratiebeheerders ontvangen configuratiedata en kunnen widgets aanpassen, kameruitnodigingen versturen en bestuursniveaus instellen namens u.";
+"confirm" = "Bevestigen";
