@@ -360,4 +360,9 @@ typedef enum : NSUInteger
  */
 - (void)pasteText:(NSString*)text;
 
+/**
+ The current attributed text message in message composer.
+ */
+@property (nonatomic) NSAttributedString *attributedTextMessage;
+
 @end
