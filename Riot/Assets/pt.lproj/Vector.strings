@@ -142,7 +142,6 @@
 "space_home_show_all_rooms" = "Mostrar todas as salas";
 "space_participants_action_ban" = "Banir deste espaço";
 "space_participants_action_remove" = "Remover deste espaço";
-"spaces_coming_soon_detail" = "Esta funcionalidade não está implementada ainda. Pode fazer esta acção através da aplicação Web ou Desktop.";
 "spaces_invites_coming_soon_title" = "Convites";
 "spaces_add_rooms_coming_soon_title" = "Adicionar salas chegando em breve";
 "spaces_coming_soon_title" = "Chegando em breve";
@@ -203,7 +202,6 @@
 
 // MARK: - Home
 
-"home_empty_view_title" = "Bem vindo ao %@";
 "call_transfer_error_message" = "Transferência de chamada falhou";
 "call_transfer_error_title" = "Erro";
 "call_transfer_contacts_all" = "Todos";
@@ -408,8 +406,6 @@
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "Use esta opção se não consegue aceder a outro dispositivo";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Usar Frase ou Chave de Segurança";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Usar Chave de Segurança";
-"device_verification_self_verify_wait_additional_information" = "Pode também validar esta sessão utilizando a sua frase ou chave de segurança.";
-"device_verification_self_verify_wait_information" = "Confirme a sua identidade verificando esta sessão a partir de uma das suas outras sessões, garantindo-lhe o acesso às mensagens encriptadas.";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verificar este login";
 
 // MARK: Self verification wait

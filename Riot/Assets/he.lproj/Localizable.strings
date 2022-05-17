@@ -137,7 +137,6 @@
 "ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
 
 /* New action message from a specific person, not referencing a room. */
-"ACTION_FROM_USER" = "%@ in %@: %@";
 
 /* New message from a specific person in a named room. Content included. */
 "MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ ב %@: %@";

@@ -2482,5 +2482,4 @@
 "location_sharing_live_loading" = "Live locatie wordt geladen...";
 "location_sharing_live_timer_incoming" = "Live tot %@";
 "live_location_sharing_ended" = "Live locatie beëindigd";
-"settings_integrations_allow_description" = "Gebruik een integratiebeheerder om bots, bruggen, widgets en stickerpakketten te beheren.\n\nIntegratiebeheerders ontvangen configuratiedata en kunnen widgets aanpassen, kameruitnodigingen versturen en bestuursniveaus instellen namens u.";
 "confirm" = "Bevestigen";

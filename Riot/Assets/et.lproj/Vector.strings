@@ -2261,6 +2261,4 @@
 "location_sharing_live_loading" = "Reaalajas asukoha laadmine...";
 "location_sharing_live_timer_incoming" = "Asukoha jagamine toimib kuni %@";
 "live_location_sharing_ended" = "Reaalajas asukoha jagamine on lõppenud";
-"directory_search_results_more_than" = ">%@ kohta leidsin %tu tulemust";
-"directory_search_results" = "%@ kohta leidsin %tu tulemust";
 "confirm" = "Kinnita";
