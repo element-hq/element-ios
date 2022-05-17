@@ -2306,3 +2306,15 @@
 "settings_presence" = "Állapot";
 "threads_discourage_information_2" = "\n\nEnnek ellenére be szeretné kapcsolni az üzenetszálakat?";
 "threads_discourage_information_1" = "A Matrix szervered jelenleg nem támogatja az üzenetszálakat így ez a funkció nem lesz megbízható. Bizonyos üzenetszálas üzenetek nem jelennek meg megbízhatóan. ";
+"location_sharing_live_stop_sharing_progress" = "Földrajzi helymeghatározás megállítása";
+"location_sharing_live_stop_sharing_error" = "A megosztás megállítása nem sikerült";
+"location_sharing_live_no_user_locations_error_title" = "Felhasználói helymeghatározás nem érhető el";
+"location_sharing_live_timer_selector_long" = "8 órán át";
+"location_sharing_live_timer_selector_medium" = "1 órán át";
+"location_sharing_live_timer_selector_short" = "15 percig";
+"location_sharing_live_timer_selector_title" = "Válaszd ki meddig láthatják mások az élő földrajzi helyzetedet.";
+"location_sharing_live_error" = "Élő pozíció megosztás hiba";
+"location_sharing_live_loading" = "Élő földrajzi helyzet meghatározás betöltése…";
+"location_sharing_live_timer_incoming" = "Élő eddig: %@";
+"live_location_sharing_ended" = "Élő pozíció megosztás befejeződött";
+"confirm" = "Megerősítés";

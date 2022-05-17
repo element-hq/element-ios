@@ -14,3 +14,157 @@
 /** General **/
 
 "Notification" = "ແຈ້ງເຕືອນ";
+
+/** Key verification **/
+
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ ຕ້ອງການຢືນຢັນ";
+
+/* Group call from user, CallKit caller name */
+"GROUP_CALL_FROM_USER" = "%@ (ການໂທກຸ່ມ)";
+
+/* A user added a Jitsi call to a room */
+"GROUP_CALL_STARTED" = "ເລີ່ມໂທກຸ່ມແລ້ວ";
+
+/* Incoming named video conference invite from a specific person */
+"VIDEO_CONF_NAMED_FROM_USER" = "ການໂທກຸ່ມວິດີໂອຈາກ %@: '%@'";
+
+/* Incoming named voice conference invite from a specific person */
+"VOICE_CONF_NAMED_FROM_USER" = "ການໂທກຸ່ມຈາກ %@: '%@'";
+
+/* Incoming unnamed video conference invite from a specific person */
+"VIDEO_CONF_FROM_USER" = "ການໂທກຸ່ມວິດີໂອຈາກ %@";
+
+/* Incoming unnamed voice conference invite from a specific person */
+"VOICE_CONF_FROM_USER" = "ການໂທກຸ່ມຈາກ %@";
+
+/* Incoming one-to-one video call */
+"VIDEO_CALL_FROM_USER" = "ໂທວິດີໂອຈາກ %@";
+
+/** Calls **/
+
+/* Incoming one-to-one voice call */
+"VOICE_CALL_FROM_USER" = "ໂທຈາກ %@";
+
+/* A user's membership has updated in an unknown way */
+"USER_MEMBERSHIP_UPDATED" = "%@ ອັບເດດໂປຣໄຟລ໌ຂອງພວກເຂົາ";
+
+/* A user has change their avatar */
+"USER_UPDATED_AVATAR" = "%@ ໄດ້ປ່ຽນຮູບແທນຕົວຂອງພວກເຂົາແລ້ວ";
+
+/* A user has change their name to a new name which we don't know */
+"GENERIC_USER_UPDATED_DISPLAYNAME" = "%@ ໄດ້ປ່ຽນຊື່ຂອງເຂົາເຈົ້າ";
+
+/** Membership Updates **/
+
+/* A user has change their name to a new name */
+"USER_UPDATED_DISPLAYNAME" = "%@ ປ່ຽນຊື່ເປັນ %@";
+
+/* A user has invited you to a named room */
+"USER_INVITE_TO_NAMED_ROOM" = "%@ ໄດ້ເຊີນໃຫ້ທ່ານ %@";
+
+/* A user has invited you to an (unamed) group chat */
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ ໄດ້ເຊີນທ່ານເຂົ້າຮ່ວມການສົນທະນາກຸ່ມ";
+
+/** Invites **/
+
+/* A user has invited you to a chat */
+"USER_INVITE_TO_CHAT" = "%@ ໄດ້ເຊີນໃຫ້ທ່ານສົນທະນາ";
+
+/* A user has reacted to a message, but the reaction content is unknown */
+"GENERIC_REACTION_FROM_USER" = "%@ ສົ່ງການໂຕ້ຕອບ";
+
+/** Reactions **/
+
+/* A user has reacted to a message, including the reaction e.g. "Alice reacted 👍". */
+"REACTION_FROM_USER" = "%@ ຕອບສະໜອງ %@";
+
+/* Look, stuff's happened, alright? Just open the app. */
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@ ຂໍ້ຄວາມໃໝ່ໃນ %@, %@ ແລະອື່ນໆ";
+
+/* Multiple messages in two rooms */
+"MSGS_IN_TWO_ROOMS" = "%@ ຂໍ້ຄວາມໃໝ່ໃນ %@ ແລະ %@";
+
+/* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
+"MSGS_FROM_TWO_PLUS_USERS" = "%@ ຂໍ້ຄວາມໃໝ່ຈາກ %@, %@ ແລະອື່ນໆ";
+
+/* Multiple unread messages from three people */
+"MSGS_FROM_THREE_USERS" = "%@ ຂໍ້ຄວາມໃໝ່ຈາກ %@, %@ ແລະ %@";
+
+/* Multiple unread messages from two people */
+"MSGS_FROM_TWO_USERS" = "%@ ຂໍ້ຄວາມໃໝ່ຈາກ %@ ແລະ %@";
+
+/* Multiple unread messages from a specific person, not referencing a room */
+"MSGS_FROM_USER" = "%@ ຂໍ້ຄວາມໃໝ່ໃນ %@";
+
+/** Coalesced messages **/
+
+/* Multiple unread messages in a room */
+"UNREAD_IN_ROOM" = "%@ ຂໍ້ຄວາມໃໝ່ໃນ %@";
+
+/* New message with hidden content due to PIN enabled */
+"MESSAGE_PROTECTED" = "ຂໍ້ຄວາມໃໝ່";
+
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "ຂໍ້ຄວາມໃນ %@";
+
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "ຂໍ້ຄວາມຈາກ %@";
+
+/** Notification messages **/
+
+/* New message indicator on unknown room */
+"MESSAGE" = "ຂໍ້ຄວາມ";
+
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@ ສົ່ງສະຕິກເກີ";
+
+/* A single unread message */
+"SINGLE_UNREAD" = "ທ່ານໄດ້ຮັບຂໍ້ຄວາມ";
+
+/* A single unread message in a room */
+"SINGLE_UNREAD_IN_ROOM" = "ທ່ານໄດ້ຮັບຂໍ້ຄວາມໃນ %@";
+
+/* New file message from a specific person, not referencing a room. */
+"LOCATION_FROM_USER" = "%@ ໄດ້ແບ່ງປັນສະຖານທີ່ຂອງພວກເຂົາ";
+
+/* New file message from a specific person, not referencing a room. */
+"FILE_FROM_USER" = "%@ ສົ່ງໄຟລ໌ %@";
+
+/* New voice message from a specific person, not referencing a room. */
+"VOICE_MESSAGE_FROM_USER" = "%@ ສົ່ງຂໍ້ຄວາມສຽງ";
+
+/* New audio message from a specific person, not referencing a room. */
+"AUDIO_FROM_USER" = "%@ ສົ່ງໄຟລ໌ສຽງ %@";
+
+/* New video message from a specific person, not referencing a room. */
+"VIDEO_FROM_USER" = "%@ ສົ່ງວິດີໂອ";
+
+/* New image message from a specific person in a named room. */
+"IMAGE_FROM_USER_IN_ROOM" = "%@ ໂພສຮູບ %@ ໃນ %@";
+
+/** Media Messages **/
+
+/* New image message from a specific person, not referencing a room. */
+"PICTURE_FROM_USER" = "%@ ສົ່ງຮູບ";
+
+/* New action message from a specific person in a named room. */
+"ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
+
+/* New action message from a specific person, not referencing a room. */
+"ACTION_FROM_USER" = "* %@ %@";
+
+/* New message from a specific person in a named room. Content included. */
+"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ in %@: %@";
+
+/** Single, unencrypted messages (where we can include the content */
+
+/* New message from a specific person, not referencing a room. Content included. */
+"MSG_FROM_USER_WITH_CONTENT" = "%@: %@";
+
+/* New message from a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM" = "%@ ໂພສໃນ %@";
+
+/** Single, end-to-end encrypted messages (ie. we don't know what they say) */
+
+/* New message from a specific person, not referencing a room */
+"MSG_FROM_USER" = "%@ ສົ່ງຂໍ້ຄວາມ";
