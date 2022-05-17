@@ -85,7 +85,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             try await authenticationService.startFlow(flow, for: homeserverAddress)
         } catch {
             MXLog.error("[AuthenticationCoordinator] start: Failed to start")
-            displayError(error)
+            displayError(message: error.localizedDescription)
             return
         }
         
@@ -103,7 +103,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         navigationRouter.toPresentable()
     }
     
-    @MainActor func presentPendingScreensIfNecessary() {
+    func presentPendingScreensIfNecessary() {
         canPresentAdditionalScreens = true
         
         showLoadingAnimation()
@@ -116,14 +116,10 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     // MARK: - Private
     
-    /// Presents an alert on top of the navigation router, using the supplied error's `localizedDescription`.
-    @MainActor private func displayError(_ error: Error) {
-        let alert = UIAlertController(title: VectorL10n.error,
-                                      message: error.localizedDescription,
-                                      preferredStyle: .alert)
-        
+    /// Presents an alert on top of the navigation router with the supplied error message.
+    @MainActor private func displayError(message: String) {
+        let alert = UIAlertController(title: VectorL10n.error, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: VectorL10n.ok, style: .default))
-        
         toPresentable().present(alert, animated: true)
     }
     
@@ -221,9 +217,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     }
     
     /// Shows the verify email screen.
-    @MainActor private func showVerifyEmailScreen() {
+    @MainActor private func showVerifyEmailScreen(registrationWizard: RegistrationWizard) {
         MXLog.debug("[AuthenticationCoordinator] showVerifyEmailScreen")
-        guard let registrationWizard = authenticationService.registrationWizard else { fatalError("Handle these errors more gracefully.") }
         
         let parameters = AuthenticationVerifyEmailCoordinatorParameters(registrationWizard: registrationWizard)
         let coordinator = AuthenticationVerifyEmailCoordinator(parameters: parameters)
@@ -240,12 +235,11 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     }
     
     /// Shows the terms screen.
-    @MainActor private func showTermsScreen(terms: MXLoginTerms?) {
+    @MainActor private func showTermsScreen(terms: MXLoginTerms?, registrationWizard: RegistrationWizard) {
         MXLog.debug("[AuthenticationCoordinator] showTermsScreen")
-        guard let registrationWizard = authenticationService.registrationWizard else { fatalError("Handle these errors more gracefully.") }
         
         let homeserver = authenticationService.state.homeserver
-        let localizedPolicies = terms?.policiesData(forLanguage: Bundle.mxk_language(), defaultLanguage: "en")
+        let localizedPolicies = terms?.policiesData(forLanguage: Bundle.mxk_language(), defaultLanguage: Bundle.mxk_fallbackLanguage())
         let parameters = AuthenticationTermsCoordinatorParameters(registrationWizard: registrationWizard,
                                                                   localizedPolicies: localizedPolicies ?? [],
                                                                   homeserverAddress: homeserver.addressFromUser ?? homeserver.address)
@@ -262,12 +256,14 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         }
     }
     
-    @MainActor private func showReCaptchaScreen(siteKey: String) {
+    @MainActor private func showReCaptchaScreen(siteKey: String, registrationWizard: RegistrationWizard) {
         MXLog.debug("[AuthenticationCoordinator] showReCaptchaScreen")
-        guard
-            let registrationWizard = authenticationService.registrationWizard,
-            let homeserverURL = URL(string: authenticationService.state.homeserver.address)
-        else { fatalError("Handle these errors more gracefully.") }
+        
+        guard let homeserverURL = URL(string: authenticationService.state.homeserver.address) else {
+            MXLog.failure("[AuthenticationCoordinator] showReCaptchaScreen: The homeserver address is no longer a valid URL.")
+            displayError(message: VectorL10n.errorCommonMessage)
+            return
+        }
         
         let parameters = AuthenticationReCaptchaCoordinatorParameters(registrationWizard: registrationWizard,
                                                                       siteKey: siteKey,
@@ -286,7 +282,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     }
     
     /// Shows the verify email screen.
-    @MainActor private func showVerifyMSISDNScreen() {
+    @MainActor private func showVerifyMSISDNScreen(registrationWizard: RegistrationWizard) {
         MXLog.debug("[AuthenticationCoordinator] showVerifyMSISDNScreen")
         fatalError("Phone verification not implemented yet.")
     }
@@ -326,17 +322,23 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     }
     
     @MainActor private func showStage(_ stage: FlowResult.Stage) {
+        guard let registrationWizard = authenticationService.registrationWizard else {
+            MXLog.failure("[AuthenticationCoordinator] showStage: Missing the RegistrationWizard needed to complete the stage.")
+            displayError(message: VectorL10n.errorCommonMessage)
+            return
+        }
+        
         switch stage {
-        case .reCaptcha(_, let siteKey):
-            showReCaptchaScreen(siteKey: siteKey)
         case .email:
-            showVerifyEmailScreen()
+            showVerifyEmailScreen(registrationWizard: registrationWizard)
+        case .terms(_, let terms):
+            showTermsScreen(terms: terms, registrationWizard: registrationWizard)
+        case .reCaptcha(_, let siteKey):
+            showReCaptchaScreen(siteKey: siteKey, registrationWizard: registrationWizard)
         case .msisdn:
-            showVerifyMSISDNScreen()
+            showVerifyMSISDNScreen(registrationWizard: registrationWizard)
         case .dummy:
             MXLog.failure("[AuthenticationCoordinator] Attempting to perform the dummy stage.")
-        case .terms(_, let terms):
-            showTermsScreen(terms: terms)
         case .other:
             #warning("Show fallback")
             MXLog.failure("[AuthenticationCoordinator] Attempting to perform an unsupported stage.")

@@ -64,6 +64,7 @@ struct AuthenticationVerifyEmailScreen: View {
         VStack(spacing: 36) {
             waitingHeader
                 .padding(.top, OnboardingMetrics.breakerScreenTopPadding)
+            
             ProgressView()
                 .scaleEffect(1.3)
                 .progressViewStyle(CircularProgressViewStyle(tint: theme.colors.secondaryContent))
