@@ -166,7 +166,7 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     @MainActor private func checkForEmailValidation() {
         currentTask = Task { [weak self] in
             do {
-                MXLog.debug("[AuthenticationVerifyEmailCoordinator] pollForEmailValidation: Sleeping for 3 seconds.")
+                MXLog.debug("[AuthenticationVerifyEmailCoordinator] checkForEmailValidation: Sleeping for 3 seconds.")
                 
                 try await Task.sleep(nanoseconds: 3_000_000_000)
                 let result = try await registrationWizard.checkIfEmailHasBeenValidated()

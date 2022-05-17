@@ -97,7 +97,6 @@ struct AuthenticationRecaptchaWebView: UIViewRepresentable {
             <script type="text/javascript">
             var verifyCallback = function(response) {
                 window.webkit.messageHandlers.recaptcha.postMessage(response);
-                alert('Testing 1234');
             };
             var onloadCallback = function() {
                 grecaptcha.render('recaptcha_widget', {

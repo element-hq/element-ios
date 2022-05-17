@@ -24,7 +24,7 @@ struct AuthenticationTermsPolicy: Identifiable, Equatable {
     let url: String
     /// The policy's title.
     let title: String
-    /// The policy's description.
+    /// The policy's subtitle.
     let subtitle: String
     /// Whether or not the policy has been accepted.
     var accepted: Bool = false
