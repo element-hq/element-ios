@@ -2250,3 +2250,15 @@
 "room_new_messages_notification" = "%d nya meddelanden";
 "room_participants_invite_prompt_msg" = "Är du säker på att du vill bjuda in %@ till den här chatten?";
 "room_participants_remove_prompt_msg" = "Är du säker på att du vill ta bort %@ från den här chatten?";
+"location_sharing_live_stop_sharing_progress" = "Avsluta platsdelning";
+"location_sharing_live_stop_sharing_error" = "Misslyckades att sluta dela plats";
+"location_sharing_live_no_user_locations_error_title" = "Inga användarplatser tillgängliga";
+"location_sharing_live_timer_selector_long" = "i 8 timmar";
+"location_sharing_live_timer_selector_medium" = "i 1 timme";
+"location_sharing_live_timer_selector_short" = "i 15 minuter";
+"location_sharing_live_timer_selector_title" = "Välj hur länge andra kommer att se din precisa plats.";
+"location_sharing_live_error" = "Fel på realtidsposition";
+"location_sharing_live_loading" = "Laddar realtidsposition…";
+"location_sharing_live_timer_incoming" = "Realtid tills %@";
+"live_location_sharing_ended" = "Realtidsplats avslutad";
+"confirm" = "Bekräfta";

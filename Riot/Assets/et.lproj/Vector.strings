@@ -2250,3 +2250,17 @@
 "settings_presence" = "Olek võrgus";
 "threads_discourage_information_2" = "\n\nKas sa ikkagi soovid jutulõngad kasutusele võtta?";
 "threads_discourage_information_1" = "Sinu koduserver hetkel ei toeta jutulõngasid ning seega antud funktsionaalsus ei pruugi toimida korralikult. Kõik sõnumid jutulõngas ilmselt ei ole loetavad. ";
+"location_sharing_live_stop_sharing_progress" = "Lõpeta asukoha jagamine reaalajas";
+"location_sharing_live_stop_sharing_error" = "Asukoha jagamise lõpetamine ei õnnestunud";
+"location_sharing_live_no_user_locations_error_title" = "Kasutaja asukohad pole leitavad";
+"location_sharing_live_timer_selector_long" = "8 tunni kestel";
+"location_sharing_live_timer_selector_medium" = "1 tunni kestel";
+"location_sharing_live_timer_selector_short" = "15 minuti kestel";
+"location_sharing_live_timer_selector_title" = "Vali aeg, mille jooksul teised kasutajad näevad sinu täpset asukohta.";
+"location_sharing_live_error" = "Viga asukoha jagamisel reaalajas";
+"location_sharing_live_loading" = "Reaalajas asukoha laadmine...";
+"location_sharing_live_timer_incoming" = "Asukoha jagamine toimib kuni %@";
+"live_location_sharing_ended" = "Reaalajas asukoha jagamine on lõppenud";
+"directory_search_results_more_than" = ">%@ kohta leidsin %tu tulemust";
+"directory_search_results" = "%@ kohta leidsin %tu tulemust";
+"confirm" = "Kinnita";

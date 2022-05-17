@@ -2511,3 +2511,15 @@
 "threads_discourage_information_1" = "Наразі ваш домашній сервер не підтримує треди, тому ця функція може працювати нестабільно. Деякі повідомлення у тредах можуть бути недоступними. ";
 "room_ongoing_conference_call_with_close" = "Поточний груповий виклик. Приєднатися як %@ або %@. %@.";
 "room_ongoing_conference_call" = "Поточний груповий виклик. Приєднатися як %@ або %@.";
+"location_sharing_live_stop_sharing_progress" = "Припинити надсилати місцеперебування";
+"location_sharing_live_stop_sharing_error" = "Не вдалося припинити надсилати місцеперебування";
+"location_sharing_live_no_user_locations_error_title" = "Місцеперебування користувача недоступні";
+"location_sharing_live_timer_selector_long" = "8 годин";
+"location_sharing_live_timer_selector_medium" = "1 годину";
+"location_sharing_live_timer_selector_short" = "15 хвилин";
+"location_sharing_live_timer_selector_title" = "Оберіть, як довго інші бачитимуть ваше точне місцеперебування.";
+"location_sharing_live_error" = "Помилка показу місцеперебування наживо";
+"location_sharing_live_loading" = "Завантаження місцеперебування наживо...";
+"location_sharing_live_timer_incoming" = "Наживо до %@";
+"live_location_sharing_ended" = "Показ місцеперебування наживо завершено";
+"confirm" = "Підтвердити";
