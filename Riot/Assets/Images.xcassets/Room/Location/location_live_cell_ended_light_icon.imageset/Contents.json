@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "location_live_cell_ended_light_icon.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "location_live_cell_ended_light_icon2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "location_live_cell_ended_light_icon3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
