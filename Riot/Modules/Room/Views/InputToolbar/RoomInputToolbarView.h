@@ -111,11 +111,6 @@ typedef NS_ENUM(NSUInteger, RoomInputToolbarViewSendMode)
  */
 @property (nonatomic, weak, readonly) UIButton *attachMediaButton;
 
-/**
- The current attributed text message in message composer.
- */
-@property (nonatomic) NSAttributedString *attributedTextMessage;
-
 @property (nonatomic, readonly, nonnull) UIFont *textDefaultFont;
 
 /**
