@@ -1,1 +1,0 @@
-Allow video rooms to be shown in the rooms list.
