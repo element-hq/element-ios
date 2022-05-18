@@ -44,3 +44,7 @@ packages:
     url: https://github.com/maplibre/maplibre-gl-native-distribution
     minVersion: 5.12.2
     maxVersion: 5.13.0
+  OrderedCollections:
+    url: https://github.com/apple/swift-collections
+    minVersion: 1.0.2
+    maxVersion: 2.0.0
