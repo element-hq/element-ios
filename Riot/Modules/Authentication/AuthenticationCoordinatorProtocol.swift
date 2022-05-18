@@ -19,6 +19,8 @@
 import Foundation
 
 enum AuthenticationCoordinatorResult {
+    /// The coordinator has started and has presented itself.
+    case didStart
     /// The user has authenticated but key verification is yet to happen. The session value is
     /// for a fresh session that still needs to load, sync etc before being ready.
     case didLogin(session: MXSession, authenticationFlow: AuthenticationFlow, authenticationType: AuthenticationType)
