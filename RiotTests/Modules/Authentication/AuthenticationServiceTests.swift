@@ -18,7 +18,6 @@ import XCTest
 
 @testable import Riot
 
-@available(iOS 14.0, *)
 class AuthenticationServiceTests: XCTestCase {
     func testRegistrationWizardWhenStartingLoginFlow() async throws {
         // Given a fresh service.
