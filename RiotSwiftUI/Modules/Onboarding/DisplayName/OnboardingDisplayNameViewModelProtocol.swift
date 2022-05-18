@@ -19,7 +19,6 @@ import Foundation
 protocol OnboardingDisplayNameViewModelProtocol {
     
     var completion: ((OnboardingDisplayNameViewModelResult) -> Void)? { get set }
-    @available(iOS 14, *)
     var context: OnboardingDisplayNameViewModelType.Context { get }
     
     /// Update the view model to show that an error has occurred.

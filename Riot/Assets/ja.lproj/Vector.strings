@@ -1619,3 +1619,5 @@
 "spaces_creation_footer" = "この設定は後から変更できます";
 "onboarding_display_name_hint" = "この設定は後から変更できます";
 "spaces_creation_visibility_title" = "作成するスペースの種類を選択してください";
+"space_public_join_rule_detail" = "誰でも参加可能、コミュニティー向け";
+"space_private_join_rule_detail" = "招待者のみ参加可能、個人やチーム向け";

@@ -76,6 +76,10 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
 // Current SSO transaction id used to identify and validate the SSO authentication callback
 @property (nonatomic, strong) NSString *ssoCallbackTxnId;
+/**
+ The SSO provider that was used to successfully complete login, otherwise `nil`.
+ */
+@property (nonatomic, readwrite, nullable) SSOIdentityProvider *ssoIdentityProvider;
 
 @property (nonatomic, getter = isFirstViewAppearing) BOOL firstViewAppearing;
 
@@ -1351,7 +1355,10 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     }
     
     // Ask the coordinator to show the loading spinner whilst waiting.
-    [self.authVCDelegate authenticationViewController:self didLoginWithSession:session andPassword:self.authInputsView.password];
+    [self.authVCDelegate authenticationViewController:self
+                                  didLoginWithSession:session
+                                          andPassword:self.authInputsView.password
+                                orSSOIdentityProvider:self.ssoIdentityProvider];
 }
 
 #pragma mark - MXKAuthInputsViewDelegate
@@ -1590,14 +1597,14 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
 #pragma mark - SocialLoginListViewDelegate
 
-- (void)socialLoginListView:(SocialLoginListView *)socialLoginListView didTapSocialButtonWithIdentifier:(NSString *)identifier
+- (void)socialLoginListView:(SocialLoginListView *)socialLoginListView didTapSocialButtonWithProvider:(SSOIdentityProvider *)identityProvider
 {
-    [self presentSSOAuthenticationForIdentityProviderIdentifier:identifier];
+    [self presentSSOAuthenticationForIdentityProvider:identityProvider];
 }
 
 #pragma mark - SSOIdentityProviderAuthenticationPresenter
 
-- (void)presentSSOAuthenticationForIdentityProviderIdentifier:(NSString*)identityProviderIdentifier
+- (void)presentSSOAuthenticationForIdentityProvider:(SSOIdentityProvider*)identityProvider
 {
     NSString *homeServerStringURL = self.homeServerTextField.text;
     
@@ -1615,7 +1622,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     // Generate a unique identifier that will identify the success callback URL
     NSString *transactionId = [MXTools generateTransactionId];
     
-    [presenter presentForIdentityProviderIdentifier:identityProviderIdentifier with: transactionId from:self animated:YES];
+    [presenter presentForIdentityProvider:identityProvider with: transactionId from:self animated:YES];
     
     self.ssoCallbackTxnId = transactionId;
     self.ssoAuthenticationPresenter = presenter;
@@ -1623,7 +1630,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
 - (void)presentDefaultSSOAuthentication
 {
-    [self presentSSOAuthenticationForIdentityProviderIdentifier:nil];
+    [self presentSSOAuthenticationForIdentityProvider:nil];
 }
 
 - (void)dismissSSOAuthenticationPresenter
@@ -1656,8 +1663,11 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     [self.errorPresenter presentErrorFromViewController:self forError:error animated:YES handler:nil];
 }
 
-- (void)ssoAuthenticationPresenter:(SSOAuthenticationPresenter *)presenter authenticationSucceededWithToken:(NSString *)token
+- (void)ssoAuthenticationPresenter:(SSOAuthenticationPresenter *)presenter
+  authenticationSucceededWithToken:(NSString *)token
+             usingIdentityProvider:(SSOIdentityProvider * _Nullable)identityProvider
 {
+    self.ssoIdentityProvider = identityProvider;
     [self dismissSSOAuthenticationPresenter];
     [self loginWithToken:token];
 }

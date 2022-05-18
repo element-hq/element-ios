@@ -18,8 +18,7 @@ import SwiftUI
 
 protocol OnboardingAvatarViewModelProtocol {
     
-    var completion: ((OnboardingAvatarViewModelResult) -> Void)? { get set }
-    @available(iOS 14, *)
+    var callback: ((OnboardingAvatarViewModelResult) -> Void)? { get set }
     var context: OnboardingAvatarViewModelType.Context { get }
     
     /// Update the view model to show the image that the user has picked.

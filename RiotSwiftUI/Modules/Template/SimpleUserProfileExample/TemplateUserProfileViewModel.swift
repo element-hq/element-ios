@@ -17,11 +17,10 @@
 import SwiftUI
 import Combine
 
-@available(iOS 14, *)
 typealias TemplateUserProfileViewModelType = StateStoreViewModel<TemplateUserProfileViewState,
                                                                  Never,
                                                                  TemplateUserProfileViewAction>
-@available(iOS 14, *)
+
 class TemplateUserProfileViewModel: TemplateUserProfileViewModelType, TemplateUserProfileViewModelProtocol {
 
     // MARK: - Properties

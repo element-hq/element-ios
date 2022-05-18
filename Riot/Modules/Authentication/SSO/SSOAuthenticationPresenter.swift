@@ -20,7 +20,9 @@ import SafariServices
 @objc protocol SSOAuthenticationPresenterDelegate {
     func ssoAuthenticationPresenterDidCancel(_ presenter: SSOAuthenticationPresenter)
     func ssoAuthenticationPresenter(_ presenter: SSOAuthenticationPresenter, authenticationDidFailWithError error: Error)
-    func ssoAuthenticationPresenter(_ presenter: SSOAuthenticationPresenter, authenticationSucceededWithToken token: String)
+    func ssoAuthenticationPresenter(_ presenter: SSOAuthenticationPresenter,
+                                    authenticationSucceededWithToken token: String,
+                                    usingIdentityProvider identityProvider: SSOIdentityProvider?)
 }
 
 enum SSOAuthenticationPresenterError: Error {
@@ -46,6 +48,7 @@ final class SSOAuthenticationPresenter: NSObject {
     
     // MARK: Public
     
+    private(set) var identityProvider: SSOIdentityProvider?
     weak var delegate: SSOAuthenticationPresenterDelegate?
     
     // MARK: - Setup
@@ -57,15 +60,16 @@ final class SSOAuthenticationPresenter: NSObject {
     
     // MARK: - Public
     
-    func present(forIdentityProviderIdentifier identityProviderIdentifier: String?,
+    func present(forIdentityProvider identityProvider: SSOIdentityProvider?,
                  with transactionId: String,
                  from presentingViewController: UIViewController,
                  animated: Bool) {
-        guard let authenticationURL = self.ssoAuthenticationService.authenticationURL(for: identityProviderIdentifier, transactionId: transactionId) else {
+        guard let authenticationURL = self.ssoAuthenticationService.authenticationURL(for: identityProvider?.id, transactionId: transactionId) else {
             self.delegate?.ssoAuthenticationPresenter(self, authenticationDidFailWithError: SSOAuthenticationPresenterError.failToLoadAuthenticationURL)
              return
         }
         
+        self.identityProvider = identityProvider
         self.presentingViewController = presentingViewController
         
         // NOTE: By using SFAuthenticationSession the consent alert show product name instead of display name. Fallback to SFSafariViewController instead in order to not disturb users with "Riot" wording at the moment.
@@ -130,7 +134,7 @@ final class SSOAuthenticationPresenter: NSObject {
                 }
             } else if let successURL = callBackURL {
                 if let loginToken = self.ssoAuthenticationService.loginToken(from: successURL) {
-                    self.delegate?.ssoAuthenticationPresenter(self, authenticationSucceededWithToken: loginToken)
+                    self.delegate?.ssoAuthenticationPresenter(self, authenticationSucceededWithToken: loginToken, usingIdentityProvider: self.identityProvider)
                 } else {
                     MXLog.debug("SSOAuthenticationPresenter: Login token not found")
                     self.delegate?.ssoAuthenticationPresenter(self, authenticationDidFailWithError: SSOAuthenticationServiceError.tokenNotFound)

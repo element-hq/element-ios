@@ -10,6 +10,10 @@ import Foundation
 
 // swiftlint:disable function_parameter_count identifier_name line_length type_body_length
 public extension VectorL10n {
+  /// This server would like to make sure you are not a robot
+  static var authenticationRecaptchaMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_recaptcha_message") 
+  }
   /// Join millions for free on the largest public server
   static var authenticationRegistrationMatrixDescription: String { 
     return VectorL10n.tr("Untranslated", "authentication_registration_matrix_description") 
@@ -77,6 +81,42 @@ public extension VectorL10n {
   /// Choose your server
   static var authenticationServerSelectionTitle: String { 
     return VectorL10n.tr("Untranslated", "authentication_server_selection_title") 
+  }
+  /// Please read through T&C. You must accept in order to continue.
+  static var authenticationTermsMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_terms_message") 
+  }
+  /// Privacy policy
+  static var authenticationTermsTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_terms_title") 
+  }
+  /// This will help verify your account and enables password recovery.
+  static var authenticationVerifyEmailInputMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_email_input_message") 
+  }
+  /// Enter your email address
+  static var authenticationVerifyEmailInputTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_email_input_title") 
+  }
+  /// Email Address
+  static var authenticationVerifyEmailTextFieldPlaceholder: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_email_text_field_placeholder") 
+  }
+  /// Resend email
+  static var authenticationVerifyEmailWaitingButton: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_email_waiting_button") 
+  }
+  /// Did not receive an email?
+  static var authenticationVerifyEmailWaitingHint: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_email_waiting_hint") 
+  }
+  /// To confirm your email address, tap the button in the email we just sent to %@
+  static func authenticationVerifyEmailWaitingMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Untranslated", "authentication_verify_email_waiting_message", p1)
+  }
+  /// Check your email to verify.
+  static var authenticationVerifyEmailWaitingTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_email_waiting_title") 
   }
   /// Choose from files
   static var imagePickerActionFiles: String { 

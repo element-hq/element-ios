@@ -2509,3 +2509,15 @@
 "room_participants_remove_prompt_msg" = "Ste si istí, že chcete používateľa %@ odstrániť z tejto konverzácie?";
 "auth_reset_password_email_validation_message" = "Na adresu %@ bola odoslaná správa. Potom, čo kliknete na odkaz z tejto správy, pokračujte kliknutím nižšie.";
 "active_call_details" = "Prebiehajúci hovor (%@)";
+"location_sharing_live_timer_incoming" = "Zdieľať polohu %@";
+"location_sharing_live_stop_sharing_progress" = "Zastaviť zdieľanie polohy";
+"location_sharing_live_stop_sharing_error" = "Nepodarilo sa zastaviť zdieľanie polohy";
+"location_sharing_live_no_user_locations_error_title" = "Nie sú k dispozícii žiadne používateľské polohy";
+"location_sharing_live_timer_selector_long" = "na 8 hodín";
+"location_sharing_live_timer_selector_medium" = "na 1 hodinu";
+"location_sharing_live_timer_selector_short" = "na 15 minút";
+"location_sharing_live_timer_selector_title" = "Vyberte si, ako dlho budú ostatní vidieť vašu presnú polohu.";
+"location_sharing_live_error" = "Chyba polohy v reálnom čase";
+"location_sharing_live_loading" = "Načítavanie polohy v reálnom čase...";
+"live_location_sharing_ended" = "Ukončenie polohy v reálnom čase";
+"confirm" = "Potvrdiť";

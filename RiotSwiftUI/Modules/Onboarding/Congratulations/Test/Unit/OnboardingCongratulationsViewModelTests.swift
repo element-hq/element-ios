@@ -18,7 +18,6 @@ import XCTest
 
 @testable import RiotSwiftUI
 
-@available(iOS 14.0, *)
 class OnboardingCongratulationsViewModelTests: XCTestCase {
     // The view modal has minimal set up and no mutation so nothing to test.
 }

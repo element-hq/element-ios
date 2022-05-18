@@ -42,7 +42,6 @@ final class TemplateSimpleScreenCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: TemplateSimpleScreenCoordinatorParameters) {
         self.parameters = parameters
         

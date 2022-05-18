@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct OnboardingSplashScreenPage: View {
     
     // MARK: - Properties
@@ -51,7 +50,7 @@ struct OnboardingSplashScreenPage: View {
                     .accessibilityHidden(true)
                 
                 VStack(spacing: 8) {
-                    OnboardingSplashScreenTitleText(content.title)
+                    OnboardingTintedFullStopText(content.title)
                         .font(theme.fonts.title2B)
                         .foregroundColor(theme.colors.primaryContent)
                     Text(content.message)
@@ -75,7 +74,6 @@ struct OnboardingSplashScreenPage: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct OnboardingSplashScreenPage_Previews: PreviewProvider {
     static let content = OnboardingSplashScreenViewState().content
     static var previews: some View {

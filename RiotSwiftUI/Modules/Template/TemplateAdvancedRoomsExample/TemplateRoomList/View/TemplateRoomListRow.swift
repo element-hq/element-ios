@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct TemplateRoomListRow: View {
 
     // MARK: - Properties
@@ -47,7 +46,6 @@ struct TemplateRoomListRow: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct TemplateRoomListRow_Previews: PreviewProvider {
     static var previews: some View {
         TemplateRoomListRow(avatar: MockAvatarInput.example, displayName: "Alice")

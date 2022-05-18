@@ -1,1 +1,169 @@
 
+
+
+/** Key verification **/
+
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ רוצה לאמת";
+
+/* Group call from user, CallKit caller name */
+"GROUP_CALL_FROM_USER" = "%@ (שיחה קבוצתית)";
+
+/* A user added a Jitsi call to a room */
+"GROUP_CALL_STARTED" = "שיחה קבוצתית החלה";
+
+/* Incoming named video conference invite from a specific person */
+"VIDEO_CONF_NAMED_FROM_USER" = "שיחת וידאו קבוצתית מ %@: '%@'";
+
+/* Incoming named voice conference invite from a specific person */
+"VOICE_CONF_NAMED_FROM_USER" = "שיחה קבוצתית מ %@: '%@'";
+
+/* Incoming unnamed video conference invite from a specific person */
+"VIDEO_CONF_FROM_USER" = "שיחת וידאו קבוצתית מ %@";
+
+/* Incoming unnamed voice conference invite from a specific person */
+"VOICE_CONF_FROM_USER" = "שיחה קבוצתית מ %@";
+
+/* Incoming one-to-one video call */
+"VIDEO_CALL_FROM_USER" = "שיחת וידאו מ %@";
+
+/** Calls **/
+
+/* Incoming one-to-one voice call */
+"VOICE_CALL_FROM_USER" = "שיחה מ %@";
+
+/* A user's membership has updated in an unknown way */
+"USER_MEMBERSHIP_UPDATED" = "%@ שינו את הפרופיל שלהם";
+
+/* A user has change their avatar */
+"USER_UPDATED_AVATAR" = "%@ שינו את הדמות שלהם";
+
+/* A user has change their name to a new name which we don't know */
+"GENERIC_USER_UPDATED_DISPLAYNAME" = "%@ שינה את שמם";
+
+/** Invites **/
+
+/* A user has invited you to a chat */
+"USER_INVITE_TO_CHAT" = "%@ הזמין אותך לצ'אט";
+
+/* Multiple unread messages from three people */
+"MSGS_FROM_THREE_USERS" = "%@ הודעה חדשה מ %@, %@ ו %@";
+
+/** Membership Updates **/
+
+/* A user has change their name to a new name */
+"USER_UPDATED_DISPLAYNAME" = "%@ שינה את שמו ל %@";
+
+/* A user has invited you to a named room */
+"USER_INVITE_TO_NAMED_ROOM" = "%@ הזמין אותך ל %@";
+
+/* A user has invited you to an (unamed) group chat */
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ הזמין לצ'אט קבוצתי";
+
+/* A user has reacted to a message, but the reaction content is unknown */
+"GENERIC_REACTION_FROM_USER" = "%@ שלח תגובה";
+
+/** Reactions **/
+
+/* A user has reacted to a message, including the reaction e.g. "Alice reacted 👍". */
+"REACTION_FROM_USER" = "%@ הגיב %@";
+
+/* Look, stuff's happened, alright? Just open the app. */
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@ הודעות חדשות ב %@, %@ ואחרים";
+
+/* Multiple messages in two rooms */
+"MSGS_IN_TWO_ROOMS" = "%@ הודעה חדשה ב %@ ו %@";
+
+/* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
+"MSGS_FROM_TWO_PLUS_USERS" = "%@ הודעה חדשה מ %@, %@ ואחרים";
+
+/* Multiple unread messages from two people */
+"MSGS_FROM_TWO_USERS" = "%@ הודעה חדשה מ %@ ו %@";
+
+/* Multiple unread messages from a specific person, not referencing a room */
+"MSGS_FROM_USER" = "%@ הודעה חדשה ב %@";
+
+/** Coalesced messages **/
+
+/* Multiple unread messages in a room */
+"UNREAD_IN_ROOM" = "%@ הודעה חדשה ב %@";
+
+/* New message with hidden content due to PIN enabled */
+"MESSAGE_PROTECTED" = "הודעה חדשה";
+
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "הודעה ב %@";
+
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "הודעה מ %@";
+
+/** Notification messages **/
+
+/* New message indicator on unknown room */
+"MESSAGE" = "הודעה";
+
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@ נשלחה מדבקה";
+
+/* A single unread message */
+"SINGLE_UNREAD" = "קיבלת הודעה";
+
+/* A single unread message in a room */
+"SINGLE_UNREAD_IN_ROOM" = "קיבלת הודעה ב %@";
+
+/* New file message from a specific person, not referencing a room. */
+"LOCATION_FROM_USER" = "%@ שיתף את מיקומו";
+
+/* New file message from a specific person, not referencing a room. */
+"FILE_FROM_USER" = "%@ שלח קובץ %@";
+
+/* New voice message from a specific person, not referencing a room. */
+"VOICE_MESSAGE_FROM_USER" = "%@ שלח הודעה קולית";
+
+/* New audio message from a specific person, not referencing a room. */
+"AUDIO_FROM_USER" = "%@ שלח קובץ קולי %@";
+
+/* New video message from a specific person, not referencing a room. */
+"VIDEO_FROM_USER" = "%@ שלח סירטון";
+
+/* New image message from a specific person in a named room. */
+"IMAGE_FROM_USER_IN_ROOM" = "%@ פירסם תמונה %@ ב %@";
+
+/** Media Messages **/
+
+/* New image message from a specific person, not referencing a room. */
+"PICTURE_FROM_USER" = "%@ שלח תמונה";
+
+/* New action message from a specific person in a named room. */
+"ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
+
+/* New action message from a specific person, not referencing a room. */
+
+/* New message from a specific person in a named room. Content included. */
+"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ ב %@: %@";
+
+/** Single, unencrypted messages (where we can include the content */
+
+/* New message from a specific person, not referencing a room. Content included. */
+"MSG_FROM_USER_WITH_CONTENT" = "%@: %@";
+
+/* New message from a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM" = "%@ פורסם ב %@";
+
+/** Single, end-to-end encrypted messages (ie. we don't know what they say) */
+
+/* New message from a specific person, not referencing a room */
+"MSG_FROM_USER" = "%@ שלח הודעה";
+
+/* New message reply from a specific person in a named room. */
+"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ השיב ב %@";
+
+/* New message reply from a specific person, not referencing a room. */
+"REPLY_FROM_USER_TITLE" = "%@ השיב";
+
+/** Titles **/
+
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ בתוך %@";
+/** General **/
+
+"Notification" = "הודעה";

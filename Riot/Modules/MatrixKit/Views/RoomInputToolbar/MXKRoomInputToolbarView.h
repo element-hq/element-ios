@@ -270,6 +270,11 @@ typedef enum : NSUInteger
 - (IBAction)onTouchUpInside:(UIButton*)button;
 
 /**
+ Send message currently displayed inside toolbar's ` UITextView`.
+ */
+- (void)sendCurrentMessage;
+
+/**
  Handle image attachment
  Save the image in user's photos library when 'isPhotoLibraryAsset' flag is NO and auto saving is enabled.
  
@@ -354,5 +359,10 @@ typedef enum : NSUInteger
  @param text the text to paste.
  */
 - (void)pasteText:(NSString*)text;
+
+/**
+ The current attributed text message in message composer.
+ */
+@property (nonatomic) NSAttributedString *attributedTextMessage;
 
 @end

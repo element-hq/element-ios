@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct TemplateSimpleScreen: View {
 
     // MARK: - Properties
@@ -104,7 +103,6 @@ struct TemplateSimpleScreen: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct TemplateSimpleScreen_Previews: PreviewProvider {
     static let stateRenderer = MockTemplateSimpleScreenScreenState.stateRenderer
     static var previews: some View {

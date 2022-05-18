@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct TemplateUserProfileHeader: View {
     
     // MARK: - Properties
@@ -49,7 +48,6 @@ struct TemplateUserProfileHeader: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct TemplateUserProfileHeader_Previews: PreviewProvider {
     static var previews: some View {
         TemplateUserProfileHeader(avatar: MockAvatarInput.example, displayName: "Alice", presence: .online)

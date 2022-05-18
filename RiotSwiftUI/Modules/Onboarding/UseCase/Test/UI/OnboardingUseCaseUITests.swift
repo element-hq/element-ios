@@ -17,7 +17,6 @@
 import XCTest
 import RiotSwiftUI
 
-@available(iOS 14.0, *)
 class OnboardingUseCaseUITests: MockScreenTest {
     // The view has no parameters or changing state to test.
 }

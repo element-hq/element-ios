@@ -277,22 +277,27 @@
     }
     else if (button == self.rightInputToolbarButton && self.textMessage.length)
     {
-        // This forces an autocorrect event to happen when "Send" is pressed, which is necessary to accept a pending correction on send
-        self.textMessage = [NSString stringWithFormat:@"%@ ", self.textMessage];
-        self.textMessage = [self.textMessage substringToIndex:[self.textMessage length]-1];
+        [self sendCurrentMessage];
+    }
+}
 
-        NSString *message = self.textMessage;
-        
-        // Reset message, disable view animation during the update to prevent placeholder distorsion.
-        [UIView setAnimationsEnabled:NO];
-        self.textMessage = nil;
-        [UIView setAnimationsEnabled:YES];
-        
-        // Send button has been pressed
-        if (message.length && [self.delegate respondsToSelector:@selector(roomInputToolbarView:sendTextMessage:)])
-        {
-            [self.delegate roomInputToolbarView:self sendTextMessage:message];
-        }
+- (void)sendCurrentMessage
+{
+    // This forces an autocorrect event to happen when "Send" is pressed, which is necessary to accept a pending correction on send
+    self.textMessage = [NSString stringWithFormat:@"%@ ", self.textMessage];
+    self.textMessage = [self.textMessage substringToIndex:[self.textMessage length]-1];
+
+    NSString *message = self.textMessage;
+
+    // Reset message, disable view animation during the update to prevent placeholder distorsion.
+    [UIView setAnimationsEnabled:NO];
+    self.textMessage = nil;
+    [UIView setAnimationsEnabled:YES];
+
+    // Send button has been pressed
+    if (message.length && [self.delegate respondsToSelector:@selector(roomInputToolbarView:sendTextMessage:)])
+    {
+        [self.delegate roomInputToolbarView:self sendTextMessage:message];
     }
 }
 
