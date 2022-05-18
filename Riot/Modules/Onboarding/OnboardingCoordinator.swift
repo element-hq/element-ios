@@ -201,21 +201,17 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             return
         }
         
-        Task {
-            if result == .customServer {
-                await beginAuthentication(with: .selectServerForRegistration)
-            } else {
-                await beginAuthentication(with: .registration)
-            }
-            
-            coordinator.stop()
+        if result == .customServer {
+            beginAuthentication(with: .selectServerForRegistration, onStart: coordinator.stop)
+        } else {
+            beginAuthentication(with: .registration, onStart: coordinator.stop)
         }
     }
     
     // MARK: - Authentication
     
     /// Show the authentication flow, starting at the specified initial screen.
-    private func beginAuthentication(with initialScreen: AuthenticationCoordinator.EntryPoint) async {
+    private func beginAuthentication(with initialScreen: AuthenticationCoordinator.EntryPoint, onStart: @escaping () -> Void) {
         MXLog.debug("[OnboardingCoordinator] beginAuthentication")
         
         let parameters = AuthenticationCoordinatorParameters(navigationRouter: navigationRouter,
@@ -226,6 +222,8 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             guard let self = self, let coordinator = coordinator else { return }
             
             switch result {
+            case .didStart:
+                onStart()
             case .didLogin(let session, let authenticationFlow, let authenticationType):
                 self.authenticationCoordinator(coordinator, didLoginWith: session, and: authenticationFlow, using: authenticationType)
             case .didComplete:
@@ -236,7 +234,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         }
         
         add(childCoordinator: coordinator)
-        await coordinator.startAsync()
+        coordinator.start()
     }
     
     /// Show the legacy authentication screen. Any parameters that have been set in previous screens are be applied.
@@ -254,8 +252,8 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
                 self.authenticationCoordinator(coordinator, didLoginWith: session, and: authenticationFlow, using: authenticationType)
             case .didComplete:
                 self.authenticationCoordinatorDidComplete(coordinator)
-            case .cancel:
-                // Cancellation is only part of the new flow.
+            case .didStart, .cancel:
+                // These results are only sent by the new flow.
                 break
             }
             

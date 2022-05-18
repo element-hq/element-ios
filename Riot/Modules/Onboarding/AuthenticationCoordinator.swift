@@ -72,30 +72,9 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     // MARK: - Public
     
     func start() {
-        Task { await startAsync() }
-    }
-    
-    /// An async version of `start`.
-    ///
-    /// Allows the caller to show an activity indicator until the authentication service is ready.
-    @MainActor func startAsync() async {
-        do {
-            let flow: AuthenticationFlow = initialScreen == .login ? .login : .register
-            let homeserverAddress = authenticationService.state.homeserver.addressFromUser ?? authenticationService.state.homeserver.address
-            try await authenticationService.startFlow(flow, for: homeserverAddress)
-        } catch {
-            MXLog.error("[AuthenticationCoordinator] start: Failed to start")
-            displayError(message: error.localizedDescription)
-            return
-        }
-        
-        switch initialScreen {
-        case .registration:
-            showRegistrationScreen()
-        case .selectServerForRegistration:
-            showServerSelectionScreen()
-        case .login:
-            showLoginScreen()
+        Task {
+            await startAuthenticationFlow()
+            callback?(.didStart)
         }
     }
     
@@ -115,6 +94,28 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     }
     
     // MARK: - Private
+    
+    /// Starts the authentication flow.
+    @MainActor private func startAuthenticationFlow() async {
+        do {
+            let flow: AuthenticationFlow = initialScreen == .login ? .login : .register
+            let homeserverAddress = authenticationService.state.homeserver.addressFromUser ?? authenticationService.state.homeserver.address
+            try await authenticationService.startFlow(flow, for: homeserverAddress)
+        } catch {
+            MXLog.error("[AuthenticationCoordinator] start: Failed to start")
+            displayError(message: error.localizedDescription)
+            return
+        }
+        
+        switch initialScreen {
+        case .registration:
+            showRegistrationScreen()
+        case .selectServerForRegistration:
+            showServerSelectionScreen()
+        case .login:
+            showLoginScreen()
+        }
+    }
     
     /// Presents an alert on top of the navigation router with the supplied error message.
     @MainActor private func displayError(message: String) {
