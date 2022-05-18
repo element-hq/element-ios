@@ -95,7 +95,7 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
  */
 @property(nonatomic) BOOL isKeyVerificationOperationPending;
 
-@property(nonatomic, strong, readonly) id<MXBeaconInfoSummaryProtocol> beaconInfoSummary;
+@property(nonatomic, strong) id<MXBeaconInfoSummaryProtocol> beaconInfoSummary;
 
 /**
  Index of the component which needs a sent tick displayed. -1 if none.

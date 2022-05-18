@@ -19,16 +19,17 @@
 #import "MediaPickerViewController.h"
 
 @class RoomActionsBar;
+@class RoomInputToolbarView;
 
 /**
  Destination of the message in the composer
  */
-typedef enum : NSUInteger
+typedef NS_ENUM(NSUInteger, RoomInputToolbarViewSendMode)
 {
     RoomInputToolbarViewSendModeSend,
     RoomInputToolbarViewSendModeReply,
     RoomInputToolbarViewSendModeEdit
-} RoomInputToolbarViewSendMode;
+};
 
 
 @protocol RoomInputToolbarViewDelegate <MXKRoomInputToolbarViewDelegate>
@@ -38,21 +39,29 @@ typedef enum : NSUInteger
  
  @param toolbarView the room input toolbar view
  */
-- (void)roomInputToolbarViewDidTapCancel:(MXKRoomInputToolbarView*)toolbarView;
+- (void)roomInputToolbarViewDidTapCancel:(RoomInputToolbarView*)toolbarView;
 
 /**
  Inform the delegate that the text message has changed.
  
  @param toolbarView the room input toolbar view
  */
-- (void)roomInputToolbarViewDidChangeTextMessage:(MXKRoomInputToolbarView*)toolbarView;
+- (void)roomInputToolbarViewDidChangeTextMessage:(RoomInputToolbarView*)toolbarView;
 
 /**
  Inform the delegate that the action menu was opened.
  
  @param toolbarView the room input toolbar view
  */
-- (void)roomInputToolbarViewDidOpenActionMenu:(MXKRoomInputToolbarView*)toolbarView;
+- (void)roomInputToolbarViewDidOpenActionMenu:(RoomInputToolbarView*)toolbarView;
+
+/**
+ Tells the delegate that the user wants to send an attributed text message.
+
+ @param toolbarView the room input toolbar view.
+ @param attributedTextMessage the attributed string to send.
+ */
+- (void)roomInputToolbarView:(RoomInputToolbarView *)toolbarView sendAttributedTextMessage:(NSAttributedString *)attributedTextMessage;
 
 @end
 
@@ -101,6 +110,8 @@ typedef enum : NSUInteger
  The attach media button
  */
 @property (nonatomic, weak, readonly) UIButton *attachMediaButton;
+
+@property (nonatomic, readonly, nonnull) UIFont *textDefaultFont;
 
 /**
  Adds a voice message toolbar view to be displayed inside this input toolbar

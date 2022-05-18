@@ -16,12 +16,10 @@
 
 import Foundation
 
-@available(iOS 14.0, *)
 protocol AuthenticationServiceDelegate: AnyObject {
     func authenticationServiceDidUpdateRegistrationParameters(_ authenticationService: AuthenticationService)
 }
 
-@available(iOS 14.0, *)
 class AuthenticationService: NSObject {
     
     /// The shared service object.
@@ -98,7 +96,7 @@ class AuthenticationService: NSObject {
         let loginWizard = LoginWizard()
         self.loginWizard = loginWizard
         
-        if flow == .registration {
+        if flow == .register {
             do {
                 let registrationWizard = RegistrationWizard(client: client)
                 state.homeserver.registrationFlow = try await registrationWizard.registrationFlow()
@@ -124,7 +122,7 @@ class AuthenticationService: NSObject {
         switch flow {
         case .login:
             return client.loginFallbackURL
-        case .registration:
+        case .register:
             return client.registerFallbackURL
         }
     }

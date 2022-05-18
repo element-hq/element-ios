@@ -24,4 +24,41 @@ public extension NSAttributedString {
         result.removeAttribute(.link, range: NSRange(location: 0, length: length))
         return result
     }
+    
+    /// Enumerate attribute for given key and conveniently ignore any attribute that doesn't match given generic type.
+    ///
+    /// - Parameters:
+    ///   - attrName: The name of the attribute to enumerate.
+    ///   - enumerationRange: The range over which the attribute values are enumerated.
+    ///   - opts: The options used by the enumeration. For possible values, see NSAttributedStringEnumerationOptions.
+    ///   - block: The block to apply to ranges of the specified attribute in the attributed string.
+    func vc_enumerateAttribute<T>(_ attrName: NSAttributedString.Key,
+                                  in enumerationRange: NSRange,
+                                  options opts: NSAttributedString.EnumerationOptions = [],
+                                  using block: (T, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void) {
+        self.enumerateAttribute(attrName,
+                                in: enumerationRange,
+                                options: opts) { (attr: Any?, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) in
+            guard let typedAttr = attr as? T else { return }
+            
+            block(typedAttr, range, stop)
+        }
+    }
+
+    /// Creates a new attributed string with given alpha applied to all texts.
+    ///
+    /// - Parameters:
+    ///   - alpha: Alpha value to apply
+    /// - Returns: New attributed string with updated alpha
+    @objc func withTextColorAlpha(_ alpha: CGFloat) -> NSAttributedString {
+        let mutableString = NSMutableAttributedString(attributedString: self)
+        let totalRange = NSRange(location: 0, length: mutableString.length)
+        mutableString.vc_enumerateAttribute(.foregroundColor,
+                                            in: totalRange) { (color: UIColor, range: NSRange, _) in
+            let colorWithAlpha = color.withAlphaComponent(alpha)
+            mutableString.addAttribute(.foregroundColor, value: colorWithAlpha, range: range)
+        }
+
+        return mutableString
+    }
 }

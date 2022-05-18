@@ -44,6 +44,7 @@
 @property (nonatomic, readonly) NSString *roomIdentifier;
 @property (nonatomic, readonly) NSString *roomDisplayname;
 @property (nonatomic, readonly) NSString *avatarUrl;
+@property (nonatomic, readonly) NSString *directUserId;
 @property (nonatomic, readonly) MXPresence presence;
 @property (nonatomic, readonly) NSString *lastEventTextMessage;
 @property (nonatomic, readonly) NSString *lastEventDate;

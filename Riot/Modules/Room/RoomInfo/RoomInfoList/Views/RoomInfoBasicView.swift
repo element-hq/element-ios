@@ -30,7 +30,11 @@ class RoomInfoBasicView: UIView {
     @IBOutlet private weak var avatarContainerView: UIView!
     @IBOutlet private weak var avatarImageView: MXKImageView!
     @IBOutlet private weak var badgeImageView: UIImageView!
-    @IBOutlet private weak var presenceIndicatorView: PresenceIndicatorView!
+    @IBOutlet private weak var presenceIndicatorView: PresenceIndicatorView! {
+        didSet {
+            presenceIndicatorView.delegate = self
+        }
+    }
     @IBOutlet private weak var roomNameStackView: UIStackView!
     @IBOutlet private weak var roomNameLabel: UILabel!
     @IBOutlet private weak var roomAddressLabel: UILabel!
@@ -98,12 +102,16 @@ class RoomInfoBasicView: UIView {
             VectorL10n.roomParticipantsSecurityInformationRoomEncryptedForDm :
             VectorL10n.roomParticipantsSecurityInformationRoomEncrypted
         securityContainerView.isHidden = !viewData.isEncrypted
-        presenceIndicatorView.setPresence(viewData.directUserPresence)
-        updateBadgeImageViewPosition(with: viewData.encryptionImage, presence: viewData.directUserPresence)
+        if let directUserId = viewData.directUserId {
+            presenceIndicatorView.configure(userId: directUserId, presence: viewData.directUserPresence)
+        } else {
+            presenceIndicatorView.stopListeningPresenceUpdates()
+        }
+        updateBadgeImageViewPosition(isPresenceDisplayed: viewData.directUserPresence != .unknown)
     }
     
-    private func updateBadgeImageViewPosition(with encryptionImage: UIImage?, presence: MXPresence) {
-        guard encryptionImage != nil else {
+    private func updateBadgeImageViewPosition(isPresenceDisplayed: Bool) {
+        guard badgeImageView.image != nil else {
             badgeImageView.isHidden = true
             return
         }
@@ -111,7 +119,6 @@ class RoomInfoBasicView: UIView {
         badgeImageView.isHidden = false
         // Update badge position if it doesn't match expectation.
         // If presence is displayed, badge should be in the name stack.
-        let isPresenceDisplayed = presence != .unknown
         let isBadgeInRoomNameStackView = roomNameStackView.arrangedSubviews.contains(badgeImageView)
         switch (isPresenceDisplayed, isBadgeInRoomNameStackView) {
         case (true, false):
@@ -166,4 +173,10 @@ extension RoomInfoBasicView: Themable {
         presenceIndicatorView.borderColor = theme.headerBackgroundColor
     }
     
+}
+
+extension RoomInfoBasicView: PresenceIndicatorViewDelegate {
+    func presenceIndicatorViewDidUpdateVisibility(_ presenceIndicatorView: PresenceIndicatorView, isHidden: Bool) {
+        updateBadgeImageViewPosition(isPresenceDisplayed: !isHidden)
+    }
 }

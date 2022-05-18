@@ -1511,11 +1511,11 @@ public class VectorL10n: NSObject {
   public static var directorySearchFail: String { 
     return VectorL10n.tr("Vector", "directory_search_fail") 
   }
-  /// %tu results found for %@
+  /// %1$tu results found for %2$@
   public static func directorySearchResults(_ p1: Int, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "directory_search_results", p1, p2)
   }
-  /// >%tu results found for %@
+  /// >%1$tu results found for %2$@
   public static func directorySearchResultsMoreThan(_ p1: Int, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "directory_search_results_more_than", p1, p2)
   }

@@ -17,7 +17,6 @@
 import Foundation
 import MatrixSDK
 
-@available(iOS 14.0, *)
 struct AuthenticationState {
     // var serverType: ServerType = .unknown
     var flow: AuthenticationFlow

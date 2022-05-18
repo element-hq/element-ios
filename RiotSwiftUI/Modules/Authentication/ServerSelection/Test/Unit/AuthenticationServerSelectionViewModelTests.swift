@@ -18,7 +18,6 @@ import XCTest
 
 @testable import RiotSwiftUI
 
-@available(iOS 14.0, *)
 class AuthenticationServerSelectionViewModelTests: XCTestCase {
     private enum Constants {
         static let counterInitialValue = 0
@@ -27,9 +26,9 @@ class AuthenticationServerSelectionViewModelTests: XCTestCase {
     var viewModel: AuthenticationServerSelectionViewModelProtocol!
     var context: AuthenticationServerSelectionViewModelType.Context!
     
-    override func setUp() async throws {
-        viewModel = await AuthenticationServerSelectionViewModel(homeserverAddress: "", hasModalPresentation: true)
-        context = await viewModel.context
+    override func setUp() {
+        viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: "", hasModalPresentation: true)
+        context = viewModel.context
     }
 
     @MainActor func testErrorMessage() async {

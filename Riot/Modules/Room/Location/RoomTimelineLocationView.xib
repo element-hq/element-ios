@@ -14,14 +14,14 @@
             <rect key="frame" x="0.0" y="0.0" width="395" height="250"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="location_placeholder_background_image" translatesAutoresizingMaskIntoConstraints="NO" id="vuV-BV-bbx" userLabel="Placeholder BackGround Image">
+                <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="location_background_light_image" translatesAutoresizingMaskIntoConstraints="NO" id="vuV-BV-bbx" userLabel="Placeholder BackGround Image">
                     <rect key="frame" x="0.0" y="0.0" width="395" height="250"/>
                 </imageView>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4WL-gT-HBV">
-                    <rect key="frame" x="172.5" y="75" width="50" height="50"/>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="location_live_cell_ended_light_icon" translatesAutoresizingMaskIntoConstraints="NO" id="4WL-gT-HBV">
+                    <rect key="frame" x="175" y="67.5" width="45" height="65"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="50" id="c7D-e5-dkZ"/>
-                        <constraint firstAttribute="width" constant="50" id="q3h-Mg-lG4"/>
+                        <constraint firstAttribute="height" constant="65" id="c7D-e5-dkZ"/>
+                        <constraint firstAttribute="width" constant="45" id="q3h-Mg-lG4"/>
                     </constraints>
                 </imageView>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="0D1-Km-vTu">
@@ -169,7 +169,8 @@
                 <outlet property="descriptionIcon" destination="GP2-dA-giJ" id="7YL-UU-ClT"/>
                 <outlet property="descriptionLabel" destination="c68-l7-McA" id="HiH-8Q-yTp"/>
                 <outlet property="liveLocationContainerView" destination="Hpx-8P-nCb" id="Vxm-Sf-TAE"/>
-                <outlet property="liveLocationImageView" destination="pgy-lK-ehN" id="1Th-PJ-G0p"/>
+                <outlet property="liveLocationIcon" destination="pgy-lK-ehN" id="1Th-PJ-G0p"/>
+                <outlet property="liveLocationIconBackgroundView" destination="72o-VM-Ls7" id="2XU-x0-vhz"/>
                 <outlet property="liveLocationStatusLabel" destination="X9R-EV-RDT" id="HJr-cE-icv"/>
                 <outlet property="liveLocationTimerLabel" destination="U75-c5-got" id="RkO-6a-ABU"/>
                 <outlet property="placeholderBackground" destination="vuV-BV-bbx" id="9PW-RW-tFh"/>
@@ -180,9 +181,10 @@
         </view>
     </objects>
     <resources>
+        <image name="location_background_light_image" width="847.5" height="556"/>
+        <image name="location_live_cell_ended_light_icon" width="46" height="65"/>
         <image name="location_live_cell_icon" width="32" height="32"/>
         <image name="location_marker_icon" width="24" height="24"/>
-        <image name="location_placeholder_background_image" width="312" height="156"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

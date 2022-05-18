@@ -1751,10 +1751,16 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
 
 - (NSAttributedString*)renderHTMLString:(NSString*)htmlString forEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState
 {
+    return [self renderHTMLString:htmlString forEvent:event withRoomState:roomState isEditMode:NO];
+}
+
+- (NSAttributedString*)renderHTMLString:(NSString*)htmlString forEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState isEditMode:(BOOL)isEditMode
+{
     NSString *html = htmlString;
 
     // Special treatment for "In reply to" message
-    if (event.isReplyEvent || (!RiotSettings.shared.enableThreads && event.isInThread))
+    // Note: `isEditMode` fixes an issue where editing a reply would display an "In reply to" span instead of a mention.
+    if (!isEditMode && (event.isReplyEvent || (!RiotSettings.shared.enableThreads && event.isInThread)))
     {
         html = [self renderReplyTo:html withRoomState:roomState];
     }

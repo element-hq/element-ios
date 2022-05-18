@@ -17,11 +17,10 @@
 import SwiftUI
 import Combine
 
-@available(iOS 14, *)
 typealias OnboardingDisplayNameViewModelType = StateStoreViewModel<OnboardingDisplayNameViewState,
-                                                                 Never,
-                                                                 OnboardingDisplayNameViewAction>
-@available(iOS 14, *)
+                                                                   Never,
+                                                                   OnboardingDisplayNameViewAction>
+
 class OnboardingDisplayNameViewModel: OnboardingDisplayNameViewModelType, OnboardingDisplayNameViewModelProtocol {
 
     // MARK: - Properties

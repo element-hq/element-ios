@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct TemplateRoomList: View {
     
     // MARK: - Properties
@@ -66,7 +65,6 @@ struct TemplateRoomList: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct TemplateRoomList_Previews: PreviewProvider {
     
     static let stateRenderer = MockTemplateRoomListScreenState.stateRenderer

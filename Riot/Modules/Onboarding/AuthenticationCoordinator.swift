@@ -18,7 +18,6 @@
 
 import UIKit
 
-@available(iOS 14.0, *)
 struct AuthenticationCoordinatorParameters {
     let navigationRouter: NavigationRouterType
     /// The screen that should be shown when starting the flow.
@@ -28,7 +27,6 @@ struct AuthenticationCoordinatorParameters {
 }
 
 /// A coordinator that handles authentication, verification and setting a PIN.
-@available(iOS 14.0, *)
 final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtocol {
     
     enum EntryPoint {
@@ -76,7 +74,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     func start() {
         Task {
             do {
-                let flow: AuthenticationFlow = initialScreen == .login ? .login : .registration
+                let flow: AuthenticationFlow = initialScreen == .login ? .login : .register
                 try await authenticationService.startFlow(flow, for: authenticationService.state.homeserver.address)
             } catch {
                 MXLog.error("[AuthenticationCoordinator] start: Failed to start")
@@ -133,7 +131,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         let parameters = AuthenticationServerSelectionCoordinatorParameters(authenticationService: authenticationService,
                                                                             hasModalPresentation: false)
         let coordinator = AuthenticationServerSelectionCoordinator(parameters: parameters)
-        coordinator.completion = { [weak self, weak coordinator] result in
+        coordinator.callback = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
             self.serverSelectionCoordinator(coordinator, didCompleteWith: result)
         }
@@ -150,7 +148,6 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         }
     }
     
-    @available(iOS 14.0, *)
     /// Shows the next screen in the flow after the server selection screen.
     @MainActor private func serverSelectionCoordinator(_ coordinator: AuthenticationServerSelectionCoordinator,
                                                        didCompleteWith result: AuthenticationServerSelectionCoordinatorResult) {
@@ -171,7 +168,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
                                                                          registrationFlow: homeserver.registrationFlow,
                                                                          loginMode: homeserver.preferredLoginMode)
         let coordinator = AuthenticationRegistrationCoordinator(parameters: parameters)
-        coordinator.completion = { [weak self, weak coordinator] result in
+        coordinator.callback = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
             self.registrationCoordinator(coordinator, didCompleteWith: result)
         }
@@ -189,12 +186,9 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     }
     
     /// Displays the next view in the flow after the registration screen.
-    @available(iOS 14.0, *)
     @MainActor private func registrationCoordinator(_ coordinator: AuthenticationRegistrationCoordinator,
                                                     didCompleteWith result: AuthenticationRegistrationCoordinatorResult) {
         switch result {
-        case .selectServer:
-            showServerSelectionScreen()
         case .completed(let result):
             handleRegistrationResult(result)
         }
@@ -211,7 +205,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     func handleRegistrationResult(_ result: RegistrationResult) {
         switch result {
         case .success(let mxSession):
-            onSessionCreated(session: mxSession, isAccountCreated: true)
+            onSessionCreated(session: mxSession, flow: .register)
         case .flowResponse(let flowResult):
             // TODO
             break
@@ -219,7 +213,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     }
     
     /// Handles the creation of a new session following on from a successful authentication.
-    func onSessionCreated(session: MXSession, isAccountCreated: Bool) {
+    func onSessionCreated(session: MXSession, flow: AuthenticationFlow) {
         self.session = session
         // self.password = password
         
@@ -249,7 +243,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         verificationListener.start()
         self.verificationListener = verificationListener
         
-        completion?(.didLogin(session: session, authenticationType: isAccountCreated ? .register : .login))
+        #warning("Add authentication type to the new flow")
+        completion?(.didLogin(session: session, authenticationFlow: flow, authenticationType: .other))
     }
     
     // MARK: - Additional Screens
@@ -291,7 +286,6 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
 }
 
 // MARK: - KeyVerificationCoordinatorDelegate
-@available(iOS 14.0, *)
 extension AuthenticationCoordinator: KeyVerificationCoordinatorDelegate {
     func keyVerificationCoordinatorDidComplete(_ coordinator: KeyVerificationCoordinatorType, otherUserId: String, otherDeviceId: String) {
         if let crypto = session?.crypto,
@@ -313,7 +307,6 @@ extension AuthenticationCoordinator: KeyVerificationCoordinatorDelegate {
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
-@available(iOS 14.0, *)
 extension AuthenticationCoordinator: UIAdaptivePresentationControllerDelegate {
     func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
         // Prevent Key Verification from using swipe to dismiss
@@ -324,14 +317,13 @@ extension AuthenticationCoordinator: UIAdaptivePresentationControllerDelegate {
 
 
 // MARK: - Unused conformances
-@available(iOS 14.0, *)
 extension AuthenticationCoordinator {
     var customServerFieldsVisible: Bool {
         get { false }
         set { /* no-op */ }
     }
     
-    func update(authenticationType: MXKAuthenticationType) {
+    func update(authenticationFlow: AuthenticationFlow) {
         // unused
     }
     

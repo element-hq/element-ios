@@ -31,7 +31,6 @@
 
 #import "MXKAppSettings.h"
 
-#import "MXKSendReplyEventStringLocalizer.h"
 #import "MXKSlashCommands.h"
 
 #import "GeneratedInterface-Swift.h"
@@ -989,6 +988,16 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 - (void)setPartialTextMessage:(NSString *)partialTextMessage
 {
     _room.partialTextMessage = partialTextMessage;
+}
+
+- (NSAttributedString *)partialAttributedTextMessage
+{
+    return _room.partialAttributedTextMessage;
+}
+
+- (void)setPartialAttributedTextMessage:(NSAttributedString *)partialAttributedTextMessage
+{
+    _room.partialAttributedTextMessage = partialAttributedTextMessage;
 }
 
 - (void)refreshEventListeners:(NSArray *)liveEventTypesFilterForMessages
@@ -2982,13 +2991,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     return processingQueue;
 }
 
-/**
- Queue an event in order to process its display later.
- 
- @param event the event to process.
- @param roomState the state of the room when the event fired.
- @param direction the order of the events in the arrays
- */
 - (void)queueEventForProcessing:(MXEvent*)event withRoomState:(MXRoomState*)roomState direction:(MXTimelineDirection)direction
 {
     if (event.isLocalEvent)
@@ -3166,12 +3168,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     return isHighlighted;
 }
 
-/**
- Start processing pending events.
- 
- @param onComplete a block called (on the main thread) when the processing has been done. Can be nil.
- Note this block returns the number of added cells in first and last positions.
- */
 - (void)processQueuedEvents:(void (^)(NSUInteger addedHistoryCellNb, NSUInteger addedLiveCellNb))onComplete
 {
     MXWeakify(self);

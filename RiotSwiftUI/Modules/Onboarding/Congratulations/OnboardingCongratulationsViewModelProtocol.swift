@@ -19,6 +19,5 @@ import Foundation
 protocol OnboardingCongratulationsViewModelProtocol {
     
     var completion: ((OnboardingCongratulationsViewModelResult) -> Void)? { get set }
-    @available(iOS 14, *)
     var context: OnboardingCongratulationsViewModelType.Context { get }
 }

@@ -38,7 +38,6 @@ final class TemplateRoomListCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: TemplateRoomListCoordinatorParameters) {
         self.parameters = parameters
         let viewModel = TemplateRoomListViewModel(templateRoomListService: TemplateRoomListService(session: parameters.session))

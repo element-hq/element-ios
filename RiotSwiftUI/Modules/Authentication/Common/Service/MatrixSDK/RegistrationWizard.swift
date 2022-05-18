@@ -16,7 +16,6 @@
 
 import Foundation
 
-@available(iOS 14.0, *)
 /// Set of methods to be able to create an account on a homeserver.
 ///
 /// Common scenario to register an account successfully:

@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 /// The screen shown to a new user to select their use case for the app.
 struct OnboardingUseCaseSelectionScreen: View {
 
@@ -33,21 +32,17 @@ struct OnboardingUseCaseSelectionScreen: View {
     /// The screen's title and instructions.
     var titleContent: some View {
         VStack(spacing: 8) {
-            Image(Asset.Images.onboardingUseCaseIcon.name)
-                .resizable()
-                .renderingMode(.template)
-                .foregroundColor(theme.colors.accent)
-                .frame(width: OnboardingMetrics.iconSize, height: OnboardingMetrics.iconSize)
-                .background(Circle().foregroundColor(.white).padding(2))
+            OnboardingIconImage(image: Asset.Images.onboardingUseCaseIcon)
                 .padding(.bottom, 8)
-                .accessibilityHidden(true)
             
             Text(VectorL10n.onboardingUseCaseTitle)
                 .font(theme.fonts.title2B)
+                .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.primaryContent)
             
             Text(VectorL10n.onboardingUseCaseMessage)
                 .font(theme.fonts.body)
+                .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.secondaryContent)
         }
     }
@@ -75,6 +70,8 @@ struct OnboardingUseCaseSelectionScreen: View {
                 viewModel.send(viewAction: .answer(.skipped))
             }
             .font(theme.fonts.subheadline)
+            .multilineTextAlignment(.center)
+            .fixedSize(horizontal: false, vertical: true)
             .foregroundColor(theme.colors.tertiaryContent)
             .padding(.top, 8)
         }
@@ -85,6 +82,7 @@ struct OnboardingUseCaseSelectionScreen: View {
         VStack(spacing: 14) {
             Text(VectorL10n.onboardingUseCaseExistingServerMessage)
                 .font(theme.fonts.subheadline)
+                .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.tertiaryContent)
             
             Button { viewModel.send(viewAction: .answer(.customServer)) } label: {
@@ -104,14 +102,15 @@ struct OnboardingUseCaseSelectionScreen: View {
                         
                         useCaseButtons
                     }
-                    .frame(maxWidth: OnboardingMetrics.maxContentWidth)
+                    .readableFrame()
                     .padding(.top, OnboardingMetrics.topPaddingToNavigationBar)
+                    .padding(.bottom, 8)
                     .padding(.horizontal, 16)
                 }
-                .frame(maxWidth: .infinity)
                 
                 serverFooter
                     .padding(.horizontal, 16)
+                    .padding(.top, 8)
                     .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 20 : 36)
             }
         }
@@ -122,14 +121,15 @@ struct OnboardingUseCaseSelectionScreen: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct OnboardingUseCase_Previews: PreviewProvider {
     static let stateRenderer = MockOnboardingUseCaseSelectionScreenState.stateRenderer
     
     static var previews: some View {
         stateRenderer.screenGroup(addNavigation: true)
             .theme(.light).preferredColorScheme(.light)
+            .navigationViewStyle(.stack)
         stateRenderer.screenGroup(addNavigation: true)
             .theme(.dark).preferredColorScheme(.dark)
+            .navigationViewStyle(.stack)
     }
 }

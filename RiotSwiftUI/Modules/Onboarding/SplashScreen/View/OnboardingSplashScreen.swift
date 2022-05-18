@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 /// The splash screen shown at the beginning of the onboarding flow.
 struct OnboardingSplashScreen: View {
 
@@ -199,7 +198,6 @@ struct OnboardingSplashScreen: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct OnboardingSplashScreen_Previews: PreviewProvider {
     static let stateRenderer = MockOnboardingSplashScreenScreenState.stateRenderer
     static var previews: some View {

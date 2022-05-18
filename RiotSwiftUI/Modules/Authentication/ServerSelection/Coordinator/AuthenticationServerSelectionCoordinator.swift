@@ -17,7 +17,6 @@
 import SwiftUI
 import CommonKit
 
-@available(iOS 14.0, *)
 struct AuthenticationServerSelectionCoordinatorParameters {
     let authenticationService: AuthenticationService
     /// Whether the screen is presented modally or within a navigation stack.
@@ -29,7 +28,6 @@ enum AuthenticationServerSelectionCoordinatorResult {
     case dismiss
 }
 
-@available(iOS 14.0, *)
 final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties
@@ -50,7 +48,7 @@ final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    @MainActor var completion: ((AuthenticationServerSelectionCoordinatorResult) -> Void)?
+    @MainActor var callback: ((AuthenticationServerSelectionCoordinatorResult) -> Void)?
     
     // MARK: - Setup
     
@@ -72,22 +70,8 @@ final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
     // MARK: - Public
     
     func start() {
-        Task {
-            await MainActor.run {
-                MXLog.debug("[AuthenticationServerSelectionCoordinator] did start.")
-                authenticationServerSelectionViewModel.completion = { [weak self] result in
-                    guard let self = self else { return }
-                    MXLog.debug("[AuthenticationServerSelectionCoordinator] AuthenticationServerSelectionViewModel did complete with result: \(result).")
-                    
-                    switch result {
-                    case .confirm(let homeserverAddress):
-                        self.useHomeserver(homeserverAddress)
-                    case .dismiss:
-                        self.completion?(.dismiss)
-                    }
-                }
-            }
-        }
+        MXLog.debug("[AuthenticationServerSelectionCoordinator] did start.")
+        Task { await setupViewModel() }
     }
     
     func toPresentable() -> UIViewController {
@@ -95,6 +79,21 @@ final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
     }
     
     // MARK: - Private
+    
+    /// Set up the view model. This method is extracted from `start()` so it can run on the `MainActor`.
+    @MainActor private func setupViewModel() {
+        authenticationServerSelectionViewModel.callback = { [weak self] result in
+            guard let self = self else { return }
+            MXLog.debug("[AuthenticationServerSelectionCoordinator] AuthenticationServerSelectionViewModel did complete with result: \(result).")
+            
+            switch result {
+            case .confirm(let homeserverAddress):
+                self.useHomeserver(homeserverAddress)
+            case .dismiss:
+                self.callback?(.dismiss)
+            }
+        }
+    }
     
     /// Show an activity indicator whilst loading.
     /// - Parameters:
@@ -119,10 +118,10 @@ final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
         Task {
             do {
                 #warning("The screen should be configuration for .login too.")
-                try await authenticationService.startFlow(.registration, for: homeserverAddress)
+                try await authenticationService.startFlow(.register, for: homeserverAddress)
                 stopLoading()
                 
-                completion?(.updated)
+                callback?(.updated)
             } catch {
                 stopLoading()
                 

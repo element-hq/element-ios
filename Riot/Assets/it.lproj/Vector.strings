@@ -2286,3 +2286,15 @@
 "threads_discourage_information_2" = "\n\nVuoi comunque attivare le conversazioni?";
 "threads_discourage_information_1" = "Il tuo homeserver attualmente non supporta le conversazioni, perciò questa funzione sarà inaffidabile. Alcuni messaggi in conversazioni potrebbero non essere disponibili. ";
 "contacts_address_book_permission_required" = "Autorizzazione necessaria per accedere alla rubrica locale";
+"location_sharing_live_stop_sharing_progress" = "Ferma la condivisione della posizione";
+"location_sharing_live_stop_sharing_error" = "Impossibile fermare la condivisione della posizione";
+"location_sharing_live_no_user_locations_error_title" = "Nessuna posizione utente disponibile";
+"location_sharing_live_timer_selector_long" = "per 8 ore";
+"location_sharing_live_timer_selector_medium" = "per 1 ora";
+"location_sharing_live_timer_selector_short" = "per 15 minuti";
+"location_sharing_live_timer_selector_title" = "Scegli per quanto tempo gli altri vedranno la tua posizione precisa.";
+"location_sharing_live_error" = "Errore della posizione in tempo reale";
+"location_sharing_live_loading" = "Caricamento posizione in tempo reale...";
+"location_sharing_live_timer_incoming" = "In tempo reale fino a %@";
+"live_location_sharing_ended" = "Posizione in tempo reale terminata";
+"confirm" = "Conferma";

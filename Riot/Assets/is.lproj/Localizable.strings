@@ -167,3 +167,6 @@
 /** General **/
 
 "Notification" = "Tilkynning";
+
+/* Look, stuff's happened, alright? Just open the app. */
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@ ný skilaboð í %@, %@ og fleirum";

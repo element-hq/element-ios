@@ -18,8 +18,7 @@ import Foundation
 
 protocol AuthenticationRegistrationViewModelProtocol {
     
-    @MainActor var completion: ((AuthenticationRegistrationViewModelResult) -> Void)? { get set }
-    @available(iOS 14, *)
+    @MainActor var callback: ((AuthenticationRegistrationViewModelResult) -> Void)? { get set }
     var context: AuthenticationRegistrationViewModelType.Context { get }
     
     /// Update the view with new homeserver information.

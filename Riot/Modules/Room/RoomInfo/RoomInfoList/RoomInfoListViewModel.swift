@@ -45,9 +45,12 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
                                                       encryptionImage: encryptionImage,
                                                       isEncrypted: room.summary.isEncrypted,
                                                       isDirect: room.isDirect,
+                                                      directUserId: room.directUserId,
                                                       directUserPresence: directUserPresence)
         
         return RoomInfoListViewData(numberOfMembers: Int(room.summary.membersCount.joined),
+                                    isEncrypted: room.summary.isEncrypted,
+                                    isDirect: room.isDirect,
                                     basicInfoViewData: basicInfoViewData)
     }
     
@@ -58,12 +61,10 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
         self.room = room
         super.init()
         startObservingSummaryChanges()
-        startObservingPresenceChanges()
     }
     
     deinit {
         stopObservingSummaryChanges()
-        stopObservingPresenceChanges()
     }
     
     // MARK: - Public
@@ -91,24 +92,8 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
         NotificationCenter.default.removeObserver(self, name: .mxRoomSummaryDidChange, object: nil)
     }
     
-    private func startObservingPresenceChanges() {
-        NotificationCenter.default.addObserver(self, selector: #selector(presenceUpdated(_:)), name: .mxkContactManagerMatrixUserPresenceChange, object: nil)
-    }
-    
-    private func stopObservingPresenceChanges() {
-        NotificationCenter.default.removeObserver(self, name: .mxkContactManagerMatrixUserPresenceChange, object: nil)
-    }
-    
     @objc private func roomSummaryUpdated(_ notification: Notification) {
         //  force update view
-        self.update(viewState: .loaded(viewData: viewData))
-    }
-    
-    @objc private func presenceUpdated(_ notification: NSNotification) {
-        guard let updatedUserId = notification.object as? String, updatedUserId == room.directUserId else {
-            return
-        }
-        
         self.update(viewState: .loaded(viewData: viewData))
     }
     

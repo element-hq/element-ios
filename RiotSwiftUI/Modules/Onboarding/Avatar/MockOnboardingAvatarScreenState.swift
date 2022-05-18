@@ -19,7 +19,6 @@ import SwiftUI
 
 /// Using an enum for the screen allows you define the different state cases with
 /// the relevant associated data for each case.
-@available(iOS 14.0, *)
 enum MockOnboardingAvatarScreenState: MockScreenState, CaseIterable {
     // A case for each state you want to represent
     // with specific, minimal associated data that will allow you
@@ -63,7 +62,6 @@ enum MockOnboardingAvatarScreenState: MockScreenState, CaseIterable {
     }
 }
 
-@available(iOS 14.0, *)
 extension MockOnboardingAvatarScreenState: CustomStringConvertible {
     // Added to have different descriptions in the SwiftUI target's list.
     var description: String {

@@ -26,16 +26,17 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
         super.render(cellData)
         
         guard #available(iOS 14.0, *),
-              let bubbleData = cellData as? RoomBubbleCellData
+              let bubbleData = cellData as? RoomBubbleCellData,
+              let event = bubbleData.events.last
         else {
             return
         }
         
         locationView.update(theme: ThemeService.shared().theme)
+        locationView.delegate = self
+        self.event = event
         
-        if bubbleData.cellDataTag == .location,
-           let event = bubbleData.events.last {
-            self.event = event
+        if bubbleData.cellDataTag == .location {
             renderStaticLocation(event)
         } else if bubbleData.cellDataTag == .liveLocation,
                   let beaconInfoSummary = bubbleData.beaconInfoSummary {
@@ -126,22 +127,19 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
         
         contentView.vc_addSubViewMatchingParent(locationView)
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.event = nil
+    }
 }
 
 extension LocationPlainCell: RoomTimelineLocationViewDelegate {
     func roomTimelineLocationViewDidTapStopButton(_ roomTimelineLocationView: RoomTimelineLocationView) {
-        guard let event = self.event else {
-            return
-        }
-        
-        delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellStopShareButtonPressed, userInfo: [kMXKRoomBubbleCellEventKey: event])
+        delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellStopShareButtonPressed, userInfo: nil)
     }
     
     func roomTimelineLocationViewDidTapRetryButton(_ roomTimelineLocationView: RoomTimelineLocationView) {
-        guard let event = self.event else {
-            return
-        }
-        
-        delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellRetryShareButtonPressed, userInfo: [kMXKRoomBubbleCellEventKey: event])
+        delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellRetryShareButtonPressed, userInfo: nil)
     }
 }

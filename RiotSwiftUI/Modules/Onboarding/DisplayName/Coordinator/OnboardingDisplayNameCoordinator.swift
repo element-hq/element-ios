@@ -21,7 +21,6 @@ struct OnboardingDisplayNameCoordinatorParameters {
     let userSession: UserSession
 }
 
-@available(iOS 14.0, *)
 final class OnboardingDisplayNameCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties

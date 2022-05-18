@@ -71,7 +71,7 @@ class SocialLoginButtonFactory {
         
         let title = self.buildButtonTitle(with: identityProvider.name, mode: mode)
         
-        let viewData = SocialLoginButtonViewData(identifier: identityProvider.identifier,
+        let viewData = SocialLoginButtonViewData(identityProvider: identityProvider.ssoIdentityProvider,
                                                  title: title,
                                                  defaultStyle: defaultStyle,
                                                  themeStyles: styles)

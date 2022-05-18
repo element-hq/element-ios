@@ -2132,3 +2132,20 @@
 "settings_labs_use_only_latest_user_avatar_and_name" = "Immer aktuelle Profilbilder und Nicknamen anzeigen";
 "room_participants_leave_success" = "Raum verlassen";
 "room_participants_leave_processing" = "Verlassen";
+"onboarding_display_name_title" = "Wähle einen Anzeigenamen";
+"onboarding_personalization_save" = "Speichern und weiter";
+"callbar_active_and_single_paused" = "1 aktiver Anruf (%@) · 1 unterbrochener Anruf";
+"onboarding_congratulations_personalize_button" = "Profil personalisieren";
+/* The placeholder string contains the user's matrix ID */
+"onboarding_congratulations_message" = "Dein Account %@ wurde erstellt.";
+"onboarding_congratulations_title" = "Herzlichen Glückwunsch!";
+"saving" = "Speichern";
+
+// Activities
+"loading" = "Laden";
+"confirm" = "Bestätigen";
+"edit" = "Bearbeiten";
+"suggest" = "Vorschlagen";
+"add" = "Hinzufügen";
+"new_word" = "Neu";
+"stop" = "Stop";
