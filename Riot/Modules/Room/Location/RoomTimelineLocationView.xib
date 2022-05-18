@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -174,7 +172,7 @@
                 <outlet property="liveLocationStatusLabel" destination="X9R-EV-RDT" id="HJr-cE-icv"/>
                 <outlet property="liveLocationTimerLabel" destination="U75-c5-got" id="RkO-6a-ABU"/>
                 <outlet property="placeholderBackground" destination="vuV-BV-bbx" id="9PW-RW-tFh"/>
-                <outlet property="placeholderIcon" destination="4WL-gT-HBV" id="pqw-gN-2Q7"/>
+                <outlet property="placeholderIconView" destination="4WL-gT-HBV" id="pqw-gN-2Q7"/>
                 <outlet property="rightButton" destination="k5H-UE-ygH" id="nz0-Eb-SRp"/>
             </connections>
             <point key="canvasLocation" x="165.94202898550725" y="-101.11607142857143"/>
