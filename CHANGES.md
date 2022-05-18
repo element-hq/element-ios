@@ -1,3 +1,38 @@
+## Changes in 1.8.15 (2022-05-18)
+
+✨ Features
+
+- Allow video rooms to be shown in the rooms list. ([#6149](https://github.com/vector-im/element-ios/issues/6149))
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.23.5](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.23.5)).
+- Add mention pills to timeline & composer ([#3526](https://github.com/vector-im/element-ios/issues/3526))
+- [Room settings] Hide or disable search in the encrypted rooms ([#5725](https://github.com/vector-im/element-ios/issues/5725))
+- ThreadRoomTitleView: Reduce spaces between title and room avatar & room name. ([#5878](https://github.com/vector-im/element-ios/issues/5878))
+- Analytics: Log decryption error details as context in AnalyticsEvent ([#6046](https://github.com/vector-im/element-ios/issues/6046))
+- Authentication: New user accounts are now tracked in analytics if the user opted in. ([#6074](https://github.com/vector-im/element-ios/issues/6074))
+- Location sharing: update UI to latest design ([#6162](https://github.com/vector-im/element-ios/issues/6162))
+
+🐛 Bugfixes
+
+- Fixed crash when opening rooms where the current user doesn't have permission to post messages. ([#6165](https://github.com/vector-im/element-ios/pull/6165))
+- Media gallery: Don't show a thumbnail for the hidden album. ([#6096](https://github.com/vector-im/element-ios/issues/6096))
+- Location sharing: fix bad interaction between static and live location cell ([#6099](https://github.com/vector-im/element-ios/issues/6099))
+- Location sharing: handle correctly timeline refresh after reception of beacon from live location sharing ([#6103](https://github.com/vector-im/element-ios/issues/6103))
+- Location sharing: fix stop button in timeline ([#6110](https://github.com/vector-im/element-ios/issues/6110))
+- Location sharing: handle correctly visibility of the live banner in room ([#6111](https://github.com/vector-im/element-ios/issues/6111))
+- Presence: fix live updates on Home & DM list ([#6144](https://github.com/vector-im/element-ios/issues/6144))
+- Stop deleting audio recording when sending fails. ([#6160](https://github.com/vector-im/element-ios/issues/6160))
+
+🚧 In development 🚧
+
+- Onboarding: Tidy up SwiftUI and Onboarding screens. ([#6139](https://github.com/vector-im/element-ios/pull/6139))
+- Onboarding: Rename completion to callback and simplify actor usage ([#6141](https://github.com/vector-im/element-ios/pull/6141))
+- Authentication: Create email verification screen. ([#5649](https://github.com/vector-im/element-ios/issues/5649))
+- Authentication: Create terms and ReCaptcha screens. ([#5650](https://github.com/vector-im/element-ios/issues/5650))
+
+
 ## Changes in 1.8.14 (2022-05-05)
 
 🙌 Improvements
