@@ -313,7 +313,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         case .flowResponse(let flowResult):
             MXLog.debug("[AuthenticationCoordinator] handleRegistrationResult: Missing stages - \(flowResult.missingStages)")
             
-            guard let nextStage = flowResult.nextUncompletedStage else {
+            let homeserver = authenticationService.state.homeserver
+            guard let nextStage = homeserver.isMatrixDotOrg ? flowResult.nextUncompletedStageOrdered : flowResult.nextUncompletedStage else {
                 MXLog.failure("[AuthenticationCoordinator] There are no remaining stages.")
                 return
             }
