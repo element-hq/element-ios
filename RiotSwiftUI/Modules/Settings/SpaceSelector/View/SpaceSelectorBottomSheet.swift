@@ -33,7 +33,7 @@ struct SpaceSelectorBottomSheet: View {
             ScrollView {
                 LazyVStack {
                     ForEach(viewModel.viewState.items) { item in
-                        SpaceSelectorBottomSheetListRow(avatar: item.avatar, displayName: item.displayName)
+                        SpaceSelectorBottomSheetListRow(avatar: item.avatar, icon: item.icon, displayName: item.displayName)
                             .onTapGesture {
                                 viewModel.send(viewAction: .spaceSelected(item))
                             }

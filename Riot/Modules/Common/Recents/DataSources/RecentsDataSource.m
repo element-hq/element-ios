@@ -39,7 +39,8 @@
 #define RECENTSDATASOURCE_SECTION_RECENTS       0x100
 
 #define RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT             30.0
-#define RECENTSDATASOURCE_ALL_CHATS_SECTION_BOTTOM_VIEW_HEIGHT      50//32.0
+#define RECENTSDATASOURCE_SECTION_HEADER_TOP_PADDING                0
+#define RECENTSDATASOURCE_ALL_CHATS_SECTION_BOTTOM_VIEW_HEIGHT      50.0
 
 NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSourceTapOnDirectoryServerChange";
 
@@ -644,15 +645,17 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         return 0.0;
     }
 
+    CGFloat baseHeight = section > 0 ? RECENTSDATASOURCE_SECTION_HEADER_TOP_PADDING : 0;
+    
     if (self.recentsListService.space == nil && sectionType == RecentsDataSourceSectionTypeConversation && _recentsDataSourceMode == RecentsDataSourceModeHome)
     {
         if (self.allChatFilterOptions.optionsCount)
         {
-            return RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT + RECENTSDATASOURCE_ALL_CHATS_SECTION_BOTTOM_VIEW_HEIGHT;
+            return baseHeight + RECENTSDATASOURCE_ALL_CHATS_SECTION_BOTTOM_VIEW_HEIGHT;
         }
     }
     
-    return RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT;
+    return baseHeight + RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT;
 }
 
 - (NSAttributedString *)attributedStringForHeaderTitleInSection:(NSInteger)section
@@ -682,7 +685,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         }
         else if (_recentsDataSourceMode == RecentsDataSourceModeHome)
         {
-            title = [[VectorL10n allChatsTitle] uppercaseString];
+            if (section > 0)
+            {
+                title = [VectorL10n allChatsSectionTitle];
+            }
         }
         else
         {
@@ -724,27 +730,28 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     else if (sectionType == RecentsDataSourceSectionTypeRecentRooms)
     {
         count = self.recentsListService.recentRoomListData.counts.total.numberOfRooms;
-        title = [[VectorL10n roomRecentsRecentlyViewedSection] uppercaseString];
+        title = [VectorL10n roomRecentsRecentlyViewedSection];
     }
     
-    if (count && !(sectionType == RecentsDataSourceSectionTypeInvites))
+//    if (count && !(sectionType == RecentsDataSourceSectionTypeInvites))
+//    {
+//        NSString *roomCount = [NSString stringWithFormat:@"   %tu", count];
+//
+//        NSMutableAttributedString *mutableSectionTitle = [[NSMutableAttributedString alloc] initWithString:title
+//                                                                                         attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.headerTextPrimaryColor,
+//                                                                                                      NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}];
+//        [mutableSectionTitle appendAttributedString:[[NSMutableAttributedString alloc] initWithString:roomCount
+//                                                                                    attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.headerTextSecondaryColor,
+//                                                                                                 NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}]];
+//
+//        sectionTitle = mutableSectionTitle;
+//    }
+//    else if (title)
+    if (title)
     {
-        NSString *roomCount = [NSString stringWithFormat:@"   %tu", count];
-        
-        NSMutableAttributedString *mutableSectionTitle = [[NSMutableAttributedString alloc] initWithString:title
-                                                                                         attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.headerTextPrimaryColor,
-                                                                                                      NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}];
-        [mutableSectionTitle appendAttributedString:[[NSMutableAttributedString alloc] initWithString:roomCount
-                                                                                    attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.headerTextSecondaryColor,
-                                                                                                 NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}]];
-        
-        sectionTitle = mutableSectionTitle;
-    }
-    else if (title)
-    {
-        sectionTitle = [[NSAttributedString alloc] initWithString:title
+        sectionTitle = [[NSAttributedString alloc] initWithString:[title capitalizedString]
                                                attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.headerTextPrimaryColor,
-                                                            NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}];
+                                                            NSFontAttributeName: [ThemeService shared].theme.fonts.calloutSB}];
     }
     
     return sectionTitle;
@@ -841,8 +848,16 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
     sectionHeader.backgroundView = [UIView new];
     sectionHeader.frame = frame;
-    sectionHeader.backgroundView.backgroundColor = ThemeService.shared.theme.backgroundColor;
-    sectionHeader.topViewHeight = RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT;
+    sectionHeader.backgroundView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    if (section > 0)
+    {
+        sectionHeader.topPadding = RECENTSDATASOURCE_SECTION_HEADER_TOP_PADDING;
+    }
+    else
+    {
+        sectionHeader.topPadding = 0;
+    }
+    sectionHeader.topViewHeight = RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT + sectionHeader.topPadding;
     NSInteger sectionBitwise = 0;
 
     if (_areSectionsShrinkable)
@@ -910,31 +925,43 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         chevronView.contentMode = UIViewContentModeCenter;
         sectionHeader.accessoryView = chevronView;
     }
-    if (_recentsDataSourceMode == RecentsDataSourceModeHome
-        || _recentsDataSourceMode == RecentsDataSourceModePeople
-        || _recentsDataSourceMode == RecentsDataSourceModeRooms)
-    {
-        // Add a badge to display the total of missed notifications by section.
-        UIView *badgeView = [self badgeViewForHeaderTitleInSection:section];
-        
-        if (badgeView)
-        {
-            sectionHeader.rightAccessoryView = badgeView;
-        }
-    }
     
-    // Add label
-    frame.size.height = RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT - 10;
-    UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
-    headerLabel.backgroundColor = [UIColor clearColor];
-    headerLabel.attributedText = [self attributedStringForHeaderTitleInSection:section];
-    sectionHeader.headerLabel = headerLabel;
+//    if (_recentsDataSourceMode == RecentsDataSourceModeHome
+//        || _recentsDataSourceMode == RecentsDataSourceModePeople
+//        || _recentsDataSourceMode == RecentsDataSourceModeRooms)
+//    {
+//        // Add a badge to display the total of missed notifications by section.
+//        UIView *badgeView = [self badgeViewForHeaderTitleInSection:section];
+//
+//        if (badgeView)
+//        {
+//            sectionHeader.rightAccessoryView = badgeView;
+//        }
+//    }
     
     if (self.recentsListService.space == nil && _recentsDataSourceMode == RecentsDataSourceModeHome && sectionType == RecentsDataSourceSectionTypeConversation) {
-//        if (!self.allChatOptionsView) {
+        if (!self.allChatOptionsView) {
             self.allChatOptionsView = [self.allChatFilterOptions createFilterListView];
-//        }
+        }
         sectionHeader.bottomView = self.allChatOptionsView;
+    }
+    else
+    {
+        sectionHeader.bottomView = nil;
+    }
+    
+    if (!sectionHeader.bottomView)
+    {
+        // Add label
+        frame.size.height = RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT - 10;
+        UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
+        headerLabel.backgroundColor = [UIColor clearColor];
+        headerLabel.attributedText = [self attributedStringForHeaderTitleInSection:section];
+        sectionHeader.headerLabel = headerLabel;
+    }
+    else
+    {
+        sectionHeader.headerLabel = nil;
     }
 
     return sectionHeader;
@@ -1708,7 +1735,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (void)allChatFilterOptions:(AllChatFilterOptions *)allChatFilterOptions presentSpaceSelectorForSpacesWithIds:(NSArray<NSString *> *)spaceIds
 {
-    SpaceSelectorBottomSheetCoordinatorBridgePresenter *presenter = [[SpaceSelectorBottomSheetCoordinatorBridgePresenter alloc] initWithSession:self.mxSession spaceIds:spaceIds];
+    SpaceSelectorBottomSheetCoordinatorBridgePresenter *presenter = [[SpaceSelectorBottomSheetCoordinatorBridgePresenter alloc] initWithSession:self.mxSession spaceIds:spaceIds isAllEnabled:YES];
     [presenter presentFrom:(UIViewController *)self.delegate animated:YES];
     presenter.delegate = self;
     self.spaceSelectorPresenter = presenter;
@@ -1723,6 +1750,13 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (void)spaceSelectorBottomSheetCoordinatorBridgePresenterDidCancel:(SpaceSelectorBottomSheetCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
+    self.spaceSelectorPresenter = nil;
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+}
+
+- (void)spaceSelectorBottomSheetCoordinatorBridgePresenterDidSelectAll:(SpaceSelectorBottomSheetCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self.allChatFilterOptions updateActivePinnedSpaceWithId:nil];
     self.spaceSelectorPresenter = nil;
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
 }

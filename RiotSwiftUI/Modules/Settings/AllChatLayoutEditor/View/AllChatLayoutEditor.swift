@@ -98,6 +98,7 @@ struct AllChatLayoutEditor: View {
                             .onTapGesture {
                                 viewModel.send(viewAction: .tappedSectionItem(section))
                             }
+                            .animation(.default, value: section.selected)
                     }
                 }
             }
@@ -116,6 +117,7 @@ struct AllChatLayoutEditor: View {
                             .onTapGesture {
                                 viewModel.send(viewAction: .tappedFilterItem(filter))
                             }
+                            .animation(.default, value: filter.selected)
                     }
                 }
             }
@@ -141,6 +143,7 @@ struct AllChatLayoutEditor: View {
                             }
                     }
                 }
+                .animation(.default, value: viewModel.viewState.pinnedSpaces)
             }
         }
     }
@@ -154,6 +157,7 @@ struct AllChatLayoutEditor: View {
                     .onTapGesture {
                         viewModel.send(viewAction: .tappedSortingOption(option))
                     }
+                    .animation(.default, value: option.selected)
             }
         }
     }

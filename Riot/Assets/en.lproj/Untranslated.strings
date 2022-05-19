@@ -65,6 +65,7 @@
 // MARK: All Chat
 
 "all_chats_title" = "All chats";
+"all_chats_section_title" = "Chats";
 "all_chats_edit_layout" = "Edit layout";
 "all_chats_edit_layout_recents" = "Recents";
 "all_chats_edit_layout_unreads" = "Unreads";
@@ -76,5 +77,6 @@
 "all_chats_edit_layout_add_filters_message" = "Automatically filter your messages into the categories of your choice";
 "all_chats_edit_layout_pin_spaces_title" = "Pin your spaces";
 "all_chats_edit_layout_sorting_options_title" = "Sort messages by";
+"all_chats_all_filter" = "All";
 
 "room_recents_recently_viewed_section" = "Recently viewed";

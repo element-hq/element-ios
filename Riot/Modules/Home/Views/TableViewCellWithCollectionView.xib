@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,17 +17,17 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="iXt-1Y-bEu" customClass="AccessibleCollectionView" customModule="Riot" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="116"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="92"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="zZI-Za-2q1">
                             <size key="itemSize" width="50" height="50"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <inset key="sectionInset" minX="6" minY="0.0" maxX="6" maxY="0.0"/>
                         </collectionViewFlowLayout>
                     </collectionView>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K7T-mO-6FZ">
-                        <rect key="frame" x="15" y="116" width="570" height="60"/>
+                        <rect key="frame" x="15" y="92" width="570" height="60"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R8G-pa-NMv">
                                 <rect key="frame" x="160" y="0.0" width="50" height="60"/>
@@ -119,9 +119,10 @@
                         </constraints>
                     </view>
                 </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="K7T-mO-6FZ" secondAttribute="trailing" priority="750" constant="15" id="Idw-N1-mWl"/>
-                    <constraint firstAttribute="bottom" secondItem="K7T-mO-6FZ" secondAttribute="bottom" constant="5" id="PQs-Ra-gvO"/>
+                    <constraint firstAttribute="bottom" secondItem="K7T-mO-6FZ" secondAttribute="bottom" constant="29" id="PQs-Ra-gvO"/>
                     <constraint firstItem="iXt-1Y-bEu" firstAttribute="top" secondItem="cFw-g7-Cgn" secondAttribute="top" id="eEg-xT-ju4"/>
                     <constraint firstAttribute="trailing" secondItem="iXt-1Y-bEu" secondAttribute="trailing" id="lAZ-3p-GBF"/>
                     <constraint firstItem="iXt-1Y-bEu" firstAttribute="leading" secondItem="cFw-g7-Cgn" secondAttribute="leading" id="n3c-tX-orx"/>

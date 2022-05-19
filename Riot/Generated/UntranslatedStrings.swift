@@ -10,6 +10,10 @@ import Foundation
 
 // swiftlint:disable function_parameter_count identifier_name line_length type_body_length
 public extension VectorL10n {
+  /// All
+  static var allChatsAllFilter: String { 
+    return VectorL10n.tr("Untranslated", "all_chats_all_filter") 
+  }
   /// Edit layout
   static var allChatsEditLayout: String { 
     return VectorL10n.tr("Untranslated", "all_chats_edit_layout") 
@@ -53,6 +57,10 @@ public extension VectorL10n {
   /// Unreads
   static var allChatsEditLayoutUnreads: String { 
     return VectorL10n.tr("Untranslated", "all_chats_edit_layout_unreads") 
+  }
+  /// Chats
+  static var allChatsSectionTitle: String { 
+    return VectorL10n.tr("Untranslated", "all_chats_section_title") 
   }
   /// All chats
   static var allChatsTitle: String { 

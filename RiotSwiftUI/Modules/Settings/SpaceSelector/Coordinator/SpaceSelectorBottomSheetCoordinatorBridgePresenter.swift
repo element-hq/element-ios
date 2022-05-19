@@ -18,6 +18,7 @@ import Foundation
 
 @objc protocol SpaceSelectorBottomSheetCoordinatorBridgePresenterDelegate {
     func spaceSelectorBottomSheetCoordinatorBridgePresenterDidCancel(_ coordinatorBridgePresenter: SpaceSelectorBottomSheetCoordinatorBridgePresenter)
+    func spaceSelectorBottomSheetCoordinatorBridgePresenterDidSelectAll(_ coordinatorBridgePresenter: SpaceSelectorBottomSheetCoordinatorBridgePresenter)
     func spaceSelectorBottomSheetCoordinatorBridgePresenter(_ coordinatorBridgePresenter: SpaceSelectorBottomSheetCoordinatorBridgePresenter, didSelectSpaceWithId spaceId: String)
 }
 
@@ -34,6 +35,7 @@ final class SpaceSelectorBottomSheetCoordinatorBridgePresenter: NSObject {
     
     private let session: MXSession
     private let spaceIds: [String]?
+    private let isAllEnabled: Bool
     private var coordinator: SpaceSelectorBottomSheetCoordinator?
 //    private var router: NavigationRouterType?
     
@@ -43,22 +45,25 @@ final class SpaceSelectorBottomSheetCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Setup
     
-    init(session: MXSession, spaceIds: [String]?) {
+    init(session: MXSession, spaceIds: [String]?, isAllEnabled: Bool) {
         self.session = session
         self.spaceIds = spaceIds
+        self.isAllEnabled = isAllEnabled
         super.init()
     }
     
     // MARK: - Public
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let coordinator = SpaceSelectorBottomSheetCoordinator(parameters: SpaceSelectorBottomSheetCoordinatorParameters(session: session, spaceIds: spaceIds))
+        let coordinator = SpaceSelectorBottomSheetCoordinator(parameters: SpaceSelectorBottomSheetCoordinatorParameters(session: session, spaceIds: spaceIds, isAllEnabled: isAllEnabled))
         coordinator.completion = { [weak self] result in
             guard let self = self else { return }
             
             switch result {
             case .cancel:
                 self.delegate?.spaceSelectorBottomSheetCoordinatorBridgePresenterDidCancel(self)
+            case .allSelected:
+                self.delegate?.spaceSelectorBottomSheetCoordinatorBridgePresenterDidSelectAll(self)
             case .spaceSelected(let item):
                 self.delegate?.spaceSelectorBottomSheetCoordinatorBridgePresenter(self, didSelectSpaceWithId: item.id)
             }

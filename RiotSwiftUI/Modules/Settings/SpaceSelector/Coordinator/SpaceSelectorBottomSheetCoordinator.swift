@@ -20,11 +20,14 @@ import CommonKit
 struct SpaceSelectorBottomSheetCoordinatorParameters {
     let session: MXSession
     let spaceIds: [String]?
+    let isAllEnabled: Bool
     
     init(session: MXSession,
-         spaceIds: [String]? = nil) {
+         spaceIds: [String]? = nil,
+         isAllEnabled: Bool = false) {
         self.session = session
         self.spaceIds = spaceIds
+        self.isAllEnabled = isAllEnabled
     }
 }
 
@@ -52,7 +55,7 @@ final class SpaceSelectorBottomSheetCoordinator: Coordinator, Presentable {
     @available(iOS 14.0, *)
     init(parameters: SpaceSelectorBottomSheetCoordinatorParameters) {
         self.parameters = parameters
-        let viewModel = SpaceSelectorBottomSheetViewModel.makeSpaceSelectorBottomSheetViewModel(spaceSelectorBottomSheetService: SpaceSelectorBottomSheetService(session: parameters.session, spaceIds: parameters.spaceIds))
+        let viewModel = SpaceSelectorBottomSheetViewModel.makeSpaceSelectorBottomSheetViewModel(spaceSelectorBottomSheetService: SpaceSelectorBottomSheetService(session: parameters.session, spaceIds: parameters.spaceIds, isAllEnabled: parameters.isAllEnabled))
         let view = SpaceSelectorBottomSheet(viewModel: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
         spaceSelectorBottomSheetViewModel = viewModel
@@ -73,6 +76,8 @@ final class SpaceSelectorBottomSheetCoordinator: Coordinator, Presentable {
             switch result {
             case .cancel:
                 self.completion?(.cancel)
+            case .allSelected:
+                self.completion?(.allSelected)
             case .spaceSelected(let item):
                 self.completion?(.spaceSelected(item))
             }

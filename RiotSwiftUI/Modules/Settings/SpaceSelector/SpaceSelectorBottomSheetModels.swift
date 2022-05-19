@@ -20,14 +20,18 @@ import Foundation
 
 enum SpaceSelectorBottomSheetCoordinatorResult {
     case cancel
+    case allSelected
     case spaceSelected(_ item: SpaceSelectorListItemData)
 }
 
 // MARK: View model
 
+let SpaceSelectorListItemDataAllId = "SpaceSelectorListItemDataAllId"
+
 struct SpaceSelectorListItemData {
     let id: String
-    let avatar: AvatarInput
+    let avatar: AvatarInput?
+    let icon: UIImage?
     let displayName: String?
 }
 
@@ -35,6 +39,7 @@ extension SpaceSelectorListItemData: Identifiable, Equatable {}
 
 enum SpaceSelectorBottomSheetViewModelResult {
     case cancel
+    case allSelected
     case spaceSelected(_ item: SpaceSelectorListItemData)
 }
 

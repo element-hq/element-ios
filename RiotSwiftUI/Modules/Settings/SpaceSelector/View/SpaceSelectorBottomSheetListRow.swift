@@ -25,19 +25,29 @@ struct SpaceSelectorBottomSheetListRow: View {
     
     // MARK: Public
     
-    let avatar: AvatarInputProtocol
+    let avatar: AvatarInputProtocol?
+    let icon: UIImage?
     let displayName: String?
     
     @ViewBuilder
     var body: some View {
         HStack{
-            SpaceAvatarImage(avatarData: avatar, size: .small)
+            if let avatar = avatar {
+                SpaceAvatarImage(avatarData: avatar, size: .medium)
+            }
+            if let icon = icon {
+                Image(uiImage: icon)
+                    .renderingMode(.template)
+                    .foregroundColor(theme.colors.primaryContent)
+                    .frame(width: 42, height: 42)
+                    .background(theme.colors.navigation)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+            }
             Text(displayName ?? "")
                 .foregroundColor(theme.colors.primaryContent)
-                .font(theme.fonts.callout)
+                .font(theme.fonts.bodySB)
                 .accessibility(identifier: "itemNameText")
             Spacer()
-            Image(systemName: "chevron.right").renderingMode(.template).foregroundColor(theme.colors.primaryContent)
         }
         .background(theme.colors.background)
         .padding(.horizontal)

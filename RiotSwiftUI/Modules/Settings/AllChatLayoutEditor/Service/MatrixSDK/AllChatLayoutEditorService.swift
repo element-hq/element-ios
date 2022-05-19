@@ -58,7 +58,7 @@ class AllChatLayoutEditorService: AllChatLayoutEditorServiceProtocol {
                 return nil
             }
             
-            return SpaceSelectorListItemData(id: spaceId, avatar: summary.room.avatarData, displayName: summary.displayname)
+            return SpaceSelectorListItemData(id: spaceId, avatar: summary.room.avatarData, icon: nil, displayName: summary.displayname)
         }
     }
 

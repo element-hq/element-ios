@@ -97,15 +97,15 @@
 
     MXWeakify(self);
     UIMenu *menu = [UIMenu menuWithChildren:@[
-        [UIAction actionWithTitle:VectorL10n.roomRecentsJoinRoom image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+        [UIAction actionWithTitle:VectorL10n.roomRecentsJoinRoom image:AssetImages.homeFabJoinRoom.image identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
             MXStrongifyAndReturnIfNil(self);
             [self joinARoom];
         }],
-        [UIAction actionWithTitle:VectorL10n.roomRecentsCreateEmptyRoom image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+        [UIAction actionWithTitle:VectorL10n.roomRecentsCreateEmptyRoom image:AssetImages.homeFabCreateRoom.image identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
             MXStrongifyAndReturnIfNil(self);
             [self createNewRoom];
         }],
-        [UIAction actionWithTitle:VectorL10n.roomRecentsStartChatWith image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+        [UIAction actionWithTitle:VectorL10n.roomRecentsStartChatWith image:AssetImages.sideMenuActionIconFeedback.image identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
             MXStrongifyAndReturnIfNil(self);
             [self startChat];
         }],
@@ -493,7 +493,14 @@
     NSInteger index = [recentsDataSource.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeConversation];
     if (indexPath.section == index)
     {
-        return [super tableView:tableView heightForRowAtIndexPath:indexPath];
+        CGFloat height = [super tableView:tableView heightForRowAtIndexPath:indexPath];
+        if (indexPath.section < [recentsDataSource numberOfSectionsInTableView:tableView] - 1 && indexPath.row == [recentsDataSource tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+        {
+            // Add padding to the last row of each sections except the last one.
+           height += 24.0;
+        }
+        
+        return height;
     }
 
     RecentsDataSourceSectionType sectionType = [recentsDataSource.sections sectionTypeForSectionIndex:indexPath.section];
@@ -542,6 +549,9 @@
         height += 65.0;
     }
     
+    // Add padding to the last row of each sections except the last one.
+    height += 24.0;
+
     return height;
 }
 

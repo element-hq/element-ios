@@ -775,10 +775,22 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         createRightButtonItem()
     }
     
+    private weak var rightMenuAvatarView: AvatarView?
+    
     private func createRightButtonItem() {
+        if let avatarView = rightMenuAvatarView {
+            if let avatar = userAvatarViewData(from: currentMatrixSession) {
+                avatarView.fill(with: avatar)
+                avatarView.update(theme: ThemeService.shared().theme)
+                self.rightMenuAvatarView = avatarView
+            }
+            
+            return
+        }
+        
         var actions: [UIAction] = []
         
-        actions.append(UIAction(title: VectorL10n.settings, image: UIImage(systemName: "gearshape")) { [weak self] action in
+        actions.append(UIAction(title: VectorL10n.settings, image: UIImage(systemName: "gearshape.fill")) { [weak self] action in
             self?.showSettings()
         })
         
@@ -821,6 +833,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             avatarView.update(theme: ThemeService.shared().theme)
             avatarView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
             view.addSubview(avatarView)
+            self.rightMenuAvatarView = avatarView
         }
         
         self.masterTabBarController.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: view)

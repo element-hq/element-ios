@@ -37,6 +37,28 @@ class FilterOptionView: UIView, Themable {
     
     // MARK: - Properties
     
+    var isAll: Bool = false {
+        didSet {
+            if isAll {
+                let label = UILabel()
+                label.text = VectorL10n.allChatsAllFilter
+                stackView.addArrangedSubview(label)
+                self.label = label
+                
+                let settings = AllChatLayoutSettingsManager.shared.allChatLayoutSettings
+                self.isSelected = settings.activePinnedSpaceId == nil && settings.activeFilters.isEmpty
+
+                NotificationCenter.default.addObserver(forName: AllChatLayoutSettings.didUpdateFilters, object: nil, queue: OperationQueue.main) { [weak self] notification in
+                    guard let self = self, let settings = notification.object as? AllChatLayoutSettings else {
+                        return
+                    }
+                    
+                    self.isSelected = settings.activePinnedSpaceId == nil && settings.activeFilters.isEmpty
+                }
+            }
+        }
+    }
+    
     var spaceNameByIds: [String: String]? {
         didSet {
             for subView in stackView.arrangedSubviews {
@@ -45,7 +67,7 @@ class FilterOptionView: UIView, Themable {
             }
 
             let label = UILabel()
-            label.text = "All"
+            label.text = VectorL10n.allChatsAllFilter
             stackView.addArrangedSubview(label)
             self.label = label
             
@@ -76,10 +98,10 @@ class FilterOptionView: UIView, Themable {
             if let spaceName = self.spaceNameByIds?[activePinnedSpaceId] {
                 label?.text = spaceName
             } else {
-                label?.text = "A space"
+                label?.text = VectorL10n.spaceTag
             }
         } else {
-            label?.text = "All"
+            label?.text = VectorL10n.allChatsAllFilter
         }
     }
 //
@@ -171,7 +193,7 @@ class FilterOptionView: UIView, Themable {
     // MARK: - Themable
     
     func update(theme: Theme) {
-        label?.font = theme.fonts.callout
+        label?.font = theme.fonts.calloutSB
         
         if isHighlighted {
             self.alpha = 0.3
@@ -182,7 +204,7 @@ class FilterOptionView: UIView, Themable {
             label?.textColor = theme.colors.accent
         } else {
             backgroundLayer.strokeColor = UIColor.clear.cgColor
-            backgroundLayer.fillColor = theme.colors.system.cgColor
+            backgroundLayer.fillColor = theme.colors.background.cgColor
             imageView?.tintColor = theme.colors.primaryContent
             label?.textColor = theme.colors.primaryContent
         }

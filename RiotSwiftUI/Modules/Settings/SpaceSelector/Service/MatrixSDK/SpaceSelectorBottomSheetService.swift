@@ -26,20 +26,23 @@ class SpaceSelectorBottomSheetService: SpaceSelectorBottomSheetServiceProtocol {
     
     private let session: MXSession
     private let spaceIds: [String]?
-    
+    private let isAllEnabled: Bool
+
     private var spaceList: [SpaceSelectorListItemData] {
+        var itemList = isAllEnabled ? [SpaceSelectorListItemData(id: SpaceSelectorListItemDataAllId, avatar: nil, icon: Asset.Images.sideMenuActionIconFeedback.image, displayName: VectorL10n.allChatsTitle)] : []
         if let spaceIds = spaceIds {
-            return spaceIds.compactMap { spaceId in
+            itemList.append(contentsOf: spaceIds.compactMap { spaceId in
                 guard let summary = session.roomSummary(withRoomId: spaceId) else {
                     return nil
                 }
-                return SpaceSelectorListItemData(id:summary.roomId, avatar: summary.room.avatarData, displayName: summary.displayname)
-            }
+                return SpaceSelectorListItemData(id:summary.roomId, avatar: summary.room.avatarData, icon: nil, displayName: summary.displayname)
+            })
         } else {
-            return session.spaceService.spaceSummaries.compactMap { summary in
-                SpaceSelectorListItemData(id:summary.roomId, avatar: summary.room.avatarData, displayName: summary.displayname)
-            }
+            itemList.append(contentsOf: session.spaceService.spaceSummaries.compactMap { summary in
+                SpaceSelectorListItemData(id:summary.roomId, avatar: summary.room.avatarData, icon: nil, displayName: summary.displayname)
+            })
         }
+        return itemList
     }
     
     // MARK: Public
@@ -48,9 +51,10 @@ class SpaceSelectorBottomSheetService: SpaceSelectorBottomSheetServiceProtocol {
     
     // MARK: - Setup
     
-    init(session: MXSession, spaceIds: [String]?) {
+    init(session: MXSession, spaceIds: [String]?, isAllEnabled: Bool) {
         self.session = session
         self.spaceIds = spaceIds
+        self.isAllEnabled = isAllEnabled
         self.spaceListSubject = CurrentValueSubject([])
         
         spaceListSubject.send(spaceList)

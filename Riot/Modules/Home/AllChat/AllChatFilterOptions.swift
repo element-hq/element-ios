@@ -35,6 +35,8 @@ import UIKit
         scrollView.backgroundColor = .clear
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
+//        scrollView.bounces = false
+//        scrollView.alwaysBounceHorizontal = true
         
         let stackView = UIStackView(frame: .zero)
         stackView.axis = .horizontal
@@ -42,10 +44,23 @@ import UIKit
         stackView.backgroundColor = .clear
         
         let spaceIds = AllChatLayoutSettingsManager.shared.allChatLayoutSettings.pinnedSpaceIds
-        let activeSpaceId = AllChatLayoutSettingsManager.shared.allChatLayoutSettings.activePinnedSpaceId
+//        let activeSpaceId = AllChatLayoutSettingsManager.shared.allChatLayoutSettings.activePinnedSpaceId
+        
+        if !options.isEmpty && spaceIds.isEmpty {
+            let optionView = FilterOptionView()
+            optionView.isAll = true
+            optionView.didTap = { optionView in
+                if !optionView.isSelected {
+                    AllChatLayoutSettingsManager.shared.allChatLayoutSettings.activeFilters = []
+//                    self.updateActivePinnedSpace(withId: nil)
+                }
+            }
+            stackView.addArrangedSubview(optionView)
+        }
+
         if !spaceIds.isEmpty {
             let optionView = FilterOptionView()
-            let pairs:[(String, String)] = spaceIds.compactMap { spaceId in
+            let pairs: [(String, String)] = spaceIds.compactMap { spaceId in
                 guard let spaceName = self.delegate?.allChatFilterOptions(self, nameForSpaceWithId: spaceId) else {
                     return nil
                 }
@@ -59,11 +74,11 @@ import UIKit
 //                optionView.selectedSpaceName = nil
 //            }
             optionView.didTap = { optionView in
-                if !optionView.isSelected {
+//                if !optionView.isSelected {
                     self.delegate?.allChatFilterOptions(self, presentSpaceSelectorForSpacesWithIds: spaceIds)
-                } else {
-                    self.updateActivePinnedSpace(withId: nil)
-                }
+//                } else {
+//                    self.updateActivePinnedSpace(withId: nil)
+//                }
             }
             stackView.addArrangedSubview(optionView)
         }
@@ -84,10 +99,10 @@ import UIKit
         
         scrollView.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor).isActive = true
-        stackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 16).isActive = true
+        stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: 16).isActive = true
+        stackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 8).isActive = true
         stackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: -16).isActive = true
         
         return scrollView
     }

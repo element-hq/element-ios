@@ -56,7 +56,11 @@ class SpaceSelectorBottomSheetViewModel: SpaceSelectorBottomSheetViewModelType, 
         case .cancel:
             completion?(.cancel)
         case .spaceSelected(let item):
-            completion?(.spaceSelected(item))
+            if item.id == SpaceSelectorListItemDataAllId {
+                completion?(.allSelected)
+            } else {
+                completion?(.spaceSelected(item))
+            }
         }
     }
 }

@@ -1054,6 +1054,15 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }
 }
 
+- (void)setRecentsUpdateEnabled:(BOOL)recentsUpdateEnabled
+{
+    super.recentsUpdateEnabled = recentsUpdateEnabled;
+    if (!recentsUpdateEnabled)
+    {
+        MXLogDebug(@"[TOTO] setRecentsUpdateEnabled: false");
+    }
+}
+
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
 {
     if (!self.recentsUpdateEnabled)

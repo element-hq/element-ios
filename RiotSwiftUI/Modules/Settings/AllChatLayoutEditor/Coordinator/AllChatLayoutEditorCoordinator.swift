@@ -109,10 +109,9 @@ final class AllChatLayoutEditorCoordinator: Coordinator, Presentable {
             
             switch result {
             case .cancel: break
+            case .allSelected: break
             case .spaceSelected(let item):
-                if let summary = self.parameters.session.roomSummary(withRoomId: item.id) {
-                    self.allChatLayoutEditorViewModel.pinSpace(with: SpaceSelectorListItemData(id: summary.roomId, avatar: summary.room.avatarData, displayName: summary.displayname))
-                }
+                self.allChatLayoutEditorViewModel.pinSpace(with: item)
             }
             
             coordinator.toPresentable().dismiss(animated: true)
