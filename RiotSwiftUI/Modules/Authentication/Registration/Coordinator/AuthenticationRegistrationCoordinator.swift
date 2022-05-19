@@ -180,8 +180,6 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
             switch authenticationError {
             case .invalidHomeserver:
                 authenticationRegistrationViewModel.displayError(.invalidHomeserver)
-            case .dictionaryError:
-                authenticationRegistrationViewModel.displayError(.unknown)
             case .loginFlowNotCalled:
                 #warning("Reset the flow")
             case .missingMXRestClient:

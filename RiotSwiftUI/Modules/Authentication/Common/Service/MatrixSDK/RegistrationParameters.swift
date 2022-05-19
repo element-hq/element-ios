@@ -17,7 +17,7 @@
 import Foundation
 
 /// The parameters used for registration requests.
-struct RegistrationParameters: Codable {
+struct RegistrationParameters: DictionaryEncodable {
     /// Authentication parameters
     var auth: AuthenticationParameters?
     
@@ -41,22 +41,10 @@ struct RegistrationParameters: Codable {
         case initialDeviceDisplayName = "initial_device_display_name"
         case xShowMSISDN = "x_show_msisdn"
     }
-    
-    /// The parameters as a JSON dictionary for use in MXRestClient.
-    func dictionary() throws -> [String: Any] {
-        let jsonData = try JSONEncoder().encode(self)
-        let object = try JSONSerialization.jsonObject(with: jsonData)
-        guard let dictionary = object as? [String: Any] else {
-            MXLog.error("[RegistrationParameters] dictionary: Unexpected type decoded \(type(of: object)). Expected a Dictionary.")
-            throw AuthenticationError.dictionaryError
-        }
-        
-        return dictionary
-    }
 }
 
-/// The data passed to the `auth` parameter in registration requests.
-struct AuthenticationParameters: Codable {
+/// The data passed to the `auth` parameter in authentication requests.
+struct AuthenticationParameters: Encodable {
     /// The type of authentication taking place. The identifier from `MXLoginFlowType`.
     let type: String
     

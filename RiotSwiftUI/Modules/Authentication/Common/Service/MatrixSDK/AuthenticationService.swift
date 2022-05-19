@@ -93,7 +93,7 @@ class AuthenticationService: NSObject {
                                  preferredLoginMode: loginFlows.loginMode,
                                  loginModeSupportedTypes: loginFlows.supportedLoginTypes)
         
-        let loginWizard = LoginWizard()
+        let loginWizard = LoginWizard(client: client)
         self.loginWizard = loginWizard
         
         if flow == .register {
