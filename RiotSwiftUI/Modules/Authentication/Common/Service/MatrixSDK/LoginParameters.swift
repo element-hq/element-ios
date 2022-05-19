@@ -16,7 +16,7 @@
 
 import Foundation
 
-/// An `Encodable` type that can be used as the parameters of a login request.
+/// A `DictionaryEncodable` type that can be used as the parameters of a login request.
 protocol LoginParameters: DictionaryEncodable {
     var type: String { get }
 }
@@ -94,11 +94,10 @@ struct LoginPasswordParameters: LoginParameters {
     }
 }
 
-/// The parameters used when checking the user has confirmed their email to reset their password.
+/// The parameters used when checking that the user has confirmed their email in order to reset their password.
 struct CheckResetPasswordParameters: DictionaryEncodable {
     /// Authentication parameters
     let auth: AuthenticationParameters
-    
     /// The new password
     let newPassword: String
     

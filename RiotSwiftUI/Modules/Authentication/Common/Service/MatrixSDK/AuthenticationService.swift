@@ -30,7 +30,7 @@ class AuthenticationService: NSObject {
     // MARK: Private
     
     /// The rest client used to make authentication requests.
-    private var client: MXRestClient
+    private var client: AuthenticationRestClient
     /// The object used to create a new `MXSession` when authentication has completed.
     private var sessionCreator = SessionCreator()
     
@@ -141,7 +141,7 @@ class AuthenticationService: NSObject {
         let address = state.homeserver.addressFromUser ?? state.homeserver.address
         self.state = AuthenticationState(flow: .login, homeserverAddress: address)
     }
-
+    
     /// Create a session after a SSO successful login
     func makeSessionFromSSO(credentials: MXCredentials) -> MXSession {
         sessionCreator.createSession(credentials: credentials, client: client)

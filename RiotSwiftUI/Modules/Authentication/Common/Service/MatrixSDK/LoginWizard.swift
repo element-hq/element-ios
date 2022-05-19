@@ -30,12 +30,12 @@ class LoginWizard {
         var sendAttempt: UInt = 0
     }
     
-    let client: MXRestClient
+    let client: AuthenticationRestClient
     let sessionCreator: SessionCreator
     
     private(set) var state: State
     
-    init(client: MXRestClient, sessionCreator: SessionCreator = SessionCreator()) {
+    init(client: AuthenticationRestClient, sessionCreator: SessionCreator = SessionCreator()) {
         self.client = client
         self.sessionCreator = sessionCreator
         
@@ -111,8 +111,8 @@ class LoginWizard {
         }
         
         let parameters = CheckResetPasswordParameters(clientSecret: state.clientSecret,
-                                                 sessionID: resetPasswordData.addThreePIDSessionID,
-                                                 newPassword: resetPasswordData.newPassword)
+                                                      sessionID: resetPasswordData.addThreePIDSessionID,
+                                                      newPassword: resetPasswordData.newPassword)
         
         try await client.resetPassword(parameters: parameters)
         

@@ -35,7 +35,7 @@ class RegistrationWizard {
         var sendAttempt: UInt = 0
     }
     
-    let client: MXRestClient
+    let client: AuthenticationRestClient
     let sessionCreator: SessionCreator
     
     private(set) var state: State
@@ -59,7 +59,7 @@ class RegistrationWizard {
         state.isRegistrationStarted
     }
     
-    init(client: MXRestClient, sessionCreator: SessionCreator = SessionCreator()) {
+    init(client: AuthenticationRestClient, sessionCreator: SessionCreator = SessionCreator()) {
         self.client = client
         self.sessionCreator = sessionCreator
         
