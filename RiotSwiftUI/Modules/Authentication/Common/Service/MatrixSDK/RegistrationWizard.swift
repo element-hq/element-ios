@@ -88,16 +88,17 @@ class RegistrationWizard {
     /// Can be call to check is the desired username is available for registration on the current homeserver.
     /// It may also fails if the desired username is not correctly formatted or does not follow any restriction on
     /// the homeserver. Ex: username with only digits may be rejected.
-    /// - Parameter username the desired username. Ex: "alice"
+    /// - Parameter username: The desired username. Ex: "alice"
     func registrationAvailable(username: String) async throws -> Bool {
         try await client.isUsernameAvailable(username)
     }
 
     /// This is the first method to call in order to create an account and start the registration process.
     ///
-    /// - Parameter username the desired username. Ex: "alice"
-    /// - Parameter password the desired password
-    /// - Parameter initialDeviceDisplayName the device display name
+    /// - Parameters:
+    ///   - username: The desired username. Ex: "alice"
+    ///   - password: The desired password
+    ///   - initialDeviceDisplayName: The device display name
     func createAccount(username: String?,
                        password: String?,
                        initialDeviceDisplayName: String?) async throws -> RegistrationResult {

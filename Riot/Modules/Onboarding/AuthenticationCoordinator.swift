@@ -74,7 +74,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     func start() {
         Task {
             await startAuthenticationFlow()
-            callback?(.didStart)
+            await MainActor.run { callback?(.didStart) }
         }
     }
     
@@ -416,7 +416,9 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     /// Complete the authentication flow.
     private func authenticationDidComplete() {
-        callback?(.didComplete)
+        Task {
+            await MainActor.run { callback?(.didComplete) }
+        }
     }
 }
 
