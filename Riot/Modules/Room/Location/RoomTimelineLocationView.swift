@@ -102,8 +102,8 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     @IBOutlet private var liveLocationStatusLabel: UILabel!
     @IBOutlet private var liveLocationTimerLabel: UILabel!
     @IBOutlet private var rightButton: UIButton!
+    @IBOutlet private var activityIndicatorView: UIActivityIndicatorView!
     
-    private var activityIndicatorPresenter: ActivityIndicatorPresenterType = ActivityIndicatorPresenter()
     private var mapView: MGLMapView!
     private var annotationView: LocationMarkerView?
     private static var usernameColorGenerator = UserNameColorGenerator()
@@ -227,9 +227,11 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
         switch bannerViewData.status {
         case .starting:
             placeholderIconView.isHidden = true
-            activityIndicatorPresenter.presentActivityIndicator(on: self, animated: true)
+            activityIndicatorView.isHidden = false
+            activityIndicatorView.startAnimating()
         default:
-            activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+            activityIndicatorView.isHidden = true
+            activityIndicatorView.stopAnimating()
         }
     }
     
