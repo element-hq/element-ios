@@ -2393,3 +2393,7 @@
 "edit" = "Editar";
 "add" = "Añadir";
 "new_word" = "Nuevo";
+"location_sharing_live_timer_incoming" = "Compartiendo hasta %@";
+"onboarding_avatar_message" = "Puedes cambiarlo más adelante.";
+"onboarding_avatar_title" = "Añadir una foto de perfil";
+"confirm" = "Confirmar";
