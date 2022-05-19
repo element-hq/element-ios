@@ -31,7 +31,7 @@ extension DictionaryEncodable {
         let object = try JSONSerialization.jsonObject(with: jsonData)
         
         guard let dictionary = object as? [String: Any] else {
-            MXLog.error("[RegistrationParameters] dictionary: Unexpected type decoded \(type(of: object)). Expected a Dictionary.")
+            MXLog.error("[DictionaryEncodable] Unexpected type decoded \(type(of: object)). Expected a Dictionary.")
             throw DictionaryEncodableError.typeError
         }
         
