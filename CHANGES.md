@@ -1,3 +1,15 @@
+## Changes in 1.8.16 (2022-05-19)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.23.6](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.23.6)).
+
+🐛 Bugfixes
+
+- Fixed home screen shrinking too much on opening the keyboard. ([#6184](https://github.com/vector-im/element-ios/pull/6184))
+- Fixed filtering search bar not resetting properly when cancelling or switching tabs. ([#6130](https://github.com/vector-im/element-ios/issues/6130))
+
+
 ## Changes in 1.8.15 (2022-05-18)
 
 ✨ Features
