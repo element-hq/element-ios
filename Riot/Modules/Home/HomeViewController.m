@@ -114,7 +114,7 @@
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeHome];
         
         // Reset filtering on the shared data source when switching tabs
-        [self searchBarCancelButtonClicked:self.recentsSearchBar];
+        [recentsDataSource searchWithPatterns:nil];
         [self.recentsSearchBar setText:nil];
     }
 }
