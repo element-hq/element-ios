@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct OnboardingDisplayNameScreen: View {
 
     // MARK: - Properties
@@ -49,14 +48,14 @@ struct OnboardingDisplayNameScreen: View {
                 
                 buttons
             }
-            .frame(maxWidth: OnboardingMetrics.maxContentWidth)
+            .readableFrame()
             .padding(.horizontal)
             .padding(.top, OnboardingMetrics.topPaddingToNavigationBar)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .accentColor(theme.colors.accent)
+        .frame(maxHeight: .infinity)
         .background(theme.colors.background.ignoresSafeArea())
         .alert(item: $viewModel.alertInfo) { $0.alert }
+        .accentColor(theme.colors.accent)
         .onChange(of: viewModel.displayName) { _ in
             viewModel.send(viewAction: .validateDisplayName)
         }
@@ -88,8 +87,7 @@ struct OnboardingDisplayNameScreen: View {
                 isEditingTextField = $0
             }
             .autocapitalization(.words)
-            .textFieldStyle(BorderedInputFieldStyle(theme: _theme,
-                                                    isEditing: isEditingTextField,
+            .textFieldStyle(BorderedInputFieldStyle(isEditing: isEditingTextField,
                                                     isError: viewModel.viewState.validationErrorMessage != nil))
             
             Text(viewModel.viewState.textFieldFooterMessage)

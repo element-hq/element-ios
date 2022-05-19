@@ -17,7 +17,6 @@
 import XCTest
 import RiotSwiftUI
 
-@available(iOS 14.0, *)
 class OnboardingCelebrationUITests: MockScreenTest {
     // Nothing to test as the view is completely static
 }

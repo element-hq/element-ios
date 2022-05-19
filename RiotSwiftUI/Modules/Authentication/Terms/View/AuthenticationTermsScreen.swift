@@ -42,11 +42,11 @@ struct AuthenticationTermsScreen: View {
                 button
                     .padding(.horizontal)
             }
-            .frame(maxWidth: OnboardingMetrics.maxContentWidth)
-            .frame(maxWidth: .infinity)
+            .readableFrame()
             .padding(.bottom, 16)
         }
         .background(theme.colors.background.ignoresSafeArea())
+        .toolbar { toolbar }
         .alert(item: $viewModel.alertInfo) { $0.alert }
         .accentColor(theme.colors.accent)
     }
@@ -90,6 +90,15 @@ struct AuthenticationTermsScreen: View {
             .buttonStyle(PrimaryActionButtonStyle())
             .disabled(!viewModel.viewState.hasAcceptedAllPolicies)
             .accessibilityIdentifier("nextButton")
+        }
+    }
+    
+    /// A simple toolbar with a cancel button.
+    var toolbar: some ToolbarContent {
+        ToolbarItem(placement: .cancellationAction) {
+            Button(VectorL10n.cancel) {
+                viewModel.send(viewAction: .cancel)
+            }
         }
     }
 }

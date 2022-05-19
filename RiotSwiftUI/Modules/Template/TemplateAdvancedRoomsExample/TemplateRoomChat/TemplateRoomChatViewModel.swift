@@ -17,12 +17,10 @@
 import SwiftUI
 import Combine
 
-@available(iOS 14, *)
 typealias TemplateRoomChatViewModelType = StateStoreViewModel<TemplateRoomChatViewState,
                                                               Never,
                                                               TemplateRoomChatViewAction>
 
-@available(iOS 14, *)
 class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChatViewModelProtocol {
     
     enum Constants {

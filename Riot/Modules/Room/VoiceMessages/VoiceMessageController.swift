@@ -352,7 +352,13 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
                                                   samples: invertedSamples) { [weak self] success in
                 UINotificationFeedbackGenerator().notificationOccurred((success ? .success : .error))
                 self?.deleteRecordingAtURL(sourceURL)
-                self?.deleteRecordingAtURL(destinationURL)
+                
+                // Do not delete the file to be sent if request failed, the retry flow will need it
+                // There's no manual mechanism to clean it up afterwards but the tmp folder
+                // they live in will eventually be deleted by the system
+                if success {
+                    self?.deleteRecordingAtURL(destinationURL)
+                }
             }
         }
     }

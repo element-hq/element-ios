@@ -18,8 +18,7 @@ import Foundation
 
 protocol AuthenticationServerSelectionViewModelProtocol {
     
-    @MainActor var completion: ((AuthenticationServerSelectionViewModelResult) -> Void)? { get set }
-    @available(iOS 14, *)
+    var callback: (@MainActor (AuthenticationServerSelectionViewModelResult) -> Void)? { get set }
     var context: AuthenticationServerSelectionViewModelType.Context { get }
     
     /// Displays an error to the user.

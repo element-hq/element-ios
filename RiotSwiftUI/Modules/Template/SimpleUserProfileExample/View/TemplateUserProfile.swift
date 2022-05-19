@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct TemplateUserProfile: View {
 
     // MARK: - Properties
@@ -70,7 +69,6 @@ struct TemplateUserProfile: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct TemplateUserProfile_Previews: PreviewProvider {
     static let stateRenderer = MockTemplateUserProfileScreenState.stateRenderer
     static var previews: some View {

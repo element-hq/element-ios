@@ -131,6 +131,8 @@
     [self.ssoButton setTitle:[VectorL10n authLoginSingleSignOn] forState:UIControlStateNormal];
     [self.ssoButton setTitle:[VectorL10n authLoginSingleSignOn] forState:UIControlStateHighlighted];
     self.ssoButton.backgroundColor = ThemeService.shared.theme.tintColor;
+    
+    self.recaptchaContainer.backgroundColor = ThemeService.shared.theme.backgroundColor;
 
     if (self.userLoginTextField.placeholder)
     {

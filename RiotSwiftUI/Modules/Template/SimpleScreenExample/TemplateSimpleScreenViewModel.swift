@@ -16,11 +16,10 @@
 
 import SwiftUI
 
-@available(iOS 14, *)
 typealias TemplateSimpleScreenViewModelType = StateStoreViewModel<TemplateSimpleScreenViewState,
                                                                   Never,
                                                                   TemplateSimpleScreenViewAction>
-@available(iOS 14, *)
+
 class TemplateSimpleScreenViewModel: TemplateSimpleScreenViewModelType, TemplateSimpleScreenViewModelProtocol {
 
     // MARK: - Properties

@@ -18,7 +18,6 @@ import SwiftUI
 
 // MARK: - Coordinator
 
-@available(iOS 13.0, *)
 /// The content displayed in a single splash screen page.
 struct OnboardingSplashScreenPageContent {
     let title: String
@@ -37,7 +36,6 @@ enum OnboardingSplashScreenViewModelResult {
 
 // MARK: View
 
-@available(iOS 13.0, *)
 struct OnboardingSplashScreenViewState: BindableState, CustomDebugStringConvertible {
     
     // MARK: - Constants

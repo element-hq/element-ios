@@ -66,6 +66,14 @@ public extension VectorL10n {
   static var allChatsTitle: String { 
     return VectorL10n.tr("Untranslated", "all_chats_title") 
   }
+  /// Your account is not created yet. Stop the registration process?
+  static var authenticationCancelFlowConfirmationMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_cancel_flow_confirmation_message") 
+  }
+  /// This server would like to make sure you are not a robot
+  static var authenticationRecaptchaMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_recaptcha_message") 
+  }
   /// Join millions for free on the largest public server
   static var authenticationRegistrationMatrixDescription: String { 
     return VectorL10n.tr("Untranslated", "authentication_registration_matrix_description") 
@@ -98,22 +106,6 @@ public extension VectorL10n {
   static var authenticationRegistrationUsernameFooter: String { 
     return VectorL10n.tr("Untranslated", "authentication_registration_username_footer") 
   }
-  /// Get in touch
-  static var authenticationServerSelectionEmsButton: String { 
-    return VectorL10n.tr("Untranslated", "authentication_server_selection_ems_button") 
-  }
-  /// element.io/ems
-  static var authenticationServerSelectionEmsLink: String { 
-    return VectorL10n.tr("Untranslated", "authentication_server_selection_ems_link") 
-  }
-  /// Element Matrix Services (EMS) is a robust and reliable hosting service for fast, secure real time communication. Find out how on
-  static var authenticationServerSelectionEmsMessage: String { 
-    return VectorL10n.tr("Untranslated", "authentication_server_selection_ems_message") 
-  }
-  /// Want to host your own server?
-  static var authenticationServerSelectionEmsTitle: String { 
-    return VectorL10n.tr("Untranslated", "authentication_server_selection_ems_title") 
-  }
   /// Cannot find a server at this URL, please check it is correct.
   static var authenticationServerSelectionGenericError: String { 
     return VectorL10n.tr("Untranslated", "authentication_server_selection_generic_error") 
@@ -137,6 +129,10 @@ public extension VectorL10n {
   /// Please read through T&C. You must accept in order to continue.
   static var authenticationTermsMessage: String { 
     return VectorL10n.tr("Untranslated", "authentication_terms_message") 
+  }
+  /// Unable to find the selected policy. Please try again later.
+  static var authenticationTermsPolicyUrlError: String { 
+    return VectorL10n.tr("Untranslated", "authentication_terms_policy_url_error") 
   }
   /// Privacy policy
   static var authenticationTermsTitle: String { 

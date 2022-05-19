@@ -17,7 +17,6 @@
 import SwiftUI
 import SceneKit
 
-@available(iOS 14.0, *)
 struct OnboardingCelebrationScreen: View {
 
     // MARK: - Properties
@@ -40,19 +39,18 @@ struct OnboardingCelebrationScreen: View {
     var body: some View {
         GeometryReader { geometry in
             VStack {
-                ScrollView(showsIndicators: false) {
+                ScrollView {
                     Spacer()
                         .frame(height: OnboardingMetrics.spacerHeight(in: geometry))
                     
                     mainContent
-                        .frame(maxWidth: OnboardingMetrics.maxContentWidth)
+                        .readableFrame()
                         .padding(.top, OnboardingMetrics.breakerScreenTopPadding)
                         .padding(.horizontal, horizontalPadding)
                 }
-                .frame(maxWidth: .infinity)
                 
                 buttons
-                    .frame(maxWidth: OnboardingMetrics.maxContentWidth)
+                    .readableFrame()
                     .padding(.horizontal, horizontalPadding)
                     .padding(.bottom, OnboardingMetrics.actionButtonBottomPadding)
                     .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
@@ -60,7 +58,7 @@ struct OnboardingCelebrationScreen: View {
                 Spacer()
                     .frame(height: OnboardingMetrics.spacerHeight(in: geometry))
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .frame(maxHeight: .infinity)
         }
         .overlay(effects.ignoresSafeArea())
         .background(theme.colors.background.ignoresSafeArea())

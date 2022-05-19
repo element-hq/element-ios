@@ -24,5 +24,7 @@
 	<string>RiotSwiftUI</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>When you share your location to people, Element needs access to show them a map.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>When you share your location to people, Element needs access to show them a map.</string>
 </dict>
 </plist>

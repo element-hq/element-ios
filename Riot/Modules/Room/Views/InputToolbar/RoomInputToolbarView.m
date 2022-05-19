@@ -77,7 +77,7 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
     self.isEncryptionEnabled = _isEncryptionEnabled;
     
-    [self updateUIWithTextMessage:nil animated:NO];
+    [self updateUIWithAttributedTextMessage:nil animated:NO];
     
     self.textView.toolbarDelegate = self;
     
@@ -117,6 +117,11 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     self.textView.tintColor = ThemeService.shared.theme.tintColor;
     self.textView.placeholderColor = ThemeService.shared.theme.textTertiaryColor;
     self.textView.showsVerticalScrollIndicator = NO;
+
+    // Trigger textView redraw using proper color/font.
+    NSAttributedString *newText = self.textView.attributedText;
+    self.textView.attributedText = nil;
+    self.textView.attributedText = newText;
     
     self.textView.keyboardAppearance = ThemeService.shared.theme.keyboardAppearance;
     if (self.textView.isFirstResponder)
@@ -154,16 +159,48 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
 - (void)setTextMessage:(NSString *)textMessage
 {
-    [super setTextMessage:textMessage];
-    
-    self.textView.text = textMessage;
-    [self updateUIWithTextMessage:textMessage animated:YES];
+    if (!textMessage)
+    {
+        [self setAttributedTextMessage:nil];
+    }
+}
+
+- (void)setAttributedTextMessage:(NSAttributedString *)attributedTextMessage
+{
+    if (attributedTextMessage)
+    {
+        NSMutableAttributedString *mutableTextMessage = [[NSMutableAttributedString alloc] initWithAttributedString:attributedTextMessage];
+        [mutableTextMessage addAttributes:@{ NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor,
+                                             NSFontAttributeName: self.textDefaultFont }
+                                    range:NSMakeRange(0, mutableTextMessage.length)];
+        attributedTextMessage = mutableTextMessage;
+    }
+
+    self.textView.attributedText = attributedTextMessage;
+    [self updateUIWithAttributedTextMessage:attributedTextMessage animated:YES];
     [self textViewDidChange:self.textView];
+}
+
+- (NSAttributedString *)attributedTextMessage
+{
+    return self.textView.attributedText;
 }
 
 - (NSString *)textMessage
 {
     return self.textView.text;
+}
+
+- (UIFont *)textDefaultFont
+{
+    if (self.textView.font)
+    {
+        return self.textView.font;
+    }
+    else
+    {
+        return [UIFont systemFontOfSize:15.f];
+    }
 }
 
 - (void)setIsEncryptionEnabled:(BOOL)isEncryptionEnabled
@@ -329,9 +366,10 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    NSString *newText = [textView.text stringByReplacingCharactersInRange:range withString:text];
-    [self updateUIWithTextMessage:newText animated:YES];
-    
+    NSMutableAttributedString *newText = [[NSMutableAttributedString alloc] initWithAttributedString:textView.attributedText];
+    [newText replaceCharactersInRange:range withString:text];
+    [self updateUIWithAttributedTextMessage:newText animated:YES];
+
     return YES;
 }
 
@@ -393,6 +431,11 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     }
 
     [super onTouchUpInside:button];
+}
+
+- (BOOL)isFirstResponder
+{
+    return [self.textView isFirstResponder];
 }
 
 - (BOOL)becomeFirstResponder
@@ -466,15 +509,15 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
 #pragma mark - Private
 
-- (void)updateUIWithTextMessage:(NSString *)textMessage animated:(BOOL)animated
+- (void)updateUIWithAttributedTextMessage:(NSAttributedString *)attributedTextMessage animated:(BOOL)animated
 {
     self.actionMenuOpened = NO;
         
     [UIView animateWithDuration:(animated ? 0.15f : 0.0f) animations:^{
-        self.rightInputToolbarButton.alpha = textMessage.length ? 1.0f : 0.0f;
-        self.rightInputToolbarButton.enabled = textMessage.length;
+        self.rightInputToolbarButton.alpha = attributedTextMessage.length ? 1.0f : 0.0f;
+        self.rightInputToolbarButton.enabled = attributedTextMessage.length;
         
-        self.voiceMessageToolbarView.alpha = textMessage.length ? 0.0f : 1.0;
+        self.voiceMessageToolbarView.alpha = attributedTextMessage.length ? 0.0f : 1.0;
     }];
 }
 

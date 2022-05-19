@@ -297,8 +297,10 @@ Tap the + to start adding people.";
 "directory_cell_title" = "Browse directory";
 "directory_cell_description" = "%tu rooms";
 "directory_search_results_title" = "Browse directory results";
-"directory_search_results" = "%tu results found for %@";
-"directory_search_results_more_than" = ">%tu results found for %@";
+/* The placeholder %1$tu will be replaced with a number and %2$@ with the user's search terms. */
+"directory_search_results" = "%1$tu results found for %2$@";
+/* The placeholder %1$tu will be replaced with a number and %2$@ with the user's search terms. Note the > at the start indicates "more than 20 results". */
+"directory_search_results_more_than" = ">%1$tu results found for %2$@";
 "directory_searching_title" = "Searching directory…";
 "directory_search_fail" = "Failed to fetch data";
 
@@ -2134,6 +2136,12 @@ Tap the + to start adding people.";
 "location_sharing_settings_header" = "Location sharing";
 
 "location_sharing_settings_toggle_title" = "Enable location sharing";
+
+"location_sharing_allow_background_location_title" = "Allow access";
+"location_sharing_allow_background_location_message" = "If you’d like to share your Live location, Element needs location access when the app is in the background.
+To enable access, tap Settings> Location and select Always";
+"location_sharing_allow_background_location_validate_action" = "Settings";
+"location_sharing_allow_background_location_cancel_action" = "Not now";
 
 // MARK: Live location sharing
 

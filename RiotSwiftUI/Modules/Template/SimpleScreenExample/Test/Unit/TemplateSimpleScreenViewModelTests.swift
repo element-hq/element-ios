@@ -18,7 +18,6 @@ import XCTest
 
 @testable import RiotSwiftUI
 
-@available(iOS 14.0, *)
 class TemplateSimpleScreenViewModelTests: XCTestCase {
     private enum Constants {
         static let counterInitialValue = 0

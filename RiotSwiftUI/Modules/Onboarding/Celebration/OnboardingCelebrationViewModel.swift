@@ -16,11 +16,10 @@
 
 import SwiftUI
 
-@available(iOS 14, *)
 typealias OnboardingCelebrationViewModelType = StateStoreViewModel<OnboardingCelebrationViewState,
-                                                                  Never,
-                                                                  OnboardingCelebrationViewAction>
-@available(iOS 14, *)
+                                                                   Never,
+                                                                   OnboardingCelebrationViewAction>
+
 class OnboardingCelebrationViewModel: OnboardingCelebrationViewModelType, OnboardingCelebrationViewModelProtocol {
 
     // MARK: - Properties

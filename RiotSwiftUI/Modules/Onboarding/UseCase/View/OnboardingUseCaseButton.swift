@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 /// A button used for the Use Case selection.
 struct OnboardingUseCaseButton: View {
     
@@ -48,7 +47,6 @@ struct OnboardingUseCaseButton: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct Previews_OnboardingUseCaseButton_Previews: PreviewProvider {
     static var previews: some View {
         OnboardingUseCaseButton(title: VectorL10n.onboardingUseCaseWorkMessaging,

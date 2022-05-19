@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct AuthenticationRegistrationScreen: View {
 
     // MARK: - Properties
@@ -24,6 +23,8 @@ struct AuthenticationRegistrationScreen: View {
     // MARK: Private
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
+    
+    @State private var isPasswordFocused = false
     
     // MARK: Public
     
@@ -60,8 +61,7 @@ struct AuthenticationRegistrationScreen: View {
                 }
                 
             }
-            .frame(maxWidth: OnboardingMetrics.maxContentWidth)
-            .frame(maxWidth: .infinity)
+            .readableFrame()
             .padding(.horizontal, 16)
             .padding(.bottom, 16)
         }
@@ -73,14 +73,8 @@ struct AuthenticationRegistrationScreen: View {
     /// The header containing the icon, title and message.
     var header: some View {
         VStack(spacing: 8) {
-            Image(Asset.Images.onboardingCongratulationsIcon.name)
-                .resizable()
-                .renderingMode(.template)
-                .foregroundColor(theme.colors.accent)
-                .frame(width: 90, height: 90)
-                .background(Circle().foregroundColor(.white).padding(2))
+            OnboardingIconImage(image: Asset.Images.onboardingCongratulationsIcon)
                 .padding(.bottom, 8)
-                .accessibilityHidden(true)
             
             Text(VectorL10n.authenticationRegistrationTitle)
                 .font(theme.fonts.title2B)
@@ -137,10 +131,10 @@ struct AuthenticationRegistrationScreen: View {
                                    footerText: viewModel.viewState.usernameFooterMessage,
                                    isError: viewModel.viewState.hasEditedUsername && !viewModel.viewState.isUsernameValid,
                                    isFirstResponder: false,
-                                   configuration: UIKitTextInputConfiguration(returnKeyType: .default,
+                                   configuration: UIKitTextInputConfiguration(returnKeyType: .next,
                                                                               autocapitalizationType: .none,
                                                                               autocorrectionType: .no),
-                                   onEditingChanged: { validateUsername(isEditing: $0) })
+                                   onEditingChanged: usernameEditingChanged)
             .onChange(of: viewModel.username) { _ in viewModel.send(viewAction: .clearUsernameError) }
             .accessibilityIdentifier("usernameTextField")
             
@@ -149,12 +143,13 @@ struct AuthenticationRegistrationScreen: View {
                                    text: $viewModel.password,
                                    footerText: VectorL10n.authenticationRegistrationPasswordFooter,
                                    isError: viewModel.viewState.hasEditedPassword && !viewModel.viewState.isPasswordValid,
-                                   isFirstResponder: false,
-                                   configuration: UIKitTextInputConfiguration(isSecureTextEntry: true),
-                                   onEditingChanged: { validatePassword(isEditing: $0) })
+                                   isFirstResponder: isPasswordFocused,
+                                   configuration: UIKitTextInputConfiguration(returnKeyType: .done,
+                                                                              isSecureTextEntry: true),
+                                   onEditingChanged: passwordEditingChanged)
             .accessibilityIdentifier("passwordTextField")
             
-            Button { viewModel.send(viewAction: .next) } label: {
+            Button(action: submit) {
                 Text(VectorL10n.next)
             }
             .buttonStyle(PrimaryActionButtonStyle())
@@ -175,16 +170,28 @@ struct AuthenticationRegistrationScreen: View {
         }
     }
     
-    /// Validates the username when the text field ends editing.
-    func validateUsername(isEditing: Bool) {
+    /// Validates the username when the text field ends editing, and selects the password text field.
+    func usernameEditingChanged(isEditing: Bool) {
         guard !isEditing, !viewModel.username.isEmpty else { return }
+        
         viewModel.send(viewAction: .validateUsername)
+        isPasswordFocused = true
     }
     
-    /// Enables password validation the first time the user finishes editing the password text field.
-    func validatePassword(isEditing: Bool) {
-        guard !viewModel.viewState.hasEditedPassword, !isEditing else { return }
+    /// Enables password validation the first time the user taps return, and sends the username and submits the form if possible.
+    func passwordEditingChanged(isEditing: Bool) {
+        guard !isEditing else { return }
+        isPasswordFocused = false
+        submit()
+        
+        guard !viewModel.viewState.hasEditedPassword else { return }
         viewModel.send(viewAction: .enablePasswordValidation)
+    }
+    
+    /// Sends the `next` view action so long as valid credentials have been input.
+    func submit() {
+        guard viewModel.viewState.hasValidCredentials else { return }
+        viewModel.send(viewAction: .next)
     }
 }
 

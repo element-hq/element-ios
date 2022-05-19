@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct OnboardingSplashScreenPage: View {
     
     // MARK: - Properties
@@ -75,7 +74,6 @@ struct OnboardingSplashScreenPage: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct OnboardingSplashScreenPage_Previews: PreviewProvider {
     static let content = OnboardingSplashScreenViewState().content
     static var previews: some View {

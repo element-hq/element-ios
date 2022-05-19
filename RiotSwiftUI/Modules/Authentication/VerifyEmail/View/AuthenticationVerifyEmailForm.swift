@@ -66,21 +66,37 @@ struct AuthenticationVerifyEmailForm: View {
     /// The text field and submit button where the user enters an email address.
     var mainContent: some View {
         VStack(alignment: .leading, spacing: 12) {
-            TextField(VectorL10n.authenticationVerifyEmailTextFieldPlaceholder, text: $viewModel.emailAddress) {
-                isEditingTextField = $0
+            if #available(iOS 15.0, *) {
+                textField
+                    .onSubmit(submit)
+            } else {
+                textField
             }
-            .textFieldStyle(BorderedInputFieldStyle(isEditing: isEditingTextField, isError: false))
-            .keyboardType(.emailAddress)
-            .autocapitalization(.none)
-            .disableAutocorrection(true)
-            .accessibilityIdentifier("addressTextField")
             
-            Button { viewModel.send(viewAction: .send) } label: {
+            Button(action: submit) {
                 Text(VectorL10n.next)
             }
             .buttonStyle(PrimaryActionButtonStyle())
             .disabled(viewModel.viewState.hasInvalidAddress)
             .accessibilityIdentifier("nextButton")
         }
+    }
+    
+    /// The text field, extracted for iOS 15 modifiers to be applied.
+    var textField: some View {
+        TextField(VectorL10n.authenticationVerifyEmailTextFieldPlaceholder, text: $viewModel.emailAddress) {
+            isEditingTextField = $0
+        }
+        .textFieldStyle(BorderedInputFieldStyle(isEditing: isEditingTextField, isError: false))
+        .keyboardType(.emailAddress)
+        .autocapitalization(.none)
+        .disableAutocorrection(true)
+        .accessibilityIdentifier("addressTextField")
+    }
+    
+    /// Sends the `send` view action so long as a valid email address has been input.
+    func submit() {
+        guard !viewModel.viewState.hasInvalidAddress else { return }
+        viewModel.send(viewAction: .send)
     }
 }

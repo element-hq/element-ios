@@ -19,7 +19,6 @@ import Combine
 
 @testable import RiotSwiftUI
 
-@available(iOS 14.0, *)
 @MainActor class AuthenticationRegistrationViewModelTests: XCTestCase {
     var viewModel: AuthenticationRegistrationViewModelProtocol!
     var context: AuthenticationRegistrationViewModelType.Context!

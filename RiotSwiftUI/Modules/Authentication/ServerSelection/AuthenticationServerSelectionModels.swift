@@ -68,8 +68,6 @@ enum AuthenticationServerSelectionViewAction {
     case confirm
     /// Dismiss the view without using the entered address.
     case dismiss
-    /// Open the EMS link.
-    case getInTouch
     /// Clear any errors shown in the text field footer.
     case clearFooterError
 }

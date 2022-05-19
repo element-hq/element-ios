@@ -386,7 +386,6 @@ final class BuildSettings: NSObject {
     // MARK: - Onboarding
     static let onboardingShowAccountPersonalization = false
     static let onboardingEnableNewAuthenticationFlow = false
-    static let onboardingHostYourOwnServerLink = URL(string: "https://element.io/contact-sales")!
     
     // MARK: - Unified Search
     static let unifiedSearchScreenShowPublicDirectory = true

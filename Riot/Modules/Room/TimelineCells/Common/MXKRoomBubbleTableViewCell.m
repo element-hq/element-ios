@@ -28,7 +28,6 @@
 #import "NSBundle+MatrixKit.h"
 #import "MXRoom+Sync.h"
 #import "MXKMessageTextView.h"
-#import "UITextView+MatrixKit.h"
 
 #import "GeneratedInterface-Swift.h"
 
@@ -1392,23 +1391,7 @@ static NSMutableDictionary *childClasses;
             {
                 UITextView *textView = self.messageTextView;
                 CGPoint tapLocation = [sender locationInView:textView];
-                UITextPosition *textPosition = [textView closestPositionToPoint:tapLocation];
-                NSDictionary *attributes = [textView textStylingAtPosition:textPosition inDirection:UITextStorageDirectionForward];
-                
-                // The value of `NSLinkAttributeName` attribute could be an NSURL or an NSString object.
-                id tappedURLObject = attributes[NSLinkAttributeName];
-                
-                if (tappedURLObject)
-                {
-                    if ([tappedURLObject isKindOfClass:[NSURL class]])
-                    {
-                        tappedUrl = (NSURL*)tappedURLObject;
-                    }
-                    else if ([tappedURLObject isKindOfClass:[NSString class]])
-                    {
-                        tappedUrl = [NSURL URLWithString:(NSString*)tappedURLObject];
-                    }
-                }
+                tappedUrl = [textView urlForLinkAtLocation:tapLocation];
             }
             
             MXKRoomBubbleComponent *tappedComponent = [self closestBubbleComponentForGestureRecognizer:sender locationInView:sender.view];
@@ -1653,7 +1636,7 @@ static NSMutableDictionary *childClasses;
             UITextView *textView = (UITextView*)touchedView;
             CGPoint touchLocation = [touch locationInView:textView];
             
-            return [textView isThereALinkNearPoint:touchLocation] == NO;
+            return [textView isThereALinkNearLocation:touchLocation] == NO;
         }
     }
     

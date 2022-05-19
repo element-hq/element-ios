@@ -20,7 +20,6 @@ struct OnboardingCelebrationCoordinatorParameters {
     let userSession: UserSession
 }
 
-@available(iOS 14.0, *)
 final class OnboardingCelebrationCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties

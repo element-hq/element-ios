@@ -46,21 +46,19 @@ final class TemplateRoomsCoordinator: Coordinator, Presentable {
     
     
     func start() {
-        if #available(iOS 14.0, *) {
-            MXLog.debug("[TemplateRoomsCoordinator] did start.")
-            let rootCoordinator = self.createTemplateRoomListCoordinator()
-            rootCoordinator.start()
-            
-            self.add(childCoordinator: rootCoordinator)
-            
-            if self.navigationRouter.modules.isEmpty == false {
-                self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
-                    self?.remove(childCoordinator: rootCoordinator)
-                })
-            } else {
-                self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
-                    self?.remove(childCoordinator: rootCoordinator)
-                }
+        MXLog.debug("[TemplateRoomsCoordinator] did start.")
+        let rootCoordinator = self.createTemplateRoomListCoordinator()
+        rootCoordinator.start()
+        
+        self.add(childCoordinator: rootCoordinator)
+        
+        if self.navigationRouter.modules.isEmpty == false {
+            self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
+                self?.remove(childCoordinator: rootCoordinator)
+            })
+        } else {
+            self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
+                self?.remove(childCoordinator: rootCoordinator)
             }
         }
     }
@@ -71,7 +69,6 @@ final class TemplateRoomsCoordinator: Coordinator, Presentable {
     
     // MARK: - Private
     
-    @available(iOS 14.0, *)
     private func createTemplateRoomListCoordinator() -> TemplateRoomListCoordinator {
         let coordinator: TemplateRoomListCoordinator = TemplateRoomListCoordinator(parameters: TemplateRoomListCoordinatorParameters(session: parameters.session))
         
@@ -88,13 +85,11 @@ final class TemplateRoomsCoordinator: Coordinator, Presentable {
         return coordinator
     }
     
-    @available(iOS 14.0, *)
     private func createTemplateRoomChatCoordinator(room: MXRoom) -> TemplateRoomChatCoordinator {
         let coordinator: TemplateRoomChatCoordinator = TemplateRoomChatCoordinator(parameters: TemplateRoomChatCoordinatorParameters(room: room))
         return coordinator
     }
     
-    @available(iOS 14.0, *)
     func showTemplateRoomChat(roomId: String) {
         guard let room = parameters.session.room(withRoomId: roomId) else {
             MXLog.error("[TemplateRoomsCoordinator] Failed to find room by selected Id.")
