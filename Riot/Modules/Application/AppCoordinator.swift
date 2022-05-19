@@ -87,6 +87,9 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         // Setup navigation router store
         _ = NavigationRouterStore.shared
         
+        // Setup user location services
+        _ = UserLocationServiceProvider.shared
+        
         if BuildSettings.enableSideMenu {
             self.addSideMenu()
         }
