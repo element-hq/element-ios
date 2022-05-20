@@ -50,6 +50,7 @@ struct AllChatLayoutEditor: View {
                 }
             }
             .accentColor(theme.colors.accent)
+            .track(screen: .editLayout)
     }
     
     // MARK: - Private

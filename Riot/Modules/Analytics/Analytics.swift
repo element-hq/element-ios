@@ -313,6 +313,11 @@ extension Analytics {
         viewRoomTrigger = .unknown
         capture(event: event)
     }
+    
+    func trackEditLayoutPinnedSpaces(with spaceNumber: Int) {
+        let event = AnalyticsEvent.EditLayoutPinnedSpaces(spaceNumber: spaceNumber)
+        capture(event: event)
+    }
 }
 
 // MARK: - MXAnalyticsDelegate

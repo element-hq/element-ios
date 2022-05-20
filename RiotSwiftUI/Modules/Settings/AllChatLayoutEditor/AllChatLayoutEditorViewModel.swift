@@ -67,6 +67,7 @@ class AllChatLayoutEditorViewModel: AllChatLayoutEditorViewModelType, AllChatLay
         case .cancel:
             completion?(.cancel)
         case .done:
+            service.trackDoneAction(sections: state.sections, filters: state.filters, sortingOptions: state.sortingOptions, pinnedSpaces: state.pinnedSpaces)
             completion?(.done(service.outputSettings(sections: state.sections, filters: state.filters, sortingOptions: state.sortingOptions, pinnedSpaces: state.pinnedSpaces)))
         case .tappedSectionItem(let sectionItem):
             revertSelection(of: sectionItem)

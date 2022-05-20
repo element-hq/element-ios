@@ -1756,6 +1756,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (void)spaceSelectorBottomSheetCoordinatorBridgePresenterDidSelectAll:(SpaceSelectorBottomSheetCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
+    [Analytics.shared trackInteraction:AnalyticsUIElementAllChatAllSpacesActivated];
     [self.allChatFilterOptions updateActivePinnedSpaceWithId:nil];
     self.spaceSelectorPresenter = nil;
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
@@ -1763,6 +1764,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (void)spaceSelectorBottomSheetCoordinatorBridgePresenter:(SpaceSelectorBottomSheetCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectSpaceWithId:(NSString *)spaceId
 {
+    [Analytics.shared trackInteraction:AnalyticsUIElementAllChatPinnedSpaceActivated];
     [self.allChatFilterOptions updateActivePinnedSpaceWithId:spaceId];
     self.spaceSelectorPresenter = nil;
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];

@@ -30,4 +30,9 @@ class MockAllChatLayoutEditorService: AllChatLayoutEditorServiceProtocol {
     func outputSettings(sections: [AllChatLayoutEditorSection], filters: [AllChatLayoutEditorFilter], sortingOptions: [AllChatLayoutEditorSortingOption], pinnedSpaces: [SpaceSelectorListItemData]) -> AllChatLayoutSettings {
         return AllChatLayoutSettings()
     }
+    
+    func trackDoneAction(sections: [AllChatLayoutEditorSection],
+                         filters: [AllChatLayoutEditorFilter],
+                         sortingOptions: [AllChatLayoutEditorSortingOption],
+                         pinnedSpaces: [SpaceSelectorListItemData]) {}
 }

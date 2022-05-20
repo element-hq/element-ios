@@ -24,7 +24,30 @@ import AnalyticsEvents
     case threadListFilterItem
     case spacePanelSelectedSpace
     case spacePanelSwitchSpace
-    
+    case editLayoutFavouritesFilterSelected
+    case editLayoutFavouritesFilterUnselected
+    case editLayoutFavouritesSectionSelected
+    case editLayoutFavouritesSectionUnselected
+    case editLayoutPeopleFilterSelected
+    case editLayoutPeopleFilterUnselected
+    case editLayoutRecentsSectionSelected
+    case editLayoutRecentsSectionUnselected
+    case editLayoutRoomsFilterSelected
+    case editLayoutRoomsFilterUnselected
+    case editLayoutUnreadsFilterSelected
+    case editLayoutUnreadsFilterUnselected
+    case allChatAllOptionActivated
+    case allChatAllSpacesActivated
+    case allChatFavouritesOptionActivated
+    case allChatFavouritesOptionDeactivated
+    case allChatPeopleOptionActivated
+    case allChatPeopleOptionDeactivated
+    case allChatPinnedSpaceActivated
+    case allChatRoomsOptionActivated
+    case allChatRoomsOptionDeactivated
+    case allChatUnreadsOptionActivated
+    case allChatUnreadsOptionDeactivated
+
     /// The element name reported to the AnalyticsEvent.
     var name: AnalyticsEvent.Interaction.Name {
         switch self {
@@ -40,6 +63,52 @@ import AnalyticsEvents
             return .SpacePanelSelectedSpace
         case .spacePanelSwitchSpace:
             return .SpacePanelSwitchSpace
+        case .editLayoutFavouritesFilterSelected:
+            return .EditLayoutFavouritesFilterSelected
+        case .editLayoutFavouritesFilterUnselected:
+            return .EditLayoutFavouritesFilterUnselected
+        case .editLayoutFavouritesSectionSelected:
+            return .EditLayoutFavouritesSectionSelected
+        case .editLayoutFavouritesSectionUnselected:
+            return .EditLayoutFavouritesSectionUnselected
+        case .editLayoutPeopleFilterSelected:
+            return .EditLayoutPeopleFilterSelected
+        case .editLayoutPeopleFilterUnselected:
+            return .EditLayoutPeopleFilterUnselected
+        case .editLayoutRecentsSectionSelected:
+            return .EditLayoutRecentsSectionSelected
+        case .editLayoutRecentsSectionUnselected:
+            return .EditLayoutRecentsSectionUnselected
+        case .editLayoutRoomsFilterSelected:
+            return .EditLayoutRoomsFilterSelected
+        case .editLayoutRoomsFilterUnselected:
+            return .EditLayoutRoomsFilterUnselected
+        case .editLayoutUnreadsFilterSelected:
+            return .EditLayoutUnreadsFilterSelected
+        case .editLayoutUnreadsFilterUnselected:
+            return .EditLayoutUnreadsFilterUnselected
+        case .allChatAllOptionActivated:
+            return .AllChatAllOptionActivated
+        case .allChatAllSpacesActivated:
+            return .AllChatAllSpacesActivated
+        case .allChatFavouritesOptionActivated:
+            return .AllChatFavouritesOptionActivated
+        case .allChatFavouritesOptionDeactivated:
+            return .AllChatFavouritesOptionDeactivated
+        case .allChatPeopleOptionActivated:
+            return .AllChatPeopleOptionActivated
+        case .allChatPeopleOptionDeactivated:
+            return .AllChatPeopleOptionDeactivated
+        case .allChatPinnedSpaceActivated:
+            return .AllChatPinnedSpaceActivated
+        case .allChatRoomsOptionActivated:
+            return .AllChatRoomsOptionActivated
+        case .allChatRoomsOptionDeactivated:
+            return .AllChatRoomsOptionDeactivated
+        case .allChatUnreadsOptionActivated:
+            return .AllChatUnreadsOptionActivated
+        case .allChatUnreadsOptionDeactivated:
+            return .AllChatUnreadsOptionDeactivated
         }
     }
 }

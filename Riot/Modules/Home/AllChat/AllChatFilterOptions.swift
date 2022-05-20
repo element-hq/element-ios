@@ -51,6 +51,7 @@ import UIKit
             optionView.isAll = true
             optionView.didTap = { optionView in
                 if !optionView.isSelected {
+                    Analytics.shared.trackInteraction(.allChatAllOptionActivated)
                     AllChatLayoutSettingsManager.shared.allChatLayoutSettings.activeFilters = []
 //                    self.updateActivePinnedSpace(withId: nil)
                 }
@@ -73,7 +74,11 @@ import UIKit
 //            } else {
 //                optionView.selectedSpaceName = nil
 //            }
-            optionView.didTap = { optionView in
+            optionView.didTap = { [weak self] optionView in
+                guard let self = self else {
+                    return
+                }
+                
 //                if !optionView.isSelected {
                     self.delegate?.allChatFilterOptions(self, presentSpaceSelectorForSpacesWithIds: spaceIds)
 //                } else {
@@ -86,8 +91,9 @@ import UIKit
         for option in options {
             let optionView = FilterOptionView()
             optionView.data = option
-            optionView.didTap = { optionView in
-//                optionView.isSelected = !optionView.isSelected
+            optionView.didTap = { [weak self] optionView in
+                self?.trackSelectionChangeFor(optionView)
+                
                 if !optionView.isSelected {
                     AllChatLayoutSettingsManager.shared.allChatLayoutSettings.activeFilters = option.type
                 } else {
@@ -105,6 +111,24 @@ import UIKit
         stackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: -16).isActive = true
         
         return scrollView
+    }
+    
+    private func trackSelectionChangeFor(_ optionView: FilterOptionView) {
+        guard let optionType = optionView.data?.type else {
+            return
+        }
+        
+        switch optionType {
+        case .favourites:
+            Analytics.shared.trackInteraction(optionView.isSelected ? .allChatFavouritesOptionDeactivated : .allChatFavouritesOptionActivated)
+        case .people:
+            Analytics.shared.trackInteraction(optionView.isSelected ? .allChatPeopleOptionDeactivated : .allChatPeopleOptionActivated)
+        case .rooms:
+            Analytics.shared.trackInteraction(optionView.isSelected ? .allChatRoomsOptionDeactivated : .allChatRoomsOptionActivated)
+        case .unreads:
+            Analytics.shared.trackInteraction(optionView.isSelected ? .allChatUnreadsOptionDeactivated : .allChatUnreadsOptionActivated)
+        default: break
+        }
     }
     
     var optionsCount: Int {

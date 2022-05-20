@@ -72,6 +72,39 @@ class AllChatLayoutEditorService: AllChatLayoutEditorServiceProtocol {
     
     // MARK: - Public
     
+    func trackDoneAction(sections: [AllChatLayoutEditorSection],
+                         filters: [AllChatLayoutEditorFilter],
+                         sortingOptions: [AllChatLayoutEditorSortingOption],
+                         pinnedSpaces: [SpaceSelectorListItemData]) {
+        for section in sections {
+            switch section.type {
+            case .favourites:
+                trackChangeFor(section: section, selectedEvent: .editLayoutFavouritesSectionSelected, unselectedEvent: .editLayoutFavouritesSectionUnselected)
+            case .recents:
+                trackChangeFor(section: section, selectedEvent: .editLayoutRecentsSectionSelected, unselectedEvent: .editLayoutRecentsSectionUnselected)
+            default:
+                break
+            }
+        }
+        
+        for filter in filters {
+            switch filter.type {
+            case .favourites:
+                trackChangeFor(filter: filter, selectedEvent: .editLayoutFavouritesFilterSelected, unselectedEvent: .editLayoutFavouritesFilterUnselected)
+            case .people:
+                trackChangeFor(filter: filter, selectedEvent: .editLayoutPeopleFilterSelected, unselectedEvent: .editLayoutPeopleFilterUnselected)
+            case .rooms:
+                trackChangeFor(filter: filter, selectedEvent: .editLayoutRoomsFilterSelected, unselectedEvent: .editLayoutRoomsFilterUnselected)
+            case .unreads:
+                trackChangeFor(filter: filter, selectedEvent: .editLayoutUnreadsFilterSelected, unselectedEvent: .editLayoutUnreadsFilterUnselected)
+            default:
+                break
+            }
+        }
+        
+        Analytics.shared.trackEditLayoutPinnedSpaces(with: pinnedSpaces.count)
+    }
+    
     func outputSettings(sections: [AllChatLayoutEditorSection],
                         filters: [AllChatLayoutEditorFilter],
                         sortingOptions: [AllChatLayoutEditorSortingOption],
@@ -85,4 +118,25 @@ class AllChatLayoutEditorService: AllChatLayoutEditorServiceProtocol {
         return settings
     }
     
+    // MARK: - Private
+    
+    private func trackChangeFor(section: AllChatLayoutEditorSection, selectedEvent: AnalyticsUIElement, unselectedEvent: AnalyticsUIElement) {
+        if section.selected && !settings.sections.contains(section.type) {
+            MXLog.debug("[AllChatLayoutEditorService] tracking \(selectedEvent.name)")
+            Analytics.shared.trackInteraction(selectedEvent)
+        } else if !section.selected && settings.sections.contains(section.type) {
+            MXLog.debug("[AllChatLayoutEditorService] tracking \(unselectedEvent.name)")
+            Analytics.shared.trackInteraction(unselectedEvent)
+        }
+    }
+    
+    private func trackChangeFor(filter: AllChatLayoutEditorFilter, selectedEvent: AnalyticsUIElement, unselectedEvent: AnalyticsUIElement) {
+        if filter.selected && !settings.filters.contains(filter.type) {
+            MXLog.debug("[AllChatLayoutEditorService] tracking \(selectedEvent.name)")
+            Analytics.shared.trackInteraction(selectedEvent)
+        } else if !filter.selected && settings.filters.contains(filter.type) {
+            MXLog.debug("[AllChatLayoutEditorService] tracking \(unselectedEvent.name)")
+            Analytics.shared.trackInteraction(unselectedEvent)
+        }
+    }
 }

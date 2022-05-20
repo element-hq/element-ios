@@ -23,8 +23,14 @@ protocol AllChatLayoutEditorServiceProtocol {
     var filters: [AllChatLayoutEditorFilter] { get }
     var sortingOptions: [AllChatLayoutEditorSortingOption] { get }
     var pinnedSpaces: [SpaceSelectorListItemData] { get }
+    
+    func trackDoneAction(sections: [AllChatLayoutEditorSection],
+                         filters: [AllChatLayoutEditorFilter],
+                         sortingOptions: [AllChatLayoutEditorSortingOption],
+                         pinnedSpaces: [SpaceSelectorListItemData])
     func outputSettings(sections: [AllChatLayoutEditorSection],
                         filters: [AllChatLayoutEditorFilter],
                         sortingOptions: [AllChatLayoutEditorSortingOption],
                         pinnedSpaces: [SpaceSelectorListItemData]) -> AllChatLayoutSettings
+
 }
