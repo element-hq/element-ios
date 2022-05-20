@@ -32,7 +32,6 @@ include:
   - path: RiotShareExtension/target.yml
   - path: SiriIntents/target.yml
   - path: RiotNSE/target.yml
-  - path: DesignKit/target.yml
   - path: RiotSwiftUI/target.yml
   - path: RiotSwiftUI/targetUnitTests.yml
   - path: RiotSwiftUI/targetUITests.yml
@@ -40,6 +39,9 @@ include:
   - path: CommonKit/targetUnitTests.yml
 
 packages:
+  DesignKit:
+    url: https://github.com/vector-im/element-x-ios
+    branch: doug/designkit
   Mapbox:
     url: https://github.com/maplibre/maplibre-gl-native-distribution
     minVersion: 5.12.2

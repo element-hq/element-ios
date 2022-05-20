@@ -14,10 +14,43 @@
 // limitations under the License.
 //
 
-import Foundation
+import SwiftUI
 import DesignKit
+import DesignTokens
 
 protocol ThemeSwiftUI: ThemeSwiftUIType {
     var identifier: ThemeIdentifier { get }
     var isDark: Bool { get }
+}
+
+/// Theme v2 for SwiftUI.
+@available(iOS 14.0, *)
+public protocol ThemeSwiftUIType {
+    
+    /// Colors object
+    var colors: ElementColors { get }
+    
+    /// Fonts object
+    var fonts: ElementFonts { get }
+    
+    /// may contain more design components in future, like icons, audio files etc.
+}
+
+#warning("Temporary missing colors")
+public extension ElementColors {
+    var quarterlyContent: Color { quaternaryContent }
+    var navigation: Color { system }
+    var tile: Color { system }
+    var namesAndAvatars: [Color] {
+        [
+            globalAzure,
+            globalGrape,
+            globalVerde,
+            globalPolly,
+            globalMelon,
+            globalAqua,
+            globalPrune,
+            globalKiwi
+        ]
+    }
 }
