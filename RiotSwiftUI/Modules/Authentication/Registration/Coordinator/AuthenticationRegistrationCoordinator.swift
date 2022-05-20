@@ -53,9 +53,9 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
     private var waitingIndicator: UserIndicator?
     
     /// The authentication service used for the registration.
-    var authenticationService: AuthenticationService { parameters.authenticationService }
+    private var authenticationService: AuthenticationService { parameters.authenticationService }
     /// The wizard used to handle the registration flow. May be `nil` when only SSO is supported.
-    var registrationWizard: RegistrationWizard?
+    private var registrationWizard: RegistrationWizard? { parameters.authenticationService.registrationWizard }
     
     // MARK: Public
 
@@ -67,7 +67,6 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
     
     @MainActor init(parameters: AuthenticationRegistrationCoordinatorParameters) {
         self.parameters = parameters
-        self.registrationWizard = parameters.authenticationService.registrationWizard
         
         let homeserver = parameters.authenticationService.state.homeserver
         let viewModel = AuthenticationRegistrationViewModel(homeserverAddress: homeserver.addressFromUser ?? homeserver.address,
@@ -112,8 +111,8 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
     }
     
     /// Show a blocking activity indicator whilst saving.
-    @MainActor private func startLoading(label: String? = nil) {
-        waitingIndicator = indicatorPresenter.present(.loading(label: label ?? VectorL10n.loading, isInteractionBlocking: true))
+    @MainActor private func startLoading() {
+        waitingIndicator = indicatorPresenter.present(.loading(label: VectorL10n.loading, isInteractionBlocking: true))
     }
     
     /// Hide the currently displayed activity indicator.
@@ -149,14 +148,13 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
             return
         }
         
-        // reAuthHelper.data = state.password
-        let deviceDisplayName = UIDevice.current.isPhone ? VectorL10n.loginMobileDevice : VectorL10n.loginTabletDevice
-        
         startLoading()
         
         currentTask = Task { [weak self] in
             do {
-                let result = try await registrationWizard.createAccount(username: username, password: password, initialDeviceDisplayName: deviceDisplayName)
+                let result = try await registrationWizard.createAccount(username: username,
+                                                                        password: password,
+                                                                        initialDeviceDisplayName: UIDevice.current.initialDisplayName)
                 
                 guard !Task.isCancelled else { return }
                 callback?(.completed(result))
@@ -230,8 +228,6 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
             authenticationRegistrationViewModel.update(homeserverAddress: homeserver.addressFromUser ?? homeserver.address,
                                                        showRegistrationForm: homeserver.registrationFlow != nil,
                                                        ssoIdentityProviders: homeserver.preferredLoginMode.ssoIdentityProviders ?? [])
-            
-            self.registrationWizard = authenticationService.registrationWizard
         }
         
         navigationRouter.dismissModule(animated: true) { [weak self] in

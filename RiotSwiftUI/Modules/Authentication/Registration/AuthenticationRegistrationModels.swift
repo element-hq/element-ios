@@ -58,7 +58,7 @@ struct AuthenticationRegistrationViewState: BindableState {
     /// A description that can be shown for the currently selected homeserver.
     var serverDescription: String? {
         guard homeserverAddress == "matrix.org" else { return nil }
-        return VectorL10n.authenticationRegistrationMatrixDescription
+        return VectorL10n.authenticationServerInfoMatrixDescription
     }
     
     /// Whether to show any SSO buttons.

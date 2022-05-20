@@ -23,12 +23,16 @@
 // MARK: Onboarding Authentication WIP
 "authentication_registration_title" = "Create your account";
 "authentication_registration_message" = "We’ll need some info to get you set up.";
-"authentication_registration_server_title" = "Choose your server to store your data";
-"authentication_registration_matrix_description" = "Join millions for free on the largest public server";
 "authentication_registration_username" = "Username";
-"authentication_registration_password" = "Password";
 "authentication_registration_username_footer" = "You can’t change this later";
 "authentication_registration_password_footer" = "Must be 8 characters or more";
+
+"authentication_login_title" = "Welcome back!";
+"authentication_login_username" = "Username or Email";
+"authentication_login_forgot_password" = "Forgot password";
+
+"authentication_server_info_title" = "Choose your server to store your data";
+"authentication_server_info_matrix_description" = "Join millions for free on the largest public server";
 
 "authentication_server_selection_title" = "Choose your server";
 "authentication_server_selection_message" = "What is the address of your server? A server is like a home for all your data.";

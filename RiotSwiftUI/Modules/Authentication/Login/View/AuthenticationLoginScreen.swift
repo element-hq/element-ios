@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-struct AuthenticationRegistrationScreen: View {
+struct AuthenticationLoginScreen: View {
 
     // MARK: - Properties
     
@@ -24,11 +24,13 @@ struct AuthenticationRegistrationScreen: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
+    /// A boolean that can be toggled to give focus to the password text field.
+    /// This must be manually set back to `false` when the text field finishes editing.
     @State private var isPasswordFocused = false
     
     // MARK: Public
     
-    @ObservedObject var viewModel: AuthenticationRegistrationViewModel.Context
+    @ObservedObject var viewModel: AuthenticationLoginViewModel.Context
     
     var body: some View {
         ScrollView {
@@ -45,11 +47,11 @@ struct AuthenticationRegistrationScreen: View {
                     .frame(height: 1)
                     .padding(.vertical, 21)
                 
-                if viewModel.viewState.showRegistrationForm {
-                    registrationForm
+                if viewModel.viewState.showLoginForm {
+                    loginForm
                 }
                 
-                if viewModel.viewState.showRegistrationForm && viewModel.viewState.showSSOButtons {
+                if viewModel.viewState.showLoginForm && viewModel.viewState.showSSOButtons {
                     Text(VectorL10n.or)
                         .foregroundColor(theme.colors.secondaryContent)
                         .padding(.top, 16)
@@ -72,20 +74,10 @@ struct AuthenticationRegistrationScreen: View {
     
     /// The header containing the icon, title and message.
     var header: some View {
-        VStack(spacing: 8) {
-            OnboardingIconImage(image: Asset.Images.onboardingCongratulationsIcon)
-                .padding(.bottom, 8)
-            
-            Text(VectorL10n.authenticationRegistrationTitle)
-                .font(theme.fonts.title2B)
-                .multilineTextAlignment(.center)
-                .foregroundColor(theme.colors.primaryContent)
-            
-            Text(VectorL10n.authenticationRegistrationMessage)
-                .font(theme.fonts.body)
-                .multilineTextAlignment(.center)
-                .foregroundColor(theme.colors.secondaryContent)
-        }
+        Text(VectorL10n.authenticationLoginTitle)
+            .font(theme.fonts.title2B)
+            .multilineTextAlignment(.center)
+            .foregroundColor(theme.colors.primaryContent)
     }
     
     /// The sever information section that includes a button to select a different server.
@@ -97,31 +89,33 @@ struct AuthenticationRegistrationScreen: View {
     }
     
     /// The form with text fields for username and password, along with a submit button.
-    var registrationForm: some View {
-        VStack(spacing: 21) {
-            RoundedBorderTextField(title: nil,
-                                   placeHolder: VectorL10n.authenticationRegistrationUsername,
+    var loginForm: some View {
+        VStack(spacing: 14) {
+            RoundedBorderTextField(placeHolder: VectorL10n.authenticationLoginUsername,
                                    text: $viewModel.username,
-                                   footerText: viewModel.viewState.usernameFooterMessage,
-                                   isError: viewModel.viewState.hasEditedUsername && !viewModel.viewState.isUsernameValid,
                                    isFirstResponder: false,
                                    configuration: UIKitTextInputConfiguration(returnKeyType: .next,
                                                                               autocapitalizationType: .none,
                                                                               autocorrectionType: .no),
                                    onEditingChanged: usernameEditingChanged)
-            .onChange(of: viewModel.username) { _ in viewModel.send(viewAction: .clearUsernameError) }
             .accessibilityIdentifier("usernameTextField")
             
-            RoundedBorderTextField(title: nil,
-                                   placeHolder: VectorL10n.authPasswordPlaceholder,
+            Spacer().frame(height: 20)
+            
+            RoundedBorderTextField(placeHolder: VectorL10n.authPasswordPlaceholder,
                                    text: $viewModel.password,
-                                   footerText: VectorL10n.authenticationRegistrationPasswordFooter,
-                                   isError: viewModel.viewState.hasEditedPassword && !viewModel.viewState.isPasswordValid,
                                    isFirstResponder: isPasswordFocused,
                                    configuration: UIKitTextInputConfiguration(returnKeyType: .done,
                                                                               isSecureTextEntry: true),
                                    onEditingChanged: passwordEditingChanged)
             .accessibilityIdentifier("passwordTextField")
+            
+            Button { } label: {
+                Text(VectorL10n.authenticationLoginForgotPassword)
+                    .font(theme.fonts.body)
+            }
+            .frame(maxWidth: .infinity, alignment: .trailing)
+            .padding(.bottom, 8)
             
             Button(action: submit) {
                 Text(VectorL10n.next)
@@ -144,22 +138,19 @@ struct AuthenticationRegistrationScreen: View {
         }
     }
     
-    /// Validates the username when the text field ends editing, and selects the password text field.
+    /// Give focus to the password text field.
     func usernameEditingChanged(isEditing: Bool) {
         guard !isEditing, !viewModel.username.isEmpty else { return }
         
-        viewModel.send(viewAction: .validateUsername)
+        viewModel.send(viewAction: .parseUsername)
         isPasswordFocused = true
     }
     
-    /// Enables password validation the first time the user taps return, and sends the username and submits the form if possible.
+    /// Submits the form if valid credentials have been input.
     func passwordEditingChanged(isEditing: Bool) {
         guard !isEditing else { return }
         isPasswordFocused = false
         submit()
-        
-        guard !viewModel.viewState.hasEditedPassword else { return }
-        viewModel.send(viewAction: .enablePasswordValidation)
     }
     
     /// Sends the `next` view action so long as valid credentials have been input.
@@ -172,8 +163,8 @@ struct AuthenticationRegistrationScreen: View {
 // MARK: - Previews
 
 @available(iOS 15.0, *)
-struct AuthenticationRegistration_Previews: PreviewProvider {
-    static let stateRenderer = MockAuthenticationRegistrationScreenState.stateRenderer
+struct AuthenticationLogin_Previews: PreviewProvider {
+    static let stateRenderer = MockAuthenticationLoginScreenState.stateRenderer
     static var previews: some View {
         stateRenderer.screenGroup(addNavigation: true)
             .navigationViewStyle(.stack)

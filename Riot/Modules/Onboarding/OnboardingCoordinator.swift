@@ -163,7 +163,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         case .register:
             showUseCaseSelectionScreen()
         case .login:
-            showLegacyAuthenticationScreen()
+            beginAuthentication(with: .login, onStart: coordinator.stop)
         }
     }
     
@@ -232,6 +232,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
                 self.cancelAuthentication(flow: flow)
             }
         }
+        authenticationCoordinator = coordinator
         
         add(childCoordinator: coordinator)
         coordinator.start()
@@ -256,7 +257,6 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
                 // These results are only sent by the new flow.
                 break
             }
-            
         }
         
         // Due to needing to preload the authVC, this breaks the Coordinator init/start pattern.
@@ -567,7 +567,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         }
         
         guard authenticationFinished else {
-            MXLog.debug("[OnboardingCoordinator] Allowing LegacyAuthenticationCoordinator to display any remaining screens.")
+            MXLog.debug("[OnboardingCoordinator] Allowing AuthenticationCoordinator to display any remaining screens.")
             authenticationCoordinator.presentPendingScreensIfNecessary()
             return
         }

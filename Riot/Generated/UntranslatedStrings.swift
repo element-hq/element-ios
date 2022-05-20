@@ -14,29 +14,29 @@ public extension VectorL10n {
   static var authenticationCancelFlowConfirmationMessage: String { 
     return VectorL10n.tr("Untranslated", "authentication_cancel_flow_confirmation_message") 
   }
+  /// Forgot password
+  static var authenticationLoginForgotPassword: String { 
+    return VectorL10n.tr("Untranslated", "authentication_login_forgot_password") 
+  }
+  /// Welcome back!
+  static var authenticationLoginTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_login_title") 
+  }
+  /// Username or Email
+  static var authenticationLoginUsername: String { 
+    return VectorL10n.tr("Untranslated", "authentication_login_username") 
+  }
   /// This server would like to make sure you are not a robot
   static var authenticationRecaptchaMessage: String { 
     return VectorL10n.tr("Untranslated", "authentication_recaptcha_message") 
-  }
-  /// Join millions for free on the largest public server
-  static var authenticationRegistrationMatrixDescription: String { 
-    return VectorL10n.tr("Untranslated", "authentication_registration_matrix_description") 
   }
   /// We’ll need some info to get you set up.
   static var authenticationRegistrationMessage: String { 
     return VectorL10n.tr("Untranslated", "authentication_registration_message") 
   }
-  /// Password
-  static var authenticationRegistrationPassword: String { 
-    return VectorL10n.tr("Untranslated", "authentication_registration_password") 
-  }
   /// Must be 8 characters or more
   static var authenticationRegistrationPasswordFooter: String { 
     return VectorL10n.tr("Untranslated", "authentication_registration_password_footer") 
-  }
-  /// Choose your server to store your data
-  static var authenticationRegistrationServerTitle: String { 
-    return VectorL10n.tr("Untranslated", "authentication_registration_server_title") 
   }
   /// Create your account
   static var authenticationRegistrationTitle: String { 
@@ -49,6 +49,14 @@ public extension VectorL10n {
   /// You can’t change this later
   static var authenticationRegistrationUsernameFooter: String { 
     return VectorL10n.tr("Untranslated", "authentication_registration_username_footer") 
+  }
+  /// Join millions for free on the largest public server
+  static var authenticationServerInfoMatrixDescription: String { 
+    return VectorL10n.tr("Untranslated", "authentication_server_info_matrix_description") 
+  }
+  /// Choose your server to store your data
+  static var authenticationServerInfoTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_server_info_title") 
   }
   /// Cannot find a server at this URL, please check it is correct.
   static var authenticationServerSelectionGenericError: String { 

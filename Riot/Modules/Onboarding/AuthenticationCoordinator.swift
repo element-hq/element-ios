@@ -144,6 +144,43 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         callback?(.cancel(.register))
     }
     
+    // MARK: - Login
+    
+    /// Shows the login screen.
+    @MainActor private func showLoginScreen() {
+        MXLog.debug("[AuthenticationCoordinator] showLoginScreen")
+        
+        let homeserver = authenticationService.state.homeserver
+        let parameters = AuthenticationLoginCoordinatorParameters(navigationRouter: navigationRouter,
+                                                                  authenticationService: authenticationService,
+                                                                  loginMode: homeserver.preferredLoginMode)
+        let coordinator = AuthenticationLoginCoordinator(parameters: parameters)
+        coordinator.callback = { [weak self, weak coordinator] result in
+            guard let self = self, let coordinator = coordinator else { return }
+            self.loginCoordinator(coordinator, didCompleteWith: result)
+        }
+        
+        coordinator.start()
+        add(childCoordinator: coordinator)
+        
+        if navigationRouter.modules.isEmpty {
+            navigationRouter.setRootModule(coordinator, popCompletion: nil)
+        } else {
+            navigationRouter.push(coordinator, animated: true) { [weak self] in
+                self?.remove(childCoordinator: coordinator)
+            }
+        }
+    }
+    
+    /// Displays the next view in the flow after the registration screen.
+    @MainActor private func loginCoordinator(_ coordinator: AuthenticationLoginCoordinator,
+                                             didCompleteWith result: AuthenticationLoginCoordinatorResult) {
+        switch result {
+        case .success(let session):
+            onSessionCreated(session: session, flow: .login)
+        }
+    }
+    
     // MARK: - Registration
     
     /// Pushes the server selection screen into the flow (other screens may also present it modally later).
@@ -298,12 +335,6 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         }
     }
     
-    /// Shows the login screen.
-    @MainActor private func showLoginScreen() {
-        MXLog.debug("[AuthenticationCoordinator] showLoginScreen")
-        
-    }
-    
     // MARK: - Registration Handlers
     /// Determines the next screen to show from the flow result and pushes it.
     @MainActor private func handleRegistrationResult(_ result: RegistrationResult) {
@@ -378,7 +409,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         verificationListener.start()
         self.verificationListener = verificationListener
         
-        #warning("Add authentication type to the new flow")
+        #warning("Add authentication type to the new flow.")
         callback?(.didLogin(session: session, authenticationFlow: flow, authenticationType: .other))
     }
     
@@ -397,7 +428,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     /// Present the key verification screen modally.
     private func presentCompleteSecurity() {
         guard let session = session else {
-            MXLog.error("[LegacyAuthenticationCoordinator] presentCompleteSecurity: Unable to present security due to missing session.")
+            MXLog.error("[AuthenticationCoordinator] presentCompleteSecurity: Unable to present security due to missing session.")
             authenticationDidComplete()
             return
         }
@@ -427,7 +458,7 @@ extension AuthenticationCoordinator: KeyVerificationCoordinatorDelegate {
     func keyVerificationCoordinatorDidComplete(_ coordinator: KeyVerificationCoordinatorType, otherUserId: String, otherDeviceId: String) {
         if let crypto = session?.crypto,
            !crypto.backup.hasPrivateKeyInCryptoStore || !crypto.backup.enabled {
-            MXLog.debug("[LegacyAuthenticationCoordinator][MXKeyVerification] requestAllPrivateKeys: Request key backup private keys")
+            MXLog.debug("[AuthenticationCoordinator][MXKeyVerification] requestAllPrivateKeys: Request key backup private keys")
             crypto.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
         }
         
