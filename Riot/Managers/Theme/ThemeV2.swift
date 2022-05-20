@@ -14,29 +14,38 @@
 // limitations under the License.
 //
 
-import Foundation
 import UIKit
+import DesignKit
+import DesignTokens
 
 /// Theme v2. May be named again as `Theme` when the migration completed.
 @objc public protocol ThemeV2 {
     
     /// Colors object
-    var colors: ColorsUIKit { get }
+    var colors: ElementUIColors { get }
     
     /// Fonts object
-    var fonts: FontsUIKit { get }
+    var fonts: ElementUIFonts { get }
     
     /// may contain more design components in future, like icons, audio files etc.
 }
 
-/// Theme v2 for SwiftUI.
-public protocol ThemeSwiftUIType {
-    
-    /// Colors object
-    var colors: ColorSwiftUI { get }
-    
-    /// Fonts object
-    var fonts: FontSwiftUI { get }
-    
-    /// may contain more design components in future, like icons, audio files etc.
+#warning("Temporary missing colors")
+public extension ElementUIColors {
+    var quarterlyContent: UIColor { quaternaryContent }
+    var navigation: UIColor { system }
+    var tile: UIColor { system }
+    var separator: UIColor { system }
+    var namesAndAvatars: [UIColor] {
+        [
+            globalAzure,
+            globalGrape,
+            globalVerde,
+            globalPolly,
+            globalMelon,
+            globalAqua,
+            globalPrune,
+            globalKiwi
+        ]
+    }
 }

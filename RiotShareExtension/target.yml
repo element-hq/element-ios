@@ -30,6 +30,8 @@ targets:
   RiotShareExtension:
     platform: iOS
     type: app-extension
+    dependencies:
+    - package: DesignKit
 
     configFiles:
       Debug: Debug.xcconfig
