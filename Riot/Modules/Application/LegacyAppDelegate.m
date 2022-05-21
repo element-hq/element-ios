@@ -424,13 +424,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
     self.clearingCache = NO;
     
-    if (RiotSettings.shared.needsClearCacheForEditLayoutPrototype)
-    {
-        self.clearingCache = YES;
-        [self clearCache];
-        RiotSettings.shared.needsClearCacheForEditLayoutPrototype = NO;
-    }
-
     // Log app information
     NSString *appDisplayName = self.appInfo.displayName;
     NSString* appVersion = self.appVersion;

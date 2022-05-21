@@ -941,9 +941,23 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     
     if (self.recentsListService.space == nil && _recentsDataSourceMode == RecentsDataSourceModeHome && sectionType == RecentsDataSourceSectionTypeConversation) {
         if (!self.allChatOptionsView) {
-            self.allChatOptionsView = [self.allChatFilterOptions createFilterListView];
+            UIView *allChatOptionsView = [self.allChatFilterOptions createFilterListView];
+            if (allChatOptionsView) {
+                UIView *superView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+                [superView vc_addSubViewMatchingParent:allChatOptionsView];
+                self.allChatOptionsView = superView;
+                self.allChatOptionsView.backgroundColor = [ThemeService shared].theme.colors.navigation;
+            }
+            else
+            {
+                self.allChatOptionsView = nil;
+            }
         }
-        sectionHeader.bottomView = self.allChatOptionsView;
+//        sectionHeader.bottomView = self.allChatOptionsView;
+        if (self.allChatOptionsView)
+        {
+            return self.allChatOptionsView;
+        }
     }
     else
     {

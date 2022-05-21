@@ -138,6 +138,28 @@
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (RiotSettings.shared.needsClearCacheForEditLayoutPrototype)
+    {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                       message:@"To fully enjoy this new experience, we just need to refresh your data just this time."
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n settingsClearCache]
+                                                  style:UIAlertActionStyleDefault
+                                                handler:^(UIAlertAction * action) {
+                                                    [[AppDelegate theDelegate] reloadMatrixSessions:YES];
+                                                    RiotSettings.shared.needsClearCacheForEditLayoutPrototype = NO;
+                                                }]];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+
+    }
+}
+
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
 {
     if (selectedRoomId)
