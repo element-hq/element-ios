@@ -31,20 +31,10 @@ import UIKit
             return nil
         }
         
-        let scrollView = UIScrollView()
-        scrollView.backgroundColor = .clear
-        scrollView.showsHorizontalScrollIndicator = false
-        scrollView.showsVerticalScrollIndicator = false
-//        scrollView.bounces = false
-//        scrollView.alwaysBounceHorizontal = true
-        
-        let stackView = UIStackView(frame: .zero)
-        stackView.axis = .horizontal
-        stackView.spacing = 8
-        stackView.backgroundColor = .clear
-        
         let spaceIds = AllChatLayoutSettingsManager.shared.allChatLayoutSettings.pinnedSpaceIds
 //        let activeSpaceId = AllChatLayoutSettingsManager.shared.allChatLayoutSettings.activePinnedSpaceId
+        
+        var filterViews: [FilterOptionView] = []
         
         if !options.isEmpty && spaceIds.isEmpty {
             let optionView = FilterOptionView()
@@ -56,7 +46,7 @@ import UIKit
 //                    self.updateActivePinnedSpace(withId: nil)
                 }
             }
-            stackView.addArrangedSubview(optionView)
+            filterViews.append(optionView)
         }
 
         if !spaceIds.isEmpty {
@@ -85,7 +75,7 @@ import UIKit
 //                    self.updateActivePinnedSpace(withId: nil)
 //                }
             }
-            stackView.addArrangedSubview(optionView)
+            filterViews.append(optionView)
         }
         
         for option in options {
@@ -100,17 +90,13 @@ import UIKit
                     AllChatLayoutSettingsManager.shared.allChatLayoutSettings.activeFilters.remove(option.type)
                 }
             }
-            stackView.addArrangedSubview(optionView)
+            filterViews.append(optionView)
         }
         
-        scrollView.addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: 16).isActive = true
-        stackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 8).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: -16).isActive = true
-        
-        return scrollView
+        let filterOptionListView = FilterOptionListView()
+        filterOptionListView.filterViews = filterViews
+
+        return filterOptionListView
     }
     
     private func trackSelectionChangeFor(_ optionView: FilterOptionView) {
