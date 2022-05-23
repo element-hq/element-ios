@@ -75,9 +75,8 @@ abstract_target 'RiotPods' do
   pod 'AnalyticsEvents', :git => 'https://github.com/matrix-org/matrix-analytics-events.git', :branch => 'release/swift'
   # pod 'AnalyticsEvents', :path => '../matrix-analytics-events/AnalyticsEvents.podspec'
 
-  # Remove warnings from "bad" pods
-  pod 'OLMKit', :inhibit_warnings => true
-  pod 'zxcvbn-ios', :inhibit_warnings => true
+  pod 'OLMKit'
+  pod 'zxcvbn-ios'
 
   # Tools
   pod 'SwiftGen', '~> 6.3'
