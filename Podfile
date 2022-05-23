@@ -3,6 +3,9 @@ source 'https://cdn.cocoapods.org/'
 # Uncomment this line to define a global platform for your project
 platform :ios, '14.0'
 
+# By default, ignore all warnings from any pod
+inhibit_all_warnings!
+
 # Use frameworks to allow usage of pods written in Swift
 use_frameworks!
 
