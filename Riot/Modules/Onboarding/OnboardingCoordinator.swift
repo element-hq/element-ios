@@ -54,8 +54,10 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     private var navigationRouter: NavigationRouterType {
         parameters.router
     }
-    // Keep a strong ref as we need to init authVC early to preload its view
-    private let authenticationCoordinator: AuthenticationCoordinatorProtocol
+    /// A strong ref to the legacy authVC as we need to init early to preload its view.
+    private let legacyAuthenticationCoordinator: LegacyAuthenticationCoordinator
+    /// The currently active authentication coordinator, otherwise `nil`.
+    private weak var authenticationCoordinator: AuthenticationCoordinatorProtocol?
     #warning("This might be removable when SSO comes through the AuthenticationService?")
     /// A boolean to prevent authentication being shown when already in progress.
     private var isShowingLegacyAuthentication = false
@@ -90,9 +92,9 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     init(parameters: OnboardingCoordinatorParameters) {
         self.parameters = parameters
         
-        // Preload the authVC (it is *really* slow to load in realtime)
+        // Preload the legacy authVC (it is *really* slow to load in realtime)
         let authenticationParameters = LegacyAuthenticationCoordinatorParameters(navigationRouter: parameters.router, canPresentAdditionalScreens: false)
-        authenticationCoordinator = LegacyAuthenticationCoordinator(parameters: authenticationParameters)
+        legacyAuthenticationCoordinator = LegacyAuthenticationCoordinator(parameters: authenticationParameters)
         
         super.init()
     }    
@@ -116,20 +118,20 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     /// For more information see `AuthenticationViewController.externalRegistrationParameters`.
     func update(externalRegistrationParameters: [AnyHashable: Any]) {
         self.externalRegistrationParameters = externalRegistrationParameters
-        authenticationCoordinator.update(externalRegistrationParameters: externalRegistrationParameters)
+        legacyAuthenticationCoordinator.update(externalRegistrationParameters: externalRegistrationParameters)
     }
     
     /// Set up the authentication screen with the specified homeserver and/or identity server.
     func updateHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?) {
         self.customHomeserver = homeserver
         self.customIdentityServer = identityServer
-        authenticationCoordinator.updateHomeserver(homeserver, andIdentityServer: identityServer)
+        legacyAuthenticationCoordinator.updateHomeserver(homeserver, andIdentityServer: identityServer)
     }
     
     /// When SSO login succeeded, when SFSafariViewController is used, continue login with success parameters.
     func continueSSOLogin(withToken loginToken: String, transactionID: String) -> Bool {
         guard isShowingLegacyAuthentication else { return false }
-        return authenticationCoordinator.continueSSOLogin(withToken: loginToken, transactionID: transactionID)
+        return legacyAuthenticationCoordinator.continueSSOLogin(withToken: loginToken, transactionID: transactionID)
     }
     
     // MARK: - Pre-Authentication
@@ -156,14 +158,19 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     private func splashScreenCoordinator(_ coordinator: OnboardingSplashScreenCoordinator, didCompleteWith result: OnboardingSplashScreenViewModelResult) {
         splashScreenResult = result
         
-        // Set the auth type early to allow network requests to finish during display of the use case screen.
-        authenticationCoordinator.update(authenticationFlow: result.flow)
+        // Set the auth type early on the legacy auth to allow network requests to finish during display of the use case screen.
+        legacyAuthenticationCoordinator.update(authenticationFlow: result.flow)
         
         switch result {
         case .register:
             showUseCaseSelectionScreen()
         case .login:
-            beginAuthentication(with: .login, onStart: coordinator.stop)
+            if BuildSettings.onboardingEnableNewAuthenticationFlow {
+                beginAuthentication(with: .login, onStart: coordinator.stop)
+            } else {
+                coordinator.stop()
+                showLegacyAuthenticationScreen()
+            }
         }
     }
     
@@ -244,7 +251,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         
         MXLog.debug("[OnboardingCoordinator] showLegacyAuthenticationScreen")
         
-        let coordinator = authenticationCoordinator
+        let coordinator = legacyAuthenticationCoordinator
         coordinator.callback = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
             
@@ -271,6 +278,8 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         if let softLogoutCredentials = parameters.softLogoutCredentials {
             coordinator.update(softLogoutCredentials: softLogoutCredentials)
         }
+        
+        authenticationCoordinator = coordinator
         
         coordinator.start()
         add(childCoordinator: coordinator)
@@ -567,6 +576,11 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         }
         
         guard authenticationFinished else {
+            guard let authenticationCoordinator = authenticationCoordinator else {
+                MXLog.failure("[OnboardingCoordinator] completeIfReady: authenticationCoordinator is missing.")
+                return
+            }
+
             MXLog.debug("[OnboardingCoordinator] Allowing AuthenticationCoordinator to display any remaining screens.")
             authenticationCoordinator.presentPendingScreensIfNecessary()
             return
