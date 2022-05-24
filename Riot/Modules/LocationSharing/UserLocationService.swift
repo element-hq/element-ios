@@ -66,7 +66,7 @@ class UserLocationService: UserLocationServiceProtocol {
     func start() {
         self.locationManager.delegate = self
         
-        // Check for exiting beacon info summaries for the current device and start location tracking if needed
+        // Check for existing beacon info summaries for the current device and start location tracking if needed
         self.setupDeviceBeaconSummaries()
         
         self.startListeningBeaconInfoSummaries()
