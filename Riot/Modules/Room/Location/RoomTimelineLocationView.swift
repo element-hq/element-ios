@@ -30,7 +30,7 @@ struct RoomTimelineLocationViewData {
     let mapStyleURL: URL
 }
 
-struct LiveLocationBannerViewData {
+struct TimelineLiveLocationViewData {
     let status: LiveLocationSharingStatus
     let iconTint: UIColor
     let title: String
@@ -165,7 +165,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     private func displayLocation(_ location: CLLocationCoordinate2D?,
                                  userAvatarData: AvatarViewData? = nil,
                                  mapStyleURL: URL,
-                                 bannerViewData: LiveLocationBannerViewData? = nil) {
+                                 bannerViewData: TimelineLiveLocationViewData? = nil) {
         
         if let location = location {
             mapView.isHidden = false
@@ -235,7 +235,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
         }
     }
     
-    private func liveLocationBannerViewData(from viewState: TimelineLiveLocationViewState) -> LiveLocationBannerViewData {
+    private func liveLocationBannerViewData(from viewState: TimelineLiveLocationViewState) -> TimelineLiveLocationViewData {
         
         var status: LiveLocationSharingStatus
         let iconTint: UIColor
@@ -294,7 +294,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
             }
         }
         
-        return LiveLocationBannerViewData(status: status,
+        return TimelineLiveLocationViewData(status: status,
                                           iconTint: iconTint,
                                           title: title,
                                           titleColor: titleColor,
