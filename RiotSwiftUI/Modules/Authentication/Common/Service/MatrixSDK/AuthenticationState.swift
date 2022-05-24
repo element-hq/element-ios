@@ -30,6 +30,11 @@ struct AuthenticationState {
         self.homeserver = Homeserver(address: homeserverAddress)
     }
     
+    init(flow: AuthenticationFlow, homeserver: Homeserver) {
+        self.flow = flow
+        self.homeserver = homeserver
+    }
+    
     struct Homeserver {
         /// The homeserver address as returned by the server.
         var address: String

@@ -204,6 +204,7 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
     @MainActor private func presentServerSelectionScreen() {
         MXLog.debug("[AuthenticationCoordinator] showServerSelectionScreen")
         let parameters = AuthenticationServerSelectionCoordinatorParameters(authenticationService: authenticationService,
+                                                                            flow: .register,
                                                                             hasModalPresentation: true)
         let coordinator = AuthenticationServerSelectionCoordinator(parameters: parameters)
         coordinator.callback = { [weak self, weak coordinator] result in

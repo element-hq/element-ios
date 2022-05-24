@@ -19,6 +19,8 @@ import CommonKit
 
 struct AuthenticationServerSelectionCoordinatorParameters {
     let authenticationService: AuthenticationService
+    /// Whether the server selection is for the login flow or registration flow.
+    let flow: AuthenticationFlow
     /// Whether the screen is presented modally or within a navigation stack.
     let hasModalPresentation: Bool
 }
@@ -111,14 +113,12 @@ final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
     /// Updates the login flow using the supplied homeserver address, or shows an error when this isn't possible.
     @MainActor private func useHomeserver(_ homeserverAddress: String) {
         startLoading()
-        authenticationService.reset()
         
         let homeserverAddress = HomeserverAddress.sanitized(homeserverAddress)
         
         Task {
             do {
-                #warning("The screen should be configuration for .login too.")
-                try await authenticationService.startFlow(.register, for: homeserverAddress)
+                try await authenticationService.startFlow(parameters.flow, for: homeserverAddress)
                 stopLoading()
                 
                 callback?(.updated)
