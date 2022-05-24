@@ -67,9 +67,7 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
         self.parameters = parameters
         
         let homeserver = parameters.authenticationService.state.homeserver
-        let viewModel = AuthenticationLoginViewModel(homeserverAddress: homeserver.addressFromUser ?? homeserver.address,
-                                                     showLoginForm: homeserver.preferredLoginMode.supportsPasswordFlow,
-                                                     ssoIdentityProviders: parameters.loginMode.ssoIdentityProviders ?? [])
+        let viewModel = AuthenticationLoginViewModel(homeserver: homeserver.viewData)
         authenticationLoginViewModel = viewModel
         
         let view = AuthenticationLoginScreen(viewModel: viewModel.context)
@@ -223,10 +221,9 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
         }
     }
     
+    /// Updates the view model to reflect any changes made to the homeserver.
     @MainActor private func updateViewModel() {
         let homeserver = authenticationService.state.homeserver
-        authenticationLoginViewModel.update(homeserverAddress: homeserver.addressFromUser ?? homeserver.address,
-                                            showLoginForm: homeserver.preferredLoginMode.supportsPasswordFlow,
-                                            ssoIdentityProviders: homeserver.preferredLoginMode.ssoIdentityProviders ?? [])
+        authenticationLoginViewModel.update(homeserver: homeserver.viewData)
     }
 }

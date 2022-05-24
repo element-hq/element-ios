@@ -25,7 +25,7 @@ struct AuthenticationServerInfoSection: View {
     // MARK: - Public
     
     let address: String
-    let description: String?
+    let showMatrixDotOrgInfo: Bool
     let editAction: () -> Void
     
     // MARK: - Views
@@ -42,8 +42,8 @@ struct AuthenticationServerInfoSection: View {
                         .font(theme.fonts.body)
                         .foregroundColor(theme.colors.primaryContent)
                     
-                    if let description = description {
-                        Text(description)
+                    if showMatrixDotOrgInfo {
+                        Text(VectorL10n.authenticationServerInfoMatrixDescription)
                             .font(theme.fonts.caption1)
                             .foregroundColor(theme.colors.tertiaryContent)
                             .accessibilityIdentifier("serverDescriptionText")

@@ -69,9 +69,7 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
         self.parameters = parameters
         
         let homeserver = parameters.authenticationService.state.homeserver
-        let viewModel = AuthenticationRegistrationViewModel(homeserverAddress: homeserver.addressFromUser ?? homeserver.address,
-                                                            showRegistrationForm: homeserver.registrationFlow != nil,
-                                                            ssoIdentityProviders: parameters.loginMode.ssoIdentityProviders ?? [])
+        let viewModel = AuthenticationRegistrationViewModel(homeserver: homeserver.viewData)
         authenticationRegistrationViewModel = viewModel
         
         let view = AuthenticationRegistrationScreen(viewModel: viewModel.context)
@@ -226,9 +224,7 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
                                                        didCompleteWith result: AuthenticationServerSelectionCoordinatorResult) {
         if result == .updated {
             let homeserver = authenticationService.state.homeserver
-            authenticationRegistrationViewModel.update(homeserverAddress: homeserver.addressFromUser ?? homeserver.address,
-                                                       showRegistrationForm: homeserver.registrationFlow != nil,
-                                                       ssoIdentityProviders: homeserver.preferredLoginMode.ssoIdentityProviders ?? [])
+            authenticationRegistrationViewModel.update(homeserver: homeserver.viewData)
         }
         
         navigationRouter.dismissModule(animated: true) { [weak self] in

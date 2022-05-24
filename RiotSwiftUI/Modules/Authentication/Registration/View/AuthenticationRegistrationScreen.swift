@@ -45,11 +45,11 @@ struct AuthenticationRegistrationScreen: View {
                     .frame(height: 1)
                     .padding(.vertical, 21)
                 
-                if viewModel.viewState.showRegistrationForm {
+                if viewModel.viewState.homeserver.showRegistrationForm {
                     registrationForm
                 }
                 
-                if viewModel.viewState.showRegistrationForm && viewModel.viewState.showSSOButtons {
+                if viewModel.viewState.homeserver.showRegistrationForm && viewModel.viewState.showSSOButtons {
                     Text(VectorL10n.or)
                         .foregroundColor(theme.colors.secondaryContent)
                         .padding(.top, 16)
@@ -90,8 +90,8 @@ struct AuthenticationRegistrationScreen: View {
     
     /// The sever information section that includes a button to select a different server.
     var serverInfo: some View {
-        AuthenticationServerInfoSection(address: viewModel.viewState.homeserverAddress,
-                                        description: viewModel.viewState.serverDescription) {
+        AuthenticationServerInfoSection(address: viewModel.viewState.homeserver.address,
+                                        showMatrixDotOrgInfo: viewModel.viewState.homeserver.isMatrixDotOrg) {
             viewModel.send(viewAction: .selectServer)
         }
     }
@@ -135,7 +135,7 @@ struct AuthenticationRegistrationScreen: View {
     /// A list of SSO buttons that can be used for login.
     var ssoButtons: some View {
         VStack(spacing: 16) {
-            ForEach(viewModel.viewState.ssoIdentityProviders) { provider in
+            ForEach(viewModel.viewState.homeserver.ssoIdentityProviders) { provider in
                 AuthenticationSSOButton(provider: provider) {
                     viewModel.send(viewAction: .continueWithSSO(id: provider.id))
                 }

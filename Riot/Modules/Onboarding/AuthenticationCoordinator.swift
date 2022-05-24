@@ -281,7 +281,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         let localizedPolicies = terms?.policiesData(forLanguage: Bundle.mxk_language(), defaultLanguage: Bundle.mxk_fallbackLanguage())
         let parameters = AuthenticationTermsCoordinatorParameters(registrationWizard: registrationWizard,
                                                                   localizedPolicies: localizedPolicies ?? [],
-                                                                  homeserverAddress: homeserver.addressFromUser ?? homeserver.address)
+                                                                  homeserverAddress: homeserver.displayableAddress)
         let coordinator = AuthenticationTermsCoordinator(parameters: parameters)
         coordinator.callback = { [weak self] result in
             self?.registrationStageDidComplete(with: result)

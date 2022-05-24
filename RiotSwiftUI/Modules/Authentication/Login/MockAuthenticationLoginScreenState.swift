@@ -38,23 +38,15 @@ enum MockAuthenticationLoginScreenState: MockScreenState, CaseIterable {
         let viewModel: AuthenticationLoginViewModel
         switch self {
         case .matrixDotOrg:
-            viewModel = AuthenticationLoginViewModel(homeserverAddress: "https://matrix.org", ssoIdentityProviders: [
-                SSOIdentityProvider(id: "1", name: "Apple", brand: "apple", iconURL: nil),
-                SSOIdentityProvider(id: "2", name: "Facebook", brand: "facebook", iconURL: nil),
-                SSOIdentityProvider(id: "3", name: "GitHub", brand: "github", iconURL: nil),
-                SSOIdentityProvider(id: "4", name: "GitLab", brand: "gitlab", iconURL: nil),
-                SSOIdentityProvider(id: "5", name: "Google", brand: "google", iconURL: nil)
-            ])
+            viewModel = AuthenticationLoginViewModel(homeserver: .mockMatrixDotOrg)
         case .passwordOnly:
-            viewModel = AuthenticationLoginViewModel(homeserverAddress: "https://example.com", ssoIdentityProviders: [])
+            viewModel = AuthenticationLoginViewModel(homeserver: .mockBasicServer)
         case .passwordWithCredentials:
-            viewModel = AuthenticationLoginViewModel(homeserverAddress: "https://example.com", ssoIdentityProviders: [])
+            viewModel = AuthenticationLoginViewModel(homeserver: .mockBasicServer)
             viewModel.context.username = "alice"
             viewModel.context.password = "password"
         case .ssoOnly:
-            viewModel = AuthenticationLoginViewModel(homeserverAddress: "https://company.com",
-                                                     showLoginForm: false,
-                                                     ssoIdentityProviders: [SSOIdentityProvider(id: "test", name: "SAML", brand: nil, iconURL: nil)])
+            viewModel = AuthenticationLoginViewModel(homeserver: .mockEnterpriseSSO)
         }
         
         

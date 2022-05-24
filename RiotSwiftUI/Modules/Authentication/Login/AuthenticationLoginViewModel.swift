@@ -30,12 +30,9 @@ class AuthenticationLoginViewModel: AuthenticationLoginViewModelType, Authentica
 
     // MARK: - Setup
 
-    init(homeserverAddress: String, showLoginForm: Bool = true, ssoIdentityProviders: [SSOIdentityProvider]) {
+    init(homeserver: AuthenticationHomeserverViewData) {
         let bindings = AuthenticationLoginBindings()
-        let viewState = AuthenticationLoginViewState(homeserverAddress: HomeserverAddress.displayable(homeserverAddress),
-                                                     showLoginForm: showLoginForm,
-                                                     ssoIdentityProviders: ssoIdentityProviders,
-                                                     bindings: bindings)
+        let viewState = AuthenticationLoginViewState(homeserver: homeserver, bindings: bindings)
         
         super.init(initialViewState: viewState)
     }
@@ -57,10 +54,8 @@ class AuthenticationLoginViewModel: AuthenticationLoginViewModelType, Authentica
         }
     }
     
-    @MainActor func update(homeserverAddress: String, showLoginForm: Bool, ssoIdentityProviders: [SSOIdentityProvider]) {
-        state.homeserverAddress = HomeserverAddress.displayable(homeserverAddress)
-        state.showLoginForm = showLoginForm
-        state.ssoIdentityProviders = ssoIdentityProviders
+    @MainActor func update(homeserver: AuthenticationHomeserverViewData) {
+        state.homeserver = homeserver
     }
     
     @MainActor func displayError(_ type: AuthenticationLoginErrorType) {

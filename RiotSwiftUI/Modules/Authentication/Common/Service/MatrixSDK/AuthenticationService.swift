@@ -188,8 +188,7 @@ class AuthenticationService: NSObject {
         
         let state = AuthenticationState(flow: .login, homeserver: .init(address: loginFlow.homeserverAddress,
                                                                         addressFromUser: homeserverAddress,
-                                                                        preferredLoginMode: loginFlow.loginMode,
-                                                                        loginModeSupportedTypes: loginFlow.supportedLoginTypes))
+                                                                        preferredLoginMode: loginFlow.loginMode))
         return (client, state)
     }
     
@@ -205,8 +204,7 @@ class AuthenticationService: NSObject {
         let loginFlow = try await getLoginFlowResult(client: session.matrixRestClient)
         
         let state = AuthenticationState(flow: .login, homeserver: .init(address: loginFlow.homeserverAddress,
-                                                                        preferredLoginMode: loginFlow.loginMode,
-                                                                        loginModeSupportedTypes: loginFlow.supportedLoginTypes))
+                                                                        preferredLoginMode: loginFlow.loginMode))
         return (client, state)
     }
     

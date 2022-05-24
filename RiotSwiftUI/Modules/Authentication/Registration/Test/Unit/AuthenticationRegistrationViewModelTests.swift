@@ -20,76 +20,34 @@ import Combine
 @testable import RiotSwiftUI
 
 @MainActor class AuthenticationRegistrationViewModelTests: XCTestCase {
+    let defaultHomeserver = AuthenticationHomeserverViewData.mockMatrixDotOrg
     var viewModel: AuthenticationRegistrationViewModelProtocol!
     var context: AuthenticationRegistrationViewModelType.Context!
     
     @MainActor override func setUp() async throws {
-        viewModel = AuthenticationRegistrationViewModel(homeserverAddress: "", ssoIdentityProviders: [])
+        viewModel = AuthenticationRegistrationViewModel(homeserver: defaultHomeserver)
         context = viewModel.context
     }
     
     func testMatrixDotOrg() {
-        // Given matrix.org with some SSO providers.
-        let address = "https://matrix.org"
-        let ssoProviders = [
-            SSOIdentityProvider(id: "apple", name: "Apple", brand: "Apple", iconURL: nil),
-            SSOIdentityProvider(id: "google", name: "Google", brand: "Google", iconURL: nil),
-            SSOIdentityProvider(id: "github", name: "Github", brand: "Github", iconURL: nil)
-        ]
+        // Given the initial view model configured for matrix.org with some SSO providers.
+        let homeserver = defaultHomeserver
         
-        // When updating the view model with the server.
-        viewModel.update(homeserverAddress: address, showRegistrationForm: true, ssoIdentityProviders: ssoProviders)
-        
-        // Then the form should show the server description along with the username and password fields and the SSO buttons.
-        XCTAssertEqual(context.viewState.homeserverAddress, "matrix.org", "The homeserver address should have the https scheme stripped away.")
-        XCTAssertEqual(context.viewState.serverDescription, VectorL10n.authenticationRegistrationMatrixDescription, "A description should be shown for matrix.org.")
-        XCTAssertTrue(context.viewState.showRegistrationForm, "The username and password section should be shown.")
+        // Then the view state should contain a homeserver that matches matrix.org and shows SSO buttons.
+        XCTAssertEqual(context.viewState.homeserver, homeserver, "The homeserver data should match the original.")
         XCTAssertTrue(context.viewState.showSSOButtons, "The SSO buttons should be shown.")
     }
     
     func testBasicServer() {
         // Given a basic server example.com that only supports password registration.
-        let address = "https://example.com"
+        let homeserver = AuthenticationHomeserverViewData.mockBasicServer
         
         // When updating the view model with the server.
-        viewModel.update(homeserverAddress: address, showRegistrationForm: true, ssoIdentityProviders: [])
+        viewModel.update(homeserver: homeserver)
         
-        // Then the form should only show the username and password section.
-        XCTAssertEqual(context.viewState.homeserverAddress, "example.com", "The homeserver address should have the https scheme stripped away.")
-        XCTAssertNil(context.viewState.serverDescription, "A description should not be shown when the server isn't matrix.org.")
-        XCTAssertTrue(context.viewState.showRegistrationForm, "The username and password section should be shown.")
+        // Then the view state should be updated with the homeserver and hide the SSO buttons.
+        XCTAssertEqual(context.viewState.homeserver, homeserver, "The homeserver data should should match the new homeserver.")
         XCTAssertFalse(context.viewState.showSSOButtons, "The SSO buttons should not be shown.")
-    }
-    
-    func testUnsecureServer() {
-        // Given a server that uses http for communication.
-        let address = "http://testserver.local"
-        
-        // When updating the view model with the server.
-        viewModel.update(homeserverAddress: address, showRegistrationForm: true, ssoIdentityProviders: [])
-        
-        // Then the form should only show the username and password section.
-        XCTAssertEqual(context.viewState.homeserverAddress, address, "The homeserver address should show the http scheme.")
-        XCTAssertNil(context.viewState.serverDescription, "A description should not be shown when the server isn't matrix.org.")
-    }
-    
-    func testSSOOnlyServer() {
-        // Given matrix.org with some SSO providers.
-        let address = "https://example.com"
-        let ssoProviders = [
-            SSOIdentityProvider(id: "apple", name: "Apple", brand: "Apple", iconURL: nil),
-            SSOIdentityProvider(id: "google", name: "Google", brand: "Google", iconURL: nil),
-            SSOIdentityProvider(id: "github", name: "Github", brand: "Github", iconURL: nil)
-        ]
-        
-        // When updating the view model with the server.
-        viewModel.update(homeserverAddress: address, showRegistrationForm: false, ssoIdentityProviders: ssoProviders)
-        
-        // Then the form should show the server description along with the username and password fields and the SSO buttons.
-        XCTAssertEqual(context.viewState.homeserverAddress, "example.com", "The homeserver address should have the https scheme stripped away.")
-        XCTAssertNil(context.viewState.serverDescription, "A description should not be shown when the server isn't matrix.org.")
-        XCTAssertFalse(context.viewState.showRegistrationForm, "The username and password section should not be shown.")
-        XCTAssertTrue(context.viewState.showSSOButtons, "The SSO buttons should be shown.")
     }
     
     func testUsernameError() async {

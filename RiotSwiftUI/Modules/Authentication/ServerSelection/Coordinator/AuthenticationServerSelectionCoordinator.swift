@@ -58,7 +58,7 @@ final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
         self.parameters = parameters
         
         let homeserver = parameters.authenticationService.state.homeserver
-        let viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: homeserver.addressFromUser ?? homeserver.address,
+        let viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: homeserver.displayableAddress,
                                                                hasModalPresentation: parameters.hasModalPresentation)
         let view = AuthenticationServerSelectionScreen(viewModel: viewModel.context)
         authenticationServerSelectionViewModel = viewModel

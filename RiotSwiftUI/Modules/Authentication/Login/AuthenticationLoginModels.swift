@@ -32,24 +32,14 @@ enum AuthenticationLoginViewModelResult {
 // MARK: View
 
 struct AuthenticationLoginViewState: BindableState {
-    /// The address of the homeserver.
-    var homeserverAddress: String
-    /// Whether or not to show the username and password text fields with the next button
-    var showLoginForm: Bool
-    /// An array containing the available SSO options for login.
-    var ssoIdentityProviders: [SSOIdentityProvider]
+    /// Data about the selected homeserver.
+    var homeserver: AuthenticationHomeserverViewData
     /// View state that can be bound to from SwiftUI.
     var bindings: AuthenticationLoginBindings
     
-    /// A description that can be shown for the currently selected homeserver.
-    var serverDescription: String? {
-        guard homeserverAddress == "matrix.org" else { return nil }
-        return VectorL10n.authenticationServerInfoMatrixDescription
-    }
-    
     /// Whether to show any SSO buttons.
     var showSSOButtons: Bool {
-        !ssoIdentityProviders.isEmpty
+        !homeserver.ssoIdentityProviders.isEmpty
     }
     
     /// `true` if it is possible to continue, otherwise `false`.
