@@ -64,7 +64,11 @@ class UserLocationService: UserLocationServiceProtocol {
     }
     
     func start() {
-        self.startLocationTracking()
+        self.locationManager.delegate = self
+        
+        // Check for exiting beacon info summaries for the current device and start location tracking if needed
+        self.setupDeviceBeaconSummaries()
+        
         self.startListeningBeaconInfoSummaries()
         self.startVerifyingExpiredBeaconInfoSummaries()
     }
@@ -81,7 +85,7 @@ class UserLocationService: UserLocationServiceProtocol {
     
     private func startVerifyingExpiredBeaconInfoSummaries() {
                         
-        let timer = Timer.scheduledTimer(withTimeInterval: Constants.beaconExpiredVerificationInterval, repeats: false) { [weak self] _ in
+        let timer = Timer.scheduledTimer(withTimeInterval: Constants.beaconExpiredVerificationInterval, repeats: true) { [weak self] _ in
 
             self?.verifyExpiredBeaconInfoSummaries()
         }
@@ -111,34 +115,33 @@ class UserLocationService: UserLocationServiceProtocol {
         })
     }
     
+    private func getExistingDeviceBeaconSummaries() -> [MXBeaconInfoSummaryProtocol] {
+        guard let userId = self.session.myUserId else {
+            return []
+        }
+        
+        return self.session.locationService.getBeaconInfoSummaries(for: userId).filter { summary in
+            return self.isDeviceBeaconInfoSummary(summary) && summary.isActive
+        }
+    }
+    
+    private func setupDeviceBeaconSummaries() {
+        let existingDeviceBeaconInfoSummaries = self.getExistingDeviceBeaconSummaries()
+        
+        self.deviceBeaconInfoSummaries = existingDeviceBeaconInfoSummaries
+        
+        self.updateLocationTrackingIfNeeded()
+        
+        for summary in existingDeviceBeaconInfoSummaries {
+            self.didReceiveDeviceNewBeaconInfoSummary(summary)
+        }
+    }
+    
     private func startListeningBeaconInfoSummaries() {
-        let beaconInfoSummaryListener = self.session.aggregations.beaconAggregations.listenToBeaconInfoSummaryUpdate { roomId, beaconInfoSummary in
+        
+        let beaconInfoSummaryListener = self.session.aggregations.beaconAggregations.listenToBeaconInfoSummaryUpdate { [weak self] roomId, beaconInfoSummary in
             
-            if self.isDeviceBeaconInfoSummary(beaconInfoSummary) {
-                
-                let existingIndex = self.deviceBeaconInfoSummaries.firstIndex(where: { beaconInfoSum in
-                    beaconInfoSum.id == beaconInfoSummary.id
-                })
-                
-                if beaconInfoSummary.isActive {
-                    
-                    if let index = existingIndex {
-                        self.deviceBeaconInfoSummaries[index] = beaconInfoSummary
-                    } else {
-                        self.deviceBeaconInfoSummaries.append(beaconInfoSummary)
-                        
-                        // Send location if possible to a new beacon info summary
-                        self.didReceiveDeviceNewBeaconInfoSummary(beaconInfoSummary)
-                    }
-                } else {
-                    
-                    if let index = existingIndex {
-                        self.deviceBeaconInfoSummaries.remove(at: index)
-                    }
-                }
-                
-                self.updateLocationTrackingIfNeeded()
-            }
+            self?.didReceiveBeaconInfoSummary(beaconInfoSummary)
         }
         
         self.beaconInfoSummaryListener = beaconInfoSummaryListener
@@ -156,6 +159,35 @@ class UserLocationService: UserLocationServiceProtocol {
         return beaconInfoSummary.userId == self.session.myUserId && beaconInfoSummary.deviceId  == self.session.myDeviceId
     }
     
+    private func didReceiveBeaconInfoSummary(_ beaconInfoSummary: MXBeaconInfoSummaryProtocol) {
+        
+        guard self.isDeviceBeaconInfoSummary(beaconInfoSummary) else {
+            return
+        }
+            
+        let existingIndex = self.deviceBeaconInfoSummaries.firstIndex(where: { beaconInfoSum in
+            beaconInfoSum.id == beaconInfoSummary.id
+        })
+        
+        if beaconInfoSummary.isActive {
+            
+            if let index = existingIndex {
+                self.deviceBeaconInfoSummaries[index] = beaconInfoSummary
+            } else {
+                self.deviceBeaconInfoSummaries.append(beaconInfoSummary)
+                
+                // Send location if possible to a new beacon info summary
+                self.didReceiveDeviceNewBeaconInfoSummary(beaconInfoSummary)
+            }
+        } else {
+            
+            if let index = existingIndex {
+                self.deviceBeaconInfoSummaries.remove(at: index)
+            }
+        }
+        
+        self.updateLocationTrackingIfNeeded()
+    }
 
     private func didReceiveDeviceNewBeaconInfoSummary(_ beaconInfoSummary: MXBeaconInfoSummaryProtocol) {
         
@@ -220,11 +252,6 @@ class UserLocationService: UserLocationServiceProtocol {
     }
     
     // MARK: Device location
-    
-    private func startLocationTracking() {
-        self.locationManager.start()
-        self.locationManager.delegate = self
-    }
     
     private func stopLocationTracking() {
         self.locationManager.stop()
