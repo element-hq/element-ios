@@ -19,30 +19,95 @@ import XCTest
 @testable import RiotSwiftUI
 
 class AuthenticationLoginViewModelTests: XCTestCase {
-    private enum Constants {
-        static let counterInitialValue = 0
-    }
-    
+    let defaultHomeserver = AuthenticationHomeserverViewData.mockMatrixDotOrg
     var viewModel: AuthenticationLoginViewModelProtocol!
     var context: AuthenticationLoginViewModelType.Context!
     
-    override func setUpWithError() throws {
-        viewModel = AuthenticationLoginViewModel(promptType: .regular, initialCount: Constants.counterInitialValue)
+    @MainActor override func setUp() async throws {
+        viewModel = AuthenticationLoginViewModel(homeserver: defaultHomeserver)
         context = viewModel.context
     }
-
-    func testInitialState() {
-        XCTAssertEqual(context.viewState.count, Constants.counterInitialValue)
+    
+    func testMatrixDotOrg() {
+        // Given the initial view model configured for matrix.org with some SSO providers.
+        let homeserver = defaultHomeserver
+        
+        // Then the view state should contain a homeserver that matches matrix.org and shows SSO buttons.
+        XCTAssertEqual(context.viewState.homeserver, homeserver, "The homeserver data should match the original.")
+        XCTAssertTrue(context.viewState.showSSOButtons, "The SSO buttons should be shown.")
     }
-
-    func testCounter() throws {
-        context.send(viewAction: .incrementCount)
-        XCTAssertEqual(context.viewState.count, 1)
+    
+    @MainActor func testBasicServer() {
+        // Given a basic server example.com that only supports password registration.
+        let homeserver = AuthenticationHomeserverViewData.mockBasicServer
         
-        context.send(viewAction: .incrementCount)
-        XCTAssertEqual(context.viewState.count, 2)
+        // When updating the view model with the server.
+        viewModel.update(homeserver: homeserver)
         
-        context.send(viewAction: .decrementCount)
-        XCTAssertEqual(context.viewState.count, 1)
+        // Then the view state should be updated with the homeserver and hide the SSO buttons.
+        XCTAssertEqual(context.viewState.homeserver, homeserver, "The homeserver data should should match the new homeserver.")
+        XCTAssertFalse(context.viewState.showSSOButtons, "The SSO buttons should not be shown.")
+    }
+    
+    func testUsernameWithEmptyPassword() {
+        // Given a form with an empty username and password.
+        XCTAssertTrue(context.password.isEmpty, "The initial value for the password should be empty.")
+        XCTAssertTrue(context.username.isEmpty, "The initial value for the username should be empty.")
+        XCTAssertFalse(context.viewState.hasValidCredentials, "The credentials should be invalid.")
+        
+        // When entering a username without a password.
+        context.username = "bob"
+        context.password = ""
+        
+        // Then the credentials should be considered invalid.
+        XCTAssertFalse(context.viewState.hasValidCredentials, "The credentials should be invalid.")
+    }
+    
+    func testEmptyUsernameWithPassword() {
+        // Given a form with an empty username and password.
+        XCTAssertTrue(context.password.isEmpty, "The initial value for the password should be empty.")
+        XCTAssertTrue(context.username.isEmpty, "The initial value for the username should be empty.")
+        XCTAssertFalse(context.viewState.hasValidCredentials, "The credentials should be invalid.")
+        
+        // When entering a password without a username.
+        context.username = ""
+        context.password = "12345678"
+        
+        // Then the credentials should be considered invalid.
+        XCTAssertFalse(context.viewState.hasValidCredentials, "The credentials should be invalid.")
+    }
+    
+    func testValidCredentials() {
+        // Given a form with an empty username and password.
+        XCTAssertTrue(context.password.isEmpty, "The initial value for the password should be empty.")
+        XCTAssertTrue(context.username.isEmpty, "The initial value for the username should be empty.")
+        XCTAssertFalse(context.viewState.hasValidCredentials, "The credentials should be invalid.")
+        
+        // When entering a username and an 8-character password.
+        context.username = "bob"
+        context.password = "12345678"
+        
+        // Then the credentials should be considered valid.
+        XCTAssertTrue(context.viewState.hasValidCredentials, "The credentials should be valid when the username and password are valid.")
+    }
+    
+    @MainActor func testLoadingServer() {
+        // Given a form with valid credentials.
+        context.username = "bob"
+        context.password = "12345678"
+        XCTAssertTrue(context.viewState.hasValidCredentials, "The credentials should be valid.")
+        XCTAssertFalse(context.viewState.isLoading, "The view shouldn't start in a loading state.")
+        
+        // When updating the view model whilst loading a homeserver.
+        viewModel.update(isLoading: true)
+        
+        // Then the view state should reflect that the homeserver is loading.
+        XCTAssertTrue(context.viewState.isLoading, "The view should now be in a loading state.")
+        
+        // When updating the view model after loading a homeserver.
+        viewModel.update(isLoading: false)
+        
+        // Then the view state should reflect that the homeserver is now loaded.
+        XCTAssertFalse(context.viewState.isLoading, "The view should be back in a loaded state.")
     }
 }

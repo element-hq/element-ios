@@ -73,6 +73,13 @@ enum LoginError: String, Error {
     case resetPasswordNotStarted
 }
 
+struct HomeserverAddress {
+    /// Ensures the address contains a scheme, otherwise makes it `https`.
+    static func sanitized(_ address: String) -> String {
+        !address.contains("://") ? "https://\(address.lowercased())" : address.lowercased()
+    }
+}
+
 /// Represents an SSO Identity Provider as provided in a login flow.
 @objc class SSOIdentityProvider: NSObject, Identifiable {
     /// The id field is the Identity Provider identifier used for the SSO Web page redirection `/login/sso/redirect/{idp_id}`.

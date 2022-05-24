@@ -26,7 +26,7 @@ class AuthenticationLoginViewModel: AuthenticationLoginViewModelType, Authentica
 
     // MARK: Public
 
-    @MainActor var callback: (@MainActor (AuthenticationLoginViewModelResult) -> Void)?
+    var callback: (@MainActor (AuthenticationLoginViewModelResult) -> Void)?
 
     // MARK: - Setup
 
@@ -52,6 +52,11 @@ class AuthenticationLoginViewModel: AuthenticationLoginViewModelType, Authentica
         case .continueWithSSO(let id):
             break
         }
+    }
+    
+    @MainActor func update(isLoading: Bool) {
+        guard state.isLoading != isLoading else { return }
+        state.isLoading = isLoading
     }
     
     @MainActor func update(homeserver: AuthenticationHomeserverViewData) {

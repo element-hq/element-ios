@@ -58,6 +58,7 @@ struct AuthenticationState {
             return url.host == "matrix.org" || url.host == "matrix-client.matrix.org"
         }
         
+        /// The homeserver mapped into view data that is ready for display.
         var viewData: AuthenticationHomeserverViewData {
             AuthenticationHomeserverViewData(address: displayableAddress,
                                              isMatrixDotOrg: isMatrixDotOrg,

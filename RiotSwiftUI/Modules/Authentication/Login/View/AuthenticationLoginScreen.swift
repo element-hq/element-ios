@@ -72,7 +72,7 @@ struct AuthenticationLoginScreen: View {
         .accentColor(theme.colors.accent)
     }
     
-    /// The header containing the icon, title and message.
+    /// The header containing a Welcome Back title.
     var header: some View {
         Text(VectorL10n.authenticationLoginTitle)
             .font(theme.fonts.title2B)
@@ -110,7 +110,7 @@ struct AuthenticationLoginScreen: View {
                                    onEditingChanged: passwordEditingChanged)
             .accessibilityIdentifier("passwordTextField")
             
-            Button { } label: {
+            Button { viewModel.send(viewAction: .forgotPassword) } label: {
                 Text(VectorL10n.authenticationLoginForgotPassword)
                     .font(theme.fonts.body)
             }
@@ -121,7 +121,7 @@ struct AuthenticationLoginScreen: View {
                 Text(VectorL10n.next)
             }
             .buttonStyle(PrimaryActionButtonStyle())
-            .disabled(!viewModel.viewState.hasValidCredentials)
+            .disabled(!viewModel.viewState.hasValidCredentials || viewModel.viewState.isLoading)
             .accessibilityIdentifier("nextButton")
         }
     }

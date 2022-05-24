@@ -50,7 +50,7 @@ import Combine
         XCTAssertFalse(context.viewState.showSSOButtons, "The SSO buttons should not be shown.")
     }
     
-    func testUsernameError() async {
+    func testUsernameError() async throws {
         // Given a form with a valid username.
         context.username = "bob"
         XCTAssertNil(context.viewState.usernameErrorMessage, "The shouldn't be a username error when the view model is created.")
@@ -71,8 +71,7 @@ import Combine
         context.send(viewAction: .clearUsernameError)
         
         // Wait for the action to spawn a Task on the main actor as the Context protocol doesn't support actors.
-        let task = Task { try await Task.sleep(nanoseconds: 100_000_000) }
-        _ = await task.result
+        try await Task.sleep(nanoseconds: 100_000_000)
         
         // Then the error should be hidden again.
         XCTAssertNil(context.viewState.usernameErrorMessage, "The shouldn't be a username error anymore.")

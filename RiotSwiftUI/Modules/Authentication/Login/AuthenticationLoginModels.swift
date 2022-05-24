@@ -34,6 +34,8 @@ enum AuthenticationLoginViewModelResult {
 struct AuthenticationLoginViewState: BindableState {
     /// Data about the selected homeserver.
     var homeserver: AuthenticationHomeserverViewData
+    /// Whether a new homeserver is currently being loaded.
+    var isLoading: Bool = false
     /// View state that can be bound to from SwiftUI.
     var bindings: AuthenticationLoginBindings
     

@@ -18,8 +18,11 @@ import Foundation
 
 protocol AuthenticationLoginViewModelProtocol {
     
-    @MainActor var callback: (@MainActor (AuthenticationLoginViewModelResult) -> Void)? { get set }
+    var callback: (@MainActor (AuthenticationLoginViewModelResult) -> Void)? { get set }
     var context: AuthenticationLoginViewModelType.Context { get }
+    
+    /// Update the view to reflect that a new homeserver is being loaded.
+    @MainActor func update(isLoading: Bool)
     
     /// Update the view with new homeserver information.
     @MainActor func update(homeserver: AuthenticationHomeserverViewData)

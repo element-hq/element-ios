@@ -59,7 +59,7 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    @MainActor var callback: ((AuthenticationLoginCoordinatorResult) -> Void)?
+    var callback: (@MainActor (AuthenticationLoginCoordinatorResult) -> Void)?
     
     // MARK: - Setup
     
@@ -111,10 +111,15 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
     /// Show a blocking activity indicator whilst saving.
     @MainActor private func startLoading(isInteractionBlocking: Bool) {
         waitingIndicator = indicatorPresenter.present(.loading(label: VectorL10n.loading, isInteractionBlocking: isInteractionBlocking))
+        
+        if !isInteractionBlocking {
+            authenticationLoginViewModel.update(isLoading: true)
+        }
     }
     
     /// Hide the currently displayed activity indicator.
     @MainActor private func stopLoading() {
+        authenticationLoginViewModel.update(isLoading: false)
         waitingIndicator = nil
     }
     
@@ -190,7 +195,7 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
     
     /// Presents the server selection screen as a modal.
     @MainActor private func presentServerSelectionScreen() {
-        MXLog.debug("[AuthenticationCoordinator] showServerSelectionScreen")
+        MXLog.debug("[AuthenticationLoginCoordinator] presentServerSelectionScreen")
         let parameters = AuthenticationServerSelectionCoordinatorParameters(authenticationService: authenticationService,
                                                                             flow: .login,
                                                                             hasModalPresentation: true)

@@ -66,10 +66,3 @@ extension AuthenticationHomeserverViewData {
                                          ssoIdentityProviders: [SSOIdentityProvider(id: "test", name: "SAML", brand: nil, iconURL: nil)])
     }
 }
-
-struct HomeserverAddress {
-    /// Ensures the address contains a scheme, otherwise makes it `https`.
-    static func sanitized(_ address: String) -> String {
-        !address.contains("://") ? "https://\(address.lowercased())" : address.lowercased()
-    }
-}

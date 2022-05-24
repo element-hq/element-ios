@@ -61,7 +61,7 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    @MainActor var callback: ((AuthenticationRegistrationCoordinatorResult) -> Void)?
+    var callback: (@MainActor (AuthenticationRegistrationCoordinatorResult) -> Void)?
     
     // MARK: - Setup
     
@@ -200,7 +200,7 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
     
     /// Presents the server selection screen as a modal.
     @MainActor private func presentServerSelectionScreen() {
-        MXLog.debug("[AuthenticationCoordinator] showServerSelectionScreen")
+        MXLog.debug("[AuthenticationRegistrationCoordinator] presentServerSelectionScreen")
         let parameters = AuthenticationServerSelectionCoordinatorParameters(authenticationService: authenticationService,
                                                                             flow: .register,
                                                                             hasModalPresentation: true)
