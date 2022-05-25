@@ -137,7 +137,7 @@ struct AuthenticationRegistrationScreen: View {
         VStack(spacing: 16) {
             ForEach(viewModel.viewState.homeserver.ssoIdentityProviders) { provider in
                 AuthenticationSSOButton(provider: provider) {
-                    viewModel.send(viewAction: .continueWithSSO(id: provider.id))
+                    viewModel.send(viewAction: .continueWithSSO(provider))
                 }
                 .accessibilityIdentifier("ssoButton")
             }

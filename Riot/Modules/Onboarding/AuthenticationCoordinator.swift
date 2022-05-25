@@ -42,10 +42,17 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     private let navigationRouter: NavigationRouterType
     private let authenticationService = AuthenticationService.shared
     
+    /// The initial screen to be shown when starting the coordinator.
     private let initialScreen: EntryPoint
+    /// The presenter used to handler authentication via SSO.
+    private var ssoAuthenticationPresenter: SSOAuthenticationPresenter?
+    
+    /// Whether the coordinator can present further screens after a successful login has occurred.
     private var canPresentAdditionalScreens: Bool
+    /// `true` if presentation of the verification screen is blocked by `canPresentAdditionalScreens`.
     private var isWaitingToPresentCompleteSecurity = false
     
+    /// The listener object that informs the coordinator whether verification needs to be presented or not.
     private var verificationListener: SessionVerificationListener?
     
     /// The password entered, for use when setting up cross-signing.
@@ -157,7 +164,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         let coordinator = AuthenticationLoginCoordinator(parameters: parameters)
         coordinator.callback = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
-            self.loginCoordinator(coordinator, didCompleteWith: result)
+            self.loginCoordinator(coordinator, didCallbackWith: result)
         }
         
         coordinator.start()
@@ -172,10 +179,12 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         }
     }
     
-    /// Displays the next view in the flow after the registration screen.
+    /// Displays the next view in the flow based on the result from the registration screen.
     @MainActor private func loginCoordinator(_ coordinator: AuthenticationLoginCoordinator,
-                                             didCompleteWith result: AuthenticationLoginCoordinatorResult) {
+                                             didCallbackWith result: AuthenticationLoginCoordinatorResult) {
         switch result {
+        case .continueWithSSO(let provider):
+            presentSSOAuthentication(for: provider)
         case .success(let session):
             onSessionCreated(session: session, flow: .login)
         }
@@ -231,7 +240,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         let coordinator = AuthenticationRegistrationCoordinator(parameters: parameters)
         coordinator.callback = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
-            self.registrationCoordinator(coordinator, didCompleteWith: result)
+            self.registrationCoordinator(coordinator, didCallbackWith: result)
         }
         
         coordinator.start()
@@ -246,10 +255,12 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         }
     }
     
-    /// Displays the next view in the flow after the registration screen.
+    /// Displays the next view in the flow based on the result from the registration screen.
     @MainActor private func registrationCoordinator(_ coordinator: AuthenticationRegistrationCoordinator,
-                                                    didCompleteWith result: AuthenticationRegistrationCoordinatorResult) {
+                                                    didCallbackWith result: AuthenticationRegistrationCoordinatorResult) {
         switch result {
+        case .continueWithSSO(let provider):
+            presentSSOAuthentication(for: provider)
         case .completed(let result):
             handleRegistrationResult(result)
         }
@@ -451,6 +462,53 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         Task {
             await MainActor.run { callback?(.didComplete) }
         }
+    }
+}
+
+// MARK: - SSO
+
+extension AuthenticationCoordinator: SSOAuthenticationPresenterDelegate {
+    /// Presents SSO authentication for the specified identity provider.
+    private func presentSSOAuthentication(for identityProvider: SSOIdentityProvider) {
+        let service = SSOAuthenticationService(homeserverStringURL: authenticationService.state.homeserver.address)
+        let presenter = SSOAuthenticationPresenter(ssoAuthenticationService: service)
+        presenter.delegate = self
+        
+        presenter.present(forIdentityProvider: identityProvider,
+                          with: MXTools.generateTransactionId(),
+                          from: toPresentable(),
+                          animated: true)
+        
+        self.ssoAuthenticationPresenter = presenter
+    }
+    
+    func ssoAuthenticationPresenter(_ presenter: SSOAuthenticationPresenter, authenticationSucceededWithToken token: String, usingIdentityProvider identityProvider: SSOIdentityProvider?) {
+        MXLog.debug("[AuthenticationCoordinator] SSO authentication succeeded.")
+        
+        guard let loginWizard = authenticationService.loginWizard else {
+            MXLog.failure("[AuthenticationCoordinator] The login wizard was requested before getting the login flow.")
+            return
+        }
+        
+        Task {
+            let session = try await loginWizard.login(with: token)
+            await onSessionCreated(session: session, flow: authenticationService.state.flow)
+            self.ssoAuthenticationPresenter = nil
+        }
+    }
+    
+    func ssoAuthenticationPresenter(_ presenter: SSOAuthenticationPresenter, authenticationDidFailWithError error: Error) {
+        MXLog.debug("[AuthenticationCoordinator] SSO authentication failed.")
+        
+        Task {
+            await displayError(message: error.localizedDescription)
+            self.ssoAuthenticationPresenter = nil
+        }
+    }
+    
+    func ssoAuthenticationPresenterDidCancel(_ presenter: SSOAuthenticationPresenter) {
+        MXLog.debug("[AuthenticationCoordinator] SSO authentication cancelled.")
+        self.ssoAuthenticationPresenter = nil
     }
 }
 

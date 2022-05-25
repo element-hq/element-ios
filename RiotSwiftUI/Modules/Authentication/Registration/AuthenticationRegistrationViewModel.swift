@@ -52,8 +52,8 @@ class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelTy
             Task { await clearUsernameError() }
         case .next:
             Task { await callback?(.createAccount(username: state.bindings.username, password: state.bindings.password)) }
-        case .continueWithSSO(let id):
-            break
+        case .continueWithSSO(let provider):
+            Task { await callback?(.continueWithSSO(provider)) }
         }
     }
     
