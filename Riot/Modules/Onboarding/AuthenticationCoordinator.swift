@@ -44,8 +44,11 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     /// The initial screen to be shown when starting the coordinator.
     private let initialScreen: EntryPoint
+    
     /// The presenter used to handler authentication via SSO.
     private var ssoAuthenticationPresenter: SSOAuthenticationPresenter?
+    /// The transaction ID used when presenting the SSO screen. Used when completing via a deep link.
+    private var ssoTransactionID: String?
     
     /// Whether the coordinator can present further screens after a successful login has occurred.
     private var canPresentAdditionalScreens: Bool
@@ -79,9 +82,10 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     // MARK: - Public
     
     func start() {
-        Task {
+        Task { @MainActor in
             await startAuthenticationFlow()
-            await MainActor.run { callback?(.didStart) }
+            callback?(.didStart)
+            authenticationService.delegate = self
         }
     }
     
@@ -469,17 +473,16 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
 
 extension AuthenticationCoordinator: SSOAuthenticationPresenterDelegate {
     /// Presents SSO authentication for the specified identity provider.
-    private func presentSSOAuthentication(for identityProvider: SSOIdentityProvider) {
+    @MainActor private func presentSSOAuthentication(for identityProvider: SSOIdentityProvider) {
         let service = SSOAuthenticationService(homeserverStringURL: authenticationService.state.homeserver.address)
         let presenter = SSOAuthenticationPresenter(ssoAuthenticationService: service)
         presenter.delegate = self
         
-        presenter.present(forIdentityProvider: identityProvider,
-                          with: MXTools.generateTransactionId(),
-                          from: toPresentable(),
-                          animated: true)
+        let transactionID = MXTools.generateTransactionId()
+        presenter.present(forIdentityProvider: identityProvider, with: transactionID, from: toPresentable(), animated: true)
         
-        self.ssoAuthenticationPresenter = presenter
+        ssoAuthenticationPresenter = presenter
+        ssoTransactionID = transactionID
     }
     
     func ssoAuthenticationPresenter(_ presenter: SSOAuthenticationPresenter, authenticationSucceededWithToken token: String, usingIdentityProvider identityProvider: SSOIdentityProvider?) {
@@ -490,11 +493,7 @@ extension AuthenticationCoordinator: SSOAuthenticationPresenterDelegate {
             return
         }
         
-        Task {
-            let session = try await loginWizard.login(with: token)
-            await onSessionCreated(session: session, flow: authenticationService.state.flow)
-            self.ssoAuthenticationPresenter = nil
-        }
+        Task { await handleLoginToken(token, using: loginWizard) }
     }
     
     func ssoAuthenticationPresenter(_ presenter: SSOAuthenticationPresenter, authenticationDidFailWithError error: Error) {
@@ -502,13 +501,50 @@ extension AuthenticationCoordinator: SSOAuthenticationPresenterDelegate {
         
         Task {
             await displayError(message: error.localizedDescription)
-            self.ssoAuthenticationPresenter = nil
+            ssoAuthenticationPresenter = nil
+            ssoTransactionID = nil
         }
     }
     
     func ssoAuthenticationPresenterDidCancel(_ presenter: SSOAuthenticationPresenter) {
         MXLog.debug("[AuthenticationCoordinator] SSO authentication cancelled.")
-        self.ssoAuthenticationPresenter = nil
+        ssoAuthenticationPresenter = nil
+    }
+    
+    /// Performs the last step of the login process for a flow that authenticated via SSO.
+    @MainActor private func handleLoginToken(_ token: String, using loginWizard: LoginWizard) async {
+        do {
+            let session = try await loginWizard.login(with: token)
+            onSessionCreated(session: session, flow: authenticationService.state.flow)
+        } catch {
+            MXLog.error("[AuthenticationCoordinator] Login with SSO token failed.")
+            displayError(message: error.localizedDescription)
+        }
+        
+        ssoAuthenticationPresenter = nil
+        ssoTransactionID = nil
+    }
+}
+
+// MARK: - AuthenticationServiceDelegate
+extension AuthenticationCoordinator: AuthenticationServiceDelegate {
+    func authenticationService(_ service: AuthenticationService, didReceive ssoLoginToken: String, with transactionID: String) -> Bool {
+        guard let presenter = ssoAuthenticationPresenter, transactionID == ssoTransactionID else {
+            Task { await displayError(message: VectorL10n.errorCommonMessage) }
+            return false
+        }
+        
+        guard let loginWizard = authenticationService.loginWizard else {
+            MXLog.failure("[AuthenticationCoordinator] The login wizard was requested before getting the login flow.")
+            return false
+        }
+        
+        Task {
+            await handleLoginToken(ssoLoginToken, using: loginWizard)
+            await MainActor.run { presenter.dismiss(animated: true, completion: nil) }
+        }
+        
+        return true
     }
 }
 
@@ -564,10 +600,5 @@ extension AuthenticationCoordinator {
     
     func updateHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?) {
         // unused
-    }
-    
-    func continueSSOLogin(withToken loginToken: String, transactionID: String) -> Bool {
-        #warning("To be implemented elsewhere")
-        return false
     }
 }

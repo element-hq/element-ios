@@ -97,12 +97,6 @@ final class OnboardingCoordinatorBridgePresenter: NSObject {
         coordinator?.updateHomeserver(homeserver, andIdentityServer: identityServer)
     }
     
-    /// When SSO login succeeded, when SFSafariViewController is used, continue login with success parameters.
-    func continueSSOLogin(withToken loginToken: String, transactionID: String) -> Bool {
-        guard let coordinator = coordinator else { return false }
-        return coordinator.continueSSOLogin(withToken: loginToken, transactionID: transactionID)
-    }
-    
     func dismiss(animated: Bool, completion: (() -> Void)?) {
         guard let coordinator = self.coordinator else {
             return

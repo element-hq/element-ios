@@ -17,7 +17,14 @@
 import Foundation
 
 protocol AuthenticationServiceDelegate: AnyObject {
-    func authenticationServiceDidUpdateRegistrationParameters(_ authenticationService: AuthenticationService)
+    /// The authentication service received an SSO login token via a deep link.
+    /// This only occurs when SSOAuthenticationPresenter uses an SFSafariViewController.
+    /// - Parameters:
+    ///   - service: The authentication service.
+    ///   - ssoLoginToken: The login token provided when SSO succeeded.
+    ///   - transactionID: The transaction ID generated during SSO page presentation.
+    /// - Returns: `true` if the SSO login can be continued.
+    func authenticationService(_ service: AuthenticationService, didReceive ssoLoginToken: String, with transactionID: String) -> Bool
 }
 
 class AuthenticationService: NSObject {
@@ -42,6 +49,9 @@ class AuthenticationService: NSObject {
     private(set) var loginWizard: LoginWizard?
     /// The current registration wizard or `nil` if `startFlow` hasn't been called for `.registration`.
     private(set) var registrationWizard: RegistrationWizard?
+    
+    /// The authentication service's delegate.
+    weak var delegate: AuthenticationServiceDelegate?
     
     // MARK: - Setup
     
@@ -108,11 +118,6 @@ class AuthenticationService: NSObject {
         self.client = client
     }
     
-    /// Get a SSO url
-    func getSSOURL(redirectUrl: String, deviceId: String?, providerId: String?) -> String? {
-        fatalError("Not implemented.")
-    }
-    
     /// Get the sign in or sign up fallback URL
     func fallbackURL(for flow: AuthenticationFlow) -> URL {
         switch flow {
@@ -138,9 +143,13 @@ class AuthenticationService: NSObject {
         self.state = AuthenticationState(flow: .login, homeserverAddress: address)
     }
     
-    /// Create a session after a SSO successful login
-    func makeSessionFromSSO(credentials: MXCredentials) -> MXSession {
-        sessionCreator.createSession(credentials: credentials, client: client)
+    /// Continues an SSO flow when completion comes via a deep link.
+    /// - Parameters:
+    ///   - token: The login token provided when SSO succeeded.
+    ///   - transactionID: The transaction ID generated during SSO page presentation.
+    /// - Returns: `true` if the SSO login can be continued.
+    func continueSSOLogin(with token: String, and transactionID: String) -> Bool {
+        delegate?.authenticationService(self, didReceive: token, with: transactionID) ?? false
     }
     
 //    /// Perform a well-known request, using the domain from the matrixId

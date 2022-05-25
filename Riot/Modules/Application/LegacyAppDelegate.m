@@ -4696,21 +4696,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self presentViewController:viewController animated:YES completion:completion];
 }
 
-#pragma mark - Authentication
-
-- (BOOL)continueSSOLoginWithToken:(NSString*)loginToken txnId:(NSString*)txnId
-{
-    OnboardingCoordinatorBridgePresenter *bridgePresenter = self.masterTabBarController.onboardingCoordinatorBridgePresenter;
-    
-    if (!bridgePresenter)
-    {
-        MXLogDebug(@"[AppDelegate] Fail to continue SSO login");
-        return NO;
-    }
-    
-    return [bridgePresenter continueSSOLoginWithToken:loginToken transactionID:txnId];
-}
-
 #pragma mark - Private
 
 - (void)clearCache
