@@ -31,6 +31,7 @@ internal class Asset: NSObject {
     internal static let socialLoginButtonGoogle = ImageAsset(name: "social_login_button_google")
     internal static let socialLoginButtonTwitter = ImageAsset(name: "social_login_button_twitter")
     internal static let authenticationEmailIcon = ImageAsset(name: "authentication_email_icon")
+    internal static let authenticationMsisdnIcon = ImageAsset(name: "authentication_msisdn_icon")
     internal static let authenticationServerSelectionIcon = ImageAsset(name: "authentication_server_selection_icon")
     internal static let authenticationSsoIconApple = ImageAsset(name: "authentication_sso_icon_apple")
     internal static let authenticationSsoIconFacebook = ImageAsset(name: "authentication_sso_icon_facebook")
