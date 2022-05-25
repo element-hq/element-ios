@@ -285,7 +285,19 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     /// Shows the verify email screen.
     @MainActor private func showVerifyMSISDNScreen(registrationWizard: RegistrationWizard) {
         MXLog.debug("[AuthenticationCoordinator] showVerifyMSISDNScreen")
-        fatalError("Phone verification not implemented yet.")
+
+        let parameters = AuthenticationVerifyMsisdnCoordinatorParameters(registrationWizard: registrationWizard)
+        let coordinator = AuthenticationVerifyMsisdnCoordinator(parameters: parameters)
+        coordinator.callback = { [weak self] result in
+            self?.registrationStageDidComplete(with: result)
+        }
+
+        coordinator.start()
+        add(childCoordinator: coordinator)
+
+        navigationRouter.setRootModule(coordinator, hideNavigationBar: false, animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
     }
     
     /// Displays the next view in the registration flow.
