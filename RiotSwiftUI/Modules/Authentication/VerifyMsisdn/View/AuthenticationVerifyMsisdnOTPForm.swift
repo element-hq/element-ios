@@ -73,16 +73,14 @@ struct AuthenticationVerifyMsisdnOTPForm: View {
                 textField
             }
 
-            HStack {
-                Spacer()
-                Button { viewModel.send(viewAction: .resend) } label: {
-                    Text(VectorL10n.authenticationVerifyMsisdnWaitingButton)
-                        .font(theme.fonts.body)
-                        .multilineTextAlignment(.center)
-                }
-                .accessibilityIdentifier("resendButton")
+            Button { viewModel.send(viewAction: .resend) } label: {
+                Text(VectorL10n.authenticationVerifyMsisdnWaitingButton)
+                    .font(theme.fonts.body)
+                    .multilineTextAlignment(.center)
             }
-            .padding(.bottom, 38)
+            .frame(maxWidth: .infinity, alignment: .trailing)
+            .accessibilityIdentifier("resendButton")
+            .padding(.bottom, 26)
 
             Button(action: submitOTP) {
                 Text(VectorL10n.next)

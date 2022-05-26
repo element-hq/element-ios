@@ -19,10 +19,7 @@ import XCTest
 @testable import RiotSwiftUI
 
 class AuthenticationVerifyMsisdnViewModelTests: XCTestCase {
-    private enum Constants {
-        static let counterInitialValue = 0
-    }
-    
+
     var viewModel: AuthenticationVerifyMsisdnViewModelProtocol!
     var context: AuthenticationVerifyMsisdnViewModelType.Context!
     
@@ -31,28 +28,25 @@ class AuthenticationVerifyMsisdnViewModelTests: XCTestCase {
         context = viewModel.context
     }
 
-    func testSentSMSState() async {
+    @MainActor func testSentSMSState() async {
         // Given a view model where the user hasn't yet sent the verification email.
         XCTAssertFalse(context.viewState.hasSentSMS, "The view model should start with hasSentSMS equal to false.")
         
         // When updating to indicate that an email has been send.
-        let task = Task { await viewModel.updateForSentSMS() }
-        _ = await task.result
+        viewModel.updateForSentSMS()
         
         // Then the view model should update to reflect a sent email.
         XCTAssertTrue(context.viewState.hasSentSMS, "The view model should update hasSentSMS after sending an email.")
     }
 
-    func testGoBack() async {
-        let task = Task { await viewModel.updateForSentSMS() }
-        _ = await task.result
+    @MainActor func testGoBack() async {
+        viewModel.updateForSentSMS()
 
         context.otp = "123456"
 
-        let task2 = Task{ await viewModel.goBackToMsisdnForm() }
-        _ = await task2.result
+        viewModel.goBackToMsisdnForm()
 
         XCTAssertFalse(context.viewState.hasSentSMS, "The view model should update hasSentSMS after going back.")
-        XCTAssertTrue(context.viewState.hasInvalidOTP, "The view model should update hasSentSMS after going back.")
+        XCTAssertTrue(context.viewState.hasInvalidOTP, "The view model should clear the OTP after going back.")
     }
 }

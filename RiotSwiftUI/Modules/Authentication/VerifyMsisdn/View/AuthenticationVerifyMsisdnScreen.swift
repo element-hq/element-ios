@@ -46,7 +46,7 @@ struct AuthenticationVerifyMsisdnScreen: View {
                 }
             }
         }
-        .background(theme.colors.background)
+        .background(theme.colors.background.ignoresSafeArea())
         .toolbar { toolbar }
         .alert(item: $viewModel.alertInfo) { $0.alert }
         .accentColor(theme.colors.accent)
@@ -55,12 +55,10 @@ struct AuthenticationVerifyMsisdnScreen: View {
     /// A simple toolbar with a cancel button.
     var toolbar: some ToolbarContent {
         ToolbarItem(placement: .cancellationAction) {
-            if viewModel.viewState.hasSentSMS {
-                Button(VectorL10n.back) {
+            Button(viewModel.viewState.hasSentSMS ? VectorL10n.back : VectorL10n.cancel) {
+                if viewModel.viewState.hasSentSMS {
                     viewModel.send(viewAction: .goBack)
-                }
-            } else {
-                Button(VectorL10n.cancel) {
+                } else {
                     viewModel.send(viewAction: .cancel)
                 }
             }

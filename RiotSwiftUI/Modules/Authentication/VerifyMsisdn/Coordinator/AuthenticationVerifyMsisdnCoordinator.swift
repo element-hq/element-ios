@@ -22,7 +22,6 @@ struct AuthenticationVerifyMsisdnCoordinatorParameters {
     let registrationWizard: RegistrationWizard
 }
 
-@available(iOS 14.0, *)
 final class AuthenticationVerifyMsisdnCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties
@@ -79,6 +78,7 @@ final class AuthenticationVerifyMsisdnCoordinator: Coordinator, Presentable {
     
     // MARK: - Private
 
+    /// Attempts to extract the country code from a given phone number. Throws `RegistrationError.invalidPhoneNumber` if cannot.
     private func countryCodeFromPhoneNumber(_ phoneNumber: String) throws -> String {
         do {
             let phoneNumber = try NBPhoneNumberUtil.sharedInstance().parse(phoneNumber,
@@ -123,7 +123,7 @@ final class AuthenticationVerifyMsisdnCoordinator: Coordinator, Presentable {
         loadingIndicator = nil
     }
     
-    /// Sends a validation email to the supplied address and then begins polling the server.
+    /// Sends a validation SMS to the entered phone number and then waits for an OTP.
     @MainActor private func sendSMS(_ phoneNumber: String) {
         startLoading()
         
@@ -152,6 +152,7 @@ final class AuthenticationVerifyMsisdnCoordinator: Coordinator, Presentable {
         }
     }
 
+    /// Submits OTP to verify the phone number.
     @MainActor private func submitOTP(_ otp: String) {
         startLoading()
 
@@ -165,12 +166,6 @@ final class AuthenticationVerifyMsisdnCoordinator: Coordinator, Presentable {
 
                 self?.callback?(.completed(result))
                 self?.stopLoading()
-            } catch RegistrationError.threePIDClientFailure {
-                self?.stopLoading()
-                self?.handleError(RegistrationError.threePIDClientFailure)
-            } catch RegistrationError.threePIDValidationFailure {
-                self?.stopLoading()
-                self?.handleError(RegistrationError.threePIDValidationFailure)
             } catch is CancellationError {
                 return
             } catch {
@@ -181,7 +176,7 @@ final class AuthenticationVerifyMsisdnCoordinator: Coordinator, Presentable {
         }
     }
     
-    /// Resends an email to the previously entered address and then resumes polling the server.
+    /// Resends an SMS to the previously entered phone number and then waits for user input for an OTP.
     @MainActor private func resendSMS() {
         startLoading()
         
@@ -212,9 +207,12 @@ final class AuthenticationVerifyMsisdnCoordinator: Coordinator, Presentable {
             authenticationVerifyMsisdnViewModel.displayError(.mxError(mxError.error))
             return
         }
-        
-        // TODO: Handle another other error types as needed.
-        
-        authenticationVerifyMsisdnViewModel.displayError(.unknown)
+
+        switch error {
+        case RegistrationError.invalidPhoneNumber:
+            authenticationVerifyMsisdnViewModel.displayError(.invalidPhoneNumber)
+        default:
+            authenticationVerifyMsisdnViewModel.displayError(.unknown)
+        }
     }
 }

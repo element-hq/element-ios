@@ -68,6 +68,10 @@ class AuthenticationVerifyMsisdnViewModel: AuthenticationVerifyMsisdnViewModelTy
             state.bindings.alertInfo = AlertInfo(id: type,
                                                  title: VectorL10n.error,
                                                  message: message)
+        case .invalidPhoneNumber:
+            state.bindings.alertInfo = AlertInfo(id: type,
+                                                 title: VectorL10n.error,
+                                                 message: VectorL10n.authenticationVerifyMsisdnInvalidPhoneNumber)
         case .unknown:
             state.bindings.alertInfo = AlertInfo(id: type)
         }

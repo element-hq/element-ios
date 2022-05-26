@@ -75,6 +75,8 @@ enum AuthenticationVerifyMsisdnViewAction {
 enum AuthenticationVerifyMsisdnErrorType: Hashable {
     /// An error response from the homeserver.
     case mxError(String)
+    /// User entered an invalid phone number
+    case invalidPhoneNumber
     /// An unknown error occurred.
     case unknown
 }
