@@ -58,6 +58,10 @@ class AuthenticationVerifyMsisdnUITests: MockScreenTest {
 
         let resendButton = app.buttons["resendButton"]
         XCTAssertFalse(resendButton.exists, "Resend button should be hidden until an SMS is sent.")
+
+        let cancelButton = app.navigationBars.firstMatch.buttons["cancelButton"]
+        XCTAssertTrue(cancelButton.exists, "Cancel button should be shown.")
+        XCTAssertEqual(cancelButton.label, "Cancel")
     }
     
     func verifyEnteredPhoneNumber() {
@@ -77,6 +81,10 @@ class AuthenticationVerifyMsisdnUITests: MockScreenTest {
 
         let resendButton = app.buttons["resendButton"]
         XCTAssertFalse(resendButton.exists, "Resend button should be hidden until an SMS is sent.")
+
+        let cancelButton = app.navigationBars.firstMatch.buttons["cancelButton"]
+        XCTAssertTrue(cancelButton.exists, "Cancel button should be shown.")
+        XCTAssertEqual(cancelButton.label, "Cancel")
     }
     
     func verifyHasSentSMS() {
@@ -100,6 +108,10 @@ class AuthenticationVerifyMsisdnUITests: MockScreenTest {
         let resendButton = app.buttons["resendButton"]
         XCTAssertTrue(resendButton.exists, "Resend button should be shown after SMS sent.")
         XCTAssertTrue(resendButton.isEnabled, "Resend button should be enabled after an SMS sent once.")
+
+        let backButton = app.navigationBars.firstMatch.buttons["cancelButton"]
+        XCTAssertTrue(backButton.exists, "Back button should be shown.")
+        XCTAssertEqual(backButton.label, "Back")
     }
 
     func verifyEnteredOTP() {
@@ -123,6 +135,10 @@ class AuthenticationVerifyMsisdnUITests: MockScreenTest {
         let resendButton = app.buttons["resendButton"]
         XCTAssertTrue(resendButton.exists, "Resend button should be shown after SMS sent.")
         XCTAssertTrue(resendButton.isEnabled, "Resend button should be enabled after an SMS sent once.")
+
+        let backButton = app.navigationBars.firstMatch.buttons["cancelButton"]
+        XCTAssertTrue(backButton.exists, "Back button should be shown.")
+        XCTAssertEqual(backButton.label, "Back")
     }
 
 }

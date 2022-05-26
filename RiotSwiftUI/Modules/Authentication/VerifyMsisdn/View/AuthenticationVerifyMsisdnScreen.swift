@@ -62,6 +62,7 @@ struct AuthenticationVerifyMsisdnScreen: View {
                     viewModel.send(viewAction: .cancel)
                 }
             }
+            .accessibilityIdentifier("cancelButton")
         }
     }
 }
