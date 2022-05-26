@@ -202,7 +202,7 @@ class RegistrationWizard {
                                                         sessionID: threePIDData.registrationResponse.sessionID,
                                                         code: code)
         
-        #warning("Seems odd to pass a nil baseURL and then the url as the path, yet this is how MXK3PID works")
+        //  Seems odd to pass a nil baseURL and then the url as the path, yet this is how MXK3PID works"
         guard let httpClient = MXHTTPClient(baseURL: nil, andOnUnrecognizedCertificateBlock: nil) else {
             MXLog.error("[RegistrationWizard] validateThreePid: Failed to create an MXHTTPClient.")
             throw RegistrationError.threePIDClientFailure
@@ -213,7 +213,6 @@ class RegistrationWizard {
         }
         
         let parameters = threePIDData.registrationParameters
-        MXLog.failure("This method used to add a 3-second delay to the request. This should be moved to the caller of `handleValidateThreePID`.")
         return try await performRegistrationRequest(parameters: parameters)
     }
     
