@@ -34,16 +34,6 @@ enum AuthenticationVerifyMsisdnViewModelResult {
 // MARK: View
 
 struct AuthenticationVerifyMsisdnViewState: BindableState {
-    enum Constants {
-        static let gradientColors = [
-            Color(red: 0.646, green: 0.95, blue: 0.879),
-            Color(red: 0.576, green: 0.929, blue: 0.961),
-            Color(red: 0.874, green: 0.82, blue: 1)
-        ]
-    }
-    
-    /// The background gradient used with light mode.
-    let gradient = Gradient (colors: Constants.gradientColors)
     /// An SMS has been sent.
     var hasSentSMS = false
     /// View state that can be bound to from SwiftUI.

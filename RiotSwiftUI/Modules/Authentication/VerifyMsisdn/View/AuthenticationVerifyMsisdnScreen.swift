@@ -46,38 +46,12 @@ struct AuthenticationVerifyMsisdnScreen: View {
                 }
             }
         }
-        .background(background.ignoresSafeArea())
+        .background(theme.colors.background)
         .toolbar { toolbar }
         .alert(item: $viewModel.alertInfo) { $0.alert }
         .accentColor(theme.colors.accent)
     }
 
-    @ViewBuilder
-    /// The view's background, which will show a gradient in light mode after sending the email.
-    var background: some View {
-        GeometryReader { geometry in
-            ZStack(alignment: .top) {
-                theme.colors.background
-                
-                if viewModel.viewState.hasSentSMS && !theme.isDark {
-                    gradient
-                        .frame(height: geometry.size.height * 0.65)
-                }
-            }
-        }
-    }
-    
-    /// The background gradient shown after sending the email.
-    var gradient: some View {
-        LinearGradient(gradient: viewModel.viewState.gradient,
-                       startPoint: .leading,
-                       endPoint: .trailing)
-            .opacity(0.3)
-            .mask(LinearGradient(colors: [.white, .clear],
-                                 startPoint: .top,
-                                 endPoint: .bottom))
-    }
-    
     /// A simple toolbar with a cancel button.
     var toolbar: some ToolbarContent {
         ToolbarItem(placement: .cancellationAction) {
