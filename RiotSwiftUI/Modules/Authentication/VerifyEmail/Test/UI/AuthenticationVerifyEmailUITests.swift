@@ -53,6 +53,10 @@ class AuthenticationVerifyEmailUITests: MockScreenTest {
         
         XCTAssertFalse(app.staticTexts["waitingTitleLabel"].exists, "The waiting title should be hidden until an email is sent.")
         XCTAssertFalse(app.staticTexts["waitingMessageLabel"].exists, "The waiting message should be hidden until an email is sent.")
+
+        let cancelButton = app.navigationBars.firstMatch.buttons["cancelButton"]
+        XCTAssertTrue(cancelButton.exists, "Cancel button should be shown.")
+        XCTAssertEqual(cancelButton.label, "Cancel")
     }
     
     func verifyEnteredAddress() {
@@ -69,6 +73,10 @@ class AuthenticationVerifyEmailUITests: MockScreenTest {
         
         XCTAssertFalse(app.staticTexts["waitingTitleLabel"].exists, "The waiting title should be hidden until an email is sent.")
         XCTAssertFalse(app.staticTexts["waitingMessageLabel"].exists, "The waiting message should be hidden until an email is sent.")
+
+        let cancelButton = app.navigationBars.firstMatch.buttons["cancelButton"]
+        XCTAssertTrue(cancelButton.exists, "Cancel button should be shown.")
+        XCTAssertEqual(cancelButton.label, "Cancel")
     }
     
     func verifyWaitingForEmailLink() {
@@ -79,6 +87,10 @@ class AuthenticationVerifyEmailUITests: MockScreenTest {
         
         XCTAssertTrue(app.staticTexts["waitingTitleLabel"].exists, "The waiting title should be shown once an email has been sent.")
         XCTAssertTrue(app.staticTexts["waitingMessageLabel"].exists, "The waiting title should be shown once an email has been sent.")
+
+        let backButton = app.navigationBars.firstMatch.buttons["cancelButton"]
+        XCTAssertTrue(backButton.exists, "Back button should be shown.")
+        XCTAssertEqual(backButton.label, "Back")
     }
 
 }

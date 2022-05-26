@@ -137,9 +137,14 @@ struct AuthenticationVerifyEmailScreen: View {
     /// A simple toolbar with a cancel button.
     var toolbar: some ToolbarContent {
         ToolbarItem(placement: .cancellationAction) {
-            Button(VectorL10n.cancel) {
-                viewModel.send(viewAction: .cancel)
+            Button(viewModel.viewState.hasSentEmail ? VectorL10n.back : VectorL10n.cancel) {
+                if viewModel.viewState.hasSentEmail {
+                    viewModel.send(viewAction: .goBack)
+                } else {
+                    viewModel.send(viewAction: .cancel)
+                }
             }
+            .accessibilityIdentifier("cancelButton")
         }
     }
 }

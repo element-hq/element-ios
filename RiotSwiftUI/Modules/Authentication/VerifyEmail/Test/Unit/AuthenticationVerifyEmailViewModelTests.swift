@@ -19,10 +19,7 @@ import XCTest
 @testable import RiotSwiftUI
 
 class AuthenticationVerifyEmailViewModelTests: XCTestCase {
-    private enum Constants {
-        static let counterInitialValue = 0
-    }
-    
+
     var viewModel: AuthenticationVerifyEmailViewModelProtocol!
     var context: AuthenticationVerifyEmailViewModelType.Context!
     
@@ -31,15 +28,22 @@ class AuthenticationVerifyEmailViewModelTests: XCTestCase {
         context = viewModel.context
     }
 
-    func testSentEmailState() async {
+    @MainActor func testSentEmailState() async {
         // Given a view model where the user hasn't yet sent the verification email.
         XCTAssertFalse(context.viewState.hasSentEmail, "The view model should start with hasSentEmail equal to false.")
         
         // When updating to indicate that an email has been send.
-        let task = Task { await viewModel.updateForSentEmail() }
-        _ = await task.result
+        viewModel.updateForSentEmail()
         
         // Then the view model should update to reflect a sent email.
         XCTAssertTrue(context.viewState.hasSentEmail, "The view model should update hasSentEmail after sending an email.")
+    }
+
+    @MainActor func testGoBack() async {
+        viewModel.updateForSentEmail()
+
+        viewModel.goBackToEnterEmailForm()
+
+        XCTAssertFalse(context.viewState.hasSentEmail, "The view model should update hasSentEmail after going back.")
     }
 }
