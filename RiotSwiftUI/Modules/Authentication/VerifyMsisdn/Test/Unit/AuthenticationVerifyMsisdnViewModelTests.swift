@@ -18,32 +18,35 @@ import XCTest
 
 @testable import RiotSwiftUI
 
-class AuthenticationVerifyEmailViewModelTests: XCTestCase {
+class AuthenticationVerifyMsisdnViewModelTests: XCTestCase {
 
-    var viewModel: AuthenticationVerifyEmailViewModelProtocol!
-    var context: AuthenticationVerifyEmailViewModelType.Context!
+    var viewModel: AuthenticationVerifyMsisdnViewModelProtocol!
+    var context: AuthenticationVerifyMsisdnViewModelType.Context!
     
     override func setUpWithError() throws {
-        viewModel = AuthenticationVerifyEmailViewModel()
+        viewModel = AuthenticationVerifyMsisdnViewModel()
         context = viewModel.context
     }
 
-    @MainActor func testSentEmailState() async {
+    @MainActor func testSentSMSState() async {
         // Given a view model where the user hasn't yet sent the verification email.
-        XCTAssertFalse(context.viewState.hasSentEmail, "The view model should start with hasSentEmail equal to false.")
+        XCTAssertFalse(context.viewState.hasSentSMS, "The view model should start with hasSentSMS equal to false.")
         
         // When updating to indicate that an email has been send.
-        viewModel.updateForSentEmail()
+        viewModel.updateForSentSMS()
         
         // Then the view model should update to reflect a sent email.
-        XCTAssertTrue(context.viewState.hasSentEmail, "The view model should update hasSentEmail after sending an email.")
+        XCTAssertTrue(context.viewState.hasSentSMS, "The view model should update hasSentSMS after sending an email.")
     }
 
     @MainActor func testGoBack() async {
-        viewModel.updateForSentEmail()
+        viewModel.updateForSentSMS()
 
-        viewModel.goBackToEnterEmailForm()
+        context.otp = "123456"
 
-        XCTAssertFalse(context.viewState.hasSentEmail, "The view model should update hasSentEmail after going back.")
+        viewModel.goBackToMsisdnForm()
+
+        XCTAssertFalse(context.viewState.hasSentSMS, "The view model should update hasSentSMS after going back.")
+        XCTAssertTrue(context.viewState.hasInvalidOTP, "The view model should clear the OTP after going back.")
     }
 }

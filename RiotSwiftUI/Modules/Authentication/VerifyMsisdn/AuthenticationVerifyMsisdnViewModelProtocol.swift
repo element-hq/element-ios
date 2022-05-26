@@ -16,17 +16,17 @@
 
 import Foundation
 
-protocol AuthenticationVerifyEmailViewModelProtocol {
+protocol AuthenticationVerifyMsisdnViewModelProtocol {
     
-    var callback: (@MainActor (AuthenticationVerifyEmailViewModelResult) -> Void)? { get set }
-    var context: AuthenticationVerifyEmailViewModelType.Context { get }
+    var callback: (@MainActor (AuthenticationVerifyMsisdnViewModelResult) -> Void)? { get set }
+    var context: AuthenticationVerifyMsisdnViewModelType.Context { get }
     
-    /// Updates the view to reflect that a verification email was successfully sent.
-    @MainActor func updateForSentEmail()
+    /// Updates the view to reflect that a verification SMS was successfully sent.
+    @MainActor func updateForSentSMS()
 
-    /// Goes back to the email form
-    @MainActor func goBackToEnterEmailForm()
+    //  Goes back to the msisdn form
+    @MainActor func goBackToMsisdnForm()
     
     /// Display an error to the user.
-    @MainActor func displayError(_ type: AuthenticationVerifyEmailErrorType)
+    @MainActor func displayError(_ type: AuthenticationVerifyMsisdnErrorType)
 }

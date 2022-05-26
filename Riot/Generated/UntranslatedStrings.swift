@@ -110,6 +110,38 @@ public extension VectorL10n {
   static var authenticationVerifyEmailWaitingTitle: String { 
     return VectorL10n.tr("Untranslated", "authentication_verify_email_waiting_title") 
   }
+  /// This will help verify your account and enables password recovery.
+  static var authenticationVerifyMsisdnInputMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_msisdn_input_message") 
+  }
+  /// Enter your phone number
+  static var authenticationVerifyMsisdnInputTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_msisdn_input_title") 
+  }
+  /// Invalid phone number
+  static var authenticationVerifyMsisdnInvalidPhoneNumber: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_msisdn_invalid_phone_number") 
+  }
+  /// Verification Code
+  static var authenticationVerifyMsisdnOtpTextFieldPlaceholder: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_msisdn_otp_text_field_placeholder") 
+  }
+  /// Phone Number
+  static var authenticationVerifyMsisdnTextFieldPlaceholder: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_msisdn_text_field_placeholder") 
+  }
+  /// Resend code
+  static var authenticationVerifyMsisdnWaitingButton: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_msisdn_waiting_button") 
+  }
+  /// We just sent a code to %@. Enter it  below to verify it’s you.
+  static func authenticationVerifyMsisdnWaitingMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Untranslated", "authentication_verify_msisdn_waiting_message", p1)
+  }
+  /// Confirm your phone number
+  static var authenticationVerifyMsisdnWaitingTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_msisdn_waiting_title") 
+  }
   /// Choose from files
   static var imagePickerActionFiles: String { 
     return VectorL10n.tr("Untranslated", "image_picker_action_files") 

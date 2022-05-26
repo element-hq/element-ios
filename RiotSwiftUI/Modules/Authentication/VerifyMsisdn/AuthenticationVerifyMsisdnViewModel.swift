@@ -16,10 +16,10 @@
 
 import SwiftUI
 
-typealias AuthenticationVerifyEmailViewModelType = StateStoreViewModel<AuthenticationVerifyEmailViewState,
+typealias AuthenticationVerifyMsisdnViewModelType = StateStoreViewModel<AuthenticationVerifyMsisdnViewState,
                                                                        Never,
-                                                                       AuthenticationVerifyEmailViewAction>
-class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType, AuthenticationVerifyEmailViewModelProtocol {
+                                                                       AuthenticationVerifyMsisdnViewAction>
+class AuthenticationVerifyMsisdnViewModel: AuthenticationVerifyMsisdnViewModelType, AuthenticationVerifyMsisdnViewModelProtocol {
 
     // MARK: - Properties
 
@@ -27,21 +27,23 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
 
     // MARK: Public
 
-    var callback: (@MainActor (AuthenticationVerifyEmailViewModelResult) -> Void)?
+    var callback: (@MainActor (AuthenticationVerifyMsisdnViewModelResult) -> Void)?
 
     // MARK: - Setup
 
-    init(emailAddress: String = "") {
-        let viewState = AuthenticationVerifyEmailViewState(bindings: AuthenticationVerifyEmailBindings(emailAddress: emailAddress))
+    init(phoneNumber: String = "", otp: String = "") {
+        let viewState = AuthenticationVerifyMsisdnViewState(bindings: AuthenticationVerifyMsisdnBindings(phoneNumber: phoneNumber, otp: otp))
         super.init(initialViewState: viewState)
     }
 
     // MARK: - Public
     
-    override func process(viewAction: AuthenticationVerifyEmailViewAction) {
+    override func process(viewAction: AuthenticationVerifyMsisdnViewAction) {
         switch viewAction {
         case .send:
-            Task { await callback?(.send(state.bindings.emailAddress)) }
+            Task { await callback?(.send(state.bindings.phoneNumber)) }
+        case .submitOTP:
+            Task { await callback?(.submitOTP(state.bindings.otp)) }
         case .resend:
             Task { await callback?(.resend) }
         case .cancel:
@@ -51,20 +53,25 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
         }
     }
     
-    @MainActor func updateForSentEmail() {
-        state.hasSentEmail = true
+    @MainActor func updateForSentSMS() {
+        state.hasSentSMS = true
     }
 
-    @MainActor func goBackToEnterEmailForm() {
-        state.hasSentEmail = false
+    @MainActor func goBackToMsisdnForm() {
+        state.hasSentSMS = false
+        state.bindings.otp = ""
     }
     
-    @MainActor func displayError(_ type: AuthenticationVerifyEmailErrorType) {
+    @MainActor func displayError(_ type: AuthenticationVerifyMsisdnErrorType) {
         switch type {
         case .mxError(let message):
             state.bindings.alertInfo = AlertInfo(id: type,
                                                  title: VectorL10n.error,
                                                  message: message)
+        case .invalidPhoneNumber:
+            state.bindings.alertInfo = AlertInfo(id: type,
+                                                 title: VectorL10n.error,
+                                                 message: VectorL10n.authenticationVerifyMsisdnInvalidPhoneNumber)
         case .unknown:
             state.bindings.alertInfo = AlertInfo(id: type)
         }
