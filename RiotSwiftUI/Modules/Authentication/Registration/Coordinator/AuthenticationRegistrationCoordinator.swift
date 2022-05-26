@@ -31,7 +31,7 @@ enum AuthenticationRegistrationCoordinatorResult {
     /// Continue using the supplied SSO provider.
     case continueWithSSO(SSOIdentityProvider)
     /// The screen completed with the associated registration result.
-    case completed(RegistrationResult)
+    case completed(result: RegistrationResult, password: String)
 }
 
 final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
@@ -160,7 +160,7 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
                                                                         initialDeviceDisplayName: UIDevice.current.initialDisplayName)
                 
                 guard !Task.isCancelled else { return }
-                callback?(.completed(result))
+                callback?(.completed(result: result, password: password))
                 
                 self?.stopLoading()
             } catch {

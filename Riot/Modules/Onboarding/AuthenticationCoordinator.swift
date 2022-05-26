@@ -44,6 +44,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     /// The initial screen to be shown when starting the coordinator.
     private let initialScreen: EntryPoint
+    /// The type of authentication that was used to complete the flow.
+    private var authenticationType: AuthenticationType?
     
     /// The presenter used to handler authentication via SSO.
     private var ssoAuthenticationPresenter: SSOAuthenticationPresenter?
@@ -189,7 +191,9 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         switch result {
         case .continueWithSSO(let provider):
             presentSSOAuthentication(for: provider)
-        case .success(let session):
+        case .success(let session, let loginPassword):
+            password = loginPassword
+            authenticationType = .password
             onSessionCreated(session: session, flow: .login)
         }
     }
@@ -265,7 +269,9 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         switch result {
         case .continueWithSSO(let provider):
             presentSSOAuthentication(for: provider)
-        case .completed(let result):
+        case .completed(let result, let registerPassword):
+            password = registerPassword
+            authenticationType = .password
             handleRegistrationResult(result)
         }
     }
@@ -397,7 +403,6 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     /// Handles the creation of a new session following on from a successful authentication.
     @MainActor private func onSessionCreated(session: MXSession, flow: AuthenticationFlow) {
         self.session = session
-        // self.password = password
         
         if canPresentAdditionalScreens {
             showLoadingAnimation()
@@ -425,8 +430,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         verificationListener.start()
         self.verificationListener = verificationListener
         
-        #warning("Add authentication type to the new flow.")
-        callback?(.didLogin(session: session, authenticationFlow: flow, authenticationType: .other))
+        callback?(.didLogin(session: session, authenticationFlow: flow, authenticationType: authenticationType ?? .other))
     }
     
     // MARK: - Additional Screens
@@ -483,6 +487,7 @@ extension AuthenticationCoordinator: SSOAuthenticationPresenterDelegate {
         
         ssoAuthenticationPresenter = presenter
         ssoTransactionID = transactionID
+        authenticationType = .sso(identityProvider)
     }
     
     func ssoAuthenticationPresenter(_ presenter: SSOAuthenticationPresenter, authenticationSucceededWithToken token: String, usingIdentityProvider identityProvider: SSOIdentityProvider?) {
@@ -499,16 +504,19 @@ extension AuthenticationCoordinator: SSOAuthenticationPresenterDelegate {
     func ssoAuthenticationPresenter(_ presenter: SSOAuthenticationPresenter, authenticationDidFailWithError error: Error) {
         MXLog.debug("[AuthenticationCoordinator] SSO authentication failed.")
         
-        Task {
-            await displayError(message: error.localizedDescription)
+        Task { @MainActor in
+            displayError(message: error.localizedDescription)
             ssoAuthenticationPresenter = nil
             ssoTransactionID = nil
+            authenticationType = nil
         }
     }
     
     func ssoAuthenticationPresenterDidCancel(_ presenter: SSOAuthenticationPresenter) {
         MXLog.debug("[AuthenticationCoordinator] SSO authentication cancelled.")
         ssoAuthenticationPresenter = nil
+        ssoTransactionID = nil
+        authenticationType = nil
     }
     
     /// Performs the last step of the login process for a flow that authenticated via SSO.
@@ -519,6 +527,7 @@ extension AuthenticationCoordinator: SSOAuthenticationPresenterDelegate {
         } catch {
             MXLog.error("[AuthenticationCoordinator] Login with SSO token failed.")
             displayError(message: error.localizedDescription)
+            authenticationType = nil
         }
         
         ssoAuthenticationPresenter = nil

@@ -29,7 +29,7 @@ enum AuthenticationLoginCoordinatorResult {
     /// Continue using the supplied SSO provider.
     case continueWithSSO(SSOIdentityProvider)
     /// Login was successful with the associated session created.
-    case success(MXSession)
+    case success(session: MXSession, password: String)
 }
 
 final class AuthenticationLoginCoordinator: Coordinator, Presentable {
@@ -144,7 +144,7 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
                                                           initialDeviceName: UIDevice.current.initialDisplayName)
                 
                 guard !Task.isCancelled else { return }
-                callback?(.success(session))
+                callback?(.success(session: session, password: password))
                 
                 self?.stopLoading()
             } catch {

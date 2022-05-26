@@ -27,25 +27,24 @@ struct SecondaryActionButtonStyle: ButtonStyle {
         configuration.label
             .padding(12.0)
             .frame(maxWidth: .infinity)
-            .foregroundColor(strokeColor(configuration.isPressed))
+            .foregroundColor(customColor ?? theme.colors.accent)
             .font(theme.fonts.body)
             .background(RoundedRectangle(cornerRadius: 8)
                             .strokeBorder()
-                            .foregroundColor(strokeColor(configuration.isPressed)))
-            .opacity(isEnabled ? 1.0 : 0.6)
+                            .foregroundColor(customColor ?? theme.colors.accent))
+            .opacity(opacity(when: configuration.isPressed))
     }
     
-    func strokeColor(_ isPressed: Bool) -> Color {
-        if let customColor = customColor {
-            return customColor
-        }
-        
-        return isPressed ? theme.colors.accent.opacity(0.6) : theme.colors.accent
+    private func opacity(when isPressed: Bool) -> CGFloat {
+        guard isEnabled else { return 0.6 }
+        return isPressed ? 0.6 : 1.0
     }
 }
 
 @available(iOS 14.0, *)
 struct SecondaryActionButtonStyle_Previews: PreviewProvider {
+    static var theme: ThemeSwiftUI = DefaultThemeSwiftUI()
+    
     static var previews: some View {
         Group {
             buttonGroup
@@ -64,14 +63,14 @@ struct SecondaryActionButtonStyle_Previews: PreviewProvider {
                 .buttonStyle(SecondaryActionButtonStyle())
                 .disabled(true)
             
-            Button { } label: {
-                Text("Clear BG")
-                    .foregroundColor(.red)
-            }
-            .buttonStyle(SecondaryActionButtonStyle(customColor: .clear))
-            
             Button("Red BG") { }
             .buttonStyle(SecondaryActionButtonStyle(customColor: .red))
+            
+            Button { } label: {
+                Text("Custom")
+                    .foregroundColor(theme.colors.secondaryContent)
+            }
+            .buttonStyle(SecondaryActionButtonStyle(customColor: theme.colors.quarterlyContent))
         }
         .padding()
     }
