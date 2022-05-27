@@ -182,7 +182,7 @@ class DarkTheme: NSObject, Theme {
     }
     
     // MARK: - Theme v2
-    var colors = UIColor.element
+    var colors = UIColor.elementDark
     
     var fonts = UIFont.element
     

@@ -38,7 +38,7 @@ struct SearchBar: View {
             }
             .padding(8)
             .padding(.horizontal, 25)
-            .background(theme.colors.navigation)
+            .background(theme.colors.system)
             .cornerRadius(8)
             .padding(.leading)
             .padding(.trailing, isEditing ? 8 : 16)
@@ -46,7 +46,7 @@ struct SearchBar: View {
                 HStack {
                     Image(systemName: "magnifyingglass")
                         .renderingMode(.template)
-                        .foregroundColor(theme.colors.quarterlyContent)
+                        .foregroundColor(theme.colors.quaternaryContent)
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
              
                     if isEditing && !text.isEmpty {
@@ -55,7 +55,7 @@ struct SearchBar: View {
                         }) {
                             Image(systemName: "multiply.circle.fill")
                                 .renderingMode(.template)
-                                .foregroundColor(theme.colors.quarterlyContent)
+                                .foregroundColor(theme.colors.quaternaryContent)
                         }
                     }
                 }

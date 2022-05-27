@@ -144,7 +144,7 @@ struct MatrixItemChooser: View {
         }
         .padding(.vertical, 4)
         .padding(.horizontal)
-        .background(theme.colors.tile)
+        .background(theme.colors.legacyTile)
     }
 }
 

@@ -65,9 +65,12 @@ fileprivate extension Color {
     ///
     /// SceneKit works in a colorspace with a linear gamma, which is why this conversion is necessary.
     var floatComponents: [Float]? {
+        // Get the CGColor from a UIColor as it is nil on Color when loaded from an asset catalog.
+        let cgColor = UIColor(self).cgColor
+        
         guard
             let colorSpace = CGColorSpace(name: CGColorSpace.extendedLinearSRGB),
-            let linearColor = cgColor?.converted(to: colorSpace, intent: .defaultIntent, options: nil),
+            let linearColor = cgColor.converted(to: colorSpace, intent: .defaultIntent, options: nil),
             let components = linearColor.components
         else { return nil }
         

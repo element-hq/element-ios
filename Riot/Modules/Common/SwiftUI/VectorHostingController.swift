@@ -98,6 +98,9 @@ class VectorHostingController: UIHostingController<AnyView> {
     }
     
     private func update(theme: Theme) {
+        // Ensure dynamic colors are shown correctly when the theme is the opposite appearance to the system.
+        overrideUserInterfaceStyle = theme.userInterfaceStyle
+        
         if let navigationBar = self.navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar, withModernScrollEdgeAppearance: enableNavigationBarScrollEdgeAppearance)
         }
