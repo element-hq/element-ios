@@ -110,23 +110,29 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     /// Starts the authentication flow.
     @MainActor private func startAuthenticationFlow() async {
-        do {
-            let flow: AuthenticationFlow = initialScreen == .login ? .login : .register
-            let homeserverAddress = authenticationService.state.homeserver.addressFromUser ?? authenticationService.state.homeserver.address
-            try await authenticationService.startFlow(flow, for: homeserverAddress)
-        } catch {
-            MXLog.error("[AuthenticationCoordinator] start: Failed to start")
-            displayError(message: error.localizedDescription)
-            return
+        let flow: AuthenticationFlow = initialScreen == .login ? .login : .register
+        if initialScreen != .selectServerForRegistration {
+            do {
+                let homeserverAddress = authenticationService.state.homeserver.addressFromUser ?? authenticationService.state.homeserver.address
+                try await authenticationService.startFlow(flow, for: homeserverAddress)
+            } catch {
+                MXLog.error("[AuthenticationCoordinator] start: Failed to start")
+                displayError(message: error.localizedDescription)
+                return
+            }
         }
-        
-        switch initialScreen {
-        case .registration:
-            showRegistrationScreen()
-        case .selectServerForRegistration:
-            showServerSelectionScreen()
-        case .login:
-            showLoginScreen()
+
+        if authenticationService.state.homeserver.needsFallback {
+            showFallback(for: flow)
+        } else {
+            switch initialScreen {
+            case .registration:
+                showRegistrationScreen()
+            case .selectServerForRegistration:
+                showServerSelectionScreen()
+            case .login:
+                showLoginScreen()
+            }
         }
     }
     
@@ -192,8 +198,12 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         case .continueWithSSO(let provider):
             presentSSOAuthentication(for: provider)
         case .success(let session, let loginPassword):
-            password = loginPassword
-            authenticationType = .password
+            if let loginPassword = loginPassword {
+                password = loginPassword
+                authenticationType = .password
+            } else {
+                authenticationType = .other
+            }
             onSessionCreated(session: session, flow: .login)
         }
     }
@@ -231,7 +241,11 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
                                                        didCompleteWith result: AuthenticationServerSelectionCoordinatorResult) {
         switch result {
         case .updated:
-            showRegistrationScreen()
+            if authenticationService.state.homeserver.needsFallback {
+                showFallback(for: .register)
+            } else {
+                showRegistrationScreen()
+            }
         case .dismiss:
             MXLog.failure("[AuthenticationCoordinator] AuthenticationServerSelectionScreen is requesting dismiss when part of a stack.")
         }
@@ -395,8 +409,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         case .dummy:
             MXLog.failure("[AuthenticationCoordinator] Attempting to perform the dummy stage.")
         case .other:
-            #warning("Show fallback")
-            MXLog.failure("[AuthenticationCoordinator] Attempting to perform an unsupported stage.")
+            showFallback(for: .register)
         }
     }
     
@@ -434,6 +447,34 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     }
     
     // MARK: - Additional Screens
+
+    private func showFallback(for flow: AuthenticationFlow) {
+        let url = authenticationService.fallbackURL(for: flow)
+
+        MXLog.debug("[AuthenticationCoordinator] showFallback for: \(flow), url: \(url)")
+
+        guard let fallbackVC = AuthFallBackViewController(url: url.absoluteString) else {
+            MXLog.error("[AuthenticationCoordinator] showFallback: could not create fallback view controller")
+            return
+        }
+        fallbackVC.delegate = self
+        let navController = RiotNavigationController(rootViewController: fallbackVC)
+        navController.navigationBar.topItem?.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
+                                                                                 target: self,
+                                                                                 action: #selector(dismissFallback))
+        navigationRouter.present(navController, animated: true)
+    }
+
+    @objc
+    private func dismissFallback() {
+        MXLog.debug("[AuthenticationCoorrdinator] dismissFallback")
+
+        guard let fallbackNavigationVC = navigationRouter.toPresentable().presentedViewController as? RiotNavigationController else {
+            return
+        }
+        fallbackNavigationVC.dismiss(animated: true)
+        authenticationService.reset()
+    }
     
     /// Replace the contents of the navigation router with a loading animation.
     private func showLoadingAnimation() {
@@ -610,4 +651,24 @@ extension AuthenticationCoordinator {
     func updateHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?) {
         // unused
     }
+}
+
+// MARK: - AuthFallBackViewControllerDelegate
+extension AuthenticationCoordinator: AuthFallBackViewControllerDelegate {
+    @MainActor func authFallBackViewController(_ authFallBackViewController: AuthFallBackViewController,
+                                    didLoginWith loginResponse: MXLoginResponse) {
+        let credentials = MXCredentials(loginResponse: loginResponse, andDefaultCredentials: nil)
+        let client = MXRestClient(credentials: credentials)
+        guard let session = MXSession(matrixRestClient: client) else {
+            MXLog.error("[AuthenticationCoordinator] authFallBackViewController:didLogin: session could not be created")
+            return
+        }
+        let flow: AuthenticationFlow = initialScreen == .login ? .login : .register
+        onSessionCreated(session: session, flow: flow)
+    }
+
+    func authFallBackViewControllerDidClose(_ authFallBackViewController: AuthFallBackViewController) {
+        dismissFallback()
+    }
+
 }

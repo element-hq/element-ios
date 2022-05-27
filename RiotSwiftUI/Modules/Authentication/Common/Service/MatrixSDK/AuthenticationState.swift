@@ -66,5 +66,24 @@ struct AuthenticationState {
                                              showRegistrationForm: registrationFlow != nil,
                                              ssoIdentityProviders: preferredLoginMode.ssoIdentityProviders ?? [])
         }
+
+        /// Needs authentication fallback for login or registration
+        var needsFallback: Bool {
+            switch preferredLoginMode {
+            case .unsupported:
+                return true
+            default:
+                break
+            }
+            guard let flow = registrationFlow else {
+                return false
+            }
+            switch flow {
+            case .flowResponse(let result):
+                return result.needsFallback
+            default:
+                return false
+            }
+        }
     }
 }
