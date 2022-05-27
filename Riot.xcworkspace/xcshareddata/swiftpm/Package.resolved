@@ -1,0 +1,50 @@
+{
+  "pins" : [
+    {
+      "identity" : "element-design-tokens",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vector-im/element-design-tokens.git",
+      "state" : {
+        "revision" : "4aafdc25ca0e322c0de930d4ec86121f5503023e",
+        "version" : "0.0.1"
+      }
+    },
+    {
+      "identity" : "element-x-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vector-im/element-x-ios",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "272fc5000bfe6e15a0f0ea669ef3088c7d163ce7"
+      }
+    },
+    {
+      "identity" : "maplibre-gl-native-distribution",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/maplibre/maplibre-gl-native-distribution",
+      "state" : {
+        "revision" : "d761956e81e74d8bdbfba31e0ec3a75616190658",
+        "version" : "5.12.2"
+      }
+    },
+    {
+      "identity" : "swift-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-collections",
+      "state" : {
+        "revision" : "48254824bb4248676bf7ce56014ff57b142b77eb",
+        "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "swiftui-introspect",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/siteline/SwiftUI-Introspect.git",
+      "state" : {
+        "revision" : "f2616860a41f9d9932da412a8978fec79c06fe24",
+        "version" : "0.1.4"
+      }
+    }
+  ],
+  "version" : 2
+}

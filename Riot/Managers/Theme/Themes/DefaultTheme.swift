@@ -186,7 +186,7 @@ class DefaultTheme: NSObject, Theme {
     }
     
     // MARK: - Theme v2
-    var colors = UIColor.element
+    var colors = UIColor.elementLight
     
     var fonts = UIFont.element
 }

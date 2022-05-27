@@ -22,30 +22,10 @@ import DesignTokens
 @objc public protocol ThemeV2 {
     
     /// Colors object
-    var colors: ElementUIColors { get }
+    var colors: ElementUIColorsResolved { get }
     
     /// Fonts object
     var fonts: ElementUIFonts { get }
     
     /// may contain more design components in future, like icons, audio files etc.
-}
-
-#warning("Temporary missing colors")
-public extension ElementUIColors {
-    var quarterlyContent: UIColor { quaternaryContent }
-    var navigation: UIColor { system }
-    var tile: UIColor { system }
-    var separator: UIColor { system }
-    var namesAndAvatars: [UIColor] {
-        [
-            globalAzure,
-            globalGrape,
-            globalVerde,
-            globalPolly,
-            globalMelon,
-            globalAqua,
-            globalPrune,
-            globalKiwi
-        ]
-    }
 }

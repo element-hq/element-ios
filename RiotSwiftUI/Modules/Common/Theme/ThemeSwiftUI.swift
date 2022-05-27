@@ -36,11 +36,14 @@ public protocol ThemeSwiftUIType {
     /// may contain more design components in future, like icons, audio files etc.
 }
 
-#warning("Temporary missing colors")
 public extension ElementColors {
-    var quarterlyContent: Color { quaternaryContent }
-    var navigation: Color { system }
-    var tile: Color { system }
+    // MARK: - Legacy
+    var legacyTile: Color {
+        let dynamicColor = UIColor { $0.userInterfaceStyle == .light ? .elementLight.tile : .elementDark.tile }
+        return Color(dynamicColor)
+    }
+    
+    // TODO: Generate in DesignTokens repo.
     var namesAndAvatars: [Color] {
         [
             globalAzure,

@@ -41,7 +41,7 @@ include:
 packages:
   DesignKit:
     url: https://github.com/vector-im/element-x-ios
-    branch: doug/designkit
+    branch: develop
   Mapbox:
     url: https://github.com/maplibre/maplibre-gl-native-distribution
     minVersion: 5.12.2
