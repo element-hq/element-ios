@@ -50,6 +50,9 @@ class AuthenticationLoginUITests: MockScreenTest {
             validateServerDescriptionIsHidden(for: state)
             validateLoginFormIsHidden(for: state)
             validateSSOButtonsAreShown(for: state)
+        case .fallback:
+            let state = "a fallback server"
+            validateFallback(for: state)
         }
     }
     
@@ -113,6 +116,21 @@ class AuthenticationLoginUITests: MockScreenTest {
         let nextButton = app.buttons["nextButton"]
         XCTAssertTrue(nextButton.exists, "The next button should be shown.")
         XCTAssertTrue(nextButton.isEnabled, "The next button should be enabled for \(state).")
+    }
+
+    func validateFallback(for state: String) {
+        let usernameTextField = app.textFields.element
+        let passwordTextField = app.secureTextFields.element
+        let nextButton = app.buttons["nextButton"]
+        let ssoButtons = app.buttons.matching(identifier: "ssoButton")
+        let fallbackButton = app.buttons["fallbackButton"]
+
+        XCTAssertFalse(usernameTextField.exists, "Username input should not be shown for \(state).")
+        XCTAssertFalse(passwordTextField.exists, "Password input should not be shown for \(state).")
+        XCTAssertFalse(nextButton.exists, "The next button should not be shown for \(state).")
+        XCTAssertEqual(ssoButtons.count, 0, "There should not be any SSO buttons shown for \(state).")
+        XCTAssertTrue(fallbackButton.exists, "The fallback button should be shown for \(state).")
+        XCTAssertTrue(fallbackButton.isEnabled, "The fallback button should be enabled for \(state).")
     }
     
 }

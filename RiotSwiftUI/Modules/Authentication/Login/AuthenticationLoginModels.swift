@@ -29,6 +29,8 @@ enum AuthenticationLoginViewModelResult {
     case login(username: String, password: String)
     /// Continue using the supplied SSO provider.
     case continueWithSSO(SSOIdentityProvider)
+    /// Continue using the fallback page
+    case fallback
 }
 
 // MARK: View
@@ -70,6 +72,8 @@ enum AuthenticationLoginViewAction {
     case forgotPassword
     /// Continue using the input username and password.
     case next
+    /// Continue using the fallback page
+    case fallback
     /// Continue using the supplied SSO provider.
     case continueWithSSO(SSOIdentityProvider)
 }

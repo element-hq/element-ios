@@ -61,6 +61,10 @@ struct AuthenticationLoginScreen: View {
                     ssoButtons
                         .padding(.top, 16)
                 }
+
+                if !viewModel.viewState.homeserver.showLoginForm && !viewModel.viewState.showSSOButtons {
+                    fallbackButton
+                }
                 
             }
             .readableFrame()
@@ -137,6 +141,15 @@ struct AuthenticationLoginScreen: View {
             }
         }
     }
+
+    /// A fallback button that can be used for login.
+    var fallbackButton: some View {
+        Button(action: fallback) {
+            Text(VectorL10n.login)
+        }
+        .buttonStyle(PrimaryActionButtonStyle())
+        .accessibilityIdentifier("fallbackButton")
+    }
     
     /// Give focus to the password text field.
     func usernameEditingChanged(isEditing: Bool) {
@@ -157,6 +170,11 @@ struct AuthenticationLoginScreen: View {
     func submit() {
         guard viewModel.viewState.hasValidCredentials else { return }
         viewModel.send(viewAction: .next)
+    }
+
+    /// Sends the `fallback` view action.
+    func fallback() {
+        viewModel.send(viewAction: .fallback)
     }
 }
 
