@@ -97,7 +97,8 @@ struct AuthenticationLoginScreen: View {
                                    configuration: UIKitTextInputConfiguration(returnKeyType: .next,
                                                                               autocapitalizationType: .none,
                                                                               autocorrectionType: .no),
-                                   onEditingChanged: usernameEditingChanged)
+                                   onEditingChanged: usernameEditingChanged,
+                                   onCommit: { isPasswordFocused = true })
             .accessibilityIdentifier("usernameTextField")
             
             Spacer().frame(height: 20)
@@ -107,7 +108,8 @@ struct AuthenticationLoginScreen: View {
                                    isFirstResponder: isPasswordFocused,
                                    configuration: UIKitTextInputConfiguration(returnKeyType: .done,
                                                                               isSecureTextEntry: true),
-                                   onEditingChanged: passwordEditingChanged)
+                                   onEditingChanged: passwordEditingChanged,
+                                   onCommit: submit)
             .accessibilityIdentifier("passwordTextField")
             
             Button { viewModel.send(viewAction: .forgotPassword) } label: {
@@ -138,19 +140,17 @@ struct AuthenticationLoginScreen: View {
         }
     }
     
-    /// Give focus to the password text field.
+    /// Parses the username for a homeserver.
     func usernameEditingChanged(isEditing: Bool) {
         guard !isEditing, !viewModel.username.isEmpty else { return }
         
         viewModel.send(viewAction: .parseUsername)
-        isPasswordFocused = true
     }
     
-    /// Submits the form if valid credentials have been input.
+    /// Resets the password field focus.
     func passwordEditingChanged(isEditing: Bool) {
         guard !isEditing else { return }
         isPasswordFocused = false
-        submit()
     }
     
     /// Sends the `next` view action so long as valid credentials have been input.
