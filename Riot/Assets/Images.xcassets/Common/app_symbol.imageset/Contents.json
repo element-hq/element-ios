@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Element Symbol.png",
+      "filename" : "apple-touch-icon-120.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Element Symbol@2x.png",
+      "filename" : "240.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Element Symbol@3x.png",
+      "filename" : "360.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
