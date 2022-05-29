@@ -41,36 +41,45 @@ struct OnboardingSplashScreenPage: View {
     
     var body: some View {
         VStack {
-            VStack {
-                Image(theme.isDark ? content.darkImage.name : content.image.name)
+            ZStack {
+                Image("onboarding_bg")
                     .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: 300)
-                    .padding(20)
-                    .accessibilityHidden(true)
-                
-                VStack(spacing: 8) {
-                    OnboardingTintedFullStopText(content.title)
-                        .font(theme.fonts.title2B)
-                        .foregroundColor(theme.colors.primaryContent)
-                    Text(content.message)
-                        .font(theme.fonts.body)
-                        .foregroundColor(theme.colors.secondaryContent)
-                        .multilineTextAlignment(.center)
+                    .scaledToFill()
+                    .edgesIgnoringSafeArea(.all)
+            
+                VStack {
+    //                Image(theme.isDark ? content.darkImage.name : content.image.name)
+    //                    .resizable()
+    //                    .scaledToFit()
+    //                    .frame(maxWidth: 300)
+    //                    .padding(20)
+    //                    .accessibilityHidden(true)
+                    
+                    Spacer()
+                    
+                    VStack(spacing: 8) {
+                        OnboardingTintedFullStopText(content.title)
+                            .font(theme.fonts.title2B)
+                            .foregroundColor(theme.colors.primaryContent)
+                        Text(content.message)
+                            .font(theme.fonts.body)
+                            .foregroundColor(theme.colors.secondaryContent)
+                            .multilineTextAlignment(.center)
+                    }
+                    .padding(.bottom)
+                    
+                    Spacer()
+                    
+                    // Prevent the content from clashing with the overlay content.
+                    Spacer().frame(maxHeight: overlayHeight)
                 }
-                .padding(.bottom)
-                
-                Spacer()
-                
-                // Prevent the content from clashing with the overlay content.
-                Spacer().frame(maxHeight: overlayHeight)
+                .padding(.horizontal, 16)
+                .frame(maxWidth: OnboardingMetrics.maxContentWidth,
+                       maxHeight: OnboardingMetrics.maxContentHeight)
             }
-            .padding(.horizontal, 16)
-            .frame(maxWidth: OnboardingMetrics.maxContentWidth,
-                   maxHeight: OnboardingMetrics.maxContentHeight)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(backgroundGradient.ignoresSafeArea())
+//        .background(backgroundGradient.ignoresSafeArea())
     }
 }
 

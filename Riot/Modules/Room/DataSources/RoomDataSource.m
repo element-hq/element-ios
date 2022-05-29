@@ -1199,18 +1199,16 @@ const CGFloat kTypingCellHeight = 24;
 {
     MXLocationService *locationService = self.mxSession.locationService;
     
-    NSString *roomId = self.roomId;
-    
-    if (!locationService || !roomId)
+    if (!locationService || !self.roomId)
     {
         return;
     }
     
-    BOOL isUserSharingActiveLocation = [locationService isCurrentUserSharingActiveLocationInRoomWithId:roomId];
+    BOOL isUserSharingActiveLocation = [locationService isCurrentUserSharingActiveLocationInRoomWithId:self.roomId];
     
     if (isUserSharingActiveLocation != self.isCurrentUserSharingActiveLocation)
     {
-        self.isCurrentUserSharingActiveLocation = isUserSharingActiveLocation;
+        self.isCurrentUserSharingActiveLocation = [locationService isCurrentUserSharingActiveLocationInRoomWithId:self.roomId];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.roomDataSourceDelegate roomDataSourceDidUpdateCurrentUserSharingLocationStatus:self];

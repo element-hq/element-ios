@@ -144,5 +144,7 @@
 			<string>im.vector.app.pills</string>
 		</dict>
 	</array>
+	<key>UIUserInterfaceStyle</key>
+	<string>Dark</string>
 </dict>
 </plist>

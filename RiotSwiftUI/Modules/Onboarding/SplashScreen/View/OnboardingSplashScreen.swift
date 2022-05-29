@@ -63,8 +63,8 @@ struct OnboardingSplashScreen: View {
             Color.clear
             
             VStack {
-                OnboardingSplashScreenPageIndicator(pageCount: pageCount,
-                                                    pageIndex: viewModel.pageIndex)
+//                OnboardingSplashScreenPageIndicator(pageCount: pageCount,
+//                                                    pageIndex: viewModel.pageIndex)
                 Spacer()
                 
                 buttons
@@ -84,25 +84,26 @@ struct OnboardingSplashScreen: View {
                 HStack(spacing: 0) {
                     
                     // Add a hidden page at the start of the carousel duplicating the content of the last page
-                    OnboardingSplashScreenPage(content: viewModel.viewState.content[pageCount - 1],
-                                               overlayHeight: overlayFrame.height + geometry.safeAreaInsets.bottom)
-                        .frame(width: geometry.size.width)
-                        .tag(-1)
+//                    OnboardingSplashScreenPage(content: viewModel.viewState.content[pageCount - 1],
+//                                               overlayHeight: overlayFrame.height + geometry.safeAreaInsets.bottom)
+//                        .frame(width: geometry.size.width)
+//                        .tag(-1)
                     
-                    ForEach(0..<pageCount) { index in
+                    let index = 0
+//                    ForEach(0..<pageCount) { index in
                         OnboardingSplashScreenPage(content: viewModel.viewState.content[index],
                                                    overlayHeight: overlayFrame.height + geometry.safeAreaInsets.bottom)
                             .frame(width: geometry.size.width)
                             .tag(index)
-                    }
+//                    }
                     
                 }
-                .offset(x: (CGFloat(viewModel.pageIndex + 1) * -geometry.size.width) + dragOffset)
-                .gesture(
-                    DragGesture()
-                        .onChanged(handleDragGestureChange)
-                        .onEnded { handleDragGestureEnded($0, viewSize: geometry.size) }
-                )
+//                .offset(x: (CGFloat(viewModel.pageIndex + 1) * -geometry.size.width) + dragOffset)
+//                .gesture(
+//                    DragGesture()
+//                        .onChanged(handleDragGestureChange)
+//                        .onEnded { handleDragGestureEnded($0, viewSize: geometry.size) }
+//                )
                 
                 overlay
                     .frame(width: geometry.size.width)
@@ -111,13 +112,13 @@ struct OnboardingSplashScreen: View {
         .background(theme.colors.background.ignoresSafeArea())
         .accentColor(theme.colors.accent)
         .navigationBarHidden(true)
-        .onAppear {
-            startTimer()
-        }
-        .onDisappear { stopTimer() }
+//        .onAppear {
+//            startTimer()
+//        }
+//        .onDisappear { stopTimer() }
         .track(screen: .welcome)
     }
-    
+    /*
     // MARK: - Animation
     
     /// Starts the animation timer for an automatic carousel effect.
@@ -194,6 +195,7 @@ struct OnboardingSplashScreen: View {
             dragOffset = 0
         }
     }
+     */
 }
 
 // MARK: - Previews

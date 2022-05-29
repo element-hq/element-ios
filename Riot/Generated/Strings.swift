@@ -3943,11 +3943,11 @@ public class VectorL10n: NSObject {
   public static var onboardingSplashLoginButtonTitle: String { 
     return VectorL10n.tr("Vector", "onboarding_splash_login_button_title") 
   }
-  /// Secure and independent communication that gives you the same level of privacy as a face-to-face conversation in your own home.
+  /// Welcome to STVDIO Space!
   public static var onboardingSplashPage1Message: String { 
     return VectorL10n.tr("Vector", "onboarding_splash_page_1_message") 
   }
-  /// Own your conversations.
+  /// STVDIO
   public static var onboardingSplashPage1Title: String { 
     return VectorL10n.tr("Vector", "onboarding_splash_page_1_title") 
   }

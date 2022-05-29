@@ -3519,8 +3519,6 @@ static CGSize kThreadListBarButtonItemImageSize;
     BOOL showThreadOption = [self showThreadOptionForEvent:selectedEvent];
     if (showThreadOption && [self canCopyEvent:selectedEvent andCell:cell])
     {
-        MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
-        MXKRoomBubbleCellData *cellData = roomBubbleTableViewCell.bubbleData;
         [self.eventMenuBuilder addItemWithType:EventMenuItemTypeCopy
                                         action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCopy]
                                                                         style:UIAlertActionStyleDefault
@@ -3529,7 +3527,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             
             [self cancelEventSelection];
             
-            [self copyEvent:selectedEvent inCell:cell withCellData:cellData];
+            [self copyEvent:selectedEvent inCell:cell];
         }]];
     }
     
@@ -6680,12 +6678,10 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     RoomContextualMenuItem *copyMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionCopy];
     copyMenuItem.isEnabled = [self canCopyEvent:event andCell:cell];
-    MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
-    MXKRoomBubbleCellData *cellData = roomBubbleTableViewCell.bubbleData;
     copyMenuItem.action = ^{
         MXStrongifyAndReturnIfNil(self);
         
-        [self copyEvent:event inCell:cell withCellData:cellData];
+        [self copyEvent:event inCell:cell];
     };
     
     return copyMenuItem;
@@ -6743,14 +6739,14 @@ static CGSize kThreadListBarButtonItemImageSize;
     return result;
 }
 
-- (void)copyEvent:(MXEvent*)event inCell:(id<MXKCellRendering>)cell withCellData:(MXKRoomBubbleCellData *)cellData
+- (void)copyEvent:(MXEvent*)event inCell:(id<MXKCellRendering>)cell
 {
     MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
-    MXKAttachment *attachment = cellData.attachment;
+    MXKAttachment *attachment = roomBubbleTableViewCell.bubbleData.attachment;
     
     if (!attachment)
     {
-        NSArray *components = cellData.bubbleComponents;
+        NSArray *components = roomBubbleTableViewCell.bubbleData.bubbleComponents;
         MXKRoomBubbleComponent *selectedComponent;
         for (selectedComponent in components)
         {
