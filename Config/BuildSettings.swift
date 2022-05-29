@@ -375,9 +375,9 @@ final class BuildSettings: NSObject {
     
     // MARK: - Authentication Screen
     static let authScreenShowRegister = true
-    static let authScreenShowPhoneNumber = true
+    static let authScreenShowPhoneNumber = false
     static let authScreenShowForgotPassword = true
-    static let authScreenShowCustomServerOptions = true
+    static let authScreenShowCustomServerOptions = false
     static let authScreenShowSocialLoginSection = true
     
     // MARK: - Authentication Options

@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "horizontal_logo.png",
+      "filename" : "hlogox1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "horizontal_logo@2x.png",
+      "filename" : "hlogox2.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "horizontal_logo@3x.png",
+      "filename" : "hlogox3.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

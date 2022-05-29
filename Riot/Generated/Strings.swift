@@ -291,7 +291,7 @@ public class VectorL10n: NSObject {
   public static var authEmailValidationMessage: String { 
     return VectorL10n.tr("Vector", "auth_email_validation_message") 
   }
-  /// Forgot Matrix account password?
+  /// Forgot password?
   public static var authForgotPassword: String { 
     return VectorL10n.tr("Vector", "auth_forgot_password") 
   }
