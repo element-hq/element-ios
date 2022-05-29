@@ -18,7 +18,7 @@ import Foundation
 
 protocol AuthenticationRegistrationViewModelProtocol {
     
-    @MainActor var callback: (@MainActor (AuthenticationRegistrationViewModelResult) -> Void)? { get set }
+    @MainActor var callback: ((AuthenticationRegistrationViewModelResult) -> Void)? { get set }
     var context: AuthenticationRegistrationViewModelType.Context { get }
     
     /// Update the view with new homeserver information.

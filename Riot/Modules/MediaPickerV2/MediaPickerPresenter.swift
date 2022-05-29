@@ -18,6 +18,7 @@ import UIKit
 import PhotosUI
 import CommonKit
 
+@available(iOS 14.0, *)
 protocol MediaPickerPresenterDelegate: AnyObject {
     func mediaPickerPresenter(_ presenter: MediaPickerPresenter, didPickImage image: UIImage)
     func mediaPickerPresenterDidCancel(_ presenter: MediaPickerPresenter)
@@ -25,6 +26,10 @@ protocol MediaPickerPresenterDelegate: AnyObject {
 
 /// A picker for photos and videos from the user's photo library on iOS 14+ using the
 /// new `PHPickerViewController` that doesn't require permission to be granted.
+///
+/// **Note:** If you need to support iOS 12 & 13, then you will need to use the older
+/// `MediaPickerCoordinator`/`MediaPickerViewController` instead.
+@available(iOS 14.0, *)
 final class MediaPickerPresenter: NSObject {
     
     // MARK: - Properties
@@ -64,11 +69,11 @@ final class MediaPickerPresenter: NSObject {
     
     // MARK: - Private
     
-    private func showLoadingIndicator() {
+    func showLoadingIndicator() {
         loadingIndicator = indicatorPresenter?.present(.loading(label: VectorL10n.loading, isInteractionBlocking: true))
     }
     
-    private func hideLoadingIndicator() {
+    func hideLoadingIndicator() {
         loadingIndicator = nil
     }
 }

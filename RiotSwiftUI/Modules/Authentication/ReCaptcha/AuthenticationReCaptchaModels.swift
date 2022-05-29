@@ -38,7 +38,7 @@ struct AuthenticationReCaptchaViewState: BindableState {
 
 struct AuthenticationReCaptchaBindings {
     /// Information describing the currently displayed alert.
-    var alertInfo: AlertInfo<AuthenticationReCaptchaErrorType>?
+    var alertInfo: AlertInfo<Int>?
 }
 
 enum AuthenticationReCaptchaViewAction {
@@ -46,11 +46,4 @@ enum AuthenticationReCaptchaViewAction {
     case validate(String)
     /// Cancel the flow.
     case cancel
-}
-
-enum AuthenticationReCaptchaErrorType: Hashable {
-    /// An error response from the homeserver.
-    case mxError(String)
-    /// An unknown error occurred.
-    case unknown
 }

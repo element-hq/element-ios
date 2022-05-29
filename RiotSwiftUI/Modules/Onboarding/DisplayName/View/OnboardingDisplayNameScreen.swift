@@ -87,7 +87,8 @@ struct OnboardingDisplayNameScreen: View {
                 isEditingTextField = $0
             }
             .autocapitalization(.words)
-            .textFieldStyle(BorderedInputFieldStyle(isEditing: isEditingTextField,
+            .textFieldStyle(BorderedInputFieldStyle(theme: _theme,
+                                                    isEditing: isEditingTextField,
                                                     isError: viewModel.viewState.validationErrorMessage != nil))
             
             Text(viewModel.viewState.textFieldFooterMessage)

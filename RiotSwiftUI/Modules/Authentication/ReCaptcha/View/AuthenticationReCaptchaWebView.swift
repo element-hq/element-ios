@@ -42,13 +42,7 @@ struct AuthenticationRecaptchaWebView: UIViewRepresentable {
     // MARK: - Setup
     
     func makeUIView(context: Context) -> WKWebView {
-        let userContentController = WKUserContentController()
-        userContentController.add(context.coordinator, name: "recaptcha")
-        
-        let configuration = WKWebViewConfiguration()
-        configuration.userContentController = userContentController
-        
-        let webView = WKWebView(frame: .zero, configuration: configuration)
+        let webView = WKWebView()
         webView.navigationDelegate = context.coordinator
         
         #if DEBUG
@@ -72,7 +66,7 @@ struct AuthenticationRecaptchaWebView: UIViewRepresentable {
     
     // MARK: - Coordinator
     
-    class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler {
+    class Coordinator: NSObject, WKNavigationDelegate {
         /// The theme used to render the ReCaptcha
         enum ReCaptchaTheme: String { case light, dark }
         
@@ -96,7 +90,13 @@ struct AuthenticationRecaptchaWebView: UIViewRepresentable {
             <style>@media (prefers-color-scheme: dark) { body { background-color: #15191E; } }</style>
             <script type="text/javascript">
             var verifyCallback = function(response) {
-                window.webkit.messageHandlers.recaptcha.postMessage(response);
+                /* Generic method to make a bridge between JS and the WKWebView*/
+                var iframe = document.createElement('iframe');
+                iframe.setAttribute('src', 'js:' + JSON.stringify({'action': 'verifyCallback', 'response': response}));
+                
+                document.documentElement.appendChild(iframe);
+                iframe.parentNode.removeChild(iframe);
+                iframe = null;
             };
             var onloadCallback = function() {
                 grecaptcha.render('recaptcha_widget', {
@@ -128,9 +128,24 @@ struct AuthenticationRecaptchaWebView: UIViewRepresentable {
             isLoading = false
         }
         
-        func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-            guard let response = message.body as? String else { return }
+        func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {
+            guard
+                let url = navigationAction.request.url,
+                // Listen only to scheme of the JS-WKWebView bridge
+                navigationAction.request.url?.scheme == "js"
+            else { return .allow }
+            
+            guard
+                let jsonString = url.path.removingPercentEncoding,
+                let jsonData = jsonString.data(using: .utf8),
+                let parameters = try? JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers) as? [String: String],
+                parameters["action"] == "verifyCallback",
+                let response = parameters["response"]
+            else { return .cancel }
+            
             completion?(response)
+            
+            return .cancel
         }
     }
 }

@@ -48,7 +48,7 @@ final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    var callback: (@MainActor (AuthenticationServerSelectionCoordinatorResult) -> Void)?
+    @MainActor var callback: ((AuthenticationServerSelectionCoordinatorResult) -> Void)?
     
     // MARK: - Setup
     

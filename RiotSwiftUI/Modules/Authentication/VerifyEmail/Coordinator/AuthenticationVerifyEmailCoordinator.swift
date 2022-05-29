@@ -18,6 +18,7 @@ import SwiftUI
 import CommonKit
 
 struct AuthenticationVerifyEmailCoordinatorParameters {
+    let authenticationService: AuthenticationService
     let registrationWizard: RegistrationWizard
 }
 
@@ -35,6 +36,8 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol
     private var loadingIndicator: UserIndicator?
     
+    /// The authentication service used for the registration.
+    private var authenticationService: AuthenticationService { parameters.authenticationService }
     /// The wizard used to handle the registration flow.
     private var registrationWizard: RegistrationWizard { parameters.registrationWizard }
     
@@ -48,7 +51,7 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    var callback: (@MainActor (AuthenticationRegistrationStageResult) -> Void)?
+    @MainActor var callback: ((AuthenticationVerifyEmailViewModelResult) -> Void)?
     
     // MARK: - Setup
     
@@ -88,9 +91,9 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
             case .send(let emailAddress):
                 self.sendEmail(emailAddress)
             case .resend:
-                self.resendEmail()
+                self.resentEmail()
             case .cancel:
-                self.callback?(.cancel)
+                #warning("Reset the flow.")
             }
         }
     }
@@ -105,7 +108,6 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
         loadingIndicator = nil
     }
     
-    /// Sends a validation email to the supplied address and then begins polling the server.
     @MainActor private func sendEmail(_ address: String) {
         let threePID = RegisterThreePID.email(address)
         
@@ -113,22 +115,13 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
         
         currentTask = Task { [weak self] in
             do {
-                let result = try await registrationWizard.addThreePID(threePID: threePID)
-                
-                // Shouldn't be reachable but just in case, continue the flow.
+                _ = try await registrationWizard.addThreePID(threePID: threePID)
                 
                 guard !Task.isCancelled else { return }
                 
-                self?.callback?(.completed(result))
-                self?.stopLoading()
-            } catch RegistrationError.waitingForThreePIDValidation {
-                // If everything went well, begin polling the server.
                 authenticationVerifyEmailViewModel.updateForSentEmail()
+                pollForEmailValidation()
                 self?.stopLoading()
-                
-                checkForEmailValidation()
-            } catch is CancellationError {
-                return
             } catch {
                 self?.stopLoading()
                 self?.handleError(error)
@@ -136,26 +129,17 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
         }
     }
     
-    /// Resends an email to the previously entered address and then resumes polling the server.
-    @MainActor private func resendEmail() {
+    @MainActor private func resentEmail() {
         startLoading()
         
         currentTask = Task { [weak self] in
             do {
-                let result = try await registrationWizard.sendAgainThreePID()
-                
-                // Shouldn't be reachable but just in case, continue the flow.
+                _ = try await registrationWizard.sendAgainThreePID()
                 
                 guard !Task.isCancelled else { return }
                 
-                self?.callback?(.completed(result))
+                pollForEmailValidation()
                 self?.stopLoading()
-            } catch RegistrationError.waitingForThreePIDValidation {
-                // Resume polling the server.
-                self?.stopLoading()
-                checkForEmailValidation()
-            } catch is CancellationError {
-                return
             } catch {
                 self?.stopLoading()
                 self?.handleError(error)
@@ -163,26 +147,8 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
         }
     }
     
-    @MainActor private func checkForEmailValidation() {
-        currentTask = Task { [weak self] in
-            do {
-                MXLog.debug("[AuthenticationVerifyEmailCoordinator] checkForEmailValidation: Sleeping for 3 seconds.")
-                
-                try await Task.sleep(nanoseconds: 3_000_000_000)
-                let result = try await registrationWizard.checkIfEmailHasBeenValidated()
-                
-                guard !Task.isCancelled else { return }
-                
-                self?.callback?(.completed(result))
-            } catch RegistrationError.waitingForThreePIDValidation {
-                // Check again, creating a poll on the server.
-                checkForEmailValidation()
-            } catch is CancellationError {
-                return
-            } catch {
-                self?.handleError(error)
-            }
-        }
+    @MainActor private func pollForEmailValidation() {
+        // TODO
     }
     
     /// Processes an error to either update the flow or display it to the user.

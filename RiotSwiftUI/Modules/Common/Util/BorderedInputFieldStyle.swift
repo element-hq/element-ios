@@ -25,19 +25,21 @@ import Introspect
 /// https://www.figma.com/file/X4XTH9iS2KGJ2wFKDqkyed/Compound?node-id=2039%3A26415
 struct BorderedInputFieldStyle: TextFieldStyle {
     
-    @Environment(\.theme) private var theme: ThemeSwiftUI
-    @Environment(\.isEnabled) private var isEnabled: Bool
+    @Environment(\.theme) var theme: ThemeSwiftUI
+    @Environment(\.isEnabled) var isEnabled: Bool
     
     var isEditing: Bool = false
     var isError: Bool = false
     
     private var borderColor: Color {
-        if isError {
+        if !isEnabled {
+            return theme.colors.quinaryContent
+        } else if isError {
             return theme.colors.alert
         } else if isEditing {
             return theme.colors.accent
         }
-        return theme.colors.quinaryContent
+        return theme.colors.quarterlyContent
     }
     
     private var accentColor: Color {

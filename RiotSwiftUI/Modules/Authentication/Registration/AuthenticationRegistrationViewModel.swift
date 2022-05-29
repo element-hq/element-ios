@@ -27,7 +27,7 @@ class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelTy
 
     // MARK: Public
 
-    @MainActor var callback: (@MainActor (AuthenticationRegistrationViewModelResult) -> Void)?
+    @MainActor var callback: ((AuthenticationRegistrationViewModelResult) -> Void)?
 
     // MARK: - Setup
 

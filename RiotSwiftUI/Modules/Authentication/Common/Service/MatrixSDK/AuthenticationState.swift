@@ -43,11 +43,5 @@ struct AuthenticationState {
         
         /// The response returned when querying the homeserver for registration flows.
         var registrationFlow: RegistrationResult?
-        
-        /// Whether or not the homeserver is for matrix.org.
-        var isMatrixDotOrg: Bool {
-            guard let url = URL(string: address) else { return false }
-            return url.host == "matrix.org" || url.host == "matrix-client.matrix.org"
-        }
     }
 }

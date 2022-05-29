@@ -34,6 +34,8 @@ enum AuthenticationType {
 
 /// Errors that can be thrown from `AuthenticationService`.
 enum AuthenticationError: String, LocalizedError {
+    /// A failure to convert a struct into a dictionary.
+    case dictionaryError
     case invalidHomeserver
     case loginFlowNotCalled
     case missingMXRestClient
@@ -56,7 +58,6 @@ enum RegistrationError: String, LocalizedError {
     case missingThreePIDURL
     case threePIDValidationFailure
     case threePIDClientFailure
-    case waitingForThreePIDValidation
     
     var errorDescription: String? {
         switch self {
@@ -70,7 +71,7 @@ enum RegistrationError: String, LocalizedError {
 
 /// Errors that can be thrown from `LoginWizard`
 enum LoginError: String, Error {
-    case resetPasswordNotStarted
+    case unimplemented
 }
 
 /// Represents an SSO Identity Provider as provided in a login flow.

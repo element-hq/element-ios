@@ -49,7 +49,7 @@ class LocationSharingViewModelTests: XCTestCase {
                 XCTFail()
             case .cancel:
                 expectation.fulfill()
-            case .shareLiveLocation:
+            case .shareLiveLocation(timeout: let timeout):
                 XCTFail()
             }
         }
@@ -94,10 +94,7 @@ class LocationSharingViewModelTests: XCTestCase {
     }
     
     private func buildViewModel() -> LocationSharingViewModel {
-        
-        let service = MockLocationSharingService()
-        
-        return LocationSharingViewModel(mapStyleURL: URL(string: "http://empty.com")!,
-                                 avatarData: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: ""), service: service)
+        LocationSharingViewModel(mapStyleURL: URL(string: "http://empty.com")!,
+                                 avatarData: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: ""))
     }
 }

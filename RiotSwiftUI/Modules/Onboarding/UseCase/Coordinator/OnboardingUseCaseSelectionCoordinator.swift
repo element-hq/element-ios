@@ -15,7 +15,6 @@
 //
 
 import SwiftUI
-import CommonKit
 
 final class OnboardingUseCaseSelectionCoordinator: Coordinator, Presentable {
     
@@ -25,9 +24,6 @@ final class OnboardingUseCaseSelectionCoordinator: Coordinator, Presentable {
     
     private let onboardingUseCaseHostingController: VectorHostingController
     private var onboardingUseCaseViewModel: OnboardingUseCaseViewModelProtocol
-    
-    private var indicatorPresenter: UserIndicatorTypePresenterProtocol
-    private var loadingIndicator: UserIndicator?
     
     // MARK: Public
 
@@ -45,41 +41,19 @@ final class OnboardingUseCaseSelectionCoordinator: Coordinator, Presentable {
         onboardingUseCaseHostingController = VectorHostingController(rootView: view)
         onboardingUseCaseHostingController.vc_removeBackTitle()
         onboardingUseCaseHostingController.enableNavigationBarScrollEdgeAppearance = true
-        
-        indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: onboardingUseCaseHostingController)
     }
     
     // MARK: - Public
     func start() {
         MXLog.debug("[OnboardingUseCaseSelectionCoordinator] did start.")
         onboardingUseCaseViewModel.completion = { [weak self] result in
-            guard let self = self else { return }
             MXLog.debug("[OnboardingUseCaseSelectionCoordinator] OnboardingUseCaseViewModel did complete with result: \(result).")
-            
-            // Show a loading indicator which can be dismissed externally by calling `stop`.
-            self.startLoading()
+            guard let self = self else { return }
             self.completion?(result)
         }
     }
     
     func toPresentable() -> UIViewController {
         return self.onboardingUseCaseHostingController
-    }
-    
-    /// Stops any ongoing activities in the coordinator.
-    func stop() {
-        stopLoading()
-    }
-    
-    // MARK: - Private
-    
-    /// Show an activity indicator whilst loading.
-    private func startLoading() {
-        loadingIndicator = indicatorPresenter.present(.loading(label: VectorL10n.loading, isInteractionBlocking: true))
-    }
-    
-    /// Hide the currently displayed activity indicator.
-    private func stopLoading() {
-        loadingIndicator = nil
     }
 }

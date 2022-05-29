@@ -2751,22 +2751,6 @@ public class VectorL10n: NSObject {
   public static func localContactsAccessNotGranted(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "local_contacts_access_not_granted", p1)
   }
-  /// Not now
-  public static var locationSharingAllowBackgroundLocationCancelAction: String { 
-    return VectorL10n.tr("Vector", "location_sharing_allow_background_location_cancel_action") 
-  }
-  /// If you’d like to share your Live location, Element needs location access when the app is in the background.\nTo enable access, tap Settings> Location and select Always
-  public static var locationSharingAllowBackgroundLocationMessage: String { 
-    return VectorL10n.tr("Vector", "location_sharing_allow_background_location_message") 
-  }
-  /// Allow access
-  public static var locationSharingAllowBackgroundLocationTitle: String { 
-    return VectorL10n.tr("Vector", "location_sharing_allow_background_location_title") 
-  }
-  /// Settings
-  public static var locationSharingAllowBackgroundLocationValidateAction: String { 
-    return VectorL10n.tr("Vector", "location_sharing_allow_background_location_validate_action") 
-  }
   /// Close
   public static var locationSharingCloseAction: String { 
     return VectorL10n.tr("Vector", "location_sharing_close_action") 
