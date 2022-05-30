@@ -54,6 +54,8 @@ class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelTy
             Task { await callback?(.createAccount(username: state.bindings.username, password: state.bindings.password)) }
         case .continueWithSSO(let provider):
             Task { await callback?(.continueWithSSO(provider)) }
+        case .fallback:
+            Task { await callback?(.fallback) }
         }
     }
     

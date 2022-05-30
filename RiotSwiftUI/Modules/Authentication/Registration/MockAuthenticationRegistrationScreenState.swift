@@ -28,6 +28,7 @@ enum MockAuthenticationRegistrationScreenState: MockScreenState, CaseIterable {
     case passwordWithCredentials
     case passwordWithUsernameError
     case ssoOnly
+    case fallback
 
     /// The associated screen
     var screenType: Any.Type {
@@ -52,6 +53,8 @@ enum MockAuthenticationRegistrationScreenState: MockScreenState, CaseIterable {
             Task { await viewModel.displayError(.usernameUnavailable(VectorL10n.authInvalidUserName)) }
         case .ssoOnly:
             viewModel = AuthenticationRegistrationViewModel(homeserver: .mockEnterpriseSSO)
+        case .fallback:
+            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockFallback)
         }
         
 

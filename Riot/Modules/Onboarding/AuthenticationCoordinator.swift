@@ -122,15 +122,19 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             }
         }
 
-        if authenticationService.state.homeserver.needsFallback {
-            showFallback(for: flow)
-        } else {
-            switch initialScreen {
-            case .registration:
+        switch initialScreen {
+        case .registration:
+            if authenticationService.state.homeserver.needsRegistrationFallback {
+                showFallback(for: flow)
+            } else {
                 showRegistrationScreen()
-            case .selectServerForRegistration:
-                showServerSelectionScreen()
-            case .login:
+            }
+        case .selectServerForRegistration:
+            showServerSelectionScreen()
+        case .login:
+            if authenticationService.state.homeserver.needsLoginFallback {
+                showFallback(for: flow)
+            } else {
                 showLoginScreen()
             }
         }
@@ -198,13 +202,11 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         case .continueWithSSO(let provider):
             presentSSOAuthentication(for: provider)
         case .success(let session, let loginPassword):
-            if let loginPassword = loginPassword {
-                password = loginPassword
-                authenticationType = .password
-            } else {
-                authenticationType = .other
-            }
+            password = loginPassword
+            authenticationType = .password
             onSessionCreated(session: session, flow: .login)
+        case .fallback:
+            showFallback(for: .login)
         }
     }
     
@@ -241,7 +243,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
                                                        didCompleteWith result: AuthenticationServerSelectionCoordinatorResult) {
         switch result {
         case .updated:
-            if authenticationService.state.homeserver.needsFallback {
+            if authenticationService.state.homeserver.needsRegistrationFallback {
                 showFallback(for: .register)
             } else {
                 showRegistrationScreen()
@@ -287,6 +289,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             password = registerPassword
             authenticationType = .password
             handleRegistrationResult(result)
+        case .fallback:
+            showFallback(for: .register)
         }
     }
     
@@ -409,6 +413,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         case .dummy:
             MXLog.failure("[AuthenticationCoordinator] Attempting to perform the dummy stage.")
         case .other:
+            MXLog.failure("[AuthenticationCoordinator] Attempting to perform an unsupported stage.")
             showFallback(for: .register)
         }
     }
@@ -655,16 +660,17 @@ extension AuthenticationCoordinator {
 
 // MARK: - AuthFallBackViewControllerDelegate
 extension AuthenticationCoordinator: AuthFallBackViewControllerDelegate {
-    @MainActor func authFallBackViewController(_ authFallBackViewController: AuthFallBackViewController,
+    func authFallBackViewController(_ authFallBackViewController: AuthFallBackViewController,
                                     didLoginWith loginResponse: MXLoginResponse) {
         let credentials = MXCredentials(loginResponse: loginResponse, andDefaultCredentials: nil)
         let client = MXRestClient(credentials: credentials)
         guard let session = MXSession(matrixRestClient: client) else {
-            MXLog.error("[AuthenticationCoordinator] authFallBackViewController:didLogin: session could not be created")
+            MXLog.failure("[AuthenticationCoordinator] authFallBackViewController:didLogin: session could not be created")
             return
         }
         let flow: AuthenticationFlow = initialScreen == .login ? .login : .register
-        onSessionCreated(session: session, flow: flow)
+        authenticationType = .other
+        Task { await onSessionCreated(session: session, flow: flow) }
     }
 
     func authFallBackViewControllerDidClose(_ authFallBackViewController: AuthFallBackViewController) {

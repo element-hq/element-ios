@@ -63,18 +63,17 @@ struct AuthenticationState {
             AuthenticationHomeserverViewData(address: displayableAddress,
                                              isMatrixDotOrg: isMatrixDotOrg,
                                              showLoginForm: preferredLoginMode.supportsPasswordFlow,
-                                             showRegistrationForm: registrationFlow != nil,
+                                             showRegistrationForm: registrationFlow != nil && !needsRegistrationFallback,
                                              ssoIdentityProviders: preferredLoginMode.ssoIdentityProviders ?? [])
         }
 
-        /// Needs authentication fallback for login or registration
-        var needsFallback: Bool {
-            switch preferredLoginMode {
-            case .unsupported:
-                return true
-            default:
-                break
-            }
+        /// Needs authentication fallback for login
+        var needsLoginFallback: Bool {
+            return preferredLoginMode.isUnsupported
+        }
+
+        /// Needs authentication fallback for registration
+        var needsRegistrationFallback: Bool {
             guard let flow = registrationFlow else {
                 return false
             }

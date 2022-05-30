@@ -29,7 +29,9 @@ enum AuthenticationLoginCoordinatorResult {
     /// Continue using the supplied SSO provider.
     case continueWithSSO(SSOIdentityProvider)
     /// Login was successful with the associated session created.
-    case success(session: MXSession, password: String?)
+    case success(session: MXSession, password: String)
+    /// Login requested a fallback
+    case fallback
 }
 
 final class AuthenticationLoginCoordinator: Coordinator, Presentable {
@@ -110,7 +112,7 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
             case .continueWithSSO(let identityProvider):
                 self.callback?(.continueWithSSO(identityProvider))
             case .fallback:
-                self.showFallback()
+                self.callback?(.fallback)
             }
         }
     }
@@ -238,57 +240,8 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
         let homeserver = authenticationService.state.homeserver
         authenticationLoginViewModel.update(homeserver: homeserver.viewData)
 
-        if homeserver.needsFallback {
-            showFallback()
+        if homeserver.needsLoginFallback {
+            callback?(.fallback)
         }
     }
-
-    private func showFallback() {
-        let url = authenticationService.fallbackURL(for: .login)
-
-        MXLog.debug("[AuthenticationLoginCoordinator] showFallback, url: \(url)")
-
-        guard let fallbackVC = AuthFallBackViewController(url: url.absoluteString) else {
-            MXLog.error("[AuthenticationLoginCoordinator] showFallback: could not create fallback view controller")
-            return
-        }
-        fallbackVC.delegate = self
-        let navController = RiotNavigationController(rootViewController: fallbackVC)
-        navController.navigationBar.topItem?.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
-                                                                                 target: self,
-                                                                                 action: #selector(dismissFallback))
-        navigationRouter.present(navController, animated: true)
-    }
-
-    @objc
-    private func dismissFallback() {
-        MXLog.debug("[AuthenticationLoginCoorrdinator] dismissFallback")
-
-        guard let fallbackNavigationVC = navigationRouter.toPresentable().presentedViewController as? RiotNavigationController else {
-            return
-        }
-        fallbackNavigationVC.dismiss(animated: true)
-        authenticationService.reset()
-    }
-}
-
-
-// MARK: - AuthFallBackViewControllerDelegate
-extension AuthenticationLoginCoordinator: AuthFallBackViewControllerDelegate {
-    @MainActor func authFallBackViewController(_ authFallBackViewController: AuthFallBackViewController,
-                                               didLoginWith loginResponse: MXLoginResponse) {
-        let credentials = MXCredentials(loginResponse: loginResponse, andDefaultCredentials: nil)
-        let client = MXRestClient(credentials: credentials)
-        guard let session = MXSession(matrixRestClient: client) else {
-            MXLog.error("[AuthenticationCoordinator] authFallBackViewController:didLogin: session could not be created")
-            return
-        }
-        dismissFallback()
-        callback?(.success(session: session, password: nil))
-    }
-
-    func authFallBackViewControllerDidClose(_ authFallBackViewController: AuthFallBackViewController) {
-        dismissFallback()
-    }
-
 }
