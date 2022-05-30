@@ -2545,7 +2545,7 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
 
             cell = labelAndSwitchCell;
         }
-        else if (row == LABS_ENABLE_LIVE_LOCATION_SHARING)
+        else if (row == LABS_ENABLE_LIVE_LOCATION_SHARING && BuildSettings.liveLocationSharingEnabled) // Hide live location lab setting until it's ready to be release
         {
             cell = [self buildLiveLocationSharingCellForTableView:tableView atIndexPath:indexPath];
         }
