@@ -4277,26 +4277,11 @@ static CGSize kThreadListBarButtonItemImageSize;
                         default:
                         {
                             MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
-                            NSString *format = tappedEvent.content[@"format"];
-                            NSString *formattedBody = tappedEvent.content[@"formatted_body"];
-                            NSString *body = tappedEvent.content[kMXMessageBodyKey];
-                            //  if an html formatted body exists
-                            if ([format isEqualToString:kMXRoomMessageFormatHTML] && formattedBody)
+                            URLValidationResult *result = [URLValidator validateTappedURL:url in:tappedEvent];
+                            if (result.shouldShowConfirmationAlert)
                             {
-                                NSURL *visibleURL = [formattedBodyParser getVisibleURLForURL:url inFormattedBody:formattedBody];
-                                
-                                if (visibleURL && ![url isEqual:visibleURL])
-                                {
-                                    //  urls are different, show confirmation alert
-                                    [self showDifferentURLsAlertFor:url visibleString:visibleURL.absoluteString];
-                                    return NO;
-                                }
-                            }
-                            else if ([body mxk_containsRTLOverride] && ![body isEqualToString:url.absoluteString])
-                            {
-                                //  we don't know where the url in the body, assuming visibleString is just a reverse of the url
                                 [self showDifferentURLsAlertFor:url
-                                                  visibleString:[url.absoluteString mxk_reversed]];
+                                                  visibleURLString:result.visibleURLString];
                                 return NO;
                             }
                             // Try to open the link
@@ -4423,10 +4408,10 @@ static CGSize kThreadListBarButtonItemImageSize;
     return roomInputToolbarView;
 }
 
-- (void)showDifferentURLsAlertFor:(NSURL *)url visibleString:(NSString *)visibleString
+- (void)showDifferentURLsAlertFor:(NSURL *)url visibleURLString:(NSString *)visibleURLString
 {
     //  urls are different, show confirmation alert
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[VectorL10n externalLinkConfirmationTitle] message:[VectorL10n externalLinkConfirmationMessage:visibleString :url.absoluteString] preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[VectorL10n externalLinkConfirmationTitle] message:[VectorL10n externalLinkConfirmationMessage:visibleURLString :url.absoluteString] preferredStyle:UIAlertControllerStyleAlert];
 
     UIAlertAction *continueAction = [UIAlertAction actionWithTitle:[VectorL10n continue] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         // Try to open the link
