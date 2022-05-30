@@ -19,10 +19,6 @@ import MatrixSDK.MXLog
 
 public extension NSString {
 
-    private enum Constants {
-        static let RTLOverrideChar: String = "\u{202E}"
-    }
-
     /// Gets the first URL contained in the string ignoring any links to hosts defined in
     /// the `firstURLDetectionIgnoredHosts` property of `MXKAppSettings`.
     /// - Returns: A URL if detected, otherwise nil.
@@ -67,15 +63,5 @@ public extension NSString {
         }
         
         return detectedURL
-    }
-
-    /// Returns if the string contains an RTL override character
-    @objc func mxk_containsRTLOverride() -> Bool {
-        return contains(Constants.RTLOverrideChar)
-    }
-
-    /// Returns a new string which is reversed of the receiver
-    @objc func mxk_reversed() -> NSString {
-        return String((self as String).reversed()) as NSString
     }
 }
