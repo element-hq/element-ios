@@ -2430,6 +2430,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         }
         
         BOOL isLaunching = NO;
+
+        if (mainSession.vc_homeserverConfiguration)
+        {
+            [MXKAppSettings standardAppSettings].outboundGroupSessionKeyPreSharingStrategy = mainSession.vc_homeserverConfiguration.encryption.outboundKeysPreSharingMode;
+        }
         
         if (_masterTabBarController.isOnboardingInProgress)
         {
