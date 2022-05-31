@@ -1,9 +1,5 @@
 ## Changes in 1.8.17 (2022-05-31)
 
-✨ Features
-
-- Authentication: Implement msisdn verification screen. ([#6182](https://github.com/vector-im/element-ios/issues/6182))
-
 🙌 Improvements
 
 - Upgrade MatrixSDK version ([v0.23.7](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.23.7)).
@@ -20,6 +16,7 @@
 🚧 In development 🚧
 
 - Authentication: Add Email/Terms/ReCaptcha screens into the flow. ([#5151](https://github.com/vector-im/element-ios/issues/5151))
+- Authentication: Implement msisdn verification screen. ([#6182](https://github.com/vector-im/element-ios/issues/6182))
 - Location sharing: Support sending live device location. ([#5722](https://github.com/vector-im/element-ios/issues/5722))
 - Authentication: Implement the LoginWizard to match Element Android. ([#5896](https://github.com/vector-im/element-ios/issues/5896))
 - Location sharing: Support restarting location sending after app kill. ([#6199](https://github.com/vector-im/element-ios/issues/6199))
