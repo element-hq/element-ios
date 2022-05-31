@@ -2523,3 +2523,8 @@
 "location_sharing_live_timer_incoming" = "Наживо до %@";
 "live_location_sharing_ended" = "Показ місцеперебування наживо завершено";
 "confirm" = "Підтвердити";
+"location_sharing_allow_background_location_cancel_action" = "Не зараз";
+"location_sharing_allow_background_location_validate_action" = "Налаштування";
+"location_sharing_allow_background_location_message" = "Якщо ви хочете ділитися своїм місцеперебуванням наживо, Element потребує доступу до розташування, коли застосунок перебуваю у фоновому режимі. Щоб увімкнути доступ, торкніться Налаштування> Геодані та виберіть завжди";
+"location_sharing_allow_background_location_title" = "Дозволити доступ";
+"settings_labs_enable_live_location_sharing" = "Поширення місцеперебування наживо - діліться поточним розташуванням (в активній розробці, місця тимчасово зберігаються в історії кімнат)";
