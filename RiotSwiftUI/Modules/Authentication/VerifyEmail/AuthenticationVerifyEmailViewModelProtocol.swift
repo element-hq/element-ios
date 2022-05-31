@@ -23,6 +23,9 @@ protocol AuthenticationVerifyEmailViewModelProtocol {
     
     /// Updates the view to reflect that a verification email was successfully sent.
     @MainActor func updateForSentEmail()
+
+    /// Goes back to the email form
+    @MainActor func goBackToEnterEmailForm()
     
     /// Display an error to the user.
     @MainActor func displayError(_ type: AuthenticationVerifyEmailErrorType)

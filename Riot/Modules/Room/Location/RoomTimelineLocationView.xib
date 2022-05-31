@@ -147,15 +147,24 @@
                         </view>
                     </subviews>
                 </stackView>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="1j3-sd-BvY">
+                    <rect key="frame" x="175" y="77.5" width="45" height="45"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="Mc9-VR-e3H"/>
+                        <constraint firstAttribute="width" constant="45" id="gqh-tx-UXQ"/>
+                    </constraints>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
+                <constraint firstItem="1j3-sd-BvY" firstAttribute="centerY" secondItem="4WL-gT-HBV" secondAttribute="centerY" id="A5v-W4-VaN"/>
                 <constraint firstAttribute="trailing" secondItem="vuV-BV-bbx" secondAttribute="trailing" id="Gck-1z-j8f"/>
                 <constraint firstItem="vuV-BV-bbx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="NhI-xD-L7V"/>
                 <constraint firstAttribute="trailing" secondItem="0D1-Km-vTu" secondAttribute="trailing" id="QHD-xv-nfX"/>
                 <constraint firstAttribute="bottom" secondItem="vuV-BV-bbx" secondAttribute="bottom" id="eKg-25-HDW"/>
                 <constraint firstItem="4WL-gT-HBV" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="eRF-LN-Evm"/>
                 <constraint firstAttribute="bottom" secondItem="0D1-Km-vTu" secondAttribute="bottom" id="ea5-xx-V3s"/>
+                <constraint firstItem="1j3-sd-BvY" firstAttribute="centerX" secondItem="4WL-gT-HBV" secondAttribute="centerX" id="fxh-rF-fpN"/>
                 <constraint firstItem="4WL-gT-HBV" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="-25" id="nKg-p6-0mc"/>
                 <constraint firstItem="vuV-BV-bbx" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="tJb-jf-9mX"/>
                 <constraint firstItem="0D1-Km-vTu" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="yJw-DU-ien"/>
@@ -164,6 +173,7 @@
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="activityIndicatorView" destination="1j3-sd-BvY" id="NYR-SC-E82"/>
                 <outlet property="attributionLabel" destination="jWW-0w-1YM" id="MtF-th-LJr"/>
                 <outlet property="descriptionContainerView" destination="oVd-gS-Rmb" id="Npu-jp-oYo"/>
                 <outlet property="descriptionIcon" destination="GP2-dA-giJ" id="7YL-UU-ClT"/>
@@ -174,7 +184,7 @@
                 <outlet property="liveLocationStatusLabel" destination="X9R-EV-RDT" id="HJr-cE-icv"/>
                 <outlet property="liveLocationTimerLabel" destination="U75-c5-got" id="RkO-6a-ABU"/>
                 <outlet property="placeholderBackground" destination="vuV-BV-bbx" id="9PW-RW-tFh"/>
-                <outlet property="placeholderIcon" destination="4WL-gT-HBV" id="pqw-gN-2Q7"/>
+                <outlet property="placeholderIconView" destination="4WL-gT-HBV" id="pqw-gN-2Q7"/>
                 <outlet property="rightButton" destination="k5H-UE-ygH" id="nz0-Eb-SRp"/>
             </connections>
             <point key="canvasLocation" x="165.94202898550725" y="-101.11607142857143"/>

@@ -167,7 +167,8 @@ typedef NS_ENUM(NSUInteger, LABS_ENABLE)
     LABS_ENABLE_THREADS_INDEX,
     LABS_ENABLE_MESSAGE_BUBBLES_INDEX,
     LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS,
-    LABS_USE_ONLY_LATEST_USER_AVATAR_AND_NAME_INDEX
+    LABS_USE_ONLY_LATEST_USER_AVATAR_AND_NAME_INDEX,
+    LABS_ENABLE_LIVE_LOCATION_SHARING
 };
 
 typedef NS_ENUM(NSUInteger, SECURITY)
@@ -595,6 +596,11 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
         [sectionLabs addRowWithTag:LABS_ENABLE_MESSAGE_BUBBLES_INDEX];
         [sectionLabs addRowWithTag:LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS];
         [sectionLabs addRowWithTag:LABS_USE_ONLY_LATEST_USER_AVATAR_AND_NAME_INDEX];
+        if (BuildSettings.liveLocationSharingEnabled)
+        {
+            // Hide live location lab setting until it's ready to be release
+            [sectionLabs addRowWithTag:LABS_ENABLE_LIVE_LOCATION_SHARING];
+        }
         sectionLabs.headerTitle = [VectorL10n settingsLabs];
         if (sectionLabs.hasAnyRows)
         {
@@ -1518,6 +1524,21 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
     labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
     labelAndSwitchCell.mxkSwitch.enabled = YES;
     [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableAutoReportDecryptionErrors:) forControlEvents:UIControlEventTouchUpInside];
+    
+    return labelAndSwitchCell;
+}
+
+- (UITableViewCell *)buildLiveLocationSharingCellForTableView:(UITableView*)tableView
+                                                  atIndexPath:(NSIndexPath*)indexPath
+{
+    MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+    
+    labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsLabsEnableLiveLocationSharing];
+    
+    labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.enableLiveLocationSharing;
+    labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+    labelAndSwitchCell.mxkSwitch.enabled = YES;
+    [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableLiveLocationSharing:) forControlEvents:UIControlEventTouchUpInside];
     
     return labelAndSwitchCell;
 }
@@ -2527,6 +2548,10 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleUseOnlyLatestUserAvatarAndName:) forControlEvents:UIControlEventTouchUpInside];
 
             cell = labelAndSwitchCell;
+        }
+        else if (row == LABS_ENABLE_LIVE_LOCATION_SHARING)
+        {
+            cell = [self buildLiveLocationSharingCellForTableView:tableView atIndexPath:indexPath];
         }
     }
     else if (section == SECTION_TAG_FLAIR)
@@ -4001,6 +4026,11 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
 - (void)toggleEnableAutoReportDecryptionErrors:(UISwitch *)sender
 {
     RiotSettings.shared.enableUISIAutoReporting = sender.isOn;
+}
+
+- (void)toggleEnableLiveLocationSharing:(UISwitch *)sender
+{
+    RiotSettings.shared.enableLiveLocationSharing = sender.isOn;
 }
 
 #pragma mark - TextField listener

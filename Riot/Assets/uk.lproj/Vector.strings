@@ -558,8 +558,8 @@
 "directory_title" = "Каталог";
 "settings_encrypted_direct_messages" = "Зашифровані особисті повідомлення";
 "settings_direct_messages" = "Особисті повідомлення";
-"directory_search_results_more_than" = ">%tu результатів знайдено для %@";
-"directory_search_results" = "%tu результатів знайдено для %@";
+"directory_search_results_more_than" = ">%1$tu результатів знайдено для %2$@";
+"directory_search_results" = "%1$tu результатів знайдено для %2$@";
 "secure_backup_setup_banner_subtitle" = "Захистіться від втрати доступу до зашифрованих повідомлень і даних";
 "secure_key_backup_setup_intro_info" = "Захистіться від втрати доступу до зашифрованих повідомлень і даних створенням резервної копії ключів шифрування на своєму сервері.";
 "security_settings_secure_backup" = "БЕЗПЕЧНЕ РЕЗЕРВНЕ КОПІЮВАННЯ";

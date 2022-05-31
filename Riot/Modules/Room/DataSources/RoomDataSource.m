@@ -238,7 +238,7 @@ const CGFloat kTypingCellHeight = 24;
 
 - (void)roomSummaryDidChange:(NSNotification*)notification
 {
-    if (BuildSettings.liveLocationSharingEnabled)
+    if (RiotSettings.shared.enableLiveLocationSharing)
     {
         [self updateCurrentUserLocationSharingStatus];
     }

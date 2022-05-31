@@ -114,8 +114,8 @@
 "search_no_result" = "Brak wyników";
 // Directory
 "directory_cell_title" = "Przeglądaj katalog";
-"directory_search_results" = "%tu znalezionych wyników dla %@";
-"directory_search_results_more_than" = ">%tu znalezionych wyników dla %@";
+"directory_search_results" = "%1$tu znalezionych wyników dla %2$@";
+"directory_search_results_more_than" = ">%1$tu znalezionych wyników dla %2$@";
 "directory_searching_title" = "Wyszukiwanie katalogu…";
 // Contacts
 "contacts_address_book_section" = "LOKALNE KONTAKTY";
@@ -2073,3 +2073,4 @@
 "attachment_unsupported_preview_title" = "Brak podglądu";
 "message_reply_to_sender_sent_their_location" = "udostępnił(-a) swoją lokację.";
 "room_displayname_all_other_members_left" = "%@ (Opuścił-a)";
+"call_jitsi_unable_to_start" = "Nie można rozpocząć połączenia konferencyjnego";

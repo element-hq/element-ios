@@ -57,11 +57,16 @@ enum RegistrationError: String, LocalizedError {
     case threePIDValidationFailure
     case threePIDClientFailure
     case waitingForThreePIDValidation
+    case invalidPhoneNumber
     
     var errorDescription: String? {
         switch self {
         case .registrationDisabled:
             return VectorL10n.loginErrorRegistrationIsNotSupported
+        case .threePIDValidationFailure, .threePIDClientFailure:
+            return VectorL10n.authMsisdnValidationError
+        case .invalidPhoneNumber:
+            return VectorL10n.authenticationVerifyMsisdnInvalidPhoneNumber
         default:
             return VectorL10n.errorCommonMessage
         }
