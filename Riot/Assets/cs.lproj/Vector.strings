@@ -376,3 +376,33 @@
 "done" = "Hotovo";
 "open" = "Otevřít";
 "enable" = "Povolit";
+"onboarding_avatar_accessibility_label" = "Profilová fotka";
+"onboarding_avatar_message" = "Toto můžeš změnit kdykoliv.";
+"onboarding_avatar_title" = "Přidat profilovou fotku";
+"onboarding_display_name_max_length" = "Tvoje jméno musí být kratší než 256 charakterů";
+"onboarding_display_name_hint" = "Tohle můžeš změnit později";
+"onboarding_display_name_placeholder" = "Svoje jméno";
+"onboarding_display_name_message" = "Tohle se ukáže, když pošleš zprávy.";
+"onboarding_display_name_title" = "Vyber si svoje jméno";
+"onboarding_personalization_skip" = "Přeskočit tento krok";
+"onboarding_personalization_save" = "Uložit a pokračovat";
+"onboarding_congratulations_home_button" = "Vezmi mě domů";
+"onboarding_congratulations_personalize_button" = "Personalizovat profil";
+/* The placeholder string contains the user's matrix ID */
+"onboarding_congratulations_message" = "Váš účet %@ byl vytvořen.";
+"onboarding_congratulations_title" = "Gratulace!";
+"saving" = "Ukládání";
+
+// Activities
+"loading" = "Načítání";
+"confirm" = "Potvrdit";
+"edit" = "Upravit";
+"suggest" = "Doporučit";
+"error" = "Chyba";
+"add" = "Přidat";
+"existing" = "Existující";
+"new_word" = "Nový";
+"stop" = "Zastavit";
+"public" = "Veřejný";
+"private" = "Soukromý";
+"joining" = "Připojování";
