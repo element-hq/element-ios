@@ -133,8 +133,8 @@
 // Directory
 "directory_cell_title" = "Navegar diretório";
 "directory_cell_description" = "%tu salas";
-"directory_search_results" = "%tu resultados encontrados para %@";
-"directory_search_results_more_than" = ">%tu resultados encontrados para %@";
+"directory_search_results" = "%1$tu resultados encontrados para %2$@";
+"directory_search_results_more_than" = ">%1$tu resultados encontrados para %2$@";
 "directory_searching_title" = "Pesquisando diretório…";
 // Contacts
 "contacts_address_book_section" = "CONTATOS LOCAIS";

@@ -147,7 +147,9 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         coordinator.start()
         add(childCoordinator: coordinator)
         
-        navigationRouter.setRootModule(coordinator, popCompletion: nil)
+        navigationRouter.setRootModule(coordinator) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
     }
     
     /// Displays the next view in the flow after the splash screen.
@@ -166,7 +168,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     }
     
     /// Show the use case screen for new users.
-    private func showUseCaseSelectionScreen() {
+    private func showUseCaseSelectionScreen(animated: Bool = true) {
         MXLog.debug("[OnboardingCoordinator] showUseCaseSelectionScreen")
         
         let coordinator = OnboardingUseCaseSelectionCoordinator()
@@ -179,9 +181,11 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         add(childCoordinator: coordinator)
         
         if navigationRouter.modules.isEmpty {
-            navigationRouter.setRootModule(coordinator, popCompletion: nil)
+            navigationRouter.setRootModule(coordinator) { [weak self] in
+                self?.remove(childCoordinator: coordinator)
+            }
         } else {
-            navigationRouter.push(coordinator, animated: true) { [weak self] in
+            navigationRouter.push(coordinator, animated: animated) { [weak self] in
                 self?.remove(childCoordinator: coordinator)
             }
         }
@@ -193,34 +197,39 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         
         guard BuildSettings.onboardingEnableNewAuthenticationFlow else {
             showLegacyAuthenticationScreen()
+            coordinator.stop()
             return
         }
         
         if result == .customServer {
-            beginAuthentication(with: .selectServerForRegistration)
+            beginAuthentication(with: .selectServerForRegistration, onStart: coordinator.stop)
         } else {
-            beginAuthentication(with: .registration)
+            beginAuthentication(with: .registration, onStart: coordinator.stop)
         }
     }
     
     // MARK: - Authentication
     
     /// Show the authentication flow, starting at the specified initial screen.
-    private func beginAuthentication(with initialScreen: AuthenticationCoordinator.EntryPoint) {
+    private func beginAuthentication(with initialScreen: AuthenticationCoordinator.EntryPoint, onStart: @escaping () -> Void) {
         MXLog.debug("[OnboardingCoordinator] beginAuthentication")
         
         let parameters = AuthenticationCoordinatorParameters(navigationRouter: navigationRouter,
                                                              initialScreen: initialScreen,
                                                              canPresentAdditionalScreens: false)
         let coordinator = AuthenticationCoordinator(parameters: parameters)
-        coordinator.completion = { [weak self, weak coordinator] result in
+        coordinator.callback = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
             
             switch result {
+            case .didStart:
+                onStart()
             case .didLogin(let session, let authenticationFlow, let authenticationType):
                 self.authenticationCoordinator(coordinator, didLoginWith: session, and: authenticationFlow, using: authenticationType)
             case .didComplete:
                 self.authenticationCoordinatorDidComplete(coordinator)
+            case .cancel(let flow):
+                self.cancelAuthentication(flow: flow)
             }
         }
         
@@ -235,7 +244,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         MXLog.debug("[OnboardingCoordinator] showLegacyAuthenticationScreen")
         
         let coordinator = authenticationCoordinator
-        coordinator.completion = { [weak self, weak coordinator] result in
+        coordinator.callback = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
             
             switch result {
@@ -243,6 +252,9 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
                 self.authenticationCoordinator(coordinator, didLoginWith: session, and: authenticationFlow, using: authenticationType)
             case .didComplete:
                 self.authenticationCoordinatorDidComplete(coordinator)
+            case .didStart, .cancel:
+                // These results are only sent by the new flow.
+                break
             }
             
         }
@@ -276,6 +288,20 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             }
         }
         isShowingLegacyAuthentication = true
+    }
+    
+    /// Cancels the registration flow, returning to the Use Case screen.
+    private func cancelAuthentication(flow: AuthenticationFlow) {
+        switch flow {
+        case .register:
+            navigationRouter.popAllModules(animated: false)
+            
+            showSplashScreen()
+            showUseCaseSelectionScreen(animated: false)
+        case .login:
+            // Probably not needed, error for now until the new login flow is implemented.
+            MXLog.failure("[OnboardingCoordinator] cancelAuthentication: Not implemented for the login flow")
+        }
     }
     
     /// Displays the next view in the flow after the authentication screens,

@@ -29,13 +29,18 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
     
     // MARK: Private
     
+    private let locationSharingService: LocationSharingServiceProtocol
+    
     // MARK: Public
     
     var completion: ((LocationSharingViewModelResult) -> Void)?
     
     // MARK: - Setup
     
-    init(mapStyleURL: URL, avatarData: AvatarInputProtocol, isLiveLocationSharingEnabled: Bool = false) {
+    init(mapStyleURL: URL, avatarData: AvatarInputProtocol, isLiveLocationSharingEnabled: Bool = false, service: LocationSharingServiceProtocol) {
+        
+        self.locationSharingService = service
+        
         let viewState = LocationSharingViewState(mapStyleURL: mapStyleURL,
                                                  userAvatarData: avatarData,
                                                  annotations: [],
@@ -75,7 +80,7 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
         case .goToUserLocation:
             state.bindings.pinLocation = nil
         case .startLiveSharing:
-            state.bindings.showingTimerSelector = true
+            self.startLiveLocationSharing()
         case .shareLiveLocation(let timeout):
             state.bindings.showingTimerSelector = false
             completion?(.shareLiveLocation(timeout: timeout.rawValue))
@@ -124,12 +129,38 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
                                                  title: VectorL10n.locationSharingInvalidAuthorizationErrorTitle(AppInfo.current.displayName),
                                                  primaryButton: (VectorL10n.locationSharingInvalidAuthorizationNotNow, primaryButtonCompletion),
                                                  secondaryButton: (VectorL10n.locationSharingInvalidAuthorizationSettings, {
-                if let applicationSettingsURL = URL(string:UIApplication.openSettingsURLString) {
-                    UIApplication.shared.open(applicationSettingsURL)
-                }
+                UIApplication.shared.vc_openSettings()
             }))
         default:
             break
+        }
+    }
+    
+    private func startLiveLocationSharing() {
+        
+        self.locationSharingService.requestAuthorization { [weak self] authorizationStatus in
+            
+            guard let self = self else {
+                return
+            }
+            
+            switch authorizationStatus {
+            case .unknown, .denied:
+                // Show error alert
+                self.state.bindings.alertInfo = AlertInfo(id: .userLocatingError,
+                                                     title: VectorL10n.locationSharingLocatingUserErrorTitle(AppInfo.current.displayName),
+                                                          primaryButton: (VectorL10n.ok, { UIApplication.shared.vc_openSettings()
+                    }))
+            case .authorizedInForeground:
+                // When user only authorized location in foreground, advize to use background location
+                self.state.bindings.alertInfo = AlertInfo(id: .userLocatingError,
+                                                          title: VectorL10n.locationSharingAllowBackgroundLocationTitle,
+                                                          message:  VectorL10n.locationSharingAllowBackgroundLocationMessage,
+                                                          primaryButton: (VectorL10n.locationSharingAllowBackgroundLocationCancelAction, { [weak self] in self?.state.bindings.showingTimerSelector = true }),
+                                                          secondaryButton: (VectorL10n.locationSharingAllowBackgroundLocationValidateAction, { UIApplication.shared.vc_openSettings() }))
+            case .authorizedAlways:
+                self.state.bindings.showingTimerSelector = true
+            }
         }
     }
 }

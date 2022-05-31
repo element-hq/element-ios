@@ -35,14 +35,33 @@ extension MXRestClient {
         }
     }
     
-    /// An async version of `getRegisterSession(completion:)`.
-    func getRegisterSession() async throws -> MXAuthenticationSession {
-        try await getResponse(getRegisterSession)
-    }
+    // MARK: - Login
     
     /// An async version of `getLoginSession(completion:)`.
     func getLoginSession() async throws -> MXAuthenticationSession {
         try await getResponse(getLoginSession)
+    }
+    
+    /// An async version of `login(parameters:completion:)`, that takes a value that conforms to `LoginParameters`.
+    func login(parameters: LoginParameters) async throws -> MXCredentials {
+        let dictionary = try parameters.dictionary()
+        return try await login(parameters: dictionary)
+    }
+    
+    /// An async version of `login(parameters:completion:)`.
+    func login(parameters: [String: Any]) async throws -> MXCredentials {
+        let jsonDictionary = try await getResponse { completion in
+            login(parameters: parameters, completion: completion)
+        }
+        guard let loginResponse = MXLoginResponse(fromJSON: jsonDictionary) else { throw ClientError.decodingError }
+        return MXCredentials(loginResponse: loginResponse, andDefaultCredentials: credentials)
+    }
+    
+    // MARK: - Registration
+    
+    /// An async version of `getRegisterSession(completion:)`.
+    func getRegisterSession() async throws -> MXAuthenticationSession {
+        try await getResponse(getRegisterSession)
     }
     
     /// An async version of `isUsernameAvailable(_:completion:)`.
@@ -101,7 +120,34 @@ extension MXRestClient {
         }
     }
     
-    // MARK: Private
+    // MARK: - Reset Password
+    
+    /// An async version of `forgetPassword(forEmail:clientSecret:sendAttempt:success:failure:)`.
+    /// - Returns: The session ID to be included when calling `resetPassword(parameters:)`.
+    func forgetPassword(for email: String, clientSecret: String, sendAttempt: UInt) async throws -> String {
+        try await getResponse { success, failure in
+            forgetPassword(forEmail: email,
+                           clientSecret: clientSecret,
+                           sendAttempt: sendAttempt,
+                           success: success,
+                           failure: failure)
+        }
+    }
+    
+    /// An async version of `resetPassword(parameters:completion:)`, that takes a `CheckResetPasswordParameters` value instead of a dictionary.
+    func resetPassword(parameters: CheckResetPasswordParameters) async throws {
+        let dictionary = try parameters.dictionary()
+        try await resetPassword(parameters: dictionary)
+    }
+    
+    /// An async version of `resetPassword(parameters:completion:)`.
+    func resetPassword(parameters: [String: Any]) async throws {
+        try await getResponse { completion in
+            resetPassword(parameters: parameters, completion: completion)
+        }
+    }
+    
+    // MARK: - Private
     
     private func getResponse<T>(_ callback: (@escaping (MXResponse<T>) -> Void) -> MXHTTPOperation) async throws -> T {
         try await withCheckedThrowingContinuation { continuation in

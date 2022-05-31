@@ -29,7 +29,7 @@ class AuthenticationTermsViewModel: AuthenticationTermsViewModelType, Authentica
 
     // MARK: Public
 
-    @MainActor var callback: ((AuthenticationTermsViewModelResult) -> Void)?
+    var callback: (@MainActor (AuthenticationTermsViewModelResult) -> Void)?
 
     // MARK: - Setup
 
@@ -56,6 +56,10 @@ class AuthenticationTermsViewModel: AuthenticationTermsViewModelType, Authentica
             state.bindings.alertInfo = AlertInfo(id: type,
                                                  title: VectorL10n.error,
                                                  message: message)
+        case .invalidPolicyURL:
+            state.bindings.alertInfo = AlertInfo(id: type,
+                                                 title: VectorL10n.error,
+                                                 message: VectorL10n.authenticationTermsPolicyUrlError)
         case .unknown:
             state.bindings.alertInfo = AlertInfo(id: type)
         }

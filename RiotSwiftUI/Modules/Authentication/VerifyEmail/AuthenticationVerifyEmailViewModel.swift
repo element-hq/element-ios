@@ -27,7 +27,7 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
 
     // MARK: Public
 
-    @MainActor var callback: ((AuthenticationVerifyEmailViewModelResult) -> Void)?
+    var callback: (@MainActor (AuthenticationVerifyEmailViewModelResult) -> Void)?
 
     // MARK: - Setup
 
@@ -46,11 +46,17 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
             Task { await callback?(.resend) }
         case .cancel:
             Task { await callback?(.cancel) }
+        case .goBack:
+            Task { await callback?(.goBack) }
         }
     }
     
     @MainActor func updateForSentEmail() {
         state.hasSentEmail = true
+    }
+
+    @MainActor func goBackToEnterEmailForm() {
+        state.hasSentEmail = false
     }
     
     @MainActor func displayError(_ type: AuthenticationVerifyEmailErrorType) {

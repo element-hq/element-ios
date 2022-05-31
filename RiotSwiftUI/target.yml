@@ -53,6 +53,7 @@ targets:
     - path: ../Riot/Categories/UIColor.swift
     - path: ../Riot/Categories/UISearchBar.swift
     - path: ../Riot/Categories/UIView.swift
+    - path: ../Riot/Categories/UIApplication.swift
     - path: ../Riot/Assets/en.lproj/Vector.strings
     - path: ../Riot/Modules/Analytics/AnalyticsScreen.swift
     - path: ../Riot/Assets/en.lproj/Untranslated.strings

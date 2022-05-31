@@ -643,6 +643,7 @@ Tap the + to start adding people.";
 "settings_calls_stun_server_fallback_description" = "Allow fallback call assist server %@ when your homeserver does not offer one (your IP address would be shared during a call).";
 
 "settings_integrations_allow_button" = "Manage integrations";
+/* The %@ placeholder will be replaced with the integration manager's URL. */
 "settings_integrations_allow_description" = "Use an integration manager (%@) to manage bots, bridges, widgets and sticker packs.\n\nIntegration managers receive configuration data, and can modify widgets, send room invites and set power levels on your behalf.";
 
 "settings_ui_language" = "Language";
@@ -673,6 +674,7 @@ Tap the + to start adding people.";
 "settings_labs_enable_threads" = "Threaded messaging";
 "settings_labs_enable_auto_report_decryption_errors" = "Auto Report Decryption Errors";
 "settings_labs_use_only_latest_user_avatar_and_name" = "Show latest avatar and name for users in message history";
+"settings_labs_enable_live_location_sharing" = "Live location sharing - share current location (active development, and temporarily, locations persist in room history)";
 
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";
@@ -2136,6 +2138,12 @@ Tap the + to start adding people.";
 "location_sharing_settings_header" = "Location sharing";
 
 "location_sharing_settings_toggle_title" = "Enable location sharing";
+
+"location_sharing_allow_background_location_title" = "Allow access";
+"location_sharing_allow_background_location_message" = "If you’d like to share your Live location, Element needs location access when the app is in the background.
+To enable access, tap Settings> Location and select Always";
+"location_sharing_allow_background_location_validate_action" = "Settings";
+"location_sharing_allow_background_location_cancel_action" = "Not now";
 
 // MARK: Live location sharing
 
