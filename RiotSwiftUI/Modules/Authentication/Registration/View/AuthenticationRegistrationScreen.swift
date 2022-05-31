@@ -108,7 +108,8 @@ struct AuthenticationRegistrationScreen: View {
                                    configuration: UIKitTextInputConfiguration(returnKeyType: .next,
                                                                               autocapitalizationType: .none,
                                                                               autocorrectionType: .no),
-                                   onEditingChanged: usernameEditingChanged)
+                                   onEditingChanged: usernameEditingChanged,
+                                   onCommit: { isPasswordFocused = true })
             .onChange(of: viewModel.username) { _ in viewModel.send(viewAction: .clearUsernameError) }
             .accessibilityIdentifier("usernameTextField")
             
@@ -120,7 +121,8 @@ struct AuthenticationRegistrationScreen: View {
                                    isFirstResponder: isPasswordFocused,
                                    configuration: UIKitTextInputConfiguration(returnKeyType: .done,
                                                                               isSecureTextEntry: true),
-                                   onEditingChanged: passwordEditingChanged)
+                                   onEditingChanged: passwordEditingChanged,
+                                   onCommit: submit)
             .accessibilityIdentifier("passwordTextField")
             
             Button(action: submit) {
@@ -137,26 +139,24 @@ struct AuthenticationRegistrationScreen: View {
         VStack(spacing: 16) {
             ForEach(viewModel.viewState.homeserver.ssoIdentityProviders) { provider in
                 AuthenticationSSOButton(provider: provider) {
-                    viewModel.send(viewAction: .continueWithSSO(id: provider.id))
+                    viewModel.send(viewAction: .continueWithSSO(provider))
                 }
                 .accessibilityIdentifier("ssoButton")
             }
         }
     }
     
-    /// Validates the username when the text field ends editing, and selects the password text field.
+    /// Validates the username when the text field ends editing.
     func usernameEditingChanged(isEditing: Bool) {
         guard !isEditing, !viewModel.username.isEmpty else { return }
-        
         viewModel.send(viewAction: .validateUsername)
-        isPasswordFocused = true
     }
     
-    /// Enables password validation the first time the user taps return, and sends the username and submits the form if possible.
+    /// Enables password validation the first time the user finishes editing.
+    /// Additionally resets the password field focus.
     func passwordEditingChanged(isEditing: Bool) {
         guard !isEditing else { return }
         isPasswordFocused = false
-        submit()
         
         guard !viewModel.viewState.hasEditedPassword else { return }
         viewModel.send(viewAction: .enablePasswordValidation)

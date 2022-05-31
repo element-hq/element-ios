@@ -28,8 +28,10 @@ struct AuthenticationRegistrationCoordinatorParameters {
 }
 
 enum AuthenticationRegistrationCoordinatorResult {
+    /// Continue using the supplied SSO provider.
+    case continueWithSSO(SSOIdentityProvider)
     /// The screen completed with the associated registration result.
-    case completed(RegistrationResult)
+    case completed(result: RegistrationResult, password: String)
 }
 
 final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
@@ -97,6 +99,7 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
         authenticationRegistrationViewModel.callback = { [weak self] result in
             guard let self = self else { return }
             MXLog.debug("[AuthenticationRegistrationCoordinator] AuthenticationRegistrationViewModel did complete with result: \(result).")
+            
             switch result {
             case .selectServer:
                 self.presentServerSelectionScreen()
@@ -104,6 +107,8 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
                 self.validateUsername(username)
             case .createAccount(let username, let password):
                 self.createAccount(username: username, password: password)
+            case .continueWithSSO(let provider):
+                self.callback?(.continueWithSSO(provider))
             }
         }
     }
@@ -155,7 +160,7 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
                                                                         initialDeviceDisplayName: UIDevice.current.initialDisplayName)
                 
                 guard !Task.isCancelled else { return }
-                callback?(.completed(result))
+                callback?(.completed(result: result, password: password))
                 
                 self?.stopLoading()
             } catch {

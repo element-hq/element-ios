@@ -49,8 +49,8 @@ class AuthenticationLoginViewModel: AuthenticationLoginViewModelType, Authentica
             Task { await callback?(.forgotPassword) }
         case .next:
             Task { await callback?(.login(username: state.bindings.username, password: state.bindings.password)) }
-        case .continueWithSSO(let id):
-            break
+        case .continueWithSSO(let provider):
+            Task { await callback?(.continueWithSSO(provider))}
         }
     }
     

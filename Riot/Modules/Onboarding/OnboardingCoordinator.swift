@@ -128,12 +128,6 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         legacyAuthenticationCoordinator.updateHomeserver(homeserver, andIdentityServer: identityServer)
     }
     
-    /// When SSO login succeeded, when SFSafariViewController is used, continue login with success parameters.
-    func continueSSOLogin(withToken loginToken: String, transactionID: String) -> Bool {
-        guard isShowingLegacyAuthentication else { return false }
-        return legacyAuthenticationCoordinator.continueSSOLogin(withToken: loginToken, transactionID: transactionID)
-    }
-    
     // MARK: - Pre-Authentication
     
     /// Show the onboarding splash screen as the root module in the flow.

@@ -27,6 +27,8 @@ enum AuthenticationLoginViewModelResult {
     case forgotPassword
     /// Login using the supplied credentials.
     case login(username: String, password: String)
+    /// Continue using the supplied SSO provider.
+    case continueWithSSO(SSOIdentityProvider)
 }
 
 // MARK: View
@@ -68,8 +70,8 @@ enum AuthenticationLoginViewAction {
     case forgotPassword
     /// Continue using the input username and password.
     case next
-    /// Login using the supplied SSO provider ID.
-    case continueWithSSO(id: String)
+    /// Continue using the supplied SSO provider.
+    case continueWithSSO(SSOIdentityProvider)
 }
 
 enum AuthenticationLoginErrorType: Hashable {

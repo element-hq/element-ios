@@ -26,8 +26,10 @@ struct AuthenticationLoginCoordinatorParameters {
 }
 
 enum AuthenticationLoginCoordinatorResult {
+    /// Continue using the supplied SSO provider.
+    case continueWithSSO(SSOIdentityProvider)
     /// Login was successful with the associated session created.
-    case success(MXSession)
+    case success(session: MXSession, password: String)
 }
 
 final class AuthenticationLoginCoordinator: Coordinator, Presentable {
@@ -95,6 +97,7 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
         authenticationLoginViewModel.callback = { [weak self] result in
             guard let self = self else { return }
             MXLog.debug("[AuthenticationLoginCoordinator] AuthenticationLoginViewModel did callback with result: \(result).")
+            
             switch result {
             case .selectServer:
                 self.presentServerSelectionScreen()
@@ -104,6 +107,8 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
                 #warning("Show the forgot password flow.")
             case .login(let username, let password):
                 self.login(username: username, password: password)
+            case .continueWithSSO(let identityProvider):
+                self.callback?(.continueWithSSO(identityProvider))
             }
         }
     }
@@ -139,7 +144,7 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
                                                           initialDeviceName: UIDevice.current.initialDisplayName)
                 
                 guard !Task.isCancelled else { return }
-                callback?(.success(session))
+                callback?(.success(session: session, password: password))
                 
                 self?.stopLoading()
             } catch {
