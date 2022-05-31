@@ -31,7 +31,7 @@ class UserLocationServiceProvider {
     // MARK: - Setup
     
     private init() {
-        guard BuildSettings.liveLocationSharingEnabled else {
+        guard RiotSettings.shared.enableLiveLocationSharing else {
             return
         }
         

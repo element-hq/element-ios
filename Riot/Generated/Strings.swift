@@ -6883,6 +6883,10 @@ public class VectorL10n: NSObject {
   public static var settingsLabsEnableAutoReportDecryptionErrors: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_auto_report_decryption_errors") 
   }
+  /// Live location sharing - share current location (active development, and temporarily, locations persist in room history)
+  public static var settingsLabsEnableLiveLocationSharing: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enable_live_location_sharing") 
+  }
   /// Ring for group calls
   public static var settingsLabsEnableRingingForGroupCalls: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_ringing_for_group_calls") 
