@@ -19,7 +19,7 @@ import Foundation
 /// A WIP class that has common functionality to create a new session.
 class SessionCreator {
     /// Creates an `MXSession` using the supplied credentials and REST client.
-    func createSession(credentials: MXCredentials, client: MXRestClient) -> MXSession {
+    func createSession(credentials: MXCredentials, client: AuthenticationRestClient) -> MXSession {
         // Report the new account in account manager
         if credentials.identityServer == nil {
             #warning("Check that the client is actually updated with this info?")

@@ -25,6 +25,8 @@ enum AuthenticationVerifyEmailViewModelResult {
     case resend
     /// Cancel the flow.
     case cancel
+    /// Go back to the email form
+    case goBack
 }
 
 // MARK: View
@@ -65,6 +67,8 @@ enum AuthenticationVerifyEmailViewAction {
     case resend
     /// Cancel the flow.
     case cancel
+    /// Go back to enter email adress screen
+    case goBack
 }
 
 enum AuthenticationVerifyEmailErrorType: Hashable {

@@ -50,9 +50,6 @@ protocol AuthenticationCoordinatorProtocol: Coordinator, Presentable {
     /// Set up the authentication screen with the specified homeserver and/or identity server.
     func updateHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?)
     
-    /// When SSO login succeeded, when SFSafariViewController is used, continue login with success parameters.
-    func continueSSOLogin(withToken loginToken: String, transactionID: String) -> Bool
-    
     /// Indicates to the coordinator to display any pending screens if it was created with
     /// the `canPresentAdditionalScreens` parameter set to `false`
     func presentPendingScreensIfNecessary()

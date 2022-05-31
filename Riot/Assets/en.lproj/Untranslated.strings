@@ -23,12 +23,16 @@
 // MARK: Onboarding Authentication WIP
 "authentication_registration_title" = "Create your account";
 "authentication_registration_message" = "We’ll need some info to get you set up.";
-"authentication_registration_server_title" = "Choose your server to store your data";
-"authentication_registration_matrix_description" = "Join millions for free on the largest public server";
 "authentication_registration_username" = "Username";
-"authentication_registration_password" = "Password";
 "authentication_registration_username_footer" = "You can’t change this later";
 "authentication_registration_password_footer" = "Must be 8 characters or more";
+
+"authentication_login_title" = "Welcome back!";
+"authentication_login_username" = "Username or Email";
+"authentication_login_forgot_password" = "Forgot password";
+
+"authentication_server_info_title" = "Choose your server to store your data";
+"authentication_server_info_matrix_description" = "Join millions for free on the largest public server";
 
 "authentication_server_selection_title" = "Choose your server";
 "authentication_server_selection_message" = "What is the address of your server? A server is like a home for all your data.";
@@ -45,6 +49,15 @@
 "authentication_verify_email_waiting_message" = "To confirm your email address, tap the button in the email we just sent to %@";
 "authentication_verify_email_waiting_hint" = "Did not receive an email?";
 "authentication_verify_email_waiting_button" = "Resend email";
+
+"authentication_verify_msisdn_input_title" = "Enter your phone number";
+"authentication_verify_msisdn_input_message" = "This will help verify your account and enables password recovery.";
+"authentication_verify_msisdn_text_field_placeholder" = "Phone Number";
+"authentication_verify_msisdn_otp_text_field_placeholder" = "Verification Code";
+"authentication_verify_msisdn_waiting_title" = "Confirm your phone number";
+"authentication_verify_msisdn_waiting_message" = "We just sent a code to %@. Enter it  below to verify it’s you.";
+"authentication_verify_msisdn_waiting_button" = "Resend code";
+"authentication_verify_msisdn_invalid_phone_number" = "Invalid phone number";
 
 "authentication_terms_title" = "Privacy policy";
 "authentication_terms_message" = "Please read through T&C. You must accept in order to continue.";

@@ -4277,36 +4277,12 @@ static CGSize kThreadListBarButtonItemImageSize;
                         default:
                         {
                             MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
-                            NSString *format = tappedEvent.content[@"format"];
-                            NSString *formattedBody = tappedEvent.content[@"formatted_body"];
-                            //  if an html formatted body exists
-                            if ([format isEqualToString:kMXRoomMessageFormatHTML] && formattedBody)
+                            URLValidationResult *result = [URLValidator validateTappedURL:url in:tappedEvent];
+                            if (result.shouldShowConfirmationAlert)
                             {
-                                NSURL *visibleURL = [formattedBodyParser getVisibleURLForURL:url inFormattedBody:formattedBody];
-                                
-                                if (visibleURL && ![url isEqual:visibleURL])
-                                {
-                                    //  urls are different, show confirmation alert
-                                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[VectorL10n externalLinkConfirmationTitle] message:[VectorL10n externalLinkConfirmationMessage:visibleURL.absoluteString :url.absoluteString] preferredStyle:UIAlertControllerStyleAlert];
-                                    
-                                    UIAlertAction *continueAction = [UIAlertAction actionWithTitle:[VectorL10n continue] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                                        // Try to open the link
-                                        [[UIApplication sharedApplication] vc_open:url completionHandler:^(BOOL success) {
-                                            if (!success)
-                                            {
-                                                [self showUnableToOpenLinkErrorAlert];
-                                            }
-                                        }];
-                                    }];
-                                    
-                                    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:[VectorL10n cancel] style:UIAlertActionStyleCancel handler:nil];
-                                    
-                                    [alert addAction:continueAction];
-                                    [alert addAction:cancelAction];
-                                    
-                                    [self presentViewController:alert animated:YES completion:nil];
-                                    return NO;
-                                }
+                                [self showDifferentURLsAlertFor:url
+                                                  visibleURLString:result.visibleURLString];
+                                return NO;
                             }
                             // Try to open the link
                             [[UIApplication sharedApplication] vc_open:url completionHandler:^(BOOL success) {
@@ -4430,6 +4406,29 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
     
     return roomInputToolbarView;
+}
+
+- (void)showDifferentURLsAlertFor:(NSURL *)url visibleURLString:(NSString *)visibleURLString
+{
+    //  urls are different, show confirmation alert
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[VectorL10n externalLinkConfirmationTitle] message:[VectorL10n externalLinkConfirmationMessage:visibleURLString :url.absoluteString] preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction *continueAction = [UIAlertAction actionWithTitle:[VectorL10n continue] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        // Try to open the link
+        [[UIApplication sharedApplication] vc_open:url completionHandler:^(BOOL success) {
+            if (!success)
+            {
+                [self showUnableToOpenLinkErrorAlert];
+            }
+        }];
+    }];
+
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:[VectorL10n cancel] style:UIAlertActionStyleCancel handler:nil];
+
+    [alert addAction:continueAction];
+    [alert addAction:cancelAction];
+
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - RoomDataSourceDelegate

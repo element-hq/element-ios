@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-/// An button that displays the icon and name of an SSO provider.
+/// A button that displays the icon and name of an SSO provider.
 struct AuthenticationSSOButton: View {
     
     // MARK: - Constants
@@ -28,6 +28,11 @@ struct AuthenticationSSOButton: View {
     // MARK: - Private
     
     @Environment(\.theme) private var theme
+    @ScaledMetric private var iconSize = 24
+    
+    private var renderingMode: Image.TemplateRenderingMode? {
+        provider.brand == Brand.apple.rawValue || provider.brand == Brand.github.rawValue ? .template : nil
+    }
     
     // MARK: - Public
     
@@ -52,32 +57,63 @@ struct AuthenticationSSOButton: View {
                     .opacity(0)
             }
             .frame(maxWidth: .infinity)
+            .fixedSize(horizontal: false, vertical: true)
             .contentShape(RoundedRectangle(cornerRadius: 8))
         }
         .buttonStyle(SecondaryActionButtonStyle(customColor: theme.colors.quinaryContent))
     }
     
-    @ViewBuilder
+    /// The icon with appropriate rendering mode and size for dynamic type.
     var icon: some View {
+        iconImage.map { image in
+            image
+                .renderingMode(renderingMode)
+                .resizable()
+                .scaledToFit()
+                .frame(width: iconSize, height: iconSize)
+                .foregroundColor(renderingMode == .template ? theme.colors.primaryContent : nil)
+        }
+    }
+    
+    /// The image to be shown in the icon.
+    var iconImage: Image? {
         switch provider.brand {
         case Brand.apple.rawValue:
-            Image(Asset.Images.authenticationSsoIconApple.name)
-                .renderingMode(.template)
-                .foregroundColor(theme.colors.primaryContent)
+            return Image(Asset.Images.authenticationSsoIconApple.name)
         case Brand.facebook.rawValue:
-            Image(Asset.Images.authenticationSsoIconFacebook.name)
+            return Image(Asset.Images.authenticationSsoIconFacebook.name)
         case Brand.github.rawValue:
-            Image(Asset.Images.authenticationSsoIconGithub.name)
-                .renderingMode(.template)
-                .foregroundColor(theme.colors.primaryContent)
+            return Image(Asset.Images.authenticationSsoIconGithub.name)
         case Brand.gitlab.rawValue:
-            Image(Asset.Images.authenticationSsoIconGitlab.name)
+            return Image(Asset.Images.authenticationSsoIconGitlab.name)
         case Brand.google.rawValue:
-            Image(Asset.Images.authenticationSsoIconGoogle.name)
+            return Image(Asset.Images.authenticationSsoIconGoogle.name)
         case Brand.twitter.rawValue:
-            Image(Asset.Images.authenticationSsoIconTwitter.name)
+            return Image(Asset.Images.authenticationSsoIconTwitter.name)
         default:
-            EmptyView()
+            return nil
         }
+    }
+}
+
+struct AuthenticationSSOButton_Previews: PreviewProvider {
+    static var matrixDotOrg = AuthenticationHomeserverViewData.mockMatrixDotOrg
+    
+    static var buttons: some View {
+        VStack {
+            ForEach(matrixDotOrg.ssoIdentityProviders) { provider in
+                AuthenticationSSOButton(provider: provider) { }
+            }
+            AuthenticationSSOButton(provider: SSOIdentityProvider(id: "", name: "SAML", brand: nil, iconURL: nil)) { }
+        }
+        .padding()
+    }
+    
+    static var previews: some View {
+        buttons
+            .theme(.light).preferredColorScheme(.light)
+            .environment(\.sizeCategory, .accessibilityLarge)
+        buttons
+            .theme(.dark).preferredColorScheme(.dark)
     }
 }

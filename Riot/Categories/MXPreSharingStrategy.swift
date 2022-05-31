@@ -16,16 +16,19 @@
 
 import Foundation
 
-struct HomeserverAddress {
-    /// Ensures the address contains a scheme, otherwise makes it `https`.
-    static func sanitized(_ address: String) -> String {
-        !address.contains("://") ? "https://\(address.lowercased())" : address.lowercased()
-    }
-    
-    /// Strips the `https://` away from the address (but leaves `http://`) for display in labels.
-    ///
-    /// `http://` is left in the string to make it clear when a chosen server doesn't use SSL.
-    static func displayable(_ address: String) -> String {
-        address.replacingOccurrences(of: "https://", with: "")
+extension MXKKeyPreSharingStrategy {
+    init?(key: String?) {
+        guard let key = key else {
+            return nil
+        }
+
+        switch key {
+        case "on_typing":
+            self = .whenTyping
+        case "on_room_opening":
+            self = .whenEnteringRoom
+        default:
+            self = .none
+        }
     }
 }

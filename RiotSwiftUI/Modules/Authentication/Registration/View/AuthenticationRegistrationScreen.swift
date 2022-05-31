@@ -45,11 +45,11 @@ struct AuthenticationRegistrationScreen: View {
                     .frame(height: 1)
                     .padding(.vertical, 21)
                 
-                if viewModel.viewState.showRegistrationForm {
+                if viewModel.viewState.homeserver.showRegistrationForm {
                     registrationForm
                 }
                 
-                if viewModel.viewState.showRegistrationForm && viewModel.viewState.showSSOButtons {
+                if viewModel.viewState.homeserver.showRegistrationForm && viewModel.viewState.showSSOButtons {
                     Text(VectorL10n.or)
                         .foregroundColor(theme.colors.secondaryContent)
                         .padding(.top, 16)
@@ -58,6 +58,10 @@ struct AuthenticationRegistrationScreen: View {
                 if viewModel.viewState.showSSOButtons {
                     ssoButtons
                         .padding(.top, 16)
+                }
+
+                if !viewModel.viewState.homeserver.showRegistrationForm && !viewModel.viewState.showSSOButtons {
+                    fallbackButton
                 }
                 
             }
@@ -90,35 +94,9 @@ struct AuthenticationRegistrationScreen: View {
     
     /// The sever information section that includes a button to select a different server.
     var serverInfo: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(VectorL10n.authenticationRegistrationServerTitle)
-                .font(theme.fonts.subheadline)
-                .foregroundColor(theme.colors.secondaryContent)
-            
-            HStack {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(viewModel.viewState.homeserverAddress)
-                        .font(theme.fonts.body)
-                        .foregroundColor(theme.colors.primaryContent)
-                    
-                    if let serverDescription = viewModel.viewState.serverDescription {
-                        Text(serverDescription)
-                            .font(theme.fonts.caption1)
-                            .foregroundColor(theme.colors.tertiaryContent)
-                            .accessibilityIdentifier("serverDescriptionText")
-                    }
-                }
-                
-                Spacer()
-                
-                Button { viewModel.send(viewAction: .selectServer) } label: {
-                    Text(VectorL10n.edit)
-                        .font(theme.fonts.body)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 6)
-                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(theme.colors.accent))
-                }
-            }
+        AuthenticationServerInfoSection(address: viewModel.viewState.homeserver.address,
+                                        showMatrixDotOrgInfo: viewModel.viewState.homeserver.isMatrixDotOrg) {
+            viewModel.send(viewAction: .selectServer)
         }
     }
     
@@ -134,7 +112,8 @@ struct AuthenticationRegistrationScreen: View {
                                    configuration: UIKitTextInputConfiguration(returnKeyType: .next,
                                                                               autocapitalizationType: .none,
                                                                               autocorrectionType: .no),
-                                   onEditingChanged: usernameEditingChanged)
+                                   onEditingChanged: usernameEditingChanged,
+                                   onCommit: { isPasswordFocused = true })
             .onChange(of: viewModel.username) { _ in viewModel.send(viewAction: .clearUsernameError) }
             .accessibilityIdentifier("usernameTextField")
             
@@ -146,7 +125,8 @@ struct AuthenticationRegistrationScreen: View {
                                    isFirstResponder: isPasswordFocused,
                                    configuration: UIKitTextInputConfiguration(returnKeyType: .done,
                                                                               isSecureTextEntry: true),
-                                   onEditingChanged: passwordEditingChanged)
+                                   onEditingChanged: passwordEditingChanged,
+                                   onCommit: submit)
             .accessibilityIdentifier("passwordTextField")
             
             Button(action: submit) {
@@ -161,28 +141,35 @@ struct AuthenticationRegistrationScreen: View {
     /// A list of SSO buttons that can be used for login.
     var ssoButtons: some View {
         VStack(spacing: 16) {
-            ForEach(viewModel.viewState.ssoIdentityProviders) { provider in
+            ForEach(viewModel.viewState.homeserver.ssoIdentityProviders) { provider in
                 AuthenticationSSOButton(provider: provider) {
-                    viewModel.send(viewAction: .continueWithSSO(id: provider.id))
+                    viewModel.send(viewAction: .continueWithSSO(provider))
                 }
                 .accessibilityIdentifier("ssoButton")
             }
         }
     }
-    
-    /// Validates the username when the text field ends editing, and selects the password text field.
-    func usernameEditingChanged(isEditing: Bool) {
-        guard !isEditing, !viewModel.username.isEmpty else { return }
-        
-        viewModel.send(viewAction: .validateUsername)
-        isPasswordFocused = true
+
+    /// A fallback button that can be used for login.
+    var fallbackButton: some View {
+        Button(action: fallback) {
+            Text(VectorL10n.authRegister)
+        }
+        .buttonStyle(PrimaryActionButtonStyle())
+        .accessibilityIdentifier("fallbackButton")
     }
     
-    /// Enables password validation the first time the user taps return, and sends the username and submits the form if possible.
+    /// Validates the username when the text field ends editing.
+    func usernameEditingChanged(isEditing: Bool) {
+        guard !isEditing, !viewModel.username.isEmpty else { return }
+        viewModel.send(viewAction: .validateUsername)
+    }
+    
+    /// Enables password validation the first time the user finishes editing.
+    /// Additionally resets the password field focus.
     func passwordEditingChanged(isEditing: Bool) {
         guard !isEditing else { return }
         isPasswordFocused = false
-        submit()
         
         guard !viewModel.viewState.hasEditedPassword else { return }
         viewModel.send(viewAction: .enablePasswordValidation)
@@ -192,6 +179,11 @@ struct AuthenticationRegistrationScreen: View {
     func submit() {
         guard viewModel.viewState.hasValidCredentials else { return }
         viewModel.send(viewAction: .next)
+    }
+
+    /// Sends the `fallback` view action.
+    func fallback() {
+        viewModel.send(viewAction: .fallback)
     }
 }
 

@@ -2262,3 +2262,7 @@
 "location_sharing_live_timer_incoming" = "Asukoha jagamine toimib kuni %@";
 "live_location_sharing_ended" = "Reaalajas asukoha jagamine on lõppenud";
 "confirm" = "Kinnita";
+/* The placeholder %1$tu will be replaced with a number and %2$@ with the user's search terms. Note the > at the start indicates "more than 20 results". */
+"directory_search_results_more_than" = ">%2$@ kohta leidsin %1$tu tulemust";
+/* The placeholder %1$tu will be replaced with a number and %2$@ with the user's search terms. */
+"directory_search_results" = "%2$@ kohta leidsin %1$tu tulemust";

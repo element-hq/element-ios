@@ -17,6 +17,10 @@
 import Foundation
 
 extension String {
+
+    private enum Constants {
+        static let RTLOverrideChar: String = "\u{202E}"
+    }
     
     /// Calculates a numeric hash same as Riot Web
     /// See original function here https://github.com/matrix-org/matrix-react-sdk/blob/321dd49db4fbe360fc2ff109ac117305c955b061/src/utils/FormattingUtils.js#L47
@@ -48,6 +52,16 @@ extension String {
     /// - Returns: New string without whitespaces from the receiver
     func vc_removingAllWhitespaces() -> String {
         return components(separatedBy: .whitespaces).joined()
+    }
+
+    /// Returns if the string contains an RTL override character
+    func vc_containsRTLOverride() -> Bool {
+        return contains(Constants.RTLOverrideChar)
+    }
+
+    /// Returns a new string which is reversed of the receiver
+    func vc_reversed() -> String {
+        return String(self.reversed())
     }
 }
 

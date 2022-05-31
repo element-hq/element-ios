@@ -14,7 +14,7 @@ env:
 
 jobs:
   check-secret:
-    runs-on: macos-11
+    runs-on: macos-12
     outputs:
       out-key: ${{ steps.out-key.outputs.defined }}
     steps:
@@ -29,7 +29,7 @@ jobs:
     needs: [check-secret]
     if: needs.check-secret.outputs.out-key == 'true'
     name: Release
-    runs-on: macos-11
+    runs-on: macos-12
     
     concurrency:
       # Only allow a single run of this workflow on each branch, automatically cancelling older runs.

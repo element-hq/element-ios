@@ -17,7 +17,14 @@
 import Foundation
 
 protocol AuthenticationServiceDelegate: AnyObject {
-    func authenticationServiceDidUpdateRegistrationParameters(_ authenticationService: AuthenticationService)
+    /// The authentication service received an SSO login token via a deep link.
+    /// This only occurs when SSOAuthenticationPresenter uses an SFSafariViewController.
+    /// - Parameters:
+    ///   - service: The authentication service.
+    ///   - ssoLoginToken: The login token provided when SSO succeeded.
+    ///   - transactionID: The transaction ID generated during SSO page presentation.
+    /// - Returns: `true` if the SSO login can be continued.
+    func authenticationService(_ service: AuthenticationService, didReceive ssoLoginToken: String, with transactionID: String) -> Bool
 }
 
 class AuthenticationService: NSObject {
@@ -30,7 +37,7 @@ class AuthenticationService: NSObject {
     // MARK: Private
     
     /// The rest client used to make authentication requests.
-    private var client: MXRestClient
+    private var client: AuthenticationRestClient
     /// The object used to create a new `MXSession` when authentication has completed.
     private var sessionCreator = SessionCreator()
     
@@ -42,6 +49,9 @@ class AuthenticationService: NSObject {
     private(set) var loginWizard: LoginWizard?
     /// The current registration wizard or `nil` if `startFlow` hasn't been called for `.registration`.
     private(set) var registrationWizard: RegistrationWizard?
+    
+    /// The authentication service's delegate.
+    weak var delegate: AuthenticationServiceDelegate?
     
     // MARK: - Setup
     
@@ -84,37 +94,28 @@ class AuthenticationService: NSObject {
     }
     
     func startFlow(_ flow: AuthenticationFlow, for homeserverAddress: String) async throws {
-        reset()
+        var (client, homeserver) = try await loginFlow(for: homeserverAddress)
         
-        let loginFlows = try await loginFlow(for: homeserverAddress)
-        
-        state.homeserver = .init(address: loginFlows.homeserverAddress,
-                                 addressFromUser: homeserverAddress,
-                                 preferredLoginMode: loginFlows.loginMode,
-                                 loginModeSupportedTypes: loginFlows.supportedLoginTypes)
-        
-        let loginWizard = LoginWizard()
+        let loginWizard = LoginWizard(client: client)
         self.loginWizard = loginWizard
         
         if flow == .register {
             do {
                 let registrationWizard = RegistrationWizard(client: client)
-                state.homeserver.registrationFlow = try await registrationWizard.registrationFlow()
+                homeserver.registrationFlow = try await registrationWizard.registrationFlow()
                 self.registrationWizard = registrationWizard
             } catch {
-                guard state.homeserver.preferredLoginMode.hasSSO, error as? RegistrationError == .registrationDisabled else {
+                guard homeserver.preferredLoginMode.hasSSO, error as? RegistrationError == .registrationDisabled else {
                     throw error
                 }
                 // Continue without throwing when registration is disabled but SSO is available.
             }
         }
         
-        state.flow = flow
-    }
-    
-    /// Get a SSO url
-    func getSSOURL(redirectUrl: String, deviceId: String?, providerId: String?) -> String? {
-        fatalError("Not implemented.")
+        // The state and client are set after trying the registration flow to
+        // ensure the existing state isn't wiped out when an error occurs.
+        self.state = AuthenticationState(flow: flow, homeserver: homeserver)
+        self.client = client
     }
     
     /// Get the sign in or sign up fallback URL
@@ -136,15 +137,19 @@ class AuthenticationService: NSObject {
     func reset() {
         loginWizard = nil
         registrationWizard = nil
-        
+
         // The previously used homeserver is re-used as `startFlow` will be called again a replace it anyway.
         let address = state.homeserver.addressFromUser ?? state.homeserver.address
         self.state = AuthenticationState(flow: .login, homeserverAddress: address)
     }
-
-    /// Create a session after a SSO successful login
-    func makeSessionFromSSO(credentials: MXCredentials) -> MXSession {
-        sessionCreator.createSession(credentials: credentials, client: client)
+    
+    /// Continues an SSO flow when completion comes via a deep link.
+    /// - Parameters:
+    ///   - token: The login token provided when SSO succeeded.
+    ///   - transactionID: The transaction ID generated during SSO page presentation.
+    /// - Returns: `true` if the SSO login can be continued.
+    func continueSSOLogin(with token: String, and transactionID: String) -> Bool {
+        delegate?.authenticationService(self, didReceive: token, with: transactionID) ?? false
     }
     
 //    /// Perform a well-known request, using the domain from the matrixId
@@ -170,18 +175,17 @@ class AuthenticationService: NSObject {
     
     // MARK: - Private
     
-    /// Request the supported login flows for this homeserver.
+    /// Query the supported login flows for the supplied homeserver.
     /// This is the first method to call to be able to get a wizard to login or to create an account
     /// - Parameter homeserverAddress: The homeserver string entered by the user.
-    private func loginFlow(for homeserverAddress: String) async throws -> LoginFlowResult {
+    /// - Returns: A tuple containing the REST client for the server along with the homeserver state containing the login flows.
+    private func loginFlow(for homeserverAddress: String) async throws -> (AuthenticationRestClient, AuthenticationState.Homeserver) {
         let homeserverAddress = HomeserverAddress.sanitized(homeserverAddress)
         
         guard var homeserverURL = URL(string: homeserverAddress) else {
             MXLog.error("[AuthenticationService] Unable to create a URL from the supplied homeserver address when calling loginFlow.")
             throw AuthenticationError.invalidHomeserver
         }
-        
-        let state = AuthenticationState(flow: .login, homeserverAddress: homeserverAddress)
         
         if let wellKnown = try? await wellKnown(for: homeserverURL),
            let baseURL = URL(string: wellKnown.homeServer.baseUrl) {
@@ -193,28 +197,26 @@ class AuthenticationService: NSObject {
         
         let loginFlow = try await getLoginFlowResult(client: client)
         
-        self.client = client
-        self.state = state
-        
-        return loginFlow
+        let homeserver = AuthenticationState.Homeserver(address: loginFlow.homeserverAddress,
+                                                        addressFromUser: homeserverAddress,
+                                                        preferredLoginMode: loginFlow.loginMode)
+        return (client, homeserver)
     }
     
     /// Request the supported login flows for the corresponding session.
     /// This method is used to get the flows for a server after a soft-logout.
     /// - Parameter session: The MXSession where a soft-logout has occurred.
-    private func loginFlow(for session: MXSession) async throws -> LoginFlowResult {
+    private func loginFlow(for session: MXSession) async throws -> (AuthenticationRestClient, AuthenticationState.Homeserver) {
         guard let client = session.matrixRestClient else {
             MXLog.error("[AuthenticationService] loginFlow called on a session that doesn't have a matrixRestClient.")
             throw AuthenticationError.missingMXRestClient
         }
-        let state = AuthenticationState(flow: .login, homeserverAddress: client.homeserver)
         
         let loginFlow = try await getLoginFlowResult(client: session.matrixRestClient)
         
-        self.client = client
-        self.state = state
-        
-        return loginFlow
+        let homeserver = AuthenticationState.Homeserver(address: loginFlow.homeserverAddress,
+                                                        preferredLoginMode: loginFlow.loginMode)
+        return (client, homeserver)
     }
     
     private func getLoginFlowResult(client: MXRestClient) async throws -> LoginFlowResult {

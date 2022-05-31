@@ -91,6 +91,8 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
                 self.resendEmail()
             case .cancel:
                 self.callback?(.cancel)
+            case .goBack:
+                self.authenticationVerifyEmailViewModel.goBackToEnterEmailForm()
             }
         }
     }

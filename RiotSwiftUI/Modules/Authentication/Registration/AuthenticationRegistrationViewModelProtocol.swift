@@ -18,16 +18,14 @@ import Foundation
 
 protocol AuthenticationRegistrationViewModelProtocol {
     
-    @MainActor var callback: (@MainActor (AuthenticationRegistrationViewModelResult) -> Void)? { get set }
+    var callback: (@MainActor (AuthenticationRegistrationViewModelResult) -> Void)? { get set }
     var context: AuthenticationRegistrationViewModelType.Context { get }
     
     /// Update the view with new homeserver information.
-    /// - Parameters:
-    ///   - homeserverAddress: The homeserver string to be shown to the user.
-    ///   - showRegistrationForm: Whether or not to display the username and password text fields.
-    ///   - ssoIdentityProviders: The supported SSO login options.
-    @MainActor func update(homeserverAddress: String, showRegistrationForm: Bool, ssoIdentityProviders: [SSOIdentityProvider])
+    /// - Parameter homeserver: The view data for the homeserver. This can be generated using `AuthenticationService.Homeserver.viewData`.
+    @MainActor func update(homeserver: AuthenticationHomeserverViewData)
     
     /// Display an error to the user.
+    /// - Parameter type: The type of error to be displayed.
     @MainActor func displayError(_ type: AuthenticationRegistrationErrorType)
 }

@@ -14,7 +14,7 @@ env:
 jobs:
   tests:
     name: UI Tests
-    runs-on: macos-11
+    runs-on: macos-12
     
     concurrency:
       # Only allow a single run of this workflow on each branch, automatically cancelling older runs.
