@@ -15,6 +15,7 @@
 //
 
 import SwiftUI
+import CommonKit
 
 protocol OnboardingSplashScreenCoordinatorProtocol: Coordinator, Presentable {
     var completion: ((OnboardingSplashScreenViewModelResult) -> Void)? { get set }
@@ -28,6 +29,9 @@ final class OnboardingSplashScreenCoordinator: OnboardingSplashScreenCoordinator
     
     private let onboardingSplashScreenHostingController: VectorHostingController
     private var onboardingSplashScreenViewModel: OnboardingSplashScreenViewModelProtocol
+    
+    private var indicatorPresenter: UserIndicatorTypePresenterProtocol
+    private var loadingIndicator: UserIndicator?
     
     // MARK: Public
 
@@ -43,6 +47,8 @@ final class OnboardingSplashScreenCoordinator: OnboardingSplashScreenCoordinator
         onboardingSplashScreenViewModel = viewModel
         onboardingSplashScreenHostingController = VectorHostingController(rootView: view)
         onboardingSplashScreenHostingController.vc_removeBackTitle()
+        
+        indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: onboardingSplashScreenHostingController)
     }
     
     // MARK: - Public
@@ -52,13 +58,33 @@ final class OnboardingSplashScreenCoordinator: OnboardingSplashScreenCoordinator
             MXLog.debug("[OnboardingSplashScreenCoordinator] OnboardingSplashScreenViewModel did complete with result: \(result).")
             guard let self = self else { return }
             switch result {
-            case .login, .register:
+            case .login:
+                self.startLoading()
+                self.completion?(result)
+            case .register:
                 self.completion?(result)
             }
         }
     }
     
     func toPresentable() -> UIViewController {
-        return self.onboardingSplashScreenHostingController
+        return onboardingSplashScreenHostingController
+    }
+    
+    /// Stops any ongoing activities in the coordinator.
+    func stop() {
+        stopLoading()
+    }
+    
+    // MARK: - Private
+    
+    /// Show an activity indicator whilst loading.
+    private func startLoading() {
+        loadingIndicator = indicatorPresenter.present(.loading(label: VectorL10n.loading, isInteractionBlocking: true))
+    }
+    
+    /// Hide the currently displayed activity indicator.
+    private func stopLoading() {
+        loadingIndicator = nil
     }
 }

@@ -59,7 +59,7 @@ final class AuthenticationTermsCoordinator: Coordinator, Presentable {
     @MainActor init(parameters: AuthenticationTermsCoordinatorParameters) {
         self.parameters = parameters
         
-        let subtitle = HomeserverAddress.displayable(parameters.homeserverAddress)
+        let subtitle = parameters.homeserverAddress
         let policies = parameters.localizedPolicies.compactMap { AuthenticationTermsPolicy(url: $0.url, title: $0.name, subtitle: subtitle) }
         
         let viewModel = AuthenticationTermsViewModel(policies: policies)

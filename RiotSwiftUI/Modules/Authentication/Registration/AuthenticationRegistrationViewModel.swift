@@ -27,16 +27,13 @@ class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelTy
 
     // MARK: Public
 
-    @MainActor var callback: (@MainActor (AuthenticationRegistrationViewModelResult) -> Void)?
+    var callback: (@MainActor (AuthenticationRegistrationViewModelResult) -> Void)?
 
     // MARK: - Setup
 
-    init(homeserverAddress: String, showRegistrationForm: Bool = true, ssoIdentityProviders: [SSOIdentityProvider]) {
+    init(homeserver: AuthenticationHomeserverViewData) {
         let bindings = AuthenticationRegistrationBindings()
-        let viewState = AuthenticationRegistrationViewState(homeserverAddress: HomeserverAddress.displayable(homeserverAddress),
-                                                            showRegistrationForm: showRegistrationForm,
-                                                            ssoIdentityProviders: ssoIdentityProviders,
-                                                            bindings: bindings)
+        let viewState = AuthenticationRegistrationViewState(homeserver: homeserver, bindings: bindings)
         
         super.init(initialViewState: viewState)
     }
@@ -60,10 +57,8 @@ class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelTy
         }
     }
     
-    @MainActor func update(homeserverAddress: String, showRegistrationForm: Bool, ssoIdentityProviders: [SSOIdentityProvider]) {
-        state.homeserverAddress = HomeserverAddress.displayable(homeserverAddress)
-        state.showRegistrationForm = showRegistrationForm
-        state.ssoIdentityProviders = ssoIdentityProviders
+    @MainActor func update(homeserver: AuthenticationHomeserverViewData) {
+        state.homeserver = homeserver
     }
     
     @MainActor func displayError(_ type: AuthenticationRegistrationErrorType) {
