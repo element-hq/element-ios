@@ -596,7 +596,11 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
         [sectionLabs addRowWithTag:LABS_ENABLE_MESSAGE_BUBBLES_INDEX];
         [sectionLabs addRowWithTag:LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS];
         [sectionLabs addRowWithTag:LABS_USE_ONLY_LATEST_USER_AVATAR_AND_NAME_INDEX];
-        [sectionLabs addRowWithTag:LABS_ENABLE_LIVE_LOCATION_SHARING];
+        if (BuildSettings.liveLocationSharingEnabled)
+        {
+            // Hide live location lab setting until it's ready to be release
+            [sectionLabs addRowWithTag:LABS_ENABLE_LIVE_LOCATION_SHARING];
+        }
         sectionLabs.headerTitle = [VectorL10n settingsLabs];
         if (sectionLabs.hasAnyRows)
         {
@@ -2545,7 +2549,7 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
 
             cell = labelAndSwitchCell;
         }
-        else if (row == LABS_ENABLE_LIVE_LOCATION_SHARING && BuildSettings.liveLocationSharingEnabled) // Hide live location lab setting until it's ready to be release
+        else if (row == LABS_ENABLE_LIVE_LOCATION_SHARING)
         {
             cell = [self buildLiveLocationSharingCellForTableView:tableView atIndexPath:indexPath];
         }
