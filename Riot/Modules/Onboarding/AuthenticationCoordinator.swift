@@ -668,9 +668,8 @@ extension AuthenticationCoordinator: AuthFallBackViewControllerDelegate {
             MXLog.failure("[AuthenticationCoordinator] authFallBackViewController:didLogin: session could not be created")
             return
         }
-        let flow: AuthenticationFlow = initialScreen == .login ? .login : .register
         authenticationType = .other
-        Task { await onSessionCreated(session: session, flow: flow) }
+        Task { await onSessionCreated(session: session, flow: authenticationService.state.flow) }
     }
 
     func authFallBackViewControllerDidClose(_ authFallBackViewController: AuthFallBackViewController) {
