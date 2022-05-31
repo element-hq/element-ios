@@ -45,8 +45,8 @@ end
 
 # Method to import the MatrixSDK
 def import_MatrixSDK
-  pod 'MatrixSDK', $matrixSDKVersionSpec
-  pod 'MatrixSDK/JingleCallStack', $matrixSDKVersionSpec
+  pod 'MatrixSDK', $matrixSDKVersionSpec, :inhibit_warnings => false
+  pod 'MatrixSDK/JingleCallStack', $matrixSDKVersionSpec, :inhibit_warnings => false
 end
 
 ########################################
@@ -72,7 +72,7 @@ abstract_target 'RiotPods' do
 
   # PostHog for analytics
   pod 'PostHog', '~> 1.4.4'
-  pod 'AnalyticsEvents', :git => 'https://github.com/matrix-org/matrix-analytics-events.git', :branch => 'release/swift'
+  pod 'AnalyticsEvents', :git => 'https://github.com/matrix-org/matrix-analytics-events.git', :branch => 'release/swift', :inhibit_warnings => false
   # pod 'AnalyticsEvents', :path => '../matrix-analytics-events/AnalyticsEvents.podspec'
 
   pod 'OLMKit'
