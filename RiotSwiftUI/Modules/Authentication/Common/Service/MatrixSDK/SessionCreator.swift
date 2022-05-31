@@ -16,9 +16,17 @@
 
 import Foundation
 
-/// A WIP class that has common functionality to create a new session.
-class SessionCreator {
+protocol SessionCreatorProtocol {
     /// Creates an `MXSession` using the supplied credentials and REST client.
+    /// - Parameters:
+    ///   - credentials: The `MXCredentials` for the account.
+    ///   - client: The client that completed the authentication.
+    /// - Returns: A new `MXSession` for the account.
+    func createSession(credentials: MXCredentials, client: AuthenticationRestClient) -> MXSession
+}
+
+/// A struct that provides common functionality to create a new session.
+struct SessionCreator: SessionCreatorProtocol {
     func createSession(credentials: MXCredentials, client: AuthenticationRestClient) -> MXSession {
         // Report the new account in account manager
         if credentials.identityServer == nil {

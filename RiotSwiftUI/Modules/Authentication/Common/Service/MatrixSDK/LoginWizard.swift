@@ -31,11 +31,11 @@ class LoginWizard {
     }
     
     let client: AuthenticationRestClient
-    let sessionCreator: SessionCreator
+    let sessionCreator: SessionCreatorProtocol
     
     private(set) var state: State
     
-    init(client: AuthenticationRestClient, sessionCreator: SessionCreator = SessionCreator()) {
+    init(client: AuthenticationRestClient, sessionCreator: SessionCreatorProtocol) {
         self.client = client
         self.sessionCreator = sessionCreator
         

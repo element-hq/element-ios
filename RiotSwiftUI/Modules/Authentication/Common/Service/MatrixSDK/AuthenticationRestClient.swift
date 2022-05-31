@@ -16,10 +16,14 @@
 
 import Foundation
 
-protocol AuthenticationRestClient {
+protocol AuthenticationRestClient: AnyObject {
     // MARK: Configuration
-    var credentials: MXCredentials! { get }
+    var homeserver: String! { get }
     var identityServer: String! { get }
+    var credentials: MXCredentials! { get }
+    var acceptableContentTypes: Set<String>! { get set }
+    
+    init(homeServer: URL, unrecognizedCertificateHandler handler: MXHTTPClientOnUnrecognizedCertificate?)
     
     // MARK: Login
     var loginFallbackURL: URL { get }
