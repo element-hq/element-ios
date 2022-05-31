@@ -885,8 +885,8 @@
 "room_event_action_kick_prompt_reason" = "Alasan untuk mengeluarkan pengguna ini";
 "room_event_action_report_prompt_reason" = "Alasan untuk melaporkan konten ini";
 "room_message_unable_open_link_error_message" = "Tidak dapat membuka tautan ini.";
-"directory_search_results_more_than" = ">%tu hasil ditemukan untuk %@";
-"directory_search_results" = "%tu hasil ditemukan untuk %@";
+"directory_search_results_more_than" = ">%1$tu hasil ditemukan untuk %2$@";
+"directory_search_results" = "%1$tu hasil ditemukan untuk %2$@";
 "room_creation_invite_another_user" = "ID Pengguna, nama atau email";
 "space_participants_action_ban" = "Cekal dari space ini";
 "space_participants_action_remove" = "Keluarkan dari space ini";

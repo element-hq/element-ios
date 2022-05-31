@@ -394,8 +394,8 @@
 "auth_reset_password_email_validation_message" = "Tölvupóstur hefur verið sendur á %@ Þegar þú ert búin/n að fylgja tenglinum sem sá póstur inniheldur, smelltu þá hér fyrir neðan.";
 "auth_reset_password_error_unauthorized" = "Gat ekki sannprófað tölvupóstfang: gakktu úr skugga um að þú hafir smellt á tengilinn í tölvupóstinum";
 "auth_reset_password_success_message" = "Matrix-ykilorðið þitt hefur verið endurstillt.\n\nÞú hefur verið skráður út af öllum tækjum og munt ekki lengur fá ýti-tilkynningar. Til að endurvirkja tilkynningar, þarf að skrá sig aftur inn á hverju tæki fyrir sig.";
-"directory_search_results" = "%tu niðurstöður fundust fyrir %@";
-"directory_search_results_more_than" = ">%tu niðurstöður fundust fyrir %@";
+"directory_search_results" = "%1$tu niðurstöður fundust fyrir %2$@";
+"directory_search_results_more_than" = ">%1$tu niðurstöður fundust fyrir %2$@";
 "contacts_address_book_permission_denied" = "Þú heimilaðir %@ ekki aðgang að tengiliðum á tækinu";
 "room_participants_remove_prompt_msg" = "Ertu viss um að þú viljir fjarlægja %@ úr þessu spjalli?";
 "room_participants_invite_prompt_msg" = "Ertu viss um að þú viljir bjóða %@ á þetta spjall?";

@@ -141,8 +141,8 @@
 "directory_cell_title" = "Bladeren door de catalogus";
 "directory_cell_description" = "%tu kamers";
 "directory_search_results_title" = "Bladeren door catalogusresultaten";
-"directory_search_results" = "%tu resultaten gevonden voor %@";
-"directory_search_results_more_than" = ">%tu resultaten gevonden voor %@";
+"directory_search_results" = "%1$tu resultaten gevonden voor %2$@";
+"directory_search_results_more_than" = ">%1$tu resultaten gevonden voor %2$@";
 "directory_searching_title" = "Catalogus wordt doorzocht…";
 "directory_search_fail" = "Ophalen van gegevens is mislukt";
 // Contacts
@@ -2483,3 +2483,4 @@
 "location_sharing_live_timer_incoming" = "Live tot %@";
 "live_location_sharing_ended" = "Live locatie beëindigd";
 "confirm" = "Bevestigen";
+"settings_integrations_allow_description" = "Gebruik een integratiebeheerder om bots, bruggen, widgets en stickerpakketten te beheren.\n\nIntegratiebeheerders ontvangen configuratiedata en kunnen widgets aanpassen, kameruitnodigingen versturen en bestuursniveaus instellen namens u.";

@@ -141,8 +141,8 @@
 "directory_cell_title" = "Keresés a könyvtárban";
 "directory_cell_description" = "%tu szobák";
 "directory_search_results_title" = "Találatok a könyvtár listában";
-"directory_search_results" = "%tu találat ehhez: %@";
-"directory_search_results_more_than" = ">%tu találat ehhez: %@";
+"directory_search_results" = "%1$tu találat ehhez: %2$@";
+"directory_search_results_more_than" = ">%1$tu találat ehhez: %2$@";
 "directory_searching_title" = "Könyvtár keresés…";
 "directory_search_fail" = "Az adatot nem sikerült betölteni";
 // Contacts

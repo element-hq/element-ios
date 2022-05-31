@@ -130,8 +130,8 @@
 "directory_cell_title" = "Parcourir le répertoire";
 "directory_cell_description" = "%tu salons";
 "directory_search_results_title" = "Parcourir les résultats dans le répertoire";
-"directory_search_results" = "%tu résultats trouvés pour %@";
-"directory_search_results_more_than" = ">%tu résultats trouvés pour %@";
+"directory_search_results" = "%1$tu résultats trouvés pour %2$@";
+"directory_search_results_more_than" = ">%1$tu résultats trouvés pour %2$@";
 "directory_searching_title" = "Recherche dans le répertoire…";
 "directory_search_fail" = "Impossible de récupérer les données";
 // Contacts
@@ -2142,3 +2142,49 @@
 "room_participants_leave_processing" = "Départ";
 "notice_error_unformattable_event" = "** Impossible d’afficher le message. Merci de signaler une erreur";
 "home_syncing" = "Synchronisation";
+"room_details_access_row_title" = "Accéder";
+"settings_presence_offline_mode_description" = "Si active, vous apparaîtrez toujours hors-ligne aux autres utilisateurs, même lorsque vous utilisez l’application.";
+"settings_presence_offline_mode" = "Mode hors-ligne";
+"settings_presence" = "Présence";
+"settings_labs_enable_auto_report_decryption_errors" = "Rapports automatiques d’erreurs de déchiffrement";
+"room_preview_decline_invitation_options" = "Voulez-vous ignorer l’invitation ou ignorer l’utilisateur ?";
+"threads_discourage_information_2" = "\n\nVoulez-vous tout de même activer les fils de discussion ?";
+"threads_discourage_information_1" = "Votre serveur d’accueil ne prend pas en charge les fils de discussion, cette fonctionnalité pourrait ne pas être fiable. Certains messages dans les fils pourraient ne pas s’afficher. ";
+"threads_beta_cancel" = "Pas maintenant";
+"threads_beta_enable" = "Essayer";
+"threads_beta_information_link" = "En apprendre plus";
+"threads_beta_information" = "Gardez vos conversations organisées avec les fils de discussion.\n\nLes fils de discussion cadrent les conversations et permettent de s’y retrouver plus facilement. ";
+"threads_beta_title" = "Fils de discussion";
+"threads_notice_done" = "Compris";
+"threads_notice_information" = "Tous les fils de discussion créés pendant la période d’expérimentation seront désormais <b>affichés comme de simples réponses</b>.<br/><br/>Il s’agit d’une transition unique puisque les fils de discussion font désormais partie de la spécification Matrix.";
+"threads_notice_title" = "Les fils de discussions ne sont plus une fonctionnalité expérimentale 🎉";
+"room_participants_invite_prompt_to_msg" = "Êtes vous sûr de vouloir inviter %@ dans %@ ?";
+"onboarding_celebration_button" = "C’est parti";
+"onboarding_celebration_message" = "Vos préférences ont été enregistrées.";
+"onboarding_celebration_title" = "Tout est prêt !";
+"onboarding_avatar_accessibility_label" = "Photo de profil";
+"onboarding_avatar_message" = "Vous pouvez la changer n’importe quand.";
+"onboarding_avatar_title" = "Ajoutez un photo de profil";
+"onboarding_display_name_max_length" = "Votre nom d’affichage doit faire moins de 256 caractères";
+"onboarding_display_name_hint" = "Vous pouvez le changer plus tard";
+"onboarding_display_name_placeholder" = "Nom d’affichage";
+"onboarding_display_name_message" = "Il sera affiché lorsque vous envoyez des messages.";
+"onboarding_display_name_title" = "Choisissez un nom d’affichage";
+"onboarding_personalization_skip" = "Passer cette étape";
+"onboarding_personalization_save" = "Enregistrer et poursuivre";
+"onboarding_congratulations_home_button" = "Aller à l’écran d’accueil";
+"onboarding_congratulations_personalize_button" = "Personnaliser le profil";
+/* The placeholder string contains the user's matrix ID */
+"onboarding_congratulations_message" = "Votre compte %@ a été créé.";
+"onboarding_congratulations_title" = "Félicitations !";
+"saving" = "Enregistrement";
+
+// Activities
+"loading" = "Chargement";
+"confirm" = "Confirmer";
+"edit" = "Modifier";
+"suggest" = "Suggérer";
+"add" = "Ajouter";
+"existing" = "Existant";
+"new_word" = "Nouveau";
+"stop" = "Arrêter";
