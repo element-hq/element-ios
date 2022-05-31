@@ -65,4 +65,14 @@ extension AuthenticationHomeserverViewData {
                                          showRegistrationForm: false,
                                          ssoIdentityProviders: [SSOIdentityProvider(id: "test", name: "SAML", brand: nil, iconURL: nil)])
     }
+
+    /// A mock homeserver that supports only supports authentication via fallback.
+    static var mockFallback: AuthenticationHomeserverViewData {
+        AuthenticationHomeserverViewData(address: "company.com",
+                                         isMatrixDotOrg: false,
+                                         showLoginForm: false,
+                                         showRegistrationForm: false,
+                                         ssoIdentityProviders: [])
+    }
+
 }

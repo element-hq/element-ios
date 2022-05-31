@@ -27,6 +27,8 @@ enum AuthenticationRegistrationViewModelResult {
     case createAccount(username: String, password: String)
     /// Continue using the supplied SSO provider.
     case continueWithSSO(SSOIdentityProvider)
+    /// Continue using a fallback
+    case fallback
 }
 
 // MARK: View
@@ -96,6 +98,8 @@ enum AuthenticationRegistrationViewAction {
     case next
     /// Continue using the supplied SSO provider.
     case continueWithSSO(SSOIdentityProvider)
+    /// Continue using the fallback page
+    case fallback
 }
 
 enum AuthenticationRegistrationErrorType: Hashable {

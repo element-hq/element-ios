@@ -32,6 +32,8 @@ enum AuthenticationRegistrationCoordinatorResult {
     case continueWithSSO(SSOIdentityProvider)
     /// The screen completed with the associated registration result.
     case completed(result: RegistrationResult, password: String)
+    /// Continue using the fallback
+    case fallback
 }
 
 final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
@@ -109,6 +111,8 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
                 self.createAccount(username: username, password: password)
             case .continueWithSSO(let provider):
                 self.callback?(.continueWithSSO(provider))
+            case .fallback:
+                self.callback?(.fallback)
             }
         }
     }

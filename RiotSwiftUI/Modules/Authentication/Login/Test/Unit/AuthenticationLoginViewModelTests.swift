@@ -110,4 +110,16 @@ class AuthenticationLoginViewModelTests: XCTestCase {
         // Then the view state should reflect that the homeserver is now loaded.
         XCTAssertFalse(context.viewState.isLoading, "The view should be back in a loaded state.")
     }
+
+    @MainActor func testFallbackServer() {
+        // Given a basic server example.com that only supports password registration.
+        let homeserver = AuthenticationHomeserverViewData.mockFallback
+
+        // When updating the view model with the server.
+        viewModel.update(homeserver: homeserver)
+
+        // Then the view state should be updated with the homeserver and hide the SSO buttons and login form.
+        XCTAssertFalse(context.viewState.showSSOButtons, "The SSO buttons should not be shown.")
+        XCTAssertFalse(context.viewState.homeserver.showLoginForm, "The login form should not be shown.")
+    }
 }

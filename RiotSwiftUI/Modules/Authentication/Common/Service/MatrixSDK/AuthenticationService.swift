@@ -137,7 +137,7 @@ class AuthenticationService: NSObject {
     func reset() {
         loginWizard = nil
         registrationWizard = nil
-        
+
         // The previously used homeserver is re-used as `startFlow` will be called again a replace it anyway.
         let address = state.homeserver.addressFromUser ?? state.homeserver.address
         self.state = AuthenticationState(flow: .login, homeserverAddress: address)

@@ -49,6 +49,18 @@ import Combine
         XCTAssertEqual(context.viewState.homeserver, homeserver, "The homeserver data should should match the new homeserver.")
         XCTAssertFalse(context.viewState.showSSOButtons, "The SSO buttons should not be shown.")
     }
+
+    func testFallbackServer() {
+        // Given a basic server example.com that only supports password registration.
+        let homeserver = AuthenticationHomeserverViewData.mockFallback
+
+        // When updating the view model with the server.
+        viewModel.update(homeserver: homeserver)
+
+        // Then the view state should be updated with the homeserver and hide the SSO buttons and registration form.
+        XCTAssertFalse(context.viewState.homeserver.showRegistrationForm, "The registration form should not be shown.")
+        XCTAssertFalse(context.viewState.showSSOButtons, "The SSO buttons should not be shown.")
+    }
     
     func testUsernameError() async throws {
         // Given a form with a valid username.

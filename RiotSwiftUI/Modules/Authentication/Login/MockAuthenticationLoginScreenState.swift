@@ -27,6 +27,7 @@ enum MockAuthenticationLoginScreenState: MockScreenState, CaseIterable {
     case passwordOnly
     case passwordWithCredentials
     case ssoOnly
+    case fallback
 
     /// The associated screen
     var screenType: Any.Type {
@@ -47,6 +48,8 @@ enum MockAuthenticationLoginScreenState: MockScreenState, CaseIterable {
             viewModel.context.password = "password"
         case .ssoOnly:
             viewModel = AuthenticationLoginViewModel(homeserver: .mockEnterpriseSSO)
+        case .fallback:
+            viewModel = AuthenticationLoginViewModel(homeserver: .mockFallback)
         }
         
         

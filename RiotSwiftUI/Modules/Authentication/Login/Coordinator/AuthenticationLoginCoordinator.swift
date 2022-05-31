@@ -30,6 +30,8 @@ enum AuthenticationLoginCoordinatorResult {
     case continueWithSSO(SSOIdentityProvider)
     /// Login was successful with the associated session created.
     case success(session: MXSession, password: String)
+    /// Login requested a fallback
+    case fallback
 }
 
 final class AuthenticationLoginCoordinator: Coordinator, Presentable {
@@ -109,6 +111,8 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
                 self.login(username: username, password: password)
             case .continueWithSSO(let identityProvider):
                 self.callback?(.continueWithSSO(identityProvider))
+            case .fallback:
+                self.callback?(.fallback)
             }
         }
     }
@@ -222,11 +226,11 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
     /// Handles the result from the server selection modal, dismissing it after updating the view.
     @MainActor private func serverSelectionCoordinator(_ coordinator: AuthenticationServerSelectionCoordinator,
                                                        didCompleteWith result: AuthenticationServerSelectionCoordinatorResult) {
-        if result == .updated {
-            updateViewModel()
-        }
-        
         navigationRouter.dismissModule(animated: true) { [weak self] in
+            if result == .updated {
+                self?.updateViewModel()
+            }
+
             self?.remove(childCoordinator: coordinator)
         }
     }
@@ -235,5 +239,9 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
     @MainActor private func updateViewModel() {
         let homeserver = authenticationService.state.homeserver
         authenticationLoginViewModel.update(homeserver: homeserver.viewData)
+
+        if homeserver.needsLoginFallback {
+            callback?(.fallback)
+        }
     }
 }
