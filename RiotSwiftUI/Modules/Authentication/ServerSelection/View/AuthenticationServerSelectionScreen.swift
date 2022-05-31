@@ -17,10 +17,6 @@
 import SwiftUI
 
 struct AuthenticationServerSelectionScreen: View {
-    
-    enum Constants {
-        static let textFieldID = "textFieldID"
-    }
 
     // MARK: - Properties
     
@@ -28,8 +24,11 @@ struct AuthenticationServerSelectionScreen: View {
     
     @Environment(\.theme) private var theme
     
-    /// The scroll view proxy can be stored here for use in other methods.
-    @State private var scrollView: ScrollViewProxy?
+    @State private var isEditingTextField = false
+    
+    private var textFieldFooterColor: Color {
+        viewModel.viewState.hasValidationError ? theme.colors.alert : theme.colors.tertiaryContent
+    }
     
     // MARK: Public
     
@@ -40,27 +39,17 @@ struct AuthenticationServerSelectionScreen: View {
     var body: some View {
         GeometryReader { geometry in
             ScrollView {
-                ScrollViewReader { reader in
-                    VStack(spacing: 0) {
-                        header
-                            .padding(.top, OnboardingMetrics.topPaddingToNavigationBar)
-                            .padding(.bottom, 36)
-                        
-                        serverForm
-                        
-                        Spacer()
-                        
-                        emsBanner
-                            .padding(.vertical, 16)
-                    }
-                    .readableFrame()
-                    .frame(minHeight: geometry.size.height)
-                    .padding(.horizontal, 16)
-                    .onAppear { scrollView = reader }
+                VStack(spacing: 0) {
+                    header
+                        .padding(.top, OnboardingMetrics.topPaddingToNavigationBar)
+                        .padding(.bottom, 36)
+                    
+                    serverForm
                 }
+                .readableFrame()
+                .padding(.horizontal, 16)
             }
         }
-        .ignoresSafeArea(.keyboard)
         .background(theme.colors.background.ignoresSafeArea())
         .toolbar { toolbar }
         .alert(item: $viewModel.alertInfo) { $0.alert }
@@ -88,23 +77,22 @@ struct AuthenticationServerSelectionScreen: View {
     /// The text field and confirm button where the user enters a server URL.
     var serverForm: some View {
         VStack(alignment: .leading, spacing: 12) {
-            RoundedBorderTextField(title: nil,
-                                   placeHolder: VectorL10n.authenticationServerSelectionServerUrl,
-                                   text: $viewModel.homeserverAddress,
-                                   footerText: viewModel.viewState.footerMessage,
-                                   isError: viewModel.viewState.isShowingFooterError,
-                                   isFirstResponder: false,
-                                   configuration: UIKitTextInputConfiguration(keyboardType: .URL,
-                                                                              returnKeyType: .default,
-                                                                              autocapitalizationType: .none,
-                                                                              autocorrectionType: .no),
-                                   onTextChanged: nil,
-                                   onEditingChanged: textFieldEditingChangeHandler)
-            .onChange(of: viewModel.homeserverAddress) { _ in viewModel.send(viewAction: .clearFooterError) }
-            .id(Constants.textFieldID)
-            .accessibilityIdentifier("addressTextField")
+            VStack(spacing: 8) {
+                if #available(iOS 15.0, *) {
+                    textField
+                        .onSubmit(submit)
+                } else {
+                    textField
+                }
+                
+                Text(viewModel.viewState.footerMessage)
+                    .font(theme.fonts.footnote)
+                    .foregroundColor(textFieldFooterColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .accessibilityIdentifier("textFieldFooter")
+            }
             
-            Button { viewModel.send(viewAction: .confirm) } label: {
+            Button(action: submit) {
                 Text(viewModel.viewState.buttonTitle)
             }
             .buttonStyle(PrimaryActionButtonStyle())
@@ -113,39 +101,18 @@ struct AuthenticationServerSelectionScreen: View {
         }
     }
     
-    /// A banner shown beneath the server form with information about hosting your own server.
-    var emsBanner: some View {
-        VStack(spacing: 12) {
-            Image(Asset.Images.authenticationServerSelectionEmsLogo.name)
-                .padding(.top, 8)
-                .accessibilityHidden(true)
-            
-            Text(VectorL10n.authenticationServerSelectionEmsTitle)
-                .font(theme.fonts.title3SB)
-                .multilineTextAlignment(.center)
-                .foregroundColor(theme.colors.primaryContent)
-            
-            VStack(spacing: 2) {
-                Text(VectorL10n.authenticationServerSelectionEmsMessage)
-                    .font(theme.fonts.callout)
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(theme.colors.secondaryContent)
-                Text(VectorL10n.authenticationServerSelectionEmsLink)
-                    .font(theme.fonts.callout)
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(theme.colors.primaryContent)
-            }
-            .padding(.bottom, 4)
-            .accessibilityElement(children: .combine)
-            
-            Button { viewModel.send(viewAction: .getInTouch) } label: {
-                Text(VectorL10n.authenticationServerSelectionEmsButton)
-                    .font(theme.fonts.body)
-            }
-            .buttonStyle(PrimaryActionButtonStyle(customColor: theme.colors.ems))
+    /// The text field, extracted for iOS 15 modifiers to be applied.
+    var textField: some View {
+        TextField(VectorL10n.authenticationServerSelectionServerUrl, text: $viewModel.homeserverAddress) {
+            isEditingTextField = $0
         }
-        .padding(16)
-        .background(RoundedRectangle(cornerRadius: 9).foregroundColor(theme.colors.system))
+        .keyboardType(.URL)
+        .autocapitalization(.none)
+        .disableAutocorrection(true)
+        .textFieldStyle(BorderedInputFieldStyle(isEditing: isEditingTextField,
+                                                isError: viewModel.viewState.isShowingFooterError))
+        .onChange(of: viewModel.homeserverAddress) { _ in viewModel.send(viewAction: .clearFooterError) }
+        .accessibilityIdentifier("addressTextField")
     }
     
     @ToolbarContentBuilder
@@ -161,13 +128,10 @@ struct AuthenticationServerSelectionScreen: View {
         }
     }
     
-    /// Ensures the textfield is on screen when editing starts.
-    ///
-    /// This is required due to the `.ignoresSafeArea(.keyboard)` modifier which preserves
-    /// the spacing between the Next button and the EMS banner when the keyboard appears.
-    func textFieldEditingChangeHandler(isEditing: Bool) {
-        guard isEditing else { return }
-        withAnimation { scrollView?.scrollTo(Constants.textFieldID) }
+    /// Sends the `confirm` view action so long as the text field input is valid.
+    func submit() {
+        guard !viewModel.viewState.hasValidationError else { return }
+        viewModel.send(viewAction: .confirm)
     }
 }
 

@@ -24,8 +24,8 @@ struct AuthenticationTermsPolicy: Identifiable, Equatable {
     let url: String
     /// The policy's title.
     let title: String
-    /// The policy's description.
-    let description: String
+    /// The policy's subtitle.
+    let subtitle: String
     /// Whether or not the policy has been accepted.
     var accepted: Bool = false
 }
@@ -72,6 +72,8 @@ enum AuthenticationTermsViewAction {
 enum AuthenticationTermsErrorType: Hashable {
     /// An error response from the homeserver.
     case mxError(String)
+    /// The homeserver supplied an invalid URL for the policy.
+    case invalidPolicyURL
     /// An unknown error occurred.
     case unknown
 }

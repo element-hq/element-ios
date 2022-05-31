@@ -77,9 +77,12 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
     init(parameters: LocationSharingCoordinatorParameters) {
         self.parameters = parameters
         
+        
+        let locationSharingService = LocationSharingService(userLocationService: parameters.roomDataSource.mxSession.userLocationService)
+        
         let viewModel = LocationSharingViewModel(mapStyleURL: BuildSettings.tileServerMapStyleURL,
                                                  avatarData: parameters.avatarData,
-                                                 isLiveLocationSharingEnabled: BuildSettings.liveLocationSharingEnabled)
+                                                 isLiveLocationSharingEnabled: RiotSettings.shared.enableLiveLocationSharing, service: locationSharingService)
         let view = LocationSharingView(context: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
         

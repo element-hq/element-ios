@@ -16,20 +16,14 @@
 
 import SwiftUI
 import CommonKit
+import SafariServices
 
 struct AuthenticationTermsCoordinatorParameters {
     let registrationWizard: RegistrationWizard
     /// The policies to be accepted by the user.
-    let policies: [String: String]
+    let localizedPolicies: [MXLoginPolicyData]
     /// The address of the homeserver (shown beneath the policies).
     let homeserverAddress: String
-}
-
-enum AuthenticationTermsCoordinatorResult {
-    /// The screen completed with the associated registration result.
-    case completed(RegistrationResult)
-    /// The user would like to cancel the flow.
-    case cancel
 }
 
 final class AuthenticationTermsCoordinator: Coordinator, Presentable {
@@ -39,7 +33,7 @@ final class AuthenticationTermsCoordinator: Coordinator, Presentable {
     // MARK: Private
     
     private let parameters: AuthenticationTermsCoordinatorParameters
-    private let authenticationTermsHostingController: UIViewController
+    private let authenticationTermsHostingController: VectorHostingController
     private var authenticationTermsViewModel: AuthenticationTermsViewModelProtocol
     
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol
@@ -58,18 +52,22 @@ final class AuthenticationTermsCoordinator: Coordinator, Presentable {
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    @MainActor var callback: ((AuthenticationTermsCoordinatorResult) -> Void)?
+    var callback: (@MainActor (AuthenticationRegistrationStageResult) -> Void)?
     
     // MARK: - Setup
     
     @MainActor init(parameters: AuthenticationTermsCoordinatorParameters) {
         self.parameters = parameters
         
-        let policies = parameters.policies.map { AuthenticationTermsPolicy(url: $0.value, title: $0.key, description: parameters.homeserverAddress) }
+        let subtitle = HomeserverAddress.displayable(parameters.homeserverAddress)
+        let policies = parameters.localizedPolicies.compactMap { AuthenticationTermsPolicy(url: $0.url, title: $0.name, subtitle: subtitle) }
+        
         let viewModel = AuthenticationTermsViewModel(policies: policies)
         let view = AuthenticationTermsScreen(viewModel: viewModel.context)
         authenticationTermsViewModel = viewModel
         authenticationTermsHostingController = VectorHostingController(rootView: view)
+        authenticationTermsHostingController.vc_removeBackTitle()
+        authenticationTermsHostingController.enableNavigationBarScrollEdgeAppearance = true
         
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: authenticationTermsHostingController)
     }
@@ -136,9 +134,17 @@ final class AuthenticationTermsCoordinator: Coordinator, Presentable {
         }
     }
     
-    /// Present the policy in a modal.
+    /// Present the policy page in a modal.
     @MainActor private func show(_ policy: AuthenticationTermsPolicy) {
-        // TODO
+        guard let url = URL(string: policy.url) else {
+            authenticationTermsViewModel.displayError(.invalidPolicyURL)
+            return
+        }
+        
+        let safariViewController = SFSafariViewController(url: url)
+        safariViewController.modalPresentationStyle = .pageSheet
+        
+        toPresentable().present(safariViewController, animated: true)
     }
     
     /// Processes an error to either update the flow or display it to the user.

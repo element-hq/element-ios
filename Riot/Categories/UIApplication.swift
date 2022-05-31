@@ -37,4 +37,12 @@ extension UIApplication {
         return sendAction(#selector(resignFirstResponder), to: nil, from: nil, for: nil)
     }
     
+    /// Open system application settings
+    func vc_openSettings(completion: ((Bool) -> Void)? = nil) {
+        guard let applicationSettingsURL = URL(string: UIApplication.openSettingsURLString) else {
+            completion?(false)
+            return
+        }
+        UIApplication.shared.open(applicationSettingsURL, completionHandler: completion)
+    }
 }

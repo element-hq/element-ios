@@ -37,6 +37,7 @@ targets:
     - target: DesignKit
     - target: CommonKit
     - package: Mapbox
+    - package: OrderedCollections
 
     configFiles:
       Debug: Debug.xcconfig

@@ -22,3 +22,4 @@
 "NSCalendarsUsageDescription" = "See your scheduled meetings in the app.";
 "NSFaceIDUsageDescription" = "Face ID is used to access your app.";
 "NSLocationWhenInUseUsageDescription" = "When you share your location to people, Element needs access to show them a map.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "When you share your location to people, Element needs access to show them a map.";

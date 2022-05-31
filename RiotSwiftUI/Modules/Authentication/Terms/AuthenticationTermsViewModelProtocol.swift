@@ -18,7 +18,7 @@ import Foundation
 
 protocol AuthenticationTermsViewModelProtocol {
     
-    @MainActor var callback: ((AuthenticationTermsViewModelResult) -> Void)? { get set }
+    var callback: (@MainActor (AuthenticationTermsViewModelResult) -> Void)? { get set }
     var context: AuthenticationTermsViewModelType.Context { get }
     
     /// Display an error to the user.

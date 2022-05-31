@@ -3519,6 +3519,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     BOOL showThreadOption = [self showThreadOptionForEvent:selectedEvent];
     if (showThreadOption && [self canCopyEvent:selectedEvent andCell:cell])
     {
+        MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
+        MXKRoomBubbleCellData *cellData = roomBubbleTableViewCell.bubbleData;
         [self.eventMenuBuilder addItemWithType:EventMenuItemTypeCopy
                                         action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCopy]
                                                                         style:UIAlertActionStyleDefault
@@ -3527,7 +3529,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             
             [self cancelEventSelection];
             
-            [self copyEvent:selectedEvent inCell:cell];
+            [self copyEvent:selectedEvent inCell:cell withCellData:cellData];
         }]];
     }
     
@@ -4275,36 +4277,12 @@ static CGSize kThreadListBarButtonItemImageSize;
                         default:
                         {
                             MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
-                            NSString *format = tappedEvent.content[@"format"];
-                            NSString *formattedBody = tappedEvent.content[@"formatted_body"];
-                            //  if an html formatted body exists
-                            if ([format isEqualToString:kMXRoomMessageFormatHTML] && formattedBody)
+                            URLValidationResult *result = [URLValidator validateTappedURL:url in:tappedEvent];
+                            if (result.shouldShowConfirmationAlert)
                             {
-                                NSURL *visibleURL = [formattedBodyParser getVisibleURLForURL:url inFormattedBody:formattedBody];
-                                
-                                if (visibleURL && ![url isEqual:visibleURL])
-                                {
-                                    //  urls are different, show confirmation alert
-                                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[VectorL10n externalLinkConfirmationTitle] message:[VectorL10n externalLinkConfirmationMessage:visibleURL.absoluteString :url.absoluteString] preferredStyle:UIAlertControllerStyleAlert];
-                                    
-                                    UIAlertAction *continueAction = [UIAlertAction actionWithTitle:[VectorL10n continue] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                                        // Try to open the link
-                                        [[UIApplication sharedApplication] vc_open:url completionHandler:^(BOOL success) {
-                                            if (!success)
-                                            {
-                                                [self showUnableToOpenLinkErrorAlert];
-                                            }
-                                        }];
-                                    }];
-                                    
-                                    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:[VectorL10n cancel] style:UIAlertActionStyleCancel handler:nil];
-                                    
-                                    [alert addAction:continueAction];
-                                    [alert addAction:cancelAction];
-                                    
-                                    [self presentViewController:alert animated:YES completion:nil];
-                                    return NO;
-                                }
+                                [self showDifferentURLsAlertFor:url
+                                                  visibleURLString:result.visibleURLString];
+                                return NO;
                             }
                             // Try to open the link
                             [[UIApplication sharedApplication] vc_open:url completionHandler:^(BOOL success) {
@@ -4428,6 +4406,29 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
     
     return roomInputToolbarView;
+}
+
+- (void)showDifferentURLsAlertFor:(NSURL *)url visibleURLString:(NSString *)visibleURLString
+{
+    //  urls are different, show confirmation alert
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[VectorL10n externalLinkConfirmationTitle] message:[VectorL10n externalLinkConfirmationMessage:visibleURLString :url.absoluteString] preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction *continueAction = [UIAlertAction actionWithTitle:[VectorL10n continue] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        // Try to open the link
+        [[UIApplication sharedApplication] vc_open:url completionHandler:^(BOOL success) {
+            if (!success)
+            {
+                [self showUnableToOpenLinkErrorAlert];
+            }
+        }];
+    }];
+
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:[VectorL10n cancel] style:UIAlertActionStyleCancel handler:nil];
+
+    [alert addAction:continueAction];
+    [alert addAction:cancelAction];
+
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - RoomDataSourceDelegate
@@ -6678,10 +6679,12 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     RoomContextualMenuItem *copyMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionCopy];
     copyMenuItem.isEnabled = [self canCopyEvent:event andCell:cell];
+    MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
+    MXKRoomBubbleCellData *cellData = roomBubbleTableViewCell.bubbleData;
     copyMenuItem.action = ^{
         MXStrongifyAndReturnIfNil(self);
         
-        [self copyEvent:event inCell:cell];
+        [self copyEvent:event inCell:cell withCellData:cellData];
     };
     
     return copyMenuItem;
@@ -6739,14 +6742,14 @@ static CGSize kThreadListBarButtonItemImageSize;
     return result;
 }
 
-- (void)copyEvent:(MXEvent*)event inCell:(id<MXKCellRendering>)cell
+- (void)copyEvent:(MXEvent*)event inCell:(id<MXKCellRendering>)cell withCellData:(MXKRoomBubbleCellData *)cellData
 {
     MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
-    MXKAttachment *attachment = roomBubbleTableViewCell.bubbleData.attachment;
+    MXKAttachment *attachment = cellData.attachment;
     
     if (!attachment)
     {
-        NSArray *components = roomBubbleTableViewCell.bubbleData.bubbleComponents;
+        NSArray *components = cellData.bubbleComponents;
         MXKRoomBubbleComponent *selectedComponent;
         for (selectedComponent in components)
         {

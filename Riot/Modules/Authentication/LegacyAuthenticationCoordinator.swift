@@ -45,7 +45,7 @@ final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinator
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    var completion: ((AuthenticationCoordinatorResult) -> Void)?
+    var callback: ((AuthenticationCoordinatorResult) -> Void)?
     
     var customServerFieldsVisible = false {
         didSet {
@@ -143,7 +143,7 @@ final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinator
     }
     
     private func authenticationDidComplete() {
-        completion?(.didComplete)
+        callback?(.didComplete)
     }
 }
 
@@ -195,9 +195,9 @@ extension LegacyAuthenticationCoordinator: AuthenticationViewControllerDelegate 
             authenticationType = .other
         }
         
-        completion?(.didLogin(session: session,
-                              authenticationFlow: authenticationViewController.authType.flow,
-                              authenticationType: authenticationType))
+        callback?(.didLogin(session: session,
+                            authenticationFlow: authenticationViewController.authType.flow,
+                            authenticationType: authenticationType))
     }
 }
 

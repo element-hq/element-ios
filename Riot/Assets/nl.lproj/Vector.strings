@@ -141,8 +141,8 @@
 "directory_cell_title" = "Bladeren door de catalogus";
 "directory_cell_description" = "%tu kamers";
 "directory_search_results_title" = "Bladeren door catalogusresultaten";
-"directory_search_results" = "%tu resultaten gevonden voor %@";
-"directory_search_results_more_than" = ">%tu resultaten gevonden voor %@";
+"directory_search_results" = "%1$tu resultaten gevonden voor %2$@";
+"directory_search_results_more_than" = ">%1$tu resultaten gevonden voor %2$@";
 "directory_searching_title" = "Catalogus wordt doorzocht…";
 "directory_search_fail" = "Ophalen van gegevens is mislukt";
 // Contacts

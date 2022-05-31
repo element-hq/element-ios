@@ -538,7 +538,7 @@
         // Select the right text view for measurement
         UITextView *selectedTextView = (removeVerticalInset ? measurementTextViewWithoutInset : measurementTextView);
         
-        selectedTextView.frame = CGRectMake(0, 0, _maxTextViewWidth, MAXFLOAT);
+        selectedTextView.frame = CGRectMake(0, 0, _maxTextViewWidth, 0);
         selectedTextView.attributedText = attributedText;
             
         CGSize size = [selectedTextView sizeThatFits:selectedTextView.frame.size];

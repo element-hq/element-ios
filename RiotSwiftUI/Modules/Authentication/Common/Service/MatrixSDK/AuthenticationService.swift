@@ -30,7 +30,7 @@ class AuthenticationService: NSObject {
     // MARK: Private
     
     /// The rest client used to make authentication requests.
-    private var client: MXRestClient
+    private var client: AuthenticationRestClient
     /// The object used to create a new `MXSession` when authentication has completed.
     private var sessionCreator = SessionCreator()
     
@@ -93,7 +93,7 @@ class AuthenticationService: NSObject {
                                  preferredLoginMode: loginFlows.loginMode,
                                  loginModeSupportedTypes: loginFlows.supportedLoginTypes)
         
-        let loginWizard = LoginWizard()
+        let loginWizard = LoginWizard(client: client)
         self.loginWizard = loginWizard
         
         if flow == .register {
@@ -138,9 +138,10 @@ class AuthenticationService: NSObject {
         registrationWizard = nil
         
         // The previously used homeserver is re-used as `startFlow` will be called again a replace it anyway.
-        self.state = AuthenticationState(flow: .login, homeserverAddress: state.homeserver.address)
+        let address = state.homeserver.addressFromUser ?? state.homeserver.address
+        self.state = AuthenticationState(flow: .login, homeserverAddress: address)
     }
-
+    
     /// Create a session after a SSO successful login
     func makeSessionFromSSO(credentials: MXCredentials) -> MXSession {
         sessionCreator.createSession(credentials: credentials, client: client)

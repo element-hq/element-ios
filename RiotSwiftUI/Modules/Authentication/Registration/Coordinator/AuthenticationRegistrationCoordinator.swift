@@ -180,8 +180,6 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
             switch authenticationError {
             case .invalidHomeserver:
                 authenticationRegistrationViewModel.displayError(.invalidHomeserver)
-            case .dictionaryError:
-                authenticationRegistrationViewModel.displayError(.unknown)
             case .loginFlowNotCalled:
                 #warning("Reset the flow")
             case .missingMXRestClient:
@@ -194,7 +192,7 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
             switch registrationError {
             case .registrationDisabled:
                 authenticationRegistrationViewModel.displayError(.registrationDisabled)
-            case .createAccountNotCalled, .missingThreePIDData, .missingThreePIDURL, .threePIDClientFailure, .threePIDValidationFailure:
+            case .createAccountNotCalled, .missingThreePIDData, .missingThreePIDURL, .threePIDClientFailure, .threePIDValidationFailure, .waitingForThreePIDValidation, .invalidPhoneNumber:
                 // Shouldn't happen at this stage
                 authenticationRegistrationViewModel.displayError(.unknown)
             }

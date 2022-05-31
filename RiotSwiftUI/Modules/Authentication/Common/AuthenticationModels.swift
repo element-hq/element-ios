@@ -34,8 +34,6 @@ enum AuthenticationType {
 
 /// Errors that can be thrown from `AuthenticationService`.
 enum AuthenticationError: String, LocalizedError {
-    /// A failure to convert a struct into a dictionary.
-    case dictionaryError
     case invalidHomeserver
     case loginFlowNotCalled
     case missingMXRestClient
@@ -58,11 +56,17 @@ enum RegistrationError: String, LocalizedError {
     case missingThreePIDURL
     case threePIDValidationFailure
     case threePIDClientFailure
+    case waitingForThreePIDValidation
+    case invalidPhoneNumber
     
     var errorDescription: String? {
         switch self {
         case .registrationDisabled:
             return VectorL10n.loginErrorRegistrationIsNotSupported
+        case .threePIDValidationFailure, .threePIDClientFailure:
+            return VectorL10n.authMsisdnValidationError
+        case .invalidPhoneNumber:
+            return VectorL10n.authenticationVerifyMsisdnInvalidPhoneNumber
         default:
             return VectorL10n.errorCommonMessage
         }
@@ -71,7 +75,7 @@ enum RegistrationError: String, LocalizedError {
 
 /// Errors that can be thrown from `LoginWizard`
 enum LoginError: String, Error {
-    case unimplemented
+    case resetPasswordNotStarted
 }
 
 /// Represents an SSO Identity Provider as provided in a login flow.
