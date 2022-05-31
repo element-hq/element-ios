@@ -643,6 +643,7 @@ Tap the + to start adding people.";
 "settings_calls_stun_server_fallback_description" = "Allow fallback call assist server %@ when your homeserver does not offer one (your IP address would be shared during a call).";
 
 "settings_integrations_allow_button" = "Manage integrations";
+/* The %@ placeholder will be replaced with the integration manager's URL. */
 "settings_integrations_allow_description" = "Use an integration manager (%@) to manage bots, bridges, widgets and sticker packs.\n\nIntegration managers receive configuration data, and can modify widgets, send room invites and set power levels on your behalf.";
 
 "settings_ui_language" = "Language";

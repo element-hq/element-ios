@@ -127,8 +127,8 @@
 "search_no_result" = "Inga resultat";
 "search_in_progress" = "Söker…";
 "directory_cell_description" = "%tu rum";
-"directory_search_results" = "%tu resultat hittades för %@";
-"directory_search_results_more_than" = ">%tu resultat hittades för %@";
+"directory_search_results" = "%1$tu resultat hittades för %2$@";
+"directory_search_results_more_than" = ">%1$tu resultat hittades för %2$@";
 // Contacts
 "contacts_address_book_section" = "LOKALA KONTAKTER";
 "contacts_address_book_matrix_users_toggle" = "Endast Matrix-användare";
