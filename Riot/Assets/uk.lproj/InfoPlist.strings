@@ -6,3 +6,4 @@
 "NSCalendarsUsageDescription" = "Переглядайте свої заплановані зустрічі в додатку.";
 "NSFaceIDUsageDescription" = "Face ID використовується для доступу до вашого додатку.";
 "NSLocationWhenInUseUsageDescription" = "Коли ви надсилаєте комусь дані про своє місцеперебування, Element потребує дозволу, щоб показати їм карту.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Коли ви надсилаєте комусь дані про своє місцеперебування, Element потребує дозволу, щоб показати їм карту.";
