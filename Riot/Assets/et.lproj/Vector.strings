@@ -2266,3 +2266,8 @@
 "directory_search_results_more_than" = ">%2$@ kohta leidsin %1$tu tulemust";
 /* The placeholder %1$tu will be replaced with a number and %2$@ with the user's search terms. */
 "directory_search_results" = "%2$@ kohta leidsin %1$tu tulemust";
+"location_sharing_allow_background_location_message" = "Kui sa soovid praegust asukohta jagada reaalajas, siis Element vajab taustal töötades õigusi asukohta tuvastada. Selleks klõpsi Seadistused > Asukoht ning vali Alati";
+"location_sharing_allow_background_location_cancel_action" = "Mitte praegu";
+"location_sharing_allow_background_location_validate_action" = "Seadistused";
+"location_sharing_allow_background_location_title" = "Luba ligipääs asukohale";
+"settings_labs_enable_live_location_sharing" = "Praeguse asukoha jagamine reaalajas (funktsionaalsus on arendamisel ning ajutiselt on asukohad jututoa ajaloos näha)";
