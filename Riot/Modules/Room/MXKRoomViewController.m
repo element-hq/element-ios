@@ -1903,6 +1903,11 @@
         return;
     }
     
+    __block UserIndicatorCancel cancelIndicator;
+    NSTimer *indicatorTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 repeats:NO block:^(NSTimer * _Nonnull timer) {
+        cancelIndicator = [self.userIndicatorStore presentLoadingWithLabel:[VectorL10n homeSyncing] isInteractionBlocking:NO];
+    }];
+    
     // Store the current height of the first bubble (if any)
     backPaginationSavedFirstBubbleHeight = 0;
     if (direction == MXTimelineDirectionBackwards && [roomDataSource tableView:_bubblesTableView numberOfRowsInSection:0])
@@ -1987,6 +1992,12 @@
         {
             [self updateCurrentEventIdAtTableBottom:NO];
         }
+        
+        [indicatorTimer invalidate];
+        
+        if (cancelIndicator) {
+            cancelIndicator();
+        }
 
     } failure:^(NSError *error) {
         
@@ -2002,6 +2013,11 @@
         
         self.bubbleTableViewDisplayInTransition = NO;
         
+        [indicatorTimer invalidate];
+        
+        if (cancelIndicator) {
+            cancelIndicator();
+        }
     }];
 }
 
