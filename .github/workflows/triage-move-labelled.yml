@@ -99,7 +99,7 @@ jobs:
     name: Spaces issues to Delight project board
     runs-on: ubuntu-latest
     if: >
-        contains(github.event.issue.labels.*.name, 'Team-Delight')
+        contains(github.event.issue.labels.*.name, 'Team: Delight')
     steps:
       - uses: octokit/graphql-action@v2.x
         with:
