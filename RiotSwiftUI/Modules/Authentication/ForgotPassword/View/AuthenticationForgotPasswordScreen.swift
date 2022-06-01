@@ -109,9 +109,7 @@ struct AuthenticationForgotPasswordScreen: View {
     @ViewBuilder
     /// The view's background, which will show a gradient in light mode after sending the email.
     var background: some View {
-        if viewModel.viewState.hasSentEmail {
-            OnboardingBreakerScreenBackground()
-        }
+        OnboardingBreakerScreenBackground(viewModel.viewState.hasSentEmail)
     }
     
     /// A simple toolbar with a cancel button.

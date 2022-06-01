@@ -20,6 +20,9 @@ struct OnboardingBreakerScreenBackground: View {
 
     @Environment(\.theme) private var theme
 
+    /// Flag indicating whether the gradient enabled on light theme
+    var isGradientEnabled: Bool
+
     enum Constants {
         static let gradientColors = [
             Color(red: 0.646, green: 0.95, blue: 0.879),
@@ -31,12 +34,16 @@ struct OnboardingBreakerScreenBackground: View {
     /// The background gradient used with light mode.
     let gradient = Gradient (colors: Constants.gradientColors)
 
+    init(_ isGradientEnabled: Bool = true) {
+        self.isGradientEnabled = isGradientEnabled
+    }
+
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .top) {
                 theme.colors.background
 
-                if !theme.isDark {
+                if isGradientEnabled && !theme.isDark {
                     LinearGradient(gradient: gradient,
                                    startPoint: .leading,
                                    endPoint: .trailing)
