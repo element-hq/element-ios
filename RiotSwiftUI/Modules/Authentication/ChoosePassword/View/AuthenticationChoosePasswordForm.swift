@@ -46,7 +46,7 @@ struct AuthenticationChoosePasswordForm: View {
     /// The title, message and icon at the top of the screen.
     var header: some View {
         VStack(spacing: 8) {
-            OnboardingIconImage(image: Asset.Images.authenticationEmailIcon)
+            OnboardingIconImage(image: Asset.Images.authenticationPasswordIcon)
                 .padding(.bottom, 8)
             
             Text(VectorL10n.authenticationChoosePasswordInputTitle)
