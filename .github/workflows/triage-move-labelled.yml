@@ -9,15 +9,15 @@ jobs:
     name: Add Z-Labs label for features behind labs flags
     runs-on: ubuntu-latest
     if: >
-        contains(github.event.issue.labels.*.name, 'A-Maths') || 
-        contains(github.event.issue.labels.*.name, 'A-Message-Pinning') ||
-        contains(github.event.issue.labels.*.name, 'A-Polls') ||
-        contains(github.event.issue.labels.*.name, 'A-Location-Sharing') ||
-        contains(github.event.issue.labels.*.name, 'A-Message-Bubbles') ||
-        contains(github.event.issue.labels.*.name, 'Z-IA') ||
-        contains(github.event.issue.labels.*.name, 'A-Themes-Custom') ||
-        contains(github.event.issue.labels.*.name, 'A-E2EE-Dehydration') ||
-        contains(github.event.issue.labels.*.name, 'A-Tags')
+      contains(github.event.issue.labels.*.name, 'A-Maths') || 
+      contains(github.event.issue.labels.*.name, 'A-Message-Pinning') ||
+      contains(github.event.issue.labels.*.name, 'A-Polls') ||
+      contains(github.event.issue.labels.*.name, 'A-Location-Sharing') ||
+      contains(github.event.issue.labels.*.name, 'A-Message-Bubbles') ||
+      contains(github.event.issue.labels.*.name, 'Z-IA') ||
+      contains(github.event.issue.labels.*.name, 'A-Themes-Custom') ||
+      contains(github.event.issue.labels.*.name, 'A-E2EE-Dehydration') ||
+      contains(github.event.issue.labels.*.name, 'A-Tags')
     steps:
       - uses: actions/github-script@v5
         with:
@@ -44,14 +44,14 @@ jobs:
     name: P1 X-Needs-Design to Design project board
     runs-on: ubuntu-latest
     if: >
-        contains(github.event.issue.labels.*.name, 'X-Needs-Design') &&
-        (contains(github.event.issue.labels.*.name, 'S-Critical') &&
-         (contains(github.event.issue.labels.*.name, 'O-Frequent') ||
-          contains(github.event.issue.labels.*.name, 'O-Occasional')) ||
-         contains(github.event.issue.labels.*.name, 'S-Major') &&
-         contains(github.event.issue.labels.*.name, 'O-Frequent') ||
-         contains(github.event.issue.labels.*.name, 'A11y') &&
-         contains(github.event.issue.labels.*.name, 'O-Frequent'))
+      contains(github.event.issue.labels.*.name, 'X-Needs-Design') &&
+      (contains(github.event.issue.labels.*.name, 'S-Critical') &&
+       (contains(github.event.issue.labels.*.name, 'O-Frequent') ||
+        contains(github.event.issue.labels.*.name, 'O-Occasional')) ||
+       contains(github.event.issue.labels.*.name, 'S-Major') &&
+       contains(github.event.issue.labels.*.name, 'O-Frequent') ||
+       contains(github.event.issue.labels.*.name, 'A11y') &&
+       contains(github.event.issue.labels.*.name, 'O-Frequent'))
     steps:
       - uses: octokit/graphql-action@v2.x
         id: add_to_project
@@ -75,7 +75,7 @@ jobs:
     name: X-Needs-Product to Design project board
     runs-on: ubuntu-latest
     if: >
-        contains(github.event.issue.labels.*.name, 'X-Needs-Product')
+      contains(github.event.issue.labels.*.name, 'X-Needs-Product')
     steps:
       - uses: octokit/graphql-action@v2.x
         id: add_to_project
@@ -99,10 +99,7 @@ jobs:
     name: Spaces issues to Delight project board
     runs-on: ubuntu-latest
     if: >
-        contains(github.event.issue.labels.*.name, 'A-Spaces') ||
-        contains(github.event.issue.labels.*.name, 'A-Space-Settings') ||
-        contains(github.event.issue.labels.*.name, 'A-Subspaces') ||
-        contains(github.event.issue.labels.*.name, 'Z-IA')
+        contains(github.event.issue.labels.*.name, 'Team: Delight')
     steps:
       - uses: octokit/graphql-action@v2.x
         with:
@@ -125,7 +122,7 @@ jobs:
     name: A-Voice Messages to voice message board
     runs-on: ubuntu-latest
     if: >
-        contains(github.event.issue.labels.*.name, 'A-Voice Messages')
+      contains(github.event.issue.labels.*.name, 'A-Voice Messages')
     steps:
       - uses: octokit/graphql-action@v2.x
         with:
@@ -148,7 +145,7 @@ jobs:
     name: A-Threads to Thread board
     runs-on: ubuntu-latest
     if: >
-        contains(github.event.issue.labels.*.name, 'A-Threads')
+      contains(github.event.issue.labels.*.name, 'A-Threads')
     steps:
       - uses: octokit/graphql-action@v2.x
         with:
@@ -171,7 +168,7 @@ jobs:
     name: A-Message-Bubbles to Message bubble board
     runs-on: ubuntu-latest
     if: >
-        contains(github.event.issue.labels.*.name, 'A-Message-Bubbles')
+      contains(github.event.issue.labels.*.name, 'A-Message-Bubbles')
     steps:
       - uses: octokit/graphql-action@v2.x
         with:
@@ -194,7 +191,7 @@ jobs:
     name: Z-FTUE to FTUE board
     runs-on: ubuntu-latest
     if: >
-        contains(github.event.issue.labels.*.name, 'Z-FTUE')
+      contains(github.event.issue.labels.*.name, 'Z-FTUE')
     steps:
       - uses: octokit/graphql-action@v2.x
         with:
@@ -212,12 +209,12 @@ jobs:
         env:
           PROJECT_ID: "PN_kwDOAM0swc4AAqVx"
           GITHUB_TOKEN: ${{ secrets.ELEMENT_BOT_TOKEN }}
-          
+
   move_WTF_issues:
     name: Z-WTF to WTF board
     runs-on: ubuntu-latest
     if: >
-        contains(github.event.issue.labels.*.name, 'Z-WTF')
+      contains(github.event.issue.labels.*.name, 'Z-WTF')
     steps:
       - uses: octokit/graphql-action@v2.x
         with:
