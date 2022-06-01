@@ -65,6 +65,9 @@ struct LocationSharingMapView: UIViewRepresentable {
         
         let mapView = self.makeMapView()
         mapView.delegate = context.coordinator
+        let panGesture = UIPanGestureRecognizer(target: context.coordinator, action: #selector(context.coordinator.didPan))
+        panGesture.delegate = context.coordinator
+        mapView.addGestureRecognizer(panGesture)
         return mapView
     }
     
@@ -106,11 +109,12 @@ struct LocationSharingMapView: UIViewRepresentable {
 @available(iOS 14, *)
 extension LocationSharingMapView {
     
-    class Coordinator: NSObject, MGLMapViewDelegate {
+    class Coordinator: NSObject, MGLMapViewDelegate, UIGestureRecognizerDelegate {
         
         // MARK: - Properties
 
         var locationSharingMapView: LocationSharingMapView
+        var mapCenterCoordinate: CLLocationCoordinate2D?
         
         // MARK: - Setup
 
@@ -158,13 +162,7 @@ extension LocationSharingMapView {
         }
         
         func mapView(_ mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
-            let mapCenterCoordinate = mapView.centerCoordinate
-            // Prevent this function to set pinLocation when the map is openning
-            guard let userLocation = locationSharingMapView.userLocation,
-                  !userLocation.isEqual(to: mapCenterCoordinate, precision: 0.0000000001) else {
-                return
-            }
-            locationSharingMapView.mapCenterCoordinate = mapCenterCoordinate
+            self.mapCenterCoordinate = mapView.centerCoordinate
         }
         
         // MARK: Callout
@@ -182,10 +180,23 @@ extension LocationSharingMapView {
         }
          
         func mapView(_ mapView: MGLMapView, tapOnCalloutFor annotation: MGLAnnotation) {
-            
             locationSharingMapView.onCalloutTap?(annotation)
             // Hide the callout
             mapView.deselectAnnotation(annotation, animated: true)
+        }
+        
+        // MARK: UIGestureRecognizer
+        
+        func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+            return gestureRecognizer is UIPanGestureRecognizer
+        }
+        
+        @objc
+        func didPan() {
+            guard let mapCenterCoordinate = mapCenterCoordinate else {
+                return
+            }
+            locationSharingMapView.mapCenterCoordinate = mapCenterCoordinate
         }
     }
 }
