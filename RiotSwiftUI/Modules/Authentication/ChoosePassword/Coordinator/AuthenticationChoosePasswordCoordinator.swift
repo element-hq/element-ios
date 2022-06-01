@@ -110,7 +110,7 @@ final class AuthenticationChoosePasswordCoordinator: Coordinator, Presentable {
         loadingIndicator = nil
     }
     
-    /// Sends a validation email to the supplied address and then begins polling the server.
+    /// Submits a reset password request with signing out of all devices option
     @MainActor private func submitPassword(_ password: String, signoutAllDevices: Bool) {
         startLoading()
 

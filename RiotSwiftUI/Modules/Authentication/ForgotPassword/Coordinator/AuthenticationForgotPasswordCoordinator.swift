@@ -23,9 +23,9 @@ struct AuthenticationForgotPasswordCoordinatorParameters {
 }
 
 enum AuthenticationForgotPasswordCoordinatorResult {
-    /// Show the display name and/or avatar screens for the user to personalize their profile.
+    /// Forgot password flow succeeded
     case success
-    /// Continue the flow by skipping the display name and avatar screens.
+    /// Forgot password flow cancelled
     case cancel
 }
 

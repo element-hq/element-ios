@@ -25,22 +25,9 @@ class AuthenticationChoosePasswordViewModelTests: XCTestCase {
         let context = viewModel.context
 
         // Given a view model where the user hasn't yet sent the verification email.
-        XCTAssert(context.viewState.bindings.password.isEmpty, "The view model should start with an empty password.")
+        XCTAssert(context.password.isEmpty, "The view model should start with an empty password.")
         XCTAssert(context.viewState.hasInvalidPassword, "The view model should start with an invalid password.")
         XCTAssertFalse(context.signoutAllDevices, "The view model should start with sign out of all devices unchecked.")
     }
 
-    @MainActor func testToggleSignoutAllDevices() async {
-
-        let viewModel = AuthenticationChoosePasswordViewModel()
-        let context = viewModel.context
-
-        viewModel.process(viewAction: .toggleSignoutAllDevices)
-
-        XCTAssertTrue(context.signoutAllDevices, "The view model should update signoutAllDevices.")
-
-        viewModel.process(viewAction: .toggleSignoutAllDevices)
-
-        XCTAssertFalse(context.signoutAllDevices, "The view model should update signoutAllDevices again.")
-    }
 }

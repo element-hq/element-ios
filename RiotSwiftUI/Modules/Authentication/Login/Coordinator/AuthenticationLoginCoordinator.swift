@@ -53,7 +53,7 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
     private var navigationRouter: NavigationRouterType { parameters.navigationRouter }
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol
     private var waitingIndicator: UserIndicator?
-    private var errorIndicator: UserIndicator?
+    private var successIndicator: UserIndicator?
     
     /// The authentication service used for the login.
     private var authenticationService: AuthenticationService { parameters.authenticationService }
@@ -250,15 +250,16 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
         let parameters = AuthenticationForgotPasswordCoordinatorParameters(navigationRouter: modalRouter,
                                                                            loginWizard: loginWizard)
         let coordinator = AuthenticationForgotPasswordCoordinator(parameters: parameters)
-        coordinator.callback = { [weak self] result in
-            guard let self = self else { return }
+        coordinator.callback = { [weak self, weak coordinator] result in
+            guard let self = self, let coordinator = coordinator else { return }
             switch result {
             case .success:
                 self.navigationRouter.dismissModule(animated: true, completion: nil)
-                self.errorIndicator = self.indicatorPresenter.present(.success(label: VectorL10n.done))
+                self.successIndicator = self.indicatorPresenter.present(.success(label: VectorL10n.done))
             case .cancel:
                 self.navigationRouter.dismissModule(animated: true, completion: nil)
             }
+            self.remove(childCoordinator: coordinator)
         }
 
         coordinator.start()
