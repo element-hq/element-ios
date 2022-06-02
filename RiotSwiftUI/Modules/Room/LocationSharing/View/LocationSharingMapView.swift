@@ -58,6 +58,9 @@ struct LocationSharingMapView: UIViewRepresentable {
     
     /// Publish view errors if any
     let errorSubject: PassthroughSubject<LocationSharingViewError, Never>
+    
+    /// Called when the user pan on the map
+    var userDidPan: (() -> Void)?
 
     // MARK: - UIViewRepresentable
     
@@ -65,6 +68,9 @@ struct LocationSharingMapView: UIViewRepresentable {
         
         let mapView = self.makeMapView()
         mapView.delegate = context.coordinator
+        let panGesture = UIPanGestureRecognizer(target: context.coordinator, action: #selector(context.coordinator.didPan))
+        panGesture.delegate = context.coordinator
+        mapView.addGestureRecognizer(panGesture)
         return mapView
     }
     
@@ -77,7 +83,7 @@ struct LocationSharingMapView: UIViewRepresentable {
             mapView.setCenter(highlightedAnnotation.coordinate, zoomLevel: Constants.mapZoomLevel, animated: false)
         }
         
-        if self.showsUserLocation && mapCenterCoordinate == nil {
+        if self.showsUserLocation {
             mapView.showsUserLocation = true
             mapView.userTrackingMode = .follow
         } else {
@@ -106,7 +112,7 @@ struct LocationSharingMapView: UIViewRepresentable {
 @available(iOS 14, *)
 extension LocationSharingMapView {
     
-    class Coordinator: NSObject, MGLMapViewDelegate {
+    class Coordinator: NSObject, MGLMapViewDelegate, UIGestureRecognizerDelegate {
         
         // MARK: - Properties
 
@@ -126,7 +132,7 @@ extension LocationSharingMapView {
                 return LocationAnnotationView(userLocationAnnotation: userLocationAnnotation)
             } else if let pinLocationAnnotation = annotation as? PinLocationAnnotation {
                 return LocationAnnotationView(pinLocationAnnotation: pinLocationAnnotation)
-            } else if annotation is MGLUserLocation && locationSharingMapView.mapCenterCoordinate == nil, let currentUserAvatarData = locationSharingMapView.userAvatarData {
+            } else if annotation is MGLUserLocation, let currentUserAvatarData = locationSharingMapView.userAvatarData {
                 // Replace default current location annotation view with a UserLocationAnnotatonView when the map is center on user location
                 return LocationAnnotationView(avatarData: currentUserAvatarData)
             }
@@ -158,13 +164,7 @@ extension LocationSharingMapView {
         }
         
         func mapView(_ mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
-            let mapCenterCoordinate = mapView.centerCoordinate
-            // Prevent this function to set pinLocation when the map is openning
-            guard let userLocation = locationSharingMapView.userLocation,
-                  !userLocation.isEqual(to: mapCenterCoordinate, precision: 0.0000000001) else {
-                return
-            }
-            locationSharingMapView.mapCenterCoordinate = mapCenterCoordinate
+            locationSharingMapView.mapCenterCoordinate = mapView.centerCoordinate
         }
         
         // MARK: Callout
@@ -182,10 +182,20 @@ extension LocationSharingMapView {
         }
          
         func mapView(_ mapView: MGLMapView, tapOnCalloutFor annotation: MGLAnnotation) {
-            
             locationSharingMapView.onCalloutTap?(annotation)
             // Hide the callout
             mapView.deselectAnnotation(annotation, animated: true)
+        }
+        
+        // MARK: UIGestureRecognizer
+        
+        func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+            return gestureRecognizer is UIPanGestureRecognizer
+        }
+        
+        @objc
+        func didPan() {
+            locationSharingMapView.userDidPan?()
         }
     }
 }
