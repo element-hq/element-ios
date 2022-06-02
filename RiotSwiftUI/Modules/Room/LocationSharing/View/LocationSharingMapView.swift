@@ -58,6 +58,9 @@ struct LocationSharingMapView: UIViewRepresentable {
     
     /// Publish view errors if any
     let errorSubject: PassthroughSubject<LocationSharingViewError, Never>
+    
+    /// Called when the user pan on the map
+    var userDidPan: (() -> Void)?
 
     // MARK: - UIViewRepresentable
     
@@ -80,7 +83,7 @@ struct LocationSharingMapView: UIViewRepresentable {
             mapView.setCenter(highlightedAnnotation.coordinate, zoomLevel: Constants.mapZoomLevel, animated: false)
         }
         
-        if self.showsUserLocation && mapCenterCoordinate == nil {
+        if self.showsUserLocation {
             mapView.showsUserLocation = true
             mapView.userTrackingMode = .follow
         } else {
@@ -114,7 +117,6 @@ extension LocationSharingMapView {
         // MARK: - Properties
 
         var locationSharingMapView: LocationSharingMapView
-        var mapCenterCoordinate: CLLocationCoordinate2D?
         
         // MARK: - Setup
 
@@ -130,7 +132,7 @@ extension LocationSharingMapView {
                 return LocationAnnotationView(userLocationAnnotation: userLocationAnnotation)
             } else if let pinLocationAnnotation = annotation as? PinLocationAnnotation {
                 return LocationAnnotationView(pinLocationAnnotation: pinLocationAnnotation)
-            } else if annotation is MGLUserLocation && locationSharingMapView.mapCenterCoordinate == nil, let currentUserAvatarData = locationSharingMapView.userAvatarData {
+            } else if annotation is MGLUserLocation, let currentUserAvatarData = locationSharingMapView.userAvatarData {
                 // Replace default current location annotation view with a UserLocationAnnotatonView when the map is center on user location
                 return LocationAnnotationView(avatarData: currentUserAvatarData)
             }
@@ -162,7 +164,7 @@ extension LocationSharingMapView {
         }
         
         func mapView(_ mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
-            self.mapCenterCoordinate = mapView.centerCoordinate
+            locationSharingMapView.mapCenterCoordinate = mapView.centerCoordinate
         }
         
         // MARK: Callout
@@ -193,10 +195,7 @@ extension LocationSharingMapView {
         
         @objc
         func didPan() {
-            guard let mapCenterCoordinate = mapCenterCoordinate else {
-                return
-            }
-            locationSharingMapView.mapCenterCoordinate = mapCenterCoordinate
+            locationSharingMapView.userDidPan?()
         }
     }
 }

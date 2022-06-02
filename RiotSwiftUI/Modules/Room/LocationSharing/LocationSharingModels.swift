@@ -39,6 +39,7 @@ enum LocationSharingViewAction {
     case goToUserLocation
     case startLiveSharing
     case shareLiveLocation(timeout: LiveLocationSharingTimeout)
+    case userDidPan
 }
 
 enum LocationSharingViewModelResult {
@@ -70,9 +71,7 @@ struct LocationSharingViewState: BindableState {
     var highlightedAnnotation: LocationAnnotation?
 
     /// Indicates whether the user has moved around the map to drop a pin somewhere other than their current location
-    var isPinDropSharing: Bool {
-        return bindings.pinLocation != nil
-    }
+    var isPinDropSharing: Bool = false
     
     var showLoadingIndicator: Bool = false
     
