@@ -136,7 +136,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     
     self.defaultIdentityServerUrl = RiotSettings.shared.identityServerUrlString;
     
-    self.welcomeImageView.image = AssetSharedImages.horizontalLogo.image;
+    self.welcomeImageView.image = [AssetSharedImages.horizontalLogo.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     
     [self.submitButton.layer setCornerRadius:5];
     self.submitButton.clipsToBounds = YES;
@@ -221,7 +221,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
     self.authenticationScrollView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
-    self.welcomeImageView.tintColor = ThemeService.shared.theme.tintColor;
+//    self.welcomeImageView.tintColor = ThemeService.shared.theme.tintColor;
 
     // Style the authentication fallback webview screen so that its header matches to navigation bar style
     self.authFallbackContentView.backgroundColor = ThemeService.shared.theme.baseColor;

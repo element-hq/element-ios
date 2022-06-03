@@ -22,7 +22,7 @@
 
 // Titles
 "title_home" = "Home";
-"title_favourites" = "Favourites";
+"title_favourites" = "Favorites";
 "title_people" = "People";
 "title_rooms" = "Rooms";
 "title_groups" = "Communities";
@@ -248,7 +248,7 @@
 
 // Room recents
 "room_recents_directory_section" = "ROOM DIRECTORY";
-"room_recents_favourites_section" = "FAVOURITES";
+"room_recents_favourites_section" = "FAVORITES";
 "room_recents_people_section" = "PEOPLE";
 "room_recents_conversations_section" = "ROOMS";
 "room_recents_no_conversation" = "No rooms";
@@ -597,7 +597,7 @@ Tap the + to start adding people.";
 "settings_add_email_address" = "Add email address";
 "settings_phone_number" = "Phone";
 "settings_add_phone_number" = "Add phone number";
-"settings_change_password" = "Change Matrix account password";
+"settings_change_password" = "Change account password";
 "settings_night_mode" = "Night Mode";
 "settings_fail_to_update_profile" = "Fail to update profile";
 "settings_three_pids_management_information_part1" = "Manage which email addresses or phone numbers you can use to log in or recover your account here. Control who can find you in ";
@@ -852,7 +852,7 @@ Tap the + to start adding people.";
 "room_details_room_name" = "Room Name";
 "room_details_room_name_for_dm" = "Name";
 "room_details_topic" = "Topic";
-"room_details_favourite_tag" = "Favourite";
+"room_details_favourite_tag" = "Favorite";
 "room_details_low_priority_tag" = "Low priority";
 "room_details_notifs" = "Notifications";
 "room_details_mute_notifs" = "Mute notifications";
@@ -1838,8 +1838,8 @@ Tap the + to start adding people.";
 "home_context_menu_notifications" = "Notifications";
 "home_context_menu_mute" = "Mute";
 "home_context_menu_unmute" = "Unmute";
-"home_context_menu_favourite" = "Favourite";
-"home_context_menu_unfavourite" = "Remove from Favourites";
+"home_context_menu_favourite" = "Favorite";
+"home_context_menu_unfavourite" = "Remove from Favorites";
 "home_context_menu_low_priority" = "Low priority";
 "home_context_menu_normal_priority" = "Normal priority";
 "home_context_menu_leave" = "Leave";
@@ -1847,8 +1847,8 @@ Tap the + to start adding people.";
 
 // MARK: - Favourites
 
-"favourites_empty_view_title" = "Favourite rooms and people";
-"favourites_empty_view_information" = "You can favourite a few ways - the quickest is just to press and hold. Tap the star and they’ll automatically appear here for safe keeping.";
+"favourites_empty_view_title" = "Favorite rooms and people";
+"favourites_empty_view_information" = "You can favorite a few ways - the quickest is just to press and hold. Tap the star and they’ll automatically appear here for safe keeping.";
 
 // MARK: - Invite friends
 

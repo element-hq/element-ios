@@ -118,6 +118,7 @@ final class BuildSettings: NSObject {
     // MARK: - Permalinks
     // Hosts/Paths for URLs that will considered as valid permalinks. Those permalinks are opened within the app.
     static let permalinkSupportedHosts: [String: [String]] = [
+        "space.stvd.io": [],
         "app.element.io": [],
         "staging.element.io": [],
         "develop.element.io": [],

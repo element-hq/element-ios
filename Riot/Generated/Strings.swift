@@ -1887,11 +1887,11 @@ public class VectorL10n: NSObject {
   public static var externalLinkConfirmationTitle: String { 
     return VectorL10n.tr("Vector", "external_link_confirmation_title") 
   }
-  /// You can favourite a few ways - the quickest is just to press and hold. Tap the star and they’ll automatically appear here for safe keeping.
+  /// You can favorite a few ways - the quickest is just to press and hold. Tap the star and they’ll automatically appear here for safe keeping.
   public static var favouritesEmptyViewInformation: String { 
     return VectorL10n.tr("Vector", "favourites_empty_view_information") 
   }
-  /// Favourite rooms and people
+  /// Favorite rooms and people
   public static var favouritesEmptyViewTitle: String { 
     return VectorL10n.tr("Vector", "favourites_empty_view_title") 
   }
@@ -2043,7 +2043,7 @@ public class VectorL10n: NSObject {
   public static var groupSection: String { 
     return VectorL10n.tr("Vector", "group_section") 
   }
-  /// Favourite
+  /// Favorite
   public static var homeContextMenuFavourite: String { 
     return VectorL10n.tr("Vector", "home_context_menu_favourite") 
   }
@@ -2075,7 +2075,7 @@ public class VectorL10n: NSObject {
   public static var homeContextMenuNotifications: String { 
     return VectorL10n.tr("Vector", "home_context_menu_notifications") 
   }
-  /// Remove from Favourites
+  /// Remove from Favorites
   public static var homeContextMenuUnfavourite: String { 
     return VectorL10n.tr("Vector", "home_context_menu_unfavourite") 
   }
@@ -4739,7 +4739,7 @@ public class VectorL10n: NSObject {
   public static var roomDetailsFailToUpdateTopic: String { 
     return VectorL10n.tr("Vector", "room_details_fail_to_update_topic") 
   }
-  /// Favourite
+  /// Favorite
   public static var roomDetailsFavouriteTag: String { 
     return VectorL10n.tr("Vector", "room_details_favourite_tag") 
   }
@@ -5707,7 +5707,7 @@ public class VectorL10n: NSObject {
   public static var roomRecentsDirectorySection: String { 
     return VectorL10n.tr("Vector", "room_recents_directory_section") 
   }
-  /// FAVOURITES
+  /// FAVORITES
   public static var roomRecentsFavouritesSection: String { 
     return VectorL10n.tr("Vector", "room_recents_favourites_section") 
   }
@@ -6479,7 +6479,7 @@ public class VectorL10n: NSObject {
   public static func settingsCallsStunServerFallbackDescription(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_calls_stun_server_fallback_description", p1)
   }
-  /// Change Matrix account password
+  /// Change account password
   public static var settingsChangePassword: String { 
     return VectorL10n.tr("Vector", "settings_change_password") 
   }
@@ -7823,7 +7823,7 @@ public class VectorL10n: NSObject {
   public static var threadsTitle: String { 
     return VectorL10n.tr("Vector", "threads_title") 
   }
-  /// Favourites
+  /// Favorites
   public static var titleFavourites: String { 
     return VectorL10n.tr("Vector", "title_favourites") 
   }

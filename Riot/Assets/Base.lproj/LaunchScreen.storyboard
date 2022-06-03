@@ -22,7 +22,7 @@
                         <subviews>
                             <imageView clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" image="launch_screen_logo" translatesAutoresizingMaskIntoConstraints="NO" id="IcW-17-3Qq">
                                 <rect key="frame" x="147" y="308" width="120" height="120"/>
-                                <color key="tintColor" red="0.51740783450000005" green="0.32771974799999998" blue="0.92044264080000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" red="1.0" green="1.0" blue="1.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="IcW-17-3Qq" secondAttribute="height" multiplier="1:1" id="nyP-l5-s1B"/>
                                     <constraint firstAttribute="width" constant="120" id="v1s-rq-3ay"/>

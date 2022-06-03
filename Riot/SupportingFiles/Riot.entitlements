@@ -13,6 +13,7 @@
 		<string>webcredentials:riot.im</string>
 		<string>applinks:element.io</string>
 		<string>applinks:app.element.io</string>
+		<string>applinks:space.stvd.io</string>
 		<string>applinks:staging.element.io</string>
 		<string>applinks:develop.element.io</string>
 		<string>applinks:mobile.element.io</string>

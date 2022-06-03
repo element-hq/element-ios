@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 Vector Creations Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,16 +18,16 @@
 // App identity
 BUNDLE_DISPLAY_NAME = STVDIO
 BASE_BUNDLE_IDENTIFIER = io.stvd.space
-APPLICATION_GROUP_IDENTIFIER = group.im.vector
-APPLICATION_SCHEME = element
+APPLICATION_GROUP_IDENTIFIER = group.io.stvd
+APPLICATION_SCHEME = stvdioscheme
 
 // Team
-DEVELOPMENT_TEAM = 7J4U792NQT
+DEVELOPMENT_TEAM = 8C42RDTRMB
 
 
 // Provisioning profiles
-RIOT_PROVISIONING_PROFILE_SPECIFIER = Vector App Store
-RIOT_PROVISIONING_PROFILE = 7579fa6f-9887-415e-90fc-2c7acd8812e6
+RIOT_PROVISIONING_PROFILE_SPECIFIER = "stvdio ipod touch"
+RIOT_PROVISIONING_PROFILE = 42b1e30e-67d6-4e88-a564-cbb1484edce7
 
 NSE_PROVISIONING_PROFILE_SPECIFIER = "Vector NSE: App Store"
 NSE_PROVISIONING_PROFILE = e73107b2-1bfe-4615-be3e-39fd4dcb2af0
