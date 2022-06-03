@@ -29,7 +29,7 @@
 
 #import "MXKRoomNameStringLocalizer.h"
 
-static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
+static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>([^<]*)</a>";
 
 @interface MXKEventFormatter ()
 {
@@ -1843,6 +1843,14 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
  */
 - (NSString*)renderReplyTo:(NSString*)htmlString withRoomState:(MXRoomState*)roomState
 {
+    NSInteger mxReplyEndLocation = [htmlString rangeOfString:@"</mx-reply>"].location;
+
+    if (mxReplyEndLocation == NSNotFound)
+    {
+        MXLogWarning(@"[MXKEventFormatter] Missing mx-reply block in html string");
+        return htmlString;
+    }
+
     NSString *html = htmlString;
     
     static NSRegularExpression *htmlATagRegex;
@@ -1860,7 +1868,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     
     [htmlATagRegex enumerateMatchesInString:html
                                     options:0
-                                      range:NSMakeRange(0, html.length)
+                                      range:NSMakeRange(0, mxReplyEndLocation)
                                  usingBlock:^(NSTextCheckingResult *match, NSMatchingFlags flags, BOOL *stop) {
                                      
                                      if (hrefCount > 1)
