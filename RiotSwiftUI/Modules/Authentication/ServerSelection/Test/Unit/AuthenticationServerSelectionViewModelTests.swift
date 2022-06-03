@@ -31,7 +31,7 @@ class AuthenticationServerSelectionViewModelTests: XCTestCase {
         context = viewModel.context
     }
 
-    @MainActor func testErrorMessage() async {
+    @MainActor func testErrorMessage() async throws {
         // Given a new instance of the view model.
         XCTAssertNil(context.viewState.footerErrorMessage, "There should not be an error message for a new view model.")
         XCTAssertEqual(context.viewState.footerMessage, VectorL10n.authenticationServerSelectionServerFooter, "The standard footer message should be shown.")
@@ -48,8 +48,7 @@ class AuthenticationServerSelectionViewModelTests: XCTestCase {
         context.send(viewAction: .clearFooterError)
         
         // Wait for the action to spawn a Task on the main actor as the Context protocol doesn't support actors.
-        let task = Task { try await Task.sleep(nanoseconds: 100_000_000) }
-        _ = await task.result
+        try await Task.sleep(nanoseconds: 100_000_000)
         
         // Then the error message should now be removed.
         XCTAssertNil(context.viewState.footerErrorMessage, "The error message should have been cleared.")

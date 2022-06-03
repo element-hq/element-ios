@@ -75,6 +75,15 @@ enum LoginMode {
             return false
         }
     }
+
+    var isUnsupported: Bool {
+        switch self {
+        case .unsupported:
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 /// Data obtained when calling `LoginWizard.resetPassword` that will be used

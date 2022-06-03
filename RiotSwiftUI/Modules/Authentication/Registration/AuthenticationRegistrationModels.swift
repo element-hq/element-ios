@@ -25,17 +25,17 @@ enum AuthenticationRegistrationViewModelResult {
     case validateUsername(String)
     /// Create an account using the supplied credentials.
     case createAccount(username: String, password: String)
+    /// Continue using the supplied SSO provider.
+    case continueWithSSO(SSOIdentityProvider)
+    /// Continue using a fallback
+    case fallback
 }
 
 // MARK: View
 
 struct AuthenticationRegistrationViewState: BindableState {
-    /// The address of the homeserver.
-    var homeserverAddress: String
-    /// Whether or not to show the username and password text fields with the next button
-    var showRegistrationForm: Bool
-    /// An array containing the available SSO options for login.
-    var ssoIdentityProviders: [SSOIdentityProvider]
+    /// Data about the selected homeserver.
+    var homeserver: AuthenticationHomeserverViewData
     /// View state that can be bound to from SwiftUI.
     var bindings: AuthenticationRegistrationBindings
     /// Whether or not the username field has been edited yet.
@@ -55,15 +55,9 @@ struct AuthenticationRegistrationViewState: BindableState {
         usernameErrorMessage ?? VectorL10n.authenticationRegistrationUsernameFooter
     }
     
-    /// A description that can be shown for the currently selected homeserver.
-    var serverDescription: String? {
-        guard homeserverAddress == "matrix.org" else { return nil }
-        return VectorL10n.authenticationRegistrationMatrixDescription
-    }
-    
     /// Whether to show any SSO buttons.
     var showSSOButtons: Bool {
-        !ssoIdentityProviders.isEmpty
+        !homeserver.ssoIdentityProviders.isEmpty
     }
     
     /// Whether the current `username` is valid.
@@ -102,8 +96,10 @@ enum AuthenticationRegistrationViewAction {
     case clearUsernameError
     /// Continue using the input username and password.
     case next
-    /// Login using the supplied SSO provider ID.
-    case continueWithSSO(id: String)
+    /// Continue using the supplied SSO provider.
+    case continueWithSSO(SSOIdentityProvider)
+    /// Continue using the fallback page
+    case fallback
 }
 
 enum AuthenticationRegistrationErrorType: Hashable {

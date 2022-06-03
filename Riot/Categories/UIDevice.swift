@@ -34,4 +34,8 @@ import UIKit
         return userInterfaceIdiom == .phone
     }
     
+    var initialDisplayName: String {
+        isPhone ? VectorL10n.loginMobileDevice : VectorL10n.loginTabletDevice
+    }
+    
 }

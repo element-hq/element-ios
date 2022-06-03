@@ -76,7 +76,10 @@ struct LocationSharingView: View {
                                        showsUserLocation: context.viewState.showsUserLocation,
                                        userLocation: $context.userLocation,
                                        mapCenterCoordinate: $context.pinLocation,
-                                       errorSubject: context.viewState.errorSubject)
+                                       errorSubject: context.viewState.errorSubject,
+                                       userDidPan: {
+                    context.send(viewAction: .userDidPan)
+                })
                 if context.viewState.isPinDropSharing {
                     LocationSharingMarkerView(backgroundColor: theme.colors.accent) {
                         Image(uiImage: Asset.Images.locationPinIcon.image)

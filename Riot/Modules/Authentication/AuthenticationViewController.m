@@ -554,6 +554,12 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
 - (BOOL)continueSSOLoginWithToken:(NSString*)loginToken txnId:(NSString*)txnId
 {
+    // The presenter isn't dismissed automatically when finishing via a deep link
+    if (self.ssoAuthenticationPresenter)
+    {
+        [self dismissSSOAuthenticationPresenter];
+    }
+    
     // Check if transaction id is the same as expected
     if (loginToken &&
         txnId && self.ssoCallbackTxnId

@@ -81,4 +81,90 @@ class AuthenticationServiceTests: XCTestCase {
         XCTAssertEqual(service.state.homeserver.addressFromUser, "https://matrix.org", "The new address entered by the user should be stored.")
         XCTAssertEqual(service.state.homeserver.address, "https://matrix-client.matrix.org", "The new address discovered from the well-known should be stored.")
     }
+    
+    func testHomeserverViewDataForMatrixDotOrg() {
+        // Given a homeserver such as matrix.org.
+        let address = "https://matrix-client.matrix.org"
+        let addressFromUser = "https://matrix.org" // https is added when sanitising the input.
+        let ssoIdentityProviders = [
+            SSOIdentityProvider(id: "1", name: "Apple", brand: "apple", iconURL: nil),
+            SSOIdentityProvider(id: "2", name: "GitHub", brand: "github", iconURL: nil)
+        ]
+        let flowResult = FlowResult(missingStages: [.email(isMandatory: true), .reCaptcha(isMandatory: true, siteKey: "1234")], completedStages: [])
+        let homeserver = AuthenticationState.Homeserver(address: address,
+                                                        addressFromUser: addressFromUser,
+                                                        preferredLoginMode: .ssoAndPassword(ssoIdentityProviders: ssoIdentityProviders),
+                                                        registrationFlow: .flowResponse(flowResult))
+        
+        // When creating view data for that homeserver.
+        let viewData = homeserver.viewData
+        
+        // Then the view data should correctly represent the homeserver.
+        XCTAssertEqual(viewData.address, "matrix.org", "The displayed address should match the address supplied by the user, but without the scheme.")
+        XCTAssertEqual(viewData.isMatrixDotOrg, true, "The server should be detected as matrix.org.")
+        XCTAssertTrue(viewData.showLoginForm, "The login form should be shown.")
+        XCTAssertEqual(viewData.ssoIdentityProviders, ssoIdentityProviders, "The sso identity providers should match.")
+        XCTAssertTrue(viewData.showRegistrationForm, "The registration form should be shown.")
+    }
+    
+    func testHomeserverViewDataForPasswordLoginOnly() {
+        // Given a homeserver with password login and registration disabled.
+        let address = "https://matrix.example.com"
+        let addressFromUser = "https://example.com" // https is added when sanitising the input.
+        let homeserver = AuthenticationState.Homeserver(address: address,
+                                                        addressFromUser: addressFromUser,
+                                                        preferredLoginMode: .password,
+                                                        registrationFlow: nil)
+        
+        // When creating view data for that homeserver.
+        let viewData = homeserver.viewData
+        
+        // Then the view data should correctly represent the homeserver.
+        XCTAssertEqual(viewData.address, "example.com", "The displayed address should match the address supplied by the user, but without the scheme.")
+        XCTAssertEqual(viewData.isMatrixDotOrg, false, "The server should not be detected as matrix.org.")
+        XCTAssertTrue(viewData.showLoginForm, "The login form should be shown.")
+        XCTAssertEqual(viewData.ssoIdentityProviders, [], "There shouldn't be any sso identity providers.")
+        XCTAssertFalse(viewData.showRegistrationForm, "The registration form should not be shown.")
+    }
+    
+    func testHomeserverViewDataForSSOOnly() {
+        // Given a homeserver that only supports authentication via SSO.
+        let address = "https://matrix.company.com"
+        let addressFromUser = "https://company.com" // https is added when sanitising the input.
+        let ssoIdentityProviders = [SSOIdentityProvider(id: "1", name: "SAML", brand: nil, iconURL: nil)]
+        let homeserver = AuthenticationState.Homeserver(address: address,
+                                                        addressFromUser: addressFromUser,
+                                                        preferredLoginMode: .sso(ssoIdentityProviders: ssoIdentityProviders),
+                                                        registrationFlow: nil)
+        
+        // When creating view data for that homeserver.
+        let viewData = homeserver.viewData
+        
+        // Then the view data should correctly represent the homeserver.
+        XCTAssertEqual(viewData.address, "company.com", "The displayed address should match the address supplied by the user, but without the scheme.")
+        XCTAssertEqual(viewData.isMatrixDotOrg, false, "The server should not be detected as matrix.org.")
+        XCTAssertFalse(viewData.showLoginForm, "The login form should not be shown.")
+        XCTAssertEqual(viewData.ssoIdentityProviders, ssoIdentityProviders, "The sso identity providers should match.")
+        XCTAssertFalse(viewData.showRegistrationForm, "The registration form should not be shown.")
+    }
+    
+    func testHomeserverViewDataForLocalHomeserver() {
+        // Given a local homeserver that supports login and registration but only via a password.
+        let addressFromUser = "http://localhost:8008" // https is added when sanitising the input.
+        let flowResult = FlowResult(missingStages: [.dummy(isMandatory: true)], completedStages: [])
+        let homeserver = AuthenticationState.Homeserver(address: addressFromUser,
+                                                        addressFromUser: addressFromUser,
+                                                        preferredLoginMode: .password,
+                                                        registrationFlow: .flowResponse(flowResult))
+        
+        // When creating view data for that homeserver.
+        let viewData = homeserver.viewData
+        
+        // Then the view data should correctly represent the homeserver.
+        XCTAssertEqual(viewData.address, "http://localhost:8008", "The displayed address should match address supplied by the user, complete with the scheme.")
+        XCTAssertEqual(viewData.isMatrixDotOrg, false, "The server should not be detected as matrix.org.")
+        XCTAssertTrue(viewData.showLoginForm, "The login form should be shown.")
+        XCTAssertEqual(viewData.ssoIdentityProviders, [], "There shouldn't be any sso identity providers.")
+        XCTAssertTrue(viewData.showRegistrationForm, "The registration form should be shown.")
+    }
 }
