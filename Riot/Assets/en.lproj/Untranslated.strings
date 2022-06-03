@@ -74,3 +74,8 @@
 "leave_space_selection_title" = "SELECT ROOMS";
 "leave_space_selection_all_rooms" = "Select all rooms";
 "leave_space_selection_no_rooms" = "Select no rooms";
+
+
+// MARK: Reactions
+
+"room_event_action_reaction_more" = "%@ more";

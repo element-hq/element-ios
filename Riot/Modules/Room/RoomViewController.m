@@ -2435,6 +2435,35 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self updateLiveLocationBannerViewVisibility];
 }
 
+- (void)showEmojiPickerForEventId:(NSString *)eventId
+{
+    EmojiPickerCoordinatorBridgePresenter *emojiPickerCoordinatorBridgePresenter = [[EmojiPickerCoordinatorBridgePresenter alloc] initWithSession:self.mainSession roomId:self.roomDataSource.roomId eventId:eventId];
+    emojiPickerCoordinatorBridgePresenter.delegate = self;
+    
+    NSInteger cellRow = [self.roomDataSource indexOfCellDataWithEventId:eventId];
+    
+    UIView *sourceView;
+    CGRect sourceRect = CGRectNull;
+    
+    if (cellRow >= 0)
+    {
+        NSIndexPath *cellIndexPath = [NSIndexPath indexPathForRow:cellRow inSection:0];
+        UITableViewCell *cell = [self.bubblesTableView cellForRowAtIndexPath:cellIndexPath];
+        sourceView = cell;
+        
+        if ([cell isKindOfClass:[MXKRoomBubbleTableViewCell class]])
+        {
+            MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)cell;
+            NSInteger bubbleComponentIndex = [roomBubbleTableViewCell.bubbleData bubbleComponentIndexForEventId:eventId];
+            sourceRect = [roomBubbleTableViewCell componentFrameInContentViewForIndex:bubbleComponentIndex];
+        }
+        
+    }
+    
+    [emojiPickerCoordinatorBridgePresenter presentFrom:self sourceView:sourceView sourceRect:sourceRect animated:YES];
+    self.emojiPickerCoordinatorBridgePresenter = emojiPickerCoordinatorBridgePresenter;
+}
+
 #pragma mark - Jitsi
 
 - (void)showJitsiCallWithWidget:(Widget*)widget
@@ -3380,6 +3409,14 @@ static CGSize kThreadListBarButtonItemImageSize;
             if (tappedEventId)
             {
                 [self showReactionHistoryForEventId:tappedEventId animated:YES];
+            }
+        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAddReaction])
+        {
+            NSString *tappedEventId = userInfo[kMXKRoomBubbleCellEventIdKey];
+            if (tappedEventId)
+            {
+                [self showEmojiPickerForEventId:tappedEventId];
             }
         }
         else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.callBackAction])
@@ -7125,32 +7162,8 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (void)reactionsMenuViewModelDidTapMoreReactions:(ReactionsMenuViewModel *)viewModel forEventId:(NSString *)eventId
 {
     [self hideContextualMenuAnimated:YES];
-    
-    EmojiPickerCoordinatorBridgePresenter *emojiPickerCoordinatorBridgePresenter = [[EmojiPickerCoordinatorBridgePresenter alloc] initWithSession:self.mainSession roomId:self.roomDataSource.roomId eventId:eventId];
-    emojiPickerCoordinatorBridgePresenter.delegate = self;
-    
-    NSInteger cellRow = [self.roomDataSource indexOfCellDataWithEventId:eventId];
-    
-    UIView *sourceView;
-    CGRect sourceRect = CGRectNull;
-    
-    if (cellRow >= 0)
-    {
-        NSIndexPath *cellIndexPath = [NSIndexPath indexPathForRow:cellRow inSection:0];
-        UITableViewCell *cell = [self.bubblesTableView cellForRowAtIndexPath:cellIndexPath];
-        sourceView = cell;
-        
-        if ([cell isKindOfClass:[MXKRoomBubbleTableViewCell class]])
-        {
-            MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)cell;
-            NSInteger bubbleComponentIndex = [roomBubbleTableViewCell.bubbleData bubbleComponentIndexForEventId:eventId];
-            sourceRect = [roomBubbleTableViewCell componentFrameInContentViewForIndex:bubbleComponentIndex];
-        }
-        
-    }
-    
-    [emojiPickerCoordinatorBridgePresenter presentFrom:self sourceView:sourceView sourceRect:sourceRect animated:YES];
-    self.emojiPickerCoordinatorBridgePresenter = emojiPickerCoordinatorBridgePresenter;
+
+    [self showEmojiPickerForEventId:eventId];
 }
 
 #pragma mark -

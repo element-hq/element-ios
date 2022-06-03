@@ -178,6 +178,10 @@ public extension VectorL10n {
   static var leaveSpaceSelectionTitle: String { 
     return VectorL10n.tr("Untranslated", "leave_space_selection_title") 
   }
+  /// %@ more
+  static func roomEventActionReactionMore(_ p1: String) -> String {
+    return VectorL10n.tr("Untranslated", "room_event_action_reaction_more", p1)
+  }
   /// This feature isn't available here. For now, you can do this with %@ on your computer.
   static func spacesFeatureNotAvailable(_ p1: String) -> String {
     return VectorL10n.tr("Untranslated", "spaces_feature_not_available", p1)
