@@ -1,3 +1,26 @@
+## Changes in 1.8.18 (2022-06-03)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.23.8](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.23.8)).
+- Show user indicators when paginating a room ([#5746](https://github.com/vector-im/element-ios/issues/5746))
+- Authentication: Display fallback screens on registration & login according to the HS needs. ([#6176](https://github.com/vector-im/element-ios/issues/6176))
+- WellKnown: support outbound keys presharing strategy ([#6214](https://github.com/vector-im/element-ios/issues/6214))
+
+🐛 Bugfixes
+
+- Location sharing: Improve automatic detection of pin drop state ([#6202](https://github.com/vector-im/element-ios/issues/6202))
+
+🧱 Build
+
+- Ensure that warnings from CocoaPods dependencies do not show up in Xcode ([#6196](https://github.com/vector-im/element-ios/pull/6196))
+- CI: Use macOS 12 and Xcode 13.4 ([#6204](https://github.com/vector-im/element-ios/pull/6204))
+
+🚧 In development 🚧
+
+- Authentication: Add the login screen to the new flow and support SSO on both login and registration flows. ([#5654](https://github.com/vector-im/element-ios/issues/5654))
+
+
 ## Changes in 1.8.17 (2022-05-31)
 
 🙌 Improvements
