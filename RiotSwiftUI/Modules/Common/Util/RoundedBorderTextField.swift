@@ -33,6 +33,7 @@ struct RoundedBorderTextField: View {
     
     var onTextChanged: ((String) -> Void)? = nil
     var onEditingChanged: ((Bool) -> Void)? = nil
+    var onCommit: (() -> Void)? = nil
 
     // MARK: Private
     
@@ -52,6 +53,7 @@ struct RoundedBorderTextField: View {
                     .multilineTextAlignment(.leading)
                     .padding(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
             }
+            
             ZStack(alignment: .leading) {
                 if text.isEmpty {
                     Text(placeHolder)
@@ -60,32 +62,22 @@ struct RoundedBorderTextField: View {
                         .lineLimit(1)
                         .accessibilityHidden(true)
                 }
-                if isEnabled {
-                    ThemableTextField(placeholder: "", text: $text, configuration: configuration, onEditingChanged: { edit in
-                        self.editing = edit
-                        onEditingChanged?(edit)
-                    })
-                    .makeFirstResponder(isFirstResponder)
-                    .showClearButton(text: $text)
-                    .onChange(of: text) { newText in
-                        onTextChanged?(newText)
-                    }
-                    .frame(height: 30)
-                    .accessibilityLabel(text.isEmpty ? placeHolder : "")
-                } else {
-                    ThemableTextField(placeholder: "", text: $text, configuration: configuration, onEditingChanged: { edit in
-                        self.editing = edit
-                        onEditingChanged?(edit)
-                    })
-                    .makeFirstResponder(isFirstResponder)
-                    .onChange(of: text) { newText in
-                        onTextChanged?(newText)
-                    }
-                    .frame(height: 30)
-                    .allowsHitTesting(false)
-                    .opacity(0.5)
-                    .accessibilityLabel(text.isEmpty ? placeHolder : "")
+                
+                ThemableTextField(placeholder: "", text: $text, configuration: configuration, onEditingChanged: { edit in
+                    self.editing = edit
+                    onEditingChanged?(edit)
+                }, onCommit: {
+                    onCommit?()
+                })
+                .makeFirstResponder(isFirstResponder)
+                .showClearButton(isEnabled, text: $text)
+                .onChange(of: text) { newText in
+                    onTextChanged?(newText)
                 }
+                .frame(height: 30)
+                .allowsHitTesting(isEnabled)
+                .opacity(isEnabled ? 1 : 0.5)
+                .accessibilityLabel(text.isEmpty ? placeHolder : "")
             }
             .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: text.isEmpty ? 8 : 0))
             .background(RoundedRectangle(cornerRadius: 8).fill(theme.colors.background))

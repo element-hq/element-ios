@@ -19,49 +19,44 @@ import SwiftUI
 
 /// Using an enum for the screen allows you define the different state cases with
 /// the relevant associated data for each case.
-enum MockAuthenticationRegistrationScreenState: MockScreenState, CaseIterable {
+enum MockAuthenticationLoginScreenState: MockScreenState, CaseIterable {
     // A case for each state you want to represent
     // with specific, minimal associated data that will allow you
     // mock that screen.
     case matrixDotOrg
     case passwordOnly
     case passwordWithCredentials
-    case passwordWithUsernameError
     case ssoOnly
     case fallback
 
     /// The associated screen
     var screenType: Any.Type {
-        AuthenticationRegistrationScreen.self
+        AuthenticationLoginScreen.self
     }
-
+    
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView)  {
-        let viewModel: AuthenticationRegistrationViewModel
+        let viewModel: AuthenticationLoginViewModel
         switch self {
         case .matrixDotOrg:
-            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockMatrixDotOrg)
+            viewModel = AuthenticationLoginViewModel(homeserver: .mockMatrixDotOrg)
         case .passwordOnly:
-            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockBasicServer)
+            viewModel = AuthenticationLoginViewModel(homeserver: .mockBasicServer)
         case .passwordWithCredentials:
-            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockBasicServer)
+            viewModel = AuthenticationLoginViewModel(homeserver: .mockBasicServer)
             viewModel.context.username = "alice"
             viewModel.context.password = "password"
-        case .passwordWithUsernameError:
-            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockBasicServer)
-            viewModel.state.hasEditedUsername = true
-            Task { await viewModel.displayError(.usernameUnavailable(VectorL10n.authInvalidUserName)) }
         case .ssoOnly:
-            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockEnterpriseSSO)
+            viewModel = AuthenticationLoginViewModel(homeserver: .mockEnterpriseSSO)
         case .fallback:
-            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockFallback)
+            viewModel = AuthenticationLoginViewModel(homeserver: .mockFallback)
         }
         
-
+        
         // can simulate service and viewModel actions here if needs be.
-
+        
         return (
-            [viewModel], AnyView(AuthenticationRegistrationScreen(viewModel: viewModel.context))
+            [viewModel], AnyView(AuthenticationLoginScreen(viewModel: viewModel.context))
         )
     }
 }

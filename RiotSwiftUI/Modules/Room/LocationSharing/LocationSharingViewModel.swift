@@ -78,12 +78,16 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
             
             completion?(.share(latitude: pinLocation.latitude, longitude: pinLocation.longitude, coordinateType: .pin))
         case .goToUserLocation:
-            state.bindings.pinLocation = nil
+            state.showsUserLocation = true
+            state.isPinDropSharing = false
         case .startLiveSharing:
             self.startLiveLocationSharing()
         case .shareLiveLocation(let timeout):
             state.bindings.showingTimerSelector = false
             completion?(.shareLiveLocation(timeout: timeout.rawValue))
+        case .userDidPan:
+            state.showsUserLocation = false
+            state.isPinDropSharing = true
         }
     }
     

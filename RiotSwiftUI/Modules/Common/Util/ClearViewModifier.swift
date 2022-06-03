@@ -18,15 +18,25 @@ import SwiftUI
 
 @available(iOS 14.0, *)
 extension ThemableTextField {
-    func showClearButton(text: Binding<String>, alignement: VerticalAlignment = .center) -> some View {
-        return modifier(ClearViewModifier(alignment: alignement, text: text))
+    /// Adds a clear button to the text field
+    /// - Parameters:
+    ///   - show: A boolean that can be used to dynamically show/hide the button. Defaults to `true`.
+    ///   - text: The text for the clear button to clear.
+    ///   - alignment: The vertical alignment of the button in the text field. Default to `center`
+    @ViewBuilder
+    func showClearButton(_ show: Bool = true, text: Binding<String>, alignment: VerticalAlignment = .center) -> some View {
+        if show {
+            modifier(ClearViewModifier(alignment: alignment, text: text))
+        } else {
+            self
+        }
     }
 }
 
 @available(iOS 14.0, *)
 extension ThemableTextEditor {
-    func showClearButton(text: Binding<String>, alignement: VerticalAlignment = .top) -> some View {
-        return modifier(ClearViewModifier(alignment: alignement, text: text))
+    func showClearButton(text: Binding<String>, alignment: VerticalAlignment = .top) -> some View {
+        return modifier(ClearViewModifier(alignment: alignment, text: text))
     }
 }
 

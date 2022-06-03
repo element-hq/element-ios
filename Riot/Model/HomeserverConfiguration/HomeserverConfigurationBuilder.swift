@@ -41,6 +41,8 @@ final class HomeserverConfigurationBuilder: NSObject {
         let isE2EEByDefaultEnabled = vectorWellKnownEncryptionConfiguration?.isE2EEByDefaultEnabled ?? true
         // Disable mandatory secure backup when there is no value
         let isSecureBackupRequired = vectorWellKnownEncryptionConfiguration?.isSecureBackupRequired ?? false
+        // Default to `MXKKeyPreSharingWhenTyping` when there is no value
+        let outboundKeysPreSharingMode = vectorWellKnownEncryptionConfiguration?.outboundKeysPreSharingMode ?? .whenTyping
         // Defaults to all secure backup methods available when there is no value
         let secureBackupSetupMethods: [VectorWellKnownBackupSetupMethod]
         if let backupSetupMethods = vectorWellKnownEncryptionConfiguration?.secureBackupSetupMethods {
@@ -51,7 +53,8 @@ final class HomeserverConfigurationBuilder: NSObject {
 
         let encryptionConfiguration = HomeserverEncryptionConfiguration(isE2EEByDefaultEnabled: isE2EEByDefaultEnabled,
                                                                         isSecureBackupRequired: isSecureBackupRequired,
-                                                                        secureBackupSetupMethods: secureBackupSetupMethods)
+                                                                        secureBackupSetupMethods: secureBackupSetupMethods,
+                                                                        outboundKeysPreSharingMode: outboundKeysPreSharingMode)
         
         // Jitsi configuration
         let jitsiPreferredDomain: String?

@@ -27,7 +27,4 @@ protocol OnboardingCoordinatorProtocol: Coordinator, Presentable {
     
     /// Set up the authentication screen with the specified homeserver and/or identity server.
     func updateHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?)
-    
-    /// When SSO login succeeded, when SFSafariViewController is used, continue login with success parameters.
-    func continueSSOLogin(withToken loginToken: String, transactionID: String) -> Bool
 }

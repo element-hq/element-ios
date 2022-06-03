@@ -30,16 +30,24 @@ struct AuthenticationState {
         self.homeserver = Homeserver(address: homeserverAddress)
     }
     
+    init(flow: AuthenticationFlow, homeserver: Homeserver) {
+        self.flow = flow
+        self.homeserver = homeserver
+    }
+    
     struct Homeserver {
         /// The homeserver address as returned by the server.
         var address: String
         /// The homeserver address as input by the user (it can differ to the well-known request).
         var addressFromUser: String?
+        /// The homeserver's address formatted to be displayed to the user in labels, text fields etc.
+        var displayableAddress: String {
+            let address = addressFromUser ?? address
+            return address.replacingOccurrences(of: "https://", with: "") // Only remove https. Leave http to indicate the server doesn't use SSL.
+        }
         
         /// The preferred login mode for the server
         var preferredLoginMode: LoginMode = .unknown
-        /// Supported types for the login.
-        var loginModeSupportedTypes = [MXLoginFlow]()
         
         /// The response returned when querying the homeserver for registration flows.
         var registrationFlow: RegistrationResult?
@@ -48,6 +56,33 @@ struct AuthenticationState {
         var isMatrixDotOrg: Bool {
             guard let url = URL(string: address) else { return false }
             return url.host == "matrix.org" || url.host == "matrix-client.matrix.org"
+        }
+        
+        /// The homeserver mapped into view data that is ready for display.
+        var viewData: AuthenticationHomeserverViewData {
+            AuthenticationHomeserverViewData(address: displayableAddress,
+                                             isMatrixDotOrg: isMatrixDotOrg,
+                                             showLoginForm: preferredLoginMode.supportsPasswordFlow,
+                                             showRegistrationForm: registrationFlow != nil && !needsRegistrationFallback,
+                                             ssoIdentityProviders: preferredLoginMode.ssoIdentityProviders ?? [])
+        }
+
+        /// Needs authentication fallback for login
+        var needsLoginFallback: Bool {
+            return preferredLoginMode.isUnsupported
+        }
+
+        /// Needs authentication fallback for registration
+        var needsRegistrationFallback: Bool {
+            guard let flow = registrationFlow else {
+                return false
+            }
+            switch flow {
+            case .flowResponse(let result):
+                return result.needsFallback
+            default:
+                return false
+            }
         }
     }
 }

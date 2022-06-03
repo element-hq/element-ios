@@ -3,6 +3,9 @@ source 'https://cdn.cocoapods.org/'
 # Uncomment this line to define a global platform for your project
 platform :ios, '14.0'
 
+# By default, ignore all warnings from any pod
+inhibit_all_warnings!
+
 # Use frameworks to allow usage of pods written in Swift
 use_frameworks!
 
@@ -13,7 +16,7 @@ use_frameworks!
 # - `{ :specHash => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for MatrixSDK repo. Used by Fastfile during CI
 #
 # Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
-$matrixSDKVersion = '= 0.23.7'
+$matrixSDKVersion = '= 0.23.8'
 # $matrixSDKVersion = :local
 # $matrixSDKVersion = { :branch => 'develop'}
 # $matrixSDKVersion = { :specHash => { git: 'https://git.io/fork123', branch: 'fix' } }
@@ -42,8 +45,8 @@ end
 
 # Method to import the MatrixSDK
 def import_MatrixSDK
-  pod 'MatrixSDK', $matrixSDKVersionSpec
-  pod 'MatrixSDK/JingleCallStack', $matrixSDKVersionSpec
+  pod 'MatrixSDK', $matrixSDKVersionSpec, :inhibit_warnings => false
+  pod 'MatrixSDK/JingleCallStack', $matrixSDKVersionSpec, :inhibit_warnings => false
 end
 
 ########################################
@@ -69,12 +72,11 @@ abstract_target 'RiotPods' do
 
   # PostHog for analytics
   pod 'PostHog', '~> 1.4.4'
-  pod 'AnalyticsEvents', :git => 'https://github.com/matrix-org/matrix-analytics-events.git', :branch => 'release/swift'
+  pod 'AnalyticsEvents', :git => 'https://github.com/matrix-org/matrix-analytics-events.git', :branch => 'release/swift', :inhibit_warnings => false
   # pod 'AnalyticsEvents', :path => '../matrix-analytics-events/AnalyticsEvents.podspec'
 
-  # Remove warnings from "bad" pods
-  pod 'OLMKit', :inhibit_warnings => true
-  pod 'zxcvbn-ios', :inhibit_warnings => true
+  pod 'OLMKit'
+  pod 'zxcvbn-ios'
 
   # Tools
   pod 'SwiftGen', '~> 6.3'

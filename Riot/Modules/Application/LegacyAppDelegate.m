@@ -2430,6 +2430,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         }
         
         BOOL isLaunching = NO;
+
+        if (mainSession.vc_homeserverConfiguration)
+        {
+            [MXKAppSettings standardAppSettings].outboundGroupSessionKeyPreSharingStrategy = mainSession.vc_homeserverConfiguration.encryption.outboundKeysPreSharingMode;
+        }
         
         if (_masterTabBarController.isOnboardingInProgress)
         {
@@ -4694,21 +4699,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     
     [self presentViewController:viewController animated:YES completion:completion];
-}
-
-#pragma mark - Authentication
-
-- (BOOL)continueSSOLoginWithToken:(NSString*)loginToken txnId:(NSString*)txnId
-{
-    OnboardingCoordinatorBridgePresenter *bridgePresenter = self.masterTabBarController.onboardingCoordinatorBridgePresenter;
-    
-    if (!bridgePresenter)
-    {
-        MXLogDebug(@"[AppDelegate] Fail to continue SSO login");
-        return NO;
-    }
-    
-    return [bridgePresenter continueSSOLoginWithToken:loginToken transactionID:txnId];
 }
 
 #pragma mark - Private

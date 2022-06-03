@@ -15,7 +15,7 @@ env:
 jobs:
   build:
     name: Build
-    runs-on: macos-11
+    runs-on: macos-12
     
     # Concurrency group not needed as this workflow only runs on develop which we always want to test.
 
