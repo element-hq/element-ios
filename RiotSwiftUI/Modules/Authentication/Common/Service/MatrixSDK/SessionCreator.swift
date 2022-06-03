@@ -22,7 +22,6 @@ class SessionCreator {
     func createSession(credentials: MXCredentials, client: AuthenticationRestClient) -> MXSession {
         // Report the new account in account manager
         if credentials.identityServer == nil {
-            #warning("Check that the client is actually updated with this info?")
             credentials.identityServer = client.identityServer
         }
         
