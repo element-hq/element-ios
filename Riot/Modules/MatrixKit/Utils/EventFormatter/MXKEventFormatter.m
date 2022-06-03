@@ -1912,7 +1912,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
         }
     }
 
-    if (eventContent)
+    if (eventContent && repliedEvent.sender)
     {
         html = [NSString stringWithFormat:@"<mx-reply><blockquote><a href=\"%@\">In reply to</a> <a href=\"%@\">%@</a><br>%@</blockquote></mx-reply>%@",
                 [MXTools permalinkToEvent:repliedEvent.eventId inRoom:repliedEvent.roomId],
