@@ -72,11 +72,7 @@ final class RoomReactionActionViewCell: UICollectionViewCell, NibReusable, Thema
         let attachment = NSTextAttachment()
         attachment.image = actionIcon.vc_resized(with: CGSize(width: self.actionLabel.bounds.size.height, height: self.actionLabel.bounds.size.height))?.withRenderingMode(.alwaysTemplate)
 
-        let attachmentString = NSAttributedString(attachment: attachment)
-        let myString = NSMutableAttributedString(string: "")
-        myString.append(attachmentString)
-
-        self.actionLabel.attributedText = myString
+        self.actionLabel.attributedText = NSAttributedString(attachment: attachment)
         self.updateViews()
     }
     
