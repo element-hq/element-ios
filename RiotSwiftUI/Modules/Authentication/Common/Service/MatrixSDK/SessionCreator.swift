@@ -27,10 +27,16 @@ protocol SessionCreatorProtocol {
 
 /// A struct that provides common functionality to create a new session.
 struct SessionCreator: SessionCreatorProtocol {
+
+    private let accountManager: MXKAccountManager
+
+    init(withAccountManager accountManager: MXKAccountManager = .shared()) {
+        self.accountManager = accountManager
+    }
+
     func createSession(credentials: MXCredentials, client: AuthenticationRestClient) -> MXSession {
         // Report the new account in account manager
         if credentials.identityServer == nil {
-            #warning("Check that the client is actually updated with this info?")
             credentials.identityServer = client.identityServer
         }
         
@@ -40,7 +46,7 @@ struct SessionCreator: SessionCreatorProtocol {
             account.identityServerURL = identityServer
         }
         
-        MXKAccountManager.shared().addAccount(account, andOpenSession: true)
+        accountManager.addAccount(account, andOpenSession: true)
         return account.mxSession
     }
 }

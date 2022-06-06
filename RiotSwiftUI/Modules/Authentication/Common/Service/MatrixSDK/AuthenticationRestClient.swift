@@ -19,7 +19,7 @@ import Foundation
 protocol AuthenticationRestClient: AnyObject {
     // MARK: Configuration
     var homeserver: String! { get }
-    var identityServer: String! { get }
+    var identityServer: String! { get set }
     var credentials: MXCredentials! { get }
     var acceptableContentTypes: Set<String>! { get set }
     

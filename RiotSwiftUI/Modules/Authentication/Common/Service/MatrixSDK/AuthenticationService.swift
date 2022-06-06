@@ -191,14 +191,24 @@ class AuthenticationService: NSObject {
             MXLog.error("[AuthenticationService] Unable to create a URL from the supplied homeserver address when calling loginFlow.")
             throw AuthenticationError.invalidHomeserver
         }
+
+        var identityServerURL: URL?
         
-        if let wellKnown = try? await wellKnown(for: homeserverURL),
-           let baseURL = URL(string: wellKnown.homeServer.baseUrl) {
-            homeserverURL = baseURL
+        if let wellKnown = try? await wellKnown(for: homeserverURL) {
+            if let baseURL = URL(string: wellKnown.homeServer.baseUrl) {
+                homeserverURL = baseURL
+            }
+            if let identityServer = wellKnown.identityServer,
+               let baseURL = URL(string: identityServer.baseUrl) {
+                identityServerURL = baseURL
+            }
         }
         
         #warning("Add an unrecognized certificate handler.")
         let client = clientType.init(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
+        if let identityServerURL = identityServerURL {
+            client.identityServer = identityServerURL.absoluteString
+        }
         
         let loginFlow = try await getLoginFlowResult(client: client)
         

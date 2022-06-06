@@ -1,0 +1,1 @@
+AuthenticationService: Use identity server from well-known if provided when creating the client.
