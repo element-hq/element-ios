@@ -18,24 +18,24 @@ import SwiftUI
 
 // MARK: View model
 
-enum AuthenticationVerifyEmailViewModelResult {
+enum AuthenticationForgotPasswordViewModelResult {
     /// Send an email to the associated address.
     case send(String)
-    /// Send the email once more.
-    case resend
     /// Cancel the flow.
     case cancel
+    /// Email validation is done
+    case done
     /// Go back to the email form
     case goBack
 }
 
 // MARK: View
 
-struct AuthenticationVerifyEmailViewState: BindableState {
+struct AuthenticationForgotPasswordViewState: BindableState {
     /// An email has been sent and the app is waiting for the user to tap the link.
     var hasSentEmail = false
     /// View state that can be bound to from SwiftUI.
-    var bindings: AuthenticationVerifyEmailBindings
+    var bindings: AuthenticationForgotPasswordBindings
     
     /// Whether the email address is valid and the user can continue.
     var hasInvalidAddress: Bool {
@@ -43,25 +43,27 @@ struct AuthenticationVerifyEmailViewState: BindableState {
     }
 }
 
-struct AuthenticationVerifyEmailBindings {
+struct AuthenticationForgotPasswordBindings {
     /// The email address input by the user.
     var emailAddress: String
     /// Information describing the currently displayed alert.
-    var alertInfo: AlertInfo<AuthenticationVerifyEmailErrorType>?
+    var alertInfo: AlertInfo<AuthenticationForgotPasswordErrorType>?
 }
 
-enum AuthenticationVerifyEmailViewAction {
+enum AuthenticationForgotPasswordViewAction {
     /// Send an email to the entered address.
     case send
     /// Send the email once more.
     case resend
+    /// Email validation is done
+    case done
     /// Cancel the flow.
     case cancel
     /// Go back to enter email adress screen
     case goBack
 }
 
-enum AuthenticationVerifyEmailErrorType: Hashable {
+enum AuthenticationForgotPasswordErrorType: Hashable {
     /// An error response from the homeserver.
     case mxError(String)
     /// An unknown error occurred.

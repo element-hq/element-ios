@@ -17,7 +17,7 @@
 import Foundation
 
 /// The parameters used for registration requests.
-struct RegistrationParameters: DictionaryEncodable {
+struct RegistrationParameters: DictionaryEncodable, Equatable {
     /// Authentication parameters
     var auth: AuthenticationParameters?
     
@@ -44,7 +44,7 @@ struct RegistrationParameters: DictionaryEncodable {
 }
 
 /// The data passed to the `auth` parameter in authentication requests.
-struct AuthenticationParameters: Encodable {
+struct AuthenticationParameters: Encodable, Equatable {
     /// The type of authentication taking place. The identifier from `MXLoginFlowType`.
     let type: String
     

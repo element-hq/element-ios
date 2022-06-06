@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-struct AuthenticationVerifyEmailScreen: View {
+struct AuthenticationForgotPasswordScreen: View {
 
     // MARK: - Properties
     
@@ -26,7 +26,7 @@ struct AuthenticationVerifyEmailScreen: View {
     
     // MARK: Public
     
-    @ObservedObject var viewModel: AuthenticationVerifyEmailViewModel.Context
+    @ObservedObject var viewModel: AuthenticationForgotPasswordViewModel.Context
     
     // MARK: Views
     
@@ -41,7 +41,9 @@ struct AuthenticationVerifyEmailScreen: View {
                 
                 if viewModel.viewState.hasSentEmail {
                     waitingFooter
-                        .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 20 : 36)
+                        .padding(.bottom, OnboardingMetrics.actionButtonBottomPadding)
+                        .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
+                        .padding(.horizontal, 16)
                 }
             }
         }
@@ -56,7 +58,7 @@ struct AuthenticationVerifyEmailScreen: View {
         if viewModel.viewState.hasSentEmail {
             waitingContent
         } else {
-            AuthenticationVerifyEmailForm(viewModel: viewModel)
+            AuthenticationForgotPasswordForm(viewModel: viewModel)
         }
     }
     
@@ -64,10 +66,6 @@ struct AuthenticationVerifyEmailScreen: View {
         VStack(spacing: 36) {
             waitingHeader
                 .padding(.top, OnboardingMetrics.breakerScreenTopPadding)
-            
-            ProgressView()
-                .scaleEffect(1.3)
-                .progressViewStyle(CircularProgressViewStyle(tint: theme.colors.secondaryContent))
         }
     }
     
@@ -77,13 +75,13 @@ struct AuthenticationVerifyEmailScreen: View {
             OnboardingIconImage(image: Asset.Images.authenticationEmailIcon)
                 .padding(.bottom, OnboardingMetrics.breakerScreenIconBottomPadding)
             
-            OnboardingTintedFullStopText(VectorL10n.authenticationVerifyEmailWaitingTitle)
+            OnboardingTintedFullStopText(VectorL10n.authenticationForgotPasswordWaitingTitle)
                 .font(theme.fonts.title2B)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.primaryContent)
                 .accessibilityIdentifier("waitingTitleLabel")
             
-            Text(VectorL10n.authenticationVerifyEmailWaitingMessage(viewModel.emailAddress))
+            Text(VectorL10n.authenticationForgotPasswordWaitingMessage(viewModel.emailAddress))
                 .font(theme.fonts.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.secondaryContent)
@@ -93,15 +91,17 @@ struct AuthenticationVerifyEmailScreen: View {
     
     /// The footer shown whilst waiting for the user to tap the link in the email.
     var waitingFooter: some View {
-        VStack(spacing: 14) {
-            Text(VectorL10n.authenticationVerifyEmailWaitingHint)
-                .font(theme.fonts.body)
-                .multilineTextAlignment(.center)
-                .foregroundColor(theme.colors.secondaryContent)
+        VStack(spacing: 12) {
+            Button(action: done) {
+                Text(VectorL10n.done)
+            }
+            .buttonStyle(PrimaryActionButtonStyle())
+            .accessibilityIdentifier("doneButton")
             
             Button { viewModel.send(viewAction: .resend) } label: {
-                Text(VectorL10n.authenticationVerifyEmailWaitingButton)
+                Text(VectorL10n.authenticationForgotPasswordWaitingButton)
                     .font(theme.fonts.body)
+                    .padding(.vertical, 12)
                     .multilineTextAlignment(.center)
             }
             .accessibilityIdentifier("resendButton")
@@ -113,7 +113,7 @@ struct AuthenticationVerifyEmailScreen: View {
     var background: some View {
         OnboardingBreakerScreenBackground(viewModel.viewState.hasSentEmail)
     }
-
+    
     /// A simple toolbar with a cancel button.
     var toolbar: some ToolbarContent {
         ToolbarItem(placement: .cancellationAction) {
@@ -127,12 +127,18 @@ struct AuthenticationVerifyEmailScreen: View {
             .accessibilityIdentifier("cancelButton")
         }
     }
+
+    /// Sends the `done` view action.
+    func done() {
+        guard !viewModel.viewState.hasInvalidAddress else { return }
+        viewModel.send(viewAction: .done)
+    }
 }
 
 // MARK: - Previews
 
-struct AuthenticationVerifyEmailScreen_Previews: PreviewProvider {
-    static let stateRenderer = MockAuthenticationVerifyEmailScreenState.stateRenderer
+struct AuthenticationForgotPasswordScreen_Previews: PreviewProvider {
+    static let stateRenderer = MockAuthenticationForgotPasswordScreenState.stateRenderer
     static var previews: some View {
         stateRenderer.screenGroup(addNavigation: true)
             .navigationViewStyle(.stack)

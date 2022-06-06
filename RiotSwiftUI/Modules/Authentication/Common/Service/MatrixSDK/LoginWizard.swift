@@ -31,11 +31,11 @@ class LoginWizard {
     }
     
     let client: AuthenticationRestClient
-    let sessionCreator: SessionCreator
+    let sessionCreator: SessionCreatorProtocol
     
     private(set) var state: State
     
-    init(client: AuthenticationRestClient, sessionCreator: SessionCreator = SessionCreator()) {
+    init(client: AuthenticationRestClient, sessionCreator: SessionCreatorProtocol) {
         self.client = client
         self.sessionCreator = sessionCreator
         
@@ -87,24 +87,26 @@ class LoginWizard {
 //    func loginCustom(data: Codable) async -> MXSession {
 //
 //    }
-    
+
     /// Ask the homeserver to reset the user password. The password will not be
-    /// reset until `checkResetPasswordMailConfirmed` is successfully called.
+    /// reset until `resetPasswordMailConfirmed` is successfully called.
     /// - Parameters:
     ///   - email: An email previously associated to the account the user wants the password to be reset.
-    ///   - newPassword: The desired new password
-    func resetPassword(email: String, newPassword: String) async throws {
+    func resetPassword(email: String) async throws {
         let result = try await client.forgetPassword(for: email,
                                                      clientSecret: state.clientSecret,
                                                      sendAttempt: state.sendAttempt)
 
         state.sendAttempt += 1
-        state.resetPasswordData = ResetPasswordData(newPassword: newPassword, addThreePIDSessionID: result)
+        state.resetPasswordData = ResetPasswordData(addThreePIDSessionID: result)
     }
-    
+
     /// Confirm the new password, once the user has checked their email.
     /// When this method succeeds, the account password will be effectively modified.
-    func checkResetPasswordMailConfirmed() async throws {
+    /// - Parameters:
+    ///   - newPassword: The desired new password
+    ///   - signoutAllDevices: The flag to sign out of all devices
+    func resetPasswordMailConfirmed(newPassword: String, signoutAllDevices: Bool) async throws {
         guard let resetPasswordData = state.resetPasswordData else {
             MXLog.error("[LoginWizard] resetPasswordMailConfirmed: Reset password data missing. Call resetPassword first.")
             throw LoginError.resetPasswordNotStarted
@@ -112,7 +114,8 @@ class LoginWizard {
         
         let parameters = CheckResetPasswordParameters(clientSecret: state.clientSecret,
                                                       sessionID: resetPasswordData.addThreePIDSessionID,
-                                                      newPassword: resetPasswordData.newPassword)
+                                                      newPassword: newPassword,
+                                                      signoutAllDevices: signoutAllDevices)
         
         try await client.resetPassword(parameters: parameters)
         

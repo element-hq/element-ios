@@ -14,6 +14,54 @@ public extension VectorL10n {
   static var authenticationCancelFlowConfirmationMessage: String { 
     return VectorL10n.tr("Untranslated", "authentication_cancel_flow_confirmation_message") 
   }
+  /// Make sure it’s 8 characters or more.
+  static var authenticationChoosePasswordInputMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_choose_password_input_message") 
+  }
+  /// Choose a new password
+  static var authenticationChoosePasswordInputTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_choose_password_input_title") 
+  }
+  /// Sign out of all devices
+  static var authenticationChoosePasswordSignoutAllDevices: String { 
+    return VectorL10n.tr("Untranslated", "authentication_choose_password_signout_all_devices") 
+  }
+  /// Reset Password
+  static var authenticationChoosePasswordSubmitButton: String { 
+    return VectorL10n.tr("Untranslated", "authentication_choose_password_submit_button") 
+  }
+  /// New Password
+  static var authenticationChoosePasswordTextFieldPlaceholder: String { 
+    return VectorL10n.tr("Untranslated", "authentication_choose_password_text_field_placeholder") 
+  }
+  /// We will send you a verification link.
+  static var authenticationForgotPasswordInputMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_forgot_password_input_message") 
+  }
+  /// Enter your email address
+  static var authenticationForgotPasswordInputTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_forgot_password_input_title") 
+  }
+  /// Email Address
+  static var authenticationForgotPasswordTextFieldPlaceholder: String { 
+    return VectorL10n.tr("Untranslated", "authentication_forgot_password_text_field_placeholder") 
+  }
+  /// Resend email
+  static var authenticationForgotPasswordWaitingButton: String { 
+    return VectorL10n.tr("Untranslated", "authentication_forgot_password_waiting_button") 
+  }
+  /// Did not receive an email?
+  static var authenticationForgotPasswordWaitingHint: String { 
+    return VectorL10n.tr("Untranslated", "authentication_forgot_password_waiting_hint") 
+  }
+  /// To confirm your email address, tap the button in the email we just sent to %@
+  static func authenticationForgotPasswordWaitingMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Untranslated", "authentication_forgot_password_waiting_message", p1)
+  }
+  /// Check your email
+  static var authenticationForgotPasswordWaitingTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_forgot_password_waiting_title") 
+  }
   /// Forgot password
   static var authenticationLoginForgotPassword: String { 
     return VectorL10n.tr("Untranslated", "authentication_login_forgot_password") 

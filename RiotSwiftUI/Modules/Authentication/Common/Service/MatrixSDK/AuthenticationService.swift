@@ -36,15 +36,15 @@ class AuthenticationService: NSObject {
     
     // MARK: Private
     
-    /// The rest client used to make authentication requests.
-    private var client: AuthenticationRestClient
     /// The object used to create a new `MXSession` when authentication has completed.
-    private var sessionCreator = SessionCreator()
+    private var sessionCreator: SessionCreatorProtocol
     
     // MARK: Public
     
     /// The current state of the authentication flow.
     private(set) var state: AuthenticationState
+    /// The rest client used to make authentication requests.
+    private(set) var client: AuthenticationRestClient
     /// The current login wizard or `nil` if `startFlow` hasn't been called.
     private(set) var loginWizard: LoginWizard?
     /// The current registration wizard or `nil` if `startFlow` hasn't been called for `.registration`.
@@ -53,16 +53,21 @@ class AuthenticationService: NSObject {
     /// The authentication service's delegate.
     weak var delegate: AuthenticationServiceDelegate?
     
+    /// The type of client to use during the flow.
+    var clientType: AuthenticationRestClient.Type = MXRestClient.self
+    
     // MARK: - Setup
     
-    override init() {
+    init(sessionCreator: SessionCreatorProtocol = SessionCreator()) {
         guard let homeserverURL = URL(string: BuildSettings.serverConfigDefaultHomeserverUrlString) else {
             MXLog.failure("[AuthenticationService]: Failed to create URL from default homeserver URL string.")
             fatalError("Invalid default homeserver URL string.")
         }
         
         state = AuthenticationState(flow: .login, homeserverAddress: BuildSettings.serverConfigDefaultHomeserverUrlString)
-        client = MXRestClient(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
+        client = clientType.init(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
+        
+        self.sessionCreator = sessionCreator
         
         super.init()
     }
@@ -96,12 +101,12 @@ class AuthenticationService: NSObject {
     func startFlow(_ flow: AuthenticationFlow, for homeserverAddress: String) async throws {
         var (client, homeserver) = try await loginFlow(for: homeserverAddress)
         
-        let loginWizard = LoginWizard(client: client)
+        let loginWizard = LoginWizard(client: client, sessionCreator: sessionCreator)
         self.loginWizard = loginWizard
         
         if flow == .register {
             do {
-                let registrationWizard = RegistrationWizard(client: client)
+                let registrationWizard = RegistrationWizard(client: client, sessionCreator: sessionCreator)
                 homeserver.registrationFlow = try await registrationWizard.registrationFlow()
                 self.registrationWizard = registrationWizard
             } catch {
@@ -200,7 +205,7 @@ class AuthenticationService: NSObject {
         }
         
         #warning("Add an unrecognized certificate handler.")
-        let client = MXRestClient(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
+        let client = clientType.init(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
         if let identityServerURL = identityServerURL {
             client.identityServer = identityServerURL.absoluteString
         }
@@ -229,7 +234,7 @@ class AuthenticationService: NSObject {
         return (client, homeserver)
     }
     
-    private func getLoginFlowResult(client: MXRestClient) async throws -> LoginFlowResult {
+    private func getLoginFlowResult(client: AuthenticationRestClient) async throws -> LoginFlowResult {
         // Get the login flow
         let loginFlowResponse = try await client.getLoginSession()
         
@@ -241,7 +246,7 @@ class AuthenticationService: NSObject {
     
     /// Perform a well-known request on the specified homeserver URL.
     private func wellKnown(for homeserverURL: URL) async throws -> MXWellKnown {
-        let wellKnownClient = MXRestClient(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
+        let wellKnownClient = clientType.init(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
         
         // The .well-known/matrix/client API is often just a static file returned with no content type.
         // Make our HTTP client compatible with this behaviour

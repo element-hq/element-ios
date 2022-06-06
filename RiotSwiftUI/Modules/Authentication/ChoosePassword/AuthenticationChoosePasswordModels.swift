@@ -18,50 +18,44 @@ import SwiftUI
 
 // MARK: View model
 
-enum AuthenticationVerifyEmailViewModelResult {
-    /// Send an email to the associated address.
-    case send(String)
-    /// Send the email once more.
-    case resend
+enum AuthenticationChoosePasswordViewModelResult {
+    /// Submit with password and sign out of all devices option
+    case submit(String, Bool)
     /// Cancel the flow.
     case cancel
-    /// Go back to the email form
-    case goBack
 }
 
 // MARK: View
 
-struct AuthenticationVerifyEmailViewState: BindableState {
-    /// An email has been sent and the app is waiting for the user to tap the link.
-    var hasSentEmail = false
+struct AuthenticationChoosePasswordViewState: BindableState {
     /// View state that can be bound to from SwiftUI.
-    var bindings: AuthenticationVerifyEmailBindings
+    var bindings: AuthenticationChoosePasswordBindings
     
-    /// Whether the email address is valid and the user can continue.
-    var hasInvalidAddress: Bool {
-        bindings.emailAddress.isEmpty
+    /// Whether the password is valid and the user can continue.
+    var hasInvalidPassword: Bool {
+        bindings.password.count < 8
     }
 }
 
-struct AuthenticationVerifyEmailBindings {
-    /// The email address input by the user.
-    var emailAddress: String
+struct AuthenticationChoosePasswordBindings {
+    /// The password input by the user.
+    var password: String
+    /// The signout all devices checkbox status
+    var signoutAllDevices: Bool
     /// Information describing the currently displayed alert.
-    var alertInfo: AlertInfo<AuthenticationVerifyEmailErrorType>?
+    var alertInfo: AlertInfo<AuthenticationChoosePasswordErrorType>?
 }
 
-enum AuthenticationVerifyEmailViewAction {
+enum AuthenticationChoosePasswordViewAction {
     /// Send an email to the entered address.
-    case send
-    /// Send the email once more.
-    case resend
+    case submit
+    /// Toggle sign out of all devices
+    case toggleSignoutAllDevices
     /// Cancel the flow.
     case cancel
-    /// Go back to enter email adress screen
-    case goBack
 }
 
-enum AuthenticationVerifyEmailErrorType: Hashable {
+enum AuthenticationChoosePasswordErrorType: Hashable {
     /// An error response from the homeserver.
     case mxError(String)
     /// An unknown error occurred.
