@@ -20,7 +20,7 @@ import XCTest
 class SessionCreatorTests: XCTestCase {
 
     func testIdentityServer() throws {
-        let sessionCreator = SessionCreator()
+        let sessionCreator = SessionCreator(withAccountManager: .mock)
 
         let mockIS = "mock_identity_server"
 
@@ -34,6 +34,16 @@ class SessionCreatorTests: XCTestCase {
         XCTAssertEqual(credentials.identityServer, mockIS)
         XCTAssertEqual(session.credentials.identityServer, mockIS)
         XCTAssertEqual(session.identityService?.identityServer, mockIS)
+    }
+
+}
+
+private extension MXKAccountManager {
+
+    static var mock: MXKAccountManager {
+        let result = MXKAccountManager.shared()
+        result!.isSavingAccountsEnabled = false
+        return result!
     }
 
 }
