@@ -71,12 +71,7 @@ struct AuthenticationChoosePasswordScreen: View {
     /// The text field and submit button where the user enters an email address.
     var form: some View {
         VStack(alignment: .leading, spacing: 12) {
-            if #available(iOS 15.0, *) {
-                textField
-                    .onSubmit(submit)
-            } else {
-                textField
-            }
+            textField
 
             HStack(alignment: .center, spacing: 8) {
                 Toggle(VectorL10n.authenticationChoosePasswordSignoutAllDevices, isOn: $viewModel.signoutAllDevices)

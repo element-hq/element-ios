@@ -41,7 +41,8 @@ struct AuthenticationForgotPasswordScreen: View {
                 
                 if viewModel.viewState.hasSentEmail {
                     waitingFooter
-                        .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 20 : 36)
+                        .padding(.bottom, OnboardingMetrics.actionButtonBottomPadding)
+                        .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
                         .padding(.horizontal, 16)
                 }
             }
@@ -90,7 +91,7 @@ struct AuthenticationForgotPasswordScreen: View {
     
     /// The footer shown whilst waiting for the user to tap the link in the email.
     var waitingFooter: some View {
-        VStack(spacing: 14) {
+        VStack(spacing: 12) {
             Button(action: done) {
                 Text(VectorL10n.done)
             }
@@ -100,6 +101,7 @@ struct AuthenticationForgotPasswordScreen: View {
             Button { viewModel.send(viewAction: .resend) } label: {
                 Text(VectorL10n.authenticationForgotPasswordWaitingButton)
                     .font(theme.fonts.body)
+                    .padding(.vertical, 12)
                     .multilineTextAlignment(.center)
             }
             .accessibilityIdentifier("resendButton")

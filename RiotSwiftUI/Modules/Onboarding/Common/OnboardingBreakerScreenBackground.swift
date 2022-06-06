@@ -32,7 +32,7 @@ struct OnboardingBreakerScreenBackground: View {
     }
 
     /// The background gradient used with light mode.
-    let gradient = Gradient (colors: Constants.gradientColors)
+    let gradient = Gradient(colors: Constants.gradientColors)
 
     init(_ isGradientEnabled: Bool = true) {
         self.isGradientEnabled = isGradientEnabled
