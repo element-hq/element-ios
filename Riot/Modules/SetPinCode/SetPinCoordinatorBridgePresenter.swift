@@ -17,6 +17,7 @@
  */
 
 import Foundation
+import UIKit
 
 @objc enum SetPinCoordinatorViewMode: Int {
     case setPin
@@ -48,6 +49,8 @@ final class SetPinCoordinatorBridgePresenter: NSObject {
     // MARK: - Properties
     
     // MARK: Private
+    
+    private var pinCoordinatorWindow: UIWindow?
     
     private let session: MXSession?
     private var coordinator: SetPinCoordinator?
@@ -87,18 +90,23 @@ final class SetPinCoordinatorBridgePresenter: NSObject {
         self.coordinator = setPinCoordinator
     }
     
-    func present(in window: UIWindow) {
+    func presentWithMainAppWindow(_ window: UIWindow) {
+        let pinCoordinatorWindow = UIWindow(frame: window.bounds)
+        
         let setPinCoordinator = SetPinCoordinator(session: self.session, viewMode: self.viewMode, pinCodePreferences: .shared)
         setPinCoordinator.delegate = self
         guard let view = setPinCoordinator.toPresentable().view else { return }
-        window.addSubview(view)
-        view.leadingAnchor.constraint(equalTo: window.leadingAnchor, constant: 0).isActive = true
-        view.trailingAnchor.constraint(equalTo: window.trailingAnchor, constant: 0).isActive = true
-        view.topAnchor.constraint(equalTo: window.topAnchor, constant: 0).isActive = true
-        view.bottomAnchor.constraint(equalTo: window.bottomAnchor, constant: 0).isActive = true
+        pinCoordinatorWindow.addSubview(view)
+        view.leadingAnchor.constraint(equalTo: pinCoordinatorWindow.leadingAnchor, constant: 0).isActive = true
+        view.trailingAnchor.constraint(equalTo: pinCoordinatorWindow.trailingAnchor, constant: 0).isActive = true
+        view.topAnchor.constraint(equalTo: pinCoordinatorWindow.topAnchor, constant: 0).isActive = true
+        view.bottomAnchor.constraint(equalTo: pinCoordinatorWindow.bottomAnchor, constant: 0).isActive = true
+        
+        pinCoordinatorWindow.makeKeyAndVisible()
         
         setPinCoordinator.start()
         
+        self.pinCoordinatorWindow = pinCoordinatorWindow
         self.coordinator = setPinCoordinator
     }
     
@@ -106,6 +114,7 @@ final class SetPinCoordinatorBridgePresenter: NSObject {
         guard let coordinator = self.coordinator else {
             return
         }
+        
         coordinator.toPresentable().dismiss(animated: animated) {
             self.coordinator = nil
 
@@ -115,11 +124,10 @@ final class SetPinCoordinatorBridgePresenter: NSObject {
         }
     }
     
-    func dismiss() {
-        guard let coordinator = self.coordinator else {
-            return
-        }
-        coordinator.toPresentable().view.removeFromSuperview()
+    func dismissWithMainAppWindow(_ window: UIWindow) {
+        window.makeKeyAndVisible()
+        pinCoordinatorWindow = nil
+        coordinator = nil
     }
 }
 
