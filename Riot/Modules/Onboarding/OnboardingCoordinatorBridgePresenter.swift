@@ -20,8 +20,6 @@ import Foundation
 
 @objcMembers
 class OnboardingCoordinatorBridgePresenterParameters: NSObject {
-    /// The external registration parameters for AuthenticationViewController.
-    var externalRegistrationParameters: [AnyHashable: Any]?
     /// The credentials to use after a soft logout has taken place.
     var softLogoutCredentials: MXCredentials?
 }
@@ -86,17 +84,6 @@ final class OnboardingCoordinatorBridgePresenter: NSObject {
         self.navigationType = .push
     }
     
-    /// Force a registration process based on a predefined set of parameters from a server provisioning link.
-    /// For more information see `AuthenticationViewController.externalRegistrationParameters`.
-    func update(externalRegistrationParameters: [AnyHashable: Any]) {
-        coordinator?.update(externalRegistrationParameters: externalRegistrationParameters)
-    }
-    
-    /// Set up the authentication screen with the specified homeserver and/or identity server.
-    func updateHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?) {
-        coordinator?.updateHomeserver(homeserver, andIdentityServer: identityServer)
-    }
-    
     func dismiss(animated: Bool, completion: (() -> Void)?) {
         guard let coordinator = self.coordinator else {
             return
@@ -137,10 +124,6 @@ final class OnboardingCoordinatorBridgePresenter: NSObject {
         onboardingCoordinator.completion = { [weak self] in
             self?.completion?()
         }
-        if let externalRegistrationParameters = parameters.externalRegistrationParameters {
-            onboardingCoordinator.update(externalRegistrationParameters: externalRegistrationParameters)
-        }
-        
         return onboardingCoordinator
     }
 }
