@@ -223,7 +223,7 @@ typedef enum : NSUInteger {
 
  @param htmlString the HTLM string to render.
  @param event the event associated to the string.
- @param roomState the room state right before the event.
+ @param roomState the room state right before the event. If nil, replies will not get constructed or formatted.
  @return an attributed string.
  */
 - (NSAttributedString*)renderHTMLString:(NSString*)htmlString forEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState;
