@@ -87,18 +87,10 @@ final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinator
         authenticationViewController.authType = authenticationFlow.mxkType
     }
     
-    func update(externalRegistrationParameters: [AnyHashable: Any]) {
-        authenticationViewController.externalRegistrationParameters = externalRegistrationParameters
-    }
-    
     func update(softLogoutCredentials: MXCredentials) {
         authenticationViewController.softLogoutCredentials = softLogoutCredentials
     }
-    
-    func updateHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?) {
-        authenticationViewController.showCustomHomeserver(homeserver, andIdentityServer: identityServer)
-    }
-    
+
     func presentPendingScreensIfNecessary() {
         canPresentAdditionalScreens = true
         
@@ -149,6 +141,15 @@ final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinator
 extension LegacyAuthenticationCoordinator: AuthenticationServiceDelegate {
     func authenticationService(_ service: AuthenticationService, didReceive ssoLoginToken: String, with transactionID: String) -> Bool {
         authenticationViewController.continueSSOLogin(withToken: ssoLoginToken, txnId: transactionID)
+    }
+
+    func authenticationService(_ service: AuthenticationService, didUpdateStateWithLink link: UniversalLink) {
+        if link.pathParams.first == "register" && !link.queryParams.isEmpty {
+            authenticationViewController.externalRegistrationParameters = link.queryParams
+        } else if let homeserver = link.homeserverUrl {
+            let identityServer = link.identityServerUrl
+            authenticationViewController.showCustomHomeserver(homeserver, andIdentityServer: identityServer)
+        }
     }
 }
 

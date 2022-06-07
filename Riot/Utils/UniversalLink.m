@@ -15,19 +15,135 @@
  */
 
 #import "UniversalLink.h"
+#import "NSArray+Element.h"
 
 @implementation UniversalLink
 
-- (id)initWithUrl:(NSURL *)url pathParams:(NSArray<NSString *> *)pathParams queryParams:(NSDictionary<NSString *,NSString *> *)queryParams
+- (id)initWithUrl:(NSURL *)url
 {
     self = [super init];
     if (self)
     {
         _url = url;
-        _pathParams = pathParams;
-        _queryParams = queryParams;
+
+        // Extract required parameters from the link
+        [self parsePathAndQueryParams];
     }
     return self;
+}
+
+/**
+ Extract params from the URL fragment part (after '#') of a vector.im Universal link:
+
+ The fragment can contain a '?'. So there are two kinds of parameters: path params and query params.
+ It is in the form of /[pathParam1]/[pathParam2]?[queryParam1Key]=[queryParam1Value]&[queryParam2Key]=[queryParam2Value]
+ */
+- (void)parsePathAndQueryParams
+{
+    NSArray<NSString*> *pathParams;
+    NSMutableDictionary *queryParams = [NSMutableDictionary dictionary];
+
+    NSArray<NSString*> *fragments = [_url.fragment componentsSeparatedByString:@"?"];
+
+    // Extract path params
+    pathParams = [fragments[0] componentsSeparatedByString:@"/"];
+
+    // Remove the first empty path param string
+    pathParams = [pathParams filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"length > 0"]];
+
+    // URL decode each path param
+    pathParams = [pathParams vc_map:^id _Nonnull(NSString * _Nonnull item) {
+        return [item stringByRemovingPercentEncoding];
+    }];
+    
+    // Extract query params
+    NSURLComponents *components = [NSURLComponents componentsWithURL:_url resolvingAgainstBaseURL:NO];
+    for (NSURLQueryItem *item in components.queryItems)
+    {
+        if (item.value)
+        {
+            NSString *key = item.name;
+            NSString *value = item.value;
+            value = [value stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+            value = [value stringByRemovingPercentEncoding];
+
+            if ([key isEqualToString:@"via"])
+            {
+                // Special case the via parameter
+                // As we can have several of them, store each value into an array
+                if (!queryParams[key])
+                {
+                    queryParams[key] = [NSMutableArray array];
+                }
+
+                [queryParams[key] addObject:value];
+            }
+            else
+            {
+                queryParams[key] = value;
+            }
+        }
+    }
+    // Query params are in the form [queryParam1Key]=[queryParam1Value], so the
+    // presence of at least one '=' character is mandatory
+    if (fragments.count == 2 && (NSNotFound != [fragments[1] rangeOfString:@"="].location))
+    {
+        for (NSString *keyValue in [fragments[1] componentsSeparatedByString:@"&"])
+        {
+            // Get the parameter name
+            NSString *key = [keyValue componentsSeparatedByString:@"="][0];
+
+            // Get the parameter value
+            NSString *value = [keyValue componentsSeparatedByString:@"="][1];
+            if (value.length)
+            {
+                value = [value stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+                value = [value stringByRemovingPercentEncoding];
+
+                if ([key isEqualToString:@"via"])
+                {
+                    // Special case the via parameter
+                    // As we can have several of them, store each value into an array
+                    if (!queryParams[key])
+                    {
+                        queryParams[key] = [NSMutableArray array];
+                    }
+
+                    if (![queryParams[key] containsObject:value])
+                    {
+                        [queryParams[key] addObject:value];
+                    }
+                }
+                else
+                {
+                    queryParams[key] = value;
+                }
+            }
+        }
+    }
+
+    _pathParams = pathParams;
+    _queryParams = queryParams;
+}
+
+- (NSString *)homeserverUrl
+{
+    return _queryParams[@"hs_url"];
+}
+
+- (NSString *)identityServerUrl
+{
+    return _queryParams[@"is_url"];
+}
+
+- (NSArray<NSString *> *)via
+{
+    NSArray<NSString *> *result = _queryParams[@"via"];
+    if (!result)
+    {
+        return @[];
+    }
+    return result;
 }
 
 - (BOOL)isEqual:(id)other
@@ -55,6 +171,23 @@
     result = prime * result + [_queryParams hash];
 
     return result;
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<UniversalLink: %@>", _url.absoluteString];
+}
+
+#pragma mark - NSCopying
+- (id)copyWithZone:(NSZone *)zone
+{
+    UniversalLink *link = [[self.class allocWithZone:zone] init];
+
+    link->_url = [_url copyWithZone:zone];
+    link->_pathParams = [_pathParams copyWithZone:zone];
+    link->_queryParams = [_queryParams copyWithZone:zone];
+
+    return link;
 }
 
 @end

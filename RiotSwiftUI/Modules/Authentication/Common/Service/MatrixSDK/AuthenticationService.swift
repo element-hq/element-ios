@@ -25,8 +25,12 @@ protocol AuthenticationServiceDelegate: AnyObject {
     ///   - transactionID: The transaction ID generated during SSO page presentation.
     /// - Returns: `true` if the SSO login can be continued.
     func authenticationService(_ service: AuthenticationService, didReceive ssoLoginToken: String, with transactionID: String) -> Bool
+
+    func authenticationService(_ service: AuthenticationService,
+                               didUpdateStateWithLink link: UniversalLink)
 }
 
+@objcMembers
 class AuthenticationService: NSObject {
     
     /// The shared service object.
@@ -73,7 +77,40 @@ class AuthenticationService: NSObject {
     }
     
     // MARK: - Public
-    
+
+    /// Parse and handle a server provisioning link.
+    /// - Parameter universalLink: A link such as https://mobile.element.io/?hs_url=matrix.example.com&is_url=identity.example.com
+    /// - Returns: `true` if a provisioning link was detected and handled.
+    @discardableResult
+    func handleServerProvisioningLink(_ universalLink: UniversalLink) -> Bool {
+        MXLog.debug("[AuthenticationService] handleServerProvisioningLink: \(universalLink)")
+
+        let hsUrl = universalLink.homeserverUrl
+        let isUrl = universalLink.identityServerUrl
+
+        if hsUrl == nil && isUrl == nil {
+            MXLog.debug("[AuthenticationService] handleServerProvisioningLink: no hsUrl or isUrl")
+            return false
+        }
+
+        let isRegister = universalLink.pathParams.first == "register"
+        let flow: AuthenticationFlow = isRegister ? .register : .login
+
+        if needsAuthentication {
+            reset()
+            //  not logged in
+            //  update the state with given HS and IS addresses
+            state = AuthenticationState(flow: flow,
+                                        homeserverAddress: hsUrl ?? BuildSettings.serverConfigDefaultHomeserverUrlString,
+                                        identityServer: isUrl ?? BuildSettings.serverConfigDefaultIdentityServerUrlString)
+            delegate?.authenticationService(self, didUpdateStateWithLink: universalLink)
+        } else {
+            //  logged in
+            AppDelegate.theDelegate().displayLogoutConfirmation(for: universalLink, completion: nil)
+        }
+        return true
+    }
+
     /// Whether authentication is needed by checking for any accounts.
     /// - Returns: `true` there are no accounts or if there is an inactive account that has had a soft logout.
     var needsAuthentication: Bool {
@@ -145,7 +182,10 @@ class AuthenticationService: NSObject {
 
         // The previously used homeserver is re-used as `startFlow` will be called again a replace it anyway.
         let address = state.homeserver.addressFromUser ?? state.homeserver.address
-        self.state = AuthenticationState(flow: .login, homeserverAddress: address)
+        let identityServer = state.identityServer
+        self.state = AuthenticationState(flow: .login,
+                                         homeserverAddress: address,
+                                         identityServer: identityServer)
     }
     
     /// Continues an SSO flow when completion comes via a deep link.
