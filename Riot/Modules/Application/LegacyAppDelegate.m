@@ -563,7 +563,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         }
         self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:mxSessionArray.firstObject viewMode:SetPinCoordinatorViewModeInactive];
         self.setPinCoordinatorBridgePresenter.delegate = self;
-        [self.setPinCoordinatorBridgePresenter presentIn:self.window];
+        [self.setPinCoordinatorBridgePresenter presentWithMainAppWindow:self.window];
     }
 }
 
@@ -663,12 +663,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         {
             self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:mxSessionArray.firstObject viewMode:SetPinCoordinatorViewModeUnlock];
             self.setPinCoordinatorBridgePresenter.delegate = self;
-            [self.setPinCoordinatorBridgePresenter presentIn:self.window];
+            [self.setPinCoordinatorBridgePresenter presentWithMainAppWindow:self.window];
         }
     }
     else
     {
-        [self.setPinCoordinatorBridgePresenter dismiss];
+        [self.setPinCoordinatorBridgePresenter dismissWithMainAppWindow:self.window];
         self.setPinCoordinatorBridgePresenter = nil;
         [self afterAppUnlockedByPin:application];
     }
@@ -4611,7 +4611,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)setPinCoordinatorBridgePresenterDelegateDidComplete:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
-    [coordinatorBridgePresenter dismiss];
+    [coordinatorBridgePresenter dismissWithMainAppWindow:self.window];
     self.setPinCoordinatorBridgePresenter = nil;
     [self afterAppUnlockedByPin:[UIApplication sharedApplication]];
 }
@@ -4625,7 +4625,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     else
     {
-        [coordinatorBridgePresenter dismiss];
+        [coordinatorBridgePresenter dismissWithMainAppWindow:self.window];
         self.setPinCoordinatorBridgePresenter = nil;
         [self logoutWithConfirmation:NO completion:nil];
     }
