@@ -657,15 +657,7 @@ extension AuthenticationCoordinator {
         // unused
     }
     
-    func update(externalRegistrationParameters: [AnyHashable: Any]) {
-        // unused
-    }
-    
     func update(softLogoutCredentials: MXCredentials) {
-        // unused
-    }
-    
-    func updateHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?) {
         // unused
     }
 }

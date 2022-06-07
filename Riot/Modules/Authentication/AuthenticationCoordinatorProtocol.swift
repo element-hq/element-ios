@@ -39,17 +39,10 @@ protocol AuthenticationCoordinatorProtocol: Coordinator, Presentable {
     
     /// Update the screen to display registration or login.
     func update(authenticationFlow: AuthenticationFlow)
-    
-    /// Force a registration process based on a predefined set of parameters from a server provisioning link.
-    /// For more information see `AuthenticationViewController.externalRegistrationParameters`.
-    func update(externalRegistrationParameters: [AnyHashable: Any])
-    
+
     /// Update the screen to use any credentials to use after a soft logout has taken place.
     func update(softLogoutCredentials: MXCredentials)
-    
-    /// Set up the authentication screen with the specified homeserver and/or identity server.
-    func updateHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?)
-    
+
     /// Indicates to the coordinator to display any pending screens if it was created with
     /// the `canPresentAdditionalScreens` parameter set to `false`
     func presentPendingScreensIfNecessary()

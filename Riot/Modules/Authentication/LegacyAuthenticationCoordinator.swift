@@ -87,18 +87,10 @@ final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinator
         authenticationViewController.authType = authenticationFlow.mxkType
     }
     
-    func update(externalRegistrationParameters: [AnyHashable: Any]) {
-        authenticationViewController.externalRegistrationParameters = externalRegistrationParameters
-    }
-    
     func update(softLogoutCredentials: MXCredentials) {
         authenticationViewController.softLogoutCredentials = softLogoutCredentials
     }
-    
-    func updateHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?) {
-        authenticationViewController.showCustomHomeserver(homeserver, andIdentityServer: identityServer)
-    }
-    
+
     func presentPendingScreensIfNecessary() {
         canPresentAdditionalScreens = true
         
