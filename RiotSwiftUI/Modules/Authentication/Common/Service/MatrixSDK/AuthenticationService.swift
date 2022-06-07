@@ -97,6 +97,7 @@ class AuthenticationService: NSObject {
         let flow: AuthenticationFlow = isRegister ? .register : .login
 
         if needsAuthentication {
+            reset()
             //  not logged in
             //  update the state with given HS and IS addresses
             state = AuthenticationState(flow: flow,

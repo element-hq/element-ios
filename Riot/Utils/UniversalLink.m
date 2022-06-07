@@ -109,7 +109,10 @@
                         queryParams[key] = [NSMutableArray array];
                     }
 
-                    [queryParams[key] addObject:value];
+                    if (![queryParams[key] containsObject:value])
+                    {
+                        [queryParams[key] addObject:value];
+                    }
                 }
                 else
                 {
