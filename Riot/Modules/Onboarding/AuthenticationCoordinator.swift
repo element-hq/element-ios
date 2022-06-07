@@ -17,6 +17,7 @@
  */
 
 import UIKit
+import CommonKit
 
 struct AuthenticationCoordinatorParameters {
     let navigationRouter: NavigationRouterType
@@ -59,6 +60,9 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     /// The listener object that informs the coordinator whether verification needs to be presented or not.
     private var verificationListener: SessionVerificationListener?
+
+    private var indicatorPresenter: UserIndicatorTypePresenterProtocol
+    private var successIndicator: UserIndicator?
     
     /// The password entered, for use when setting up cross-signing.
     private var password: String?
@@ -77,6 +81,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         self.navigationRouter = parameters.navigationRouter
         self.initialScreen = parameters.initialScreen
         self.canPresentAdditionalScreens = parameters.canPresentAdditionalScreens
+
+        indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: parameters.navigationRouter.toPresentable())
         
         super.init()
     }
@@ -613,6 +619,15 @@ extension AuthenticationCoordinator: AuthenticationServiceDelegate {
         
         return true
     }
+
+    func authenticationService(_ service: AuthenticationService, didUpdateStateWithLink link: UniversalLink) {
+        if link.pathParams.first == "register" {
+            callback?(.cancel(.register))
+        } else {
+            callback?(.cancel(.login))
+        }
+        successIndicator = indicatorPresenter.present(.success(label: VectorL10n.done))
+    }
 }
 
 // MARK: - KeyVerificationCoordinatorDelegate
@@ -657,15 +672,7 @@ extension AuthenticationCoordinator {
         // unused
     }
     
-    func update(externalRegistrationParameters: [AnyHashable: Any]) {
-        // unused
-    }
-    
     func update(softLogoutCredentials: MXCredentials) {
-        // unused
-    }
-    
-    func updateHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?) {
         // unused
     }
 }

@@ -64,16 +64,6 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 - (void)showOnboardingFlow;
 
 /**
- Display the onboarding flow in order to pursue a registration process by using a predefined set
- of parameters.
- 
- If the provided registration parameters are not supported, the default onboarding flow will be used.
- 
- @param parameters the set of parameters.
- */
-- (void)showOnboardingFlowWithRegistrationParameters:(NSDictionary*)parameters;
-
-/**
  Display the onboarding flow configured to log back into a soft logout session.
 
  @param softLogoutCredentials the credentials of the soft logout session.

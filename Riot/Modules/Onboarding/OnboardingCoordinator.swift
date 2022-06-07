@@ -42,13 +42,6 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     // MARK: Private
         
     private let parameters: OnboardingCoordinatorParameters
-    // TODO: these can likely be consolidated using an additional authType.
-    /// The any registration parameters for AuthenticationViewController from a server provisioning link.
-    private var externalRegistrationParameters: [AnyHashable: Any]?
-    /// A custom homeserver to be shown when logging in.
-    private var customHomeserver: String?
-    /// A custom identity server to be used once logged in.
-    private var customIdentityServer: String?
     
     // MARK: Navigation State
     private var navigationRouter: NavigationRouterType {
@@ -113,21 +106,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     func toPresentable() -> UIViewController {
         navigationRouter.toPresentable()
     }
-    
-    /// Force a registration process based on a predefined set of parameters from a server provisioning link.
-    /// For more information see `AuthenticationViewController.externalRegistrationParameters`.
-    func update(externalRegistrationParameters: [AnyHashable: Any]) {
-        self.externalRegistrationParameters = externalRegistrationParameters
-        legacyAuthenticationCoordinator.update(externalRegistrationParameters: externalRegistrationParameters)
-    }
-    
-    /// Set up the authentication screen with the specified homeserver and/or identity server.
-    func updateHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?) {
-        self.customHomeserver = homeserver
-        self.customIdentityServer = identityServer
-        legacyAuthenticationCoordinator.updateHomeserver(homeserver, andIdentityServer: identityServer)
-    }
-    
+
     // MARK: - Pre-Authentication
     
     /// Show the onboarding splash screen as the root module in the flow.
@@ -259,14 +238,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
                 break
             }
         }
-        
-        // Due to needing to preload the authVC, this breaks the Coordinator init/start pattern.
-        // This can be re-assessed once we re-write a native flow for authentication.
-        
-        if let externalRegistrationParameters = externalRegistrationParameters {
-            coordinator.update(externalRegistrationParameters: externalRegistrationParameters)
-        }
-        
+
         coordinator.customServerFieldsVisible = useCaseResult == .customServer
         
         if let softLogoutCredentials = parameters.softLogoutCredentials {
@@ -277,11 +249,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         
         coordinator.start()
         add(childCoordinator: coordinator)
-        
-        if customHomeserver != nil || customIdentityServer != nil {
-            coordinator.updateHomeserver(customHomeserver, andIdentityServer: customIdentityServer)
-        }
-        
+
         if navigationRouter.modules.isEmpty {
             navigationRouter.setRootModule(coordinator, popCompletion: nil)
         } else {
