@@ -142,6 +142,15 @@ extension LegacyAuthenticationCoordinator: AuthenticationServiceDelegate {
     func authenticationService(_ service: AuthenticationService, didReceive ssoLoginToken: String, with transactionID: String) -> Bool {
         authenticationViewController.continueSSOLogin(withToken: ssoLoginToken, txnId: transactionID)
     }
+
+    func authenticationService(_ service: AuthenticationService, didUpdateStateWithLink link: UniversalLink) {
+        if link.pathParams.first == "register" && !link.queryParams.isEmpty {
+            authenticationViewController.externalRegistrationParameters = link.queryParams
+        } else if let homeserver = link.homeserverUrl {
+            let identityServer = link.identityServerUrl
+            authenticationViewController.showCustomHomeserver(homeserver, andIdentityServer: identityServer)
+        }
+    }
 }
 
 // MARK: - AuthenticationViewControllerDelegate

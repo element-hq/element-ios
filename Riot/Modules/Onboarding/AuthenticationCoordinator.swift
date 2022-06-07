@@ -613,6 +613,10 @@ extension AuthenticationCoordinator: AuthenticationServiceDelegate {
         
         return true
     }
+
+    func authenticationService(_ service: AuthenticationService, didUpdateStateWithLink link: UniversalLink) {
+        //  updating current views according to the link doesn't seem easy.
+    }
 }
 
 // MARK: - KeyVerificationCoordinatorDelegate
