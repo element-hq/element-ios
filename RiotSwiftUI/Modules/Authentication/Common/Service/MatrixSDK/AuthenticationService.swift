@@ -145,7 +145,10 @@ class AuthenticationService: NSObject {
 
         // The previously used homeserver is re-used as `startFlow` will be called again a replace it anyway.
         let address = state.homeserver.addressFromUser ?? state.homeserver.address
-        self.state = AuthenticationState(flow: .login, homeserverAddress: address)
+        let identityServer = state.identityServer
+        self.state = AuthenticationState(flow: .login,
+                                         homeserverAddress: address,
+                                         identityServer: identityServer)
     }
     
     /// Continues an SSO flow when completion comes via a deep link.
