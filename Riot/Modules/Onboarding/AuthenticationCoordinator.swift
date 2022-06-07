@@ -24,6 +24,8 @@ struct AuthenticationCoordinatorParameters {
     let initialScreen: AuthenticationCoordinator.EntryPoint
     /// Whether or not the coordinator should show the loading spinner, key verification etc.
     let canPresentAdditionalScreens: Bool
+    /// Soft logout credentials
+    let softLogoutCredentials: MXCredentials?
 }
 
 /// A coordinator that handles authentication, verification and setting a PIN.
@@ -54,6 +56,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     /// Whether the coordinator can present further screens after a successful login has occurred.
     private var canPresentAdditionalScreens: Bool
+    /// Soft logout credentials
+    private let softLogoutCredentials: MXCredentials?
     /// `true` if presentation of the verification screen is blocked by `canPresentAdditionalScreens`.
     private var isWaitingToPresentCompleteSecurity = false
     
@@ -77,6 +81,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         self.navigationRouter = parameters.navigationRouter
         self.initialScreen = parameters.initialScreen
         self.canPresentAdditionalScreens = parameters.canPresentAdditionalScreens
+        self.softLogoutCredentials = parameters.softLogoutCredentials
         
         super.init()
     }
@@ -110,6 +115,11 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     /// Starts the authentication flow.
     @MainActor private func startAuthenticationFlow() async {
+        if let softLogoutCredentials = softLogoutCredentials {
+            showSoftLogoutScreen(softLogoutCredentials)
+            return
+        }
+
         let flow: AuthenticationFlow = initialScreen == .login ? .login : .register
         if initialScreen != .selectServerForRegistration {
             do {
@@ -186,6 +196,41 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         coordinator.start()
         add(childCoordinator: coordinator)
         
+        if navigationRouter.modules.isEmpty {
+            navigationRouter.setRootModule(coordinator, popCompletion: nil)
+        } else {
+            navigationRouter.push(coordinator, animated: true) { [weak self] in
+                self?.remove(childCoordinator: coordinator)
+            }
+        }
+    }
+
+    /// Shows the soft logout screen.
+    @MainActor private func showSoftLogoutScreen(_ credentials: MXCredentials) {
+        MXLog.debug("[AuthenticationCoordinator] showSoftLogoutScreen")
+
+        let parameters = AuthenticationSoftLogoutCoordinatorParameters(navigationRouter: navigationRouter,
+                                                                       authenticationService: authenticationService,
+                                                                       credentials: credentials)
+        let coordinator = AuthenticationSoftLogoutCoordinator(parameters: parameters)
+        coordinator.callback = { [weak self, weak coordinator] result in
+            guard let self = self, let coordinator = coordinator else { return }
+            switch result {
+            case .success(let session, let loginPassword):
+                self.password = loginPassword
+                self.authenticationType = .password
+                self.onSessionCreated(session: session, flow: .login)
+            case .clearAllData:
+                //  TODO: Implement
+                break
+            case .cancel:
+                break
+            }
+        }
+
+        coordinator.start()
+        add(childCoordinator: coordinator)
+
         if navigationRouter.modules.isEmpty {
             navigationRouter.setRootModule(coordinator, popCompletion: nil)
         } else {

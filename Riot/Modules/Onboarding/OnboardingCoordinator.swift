@@ -102,8 +102,11 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     // MARK: - Public
     
     func start() {
-        // TODO: Manage a separate flow for soft logout that just uses AuthenticationCoordinator
-        if parameters.softLogoutCredentials == nil, BuildSettings.authScreenShowRegister {
+        if parameters.softLogoutCredentials != nil {
+            beginAuthentication(with: .login) {
+
+            }
+        } else if BuildSettings.authScreenShowRegister {
             showSplashScreen()
         } else {
             showLegacyAuthenticationScreen()
@@ -217,7 +220,8 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         
         let parameters = AuthenticationCoordinatorParameters(navigationRouter: navigationRouter,
                                                              initialScreen: initialScreen,
-                                                             canPresentAdditionalScreens: false)
+                                                             canPresentAdditionalScreens: false,
+                                                             softLogoutCredentials: self.parameters.softLogoutCredentials)
         let coordinator = AuthenticationCoordinator(parameters: parameters)
         coordinator.callback = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
@@ -229,6 +233,8 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
                 self.authenticationCoordinator(coordinator, didLoginWith: session, and: authenticationFlow, using: authenticationType)
             case .didComplete:
                 self.authenticationCoordinatorDidComplete(coordinator)
+            case .clearAllData:
+                break
             case .cancel(let flow):
                 self.cancelAuthentication(flow: flow)
             }
@@ -238,7 +244,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         add(childCoordinator: coordinator)
         coordinator.start()
     }
-    
+
     /// Show the legacy authentication screen. Any parameters that have been set in previous screens are be applied.
     private func showLegacyAuthenticationScreen() {
         guard !isShowingLegacyAuthentication else { return }
@@ -254,7 +260,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
                 self.authenticationCoordinator(coordinator, didLoginWith: session, and: authenticationFlow, using: authenticationType)
             case .didComplete:
                 self.authenticationCoordinatorDidComplete(coordinator)
-            case .didStart, .cancel:
+            case .didStart, .clearAllData, .cancel:
                 // These results are only sent by the new flow.
                 break
             }

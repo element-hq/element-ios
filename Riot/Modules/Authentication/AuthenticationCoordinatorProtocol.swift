@@ -26,6 +26,8 @@ enum AuthenticationCoordinatorResult {
     case didLogin(session: MXSession, authenticationFlow: AuthenticationFlow, authenticationType: AuthenticationType)
     /// All of the required authentication steps including key verification is complete.
     case didComplete
+    /// In case of soft logout, user has decided to clear all data
+    case clearAllData
     /// The user has cancelled the associated authentication flow.
     case cancel(AuthenticationFlow)
 }
