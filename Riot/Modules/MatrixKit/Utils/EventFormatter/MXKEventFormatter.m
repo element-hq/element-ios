@@ -1757,11 +1757,19 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
 - (NSAttributedString*)renderHTMLString:(NSString*)htmlString forEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState isEditMode:(BOOL)isEditMode
 {
     NSString *html = htmlString;
+    MXEvent *repliedEvent;
 
     // Special treatment for "In reply to" message
     // Note: `isEditMode` fixes an issue where editing a reply would display an "In reply to" span instead of a mention.
     if (!isEditMode && (event.isReplyEvent || (!RiotSettings.shared.enableThreads && event.isInThread)))
     {
+        repliedEvent = [self->mxSession.store eventWithEventId:event.relatesTo.inReplyTo.eventId inRoom:roomState.roomId];
+        if (repliedEvent)
+        {
+            // Try to construct rich reply.
+            html = [self buildHTMLStringForEvent:event inReplyToEvent:repliedEvent] ?: html;
+        }
+
         html = [self renderReplyTo:html withRoomState:roomState];
     }
 
@@ -1804,6 +1812,18 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
     // Finalize HTML blockquote blocks marking
     str = [MXKTools removeMarkedBlockquotesArtifacts:str];
 
+    if (repliedEvent && repliedEvent.isRedactedEvent)
+    {
+        // Replace the description of an empty replied event
+        NSMutableAttributedString *mutableStr = [[NSMutableAttributedString alloc] initWithAttributedString:str];
+        NSRange nullRange = [mutableStr.string rangeOfString:@"(null)"];
+        if (nullRange.location != NSNotFound)
+        {
+            [mutableStr replaceCharactersInRange:nullRange withAttributedString:[self redactedMessageReplacementAttributedString]];
+            str = mutableStr;
+        }
+    }
+
     UIFont *fontForBody = [self fontForEvent:event string:nil];
     if ([fontForWholeString isEqual:fontForBody])
     {
@@ -1830,6 +1850,84 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
     NSMutableAttributedString *mutableStr = [str mutableCopy];
     [mutableStr addAttribute:NSFontAttributeName value:fontForBody range:bodyRange];
     return mutableStr;
+}
+
+- (NSAttributedString*)redactedMessageReplacementAttributedString
+{
+    return [[NSAttributedString alloc] initWithString:VectorL10n.eventFormatterMessageDeleted];
+}
+
+/**
+ Build the HTML body of a reply from its related event (rich replies).
+
+ @param event the reply event.
+ @param repliedEvent the event it replies to.
+ @return an html string containing the updated content of both events.
+ */
+- (NSString*)buildHTMLStringForEvent:(MXEvent*)event inReplyToEvent:(MXEvent*)repliedEvent
+{
+    NSString *repliedEventContent;
+    NSString *eventContent;
+    NSString *html;
+
+    if (repliedEvent.isRedactedEvent)
+    {
+        repliedEventContent = nil;
+    }
+    else
+    {
+        if (repliedEvent.content[kMXMessageContentKeyNewContent])
+        {
+            MXJSONModelSetString(repliedEventContent, repliedEvent.content[kMXMessageContentKeyNewContent][@"formatted_body"]);
+            if (!repliedEventContent)
+            {
+                MXJSONModelSetString(repliedEventContent, repliedEvent.content[kMXMessageContentKeyNewContent][kMXMessageBodyKey]);
+            }
+        }
+        else
+        {
+            MXJSONModelSetString(repliedEventContent, repliedEvent.content[@"formatted_body"]);
+            if (!repliedEventContent)
+            {
+                MXJSONModelSetString(repliedEventContent, repliedEvent.content[kMXMessageBodyKey]);
+            }
+        }
+    }
+
+    if (event.content[kMXMessageContentKeyNewContent])
+    {
+        MXJSONModelSetString(eventContent, event.content[kMXMessageContentKeyNewContent][@"formatted_body"]);
+        if (!eventContent)
+        {
+            MXJSONModelSetString(eventContent, event.content[kMXMessageContentKeyNewContent][kMXMessageBodyKey]);
+        }
+    }
+    else
+    {
+        MXReplyEventParser *parser = [[MXReplyEventParser alloc] init];
+        MXReplyEventParts *parts = [parser parse:event];
+        MXJSONModelSetString(eventContent, parts.formattedBodyParts.replyText)
+        if (!eventContent)
+        {
+            MXJSONModelSetString(eventContent, parts.bodyParts.replyText)
+        }
+    }
+
+    if (eventContent && repliedEvent.sender)
+    {
+        html = [NSString stringWithFormat:@"<mx-reply><blockquote><a href=\"%@\">In reply to</a> <a href=\"%@\">%@</a><br>%@</blockquote></mx-reply>%@",
+                [MXTools permalinkToEvent:repliedEvent.eventId inRoom:repliedEvent.roomId],
+                [MXTools permalinkToUserWithUserId:repliedEvent.sender],
+                repliedEvent.sender,
+                repliedEventContent,
+                eventContent];
+    }
+    else
+    {
+        MXLogDebug(@"[MXKEventFormatter] Unable to build reply event %@", event.description)
+    }
+
+    return html;
 }
 
 /**
