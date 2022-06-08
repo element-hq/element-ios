@@ -717,9 +717,6 @@ extension AuthenticationCoordinator {
         // unused
     }
     
-    func update(softLogoutCredentials: MXCredentials) {
-        // unused
-    }
 }
 
 // MARK: - AuthFallBackViewControllerDelegate

@@ -86,8 +86,10 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         self.parameters = parameters
         
         // Preload the legacy authVC (it is *really* slow to load in realtime)
-        let authenticationParameters = LegacyAuthenticationCoordinatorParameters(navigationRouter: parameters.router, canPresentAdditionalScreens: false)
-        legacyAuthenticationCoordinator = LegacyAuthenticationCoordinator(parameters: authenticationParameters)
+        let params = LegacyAuthenticationCoordinatorParameters(navigationRouter: parameters.router,
+                                                               canPresentAdditionalScreens: false,
+                                                               softLogoutCredentials: parameters.softLogoutCredentials)
+        legacyAuthenticationCoordinator = LegacyAuthenticationCoordinator(parameters: params)
         
         super.init()
     }    
@@ -96,8 +98,10 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     
     func start() {
         if parameters.softLogoutCredentials != nil {
-            beginAuthentication(with: .login) {
-
+            if BuildSettings.onboardingEnableNewAuthenticationFlow {
+                beginAuthentication(with: .login)
+            } else {
+                showLegacyAuthenticationScreen()
             }
         } else if BuildSettings.authScreenShowRegister {
             showSplashScreen()
@@ -194,7 +198,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     // MARK: - Authentication
     
     /// Show the authentication flow, starting at the specified initial screen.
-    private func beginAuthentication(with initialScreen: AuthenticationCoordinator.EntryPoint, onStart: @escaping () -> Void) {
+    private func beginAuthentication(with initialScreen: AuthenticationCoordinator.EntryPoint, onStart: (() -> Void)? = nil) {
         MXLog.debug("[OnboardingCoordinator] beginAuthentication")
         
         let parameters = AuthenticationCoordinatorParameters(navigationRouter: navigationRouter,
@@ -207,13 +211,15 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             
             switch result {
             case .didStart:
-                onStart()
+                onStart?()
             case .didLogin(let session, let authenticationFlow, let authenticationType):
                 self.authenticationCoordinator(coordinator, didLoginWith: session, and: authenticationFlow, using: authenticationType)
             case .didComplete:
                 self.authenticationCoordinatorDidComplete(coordinator)
             case .clearAllData:
-                break
+                self.isShowingLegacyAuthentication = false
+                self.authenticationFinished = false
+                AppDelegate.theDelegate().logoutSendingRequestServer(true, completion: nil)
             case .cancel(let flow):
                 self.cancelAuthentication(flow: flow)
             }
@@ -246,11 +252,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         }
 
         coordinator.customServerFieldsVisible = useCaseResult == .customServer
-        
-        if let softLogoutCredentials = parameters.softLogoutCredentials {
-            coordinator.update(softLogoutCredentials: softLogoutCredentials)
-        }
-        
+
         authenticationCoordinator = coordinator
         
         coordinator.start()

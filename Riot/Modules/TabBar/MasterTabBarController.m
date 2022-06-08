@@ -475,12 +475,8 @@
 // TODO: Manage the onboarding coordinator at the AppCoordinator level
 - (void)presentOnboardingFlow
 {
-    OnboardingCoordinatorBridgePresenterParameters *parameters = [[OnboardingCoordinatorBridgePresenterParameters alloc] init];
-    if (self.softLogoutCredentials)
-    {
-        parameters.softLogoutCredentials = self.softLogoutCredentials;
-        self.softLogoutCredentials = nil;
-    }
+    OnboardingCoordinatorBridgePresenterParameters *parameters = [[OnboardingCoordinatorBridgePresenterParameters alloc] initWithSoftLogoutCredentials:self.softLogoutCredentials];
+    self.softLogoutCredentials = nil;
     
     MXWeakify(self);
     OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter = [[OnboardingCoordinatorBridgePresenter alloc] initWith:parameters];

@@ -42,9 +42,6 @@ protocol AuthenticationCoordinatorProtocol: Coordinator, Presentable {
     /// Update the screen to display registration or login.
     func update(authenticationFlow: AuthenticationFlow)
 
-    /// Update the screen to use any credentials to use after a soft logout has taken place.
-    func update(softLogoutCredentials: MXCredentials)
-
     /// Indicates to the coordinator to display any pending screens if it was created with
     /// the `canPresentAdditionalScreens` parameter set to `false`
     func presentPendingScreensIfNecessary()

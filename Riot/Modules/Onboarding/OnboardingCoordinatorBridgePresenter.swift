@@ -21,7 +21,13 @@ import Foundation
 @objcMembers
 class OnboardingCoordinatorBridgePresenterParameters: NSObject {
     /// The credentials to use after a soft logout has taken place.
-    var softLogoutCredentials: MXCredentials?
+    let softLogoutCredentials: MXCredentials?
+
+    init(softLogoutCredentials: MXCredentials?) {
+        self.softLogoutCredentials = softLogoutCredentials
+        
+        super.init()
+    }
 }
 
 /// OnboardingCoordinatorBridgePresenter enables to start OnboardingCoordinator from a view controller.
