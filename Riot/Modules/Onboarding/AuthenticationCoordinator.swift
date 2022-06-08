@@ -121,8 +121,17 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     /// Starts the authentication flow.
     @MainActor private func startAuthenticationFlow() async {
-        if let softLogoutCredentials = softLogoutCredentials {
-            showSoftLogoutScreen(softLogoutCredentials)
+        if let softLogoutCredentials = softLogoutCredentials,
+           let homeserverAddress = softLogoutCredentials.homeServer {
+            do {
+                try await authenticationService.startFlow(.login, for: homeserverAddress)
+            } catch {
+                MXLog.error("[AuthenticationCoordinator] start: Failed to start")
+                displayError(message: error.localizedDescription)
+            }
+
+            await showSoftLogoutScreen(softLogoutCredentials)
+
             return
         }
 
@@ -212,25 +221,41 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     }
 
     /// Shows the soft logout screen.
-    @MainActor private func showSoftLogoutScreen(_ credentials: MXCredentials) {
+    @MainActor private func showSoftLogoutScreen(_ credentials: MXCredentials) async {
         MXLog.debug("[AuthenticationCoordinator] showSoftLogoutScreen")
+
+        guard let userId = credentials.userId else {
+            MXLog.failure("[AuthenticationCoordinator] showSoftLogoutScreen: Missing userId.")
+            displayError(message: VectorL10n.errorCommonMessage)
+            return
+        }
+
+        let store = MXFileStore(credentials: credentials)
+        let userDisplayName = await store.displayName(ofUserWithId: userId) ?? ""
+
+        let softLogoutCredentials = SoftLogoutCredentials(userId: userId,
+                                                          homeserverName: credentials.homeServerName() ?? "",
+                                                          userDisplayName: userDisplayName,
+                                                          deviceId: credentials.deviceId)
 
         let parameters = AuthenticationSoftLogoutCoordinatorParameters(navigationRouter: navigationRouter,
                                                                        authenticationService: authenticationService,
-                                                                       credentials: credentials)
+                                                                       credentials: softLogoutCredentials)
         let coordinator = AuthenticationSoftLogoutCoordinator(parameters: parameters)
-        coordinator.callback = { [weak self, weak coordinator] result in
-            guard let self = self, let coordinator = coordinator else { return }
+        coordinator.callback = { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let session, let loginPassword):
                 self.password = loginPassword
                 self.authenticationType = .password
                 self.onSessionCreated(session: session, flow: .login)
             case .clearAllData:
-                //  TODO: Implement
-                break
-            case .cancel:
-                break
+                self.authenticationService.reset()
+                self.callback?(.clearAllData)
+            case .continueWithSSO(let provider):
+                self.presentSSOAuthentication(for: provider)
+            case .fallback:
+                self.showFallback(for: .login)
             }
         }
 
