@@ -255,7 +255,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             case .continueWithSSO(let provider):
                 self.presentSSOAuthentication(for: provider)
             case .fallback:
-                self.showFallback(for: .login)
+                self.showFallback(for: .login, deviceId: softLogoutCredentials.deviceId)
             }
         }
 
@@ -541,8 +541,26 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     // MARK: - Additional Screens
 
-    private func showFallback(for flow: AuthenticationFlow) {
-        let url = authenticationService.fallbackURL(for: flow)
+    private func showFallback(for flow: AuthenticationFlow, deviceId: String? = nil) {
+        var url = authenticationService.fallbackURL(for: flow)
+
+        if let deviceId = deviceId {
+            //  add deviceId as `device_id` into the url
+            guard var urlComponents = URLComponents(string: url.absoluteString) else {
+                MXLog.error("[AuthenticationCoordinator] showFallback: could not create url components")
+                return
+            }
+            var queryItems = urlComponents.queryItems ?? []
+            queryItems.append(URLQueryItem(name: "device_id", value: deviceId))
+            urlComponents.queryItems = queryItems
+
+            if let newUrl = urlComponents.url {
+                url = newUrl
+            } else {
+                MXLog.error("[AuthenticationCoordinator] showFallback: could not create url from components")
+                return
+            }
+        }
 
         MXLog.debug("[AuthenticationCoordinator] showFallback for: \(flow), url: \(url)")
 
