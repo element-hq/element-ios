@@ -132,7 +132,8 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
         //  shape-up events
         for event in roomState.stateEvents {
             let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
-            if !shouldDisplay(event) || eventFormatter.attributedString(from: event, with: roomState, error: formatterError) == nil {
+            let eventString = eventFormatter.attributedString(from: event, with: roomState, error: formatterError)
+            guard shouldDisplay(event), eventString != nil, formatterError.pointee == MXKEventFormatterErrorNone else {
                 continue
             }
             
