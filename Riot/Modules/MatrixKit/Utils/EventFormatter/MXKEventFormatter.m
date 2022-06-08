@@ -1755,7 +1755,6 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
     MXEvent *repliedEvent;
 
     // Special treatment for "In reply to" message
-    // Note: `isEditMode` fixes an issue where editing a reply would display an "In reply to" span instead of a mention.
     if (roomState && (event.isReplyEvent || (!RiotSettings.shared.enableThreads && event.isInThread)))
     {
         repliedEvent = [self->mxSession.store eventWithEventId:event.relatesTo.inReplyTo.eventId inRoom:roomState.roomId];
