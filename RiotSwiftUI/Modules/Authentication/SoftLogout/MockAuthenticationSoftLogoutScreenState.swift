@@ -26,6 +26,9 @@ enum MockAuthenticationSoftLogoutScreenState: MockScreenState, CaseIterable {
     // mock that screen.
     case emptyPassword
     case enteredPassword
+    case ssoOnly
+    case noSSO
+    case fallback
     
     /// The associated screen
     var screenType: Any.Type {
@@ -35,11 +38,27 @@ enum MockAuthenticationSoftLogoutScreenState: MockScreenState, CaseIterable {
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView)  {
         let viewModel: AuthenticationSoftLogoutViewModel
+        let credentials = SoftLogoutCredentials(userId: "@mock:matrix.org",
+                                                homeserverName: "matrix.org",
+                                                userDisplayName: "mock",
+                                                deviceId: nil)
         switch self {
         case .emptyPassword:
-            viewModel = AuthenticationSoftLogoutViewModel()
+            viewModel = AuthenticationSoftLogoutViewModel(credentials: credentials,
+                                                          homeserver: .mockMatrixDotOrg)
         case .enteredPassword:
-            viewModel = AuthenticationSoftLogoutViewModel(password: "12345678")
+            viewModel = AuthenticationSoftLogoutViewModel(credentials: credentials,
+                                                          homeserver: .mockMatrixDotOrg,
+                                                          password: "12345678")
+        case .ssoOnly:
+            viewModel = AuthenticationSoftLogoutViewModel(credentials: credentials,
+                                                          homeserver: .mockEnterpriseSSO)
+        case .noSSO:
+            viewModel = AuthenticationSoftLogoutViewModel(credentials: credentials,
+                                                          homeserver: .mockBasicServer)
+        case .fallback:
+            viewModel = AuthenticationSoftLogoutViewModel(credentials: credentials,
+                                                          homeserver: .mockFallback)
         }
         
         // can simulate service and viewModel actions here if needs be.

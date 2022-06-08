@@ -20,14 +20,36 @@ import XCTest
 
 class AuthenticationSoftLogoutViewModelTests: XCTestCase {
 
-    @MainActor func testInitialState() async {
-        let viewModel = AuthenticationSoftLogoutViewModel()
+    @MainActor func testInitialStateForMatrixOrg() async {
+        let credentials = SoftLogoutCredentials(userId: "mock_user_id",
+                                                homeserverName: "https://matrix.org",
+                                                userDisplayName: "mock_username",
+                                                deviceId: nil)
+        let viewModel = AuthenticationSoftLogoutViewModel(credentials: credentials,
+                                                          homeserver: .mockMatrixDotOrg)
         let context = viewModel.context
 
         // Given a view model where the user hasn't yet sent the verification email.
         XCTAssert(context.password.isEmpty, "The view model should start with an empty password.")
         XCTAssert(context.viewState.hasInvalidPassword, "The view model should start with an invalid password.")
-        XCTAssertFalse(context.signoutAllDevices, "The view model should start with sign out of all devices unchecked.")
+        XCTAssert(context.viewState.showSSOButtons, "The view model should show SSO buttons for the given homeserver.")
+        XCTAssert(context.viewState.showLoginForm, "The view model should show login form for the given homeserver.")
+    }
+
+    @MainActor func testInitialStateForNoSSO() async {
+        let credentials = SoftLogoutCredentials(userId: "mock_user_id",
+                                                homeserverName: "https://example.com",
+                                                userDisplayName: "mock_username",
+                                                deviceId: nil)
+        let viewModel = AuthenticationSoftLogoutViewModel(credentials: credentials,
+                                                          homeserver: .mockBasicServer)
+        let context = viewModel.context
+
+        // Given a view model where the user hasn't yet sent the verification email.
+        XCTAssert(context.password.isEmpty, "The view model should start with an empty password.")
+        XCTAssert(context.viewState.hasInvalidPassword, "The view model should start with an invalid password.")
+        XCTAssertFalse(context.viewState.showSSOButtons, "The view model should not show SSO buttons for the given homeserver.")
+        XCTAssert(context.viewState.showLoginForm, "The view model should show login form for the given homeserver.")
     }
 
 }

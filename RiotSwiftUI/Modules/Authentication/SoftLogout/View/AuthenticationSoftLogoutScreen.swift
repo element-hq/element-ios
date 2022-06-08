@@ -34,13 +34,23 @@ struct AuthenticationSoftLogoutScreen: View {
     
     var body: some View {
         ScrollView {
-            VStack(spacing: 0) {
+            VStack(spacing: 36) {
                 header
-                    .padding(.top, OnboardingMetrics.topPaddingToNavigationBar)
-                    .padding(.bottom, 36)
-                form
+                if viewModel.viewState.showLoginForm {
+                    loginForm
+                } else if !viewModel.viewState.showSSOButtons {
+                    fallbackButton
+                }
+                clearDataForm
+                if viewModel.viewState.showSSOButtons {
+                    Text(VectorL10n.or)
+                        .foregroundColor(theme.colors.secondaryContent)
+                        .accessibilityIdentifier("orLabel")
+                    ssoButtons
+                }
             }
             .readableFrame()
+            .padding(.top, OnboardingMetrics.topPaddingToNavigationBar)
             .padding(.horizontal, 16)
         }
         .background(theme.colors.background.ignoresSafeArea())
@@ -50,28 +60,43 @@ struct AuthenticationSoftLogoutScreen: View {
 
     /// The title, message and icon at the top of the screen.
     var header: some View {
-        VStack(spacing: 8) {
+        VStack(alignment: .leading, spacing: 16) {
             OnboardingIconImage(image: Asset.Images.authenticationPasswordIcon)
                 .padding(.bottom, 8)
+                .frame(maxWidth: .infinity, alignment: .center)
 
-            Text("")
+            Text(VectorL10n.authSoftlogoutSignIn)
                 .font(theme.fonts.title2B)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.primaryContent)
                 .accessibilityIdentifier("titleLabel")
 
-            Text("")
+            Text(VectorL10n.authSoftlogoutReason(viewModel.viewState.credentials.homeserverName, viewModel.viewState.credentials.userDisplayName, viewModel.viewState.credentials.userId))
                 .font(theme.fonts.body)
-                .multilineTextAlignment(.center)
-                .foregroundColor(theme.colors.secondaryContent)
-                .accessibilityIdentifier("messageLabel")
+                .multilineTextAlignment(.leading)
+                .foregroundColor(theme.colors.primaryContent)
+                .accessibilityIdentifier("messageLabel1")
+
+            Text(VectorL10n.authSoftlogoutRecoverEncryptionKeys)
+                .font(theme.fonts.body)
+                .multilineTextAlignment(.leading)
+                .foregroundColor(theme.colors.primaryContent)
+                .accessibilityIdentifier("messageLabel2")
         }
     }
 
     /// The text field and submit button where the user enters an email address.
-    var form: some View {
+    var loginForm: some View {
         VStack(alignment: .leading, spacing: 12) {
-            textField
+            passwordTextField
+
+            Button(action: forgotPassword) {
+                Text(VectorL10n.authenticationLoginForgotPassword)
+                    .font(theme.fonts.body)
+            }
+            .frame(maxWidth: .infinity, alignment: .trailing)
+            .padding(.bottom, 8)
+            .accessibilityIdentifier("forgotPasswordButton")
 
             Button(action: login) {
                 Text(VectorL10n.login)
@@ -82,8 +107,47 @@ struct AuthenticationSoftLogoutScreen: View {
         }
     }
 
+    /// A fallback button that can be used for login.
+    var fallbackButton: some View {
+        Button(action: fallback) {
+            Text(VectorL10n.login)
+        }
+        .buttonStyle(PrimaryActionButtonStyle())
+        .accessibilityIdentifier("fallbackButton")
+    }
+
+    /// The text field and submit button where the user enters an email address.
+    var clearDataForm: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(VectorL10n.authSoftlogoutClearData)
+                .font(theme.fonts.title2B)
+                .multilineTextAlignment(.leading)
+                .foregroundColor(theme.colors.primaryContent)
+                .accessibilityIdentifier("clearDataTitleLabel")
+
+            Text(VectorL10n.authSoftlogoutClearDataMessage1)
+                .font(theme.fonts.body)
+                .multilineTextAlignment(.leading)
+                .foregroundColor(theme.colors.primaryContent)
+                .accessibilityIdentifier("clearDataMessage1Label")
+
+            Text(VectorL10n.authSoftlogoutClearDataMessage2)
+                .font(theme.fonts.body)
+                .multilineTextAlignment(.leading)
+                .foregroundColor(theme.colors.primaryContent)
+                .accessibilityIdentifier("clearDataMessage2Label")
+                .padding(.bottom, 12)
+
+            Button(action: clearData) {
+                Text(VectorL10n.authSoftlogoutClearDataButton)
+            }
+            .buttonStyle(PrimaryActionButtonStyle(customColor: theme.colors.alert))
+            .accessibilityIdentifier("clearDataButton")
+        }
+    }
+
     /// The text field, extracted for iOS 15 modifiers to be applied.
-    var textField: some View {
+    var passwordTextField: some View {
         RoundedBorderTextField(placeHolder: VectorL10n.loginPasswordPlaceholder,
                                text: $viewModel.password,
                                isFirstResponder: isEditingTextField,
@@ -93,10 +157,37 @@ struct AuthenticationSoftLogoutScreen: View {
         .accessibilityIdentifier("passwordTextField")
     }
 
-    /// Sends the `send` view action so long as a valid email address has been input.
+    /// A list of SSO buttons that can be used for login.
+    var ssoButtons: some View {
+        VStack(spacing: 16) {
+            ForEach(viewModel.viewState.homeserver.ssoIdentityProviders) { provider in
+                AuthenticationSSOButton(provider: provider) {
+                    viewModel.send(viewAction: .continueWithSSO(provider))
+                }
+                .accessibilityIdentifier("ssoButton")
+            }
+        }
+    }
+
+    /// Sends the `login` view action so long as a valid email address has been input.
     func login() {
         guard !viewModel.viewState.hasInvalidPassword else { return }
         viewModel.send(viewAction: .login)
+    }
+
+    /// Sends the `fallback` view action.
+    func fallback() {
+        viewModel.send(viewAction: .fallback)
+    }
+
+    /// Sends the `forgotPassword` view action.
+    func forgotPassword() {
+        viewModel.send(viewAction: .forgotPassword)
+    }
+
+    /// Sends the `clearAllData` view action.
+    func clearData() {
+        viewModel.send(viewAction: .clearAllData)
     }
 
 }

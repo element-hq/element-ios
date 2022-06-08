@@ -32,87 +32,167 @@ class AuthenticationSoftLogoutUITests: MockScreenTest {
         switch screenState {
         case .emptyPassword:
             verifyEmptyPassword()
-        case .enteredInvalidPassword:
-            verifyEnteredInvalidPassword()
-        case .enteredValidPassword:
-            verifyEnteredValidPassword()
-        case .enteredValidPasswordAndSignoutAllDevicesChecked:
-            verifyEnteredValidPasswordAndSignoutAllDevicesChecked()
+        case .enteredPassword:
+            verifyEnteredPassword()
+        case .ssoOnly:
+            verifySSOOnly()
+        case .noSSO:
+            verifyNoSSO()
+        case .fallback:
+            verifyFallback()
         }
     }
     
     func verifyEmptyPassword() {
         XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown.")
-        XCTAssertTrue(app.staticTexts["messageLabel"].exists, "The message should be shown.")
+        XCTAssertTrue(app.staticTexts["messageLabel1"].exists, "The message 1 should be shown.")
+        XCTAssertTrue(app.staticTexts["messageLabel2"].exists, "The message 2 should be shown.")
+        XCTAssertTrue(app.staticTexts["clearDataTitleLabel"].exists, "The clear data title should be shown.")
+        XCTAssertTrue(app.staticTexts["clearDataMessage1Label"].exists, "The clear data message 1 should be shown.")
+        XCTAssertTrue(app.staticTexts["clearDataMessage2Label"].exists, "The clear data message 2 should be shown.")
+        XCTAssertTrue(app.staticTexts["orLabel"].exists, "The or label for SSO should be shown.")
         
         let passwordTextField = app.secureTextFields["passwordTextField"]
-        XCTAssertTrue(passwordTextField.exists, "The text field should be shown.")
-        XCTAssertEqual(passwordTextField.label, "New Password", "The text field should be showing the placeholder before text is input.")
+        XCTAssertTrue(passwordTextField.exists, "The password text field should be shown.")
+        XCTAssertEqual(passwordTextField.label, "Password", "The password text field should be showing the placeholder before text is input.")
         
-        let submitButton = app.buttons["submitButton"]
-        XCTAssertTrue(submitButton.exists, "The submit button should be shown.")
-        XCTAssertFalse(submitButton.isEnabled, "The submit button should be disabled before text is input.")
+        let loginButton = app.buttons["loginButton"]
+        XCTAssertTrue(loginButton.exists, "The login button should be shown.")
+        XCTAssertFalse(loginButton.isEnabled, "The login button should be disabled before text is input.")
 
-        let signoutAllDevicesToggle = app.switches["signoutAllDevicesToggle"]
-        XCTAssertTrue(signoutAllDevicesToggle.exists, "Sign out all devices toggle should exist")
-        XCTAssertFalse(signoutAllDevicesToggle.isOn, "Sign out all devices should be unchecked")
+        let forgotPasswordButton = app.buttons["forgotPasswordButton"]
+        XCTAssertTrue(forgotPasswordButton.exists, "The forgot password button should be shown.")
+        XCTAssertTrue(forgotPasswordButton.isEnabled, "The forgot password button should be enabled.")
+
+        let fallbackButton = app.buttons["fallbackButton"]
+        XCTAssertFalse(fallbackButton.exists, "The fallback button should not be shown.")
+
+        let clearDataButton = app.buttons["clearDataButton"]
+        XCTAssertTrue(clearDataButton.exists, "The clear data button should be shown.")
+        XCTAssertTrue(clearDataButton.isEnabled, "The clear data button should be enabled.")
+
+        let ssoButtons = app.buttons.matching(identifier: "ssoButton")
+        XCTAssertGreaterThan(ssoButtons.count, 0, "There should be at least 1 SSO button shown.")
     }
-    
-    func verifyEnteredInvalidPassword() {
+
+    func verifyEnteredPassword() {
         XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown.")
-        XCTAssertTrue(app.staticTexts["messageLabel"].exists, "The message should be shown.")
+        XCTAssertTrue(app.staticTexts["messageLabel1"].exists, "The message 1 should be shown.")
+        XCTAssertTrue(app.staticTexts["messageLabel2"].exists, "The message 2 should be shown.")
+        XCTAssertTrue(app.staticTexts["clearDataTitleLabel"].exists, "The clear data title should be shown.")
+        XCTAssertTrue(app.staticTexts["clearDataMessage1Label"].exists, "The clear data message 1 should be shown.")
+        XCTAssertTrue(app.staticTexts["clearDataMessage2Label"].exists, "The clear data message 2 should be shown.")
+        XCTAssertTrue(app.staticTexts["orLabel"].exists, "The or label for SSO should be shown.")
 
         let passwordTextField = app.secureTextFields["passwordTextField"]
-        XCTAssertTrue(passwordTextField.exists, "The text field should be shown.")
-        XCTAssertEqual(passwordTextField.value as? String, "••••", "The text field should be showing the placeholder before text is input.")
-
-        let submitButton = app.buttons["submitButton"]
-        XCTAssertTrue(submitButton.exists, "The submit button should be shown.")
-        XCTAssertFalse(submitButton.isEnabled, "The submit button should be disabled when password is invalid.")
-
-        let signoutAllDevicesToggle = app.switches["signoutAllDevicesToggle"]
-        XCTAssertTrue(signoutAllDevicesToggle.exists, "Sign out all devices toggle should exist")
-        XCTAssertFalse(signoutAllDevicesToggle.isOn, "Sign out all devices should be unchecked")
-    }
-    
-    func verifyEnteredValidPassword() {
-        XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown.")
-        XCTAssertTrue(app.staticTexts["messageLabel"].exists, "The message should be shown.")
-
-        let passwordTextField = app.secureTextFields["passwordTextField"]
-        XCTAssertTrue(passwordTextField.exists, "The text field should be shown.")
+        XCTAssertTrue(passwordTextField.exists, "The password text field should be shown.")
         XCTAssertEqual(passwordTextField.value as? String, "••••••••", "The text field should be showing the placeholder before text is input.")
 
-        let submitButton = app.buttons["submitButton"]
-        XCTAssertTrue(submitButton.exists, "The submit button should be shown.")
-        XCTAssertTrue(submitButton.isEnabled, "The submit button should be enabled after password is valid.")
+        let loginButton = app.buttons["loginButton"]
+        XCTAssertTrue(loginButton.exists, "The login button should be shown.")
+        XCTAssertTrue(loginButton.isEnabled, "The login button should be enabled after text is input.")
 
-        let signoutAllDevicesToggle = app.switches["signoutAllDevicesToggle"]
-        XCTAssertTrue(signoutAllDevicesToggle.exists, "Sign out all devices toggle should exist")
-        XCTAssertFalse(signoutAllDevicesToggle.isOn, "Sign out all devices should be unchecked")
+        let forgotPasswordButton = app.buttons["forgotPasswordButton"]
+        XCTAssertTrue(forgotPasswordButton.exists, "The forgot password button should be shown.")
+        XCTAssertTrue(forgotPasswordButton.isEnabled, "The forgot password button should be enabled.")
+
+        let fallbackButton = app.buttons["fallbackButton"]
+        XCTAssertFalse(fallbackButton.exists, "The fallback button should not be shown.")
+
+        let clearDataButton = app.buttons["clearDataButton"]
+        XCTAssertTrue(clearDataButton.exists, "The clear data button should be shown.")
+        XCTAssertTrue(clearDataButton.isEnabled, "The clear data button should be enabled.")
+
+        let ssoButtons = app.buttons.matching(identifier: "ssoButton")
+        XCTAssertGreaterThan(ssoButtons.count, 0, "There should be at least 1 SSO button shown.")
     }
 
-    func verifyEnteredValidPasswordAndSignoutAllDevicesChecked() {
+    func verifySSOOnly() {
         XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown.")
-        XCTAssertTrue(app.staticTexts["messageLabel"].exists, "The message should be shown.")
+        XCTAssertTrue(app.staticTexts["messageLabel1"].exists, "The message 1 should be shown.")
+        XCTAssertTrue(app.staticTexts["messageLabel2"].exists, "The message 2 should be shown.")
+        XCTAssertTrue(app.staticTexts["clearDataTitleLabel"].exists, "The clear data title should be shown.")
+        XCTAssertTrue(app.staticTexts["clearDataMessage1Label"].exists, "The clear data message 1 should be shown.")
+        XCTAssertTrue(app.staticTexts["clearDataMessage2Label"].exists, "The clear data message 2 should be shown.")
+        XCTAssertTrue(app.staticTexts["orLabel"].exists, "The or label for SSO should be shown.")
 
         let passwordTextField = app.secureTextFields["passwordTextField"]
-        XCTAssertTrue(passwordTextField.exists, "The text field should be shown.")
-        XCTAssertEqual(passwordTextField.value as? String, "••••••••", "The text field should be showing the placeholder before text is input.")
+        XCTAssertFalse(passwordTextField.exists, "The password text field should not be shown.")
 
-        let submitButton = app.buttons["submitButton"]
-        XCTAssertTrue(submitButton.exists, "The submit button should be shown.")
-        XCTAssertTrue(submitButton.isEnabled, "The submit button should be enabled after password is valid.")
+        let loginButton = app.buttons["loginButton"]
+        XCTAssertFalse(loginButton.exists, "The login button should not be shown.")
 
-        let signoutAllDevicesToggle = app.switches["signoutAllDevicesToggle"]
-        XCTAssertTrue(signoutAllDevicesToggle.exists, "Sign out all devices toggle should exist")
-        XCTAssertTrue(signoutAllDevicesToggle.isOn, "Sign out all devices should be checked")
+        let forgotPasswordButton = app.buttons["forgotPasswordButton"]
+        XCTAssertFalse(forgotPasswordButton.exists, "The forgot password button should not be shown.")
+
+        let fallbackButton = app.buttons["fallbackButton"]
+        XCTAssertFalse(fallbackButton.exists, "The fallback button should not be shown.")
+
+        let clearDataButton = app.buttons["clearDataButton"]
+        XCTAssertTrue(clearDataButton.exists, "The clear data button should be shown.")
+        XCTAssertTrue(clearDataButton.isEnabled, "The clear data button should be enabled.")
+
+        let ssoButtons = app.buttons.matching(identifier: "ssoButton")
+        XCTAssertGreaterThan(ssoButtons.count, 0, "There should be at least 1 SSO button shown.")
     }
 
-}
+    func verifyNoSSO() {
+        XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown.")
+        XCTAssertTrue(app.staticTexts["messageLabel1"].exists, "The message 1 should be shown.")
+        XCTAssertTrue(app.staticTexts["messageLabel2"].exists, "The message 2 should be shown.")
+        XCTAssertTrue(app.staticTexts["clearDataTitleLabel"].exists, "The clear data title should be shown.")
+        XCTAssertTrue(app.staticTexts["clearDataMessage1Label"].exists, "The clear data message 1 should be shown.")
+        XCTAssertTrue(app.staticTexts["clearDataMessage2Label"].exists, "The clear data message 2 should be shown.")
+        XCTAssertFalse(app.staticTexts["orLabel"].exists, "The or label for SSO should not be shown.")
 
-extension XCUIElement {
-    var isOn: Bool {
-        (value as? String) == "1"
+        let passwordTextField = app.secureTextFields["passwordTextField"]
+        XCTAssertTrue(passwordTextField.exists, "The password text field should be shown.")
+
+        let loginButton = app.buttons["loginButton"]
+        XCTAssertTrue(loginButton.exists, "The login button should be shown.")
+
+        let forgotPasswordButton = app.buttons["forgotPasswordButton"]
+        XCTAssertTrue(forgotPasswordButton.exists, "The forgot password button should be shown.")
+
+        let fallbackButton = app.buttons["fallbackButton"]
+        XCTAssertFalse(fallbackButton.exists, "The fallback button should not be shown.")
+
+        let clearDataButton = app.buttons["clearDataButton"]
+        XCTAssertTrue(clearDataButton.exists, "The clear data button should be shown.")
+        XCTAssertTrue(clearDataButton.isEnabled, "The clear data button should be enabled.")
+
+        let ssoButtons = app.buttons.matching(identifier: "ssoButton")
+        XCTAssertEqual(ssoButtons.count, 0, "There should be no SSO button shown.")
     }
+
+    func verifyFallback() {
+        XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown.")
+        XCTAssertTrue(app.staticTexts["messageLabel1"].exists, "The message 1 should be shown.")
+        XCTAssertTrue(app.staticTexts["messageLabel2"].exists, "The message 2 should be shown.")
+        XCTAssertTrue(app.staticTexts["clearDataTitleLabel"].exists, "The clear data title should be shown.")
+        XCTAssertTrue(app.staticTexts["clearDataMessage1Label"].exists, "The clear data message 1 should be shown.")
+        XCTAssertTrue(app.staticTexts["clearDataMessage2Label"].exists, "The clear data message 2 should be shown.")
+        XCTAssertFalse(app.staticTexts["orLabel"].exists, "The or label for SSO should not be shown.")
+
+        let passwordTextField = app.secureTextFields["passwordTextField"]
+        XCTAssertFalse(passwordTextField.exists, "The password text field should not be shown.")
+
+        let loginButton = app.buttons["loginButton"]
+        XCTAssertFalse(loginButton.exists, "The login button should not be shown.")
+
+        let forgotPasswordButton = app.buttons["forgotPasswordButton"]
+        XCTAssertFalse(forgotPasswordButton.exists, "The forgot password button should not be shown.")
+
+        let fallbackButton = app.buttons["fallbackButton"]
+        XCTAssertTrue(fallbackButton.exists, "The fallback button should be shown.")
+        XCTAssertTrue(fallbackButton.isEnabled, "The fallback button should be enabled.")
+
+        let clearDataButton = app.buttons["clearDataButton"]
+        XCTAssertTrue(clearDataButton.exists, "The clear data button should be shown.")
+        XCTAssertTrue(clearDataButton.isEnabled, "The clear data button should be enabled.")
+
+        let ssoButtons = app.buttons.matching(identifier: "ssoButton")
+        XCTAssertEqual(ssoButtons.count, 0, "There should be no SSO button shown.")
+    }
+
 }

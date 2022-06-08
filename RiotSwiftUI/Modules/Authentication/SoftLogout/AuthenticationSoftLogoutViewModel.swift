@@ -31,8 +31,13 @@ class AuthenticationSoftLogoutViewModel: AuthenticationSoftLogoutViewModelType, 
 
     // MARK: - Setup
 
-    init(password: String = "") {
-        let viewState = AuthenticationSoftLogoutViewState(bindings: AuthenticationSoftLogoutBindings(password: password))
+    init(credentials: SoftLogoutCredentials,
+         homeserver: AuthenticationHomeserverViewData,
+         password: String = "") {
+        let bindings = AuthenticationSoftLogoutBindings(password: password)
+        let viewState = AuthenticationSoftLogoutViewState(credentials: credentials,
+                                                          homeserver: homeserver,
+                                                          bindings: bindings)
         super.init(initialViewState: viewState)
     }
 
@@ -46,6 +51,10 @@ class AuthenticationSoftLogoutViewModel: AuthenticationSoftLogoutViewModelType, 
             Task { await callback?(.forgotPassword) }
         case .clearAllData:
             Task { await callback?(.clearAllData) }
+        case .continueWithSSO(let provider):
+            Task { await callback?(.continueWithSSO(provider)) }
+        case .fallback:
+            Task { await callback?(.fallback) }
         }
     }
 

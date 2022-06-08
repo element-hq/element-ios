@@ -16,6 +16,14 @@
 
 import SwiftUI
 
+// MARK: Data
+struct SoftLogoutCredentials {
+    let userId: String
+    let homeserverName: String
+    let userDisplayName: String
+    let deviceId: String?
+}
+
 // MARK: View model
 
 enum AuthenticationSoftLogoutViewModelResult {
@@ -25,15 +33,32 @@ enum AuthenticationSoftLogoutViewModelResult {
     case forgotPassword
     /// Clear all user data
     case clearAllData
-    /// Cancel the flow.
-    case cancel
+    /// Continue using the supplied SSO provider.
+    case continueWithSSO(SSOIdentityProvider)
+    /// Continue using the fallback page
+    case fallback
 }
 
 // MARK: View
 
 struct AuthenticationSoftLogoutViewState: BindableState {
+    var credentials: SoftLogoutCredentials
+
+    /// Data about the selected homeserver.
+    var homeserver: AuthenticationHomeserverViewData
+
     /// View state that can be bound to from SwiftUI.
     var bindings: AuthenticationSoftLogoutBindings
+
+    /// Whether to show login form.
+    var showLoginForm: Bool {
+        homeserver.showLoginForm
+    }
+
+    /// Whether to show any SSO buttons.
+    var showSSOButtons: Bool {
+        !homeserver.ssoIdentityProviders.isEmpty
+    }
     
     /// Whether the password is valid and the user can continue.
     var hasInvalidPassword: Bool {
@@ -55,6 +80,10 @@ enum AuthenticationSoftLogoutViewAction {
     case forgotPassword
     /// Clear all user data.
     case clearAllData
+    /// Continue using the supplied SSO provider.
+    case continueWithSSO(SSOIdentityProvider)
+    /// Continue using the fallback page
+    case fallback
 }
 
 enum AuthenticationSoftLogoutErrorType: Hashable {

@@ -20,7 +20,7 @@ import CommonKit
 struct AuthenticationSoftLogoutCoordinatorParameters {
     let navigationRouter: NavigationRouterType
     let authenticationService: AuthenticationService
-    let credentials: MXCredentials
+    let credentials: SoftLogoutCredentials
 }
 
 enum AuthenticationSoftLogoutCoordinatorResult {
@@ -28,8 +28,10 @@ enum AuthenticationSoftLogoutCoordinatorResult {
     case success(session: MXSession, password: String)
     /// Clear all user data
     case clearAllData
-    /// Continue the flow by skipping the display name and avatar screens.
-    case cancel
+    /// Continue using the supplied SSO provider.
+    case continueWithSSO(SSOIdentityProvider)
+    /// Continue using the fallback page
+    case fallback
 }
 
 @available(iOS 14.0, *)
@@ -68,8 +70,11 @@ final class AuthenticationSoftLogoutCoordinator: Coordinator, Presentable {
     
     @MainActor init(parameters: AuthenticationSoftLogoutCoordinatorParameters) {
         self.parameters = parameters
+
+        let homeserver = parameters.authenticationService.state.homeserver
         
-        let viewModel = AuthenticationSoftLogoutViewModel()
+        let viewModel = AuthenticationSoftLogoutViewModel(credentials: parameters.credentials,
+                                                          homeserver: homeserver.viewData)
         let view = AuthenticationSoftLogoutScreen(viewModel: viewModel.context)
         authenticationSoftLogoutViewModel = viewModel
         authenticationSoftLogoutHostingController = VectorHostingController(rootView: view)
@@ -105,8 +110,10 @@ final class AuthenticationSoftLogoutCoordinator: Coordinator, Presentable {
                 self.showForgotPasswordScreen()
             case .clearAllData:
                 self.callback?(.clearAllData)
-            case .cancel:
-                self.callback?(.cancel)
+            case .continueWithSSO(let provider):
+                self.callback?(.continueWithSSO(provider))
+            case .fallback:
+                self.callback?(.fallback)
             }
         }
     }
@@ -157,18 +164,18 @@ final class AuthenticationSoftLogoutCoordinator: Coordinator, Presentable {
     
     /// Login with the supplied username and password.
     @MainActor private func login(withPassword password: String) {
-        guard let loginWizard = loginWizard,
-            let username = parameters.credentials.userId else {
+        guard let loginWizard = loginWizard else {
             MXLog.failure("[AuthenticationSoftLogoutCoordinator] The login wizard was requested before getting the login flow.")
             return
         }
 
+        let userId = parameters.credentials.userId
         let deviceId = parameters.credentials.deviceId
         startLoading()
 
         currentTask = Task { [weak self] in
             do {
-                let session = try await loginWizard.login(login: username,
+                let session = try await loginWizard.login(login: userId,
                                                           password: password,
                                                           initialDeviceName: UIDevice.current.initialDisplayName,
                                                           deviceID: deviceId)
