@@ -21,8 +21,9 @@ protocol SessionCreatorProtocol {
     /// - Parameters:
     ///   - credentials: The `MXCredentials` for the account.
     ///   - client: The client that completed the authentication.
+    ///   - resetOthers: Flag to reset other accounts.
     /// - Returns: A new `MXSession` for the account.
-    func createSession(credentials: MXCredentials, client: AuthenticationRestClient) -> MXSession
+    func createSession(credentials: MXCredentials, client: AuthenticationRestClient, resetOthers: Bool) -> MXSession
 }
 
 /// A struct that provides common functionality to create a new session.
@@ -34,19 +35,29 @@ struct SessionCreator: SessionCreatorProtocol {
         self.accountManager = accountManager
     }
 
-    func createSession(credentials: MXCredentials, client: AuthenticationRestClient) -> MXSession {
-        // Report the new account in account manager
+    func createSession(credentials: MXCredentials, client: AuthenticationRestClient, resetOthers: Bool) -> MXSession {
+        // Use identity server provided in the client
         if credentials.identityServer == nil {
             credentials.identityServer = client.identityServer
         }
-        
-        let account = MXKAccount(credentials: credentials)
-        
-        if let identityServer = credentials.identityServer {
-            account.identityServerURL = identityServer
+
+        if let account = accountManager.account(forUserId: credentials.userId) {
+            accountManager.hydrateAccount(account, with: credentials)
+            return account.mxSession
+        } else {
+            if resetOthers {
+                accountManager.logout(completion: nil)
+            }
+
+            let account = MXKAccount(credentials: credentials)
+
+            //  set identity server of the new account
+            if let identityServer = credentials.identityServer {
+                account.identityServerURL = identityServer
+            }
+
+            accountManager.addAccount(account, andOpenSession: true)
+            return account.mxSession
         }
-        
-        accountManager.addAccount(account, andOpenSession: true)
-        return account.mxSession
     }
 }

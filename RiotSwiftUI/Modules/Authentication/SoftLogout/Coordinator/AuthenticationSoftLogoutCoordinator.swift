@@ -178,7 +178,8 @@ final class AuthenticationSoftLogoutCoordinator: Coordinator, Presentable {
                 let session = try await loginWizard.login(login: userId,
                                                           password: password,
                                                           initialDeviceName: UIDevice.current.initialDisplayName,
-                                                          deviceID: deviceId)
+                                                          deviceID: deviceId,
+                                                          resetOthers: true)
 
                 guard !Task.isCancelled else { return }
                 callback?(.success(session: session, password: password))
