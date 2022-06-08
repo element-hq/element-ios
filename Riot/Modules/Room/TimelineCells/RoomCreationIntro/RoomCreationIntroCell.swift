@@ -28,6 +28,7 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
         
     static let tapOnAvatarView = "RoomCreationIntroCellTapOnAvatarView"
     static let tapOnAddTopic = "RoomCreationIntroCellTapOnAddTopic"
+    static let tapOnRoomName = "RoomCreationIntroCellTapOnRoomName"
     static let tapOnAddParticipants = "RoomCreationIntroCellTapOnAddParticipants"
     
     // MARK: - Properties
@@ -154,6 +155,10 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
         
         roomCellContentView.didTapTopic = { [weak self] in
             self?.notifyDelegate(with: RoomCreationIntroCell.tapOnAddTopic)
+        }
+        
+        roomCellContentView.didTapRoomName = { [weak self] in
+            self?.notifyDelegate(with: RoomCreationIntroCell.tapOnRoomName)
         }
         
         roomCellContentView.didTapAddParticipants = { [weak self] in
