@@ -233,6 +233,9 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         let store = MXFileStore(credentials: credentials)
         let userDisplayName = await store.displayName(ofUserWithId: userId) ?? ""
 
+        let cryptoStore = MXRealmCryptoStore(credentials: credentials)
+        let keyBackupNeeded = (cryptoStore?.inboundGroupSessions(toBackup: 1) ?? []).count > 0
+
         let softLogoutCredentials = SoftLogoutCredentials(userId: userId,
                                                           homeserverName: credentials.homeServerName() ?? "",
                                                           userDisplayName: userDisplayName,
@@ -240,7 +243,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
 
         let parameters = AuthenticationSoftLogoutCoordinatorParameters(navigationRouter: navigationRouter,
                                                                        authenticationService: authenticationService,
-                                                                       credentials: softLogoutCredentials)
+                                                                       credentials: softLogoutCredentials,
+                                                                       keyBackupNeeded: keyBackupNeeded)
         let coordinator = AuthenticationSoftLogoutCoordinator(parameters: parameters)
         coordinator.callback = { [weak self] result in
             guard let self = self else { return }

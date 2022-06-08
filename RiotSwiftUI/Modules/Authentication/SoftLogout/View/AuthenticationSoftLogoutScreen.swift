@@ -77,11 +77,13 @@ struct AuthenticationSoftLogoutScreen: View {
                 .foregroundColor(theme.colors.primaryContent)
                 .accessibilityIdentifier("messageLabel1")
 
-            Text(VectorL10n.authSoftlogoutRecoverEncryptionKeys)
-                .font(theme.fonts.body)
-                .multilineTextAlignment(.leading)
-                .foregroundColor(theme.colors.primaryContent)
-                .accessibilityIdentifier("messageLabel2")
+            if viewModel.viewState.showRecoverEncryptionKeysMessage {
+                Text(VectorL10n.authSoftlogoutRecoverEncryptionKeys)
+                    .font(theme.fonts.body)
+                    .multilineTextAlignment(.leading)
+                    .foregroundColor(theme.colors.primaryContent)
+                    .accessibilityIdentifier("messageLabel2")
+            }
         }
     }
 

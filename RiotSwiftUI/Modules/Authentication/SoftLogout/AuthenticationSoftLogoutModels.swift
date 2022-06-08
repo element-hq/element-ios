@@ -42,10 +42,14 @@ enum AuthenticationSoftLogoutViewModelResult {
 // MARK: View
 
 struct AuthenticationSoftLogoutViewState: BindableState {
+    /// Soft logout credentials
     var credentials: SoftLogoutCredentials
 
     /// Data about the selected homeserver.
     var homeserver: AuthenticationHomeserverViewData
+
+    /// Flag indicating soft logged out user needs backup for some keys
+    var keyBackupNeeded: Bool
 
     /// View state that can be bound to from SwiftUI.
     var bindings: AuthenticationSoftLogoutBindings
@@ -58,6 +62,11 @@ struct AuthenticationSoftLogoutViewState: BindableState {
     /// Whether to show any SSO buttons.
     var showSSOButtons: Bool {
         !homeserver.ssoIdentityProviders.isEmpty
+    }
+
+    /// Whether to show recover encryption keys message
+    var showRecoverEncryptionKeysMessage: Bool {
+        keyBackupNeeded
     }
     
     /// Whether the password is valid and the user can continue.

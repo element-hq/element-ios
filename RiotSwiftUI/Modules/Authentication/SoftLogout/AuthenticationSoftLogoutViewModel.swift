@@ -33,10 +33,12 @@ class AuthenticationSoftLogoutViewModel: AuthenticationSoftLogoutViewModelType, 
 
     init(credentials: SoftLogoutCredentials,
          homeserver: AuthenticationHomeserverViewData,
+         keyBackupNeeded: Bool,
          password: String = "") {
         let bindings = AuthenticationSoftLogoutBindings(password: password)
         let viewState = AuthenticationSoftLogoutViewState(credentials: credentials,
                                                           homeserver: homeserver,
+                                                          keyBackupNeeded: keyBackupNeeded,
                                                           bindings: bindings)
         super.init(initialViewState: viewState)
     }

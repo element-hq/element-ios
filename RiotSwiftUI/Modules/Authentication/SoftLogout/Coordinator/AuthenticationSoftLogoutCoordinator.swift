@@ -21,6 +21,7 @@ struct AuthenticationSoftLogoutCoordinatorParameters {
     let navigationRouter: NavigationRouterType
     let authenticationService: AuthenticationService
     let credentials: SoftLogoutCredentials
+    let keyBackupNeeded: Bool
 }
 
 enum AuthenticationSoftLogoutCoordinatorResult {
@@ -74,7 +75,8 @@ final class AuthenticationSoftLogoutCoordinator: Coordinator, Presentable {
         let homeserver = parameters.authenticationService.state.homeserver
         
         let viewModel = AuthenticationSoftLogoutViewModel(credentials: parameters.credentials,
-                                                          homeserver: homeserver.viewData)
+                                                          homeserver: homeserver.viewData,
+                                                          keyBackupNeeded: parameters.keyBackupNeeded)
         let view = AuthenticationSoftLogoutScreen(viewModel: viewModel.context)
         authenticationSoftLogoutViewModel = viewModel
         authenticationSoftLogoutHostingController = VectorHostingController(rootView: view)

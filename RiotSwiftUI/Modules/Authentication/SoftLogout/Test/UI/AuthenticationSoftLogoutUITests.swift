@@ -40,6 +40,8 @@ class AuthenticationSoftLogoutUITests: MockScreenTest {
             verifyNoSSO()
         case .fallback:
             verifyFallback()
+        case .noKeyBackup:
+            verifyNoKeyBackup()
         }
     }
     
@@ -193,6 +195,10 @@ class AuthenticationSoftLogoutUITests: MockScreenTest {
 
         let ssoButtons = app.buttons.matching(identifier: "ssoButton")
         XCTAssertEqual(ssoButtons.count, 0, "There should be no SSO button shown.")
+    }
+
+    func verifyNoKeyBackup() {
+        XCTAssertFalse(app.staticTexts["messageLabel2"].exists, "The message 2 should not be shown.")
     }
 
 }

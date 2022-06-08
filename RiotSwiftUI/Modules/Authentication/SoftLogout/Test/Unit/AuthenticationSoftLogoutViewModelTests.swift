@@ -26,7 +26,8 @@ class AuthenticationSoftLogoutViewModelTests: XCTestCase {
                                                 userDisplayName: "mock_username",
                                                 deviceId: nil)
         let viewModel = AuthenticationSoftLogoutViewModel(credentials: credentials,
-                                                          homeserver: .mockMatrixDotOrg)
+                                                          homeserver: .mockMatrixDotOrg,
+                                                          keyBackupNeeded: true)
         let context = viewModel.context
 
         // Given a view model where the user hasn't yet sent the verification email.
@@ -34,6 +35,7 @@ class AuthenticationSoftLogoutViewModelTests: XCTestCase {
         XCTAssert(context.viewState.hasInvalidPassword, "The view model should start with an invalid password.")
         XCTAssert(context.viewState.showSSOButtons, "The view model should show SSO buttons for the given homeserver.")
         XCTAssert(context.viewState.showLoginForm, "The view model should show login form for the given homeserver.")
+        XCTAssert(context.viewState.showRecoverEncryptionKeysMessage, "The view model should show recover encryption keys message.")
     }
 
     @MainActor func testInitialStateForNoSSO() async {
@@ -42,7 +44,8 @@ class AuthenticationSoftLogoutViewModelTests: XCTestCase {
                                                 userDisplayName: "mock_username",
                                                 deviceId: nil)
         let viewModel = AuthenticationSoftLogoutViewModel(credentials: credentials,
-                                                          homeserver: .mockBasicServer)
+                                                          homeserver: .mockBasicServer,
+                                                          keyBackupNeeded: false)
         let context = viewModel.context
 
         // Given a view model where the user hasn't yet sent the verification email.
@@ -50,6 +53,7 @@ class AuthenticationSoftLogoutViewModelTests: XCTestCase {
         XCTAssert(context.viewState.hasInvalidPassword, "The view model should start with an invalid password.")
         XCTAssertFalse(context.viewState.showSSOButtons, "The view model should not show SSO buttons for the given homeserver.")
         XCTAssert(context.viewState.showLoginForm, "The view model should show login form for the given homeserver.")
+        XCTAssertFalse(context.viewState.showRecoverEncryptionKeysMessage, "The view model should not show recover encryption keys message.")
     }
 
 }
