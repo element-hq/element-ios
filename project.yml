@@ -48,3 +48,6 @@ packages:
     url: https://github.com/apple/swift-collections
     minVersion: 1.0.2
     maxVersion: 2.0.0
+  SwiftOGG:
+    url: https://github.com/vector-im/swift-ogg
+    branch: langleyd/initial
