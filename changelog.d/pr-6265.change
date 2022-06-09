@@ -1,0 +1,1 @@
+Security fix: prevent playback on already read messages through push notifications, enable on device silencing.
