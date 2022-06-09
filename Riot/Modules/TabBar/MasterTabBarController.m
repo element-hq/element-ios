@@ -473,6 +473,8 @@
 // TODO: Manage the onboarding coordinator at the AppCoordinator level
 - (void)presentOnboardingFlow
 {
+    MXLogDebug(@"[MasterTabBarController] presentOnboardingFlow");
+    
     OnboardingCoordinatorBridgePresenterParameters *parameters = [[OnboardingCoordinatorBridgePresenterParameters alloc] init];
     
     MXWeakify(self);
@@ -515,8 +517,8 @@
 
 - (void)showOnboardingFlow
 {
-    MXLogDebug(@"[MasterTabBarController] showAuthenticationScreen");
-    
+    MXLogDebug(@"[MasterTabBarController] showOnboardingFlow");
+
     // Check whether an authentication screen is not already shown or preparing
     if (!self.onboardingCoordinatorBridgePresenter && !self.isOnboardingCoordinatorPreparing)
     {

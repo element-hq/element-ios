@@ -241,6 +241,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
                     self.authenticationService.reset()
                     self.isShowingLegacyAuthentication = false
                     self.authenticationFinished = false
+                    self.cancelAuthentication(flow: .login)
                     AppDelegate.theDelegate().logoutSendingRequestServer(true, completion: nil)
                 }
             case .cancel(let flow):
@@ -303,8 +304,9 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             showSplashScreen()
             showUseCaseSelectionScreen(animated: false)
         case .login:
-            // Probably not needed, error for now until the new login flow is implemented.
-            MXLog.failure("[OnboardingCoordinator] cancelAuthentication: Not implemented for the login flow")
+            navigationRouter.popAllModules(animated: false)
+
+            showSplashScreen()
         }
     }
     
