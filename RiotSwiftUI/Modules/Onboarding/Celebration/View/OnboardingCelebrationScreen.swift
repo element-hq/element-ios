@@ -60,7 +60,7 @@ struct OnboardingCelebrationScreen: View {
             }
             .frame(maxHeight: .infinity)
         }
-        .background(theme.colors.background.ignoresSafeArea())
+        .background(OnboardingBreakerScreenBackground().ignoresSafeArea())
         .accentColor(theme.colors.accent)
         .navigationBarHidden(true)
     }
