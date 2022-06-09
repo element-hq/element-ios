@@ -4130,7 +4130,7 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
                 
                 MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
                 
-                [account changePassword:self->currentPasswordTextField.text with:self->newPasswordTextField1.text success:^{
+                [account changePassword:self->currentPasswordTextField.text with:self->newPasswordTextField1.text logoutDevices:YES success:^{
                     
                     if (weakSelf)
                     {
@@ -4287,6 +4287,13 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
     
     [resetPwdAlertController addAction:cancel];
     [resetPwdAlertController addAction:savePasswordAction];
+
+    UIButton *logoutDevicesButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, 50)];
+    [logoutDevicesButton setImage:AssetImages.selectionTick.image forState:UIControlStateSelected];
+    [logoutDevicesButton setImage:AssetImages.selectionUntick.image forState:UIControlStateNormal];
+    [logoutDevicesButton setTitle:VectorL10n.settingsChangePassword forState:UIControlStateNormal];
+    [resetPwdAlertController.view addSubview:logoutDevicesButton];
+
     [self presentViewController:resetPwdAlertController animated:YES completion:nil];
 }
 
