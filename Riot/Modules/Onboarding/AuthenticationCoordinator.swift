@@ -266,13 +266,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         coordinator.start()
         add(childCoordinator: coordinator)
 
-        if navigationRouter.modules.isEmpty {
-            navigationRouter.setRootModule(coordinator, popCompletion: nil)
-        } else {
-            navigationRouter.push(coordinator, animated: true) { [weak self] in
-                self?.remove(childCoordinator: coordinator)
-            }
-        }
+        navigationRouter.setRootModule(coordinator, popCompletion: nil)
     }
     
     /// Displays the next view in the flow based on the result from the registration screen.

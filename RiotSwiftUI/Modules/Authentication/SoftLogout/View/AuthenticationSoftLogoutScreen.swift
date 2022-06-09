@@ -23,8 +23,6 @@ struct AuthenticationSoftLogoutScreen: View {
     // MARK: Private
     
     @Environment(\.theme) private var theme
-
-    @State private var isEditingTextField = false
     
     // MARK: Public
     
@@ -67,7 +65,7 @@ struct AuthenticationSoftLogoutScreen: View {
 
             Text(VectorL10n.authSoftlogoutSignIn)
                 .font(theme.fonts.title2B)
-                .multilineTextAlignment(.center)
+                .multilineTextAlignment(.leading)
                 .foregroundColor(theme.colors.primaryContent)
                 .accessibilityIdentifier("titleLabel")
 
@@ -152,7 +150,6 @@ struct AuthenticationSoftLogoutScreen: View {
     var passwordTextField: some View {
         RoundedBorderTextField(placeHolder: VectorL10n.loginPasswordPlaceholder,
                                text: $viewModel.password,
-                               isFirstResponder: isEditingTextField,
                                configuration: UIKitTextInputConfiguration(returnKeyType: .done,
                                                                           isSecureTextEntry: true),
                                onCommit: login)

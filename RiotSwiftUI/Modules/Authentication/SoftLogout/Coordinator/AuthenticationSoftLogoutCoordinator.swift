@@ -181,7 +181,7 @@ final class AuthenticationSoftLogoutCoordinator: Coordinator, Presentable {
                                                           password: password,
                                                           initialDeviceName: UIDevice.current.initialDisplayName,
                                                           deviceID: deviceId,
-                                                          resetOthers: true)
+                                                          removeOtherAccounts: true)
 
                 guard !Task.isCancelled else { return }
                 callback?(.success(session: session, password: password))

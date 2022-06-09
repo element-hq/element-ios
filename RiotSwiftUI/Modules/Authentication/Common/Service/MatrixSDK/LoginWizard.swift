@@ -53,8 +53,13 @@ class LoginWizard {
     ///   - password: The password of the account.
     ///   - initialDeviceName: The initial device name.
     ///   - deviceID: The device ID, optional. If not provided or nil, the server will generate one.
+    ///   - removeOtherAccounts: If set to true, existing accounts with different user identifiers will be removed.
     /// - Returns: An `MXSession` if the login is successful.
-    func login(login: String, password: String, initialDeviceName: String, deviceID: String? = nil, resetOthers: Bool = false) async throws -> MXSession {
+    func login(login: String,
+               password: String,
+               initialDeviceName: String,
+               deviceID: String? = nil,
+               removeOtherAccounts: Bool = false) async throws -> MXSession {
         let parameters: LoginPasswordParameters
         
         if MXTools.isEmailAddress(login) {
@@ -70,16 +75,22 @@ class LoginWizard {
         }
         
         let credentials = try await client.login(parameters: parameters)
-        return sessionCreator.createSession(credentials: credentials, client: client, resetOthers: resetOthers)
+        return sessionCreator.createSession(credentials: credentials,
+                                            client: client,
+                                            removeOtherAccounts: removeOtherAccounts)
     }
-    
+
     /// Exchange a login token to an access token.
-    /// - Parameter loginToken: A login token, obtained when login has happened in a WebView, using SSO.
+    /// - Parameters:
+    ///   - token: A login token, obtained when login has happened in a WebView, using SSO.
+    ///   - removeOtherAccounts: If set to true, existing accounts with different user identifiers will be removed.
     /// - Returns: An `MXSession` if the login is successful.
-    func login(with token: String, resetOthers: Bool = false) async throws -> MXSession {
+    func login(with token: String, removeOtherAccounts: Bool = false) async throws -> MXSession {
         let parameters = LoginTokenParameters(token: token)
         let credentials = try await client.login(parameters: parameters)
-        return sessionCreator.createSession(credentials: credentials, client: client, resetOthers: resetOthers)
+        return sessionCreator.createSession(credentials: credentials,
+                                            client: client,
+                                            removeOtherAccounts: removeOtherAccounts)
     }
     
 //    /// Login to the homeserver by sending a custom JsonDict.
