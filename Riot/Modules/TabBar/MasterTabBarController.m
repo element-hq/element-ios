@@ -475,10 +475,8 @@
 {
     MXLogDebug(@"[MasterTabBarController] presentOnboardingFlow");
     
-    OnboardingCoordinatorBridgePresenterParameters *parameters = [[OnboardingCoordinatorBridgePresenterParameters alloc] init];
-    
     MXWeakify(self);
-    OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter = [[OnboardingCoordinatorBridgePresenter alloc] initWith:parameters];
+    OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter = [[OnboardingCoordinatorBridgePresenter alloc] init];
     onboardingCoordinatorBridgePresenter.completion = ^{
         MXStrongifyAndReturnIfNil(self);
         [self.onboardingCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];

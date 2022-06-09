@@ -18,11 +18,6 @@
 
 import Foundation
 
-@objcMembers
-class OnboardingCoordinatorBridgePresenterParameters: NSObject {
-    
-}
-
 /// OnboardingCoordinatorBridgePresenter enables to start OnboardingCoordinator from a view controller.
 /// This bridge is used while waiting for global usage of coordinator pattern.
 /// **WARNING**: This class breaks the Coordinator abstraction and it has been introduced for **Objective-C compatibility only** (mainly for integration in legacy view controllers). Each bridge should be removed
@@ -41,19 +36,12 @@ final class OnboardingCoordinatorBridgePresenter: NSObject {
     
     // MARK: Private
     
-    private let parameters: OnboardingCoordinatorBridgePresenterParameters
     private var navigationType: NavigationType = .present
     private var coordinator: OnboardingCoordinator?
     
     // MARK: Public
     
     var completion: (() -> Void)?
-    
-    // MARK: Setup
-    init(with parameters: OnboardingCoordinatorBridgePresenterParameters) {
-        self.parameters = parameters
-        super.init()
-    }
     
     // MARK: - Public
     

@@ -104,7 +104,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             if BuildSettings.authScreenShowRegister {
                 showSplashScreen()
             } else {
-                showEmptyScren()
+                showEmptyScreen()
             }
             startLoading()
             if BuildSettings.onboardingEnableNewAuthenticationFlow {
@@ -146,8 +146,8 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     }
 
     /// Show an empty screen when configuring soft logout flow
-    private func showEmptyScren() {
-        MXLog.debug("[OnboardingCoordinator] showEmptyScren")
+    private func showEmptyScreen() {
+        MXLog.debug("[OnboardingCoordinator] showEmptyScreen")
 
         let viewController = UIViewController()
         viewController.view.backgroundColor = ThemeService.shared().theme.backgroundColor
