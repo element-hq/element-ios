@@ -189,7 +189,8 @@ SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinator
 SettingsIdentityServerCoordinatorBridgePresenterDelegate,
 ServiceTermsModalCoordinatorBridgePresenterDelegate,
 TableViewSectionsDelegate,
-ThreadsBetaCoordinatorBridgePresenterDelegate>
+ThreadsBetaCoordinatorBridgePresenterDelegate,
+ChangePasswordCoordinatorBridgePresenterDelegate>
 {
     // Current alert (if any).
     __weak UIAlertController *currentAlert;
@@ -211,12 +212,6 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
     
     // new display name
     NSString* newDisplayName;
-    
-    // password update
-    UITextField* currentPasswordTextField;
-    UITextField* newPasswordTextField1;
-    UITextField* newPasswordTextField2;
-    UIAlertAction* savePasswordAction;
 
     // New email address to bind
     UITextField* newEmailTextField;
@@ -235,14 +230,10 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     __weak id kThemeServiceDidChangeThemeNotificationObserver;
     
-    // Postpone destroy operation when saving, pwd reset or email binding is in progress
+    // Postpone destroy operation when saving or email binding is in progress
     BOOL isSavingInProgress;
-    BOOL isResetPwdInProgress;
     BOOL is3PIDBindingInProgress;
     blockSettingsViewController_onReadyToDestroy onReadyToDestroyHandler;
-    
-    //
-    UIAlertController *resetPwdAlertController;
     
     BOOL keepNewEmailEditing;
     BOOL keepNewPhoneNumberEditing;
@@ -291,6 +282,7 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
 @property (nonatomic, strong) UserInteractiveAuthenticationService *userInteractiveAuthenticationService;
 
 @property (nonatomic, strong) ThreadsBetaCoordinatorBridgePresenter *threadsBetaBridgePresenter;
+@property (nonatomic, strong) ChangePasswordCoordinatorBridgePresenter *changePasswordBridgePresenter;
 
 /**
  Whether or not to check for contacts access after the user accepts the service terms. The value of this property is
@@ -332,7 +324,6 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
     self.rageShakeManager = [RageShakeManager sharedManager];
     
     isSavingInProgress = NO;
-    isResetPwdInProgress = NO;
     is3PIDBindingInProgress = NO;
     
     self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenSettings];
@@ -779,7 +770,7 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
         kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
 
-    if (isSavingInProgress || isResetPwdInProgress || is3PIDBindingInProgress)
+    if (isSavingInProgress || is3PIDBindingInProgress)
     {
         __weak typeof(self) weakSelf = self;
         onReadyToDestroyHandler = ^() {
@@ -865,12 +856,6 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         currentAlert = nil;
     }
-    
-    if (resetPwdAlertController)
-    {
-        [resetPwdAlertController dismissViewControllerAnimated:NO completion:nil];
-        resetPwdAlertController = nil;
-    }
 
     if (notificationCenterWillUpdateObserver)
     {
@@ -936,9 +921,6 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
 
 - (void)dismissKeyboard
 {
-    [currentPasswordTextField resignFirstResponder];
-    [newPasswordTextField1 resignFirstResponder];
-    [newPasswordTextField2 resignFirstResponder];
     [newEmailTextField resignFirstResponder];
     [newPhoneNumberCell.mxkTextField resignFirstResponder];
 }
@@ -4103,200 +4085,13 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
 
 #pragma password update management
 
-- (IBAction)passwordTextFieldDidChange:(id)sender
-{
-    savePasswordAction.enabled = (currentPasswordTextField.text.length > 0) && (newPasswordTextField1.text.length > 2) && [newPasswordTextField1.text isEqualToString:newPasswordTextField2.text];
-}
-
 - (void)displayPasswordAlert
 {
-    __weak typeof(self) weakSelf = self;
-    [resetPwdAlertController dismissViewControllerAnimated:NO completion:nil];
-    
-    resetPwdAlertController = [UIAlertController alertControllerWithTitle:[VectorL10n settingsChangePassword] message:nil preferredStyle:UIAlertControllerStyleAlert];
-    resetPwdAlertController.accessibilityLabel=@"ChangePasswordAlertController";
-    savePasswordAction = [UIAlertAction actionWithTitle:[VectorL10n save] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-        
-        if (weakSelf)
-        {
-            typeof(self) self = weakSelf;
-            
-            self->resetPwdAlertController = nil;
-            
-            if ([MXKAccountManager sharedManager].activeAccounts.count > 0)
-            {
-                [self startActivityIndicator];
-                self->isResetPwdInProgress = YES;
-                
-                MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-                
-                [account changePassword:self->currentPasswordTextField.text with:self->newPasswordTextField1.text logoutDevices:YES success:^{
-                    
-                    if (weakSelf)
-                    {
-                        typeof(self) self = weakSelf;
-                        
-                        self->isResetPwdInProgress = NO;
-                        [self stopActivityIndicator];
-                        
-                        // Display a successful message only if the settings screen is still visible (destroy is not called yet)
-                        if (!self->onReadyToDestroyHandler)
-                        {
-                            [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
-                            
-                            UIAlertController *successAlert = [UIAlertController alertControllerWithTitle:nil message:[VectorL10n settingsPasswordUpdated] preferredStyle:UIAlertControllerStyleAlert];
-                            
-                            [successAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
-                                                                             style:UIAlertActionStyleDefault
-                                                                           handler:^(UIAlertAction * action) {
-                                                                               
-                                                                               if (weakSelf)
-                                                                               {
-                                                                                   typeof(self) self = weakSelf;
-                                                                                   self->currentAlert = nil;
-                                                                                   
-                                                                                   // Check whether destroy has been called durign pwd change
-                                                                                   if (self->onReadyToDestroyHandler)
-                                                                                   {
-                                                                                       // Ready to destroy
-                                                                                       self->onReadyToDestroyHandler();
-                                                                                       self->onReadyToDestroyHandler = nil;
-                                                                                   }
-                                                                               }
-                                                                               
-                                                                           }]];
-                            
-                            [successAlert mxk_setAccessibilityIdentifier:@"SettingsVCOnPasswordUpdatedAlert"];
-                            [self presentViewController:successAlert animated:YES completion:nil];
-                            self->currentAlert = successAlert;
-                        }
-                        else
-                        {
-                            // Ready to destroy
-                            self->onReadyToDestroyHandler();
-                            self->onReadyToDestroyHandler = nil;
-                        }
-                    }
-                    
-                } failure:^(NSError *error) {
-                    
-                    if (weakSelf)
-                    {
-                        typeof(self) self = weakSelf;
-                        
-                        self->isResetPwdInProgress = NO;
-                        [self stopActivityIndicator];
-                        
-                        // Display a failure message on the current screen
-                        UIViewController *rootViewController = [AppDelegate theDelegate].window.rootViewController;
-                        if (rootViewController)
-                        {
-                            [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
-                            
-                            UIAlertController *errorAlert = [UIAlertController alertControllerWithTitle:nil message:[VectorL10n settingsFailToUpdatePassword] preferredStyle:UIAlertControllerStyleAlert];
-                            
-                            [errorAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
-                                                                                   style:UIAlertActionStyleDefault
-                                                                                 handler:^(UIAlertAction * action) {
-                                                                                     
-                                                                                     if (weakSelf)
-                                                                                     {
-                                                                                         typeof(self) self = weakSelf;
-                                                                                         
-                                                                                         self->currentAlert = nil;
-                                                                                         
-                                                                                         // Check whether destroy has been called durign pwd change
-                                                                                         if (self->onReadyToDestroyHandler)
-                                                                                         {
-                                                                                             // Ready to destroy
-                                                                                             self->onReadyToDestroyHandler();
-                                                                                             self->onReadyToDestroyHandler = nil;
-                                                                                         }
-                                                                                     }
-                                                                                     
-                                                                                 }]];
-                            
-                            [errorAlert mxk_setAccessibilityIdentifier:@"SettingsVCPasswordChangeFailedAlert"];
-                            [rootViewController presentViewController:errorAlert animated:YES completion:nil];
-                            self->currentAlert = errorAlert;
-                        }
-                    }
-                    
-                }];
-            }
-        }
-        
-    }];
-    
-    // disable by default
-    // check if the textfields have the right value
-    savePasswordAction.enabled = NO;
-    
-    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
-        
-        if (weakSelf)
-        {
-            typeof(self) self = weakSelf;
-            
-            self->resetPwdAlertController = nil;
-        }
-        
-    }];
-    
-    [resetPwdAlertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        
-        if (weakSelf)
-        {
-            typeof(self) self = weakSelf;
-            
-            self->currentPasswordTextField = textField;
-            self->currentPasswordTextField.placeholder = [VectorL10n settingsOldPassword];
-            self->currentPasswordTextField.secureTextEntry = YES;
-            [self->currentPasswordTextField addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-        }
-         
-     }];
-    
-    [resetPwdAlertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        
-        if (weakSelf)
-        {
-            typeof(self) self = weakSelf;
-            
-            self->newPasswordTextField1 = textField;
-            self->newPasswordTextField1.placeholder = [VectorL10n settingsNewPassword];
-            self->newPasswordTextField1.secureTextEntry = YES;
-            [self->newPasswordTextField1 addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-        }
-        
-    }];
-    
-    [resetPwdAlertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        
-        if (weakSelf)
-        {
-            typeof(self) self = weakSelf;
-            
-            self->newPasswordTextField2 = textField;
-            self->newPasswordTextField2.placeholder = [VectorL10n settingsConfirmPassword];
-            self->newPasswordTextField2.secureTextEntry = YES;
-            [self->newPasswordTextField2 addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-        }
-    }];
+    self.changePasswordBridgePresenter = [[ChangePasswordCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    self.changePasswordBridgePresenter.delegate = self;
 
-    
-    [resetPwdAlertController addAction:cancel];
-    [resetPwdAlertController addAction:savePasswordAction];
-
-    UIButton *logoutDevicesButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, 50)];
-    [logoutDevicesButton setImage:AssetImages.selectionTick.image forState:UIControlStateSelected];
-    [logoutDevicesButton setImage:AssetImages.selectionUntick.image forState:UIControlStateNormal];
-    [logoutDevicesButton setTitle:VectorL10n.settingsChangePassword forState:UIControlStateNormal];
-    [resetPwdAlertController.view addSubview:logoutDevicesButton];
-
-    [self presentViewController:resetPwdAlertController animated:YES completion:nil];
+    [self.changePasswordBridgePresenter presentFrom:self animated:YES];
 }
-
 
 #pragma mark - MXKCountryPickerViewControllerDelegate
 
@@ -4805,6 +4600,21 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
         MXStrongifyAndReturnIfNil(self);
         [self updateSections];
     }];
+}
+
+#pragma mark - ChangePasswordCoordinatorBridgePresenterDelegate
+
+- (void)changePasswordCoordinatorBridgePresenterDidComplete:(ChangePasswordCoordinatorBridgePresenter *)bridgePresenter
+{
+    [bridgePresenter dismissWithAnimated:YES completion:^{
+        self.changePasswordBridgePresenter = nil;
+    }];
+}
+
+- (void)changePasswordCoordinatorBridgePresenterDidCancel:(ChangePasswordCoordinatorBridgePresenter *)bridgePresenter
+{
+    [bridgePresenter dismissWithAnimated:YES completion:nil];
+    self.changePasswordBridgePresenter = nil;
 }
 
 @end
