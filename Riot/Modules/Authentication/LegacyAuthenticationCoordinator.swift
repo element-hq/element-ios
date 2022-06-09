@@ -22,8 +22,6 @@ struct LegacyAuthenticationCoordinatorParameters {
     let navigationRouter: NavigationRouterType
     /// Whether or not the coordinator should show the loading spinner, key verification etc.
     let canPresentAdditionalScreens: Bool
-    /// The credentials to use if a soft logout has taken place.
-    let softLogoutCredentials: MXCredentials?
 }
 
 /// A coordinator that handles authentication, verification and setting a PIN using the old UIViewController flow for iOS 12 & 13.
@@ -39,6 +37,7 @@ final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinator
     private var canPresentAdditionalScreens: Bool
     private var isWaitingToPresentCompleteSecurity = false
     private var verificationListener: SessionVerificationListener?
+    private let authenticationService: AuthenticationService = .shared
     
     /// The session created when successfully authenticated.
     private var session: MXSession?
@@ -63,7 +62,7 @@ final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinator
         self.canPresentAdditionalScreens = parameters.canPresentAdditionalScreens
         
         let authenticationViewController = AuthenticationViewController()
-        authenticationViewController.softLogoutCredentials = parameters.softLogoutCredentials
+        authenticationViewController.softLogoutCredentials = authenticationService.softLogoutCredentials
         self.authenticationViewController = authenticationViewController
         
         // Preload the view as this can a second and lock up the UI at presentation.

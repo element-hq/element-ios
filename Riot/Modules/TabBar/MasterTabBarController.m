@@ -67,8 +67,6 @@
 @property (nonatomic, readwrite) id addAccountObserver;
 @property (nonatomic, readwrite) id removeAccountObserver;
 
-@property (nonatomic, readwrite) MXCredentials *softLogoutCredentials;
-
 @property (nonatomic) BOOL reviewSessionAlertHasBeenDisplayed;
 
 @end
@@ -475,8 +473,7 @@
 // TODO: Manage the onboarding coordinator at the AppCoordinator level
 - (void)presentOnboardingFlow
 {
-    OnboardingCoordinatorBridgePresenterParameters *parameters = [[OnboardingCoordinatorBridgePresenterParameters alloc] initWithSoftLogoutCredentials:self.softLogoutCredentials];
-    self.softLogoutCredentials = nil;
+    OnboardingCoordinatorBridgePresenterParameters *parameters = [[OnboardingCoordinatorBridgePresenterParameters alloc] init];
     
     MXWeakify(self);
     OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter = [[OnboardingCoordinatorBridgePresenter alloc] initWith:parameters];
@@ -539,7 +536,7 @@
 {
     MXLogDebug(@"[MasterTabBarController] showAuthenticationScreenAfterSoftLogout");
 
-    self.softLogoutCredentials = credentials;
+    AuthenticationService.shared.softLogoutCredentials = credentials;
 
     // Check whether an authentication screen is not already shown or preparing
     if (!self.onboardingCoordinatorBridgePresenter && !self.isOnboardingCoordinatorPreparing)

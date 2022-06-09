@@ -17,19 +17,16 @@
  */
 
 import UIKit
+import CommonKit
 
 /// OnboardingCoordinator input parameters
 struct OnboardingCoordinatorParameters {
                 
     /// The navigation router that manage physical navigation
     let router: NavigationRouterType
-    /// The credentials to use if a soft logout has taken place.
-    let softLogoutCredentials: MXCredentials?
     
-    init(router: NavigationRouterType? = nil,
-         softLogoutCredentials: MXCredentials? = nil) {
+    init(router: NavigationRouterType? = nil) {
         self.router = router ?? NavigationRouter(navigationController: RiotNavigationController(isLockedToPortraitOnPhone: true))
-        self.softLogoutCredentials = softLogoutCredentials
     }
 }
 
@@ -65,6 +62,10 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     private var session: MXSession?
     /// A place to store the image selected in the avatar screen until it has been saved.
     private var selectedAvatar: UIImage?
+    private let authenticationService: AuthenticationService = .shared
+
+    private var indicatorPresenter: UserIndicatorTypePresenterProtocol
+    private var loadingIndicator: UserIndicator?
     
     private var shouldShowDisplayNameScreen = false
     private var shouldShowAvatarScreen = false
@@ -87,9 +88,10 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         
         // Preload the legacy authVC (it is *really* slow to load in realtime)
         let params = LegacyAuthenticationCoordinatorParameters(navigationRouter: parameters.router,
-                                                               canPresentAdditionalScreens: false,
-                                                               softLogoutCredentials: parameters.softLogoutCredentials)
+                                                               canPresentAdditionalScreens: false)
         legacyAuthenticationCoordinator = LegacyAuthenticationCoordinator(parameters: params)
+
+        indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: parameters.router.toPresentable())
         
         super.init()
     }    
@@ -97,11 +99,20 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     // MARK: - Public
     
     func start() {
-        if parameters.softLogoutCredentials != nil {
-            if BuildSettings.onboardingEnableNewAuthenticationFlow {
-                beginAuthentication(with: .login)
+        if authenticationService.softLogoutCredentials != nil {
+            //  show the splash screen and a loading indicator
+            if BuildSettings.authScreenShowRegister {
+                showSplashScreen()
             } else {
-                showLegacyAuthenticationScreen()
+                showEmptyScren()
+            }
+            startLoading()
+            if BuildSettings.onboardingEnableNewAuthenticationFlow {
+                beginAuthentication(with: .login) { [weak self] in
+                    self?.stopLoading()
+                }
+            } else {
+                showLegacyAuthenticationScreen(forceAsRootModule: true)
             }
         } else if BuildSettings.authScreenShowRegister {
             showSplashScreen()
@@ -132,6 +143,15 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         navigationRouter.setRootModule(coordinator) { [weak self] in
             self?.remove(childCoordinator: coordinator)
         }
+    }
+
+    /// Show an empty screen when configuring soft logout flow
+    private func showEmptyScren() {
+        MXLog.debug("[OnboardingCoordinator] showEmptyScren")
+
+        let viewController = UIViewController()
+        viewController.view.backgroundColor = ThemeService.shared().theme.backgroundColor
+        navigationRouter.setRootModule(viewController)
     }
     
     /// Displays the next view in the flow after the splash screen.
@@ -203,8 +223,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         
         let parameters = AuthenticationCoordinatorParameters(navigationRouter: navigationRouter,
                                                              initialScreen: initialScreen,
-                                                             canPresentAdditionalScreens: false,
-                                                             softLogoutCredentials: self.parameters.softLogoutCredentials)
+                                                             canPresentAdditionalScreens: false)
         let coordinator = AuthenticationCoordinator(parameters: parameters)
         coordinator.callback = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
@@ -231,7 +250,8 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     }
 
     /// Show the legacy authentication screen. Any parameters that have been set in previous screens are be applied.
-    private func showLegacyAuthenticationScreen() {
+    /// - Parameter forceAsRootModule: Force setting the module as root instead of pushing
+    private func showLegacyAuthenticationScreen(forceAsRootModule: Bool = false) {
         guard !isShowingLegacyAuthentication else { return }
         
         MXLog.debug("[OnboardingCoordinator] showLegacyAuthenticationScreen")
@@ -258,7 +278,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         coordinator.start()
         add(childCoordinator: coordinator)
 
-        if navigationRouter.modules.isEmpty {
+        if navigationRouter.modules.isEmpty || forceAsRootModule {
             navigationRouter.setRootModule(coordinator, popCompletion: nil)
         } else {
             navigationRouter.push(coordinator, animated: true) { [weak self] in
@@ -267,6 +287,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             }
         }
         isShowingLegacyAuthentication = true
+        stopLoading()
     }
     
     /// Cancels the registration flow, returning to the Use Case screen.
@@ -570,6 +591,16 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         }
         
         Analytics.shared.trackSignup(authenticationType: authenticationType.analyticsType)
+    }
+
+    /// Show an activity indicator whilst loading.
+    private func startLoading() {
+        loadingIndicator = indicatorPresenter.present(.loading(label: VectorL10n.loading, isInteractionBlocking: true))
+    }
+
+    /// Hide the currently displayed activity indicator.
+    private func stopLoading() {
+        loadingIndicator = nil
     }
 }
 

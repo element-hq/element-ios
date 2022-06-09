@@ -25,8 +25,6 @@ struct AuthenticationCoordinatorParameters {
     let initialScreen: AuthenticationCoordinator.EntryPoint
     /// Whether or not the coordinator should show the loading spinner, key verification etc.
     let canPresentAdditionalScreens: Bool
-    /// Soft logout credentials
-    let softLogoutCredentials: MXCredentials?
 }
 
 /// A coordinator that handles authentication, verification and setting a PIN.
@@ -57,8 +55,6 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     /// Whether the coordinator can present further screens after a successful login has occurred.
     private var canPresentAdditionalScreens: Bool
-    /// Soft logout credentials
-    private let softLogoutCredentials: MXCredentials?
     /// `true` if presentation of the verification screen is blocked by `canPresentAdditionalScreens`.
     private var isWaitingToPresentCompleteSecurity = false
     
@@ -85,7 +81,6 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         self.navigationRouter = parameters.navigationRouter
         self.initialScreen = parameters.initialScreen
         self.canPresentAdditionalScreens = parameters.canPresentAdditionalScreens
-        self.softLogoutCredentials = parameters.softLogoutCredentials
 
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: parameters.navigationRouter.toPresentable())
         
@@ -121,7 +116,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     /// Starts the authentication flow.
     @MainActor private func startAuthenticationFlow() async {
-        if let softLogoutCredentials = softLogoutCredentials,
+        if let softLogoutCredentials = authenticationService.softLogoutCredentials,
            let homeserverAddress = softLogoutCredentials.homeServer {
             do {
                 try await authenticationService.startFlow(.login, for: homeserverAddress)
