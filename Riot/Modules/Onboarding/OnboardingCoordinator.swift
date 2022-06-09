@@ -236,9 +236,13 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             case .didComplete:
                 self.authenticationCoordinatorDidComplete(coordinator)
             case .clearAllData:
-                self.isShowingLegacyAuthentication = false
-                self.authenticationFinished = false
-                AppDelegate.theDelegate().logoutSendingRequestServer(true, completion: nil)
+                self.showClearAllDataConfirmation {
+                    MXLog.debug("[OnboardingCoordinator] beginAuthentication: clear all data after soft logout")
+                    self.authenticationService.reset()
+                    self.isShowingLegacyAuthentication = false
+                    self.authenticationFinished = false
+                    AppDelegate.theDelegate().logoutSendingRequestServer(true, completion: nil)
+                }
             case .cancel(let flow):
                 self.cancelAuthentication(flow: flow)
             }
@@ -601,6 +605,19 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     /// Hide the currently displayed activity indicator.
     private func stopLoading() {
         loadingIndicator = nil
+    }
+
+    /// Show confirmation to clear all data
+    /// - Parameter confirmed: Callback to be called when confirmed.
+    private func showClearAllDataConfirmation(_ confirmed: (() -> Void)?) {
+        let alertController = UIAlertController(title: VectorL10n.authSoftlogoutClearDataSignOutTitle,
+                                                message: VectorL10n.authSoftlogoutClearDataSignOutMsg,
+                                                preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: VectorL10n.authSoftlogoutClearDataSignOut, style: .default, handler: { action in
+            confirmed?()
+        }))
+        navigationRouter.present(alertController, animated: true)
     }
 }
 

@@ -249,7 +249,6 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
                 self.authenticationType = .password
                 self.onSessionCreated(session: session, flow: .login)
             case .clearAllData:
-                self.authenticationService.reset()
                 self.callback?(.clearAllData)
             case .continueWithSSO(let provider):
                 self.presentSSOAuthentication(for: provider)
