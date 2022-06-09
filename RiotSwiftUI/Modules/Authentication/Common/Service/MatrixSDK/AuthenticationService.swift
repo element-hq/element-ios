@@ -17,6 +17,13 @@
 import Foundation
 
 protocol AuthenticationServiceDelegate: AnyObject {
+    /// The authentication service encountered an unrecognized certificate and needs to
+    /// prompt the user to find out whether or not it should be trusted.
+    /// - Parameters:
+    ///   - service: The authentication service.
+    ///   - unrecognizedCertificate: The certificate data to be trusted.
+    ///   - completion: A completion handler called one the user accepts/rejects the certificate.
+    func authenticationService(_ service: AuthenticationService, needsPromptFor unrecognizedCertificate: Data?, completion: @escaping (Bool) -> Void)
     /// The authentication service received an SSO login token via a deep link.
     /// This only occurs when SSOAuthenticationPresenter uses an SFSafariViewController.
     /// - Parameters:
@@ -236,8 +243,21 @@ class AuthenticationService: NSObject {
             }
         }
         
-        #warning("Add an unrecognized certificate handler.")
-        let client = clientType.init(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
+        let client = clientType.init(homeServer: homeserverURL, unrecognizedCertificateHandler: { [weak self] certificate in
+            guard let self = self else { return false }
+            
+            var isTrusted = false
+            let semaphore = DispatchSemaphore(value: 0)
+            
+            self.delegate?.authenticationService(self, needsPromptFor: certificate) { didTrust in
+                isTrusted = didTrust
+                semaphore.signal()
+            }
+            
+            semaphore.wait()
+            return isTrusted
+        })
+        
         if let identityServerURL = identityServerURL {
             client.identityServer = identityServerURL.absoluteString
         }

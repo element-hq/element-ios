@@ -181,6 +181,38 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         toPresentable().present(alert, animated: true)
     }
     
+    /// Prompts the user to trust a certificate by displaying its fingerprint (SHA256).
+    @MainActor private func displayUnrecognizedCertificateAlert(for certificate: Data) async -> Bool {
+        await withCheckedContinuation { continuation in
+            let title = VectorL10n.sslCouldNotVerify
+            let homeserverURLString = VectorL10n.sslHomeserverUrl(authenticationService.state.homeserver.displayableAddress)
+            let fingerprint = VectorL10n.sslFingerprintHash("SHA256")
+            let certificateFingerprint = (certificate as NSData).mx_SHA256AsHexString() ?? VectorL10n.error
+            
+            let message = [VectorL10n.sslCertNotTrust,
+                           VectorL10n.sslCertNewAccountExpl,
+                           homeserverURLString,
+                           fingerprint,
+                           certificateFingerprint,
+                           VectorL10n.sslOnlyAccept]
+                .joined(separator: "\n\n")
+            
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel) { action in
+                continuation.resume(with: .success(false))
+            })
+            
+            alert.addAction(UIAlertAction(title: VectorL10n.sslTrust, style: .default) { action in
+                continuation.resume(with: .success(true))
+            })
+            
+            // The alert will be encountered on the current stack or when server selection is being presented.
+            let presentingViewController = toPresentable().presentedViewController ?? toPresentable()
+            presentingViewController.present(alert, animated: true, completion: nil)
+        }
+    }
+    
     /// Cancels the registration flow, handing control back to the onboarding coordinator.
     @MainActor private func cancelRegistration() {
         authenticationService.reset()
@@ -681,6 +713,19 @@ extension AuthenticationCoordinator: SSOAuthenticationPresenterDelegate {
 
 // MARK: - AuthenticationServiceDelegate
 extension AuthenticationCoordinator: AuthenticationServiceDelegate {
+    
+    func authenticationService(_ service: AuthenticationService, needsPromptFor unrecognizedCertificate: Data?, completion: @escaping (Bool) -> Void) {
+        guard let certificate = unrecognizedCertificate else {
+            completion(false)
+            return
+        }
+        
+        Task {
+            let trusted = await self.displayUnrecognizedCertificateAlert(for: certificate)
+            completion(trusted)
+        }
+    }
+    
     func authenticationService(_ service: AuthenticationService, didReceive ssoLoginToken: String, with transactionID: String) -> Bool {
         guard let presenter = ssoAuthenticationPresenter, transactionID == ssoTransactionID else {
             Task { await displayError(message: VectorL10n.errorCommonMessage) }

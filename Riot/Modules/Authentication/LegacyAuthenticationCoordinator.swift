@@ -149,6 +149,10 @@ extension LegacyAuthenticationCoordinator: AuthenticationServiceDelegate {
             authenticationViewController.showCustomHomeserver(homeserver, andIdentityServer: identityServer)
         }
     }
+    
+    func authenticationService(_ service: AuthenticationService, needsPromptFor unrecognizedCertificate: Data?, completion: @escaping (Bool) -> Void) {
+        // Handled internally in AuthenticationViewController
+    }
 }
 
 // MARK: - AuthenticationViewControllerDelegate

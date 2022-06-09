@@ -223,22 +223,10 @@ typedef enum : NSUInteger {
 
  @param htmlString the HTLM string to render.
  @param event the event associated to the string.
- @param roomState the room state right before the event.
+ @param roomState the room state right before the event. If nil, replies will not get constructed or formatted.
  @return an attributed string.
  */
 - (NSAttributedString*)renderHTMLString:(NSString*)htmlString forEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState;
-
-/**
- Render a random html string into an attributed string with the font and the text color
- that correspond to the passed event.
-
- @param htmlString the HTLM string to render.
- @param event the event associated to the string.
- @param roomState the room state right before the event.
- @param isEditMode wether string will be used for edition in the composer
- @return an attributed string.
- */
-- (NSAttributedString*)renderHTMLString:(NSString*)htmlString forEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState isEditMode:(BOOL)isEditMode;
 
 /**
  Defines the replacement attributed string for a redacted message.

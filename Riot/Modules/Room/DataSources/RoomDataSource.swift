@@ -156,7 +156,7 @@ extension RoomDataSource {
 
         if event.isReply() {
             let body: String
-            if let newContent = event.content[kMXMessageContentKeyNewContent] as? [String:Any] {
+            if let newContent = event.content[kMXMessageContentKeyNewContent] as? [String: Any] {
                 // Use new content if available.
                 body = newContent["formatted_body"] as? String ?? newContent[kMXMessageBodyKey] as? String ?? ""
             } else {
@@ -167,7 +167,7 @@ extension RoomDataSource {
                 body = replyEventParts?.formattedBodyParts?.replyText ?? replyEventParts?.bodyParts.replyText ?? ""
             }
 
-            let attributed = eventFormatter.renderHTMLString(body, for: event, with: self.roomState, isEditMode: true)
+            let attributed = eventFormatter.renderHTMLString(body, for: event, with: nil)
             if let attributed = attributed, #available(iOS 15.0, *) {
                 editableTextMessage = PillsFormatter.insertPills(in: attributed,
                                                                  withSession: self.mxSession,
@@ -180,7 +180,7 @@ extension RoomDataSource {
             }
         } else {
             let body: String = event.content["formatted_body"] as? String ?? event.content["body"] as? String ?? ""
-            let attributed = eventFormatter.renderHTMLString(body, for: event, with: self.roomState, isEditMode: true)
+            let attributed = eventFormatter.renderHTMLString(body, for: event, with: nil)
             if let attributed = attributed, #available(iOS 15.0, *) {
                 editableTextMessage = PillsFormatter.insertPills(in: attributed,
                                                                  withSession: self.mxSession,
