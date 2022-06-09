@@ -67,8 +67,6 @@
 @property (nonatomic, readwrite) id addAccountObserver;
 @property (nonatomic, readwrite) id removeAccountObserver;
 
-@property (nonatomic, readwrite) MXCredentials *softLogoutCredentials;
-
 @property (nonatomic) BOOL reviewSessionAlertHasBeenDisplayed;
 
 @end
@@ -475,15 +473,10 @@
 // TODO: Manage the onboarding coordinator at the AppCoordinator level
 - (void)presentOnboardingFlow
 {
-    OnboardingCoordinatorBridgePresenterParameters *parameters = [[OnboardingCoordinatorBridgePresenterParameters alloc] init];
-    if (self.softLogoutCredentials)
-    {
-        parameters.softLogoutCredentials = self.softLogoutCredentials;
-        self.softLogoutCredentials = nil;
-    }
+    MXLogDebug(@"[MasterTabBarController] presentOnboardingFlow");
     
     MXWeakify(self);
-    OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter = [[OnboardingCoordinatorBridgePresenter alloc] initWith:parameters];
+    OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter = [[OnboardingCoordinatorBridgePresenter alloc] init];
     onboardingCoordinatorBridgePresenter.completion = ^{
         MXStrongifyAndReturnIfNil(self);
         [self.onboardingCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
@@ -522,8 +515,8 @@
 
 - (void)showOnboardingFlow
 {
-    MXLogDebug(@"[MasterTabBarController] showAuthenticationScreen");
-    
+    MXLogDebug(@"[MasterTabBarController] showOnboardingFlow");
+
     // Check whether an authentication screen is not already shown or preparing
     if (!self.onboardingCoordinatorBridgePresenter && !self.isOnboardingCoordinatorPreparing)
     {
@@ -543,7 +536,7 @@
 {
     MXLogDebug(@"[MasterTabBarController] showAuthenticationScreenAfterSoftLogout");
 
-    self.softLogoutCredentials = credentials;
+    AuthenticationService.shared.softLogoutCredentials = credentials;
 
     // Check whether an authentication screen is not already shown or preparing
     if (!self.onboardingCoordinatorBridgePresenter && !self.isOnboardingCoordinatorPreparing)

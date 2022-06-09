@@ -16,13 +16,14 @@
 
 import Foundation
 
-@testable import Riot
+extension MXFileStore {
 
-struct MockSessionCreator: SessionCreatorProtocol {
-    /// Returns a basic session created from the supplied credentials. This prevents the app from setting up the account during tests.
-    func createSession(credentials: MXCredentials, client: AuthenticationRestClient, removeOtherAccounts: Bool) -> MXSession {
-        let client = MXRestClient(credentials: credentials,
-                                  unauthenticatedHandler: { _,_,_,_ in }) // The handler is expected if credentials are set.
-        return MXSession(matrixRestClient: client)
+    func displayName(ofUserWithId userId: String) async -> String? {
+        await withCheckedContinuation({ continuation in
+            asyncUsers(withUserIds: [userId]) { users in
+                continuation.resume(returning: users.first?.displayname)
+            }
+        })
     }
+
 }
