@@ -313,7 +313,7 @@ static CGFloat const kTextFontSize = 15.0;
         switch (authentication) {
             case DeactivateAccountAuthenticationAuthenticated:
                 MXLogDebug(@"[DeactivateAccountViewController] Deactivation endpoint has already been authenticated. Continuing deactivation.")
-                [self.deactivateAccountService deactivateWithEraseAccount:self.forgetMessageButton.isEnabled];
+                [self.deactivateAccountService deactivateWithEraseAccount:self.forgetMessageButton.isSelected];
                 break;
             case DeactivateAccountAuthenticationRequiresPassword:
                 [self presentPasswordPrompt];
@@ -337,7 +337,7 @@ static CGFloat const kTextFontSize = 15.0;
     MXWeakify(self);
     [self presentPasswordRequiredAlertWithSubmitHandler:^(NSString *password) {
         MXStrongifyAndReturnIfNil(self);
-        [self.deactivateAccountService deactivateWith:password eraseAccount:self.forgetMessageButton.isEnabled];
+        [self.deactivateAccountService deactivateWith:password eraseAccount:self.forgetMessageButton.isSelected];
     } cancelHandler:^() {
         MXStrongifyAndReturnIfNil(self);
         [self stopLoading];
@@ -353,7 +353,7 @@ static CGFloat const kTextFontSize = 15.0;
     safariViewController.modalPresentationStyle = UIModalPresentationFormSheet;
     safariViewController.delegate = self;
     
-    [self presentViewController:safariViewController animated:true completion:nil];
+    [self presentViewController:safariViewController animated:YES completion:nil];
 }
 
 - (void)safariViewControllerDidFinish:(SFSafariViewController *)controller
@@ -361,7 +361,7 @@ static CGFloat const kTextFontSize = 15.0;
     // There is no indication from the fallback page or the UIAService whether this was successful so attempt to deactivate.
     // It will fail (and display an error to the user) if the fallback page was dismissed.
     MXLogDebug(@"[DeactivateAccountViewController] safariViewControllerDidFinish: Completing deactivation after fallback.")
-    [self.deactivateAccountService deactivateWithEraseAccount:self.forgetMessageButton.isEnabled];
+    [self.deactivateAccountService deactivateWithEraseAccount:self.forgetMessageButton.isSelected];
 }
 
 #pragma mark - DeactivateAccountServiceDelegate
