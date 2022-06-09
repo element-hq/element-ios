@@ -16,6 +16,7 @@
 
 #import "DeactivateAccountViewController.h"
 
+#import <SafariServices/SafariServices.h>
 #import "ThemeService.h"
 #import "GeneratedInterface-Swift.h"
 
@@ -26,7 +27,7 @@ static CGFloat const kTextFontSize = 15.0;
 
 #pragma mark - Private Interface
 
-@interface DeactivateAccountViewController ()
+@interface DeactivateAccountViewController () <DeactivateAccountServiceDelegate, SFSafariViewControllerDelegate>
 
 #pragma mark - Outlets
 
@@ -48,6 +49,8 @@ static CGFloat const kTextFontSize = 15.0;
 @property (weak, nonatomic) id <NSObject> themeDidChangeNotificationObserver;
 
 @property (nonatomic) AnalyticsScreenTracker *screenTracker;
+
+@property (nonatomic) DeactivateAccountService *deactivateAccountService;
 
 @end
 
@@ -96,6 +99,9 @@ static CGFloat const kTextFontSize = 15.0;
     
     self.errorPresentation = [[MXKErrorAlertPresentation alloc] init];
     [self registerThemeNotification];
+    
+    self.deactivateAccountService = [[DeactivateAccountService alloc] initWithSession:self.mainSession];
+    self.deactivateAccountService.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -266,55 +272,22 @@ static CGFloat const kTextFontSize = 15.0;
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)deactivateAccountWithUserId:(NSString*)userId
-                        andPassword:(NSString*)password
-                   eraseAllMessages:(BOOL)eraseAllMessages
+- (void)startLoading
 {
-    if (password && userId)
-    {
-        [self enableUserActions:NO];
-        [self startActivityIndicator];
-        
-        // This assumes that the homeserver requires password UI auth
-        // for this endpoint. In reality it could be any UI auth.
-        
-        __weak typeof(self) weakSelf = self;
-        
-        NSDictionary *authParameters = @{@"user":     userId,
-                                         @"password": password,
-                                         @"type":     kMXLoginFlowTypePassword};
-        
-        [self.mainSession deactivateAccountWithAuthParameters:authParameters eraseAccount:eraseAllMessages success:^{
-            MXLogDebug(@"[SettingsViewController] Deactivate account with success");
-            
-            typeof(weakSelf) strongSelf = weakSelf;
-            
-            if (strongSelf)
-            {
-                [strongSelf stopActivityIndicator];
-                [strongSelf enableUserActions:YES];
-                [strongSelf.delegate deactivateAccountViewControllerDidDeactivateWithSuccess:strongSelf];
-            }
-            
-        } failure:^(NSError *error) {
-            
-            MXLogDebug(@"[SettingsViewController] Failed to deactivate account");
-            
-            typeof(weakSelf) strongSelf = weakSelf;
-            
-            if (strongSelf)
-            {
-                [strongSelf stopActivityIndicator];
-                [strongSelf enableUserActions:YES];
-                [strongSelf.errorPresentation presentErrorFromViewController:strongSelf forError:error animated:YES handler:nil];
-            }
-        }];
-    }
-    else
-    {
-        MXLogDebug(@"[SettingsViewController] Failed to deactivate account");
-        [self.errorPresentation presentGenericErrorFromViewController:self animated:YES handler:nil];
-    }
+    [self enableUserActions:NO];
+    [self startActivityIndicator];
+}
+
+- (void)stopLoading
+{
+    [self stopActivityIndicator];
+    [self enableUserActions:YES];
+}
+
+- (void)handleError:(NSError *)error
+{
+    [self stopLoading];
+    [self.errorPresentation presentErrorFromViewController:self forError:error animated:YES handler:nil];
 }
 
 #pragma mark - Actions
@@ -331,19 +304,78 @@ static CGFloat const kTextFontSize = 15.0;
 
 - (IBAction)deactivateAccountButtonAction:(id)sender
 {
-    __weak typeof(self) weakSelf = self;
+    [self startLoading];
     
-    [self presentPasswordRequiredAlertWithSubmitHandler:^(NSString *password) {
+    MXWeakify(self);
+    [self.deactivateAccountService checkAuthenticationWithSuccess:^(enum DeactivateAccountAuthentication authentication, NSURL * _Nullable fallbackURL) {
+        MXStrongifyAndReturnIfNil(self);
         
-        typeof(weakSelf) strongSelf = weakSelf;
-        
-        if (strongSelf)
-        {
-            NSString *userId = strongSelf.mainSession.myUser.userId;
-            [strongSelf deactivateAccountWithUserId:userId andPassword:password eraseAllMessages:strongSelf.forgetMessageButton.isEnabled];
+        switch (authentication) {
+            case DeactivateAccountAuthenticationAuthenticated:
+                MXLogDebug(@"[DeactivateAccountViewController] Deactivation endpoint has already been authenticated. Continuing deactivation.")
+                [self.deactivateAccountService deactivateWithEraseAccount:self.forgetMessageButton.isSelected];
+                break;
+            case DeactivateAccountAuthenticationRequiresPassword:
+                [self presentPasswordPrompt];
+                break;
+            case DeactivateAccountAuthenticationRequiresFallback:
+                if (fallbackURL) [self presentFallbackForURL:fallbackURL];
+                break;
         }
-        
-    } cancelHandler:nil];
+    } failure:^(NSError * _Nonnull error) {
+        MXStrongifyAndReturnIfNil(self);
+        [self handleError:error];
+    }];
+}
+
+#pragma mark - Password
+
+- (void)presentPasswordPrompt
+{
+    MXLogDebug(@"[DeactivateAccountViewController] Show password prompt.")
+    
+    MXWeakify(self);
+    [self presentPasswordRequiredAlertWithSubmitHandler:^(NSString *password) {
+        MXStrongifyAndReturnIfNil(self);
+        [self.deactivateAccountService deactivateWith:password eraseAccount:self.forgetMessageButton.isSelected];
+    } cancelHandler:^() {
+        MXStrongifyAndReturnIfNil(self);
+        [self stopLoading];
+    }];
+}
+
+#pragma mark - Fallback
+
+- (void)presentFallbackForURL:(NSURL *)url
+{
+    MXLogDebug(@"[DeactivateAccountViewController] Show fallback for url: %@", url)
+    SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
+    safariViewController.modalPresentationStyle = UIModalPresentationFormSheet;
+    safariViewController.delegate = self;
+    
+    [self presentViewController:safariViewController animated:YES completion:nil];
+}
+
+- (void)safariViewControllerDidFinish:(SFSafariViewController *)controller
+{
+    // There is no indication from the fallback page or the UIAService whether this was successful so attempt to deactivate.
+    // It will fail (and display an error to the user) if the fallback page was dismissed.
+    MXLogDebug(@"[DeactivateAccountViewController] safariViewControllerDidFinish: Completing deactivation after fallback.")
+    [self.deactivateAccountService deactivateWithEraseAccount:self.forgetMessageButton.isSelected];
+}
+
+#pragma mark - DeactivateAccountServiceDelegate
+
+- (void)deactivateAccountServiceDidEncounterError:(NSError *)error
+{
+    MXLogDebug(@"[DeactivateAccountViewController] Failed to deactivate account");
+    [self handleError:error];
+}
+
+- (void)deactivateAccountServiceDidCompleteDeactivation
+{
+    MXLogDebug(@"[DeactivateAccountViewController] Deactivate account with success");
+    [self.delegate deactivateAccountViewControllerDidDeactivateWithSuccess:self];
 }
 
 @end

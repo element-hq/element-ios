@@ -29,7 +29,7 @@ class SessionCreatorTests: XCTestCase {
                                         accessToken: "mock_access_token")
         let client = MXRestClient(credentials: credentials)
         client.identityServer = mockIS
-        let session = sessionCreator.createSession(credentials: credentials, client: client)
+        let session = sessionCreator.createSession(credentials: credentials, client: client, removeOtherAccounts: false)
         
         XCTAssertEqual(credentials.identityServer, mockIS)
         XCTAssertEqual(session.credentials.identityServer, mockIS)
