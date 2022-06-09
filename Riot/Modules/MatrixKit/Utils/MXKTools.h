@@ -369,19 +369,17 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
  - Trim trailing whitespace and newlines in the string content.
  - Replace DTImageTextAttachments with a simple NSTextAttachment subclass.
  
- @param attributedString an attributed string.
- @return the resulting string.
+ @param mutableAttributedString a mutable attributed string.
  */
-+ (NSAttributedString*)removeDTCoreTextArtifacts:(NSAttributedString*)attributedString;
++ (void)removeDTCoreTextArtifacts:(NSMutableAttributedString*)mutableAttributedString;
 
 /**
  Make some matrix identifiers clickable in the string content.
  
- @param attributedString an attributed string.
+ @param mutableAttributedString a mutable attributed string.
  @param enabledMatrixIdsBitMask the bitmask used to list the types of matrix id to process (see MXKTOOLS_XXX__BITWISE).
- @return the resulting string.
  */
-+ (NSAttributedString*)createLinksInAttributedString:(NSAttributedString*)attributedString forEnabledMatrixIds:(NSInteger)enabledMatrixIdsBitMask;
++ (void)createLinksInMutableAttributedString:(NSMutableAttributedString*)mutableAttributedString forEnabledMatrixIds:(NSInteger)enabledMatrixIdsBitMask;
 
 #pragma mark - HTML processing - blockquote display handling
 
@@ -398,10 +396,9 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
 /**
  Removing DTCoreText artifacts used to mark blockquote blocks.
 
- @param attributedString an attributed string.
- @return the resulting string.
+ @param mutableAttributedString a mutable attributed string.
  */
-+ (NSAttributedString*)removeMarkedBlockquotesArtifacts:(NSAttributedString*)attributedString;
++ (void)removeMarkedBlockquotesArtifacts:(NSMutableAttributedString*)mutableAttributedString;
 
 /**
  Enumerate all sections of the attributed string that refer to an HTML blockquote block.

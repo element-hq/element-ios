@@ -939,10 +939,8 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
 
 #pragma mark - HTML processing
 
-+ (NSAttributedString*)removeDTCoreTextArtifacts:(NSAttributedString*)attributedString
++ (void)removeDTCoreTextArtifacts:(NSMutableAttributedString*)mutableAttributedString
 {
-    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithAttributedString:attributedString];
-    
     // DTCoreText adds a newline at the end of plain text ( https://github.com/Cocoanetics/DTCoreText/issues/779 )
     // or after a blockquote section.
     // Trim trailing whitespace and newlines in the string content
@@ -1009,62 +1007,61 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
                                              [mutableAttributedString replaceCharactersInRange:range withAttributedString:attrStringWithImage];
                                          }
                                      }];
-    
-    return mutableAttributedString;
 }
 
-+ (NSAttributedString*)createLinksInAttributedString:(NSAttributedString*)attributedString forEnabledMatrixIds:(NSInteger)enabledMatrixIdsBitMask
++ (void)createLinksInMutableAttributedString:(NSMutableAttributedString*)mutableAttributedString forEnabledMatrixIds:(NSInteger)enabledMatrixIdsBitMask
 {
-    if (!attributedString)
+    if (!mutableAttributedString)
     {
-        return nil;
+        return;
     }
-    
-    NSMutableAttributedString *postRenderAttributedString;
-    
+
     // If enabled, make user id clickable
     if (enabledMatrixIdsBitMask & MXKTOOLS_USER_IDENTIFIER_BITWISE)
     {
-        [MXKTools createLinksInAttributedString:attributedString matchingRegex:userIdRegex withWorkingAttributedString:&postRenderAttributedString];
+        [MXKTools createLinksInMutableAttributedString:mutableAttributedString matchingRegex:userIdRegex];
     }
     
     // If enabled, make room id clickable
     if (enabledMatrixIdsBitMask & MXKTOOLS_ROOM_IDENTIFIER_BITWISE)
     {
-        [MXKTools createLinksInAttributedString:attributedString matchingRegex:roomIdRegex withWorkingAttributedString:&postRenderAttributedString];
+        [MXKTools createLinksInMutableAttributedString:mutableAttributedString matchingRegex:roomIdRegex];
     }
     
     // If enabled, make room alias clickable
     if (enabledMatrixIdsBitMask & MXKTOOLS_ROOM_ALIAS_BITWISE)
     {
-        [MXKTools createLinksInAttributedString:attributedString matchingRegex:roomAliasRegex withWorkingAttributedString:&postRenderAttributedString];
+        [MXKTools createLinksInMutableAttributedString:mutableAttributedString matchingRegex:roomAliasRegex];
     }
     
     // If enabled, make event id clickable
     if (enabledMatrixIdsBitMask & MXKTOOLS_EVENT_IDENTIFIER_BITWISE)
     {
-        [MXKTools createLinksInAttributedString:attributedString matchingRegex:eventIdRegex withWorkingAttributedString:&postRenderAttributedString];
+        [MXKTools createLinksInMutableAttributedString:mutableAttributedString matchingRegex:eventIdRegex];
     }
     
     // If enabled, make group id clickable
     if (enabledMatrixIdsBitMask & MXKTOOLS_GROUP_IDENTIFIER_BITWISE)
     {
-        [MXKTools createLinksInAttributedString:attributedString matchingRegex:groupIdRegex withWorkingAttributedString:&postRenderAttributedString];
+        [MXKTools createLinksInMutableAttributedString:mutableAttributedString matchingRegex:groupIdRegex];
     }
-    
-    return postRenderAttributedString ? postRenderAttributedString : attributedString;
 }
 
-+ (void)createLinksInAttributedString:(NSAttributedString*)attributedString matchingRegex:(NSRegularExpression*)regex withWorkingAttributedString:(NSMutableAttributedString* __autoreleasing *)mutableAttributedString
++ (void)createLinksInMutableAttributedString:(NSMutableAttributedString*)mutableAttributedString matchingRegex:(NSRegularExpression*)regex
 {
     __block NSArray *linkMatches;
     
     // Enumerate each string matching the regex
-    [regex enumerateMatchesInString:attributedString.string options:0 range:NSMakeRange(0, attributedString.length) usingBlock:^(NSTextCheckingResult *match, NSMatchingFlags flags, BOOL *stop) {
+    [regex enumerateMatchesInString:mutableAttributedString.string
+                            options:0
+                              range:NSMakeRange(0, mutableAttributedString.length)
+                         usingBlock:^(NSTextCheckingResult *match, NSMatchingFlags flags, BOOL *stop) {
         
         // Do not create a link if there is already one on the found match
         __block BOOL hasAlreadyLink = NO;
-        [attributedString enumerateAttributesInRange:match.range options:0 usingBlock:^(NSDictionary<NSString *,id> * _Nonnull attrs, NSRange range, BOOL * _Nonnull stop) {
+        [mutableAttributedString enumerateAttributesInRange:match.range
+                                                    options:0
+                                                 usingBlock:^(NSDictionary<NSString *,id> * _Nonnull attrs, NSRange range, BOOL * _Nonnull stop) {
             
             if (attrs[NSLinkAttributeName])
             {
@@ -1086,7 +1083,7 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
                 // Such URL is not valid but web browsers can open them and users C+P them...
                 // NSDataDetector does not support it but UITextView and UIDataDetectorTypeLink
                 // detect them when they are displayed. So let the UI create the link at display.
-                linkMatches = [httpLinksRegex matchesInString:attributedString.string options:0 range:NSMakeRange(0, attributedString.length)];
+                linkMatches = [httpLinksRegex matchesInString:mutableAttributedString.string options:0 range:NSMakeRange(0, mutableAttributedString.length)];
             }
             
             for (NSTextCheckingResult *linkMatch in linkMatches)
@@ -1102,18 +1099,12 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
         
         if (!hasAlreadyLink)
         {
-            // Create the output string only if it is necessary because attributed strings cost CPU
-            if (!*mutableAttributedString)
-            {
-                *mutableAttributedString = [[NSMutableAttributedString alloc] initWithAttributedString:attributedString];
-            }
-            
             // Make the link clickable
             // Caution: We need here to escape the non-ASCII characters (like '#' in room alias)
             // to convert the link into a legal URL string.
-            NSString *link = [attributedString.string substringWithRange:match.range];
+            NSString *link = [mutableAttributedString.string substringWithRange:match.range];
             link = [link stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-            [*mutableAttributedString addAttribute:NSLinkAttributeName value:link range:match.range];
+            [mutableAttributedString addAttribute:NSLinkAttributeName value:link range:match.range];
         }
     }];
 }
@@ -1125,10 +1116,8 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
     return [NSString stringWithFormat:@"blockquote {background: #%lX; display: block;}", (unsigned long)[MXKTools rgbValueWithColor:kMXKToolsBlockquoteMarkColor]];
 }
 
-+ (NSAttributedString*)removeMarkedBlockquotesArtifacts:(NSAttributedString*)attributedString
++ (void)removeMarkedBlockquotesArtifacts:(NSMutableAttributedString*)mutableAttributedString
 {
-    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithAttributedString:attributedString];
-
     // Enumerate all sections marked thanks to `cssToMarkBlockquotes`
     // and apply our own attribute instead.
 
@@ -1137,10 +1126,10 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
     //     - or, just define a `NSBackgroundColorAttributeName` attribute
 
     // `DTTextBlocksAttribute` case
-    [attributedString enumerateAttribute:DTTextBlocksAttribute
-                                 inRange:NSMakeRange(0, attributedString.length)
-                                 options:0
-                              usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop)
+    [mutableAttributedString enumerateAttribute:DTTextBlocksAttribute
+                                        inRange:NSMakeRange(0, mutableAttributedString.length)
+                                        options:0
+                                     usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop)
      {
          if ([value isKindOfClass:NSArray.class])
          {
@@ -1161,9 +1150,9 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
                          NSRange prevRange = NSMakeRange(range.location - 1, 1);
 
                          NSRange effectiveRange;
-                         NSParagraphStyle *paragraphStyle = [attributedString attribute:NSParagraphStyleAttributeName
-                                                                                atIndex:prevRange.location
-                                                                         effectiveRange:&effectiveRange];
+                         NSParagraphStyle *paragraphStyle = [mutableAttributedString attribute:NSParagraphStyleAttributeName
+                                                                                       atIndex:prevRange.location
+                                                                                effectiveRange:&effectiveRange];
 
                          // Check if this is the " " string
                          if (paragraphStyle && effectiveRange.length == 1 && paragraphStyle.firstLineHeadIndent != 25)
@@ -1197,8 +1186,6 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
              [mutableAttributedString addAttribute:kMXKToolsBlockquoteMarkAttribute value:@(YES) range:range];
          }
      }];
-
-    return mutableAttributedString;
 }
 
 + (void)enumerateMarkedBlockquotesInAttributedString:(NSAttributedString*)attributedString usingBlock:(void (^)(NSRange range, BOOL *stop))block
