@@ -1778,10 +1778,10 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
     MXWeakify(self);
     NSAttributedString *str = [htmlFormatter formatHTML:html
                                         withAllowedTags:_allowedHTMLTags
+                                                   font:fontForWholeString
                                         andImageHandler:_htmlImageHandler
                                            extraOptions:@{ DTDefaultTextColor: [self textColorForEvent:event],
                                                            DTDefaultStyleSheet: dtCSS }
-                                                   font:fontForWholeString
                                    postFormatOperations:^(NSMutableAttributedString *mutableStr) {
         MXStrongifyAndReturnIfNil(self);
         [self postFormatMutableAttributedString:mutableStr

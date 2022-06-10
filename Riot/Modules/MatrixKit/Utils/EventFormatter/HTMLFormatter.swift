@@ -25,23 +25,23 @@ class HTMLFormatter: NSObject {
     /// - Parameters:
     ///   - htmlString: The html string to use.
     ///   - allowedTags: The html tags that should be allowed.
-    ///   - imageHandler: The image handler for the formatted string
-    ///   - extraOptions: Extra options to apply for the format
     ///   - font: The default font to use.
+    ///   - imageHandler: The image handler for the formatted string
+    ///   - extraOptions: Extra (or override) options to apply for the format. See DTCoreText's documentation for available options.
     ///   - postFormatOperations: Optional block to provide operations to apply
     /// - Returns: The built `NSAttributedString`.
     /// - Note: It is recommended to include "p" and "body" tags in `allowedTags` as these are often added when parsing.
     func formatHTML(_ htmlString: String,
                     withAllowedTags allowedTags: [String],
+                    font: UIFont,
                     andImageHandler imageHandler: DTHTMLElement.ImageHandler? = nil,
                     extraOptions: [AnyHashable: Any] = [:],
-                    font: UIFont,
                     postFormatOperations: ((NSMutableAttributedString) -> Void)? = nil) -> NSAttributedString {
         guard let data = htmlString.data(using: .utf8) else {
             return NSAttributedString(string: htmlString)
         }
 
-        let sanitizeCallback: DTHTMLAttributedStringBuilderWillFlushCallback = { [allowedTags, font] (element: DTHTMLElement?) in
+        let sanitizeCallback: DTHTMLAttributedStringBuilderWillFlushCallback = { [allowedTags, font, imageHandler] (element: DTHTMLElement?) in
             element?.sanitize(with: allowedTags, bodyFont: font, imageHandler: imageHandler)
         }
 
