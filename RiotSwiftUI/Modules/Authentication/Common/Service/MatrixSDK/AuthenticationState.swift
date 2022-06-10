@@ -23,16 +23,20 @@ struct AuthenticationState {
     
     /// Information about the currently selected homeserver.
     var homeserver: Homeserver
+    /// Currently selected identity server
+    var identityServer: String?
     var isForceLoginFallbackEnabled = false
     
-    init(flow: AuthenticationFlow, homeserverAddress: String) {
+    init(flow: AuthenticationFlow, homeserverAddress: String, identityServer: String? = nil) {
         self.flow = flow
         self.homeserver = Homeserver(address: homeserverAddress)
+        self.identityServer = identityServer
     }
     
-    init(flow: AuthenticationFlow, homeserver: Homeserver) {
+    init(flow: AuthenticationFlow, homeserver: Homeserver, identityServer: String? = nil) {
         self.flow = flow
         self.homeserver = homeserver
+        self.identityServer = identityServer
     }
     
     struct Homeserver {

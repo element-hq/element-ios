@@ -21,7 +21,7 @@ enum RegisterThreePID {
     case msisdn(msisdn: String, countryCode: String)
 }
 
-struct ThreePIDCredentials: Codable {
+struct ThreePIDCredentials: Codable, Equatable {
     var clientSecret: String?
     
     var identityServer: String?

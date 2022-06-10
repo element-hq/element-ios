@@ -53,6 +53,7 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
     private var navigationRouter: NavigationRouterType { parameters.navigationRouter }
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol
     private var waitingIndicator: UserIndicator?
+    private var successIndicator: UserIndicator?
     
     /// The authentication service used for the login.
     private var authenticationService: AuthenticationService { parameters.authenticationService }
@@ -106,7 +107,7 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
             case .parseUsername(let username):
                 self.parseUsername(username)
             case .forgotPassword:
-                #warning("Show the forgot password flow.")
+                self.showForgotPasswordScreen()
             case .login(let username, let password):
                 self.login(username: username, password: password)
             case .continueWithSSO(let identityProvider):
@@ -233,6 +234,40 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
 
             self?.remove(childCoordinator: coordinator)
         }
+    }
+
+    /// Shows the forgot password screen.
+    @MainActor private func showForgotPasswordScreen() {
+        MXLog.debug("[AuthenticationLoginCoordinator] showForgotPasswordScreen")
+
+        guard let loginWizard = loginWizard else {
+            MXLog.failure("[AuthenticationLoginCoordinator] The login wizard was requested before getting the login flow.")
+            return
+        }
+
+        let modalRouter = NavigationRouter()
+
+        let parameters = AuthenticationForgotPasswordCoordinatorParameters(navigationRouter: modalRouter,
+                                                                           loginWizard: loginWizard)
+        let coordinator = AuthenticationForgotPasswordCoordinator(parameters: parameters)
+        coordinator.callback = { [weak self, weak coordinator] result in
+            guard let self = self, let coordinator = coordinator else { return }
+            switch result {
+            case .success:
+                self.navigationRouter.dismissModule(animated: true, completion: nil)
+                self.successIndicator = self.indicatorPresenter.present(.success(label: VectorL10n.done))
+            case .cancel:
+                self.navigationRouter.dismissModule(animated: true, completion: nil)
+            }
+            self.remove(childCoordinator: coordinator)
+        }
+
+        coordinator.start()
+        add(childCoordinator: coordinator)
+
+        modalRouter.setRootModule(coordinator)
+
+        navigationRouter.present(modalRouter, animated: true)
     }
     
     /// Updates the view model to reflect any changes made to the homeserver.

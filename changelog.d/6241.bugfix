@@ -1,0 +1,1 @@
+Prevent random crashes when tapping links. Avoid displaying the confirmation alert for plain text ones.

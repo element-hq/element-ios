@@ -37,6 +37,7 @@ final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinator
     private var canPresentAdditionalScreens: Bool
     private var isWaitingToPresentCompleteSecurity = false
     private var verificationListener: SessionVerificationListener?
+    private let authenticationService: AuthenticationService = .shared
     
     /// The session created when successfully authenticated.
     private var session: MXSession?
@@ -61,6 +62,7 @@ final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinator
         self.canPresentAdditionalScreens = parameters.canPresentAdditionalScreens
         
         let authenticationViewController = AuthenticationViewController()
+        authenticationViewController.softLogoutCredentials = authenticationService.softLogoutCredentials
         self.authenticationViewController = authenticationViewController
         
         // Preload the view as this can a second and lock up the UI at presentation.
@@ -85,18 +87,6 @@ final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinator
     
     func update(authenticationFlow: AuthenticationFlow) {
         authenticationViewController.authType = authenticationFlow.mxkType
-    }
-    
-    func update(externalRegistrationParameters: [AnyHashable: Any]) {
-        authenticationViewController.externalRegistrationParameters = externalRegistrationParameters
-    }
-    
-    func update(softLogoutCredentials: MXCredentials) {
-        authenticationViewController.softLogoutCredentials = softLogoutCredentials
-    }
-    
-    func updateHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?) {
-        authenticationViewController.showCustomHomeserver(homeserver, andIdentityServer: identityServer)
     }
     
     func presentPendingScreensIfNecessary() {
@@ -149,6 +139,19 @@ final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinator
 extension LegacyAuthenticationCoordinator: AuthenticationServiceDelegate {
     func authenticationService(_ service: AuthenticationService, didReceive ssoLoginToken: String, with transactionID: String) -> Bool {
         authenticationViewController.continueSSOLogin(withToken: ssoLoginToken, txnId: transactionID)
+    }
+
+    func authenticationService(_ service: AuthenticationService, didUpdateStateWithLink link: UniversalLink) {
+        if link.pathParams.first == "register" && !link.queryParams.isEmpty {
+            authenticationViewController.externalRegistrationParameters = link.queryParams
+        } else if let homeserver = link.homeserverUrl {
+            let identityServer = link.identityServerUrl
+            authenticationViewController.showCustomHomeserver(homeserver, andIdentityServer: identityServer)
+        }
+    }
+    
+    func authenticationService(_ service: AuthenticationService, needsPromptFor unrecognizedCertificate: Data?, completion: @escaping (Bool) -> Void) {
+        // Handled internally in AuthenticationViewController
     }
 }
 

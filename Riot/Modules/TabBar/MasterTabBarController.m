@@ -67,10 +67,6 @@
 @property (nonatomic, readwrite) id addAccountObserver;
 @property (nonatomic, readwrite) id removeAccountObserver;
 
-// The parameters to pass to the Authentication view controller.
-@property (nonatomic, readwrite) NSDictionary *authViewControllerRegistrationParameters;
-@property (nonatomic, readwrite) MXCredentials *softLogoutCredentials;
-
 @property (nonatomic) BOOL reviewSessionAlertHasBeenDisplayed;
 
 @end
@@ -477,21 +473,10 @@
 // TODO: Manage the onboarding coordinator at the AppCoordinator level
 - (void)presentOnboardingFlow
 {
-    OnboardingCoordinatorBridgePresenterParameters *parameters = [[OnboardingCoordinatorBridgePresenterParameters alloc] init];
-    // Forward parameters if any
-    if (self.authViewControllerRegistrationParameters)
-    {
-        parameters.externalRegistrationParameters = self.authViewControllerRegistrationParameters;
-        self.authViewControllerRegistrationParameters = nil;
-    }
-    if (self.softLogoutCredentials)
-    {
-        parameters.softLogoutCredentials = self.softLogoutCredentials;
-        self.softLogoutCredentials = nil;
-    }
+    MXLogDebug(@"[MasterTabBarController] presentOnboardingFlow");
     
     MXWeakify(self);
-    OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter = [[OnboardingCoordinatorBridgePresenter alloc] initWith:parameters];
+    OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter = [[OnboardingCoordinatorBridgePresenter alloc] init];
     onboardingCoordinatorBridgePresenter.completion = ^{
         MXStrongifyAndReturnIfNil(self);
         [self.onboardingCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
@@ -530,8 +515,8 @@
 
 - (void)showOnboardingFlow
 {
-    MXLogDebug(@"[MasterTabBarController] showAuthenticationScreen");
-    
+    MXLogDebug(@"[MasterTabBarController] showOnboardingFlow");
+
     // Check whether an authentication screen is not already shown or preparing
     if (!self.onboardingCoordinatorBridgePresenter && !self.isOnboardingCoordinatorPreparing)
     {
@@ -547,41 +532,11 @@
     }
 }
 
-/**
- Sets up authentication with parameters detected in a universal link. For example
- https://app.element.io/#/register/?hs_url=matrix.example.com&is_url=identity.example.com
- */
-
-- (void)showOnboardingFlowWithRegistrationParameters:(NSDictionary *)parameters
-{
-    if (self.onboardingCoordinatorBridgePresenter)
-    {
-        MXLogDebug(@"[MasterTabBarController] Universal link: Forward registration parameter to the existing AuthViewController");
-        [self.onboardingCoordinatorBridgePresenter updateWithExternalRegistrationParameters:parameters];
-    }
-    else
-    {
-        MXLogDebug(@"[MasterTabBarController] Universal link: Prompt to logout current sessions and open AuthViewController to complete the registration");
-        
-        // Keep a ref on the params
-        self.authViewControllerRegistrationParameters = parameters;
-        
-        // Prompt to logout. It will then display AuthViewController if the user is logged out.
-        [[AppDelegate theDelegate] logoutWithConfirmation:YES completion:^(BOOL isLoggedOut) {
-            if (!isLoggedOut)
-            {
-                // Reset temporary params
-                self.authViewControllerRegistrationParameters = nil;
-            }
-        }];
-    }
-}
-
 - (void)showSoftLogoutOnboardingFlowWithCredentials:(MXCredentials*)credentials;
 {
     MXLogDebug(@"[MasterTabBarController] showAuthenticationScreenAfterSoftLogout");
 
-    self.softLogoutCredentials = credentials;
+    AuthenticationService.shared.softLogoutCredentials = credentials;
 
     // Check whether an authentication screen is not already shown or preparing
     if (!self.onboardingCoordinatorBridgePresenter && !self.isOnboardingCoordinatorPreparing)

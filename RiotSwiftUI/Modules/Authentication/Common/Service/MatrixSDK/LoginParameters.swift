@@ -100,14 +100,18 @@ struct CheckResetPasswordParameters: DictionaryEncodable {
     let auth: AuthenticationParameters
     /// The new password
     let newPassword: String
+    /// The sign out of all devices flag
+    let signoutAllDevices: Bool
     
     enum CodingKeys: String, CodingKey {
         case auth
         case newPassword = "new_password"
+        case signoutAllDevices = "logout_devices"
     }
     
-    init(clientSecret: String, sessionID: String, newPassword: String) {
+    init(clientSecret: String, sessionID: String, newPassword: String, signoutAllDevices: Bool) {
         self.auth = AuthenticationParameters.resetPasswordParameters(clientSecret: clientSecret, sessionID: sessionID)
         self.newPassword = newPassword
+        self.signoutAllDevices = signoutAllDevices
     }
 }

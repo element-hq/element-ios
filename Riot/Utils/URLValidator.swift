@@ -46,24 +46,30 @@ class URLValidator: NSObject {
     ///   - event: Event containing the link
     /// - Returns: Validation result
     static func validateTappedURL(_ url: URL, in event: MXEvent) -> URLValidationResult {
-        if let format = event.content["format"] as? String,
-           let formattedBody = event.content["formatted_body"] as? String {
+        guard let content = event.content else {
+            return .passed
+        }
+        
+        if let format = content["format"] as? String,
+           let formattedBody = content["formatted_body"] as? String {
             if format == kMXRoomMessageFormatHTML {
-                let visibleURL = FormattedBodyParser().getVisibleURL(forURL: url, inFormattedBody: formattedBody)
-                if url != visibleURL {
+                if let visibleURL = FormattedBodyParser().getVisibleURL(forURL: url, inFormattedBody: formattedBody),
+                   url != visibleURL {
                     //  urls are different, show confirmation alert
                     return .init(shouldShowConfirmationAlert: true,
-                                 visibleURLString: visibleURL?.absoluteString)
+                                 visibleURLString: visibleURL.absoluteString)
                 }
             }
         }
+        
         if let body = event.content[kMXMessageBodyKey] as? String,
-            body.vc_containsRTLOverride(),
-            body != url.absoluteString {
+           body.vc_containsRTLOverride(),
+           body != url.absoluteString {
             //  we don't know where the url is in the body, assuming visibleString is just a reverse of the url
             return .init(shouldShowConfirmationAlert: true,
                          visibleURLString: url.absoluteString.vc_reversed())
         }
+        
         return .passed
     }
 
