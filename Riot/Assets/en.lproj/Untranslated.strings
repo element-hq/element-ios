@@ -78,18 +78,3 @@
 "authentication_terms_policy_url_error" = "Unable to find the selected policy. Please try again later.";
 
 "authentication_recaptcha_message" = "This server would like to make sure you are not a robot";
-
-// MARK: Spaces WIP
-"spaces_feature_not_available" = "This feature isn't available here. For now, you can do this with %@ on your computer.";
-
-"leave_space_action" = "Leave space";
-"leave_space_and_one_room" = "Leave space and 1 room";
-"leave_space_and_more_rooms" = "Leave space and %@ rooms";
-"leave_space_selection_title" = "SELECT ROOMS";
-"leave_space_selection_all_rooms" = "Select all rooms";
-"leave_space_selection_no_rooms" = "Select no rooms";
-
-
-// MARK: Reactions
-
-"room_event_action_reaction_more" = "%@ more";

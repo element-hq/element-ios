@@ -17,9 +17,9 @@
 import Foundation
 import MatrixSDK
 import Reusable
-import DGCollectionViewLeftAlignFlowLayout
 import UIKit
 import UICollectionViewRightAlignedLayout
+import UICollectionViewLeftAlignedLayout
 
 /// RoomReactionsView items alignment
 enum RoomReactionsViewAlignment {
@@ -132,7 +132,7 @@ final class RoomReactionsView: UIView, NibOwnerLoadable {
         
         switch alignment {
         case .left:
-            collectionViewLayout = DGCollectionViewLeftAlignFlowLayout()
+            collectionViewLayout = UICollectionViewLeftAlignedLayout()
         case .right:
             collectionViewLayout = UICollectionViewRightAlignedLayout()
         }
@@ -217,6 +217,8 @@ extension RoomReactionsView: UICollectionViewDataSource {
                 let actionString = self.actionButtonString(at: indexPath)
                 cell.fill(actionString: actionString)
             } else {
+//                let actionString = self.actionButtonString(at: indexPath)
+//                cell.fill(actionString: actionString)
                 cell.fill(actionIcon: Asset.Images.reactionsMoreAction.image)
             }
 
