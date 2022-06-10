@@ -643,6 +643,11 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 - (void)setSoftLogoutCredentials:(MXCredentials *)softLogoutCredentials
 {
     [super setSoftLogoutCredentials:softLogoutCredentials];
+    
+    if (!softLogoutCredentials)
+    {
+        return;
+    }
 
     // Customise the screen for soft logout
     self.customServersTickButton.hidden = YES;
