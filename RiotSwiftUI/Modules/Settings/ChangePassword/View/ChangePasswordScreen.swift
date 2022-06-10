@@ -97,9 +97,16 @@ struct ChangePasswordScreen: View {
                 Text(VectorL10n.authenticationChoosePasswordSignoutAllDevices)
                     .foregroundColor(theme.colors.secondaryContent)
             }
-            .padding(.top, 8)
-            .padding(.bottom, 16)
             .onTapGesture(perform: toggleSignoutAllDevices)
+            .padding(.top, 8)
+
+            Text(viewModel.viewState.passwordRequirements)
+                .font(theme.fonts.body)
+                .multilineTextAlignment(.leading)
+                .foregroundColor(theme.colors.secondaryContent)
+                .accessibilityIdentifier("passwordRequirementsLabel")
+                .padding(.top, 8)
+                .padding(.bottom, 16)
 
             Button(action: submit) {
                 Text(VectorL10n.save)

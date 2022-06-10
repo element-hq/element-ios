@@ -34,12 +34,14 @@ class ChangePasswordViewModel: ChangePasswordViewModelType, ChangePasswordViewMo
     init(oldPassword: String = "",
          newPassword1: String = "",
          newPassword2: String = "",
+         passwordRequirements: String = "",
          signoutAllDevices: Bool = false) {
         let bindings = ChangePasswordBindings(oldPassword: oldPassword,
                                               newPassword1: newPassword1,
                                               newPassword2: newPassword2,
                                               signoutAllDevices: signoutAllDevices)
-        let viewState = ChangePasswordViewState(bindings: bindings)
+        let viewState = ChangePasswordViewState(passwordRequirements: passwordRequirements,
+                                                bindings: bindings)
         super.init(initialViewState: viewState)
     }
 

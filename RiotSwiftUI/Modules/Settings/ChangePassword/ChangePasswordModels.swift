@@ -26,6 +26,8 @@ enum ChangePasswordViewModelResult {
 // MARK: View
 
 struct ChangePasswordViewState: BindableState {
+    /// Requirements text for the new password
+    var passwordRequirements: String
     /// View state that can be bound to from SwiftUI.
     var bindings: ChangePasswordBindings
     

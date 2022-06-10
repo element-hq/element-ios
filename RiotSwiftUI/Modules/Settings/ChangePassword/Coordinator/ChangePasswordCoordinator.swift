@@ -30,6 +30,13 @@ final class ChangePasswordCoordinator: Coordinator, Presentable {
     private let parameters: ChangePasswordCoordinatorParameters
     private let changePasswordHostingController: VectorHostingController
     private var changePasswordViewModel: ChangePasswordViewModelProtocol
+    private let passwordValidator = PasswordValidator(withRules: [
+        .minLength(8),
+        .containUppercaseLetter,
+        .containLowercaseLetter,
+        .containNumber,
+        .containSymbol
+    ])
     
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol
     private var loadingIndicator: UserIndicator?
@@ -50,8 +57,9 @@ final class ChangePasswordCoordinator: Coordinator, Presentable {
     
     init(parameters: ChangePasswordCoordinatorParameters) {
         self.parameters = parameters
-        
-        let viewModel = ChangePasswordViewModel()
+
+        let requirements = passwordValidator.description(with: VectorL10n.passwordValidationInfoHeader)
+        let viewModel = ChangePasswordViewModel(passwordRequirements: requirements)
         let view = ChangePasswordScreen(viewModel: viewModel.context)
         changePasswordViewModel = viewModel
         changePasswordHostingController = VectorHostingController(rootView: view)
@@ -103,6 +111,7 @@ final class ChangePasswordCoordinator: Coordinator, Presentable {
 
         currentTask = Task { [weak self] in
             do {
+                try passwordValidator.validate(password: newPassword)
                 try await parameters.restClient.changePassword(from: oldPassword, to: newPassword, logoutDevices: signoutAllDevices)
 
                 guard !Task.isCancelled else { return }
@@ -122,9 +131,11 @@ final class ChangePasswordCoordinator: Coordinator, Presentable {
             changePasswordViewModel.displayError(.mxError(mxError.error))
             return
         }
-        
-        // TODO: Handle another other error types as needed.
-        
-        changePasswordViewModel.displayError(.unknown)
+
+        if let error = error as? PasswordValidatorError {
+            changePasswordViewModel.displayError(.mxError(error.localizedDescription))
+        } else {
+            changePasswordViewModel.displayError(.unknown)
+        }
     }
 }

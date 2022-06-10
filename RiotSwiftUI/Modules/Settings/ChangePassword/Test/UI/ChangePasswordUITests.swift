@@ -43,6 +43,7 @@ class ChangePasswordUITests: MockScreenTest {
     
     func verifyAllEmpty() {
         XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown.")
+        XCTAssertTrue(app.staticTexts["passwordRequirementsLabel"].exists, "The password requirements label should be shown.")
         
         let oldPasswordTextField = app.secureTextFields["oldPasswordTextField"]
         XCTAssertTrue(oldPasswordTextField.exists, "The text field should be shown.")
@@ -67,6 +68,7 @@ class ChangePasswordUITests: MockScreenTest {
     
     func verifyCannotSubmit() {
         XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown.")
+        XCTAssertTrue(app.staticTexts["passwordRequirementsLabel"].exists, "The password requirements label should be shown.")
 
         let oldPasswordTextField = app.secureTextFields["oldPasswordTextField"]
         XCTAssertTrue(oldPasswordTextField.exists, "The text field should be shown.")
@@ -91,6 +93,7 @@ class ChangePasswordUITests: MockScreenTest {
     
     func verifyCanSubmit() {
         XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown.")
+        XCTAssertTrue(app.staticTexts["passwordRequirementsLabel"].exists, "The password requirements label should be shown.")
 
         let oldPasswordTextField = app.secureTextFields["oldPasswordTextField"]
         XCTAssertTrue(oldPasswordTextField.exists, "The text field should be shown.")
@@ -115,6 +118,7 @@ class ChangePasswordUITests: MockScreenTest {
 
     func verifyCanSubmitAndSignoutAllDevicesChecked() {
         XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown.")
+        XCTAssertTrue(app.staticTexts["passwordRequirementsLabel"].exists, "The password requirements label should be shown.")
 
         let oldPasswordTextField = app.secureTextFields["oldPasswordTextField"]
         XCTAssertTrue(oldPasswordTextField.exists, "The text field should be shown.")
