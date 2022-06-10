@@ -1995,7 +1995,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
         
         if (senderDisplayName)
         {
-            html = [html stringByReplacingCharactersInRange:userIdRange withString:senderDisplayName];
+            html = [html stringByReplacingCharactersInRange:userIdRange withString:senderDisplayName.stringByAddingHTMLEntities];
         }
     }
     
