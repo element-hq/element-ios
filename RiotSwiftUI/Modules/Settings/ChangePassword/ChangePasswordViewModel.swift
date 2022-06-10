@@ -34,7 +34,7 @@ class ChangePasswordViewModel: ChangePasswordViewModelType, ChangePasswordViewMo
     init(oldPassword: String = "",
          newPassword1: String = "",
          newPassword2: String = "",
-         signoutAllDevices: Bool = true) {
+         signoutAllDevices: Bool = false) {
         let bindings = ChangePasswordBindings(oldPassword: oldPassword,
                                               newPassword1: newPassword1,
                                               newPassword2: newPassword2,
@@ -48,9 +48,13 @@ class ChangePasswordViewModel: ChangePasswordViewModelType, ChangePasswordViewMo
     override func process(viewAction: ChangePasswordViewAction) {
         switch viewAction {
         case .submit:
-            Task { await callback?(.submit(state.bindings.oldPassword,
-                                           state.bindings.newPassword1,
-                                           state.bindings.signoutAllDevices)) }
+            guard state.bindings.newPassword1 == state.bindings.newPassword2 else {
+                Task { await displayError(.passwordsDontMatch) }
+                return
+            }
+            Task { await callback?(.submit(oldPassword: state.bindings.oldPassword,
+                                           newPassword: state.bindings.newPassword1,
+                                           signoutAllDevices: state.bindings.signoutAllDevices)) }
         case .toggleSignoutAllDevices:
             state.bindings.signoutAllDevices.toggle()
         }
@@ -62,6 +66,10 @@ class ChangePasswordViewModel: ChangePasswordViewModelType, ChangePasswordViewMo
             state.bindings.alertInfo = AlertInfo(id: type,
                                                  title: VectorL10n.error,
                                                  message: message)
+        case .passwordsDontMatch:
+            state.bindings.alertInfo = AlertInfo(id: type,
+                                                 title: VectorL10n.error,
+                                                 message: VectorL10n.authPasswordDontMatch)
         case .unknown:
             state.bindings.alertInfo = AlertInfo(id: type)
         }

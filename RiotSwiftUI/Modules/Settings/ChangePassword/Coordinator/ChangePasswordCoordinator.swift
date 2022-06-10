@@ -48,7 +48,7 @@ final class ChangePasswordCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @MainActor init(parameters: ChangePasswordCoordinatorParameters) {
+    init(parameters: ChangePasswordCoordinatorParameters) {
         self.parameters = parameters
         
         let viewModel = ChangePasswordViewModel()
@@ -105,14 +105,10 @@ final class ChangePasswordCoordinator: Coordinator, Presentable {
             do {
                 try await parameters.restClient.changePassword(from: oldPassword, to: newPassword, logoutDevices: signoutAllDevices)
 
-                // Shouldn't be reachable but just in case, continue the flow.
-
                 guard !Task.isCancelled else { return }
 
                 self?.stopLoading()
                 self?.callback?()
-            } catch is CancellationError {
-                return
             } catch {
                 self?.stopLoading()
                 self?.handleError(error)

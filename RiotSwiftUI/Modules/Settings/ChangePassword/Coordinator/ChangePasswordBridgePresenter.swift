@@ -56,7 +56,7 @@ final class ChangePasswordCoordinatorBridgePresenter: NSObject {
 
     // MARK: - Public
 
-    @MainActor func present(from viewController: UIViewController, animated: Bool) {
+    func present(from viewController: UIViewController, animated: Bool) {
 
         let params = ChangePasswordCoordinatorParameters(restClient: self.session.matrixRestClient)
 

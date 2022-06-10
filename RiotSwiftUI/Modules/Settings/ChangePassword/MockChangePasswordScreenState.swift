@@ -42,8 +42,7 @@ enum MockChangePasswordScreenState: MockScreenState, CaseIterable {
             viewModel = ChangePasswordViewModel()
         case .cannotSubmit:
             viewModel = ChangePasswordViewModel(oldPassword: "12345678",
-                                                newPassword1: "87654321",
-                                                newPassword2: "97654321")
+                                                newPassword1: "87654321")
         case .canSubmit:
             viewModel = ChangePasswordViewModel(oldPassword: "12345678",
                                                 newPassword1: "87654321",

@@ -62,7 +62,7 @@ class ChangePasswordUITests: MockScreenTest {
 
         let signoutAllDevicesToggle = app.switches["signoutAllDevicesToggle"]
         XCTAssertTrue(signoutAllDevicesToggle.exists, "Sign out all devices toggle should exist")
-        XCTAssertTrue(signoutAllDevicesToggle.isOn, "Sign out all devices should be checked")
+        XCTAssertFalse(signoutAllDevicesToggle.isOn, "Sign out all devices should be unchecked")
     }
     
     func verifyCannotSubmit() {
@@ -70,15 +70,15 @@ class ChangePasswordUITests: MockScreenTest {
 
         let oldPasswordTextField = app.secureTextFields["oldPasswordTextField"]
         XCTAssertTrue(oldPasswordTextField.exists, "The text field should be shown.")
-        XCTAssertEqual(oldPasswordTextField.value as? String, "••••••••", "The text field should be showing the placeholder before text is input.")
+        XCTAssertEqual(oldPasswordTextField.value as? String, "••••••••", "The text field should show the entered password secretly.")
 
         let newPasswordTextField1 = app.secureTextFields["newPasswordTextField1"]
         XCTAssertTrue(newPasswordTextField1.exists, "The text field should be shown.")
-        XCTAssertEqual(newPasswordTextField1.value as? String, "••••••••", "The text field should be showing the placeholder before text is input.")
+        XCTAssertEqual(newPasswordTextField1.value as? String, "••••••••", "The text field should show the entered password secretly.")
 
         let newPasswordTextField2 = app.secureTextFields["newPasswordTextField2"]
         XCTAssertTrue(newPasswordTextField2.exists, "The text field should be shown.")
-        XCTAssertEqual(newPasswordTextField2.value as? String, "••••••••", "The text field should be showing the placeholder before text is input.")
+        XCTAssertEqual(newPasswordTextField2.label, "confirm password", "The text field should be showing the placeholder before text is input.")
 
         let submitButton = app.buttons["submitButton"]
         XCTAssertTrue(submitButton.exists, "The submit button should be shown.")
@@ -86,7 +86,7 @@ class ChangePasswordUITests: MockScreenTest {
 
         let signoutAllDevicesToggle = app.switches["signoutAllDevicesToggle"]
         XCTAssertTrue(signoutAllDevicesToggle.exists, "Sign out all devices toggle should exist")
-        XCTAssertTrue(signoutAllDevicesToggle.isOn, "Sign out all devices should be checked")
+        XCTAssertFalse(signoutAllDevicesToggle.isOn, "Sign out all devices should be unchecked")
     }
     
     func verifyCanSubmit() {
@@ -94,15 +94,15 @@ class ChangePasswordUITests: MockScreenTest {
 
         let oldPasswordTextField = app.secureTextFields["oldPasswordTextField"]
         XCTAssertTrue(oldPasswordTextField.exists, "The text field should be shown.")
-        XCTAssertEqual(oldPasswordTextField.value as? String, "••••••••", "The text field should be showing the placeholder before text is input.")
+        XCTAssertEqual(oldPasswordTextField.value as? String, "••••••••", "The text field should show the entered password secretly.")
 
         let newPasswordTextField1 = app.secureTextFields["newPasswordTextField1"]
         XCTAssertTrue(newPasswordTextField1.exists, "The text field should be shown.")
-        XCTAssertEqual(newPasswordTextField1.value as? String, "••••••••", "The text field should be showing the placeholder before text is input.")
+        XCTAssertEqual(newPasswordTextField1.value as? String, "••••••••", "The text field should show the entered password secretly.")
 
         let newPasswordTextField2 = app.secureTextFields["newPasswordTextField2"]
         XCTAssertTrue(newPasswordTextField2.exists, "The text field should be shown.")
-        XCTAssertEqual(newPasswordTextField2.value as? String, "••••••••", "The text field should be showing the placeholder before text is input.")
+        XCTAssertEqual(newPasswordTextField2.value as? String, "••••••••", "The text field should show the entered password secretly.")
 
         let submitButton = app.buttons["submitButton"]
         XCTAssertTrue(submitButton.exists, "The submit button should be shown.")
@@ -110,7 +110,7 @@ class ChangePasswordUITests: MockScreenTest {
 
         let signoutAllDevicesToggle = app.switches["signoutAllDevicesToggle"]
         XCTAssertTrue(signoutAllDevicesToggle.exists, "Sign out all devices toggle should exist")
-        XCTAssertTrue(signoutAllDevicesToggle.isOn, "Sign out all devices should be checked")
+        XCTAssertFalse(signoutAllDevicesToggle.isOn, "Sign out all devices should be unchecked")
     }
 
     func verifyCanSubmitAndSignoutAllDevicesChecked() {
@@ -118,15 +118,15 @@ class ChangePasswordUITests: MockScreenTest {
 
         let oldPasswordTextField = app.secureTextFields["oldPasswordTextField"]
         XCTAssertTrue(oldPasswordTextField.exists, "The text field should be shown.")
-        XCTAssertEqual(oldPasswordTextField.value as? String, "••••••••", "The text field should be showing the placeholder before text is input.")
+        XCTAssertEqual(oldPasswordTextField.value as? String, "••••••••", "The text field should show the entered password secretly.")
 
         let newPasswordTextField1 = app.secureTextFields["newPasswordTextField1"]
         XCTAssertTrue(newPasswordTextField1.exists, "The text field should be shown.")
-        XCTAssertEqual(newPasswordTextField1.value as? String, "••••••••", "The text field should be showing the placeholder before text is input.")
+        XCTAssertEqual(newPasswordTextField1.value as? String, "••••••••", "The text field should show the entered password secretly.")
 
         let newPasswordTextField2 = app.secureTextFields["newPasswordTextField2"]
         XCTAssertTrue(newPasswordTextField2.exists, "The text field should be shown.")
-        XCTAssertEqual(newPasswordTextField2.value as? String, "••••••••", "The text field should be showing the placeholder before text is input.")
+        XCTAssertEqual(newPasswordTextField2.value as? String, "••••••••", "The text field should show the entered password secretly.")
 
         let submitButton = app.buttons["submitButton"]
         XCTAssertTrue(submitButton.exists, "The submit button should be shown.")

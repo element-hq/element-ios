@@ -20,7 +20,7 @@ import SwiftUI
 
 enum ChangePasswordViewModelResult {
     /// Submit with old and new passwords and sign out of all devices option
-    case submit(String, String, Bool)
+    case submit(oldPassword: String, newPassword: String, signoutAllDevices: Bool)
 }
 
 // MARK: View
@@ -29,11 +29,11 @@ struct ChangePasswordViewState: BindableState {
     /// View state that can be bound to from SwiftUI.
     var bindings: ChangePasswordBindings
     
-    /// Whether the user can submit the form: old password should be entered, and new passwords should match
+    /// Whether the user can submit the form: old password and new passwords should be entered
     var canSubmit: Bool {
         !bindings.oldPassword.isEmpty
         && !bindings.newPassword1.isEmpty
-        && bindings.newPassword1 == bindings.newPassword2
+        && !bindings.newPassword2.isEmpty
     }
 }
 
@@ -60,6 +60,8 @@ enum ChangePasswordViewAction {
 enum ChangePasswordErrorType: Hashable {
     /// An error response from the homeserver.
     case mxError(String)
+    /// User entered new passwords do not match
+    case passwordsDontMatch
     /// An unknown error occurred.
     case unknown
 }
