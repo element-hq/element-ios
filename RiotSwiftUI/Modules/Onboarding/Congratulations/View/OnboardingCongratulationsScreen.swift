@@ -128,13 +128,9 @@ struct OnboardingCongratulationsScreen: View {
         .accessibilityIdentifier("homeButton")
     }
     
-    @ViewBuilder
     var effects: some View {
-        if viewModel.viewState.personalizationDisabled {
-            EffectsView(effect: .confetti)
-                .allowsHitTesting(false)
-                .accessibilityIdentifier("confetti")
-        }
+        EffectsView(effect: .confetti)
+            .allowsHitTesting(false)
     }
 }
 
