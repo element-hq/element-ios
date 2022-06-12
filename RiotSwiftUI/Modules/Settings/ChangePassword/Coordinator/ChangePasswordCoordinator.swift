@@ -86,10 +86,10 @@ final class ChangePasswordCoordinator: Coordinator, Presentable {
     @MainActor private func setupViewModel() {
         changePasswordViewModel.callback = { [weak self] result in
             guard let self = self else { return }
-            MXLog.debug("[ChangePasswordCoordinator] ChangePasswordViewModel did complete with result: \(result).")
-            
+
             switch result {
             case .submit(let oldPassword, let newPassword, let signoutAllDevices):
+                MXLog.debug("[ChangePasswordCoordinator] ChangePasswordViewModel did complete with result: submit.")
                 self.changePassword(from: oldPassword, to: newPassword, signoutAllDevices: signoutAllDevices)
             }
         }
