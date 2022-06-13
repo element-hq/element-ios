@@ -172,8 +172,8 @@
 "settings_crypto_device_id" = "\nID relácie: ";
 "settings_crypto_device_name" = "Názov relácie: ";
 "settings_confirm_password" = "Potvrdiť heslo";
-"settings_new_password" = "nové heslo";
-"settings_old_password" = "staré heslo";
+"settings_new_password" = "Nové heslo";
+"settings_old_password" = "Staré heslo";
 "settings_third_party_notices" = "Poznámky tretích strán";
 "settings_privacy_policy" = "Zásady ochrany súkromia";
 "settings_labs_e2e_encryption" = "End-to-End šifrovanie";
@@ -186,7 +186,7 @@
 "settings_notifications_disabled_alert_title" = "Oznámenia vypnuté";
 "settings_device_notifications" = "Oznámenia zariadenia";
 "settings_night_mode" = "Nočný režim";
-"settings_change_password" = "Zmeniť heslo k účtu Matrix";
+"settings_change_password" = "Zmeniť heslo";
 "settings_first_name" = "Krstné meno";
 "settings_display_name" = "Zobrazované meno";
 "settings_profile_picture" = "Profilový obrázok";
