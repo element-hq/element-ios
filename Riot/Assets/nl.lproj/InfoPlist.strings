@@ -22,3 +22,4 @@
 "NSCalendarsUsageDescription" = "Bekijk uw geplande afspraken in de app.";
 "NSFaceIDUsageDescription" = "Face ID wordt gebruikt om toegang te krijgen tot uw app.";
 "NSLocationWhenInUseUsageDescription" = "Wanneer u uw locatie deelt met mensen heeft Element toegang nodig om dit op een kaart te tonen.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Wanneer u locatie met mensen deelt, heeft Element toegang nodig om ze een kaart te laten zien.";
