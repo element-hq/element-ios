@@ -16,8 +16,6 @@
 
 import SwiftUI
 
-
-@available(iOS 14.0, *)
 struct RoundedBorderTextField: View {
     
     // MARK: - Properties
@@ -30,6 +28,7 @@ struct RoundedBorderTextField: View {
     var isFirstResponder = false
 
     var configuration: UIKitTextInputConfiguration = UIKitTextInputConfiguration()
+    @State var isSecureTextVisible = false
     
     var onTextChanged: ((String) -> Void)? = nil
     var onEditingChanged: ((Bool) -> Void)? = nil
@@ -37,7 +36,7 @@ struct RoundedBorderTextField: View {
 
     // MARK: Private
     
-    @State private var editing = false
+    @State private var isEditing = false
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     @Environment(\.isEnabled) private var isEnabled
@@ -51,7 +50,7 @@ struct RoundedBorderTextField: View {
                     .foregroundColor(theme.colors.primaryContent)
                     .font(theme.fonts.subheadline)
                     .multilineTextAlignment(.leading)
-                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
+                    .padding(.bottom, 8)
             }
             
             ZStack(alignment: .leading) {
@@ -63,14 +62,17 @@ struct RoundedBorderTextField: View {
                         .accessibilityHidden(true)
                 }
                 
-                ThemableTextField(placeholder: "", text: $text, configuration: configuration, onEditingChanged: { edit in
-                    self.editing = edit
-                    onEditingChanged?(edit)
-                }, onCommit: {
+                ThemableTextField(placeholder: "",
+                                  text: $text,
+                                  configuration: configuration,
+                                  isSecureTextVisible: $isSecureTextVisible) { isEditing in
+                    self.isEditing = isEditing
+                    onEditingChanged?(isEditing)
+                } onCommit: {
                     onCommit?()
-                })
+                }
                 .makeFirstResponder(isFirstResponder)
-                .showClearButton(isEnabled, text: $text)
+                .addButton(isEnabled)
                 .onChange(of: text) { newText in
                     onTextChanged?(newText)
                 }
@@ -81,25 +83,39 @@ struct RoundedBorderTextField: View {
             }
             .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: text.isEmpty ? 8 : 0))
             .background(RoundedRectangle(cornerRadius: 8).fill(theme.colors.background))
-            .overlay(RoundedRectangle(cornerRadius: 8)
-                        .stroke(editing ? theme.colors.accent : (footerText != nil && isError ? theme.colors.alert : theme.colors.quinaryContent), lineWidth: editing || (footerText != nil && isError) ? 2 : 1))
+            .overlay(RoundedRectangle(cornerRadius: 8).stroke(borderColor, lineWidth: borderWidth))
 
             if let footerText = self.footerText {
                 Text(footerText)
                     .foregroundColor(isError ? theme.colors.alert : theme.colors.tertiaryContent)
                     .font(theme.fonts.footnote)
                     .multilineTextAlignment(.leading)
-                    .padding(EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0))
+                    .padding(.top, 8)
                     .transition(.opacity)
             }
         }
         .animation(.easeOut(duration: 0.2))
     }
+    
+    /// The text field's border color.
+    private var borderColor: Color {
+        if isEditing {
+            return theme.colors.accent
+        } else if footerText != nil && isError {
+            return theme.colors.alert
+        } else {
+            return theme.colors.quinaryContent
+        }
+    }
+    
+    /// The text field's border width.
+    private var borderWidth: CGFloat {
+        isEditing || (footerText != nil && isError) ? 2 : 1
+    }
 }
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct TextFieldWithError_Previews: PreviewProvider {
     static var previews: some View {
 
@@ -118,6 +134,11 @@ struct TextFieldWithError_Previews: PreviewProvider {
             RoundedBorderTextField(title: "A title", placeHolder: "A placeholder", text: .constant("Some very long text used to check overlapping with the delete button"), footerText: "Some normal text", isError: false)
             RoundedBorderTextField(title: "A title", placeHolder: "A placeholder", text: .constant("Some very long text used to check overlapping with the delete button"), footerText: "Some normal text", isError: false)
                 .disabled(true)
+            
+            Spacer().frame(height: 0)
+            
+            RoundedBorderTextField(title: "Password", placeHolder: "Enter your password", text: .constant(""), configuration: UIKitTextInputConfiguration(isSecureTextEntry: true))
+            RoundedBorderTextField(title: "Password", placeHolder: "Enter your password", text: .constant("password"), configuration: UIKitTextInputConfiguration(isSecureTextEntry: true))
         }
     }
 }
