@@ -21,8 +21,9 @@ protocol SessionCreatorProtocol {
     /// - Parameters:
     ///   - credentials: The `MXCredentials` for the account.
     ///   - client: The client that completed the authentication.
+    ///   - removeOtherAccounts: Flag to remove other accounts than the account specified with the `credentials.userId`.
     /// - Returns: A new `MXSession` for the account.
-    func createSession(credentials: MXCredentials, client: AuthenticationRestClient) -> MXSession
+    func createSession(credentials: MXCredentials, client: AuthenticationRestClient, removeOtherAccounts: Bool) -> MXSession
 }
 
 /// A struct that provides common functionality to create a new session.
@@ -34,19 +35,32 @@ struct SessionCreator: SessionCreatorProtocol {
         self.accountManager = accountManager
     }
 
-    func createSession(credentials: MXCredentials, client: AuthenticationRestClient) -> MXSession {
-        // Report the new account in account manager
+    func createSession(credentials: MXCredentials, client: AuthenticationRestClient, removeOtherAccounts: Bool) -> MXSession {
+        // Use identity server provided in the client
         if credentials.identityServer == nil {
             credentials.identityServer = client.identityServer
         }
-        
-        let account = MXKAccount(credentials: credentials)
-        
-        if let identityServer = credentials.identityServer {
-            account.identityServerURL = identityServer
+
+        if removeOtherAccounts {
+            let otherAccounts = accountManager.accounts.filter({ $0.mxCredentials.userId != credentials.userId })
+            for account in otherAccounts {
+                accountManager.removeAccount(account, completion: nil)
+            }
         }
-        
-        accountManager.addAccount(account, andOpenSession: true)
-        return account.mxSession
+
+        if let account = accountManager.account(forUserId: credentials.userId) {
+            accountManager.hydrateAccount(account, with: credentials)
+            return account.mxSession
+        } else {
+            let account = MXKAccount(credentials: credentials)
+
+            //  set identity server of the new account
+            if let identityServer = credentials.identityServer {
+                account.identityServerURL = identityServer
+            }
+
+            accountManager.addAccount(account, andOpenSession: true)
+            return account.mxSession
+        }
     }
 }

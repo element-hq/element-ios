@@ -116,6 +116,20 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     /// Starts the authentication flow.
     @MainActor private func startAuthenticationFlow() async {
+        if let softLogoutCredentials = authenticationService.softLogoutCredentials,
+           let homeserverAddress = softLogoutCredentials.homeServer {
+            do {
+                try await authenticationService.startFlow(.login, for: homeserverAddress)
+            } catch {
+                MXLog.error("[AuthenticationCoordinator] start: Failed to start")
+                displayError(message: error.localizedDescription)
+            }
+
+            await showSoftLogoutScreen(softLogoutCredentials)
+
+            return
+        }
+
         let flow: AuthenticationFlow = initialScreen == .login ? .login : .register
         if initialScreen != .selectServerForRegistration {
             do {
@@ -231,6 +245,54 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
                 self?.remove(childCoordinator: coordinator)
             }
         }
+    }
+
+    /// Shows the soft logout screen.
+    @MainActor private func showSoftLogoutScreen(_ credentials: MXCredentials) async {
+        MXLog.debug("[AuthenticationCoordinator] showSoftLogoutScreen")
+
+        guard let userId = credentials.userId else {
+            MXLog.failure("[AuthenticationCoordinator] showSoftLogoutScreen: Missing userId.")
+            displayError(message: VectorL10n.errorCommonMessage)
+            return
+        }
+
+        let store = MXFileStore(credentials: credentials)
+        let userDisplayName = await store.displayName(ofUserWithId: userId) ?? ""
+
+        let cryptoStore = MXRealmCryptoStore(credentials: credentials)
+        let keyBackupNeeded = (cryptoStore?.inboundGroupSessions(toBackup: 1) ?? []).count > 0
+
+        let softLogoutCredentials = SoftLogoutCredentials(userId: userId,
+                                                          homeserverName: credentials.homeServerName() ?? "",
+                                                          userDisplayName: userDisplayName,
+                                                          deviceId: credentials.deviceId)
+
+        let parameters = AuthenticationSoftLogoutCoordinatorParameters(navigationRouter: navigationRouter,
+                                                                       authenticationService: authenticationService,
+                                                                       credentials: softLogoutCredentials,
+                                                                       keyBackupNeeded: keyBackupNeeded)
+        let coordinator = AuthenticationSoftLogoutCoordinator(parameters: parameters)
+        coordinator.callback = { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let session, let loginPassword):
+                self.password = loginPassword
+                self.authenticationType = .password
+                self.onSessionCreated(session: session, flow: .login)
+            case .clearAllData:
+                self.callback?(.clearAllData)
+            case .continueWithSSO(let provider):
+                self.presentSSOAuthentication(for: provider)
+            case .fallback:
+                self.showFallback(for: .login, deviceId: softLogoutCredentials.deviceId)
+            }
+        }
+
+        coordinator.start()
+        add(childCoordinator: coordinator)
+
+        navigationRouter.setRootModule(coordinator, popCompletion: nil)
     }
     
     /// Displays the next view in the flow based on the result from the registration screen.
@@ -503,8 +565,26 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     // MARK: - Additional Screens
 
-    private func showFallback(for flow: AuthenticationFlow) {
-        let url = authenticationService.fallbackURL(for: flow)
+    private func showFallback(for flow: AuthenticationFlow, deviceId: String? = nil) {
+        var url = authenticationService.fallbackURL(for: flow)
+
+        if let deviceId = deviceId {
+            //  add deviceId as `device_id` into the url
+            guard var urlComponents = URLComponents(string: url.absoluteString) else {
+                MXLog.error("[AuthenticationCoordinator] showFallback: could not create url components")
+                return
+            }
+            var queryItems = urlComponents.queryItems ?? []
+            queryItems.append(URLQueryItem(name: "device_id", value: deviceId))
+            urlComponents.queryItems = queryItems
+
+            if let newUrl = urlComponents.url {
+                url = newUrl
+            } else {
+                MXLog.error("[AuthenticationCoordinator] showFallback: could not create url from components")
+                return
+            }
+        }
 
         MXLog.debug("[AuthenticationCoordinator] showFallback for: \(flow), url: \(url)")
 
@@ -717,9 +797,6 @@ extension AuthenticationCoordinator {
         // unused
     }
     
-    func update(softLogoutCredentials: MXCredentials) {
-        // unused
-    }
 }
 
 // MARK: - AuthFallBackViewControllerDelegate

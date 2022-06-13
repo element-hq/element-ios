@@ -20,7 +20,7 @@ import Foundation
 
 struct MockSessionCreator: SessionCreatorProtocol {
     /// Returns a basic session created from the supplied credentials. This prevents the app from setting up the account during tests.
-    func createSession(credentials: MXCredentials, client: AuthenticationRestClient) -> MXSession {
+    func createSession(credentials: MXCredentials, client: AuthenticationRestClient, removeOtherAccounts: Bool) -> MXSession {
         let client = MXRestClient(credentials: credentials,
                                   unauthenticatedHandler: { _,_,_,_ in }) // The handler is expected if credentials are set.
         return MXSession(matrixRestClient: client)

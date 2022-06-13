@@ -37,6 +37,7 @@ final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinator
     private var canPresentAdditionalScreens: Bool
     private var isWaitingToPresentCompleteSecurity = false
     private var verificationListener: SessionVerificationListener?
+    private let authenticationService: AuthenticationService = .shared
     
     /// The session created when successfully authenticated.
     private var session: MXSession?
@@ -61,6 +62,7 @@ final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinator
         self.canPresentAdditionalScreens = parameters.canPresentAdditionalScreens
         
         let authenticationViewController = AuthenticationViewController()
+        authenticationViewController.softLogoutCredentials = authenticationService.softLogoutCredentials
         self.authenticationViewController = authenticationViewController
         
         // Preload the view as this can a second and lock up the UI at presentation.
@@ -87,10 +89,6 @@ final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinator
         authenticationViewController.authType = authenticationFlow.mxkType
     }
     
-    func update(softLogoutCredentials: MXCredentials) {
-        authenticationViewController.softLogoutCredentials = softLogoutCredentials
-    }
-
     func presentPendingScreensIfNecessary() {
         canPresentAdditionalScreens = true
         

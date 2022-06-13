@@ -93,7 +93,7 @@ struct AuthenticationForgotPasswordScreen: View {
     var waitingFooter: some View {
         VStack(spacing: 12) {
             Button(action: done) {
-                Text(VectorL10n.done)
+                Text(VectorL10n.next)
             }
             .buttonStyle(PrimaryActionButtonStyle())
             .accessibilityIdentifier("doneButton")

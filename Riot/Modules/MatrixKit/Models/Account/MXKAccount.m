@@ -582,12 +582,13 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     }
 }
 
-- (void)changePassword:(NSString*)oldPassword with:(NSString*)newPassword success:(void (^)(void))success failure:(void (^)(NSError *error))failure
+- (void)changePassword:(NSString*)oldPassword with:(NSString*)newPassword logoutDevices:(BOOL)logoutDevices success:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
     if (mxSession)
     {
         [mxRestClient changePassword:oldPassword
                                 with:newPassword
+                       logoutDevices:logoutDevices
                              success:^{
                                  
                                  if (success) {
@@ -871,7 +872,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 
 - (void)logout:(void (^)(void))completion 
 {
-    if (!mxSession)
+    if (!mxSession || !mxSession.matrixRestClient)
     {
         MXLogDebug(@"[MXKAccount] logout: Need to open the closed session to make a logout request");
         id<MXStore> store = [[[MXKAccountManager sharedManager].storeClass alloc] init];
@@ -958,6 +959,12 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 
 - (void)softLogout
 {
+    if (_isSoftLogout)
+    {
+        //  do not close the session if already soft logged out
+        //  it may break the current logout request and resetting session credentials can cause crashes
+        return;
+    }
     _isSoftLogout = YES;
     [[MXKAccountManager sharedManager] saveAccounts];
 

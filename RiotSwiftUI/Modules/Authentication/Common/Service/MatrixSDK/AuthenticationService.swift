@@ -125,16 +125,7 @@ class AuthenticationService: NSObject {
     }
     
     /// Credentials to be used when authenticating after soft logout, otherwise `nil`.
-    var softLogoutCredentials: MXCredentials? {
-        guard MXKAccountManager.shared().activeAccounts.isEmpty else { return nil }
-        for account in MXKAccountManager.shared().accounts {
-            if account.isSoftLogout {
-                return account.mxCredentials
-            }
-        }
-        
-        return nil
-    }
+    var softLogoutCredentials: MXCredentials?
     
     /// Get the last authenticated [Session], if there is an active session.
     /// - Returns: The last active session if any, or `nil`
@@ -186,6 +177,7 @@ class AuthenticationService: NSObject {
     func reset() {
         loginWizard = nil
         registrationWizard = nil
+        softLogoutCredentials = nil
 
         // The previously used homeserver is re-used as `startFlow` will be called again a replace it anyway.
         let address = state.homeserver.addressFromUser ?? state.homeserver.address
