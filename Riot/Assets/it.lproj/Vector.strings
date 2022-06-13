@@ -2298,3 +2298,8 @@
 "location_sharing_live_timer_incoming" = "In tempo reale fino a %@";
 "live_location_sharing_ended" = "Posizione in tempo reale terminata";
 "confirm" = "Conferma";
+"location_sharing_allow_background_location_cancel_action" = "Non ora";
+"location_sharing_allow_background_location_validate_action" = "Impostazioni";
+"location_sharing_allow_background_location_message" = "Se vuoi condividere la posizione in tempo reale, Element deve accedere alla posizione quando l'app è in secondo piano. Per attivarla, tocca Impostazioni > Posizione e seleziona Sempre";
+"location_sharing_allow_background_location_title" = "Permetti accesso";
+"settings_labs_enable_live_location_sharing" = "Condivisione posizione in tempo reale - condividi la posizione attuale (in sviluppo attivo e, per ora, le posizioni restano nella cronologia della stanza)";
