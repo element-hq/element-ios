@@ -88,3 +88,13 @@
 "leave_space_selection_title" = "SELECT ROOMS";
 "leave_space_selection_all_rooms" = "Select all rooms";
 "leave_space_selection_no_rooms" = "Select no rooms";
+
+// MARK: Password Validation
+"password_validation_info_header" = "Your password should meet the criteria below:";
+"password_validation_error_header" = "Given password does not meet the criteria below:";
+"password_validation_error_min_length" = "At least %d characters.";
+"password_validation_error_max_length" = "Not exceed %d characters.";
+"password_validation_error_contain_lowercase_letter" = "Contain a lower-case letter.";
+"password_validation_error_contain_uppercase_letter" = "Contain an upper-case letter.";
+"password_validation_error_contain_number" = "Contain a number.";
+"password_validation_error_contain_symbol" = "Contain a symbol.";

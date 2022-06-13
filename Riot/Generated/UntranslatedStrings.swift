@@ -226,6 +226,38 @@ public extension VectorL10n {
   static var leaveSpaceSelectionTitle: String { 
     return VectorL10n.tr("Untranslated", "leave_space_selection_title") 
   }
+  /// Contain a lower-case letter.
+  static var passwordValidationErrorContainLowercaseLetter: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_contain_lowercase_letter") 
+  }
+  /// Contain a number.
+  static var passwordValidationErrorContainNumber: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_contain_number") 
+  }
+  /// Contain a symbol.
+  static var passwordValidationErrorContainSymbol: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_contain_symbol") 
+  }
+  /// Contain an upper-case letter.
+  static var passwordValidationErrorContainUppercaseLetter: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_contain_uppercase_letter") 
+  }
+  /// Given password does not meet the criteria below:
+  static var passwordValidationErrorHeader: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_header") 
+  }
+  /// Not exceed %d characters.
+  static func passwordValidationErrorMaxLength(_ p1: Int) -> String {
+    return VectorL10n.tr("Untranslated", "password_validation_error_max_length", p1)
+  }
+  /// At least %d characters.
+  static func passwordValidationErrorMinLength(_ p1: Int) -> String {
+    return VectorL10n.tr("Untranslated", "password_validation_error_min_length", p1)
+  }
+  /// Your password should meet the criteria below:
+  static var passwordValidationInfoHeader: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_info_header") 
+  }
   /// This feature isn't available here. For now, you can do this with %@ on your computer.
   static func spacesFeatureNotAvailable(_ p1: String) -> String {
     return VectorL10n.tr("Untranslated", "spaces_feature_not_available", p1)

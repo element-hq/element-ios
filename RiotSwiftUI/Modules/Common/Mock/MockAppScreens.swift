@@ -52,6 +52,7 @@ enum MockAppScreens {
         MockSpaceCreationSettingsScreenState.self,
         MockSpaceCreationPostProcessScreenState.self,
         MockTimelinePollScreenState.self,
+        MockChangePasswordScreenState.self,
         MockTemplateSimpleScreenScreenState.self,
         MockTemplateUserProfileScreenState.self,
         MockTemplateRoomListScreenState.self,
