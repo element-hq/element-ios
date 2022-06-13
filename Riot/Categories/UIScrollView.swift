@@ -31,7 +31,7 @@ extension UIScrollView {
         }
     }
 
-    /// Scroll to bottom of the receiver.guard let self = self else { return }
+    /// Scroll to bottom of the receiver.
     /// - Parameter animated: animate the scroll
     @objc func vc_scrollToBottom(animated: Bool = true) {
         guard contentSize.height >= bounds.height else {
