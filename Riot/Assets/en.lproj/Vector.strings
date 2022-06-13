@@ -655,6 +655,7 @@ Tap the + to start adding people.";
 "settings_ui_theme_picker_title" = "Select a theme";
 "settings_ui_theme_picker_message_invert_colours" = "\"Auto\" uses your device's \"Invert Colours\" settings";
 "settings_ui_theme_picker_message_match_system_theme" = "\"Auto\" matches your device's system theme";
+"settings_ui_show_redactions_in_room_history" = "Show a placeholder for removed messages";
 
 "settings_show_url_previews" = "Show website preview";
 "settings_show_url_previews_description" = "Previews will only be shown in unencrypted rooms.";

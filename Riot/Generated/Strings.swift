@@ -7123,6 +7123,10 @@ public class VectorL10n: NSObject {
   public static var settingsUiLanguage: String { 
     return VectorL10n.tr("Vector", "settings_ui_language") 
   }
+  /// Show a placeholder for removed messages
+  public static var settingsUiShowRedactionsInRoomHistory: String { 
+    return VectorL10n.tr("Vector", "settings_ui_show_redactions_in_room_history") 
+  }
   /// Theme
   public static var settingsUiTheme: String { 
     return VectorL10n.tr("Vector", "settings_ui_theme") 

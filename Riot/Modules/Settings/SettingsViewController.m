@@ -130,7 +130,8 @@ typedef NS_ENUM(NSUInteger, USER_INTERFACE)
 {
     USER_INTERFACE_LANGUAGE_INDEX = 0,
     USER_INTERFACE_THEME_INDEX,
-    USER_INTERFACE_TIMELINE_STYLE_INDEX
+    USER_INTERFACE_TIMELINE_STYLE_INDEX,
+    USER_INTERFACE_SHOW_REDACTIONS_IN_ROOM_HISTORY
 };
 
 typedef NS_ENUM(NSUInteger, IDENTITY_SERVER)
@@ -518,6 +519,8 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         
 //        [sectionUserInterface addRowWithTag:USER_INTERFACE_TIMELINE_STYLE_INDEX];
     }
+
+    [sectionUserInterface addRowWithTag:USER_INTERFACE_SHOW_REDACTIONS_IN_ROOM_HISTORY];
         
     [tmpSections addObject: sectionUserInterface];
     
@@ -2264,6 +2267,19 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         {
             cell = [self buildMessageBubblesCellForTableView:tableView atIndexPath:indexPath];
         }
+        else if (row == USER_INTERFACE_SHOW_REDACTIONS_IN_ROOM_HISTORY)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+
+            labelAndSwitchCell.mxkLabel.text = VectorL10n.settingsUiShowRedactionsInRoomHistory;
+
+            labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].showRedactionsInRoomHistory;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowRedacted:) forControlEvents:UIControlEventTouchUpInside];
+
+            cell = labelAndSwitchCell;
+        }
     }
     else if (section == SECTION_TAG_IGNORED_USERS)
     {
@@ -3972,6 +3988,11 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     deactivateAccountViewController.delegate = self;
     
     self.deactivateAccountViewController = deactivateAccountViewController;
+}
+
+- (void)toggleShowRedacted:(UISwitch *)sender
+{
+    [MXKAppSettings standardAppSettings].showRedactionsInRoomHistory = sender.isOn;
 }
 
 - (void)togglePresenceOfflineMode:(UISwitch *)sender
