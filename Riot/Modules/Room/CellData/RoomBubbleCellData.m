@@ -326,6 +326,16 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     return super.hasThreadRoot;
 }
 
+- (BOOL)mergeWithBubbleCellData:(id<MXKRoomBubbleCellDataStoring>)bubbleCellData
+{
+    RoomTimelineConfiguration *timelineConfiguration = [RoomTimelineConfiguration shared];
+    if (NO == [timelineConfiguration.currentStyle canMergeWithCellData:bubbleCellData into:self]) {
+        return NO;
+    }
+
+    return [super mergeWithBubbleCellData:bubbleCellData];
+}
+
 #pragma mark - Bubble collapsing
 
 - (BOOL)collapseWith:(id<MXKRoomBubbleCellDataStoring>)cellData
