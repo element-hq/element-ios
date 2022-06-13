@@ -4109,17 +4109,16 @@ static CGSize kThreadListBarButtonItemImageSize;
                 [self showEncryptionInformation:selectedEvent];
             }]];
         }
-        
-        [self.eventMenuBuilder addItemWithType:EventMenuItemTypeCancel
-                                        action:[UIAlertAction actionWithTitle:[VectorL10n cancel]
-                                                                        style:UIAlertActionStyleCancel
-                                                                      handler:^(UIAlertAction * action) {
-            MXStrongifyAndReturnIfNil(self);
-            
-            [self hideContextualMenuAnimated:YES];
-        }]];
-        
     }
+
+    [self.eventMenuBuilder addItemWithType:EventMenuItemTypeCancel
+                                    action:[UIAlertAction actionWithTitle:[VectorL10n cancel]
+                                                                    style:UIAlertActionStyleCancel
+                                                                  handler:^(UIAlertAction * action) {
+        MXStrongifyAndReturnIfNil(self);
+
+        [self hideContextualMenuAnimated:YES];
+    }]];
     
     // Do not display empty action sheet
     if (!self.eventMenuBuilder.isEmpty)
