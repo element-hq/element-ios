@@ -19,11 +19,11 @@ import UIKit
 
 @available(iOS 14.0, *)
 struct AnalyticsPromptStrings: AnalyticsPromptStringsProtocol {
-    let point1 = HTMLFormatter().formatHTML(VectorL10n.analyticsPromptPoint1,
-                                            withAllowedTags: ["b", "p"],
-                                            font: UIFont.systemFont(ofSize: UIFont.systemFontSize))
-    let point2 = HTMLFormatter().formatHTML(VectorL10n.analyticsPromptPoint2,
-                                            withAllowedTags: ["b", "p"],
-                                            font: UIFont.systemFont(ofSize: UIFont.systemFontSize))
+    let point1 = HTMLFormatter.formatHTML(VectorL10n.analyticsPromptPoint1,
+                                          withAllowedTags: ["b", "p"],
+                                          font: UIFont.systemFont(ofSize: UIFont.systemFontSize))
+    let point2 = HTMLFormatter.formatHTML(VectorL10n.analyticsPromptPoint2,
+                                          withAllowedTags: ["b", "p"],
+                                          font: UIFont.systemFont(ofSize: UIFont.systemFontSize))
 }
 

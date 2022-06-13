@@ -1773,10 +1773,8 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
     // Apply the css style that corresponds to the event state
     UIFont *fontForWholeString = [self fontForEvent:event string:htmlString];
 
-    HTMLFormatter *htmlFormatter = [[HTMLFormatter alloc] init];
-
     MXWeakify(self);
-    NSAttributedString *str = [htmlFormatter formatHTML:html
+    NSAttributedString *str = [HTMLFormatter formatHTML:html
                                         withAllowedTags:_allowedHTMLTags
                                                    font:fontForWholeString
                                         andImageHandler:_htmlImageHandler

@@ -31,12 +31,12 @@ class HTMLFormatter: NSObject {
     ///   - postFormatOperations: Optional block to provide operations to apply
     /// - Returns: The built `NSAttributedString`.
     /// - Note: It is recommended to include "p" and "body" tags in `allowedTags` as these are often added when parsing.
-    func formatHTML(_ htmlString: String,
-                    withAllowedTags allowedTags: [String],
-                    font: UIFont,
-                    andImageHandler imageHandler: DTHTMLElement.ImageHandler? = nil,
-                    extraOptions: [AnyHashable: Any] = [:],
-                    postFormatOperations: ((NSMutableAttributedString) -> Void)? = nil) -> NSAttributedString {
+    static func formatHTML(_ htmlString: String,
+                           withAllowedTags allowedTags: [String],
+                           font: UIFont,
+                           andImageHandler imageHandler: DTHTMLElement.ImageHandler? = nil,
+                           extraOptions: [AnyHashable: Any] = [:],
+                           postFormatOperations: ((NSMutableAttributedString) -> Void)? = nil) -> NSAttributedString {
         guard let data = htmlString.data(using: .utf8) else {
             return NSAttributedString(string: htmlString)
         }
@@ -72,7 +72,7 @@ class HTMLFormatter: NSObject {
     ///   - link: The link text to be inserted.
     ///   - url: The URL to be linked to.
     /// - Returns: An attributed string.
-    func format(_ string: String, with link: String, using url: URL) -> NSAttributedString {
+    static func format(_ string: String, with link: String, using url: URL) -> NSAttributedString {
         let baseString = NSMutableAttributedString(string: string)
         let attributedLink = NSAttributedString(string: link, attributes: [.link: url])
         
@@ -91,8 +91,8 @@ extension HTMLFormatter {
     ///   - data: The data in HTML format from which to create the attributed string.
     ///   - options: Specifies how the document should be loaded.
     /// - Returns: Returns an initialized object, or `nil` if the data can’t be decoded.
-    @objc func formatHTML(_ data: Data,
-                          options: [AnyHashable: Any]) -> NSAttributedString? {
+    @objc static func formatHTML(_ data: Data,
+                                 options: [AnyHashable: Any]) -> NSAttributedString? {
         guard !data.isEmpty else {
             return nil
         }
