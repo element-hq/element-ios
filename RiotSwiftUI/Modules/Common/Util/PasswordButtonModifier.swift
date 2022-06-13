@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,38 +16,34 @@
 
 import SwiftUI
 
-extension ThemableTextEditor {
-    func showClearButton(text: Binding<String>, alignment: VerticalAlignment = .top) -> some View {
-        return modifier(ClearViewModifier(alignment: alignment, text: text))
-    }
-}
-
-/// `ClearViewModifier` aims to add a clear button (e.g. `x` button) on the right side of any text editing view
-struct ClearViewModifier: ViewModifier {
+/// Adds a reveal password button (e.g. an eye button) on the
+/// right side of the view. For use with `ThemableTextField`.
+struct PasswordButtonModifier: ViewModifier {
+    
     // MARK: - Properties
     
+    let text: String
+    @Binding var isSecureTextVisible: Bool
     let alignment: VerticalAlignment
-    
-    // MARK: - Bindings
-    
-    @Binding var text: String
     
     // MARK: - Private
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
+    @ScaledMetric private var iconSize = 16
 
     // MARK: - Public
     
     public func body(content: Content) -> some View {
-        HStack(alignment: alignment) {
+        HStack(alignment: .center) {
             content
+            
             if !text.isEmpty {
-                Button(action: {
-                    self.text = ""
-                }) {
-                    Image(systemName: "xmark.circle.fill")
+                Button { isSecureTextVisible.toggle() } label: {
+                    Image(Asset.Images.authenticationRevealPassword.name)
                         .renderingMode(.template)
-                        .foregroundColor(theme.colors.quarterlyContent)
+                        .resizable()
+                        .frame(width: iconSize, height: iconSize)
+                        .foregroundColor(theme.colors.secondaryContent)
                 }
                 .padding(.top, alignment == .top ? 8 : 0)
                 .padding(.bottom, alignment == .bottom ? 8 : 0)
