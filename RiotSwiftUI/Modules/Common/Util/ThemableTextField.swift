@@ -24,7 +24,6 @@ struct UIKitTextInputConfiguration {
     var autocorrectionType: UITextAutocorrectionType = .default
 }
 
-@available(iOS 14.0, *)
 struct ThemableTextField: UIViewRepresentable {
     
     // MARK: Properties
@@ -32,6 +31,7 @@ struct ThemableTextField: UIViewRepresentable {
     @State var placeholder: String?
     @Binding var text: String
     @State var configuration: UIKitTextInputConfiguration = UIKitTextInputConfiguration()
+    @Binding var isSecureTextVisible: Bool
     var onEditingChanged: ((_ edit: Bool) -> Void)?
     var onCommit: (() -> Void)?
 
@@ -47,11 +47,13 @@ struct ThemableTextField: UIViewRepresentable {
     init(placeholder: String? = nil,
          text: Binding<String>,
          configuration: UIKitTextInputConfiguration = UIKitTextInputConfiguration(),
+         isSecureTextVisible: Binding<Bool> = .constant(false),
          onEditingChanged: ((_ edit: Bool) -> Void)? = nil,
          onCommit: (() -> Void)? = nil) {
         self._text = text
         self._placeholder = State(initialValue: placeholder)
         self._configuration = State(initialValue: configuration)
+        self._isSecureTextVisible = isSecureTextVisible
         self.onEditingChanged = onEditingChanged
         self.onCommit = onCommit
 
@@ -89,7 +91,7 @@ struct ThemableTextField: UIViewRepresentable {
         
         uiView.keyboardType = configuration.keyboardType
         uiView.returnKeyType = configuration.returnKeyType
-        uiView.isSecureTextEntry = configuration.isSecureTextEntry
+        uiView.isSecureTextEntry = configuration.isSecureTextEntry ? !isSecureTextVisible : false
         uiView.autocapitalizationType = configuration.autocapitalizationType
         uiView.autocorrectionType = configuration.autocorrectionType
     }
@@ -149,7 +151,6 @@ struct ThemableTextField: UIViewRepresentable {
 
 // MARK: - modifiers
 
-@available(iOS 14.0, *)
 extension ThemableTextField {
     func makeFirstResponder() -> ThemableTextField {
         return makeFirstResponder(true)
@@ -158,5 +159,23 @@ extension ThemableTextField {
     func makeFirstResponder(_ isFirstResponder: Bool) -> ThemableTextField {
         internalParams.isFirstResponder = isFirstResponder
         return self
+    }
+    
+    /// Adds a button button to the text field
+    /// - Parameters:
+    ///   - show: A boolean that can be used to dynamically show/hide the button. Defaults to `true`.
+    ///   - alignment: The vertical alignment of the button in the text field. Default to `center`
+    @ViewBuilder
+    func addButton(_ show: Bool, alignment: VerticalAlignment = .center) -> some View {
+        if show && configuration.isSecureTextEntry {
+            modifier(PasswordButtonModifier(text: text,
+                                            isSecureTextVisible: $isSecureTextVisible,
+                                            alignment: alignment))
+        } else if show {
+            modifier(ClearViewModifier(alignment: alignment,
+                                       text: $text))
+        } else {
+            self
+        }
     }
 }
