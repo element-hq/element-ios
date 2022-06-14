@@ -50,4 +50,4 @@ packages:
     maxVersion: 2.0.0
   SwiftOGG:
     url: https://github.com/vector-im/swift-ogg
-    branch: langleyd/initial
+    branch: main
