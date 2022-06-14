@@ -989,11 +989,22 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         return NO;
     }
 
+    if (self.hasThreadRoot || bubbleCellData.hasThreadRoot)
+    {
+        // We do not want to merge events containing thread roots
+        return NO;
+    }
+
     return [super hasSameSenderAsBubbleCellData:bubbleCellData];
 }
 
 - (BOOL)addEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState
 {
+    if (self.hasThreadRoot)
+    {
+        // We don't want to add any events into this bubble data if it's a thread root
+        return NO;
+    }
     RoomTimelineConfiguration *timelineConfiguration = [RoomTimelineConfiguration shared];
     
     if (NO == [timelineConfiguration.currentStyle canAddEvent:event and:roomState to:self]) {

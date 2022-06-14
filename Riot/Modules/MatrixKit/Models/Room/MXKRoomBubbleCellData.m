@@ -467,6 +467,22 @@
     }
 }
 
+- (BOOL)hasThreadRoot
+{
+    @synchronized (bubbleComponents)
+    {
+        for (MXKRoomBubbleComponent *component in bubbleComponents)
+        {
+            if (component.thread)
+            {
+                return YES;
+            }
+        }
+    }
+
+    return NO;
+}
+
 #pragma mark -
 
 - (void)invalidateTextLayout
@@ -647,22 +663,6 @@
         for (MXKRoomBubbleComponent *component in bubbleComponents)
         {
             if (component.link)
-            {
-                return YES;
-            }
-        }
-    }
-    
-    return NO;
-}
-
-- (BOOL)hasThreadRoot
-{
-    @synchronized (bubbleComponents)
-    {
-        for (MXKRoomBubbleComponent *component in bubbleComponents)
-        {
-            if (component.thread)
             {
                 return YES;
             }
