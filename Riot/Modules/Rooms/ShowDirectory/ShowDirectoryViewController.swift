@@ -57,6 +57,9 @@ final class ShowDirectoryViewController: UIViewController {
         spinner.startAnimating()
         return spinner
     }()
+    private lazy var tableFooterView: UIView = {
+        return UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 50))
+    }()
     private lazy var mainSearchBar: UISearchBar = {
         let bar = UISearchBar(frame: CGRect(origin: .zero, size: CGSize(width: 600, height: 44)))
         bar.autoresizingMask = .flexibleWidth
@@ -127,7 +130,7 @@ final class ShowDirectoryViewController: UIViewController {
     
     private func removeSpinnerFooterView() {
         footerSpinnerView.stopAnimating()
-        self.mainTableView.tableFooterView = UIView()
+        self.mainTableView.tableFooterView = tableFooterView
     }
     
     private func update(theme: Theme) {
@@ -167,7 +170,7 @@ final class ShowDirectoryViewController: UIViewController {
         self.mainTableView.register(headerFooterViewType: DirectoryNetworkTableHeaderFooterView.self)
         self.mainTableView.register(cellType: DirectoryRoomTableViewCell.self)
         self.mainTableView.rowHeight = 76
-        self.mainTableView.tableFooterView = UIView()
+        self.mainTableView.tableFooterView = tableFooterView
         
         let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
             self?.cancelButtonAction()
