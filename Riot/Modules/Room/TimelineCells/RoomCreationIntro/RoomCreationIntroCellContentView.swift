@@ -94,8 +94,8 @@ final class RoomCreationIntroCellContentView: UIView, NibLoadable, Themable {
         let hideAddParticipants: Bool
         
         switch viewData.dicussionType {
-        case .room(topic: _):
-            hideAddParticipants = false
+        case .room(_, let canInvitePeople):
+            hideAddParticipants = !canInvitePeople
         default:
             hideAddParticipants = true
         }
@@ -130,7 +130,7 @@ final class RoomCreationIntroCellContentView: UIView, NibLoadable, Themable {
         let informationAttributedText: NSAttributedString
         
         switch viewData.dicussionType {
-        case .room(topic: let topic):
+        case .room(let topic, _):
             informationAttributedText = self.buildRoomInformationText(with: viewData.roomDisplayName, topic: topic)
         case .directMessage:
             informationAttributedText = self.buildDMInformationText(with: viewData.roomDisplayName, isDirect: true)
@@ -201,7 +201,7 @@ final class RoomCreationIntroCellContentView: UIView, NibLoadable, Themable {
             return
         }
         
-        if case DiscussionType.room(topic: let topic) = viewData.dicussionType {
+        if case DiscussionType.room(let topic, _) = viewData.dicussionType {
             // There is no topic defined
             if topic.isEmptyOrNil {
                 self.didTapTopic?()
