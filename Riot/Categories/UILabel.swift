@@ -42,7 +42,7 @@ extension UILabel {
     /// Sets an HTML string into the receiver. Does not support custom fonts but considers receiver's font size.
     /// - Parameter htmlText: HTML text to be rendered.
     @objc func setHTMLFromString(_ htmlText: String) {
-        let html = "<!doctype html><html><head><style>body { font-family: -apple-system; font-size: \(font.pointSize)px; } p:last-child { display: inline; }</style></head><body>\(htmlText)</body></html>"
+        let html = "<html><body>\(htmlText)</body></html>"
 
         self.attributedText = HTMLFormatter.formatHTML(html,
                                                        withAllowedTags: ["b", "p", "br", "body"],
