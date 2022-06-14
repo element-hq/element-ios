@@ -34,13 +34,15 @@ class RoomActionProvider: RoomActionProviderProtocol {
     
     var menu: UIMenu {
         if service.isRoomJoined {
-            return UIMenu(children: [
+            var children = service.hasUnread ? [self.markAsReadAction] : []
+            children.append(contentsOf: [
                 self.directChatAction,
                 self.notificationsAction,
                 self.favouriteAction,
                 self.lowPriorityAction,
                 self.leaveAction
             ])
+            return UIMenu(children: children)
         } else {
             if service.roomMembership == .invite {
                 return UIMenu(children: [
@@ -100,6 +102,15 @@ class RoomActionProvider: RoomActionProviderProtocol {
             image: UIImage(systemName: self.service.isRoomLowPriority ? "arrow.up" : "arrow.down")) { [weak self] action in
                 guard let self = self else { return }
                 self.service.isRoomLowPriority = !self.service.isRoomLowPriority
+        }
+    }
+    
+    private var markAsReadAction: UIAction {
+        return UIAction(
+            title: VectorL10n.homeContextMenuMarkAsRead,
+            image: UIImage(systemName: "envelope.open")) { [weak self] action in
+                guard let self = self else { return }
+                self.service.markAsRead()
         }
     }
     
