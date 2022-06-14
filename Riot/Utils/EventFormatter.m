@@ -139,6 +139,11 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 {
     if (event.isRedactedEvent)
     {
+        if (event.eventType == MXEventTypeReaction)
+        {
+            //  do not show redacted reactions in the timeline
+            return nil;
+        }
         // Check whether the event is a thread root or redacted information is required
         if ((RiotSettings.shared.enableThreads && [mxSession.threadingService isEventThreadRoot:event])
             || self.settings.showRedactionsInRoomHistory)

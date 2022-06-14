@@ -166,7 +166,6 @@ typedef NS_ENUM(NSUInteger, LABS_ENABLE)
 {
     LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX = 0,
     LABS_ENABLE_THREADS_INDEX,
-    LABS_ENABLE_MESSAGE_BUBBLES_INDEX,
     LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS,
     LABS_USE_ONLY_LATEST_USER_AVATAR_AND_NAME_INDEX,
     LABS_ENABLE_LIVE_LOCATION_SHARING
@@ -515,9 +514,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     
     if (BuildSettings.roomScreenAllowTimelineStyleConfiguration)
     {
-        // NOTE: Message bubbles are under labs section atm
-        
-//        [sectionUserInterface addRowWithTag:USER_INTERFACE_TIMELINE_STYLE_INDEX];
+        [sectionUserInterface addRowWithTag:USER_INTERFACE_TIMELINE_STYLE_INDEX];
     }
 
     [sectionUserInterface addRowWithTag:USER_INTERFACE_SHOW_REDACTIONS_IN_ROOM_HISTORY];
@@ -587,7 +584,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         Section *sectionLabs = [Section sectionWithTag:SECTION_TAG_LABS];
         [sectionLabs addRowWithTag:LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX];
         [sectionLabs addRowWithTag:LABS_ENABLE_THREADS_INDEX];
-        [sectionLabs addRowWithTag:LABS_ENABLE_MESSAGE_BUBBLES_INDEX];
         [sectionLabs addRowWithTag:LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS];
         [sectionLabs addRowWithTag:LABS_USE_ONLY_LATEST_USER_AVATAR_AND_NAME_INDEX];
         if (BuildSettings.liveLocationSharingEnabled)
@@ -2526,10 +2522,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableThreads:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = labelAndSwitchCell;
-        }
-        else if (row == LABS_ENABLE_MESSAGE_BUBBLES_INDEX)
-        {
-            cell = [self buildMessageBubblesCellForTableView:tableView atIndexPath:indexPath];
         }
         else if (row == LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS)
         {
