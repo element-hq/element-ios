@@ -202,6 +202,38 @@ public extension VectorL10n {
   static var imagePickerActionFiles: String { 
     return VectorL10n.tr("Untranslated", "image_picker_action_files") 
   }
+  /// Contain a lower-case letter.
+  static var passwordValidationErrorContainLowercaseLetter: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_contain_lowercase_letter") 
+  }
+  /// Contain a number.
+  static var passwordValidationErrorContainNumber: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_contain_number") 
+  }
+  /// Contain a symbol.
+  static var passwordValidationErrorContainSymbol: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_contain_symbol") 
+  }
+  /// Contain an upper-case letter.
+  static var passwordValidationErrorContainUppercaseLetter: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_contain_uppercase_letter") 
+  }
+  /// Given password does not meet the criteria below:
+  static var passwordValidationErrorHeader: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_header") 
+  }
+  /// Not exceed %d characters.
+  static func passwordValidationErrorMaxLength(_ p1: Int) -> String {
+    return VectorL10n.tr("Untranslated", "password_validation_error_max_length", p1)
+  }
+  /// At least %d characters.
+  static func passwordValidationErrorMinLength(_ p1: Int) -> String {
+    return VectorL10n.tr("Untranslated", "password_validation_error_min_length", p1)
+  }
+  /// Your password should meet the criteria below:
+  static var passwordValidationInfoHeader: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_info_header") 
+  }
 }
 // swiftlint:enable function_parameter_count identifier_name line_length type_body_length
 

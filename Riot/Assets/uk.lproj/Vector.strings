@@ -231,7 +231,7 @@
 "settings_enable_push_notif" = "Сповіщення на цьому пристрої";
 "settings_fail_to_update_profile" = "Не вдалося оновити профіль";
 "settings_night_mode" = "Нічний режим";
-"settings_change_password" = "Змінити пароль облікового запису Matrix";
+"settings_change_password" = "Змінити пароль";
 "settings_add_phone_number" = "Додати номер телефону";
 "settings_phone_number" = "Телефон";
 "settings_add_email_address" = "Додати адресу е-пошти";
@@ -833,9 +833,9 @@
 "settings_add_3pid_password_title_email" = "Додати адресу е-пошти";
 "settings_password_updated" = "Пароль облікового запису Matrix оновлено";
 "settings_fail_to_update_password" = "Не вдалося оновити пароль облікового запису Matrix";
-"settings_confirm_password" = "підтвердити пароль";
-"settings_new_password" = "новий пароль";
-"settings_old_password" = "старий пароль";
+"settings_confirm_password" = "Підтвердити пароль";
+"settings_new_password" = "Новий пароль";
+"settings_old_password" = "Старий пароль";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "Шифрування не увімкнено тут.";
 "room_details_advanced_e2e_encryption_disabled" = "Шифрування не увімкнено в цій кімнаті.";
 "room_details_advanced_e2e_encryption_enabled_for_dm" = "Шифрування увімкнено тут";
@@ -2523,3 +2523,8 @@
 "location_sharing_live_timer_incoming" = "Наживо до %@";
 "live_location_sharing_ended" = "Показ місцеперебування наживо завершено";
 "confirm" = "Підтвердити";
+"location_sharing_allow_background_location_cancel_action" = "Не зараз";
+"location_sharing_allow_background_location_validate_action" = "Налаштування";
+"location_sharing_allow_background_location_message" = "Якщо ви хочете ділитися своїм місцеперебуванням наживо, Element потребує доступу до розташування, коли застосунок перебуваю у фоновому режимі. Щоб увімкнути доступ, торкніться Налаштування> Геодані та виберіть завжди";
+"location_sharing_allow_background_location_title" = "Дозволити доступ";
+"settings_labs_enable_live_location_sharing" = "Поширення місцеперебування наживо - діліться поточним розташуванням (в активній розробці, місця тимчасово зберігаються в історії кімнат)";

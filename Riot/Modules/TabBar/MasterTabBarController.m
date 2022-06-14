@@ -63,10 +63,6 @@
 @property (nonatomic, readwrite) BOOL isOnboardingCoordinatorPreparing;
 @property (nonatomic, readwrite) BOOL isOnboardingInProgress;
 
-// Observer that checks when the Authentication view controller has gone.
-@property (nonatomic, readwrite) id addAccountObserver;
-@property (nonatomic, readwrite) id removeAccountObserver;
-
 @property (nonatomic) BOOL reviewSessionAlertHasBeenDisplayed;
 
 @end
@@ -239,17 +235,6 @@
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         currentAlert = nil;
-    }
-    
-    if (self.addAccountObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:self.addAccountObserver];
-        self.addAccountObserver = nil;
-    }
-    if (self.removeAccountObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:self.removeAccountObserver];
-        self.removeAccountObserver = nil;
     }
     
     if (kThemeServiceDidChangeThemeNotificationObserver)
@@ -490,62 +475,38 @@
     
     self.onboardingCoordinatorBridgePresenter = onboardingCoordinatorBridgePresenter;
     self.isOnboardingCoordinatorPreparing = NO;
-    
-    self.addAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        MXStrongifyAndReturnIfNil(self);
-
-        // What was this doing? This should probably happen elsewhere
-        // self.onboardingCoordinatorBridgePresenter = nil;
-        
-        [[NSNotificationCenter defaultCenter] removeObserver:self.addAccountObserver];
-        self.addAccountObserver = nil;
-    }];
-    
-    self.removeAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        MXStrongifyAndReturnIfNil(self);
-        // The user has cleared data for their soft logged out account
-
-        // What was this doing? This should probably happen elsewhere
-        // self.onboardingCoordinatorBridgePresenter = nil;
-        
-        [[NSNotificationCenter defaultCenter] removeObserver:self.removeAccountObserver];
-        self.removeAccountObserver = nil;
-    }];
 }
 
 - (void)showOnboardingFlow
 {
     MXLogDebug(@"[MasterTabBarController] showOnboardingFlow");
-
-    // Check whether an authentication screen is not already shown or preparing
-    if (!self.onboardingCoordinatorBridgePresenter && !self.isOnboardingCoordinatorPreparing)
-    {
-        self.isOnboardingCoordinatorPreparing = YES;
-        self.isOnboardingInProgress = YES;
-        
-        [self resetReviewSessionsFlags];
-        
-        [[AppDelegate theDelegate] restoreInitialDisplay:^{
-                        
-            [self presentOnboardingFlow];
-        }];
-    }
+    [self showOnboardingFlowAndResetSessionFlags:YES];
 }
 
 - (void)showSoftLogoutOnboardingFlowWithCredentials:(MXCredentials*)credentials;
 {
     MXLogDebug(@"[MasterTabBarController] showAuthenticationScreenAfterSoftLogout");
-
+    
     AuthenticationService.shared.softLogoutCredentials = credentials;
+    
+    [self showOnboardingFlowAndResetSessionFlags:NO];
+}
 
+- (void)showOnboardingFlowAndResetSessionFlags:(BOOL)resetSessionFlags
+{
     // Check whether an authentication screen is not already shown or preparing
     if (!self.onboardingCoordinatorBridgePresenter && !self.isOnboardingCoordinatorPreparing)
     {
         self.isOnboardingCoordinatorPreparing = YES;
         self.isOnboardingInProgress = YES;
-
+        
+        if (resetSessionFlags)
+        {
+            [self resetReviewSessionsFlags];
+        }
+        
         [[AppDelegate theDelegate] restoreInitialDisplay:^{
-
+            
             [self presentOnboardingFlow];
         }];
     }

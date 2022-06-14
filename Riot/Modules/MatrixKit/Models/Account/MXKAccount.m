@@ -582,12 +582,13 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     }
 }
 
-- (void)changePassword:(NSString*)oldPassword with:(NSString*)newPassword success:(void (^)(void))success failure:(void (^)(NSError *error))failure
+- (void)changePassword:(NSString*)oldPassword with:(NSString*)newPassword logoutDevices:(BOOL)logoutDevices success:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
     if (mxSession)
     {
         [mxRestClient changePassword:oldPassword
                                 with:newPassword
+                       logoutDevices:logoutDevices
                              success:^{
                                  
                                  if (success) {

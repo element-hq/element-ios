@@ -48,9 +48,6 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     private let legacyAuthenticationCoordinator: LegacyAuthenticationCoordinator
     /// The currently active authentication coordinator, otherwise `nil`.
     private weak var authenticationCoordinator: AuthenticationCoordinatorProtocol?
-    #warning("This might be removable when SSO comes through the AuthenticationService?")
-    /// A boolean to prevent authentication being shown when already in progress.
-    private var isShowingLegacyAuthentication = false
     
     // MARK: Screen results
     private var splashScreenResult: OnboardingSplashScreenViewModelResult?
@@ -239,7 +236,6 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
                 self.showClearAllDataConfirmation {
                     MXLog.debug("[OnboardingCoordinator] beginAuthentication: clear all data after soft logout")
                     self.authenticationService.reset()
-                    self.isShowingLegacyAuthentication = false
                     self.authenticationFinished = false
                     self.cancelAuthentication(flow: .login)
                     AppDelegate.theDelegate().logoutSendingRequestServer(true, completion: nil)
@@ -257,8 +253,6 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     /// Show the legacy authentication screen. Any parameters that have been set in previous screens are be applied.
     /// - Parameter forceAsRootModule: Force setting the module as root instead of pushing
     private func showLegacyAuthenticationScreen(forceAsRootModule: Bool = false) {
-        guard !isShowingLegacyAuthentication else { return }
-        
         MXLog.debug("[OnboardingCoordinator] showLegacyAuthenticationScreen")
         
         let coordinator = legacyAuthenticationCoordinator
@@ -288,10 +282,8 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         } else {
             navigationRouter.push(coordinator, animated: true) { [weak self] in
                 self?.remove(childCoordinator: coordinator)
-                self?.isShowingLegacyAuthentication = false
             }
         }
-        isShowingLegacyAuthentication = true
         stopLoading()
     }
     
@@ -361,8 +353,6 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     
     /// Completes the onboarding flow if possible, otherwise waits for any remaining screens.
     private func authenticationCoordinatorDidComplete(_ coordinator: AuthenticationCoordinatorProtocol) {
-        isShowingLegacyAuthentication = false
-        
         // Handle the chosen use case where applicable
         if authenticationFlow == .register,
            let useCase = useCaseResult?.userSessionPropertyValue,

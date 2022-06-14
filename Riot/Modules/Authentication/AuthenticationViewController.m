@@ -643,13 +643,23 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 - (void)setSoftLogoutCredentials:(MXCredentials *)softLogoutCredentials
 {
     [super setSoftLogoutCredentials:softLogoutCredentials];
-
-    // Customise the screen for soft logout
-    self.customServersTickButton.hidden = YES;
-    self.navigationItem.rightBarButtonItem.title = nil;
-    self.navigationItem.title = [VectorL10n authSoftlogoutSignedOut];
-
-    [self showSoftLogoutClearDataContainer];
+    
+    if (softLogoutCredentials)
+    {
+        // Customise the screen for soft logout
+        self.customServersTickButton.hidden = YES;
+        self.navigationItem.rightBarButtonItem.title = nil;
+        self.navigationItem.title = [VectorL10n authSoftlogoutSignedOut];
+        [self showSoftLogoutClearDataContainer];
+    }
+    else
+    {
+        // Customise the screen for regular authentication.
+        self.customServersTickButton.hidden = NO;
+        [self updateRightBarButtonItem];
+        self.navigationItem.title = nil;
+        self.softLogoutClearDataContainer.hidden = YES;
+    }
 }
 
 - (void)showSoftLogoutClearDataContainer
@@ -896,12 +906,12 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         else if (self.authType == MXKAuthenticationTypeLogin)
         {
             self.authType = MXKAuthenticationTypeRegister;
-            self.navigationItem.rightBarButtonItem.title = [VectorL10n authLogin];
+            [self updateRightBarButtonItem];
         }
         else
         {
             self.authType = MXKAuthenticationTypeLogin;
-            self.navigationItem.rightBarButtonItem.title = [VectorL10n authRegister];
+            [self updateRightBarButtonItem];
         }
     }
     else if (sender == self.navigationItem.leftBarButtonItem)
@@ -1050,6 +1060,18 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     }
     
     [self afterSetPinFlowCompletedWithCredentials:credentials];
+}
+
+- (void)updateRightBarButtonItem
+{
+    if (self.authType == MXKAuthenticationTypeLogin)
+    {
+        self.navigationItem.rightBarButtonItem.title = [VectorL10n authRegister];
+    }
+    else
+    {
+        self.navigationItem.rightBarButtonItem.title = [VectorL10n authLogin];
+    }
 }
 
 - (void)updateForgotPwdButtonVisibility

@@ -118,6 +118,11 @@
 @property (nonatomic, readonly) BOOL hasNoDisplay;
 
 /**
+ Whether the data has a thread root in its components.
+ */
+@property (nonatomic, readonly) BOOL hasThreadRoot;
+
+/**
  The list of events (`MXEvent` instances) handled by this bubble.
  */
 @property (nonatomic, readonly) NSArray<MXEvent*> *events;
