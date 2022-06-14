@@ -597,7 +597,7 @@ Tap the + to start adding people.";
 "settings_add_email_address" = "Add email address";
 "settings_phone_number" = "Phone";
 "settings_add_phone_number" = "Add phone number";
-"settings_change_password" = "Change Matrix account password";
+"settings_change_password" = "Change password";
 "settings_night_mode" = "Night Mode";
 "settings_fail_to_update_profile" = "Fail to update profile";
 "settings_three_pids_management_information_part1" = "Manage which email addresses or phone numbers you can use to log in or recover your account here. Control who can find you in ";
@@ -655,6 +655,7 @@ Tap the + to start adding people.";
 "settings_ui_theme_picker_title" = "Select a theme";
 "settings_ui_theme_picker_message_invert_colours" = "\"Auto\" uses your device's \"Invert Colours\" settings";
 "settings_ui_theme_picker_message_match_system_theme" = "\"Auto\" matches your device's system theme";
+"settings_ui_show_redactions_in_room_history" = "Show a placeholder for removed messages";
 
 "settings_show_url_previews" = "Show website preview";
 "settings_show_url_previews_description" = "Previews will only be shown in unencrypted rooms.";
@@ -685,9 +686,9 @@ Tap the + to start adding people.";
 "settings_analytics_and_crash_data" = "Send crash and analytics data";
 "settings_enable_rageshake" = "Rage shake to report bug";
 
-"settings_old_password" = "old password";
-"settings_new_password" = "new password";
-"settings_confirm_password" = "confirm password";
+"settings_old_password" = "Old password";
+"settings_new_password" = "New password";
+"settings_confirm_password" = "Confirm password";
 "settings_fail_to_update_password" = "Fail to update Matrix account password";
 "settings_password_updated" = "Your Matrix account password has been updated";
 

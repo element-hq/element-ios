@@ -2295,3 +2295,8 @@
 "location_sharing_live_timer_incoming" = "Ao vivo até %@";
 "live_location_sharing_ended" = "Localização ao vivo terminou";
 "confirm" = "Confirmar";
+"location_sharing_allow_background_location_cancel_action" = "Não agora";
+"location_sharing_allow_background_location_validate_action" = "Ajustes";
+"location_sharing_allow_background_location_message" = "Se você gostaria de acessar sua localização Ao Vivo, Element precisa de acesso de localização quando o app está no background. Para habilitar acesso, toque Ajustes > Localização e selecione Sempre";
+"location_sharing_allow_background_location_title" = "Permitir acesso";
+"settings_labs_enable_live_location_sharing" = "Compartilhamento de localização ao vivo - compartilhar localização atual (desenvolvimento ativo, e temporariamente, localizações persistem em histórico de sala)";

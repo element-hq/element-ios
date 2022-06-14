@@ -72,6 +72,7 @@ NSString *const MXKAccountManagerDataType = @"org.matrix.kit.MXKAccountManagerDa
     {
         _storeClass = [MXFileStore class];
         _dehydrationService = [MXDehydrationService new];
+        _savingAccountsEnabled = YES;
         
         // Migrate old account file to new format
         [self migrateAccounts];
@@ -108,10 +109,15 @@ NSString *const MXKAccountManagerDataType = @"org.matrix.kit.MXKAccountManagerDa
 #pragma clang diagnostic ignored "-Wdeprecated"
 - (void)saveAccounts
 {
-    NSDate *startDate = [NSDate date];
-    
     MXLogDebug(@"[MXKAccountManager] saveAccounts...");
-    
+
+    if (!self.isSavingAccountsEnabled)
+    {
+        MXLogDebug(@"[MXKAccountManager] saveAccounts: saving disabled.");
+        return;
+    }
+    NSDate *startDate = [NSDate date];
+
     NSMutableData *data = [NSMutableData data];
     NSKeyedArchiver *encoder = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
 

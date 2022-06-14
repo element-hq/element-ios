@@ -122,9 +122,9 @@
 "settings_crypto_device_id" = "\nID Sesi: ";
 "settings_crypto_device_name" = "Nama sesi: ";
 "settings_add_3pid_invalid_password_message" = "Kredential tidak valid";
-"settings_confirm_password" = "konfirmasi kata sandi";
-"settings_new_password" = "kata sandi baru";
-"settings_old_password" = "kata sandi lama";
+"settings_confirm_password" = "Konfirmasi kata sandi";
+"settings_new_password" = "Kata sandi baru";
+"settings_old_password" = "Kata sandi lama";
 "settings_third_party_notices" = "Pemberitahuan Pihak Ketiga";
 "settings_privacy_policy" = "Kebijakan Privasi";
 "settings_version" = "Versi %@";
@@ -133,7 +133,7 @@
 "settings_integrations_allow_button" = "Kelola integrasi";
 "settings_enable_callkit" = "Panggilan yang diintegrasi";
 "settings_night_mode" = "Mode Malam";
-"settings_change_password" = "Ubah kata sandi akun Matrix";
+"settings_change_password" = "Ubah kata sandi";
 "settings_first_name" = "Nama Depan";
 "settings_display_name" = "Nama Tampilan";
 "settings_profile_picture" = "Gambar Profil";
@@ -2525,3 +2525,8 @@
 "location_sharing_live_timer_incoming" = "Langsung sampai %@";
 "live_location_sharing_ended" = "Lokasi langsung berakhir";
 "confirm" = "Konfirmasi";
+"location_sharing_allow_background_location_cancel_action" = "Jangan sekarang";
+"location_sharing_allow_background_location_validate_action" = "Pengaturan";
+"location_sharing_allow_background_location_message" = "Jika Anda ingin membagikan lokasi langsung Anda, Element membutuhkan akses lokasi ketika aplikasi berada di latar belakang.Untuk memberikan akses, ketuk Pengaturan> Lokasi dan pilih Selalu";
+"location_sharing_allow_background_location_title" = "Perbolehkan akses";
+"settings_labs_enable_live_location_sharing" = "Pembagian lokasi langsung — bagikan lokasi saat ini (dalam pengembangan aktif, dan sementara, lokasi tetap di riwayat ruangan)";

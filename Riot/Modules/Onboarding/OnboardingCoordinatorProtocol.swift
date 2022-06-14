@@ -20,11 +20,4 @@ import Foundation
 /// full onboarding flow with pre-auth screens, authentication and setup screens once signed in.
 protocol OnboardingCoordinatorProtocol: Coordinator, Presentable {
     var completion: (() -> Void)? { get set }
-    
-    /// Force a registration process based on a predefined set of parameters from a server provisioning link.
-    /// For more information see `AuthenticationViewController.externalRegistrationParameters`.
-    func update(externalRegistrationParameters: [AnyHashable: Any])
-    
-    /// Set up the authentication screen with the specified homeserver and/or identity server.
-    func updateHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?)
 }

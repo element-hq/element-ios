@@ -2318,3 +2318,8 @@
 "location_sharing_live_timer_incoming" = "Élő eddig: %@";
 "live_location_sharing_ended" = "Élő pozíció megosztás befejeződött";
 "confirm" = "Megerősítés";
+"location_sharing_allow_background_location_cancel_action" = "Ne most";
+"location_sharing_allow_background_location_validate_action" = "Beállítások";
+"location_sharing_allow_background_location_message" = "Ha az élő helyzetedet szeretnéd megosztani, Elementnek akkor is hozzáférésre van szüksége a helyadatokhoz ha éppen a háttérben fut. A hozzáférés engedélyezéséhez koppints a Beállítások> Helyadatokra és válaszd a Mindiget";
+"location_sharing_allow_background_location_title" = "Hozzáférés engedélyezése";
+"settings_labs_enable_live_location_sharing" = "Folyamatos helymeghatározás megosztása - a jelenlegi helyzet megosztása (aktív fejlesztés alatt, átmenetileg a megosztott helyek megmaradnak a szoba idővonalán)";

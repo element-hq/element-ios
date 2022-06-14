@@ -2034,11 +2034,11 @@ static CGSize kThreadListBarButtonItemImageSize;
     self.mediaPickerPresenter = mediaPickerPresenter;
 }
 
-- (void)showRoomCreationModalWithBubbleData:(id<MXKRoomBubbleCellDataStoring>) bubbleData
+- (void)showRoomCreationModal
 {
     [self.roomCreationModalCoordinatorBridgePresenter dismissWithAnimated:NO completion:nil];
     
-    self.roomCreationModalCoordinatorBridgePresenter = [[RoomCreationModalCoordinatorBridgePresenter alloc] initWithSession:self.mainSession bubbleData:bubbleData roomState:self.roomDataSource.roomState];
+    self.roomCreationModalCoordinatorBridgePresenter = [[RoomCreationModalCoordinatorBridgePresenter alloc] initWithSession:self.mainSession roomState:self.roomDataSource.roomState];
     self.roomCreationModalCoordinatorBridgePresenter.delegate = self;
     [self.roomCreationModalCoordinatorBridgePresenter presentFrom:self animated:YES];
 }
@@ -2375,16 +2375,21 @@ static CGSize kThreadListBarButtonItemImageSize;
     return [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:BuildSettings.allowSplitViewDetailsScreenStacking sender:self sourceView:nil];
 }
 
-- (BOOL)handleUniversalLinkURL:(NSURL*)universalLinkURL
+- (BOOL)handleUniversalLinkURL:(NSURL*)url
 {
-    UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithUniversalLinkURL:universalLinkURL presentationParameters:[self buildUniversalLinkPresentationParameters]];
+    ScreenPresentationParameters *screenParameters = [self buildUniversalLinkPresentationParameters];
+    UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithUrl:url
+                                                                presentationParameters:screenParameters];
     return [self handleUniversalLinkWithParameters:parameters];
 }
 
-- (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL
+- (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)url
 {
+    ScreenPresentationParameters *screenParameters = [self buildUniversalLinkPresentationParameters];
+    UniversalLink *universalLink = [[UniversalLink alloc] initWithUrl:url];
     UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithFragment:fragment
-                                                                           universalLinkURL:universalLinkURL presentationParameters:[self buildUniversalLinkPresentationParameters]];
+                                                                              universalLink:universalLink
+                                                                     presentationParameters:screenParameters];
     return [self handleUniversalLinkWithParameters:parameters];
 }
 
@@ -3216,7 +3221,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                         // Show contextual menu on single tap if bubble is not collapsed
                         if (bubbleData.collapsed)
                         {
-                            [self showRoomCreationModalWithBubbleData:bubbleData];
+                            // Do nothing here as we display room creation modal only if the user taps on the room name
                         }
                         else
                         {
@@ -3469,6 +3474,10 @@ static CGSize kThreadListBarButtonItemImageSize;
         else if ([actionIdentifier isEqualToString:RoomCreationIntroCell.tapOnAddTopic])
         {
             [self showRoomTopicChange];
+        }
+        else if ([actionIdentifier isEqualToString:RoomCreationIntroCell.tapOnRoomName])
+        {
+            [self showRoomCreationModal];
         }
         else
         {
@@ -4100,17 +4109,16 @@ static CGSize kThreadListBarButtonItemImageSize;
                 [self showEncryptionInformation:selectedEvent];
             }]];
         }
-        
-        [self.eventMenuBuilder addItemWithType:EventMenuItemTypeCancel
-                                        action:[UIAlertAction actionWithTitle:[VectorL10n cancel]
-                                                                        style:UIAlertActionStyleCancel
-                                                                      handler:^(UIAlertAction * action) {
-            MXStrongifyAndReturnIfNil(self);
-            
-            [self hideContextualMenuAnimated:YES];
-        }]];
-        
     }
+
+    [self.eventMenuBuilder addItemWithType:EventMenuItemTypeCancel
+                                    action:[UIAlertAction actionWithTitle:[VectorL10n cancel]
+                                                                    style:UIAlertActionStyleCancel
+                                                                  handler:^(UIAlertAction * action) {
+        MXStrongifyAndReturnIfNil(self);
+
+        [self hideContextualMenuAnimated:YES];
+    }]];
     
     // Do not display empty action sheet
     if (!self.eventMenuBuilder.isEmpty)

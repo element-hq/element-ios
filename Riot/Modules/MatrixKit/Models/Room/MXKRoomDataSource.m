@@ -1128,6 +1128,8 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
                             // Update bubble data
                             NSUInteger remainingEvents = [bubbleData updateEvent:redactionEvent.redacts withEvent:redactedEvent];
 
+                            [self refreshRepliesWithUpdatedEventId:redactedEvent.eventId];
+
                             hasChanged = YES;
 
                             // Remove the bubble if there is no more events
@@ -4242,10 +4244,34 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     }
 }
 
+- (BOOL)refreshRepliesWithUpdatedEventId:(NSString*)updatedEventId
+{
+    BOOL hasChanged = NO;
+
+    @synchronized (bubbles) {
+        for (id<MXKRoomBubbleCellDataStoring> bubbleCellData in bubbles)
+        {
+            for (MXEvent *event in bubbleCellData.events)
+            {
+                if ([event.relatesTo.inReplyTo.eventId isEqual:updatedEventId])
+                {
+                    [bubbleCellData updateEvent:event.eventId withEvent:event];
+                    [bubbleCellData invalidateTextLayout];
+                    hasChanged = YES;
+                }
+            }
+        }
+    }
+
+    return hasChanged;
+}
+
 - (BOOL)updateCellData:(id<MXKRoomBubbleCellDataStoring>)bubbleCellData forEditionWithReplaceEvent:(MXEvent*)replaceEvent andEventId:(NSString*)eventId
 {
     BOOL hasChanged = NO;
-    
+
+    hasChanged = [self refreshRepliesWithUpdatedEventId:eventId];
+
     @synchronized (bubbleCellData)
     {
         // Retrieve the original event to edit it

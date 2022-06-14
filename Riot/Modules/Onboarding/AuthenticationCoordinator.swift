@@ -17,6 +17,7 @@
  */
 
 import UIKit
+import CommonKit
 
 struct AuthenticationCoordinatorParameters {
     let navigationRouter: NavigationRouterType
@@ -59,6 +60,9 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     /// The listener object that informs the coordinator whether verification needs to be presented or not.
     private var verificationListener: SessionVerificationListener?
+
+    private var indicatorPresenter: UserIndicatorTypePresenterProtocol
+    private var successIndicator: UserIndicator?
     
     /// The password entered, for use when setting up cross-signing.
     private var password: String?
@@ -77,6 +81,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         self.navigationRouter = parameters.navigationRouter
         self.initialScreen = parameters.initialScreen
         self.canPresentAdditionalScreens = parameters.canPresentAdditionalScreens
+
+        indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: parameters.navigationRouter.toPresentable())
         
         super.init()
     }
@@ -110,6 +116,20 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     /// Starts the authentication flow.
     @MainActor private func startAuthenticationFlow() async {
+        if let softLogoutCredentials = authenticationService.softLogoutCredentials,
+           let homeserverAddress = softLogoutCredentials.homeServer {
+            do {
+                try await authenticationService.startFlow(.login, for: homeserverAddress)
+            } catch {
+                MXLog.error("[AuthenticationCoordinator] start: Failed to start")
+                displayError(message: error.localizedDescription)
+            }
+
+            await showSoftLogoutScreen(softLogoutCredentials)
+
+            return
+        }
+
         let flow: AuthenticationFlow = initialScreen == .login ? .login : .register
         if initialScreen != .selectServerForRegistration {
             do {
@@ -161,6 +181,38 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         toPresentable().present(alert, animated: true)
     }
     
+    /// Prompts the user to trust a certificate by displaying its fingerprint (SHA256).
+    @MainActor private func displayUnrecognizedCertificateAlert(for certificate: Data) async -> Bool {
+        await withCheckedContinuation { continuation in
+            let title = VectorL10n.sslCouldNotVerify
+            let homeserverURLString = VectorL10n.sslHomeserverUrl(authenticationService.state.homeserver.displayableAddress)
+            let fingerprint = VectorL10n.sslFingerprintHash("SHA256")
+            let certificateFingerprint = (certificate as NSData).mx_SHA256AsHexString() ?? VectorL10n.error
+            
+            let message = [VectorL10n.sslCertNotTrust,
+                           VectorL10n.sslCertNewAccountExpl,
+                           homeserverURLString,
+                           fingerprint,
+                           certificateFingerprint,
+                           VectorL10n.sslOnlyAccept]
+                .joined(separator: "\n\n")
+            
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel) { action in
+                continuation.resume(with: .success(false))
+            })
+            
+            alert.addAction(UIAlertAction(title: VectorL10n.sslTrust, style: .default) { action in
+                continuation.resume(with: .success(true))
+            })
+            
+            // The alert will be encountered on the current stack or when server selection is being presented.
+            let presentingViewController = toPresentable().presentedViewController ?? toPresentable()
+            presentingViewController.present(alert, animated: true, completion: nil)
+        }
+    }
+    
     /// Cancels the registration flow, handing control back to the onboarding coordinator.
     @MainActor private func cancelRegistration() {
         authenticationService.reset()
@@ -193,6 +245,54 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
                 self?.remove(childCoordinator: coordinator)
             }
         }
+    }
+
+    /// Shows the soft logout screen.
+    @MainActor private func showSoftLogoutScreen(_ credentials: MXCredentials) async {
+        MXLog.debug("[AuthenticationCoordinator] showSoftLogoutScreen")
+
+        guard let userId = credentials.userId else {
+            MXLog.failure("[AuthenticationCoordinator] showSoftLogoutScreen: Missing userId.")
+            displayError(message: VectorL10n.errorCommonMessage)
+            return
+        }
+
+        let store = MXFileStore(credentials: credentials)
+        let userDisplayName = await store.displayName(ofUserWithId: userId) ?? ""
+
+        let cryptoStore = MXRealmCryptoStore(credentials: credentials)
+        let keyBackupNeeded = (cryptoStore?.inboundGroupSessions(toBackup: 1) ?? []).count > 0
+
+        let softLogoutCredentials = SoftLogoutCredentials(userId: userId,
+                                                          homeserverName: credentials.homeServerName() ?? "",
+                                                          userDisplayName: userDisplayName,
+                                                          deviceId: credentials.deviceId)
+
+        let parameters = AuthenticationSoftLogoutCoordinatorParameters(navigationRouter: navigationRouter,
+                                                                       authenticationService: authenticationService,
+                                                                       credentials: softLogoutCredentials,
+                                                                       keyBackupNeeded: keyBackupNeeded)
+        let coordinator = AuthenticationSoftLogoutCoordinator(parameters: parameters)
+        coordinator.callback = { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let session, let loginPassword):
+                self.password = loginPassword
+                self.authenticationType = .password
+                self.onSessionCreated(session: session, flow: .login)
+            case .clearAllData:
+                self.callback?(.clearAllData)
+            case .continueWithSSO(let provider):
+                self.presentSSOAuthentication(for: provider)
+            case .fallback:
+                self.showFallback(for: .login, deviceId: softLogoutCredentials.deviceId)
+            }
+        }
+
+        coordinator.start()
+        add(childCoordinator: coordinator)
+
+        navigationRouter.setRootModule(coordinator, popCompletion: nil)
     }
     
     /// Displays the next view in the flow based on the result from the registration screen.
@@ -465,8 +565,26 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     // MARK: - Additional Screens
 
-    private func showFallback(for flow: AuthenticationFlow) {
-        let url = authenticationService.fallbackURL(for: flow)
+    private func showFallback(for flow: AuthenticationFlow, deviceId: String? = nil) {
+        var url = authenticationService.fallbackURL(for: flow)
+
+        if let deviceId = deviceId {
+            //  add deviceId as `device_id` into the url
+            guard var urlComponents = URLComponents(string: url.absoluteString) else {
+                MXLog.error("[AuthenticationCoordinator] showFallback: could not create url components")
+                return
+            }
+            var queryItems = urlComponents.queryItems ?? []
+            queryItems.append(URLQueryItem(name: "device_id", value: deviceId))
+            urlComponents.queryItems = queryItems
+
+            if let newUrl = urlComponents.url {
+                url = newUrl
+            } else {
+                MXLog.error("[AuthenticationCoordinator] showFallback: could not create url from components")
+                return
+            }
+        }
 
         MXLog.debug("[AuthenticationCoordinator] showFallback for: \(flow), url: \(url)")
 
@@ -595,6 +713,19 @@ extension AuthenticationCoordinator: SSOAuthenticationPresenterDelegate {
 
 // MARK: - AuthenticationServiceDelegate
 extension AuthenticationCoordinator: AuthenticationServiceDelegate {
+    
+    func authenticationService(_ service: AuthenticationService, needsPromptFor unrecognizedCertificate: Data?, completion: @escaping (Bool) -> Void) {
+        guard let certificate = unrecognizedCertificate else {
+            completion(false)
+            return
+        }
+        
+        Task {
+            let trusted = await self.displayUnrecognizedCertificateAlert(for: certificate)
+            completion(trusted)
+        }
+    }
+    
     func authenticationService(_ service: AuthenticationService, didReceive ssoLoginToken: String, with transactionID: String) -> Bool {
         guard let presenter = ssoAuthenticationPresenter, transactionID == ssoTransactionID else {
             Task { await displayError(message: VectorL10n.errorCommonMessage) }
@@ -612,6 +743,15 @@ extension AuthenticationCoordinator: AuthenticationServiceDelegate {
         }
         
         return true
+    }
+
+    func authenticationService(_ service: AuthenticationService, didUpdateStateWithLink link: UniversalLink) {
+        if link.pathParams.first == "register" {
+            callback?(.cancel(.register))
+        } else {
+            callback?(.cancel(.login))
+        }
+        successIndicator = indicatorPresenter.present(.success(label: VectorL10n.done))
     }
 }
 
@@ -657,17 +797,6 @@ extension AuthenticationCoordinator {
         // unused
     }
     
-    func update(externalRegistrationParameters: [AnyHashable: Any]) {
-        // unused
-    }
-    
-    func update(softLogoutCredentials: MXCredentials) {
-        // unused
-    }
-    
-    func updateHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?) {
-        // unused
-    }
 }
 
 // MARK: - AuthFallBackViewControllerDelegate

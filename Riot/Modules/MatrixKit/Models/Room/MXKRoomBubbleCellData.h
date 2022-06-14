@@ -87,11 +87,6 @@
 @property (nonatomic, readonly) BOOL hasLink;
 
 /**
- Whether the data has a thread root in its components.
- */
-@property (nonatomic, readonly) BOOL hasThreadRoot;
-
-/**
  Event formatter
  */
 @property (nonatomic) MXKEventFormatter *eventFormatter;

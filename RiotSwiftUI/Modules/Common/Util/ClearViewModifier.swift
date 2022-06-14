@@ -16,24 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
-extension ThemableTextField {
-    /// Adds a clear button to the text field
-    /// - Parameters:
-    ///   - show: A boolean that can be used to dynamically show/hide the button. Defaults to `true`.
-    ///   - text: The text for the clear button to clear.
-    ///   - alignment: The vertical alignment of the button in the text field. Default to `center`
-    @ViewBuilder
-    func showClearButton(_ show: Bool = true, text: Binding<String>, alignment: VerticalAlignment = .center) -> some View {
-        if show {
-            modifier(ClearViewModifier(alignment: alignment, text: text))
-        } else {
-            self
-        }
-    }
-}
-
-@available(iOS 14.0, *)
 extension ThemableTextEditor {
     func showClearButton(text: Binding<String>, alignment: VerticalAlignment = .top) -> some View {
         return modifier(ClearViewModifier(alignment: alignment, text: text))
@@ -41,9 +23,7 @@ extension ThemableTextEditor {
 }
 
 /// `ClearViewModifier` aims to add a clear button (e.g. `x` button) on the right side of any text editing view
-@available(iOS 14.0, *)
-struct ClearViewModifier: ViewModifier
-{
+struct ClearViewModifier: ViewModifier {
     // MARK: - Properties
     
     let alignment: VerticalAlignment
@@ -58,8 +38,7 @@ struct ClearViewModifier: ViewModifier
 
     // MARK: - Public
     
-    public func body(content: Content) -> some View
-    {
+    public func body(content: Content) -> some View {
         HStack(alignment: alignment) {
             content
             if !text.isEmpty {
@@ -70,7 +49,9 @@ struct ClearViewModifier: ViewModifier
                         .renderingMode(.template)
                         .foregroundColor(theme.colors.quarterlyContent)
                 }
-                .padding(EdgeInsets(top: alignment == .top ? 8 : 0, leading: 0, bottom: alignment == .bottom ? 8 : 0, trailing: 8))
+                .padding(.top, alignment == .top ? 8 : 0)
+                .padding(.bottom, alignment == .bottom ? 8 : 0)
+                .padding(.trailing, 12)
             }
         }
     }

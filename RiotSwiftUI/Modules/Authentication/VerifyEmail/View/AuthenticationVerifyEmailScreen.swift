@@ -111,29 +111,9 @@ struct AuthenticationVerifyEmailScreen: View {
     @ViewBuilder
     /// The view's background, which will show a gradient in light mode after sending the email.
     var background: some View {
-        GeometryReader { geometry in
-            ZStack(alignment: .top) {
-                theme.colors.background
-                
-                if viewModel.viewState.hasSentEmail && !theme.isDark {
-                    gradient
-                        .frame(height: geometry.size.height * 0.65)
-                }
-            }
-        }
+        OnboardingBreakerScreenBackground(viewModel.viewState.hasSentEmail)
     }
-    
-    /// The background gradient shown after sending the email.
-    var gradient: some View {
-        LinearGradient(gradient: viewModel.viewState.gradient,
-                       startPoint: .leading,
-                       endPoint: .trailing)
-            .opacity(0.3)
-            .mask(LinearGradient(colors: [.white, .clear],
-                                 startPoint: .top,
-                                 endPoint: .bottom))
-    }
-    
+
     /// A simple toolbar with a cancel button.
     var toolbar: some ToolbarContent {
         ToolbarItem(placement: .cancellationAction) {

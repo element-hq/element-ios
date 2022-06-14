@@ -1077,6 +1077,12 @@ static BOOL _disableLongPressGestureOnEvent;
     
     NSArray *bubbleComponents = bubbleData.bubbleComponents;
     
+    if (bubbleComponents.count == 1) {
+        return bubbleComponents.firstObject;
+    }
+    
+    // The position check below fails for bubble data with a single component when message
+    // bubbles are enabled, thus the early bailout above
     for (MXKRoomBubbleComponent *component in bubbleComponents)
     {
         // Ignore components without display (For example redacted event or state events)

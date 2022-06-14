@@ -146,6 +146,15 @@ extension MXRestClient {
             resetPassword(parameters: parameters, completion: completion)
         }
     }
+
+    // MARK: - Change Password
+
+    /// An async version of `changePassword(from:to:logoutDevices:completion:)`.
+    func changePassword(from oldPassword: String, to newPassword: String, logoutDevices: Bool) async throws {
+        try await getResponse { completion in
+            changePassword(from: oldPassword, to: newPassword, logoutDevices: logoutDevices, completion: completion)
+        }
+    }
     
     // MARK: - Private
     

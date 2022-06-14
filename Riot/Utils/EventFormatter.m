@@ -139,27 +139,16 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 {
     if (event.isRedactedEvent)
     {
+        if (event.eventType == MXEventTypeReaction)
+        {
+            //  do not show redacted reactions in the timeline
+            return nil;
+        }
         // Check whether the event is a thread root or redacted information is required
         if ((RiotSettings.shared.enableThreads && [mxSession.threadingService isEventThreadRoot:event])
             || self.settings.showRedactionsInRoomHistory)
         {
-            UIFont *font = self.defaultTextFont;
-            UIColor *color = ThemeService.shared.theme.colors.secondaryContent;
-            NSString *string = [NSString stringWithFormat:@" %@", VectorL10n.eventFormatterMessageDeleted];
-            NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:string
-                                                                             attributes:@{
-                                                                                 NSFontAttributeName: font,
-                                                                                 NSForegroundColorAttributeName: color
-                                                                             }];
-            
-            CGSize imageSize = CGSizeMake(20, 20);
-            NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
-            attachment.image = [[AssetImages.roomContextMenuDelete.image vc_resizedWith:imageSize] vc_tintedImageUsingColor:color];
-            attachment.bounds = CGRectMake(0, font.descender, imageSize.width, imageSize.height);
-            NSAttributedString *imageString = [NSAttributedString attributedStringWithAttachment:attachment];
-            
-            NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithAttributedString:imageString];
-            [result appendAttributedString:attrString];
+            NSAttributedString *result = [self redactedMessageReplacementAttributedString];
             
             if (error)
             {
@@ -537,6 +526,29 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     }
     
     return updated;
+}
+
+- (NSAttributedString *)redactedMessageReplacementAttributedString
+{
+    UIFont *font = self.defaultTextFont;
+    UIColor *color = ThemeService.shared.theme.colors.secondaryContent;
+    NSString *string = [NSString stringWithFormat:@" %@", VectorL10n.eventFormatterMessageDeleted];
+    NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:string
+                                                                     attributes:@{
+                                                                         NSFontAttributeName: font,
+                                                                         NSForegroundColorAttributeName: color
+                                                                     }];
+
+    CGSize imageSize = CGSizeMake(20, 20);
+    NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
+    attachment.image = [[AssetImages.roomContextMenuDelete.image vc_resizedWith:imageSize] vc_tintedImageUsingColor:color];
+    attachment.bounds = CGRectMake(0, font.descender, imageSize.width, imageSize.height);
+    NSAttributedString *imageString = [NSAttributedString attributedStringWithAttachment:attachment];
+
+    NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithAttributedString:imageString];
+    [result appendAttributedString:attrString];
+
+    return result;
 }
 
 - (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withServerRoomSummary:(MXRoomSyncSummary *)serverRoomSummary roomState:(MXRoomState *)roomState

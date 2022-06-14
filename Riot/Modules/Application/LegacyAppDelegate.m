@@ -563,7 +563,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         }
         self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:mxSessionArray.firstObject viewMode:SetPinCoordinatorViewModeInactive];
         self.setPinCoordinatorBridgePresenter.delegate = self;
-        [self.setPinCoordinatorBridgePresenter presentIn:self.window];
+        [self.setPinCoordinatorBridgePresenter presentWithMainAppWindow:self.window];
     }
 }
 
@@ -663,12 +663,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         {
             self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:mxSessionArray.firstObject viewMode:SetPinCoordinatorViewModeUnlock];
             self.setPinCoordinatorBridgePresenter.delegate = self;
-            [self.setPinCoordinatorBridgePresenter presentIn:self.window];
+            [self.setPinCoordinatorBridgePresenter presentWithMainAppWindow:self.window];
         }
     }
     else
     {
-        [self.setPinCoordinatorBridgePresenter dismiss];
+        [self.setPinCoordinatorBridgePresenter dismissWithMainAppWindow:self.window];
         self.setPinCoordinatorBridgePresenter = nil;
         [self afterAppUnlockedByPin:application];
     }
@@ -1170,19 +1170,17 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     webURL = [Tools fixURLWithSeveralHashKeys:webURL];
 
     // Extract required parameters from the link
-    NSArray<NSString*> *pathParams;
-    NSMutableDictionary *queryParams;
-    [self parseUniversalLinkFragment:webURL.absoluteString outPathParams:&pathParams outQueryParams:&queryParams];
+    UniversalLink *newLink = [[UniversalLink alloc] initWithUrl:webURL];
+    NSDictionary<NSString*, NSString*> *queryParams = newLink.queryParams;
 
-    UniversalLink *newLink = [[UniversalLink alloc] initWithUrl:webURL pathParams:pathParams queryParams:queryParams];
     if (![_lastHandledUniversalLink isEqual:newLink])
     {
-        _lastHandledUniversalLink = [[UniversalLink alloc] initWithUrl:webURL pathParams:pathParams queryParams:queryParams];
+        _lastHandledUniversalLink = newLink;
         //  notify this change
         [[NSNotificationCenter defaultCenter] postNotificationName:AppDelegateUniversalLinkDidChangeNotification object:nil];
     }
 
-    if ([self handleServerProvisioningLink:webURL])
+    if ([AuthenticationService.shared handleServerProvisioningLink:newLink])
     {
         return YES;
     }
@@ -1281,20 +1279,19 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         return YES;
     }
     
-    return [self handleUniversalLinkFragment:webURL.fragment fromURL:webURL];
+    return [self handleUniversalLinkFragment:webURL.fragment fromLink:newLink];
 }
 
-- (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL
-
+- (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromLink:(UniversalLink*)universalLink
 {
-    if (!fragment || !universalLinkURL)
+    if (!fragment || !universalLink)
     {
-        MXLogDebug(@"[AppDelegate] Cannot handle universal link with missing data: %@ %@", fragment, universalLinkURL);
+        MXLogDebug(@"[AppDelegate] Cannot handle universal link with missing data: %@ %@", fragment, universalLink.url);
         return NO;
     }
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES stackAboveVisibleViews:NO];
     
-    UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithFragment:fragment universalLinkURL:universalLinkURL presentationParameters:presentationParameters];
+    UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithFragment:fragment universalLink:universalLink presentationParameters:presentationParameters];
     
     return [self handleUniversalLinkWithParameters:parameters];
 }
@@ -1302,7 +1299,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 - (BOOL)handleUniversalLinkWithParameters:(UniversalLinkParameters*)universalLinkParameters
 {
     NSString *fragment = universalLinkParameters.fragment;
-    NSURL *universalLinkURL = universalLinkParameters.universalLinkURL;
+    UniversalLink *universalLink = universalLinkParameters.universalLink;
     ScreenPresentationParameters *presentationParameters = universalLinkParameters.presentationParameters;
     BOOL restoreInitialDisplay = presentationParameters.restoreInitialDisplay;
     
@@ -1320,9 +1317,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self resetPendingUniversalLink];
     
     // Extract params
-    NSArray<NSString*> *pathParams;
-    NSMutableDictionary *queryParams;
-    [self parseUniversalLinkFragment:fragment outPathParams:&pathParams outQueryParams:&queryParams];
+    NSArray<NSString*> *pathParams = universalLink.pathParams;
+    NSDictionary<NSString*, NSString*> *queryParams = universalLink.queryParams;
     
     // Sanity check
     if (!pathParams.count)
@@ -1506,7 +1502,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                         self->universalLinkFragmentPendingRoomAlias = @{resolution.roomId: roomIdOrAlias};
 
                                         UniversalLinkParameters *newParameters = [[UniversalLinkParameters alloc] initWithFragment:newFragment
-                                                                                                                  universalLinkURL:universalLinkURL
+                                                                                                                     universalLink:universalLink
                                                                                                             presentationParameters:presentationParameters];
                                         [self handleUniversalLinkWithParameters:newParameters];
                                     }
@@ -1692,14 +1688,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             }];
         }
     }
-    // Check whether this is a registration links.
-    else if ([pathParams[0] isEqualToString:@"register"])
-    {
-        MXLogDebug(@"[AppDelegate] Universal link with registration parameters");
-        continueUserActivity = YES;
-        
-        [_masterTabBarController showOnboardingFlowWithRegistrationParameters:queryParams];
-    }
     else
     {
         // Unknown command: Do nothing except coming back to the main screen
@@ -1764,167 +1752,44 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }];
 }
 
-/**
- Extract params from the URL fragment part (after '#') of a vector.im Universal link:
- 
- The fragment can contain a '?'. So there are two kinds of parameters: path params and query params.
- It is in the form of /[pathParam1]/[pathParam2]?[queryParam1Key]=[queryParam1Value]&[queryParam2Key]=[queryParam2Value]
- 
- @param fragment the fragment to parse.
- @param outPathParams the decoded path params.
- @param outQueryParams the decoded query params. If there is no query params, it will be nil.
- */
-- (void)parseUniversalLinkFragment:(NSString*)fragment outPathParams:(NSArray<NSString*> **)outPathParams outQueryParams:(NSMutableDictionary **)outQueryParams
-{
-    NSParameterAssert(outPathParams && outQueryParams);
-    
-    NSArray<NSString*> *pathParams;
-    NSMutableDictionary *queryParams;
-    
-    NSArray<NSString*> *fragments = [fragment componentsSeparatedByString:@"?"];
-    
-    // Extract path params
-    pathParams = [fragments[0] componentsSeparatedByString:@"/"];
-    
-    // Remove the first empty path param string
-    pathParams = [pathParams filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"length > 0"]];
-    
-    // URL decode each path param
-    NSMutableArray<NSString*> *pathParams2 = [NSMutableArray arrayWithArray:pathParams];
-    for (NSInteger i = 0; i < pathParams.count; i++)
-    {
-        pathParams2[i] = [pathParams2[i] stringByRemovingPercentEncoding];
-    }
-    pathParams = pathParams2;
-    
-    // Extract query params if any
-    // Query params are in the form [queryParam1Key]=[queryParam1Value], so the
-    // presence of at least one '=' character is mandatory
-    if (fragments.count == 2 && (NSNotFound != [fragments[1] rangeOfString:@"="].location))
-    {
-        queryParams = [[NSMutableDictionary alloc] init];
-        for (NSString *keyValue in [fragments[1] componentsSeparatedByString:@"&"])
-        {
-            // Get the parameter name
-            NSString *key = [keyValue componentsSeparatedByString:@"="][0];
-            
-            // Get the parameter value
-            NSString *value = [keyValue componentsSeparatedByString:@"="][1];
-            if (value.length)
-            {
-                value = [value stringByReplacingOccurrencesOfString:@"+" withString:@" "];
-                value = [value stringByRemovingPercentEncoding];
-
-                if ([key isEqualToString:@"via"])
-                {
-                    // Special case the via parameter
-                    // As we can have several of them, store each value into an array
-                    if (!queryParams[key])
-                    {
-                        queryParams[key] = [NSMutableArray array];
-                    }
-
-                    [queryParams[key] addObject:value];
-                }
-                else
-                {
-                    queryParams[key] = value;
-                }
-            }
-        }
-    }
-    
-    *outPathParams = pathParams;
-    *outQueryParams = queryParams;
-}
-
-/**
- Parse and handle a server provisioning link. Returns `YES` if a provisioning link was detected and handled.
- @param link A link such as https://mobile.element.io/?hs_url=matrix.example.com&is_url=identity.example.com
- */
-- (BOOL)handleServerProvisioningLink:(NSURL*)link
-{
-    MXLogDebug(@"[AppDelegate] handleServerProvisioningLink: %@", link);
-
-    NSString *homeserver, *identityServer;
-    [self parseServerProvisioningLink:link homeserver:&homeserver identityServer:&identityServer];
-
-    if (homeserver)
-    {
-        if ([MXKAccountManager sharedManager].activeAccounts.count)
-        {
-            [self displayServerProvisioningLinkBuyAlreadyLoggedInAlertWithCompletion:^(BOOL logout) {
-
-                MXLogDebug(@"[AppDelegate] handleServerProvisioningLink: logoutWithConfirmation: logout: %@", @(logout));
-                if (logout)
-                {
-                    [self logoutWithConfirmation:NO completion:^(BOOL isLoggedOut) {
-                        [self handleServerProvisioningLink:link];
-                    }];
-                }
-            }];
-        }
-        else
-        {
-            [_masterTabBarController showOnboardingFlow];
-            [_masterTabBarController.onboardingCoordinatorBridgePresenter updateHomeserver:homeserver andIdentityServer:identityServer];
-        }
-
-        return YES;
-    }
-
-    return NO;
-}
-
-- (void)parseServerProvisioningLink:(NSURL*)link homeserver:(NSString**)homeserver identityServer:(NSString**)identityServer
-{
-    if ([link.path isEqualToString:@"/"])
-    {
-        NSURLComponents *linkURLComponents = [NSURLComponents componentsWithURL:link resolvingAgainstBaseURL:NO];
-        for (NSURLQueryItem *item in linkURLComponents.queryItems)
-        {
-            if ([item.name isEqualToString:@"hs_url"])
-            {
-                *homeserver = item.value;
-            }
-            else if ([item.name isEqualToString:@"is_url"])
-            {
-                *identityServer = item.value;
-                break;
-            }
-        }
-    }
-    else
-    {
-        MXLogDebug(@"[AppDelegate] parseServerProvisioningLink: Error: Unknown path: %@", link.path);
-    }
-
-
-    MXLogDebug(@"[AppDelegate] parseServerProvisioningLink: homeserver: %@ - identityServer: %@", *homeserver, *identityServer);
-}
-
-- (void)displayServerProvisioningLinkBuyAlreadyLoggedInAlertWithCompletion:(void (^)(BOOL logout))completion
+- (void)displayLogoutConfirmationForLink:(UniversalLink *)link
+                              completion:(void (^)(BOOL loggedOut))completion
 {
     // Ask confirmation
-    self.logoutConfirmation = [UIAlertController alertControllerWithTitle:[VectorL10n errorUserAlreadyLoggedIn] message:nil preferredStyle:UIAlertControllerStyleAlert];
+    self.logoutConfirmation = [UIAlertController alertControllerWithTitle:[VectorL10n errorUserAlreadyLoggedIn]
+                                                                  message:nil
+                                                           preferredStyle:UIAlertControllerStyleAlert];
 
     [self.logoutConfirmation addAction:[UIAlertAction actionWithTitle:[VectorL10n settingsSignOut]
                                                                 style:UIAlertActionStyleDefault
                                                               handler:^(UIAlertAction * action)
                                         {
-                                            self.logoutConfirmation = nil;
-                                            completion(YES);
-                                        }]];
+        self.logoutConfirmation = nil;
+        [self logoutWithConfirmation:NO completion:^(BOOL isLoggedOut) {
+            if (isLoggedOut)
+            {
+                //  process the link again after logging out
+                [AuthenticationService.shared handleServerProvisioningLink:link];
+            }
+            if (completion)
+            {
+                completion(YES);
+            }
+        }];
+    }]];
 
     [self.logoutConfirmation addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                                 style:UIAlertActionStyleCancel
                                                               handler:^(UIAlertAction * action)
                                         {
-                                            self.logoutConfirmation = nil;
-                                            completion(NO);
-                                        }]];
+        self.logoutConfirmation = nil;
+        if (completion)
+        {
+            completion(NO);
+        }
+    }]];
 
-    [self.logoutConfirmation mxk_setAccessibilityIdentifier: @"AppDelegateLogoutConfirmationAlert"];
+    [self.logoutConfirmation mxk_setAccessibilityIdentifier:@"AppDelegateLogoutConfirmationAlert"];
     [self showNotificationAlert:self.logoutConfirmation];
 }
 
@@ -4611,7 +4476,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)setPinCoordinatorBridgePresenterDelegateDidComplete:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
-    [coordinatorBridgePresenter dismiss];
+    [coordinatorBridgePresenter dismissWithMainAppWindow:self.window];
     self.setPinCoordinatorBridgePresenter = nil;
     [self afterAppUnlockedByPin:[UIApplication sharedApplication]];
 }
@@ -4625,7 +4490,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     else
     {
-        [coordinatorBridgePresenter dismiss];
+        [coordinatorBridgePresenter dismissWithMainAppWindow:self.window];
         self.setPinCoordinatorBridgePresenter = nil;
         [self logoutWithConfirmation:NO completion:nil];
     }

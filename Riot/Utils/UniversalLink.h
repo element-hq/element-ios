@@ -18,17 +18,27 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UniversalLink : NSObject
+@interface UniversalLink : NSObject <NSCopying>
 
+/// Original url
 @property (nonatomic, copy, readonly) NSURL *url;
 
+/// Path params from the link.
 @property (nonatomic, copy, readonly) NSArray<NSString*> *pathParams;
 
-@property (nonatomic, copy, readonly) NSDictionary<NSString*, NSString*> *queryParams;
+/// Query params from the link. Does not conform to RFC 1808. Designed for simplicity.
+@property (nonatomic, copy, readonly) NSDictionary<NSString*, id> *queryParams;
 
-- (id)initWithUrl:(NSURL *)url
-       pathParams:(NSArray<NSString*> *)pathParams
-      queryParams:(NSDictionary<NSString*, NSString*> *)queryParams;
+/// Homeserver url in the link if any
+@property (nonatomic, copy, readonly, nullable) NSString *homeserverUrl;
+/// Identity server url in the link if any
+@property (nonatomic, copy, readonly, nullable) NSString *identityServerUrl;
+/// via parameters url in the link if any
+@property (nonatomic, copy, readonly) NSArray<NSString*> *via;
+
+/// Initializer
+/// @param url original url
+- (id)initWithUrl:(NSURL *)url;
 
 @end
 

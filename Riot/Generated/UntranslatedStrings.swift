@@ -14,6 +14,54 @@ public extension VectorL10n {
   static var authenticationCancelFlowConfirmationMessage: String { 
     return VectorL10n.tr("Untranslated", "authentication_cancel_flow_confirmation_message") 
   }
+  /// Make sure it’s 8 characters or more.
+  static var authenticationChoosePasswordInputMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_choose_password_input_message") 
+  }
+  /// Choose a new password
+  static var authenticationChoosePasswordInputTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_choose_password_input_title") 
+  }
+  /// Sign out of all devices
+  static var authenticationChoosePasswordSignoutAllDevices: String { 
+    return VectorL10n.tr("Untranslated", "authentication_choose_password_signout_all_devices") 
+  }
+  /// Reset Password
+  static var authenticationChoosePasswordSubmitButton: String { 
+    return VectorL10n.tr("Untranslated", "authentication_choose_password_submit_button") 
+  }
+  /// New Password
+  static var authenticationChoosePasswordTextFieldPlaceholder: String { 
+    return VectorL10n.tr("Untranslated", "authentication_choose_password_text_field_placeholder") 
+  }
+  /// We will send you a verification link.
+  static var authenticationForgotPasswordInputMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_forgot_password_input_message") 
+  }
+  /// Enter your email address
+  static var authenticationForgotPasswordInputTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_forgot_password_input_title") 
+  }
+  /// Email Address
+  static var authenticationForgotPasswordTextFieldPlaceholder: String { 
+    return VectorL10n.tr("Untranslated", "authentication_forgot_password_text_field_placeholder") 
+  }
+  /// Resend email
+  static var authenticationForgotPasswordWaitingButton: String { 
+    return VectorL10n.tr("Untranslated", "authentication_forgot_password_waiting_button") 
+  }
+  /// Did not receive an email?
+  static var authenticationForgotPasswordWaitingHint: String { 
+    return VectorL10n.tr("Untranslated", "authentication_forgot_password_waiting_hint") 
+  }
+  /// To confirm your email address, tap the button in the email we just sent to %@
+  static func authenticationForgotPasswordWaitingMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Untranslated", "authentication_forgot_password_waiting_message", p1)
+  }
+  /// Check your email
+  static var authenticationForgotPasswordWaitingTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_forgot_password_waiting_title") 
+  }
   /// Forgot password
   static var authenticationLoginForgotPassword: String { 
     return VectorL10n.tr("Untranslated", "authentication_login_forgot_password") 
@@ -177,6 +225,38 @@ public extension VectorL10n {
   /// SELECT ROOMS
   static var leaveSpaceSelectionTitle: String { 
     return VectorL10n.tr("Untranslated", "leave_space_selection_title") 
+  }
+  /// Contain a lower-case letter.
+  static var passwordValidationErrorContainLowercaseLetter: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_contain_lowercase_letter") 
+  }
+  /// Contain a number.
+  static var passwordValidationErrorContainNumber: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_contain_number") 
+  }
+  /// Contain a symbol.
+  static var passwordValidationErrorContainSymbol: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_contain_symbol") 
+  }
+  /// Contain an upper-case letter.
+  static var passwordValidationErrorContainUppercaseLetter: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_contain_uppercase_letter") 
+  }
+  /// Given password does not meet the criteria below:
+  static var passwordValidationErrorHeader: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_header") 
+  }
+  /// Not exceed %d characters.
+  static func passwordValidationErrorMaxLength(_ p1: Int) -> String {
+    return VectorL10n.tr("Untranslated", "password_validation_error_max_length", p1)
+  }
+  /// At least %d characters.
+  static func passwordValidationErrorMinLength(_ p1: Int) -> String {
+    return VectorL10n.tr("Untranslated", "password_validation_error_min_length", p1)
+  }
+  /// Your password should meet the criteria below:
+  static var passwordValidationInfoHeader: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_info_header") 
   }
   /// This feature isn't available here. For now, you can do this with %@ on your computer.
   static func spacesFeatureNotAvailable(_ p1: String) -> String {

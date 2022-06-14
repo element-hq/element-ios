@@ -36,7 +36,7 @@ class RegistrationWizard {
     }
     
     let client: AuthenticationRestClient
-    let sessionCreator: SessionCreator
+    let sessionCreator: SessionCreatorProtocol
     
     private(set) var state: State
     
@@ -59,7 +59,7 @@ class RegistrationWizard {
         state.isRegistrationStarted
     }
     
-    init(client: AuthenticationRestClient, sessionCreator: SessionCreator = SessionCreator()) {
+    init(client: AuthenticationRestClient, sessionCreator: SessionCreatorProtocol) {
         self.client = client
         self.sessionCreator = sessionCreator
         
@@ -255,7 +255,7 @@ class RegistrationWizard {
         do {
             let response = try await client.register(parameters: parameters)
             let credentials = MXCredentials(loginResponse: response, andDefaultCredentials: client.credentials)
-            return .success(sessionCreator.createSession(credentials: credentials, client: client))
+            return .success(sessionCreator.createSession(credentials: credentials, client: client, removeOtherAccounts: false))
         } catch {
             let nsError = error as NSError
             
