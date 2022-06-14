@@ -19,7 +19,7 @@ import SwiftOGG
 
 enum VoiceMessageAudioConverterError: Error {
     case conversionFailed(Error?)
-    case getdurationFailed(Error?)
+    case getDurationFailed(Error?)
     case cancelled
 }
 
@@ -32,7 +32,9 @@ struct VoiceMessageAudioConverter {
                     completion(.success(()))
                 }
             } catch {
-                completion(.failure(.conversionFailed(error)))
+                DispatchQueue.main.async {
+                    completion(.failure(.conversionFailed(error)))
+                }
             }
         }
     }
@@ -45,7 +47,9 @@ struct VoiceMessageAudioConverter {
                     completion(.success(()))
                 }
             } catch {
-                completion(.failure(.conversionFailed(error)))
+                DispatchQueue.main.async {
+                    completion(.failure(.conversionFailed(error)))
+                }
             }
         }
     }
@@ -56,15 +60,22 @@ struct VoiceMessageAudioConverter {
         audioAsset.loadValuesAsynchronously(forKeys: ["duration"]) {
             var error: NSError?
             let status = audioAsset.statusOfValue(forKey: "duration", error: &error)
+            
             switch status {
             case .loaded:
                 let duration = audioAsset.duration
                 let durationInSeconds = CMTimeGetSeconds(duration)
-                completion(.success(durationInSeconds))
+                DispatchQueue.main.async {
+                    completion(.success(durationInSeconds))
+                }
             case .failed:
-                completion(.failure(.conversionFailed(error)))
+                DispatchQueue.main.async {
+                    completion(.failure(.getDurationFailed(error)))
+                }
             case .cancelled:
-                completion(.failure(.cancelled))
+                DispatchQueue.main.async {
+                    completion(.failure(.cancelled))
+                }
             default: break
             }
         }
