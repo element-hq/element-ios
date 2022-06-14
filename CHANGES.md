@@ -14,6 +14,7 @@
 - Settings: Implement logging out all devices when changing password. ([#6175](https://github.com/vector-im/element-ios/issues/6175))
 - AuthenticationService: Use identity server from well-known if provided when creating the client. ([#6177](https://github.com/vector-im/element-ios/issues/6177))
 - FTUE: Support server provisioning links in the authentication flow. ([#6180](https://github.com/vector-im/element-ios/issues/6180))
+- De-labs message bubbles ([#6285](https://github.com/vector-im/element-ios/pull/6285))
 
 🐛 Bugfixes
 
@@ -28,6 +29,8 @@
 - Room Creation: Fix crash when scrolling to bottom of the page. ([#6231](https://github.com/vector-im/element-ios/issues/6231))
 - Prevent random crashes when tapping links. Avoid displaying the confirmation alert for plain text ones. ([#6241](https://github.com/vector-im/element-ios/issues/6241))
 - Room: Avoid merging of bubbles if current timeline style does not allow. ([#6242](https://github.com/vector-im/element-ios/issues/6242))
+- Universal Link: Url decode url fragment before splitting up. ([#6207](https://github.com/vector-im/element-ios/issues/6207))
+- Room: Do not show redacted reactions in the timeline. ([#6293](https://github.com/vector-im/element-ios/issues/6293))
 
 🚧 In development 🚧
 
