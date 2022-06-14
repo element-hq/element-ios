@@ -46,7 +46,7 @@
     NSArray<NSString*> *fragments = [_url.fragment componentsSeparatedByString:@"?"];
 
     // Extract path params
-    pathParams = [fragments[0] componentsSeparatedByString:@"/"];
+    pathParams = [[fragments[0] stringByRemovingPercentEncoding] componentsSeparatedByString:@"/"];
 
     // Remove the first empty path param string
     pathParams = [pathParams filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"length > 0"]];
