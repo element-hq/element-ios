@@ -636,7 +636,7 @@
 "room_participants_invite_malformed_id" = "Chybně zadané ID. Měla by to být e-mailová adresa nebo ID matice, například \"@localpart:domain\"";
 "room_participants_filter_room_members_for_dm" = "Filtrovat členy";
 "room_participants_invite_prompt_to_msg" = "Jste si jisti, že chcete pozvat %@ do %@?";
-"room_participants_invite_prompt_msg" = "Opravdu chcete pozvat uživatele %s do této konverzace?";
+"room_participants_invite_prompt_msg" = "Opravdu chcete pozvat uživatele %@ do této konverzace?";
 "room_participants_remove_third_party_invite_prompt_msg" = "Opravdu chcete odmítnout pozvání?";
 "room_participants_remove_prompt_msg" = "Opravdu chcete odstranit %@ z tohoto chatu?";
 "room_participants_leave_success" = "Levá místnost";
@@ -659,7 +659,7 @@
 "room_recents_server_notice_section" = "UPOZORNĚNÍ SYSTÉMU";
 "room_creation_dm_error" = "Váš DM jsme nemohli vytvořit. Zkontrolujte prosím uživatele, které chcete pozvat, a zkuste to znovu.";
 "room_creation_make_public_prompt_msg" = "Určitě chcete tento chat zveřejnit? Kdokoli si může přečíst vaše zprávy a připojit se k chatu.";
-"auth_softlogout_reason" = "Správce Vašeho domovského serveru (%1$s) Vás odhlásil z Vašeho účtu %2$s (%3$s).";
+"auth_softlogout_reason" = "Správce Vašeho domovského serveru (%1$@) Vás odhlásil z Vašeho účtu %2$@ (%3$@).";
 "auth_add_email_phone_message_2" = "Nastavte e-mail pro obnovení účtu. Použijte e-mail nebo telefonní číslo volitelně později, aby je našli lidé, kteří vás znají.";
 "auth_add_phone_message_2" = "Nastavte telefonní číslo, aby později bylo volitelně k nalezení lidmi, kteří Vás znají.";
 "auth_add_email_message_2" = "Nastavte telefonní číslo, aby později bylo volitelně k nalezení lidmi, kteří Vás znají.";
