@@ -49,6 +49,7 @@ final class RoomCreationIntroCellContentView: UIView, NibLoadable, Themable {
     // MARK: Public
     
     var didTapTopic: (() -> Void)?
+    var didTapRoomName: (() -> Void)?
     var didTapAddParticipants: (() -> Void)?
     
     // MARK: - Setup
@@ -186,9 +187,13 @@ final class RoomCreationIntroCellContentView: UIView, NibLoadable, Themable {
     }        
     
     private func setupInformationTextTapGestureRecognizer() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleInformationTextTap(_:)))
+        var tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleInformationTextTap(_:)))
         self.informationLabel.isUserInteractionEnabled = true
         self.informationLabel.addGestureRecognizer(tapGestureRecognizer)
+        
+        tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleRoomNameTextTap(_:)))
+        self.titleLabel.isUserInteractionEnabled = true
+        self.titleLabel.addGestureRecognizer(tapGestureRecognizer)
     }
     
     @objc private func handleInformationTextTap(_ gestureRecognizer: UITapGestureRecognizer) {        
@@ -202,6 +207,10 @@ final class RoomCreationIntroCellContentView: UIView, NibLoadable, Themable {
                 self.didTapTopic?()
             }
         }
+    }
+    
+    @objc private func handleRoomNameTextTap(_ gestureRecognizer: UITapGestureRecognizer) {
+        self.didTapRoomName?()
     }
     
     @objc private func socialButtonAction(_ sender: UIButton) {

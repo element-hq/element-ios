@@ -6,3 +6,4 @@
 "NSContactsUsageDescription" = "Element näitab sulle tuttavaid, kellega saad alustada vestlust.";
 "NSFaceIDUsageDescription" = "Ligipääsuks sinu rakendusele on kasutusel Face ID.";
 "NSLocationWhenInUseUsageDescription" = "Kui sa jagad teiste kasutajatega oma asukohta, siis Element vajab õigusi asukoha kuvamiseks kaardil.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Kui sa jagad teiste kasutajatega oma asukohta, siis Element vajab õigusi asukoha kuvamiseks kaardil.";

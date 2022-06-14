@@ -17,6 +17,13 @@
 import Foundation
 
 protocol AuthenticationServiceDelegate: AnyObject {
+    /// The authentication service encountered an unrecognized certificate and needs to
+    /// prompt the user to find out whether or not it should be trusted.
+    /// - Parameters:
+    ///   - service: The authentication service.
+    ///   - unrecognizedCertificate: The certificate data to be trusted.
+    ///   - completion: A completion handler called one the user accepts/rejects the certificate.
+    func authenticationService(_ service: AuthenticationService, needsPromptFor unrecognizedCertificate: Data?, completion: @escaping (Bool) -> Void)
     /// The authentication service received an SSO login token via a deep link.
     /// This only occurs when SSOAuthenticationPresenter uses an SFSafariViewController.
     /// - Parameters:
@@ -25,8 +32,12 @@ protocol AuthenticationServiceDelegate: AnyObject {
     ///   - transactionID: The transaction ID generated during SSO page presentation.
     /// - Returns: `true` if the SSO login can be continued.
     func authenticationService(_ service: AuthenticationService, didReceive ssoLoginToken: String, with transactionID: String) -> Bool
+
+    func authenticationService(_ service: AuthenticationService,
+                               didUpdateStateWithLink link: UniversalLink)
 }
 
+@objcMembers
 class AuthenticationService: NSObject {
     
     /// The shared service object.
@@ -36,15 +47,15 @@ class AuthenticationService: NSObject {
     
     // MARK: Private
     
-    /// The rest client used to make authentication requests.
-    private var client: AuthenticationRestClient
     /// The object used to create a new `MXSession` when authentication has completed.
-    private var sessionCreator = SessionCreator()
+    private var sessionCreator: SessionCreatorProtocol
     
     // MARK: Public
     
     /// The current state of the authentication flow.
     private(set) var state: AuthenticationState
+    /// The rest client used to make authentication requests.
+    private(set) var client: AuthenticationRestClient
     /// The current login wizard or `nil` if `startFlow` hasn't been called.
     private(set) var loginWizard: LoginWizard?
     /// The current registration wizard or `nil` if `startFlow` hasn't been called for `.registration`.
@@ -53,22 +64,60 @@ class AuthenticationService: NSObject {
     /// The authentication service's delegate.
     weak var delegate: AuthenticationServiceDelegate?
     
+    /// The type of client to use during the flow.
+    var clientType: AuthenticationRestClient.Type = MXRestClient.self
+    
     // MARK: - Setup
     
-    override init() {
+    init(sessionCreator: SessionCreatorProtocol = SessionCreator()) {
         guard let homeserverURL = URL(string: BuildSettings.serverConfigDefaultHomeserverUrlString) else {
             MXLog.failure("[AuthenticationService]: Failed to create URL from default homeserver URL string.")
             fatalError("Invalid default homeserver URL string.")
         }
         
         state = AuthenticationState(flow: .login, homeserverAddress: BuildSettings.serverConfigDefaultHomeserverUrlString)
-        client = MXRestClient(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
+        client = clientType.init(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
+        
+        self.sessionCreator = sessionCreator
         
         super.init()
     }
     
     // MARK: - Public
-    
+
+    /// Parse and handle a server provisioning link.
+    /// - Parameter universalLink: A link such as https://mobile.element.io/?hs_url=matrix.example.com&is_url=identity.example.com
+    /// - Returns: `true` if a provisioning link was detected and handled.
+    @discardableResult
+    func handleServerProvisioningLink(_ universalLink: UniversalLink) -> Bool {
+        MXLog.debug("[AuthenticationService] handleServerProvisioningLink: \(universalLink)")
+
+        let hsUrl = universalLink.homeserverUrl
+        let isUrl = universalLink.identityServerUrl
+
+        if hsUrl == nil && isUrl == nil {
+            MXLog.debug("[AuthenticationService] handleServerProvisioningLink: no hsUrl or isUrl")
+            return false
+        }
+
+        let isRegister = universalLink.pathParams.first == "register"
+        let flow: AuthenticationFlow = isRegister ? .register : .login
+
+        if needsAuthentication {
+            reset()
+            //  not logged in
+            //  update the state with given HS and IS addresses
+            state = AuthenticationState(flow: flow,
+                                        homeserverAddress: hsUrl ?? BuildSettings.serverConfigDefaultHomeserverUrlString,
+                                        identityServer: isUrl ?? BuildSettings.serverConfigDefaultIdentityServerUrlString)
+            delegate?.authenticationService(self, didUpdateStateWithLink: universalLink)
+        } else {
+            //  logged in
+            AppDelegate.theDelegate().displayLogoutConfirmation(for: universalLink, completion: nil)
+        }
+        return true
+    }
+
     /// Whether authentication is needed by checking for any accounts.
     /// - Returns: `true` there are no accounts or if there is an inactive account that has had a soft logout.
     var needsAuthentication: Bool {
@@ -76,16 +125,7 @@ class AuthenticationService: NSObject {
     }
     
     /// Credentials to be used when authenticating after soft logout, otherwise `nil`.
-    var softLogoutCredentials: MXCredentials? {
-        guard MXKAccountManager.shared().activeAccounts.isEmpty else { return nil }
-        for account in MXKAccountManager.shared().accounts {
-            if account.isSoftLogout {
-                return account.mxCredentials
-            }
-        }
-        
-        return nil
-    }
+    var softLogoutCredentials: MXCredentials?
     
     /// Get the last authenticated [Session], if there is an active session.
     /// - Returns: The last active session if any, or `nil`
@@ -96,12 +136,12 @@ class AuthenticationService: NSObject {
     func startFlow(_ flow: AuthenticationFlow, for homeserverAddress: String) async throws {
         var (client, homeserver) = try await loginFlow(for: homeserverAddress)
         
-        let loginWizard = LoginWizard(client: client)
+        let loginWizard = LoginWizard(client: client, sessionCreator: sessionCreator)
         self.loginWizard = loginWizard
         
         if flow == .register {
             do {
-                let registrationWizard = RegistrationWizard(client: client)
+                let registrationWizard = RegistrationWizard(client: client, sessionCreator: sessionCreator)
                 homeserver.registrationFlow = try await registrationWizard.registrationFlow()
                 self.registrationWizard = registrationWizard
             } catch {
@@ -137,10 +177,14 @@ class AuthenticationService: NSObject {
     func reset() {
         loginWizard = nil
         registrationWizard = nil
+        softLogoutCredentials = nil
 
         // The previously used homeserver is re-used as `startFlow` will be called again a replace it anyway.
         let address = state.homeserver.addressFromUser ?? state.homeserver.address
-        self.state = AuthenticationState(flow: .login, homeserverAddress: address)
+        let identityServer = state.identityServer
+        self.state = AuthenticationState(flow: .login,
+                                         homeserverAddress: address,
+                                         identityServer: identityServer)
     }
     
     /// Continues an SSO flow when completion comes via a deep link.
@@ -186,14 +230,37 @@ class AuthenticationService: NSObject {
             MXLog.error("[AuthenticationService] Unable to create a URL from the supplied homeserver address when calling loginFlow.")
             throw AuthenticationError.invalidHomeserver
         }
+
+        var identityServerURL: URL?
         
-        if let wellKnown = try? await wellKnown(for: homeserverURL),
-           let baseURL = URL(string: wellKnown.homeServer.baseUrl) {
-            homeserverURL = baseURL
+        if let wellKnown = try? await wellKnown(for: homeserverURL) {
+            if let baseURL = URL(string: wellKnown.homeServer.baseUrl) {
+                homeserverURL = baseURL
+            }
+            if let identityServer = wellKnown.identityServer,
+               let baseURL = URL(string: identityServer.baseUrl) {
+                identityServerURL = baseURL
+            }
         }
         
-        #warning("Add an unrecognized certificate handler.")
-        let client = MXRestClient(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
+        let client = clientType.init(homeServer: homeserverURL, unrecognizedCertificateHandler: { [weak self] certificate in
+            guard let self = self else { return false }
+            
+            var isTrusted = false
+            let semaphore = DispatchSemaphore(value: 0)
+            
+            self.delegate?.authenticationService(self, needsPromptFor: certificate) { didTrust in
+                isTrusted = didTrust
+                semaphore.signal()
+            }
+            
+            semaphore.wait()
+            return isTrusted
+        })
+        
+        if let identityServerURL = identityServerURL {
+            client.identityServer = identityServerURL.absoluteString
+        }
         
         let loginFlow = try await getLoginFlowResult(client: client)
         
@@ -219,7 +286,7 @@ class AuthenticationService: NSObject {
         return (client, homeserver)
     }
     
-    private func getLoginFlowResult(client: MXRestClient) async throws -> LoginFlowResult {
+    private func getLoginFlowResult(client: AuthenticationRestClient) async throws -> LoginFlowResult {
         // Get the login flow
         let loginFlowResponse = try await client.getLoginSession()
         
@@ -231,7 +298,7 @@ class AuthenticationService: NSObject {
     
     /// Perform a well-known request on the specified homeserver URL.
     private func wellKnown(for homeserverURL: URL) async throws -> MXWellKnown {
-        let wellKnownClient = MXRestClient(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
+        let wellKnownClient = clientType.init(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
         
         // The .well-known/matrix/client API is often just a static file returned with no content type.
         // Make our HTTP client compatible with this behaviour

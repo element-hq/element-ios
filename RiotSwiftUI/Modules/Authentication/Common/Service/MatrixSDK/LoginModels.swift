@@ -89,7 +89,6 @@ enum LoginMode {
 /// Data obtained when calling `LoginWizard.resetPassword` that will be used
 /// when calling `LoginWizard.checkResetPasswordMailConfirmed`.
 struct ResetPasswordData {
-    let newPassword: String
     let addThreePIDSessionID: String
 }
 

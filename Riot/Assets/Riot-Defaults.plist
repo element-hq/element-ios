@@ -11,7 +11,7 @@
 	<key>showAllEventsInRoomHistory</key>
 	<false/>
 	<key>showRedactionsInRoomHistory</key>
-	<false/>
+	<true/>
 	<key>showUnsupportedEventsInRoomHistory</key>
 	<false/>
 	<key>sortRoomMembersUsingLastSeenTime</key>

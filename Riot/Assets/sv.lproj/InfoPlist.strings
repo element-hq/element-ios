@@ -6,3 +6,4 @@
 "NSContactsUsageDescription" = "Element kommer att visa dina kontakter så du kan bjuda in dem att chatta.";
 "NSFaceIDUsageDescription" = "Face ID används för att komma åt appen.";
 "NSLocationWhenInUseUsageDescription" = "När du delar din plats med folk så behöver Element åtkomst för att visa dem en karta.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "När du delar din plats med folk så behöver Element åtkomst för att visa dem en karta.";

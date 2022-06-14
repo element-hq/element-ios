@@ -1,0 +1,28 @@
+{
+  "session": "123456",
+  "flows": [
+    {
+      "stages": [
+        "m.login.recaptcha",
+        "m.login.terms",
+        "m.login.email.identity"
+      ]
+    }
+  ],
+  "params": {
+    "m.login.recaptcha": {
+      "public_key": "1234"
+    },
+    "m.login.terms": {
+      "policies": {
+        "privacy_policy": {
+          "version": "1.0",
+          "en": {
+            "name": "Terms and Conditions",
+            "url": "https://matrix-client.matrix.org/_matrix/consent?v=1.0"
+          }
+        }
+      }
+    }
+  }
+}

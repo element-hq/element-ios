@@ -6495,7 +6495,7 @@ public class VectorL10n: NSObject {
   public static func settingsCallsStunServerFallbackDescription(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_calls_stun_server_fallback_description", p1)
   }
-  /// Change Matrix account password
+  /// Change password
   public static var settingsChangePassword: String { 
     return VectorL10n.tr("Vector", "settings_change_password") 
   }
@@ -6527,7 +6527,7 @@ public class VectorL10n: NSObject {
   public static var settingsConfirmMediaSizeDescription: String { 
     return VectorL10n.tr("Vector", "settings_confirm_media_size_description") 
   }
-  /// confirm password
+  /// Confirm password
   public static var settingsConfirmPassword: String { 
     return VectorL10n.tr("Vector", "settings_confirm_password") 
   }
@@ -6947,7 +6947,7 @@ public class VectorL10n: NSObject {
   public static var settingsNewKeyword: String { 
     return VectorL10n.tr("Vector", "settings_new_keyword") 
   }
-  /// new password
+  /// New password
   public static var settingsNewPassword: String { 
     return VectorL10n.tr("Vector", "settings_new_password") 
   }
@@ -6971,7 +6971,7 @@ public class VectorL10n: NSObject {
   public static var settingsNotifyMeFor: String { 
     return VectorL10n.tr("Vector", "settings_notify_me_for") 
   }
-  /// old password
+  /// Old password
   public static var settingsOldPassword: String { 
     return VectorL10n.tr("Vector", "settings_old_password") 
   }
@@ -7122,6 +7122,10 @@ public class VectorL10n: NSObject {
   /// Language
   public static var settingsUiLanguage: String { 
     return VectorL10n.tr("Vector", "settings_ui_language") 
+  }
+  /// Show a placeholder for removed messages
+  public static var settingsUiShowRedactionsInRoomHistory: String { 
+    return VectorL10n.tr("Vector", "settings_ui_show_redactions_in_room_history") 
   }
   /// Theme
   public static var settingsUiTheme: String { 

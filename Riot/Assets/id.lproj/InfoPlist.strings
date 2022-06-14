@@ -8,3 +8,4 @@
 "NSMicrophoneUsageDescription" = "Element membutuhkan akses ke mikrofon Anda untuk melakukan dan menerima panggilan, mengambil video, dan merekam pesan suara.";
 "NSPhotoLibraryUsageDescription" = "Galeri digunakan untuk mengirim foto dan video.";
 "NSLocationWhenInUseUsageDescription" = "Ketika Anda membagikan lokasi Anda ke orang-orang, Element membutuhkan akses untuk menampilkan mereka sebuah peta.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Ketika Anda membagikan lokasi Anda kepada seseorang, Element membutuhkan akses untuk menampilkan mereka sebuah peta.";

@@ -60,8 +60,7 @@ struct OnboardingCelebrationScreen: View {
             }
             .frame(maxHeight: .infinity)
         }
-        .overlay(effects.ignoresSafeArea())
-        .background(theme.colors.background.ignoresSafeArea())
+        .background(OnboardingBreakerScreenBackground().ignoresSafeArea())
         .accentColor(theme.colors.accent)
         .navigationBarHidden(true)
     }
@@ -93,11 +92,6 @@ struct OnboardingCelebrationScreen: View {
             }
             .buttonStyle(PrimaryActionButtonStyle())
         }
-    }
-    
-    var effects: some View {
-        EffectsView(effect: .confetti)
-            .allowsHitTesting(false)
     }
 }
 

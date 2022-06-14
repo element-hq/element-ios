@@ -50,6 +50,20 @@
 "authentication_verify_email_waiting_hint" = "Did not receive an email?";
 "authentication_verify_email_waiting_button" = "Resend email";
 
+"authentication_forgot_password_input_title" = "Enter your email address";
+"authentication_forgot_password_input_message" = "We will send you a verification link.";
+"authentication_forgot_password_text_field_placeholder" = "Email Address";
+"authentication_forgot_password_waiting_title" = "Check your email";
+"authentication_forgot_password_waiting_message" = "To confirm your email address, tap the button in the email we just sent to %@";
+"authentication_forgot_password_waiting_hint" = "Did not receive an email?";
+"authentication_forgot_password_waiting_button" = "Resend email";
+
+"authentication_choose_password_input_title" = "Choose a new password";
+"authentication_choose_password_input_message" = "Make sure it’s 8 characters or more.";
+"authentication_choose_password_text_field_placeholder" = "New Password";
+"authentication_choose_password_signout_all_devices" = "Sign out of all devices";
+"authentication_choose_password_submit_button" = "Reset Password";
+
 "authentication_verify_msisdn_input_title" = "Enter your phone number";
 "authentication_verify_msisdn_input_message" = "This will help verify your account and enables password recovery.";
 "authentication_verify_msisdn_text_field_placeholder" = "Phone Number";
@@ -74,3 +88,13 @@
 "leave_space_selection_title" = "SELECT ROOMS";
 "leave_space_selection_all_rooms" = "Select all rooms";
 "leave_space_selection_no_rooms" = "Select no rooms";
+
+// MARK: Password Validation
+"password_validation_info_header" = "Your password should meet the criteria below:";
+"password_validation_error_header" = "Given password does not meet the criteria below:";
+"password_validation_error_min_length" = "At least %d characters.";
+"password_validation_error_max_length" = "Not exceed %d characters.";
+"password_validation_error_contain_lowercase_letter" = "Contain a lower-case letter.";
+"password_validation_error_contain_uppercase_letter" = "Contain an upper-case letter.";
+"password_validation_error_contain_number" = "Contain a number.";
+"password_validation_error_contain_symbol" = "Contain a symbol.";

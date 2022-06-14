@@ -6,3 +6,4 @@
 "NSCalendarsUsageDescription" = "Nézd meg a találkozóidat az alkalmazásban.";
 "NSFaceIDUsageDescription" = "Arc felismerés használata az alkalmazás eléréséhez.";
 "NSLocationWhenInUseUsageDescription" = "Ha megosztod másokkal a földrajzi helyzetedet, akkor az Elementnek hozzáférésre van szüksége a térképen való megjelenítéshez.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Ha másokkal megosztod a földrajzi helyzetedet Elementnek hozzáférésre van szüksége a térképen való megjelenítéshez.";
