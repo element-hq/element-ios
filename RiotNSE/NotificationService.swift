@@ -248,32 +248,24 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     private func checkPlaybackAndContinueProcessing(_ notificationEvent: MXEvent, roomId: String) {
-        NotificationService.backgroundSyncService.roomAccountData(forRoomId: roomId) { [weak self] response in
+        NotificationService.backgroundSyncService.readMarkerEvent(forRoomId: roomId) { [weak self] response in
             switch response {
-            case .success(let roomAccountData):
-                NotificationService.backgroundSyncService.event(withEventId: roomAccountData.readMarkerEventId, inRoom: roomId) { (response) in
-                    switch response {
-                    case .success(let readMarkerEvent):
-                        MXLog.debug("[NotificationService] checkPlaybackAndContinueProcessing: Read marker event fetched successfully")
-                        
-                        // As origin server timestamps are not always correct data in a federated environment, we add 10 minutes
-                        // to the calculation to reduce the possibility that an event is marked as read which isn't.
-                        let notificationTimestamp = notificationEvent.originServerTs + (10 * 60 * 1000)
-                        
-                        if readMarkerEvent.originServerTs > notificationTimestamp {
-                            MXLog.error("[NotificationService] checkPlaybackAndContinueProcessing: Event already read, discarding.")
-                            self?.discardEvent(event: notificationEvent)
-                        } else {
-                            self?.processEvent(notificationEvent)
-                        }
-                        
-                    case .failure(let error):
-                        MXLog.error("[NotificationService] checkPlaybackAndContinueProcessing: Failed fetching read marker event with error: \(error)")
-                        self?.processEvent(notificationEvent)
-                    }
+            case .success(let readMarkerEvent):
+                MXLog.debug("[NotificationService] checkPlaybackAndContinueProcessing: Read marker event fetched successfully")
+                
+                // As origin server timestamps are not always correct data in a federated environment, we add 10 minutes
+                // to the calculation to reduce the possibility that an event is marked as read which isn't.
+                let notificationTimestamp = notificationEvent.originServerTs + (10 * 60 * 1000)
+                
+                if readMarkerEvent.originServerTs > notificationTimestamp {
+                    MXLog.error("[NotificationService] checkPlaybackAndContinueProcessing: Event already read, discarding.")
+                    self?.discardEvent(event: notificationEvent)
+                } else {
+                    self?.processEvent(notificationEvent)
                 }
+                
             case .failure(let error):
-                MXLog.error("[NotificationService] checkPlaybackAndContinueProcessing: Failed fetching room account data with error: \(error)")
+                MXLog.error("[NotificationService] checkPlaybackAndContinueProcessing: Failed fetching read marker event with error: \(error)")
                 self?.processEvent(notificationEvent)
             }
         }
@@ -319,27 +311,14 @@ class NotificationService: UNNotificationServiceExtension {
                 //  When it completes, it'll continue with the bestAttemptContent.
                 return
             } else {
-                self.finishProcessingEvent(event, withContent: content)
+                self.finishProcessing(forEventId: event.eventId, withContent: content)
             }
         }
     }
     
     private func discardEvent(event:MXEvent) {
         MXLog.debug("[NotificationService] discardEvent: Discarding event: \(String(describing: event.eventId))")
-        finishProcessingEvent(event, withContent: UNNotificationContent())
-    }
-    
-    private func finishProcessingEvent(_ event:MXEvent, withContent content: UNNotificationContent) {
-        MXLog.debug("[NotificationService] finishProcessingEvent: Calling content handler for: \(String(describing: event.eventId))")
-        
-        self.contentHandlers[event.eventId]?(content)
-
-        //  clear maps
-        self.contentHandlers.removeValue(forKey: event.eventId)
-        self.bestAttemptContents.removeValue(forKey: event.eventId)
-        
-        // We are done for this push
-        MXLog.debug("--------------------------------------------------------------------------------")
+        finishProcessing(forEventId: event.eventId, withContent: UNNotificationContent())
     }
     
     private func fallbackToBestAttemptContent(forEventId eventId: String) {
@@ -350,8 +329,14 @@ class NotificationService: UNNotificationServiceExtension {
             return
         }
         
-        //  call contentHandler
+        finishProcessing(forEventId: eventId, withContent: content)
+    }
+    
+    private func finishProcessing(forEventId eventId: String, withContent content: UNNotificationContent) {
+        MXLog.debug("[NotificationService] finishProcessingEvent: Calling content handler for: \(String(describing: eventId))")
+        
         contentHandlers[eventId]?(content)
+
         //  clear maps
         contentHandlers.removeValue(forKey: eventId)
         bestAttemptContents.removeValue(forKey: eventId)
