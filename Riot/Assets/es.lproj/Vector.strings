@@ -2418,3 +2418,8 @@
 "location_sharing_live_timer_selector_title" = "Elige cuánto tiempo quieres que los demás vean tu ubicación precisa.";
 "location_sharing_live_error" = "Error en la ubicación en tiempo real";
 "location_sharing_live_loading" = "Cargando ubicación en tiempo real…";
+"settings_labs_enable_live_location_sharing" = "Compartir ubicación en tiempo real: comparte tu ubicación (en desarrollo, y temporalmente las ubicaciones persisten en el historial)";
+"location_sharing_allow_background_location_message" = "Si quieres compartir tu ubicación en tiempo real, Element necesita acceder a tu ubicación mientras la aplicación está en segundo plano. Para permitirlo, toca en Ajustes, ve a Ubicación y selecciona Siempre";
+"location_sharing_allow_background_location_cancel_action" = "Ahora no";
+"location_sharing_allow_background_location_validate_action" = "Ajustes";
+"location_sharing_allow_background_location_title" = "Permitir acceso";
