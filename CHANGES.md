@@ -1,3 +1,46 @@
+## Changes in 1.8.19 (2022-06-14)
+
+✨ Features
+
+- AuthenticationLoginCoordinator: Implement forgot password flow. ([#5655](https://github.com/vector-im/element-ios/issues/5655))
+- FTUE: Implement soft logout screen. ([#6181](https://github.com/vector-im/element-ios/issues/6181))
+
+🙌 Improvements
+
+- Partial implementation of rich replies ([#6155](https://github.com/vector-im/element-ios/pull/6155))
+- Upgrade MatrixSDK version ([v0.23.9](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.23.9)).
+- Display redacted messages in the timeline ([#2180](https://github.com/vector-im/element-ios/issues/2180))
+- Room: Do not group events containing thread roots. ([#5502](https://github.com/vector-im/element-ios/issues/5502))
+- Settings: Implement logging out all devices when changing password. ([#6175](https://github.com/vector-im/element-ios/issues/6175))
+- AuthenticationService: Use identity server from well-known if provided when creating the client. ([#6177](https://github.com/vector-im/element-ios/issues/6177))
+- FTUE: Support server provisioning links in the authentication flow. ([#6180](https://github.com/vector-im/element-ios/issues/6180))
+- De-labs message bubbles ([#6285](https://github.com/vector-im/element-ios/pull/6285))
+
+🐛 Bugfixes
+
+- Security fix: Prevent the session verification alert and flows from being displayed on top of the Pin entry screen, allowing another session to be verified from a locked app. ([#6249](https://github.com/vector-im/element-ios/pull/6249))
+- Remove render edit flag and fix a nil room state crash ([#6251](https://github.com/vector-im/element-ios/pull/6251))
+- Fix in reply to links appearing outside of mx-quote ([#4586](https://github.com/vector-im/element-ios/issues/4586))
+- Settings: Allow account deactivation when the account was created using SSO. ([#4685](https://github.com/vector-im/element-ios/issues/4685))
+- Fix reply to usernames containing HTML escape characters ([#5526](https://github.com/vector-im/element-ios/issues/5526))
+- Room preview unexpectedly triggering within the room ([#5939](https://github.com/vector-im/element-ios/issues/5939))
+- Room: Add cancel action to contextual menu in every case. ([#5989](https://github.com/vector-im/element-ios/issues/5989))
+- Fixed home screen room avatars being sometimes square. ([#6095](https://github.com/vector-im/element-ios/issues/6095))
+- Room Creation: Fix crash when scrolling to bottom of the page. ([#6231](https://github.com/vector-im/element-ios/issues/6231))
+- Prevent random crashes when tapping links. Avoid displaying the confirmation alert for plain text ones. ([#6241](https://github.com/vector-im/element-ios/issues/6241))
+- Room: Avoid merging of bubbles if current timeline style does not allow. ([#6242](https://github.com/vector-im/element-ios/issues/6242))
+- Universal Link: Url decode url fragment before splitting up. ([#6207](https://github.com/vector-im/element-ios/issues/6207))
+- Room: Do not show redacted reactions in the timeline. ([#6293](https://github.com/vector-im/element-ios/issues/6293))
+
+🚧 In development 🚧
+
+- Authentication: Add reveal password button and use a rounded checkbox ([#6268](https://github.com/vector-im/element-ios/pull/6268))
+- Authentication: Update labels and confetti in new flow. Tidy up onboarding presentation. ([#5151](https://github.com/vector-im/element-ios/issues/5151))
+- Add an unrecognised certificate alert to the new authentication flow. ([#6174](https://github.com/vector-im/element-ios/issues/6174))
+- Authentication: Add tests covering the authentication service and wizards. ([#6179](https://github.com/vector-im/element-ios/issues/6179))
+- Location sharing: Support sending location in background. ([#6236](https://github.com/vector-im/element-ios/issues/6236))
+
+
 ## Changes in 1.8.18 (2022-06-03)
 
 🙌 Improvements

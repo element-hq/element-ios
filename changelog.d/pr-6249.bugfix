@@ -1,1 +1,0 @@
-Security fix: Prevent the session verification alert and flows from being displayed on top of the Pin entry screen, allowing another session to be verified from a locked app.
