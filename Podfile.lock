@@ -94,7 +94,7 @@ PODS:
     - LoggerAPI (~> 1.7)
   - SwiftLint (0.44.0)
   - SwiftyBeaver (1.9.5)
-  - UICollectionViewLeftAlignedLayout (0.0.3)
+  - UICollectionViewLeftAlignedLayout (1.0.2)
   - UICollectionViewRightAlignedLayout (0.0.3)
   - WeakDictionary (2.0.2)
   - zxcvbn-ios (1.0.4)
@@ -127,7 +127,7 @@ DEPENDENCIES:
   - SwiftGen (~> 6.3)
   - SwiftJWT (~> 3.6.200)
   - SwiftLint (~> 0.44.0)
-  - UICollectionViewLeftAlignedLayout (~> 0.0.3)
+  - UICollectionViewLeftAlignedLayout (~> 1.0.2)
   - UICollectionViewRightAlignedLayout (~> 0.0.3)
   - WeakDictionary (~> 2.0)
   - zxcvbn-ios
@@ -223,12 +223,12 @@ SPEC CHECKSUMS:
   SwiftJWT: 88c412708f58c169d431d344c87bc79a87c830ae
   SwiftLint: e96c0a8c770c7ebbc4d36c55baf9096bb65c4584
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
-  UICollectionViewLeftAlignedLayout: 46396e7c45573544981b9a04a2e25ecacba18774
+  UICollectionViewLeftAlignedLayout: 830bf6fa5bab9f9b464f62e3384f9d2e00b3c0f6
   UICollectionViewRightAlignedLayout: 823eef8c567eba4a44c21bc2ffcb0d0d5f361e2d
   WeakDictionary: 8cd038acd77e5d54ca4ebaec3d20853d732b45e0
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 9ba3145f2089b7a849155839a17ceb984cd7b0fe
+PODFILE CHECKSUM: 0a0d17465abe9c500b13ac0c5c7def68d91c5ebf
 
 COCOAPODS: 1.11.3

@@ -107,6 +107,7 @@ final class RoomReactionsView: UIView, NibOwnerLoadable {
         
         self.collectionView.register(cellType: RoomReactionViewCell.self)
         self.collectionView.register(cellType: RoomReactionActionViewCell.self)
+        self.collectionView.register(cellType: RoomReactionImageViewCell.self)
         self.collectionView.reloadData()
     }
     
@@ -207,22 +208,29 @@ extension RoomReactionsView: UICollectionViewDataSource {
 
             return cell
         } else {
-            let cell: RoomReactionActionViewCell = collectionView.dequeueReusableCell(for: indexPath)
-
-            if let theme = self.theme {
-                cell.update(theme: theme)
-            }
-
             if indexPath.row == self.reactionsViewData.count && self.showAllButtonState != .none {
+                let cell: RoomReactionActionViewCell = collectionView.dequeueReusableCell(for: indexPath)
+
+                if let theme = self.theme {
+                    cell.update(theme: theme)
+                }
+
                 let actionString = self.actionButtonString(at: indexPath)
                 cell.fill(actionString: actionString)
+                
+                return cell
             } else {
-//                let actionString = self.actionButtonString(at: indexPath)
-//                cell.fill(actionString: actionString)
+                let cell: RoomReactionImageViewCell = collectionView.dequeueReusableCell(for: indexPath)
+
+                if let theme = self.theme {
+                    cell.update(theme: theme)
+                }
+
                 cell.fill(actionIcon: Asset.Images.reactionsMoreAction.image)
+                
+                return cell
             }
 
-            return cell
         }
     }
 }
