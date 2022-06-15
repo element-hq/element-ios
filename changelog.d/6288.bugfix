@@ -1,0 +1,1 @@
+AppDelegate: Do not show launch animation for `backgroundSyncInProgress` state.
