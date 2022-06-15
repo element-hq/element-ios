@@ -57,8 +57,8 @@
             senderId = event.sender;
             if ([event.type isEqualToString:kMXEventTypeStringRoomMember])
             {
-                NSString *membership = event.wireContent[@"membership"];
-                if (![membership isEqualToString:@"join"])
+                MXRoomMemberEventContent *content = [MXRoomMemberEventContent modelFromJSON:event.content];
+                if (![content.membership isEqualToString:kMXMembershipStringJoin])
                 {
                     targetId = event.stateKey;
                 }
