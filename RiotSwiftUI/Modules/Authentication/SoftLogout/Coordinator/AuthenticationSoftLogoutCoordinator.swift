@@ -24,7 +24,7 @@ struct AuthenticationSoftLogoutCoordinatorParameters {
     let keyBackupNeeded: Bool
 }
 
-enum AuthenticationSoftLogoutCoordinatorResult {
+enum AuthenticationSoftLogoutCoordinatorResult: CustomStringConvertible {
     /// Login was successful with the associated session created.
     case success(session: MXSession, password: String)
     /// Clear all user data
@@ -33,6 +33,20 @@ enum AuthenticationSoftLogoutCoordinatorResult {
     case continueWithSSO(SSOIdentityProvider)
     /// Continue using the fallback page
     case fallback
+    
+    /// A string representation of the result, ignoring any associated values that could leak PII.
+    var description: String {
+        switch self {
+        case .success:
+            return "success"
+        case .clearAllData:
+            return "clearAllData"
+        case .continueWithSSO(let provider):
+            return "continueWithSSO: \(provider)"
+        case .fallback:
+            return "fallback"
+        }
+    }
 }
 
 @available(iOS 14.0, *)

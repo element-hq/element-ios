@@ -18,9 +18,17 @@ import SwiftUI
 
 // MARK: View model
 
-enum ChangePasswordViewModelResult {
+enum ChangePasswordViewModelResult: CustomStringConvertible {
     /// Submit with old and new passwords and sign out of all devices option
     case submit(oldPassword: String, newPassword: String, signoutAllDevices: Bool)
+    
+    /// A string representation of the result, ignoring any associated values that could leak PII.
+    var description: String {
+        switch self {
+        case .submit:
+            return "submit"
+        }
+    }
 }
 
 // MARK: View
