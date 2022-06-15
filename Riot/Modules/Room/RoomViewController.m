@@ -1849,6 +1849,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         
         // Update encryption decoration if needed
         [self updateEncryptionDecorationForRoomInputToolbar:roomInputToolbarView];
+
+        // Update actions when the input toolbar refreshed
+        [self setupActions];
     }
     else if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:DisabledRoomInputToolbarView.class])
     {
