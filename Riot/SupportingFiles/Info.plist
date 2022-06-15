@@ -89,7 +89,6 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
-		<string>location</string>
 		<string>remote-notification</string>
 		<string>voip</string>
 	</array>
