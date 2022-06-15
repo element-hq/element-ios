@@ -17,7 +17,7 @@
 import UIKit
 import Reusable
 
-final class RoomReactionActionViewCell: UICollectionViewCell, NibReusable, Themable {
+final class RoomReactionImageViewCell: UICollectionViewCell, NibReusable, Themable {
     
     // MARK: - Constants
 
@@ -26,7 +26,7 @@ final class RoomReactionActionViewCell: UICollectionViewCell, NibReusable, Thema
     // MARK: Outlets
 
     @IBOutlet private weak var reactionBackgroundView: UIView!
-    @IBOutlet private weak var actionLabel: UILabel!
+    @IBOutlet private weak var imageView: UIImageView!
     
     // MARK: Private
     
@@ -63,16 +63,8 @@ final class RoomReactionActionViewCell: UICollectionViewCell, NibReusable, Thema
     
     // MARK: - Public
     
-    func fill(actionString: String) {
-        self.actionLabel.text = actionString
-        self.updateViews()
-    }
-    
     func fill(actionIcon: UIImage) {
-        let attachment = NSTextAttachment()
-        attachment.image = actionIcon.vc_resized(with: CGSize(width: self.actionLabel.bounds.size.height, height: self.actionLabel.bounds.size.height))?.withRenderingMode(.alwaysTemplate)
-
-        self.actionLabel.attributedText = NSAttributedString(attachment: attachment)
+        imageView.image = actionIcon.withRenderingMode(.alwaysTemplate)
         self.updateViews()
     }
     
@@ -84,7 +76,7 @@ final class RoomReactionActionViewCell: UICollectionViewCell, NibReusable, Thema
     // MARK: - Private
     
     private func updateViews() {
-        self.actionLabel.textColor = self.theme?.textSecondaryColor
+        self.imageView.tintColor = self.theme?.textSecondaryColor
         
         self.reactionBackgroundView.layer.borderWidth = 0.0
         self.reactionBackgroundView.backgroundColor = self.theme?.headerBackgroundColor

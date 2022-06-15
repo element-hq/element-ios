@@ -69,6 +69,8 @@ import Foundation
             self.viewModelDelegate?.roomReactionsViewModel(self, didShowAllTappedForEventId: self.eventId)
         case .tapShowAction(.showLess):
             self.viewModelDelegate?.roomReactionsViewModel(self, didShowLessTappedForEventId: self.eventId)
+        case .tapShowAction(.addReaction):
+            self.viewModelDelegate?.roomReactionsViewModel(self, didTapAddReactionForEventId: self.eventId)
         case .longPress:
             self.viewModelDelegate?.roomReactionsViewModel(self, didLongPressForEventId: self.eventId)
         }
@@ -76,6 +78,10 @@ import Foundation
 
     func loadData() {
         var reactions = self.aggregatedReactions.reactions
+            .map { (reactionCount) -> RoomReactionViewData in
+                RoomReactionViewData(emoji: reactionCount.reaction, countString: "\(reactionCount.count)", isCurrentUserReacted: reactionCount.myUserHasReacted)
+            }
+        var remainingReactions: [RoomReactionViewData] = []
         var showAllButtonState: RoomReactionsViewState.ShowAllButtonState = .none
 
         // Limit displayed reactions if required
@@ -83,16 +89,13 @@ import Foundation
             if self.showAll == true {
                 showAllButtonState = .showLess
             } else {
+                remainingReactions = Array(reactions[Constants.maxItemsWhenLimited..<reactions.count])
                 reactions = Array(reactions[0..<Constants.maxItemsWhenLimited])
                 showAllButtonState = .showAll
             }
         }
 
-        let reactionsViewData = reactions.map { (reactionCount) -> RoomReactionViewData in
-            return RoomReactionViewData(emoji: reactionCount.reaction, countString: "\(reactionCount.count)", isCurrentUserReacted: reactionCount.myUserHasReacted)
-        }
-
-        self.viewDelegate?.roomReactionsViewModel(self, didUpdateViewState: .loaded(reactionsViewData: reactionsViewData, showAllButtonState: showAllButtonState))
+        self.viewDelegate?.roomReactionsViewModel(self, didUpdateViewState: .loaded(reactionsViewData: reactions, remainingViewData: remainingReactions, showAllButtonState: showAllButtonState, showAddReaction: reactions.count > 0))
     }
         
     // MARK: - Hashable

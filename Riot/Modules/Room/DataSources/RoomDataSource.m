@@ -1077,6 +1077,11 @@ const CGFloat kTypingCellHeight = 24;
     [self setShowAllReactions:NO forEvent:eventId];
 }
 
+- (void)roomReactionsViewModel:(RoomReactionsViewModel *)viewModel didTapAddReactionForEventId:(NSString * _Nonnull)eventId
+{
+    [self.delegate dataSource:self didRecognizeAction:kMXKRoomBubbleCellTapOnAddReaction inCell:nil userInfo:@{ kMXKRoomBubbleCellEventIdKey: eventId }];
+}
+
 - (void)setShowAllReactions:(BOOL)showAllReactions forEvent:(NSString*)eventId
 {
     id<MXKRoomBubbleCellDataStoring> cellData = [self cellDataOfEventWithEventId:eventId];
