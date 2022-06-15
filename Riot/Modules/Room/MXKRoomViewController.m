@@ -1903,10 +1903,7 @@
         return;
     }
     
-    __block UserIndicatorCancel cancelIndicator;
-    NSTimer *indicatorTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 repeats:NO block:^(NSTimer * _Nonnull timer) {
-        cancelIndicator = [self.userIndicatorStore presentLoadingWithLabel:[VectorL10n homeSyncing] isInteractionBlocking:NO];
-    }];
+    UserIndicatorCancel cancelIndicator = [self.userIndicatorStore presentLoadingWithLabel:[VectorL10n loading] isInteractionBlocking:NO];
     
     // Store the current height of the first bubble (if any)
     backPaginationSavedFirstBubbleHeight = 0;
@@ -1993,8 +1990,6 @@
             [self updateCurrentEventIdAtTableBottom:NO];
         }
         
-        [indicatorTimer invalidate];
-        
         if (cancelIndicator) {
             cancelIndicator();
         }
@@ -2012,9 +2007,7 @@
         [self reloadBubblesTable:NO];
         
         self.bubbleTableViewDisplayInTransition = NO;
-        
-        [indicatorTimer invalidate];
-        
+
         if (cancelIndicator) {
             cancelIndicator();
         }
