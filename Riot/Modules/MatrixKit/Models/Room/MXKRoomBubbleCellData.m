@@ -55,7 +55,22 @@
             [bubbleComponents addObject:firstComponent];
             
             senderId = event.sender;
-            targetId = [event.type isEqualToString:kMXEventTypeStringRoomMember] ? event.stateKey : nil;
+            if ([event.type isEqualToString:kMXEventTypeStringRoomMember])
+            {
+                NSString *membership = event.wireContent[@"membership"];
+                if (![membership isEqualToString:@"join"])
+                {
+                    targetId = event.stateKey;
+                }
+                else
+                {
+                    targetId = event.sender;
+                }
+            }
+            else
+            {
+                targetId = nil;
+            }
             roomId = roomDataSource.roomId;
 
             // If `roomScreenUseOnlyLatestUserAvatarAndName`is enabled, the avatar and name are
