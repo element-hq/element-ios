@@ -70,18 +70,18 @@
         // Handle user's picture by considering it is stored unencrypted on Matrix media repository
         
         // Use the Riot style placeholder
-        if (!nextBubbleData.targetAvatarPlaceholder)
+        if (!nextBubbleData.senderAvatarPlaceholder)
         {
-            nextBubbleData.targetAvatarPlaceholder = [AvatarGenerator generateAvatarForMatrixItem:nextBubbleData.targetId withDisplayName:nextBubbleData.targetDisplayName];
+            nextBubbleData.senderAvatarPlaceholder = [AvatarGenerator generateAvatarForMatrixItem:nextBubbleData.senderId withDisplayName:nextBubbleData.senderDisplayName];
         }
         
         avatarView.enableInMemoryCache = YES;
-        [avatarView setImageURI:nextBubbleData.targetAvatarUrl
+        [avatarView setImageURI:nextBubbleData.senderAvatarUrl
                        withType:nil
             andImageOrientation:UIImageOrientationUp
                   toFitViewSize:avatarView.frame.size
                      withMethod:MXThumbnailingMethodCrop
-                   previewImage:nextBubbleData.targetAvatarPlaceholder
+                   previewImage:nextBubbleData.senderAvatarPlaceholder
                    mediaManager:nextBubbleData.mxSession.mediaManager];
 
         // Clear the default background color of a MXKImageView instance
