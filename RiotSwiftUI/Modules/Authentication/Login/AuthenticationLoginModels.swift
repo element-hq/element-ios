@@ -18,7 +18,7 @@ import Foundation
 
 // MARK: View model
 
-enum AuthenticationLoginViewModelResult {
+enum AuthenticationLoginViewModelResult: CustomStringConvertible {
     /// The user would like to select another server.
     case selectServer
     /// Parse the username and update the homeserver if included.
@@ -31,6 +31,24 @@ enum AuthenticationLoginViewModelResult {
     case continueWithSSO(SSOIdentityProvider)
     /// Continue using the fallback page
     case fallback
+    
+    /// A string representation of the result, ignoring any associated values that could leak PII.
+    var description: String {
+        switch self {
+        case .selectServer:
+            return "selectServer"
+        case .parseUsername:
+            return "parseUsername"
+        case .forgotPassword:
+            return "forgotPassword"
+        case .login:
+            return "login"
+        case .continueWithSSO(let provider):
+            return "continueWithSSO: \(provider)"
+        case .fallback:
+            return "fallback"
+        }
+    }
 }
 
 // MARK: View
