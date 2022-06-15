@@ -58,7 +58,9 @@ final class ShowDirectoryViewController: UIViewController {
         return spinner
     }()
     private lazy var tableFooterView: UIView = {
-        return UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 50))
+        let bottomSafeAreaInset = UIApplication.shared.windows.last?.safeAreaInsets.bottom ?? 0
+        let height = vibrancyEffectView.frame.height - bottomSafeAreaInset
+        return UIView(frame: CGRect(x: 0, y: 0, width: 0, height: height))
     }()
     private lazy var mainSearchBar: UISearchBar = {
         let bar = UISearchBar(frame: CGRect(origin: .zero, size: CGSize(width: 600, height: 44)))
