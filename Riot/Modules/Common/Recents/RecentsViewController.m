@@ -2528,7 +2528,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 - (void)stopActivityIndicator {
     if (self.userIndicatorStore) {
         if (loadingIndicatorCancel) {
-            MXLogDebug(@"[RecentsViewController] Present loading indicator")
+            MXLogDebug(@"[RecentsViewController] Dismiss loading indicator")
             loadingIndicatorCancel();
             loadingIndicatorCancel = nil;
         }
