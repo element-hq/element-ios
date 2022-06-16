@@ -2282,12 +2282,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     if (mainSession)
     {
-        
         switch (mainSession.state)
         {
             case MXSessionStateClosed:
             case MXSessionStateInitialised:
-            case MXSessionStateBackgroundSyncInProgress:
                 self.roomListDataReady = NO;
                 [self listenForRoomListDataReady];
             default:
@@ -2315,7 +2313,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             {
                 case MXSessionStateClosed:
                 case MXSessionStateInitialised:
-                case MXSessionStateBackgroundSyncInProgress:
                     isLaunching = YES;
                     break;
                 case MXSessionStateStoreDataReady:
