@@ -21,9 +21,11 @@ import XCTest
 private enum Inputs {
     static let messageStart = "Hello "
     static let aliceDisplayname = "Alice"
+    static let aliceAvatarUrl = "mxc://matrix.org/VyNYAgahaiAzUoOeZETtQ"
     static let aliceAwayDisplayname = "Alice_away"
-    static let aliceMember = FakeMXRoomMember(displayname: aliceDisplayname, avatarUrl: "", userId: "@alice:matrix.org")
-    static let aliceMemberAway = FakeMXRoomMember(displayname: aliceAwayDisplayname, avatarUrl: "", userId: "@alice:matrix.org")
+    static let aliceNewAvatarUrl = "mxc://matrix.org/VyNYAgaFdlLojoOeZETtQ"
+    static let aliceMember = FakeMXRoomMember(displayname: aliceDisplayname, avatarUrl: aliceAvatarUrl, userId: "@alice:matrix.org")
+    static let aliceMemberAway = FakeMXRoomMember(displayname: aliceAwayDisplayname, avatarUrl: aliceNewAvatarUrl, userId: "@alice:matrix.org")
     static let bobMember = FakeMXRoomMember(displayname: "Bob", avatarUrl: "", userId: "@bob:matrix.org")
     static let alicePermalink = "https://matrix.to/#/@alice:matrix.org"
     static let mentionToAlice = NSAttributedString(string: aliceDisplayname, attributes: [.link: URL(string: alicePermalink)!])
@@ -33,28 +35,44 @@ private enum Inputs {
 // MARK: - Tests
 @available(iOS 15.0, *)
 class PillsFormatterTests: XCTestCase {
-    func testPillsInsertion() {
+    func testPillsInsertionAndRefresh() {
         let messageWithPills = createMessageWithMentionFromBobToAlice()
         XCTAssertEqual(messageWithPills.length, Inputs.messageStart.count + 1) // +1 non-unicode character for the pill/textAttachment
         XCTAssert(messageWithPills.attribute(.attachment, at: messageWithPills.length - 1, effectiveRange: nil) is PillTextAttachment)
 
         let pillTextAttachment = messageWithPills.attribute(.attachment, at: messageWithPills.length - 1, effectiveRange: nil) as? PillTextAttachment
-        XCTAssert(pillTextAttachment?.data?.isHighlighted == true) // Alice is highlighted
+        // Alice's pill is highlighted.
+        XCTAssert(pillTextAttachment?.data?.isHighlighted == true)
+        // Attachment has correct type.
         XCTAssert(pillTextAttachment?.fileType == PillsFormatter.pillUTType)
+        // Pill data contains Alice's displayname and avatar url.
+        XCTAssertEqual(pillTextAttachment?.data?.displayText, Inputs.aliceDisplayname)
+        XCTAssertEqual(pillTextAttachment?.data?.avatarUrl, Inputs.aliceAvatarUrl)
+        // Pill has expected size.
+        let expectedSize = PillAttachmentViewProvider.size(forDisplayText: pillTextAttachment!.data!.displayText,
+                                                           andFont: pillTextAttachment!.data!.font)
+        XCTAssertEqual(pillTextAttachment?.bounds.size, expectedSize)
+
+        PillsFormatter.refreshPills(in: messageWithPills,
+                                    with: FakeMXRoomState(roomMembers: FakeMXUpdatedRoomMembers()))
+        let refreshedPillTextAttachment = messageWithPills.attribute(.attachment, at: messageWithPills.length - 1, effectiveRange: nil) as? PillTextAttachment
+        // Alice's pill is still highlighted.
+        XCTAssert(pillTextAttachment?.data?.isHighlighted == true)
+        // Pill data is refreshed with correct data.
+        XCTAssertEqual(refreshedPillTextAttachment?.data?.displayText, Inputs.aliceAwayDisplayname)
+        XCTAssertEqual(refreshedPillTextAttachment?.data?.avatarUrl, Inputs.aliceNewAvatarUrl)
+        // Pill size is updated
+        let newExpectedSize = PillAttachmentViewProvider.size(forDisplayText: refreshedPillTextAttachment!.data!.displayText,
+                                                              andFont: refreshedPillTextAttachment!.data!.font)
+        XCTAssertEqual(refreshedPillTextAttachment?.bounds.size, newExpectedSize)
     }
 
     func testPillsUsingLatestRoomState() {
         let messageWithPills = createMessageWithMentionFromBobToAliceWithLatestRoomState()
         let pillTextAttachment = messageWithPills.attribute(.attachment, at: messageWithPills.length - 1, effectiveRange: nil) as? PillTextAttachment
+        // Pill uses the latest room state data.
         XCTAssertEqual(pillTextAttachment?.data?.displayText, Inputs.aliceAwayDisplayname)
-    }
-
-    func testPillsRefresh() {
-        let messageWithPills = createMessageWithMentionFromBobToAlice()
-        PillsFormatter.refreshPills(in: messageWithPills,
-                                    with: FakeMXRoomState(roomMembers: FakeMXUpdatedRoomMembers()))
-        let pillTextAttachment = messageWithPills.attribute(.attachment, at: messageWithPills.length - 1, effectiveRange: nil) as? PillTextAttachment
-        XCTAssertEqual(pillTextAttachment?.data?.displayText, Inputs.aliceAwayDisplayname)
+        XCTAssertEqual(pillTextAttachment?.data?.avatarUrl, Inputs.aliceNewAvatarUrl)
     }
 
     func testPillsToMarkdown() {

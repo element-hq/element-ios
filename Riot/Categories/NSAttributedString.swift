@@ -29,7 +29,7 @@ public extension NSAttributedString {
     ///
     /// - Parameters:
     ///   - attrName: The name of the attribute to enumerate.
-    ///   - enumerationRange: The range over which the attribute values are enumerated. If ommited, the emtire range is used.
+    ///   - enumerationRange: The range over which the attribute values are enumerated. If ommited, the entire range is used.
     ///   - opts: The options used by the enumeration. For possible values, see NSAttributedStringEnumerationOptions.
     ///   - block: The block to apply to ranges of the specified attribute in the attributed string.
     func vc_enumerateAttribute<T>(_ attrName: NSAttributedString.Key,
