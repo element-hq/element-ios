@@ -21,7 +21,9 @@ import XCTest
 private enum Inputs {
     static let messageStart = "Hello "
     static let aliceDisplayname = "Alice"
+    static let aliceAwayDisplayname = "Alice_away"
     static let aliceMember = FakeMXRoomMember(displayname: aliceDisplayname, avatarUrl: "", userId: "@alice:matrix.org")
+    static let aliceMemberAway = FakeMXRoomMember(displayname: aliceAwayDisplayname, avatarUrl: "", userId: "@alice:matrix.org")
     static let bobMember = FakeMXRoomMember(displayname: "Bob", avatarUrl: "", userId: "@bob:matrix.org")
     static let alicePermalink = "https://matrix.to/#/@alice:matrix.org"
     static let mentionToAlice = NSAttributedString(string: aliceDisplayname, attributes: [.link: URL(string: alicePermalink)!])
@@ -39,6 +41,20 @@ class PillsFormatterTests: XCTestCase {
         let pillTextAttachment = messageWithPills.attribute(.attachment, at: messageWithPills.length - 1, effectiveRange: nil) as? PillTextAttachment
         XCTAssert(pillTextAttachment?.data?.isHighlighted == true) // Alice is highlighted
         XCTAssert(pillTextAttachment?.fileType == PillsFormatter.pillUTType)
+    }
+
+    func testPillsUsingLatestRoomState() {
+        let messageWithPills = createMessageWithMentionFromBobToAliceWithLatestRoomState()
+        let pillTextAttachment = messageWithPills.attribute(.attachment, at: messageWithPills.length - 1, effectiveRange: nil) as? PillTextAttachment
+        XCTAssertEqual(pillTextAttachment?.data?.displayText, Inputs.aliceAwayDisplayname)
+    }
+
+    func testPillsRefresh() {
+        let messageWithPills = createMessageWithMentionFromBobToAlice()
+        PillsFormatter.refreshPills(in: messageWithPills,
+                                    with: FakeMXRoomState(roomMembers: FakeMXUpdatedRoomMembers()))
+        let pillTextAttachment = messageWithPills.attribute(.attachment, at: messageWithPills.length - 1, effectiveRange: nil) as? PillTextAttachment
+        XCTAssertEqual(pillTextAttachment?.data?.displayText, Inputs.aliceAwayDisplayname)
     }
 
     func testPillsToMarkdown() {
@@ -64,7 +80,21 @@ private extension PillsFormatterTests {
                                                           withSession: session,
                                                           eventFormatter: EventFormatter(matrixSession: session),
                                                           event: FakeMXEvent(sender: Inputs.bobMember.userId),
-                                                          andRoomState: FakeMXRoomState())
+                                                          roomState: FakeMXRoomState(roomMembers: FakeMXRoomMembers()),
+                                                          andLatestRoomState: nil)
+        return messageWithPills
+    }
+
+    func createMessageWithMentionFromBobToAliceWithLatestRoomState() -> NSAttributedString {
+        let formattedMessage = NSMutableAttributedString(string: Inputs.messageStart)
+        formattedMessage.append(Inputs.mentionToAlice)
+        let session = FakeMXSession(myUserId: Inputs.aliceMember.userId)
+        let messageWithPills = PillsFormatter.insertPills(in: formattedMessage,
+                                                          withSession: session,
+                                                          eventFormatter: EventFormatter(matrixSession: session),
+                                                          event: FakeMXEvent(sender: Inputs.bobMember.userId),
+                                                          roomState: FakeMXRoomState(roomMembers: FakeMXRoomMembers()),
+                                                          andLatestRoomState: FakeMXRoomState(roomMembers: FakeMXUpdatedRoomMembers()))
         return messageWithPills
     }
 }
@@ -85,8 +115,26 @@ private class FakeMXSession: MXSession {
 }
 
 private class FakeMXRoomState: MXRoomState {
+    private let mockRoomMembers: MXRoomMembers
+
+    init(roomMembers: MXRoomMembers) {
+        mockRoomMembers = roomMembers
+
+        super.init()
+    }
+
     override var members: MXRoomMembers! {
-        return FakeMXRoomMembers()
+        return mockRoomMembers
+    }
+}
+
+private class FakeMXUpdatedRoomMembers: MXRoomMembers {
+    override var members: [MXRoomMember]! {
+        return [Inputs.aliceMemberAway, Inputs.bobMember]
+    }
+
+    override func member(withUserId userId: String!) -> MXRoomMember! {
+        return members.first(where: { $0.userId == userId })
     }
 }
 
@@ -101,9 +149,9 @@ private class FakeMXRoomMembers: MXRoomMembers {
 }
 
 private class FakeMXRoomMember: MXRoomMember {
-    private var mockDisplayname: String
+    private let mockDisplayname: String
     private var mockAvatarUrl: String
-    private var mockUserId: String
+    private let mockUserId: String
 
     init(displayname: String, avatarUrl: String, userId: String) {
         mockDisplayname = displayname
