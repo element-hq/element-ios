@@ -172,6 +172,14 @@ platform :ios do
       output_files: "riot.unit.test.html,riot.unit.test.report.junit.xml",
       open_report: !is_ci?
     )
+
+    slather(
+      cobertura_xml: true,
+      output_directory: "./build/test",
+      workspace: "Riot.xcworkspace",
+      proj: "Riot.xcodeproj",
+      scheme: "Riot",
+    )
   end
   
   desc "Run UI tests"
