@@ -7135,6 +7135,10 @@ public class VectorL10n: NSObject {
   public static var settingsThreePidsManagementInformationPart3: String { 
     return VectorL10n.tr("Vector", "settings_three_pids_management_information_part3") 
   }
+  /// TIMELINE
+  public static var settingsTimeline: String { 
+    return VectorL10n.tr("Vector", "settings_timeline") 
+  }
   /// Settings
   public static var settingsTitle: String { 
     return VectorL10n.tr("Vector", "settings_title") 
