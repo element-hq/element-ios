@@ -1028,11 +1028,11 @@ TableViewSectionsDelegate>
     return tableSection.rows.count;
 }
 
-- (MXKTableViewCellWithLabelAndSwitch*)getLabelAndSwitchCell:(UITableView*)tableview forIndexPath:(NSIndexPath *)indexPath
+- (MXKTableViewCellWithLabelAndSwitch*)getLabelAndSwitchCell:(UITableView*)tableView forIndexPath:(NSIndexPath *)indexPath
 {
-    MXKTableViewCellWithLabelAndSwitch *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier] forIndexPath:indexPath];
+    MXKTableViewCellWithLabelAndSwitch *cell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier] forIndexPath:indexPath];
 
-    cell.mxkLabelLeadingConstraint.constant = cell.vc_separatorInset.left;
+    cell.mxkLabelLeadingConstraint.constant = tableView.vc_separatorInset.left;
     cell.mxkSwitchTrailingConstraint.constant = 15;
 
     cell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
