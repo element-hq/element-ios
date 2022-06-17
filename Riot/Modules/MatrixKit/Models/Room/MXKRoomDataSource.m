@@ -4362,7 +4362,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 #pragma mark - Use Only Latest Profiles
 
 /**
- Refreshes the avatars and display names if needed.
+ Refresh avatars and display names (AKA profiles) if needed.
  */
 - (void)refreshProfilesIfNeeded
 {

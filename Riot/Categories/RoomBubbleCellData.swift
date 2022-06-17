@@ -51,7 +51,7 @@ import Foundation
         super.refreshProfilesIfNeeded(latestRoomState)
 
         if #available(iOS 15.0, *), let attributedTextMessage = self.attributedTextMessage {
-            // Pills are displayed with the latest data regardless of avatar/displayname settings.
+            // Pills are displayed with the latest data regardless of `roomScreenUseOnlyLatestUserAvatarAndName`.
             PillsFormatter.refreshPills(in: attributedTextMessage, with: latestRoomState)
         }
     }
