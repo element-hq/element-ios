@@ -2306,7 +2306,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         {
             MXKTableViewCellWithLabelAndMXKImageView *roomPhotoCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier] forIndexPath:indexPath];
             
-            roomPhotoCell.mxkLabelLeadingConstraint.constant = roomPhotoCell.vc_separatorInset.left;
+            roomPhotoCell.mxkLabelLeadingConstraint.constant = tableView.vc_separatorInset.left;
             roomPhotoCell.mxkImageViewTrailingConstraint.constant = 10;
             
             roomPhotoCell.mxkImageViewWidthConstraint.constant = roomPhotoCell.mxkImageViewHeightConstraint.constant = 30;
@@ -2350,7 +2350,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         {
             TableViewCellWithLabelAndLargeTextView *roomTopicCell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsTopicCellViewIdentifier forIndexPath:indexPath];
             
-            roomTopicCell.labelLeadingConstraint.constant = roomTopicCell.vc_separatorInset.left;
+            roomTopicCell.labelLeadingConstraint.constant = tableView.vc_separatorInset.left;
             
             roomTopicCell.label.text = [VectorL10n roomDetailsTopic];
             
@@ -2382,7 +2382,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         {
             MXKTableViewCellWithLabelAndTextField *roomNameCell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsNameCellViewIdentifier forIndexPath:indexPath];
             
-            roomNameCell.mxkLabelLeadingConstraint.constant = roomNameCell.vc_separatorInset.left;
+            roomNameCell.mxkLabelLeadingConstraint.constant = tableView.vc_separatorInset.left;
             roomNameCell.mxkTextFieldLeadingConstraint.constant = 16;
             roomNameCell.mxkTextFieldTrailingConstraint.constant = 15;
             
@@ -2431,7 +2431,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             {
                 //  show a muti-checkbox cell
                 roomTagCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithCheckBoxes defaultReuseIdentifier] forIndexPath:indexPath];
-                roomTagCell.mainContainerLeadingConstraint.constant = roomTagCell.vc_separatorInset.left;
+                roomTagCell.mainContainerLeadingConstraint.constant = tableView.vc_separatorInset.left;
                 roomTagCell.checkBoxesNumber = 2;
                 roomTagCell.allowsMultipleSelection = NO;
                 roomTagCell.delegate = self;
@@ -2595,7 +2595,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         {
             TableViewCellWithCheckBoxAndLabel *roomAccessCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithCheckBoxAndLabel defaultReuseIdentifier] forIndexPath:indexPath];
             
-            roomAccessCell.checkBoxLeadingConstraint.constant = roomAccessCell.vc_separatorInset.left;
+            roomAccessCell.checkBoxLeadingConstraint.constant = tableView.vc_separatorInset.left;
             
             // Retrieve the potential updated values for joinRule and guestAccess
             NSString *joinRule = updatedItemsDict[kRoomSettingsJoinRuleKey];
@@ -2709,7 +2709,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     {
         TableViewCellWithCheckBoxAndLabel *historyVisibilityCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithCheckBoxAndLabel defaultReuseIdentifier] forIndexPath:indexPath];
         
-        historyVisibilityCell.checkBoxLeadingConstraint.constant = historyVisibilityCell.vc_separatorInset.left;
+        historyVisibilityCell.checkBoxLeadingConstraint.constant = tableView.vc_separatorInset.left;
         
         // Retrieve first the potential updated value for history visibility
         NSString *visibility = updatedItemsDict[kRoomSettingsHistoryVisibilityKey];
@@ -2773,7 +2773,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             NSString *currentValue = (addAddressTextField ? addAddressTextField.text : nil);
             
             addAddressCell.mxkLabelLeadingConstraint.constant = 0;
-            addAddressCell.mxkTextFieldLeadingConstraint.constant = addAddressCell.vc_separatorInset.left;
+            addAddressCell.mxkTextFieldLeadingConstraint.constant = tableView.vc_separatorInset.left;
             addAddressCell.mxkTextFieldTrailingConstraint.constant = 15;
             
             addAddressCell.mxkLabel.text = nil;
@@ -2874,7 +2874,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             NSString *currentValue = (addGroupTextField ? addGroupTextField.text : nil);
 
             addCommunityCell.mxkLabelLeadingConstraint.constant = 0;
-            addCommunityCell.mxkTextFieldLeadingConstraint.constant = addCommunityCell.vc_separatorInset.left;
+            addCommunityCell.mxkTextFieldLeadingConstraint.constant = tableView.vc_separatorInset.left;
             addCommunityCell.mxkTextFieldTrailingConstraint.constant = 15;
 
             addCommunityCell.mxkLabel.text = nil;
@@ -3074,11 +3074,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     return cell;
 }
 
-- (MXKTableViewCellWithLabelAndSwitch*)getLabelAndSwitchCell:(UITableView*)tableview forIndexPath:(NSIndexPath *)indexPath
+- (MXKTableViewCellWithLabelAndSwitch*)getLabelAndSwitchCell:(UITableView*)tableView forIndexPath:(NSIndexPath *)indexPath
 {
-    MXKTableViewCellWithLabelAndSwitch *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier] forIndexPath:indexPath];
+    MXKTableViewCellWithLabelAndSwitch *cell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier] forIndexPath:indexPath];
     
-    cell.mxkLabelLeadingConstraint.constant = cell.vc_separatorInset.left;
+    cell.mxkLabelLeadingConstraint.constant = tableView.vc_separatorInset.left;
     cell.mxkSwitchTrailingConstraint.constant = 15;
     
     cell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
