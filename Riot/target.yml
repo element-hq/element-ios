@@ -38,7 +38,6 @@ targets:
     - target: CommonKit
     - package: Mapbox
     - package: OrderedCollections
-    - package: SwiftOGG
 
     configFiles:
       Debug: Debug.xcconfig
