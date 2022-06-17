@@ -186,7 +186,7 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
                 discussionType = .multipleDirectMessage
             }
         } else {
-            discussionType = .room(topic: roomSummary.topic)
+            discussionType = .room(topic: roomSummary.topic, canInvitePeople: bubbleData.canInvitePeople)
         }
         
         let displayName = roomSummary.displayname ?? ""

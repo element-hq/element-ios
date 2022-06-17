@@ -738,6 +738,13 @@
     return res;
 }
 
+- (BOOL)canInvitePeople
+{
+    NSInteger requiredLevel = roomDataSource.roomState.powerLevels.invite;
+    NSInteger myLevel = [roomDataSource.roomState.powerLevels powerLevelOfUserWithUserID:roomDataSource.mxSession.myUserId];
+    return myLevel >= requiredLevel;
+}
+
 - (NSArray*)events
 {
     NSMutableArray* eventsArray;

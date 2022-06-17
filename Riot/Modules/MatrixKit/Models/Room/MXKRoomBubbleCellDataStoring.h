@@ -113,6 +113,11 @@
 @property (nonatomic) BOOL shouldHideSenderInformation;
 
 /**
+ Flag indicating whether the user can invite people in this room.
+ */
+@property (nonatomic, readonly) BOOL canInvitePeople;
+
+/**
  Tell whether this bubble has nothing to display (neither a message nor an attachment).
  */
 @property (nonatomic, readonly) BOOL hasNoDisplay;
