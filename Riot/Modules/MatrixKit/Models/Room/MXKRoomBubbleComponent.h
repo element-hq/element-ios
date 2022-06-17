@@ -115,20 +115,29 @@ typedef enum : NSUInteger {
  
  @param event the event used to compose the bubble component.
  @param roomState the room state when the event occured.
+ @param latestRoomState the latest room state of the room containing this event.
  @param eventFormatter object used to format event into displayable string.
  @param session the related matrix session.
  @return the newly created instance.
  */
-- (instancetype)initWithEvent:(MXEvent*)event roomState:(MXRoomState*)roomState eventFormatter:(MXKEventFormatter*)eventFormatter session:(MXSession*)session;
+- (instancetype)initWithEvent:(MXEvent*)event
+                    roomState:(MXRoomState*)roomState
+           andLatestRoomState:(MXRoomState*)latestRoomState
+               eventFormatter:(MXKEventFormatter*)eventFormatter
+                      session:(MXSession*)session;
 
 /**
  Update the event because its sent state changed or it is has been redacted.
 
  @param event the new event data.
  @param roomState the up-to-date state of the room.
+ @param latestRoomState the latest room state of the room containing this event.
  @param session the related matrix session.
  */
-- (void)updateWithEvent:(MXEvent*)event roomState:(MXRoomState*)roomState session:(MXSession*)session;
+- (void)updateWithEvent:(MXEvent*)event
+              roomState:(MXRoomState*)roomState
+     andLatestRoomState:(MXRoomState*)latestRoomState
+                session:(MXSession*)session;
 
 @end
 

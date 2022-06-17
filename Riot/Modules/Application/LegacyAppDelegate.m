@@ -2680,7 +2680,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                     && !self.window.rootViewController.presentedViewController)
                 {
                     MXKEventFormatterError error;
-                    NSString* messageText = [eventFormatter stringFromEvent:event withRoomState:roomState error:&error];
+                    NSString* messageText = [eventFormatter stringFromEvent:event
+                                                              withRoomState:roomState
+                                                         andLatestRoomState:nil
+                                                                      error:&error];
                     if (messageText.length && (error == MXKEventFormatterErrorNone))
                     {
                         // Removing existing notification (if any)
