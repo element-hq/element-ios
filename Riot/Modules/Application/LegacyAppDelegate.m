@@ -254,6 +254,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
  */
 @property (nonatomic, assign, getter=isClearingCache) BOOL clearingCache;
 
+@property (nonatomic, strong) UserIndicatorCancel userIndicatorCancel;
+
 @end
 
 @implementation LegacyAppDelegate
@@ -338,28 +340,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)setIsOffline:(BOOL)isOffline
 {
-    if (!reachabilityObserver)
-    {
-        // Define reachability observer when isOffline property is set for the first time
-        reachabilityObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingReachabilityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-            
-            NSNumber *statusItem = note.userInfo[AFNetworkingReachabilityNotificationStatusItem];
-            if (statusItem)
-            {
-                AFNetworkReachabilityStatus reachabilityStatus = statusItem.integerValue;
-                if (reachabilityStatus == AFNetworkReachabilityStatusNotReachable)
-                {
-                    [AppDelegate theDelegate].isOffline = YES;
-                }
-                else
-                {
-                    [AppDelegate theDelegate].isOffline = NO;
-                }
-            }
-            
-        }];
-    }
-    
     if (_isOffline != isOffline)
     {
         _isOffline = isOffline;
@@ -575,13 +555,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
     // Stop reachability monitoring
-    if (reachabilityObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:reachabilityObserver];
-        reachabilityObserver = nil;
-    }
-    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:nil];
-    [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
+    [MXNetworkMonitor.shared stopMonitoring];
     
     // check if some media must be released to reduce the cache size
     [MXMediaManager reduceCacheSizeToInsert:0];
@@ -706,29 +680,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self registerUserConsentNotGivenNotification];
     
     // Start monitoring reachability
-    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-        
-        // Check whether monitoring is ready
-        if (status != AFNetworkReachabilityStatusUnknown)
-        {
-            if (status == AFNetworkReachabilityStatusNotReachable)
-            {
-                // Prompt user
-                [[AppDelegate theDelegate] showErrorAsAlert:[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorNotConnectedToInternet userInfo:@{NSLocalizedDescriptionKey : [VectorL10n networkOfflinePrompt]}]];
-            }
-            else
-            {
-                self.isOffline = NO;
-            }
-            
-            // Use a dispatch to avoid to kill ourselves
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:nil];
-            });
-        }
-        
+    [MXNetworkMonitor.shared startMonitoring];
+    reachabilityObserver = [[NSNotificationCenter defaultCenter] addObserverForName:MXNetworkMonitor.reachabilityDidChange object:nil queue:NSOperationQueue.mainQueue usingBlock:^(NSNotification * _Nonnull note) {
+        self.isOffline = !MXNetworkMonitor.shared.isReachable;
     }];
-    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     
     // Observe matrixKit error to alert user on error
     matrixKitErrorObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKErrorNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {

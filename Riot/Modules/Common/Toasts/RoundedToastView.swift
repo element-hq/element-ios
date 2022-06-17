@@ -115,6 +115,12 @@ class RoundedToastView: UIView, Themable {
         case .success:
             imageView.image = Asset.Images.checkmark.image
             return imageView
+        case .failure:
+            imageView.image = Asset.Images.errorIcon.image
+            return imageView
+        case .appState(let icon):
+            imageView.image = icon?.withRenderingMode(.alwaysTemplate)
+            return imageView
         }
     }
 }

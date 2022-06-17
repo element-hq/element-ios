@@ -20,6 +20,8 @@ struct ToastViewState {
     enum Style {
         case loading
         case success
+        case failure
+        case appState(icon: UIImage?)
     }
     
     let style: Style

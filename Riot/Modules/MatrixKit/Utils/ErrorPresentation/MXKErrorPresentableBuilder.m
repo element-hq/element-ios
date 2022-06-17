@@ -31,17 +31,28 @@
         return nil;
     }
     
-    NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
-    NSString *message = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
-    
-    if (!title)
+    NSString *title;
+    NSString *message;
+
+    if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet)
     {
-        title = [VectorL10n error];
+        title = [VectorL10n networkOfflineTitle];
+        message = [VectorL10n networkOfflineMessage];
     }
-    
-    if (!message)
+    else
     {
-        message = [VectorL10n errorCommonMessage];
+        title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
+        message = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
+        
+        if (!title)
+        {
+            title = [VectorL10n error];
+        }
+        
+        if (!message)
+        {
+            message = [VectorL10n errorCommonMessage];
+        }
     }
     
     return  [[MXKErrorViewModel alloc] initWithTitle:title message:message];
