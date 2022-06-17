@@ -62,6 +62,7 @@ typedef NS_ENUM(NSUInteger, SECTION_TAG)
     SECTION_TAG_IGNORED_USERS,
     SECTION_TAG_INTEGRATIONS,
     SECTION_TAG_USER_INTERFACE,
+    SECTION_TAG_TIMELINE,
     SECTION_TAG_PRESENCE,
     SECTION_TAG_ADVANCED,
     SECTION_TAG_ABOUT,
@@ -129,9 +130,14 @@ typedef NS_ENUM(NSUInteger, LOCAL_CONTACTS)
 typedef NS_ENUM(NSUInteger, USER_INTERFACE)
 {
     USER_INTERFACE_LANGUAGE_INDEX = 0,
-    USER_INTERFACE_THEME_INDEX,
-    USER_INTERFACE_TIMELINE_STYLE_INDEX,
-    USER_INTERFACE_SHOW_REDACTIONS_IN_ROOM_HISTORY
+    USER_INTERFACE_THEME_INDEX
+};
+
+typedef NS_ENUM(NSUInteger, TIMELINE)
+{
+    TIMELINE_STYLE_INDEX,
+    TIMELINE_SHOW_REDACTIONS_IN_ROOM_HISTORY_INDEX,
+    TIMELINE_USE_ONLY_LATEST_USER_AVATAR_AND_NAME_INDEX
 };
 
 typedef NS_ENUM(NSUInteger, IDENTITY_SERVER)
@@ -167,7 +173,6 @@ typedef NS_ENUM(NSUInteger, LABS_ENABLE)
     LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX = 0,
     LABS_ENABLE_THREADS_INDEX,
     LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS,
-    LABS_USE_ONLY_LATEST_USER_AVATAR_AND_NAME_INDEX,
     LABS_ENABLE_LIVE_LOCATION_SHARING
 };
 
@@ -511,15 +516,20 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     
     [sectionUserInterface addRowWithTag:USER_INTERFACE_LANGUAGE_INDEX];
     [sectionUserInterface addRowWithTag:USER_INTERFACE_THEME_INDEX];
-    
+        
+    [tmpSections addObject:sectionUserInterface];
+
+    Section *sectionTimeline = [Section sectionWithTag:SECTION_TAG_TIMELINE];
+    sectionTimeline.headerTitle = VectorL10n.settingsTimeline;
+
     if (BuildSettings.roomScreenAllowTimelineStyleConfiguration)
     {
-        [sectionUserInterface addRowWithTag:USER_INTERFACE_TIMELINE_STYLE_INDEX];
+        [sectionTimeline addRowWithTag:TIMELINE_STYLE_INDEX];
     }
+    [sectionTimeline addRowWithTag:TIMELINE_SHOW_REDACTIONS_IN_ROOM_HISTORY_INDEX];
+    [sectionTimeline addRowWithTag:TIMELINE_USE_ONLY_LATEST_USER_AVATAR_AND_NAME_INDEX];
 
-    [sectionUserInterface addRowWithTag:USER_INTERFACE_SHOW_REDACTIONS_IN_ROOM_HISTORY];
-        
-    [tmpSections addObject: sectionUserInterface];
+    [tmpSections addObject:sectionTimeline];
     
     if(BuildSettings.settingsScreenPresenceAllowConfiguration)
     {
@@ -585,7 +595,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         [sectionLabs addRowWithTag:LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX];
         [sectionLabs addRowWithTag:LABS_ENABLE_THREADS_INDEX];
         [sectionLabs addRowWithTag:LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS];
-        [sectionLabs addRowWithTag:LABS_USE_ONLY_LATEST_USER_AVATAR_AND_NAME_INDEX];
         if (BuildSettings.liveLocationSharingEnabled)
         {
             // Hide live location lab setting until it's ready to be release
@@ -2259,11 +2268,14 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
-        else if (row == USER_INTERFACE_TIMELINE_STYLE_INDEX)
+    }
+    else if (section == SECTION_TAG_TIMELINE)
+    {
+        if (row == TIMELINE_STYLE_INDEX)
         {
             cell = [self buildMessageBubblesCellForTableView:tableView atIndexPath:indexPath];
         }
-        else if (row == USER_INTERFACE_SHOW_REDACTIONS_IN_ROOM_HISTORY)
+        else if (row == TIMELINE_SHOW_REDACTIONS_IN_ROOM_HISTORY_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
@@ -2273,6 +2285,19 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowRedacted:) forControlEvents:UIControlEventTouchUpInside];
+
+            cell = labelAndSwitchCell;
+        }
+        else if (row == TIMELINE_USE_ONLY_LATEST_USER_AVATAR_AND_NAME_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+
+            labelAndSwitchCell.mxkLabel.text = VectorL10n.settingsLabsUseOnlyLatestUserAvatarAndName;
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.roomScreenUseOnlyLatestUserAvatarAndName;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleUseOnlyLatestUserAvatarAndName:) forControlEvents:UIControlEventTouchUpInside];
 
             cell = labelAndSwitchCell;
         }
@@ -2526,18 +2551,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         else if (row == LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS)
         {
             cell = [self buildAutoReportDecryptionErrorsCellForTableView:tableView atIndexPath:indexPath];
-        }
-        else if (row == LABS_USE_ONLY_LATEST_USER_AVATAR_AND_NAME_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-
-            labelAndSwitchCell.mxkLabel.text = VectorL10n.settingsLabsUseOnlyLatestUserAvatarAndName;
-            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.roomScreenUseOnlyLatestUserAvatarAndName;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleUseOnlyLatestUserAvatarAndName:) forControlEvents:UIControlEventTouchUpInside];
-
-            cell = labelAndSwitchCell;
         }
         else if (row == LABS_ENABLE_LIVE_LOCATION_SHARING)
         {

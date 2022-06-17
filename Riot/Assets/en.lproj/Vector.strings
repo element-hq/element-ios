@@ -570,6 +570,7 @@ Tap the + to start adding people.";
 "settings_identity_server_settings" = "IDENTITY SERVER";
 "settings_integrations" = "INTEGRATIONS";
 "settings_user_interface" = "USER INTERFACE";
+"settings_timeline" = "TIMELINE";
 "settings_ignored_users" = "IGNORED USERS";
 "settings_contacts" = "DEVICE CONTACTS";
 "settings_phone_contacts" = "PHONE CONTACTS";
