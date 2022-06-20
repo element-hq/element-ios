@@ -38,36 +38,6 @@ struct OnboardingSplashScreen: View {
     
     @ObservedObject var viewModel: OnboardingSplashScreenViewModel.Context
     
-    /// The main action buttons.
-    var buttons: some View {
-        VStack(spacing: 12) {
-            Button { viewModel.send(viewAction: .register) } label: {
-                Text(VectorL10n.onboardingSplashRegisterButtonTitle)
-            }
-            .buttonStyle(PrimaryActionButtonStyle())
-            
-            Button { viewModel.send(viewAction: .login) } label: {
-                Text(VectorL10n.onboardingSplashLoginButtonTitle)
-                    .font(theme.fonts.body)
-                    .padding(12)
-            }
-        }
-        .padding(.horizontal, 16)
-        .readableFrame()
-    }
-    
-    @ViewBuilder
-    var backgroundGradient: some View {
-        if !theme.isDark {
-            LinearGradient(gradient: viewModel.viewState.backgroundGradient,
-                           startPoint: .leading,
-                           endPoint: .trailing)
-                .flipsForRightToLeftLayoutDirection(true)
-        } else {
-            theme.colors.background
-        }
-    }
-    
     var body: some View {
         GeometryReader { geometry in
             VStack(alignment: .leading) {
@@ -107,10 +77,7 @@ struct OnboardingSplashScreen: View {
                     .frame(height: OnboardingMetrics.spacerHeight(in: geometry))
             }
             .frame(maxHeight: .infinity)
-            .background(backgroundGradient
-                .ignoresSafeArea()
-                .offset(x: pageOffset(in: geometry))
-            )
+            .background(background.ignoresSafeArea().offset(x: pageOffset(in: geometry)))
             .gesture(
                 DragGesture()
                     .onChanged(handleDragGestureChange)
@@ -124,6 +91,37 @@ struct OnboardingSplashScreen: View {
         }
         .onDisappear { stopTimer() }
         .track(screen: .welcome)
+    }
+    
+    /// The main action buttons.
+    var buttons: some View {
+        VStack(spacing: 12) {
+            Button { viewModel.send(viewAction: .register) } label: {
+                Text(VectorL10n.onboardingSplashRegisterButtonTitle)
+            }
+            .buttonStyle(PrimaryActionButtonStyle())
+            
+            Button { viewModel.send(viewAction: .login) } label: {
+                Text(VectorL10n.onboardingSplashLoginButtonTitle)
+                    .font(theme.fonts.body)
+                    .padding(12)
+            }
+        }
+        .padding(.horizontal, 16)
+        .readableFrame()
+    }
+    
+    @ViewBuilder
+    /// The view's background, showing a gradient in light mode and a solid colour in dark mode.
+    var background: some View {
+        if !theme.isDark {
+            LinearGradient(gradient: viewModel.viewState.backgroundGradient,
+                           startPoint: .leading,
+                           endPoint: .trailing)
+                .flipsForRightToLeftLayoutDirection(true)
+        } else {
+            theme.colors.background
+        }
     }
     
     // MARK: - Animation
