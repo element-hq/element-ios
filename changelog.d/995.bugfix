@@ -1,0 +1,1 @@
+Authentication: Trim whitespace and trailing slashes from the entered homeserver address.

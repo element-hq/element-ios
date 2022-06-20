@@ -78,10 +78,23 @@ enum LoginError: String, Error {
     case resetPasswordNotStarted
 }
 
-struct HomeserverAddress {
-    /// Ensures the address contains a scheme, otherwise makes it `https`.
+@objcMembers 
+class HomeserverAddress: NSObject {
+    /// Sanitizes a user entered homeserver address with the following rules
+    /// - Trim any whitespace.
+    /// - Lowercase the address.
+    /// - Ensure the address contains a scheme, otherwise make it `https`.
+    /// - Remove any trailing slashes.
     static func sanitized(_ address: String) -> String {
-        !address.contains("://") ? "https://\(address.lowercased())" : address.lowercased()
+        var address = address.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        
+        if !address.contains("://") {
+            address = "https://\(address)"
+        }
+        
+        address = address.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        
+        return address
     }
 }
 

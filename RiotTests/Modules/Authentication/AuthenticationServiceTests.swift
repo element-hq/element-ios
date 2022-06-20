@@ -349,4 +349,27 @@ import XCTest
         XCTAssertFalse(forgotPasswordString.contains(password), "The password must not be included in any strings.")
         XCTAssertFalse(changePasswordString.contains(password), "The password must not be included in any strings.")
     }
+    
+    func testHomeserverAddressSanitization() {
+        let basicAddress = "matrix.org"
+        let httpAddress = "http://localhost"
+        let trailingSlashAddress = "https://matrix.example.com/"
+        let whitespaceAddress = " https://matrix.example.com/  "
+        let validAddress = "https://matrix.example.com"
+        let validAddressWithPort = "https://matrix.example.com:8484"
+        
+        let sanitizedBasicAddress = HomeserverAddress.sanitized(basicAddress)
+        let sanitizedHTTPAddress = HomeserverAddress.sanitized(httpAddress)
+        let sanitizedTrailingSlashAddress = HomeserverAddress.sanitized(trailingSlashAddress)
+        let sanitizedWhitespaceAddress = HomeserverAddress.sanitized(whitespaceAddress)
+        let sanitizedValidAddress = HomeserverAddress.sanitized(validAddress)
+        let sanitizedValidAddressWithPort = HomeserverAddress.sanitized(validAddressWithPort)
+        
+        XCTAssertEqual(sanitizedBasicAddress, "https://matrix.org")
+        XCTAssertEqual(sanitizedHTTPAddress, "http://localhost")
+        XCTAssertEqual(sanitizedTrailingSlashAddress, "https://matrix.example.com")
+        XCTAssertEqual(sanitizedWhitespaceAddress, "https://matrix.example.com")
+        XCTAssertEqual(sanitizedValidAddress, validAddress)
+        XCTAssertEqual(sanitizedValidAddressWithPort, validAddressWithPort)
+    }
 }

@@ -53,6 +53,7 @@ targets:
     - path: ../Riot/Modules/MatrixKit
       excludes:
         - "**/MXKAuthenticationRecaptchaWebView.*"
+        - "**/MXKAuthenticationViewController.*"
     - path: ../Riot/Modules/Analytics
     - path: ../Riot/Managers/UserSessions
     - path: ../Riot/Managers/AppInfo/
