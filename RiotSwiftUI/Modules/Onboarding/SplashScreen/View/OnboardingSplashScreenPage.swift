@@ -34,7 +34,9 @@ struct OnboardingSplashScreenPage: View {
             Image(theme.isDark ? content.darkImage.name : content.image.name)
                 .resizable()
                 .scaledToFit()
-                .frame(maxWidth: 300)
+                .frame(maxWidth: 310) // This value is problematic. 300 results in dropped frames
+                                      // on iPhone 12/13 Mini. 305 the same on iPhone 12/13. As of
+                                      // iOS 15, 310 seems fine on all supported screen widths 🤞.
                 .padding(20)
                 .accessibilityHidden(true)
             
