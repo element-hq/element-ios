@@ -18,7 +18,6 @@ import SwiftUI
 
 /// Metrics used across the entire onboarding flow.
 struct OnboardingMetrics {
-    static let maxContentWidth: CGFloat = 600
     static let maxContentHeight: CGFloat = 750
     
     /// The padding used between the top of the main content and the navigation bar.
