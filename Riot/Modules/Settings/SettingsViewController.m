@@ -597,7 +597,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         [sectionLabs addRowWithTag:LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS];
         if (BuildSettings.liveLocationSharingEnabled)
         {
-            // Hide live location lab setting until it's ready to be release
             [sectionLabs addRowWithTag:LABS_ENABLE_LIVE_LOCATION_SHARING];
         }
         sectionLabs.headerTitle = [VectorL10n settingsLabs];

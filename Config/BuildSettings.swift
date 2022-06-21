@@ -426,8 +426,7 @@ final class BuildSettings: NSObject {
         guard self.locationSharingEnabled else {
             return false
         }
-        
-        // Do not enable live location sharing atm
-        return false
+
+        return true
     }
 }
