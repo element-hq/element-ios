@@ -130,8 +130,8 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
         playbackView.waveformView.addGestureRecognizer(tapGesture)
         tapGesture.delegate = self
         self.tapGesture = tapGesture
-        primaryRecordButton.accessibilityLabel = NSLocalizedString("room_accessibility_record_voice_message", tableName: "Vector", comment: "A11y label for the Record Voice Message button.")
-        primaryRecordButton.accessibilityHint = NSLocalizedString("room_accessibility_record_voice_message_hint", tableName: "Vector", comment: "A11y hint for the Record Voice Message button.")
+        primaryRecordButton.accessibilityLabel = VectorL10n.roomAccessibilityRecordVoiceMessage
+        primaryRecordButton.accessibilityHint = VectorL10n.roomAccessibilityRecordVoiceMessageHint
         
         updateUIWithDetails(VoiceMessageToolbarViewDetails(), animated: false)
     }
