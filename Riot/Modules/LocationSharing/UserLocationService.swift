@@ -52,7 +52,7 @@ class UserLocationService: UserLocationServiceProtocol {
     // MARK: - Setup
         
     init(session: MXSession) {
-        self.locationManager = LocationManager(accuracy: .full, allowsBackgroundLocationUpdates: true)
+        self.locationManager = LocationManager(accuracy: .full, allowsBackgroundLocationUpdates: BuildSettings.locationSharingEnabled)
         self.session = session
     }
     
