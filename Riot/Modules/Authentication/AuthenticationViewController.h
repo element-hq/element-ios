@@ -73,4 +73,9 @@
                          andPassword:(NSString * _Nullable)password
                orSSOIdentityProvider:(SSOIdentityProvider * _Nullable)identityProvider;
 
+/**
+ Notifies the delegate that the user would like to clear all data following a soft logout.
+ @param authenticationViewController The view controller that the user was shown.
+ */
+- (void)authenticationViewControllerDidRequestClearAllData:(AuthenticationViewController * _Nonnull)authenticationViewController;
 @end;

@@ -487,9 +487,15 @@
 {
     MXLogDebug(@"[MasterTabBarController] showAuthenticationScreenAfterSoftLogout");
     
-    AuthenticationService.shared.softLogoutCredentials = credentials;
-    
-    [self showOnboardingFlowAndResetSessionFlags:NO];
+    // This method can be called after the user chooses to clear their data as the MXSession
+    // is opened to call logout from. So we only set the credentials when authentication isn't
+    // in progress to prevent a second soft logout screen being shown.
+    if (!self.onboardingCoordinatorBridgePresenter && !self.isOnboardingCoordinatorPreparing)
+    {
+        AuthenticationService.shared.softLogoutCredentials = credentials;
+        
+        [self showOnboardingFlowAndResetSessionFlags:NO];
+    }
 }
 
 - (void)showOnboardingFlowAndResetSessionFlags:(BOOL)resetSessionFlags
