@@ -595,9 +595,8 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         [sectionLabs addRowWithTag:LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX];
         [sectionLabs addRowWithTag:LABS_ENABLE_THREADS_INDEX];
         [sectionLabs addRowWithTag:LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS];
-        if (BuildSettings.liveLocationSharingEnabled)
+        if (BuildSettings.locationSharingEnabled)
         {
-            // Hide live location lab setting until it's ready to be release
             [sectionLabs addRowWithTag:LABS_ENABLE_LIVE_LOCATION_SHARING];
         }
         sectionLabs.headerTitle = [VectorL10n settingsLabs];
