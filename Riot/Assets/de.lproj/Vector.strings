@@ -1622,8 +1622,6 @@
 // MARK: Threads
 "room_thread_title" = "Thread";
 "room_accessibility_thread_more" = "Mehr";
-room_accessibility_record_voice_message = "Sprachnachricht aufnehmen";
-room_accessibility_record_voice_message_hint = "Doppeltippen und halten um aufzunehmen.";
 "room_accessibility_threads" = "Threads";
 "room_event_copy_link_info" = "Link in die Zwischenablage kopiert.";
 "room_event_action_reply_in_thread" = "Thread";
