@@ -248,7 +248,9 @@ final class RoomInfoListViewController: UIViewController {
         }
         
         self.title = ""
-        
+        self.vc_removeBackTitle()
+        self.navigationItem.backButtonTitle = VectorL10n.back
+
         mainTableView.register(headerFooterViewType: TextViewTableViewHeaderFooterView.self)
         mainTableView.sectionHeaderHeight = UITableView.automaticDimension
         mainTableView.estimatedSectionHeaderHeight = 50
