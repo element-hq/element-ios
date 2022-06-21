@@ -62,7 +62,6 @@ final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinator
         self.canPresentAdditionalScreens = parameters.canPresentAdditionalScreens
         
         let authenticationViewController = AuthenticationViewController()
-        authenticationViewController.softLogoutCredentials = authenticationService.softLogoutCredentials
         self.authenticationViewController = authenticationViewController
         
         // Preload the view as this can a second and lock up the UI at presentation.
@@ -77,6 +76,8 @@ final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinator
     func start() {
         // Listen to the end of the authentication flow.
         authenticationViewController.authVCDelegate = self
+        // Set (or clear) any soft-logout credentials.
+        authenticationViewController.softLogoutCredentials = authenticationService.softLogoutCredentials
         // Listen for changes from deep links.
         AuthenticationService.shared.delegate = self
     }
@@ -206,6 +207,10 @@ extension LegacyAuthenticationCoordinator: AuthenticationViewControllerDelegate 
         callback?(.didLogin(session: session,
                             authenticationFlow: authenticationViewController.authType.flow,
                             authenticationType: authenticationType))
+    }
+    
+    func authenticationViewControllerDidRequestClearAllData(_ authenticationViewController: AuthenticationViewController) {
+        callback?(.clearAllData)
     }
 }
 

@@ -264,7 +264,15 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
                 self.authenticationCoordinator(coordinator, didLoginWith: session, and: authenticationFlow, using: authenticationType)
             case .didComplete:
                 self.authenticationCoordinatorDidComplete(coordinator)
-            case .didStart, .clearAllData, .cancel:
+            case .clearAllData:
+                self.showClearAllDataConfirmation {
+                    MXLog.debug("[OnboardingCoordinator] showLegacyAuthenticationScreen: Clear all data after soft logout")
+                    self.authenticationService.reset()
+                    self.authenticationFinished = false
+                    self.cancelAuthentication(flow: .login)
+                    AppDelegate.theDelegate().logoutSendingRequestServer(true, completion: nil)
+                }
+            case .didStart, .cancel:
                 // These results are only sent by the new flow.
                 break
             }
@@ -606,9 +614,9 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
                                                 message: VectorL10n.authSoftlogoutClearDataSignOutMsg,
                                                 preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil))
-        alertController.addAction(UIAlertAction(title: VectorL10n.authSoftlogoutClearDataSignOut, style: .default, handler: { action in
+        alertController.addAction(UIAlertAction(title: VectorL10n.authSoftlogoutClearDataSignOut, style: .destructive) { action in
             confirmed?()
-        }))
+        })
         navigationRouter.present(alertController, animated: true)
     }
 }
