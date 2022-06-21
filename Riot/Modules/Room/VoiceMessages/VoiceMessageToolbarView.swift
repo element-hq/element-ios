@@ -16,7 +16,6 @@
 
 import UIKit
 import Reusable
-import SwiftUI
 
 protocol VoiceMessageToolbarViewDelegate: AnyObject {
     func voiceMessageToolbarViewDidRequestRecordingStart(_ toolbarView: VoiceMessageToolbarView)
