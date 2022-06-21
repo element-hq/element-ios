@@ -3662,22 +3662,6 @@ static CGSize kThreadListBarButtonItemImageSize;
             }]];
         }
 
-        if (selectedEvent.sentState == MXEventSentStateSent &&
-            selectedEvent.eventType != MXEventTypePollStart &&
-            !selectedEvent.location)
-        {
-            [self.eventMenuBuilder addItemWithType:EventMenuItemTypeForward
-                                            action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
-                                                                            style:UIAlertActionStyleDefault
-                                                                          handler:^(UIAlertAction * action) {
-                MXStrongifyAndReturnIfNil(self);
-
-                [self cancelEventSelection];
-
-                [self presentEventForwardingDialogForSelectedEvent:selectedEvent];
-            }]];
-        }
-
         if (!isJitsiCallEvent && selectedEvent.eventType != MXEventTypePollStart)
         {
             [self.eventMenuBuilder addItemWithType:EventMenuItemTypeQuote
@@ -3696,7 +3680,10 @@ static CGSize kThreadListBarButtonItemImageSize;
             }]];
         }
         
-        if (selectedEvent.sentState == MXEventSentStateSent && selectedEvent.eventType != MXEventTypePollStart)
+        if (selectedEvent.sentState == MXEventSentStateSent &&
+            selectedEvent.eventType != MXEventTypePollStart &&
+            // Forwarding of live-location shares still to be implemented
+            selectedEvent.eventType != MXEventTypeBeaconInfo)
         {
             [self.eventMenuBuilder addItemWithType:EventMenuItemTypeForward
                                             action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
