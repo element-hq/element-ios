@@ -159,10 +159,7 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
 - (void)setTextMessage:(NSString *)textMessage
 {
-    if (!textMessage)
-    {
-        [self setAttributedTextMessage:nil];
-    }
+    [self setAttributedTextMessage:textMessage ? [[NSAttributedString alloc] initWithString:textMessage] : nil];
 }
 
 - (void)setAttributedTextMessage:(NSAttributedString *)attributedTextMessage

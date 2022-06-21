@@ -3687,9 +3687,10 @@ static CGSize kThreadListBarButtonItemImageSize;
                 MXStrongifyAndReturnIfNil(self);
                 
                 [self cancelEventSelection];
-                
+
                 // Quote the message a la Markdown into the input toolbar composer
-                self.inputToolbarView.textMessage = [NSString stringWithFormat:@"%@\n>%@\n\n", self.inputToolbarView.textMessage, selectedComponent.textMessage];
+                NSString *prefix = [self.inputToolbarView.textMessage length] ? [NSString stringWithFormat:@"%@\n", self.inputToolbarView.textMessage] : @"";
+                self.inputToolbarView.textMessage = [NSString stringWithFormat:@"%@>%@\n\n", prefix, selectedComponent.textMessage];
                 
                 // And display the keyboard
                 [self.inputToolbarView becomeFirstResponder];
