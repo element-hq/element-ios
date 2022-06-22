@@ -26,51 +26,34 @@ struct OnboardingSplashScreenPage: View {
     // MARK: Public
     /// The content that this page should display.
     let content: OnboardingSplashScreenPageContent
-    /// The height of the non-scrollable content in the splash screen.
-    let overlayHeight: CGFloat
     
     // MARK: - Views
     
-    @ViewBuilder
-    var backgroundGradient: some View {
-        if !theme.isDark {
-            LinearGradient(gradient: content.gradient, startPoint: .leading, endPoint: .trailing)
-                .flipsForRightToLeftLayoutDirection(true)
-        }
-    }
-    
     var body: some View {
         VStack {
-            VStack {
-                Image(theme.isDark ? content.darkImage.name : content.image.name)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: 300)
-                    .padding(20)
-                    .accessibilityHidden(true)
-                
-                VStack(spacing: 8) {
-                    OnboardingTintedFullStopText(content.title)
-                        .font(theme.fonts.title2B)
-                        .foregroundColor(theme.colors.primaryContent)
-                    Text(content.message)
-                        .font(theme.fonts.body)
-                        .foregroundColor(theme.colors.secondaryContent)
-                        .multilineTextAlignment(.center)
-                }
-                .padding(.bottom)
-                
-                Spacer()
-                
-                // Prevent the content from clashing with the overlay content.
-                Spacer().frame(maxHeight: overlayHeight)
+            Image(theme.isDark ? content.darkImage.name : content.image.name)
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: 310) // This value is problematic. 300 results in dropped frames
+                                      // on iPhone 12/13 Mini. 305 the same on iPhone 12/13. As of
+                                      // iOS 15, 310 seems fine on all supported screen widths 🤞.
+                .padding(20)
+                .accessibilityHidden(true)
+            
+            VStack(spacing: 8) {
+                OnboardingTintedFullStopText(content.title)
+                    .font(theme.fonts.title2B)
+                    .foregroundColor(theme.colors.primaryContent)
+                Text(content.message)
+                    .font(theme.fonts.body)
+                    .foregroundColor(theme.colors.secondaryContent)
+                    .multilineTextAlignment(.center)
             }
-            .padding(.horizontal, 16)
-            .frame(maxWidth: OnboardingMetrics.maxContentWidth,
-                   maxHeight: OnboardingMetrics.maxContentHeight)
+            .fixedSize(horizontal: false, vertical: true)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(backgroundGradient.ignoresSafeArea())
+        .padding(.bottom)
+        .padding(.horizontal, 16)
+        .readableFrame()
     }
 }
 
@@ -78,7 +61,7 @@ struct OnboardingSplashScreenPage_Previews: PreviewProvider {
     static let content = OnboardingSplashScreenViewState().content
     static var previews: some View {
         ForEach(0..<content.count, id:\.self) { index in
-            OnboardingSplashScreenPage(content: content[index], overlayHeight: 200)
+            OnboardingSplashScreenPage(content: content[index])
         }
     }
 }

@@ -29,8 +29,6 @@ struct OnboardingSplashScreen: View {
     private var isLeftToRight: Bool { layoutDirection == .leftToRight }
     private var pageCount: Int { viewModel.viewState.content.count }
     
-    /// The dimensions of the stack with the action buttons and page indicator.
-    @State private var overlayFrame: CGRect = .zero
     /// A timer to automatically animate the pages.
     @State private var pageTimer: Timer?
     /// The amount of offset to apply when a drag gesture is in progress.
@@ -39,6 +37,61 @@ struct OnboardingSplashScreen: View {
     // MARK: Public
     
     @ObservedObject var viewModel: OnboardingSplashScreenViewModel.Context
+    
+    var body: some View {
+        GeometryReader { geometry in
+            VStack(alignment: .leading) {
+                Spacer()
+                    .frame(height: OnboardingMetrics.spacerHeight(in: geometry))
+                
+                // The main content of the carousel
+                HStack(alignment: .top, spacing: 0) {
+                    
+                    // Add a hidden page at the start of the carousel duplicating the content of the last page
+                    OnboardingSplashScreenPage(content: viewModel.viewState.content[pageCount - 1])
+                        .frame(width: geometry.size.width)
+                    
+                    ForEach(0..<pageCount, id: \.self) { index in
+                        OnboardingSplashScreenPage(content: viewModel.viewState.content[index])
+                            .frame(width: geometry.size.width)
+                    }
+                    
+                }
+                .offset(x: pageOffset(in: geometry))
+                
+                Spacer()
+                
+                OnboardingSplashScreenPageIndicator(pageCount: pageCount,
+                                                    pageIndex: viewModel.pageIndex)
+                .frame(width: geometry.size.width)
+                .padding(.bottom)
+                
+                Spacer()
+                
+                buttons
+                    .frame(width: geometry.size.width)
+                    .padding(.bottom, OnboardingMetrics.actionButtonBottomPadding)
+                    .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
+                
+                Spacer()
+                    .frame(height: OnboardingMetrics.spacerHeight(in: geometry))
+            }
+            .frame(maxHeight: .infinity)
+            .background(background.ignoresSafeArea().offset(x: pageOffset(in: geometry)))
+            .gesture(
+                DragGesture()
+                    .onChanged(handleDragGestureChange)
+                    .onEnded { handleDragGestureEnded($0, viewSize: geometry.size) }
+            )
+        }
+        .accentColor(theme.colors.accent)
+        .navigationBarHidden(true)
+        .onAppear {
+            startTimer()
+        }
+        .onDisappear { stopTimer() }
+        .track(screen: .welcome)
+    }
     
     /// The main action buttons.
     var buttons: some View {
@@ -54,68 +107,21 @@ struct OnboardingSplashScreen: View {
                     .padding(12)
             }
         }
+        .padding(.horizontal, 16)
+        .readableFrame()
     }
     
-    /// The only part of the UI that isn't inside of the carousel.
-    var overlay: some View {
-        VStack(spacing: 50) {
-            Color.clear
-            Color.clear
-            
-            VStack {
-                OnboardingSplashScreenPageIndicator(pageCount: pageCount,
-                                                    pageIndex: viewModel.pageIndex)
-                Spacer()
-                
-                buttons
-                    .padding(.horizontal, 16)
-                    .frame(maxWidth: OnboardingMetrics.maxContentWidth)
-                Spacer()
-            }
-            .background(ViewFrameReader(frame: $overlayFrame))
+    @ViewBuilder
+    /// The view's background, showing a gradient in light mode and a solid colour in dark mode.
+    var background: some View {
+        if !theme.isDark {
+            LinearGradient(gradient: viewModel.viewState.backgroundGradient,
+                           startPoint: .leading,
+                           endPoint: .trailing)
+                .flipsForRightToLeftLayoutDirection(true)
+        } else {
+            theme.colors.background
         }
-    }
-    
-    var body: some View {
-        GeometryReader { geometry in
-            ZStack(alignment: .leading) {
-                
-                // The main content of the carousel
-                HStack(spacing: 0) {
-                    
-                    // Add a hidden page at the start of the carousel duplicating the content of the last page
-                    OnboardingSplashScreenPage(content: viewModel.viewState.content[pageCount - 1],
-                                               overlayHeight: overlayFrame.height + geometry.safeAreaInsets.bottom)
-                        .frame(width: geometry.size.width)
-                        .tag(-1)
-                    
-                    ForEach(0..<pageCount) { index in
-                        OnboardingSplashScreenPage(content: viewModel.viewState.content[index],
-                                                   overlayHeight: overlayFrame.height + geometry.safeAreaInsets.bottom)
-                            .frame(width: geometry.size.width)
-                            .tag(index)
-                    }
-                    
-                }
-                .offset(x: (CGFloat(viewModel.pageIndex + 1) * -geometry.size.width) + dragOffset)
-                .gesture(
-                    DragGesture()
-                        .onChanged(handleDragGestureChange)
-                        .onEnded { handleDragGestureEnded($0, viewSize: geometry.size) }
-                )
-                
-                overlay
-                    .frame(width: geometry.size.width)
-            }
-        }
-        .background(theme.colors.background.ignoresSafeArea())
-        .accentColor(theme.colors.accent)
-        .navigationBarHidden(true)
-        .onAppear {
-            startTimer()
-        }
-        .onDisappear { stopTimer() }
-        .track(screen: .welcome)
     }
     
     // MARK: - Animation
@@ -145,6 +151,11 @@ struct OnboardingSplashScreen: View {
         
         self.pageTimer = nil
         pageTimer.invalidate()
+    }
+    
+    /// The offset to apply to the `HStack` of pages.
+    private func pageOffset(in geometry: GeometryProxy) -> CGFloat {
+        (CGFloat(viewModel.pageIndex + 1) * -geometry.size.width) + dragOffset
     }
     
     // MARK: - Gestures
