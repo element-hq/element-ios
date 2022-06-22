@@ -4451,6 +4451,14 @@ public class VectorL10n: NSObject {
   public static var roomAccessibilityIntegrations: String { 
     return VectorL10n.tr("Vector", "room_accessibility_integrations") 
   }
+  /// Record Voice Message
+  public static var roomAccessibilityRecordVoiceMessage: String { 
+    return VectorL10n.tr("Vector", "room_accessibility_record_voice_message") 
+  }
+  /// Double-tap and hold to record.
+  public static var roomAccessibilityRecordVoiceMessageHint: String { 
+    return VectorL10n.tr("Vector", "room_accessibility_record_voice_message_hint") 
+  }
   /// Search
   public static var roomAccessibilitySearch: String { 
     return VectorL10n.tr("Vector", "room_accessibility_search") 
