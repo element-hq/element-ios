@@ -190,10 +190,10 @@
 "settings_third_party_notices" = "Athugasemdir frá þriðja aðila";
 "settings_send_crash_report" = "Senda nafnlausar hrunskýrslur og upplýsingar um notkun";
 "settings_clear_cache" = "Hreinsa skyndiminni";
-"settings_change_password" = "Breyta Matrix-lykilorði";
-"settings_old_password" = "eldra lykilorð";
-"settings_new_password" = "nýtt lykilorð";
-"settings_confirm_password" = "staðfestu lykilorð";
+"settings_change_password" = "Breyta lykilorði";
+"settings_old_password" = "Eldra lykilorð";
+"settings_new_password" = "Nýtt lykilorð";
+"settings_confirm_password" = "Staðfestu lykilorðið";
 "settings_fail_to_update_password" = "Mistókst að uppfæra Matrix-lykilorð";
 "settings_password_updated" = "Matrix-lykilorðið þitt hefur verið uppfært";
 "settings_crypto_device_name" = "Nafn á setu: ";
@@ -1968,3 +1968,151 @@
 "settings_labs_enable_ringing_for_group_calls" = "Hringing fyrir hópsímtöl";
 "onboarding_use_case_message" = "Við munum hjálpa þér að tengjast.";
 "callbar_only_single_active_group" = "Ýttu til að taka þátt í hópsímtalinu (%@)";
+"call_video_with_user" = "Myndsímtal við %@";
+"notice_room_history_visible_to_members_from_joined_point_by_you_for_dm" = "Þú gerðir skilaboð héðan í frá sýnileg fyrir alla meðlimi spjallrásarinnar síðan þeir skráðu sig.";
+"notice_room_history_visible_to_members_from_joined_point_by_you" = "Þú gerðir ferilskrá spjallrásar héðan í frá sýnilega fyrir alla meðlimi spjallrásarinnar síðan þeir skráðu sig.";
+"notice_room_history_visible_to_members_from_invited_point_by_you_for_dm" = "Þú gerðir skilaboð héðan í frá sýnileg fyrir alla meðlimi spjallrásarinnar síðan þeim var boðið.";
+"notice_room_history_visible_to_members_from_invited_point_by_you" = "Þú gerðir ferilskrá spjallrásar héðan í frá sýnilega fyrir alla meðlimi spjallrásarinnar síðan þeim var boðið.";
+"notice_room_history_visible_to_members_by_you_for_dm" = "Þú gerðir skilaboð héðan í frá sýnileg fyrir alla meðlimi spjallrásarinnar.";
+"notice_room_history_visible_to_members_by_you" = "Þú gerðir ferilskrá spjallrásar héðan í frá sýnilega fyrir alla meðlimi spjallrásarinnar.";
+"notice_room_history_visible_to_anyone_by_you" = "Þú gerðir ferilskrá spjallrásar héðan í frá sýnilega fyrir hvern sem er.";
+"ignore_user" = "Hunsa notanda";
+"location_sharing_live_timer_selector_long" = "í 8 klukkustundir";
+"location_sharing_live_timer_selector_medium" = "í 1 klukkustund";
+"location_sharing_live_timer_selector_short" = "í 15 mínútur";
+"location_sharing_live_list_item_stop_sharing_action" = "Hætta deilingu";
+"location_sharing_live_list_item_current_user_display_name" = "Þú";
+"location_sharing_live_list_item_last_update_invalid" = "Síðasta uppfærsla óþekkt";
+"location_sharing_live_list_item_last_update" = "Uppfært fyrir %@ síðan";
+"location_sharing_live_list_item_sharing_expired" = "Deikling er útrunnin";
+"location_sharing_live_viewer_title" = "Staðsetning";
+"location_sharing_live_map_callout_title" = "Deila staðsetningu";
+"location_sharing_pin_drop_share_title" = "Senda þessa staðsetningu";
+"location_sharing_static_share_title" = "Senda núverandi staðsetningu mína";
+"live_location_sharing_banner_stop" = "Stöðva";
+"live_location_sharing_banner_title" = "Staðsetning í rauntíma virkjuð";
+
+// MARK: Live location sharing
+
+"location_sharing_live_share_title" = "Deila staðsetningu í rauntíma";
+"location_sharing_allow_background_location_cancel_action" = "Ekki núna";
+"location_sharing_allow_background_location_validate_action" = "Stillingar";
+"location_sharing_allow_background_location_title" = "Leyfa aðgang";
+"side_menu_coach_message" = "Strjúktu til hægri eða ýttu til að sjá allar spjallrásir";
+"spaces_add_room_missing_permission_message" = "Þú hefur ekki heimild til að bæta spjallrásum í þetta svæði.";
+"spaces_creation_in_one_space" = "í 1 svæði";
+"spaces_creation_in_many_spaces" = "í %@ svæði";
+"spaces_creation_in_spacename_plus_many" = "í %@ + %@ svæði";
+"spaces_creation_in_spacename_plus_one" = "í %@ + 1 svæði";
+"spaces_creation_in_spacename" = "í %@";
+"spaces_creation_post_process_inviting_users" = "Býð %@ notendum";
+"spaces_creation_post_process_adding_rooms" = "Bæti við %@ spjallrásum";
+"spaces_creation_post_process_creating_room" = "Bý til %@";
+"spaces_creation_post_process_uploading_avatar" = "Sendi inn auðkennismynd";
+"spaces_creation_post_process_creating_space_task" = "Bý til %@";
+"spaces_creation_post_process_creating_space" = "Útbý svæði";
+"spaces_creation_invite_by_username_title" = "Bjóddu félögum þínu";
+"spaces_creation_invite_by_username" = "Bjóða með notandanafni";
+"spaces_creation_sharing_type_me_and_teammates_detail" = "Einkasvæði fyrir þig og félaga í teyminu þínu";
+"spaces_creation_sharing_type_me_and_teammates_title" = "Ég og félagar í teyminu mínu";
+"spaces_creation_sharing_type_just_me_detail" = "Einkasvæði til að skipuleggja spjallrásirnar þínar";
+"spaces_creation_sharing_type_just_me_title" = "Bara ég";
+"spaces_creation_sharing_type_title" = "Hverjum ertu að vinna með?";
+"spaces_creation_email_invites_email_title" = "Tölvupóstur";
+"spaces_creation_new_rooms_support" = "Aðstoð";
+"spaces_creation_new_rooms_random" = "Slembið";
+"spaces_creation_new_rooms_general" = "Almennt";
+"spaces_creation_new_rooms_room_name_title" = "Nafn spjallrásar";
+"spaces_creation_private_space_title" = "Einkasvæðið þitt";
+"spaces_creation_public_space_title" = "Opinbera svæðið þitt";
+"spaces_creation_address_already_exists" = "%@\ner þegar til";
+"spaces_creation_address_invalid_characters" = "%@\ner með ógilda stafi";
+"spaces_creation_address" = "Vistfang";
+"spaces_creation_settings_message" = "Bættu við nánari atriðum til að aðgreina þetta frá öðru. Þú getur breytt þessu hvenær sem er.";
+"spaces_creation_footer" = "Þú getur breytt þessu síðar";
+"spaces_creation_visibility_message" = "Til að ganga til liðs við fyrirliggjandi svæði þarftu boð.";
+"spaces_creation_visibility_title" = "Hvaða tegund af svæði viltu búa til?";
+
+// Mark: - Space Creation
+
+"spaces_creation_hint" = "Svæði eru ný leið til að hópa fólk og spjallrásir.";
+"space_topic" = "Lýsing";
+"space_public_join_rule_detail" = "Opið öllum, best fyrir dreifða hópa";
+"spaces_add_space" = "Bæta við svæði";
+"spaces_add_room" = "Bæta við spjallrás";
+"spaces_invite_people" = "Bjóða fólki";
+"space_private_join_rule_detail" = "Einungis gegn boði, best fyrir þig og lítinn hóp";
+"spaces_empty_space_title" = "Þetta svæði er ekki ennþá með neinar spjallrásir)";
+"spaces_explore_rooms_one_room" = "1 spjallrás";
+"spaces_explore_rooms_room_number" = "%@ spjallrásir";
+"spaces_create_space_title" = "Búa til svæði";
+"spaces_add_space_title" = "Búa til svæði";
+"room_invite_to_room_option_detail" = "Þau munu ekki vera hluti af %@.";
+"room_invite_to_room_option_title" = "Aðeins í þessa spjallrás";
+
+// Mark: - Room invite
+
+"room_invite_to_space_option_title" = "Í %@";
+
+// MARK: - Share invite link
+
+"share_invite_link_action" = "Deila boðstengli";
+"create_room_processing" = "Bý til spjallrás";
+"create_room_placeholder_address" = "#testroom:matrix.org";
+"create_room_section_footer_type_restricted" = "Hver sem er á svæðinu getur fundið og tekið þátt.";
+"create_room_section_footer_type_private" = "Aðeins fólk sem hefur verið boðið getur fundið og tekið þátt.";
+"create_room_type_restricted" = "Meðlimir svæðis";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "Þú munt tapa dulrituðu skilaboðunum þínum";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "notað öryggislykilinn þinn";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Ertu ekki með öryggisfrasann þinn? Þú getur ";
+
+// Room suggestion Settings
+"room_suggestion_settings_screen_nav_title" = "Stinga upp á spjallrás";
+"room_access_space_chooser_other_spaces_section" = "Önnur svæði eða spjallrásir";
+"room_access_settings_screen_setting_room_access" = "Stilla aðgang að spjallrás";
+"room_access_settings_screen_upgrade_alert_upgrading" = "Uppfæri spjallrás";
+"room_access_settings_screen_upgrade_alert_upgrade_button" = "Uppfæra";
+"room_access_settings_screen_upgrade_alert_message_no_param" = "Hver sem er í yfirsvæði mun geta fundið og tekið þátt í þessari spjallrás - ekki er þörf á að bjóða öllum handvirkt. Þú munt geta breytt þessu í stillingum spjallrásarinnar hvenær sem er.";
+"room_access_settings_screen_upgrade_alert_title" = "Uppfæra spjallrás";
+"room_access_settings_screen_public_message" = "Hver sem er getur fundið og tekið þátt.";
+"room_access_settings_screen_edit_spaces" = "Breyta svæðum";
+"room_access_settings_screen_upgrade_required" = "Uppfærsla er nauðsynleg";
+
+// Room Access Settings
+"room_access_settings_screen_nav_title" = "Aðgangur að spjallrás";
+"room_details_access_row_title" = "Aðgangur";
+"settings_presence" = "Viðvera";
+"settings_key_backup_button_connect" = "Tengja þessa setu við öryggisafrit af lykli";
+"settings_labs_enable_live_location_sharing" = "Deiling staðsetninga í rautíma - deildu staðsetningunni þinni í rauntíma (í virkri þróun, tímabundið haldast staðsetningar í ferli spjallrása)";
+"settings_ui_show_redactions_in_room_history" = "Birta frátökutákn fyrir fjarlægð skilaboð";
+"threads_beta_cancel" = "Ekki núna";
+"threads_beta_enable" = "Prófaðu það";
+"threads_beta_information_link" = "Kanna nánar";
+"threads_beta_title" = "Spjallþræðir";
+"threads_notice_done" = "Náði því";
+"onboarding_celebration_button" = "Hefjumst handa";
+"onboarding_celebration_message" = "Kjörstillingarnar þínar hafa verið vistaðar.";
+"onboarding_celebration_title" = "Nú ertu tilbúin(n)!";
+"onboarding_avatar_accessibility_label" = "Auðkennismynd";
+"onboarding_avatar_message" = "Þú getur breytt þessu hvenær sem er.";
+"onboarding_avatar_title" = "Bættu við auðkennismynd";
+"onboarding_display_name_hint" = "Þú getur breytt þessu síðar";
+"onboarding_display_name_placeholder" = "Birtingarnafn";
+"onboarding_display_name_title" = "Veldu birtingarnafn";
+"onboarding_personalization_skip" = "Sleppa þessu skrefi";
+"onboarding_personalization_save" = "Vista og halda áfram";
+"onboarding_congratulations_title" = "Til hamingju!";
+"saving" = "Vista";
+
+// Activities
+"loading" = "Hleð inn";
+"confirm" = "Staðfesta";
+"edit" = "Breyta";
+"suggest" = "Stinga upp á";
+"add" = "Bæta við";
+"existing" = "Fyrirliggjandi";
+"new_word" = "Nýtt";
+"stop" = "Stöðva";
+"joining" = "Gengur til liðs við spjallrás";
+// String for App Store
+"store_short_description" = "Öruggt dreifvinnsluspjall/VoIP";
