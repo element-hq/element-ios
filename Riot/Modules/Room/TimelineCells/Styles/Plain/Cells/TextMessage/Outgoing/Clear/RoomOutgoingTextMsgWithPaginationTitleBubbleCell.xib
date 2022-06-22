@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -91,7 +91,7 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DS2-xR-wnK">
-                        <rect key="frame" x="46" y="48" width="469" height="30"/>
+                        <rect key="frame" x="46" y="48" width="469" height="24"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                 </subviews>
@@ -113,7 +113,7 @@
                     <constraint firstAttribute="trailing" secondItem="vWC-jH-xa5" secondAttribute="trailing" constant="10" id="bFO-Fe-amS"/>
                     <constraint firstItem="DS2-xR-wnK" firstAttribute="top" secondItem="q9c-0p-QyP" secondAttribute="top" constant="-6" id="bf1-zi-i19"/>
                     <constraint firstItem="gJu-zj-Vro" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leadingMargin" constant="-8" id="eqX-nE-FoP"/>
-                    <constraint firstItem="DS2-xR-wnK" firstAttribute="bottom" secondItem="q9c-0p-QyP" secondAttribute="bottom" constant="6" id="h8B-NU-GPT"/>
+                    <constraint firstItem="DS2-xR-wnK" firstAttribute="bottom" secondItem="q9c-0p-QyP" secondAttribute="bottom" id="h8B-NU-GPT"/>
                     <constraint firstAttribute="trailing" secondItem="IOg-Kt-8vW" secondAttribute="trailing" constant="15" id="hQV-lO-7aQ"/>
                     <constraint firstItem="HTH-5n-MSU" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="65" id="mkw-3s-H8B"/>
                     <constraint firstItem="DS2-xR-wnK" firstAttribute="trailing" secondItem="q9c-0p-QyP" secondAttribute="trailing" id="nbd-Bl-67J"/>

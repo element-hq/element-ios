@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,7 +13,7 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="105"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WmY-Jw-mqv" id="ef1-Tq-U3Z">
-                <rect key="frame" x="0.0" y="0.0" width="600" height="104.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="600" height="105"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vWC-jH-xa5" userLabel="Pagination Title View">
@@ -58,7 +56,7 @@
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JET-AO-mol">
-                        <rect key="frame" x="41" y="65" width="28" height="39.5"/>
+                        <rect key="frame" x="41" y="65" width="28" height="40"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration" identifier="EncryptionStatusView"/>
                         <constraints>
@@ -77,7 +75,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="text message" translatesAutoresizingMaskIntoConstraints="NO" id="HTH-5n-MSU" customClass="MXKMessageTextView">
-                        <rect key="frame" x="62" y="65" width="102" height="39.5"/>
+                        <rect key="frame" x="62" y="65" width="102" height="40"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration" identifier="MessageTextView"/>
                         <constraints>
@@ -89,7 +87,7 @@
                         <dataDetectorType key="dataDetectorTypes" link="YES"/>
                     </textView>
                     <view hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IOg-Kt-8vW">
-                        <rect key="frame" x="515" y="54" width="70" height="50.5"/>
+                        <rect key="frame" x="515" y="54" width="70" height="51"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration" identifier="BubbleInfoContainer"/>
                         <constraints>
@@ -97,11 +95,11 @@
                         </constraints>
                     </view>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gJu-zj-Vro">
-                        <rect key="frame" x="12" y="3" width="576" height="99"/>
+                        <rect key="frame" x="8" y="3" width="584" height="99"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DS2-xR-wnK">
-                        <rect key="frame" x="57" y="48" width="458" height="30"/>
+                        <rect key="frame" x="57" y="48" width="458" height="24"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                 </subviews>
@@ -125,7 +123,7 @@
                     <constraint firstItem="DS2-xR-wnK" firstAttribute="top" secondItem="q9c-0p-QyP" secondAttribute="top" constant="-6" id="bf1-zi-i19"/>
                     <constraint firstItem="JET-AO-mol" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="41" id="cxc-K1-Grz"/>
                     <constraint firstItem="gJu-zj-Vro" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leadingMargin" constant="-8" id="eqX-nE-FoP"/>
-                    <constraint firstItem="DS2-xR-wnK" firstAttribute="bottom" secondItem="q9c-0p-QyP" secondAttribute="bottom" constant="6" id="h8B-NU-GPT"/>
+                    <constraint firstItem="DS2-xR-wnK" firstAttribute="bottom" secondItem="q9c-0p-QyP" secondAttribute="bottom" id="h8B-NU-GPT"/>
                     <constraint firstAttribute="trailing" secondItem="IOg-Kt-8vW" secondAttribute="trailing" constant="15" id="hQV-lO-7aQ"/>
                     <constraint firstItem="JET-AO-mol" firstAttribute="top" secondItem="vWC-jH-xa5" secondAttribute="bottom" constant="31" id="k3m-In-hzr"/>
                     <constraint firstItem="HTH-5n-MSU" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="65" id="mkw-3s-H8B"/>
@@ -156,6 +154,7 @@
                 <outlet property="userNameLabel" destination="q9c-0p-QyP" id="JId-R7-LoM"/>
                 <outlet property="userNameTapGestureMaskView" destination="DS2-xR-wnK" id="1BS-to-kX8"/>
             </connections>
+            <point key="canvasLocation" x="133" y="99"/>
         </tableViewCell>
     </objects>
 </document>
