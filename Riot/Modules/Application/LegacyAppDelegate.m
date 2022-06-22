@@ -2350,6 +2350,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         }
 
         if (mainSession.vc_homeserverConfiguration.encryption.isSecureBackupRequired
+            && mainSession.state == MXSessionStateRunning
             && mainSession.vc_canSetupSecureBackup)
         {
             // This only happens at the first login
