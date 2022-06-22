@@ -66,7 +66,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="595" height="31"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ohU-Sc-mgb">
-                                    <rect key="frame" x="46" y="4" width="534" height="30"/>
+                                    <rect key="frame" x="46" y="4" width="534" height="27"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="meG-P8-61b">
@@ -85,7 +85,7 @@
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="meG-P8-61b" secondAttribute="bottom" constant="3" id="HDT-eS-UWo"/>
                                 <constraint firstItem="ohU-Sc-mgb" firstAttribute="trailing" secondItem="meG-P8-61b" secondAttribute="trailing" id="Lbz-vD-hax"/>
-                                <constraint firstItem="ohU-Sc-mgb" firstAttribute="bottom" secondItem="meG-P8-61b" secondAttribute="bottom" constant="6" id="U50-ZB-dRG"/>
+                                <constraint firstItem="ohU-Sc-mgb" firstAttribute="bottom" secondItem="meG-P8-61b" secondAttribute="bottom" constant="3" id="U50-ZB-dRG"/>
                                 <constraint firstItem="meG-P8-61b" firstAttribute="top" secondItem="w0C-6a-f5M" secondAttribute="top" constant="10" id="baE-tR-0Ck"/>
                                 <constraint firstItem="ohU-Sc-mgb" firstAttribute="leading" secondItem="meG-P8-61b" secondAttribute="leading" constant="-10" id="ktD-JC-hfG"/>
                                 <constraint firstItem="ohU-Sc-mgb" firstAttribute="top" secondItem="meG-P8-61b" secondAttribute="top" constant="-6" id="s5V-Fj-iNL"/>
