@@ -1364,6 +1364,18 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
                             body = [VectorL10n noticeInvalidAttachment];
                             *error = MXKEventFormatterErrorUnsupported;
                         }
+                        else
+                        {
+                            NSDictionary *fileInfo = contentToUse[@"info"];
+                            if (fileInfo)
+                            {
+                                NSNumber *fileSize = fileInfo[@"size"];
+                                if (fileSize)
+                                {
+                                    body = [NSString stringWithFormat:@"%@ (%@)", body, [MXTools fileSizeToString: fileSize.longValue]];
+                                }
+                            }
+                        }
                     }
 
                     if (isHTML)
