@@ -66,9 +66,14 @@ struct AuthenticationLoginViewState: BindableState {
         !homeserver.ssoIdentityProviders.isEmpty
     }
     
-    /// `true` if it is possible to continue, otherwise `false`.
+    /// `true` if the username and password are ready to be submitted.
     var hasValidCredentials: Bool {
         !bindings.username.isEmpty && !bindings.password.isEmpty
+    }
+    
+    /// `true` if valid credentials have been entered and the homeserver is loaded.
+    var canSubmit: Bool {
+        hasValidCredentials && !isLoading
     }
 }
 
