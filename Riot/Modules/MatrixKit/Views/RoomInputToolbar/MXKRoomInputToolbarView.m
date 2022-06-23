@@ -1373,12 +1373,11 @@ NSString* MXKFileSizes_description(MXKFileSizes sizes)
         UIPasteboard *pasteboard = MXKPasteboardManager.shared.pasteboard;
         if (pasteboard.numberOfItems)
         {
-            for (NSDictionary* dict in pasteboard.items)
+            for (NSArray<NSString *> *types in [pasteboard pasteboardTypesForItemSet:nil])
             {
-                NSArray* allKeys = dict.allKeys;
-                for (NSString* key in allKeys)
+                for (NSString *type in types)
                 {
-                    NSString* MIMEType = (__bridge_transfer NSString *) UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)key, kUTTagClassMIMEType);
+                    NSString* MIMEType = (__bridge_transfer NSString *) UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)type, kUTTagClassMIMEType);
                     
                     if ([MIMEType hasPrefix:@"image/"] && [self.delegate respondsToSelector:@selector(roomInputToolbarView:sendImage:)])
                     {
