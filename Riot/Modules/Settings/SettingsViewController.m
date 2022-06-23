@@ -414,23 +414,13 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     {
         [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT];
     }
-    
-    if (@available(iOS 14.0, *)) {
-        // Don't display Global settings footer for iOS 14+
-    } else {
-        sectionNotificationSettings.footerTitle = [VectorL10n settingsGlobalSettingsInfo:AppInfo.current.displayName];
-    }
 
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX];
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_PIN_UNREAD_INDEX];
     
-    if (@available(iOS 14.0, *)) {
-        [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_DEFAULT_SETTINGS_INDEX];
-        [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_MENTION_AND_KEYWORDS_SETTINGS_INDEX];
-        [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX];
-    } else {
-        // Don't add new sections on pre iOS 14
-    }
+    [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_DEFAULT_SETTINGS_INDEX];
+    [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_MENTION_AND_KEYWORDS_SETTINGS_INDEX];
+    [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX];
 
     sectionNotificationSettings.headerTitle = [VectorL10n settingsNotifications];
     [tmpSections addObject:sectionNotificationSettings];
@@ -2941,18 +2931,16 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         }
         else if (section == SECTION_TAG_NOTIFICATIONS)
         {
-            if (@available(iOS 14.0, *)) {
-                switch (row) {
-                    case NOTIFICATION_SETTINGS_DEFAULT_SETTINGS_INDEX:
-                        [self showNotificationSettings:NotificationSettingsScreenDefaultNotifications];
-                        break;
-                    case NOTIFICATION_SETTINGS_MENTION_AND_KEYWORDS_SETTINGS_INDEX:
-                        [self showNotificationSettings:NotificationSettingsScreenMentionsAndKeywords];
-                        break;
-                    case NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX:
-                        [self showNotificationSettings:NotificationSettingsScreenOther];
-                        break;
-                }
+            switch (row) {
+                case NOTIFICATION_SETTINGS_DEFAULT_SETTINGS_INDEX:
+                    [self showNotificationSettings:NotificationSettingsScreenDefaultNotifications];
+                    break;
+                case NOTIFICATION_SETTINGS_MENTION_AND_KEYWORDS_SETTINGS_INDEX:
+                    [self showNotificationSettings:NotificationSettingsScreenMentionsAndKeywords];
+                    break;
+                case NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX:
+                    [self showNotificationSettings:NotificationSettingsScreenOther];
+                    break;
             }
         }
         

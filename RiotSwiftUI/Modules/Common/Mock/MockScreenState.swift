@@ -17,14 +17,12 @@
 import SwiftUI
 
 /// Used for mocking top level screens and their various states.
-@available(iOS 14.0, *)
 protocol MockScreenState {
     static var screenStates: [MockScreenState] { get }
     var screenType: Any.Type { get }
     var screenView: ([Any], AnyView) { get }
 }
 
-@available(iOS 14.0, *)
 extension MockScreenState {
     
     /// Get a list of the screens for every screen state.
@@ -60,7 +58,6 @@ extension MockScreenState {
     }
 }
 
-@available(iOS 14.0, *)
 extension MockScreenState where Self: CaseIterable {
     static var screenStates: [MockScreenState] {
         return Array(self.allCases)

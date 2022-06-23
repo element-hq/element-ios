@@ -30,7 +30,6 @@ import UIKit
 }
 
 /// Theme v2 for SwiftUI.
-@available(iOS 14.0, *)
 public protocol ThemeSwiftUIType {
     
     /// Colors object

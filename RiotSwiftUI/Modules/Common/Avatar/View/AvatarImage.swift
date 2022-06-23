@@ -17,7 +17,6 @@
 import SwiftUI
 import DesignKit
 
-@available(iOS 14.0, *)
 struct AvatarImage: View {
     
     @Environment(\.theme) var theme: ThemeSwiftUI
@@ -57,7 +56,6 @@ struct AvatarImage: View {
     }
 }
 
-@available(iOS 14.0, *)
 extension AvatarImage {
     init(avatarData: AvatarInputProtocol, size: AvatarSize) {
         self.init(
@@ -69,7 +67,6 @@ extension AvatarImage {
     }
 }
 
-@available(iOS 14.0, *)
 extension AvatarImage {
     func border(color: Color) -> some View {
         modifier(BorderModifier(color: color, borderWidth: 3, shape: Circle()))
@@ -82,7 +79,6 @@ extension AvatarImage {
     }
 }
 
-@available(iOS 14.0, *)
 struct AvatarImage_Previews: PreviewProvider {
     static let mxContentUri = "fakeUri"
     static let name = "Alice"

@@ -18,7 +18,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct SpaceCreationPostProcess: View {
 
     // MARK: - Properties
@@ -101,7 +100,6 @@ struct SpaceCreationPostProcess: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct SpaceCreationPostProcess_Previews: PreviewProvider {
     static let stateRenderer = MockSpaceCreationPostProcessScreenState.stateRenderer
     static var previews: some View {

@@ -17,7 +17,6 @@
 import Foundation
 import Combine
 
-@available(iOS 14.0, *)
 protocol RoomUpgradeServiceProtocol {
     var currentRoomId: String { get }
     var parentSpaceName: String? { get }

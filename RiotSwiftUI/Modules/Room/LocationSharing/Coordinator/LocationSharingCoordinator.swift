@@ -73,7 +73,6 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: LocationSharingCoordinatorParameters) {
         self.parameters = parameters
         
@@ -92,11 +91,6 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
     
     // MARK: - Public
     func start() {
-        guard #available(iOS 14.0, *) else {
-            MXLog.error("[LocationSharingCoordinator] start: Invalid iOS version, returning.")
-            return
-        }
-        
         locationSharingViewModel.completion = { [weak self] result in
             guard let self = self else { return }
             

@@ -77,24 +77,22 @@ final class SpaceCreationCoordinator: Coordinator {
     // MARK: - Public
     
     func start() {
-        if #available(iOS 14.0, *) {
-            MXLog.debug("[SpaceCreationCoordinator] did start.")
-            
-            let rootCoordinator = self.createMenuCoordinator(with: spaceVisibilityMenuParameters)
-            rootCoordinator.start()
-            
-            self.add(childCoordinator: rootCoordinator)
-            
-            self.toPresentable().isModalInPresentation = true
-            
-            if self.navigationRouter.modules.isEmpty == false {
-                self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
-                    self?.remove(childCoordinator: rootCoordinator)
-                })
-            } else {
-                self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
-                    self?.remove(childCoordinator: rootCoordinator)
-                }
+        MXLog.debug("[SpaceCreationCoordinator] did start.")
+        
+        let rootCoordinator = self.createMenuCoordinator(with: spaceVisibilityMenuParameters)
+        rootCoordinator.start()
+        
+        self.add(childCoordinator: rootCoordinator)
+        
+        self.toPresentable().isModalInPresentation = true
+        
+        if self.navigationRouter.modules.isEmpty == false {
+            self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
+                self?.remove(childCoordinator: rootCoordinator)
+            })
+        } else {
+            self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
+                self?.remove(childCoordinator: rootCoordinator)
             }
         }
     }
@@ -105,7 +103,6 @@ final class SpaceCreationCoordinator: Coordinator {
     
     // MARK: - Private
     
-    @available(iOS 14.0, *)
     func pushScreen(with coordinator: Coordinator & Presentable) {
         add(childCoordinator: coordinator)
         
@@ -116,7 +113,6 @@ final class SpaceCreationCoordinator: Coordinator {
         coordinator.start()
     }
 
-    @available(iOS 14.0, *)
     private func createMenuCoordinator(with parameters: SpaceCreationMenuCoordinatorParameters) -> SpaceCreationMenuCoordinator {
         let coordinator: SpaceCreationMenuCoordinator = SpaceCreationMenuCoordinator(parameters: parameters)
         
@@ -142,7 +138,6 @@ final class SpaceCreationCoordinator: Coordinator {
         return coordinator
     }
     
-    @available(iOS 14.0, *)
     private func createSettingsCoordinator() -> SpaceCreationSettingsCoordinator {
         let coordinator = SpaceCreationSettingsCoordinator(parameters: SpaceCreationSettingsCoordinatorParameters(session: parameters.session, creationParameters: parameters.creationParameters))
         coordinator.callback = { [weak self] result in
@@ -163,7 +158,6 @@ final class SpaceCreationCoordinator: Coordinator {
         return coordinator
     }
     
-    @available(iOS 14.0, *)
     private func createRoomsCoordinator() -> SpaceCreationRoomsCoordinator {
         let coordinator = SpaceCreationRoomsCoordinator(parameters: SpaceCreationRoomsCoordinatorParameters(session: parameters.session, creationParams: parameters.creationParameters))
         coordinator.callback = { [weak self] result in
@@ -186,7 +180,6 @@ final class SpaceCreationCoordinator: Coordinator {
         return coordinator
     }
     
-    @available(iOS 14.0, *)
     private func createEmailInvitesCoordinator() -> SpaceCreationEmailInvitesCoordinator {
         let coordinator = SpaceCreationEmailInvitesCoordinator(parameters: SpaceCreationEmailInvitesCoordinatorParameters(session: parameters.session, creationParams: parameters.creationParameters))
         coordinator.callback = { [weak self] result in
@@ -205,7 +198,6 @@ final class SpaceCreationCoordinator: Coordinator {
         return coordinator
     }
 
-    @available(iOS 14.0, *)
     private func createPeopleChooserCoordinator() -> MatrixItemChooserCoordinator {
         let parameters = MatrixItemChooserCoordinatorParameters(
             session: parameters.session,
@@ -229,7 +221,6 @@ final class SpaceCreationCoordinator: Coordinator {
         return coordinator
     }
 
-    @available(iOS 14.0, *)
     private func createRoomChooserCoordinator() -> MatrixItemChooserCoordinator {
         let parameters = MatrixItemChooserCoordinatorParameters(
             session: parameters.session,
@@ -253,7 +244,6 @@ final class SpaceCreationCoordinator: Coordinator {
         return coordinator
     }
 
-    @available(iOS 14.0, *)
     private func createPostProcessCoordinator() -> SpaceCreationPostProcessCoordinator {
         let coordinator = SpaceCreationPostProcessCoordinator(parameters: SpaceCreationPostProcessCoordinatorParameters(session: parameters.session, creationParams: parameters.creationParameters))
         coordinator.callback = { [weak self] result in

@@ -476,11 +476,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     self.pushNotificationService.delegate = self;
         
     self.spaceFeatureUnavailablePresenter = [SpaceFeatureUnavailablePresenter new];
-    
-    if (@available(iOS 14.0, *)) {
-        self.uisiAutoReporter = [[UISIAutoReporter alloc] init];
-    }
-    
+
+    self.uisiAutoReporter = [[UISIAutoReporter alloc] init];
+
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
     
@@ -2022,11 +2020,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         // register the session to the uisi auto-reporter
         if (_uisiAutoReporter != nil)
         {
-            if (@available(iOS 14.0, *))
-            {
-                UISIAutoReporter* uisiAutoReporter = (UISIAutoReporter*)_uisiAutoReporter;
-                [uisiAutoReporter add:mxSession];
-            }
+            UISIAutoReporter* uisiAutoReporter = (UISIAutoReporter*)_uisiAutoReporter;
+            [uisiAutoReporter add:mxSession];
         }
         
         [mxSessionArray addObject:mxSession];
@@ -2048,11 +2043,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // register the session to the uisi auto-reporter
     if (_uisiAutoReporter != nil)
     {
-        if (@available(iOS 14.0, *))
-        {
-            UISIAutoReporter* uisiAutoReporter = (UISIAutoReporter*)_uisiAutoReporter;
-            [uisiAutoReporter remove:mxSession];
-        }
+        UISIAutoReporter* uisiAutoReporter = (UISIAutoReporter*)_uisiAutoReporter;
+        [uisiAutoReporter remove:mxSession];
     }
 
     // Update the widgets manager

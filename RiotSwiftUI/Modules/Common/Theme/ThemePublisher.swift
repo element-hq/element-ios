@@ -21,7 +21,6 @@ import Combine
 ///
 /// Replaces the old ThemeObserver. Riot app can push updates to this class
 /// removing the dependency of this class on the `ThemeService`.
-@available(iOS 14.0, *)
 class ThemePublisher: ObservableObject {
     
     private static var _shared: ThemePublisher? = nil

@@ -17,7 +17,6 @@
 import Foundation
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct FormItemButtonStyle: ButtonStyle {
     @Environment(\.theme) var theme: ThemeSwiftUI
     func makeBody(configuration: Self.Configuration) -> some View {

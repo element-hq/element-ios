@@ -55,7 +55,6 @@ enum LocationSharingViewError {
     case failedSharingLocation
 }
 
-@available(iOS 14, *)
 struct LocationSharingViewState: BindableState {
     
     /// Map style URL

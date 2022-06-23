@@ -21,7 +21,6 @@ import SwiftUI
  https://stackoverflow.com/q/65375372
  Replace with Swift 5.5 bindings enumerator later.
  */
-@available(iOS 14.0, *)
 struct SafeBindingCollectionEnumerator<T: RandomAccessCollection & MutableCollection, C: View>: View {
     
     typealias BoundElement = Binding<T.Element>

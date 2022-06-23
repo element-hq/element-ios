@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct ThemableButton: View {
     
     // MARK: - Style
@@ -64,7 +63,6 @@ struct ThemableButton: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct ThemableButton_Previews: PreviewProvider {
     static var previews: some View {
         Group {

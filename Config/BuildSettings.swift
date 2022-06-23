@@ -398,13 +398,7 @@ final class BuildSettings: NSObject {
     
     // MARK: - Polls
     
-    static var pollsEnabled: Bool {
-        guard #available(iOS 14, *) else {
-            return false
-        }
-        
-        return true
-    }
+    static let pollsEnabled = true
     
     // MARK: - Location Sharing
     

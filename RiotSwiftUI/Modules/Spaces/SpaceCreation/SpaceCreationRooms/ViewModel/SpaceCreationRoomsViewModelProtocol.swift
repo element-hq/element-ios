@@ -21,6 +21,5 @@ import Foundation
 protocol SpaceCreationRoomsViewModelProtocol {
     
     var callback: ((SpaceCreationRoomsViewModelResult) -> Void)? { get set }
-    @available(iOS 14, *)
     var context: SpaceCreationRoomsViewModelType.Context { get }
 }

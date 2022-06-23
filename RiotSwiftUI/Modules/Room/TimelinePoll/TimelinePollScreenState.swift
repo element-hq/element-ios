@@ -17,7 +17,6 @@
 import Foundation
 import SwiftUI
 
-@available(iOS 14.0, *)
 enum MockTimelinePollScreenState: MockScreenState, CaseIterable {
     case openDisclosed
     case closedDisclosed

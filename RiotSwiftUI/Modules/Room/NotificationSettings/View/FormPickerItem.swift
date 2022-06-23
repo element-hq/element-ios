@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct FormPickerItem: View {
     
     typealias TapCallback = () -> Void
@@ -53,7 +52,6 @@ struct FormPickerItem: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct FormPickerItem_Previews: PreviewProvider {
     
     static let items = ["Item 1", "Item 2", "Item 3"]

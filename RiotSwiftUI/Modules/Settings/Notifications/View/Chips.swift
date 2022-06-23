@@ -17,7 +17,6 @@
 import SwiftUI
 
 /// Renders multiple chips in a flow layout.
-@available(iOS 14.0, *)
 struct Chips: View {
     
     @State private var frame: CGRect = CGRect.zero
@@ -75,7 +74,6 @@ struct Chips: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct Chips_Previews: PreviewProvider {
     static var chips: [String] = ["Chip1", "Chip2", "Chip3", "Chip4", "Chip5", "Chip6"]
     static var previews: some View {

@@ -18,7 +18,6 @@ import Foundation
 
 protocol RoomAccessTypeChooserViewModelProtocol {
     var callback: ((RoomAccessTypeChooserViewModelAction) -> Void)? { get set }
-    @available(iOS 14, *)
     var context: RoomAccessTypeChooserViewModelType.Context { get }
     
     func handleRoomUpgradeResult(_ result: RoomUpgradeCoordinatorResult)

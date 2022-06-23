@@ -44,7 +44,6 @@ final class SpaceCreationSettingsCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: SpaceCreationSettingsCoordinatorParameters) {
         self.parameters = parameters
         let service = SpaceCreationSettingsService(roomName: parameters.creationParameters.name ?? "", userDefinedAddress: parameters.creationParameters.userDefinedAddress, session: parameters.session)

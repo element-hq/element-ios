@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct PrimaryActionButtonStyle: ButtonStyle {
     @Environment(\.theme) private var theme
     @Environment(\.isEnabled) private var isEnabled
@@ -48,7 +47,6 @@ struct PrimaryActionButtonStyle: ButtonStyle {
     }
 }
 
-@available(iOS 14.0, *)
 struct PrimaryActionButtonStyle_Previews: PreviewProvider {
     static var buttons: some View {
         Group {

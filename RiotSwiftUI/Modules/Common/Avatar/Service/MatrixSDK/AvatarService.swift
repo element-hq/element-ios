@@ -48,7 +48,6 @@ class AvatarService: AvatarServiceProtocol {
     ///   - mxContentUri: matrix uri of the avatar to fetch
     ///   - avatarSize: The size of avatar to retrieve as defined in the DesignKit spec.
     /// - Returns: A Future of UIImage that returns an error if it fails to fetch the image.
-    @available(iOS 14.0, *)
     func avatarImage(mxContentUri: String, avatarSize: AvatarSize) -> Future<UIImage, Error> {
         
         let cachePath = MXMediaManager.thumbnailCachePath(
