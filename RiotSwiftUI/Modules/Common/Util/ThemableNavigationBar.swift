@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct ThemableNavigationBar: View {
     
     // MARK: - Style
@@ -65,7 +64,6 @@ struct ThemableNavigationBar: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct NavigationBar_Previews: PreviewProvider {
     static var previews: some View {
         Group {

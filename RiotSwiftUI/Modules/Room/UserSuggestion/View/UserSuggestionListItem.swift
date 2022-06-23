@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct UserSuggestionListItem: View {
     
     // MARK: - Properties
@@ -52,7 +51,6 @@ struct UserSuggestionListItem: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct UserSuggestionHeader_Previews: PreviewProvider {
     static var previews: some View {
         UserSuggestionListItem(avatar: MockAvatarInput.example, displayName: "Alice", userId: "@alice:matrix.org")

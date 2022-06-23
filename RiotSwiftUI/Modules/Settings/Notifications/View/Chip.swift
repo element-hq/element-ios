@@ -18,7 +18,6 @@ import SwiftUI
 
 
 /// A single rounded rect chip to be rendered within `Chips` collection
-@available(iOS 14.0, *)
 struct Chip: View {
     
     @Environment(\.isEnabled) var isEnabled
@@ -62,7 +61,6 @@ struct Chip: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct Chip_Previews: PreviewProvider {
     static var previews: some View {
         Group {

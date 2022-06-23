@@ -21,7 +21,6 @@ struct AuthenticationVerifyEmailCoordinatorParameters {
     let registrationWizard: RegistrationWizard
 }
 
-@available(iOS 14.0, *)
 final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties

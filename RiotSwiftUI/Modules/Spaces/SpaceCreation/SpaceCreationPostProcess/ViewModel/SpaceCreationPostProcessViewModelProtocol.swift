@@ -21,8 +21,6 @@ import Foundation
 protocol SpaceCreationPostProcessViewModelProtocol {
     
     var completion: ((SpaceCreationPostProcessViewModelResult) -> Void)? { get set }
-    @available(iOS 14, *)
     static func makeSpaceCreationPostProcessViewModel(spaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol) -> SpaceCreationPostProcessViewModelProtocol
-    @available(iOS 14, *)
     var context: SpaceCreationPostProcessViewModelType.Context { get }
 }

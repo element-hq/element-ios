@@ -21,7 +21,6 @@ import RiotSwiftUI
 /// Creates a test case for each screen state, launches the app,
 /// goes to the correct screen and provides the state and key for each
 /// invocation of the test.
-@available(iOS 14.0, *)
 class MockScreenTest: XCTestCase {
     
     enum Constants {

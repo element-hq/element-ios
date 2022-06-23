@@ -18,7 +18,6 @@ import Foundation
 import Combine
 import DesignKit
 
-@available(iOS 14.0, *)
 /// Simple ViewModel that supports loading an avatar image
 class AvatarViewModel: InjectableObject, ObservableObject {
     

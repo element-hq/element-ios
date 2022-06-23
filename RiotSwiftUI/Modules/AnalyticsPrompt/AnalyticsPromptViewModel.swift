@@ -17,11 +17,9 @@
 import SwiftUI
 import Combine
 
-@available(iOS 14, *)
 typealias AnalyticsPromptViewModelType = StateStoreViewModel<AnalyticsPromptViewState,
                                                              Never,
                                                              AnalyticsPromptViewAction>
-@available(iOS 14, *)
 class AnalyticsPromptViewModel: AnalyticsPromptViewModelType {
 
     // MARK: - Properties

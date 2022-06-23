@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 /// A reusable view that will show a standard placeholder avatar with the
 /// supplied character and colour index for the `namesAndAvatars` color array.
 ///
@@ -50,7 +49,6 @@ struct PlaceholderAvatarImage: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct Previews_TemplateAvatarImage_Previews: PreviewProvider {
     static var previews: some View {
         PlaceholderAvatarImage(firstCharacter: "X", colorIndex: 1)

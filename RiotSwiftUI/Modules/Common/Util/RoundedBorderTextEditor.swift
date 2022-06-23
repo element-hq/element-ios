@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct RoundedBorderTextEditor: View {
     
     // MARK: - Properties
@@ -100,7 +99,6 @@ struct RoundedBorderTextEditor: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct ThemableTextEditor_Previews: PreviewProvider {
     static var previews: some View {
 

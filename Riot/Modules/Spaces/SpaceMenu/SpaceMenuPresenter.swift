@@ -100,7 +100,6 @@ class SpaceMenuPresenter: NSObject {
         }
     }
     
-    @available(iOS 14.0, *)
     private func showLeaveSpace() {
         let name = session.spaceService.getSpace(withId: spaceId)?.summary?.displayname ?? VectorL10n.spaceTag
         

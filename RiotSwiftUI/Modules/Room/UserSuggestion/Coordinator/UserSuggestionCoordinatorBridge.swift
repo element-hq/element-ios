@@ -25,7 +25,6 @@ protocol UserSuggestionCoordinatorBridgeDelegate: AnyObject {
 final class UserSuggestionCoordinatorBridge: NSObject {
     
     private var _userSuggestionCoordinator: Any? = nil
-    @available(iOS 14.0, *)
     fileprivate var userSuggestionCoordinator: UserSuggestionCoordinator {
         return _userSuggestionCoordinator as! UserSuggestionCoordinator
     }
@@ -61,7 +60,6 @@ final class UserSuggestionCoordinatorBridge: NSObject {
     }
 }
 
-@available(iOS 14.0, *)
 extension UserSuggestionCoordinatorBridge: UserSuggestionCoordinatorDelegate {
     func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didRequestMentionForMember member: MXRoomMember, textTrigger: String?) {
         delegate?.userSuggestionCoordinatorBridge(self, didRequestMentionForMember: member, textTrigger: textTrigger)

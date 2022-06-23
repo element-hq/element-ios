@@ -114,7 +114,6 @@ final class CreateRoomCoordinator: CreateRoomCoordinatorType {
         return coordinator
     }
     
-    @available(iOS 14.0, *)
     private func createRoomSelectorCoordinator(parentSpace: MXSpace) -> MatrixItemChooserCoordinator {
         let paramaters = MatrixItemChooserCoordinatorParameters(session: self.parameters.session, viewProvider: AddRoomSelectorViewProvider(), itemsProcessor: AddRoomItemsProcessor(parentSpace: parentSpace))
         let coordinator = MatrixItemChooserCoordinator(parameters: paramaters)

@@ -17,11 +17,9 @@
 import SwiftUI
 import Combine
 
-@available(iOS 14, *)
 typealias RoomUpgradeViewModelType = StateStoreViewModel<RoomUpgradeViewState,
                                                                  Never,
                                                                  RoomUpgradeViewAction>
-@available(iOS 14, *)
 class RoomUpgradeViewModel: RoomUpgradeViewModelType, RoomUpgradeViewModelProtocol {
 
     // MARK: - Properties

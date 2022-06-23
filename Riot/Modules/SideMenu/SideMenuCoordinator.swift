@@ -260,7 +260,6 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         self.spaceDetailPresenter.present(forSpaceWithId: spaceId, from: self.sideMenuViewController, sourceView: sourceView, session: session, animated: true)
     }
     
-    @available(iOS 14.0, *)
     private func showCreateSpace() {
         guard let session = self.parameters.userSessionsService.mainUserSession?.matrixSession else {
             return
@@ -301,7 +300,6 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         self.createRoomCoordinator = createRoomCoordinator
     }
     
-    @available(iOS 14.0, *)
     private func showSpaceSettings(spaceId: String, session: MXSession) {
         let coordinator = SpaceSettingsModalCoordinator(parameters: SpaceSettingsModalCoordinatorParameters(session: session, spaceId: spaceId, parentSpaceId: nil))
         coordinator.callback = { [weak self] result in

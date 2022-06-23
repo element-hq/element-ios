@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct RoomUpgrade: View {
 
     // MARK: - Properties
@@ -102,7 +101,6 @@ struct RoomUpgrade: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct RoomUpgrade_Previews: PreviewProvider {
     static let stateRenderer = MockRoomUpgradeScreenState.stateRenderer
     static var previews: some View {

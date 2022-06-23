@@ -25,7 +25,6 @@ enum RoomAccessCoordinatorCoordinatorAction {
 }
 
 @objcMembers
-@available(iOS 14.0, *)
 final class RoomAccessCoordinator: Coordinator {
     
     // MARK: - Properties

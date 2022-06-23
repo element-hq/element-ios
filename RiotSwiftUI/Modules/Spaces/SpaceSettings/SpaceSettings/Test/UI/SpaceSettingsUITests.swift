@@ -17,7 +17,6 @@
 import XCTest
 import RiotSwiftUI
 
-@available(iOS 14.0, *)
 class SpaceSettingsUITests: MockScreenTest {
     // Tests to be implemented.
 }

@@ -28,7 +28,6 @@ enum AuthenticationChoosePasswordCoordinatorResult {
     case cancel
 }
 
-@available(iOS 14.0, *)
 final class AuthenticationChoosePasswordCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties

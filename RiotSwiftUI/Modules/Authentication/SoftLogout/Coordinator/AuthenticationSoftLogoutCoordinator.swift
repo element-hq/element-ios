@@ -49,7 +49,6 @@ enum AuthenticationSoftLogoutCoordinatorResult: CustomStringConvertible {
     }
 }
 
-@available(iOS 14.0, *)
 final class AuthenticationSoftLogoutCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties

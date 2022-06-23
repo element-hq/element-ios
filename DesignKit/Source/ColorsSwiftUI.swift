@@ -20,7 +20,6 @@ import SwiftUI
 /**
  Struct for holding colors for use in SwiftUI.
  */
-@available(iOS 14.0, *)
 public struct ColorSwiftUI: Colors {
 
     public let accent: Color

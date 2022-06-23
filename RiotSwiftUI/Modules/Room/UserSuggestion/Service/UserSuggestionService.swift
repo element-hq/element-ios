@@ -33,7 +33,6 @@ struct UserSuggestionServiceItem: UserSuggestionItemProtocol {
     let avatarUrl: String?
 }
 
-@available(iOS 14.0, *)
 class UserSuggestionService: UserSuggestionServiceProtocol {
     
     // MARK: - Properties

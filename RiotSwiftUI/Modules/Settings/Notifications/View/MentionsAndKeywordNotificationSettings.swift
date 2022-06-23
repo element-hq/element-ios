@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct MentionsAndKeywordNotificationSettings: View {
     
     @ObservedObject var viewModel: NotificationSettingsViewModel
@@ -39,7 +38,6 @@ struct MentionsAndKeywordNotificationSettings: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct MentionsAndKeywords_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {

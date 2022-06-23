@@ -73,7 +73,6 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: LocationSharingCoordinatorParameters) {
         self.parameters = parameters
         

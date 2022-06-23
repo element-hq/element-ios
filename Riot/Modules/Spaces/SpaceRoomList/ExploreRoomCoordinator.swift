@@ -204,7 +204,6 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
         self.navigationRouter.present(coordinator, animated: true)
     }
     
-    @available(iOS 14.0, *)
     private func showSpaceSettings(of childInfo: MXSpaceChildInfo) {
         let coordinator = SpaceSettingsModalCoordinator(parameters: SpaceSettingsModalCoordinatorParameters(session: session, spaceId: childInfo.childRoomId, parentSpaceId: spaceIdStack.last))
         coordinator.callback = { [weak self] result in

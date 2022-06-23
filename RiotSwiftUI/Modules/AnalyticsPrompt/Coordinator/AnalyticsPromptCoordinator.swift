@@ -31,7 +31,6 @@ final class AnalyticsPromptCoordinator: Coordinator, Presentable {
     private let analyticsPromptHostingController: UIViewController
     private var _analyticsPromptViewModel: Any? = nil
     
-    @available(iOS 14.0, *)
     fileprivate var analyticsPromptViewModel: AnalyticsPromptViewModel {
         return _analyticsPromptViewModel as! AnalyticsPromptViewModel
     }
@@ -44,7 +43,6 @@ final class AnalyticsPromptCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: AnalyticsPromptCoordinatorParameters) {
         self.parameters = parameters
         

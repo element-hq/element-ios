@@ -17,7 +17,6 @@
 import Foundation
 import SwiftUI
 
-@available(iOS 14.0, *)
 final class NotificationSettingsCoordinator: NotificationSettingsCoordinatorType {
     
     // MARK: - Properties
@@ -66,7 +65,6 @@ final class NotificationSettingsCoordinator: NotificationSettingsCoordinatorType
 }
 
 // MARK: - NotificationSettingsViewModelCoordinatorDelegate
-@available(iOS 14.0, *)
 extension NotificationSettingsCoordinator: NotificationSettingsViewModelCoordinatorDelegate {
     func notificationSettingsViewModelDidComplete(_ viewModel: NotificationSettingsViewModelType) {
         self.delegate?.notificationSettingsCoordinatorDidComplete(self)

@@ -21,11 +21,9 @@ import Combine
 
 
 
-@available(iOS 14, *)
 typealias SpaceCreationRoomsViewModelType = StateStoreViewModel<SpaceCreationRoomsViewState,
                                                                  SpaceCreationRoomsStateAction,
                                                                  SpaceCreationRoomsViewAction>
-@available(iOS 14, *)
 class SpaceCreationRoomsViewModel: SpaceCreationRoomsViewModelType, SpaceCreationRoomsViewModelProtocol {
 
     // MARK: - Setup

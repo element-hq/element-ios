@@ -20,7 +20,6 @@ import Foundation
 import Combine
 import SwiftUI
 
-@available(iOS 14.0, *)
 final class NotificationSettingsViewModel: NotificationSettingsViewModelType, ObservableObject {
     
     // MARK: - Properties

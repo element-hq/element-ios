@@ -17,7 +17,6 @@
 import Foundation
 import SwiftUI
 
-@available(iOS 14.0, *)
 enum MockUserSuggestionScreenState: MockScreenState, CaseIterable {
     case multipleResults
     
@@ -43,7 +42,6 @@ enum MockUserSuggestionScreenState: MockScreenState, CaseIterable {
     }
 }
 
-@available(iOS 14.0, *)
 extension MockUserSuggestionScreenState: RoomMembersProviderProtocol {
     func fetchMembers(_ members: ([RoomMembersProviderMember]) -> Void) {
         if Self.members == nil {

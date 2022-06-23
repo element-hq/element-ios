@@ -17,7 +17,6 @@
 import Foundation
 import Combine
 
-@available(iOS 14.0, *)
 protocol RoomAccessTypeChooserServiceProtocol {
     var accessItemsSubject: CurrentValueSubject<[RoomAccessTypeChooserAccessItem], Never> { get }
     var roomUpgradeRequiredSubject: CurrentValueSubject<Bool, Never> { get }

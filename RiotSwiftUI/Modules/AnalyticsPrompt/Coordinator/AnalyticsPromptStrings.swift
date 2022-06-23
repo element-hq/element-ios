@@ -17,7 +17,6 @@
 import Foundation
 import UIKit
 
-@available(iOS 14.0, *)
 struct AnalyticsPromptStrings: AnalyticsPromptStringsProtocol {
     let point1 = HTMLFormatter.formatHTML(VectorL10n.analyticsPromptPoint1,
                                           withAllowedTags: ["b", "p"],

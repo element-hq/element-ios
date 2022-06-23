@@ -18,7 +18,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct MatrixItemChooser: View {
     
     // MARK: Properties
@@ -151,7 +150,6 @@ struct MatrixItemChooser: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct MatrixItemChooser_Previews: PreviewProvider {
     
     static let stateRenderer = MockMatrixItemChooserScreenState.stateRenderer

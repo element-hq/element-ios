@@ -40,7 +40,6 @@ final class RoomAccessTypeChooserCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: RoomAccessTypeChooserCoordinatorParameters) {
         self.parameters = parameters
         let viewModel = RoomAccessTypeChooserViewModel(roomAccessTypeChooserService: RoomAccessTypeChooserService(roomId: parameters.roomId, allowsRoomUpgrade: parameters.allowsRoomUpgrade, session: parameters.session))

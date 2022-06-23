@@ -24,7 +24,6 @@ class RoomRestrictedAccessSpaceChooserViewProvider: MatrixItemChooserCoordinator
         self.navTitle = navTitle
     }
     
-    @available(iOS 14, *)
     func view(with viewModel: MatrixItemChooserViewModelType.Context) -> AnyView {
         return AnyView(RoomRestrictedAccessSpaceChooserSelector(viewModel: viewModel, navTitle: navTitle))
     }

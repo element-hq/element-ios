@@ -41,7 +41,6 @@ extension UISIAutoReportData: Codable {
 
 /// Listens for failed decryption events and silently sends reports RageShake server.
 /// Also requests that message senders send a matching report to have both sides of the interaction.
-@available(iOS 14.0, *)
 @objcMembers class UISIAutoReporter: NSObject, UISIDetectorDelegate {
     
     struct ReportInfo: Hashable {

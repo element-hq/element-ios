@@ -41,7 +41,6 @@ final class PollEditFormCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: PollEditFormCoordinatorParameters) {
         self.parameters = parameters
         

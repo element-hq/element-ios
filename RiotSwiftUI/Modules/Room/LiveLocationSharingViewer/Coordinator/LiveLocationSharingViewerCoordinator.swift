@@ -44,7 +44,6 @@ final class LiveLocationSharingViewerCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: LiveLocationSharingViewerCoordinatorParameters) {
         self.parameters = parameters
         

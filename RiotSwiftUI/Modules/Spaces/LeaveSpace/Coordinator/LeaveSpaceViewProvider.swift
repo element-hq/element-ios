@@ -24,7 +24,6 @@ class LeaveSpaceViewProvider: MatrixItemChooserCoordinatorViewProvider {
         self.navTitle = navTitle
     }
     
-    @available(iOS 14, *)
     func view(with viewModel: MatrixItemChooserViewModelType.Context) -> AnyView {
         return AnyView(LeaveSpace(viewModel: viewModel, navTitle: navTitle))
     }

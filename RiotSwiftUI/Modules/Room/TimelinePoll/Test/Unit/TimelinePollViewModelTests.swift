@@ -19,7 +19,6 @@ import Combine
 
 @testable import RiotSwiftUI
 
-@available(iOS 14.0, *)
 class TimelinePollViewModelTests: XCTestCase {
     var viewModel: TimelinePollViewModel!
     var context: TimelinePollViewModelType.Context!

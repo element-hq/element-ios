@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct RoomAccessTypeChooser: View {
     
     // MARK: - Properties
@@ -84,7 +83,6 @@ struct RoomAccessTypeChooser: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct RoomAccessTypeChooser_Previews: PreviewProvider {
     
     static let stateRenderer = MockRoomAccessTypeChooserScreenState.stateRenderer

@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct MatrixItemChooserListRow: View {
 
     // MARK: - Properties
@@ -69,7 +68,6 @@ struct MatrixItemChooserListRow: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct MatrixItemChooserListRow_Previews: PreviewProvider {
     static var previews: some View {
         TemplateRoomListRow(avatar: MockAvatarInput.example, displayName: "Alice")

@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct PollEditFormAnswerOptionView: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
@@ -48,7 +47,6 @@ struct PollEditFormAnswerOptionView: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct PollEditFormAnswerOptionView_Previews: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 32.0) {

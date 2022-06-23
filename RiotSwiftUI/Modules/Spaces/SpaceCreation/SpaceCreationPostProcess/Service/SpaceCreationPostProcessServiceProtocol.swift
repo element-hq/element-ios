@@ -20,7 +20,6 @@ import Foundation
 import Combine
 import UIKit
 
-@available(iOS 14.0, *)
 protocol SpaceCreationPostProcessServiceProtocol: AnyObject {
     var tasksSubject: CurrentValueSubject<[SpaceCreationPostProcessTask], Never> { get }
     var createdSpaceId: String? { get }

@@ -17,7 +17,6 @@
 import SwiftUI
 import DSBottomSheet
 
-@available(iOS 14.0, *)
 struct LiveLocationSharingViewer: View {
 
     // MARK: - Properties
@@ -90,7 +89,6 @@ struct LiveLocationSharingViewer: View {
 }
 
 // MARK: - Bottom sheet
-@available(iOS 14.0, *)
 extension LiveLocationSharingViewer {
 
     var sheetStyle: BottomSheetStyle {
@@ -119,7 +117,6 @@ extension LiveLocationSharingViewer {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct LiveLocationSharingViewer_Previews: PreviewProvider {
     static let stateRenderer = MockLiveLocationSharingViewerScreenState.stateRenderer
     static var previews: some View {
