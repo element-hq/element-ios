@@ -77,24 +77,22 @@ final class SpaceCreationCoordinator: Coordinator {
     // MARK: - Public
     
     func start() {
-        if #available(iOS 14.0, *) {
-            MXLog.debug("[SpaceCreationCoordinator] did start.")
-            
-            let rootCoordinator = self.createMenuCoordinator(with: spaceVisibilityMenuParameters)
-            rootCoordinator.start()
-            
-            self.add(childCoordinator: rootCoordinator)
-            
-            self.toPresentable().isModalInPresentation = true
-            
-            if self.navigationRouter.modules.isEmpty == false {
-                self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
-                    self?.remove(childCoordinator: rootCoordinator)
-                })
-            } else {
-                self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
-                    self?.remove(childCoordinator: rootCoordinator)
-                }
+        MXLog.debug("[SpaceCreationCoordinator] did start.")
+        
+        let rootCoordinator = self.createMenuCoordinator(with: spaceVisibilityMenuParameters)
+        rootCoordinator.start()
+        
+        self.add(childCoordinator: rootCoordinator)
+        
+        self.toPresentable().isModalInPresentation = true
+        
+        if self.navigationRouter.modules.isEmpty == false {
+            self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
+                self?.remove(childCoordinator: rootCoordinator)
+            })
+        } else {
+            self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
+                self?.remove(childCoordinator: rootCoordinator)
             }
         }
     }

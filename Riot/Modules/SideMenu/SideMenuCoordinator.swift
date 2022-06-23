@@ -430,9 +430,7 @@ extension SideMenuCoordinator: SpaceListCoordinatorDelegate {
     }
     
     func spaceListCoordinatorDidSelectCreateSpace(_ coordinator: SpaceListCoordinatorType) {
-        if #available(iOS 14.0, *) {
-            self.showCreateSpace()
-        }
+        self.showCreateSpace()
     }
 }
 
@@ -460,11 +458,7 @@ extension SideMenuCoordinator: SpaceMenuPresenterDelegate {
             case .addSpace:
                 AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.spacesAddSpace, message: VectorL10n.spacesFeatureNotAvailable(AppInfo.current.displayName))
             case .settings:
-                if #available(iOS 14.0, *) {
-                    self.showSpaceSettings(spaceId: spaceId, session: session)
-                } else {
-                    AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.settingsTitle, message: VectorL10n.spacesFeatureNotAvailable(AppInfo.current.displayName))
-                }
+                self.showSpaceSettings(spaceId: spaceId, session: session)
             case .invite:
                 self.showSpaceInvite(spaceId: spaceId, session: session)
             }

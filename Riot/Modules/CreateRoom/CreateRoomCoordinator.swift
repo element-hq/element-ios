@@ -75,7 +75,7 @@ final class CreateRoomCoordinator: CreateRoomCoordinatorType {
 
         self.add(childCoordinator: createRoomCoordinator)
 
-        if let parentSpace = self.parentSpace, #available(iOS 14, *) {
+        if let parentSpace = self.parentSpace {
             let roomSelectionCoordinator = self.createRoomSelectorCoordinator(parentSpace: parentSpace)
             roomSelectionCoordinator.completion = { [weak self] result in
                 guard let self = self else {

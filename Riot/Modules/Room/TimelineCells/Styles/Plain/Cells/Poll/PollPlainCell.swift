@@ -24,8 +24,7 @@ class PollPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCell
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
         
-        guard #available(iOS 14.0, *),
-              let contentView = roomCellContentView?.innerContentView,
+        guard let contentView = roomCellContentView?.innerContentView,
               let bubbleData = cellData as? RoomBubbleCellData,
               let event = bubbleData.events.last,
               event.eventType == __MXEventType.pollStart,

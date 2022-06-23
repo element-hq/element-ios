@@ -65,11 +65,6 @@ final class AnalyticsPromptCoordinator: Coordinator, Presentable {
     // MARK: - Public
     
     func start() {
-        guard #available(iOS 14.0, *) else {
-            MXLog.debug("[AnalyticsPromptCoordinator] start: Invalid iOS version, returning.")
-            return
-        }
-        
         MXLog.debug("[AnalyticsPromptCoordinator] did start.")
         
         analyticsPromptViewModel.completion = { [weak self] result in

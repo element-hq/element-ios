@@ -146,9 +146,7 @@ extension SpaceMenuPresenter: SpaceMenuModelViewModelCoordinatorDelegate {
         case .invite:
             self.delegate?.spaceMenuPresenter(self, didCompleteWith: .invite, forSpaceWithId: self.spaceId, with: self.session)
         case .leaveSpaceAndChooseRooms:
-            if #available(iOS 14.0, *) {
-                self.showLeaveSpace()
-            }
+            self.showLeaveSpace()
         default:
             MXLog.error("[SpaceMenuPresenter] spaceListViewModel didSelectItem: invalid action \(action)")
         }

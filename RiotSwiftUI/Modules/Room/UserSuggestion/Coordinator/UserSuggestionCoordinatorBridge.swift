@@ -33,30 +33,20 @@ final class UserSuggestionCoordinatorBridge: NSObject {
     
     init(mediaManager: MXMediaManager, room: MXRoom) {
         let parameters = UserSuggestionCoordinatorParameters(mediaManager: mediaManager, room: room)
-        if #available(iOS 14.0, *) {
-            let userSuggestionCoordinator = UserSuggestionCoordinator(parameters: parameters)
-            self._userSuggestionCoordinator = userSuggestionCoordinator
-        }
+        let userSuggestionCoordinator = UserSuggestionCoordinator(parameters: parameters)
+        self._userSuggestionCoordinator = userSuggestionCoordinator
         
         super.init()
         
-        if #available(iOS 14.0, *) {
-            userSuggestionCoordinator.delegate = self
-        }
+        userSuggestionCoordinator.delegate = self
     }
     
     func processTextMessage(_ textMessage: String) {
-        if #available(iOS 14.0, *) {
-            return self.userSuggestionCoordinator.processTextMessage(textMessage)
-        }
+        return self.userSuggestionCoordinator.processTextMessage(textMessage)
     }
     
     func toPresentable() -> UIViewController? {
-        if #available(iOS 14.0, *) {
-            return self.userSuggestionCoordinator.toPresentable()
-        }
-        
-        return nil
+        return self.userSuggestionCoordinator.toPresentable()
     }
 }
 
