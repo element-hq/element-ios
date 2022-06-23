@@ -5912,18 +5912,12 @@ static CGSize kThreadListBarButtonItemImageSize;
     [cancelAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n delete] style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
         // Remove unsent event ids
-        for (NSUInteger index = 0; index < self.roomDataSource.room.outgoingMessages.count;)
-        {
-            MXEvent *event = self.roomDataSource.room.outgoingMessages[index];
-            if (event.sentState == MXEventSentStateFailed)
-            {
-                [self.roomDataSource removeEventWithEventId:event.eventId];
-            }
-            else
-            {
-                index ++;
-            }
-        }
+        [self.roomDataSource.room.outgoingMessages enumerateObjectsUsingBlock:^(MXEvent *event, NSUInteger idx, BOOL *stop) {
+                    if (event.sentState == MXEventSentStateFailed)
+                    {
+                        [self.roomDataSource removeEventWithEventId:event.eventId];
+                    }
+        }];
         
         [self refreshActivitiesViewDisplay];
         self->currentAlert = nil;

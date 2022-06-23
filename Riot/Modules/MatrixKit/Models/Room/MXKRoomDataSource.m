@@ -2356,15 +2356,14 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         {
             [self removeCellData:bubbleData];
         }
-
-        // Remove the event from the outgoing messages storage
-        [_room removeOutgoingMessage:eventId];
+    }
+    // Remove the event from the outgoing messages storage
+    [_room removeOutgoingMessage:eventId];
     
-        // Update the delegate
-        if (self.delegate)
-        {
-            [self.delegate dataSource:self didCellChange:nil];
-        }
+    // Update the delegate
+    if (self.delegate)
+    {
+        [self.delegate dataSource:self didCellChange:nil];
     }
 }
 
