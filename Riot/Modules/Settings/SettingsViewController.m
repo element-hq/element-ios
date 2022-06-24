@@ -102,6 +102,7 @@ typedef NS_ENUM(NSUInteger, LINKS_SHOW_URL_PREVIEWS)
 typedef NS_ENUM(NSUInteger, NOTIFICATION_SETTINGS)
 {
     NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX = 0,
+    NOTIFICATION_SETTINGS_SHOW_IN_APP_INDEX,
     NOTIFICATION_SETTINGS_SYSTEM_SETTINGS,
     NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT,
     NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX,
@@ -409,6 +410,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     
     Section *sectionNotificationSettings = [Section sectionWithTag:SECTION_TAG_NOTIFICATIONS];
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX];
+    [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_SHOW_IN_APP_INDEX];
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_SYSTEM_SETTINGS];
     if (RiotSettings.shared.settingsScreenShowNotificationDecodedContentOption)
     {
@@ -2060,6 +2062,18 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             
             cell = labelAndSwitchCell;
         }
+        else if (row == NOTIFICATION_SETTINGS_SHOW_IN_APP_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            labelAndSwitchCell.mxkLabel.text = VectorL10n.settingsEnableInappNotifications;
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.showInAppNotifications;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+            labelAndSwitchCell.mxkSwitch.enabled = account.pushNotificationServiceIsActive;
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowInAppNotifications:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell = labelAndSwitchCell;
+        }
         else if (row == NOTIFICATION_SETTINGS_SYSTEM_SETTINGS)
         {
             cell = [tableView dequeueReusableCellWithIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
@@ -3163,6 +3177,11 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             }];
         }
     }
+}
+
+- (void)toggleShowInAppNotifications:(UISwitch *)sender
+{
+    RiotSettings.shared.showInAppNotifications = sender.isOn;
 }
 
 - (void)openSystemSettingsApp
