@@ -6,3 +6,4 @@
 "NSCalendarsUsageDescription" = "Shihini te aplikacioni takimet tuaja të planifikuara.";
 "NSFaceIDUsageDescription" = "Face ID përdoret që të hyni në aplikacionin tuaj.";
 "NSLocationWhenInUseUsageDescription" = "Kur ndani vendndodhjen tuaj me persona, Element-i ka nevojë për hyrje në të, që t’u trgojë atyre një hartë.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Kur u tregoni vendndodhjen tuaj të tjerëve, Element-it i duhet hyrje për t’u shfaqur një hartë.";
