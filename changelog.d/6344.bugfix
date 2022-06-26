@@ -1,0 +1,1 @@
+Warning Alert: fix failed message delete / retry not getting cancelled for ever when there is no cell data, but has unsend message event.
