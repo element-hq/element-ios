@@ -338,10 +338,10 @@
 "settings_send_crash_report" = "Személytelen összeomlás és felhasználási adatok küldése";
 "settings_enable_rageshake" = "Eszköz megrázása a hiba bejelentéséhez";
 "settings_clear_cache" = "Gyorsítótár kiürítése";
-"settings_change_password" = "Matrix fiók jelszó megváltoztatása";
-"settings_old_password" = "régi jelszó";
-"settings_new_password" = "új jelszó";
-"settings_confirm_password" = "jelszó megerősítése";
+"settings_change_password" = "Jelszó megváltoztatása";
+"settings_old_password" = "Régi jelszó";
+"settings_new_password" = "Új jelszó";
+"settings_confirm_password" = "Jelszó megerősítése";
 "settings_fail_to_update_password" = "A Matrix fiók jelszó frissítése nem sikerült";
 "settings_password_updated" = "A Matrix fiók jelszavad frissítve";
 "settings_crypto_device_name" = "Munkamenet neve: ";
@@ -2323,3 +2323,4 @@
 "location_sharing_allow_background_location_message" = "Ha az élő helyzetedet szeretnéd megosztani, Elementnek akkor is hozzáférésre van szüksége a helyadatokhoz ha éppen a háttérben fut. A hozzáférés engedélyezéséhez koppints a Beállítások> Helyadatokra és válaszd a Mindiget";
 "location_sharing_allow_background_location_title" = "Hozzáférés engedélyezése";
 "settings_labs_enable_live_location_sharing" = "Folyamatos helymeghatározás megosztása - a jelenlegi helyzet megosztása (aktív fejlesztés alatt, átmenetileg a megosztott helyek megmaradnak a szoba idővonalán)";
+"settings_ui_show_redactions_in_room_history" = "Helykitöltő megjelenítése a törölt szövegek helyett";
