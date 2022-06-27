@@ -292,10 +292,10 @@
 "settings_send_crash_report" = "Envoyer des rapports d’anomalies anonymes et des statistiques d’utilisation";
 "settings_enable_rageshake" = "Secouer l’appareil pour signaler un bug";
 "settings_clear_cache" = "Vider le cache";
-"settings_change_password" = "Changer le mot de passe de votre compte Matrix";
-"settings_old_password" = "ancien mot de passe";
-"settings_new_password" = "nouveau mot de passe";
-"settings_confirm_password" = "confirmer le mot de passe";
+"settings_change_password" = "Changer mon mot de passe";
+"settings_old_password" = "Ancien mot de passe";
+"settings_new_password" = "Nouveau mot de passe";
+"settings_confirm_password" = "Confirmer le mot de passe";
 "settings_fail_to_update_password" = "Échec de la modification du mot de passe du compte Matrix";
 "settings_password_updated" = "Le mot de passe de votre compte Matrix a été modifié";
 "settings_crypto_device_name" = "Nom de la session : ";
@@ -1208,16 +1208,16 @@
 
 "room_info_list_one_member" = "1 membre";
 "create_room_placeholder_address" = "#salondetest:matrix.org";
-"create_room_section_header_address" = "Adresse du salon";
+"create_room_section_header_address" = "ADRESSE";
 "create_room_show_in_directory" = "Publier le salon dans le répertoire";
 "create_room_section_footer_type" = "Les personnes ne rejoignent un salon privé que sur invitation.";
-"create_room_type_public" = "Salon public";
-"create_room_type_private" = "Salon privé";
+"create_room_type_public" = "Salon public (tout le monde)";
+"create_room_type_private" = "Salon privé (seulement sur invitation)";
 "create_room_section_header_type" = "Type de salon";
 "create_room_section_footer_encryption" = "Le chiffrement ne peut pas être désactivé ensuite.";
 "create_room_enable_encryption" = "Activer le chiffrement";
-"create_room_section_header_encryption" = "Chiffrement du salon";
-"create_room_placeholder_topic" = "Sujet";
+"create_room_section_header_encryption" = "Chiffrement";
+"create_room_placeholder_topic" = "De quoi parle ce salon ?";
 "create_room_section_header_topic" = "Sujet du salon (facultatif)";
 "create_room_placeholder_name" = "Nom";
 "create_room_section_header_name" = "Nom du salon";
@@ -2188,3 +2188,31 @@
 "existing" = "Existant";
 "new_word" = "Nouveau";
 "stop" = "Arrêter";
+"create_room_processing" = "Création du salon";
+"create_room_suggest_room" = "Suggérer aux membres de l'espace";
+"create_room_section_footer_type_restricted" = "Peut être trouvé et rejoins par tous les membres de l'espace.";
+"create_room_section_footer_type_private" = "Peut être trouvé et rejoins uniquement par les personnes invitées.";
+"create_room_type_restricted" = "Membres de l'espace";
+"call_jitsi_unable_to_start" = "Impossible de démarrer la conférence";
+"room_suggestion_settings_screen_message" = "Les salons suggérés sont indiqués comme intéressant à rejoindre auprès des membres de l'espace.";
+"room_suggestion_settings_screen_title" = "Suggérer un salon dans un espace";
+
+// Room suggestion Settings
+"room_suggestion_settings_screen_nav_title" = "Suggérer un salon";
+"room_access_space_chooser_other_spaces_section" = "Autres espaces ou salons";
+"room_access_space_chooser_known_spaces_section" = "Espaces que vous connaissez contenant %@";
+"room_access_settings_screen_setting_room_access" = "Réglages des permissions d'accès au salon";
+"room_access_settings_screen_upgrade_alert_auto_invite_switch" = "Inviter automatiquement les membres dans les nouveaux salons";
+"room_access_settings_screen_upgrade_alert_message_no_param" = "N'importe qui présent dans l'espace parent pourra trouver et rejoindre ce salon - pas besoin d'inviter tout le monde manuellement. Vous pouvez changer cette option dans les réglages du salon en tout temps.";
+"room_access_settings_screen_upgrade_alert_message" = "N'importe qui dans %@ pourra trouver et rejoindre ce salon - pas besoin d'inviter tout le monde manuellement. Vous pouvez changer cette option dans les réglages du salon en tout temps.";
+"room_access_settings_screen_public_message" = "Peut être trouvé et rejoint par n'importe qui.";
+"room_access_settings_screen_edit_spaces" = "Editer les espaces";
+"room_access_settings_screen_restricted_message" = "Peut être trouvé et rejoint par n'importe qui dans l'espace.\nVous allez devoir préciser depuis quel espace.";
+"room_access_settings_screen_private_message" = "Peut être trouvé et rejoint uniquement par les personnes invitées.";
+"room_access_settings_screen_message" = "Définir qui peut trouver et rejoindre %@.";
+"room_access_settings_screen_title" = "Qui peut accéder à ce salon ?";
+
+// Room Access Settings
+"room_access_settings_screen_nav_title" = "Permissions du salon";
+"room_details_promote_room_suggest_title" = "Proposer aux membres de l'espace";
+"room_details_promote_room_title" = "Promouvoir le salon";
