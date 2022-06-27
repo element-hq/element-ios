@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct StaticLocationView: View {
 
     // MARK: - Properties
@@ -89,7 +88,6 @@ struct StaticLocationView: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct StaticLocationSharingViewer_Previews: PreviewProvider {
     static let stateRenderer = MockStaticLocationViewingScreenState.stateRenderer
     static var previews: some View {

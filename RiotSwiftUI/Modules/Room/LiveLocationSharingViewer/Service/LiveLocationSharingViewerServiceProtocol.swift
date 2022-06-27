@@ -18,7 +18,6 @@ import Foundation
 import Combine
 import CoreLocation
 
-@available(iOS 14.0, *)
 protocol LiveLocationSharingViewerServiceProtocol {
     
     /// All shared users live location

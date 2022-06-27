@@ -17,7 +17,6 @@
 import SwiftUI
 
 
-@available(iOS 14.0, *)
 struct ThemableTextEditor: UIViewRepresentable {
     
     // MARK: Properties
@@ -128,7 +127,6 @@ struct ThemableTextEditor: UIViewRepresentable {
 
 // MARK: - modifiers
 
-@available(iOS 14.0, *)
 extension ThemableTextEditor {
     func keyboardType(_ type: UIKeyboardType) -> ThemableTextEditor {
         textView.keyboardType = type

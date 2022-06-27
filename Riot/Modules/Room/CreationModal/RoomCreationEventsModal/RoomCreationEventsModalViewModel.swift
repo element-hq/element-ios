@@ -44,7 +44,10 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
     func rowViewModel(at indexPath: IndexPath) -> RoomCreationEventRowViewModel? {
         let event = events[indexPath.row]
         let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
-        if let string = eventFormatter.attributedString(from: event, with: roomState, error: formatterError) {
+        if let string = eventFormatter.attributedString(from: event,
+                                                        with: roomState,
+                                                        andLatestRoomState: nil,
+                                                        error: formatterError) {
             if string.string.hasPrefix("·") {
                 return RoomCreationEventRowViewModel(title: string)
             }
@@ -132,7 +135,10 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
         //  shape-up events
         for event in roomState.stateEvents {
             let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
-            let eventString = eventFormatter.attributedString(from: event, with: roomState, error: formatterError)
+            let eventString = eventFormatter.attributedString(from: event,
+                                                              with: roomState,
+                                                              andLatestRoomState: nil,
+                                                              error: formatterError)
             guard shouldDisplay(event), eventString != nil, formatterError.pointee == MXKEventFormatterErrorNone else {
                 continue
             }

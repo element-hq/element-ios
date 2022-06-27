@@ -23,7 +23,6 @@ enum RoomSuggestionCoordinatorCoordinatorAction {
 }
 
 @objcMembers
-@available(iOS 14.0, *)
 final class RoomSuggestionCoordinator: Coordinator {
     
     // MARK: - Properties

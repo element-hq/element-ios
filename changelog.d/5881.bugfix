@@ -1,0 +1,1 @@
+Soft logout: Fix a bug where clearing all data from soft logout didn't present the login screen.

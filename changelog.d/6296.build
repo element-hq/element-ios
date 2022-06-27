@@ -1,0 +1,1 @@
+locheck-script: fix build fails when there is space character on PROJECT_DIR's path. By Hudzaifah Lutfi.

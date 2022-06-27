@@ -17,7 +17,6 @@
 import Foundation
 import DesignKit
 
-@available(iOS 14.0, *)
 struct DarkThemeSwiftUI: ThemeSwiftUI {
     var identifier: ThemeIdentifier = .dark
     let isDark: Bool = true

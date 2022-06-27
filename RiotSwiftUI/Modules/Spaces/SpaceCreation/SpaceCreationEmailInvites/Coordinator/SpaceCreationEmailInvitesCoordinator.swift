@@ -38,7 +38,6 @@ final class SpaceCreationEmailInvitesCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: SpaceCreationEmailInvitesCoordinatorParameters) {
         self.parameters = parameters
         let service = SpaceCreationEmailInvitesService(session: parameters.session)

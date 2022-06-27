@@ -19,11 +19,9 @@
 import SwiftUI
 import Combine
     
-@available(iOS 14, *)
 typealias SpaceCreationMenuViewModelType = StateStoreViewModel<SpaceCreationMenuViewState,
                                                               SpaceCreationMenuStateAction,
                                                               SpaceCreationMenuViewAction>
-@available(iOS 14.0, *)
 class SpaceCreationMenuViewModel: SpaceCreationMenuViewModelType, SpaceCreationMenuViewModelProtocol {
     
     // MARK: - Properties

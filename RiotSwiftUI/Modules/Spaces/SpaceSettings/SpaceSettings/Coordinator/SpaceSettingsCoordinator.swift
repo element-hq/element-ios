@@ -45,7 +45,6 @@ final class SpaceSettingsCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: SpaceSettingsCoordinatorParameters) {
         self.parameters = parameters
         let viewModel = SpaceSettingsViewModel.makeSpaceSettingsViewModel(service: SpaceSettingsService(session: parameters.session, spaceId: parameters.spaceId))

@@ -26,7 +26,6 @@ import SwiftUI
 /// SomeView()
 ///    .background(ViewFrameReader(frame: $frame))
 /// ```
-@available(iOS 14.0, *)
 struct ViewFrameReader: View {
     @Binding var frame: CGRect
     

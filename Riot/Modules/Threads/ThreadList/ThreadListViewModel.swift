@@ -209,6 +209,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
         return eventFormatter.attributedString(from: message.replyStrippedVersion,
                                                with: roomState,
+                                               andLatestRoomState: nil,
                                                error: formatterError).vc_byRemovingLinks
     }
     
@@ -223,6 +224,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         return (
             eventFormatter.attributedString(from: message.replyStrippedVersion,
                                             with: roomState,
+                                            andLatestRoomState: nil,
                                             error: formatterError),
             eventFormatter.dateString(from: message, withTime: true)
         )

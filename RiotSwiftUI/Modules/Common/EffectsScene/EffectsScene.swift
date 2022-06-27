@@ -17,7 +17,6 @@
 import SceneKit
 import SwiftUI
 
-@available(iOS 14.0, *)
 class EffectsScene: SCNScene {
     
     // MARK: - Constants
@@ -61,7 +60,6 @@ class EffectsScene: SCNScene {
     }
 }
 
-@available(iOS 14.0, *)
 fileprivate extension Color {
     /// The color's components as an array of floats in the extended linear sRGB colorspace.
     ///

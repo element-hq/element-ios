@@ -17,11 +17,9 @@
 import SwiftUI
 import CoreLocation
 
-@available(iOS 14, *)
 typealias StaticLocationViewingViewModelType = StateStoreViewModel<StaticLocationViewingViewState,
                                                                   Never,
                                                                    StaticLocationViewingViewAction>
-@available(iOS 14, *)
 class StaticLocationViewingViewModel: StaticLocationViewingViewModelType, StaticLocationViewingViewModelProtocol {
 
     // MARK: - Properties

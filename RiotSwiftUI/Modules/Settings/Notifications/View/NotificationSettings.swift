@@ -20,7 +20,6 @@ import SwiftUI
 ///
 /// Also renders an optional bottom section.
 /// Used in the case of keywords, for the keyword chips and input.
-@available(iOS 14.0, *)
 struct NotificationSettings<BottomSection: View>: View {
     
     @ObservedObject var viewModel: NotificationSettingsViewModel
@@ -45,14 +44,12 @@ struct NotificationSettings<BottomSection: View>: View {
     }
 }
 
-@available(iOS 14.0, *)
 extension NotificationSettings where BottomSection == EmptyView {
     init(viewModel: NotificationSettingsViewModel) {
         self.init(viewModel: viewModel, bottomSection: nil)
     }
 }
 
-@available(iOS 14.0, *)
 struct NotificationSettings_Previews: PreviewProvider {
     static var previews: some View {
         Group {

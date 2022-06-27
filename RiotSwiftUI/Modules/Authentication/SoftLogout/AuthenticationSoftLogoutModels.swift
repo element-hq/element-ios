@@ -26,7 +26,7 @@ struct SoftLogoutCredentials {
 
 // MARK: View model
 
-enum AuthenticationSoftLogoutViewModelResult {
+enum AuthenticationSoftLogoutViewModelResult: CustomStringConvertible {
     /// Login with password
     case login(String)
     /// Forgot password
@@ -37,6 +37,22 @@ enum AuthenticationSoftLogoutViewModelResult {
     case continueWithSSO(SSOIdentityProvider)
     /// Continue using the fallback page
     case fallback
+    
+    /// A string representation of the result, ignoring any associated values that could leak PII.
+    var description: String {
+        switch self {
+        case .login:
+            return "login"
+        case .forgotPassword:
+            return "forgotPassword"
+        case .clearAllData:
+            return "clearAllData"
+        case .continueWithSSO(let provider):
+            return "continueWithSSO: \(provider)"
+        case .fallback:
+            return "fallback"
+        }
+    }
 }
 
 // MARK: View

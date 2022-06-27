@@ -65,6 +65,7 @@
     
     [self.masterContainerView setBackgroundColor:ThemeService.shared.theme.baseColor];
     [self.masterContainerView.layer setCornerRadius:7.0];
+    [self.contentView setBackgroundColor:ThemeService.shared.theme.backgroundColor];
     
     [self.titleLabel setTextColor:ThemeService.shared.theme.textPrimaryColor];
     

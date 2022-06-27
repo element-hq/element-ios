@@ -698,48 +698,6 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     }
 }
 
-- (void)showClearDataAfterSoftLogoutConfirmation
-{
-    // Request confirmation
-    if (alert)
-    {
-        [alert dismissViewControllerAnimated:NO completion:nil];
-    }
-
-    alert = [UIAlertController alertControllerWithTitle:[VectorL10n authSoftlogoutClearDataSignOutTitle]
-                                                message:[VectorL10n authSoftlogoutClearDataSignOutMsg]
-                                         preferredStyle:UIAlertControllerStyleAlert];
-
-
-    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n authSoftlogoutClearDataSignOut]
-                                              style:UIAlertActionStyleDestructive
-                                            handler:^(UIAlertAction * action)
-                      {
-                          [self clearDataAfterSoftLogout];
-                      }]];
-
-    MXWeakify(self);
-    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
-                                              style:UIAlertActionStyleDefault
-                                            handler:^(UIAlertAction * action)
-                      {
-                          MXStrongifyAndReturnIfNil(self);
-                          self->alert = nil;
-                      }]];
-
-    [self presentViewController:alert animated:YES completion:nil];
-}
-
-- (void)clearDataAfterSoftLogout
-{
-    MXLogDebug(@"[AuthenticationVC] clearDataAfterSoftLogout %@", self.softLogoutCredentials.userId);
-
-    // Use AppDelegate so that we reset app settings and this auth screen
-    [[AppDelegate theDelegate] logoutSendingRequestServer:YES completion:^(BOOL isLoggedOut) {
-        MXLogDebug(@"[AuthenticationVC] Complete. isLoggedOut: %@", @(isLoggedOut));
-    }];
-}
-
 /**
  Filter and prioritise flows supported by the app.
 
@@ -1010,7 +968,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     }
     else if (sender == self.softLogoutClearDataButton)
     {
-        [self showClearDataAfterSoftLogoutConfirmation];
+        [self.authVCDelegate authenticationViewControllerDidRequestClearAllData:self];
     }
     else
     {

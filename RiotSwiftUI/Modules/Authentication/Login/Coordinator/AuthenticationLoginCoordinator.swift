@@ -25,13 +25,25 @@ struct AuthenticationLoginCoordinatorParameters {
     let loginMode: LoginMode
 }
 
-enum AuthenticationLoginCoordinatorResult {
+enum AuthenticationLoginCoordinatorResult: CustomStringConvertible {
     /// Continue using the supplied SSO provider.
     case continueWithSSO(SSOIdentityProvider)
     /// Login was successful with the associated session created.
     case success(session: MXSession, password: String)
     /// Login requested a fallback
     case fallback
+    
+    /// A string representation of the result, ignoring any associated values that could leak PII.
+    var description: String {
+        switch self {
+        case .continueWithSSO(let provider):
+            return "continueWithSSO: \(provider)"
+        case .success:
+            return "success"
+        case .fallback:
+            return "fallback"
+        }
+    }
 }
 
 final class AuthenticationLoginCoordinator: Coordinator, Presentable {

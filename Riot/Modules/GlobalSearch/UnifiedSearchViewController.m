@@ -361,7 +361,7 @@
     }
 
     // Hide back button title
-    self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    [self vc_removeBackTitle];
 }
 
 #pragma mark - Search

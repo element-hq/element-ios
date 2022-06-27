@@ -985,7 +985,11 @@
     if (event)
     {
         MXKEventFormatterError error;
-        reason = [roomDataSource.eventFormatter stringFromEvent:event withRoomState:roomDataSource.roomState error:&error];
+        reason = [roomDataSource.eventFormatter
+                  stringFromEvent:event
+                  withRoomState:roomDataSource.roomState
+                  andLatestRoomState:nil
+                  error:&error];
         if (error != MXKEventFormatterErrorNone)
         {
             reason = nil;

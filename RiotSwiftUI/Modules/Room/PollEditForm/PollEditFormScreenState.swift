@@ -17,7 +17,6 @@
 import Foundation
 import SwiftUI
 
-@available(iOS 14.0, *)
 enum MockPollEditFormScreenState: MockScreenState, CaseIterable {
     case standard
     

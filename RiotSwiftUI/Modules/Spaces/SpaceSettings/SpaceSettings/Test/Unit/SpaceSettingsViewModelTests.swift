@@ -19,7 +19,6 @@ import Combine
 
 @testable import RiotSwiftUI
 
-@available(iOS 14.0, *)
 class SpaceSettingsViewModelTests: XCTestCase {
     let creationParameters = SpaceCreationParameters()
     var service: MockSpaceSettingsService!

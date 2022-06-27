@@ -825,15 +825,15 @@
     if (self.parentViewController.navigationController)
     {
         // Hide back button title
-        self.parentViewController.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-        
+        [self.parentViewController vc_removeBackTitle];
+
         [self.parentViewController.navigationController pushViewController:viewController animated:YES];
     }
     else
     {
         // Hide back button title
-        self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-        
+        [self vc_removeBackTitle];
+
         [self.navigationController pushViewController:viewController animated:YES];
     }
 }

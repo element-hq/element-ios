@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct ScreenList: View {
     
     private var allStates: [ScreenStateInfo]
@@ -49,7 +48,6 @@ struct ScreenList: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct ScreenList_Previews: PreviewProvider {
     static var previews: some View {
         ScreenList(screens: [MockTemplateUserProfileScreenState.self])

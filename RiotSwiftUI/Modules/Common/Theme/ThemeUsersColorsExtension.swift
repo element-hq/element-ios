@@ -17,7 +17,6 @@
 import Foundation
 import SwiftUI
 
-@available(iOS 14.0, *)
 extension ThemeSwiftUI {
     
     /// Get the stable display user color based on userId.

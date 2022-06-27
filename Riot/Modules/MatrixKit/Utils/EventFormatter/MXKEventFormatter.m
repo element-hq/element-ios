@@ -296,10 +296,16 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
 
 
 #pragma mark - Events to strings conversion methods
-- (NSString*)stringFromEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState error:(MXKEventFormatterError*)error
+- (NSString*)stringFromEvent:(MXEvent*)event
+               withRoomState:(MXRoomState*)roomState
+          andLatestRoomState:(MXRoomState*)latestRoomState
+                       error:(MXKEventFormatterError*)error
 {
     NSString *stringFromEvent;
-    NSAttributedString *attributedStringFromEvent = [self attributedStringFromEvent:event withRoomState:roomState error:error];
+    NSAttributedString *attributedStringFromEvent = [self attributedStringFromEvent:event
+                                                                      withRoomState:roomState
+                                                                 andLatestRoomState:latestRoomState
+                                                                              error:error];
     if (*error == MXKEventFormatterErrorNone)
     {
         stringFromEvent = attributedStringFromEvent.string;
@@ -308,7 +314,10 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
     return stringFromEvent;
 }
 
-- (NSAttributedString *)attributedStringFromEvent:(MXEvent *)event withRoomState:(MXRoomState *)roomState error:(MXKEventFormatterError *)error
+- (NSAttributedString *)attributedStringFromEvent:(MXEvent*)event
+                                    withRoomState:(MXRoomState*)roomState
+                               andLatestRoomState:(MXRoomState*)latestRoomState
+                                            error:(MXKEventFormatterError *)error
 {
     // Check we can output the error
     NSParameterAssert(error);
@@ -1360,7 +1369,10 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
                     if (isHTML)
                     {
                         // Build the attributed string from the HTML string
-                        attributedDisplayText = [self renderHTMLString:body forEvent:event withRoomState:roomState];
+                        attributedDisplayText = [self renderHTMLString:body
+                                                              forEvent:event
+                                                         withRoomState:roomState
+                                                    andLatestRoomState:latestRoomState];
                     }
                     else
                     {
@@ -1664,7 +1676,10 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
     return attributedDisplayText;
 }
 
-- (NSAttributedString*)attributedStringFromEvents:(NSArray<MXEvent*>*)events withRoomState:(MXRoomState*)roomState error:(MXKEventFormatterError*)error
+- (NSAttributedString*)attributedStringFromEvents:(NSArray<MXEvent*>*)events
+                                    withRoomState:(MXRoomState*)roomState
+                               andLatestRoomState:(MXRoomState*)latestRoomState
+                                            error:(MXKEventFormatterError*)error
 {
     // TODO: Do a full summary
     return nil;
@@ -1752,7 +1767,10 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
     return str;
 }
 
-- (NSAttributedString*)renderHTMLString:(NSString*)htmlString forEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState
+- (NSAttributedString*)renderHTMLString:(NSString*)htmlString
+                               forEvent:(MXEvent*)event
+                          withRoomState:(MXRoomState*)roomState
+                     andLatestRoomState:(MXRoomState*)latestRoomState
 {
     NSString *html = htmlString;
     MXEvent *repliedEvent;
@@ -2126,7 +2144,10 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
         // Note that we use the current room state (roomState) because when we display
         // users displaynames, we want current displaynames
         MXKEventFormatterError error;
-        NSString *lastMessageString = [self stringFromEvent:event withRoomState:roomState error:&error];
+        NSString *lastMessageString = [self stringFromEvent:event
+                                              withRoomState:roomState
+                                         andLatestRoomState:nil
+                                                      error:&error];
         
         if (0 == lastMessageString.length)
         {

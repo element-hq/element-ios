@@ -18,7 +18,6 @@ import Foundation
 import Combine
 
 /// A service for changing notification settings and keywords
-@available(iOS 14.0, *)
 protocol NotificationSettingsServiceType {
     /// Publisher of all push rules.
     var rulesPublisher: AnyPublisher<[NotificationPushRuleType], Never> { get }

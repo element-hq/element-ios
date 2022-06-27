@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 /// A prompt that asks the user whether they would like to enable Analytics or not.
 struct AnalyticsPrompt: View {
 

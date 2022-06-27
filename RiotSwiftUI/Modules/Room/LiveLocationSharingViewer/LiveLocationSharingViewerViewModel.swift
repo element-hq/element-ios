@@ -18,11 +18,9 @@ import SwiftUI
 import Combine
 import Mapbox
 
-@available(iOS 14, *)
 typealias LiveLocationSharingViewerViewModelType = StateStoreViewModel<LiveLocationSharingViewerViewState,
                                                                  Never,
                                                                  LiveLocationSharingViewerViewAction>
-@available(iOS 14, *)
 class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType, LiveLocationSharingViewerViewModelProtocol {
 
     // MARK: - Properties

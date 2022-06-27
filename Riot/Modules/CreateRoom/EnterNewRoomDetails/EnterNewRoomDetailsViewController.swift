@@ -473,7 +473,7 @@ extension EnterNewRoomDetailsViewController: UITableViewDataSource {
                 }
                 onValueChanged?(cell.mxkSwitch)
             }
-            cell.mxkLabelLeadingConstraint.constant = cell.vc_separatorInset.left
+            cell.mxkLabelLeadingConstraint.constant = tableView.vc_separatorInset.left
             cell.mxkSwitchTrailingConstraint.constant = 15
             cell.update(theme: theme)
             

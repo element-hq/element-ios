@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct SpaceSettings: View {
 
     // MARK: - Properties
@@ -199,7 +198,6 @@ struct SpaceSettings: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct SpaceSettings_Previews: PreviewProvider {
     static let stateRenderer = MockSpaceSettingsScreenState.stateRenderer
     static var previews: some View {

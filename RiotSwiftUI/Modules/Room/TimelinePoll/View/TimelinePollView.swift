@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct TimelinePollView: View {
     
     // MARK: - Properties
@@ -94,7 +93,6 @@ struct TimelinePollView: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct TimelinePollView_Previews: PreviewProvider {
     static let stateRenderer = MockTimelinePollScreenState.stateRenderer
     static var previews: some View {

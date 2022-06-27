@@ -24,7 +24,6 @@ class RoomAncestorSelectorViewProvider: MatrixItemChooserCoordinatorViewProvider
         self.navTitle = navTitle
     }
     
-    @available(iOS 14, *)
     func view(with viewModel: MatrixItemChooserViewModelType.Context) -> AnyView {
         return AnyView(RoomAncestorSelector(viewModel: viewModel, navTitle: navTitle))
     }

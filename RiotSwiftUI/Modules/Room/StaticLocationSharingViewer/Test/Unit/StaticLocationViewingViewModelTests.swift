@@ -20,7 +20,6 @@ import CoreLocation
 
 @testable import RiotSwiftUI
 
-@available(iOS 14.0, *)
 class StaticLocationViewingViewModelTests: XCTestCase {
 
     var cancellables = Set<AnyCancellable>()

@@ -21,11 +21,9 @@ import Combine
 
 
 
-@available(iOS 14, *)
 typealias SpaceCreationPostProcessViewModelType = StateStoreViewModel<SpaceCreationPostProcessViewState,
                                                                  SpaceCreationPostProcessStateAction,
                                                                  SpaceCreationPostProcessViewAction>
-@available(iOS 14, *)
 class SpaceCreationPostProcessViewModel: SpaceCreationPostProcessViewModelType, SpaceCreationPostProcessViewModelProtocol {
 
     // MARK: - Properties
@@ -133,7 +131,6 @@ class SpaceCreationPostProcessViewModel: SpaceCreationPostProcessViewModelType, 
 }
 
 // MARK: - MXSpaceService notification constants
-@available(iOS 14, *)
 extension SpaceCreationPostProcessViewModel {
     /// Posted once the process is finished
     public static let didUpdate = Notification.Name("SpaceCreationPostProcessViewModelDidUpdate")

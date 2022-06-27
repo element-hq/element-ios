@@ -29,7 +29,6 @@ enum AuthenticationForgotPasswordCoordinatorResult {
     case cancel
 }
 
-@available(iOS 14.0, *)
 final class AuthenticationForgotPasswordCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties

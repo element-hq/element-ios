@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct LocationSharingMarkerView<Content: View>: View {
     
     // MARK: - Properties
@@ -45,7 +44,6 @@ struct LocationSharingMarkerView<Content: View>: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct LocationSharingUserMarkerView_Previews: PreviewProvider {
     static var previews: some View {
         let avatarData = AvatarInput(mxContentUri: "",

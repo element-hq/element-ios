@@ -17,7 +17,6 @@
 import SwiftUI
 
 class AddRoomSelectorViewProvider: MatrixItemChooserCoordinatorViewProvider {
-    @available(iOS 14, *)
     func view(with viewModel: MatrixItemChooserViewModelType.Context) -> AnyView {
         return AnyView(AddRoomSelector(viewModel: viewModel))
     }

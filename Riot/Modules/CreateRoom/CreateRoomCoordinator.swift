@@ -75,7 +75,7 @@ final class CreateRoomCoordinator: CreateRoomCoordinatorType {
 
         self.add(childCoordinator: createRoomCoordinator)
 
-        if let parentSpace = self.parentSpace, #available(iOS 14, *) {
+        if let parentSpace = self.parentSpace {
             let roomSelectionCoordinator = self.createRoomSelectorCoordinator(parentSpace: parentSpace)
             roomSelectionCoordinator.completion = { [weak self] result in
                 guard let self = self else {
@@ -114,7 +114,6 @@ final class CreateRoomCoordinator: CreateRoomCoordinatorType {
         return coordinator
     }
     
-    @available(iOS 14.0, *)
     private func createRoomSelectorCoordinator(parentSpace: MXSpace) -> MatrixItemChooserCoordinator {
         let paramaters = MatrixItemChooserCoordinatorParameters(session: self.parameters.session, viewProvider: AddRoomSelectorViewProvider(), itemsProcessor: AddRoomItemsProcessor(parentSpace: parentSpace))
         let coordinator = MatrixItemChooserCoordinator(parameters: paramaters)

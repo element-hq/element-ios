@@ -18,7 +18,6 @@ import Foundation
 import Combine
 import MatrixSDK
 
-@available(iOS 14.0, *)
 class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
     
     // MARK: - Properties
