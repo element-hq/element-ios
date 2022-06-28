@@ -1621,3 +1621,22 @@
 "spaces_creation_visibility_title" = "作成するスペースの種類を選択してください";
 "space_public_join_rule_detail" = "誰でも参加可能、コミュニティー向け";
 "space_private_join_rule_detail" = "招待者のみ参加可能、個人やチーム向け";
+"onboarding_use_case_title" = "誰と話すことが一番多いですか？";
+"onboarding_splash_page_4_message" = "Elementは職場利用にも最適です。世界で最も安全な組織によって信頼されています。";
+"onboarding_splash_page_4_title_no_pun" = "チームのためのメッセージング。";
+"onboarding_splash_page_3_message" = "E2Eで暗号化されており、登録に電話番号は不要です。広告もデータ収集もありません。";
+"onboarding_splash_page_3_title" = "安全なメッセージ。";
+"onboarding_splash_page_2_message" = "データがどこに保存されるかを自分で選び、主導権と独立を手に入れよう。Matrixで接続。";
+"onboarding_splash_page_2_title" = "主導権はあなたにある。";
+"onboarding_splash_page_1_message" = "オンライン上でも対面の会話と同じレベルでプライバシーを守る、安全で独立したコミュニケーション。";
+"saving" = "保存中";
+
+// Activities
+"loading" = "ロード中";
+"confirm" = "確認";
+"edit" = "編集";
+"suggest" = "サジェスト";
+"add" = "追加";
+"existing" = "既存";
+"new_word" = "新規";
+"stop" = "停止";

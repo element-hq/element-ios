@@ -347,10 +347,10 @@
 "settings_send_crash_report" = "Enviar datos de uso e informes de fallas anónimos";
 "settings_enable_rageshake" = "Agitar con rabia para reportar un error";
 "settings_clear_cache" = "Borrar caché";
-"settings_change_password" = "Cambiar contraseña en la cuenta de Matrix";
-"settings_old_password" = "contraseña anterior";
-"settings_new_password" = "contraseña nueva";
-"settings_confirm_password" = "confirmar contraseña";
+"settings_change_password" = "Cambiar contraseña";
+"settings_old_password" = "Contraseña actual";
+"settings_new_password" = "Contraseña nueva";
+"settings_confirm_password" = "Confirmar contraseña";
 "settings_fail_to_update_password" = "No se ha podido cambiar la contraseña de Matrix";
 "settings_password_updated" = "La contraseña de tu cuenta de Matrix ha sido cambiada";
 "settings_crypto_device_name" = "Nombre de la sesión: ";
@@ -2423,3 +2423,4 @@
 "location_sharing_allow_background_location_cancel_action" = "Ahora no";
 "location_sharing_allow_background_location_validate_action" = "Ajustes";
 "location_sharing_allow_background_location_title" = "Permitir acceso";
+"settings_ui_show_redactions_in_room_history" = "Mostrar un indicador donde se haya eliminado un mensaje";
