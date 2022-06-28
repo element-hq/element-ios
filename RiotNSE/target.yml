@@ -63,7 +63,10 @@ targets:
     - path: ../Riot/PropertyWrappers/UserDefaultsBackedPropertyWrapper.swift
     - path: ../Riot/Modules/MatrixKit
       excludes:
-        - "**/MXKAuthenticationRecaptchaWebView.*"
+        - "Controllers/**"
+        - "Models/*List/**"
+        - "Views/**"
+        
     - path: ../Riot/Modules/Analytics
     - path: ../Riot/Managers/UserSessions
     - path: ../Riot/Managers/AppInfo/

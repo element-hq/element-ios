@@ -24,7 +24,6 @@ class RoomSuggestionSpaceChooserViewProvider: MatrixItemChooserCoordinatorViewPr
         self.navTitle = navTitle
     }
     
-    @available(iOS 14, *)
     func view(with viewModel: MatrixItemChooserViewModelType.Context) -> AnyView {
         return AnyView(RoomSuggestionSpaceChooserSelector(viewModel: viewModel, navTitle: navTitle))
     }

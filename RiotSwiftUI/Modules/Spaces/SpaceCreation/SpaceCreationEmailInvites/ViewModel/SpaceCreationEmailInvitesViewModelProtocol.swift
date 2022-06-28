@@ -21,6 +21,5 @@ import Foundation
 protocol SpaceCreationEmailInvitesViewModelProtocol {
     
     var completion: ((SpaceCreationEmailInvitesViewModelResult) -> Void)? { get set }
-    @available(iOS 14, *)
     var context: SpaceCreationEmailInvitesViewModelType.Context { get }
 }

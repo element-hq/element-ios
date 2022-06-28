@@ -25,8 +25,7 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
         
-        guard #available(iOS 14.0, *),
-              let bubbleData = cellData as? RoomBubbleCellData,
+        guard let bubbleData = cellData as? RoomBubbleCellData,
               let event = bubbleData.events.last
         else {
             return
@@ -118,8 +117,7 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
         roomCellContentView?.showSenderInfo = true
         roomCellContentView?.showPaginationTitle = false
         
-        guard #available(iOS 14.0, *),
-              let contentView = roomCellContentView?.innerContentView else {
+        guard let contentView = roomCellContentView?.innerContentView else {
                   return
               }
         

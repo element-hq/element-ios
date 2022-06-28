@@ -18,7 +18,6 @@ import Foundation
 import CoreLocation
 import MatrixSDK
 
-@available(iOS 14.0, *)
 class LiveLocationSharingViewerService: LiveLocationSharingViewerServiceProtocol {
     
     // MARK: - Properties

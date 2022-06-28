@@ -6,3 +6,4 @@
 "NSCalendarsUsageDescription" = "予定されているミーティングをアプリで確認することができます。";
 "NSFaceIDUsageDescription" = "Face IDはアプリへのアクセスに使用されます。";
 "NSLocationWhenInUseUsageDescription" = "位置情報を共有する際には、地図を表示するためのアクセスをElementに付与する必要があります。";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "あなたが他の人に位置を共有するとき、Elementは地図をその人に表示するアクセス権が必要です。";

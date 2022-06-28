@@ -17,7 +17,6 @@
 import SwiftUI
 import CoreLocation
 
-@available(iOS 14.0, *)
 struct LocationSharingView: View {
     
     // MARK: - Properties
@@ -164,7 +163,6 @@ struct LocationSharingView: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct LocationSharingView_Previews: PreviewProvider {
     static let stateRenderer = MockLocationSharingScreenState.stateRenderer
     static var previews: some View {

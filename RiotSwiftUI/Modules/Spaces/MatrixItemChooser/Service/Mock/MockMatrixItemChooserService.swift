@@ -17,7 +17,6 @@
 import Foundation
 import Combine
 
-@available(iOS 14.0, *)
 class MockMatrixItemChooserService: MatrixItemChooserServiceProtocol {
     
     static let mockSections = [

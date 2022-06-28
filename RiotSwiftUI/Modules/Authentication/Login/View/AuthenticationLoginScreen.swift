@@ -127,7 +127,7 @@ struct AuthenticationLoginScreen: View {
                 Text(VectorL10n.next)
             }
             .buttonStyle(PrimaryActionButtonStyle())
-            .disabled(!viewModel.viewState.hasValidCredentials || viewModel.viewState.isLoading)
+            .disabled(!viewModel.viewState.canSubmit)
             .accessibilityIdentifier("nextButton")
         }
     }
@@ -166,9 +166,9 @@ struct AuthenticationLoginScreen: View {
         isPasswordFocused = false
     }
     
-    /// Sends the `next` view action so long as valid credentials have been input.
+    /// Sends the `next` view action so long as the form is ready to submit.
     func submit() {
-        guard viewModel.viewState.hasValidCredentials else { return }
+        guard viewModel.viewState.canSubmit else { return }
         viewModel.send(viewAction: .next)
     }
 

@@ -81,7 +81,6 @@ struct StyledText: View {
 }
 
 
-@available(iOS 14.0, *)
 struct StyledText_Previews: PreviewProvider {
     static func prettyText() -> NSAttributedString {
         let string = NSMutableAttributedString(string: "T", attributes: [

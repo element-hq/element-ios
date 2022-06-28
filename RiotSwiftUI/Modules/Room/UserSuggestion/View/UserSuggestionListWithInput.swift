@@ -16,13 +16,11 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct UserSuggestionListWithInputViewModel {
     let listViewModel: UserSuggestionViewModel
     let callback: (String)->()
 }
 
-@available(iOS 14.0, *)
 struct UserSuggestionListWithInput: View {
     
     // MARK: - Properties
@@ -51,7 +49,6 @@ struct UserSuggestionListWithInput: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct UserSuggestionListWithInput_Previews: PreviewProvider {
     static let stateRenderer = MockUserSuggestionScreenState.stateRenderer
     static var previews: some View {

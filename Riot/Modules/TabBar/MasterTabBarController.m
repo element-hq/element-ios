@@ -112,7 +112,7 @@
     [self vc_removeBackTitle];
     
     [self setupTitleView];
-    titleView.titleLabel.text = [VectorL10n titleHome];
+    self.titleLabelText = [VectorL10n titleHome];
     
     childViewControllers = [NSMutableArray array];
     
@@ -278,8 +278,8 @@
         }
     }
     
-    titleView.titleLabel.text = [self getTitleForItemViewController:self.selectedViewController];
-    
+    self.titleLabelText = [self getTitleForItemViewController:self.selectedViewController];
+
     // Need to be called in case of the controllers have been replaced
     [self.selectedViewController viewDidAppear:NO];
 }
@@ -299,7 +299,7 @@
     NSInteger index = [self indexOfTabItemWithTag:tabBarIndex];
     self.selectedIndex = index;
     
-    titleView.titleLabel.text = [self getTitleForItemViewController:self.selectedViewController];
+    self.titleLabelText = [self getTitleForItemViewController:self.selectedViewController];
 }
 
 #pragma mark -
@@ -487,9 +487,15 @@
 {
     MXLogDebug(@"[MasterTabBarController] showAuthenticationScreenAfterSoftLogout");
     
-    AuthenticationService.shared.softLogoutCredentials = credentials;
-    
-    [self showOnboardingFlowAndResetSessionFlags:NO];
+    // This method can be called after the user chooses to clear their data as the MXSession
+    // is opened to call logout from. So we only set the credentials when authentication isn't
+    // in progress to prevent a second soft logout screen being shown.
+    if (!self.onboardingCoordinatorBridgePresenter && !self.isOnboardingCoordinatorPreparing)
+    {
+        AuthenticationService.shared.softLogoutCredentials = credentials;
+        
+        [self showOnboardingFlowAndResetSessionFlags:NO];
+    }
 }
 
 - (void)showOnboardingFlowAndResetSessionFlags:(BOOL)resetSessionFlags
@@ -695,6 +701,12 @@
 {
     titleView = [MainTitleView new];
     self.navigationItem.titleView = titleView;
+}
+
+-(void)setTitleLabelText:(NSString *)text
+{
+    titleView.titleLabel.text = text;
+    self.navigationItem.backButtonTitle = text;
 }
 
 - (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion
@@ -1032,7 +1044,7 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
-    titleView.titleLabel.text = [self getTitleForItemViewController:viewController];
+    self.titleLabelText = [self getTitleForItemViewController:viewController];
 }
 
 @end

@@ -16,7 +16,6 @@
 
 import Combine
 
-@available(iOS 14.0, *)
 extension Publisher {
     
     ///

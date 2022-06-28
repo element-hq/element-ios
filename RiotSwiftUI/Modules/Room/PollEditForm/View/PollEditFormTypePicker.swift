@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct PollEditFormTypePicker: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
@@ -33,7 +32,6 @@ struct PollEditFormTypePicker: View {
     }
 }
 
-@available(iOS 14.0, *)
 private struct PollEditFormTypeButton: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
@@ -87,7 +85,6 @@ private struct PollEditFormTypeButton: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct PollEditFormTypePicker_Previews: PreviewProvider {
     static var previews: some View {
         VStack {

@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 /// A modifier for showing the wait overlay view over a view.
 struct WaitOverlayModifier: ViewModifier {
     
@@ -34,16 +33,13 @@ struct WaitOverlayModifier: ViewModifier {
     }
 }
 
-@available(iOS 14.0, *)
 extension View {
-    @available(iOS 14.0, *)
     func waitOverlay(show: Bool, message: String? = nil, allowUserInteraction: Bool = true) -> some View {
         self.modifier(WaitOverlayModifier(allowUserInteraction: allowUserInteraction, show: show, message: message))
     }
 }
 
 /// `WaitOverlay` allows to easily add an overlay that covers the entire with an `ActivityIndicator` at the center
-@available(iOS 14.0, *)
 struct WaitOverlay: ViewModifier {
     // MARK: - Properties
     
@@ -103,7 +99,6 @@ struct WaitOverlay: ViewModifier {
     }
 }
 
-@available(iOS 14.0, *)
 struct WaitOverlay_Previews: PreviewProvider {
     static var previews: some View {
         Group {

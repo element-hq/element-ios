@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct BorderModifier<Shape: InsettableShape>: ViewModifier {
     
     var color: Color
@@ -29,7 +28,6 @@ struct BorderModifier<Shape: InsettableShape>: ViewModifier {
     }
 }
 
-@available(iOS 14.0, *)
 extension View {
     func shapedBorder<Shape: InsettableShape>(color: Color, borderWidth: CGFloat, shape: Shape) -> some View {
         modifier(BorderModifier(color: color, borderWidth: borderWidth, shape: shape))

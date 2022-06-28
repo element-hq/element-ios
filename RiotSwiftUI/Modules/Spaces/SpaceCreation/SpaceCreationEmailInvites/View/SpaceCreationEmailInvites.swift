@@ -18,7 +18,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct SpaceCreationEmailInvites: View {
 
     // MARK: - Properties
@@ -114,7 +113,6 @@ struct SpaceCreationEmailInvites: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct SpaceCreationEmailInvites_Previews: PreviewProvider {
     static let stateRenderer = MockSpaceCreationEmailInvitesScreenState.stateRenderer
     static var previews: some View {

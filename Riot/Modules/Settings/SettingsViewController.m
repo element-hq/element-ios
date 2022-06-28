@@ -62,6 +62,7 @@ typedef NS_ENUM(NSUInteger, SECTION_TAG)
     SECTION_TAG_IGNORED_USERS,
     SECTION_TAG_INTEGRATIONS,
     SECTION_TAG_USER_INTERFACE,
+    SECTION_TAG_TIMELINE,
     SECTION_TAG_PRESENCE,
     SECTION_TAG_ADVANCED,
     SECTION_TAG_ABOUT,
@@ -129,9 +130,14 @@ typedef NS_ENUM(NSUInteger, LOCAL_CONTACTS)
 typedef NS_ENUM(NSUInteger, USER_INTERFACE)
 {
     USER_INTERFACE_LANGUAGE_INDEX = 0,
-    USER_INTERFACE_THEME_INDEX,
-    USER_INTERFACE_TIMELINE_STYLE_INDEX,
-    USER_INTERFACE_SHOW_REDACTIONS_IN_ROOM_HISTORY
+    USER_INTERFACE_THEME_INDEX
+};
+
+typedef NS_ENUM(NSUInteger, TIMELINE)
+{
+    TIMELINE_STYLE_INDEX,
+    TIMELINE_SHOW_REDACTIONS_IN_ROOM_HISTORY_INDEX,
+    TIMELINE_USE_ONLY_LATEST_USER_AVATAR_AND_NAME_INDEX
 };
 
 typedef NS_ENUM(NSUInteger, IDENTITY_SERVER)
@@ -167,7 +173,6 @@ typedef NS_ENUM(NSUInteger, LABS_ENABLE)
     LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX = 0,
     LABS_ENABLE_THREADS_INDEX,
     LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS,
-    LABS_USE_ONLY_LATEST_USER_AVATAR_AND_NAME_INDEX,
     LABS_ENABLE_LIVE_LOCATION_SHARING
 };
 
@@ -409,23 +414,13 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     {
         [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT];
     }
-    
-    if (@available(iOS 14.0, *)) {
-        // Don't display Global settings footer for iOS 14+
-    } else {
-        sectionNotificationSettings.footerTitle = [VectorL10n settingsGlobalSettingsInfo:AppInfo.current.displayName];
-    }
 
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX];
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_PIN_UNREAD_INDEX];
     
-    if (@available(iOS 14.0, *)) {
-        [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_DEFAULT_SETTINGS_INDEX];
-        [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_MENTION_AND_KEYWORDS_SETTINGS_INDEX];
-        [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX];
-    } else {
-        // Don't add new sections on pre iOS 14
-    }
+    [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_DEFAULT_SETTINGS_INDEX];
+    [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_MENTION_AND_KEYWORDS_SETTINGS_INDEX];
+    [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX];
 
     sectionNotificationSettings.headerTitle = [VectorL10n settingsNotifications];
     [tmpSections addObject:sectionNotificationSettings];
@@ -511,15 +506,20 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     
     [sectionUserInterface addRowWithTag:USER_INTERFACE_LANGUAGE_INDEX];
     [sectionUserInterface addRowWithTag:USER_INTERFACE_THEME_INDEX];
-    
+        
+    [tmpSections addObject:sectionUserInterface];
+
+    Section *sectionTimeline = [Section sectionWithTag:SECTION_TAG_TIMELINE];
+    sectionTimeline.headerTitle = VectorL10n.settingsTimeline;
+
     if (BuildSettings.roomScreenAllowTimelineStyleConfiguration)
     {
-        [sectionUserInterface addRowWithTag:USER_INTERFACE_TIMELINE_STYLE_INDEX];
+        [sectionTimeline addRowWithTag:TIMELINE_STYLE_INDEX];
     }
+    [sectionTimeline addRowWithTag:TIMELINE_SHOW_REDACTIONS_IN_ROOM_HISTORY_INDEX];
+    [sectionTimeline addRowWithTag:TIMELINE_USE_ONLY_LATEST_USER_AVATAR_AND_NAME_INDEX];
 
-    [sectionUserInterface addRowWithTag:USER_INTERFACE_SHOW_REDACTIONS_IN_ROOM_HISTORY];
-        
-    [tmpSections addObject: sectionUserInterface];
+    [tmpSections addObject:sectionTimeline];
     
     if(BuildSettings.settingsScreenPresenceAllowConfiguration)
     {
@@ -585,10 +585,8 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         [sectionLabs addRowWithTag:LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX];
         [sectionLabs addRowWithTag:LABS_ENABLE_THREADS_INDEX];
         [sectionLabs addRowWithTag:LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS];
-        [sectionLabs addRowWithTag:LABS_USE_ONLY_LATEST_USER_AVATAR_AND_NAME_INDEX];
-        if (BuildSettings.liveLocationSharingEnabled)
+        if (BuildSettings.locationSharingEnabled)
         {
-            // Hide live location lab setting until it's ready to be release
             [sectionLabs addRowWithTag:LABS_ENABLE_LIVE_LOCATION_SHARING];
         }
         sectionLabs.headerTitle = [VectorL10n settingsLabs];
@@ -629,10 +627,8 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     // Do any additional setup after loading the view, typically from a nib.
     
     self.navigationItem.title = [VectorL10n settingsTitle];
-    
-    // Remove back bar button title when pushing a view controller
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    
+    [self vc_removeBackTitle];
+
     [self.tableView registerClass:MXKTableViewCellWithLabelAndTextField.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndTextField defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCellWithLabelAndMXKImageView.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
@@ -887,10 +883,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 {
     // Keep ref on pushed view controller
     pushedViewController = viewController;
-    
-    // Hide back button title
-    self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
@@ -1623,11 +1615,11 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     return sectionObject.rows.count;
 }
 
-- (MXKTableViewCellWithLabelAndTextField*)getLabelAndTextFieldCell:(UITableView*)tableview forIndexPath:(NSIndexPath *)indexPath
+- (MXKTableViewCellWithLabelAndTextField*)getLabelAndTextFieldCell:(UITableView*)tableView forIndexPath:(NSIndexPath *)indexPath
 {
-    MXKTableViewCellWithLabelAndTextField *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndTextField defaultReuseIdentifier] forIndexPath:indexPath];
+    MXKTableViewCellWithLabelAndTextField *cell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndTextField defaultReuseIdentifier] forIndexPath:indexPath];
     
-    cell.mxkLabelLeadingConstraint.constant = cell.vc_separatorInset.left;
+    cell.mxkLabelLeadingConstraint.constant = tableView.vc_separatorInset.left;
     cell.mxkTextFieldLeadingConstraint.constant = 16;
     cell.mxkTextFieldTrailingConstraint.constant = 15;
     
@@ -1652,11 +1644,11 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     return cell;
 }
 
-- (MXKTableViewCellWithLabelAndSwitch*)getLabelAndSwitchCell:(UITableView*)tableview forIndexPath:(NSIndexPath *)indexPath
+- (MXKTableViewCellWithLabelAndSwitch*)getLabelAndSwitchCell:(UITableView*)tableView forIndexPath:(NSIndexPath *)indexPath
 {
-    MXKTableViewCellWithLabelAndSwitch *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier] forIndexPath:indexPath];
+    MXKTableViewCellWithLabelAndSwitch *cell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier] forIndexPath:indexPath];
     
-    cell.mxkLabelLeadingConstraint.constant = cell.vc_separatorInset.left;
+    cell.mxkLabelLeadingConstraint.constant = tableView.vc_separatorInset.left;
     cell.mxkSwitchTrailingConstraint.constant = 15;
     
     cell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
@@ -1760,7 +1752,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         {
             MXKTableViewCellWithLabelAndMXKImageView *profileCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier] forIndexPath:indexPath];
             
-            profileCell.mxkLabelLeadingConstraint.constant = profileCell.vc_separatorInset.left;
+            profileCell.mxkLabelLeadingConstraint.constant = tableView.vc_separatorInset.left;
             profileCell.mxkImageViewTrailingConstraint.constant = 10;
             
             profileCell.mxkImageViewWidthConstraint.constant = profileCell.mxkImageViewHeightConstraint.constant = 30;
@@ -2259,11 +2251,14 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
-        else if (row == USER_INTERFACE_TIMELINE_STYLE_INDEX)
+    }
+    else if (section == SECTION_TAG_TIMELINE)
+    {
+        if (row == TIMELINE_STYLE_INDEX)
         {
             cell = [self buildMessageBubblesCellForTableView:tableView atIndexPath:indexPath];
         }
-        else if (row == USER_INTERFACE_SHOW_REDACTIONS_IN_ROOM_HISTORY)
+        else if (row == TIMELINE_SHOW_REDACTIONS_IN_ROOM_HISTORY_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
@@ -2273,6 +2268,19 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowRedacted:) forControlEvents:UIControlEventTouchUpInside];
+
+            cell = labelAndSwitchCell;
+        }
+        else if (row == TIMELINE_USE_ONLY_LATEST_USER_AVATAR_AND_NAME_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+
+            labelAndSwitchCell.mxkLabel.text = VectorL10n.settingsLabsUseOnlyLatestUserAvatarAndName;
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.roomScreenUseOnlyLatestUserAvatarAndName;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleUseOnlyLatestUserAvatarAndName:) forControlEvents:UIControlEventTouchUpInside];
 
             cell = labelAndSwitchCell;
         }
@@ -2526,18 +2534,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         else if (row == LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS)
         {
             cell = [self buildAutoReportDecryptionErrorsCellForTableView:tableView atIndexPath:indexPath];
-        }
-        else if (row == LABS_USE_ONLY_LATEST_USER_AVATAR_AND_NAME_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-
-            labelAndSwitchCell.mxkLabel.text = VectorL10n.settingsLabsUseOnlyLatestUserAvatarAndName;
-            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.roomScreenUseOnlyLatestUserAvatarAndName;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleUseOnlyLatestUserAvatarAndName:) forControlEvents:UIControlEventTouchUpInside];
-
-            cell = labelAndSwitchCell;
         }
         else if (row == LABS_ENABLE_LIVE_LOCATION_SHARING)
         {
@@ -2935,18 +2931,16 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         }
         else if (section == SECTION_TAG_NOTIFICATIONS)
         {
-            if (@available(iOS 14.0, *)) {
-                switch (row) {
-                    case NOTIFICATION_SETTINGS_DEFAULT_SETTINGS_INDEX:
-                        [self showNotificationSettings:NotificationSettingsScreenDefaultNotifications];
-                        break;
-                    case NOTIFICATION_SETTINGS_MENTION_AND_KEYWORDS_SETTINGS_INDEX:
-                        [self showNotificationSettings:NotificationSettingsScreenMentionsAndKeywords];
-                        break;
-                    case NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX:
-                        [self showNotificationSettings:NotificationSettingsScreenOther];
-                        break;
-                }
+            switch (row) {
+                case NOTIFICATION_SETTINGS_DEFAULT_SETTINGS_INDEX:
+                    [self showNotificationSettings:NotificationSettingsScreenDefaultNotifications];
+                    break;
+                case NOTIFICATION_SETTINGS_MENTION_AND_KEYWORDS_SETTINGS_INDEX:
+                    [self showNotificationSettings:NotificationSettingsScreenMentionsAndKeywords];
+                    break;
+                case NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX:
+                    [self showNotificationSettings:NotificationSettingsScreenOther];
+                    break;
             }
         }
         

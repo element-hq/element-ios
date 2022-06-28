@@ -38,7 +38,7 @@ limitations under the License.
 
     // On iOS 13+ "TimesNewRomanPSMT" will be used instead of "SFUI"
     // In case of "Times New Roman" fallback, use system font and reuse UIFontDescriptorSymbolicTraits.
-    if ([font.familyName.lowercaseString containsString:@"times new roman"])
+    if ([font.familyName.lowercaseString containsString:@"times"])
     {
         UIFontDescriptorSymbolicTraits symbolicTraits = (UIFontDescriptorSymbolicTraits)CTFontGetSymbolicTraits(ctFont);
         

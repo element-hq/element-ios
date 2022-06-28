@@ -233,13 +233,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             case .didComplete:
                 self.authenticationCoordinatorDidComplete(coordinator)
             case .clearAllData:
-                self.showClearAllDataConfirmation {
-                    MXLog.debug("[OnboardingCoordinator] beginAuthentication: clear all data after soft logout")
-                    self.authenticationService.reset()
-                    self.authenticationFinished = false
-                    self.cancelAuthentication(flow: .login)
-                    AppDelegate.theDelegate().logoutSendingRequestServer(true, completion: nil)
-                }
+                self.showClearAllDataConfirmation()
             case .cancel(let flow):
                 self.cancelAuthentication(flow: flow)
             }
@@ -264,7 +258,9 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
                 self.authenticationCoordinator(coordinator, didLoginWith: session, and: authenticationFlow, using: authenticationType)
             case .didComplete:
                 self.authenticationCoordinatorDidComplete(coordinator)
-            case .didStart, .clearAllData, .cancel:
+            case .clearAllData:
+                self.showClearAllDataConfirmation()
+            case .didStart, .cancel:
                 // These results are only sent by the new flow.
                 break
             }
@@ -599,16 +595,21 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         loadingIndicator = nil
     }
 
-    /// Show confirmation to clear all data
-    /// - Parameter confirmed: Callback to be called when confirmed.
-    private func showClearAllDataConfirmation(_ confirmed: (() -> Void)?) {
+    /// Shows a confirmation to clear all data, and proceeds to do so if the user confirms.
+    private func showClearAllDataConfirmation() {
         let alertController = UIAlertController(title: VectorL10n.authSoftlogoutClearDataSignOutTitle,
                                                 message: VectorL10n.authSoftlogoutClearDataSignOutMsg,
                                                 preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil))
-        alertController.addAction(UIAlertAction(title: VectorL10n.authSoftlogoutClearDataSignOut, style: .default, handler: { action in
-            confirmed?()
-        }))
+        alertController.addAction(UIAlertAction(title: VectorL10n.authSoftlogoutClearDataSignOut, style: .destructive) { [weak self] action in
+            guard let self = self else { return }
+            MXLog.debug("[OnboardingCoordinator] showClearAllDataConfirmation: clear all data after soft logout")
+            self.authenticationService.reset()
+            self.authenticationFinished = false
+            self.cancelAuthentication(flow: .login)
+            AppDelegate.theDelegate().logoutSendingRequestServer(true, completion: nil)
+        })
+        
         navigationRouter.present(alertController, animated: true)
     }
 }

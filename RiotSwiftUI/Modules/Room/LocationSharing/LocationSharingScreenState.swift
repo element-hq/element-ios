@@ -18,7 +18,6 @@ import Foundation
 import SwiftUI
 import CoreLocation
 
-@available(iOS 14.0, *)
 enum MockLocationSharingScreenState: MockScreenState, CaseIterable {
     case shareUserLocation
     

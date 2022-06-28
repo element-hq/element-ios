@@ -113,6 +113,11 @@
 @property (nonatomic) BOOL shouldHideSenderInformation;
 
 /**
+ Flag indicating whether the user can invite people in this room.
+ */
+@property (nonatomic, readonly) BOOL canInvitePeople;
+
+/**
  Tell whether this bubble has nothing to display (neither a message nor an attachment).
  */
 @property (nonatomic, readonly) BOOL hasNoDisplay;
@@ -237,13 +242,11 @@
 - (instancetype)initWithEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState andRoomDataSource:(MXKRoomDataSource*)roomDataSource;
 
 /**
- Sets the `MXRoomState` for a buble cell. This allows to adapt the display
- of a cell with a different room state than its historical. This won't update critical
- flag/status, such as `isEncryptedRoom`.
+ Refresh avatars and display names (AKA profiles) displayed in the cell if needed. 
 
- @param roomState the `MXRoomState` to use for this cell.
+ @param latestRoomState the latest `MXRoomState` from the data source.
  */
-- (void)setRoomState:(MXRoomState *)roomState;
+- (void)refreshProfilesIfNeeded:(MXRoomState *)latestRoomState;
 
 /**
 Update the event because its sent state changed or it is has been redacted.

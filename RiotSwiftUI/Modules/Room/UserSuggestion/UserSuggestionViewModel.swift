@@ -17,12 +17,10 @@
 import SwiftUI
 import Combine
 
-@available(iOS 14.0, *)
 typealias UserSuggestionViewModelType = StateStoreViewModel <UserSuggestionViewState,
                                                              Never,
                                                              UserSuggestionViewAction>
 
-@available(iOS 14.0, *)
 class UserSuggestionViewModel: UserSuggestionViewModelType, UserSuggestionViewModelProtocol {
     
     // MARK: - Properties

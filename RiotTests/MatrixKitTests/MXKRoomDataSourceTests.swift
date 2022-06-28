@@ -148,8 +148,10 @@ private final class CollapsibleBubbleCellData: MXKRoomBubbleCellData {
 
 private final class CountingEventFormatter: MXKEventFormatter {
 
-    override func attributedString(from events: [MXEvent]!, with roomState: MXRoomState!, error: UnsafeMutablePointer<MXKEventFormatterError>!) -> NSAttributedString! {
+    override func attributedString(from events: [MXEvent]!,
+                                   with roomState: MXRoomState!,
+                                   andLatestRoomState latestRoomState: MXRoomState!,
+                                   error: UnsafeMutablePointer<MXKEventFormatterError>!) -> NSAttributedString! {
         NSAttributedString(string: "\(events.count)")
     }
-
 }

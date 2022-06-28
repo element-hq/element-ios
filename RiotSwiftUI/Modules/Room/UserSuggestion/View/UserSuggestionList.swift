@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct UserSuggestionList: View {
     private struct Constants {
         static let topPadding: CGFloat = 8.0
@@ -76,7 +75,6 @@ struct UserSuggestionList: View {
     }
 }
 
-@available(iOS 14.0, *)
 private struct BackgroundView<Content: View>: View {
     
     var content: () -> Content
@@ -100,7 +98,6 @@ private struct BackgroundView<Content: View>: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct UserSuggestion_Previews: PreviewProvider {
     static let stateRenderer = MockUserSuggestionScreenState.stateRenderer
     static var previews: some View {

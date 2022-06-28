@@ -20,6 +20,5 @@ import Foundation
 
 protocol SpaceCreationMenuViewModelProtocol {
     var callback: ((SpaceCreationMenuViewModelAction) -> Void)? { get set }
-    @available(iOS 14, *)
     var context: SpaceCreationMenuViewModelType.Context { get }
 }

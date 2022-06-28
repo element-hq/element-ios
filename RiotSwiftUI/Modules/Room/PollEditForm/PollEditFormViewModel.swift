@@ -22,11 +22,9 @@ struct PollEditFormViewModelParameters {
     let pollDetails: EditFormPollDetails
 }
 
-@available(iOS 14, *)
 typealias PollEditFormViewModelType = StateStoreViewModel <PollEditFormViewState,
                                                            Never,
                                                            PollEditFormViewAction>
-@available(iOS 14, *)
 class PollEditFormViewModel: PollEditFormViewModelType, PollEditFormViewModelProtocol {
     
     private struct Constants {

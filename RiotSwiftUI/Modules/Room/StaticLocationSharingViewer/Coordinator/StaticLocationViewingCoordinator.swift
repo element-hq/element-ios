@@ -46,7 +46,6 @@ final class StaticLocationViewingCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: StaticLocationViewingCoordinatorParameters) {
         self.parameters = parameters
         

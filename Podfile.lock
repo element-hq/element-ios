@@ -18,7 +18,6 @@ PODS:
   - BlueCryptor (1.0.32)
   - BlueECC (1.2.5)
   - BlueRSA (1.0.200)
-  - DGCollectionViewLeftAlignFlowLayout (1.0.4)
   - Down (0.11.0)
   - DSBottomSheet (0.3.0)
   - DSWaveformImage (6.1.1)
@@ -95,6 +94,7 @@ PODS:
     - LoggerAPI (~> 1.7)
   - SwiftLint (0.44.0)
   - SwiftyBeaver (1.9.5)
+  - UICollectionViewLeftAlignedLayout (1.0.2)
   - UICollectionViewRightAlignedLayout (0.0.3)
   - WeakDictionary (2.0.2)
   - zxcvbn-ios (1.0.4)
@@ -104,7 +104,6 @@ PODS:
 
 DEPENDENCIES:
   - AnalyticsEvents (from `https://github.com/matrix-org/matrix-analytics-events.git`, branch `release/swift`)
-  - DGCollectionViewLeftAlignFlowLayout (~> 1.0.4)
   - Down (~> 0.11.0)
   - DSBottomSheet (~> 0.3)
   - DSWaveformImage (~> 6.1.1)
@@ -128,6 +127,7 @@ DEPENDENCIES:
   - SwiftGen (~> 6.3)
   - SwiftJWT (~> 3.6.200)
   - SwiftLint (~> 0.44.0)
+  - UICollectionViewLeftAlignedLayout (~> 1.0.2)
   - UICollectionViewRightAlignedLayout (~> 0.0.3)
   - WeakDictionary (~> 2.0)
   - zxcvbn-ios
@@ -139,7 +139,6 @@ SPEC REPOS:
     - BlueCryptor
     - BlueECC
     - BlueRSA
-    - DGCollectionViewLeftAlignFlowLayout
     - Down
     - DSBottomSheet
     - DSWaveformImage
@@ -171,6 +170,7 @@ SPEC REPOS:
     - SwiftJWT
     - SwiftLint
     - SwiftyBeaver
+    - UICollectionViewLeftAlignedLayout
     - UICollectionViewRightAlignedLayout
     - WeakDictionary
     - zxcvbn-ios
@@ -192,7 +192,6 @@ SPEC CHECKSUMS:
   BlueCryptor: b0aee3d9b8f367b49b30de11cda90e1735571c24
   BlueECC: 0d18e93347d3ec6d41416de21c1ffa4d4cd3c2cc
   BlueRSA: dfeef51db96bcc4edec654956c1581adbda4e6a3
-  DGCollectionViewLeftAlignFlowLayout: a0fa58797373ded039cafba8133e79373d048399
   Down: b6ba1bc985c9d2f4e15e3b293d2207766fa12612
   DSBottomSheet: ca0ac37eb5af2dd54663f86b84382ed90a59be2a
   DSWaveformImage: 3c718a0cf99291887ee70d1d0c18d80101d3d9ce
@@ -224,11 +223,12 @@ SPEC CHECKSUMS:
   SwiftJWT: 88c412708f58c169d431d344c87bc79a87c830ae
   SwiftLint: e96c0a8c770c7ebbc4d36c55baf9096bb65c4584
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
+  UICollectionViewLeftAlignedLayout: 830bf6fa5bab9f9b464f62e3384f9d2e00b3c0f6
   UICollectionViewRightAlignedLayout: 823eef8c567eba4a44c21bc2ffcb0d0d5f361e2d
   WeakDictionary: 8cd038acd77e5d54ca4ebaec3d20853d732b45e0
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 85cc09610c3fbaa9f796ac56eef074b96cad686b
+PODFILE CHECKSUM: 09a329a72d63d74eb5f75df15305cc05c0587f01
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

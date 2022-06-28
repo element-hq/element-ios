@@ -317,15 +317,15 @@
     if (self.parentViewController.navigationController)
     {
         // Hide back button title
-        self.parentViewController.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-        
+        [self.parentViewController vc_removeBackTitle];
+
         [self.parentViewController.navigationController pushViewController:viewController animated:YES];
     }
     else
     {
         // Hide back button title
-        self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-        
+        [self vc_removeBackTitle];
+
         [self.navigationController pushViewController:viewController animated:YES];
     }
 }
@@ -535,10 +535,13 @@
         
         // Apply additional treatments
         NSInteger mxIdsBitMask = (MXKTOOLS_USER_IDENTIFIER_BITWISE | MXKTOOLS_ROOM_IDENTIFIER_BITWISE | MXKTOOLS_ROOM_ALIAS_BITWISE | MXKTOOLS_EVENT_IDENTIFIER_BITWISE | MXKTOOLS_GROUP_IDENTIFIER_BITWISE);
-        attributedString = [MXKTools createLinksInAttributedString:attributedString forEnabledMatrixIds:mxIdsBitMask];
+
+        NSMutableAttributedString *mutableStr = [[NSMutableAttributedString alloc] initWithAttributedString:attributedString];
+        [MXKTools createLinksInMutableAttributedString:mutableStr forEnabledMatrixIds:mxIdsBitMask];
+        [MXKTools removeDTCoreTextArtifacts:mutableStr];
         
         // Finalize the attributed string by removing DTCoreText artifacts (Trim trailing newlines, replace DTImageTextAttachments...)
-        _groupLongDescription.attributedText = [MXKTools removeDTCoreTextArtifacts:attributedString];
+        _groupLongDescription.attributedText = mutableStr;
         _groupLongDescription.contentOffset = CGPointZero;
     }
     else

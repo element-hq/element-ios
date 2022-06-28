@@ -31,7 +31,6 @@ final class AnalyticsPromptCoordinator: Coordinator, Presentable {
     private let analyticsPromptHostingController: UIViewController
     private var _analyticsPromptViewModel: Any? = nil
     
-    @available(iOS 14.0, *)
     fileprivate var analyticsPromptViewModel: AnalyticsPromptViewModel {
         return _analyticsPromptViewModel as! AnalyticsPromptViewModel
     }
@@ -44,7 +43,6 @@ final class AnalyticsPromptCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: AnalyticsPromptCoordinatorParameters) {
         self.parameters = parameters
         
@@ -67,11 +65,6 @@ final class AnalyticsPromptCoordinator: Coordinator, Presentable {
     // MARK: - Public
     
     func start() {
-        guard #available(iOS 14.0, *) else {
-            MXLog.debug("[AnalyticsPromptCoordinator] start: Invalid iOS version, returning.")
-            return
-        }
-        
         MXLog.debug("[AnalyticsPromptCoordinator] did start.")
         
         analyticsPromptViewModel.completion = { [weak self] result in

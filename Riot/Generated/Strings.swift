@@ -2063,6 +2063,10 @@ public class VectorL10n: NSObject {
   public static var homeContextMenuMakeRoom: String { 
     return VectorL10n.tr("Vector", "home_context_menu_make_room") 
   }
+  /// Mark as read
+  public static var homeContextMenuMarkAsRead: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_mark_as_read") 
+  }
   /// Mute
   public static var homeContextMenuMute: String { 
     return VectorL10n.tr("Vector", "home_context_menu_mute") 
@@ -2699,9 +2703,21 @@ public class VectorL10n: NSObject {
   public static var leave: String { 
     return VectorL10n.tr("Vector", "leave") 
   }
+  /// Leave space
+  public static var leaveSpaceAction: String { 
+    return VectorL10n.tr("Vector", "leave_space_action") 
+  }
   /// Leave all rooms and spaces
   public static var leaveSpaceAndAllRoomsAction: String { 
     return VectorL10n.tr("Vector", "leave_space_and_all_rooms_action") 
+  }
+  /// Leave space and %@ rooms
+  public static func leaveSpaceAndMoreRooms(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "leave_space_and_more_rooms", p1)
+  }
+  /// Leave space and 1 room
+  public static var leaveSpaceAndOneRoom: String { 
+    return VectorL10n.tr("Vector", "leave_space_and_one_room") 
   }
   /// Are you sure you want to leave %@? Do you also want to leave all rooms and spaces of this space?
   public static func leaveSpaceMessage(_ p1: String) -> String {
@@ -2714,6 +2730,18 @@ public class VectorL10n: NSObject {
   /// Don't leave any rooms
   public static var leaveSpaceOnlyAction: String { 
     return VectorL10n.tr("Vector", "leave_space_only_action") 
+  }
+  /// Select all rooms
+  public static var leaveSpaceSelectionAllRooms: String { 
+    return VectorL10n.tr("Vector", "leave_space_selection_all_rooms") 
+  }
+  /// Select no rooms
+  public static var leaveSpaceSelectionNoRooms: String { 
+    return VectorL10n.tr("Vector", "leave_space_selection_no_rooms") 
+  }
+  /// SELECT ROOMS
+  public static var leaveSpaceSelectionTitle: String { 
+    return VectorL10n.tr("Vector", "leave_space_selection_title") 
   }
   /// Leave %@
   public static func leaveSpaceTitle(_ p1: String) -> String {
@@ -4427,6 +4455,14 @@ public class VectorL10n: NSObject {
   public static var roomAccessibilityIntegrations: String { 
     return VectorL10n.tr("Vector", "room_accessibility_integrations") 
   }
+  /// Record Voice Message
+  public static var roomAccessibilityRecordVoiceMessage: String { 
+    return VectorL10n.tr("Vector", "room_accessibility_record_voice_message") 
+  }
+  /// Double-tap and hold to record.
+  public static var roomAccessibilityRecordVoiceMessageHint: String { 
+    return VectorL10n.tr("Vector", "room_accessibility_record_voice_message_hint") 
+  }
   /// Search
   public static var roomAccessibilitySearch: String { 
     return VectorL10n.tr("Vector", "room_accessibility_search") 
@@ -5014,6 +5050,10 @@ public class VectorL10n: NSObject {
   /// Reaction history
   public static var roomEventActionReactionHistory: String { 
     return VectorL10n.tr("Vector", "room_event_action_reaction_history") 
+  }
+  /// %@ more
+  public static func roomEventActionReactionMore(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_event_action_reaction_more", p1)
   }
   /// Show all
   public static var roomEventActionReactionShowAll: String { 
@@ -7107,6 +7147,10 @@ public class VectorL10n: NSObject {
   public static var settingsThreePidsManagementInformationPart3: String { 
     return VectorL10n.tr("Vector", "settings_three_pids_management_information_part3") 
   }
+  /// TIMELINE
+  public static var settingsTimeline: String { 
+    return VectorL10n.tr("Vector", "settings_timeline") 
+  }
   /// Settings
   public static var settingsTitle: String { 
     return VectorL10n.tr("Vector", "settings_title") 
@@ -7646,6 +7690,10 @@ public class VectorL10n: NSObject {
   /// %@ rooms
   public static func spacesExploreRoomsRoomNumber(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "spaces_explore_rooms_room_number", p1)
+  }
+  /// This feature isn't available here. For now, you can do this with %@ on your computer.
+  public static func spacesFeatureNotAvailable(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_feature_not_available", p1)
   }
   /// Home
   public static var spacesHomeSpaceTitle: String { 

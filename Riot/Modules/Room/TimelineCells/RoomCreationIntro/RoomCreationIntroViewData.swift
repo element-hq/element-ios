@@ -19,7 +19,7 @@ import Foundation
 enum DiscussionType {
     case directMessage
     case multipleDirectMessage
-    case room(topic: String?)
+    case room(topic: String?, canInvitePeople: Bool)
 }
 
 struct RoomCreationIntroViewData {

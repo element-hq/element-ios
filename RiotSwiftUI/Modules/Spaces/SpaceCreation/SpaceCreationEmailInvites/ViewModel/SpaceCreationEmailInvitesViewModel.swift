@@ -19,11 +19,9 @@
 import SwiftUI
 import Combine
 
-@available(iOS 14, *)
 typealias SpaceCreationEmailInvitesViewModelType = StateStoreViewModel<SpaceCreationEmailInvitesViewState,
                                                                  SpaceCreationEmailInvitesStateAction,
                                                                  SpaceCreationEmailInvitesViewAction>
-@available(iOS 14, *)
 class SpaceCreationEmailInvitesViewModel: SpaceCreationEmailInvitesViewModelType, SpaceCreationEmailInvitesViewModelProtocol {
 
     // MARK: - Properties

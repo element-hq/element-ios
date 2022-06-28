@@ -16,7 +16,6 @@
 
 import Foundation
 
-@available(iOS 14, *)
 class TimelinePollProvider {
     static let shared = TimelinePollProvider()
     

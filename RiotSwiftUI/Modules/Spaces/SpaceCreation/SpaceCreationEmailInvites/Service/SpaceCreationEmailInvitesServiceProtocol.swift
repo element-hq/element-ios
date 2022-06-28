@@ -19,7 +19,6 @@
 import Foundation
 import Combine
 
-@available(iOS 14.0, *)
 protocol SpaceCreationEmailInvitesServiceProtocol {
     var isIdentityServiceReady: Bool { get }
     var isLoadingSubject: CurrentValueSubject<Bool, Never> { get }
