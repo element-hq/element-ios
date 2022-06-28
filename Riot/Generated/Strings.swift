@@ -2063,6 +2063,10 @@ public class VectorL10n: NSObject {
   public static var homeContextMenuMakeRoom: String { 
     return VectorL10n.tr("Vector", "home_context_menu_make_room") 
   }
+  /// Mark as read
+  public static var homeContextMenuMarkAsRead: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_mark_as_read") 
+  }
   /// Mute
   public static var homeContextMenuMute: String { 
     return VectorL10n.tr("Vector", "home_context_menu_mute") 
