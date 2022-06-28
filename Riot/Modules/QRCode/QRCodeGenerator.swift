@@ -15,36 +15,29 @@
  */
 
 import Foundation
+import ZXingObjC
 
 final class QRCodeGenerator {
-    
-    // MARK: - Constants
-    
-    private enum Constants {
-        static let qrCodeGeneratorFilter = "CIQRCodeGenerator"
-        static let qrCodeInputCorrectionLevel = "M"
+    enum Error: Swift.Error {
+        case cannotCreateImage
     }
     
-    // MARK: - Public
-    
-    func generateCode(from data: Data, with size: CGSize) -> UIImage? {
-        guard let filter = CIFilter(name: Constants.qrCodeGeneratorFilter) else {
-            return nil
+    func generateCode(from data: Data, with size: CGSize) throws -> UIImage {
+        let writer = ZXMultiFormatWriter()
+        let endodedString = String(data: data, encoding: .isoLatin1)
+        let scale = UIScreen.main.scale
+        let bitMatrix = try writer.encode(
+            endodedString,
+            format: kBarcodeFormatQRCode,
+            width: Int32(size.width * scale),
+            height: Int32(size.height * scale),
+            hints: ZXEncodeHints()
+        )
+        
+        guard let cgImage = ZXImage(matrix: bitMatrix).cgimage else {
+            throw Error.cannotCreateImage
         }
         
-        filter.setValue(data, forKey: "inputMessage")
-        filter.setValue(Constants.qrCodeInputCorrectionLevel, forKey: "inputCorrectionLevel") // Be sure to use same error resilience level as other platform
-        
-        guard let ciImage = filter.outputImage else {
-            return nil
-        }
-        
-        let scaleX = size.width/ciImage.extent.size.width
-        let scaleY = size.height/ciImage.extent.size.height
-        
-        let transform = CGAffineTransform(scaleX: scaleX, y: scaleY)
-            
-        let transformedCIImage = ciImage.transformed(by: transform)
-        return UIImage(ciImage: transformedCIImage)
+        return UIImage(cgImage: cgImage)
     }
 }
