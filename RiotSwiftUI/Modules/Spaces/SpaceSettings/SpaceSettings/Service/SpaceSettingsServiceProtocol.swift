@@ -22,7 +22,6 @@ enum SpaceSettingsServiceCompletionResult {
     case failure(Error)
 }
 
-@available(iOS 14.0, *)
 protocol SpaceSettingsServiceProtocol: Avatarable {
     var spaceId: String { get }
     var roomProperties: SpaceSettingsRoomProperties? { get }
@@ -39,7 +38,6 @@ protocol SpaceSettingsServiceProtocol: Avatarable {
 
 // MARK: Avatarable
 
-@available(iOS 14.0, *)
 extension SpaceSettingsServiceProtocol {
     var mxContentUri: String? {
         roomProperties?.avatarUrl

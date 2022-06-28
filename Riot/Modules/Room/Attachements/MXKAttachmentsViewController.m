@@ -38,6 +38,8 @@
 
 #import "MXKSwiftHeader.h"
 
+#import "LegacyAppDelegate.h"
+
 @interface MXKAttachmentsViewController () <UINavigationControllerDelegate, UIViewControllerTransitioningDelegate>
 {
     /**
@@ -472,7 +474,9 @@
     // Check whether the collection is actually rendered
     if (_attachmentsCollection.contentSize.width)
     {
-        currentVisibleItemIndex = _attachmentsCollection.contentOffset.x / [[UIScreen mainScreen] bounds].size.width;
+        // Get the window from the app delegate as this can be called before the view is presented.
+        UIWindow *window = LegacyAppDelegate.theDelegate.window;
+        currentVisibleItemIndex = _attachmentsCollection.contentOffset.x / window.bounds.size.width;
     }
     else
     {
@@ -484,9 +488,12 @@
 {
     if (currentVisibleItemIndex != NSNotFound && _attachmentsCollection)
     {
+        // Get the window from the app delegate as this can be called before the view is presented.
+        UIWindow *window = LegacyAppDelegate.theDelegate.window;
+        
         // Set the content offset to display the current attachment
         CGPoint contentOffset = _attachmentsCollection.contentOffset;
-        contentOffset.x = currentVisibleItemIndex * [[UIScreen mainScreen] bounds].size.width;
+        contentOffset.x = currentVisibleItemIndex * window.bounds.size.width;
         _attachmentsCollection.contentOffset = contentOffset;
     }
 }
@@ -1118,7 +1125,8 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [[UIScreen mainScreen] bounds].size;
+    // Use the window from the app delegate as this can be called before the view is presented.
+    return LegacyAppDelegate.theDelegate.window.bounds.size;
 }
 
 #pragma mark - Movie Player

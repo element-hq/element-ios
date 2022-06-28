@@ -19,7 +19,6 @@ import Combine
 
 @testable import RiotSwiftUI
 
-@available(iOS 14.0, *)
 class PollEditFormViewModelTests: XCTestCase {
     var viewModel: PollEditFormViewModel!
     var context: PollEditFormViewModelType.Context!

@@ -16,14 +16,14 @@
 
 #import "NSBundle+MatrixKit.h"
 #import "NSBundle+MXKLanguage.h"
-#import "MXKViewController.h"
+#import "MXKAppSettings.h"
 
 @implementation NSBundle (MatrixKit)
 
 + (NSBundle*)mxk_assetsBundle
 {
     // Get the bundle within MatrixKit
-    NSBundle *bundle = [NSBundle mxk_bundleForClass:[MXKViewController class]];
+    NSBundle *bundle = [NSBundle mxk_bundleForClass:[MXKAppSettings class]];
     NSURL *assetsBundleURL = [bundle URLForResource:@"MatrixKitAssets" withExtension:@"bundle"];
 
     return [NSBundle bundleWithURL:assetsBundleURL];

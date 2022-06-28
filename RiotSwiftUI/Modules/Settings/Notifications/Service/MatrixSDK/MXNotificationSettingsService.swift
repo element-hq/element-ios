@@ -17,7 +17,6 @@
 import Foundation
 import Combine
 
-@available(iOS 14.0, *)
 class MXNotificationSettingsService: NotificationSettingsServiceType {
     
     private let session: MXSession

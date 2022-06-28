@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct MultilineTextField: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
@@ -92,7 +91,6 @@ struct MultilineTextField: View {
     }
 }
 
-@available(iOS 14.0, *)
 fileprivate struct UITextViewWrapper: UIViewRepresentable {
     typealias UIViewType = UITextView
 
@@ -172,7 +170,6 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
     }
 }
 
-@available(iOS 14.0, *)
 struct MultilineTextField_Previews: PreviewProvider {
     
     static var previews: some View {

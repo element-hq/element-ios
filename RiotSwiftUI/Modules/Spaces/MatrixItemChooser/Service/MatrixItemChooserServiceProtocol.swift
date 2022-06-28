@@ -17,7 +17,6 @@
 import Foundation
 import Combine
 
-@available(iOS 14.0, *)
 protocol MatrixItemChooserServiceProtocol {
     var sectionsSubject: CurrentValueSubject<[MatrixListItemSectionData], Never> { get }
     var selectedItemIdsSubject: CurrentValueSubject<Set<String>, Never> { get }

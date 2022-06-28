@@ -29,6 +29,7 @@
 
 NSString *const kMXKRoomBubbleCellRiotEditButtonPressed = @"kMXKRoomBubbleCellRiotEditButtonPressed";
 NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellTapOnReceiptsContainer";
+NSString *const kMXKRoomBubbleCellTapOnAddReaction = @"kMXKRoomBubbleCellTapOnAddReaction";
 NSString *const kMXKRoomBubbleCellLongPressOnReactionView = @"kMXKRoomBubbleCellLongPressOnReactionView";
 NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestAcceptPressed = @"kMXKRoomBubbleCellKeyVerificationAcceptPressed";
 NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed = @"kMXKRoomBubbleCellKeyVerificationDeclinePressed";

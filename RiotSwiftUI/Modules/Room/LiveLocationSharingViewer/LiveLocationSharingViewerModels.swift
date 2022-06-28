@@ -29,7 +29,6 @@ enum LiveLocationSharingViewerViewModelResult {
 
 // MARK: View
 
-@available(iOS 14, *)
 struct LiveLocationSharingViewerViewState: BindableState {
     
     /// Map style URL

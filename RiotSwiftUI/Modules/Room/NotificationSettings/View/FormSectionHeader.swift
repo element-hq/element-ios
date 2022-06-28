@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct FormSectionHeader: View {
     
     @Environment(\.theme) var theme: ThemeSwiftUI
@@ -34,7 +33,6 @@ struct FormSectionHeader: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct FormSectionHeader_Previews: PreviewProvider {
     static var previews: some View {
         VectorForm {

@@ -167,26 +167,28 @@ extension RoomDataSource {
                 body = replyEventParts?.formattedBodyParts?.replyText ?? replyEventParts?.bodyParts.replyText ?? ""
             }
 
-            let attributed = eventFormatter.renderHTMLString(body, for: event, with: nil)
+            let attributed = eventFormatter.renderHTMLString(body, for: event, with: nil, andLatestRoomState: nil)
             if let attributed = attributed, #available(iOS 15.0, *) {
                 editableTextMessage = PillsFormatter.insertPills(in: attributed,
                                                                  withSession: self.mxSession,
                                                                  eventFormatter: self.eventFormatter,
                                                                  event: event,
-                                                                 andRoomState: self.roomState,
+                                                                 roomState: self.roomState,
+                                                                 andLatestRoomState: nil,
                                                                  isEditMode: true)
             } else {
                 editableTextMessage = attributed
             }
         } else {
             let body: String = event.content["formatted_body"] as? String ?? event.content["body"] as? String ?? ""
-            let attributed = eventFormatter.renderHTMLString(body, for: event, with: nil)
+            let attributed = eventFormatter.renderHTMLString(body, for: event, with: nil, andLatestRoomState: nil)
             if let attributed = attributed, #available(iOS 15.0, *) {
                 editableTextMessage = PillsFormatter.insertPills(in: attributed,
                                                                  withSession: self.mxSession,
                                                                  eventFormatter: self.eventFormatter,
                                                                  event: event,
-                                                                 andRoomState: self.roomState,
+                                                                 roomState: self.roomState,
+                                                                 andLatestRoomState: nil,
                                                                  isEditMode: true)
             } else {
                 editableTextMessage = attributed

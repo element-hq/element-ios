@@ -485,6 +485,8 @@ Tap the + to start adding people.";
 "room_accessibility_threads" = "Threads";
 "room_accessibility_hangup" = "Hang up";
 "room_accessibility_thread_more" = "More";
+"room_accessibility_record_voice_message" = "Record Voice Message";
+"room_accessibility_record_voice_message_hint" = "Double-tap and hold to record.";
 "room_place_voice_call" = "Voice call";
 "room_open_dialpad" = "Dial pad";
 "room_join_group_call" = "Join";
@@ -570,6 +572,7 @@ Tap the + to start adding people.";
 "settings_identity_server_settings" = "IDENTITY SERVER";
 "settings_integrations" = "INTEGRATIONS";
 "settings_user_interface" = "USER INTERFACE";
+"settings_timeline" = "TIMELINE";
 "settings_ignored_users" = "IGNORED USERS";
 "settings_contacts" = "DEVICE CONTACTS";
 "settings_phone_contacts" = "PHONE CONTACTS";
@@ -1846,6 +1849,7 @@ Tap the + to start adding people.";
 "home_context_menu_low_priority" = "Low priority";
 "home_context_menu_normal_priority" = "Normal priority";
 "home_context_menu_leave" = "Leave";
+"home_context_menu_mark_as_read" = "Mark as read";
 "home_syncing" = "Syncing";
 
 // MARK: - Favourites
@@ -1947,6 +1951,8 @@ Tap the + to start adding people.";
 "space_settings_update_failed_message" = "Failed to update space settings. Do you want to retry?";
 "space_settings_current_address_message" = "Your space is viewable at\n%@";
 
+"spaces_feature_not_available" = "This feature isn't available here. For now, you can do this with %@ on your computer.";
+
 // Mark: - Space Creation
 
 "spaces_creation_hint" = "Spaces are a new way to group rooms and people.";
@@ -2006,6 +2012,19 @@ Tap the + to start adding people.";
 "spaces_add_room" = "Add room";
 "spaces_add_room_missing_permission_message" = "You do not have permissions to add rooms to this space.";
 "spaces_add_space" = "Add space";
+
+// Mark: Leave space
+
+"leave_space_action" = "Leave space";
+"leave_space_and_one_room" = "Leave space and 1 room";
+"leave_space_and_more_rooms" = "Leave space and %@ rooms";
+"leave_space_selection_title" = "SELECT ROOMS";
+"leave_space_selection_all_rooms" = "Select all rooms";
+"leave_space_selection_no_rooms" = "Select no rooms";
+
+// MARK: Reactions
+
+"room_event_action_reaction_more" = "%@ more";
 
 // Mark: Avatar
 

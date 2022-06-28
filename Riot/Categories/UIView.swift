@@ -42,6 +42,16 @@ extension UIView {
         subView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
     
+    /// Add a subview matching parent view with additional insets using autolayout
+    @objc func vc_addSubViewMatchingParent(_ subView: UIView, withInsets insets: UIEdgeInsets) {
+        self.addSubview(subView)
+        subView.translatesAutoresizingMaskIntoConstraints = false
+        subView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: insets.left).isActive = true
+        subView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: insets.top).isActive = true
+        subView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: insets.right).isActive = true
+        subView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: insets.bottom).isActive = true
+    }
+    
     @objc func vc_removeAllSubviews() {
         for subView in self.subviews {
             subView.removeFromSuperview()

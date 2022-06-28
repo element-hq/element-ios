@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct OptionButton: View {
     
     // MARK: - Style
@@ -70,7 +69,6 @@ struct OptionButton: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct OptionButton_Previews: PreviewProvider {
     static var previews: some View {
         Group {

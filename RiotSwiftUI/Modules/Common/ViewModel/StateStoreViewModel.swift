@@ -33,7 +33,6 @@ import Combine
 /// A similar approach is taken in libraries like [CombineFeedback](https://github.com/sergdort/CombineFeedback).
 /// It provides a nice layer of consistency and also safety. As we are not passing the `ViewModel` to the view directly, shortcuts/hacks
 /// can't be made into the `ViewModel`.
-@available(iOS 14, *)
 @dynamicMemberLookup
 class ViewModelContext<ViewState:BindableState, ViewAction>: ObservableObject {
     // MARK: - Properties
@@ -75,7 +74,6 @@ class ViewModelContext<ViewState:BindableState, ViewAction>: ObservableObject {
 /// a specific portion of state that can be safely bound to.
 /// If we decide to add more features to our state management (like doing state processing off the main thread)
 /// we can do it in this centralised place.
-@available(iOS 14, *)
 class StateStoreViewModel<State: BindableState, StateAction, ViewAction> {
 
     typealias Context = ViewModelContext<State, ViewAction>

@@ -79,16 +79,6 @@
 
 "authentication_recaptcha_message" = "This server would like to make sure you are not a robot";
 
-// MARK: Spaces WIP
-"spaces_feature_not_available" = "This feature isn't available here. For now, you can do this with %@ on your computer.";
-
-"leave_space_action" = "Leave space";
-"leave_space_and_one_room" = "Leave space and 1 room";
-"leave_space_and_more_rooms" = "Leave space and %@ rooms";
-"leave_space_selection_title" = "SELECT ROOMS";
-"leave_space_selection_all_rooms" = "Select all rooms";
-"leave_space_selection_no_rooms" = "Select no rooms";
-
 // MARK: Password Validation
 "password_validation_info_header" = "Your password should meet the criteria below:";
 "password_validation_error_header" = "Given password does not meet the criteria below:";
@@ -98,3 +88,6 @@
 "password_validation_error_contain_uppercase_letter" = "Contain an upper-case letter.";
 "password_validation_error_contain_number" = "Contain a number.";
 "password_validation_error_contain_symbol" = "Contain a symbol.";
+
+// MARK: Room Info
+"room_info_back_button_title" = "Room Info";

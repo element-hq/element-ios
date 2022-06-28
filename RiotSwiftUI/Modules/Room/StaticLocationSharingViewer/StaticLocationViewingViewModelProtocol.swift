@@ -19,6 +19,5 @@ import Foundation
 protocol StaticLocationViewingViewModelProtocol {
     
     var completion: ((StaticLocationViewingViewModelResult) -> Void)? { get set }
-    @available(iOS 14, *)
     var context: StaticLocationViewingViewModelType.Context { get }
 }

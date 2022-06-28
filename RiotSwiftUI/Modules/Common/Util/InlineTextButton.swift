@@ -78,7 +78,6 @@ struct InlineTextButton: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct Previews_InlineButtonText_Previews: PreviewProvider {
     static var previews: some View {
         InlineTextButton("Hello there this is a sentence. %@.",

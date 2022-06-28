@@ -182,30 +182,42 @@ typedef enum : NSUInteger {
  
  @param event the event to format.
  @param roomState the room state right before the event.
+ @param latestRoomState the latest room state of the room containing this event.
  @param error the error code. In case of formatting error, the formatter may return non nil string as a proposal.
  @return the display text for the event.
  */
-- (NSString*)stringFromEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState error:(MXKEventFormatterError*)error;
+- (NSString*)stringFromEvent:(MXEvent*)event
+               withRoomState:(MXRoomState*)roomState
+          andLatestRoomState:(MXRoomState*)latestRoomState
+                       error:(MXKEventFormatterError*)error;
 
 /**
  Generate a displayable attributed string representating the event.
 
  @param event the event to format.
  @param roomState the room state right before the event.
+ @param latestRoomState the latest room state of the room containing this event.
  @param error the error code. In case of formatting error, the formatter may return non nil string as a proposal.
  @return the attributed string for the event.
  */
-- (NSAttributedString*)attributedStringFromEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState error:(MXKEventFormatterError*)error;
+- (NSAttributedString*)attributedStringFromEvent:(MXEvent*)event
+                                   withRoomState:(MXRoomState*)roomState
+                              andLatestRoomState:(MXRoomState*)latestRoomState
+                                           error:(MXKEventFormatterError*)error;
 
 /**
  Generate a displayable attributed string representating a summary for the provided events.
 
  @param events the series of events to format.
  @param roomState the room state right before the first event in the series.
+ @param latestRoomState the latest room state of the room containing this event.
  @param error the error code. In case of formatting error, the formatter may return non nil string as a proposal.
  @return the attributed string.
  */
-- (NSAttributedString*)attributedStringFromEvents:(NSArray<MXEvent*>*)events withRoomState:(MXRoomState*)roomState error:(MXKEventFormatterError*)error;
+- (NSAttributedString*)attributedStringFromEvents:(NSArray<MXEvent*>*)events
+                                    withRoomState:(MXRoomState*)roomState
+                               andLatestRoomState:(MXRoomState*)latestRoomState
+                                            error:(MXKEventFormatterError*)error;
 
 /**
  Render a random string into an attributed string with the font and the text color
@@ -226,7 +238,10 @@ typedef enum : NSUInteger {
  @param roomState the room state right before the event. If nil, replies will not get constructed or formatted.
  @return an attributed string.
  */
-- (NSAttributedString*)renderHTMLString:(NSString*)htmlString forEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState;
+- (NSAttributedString*)renderHTMLString:(NSString*)htmlString
+                               forEvent:(MXEvent*)event
+                          withRoomState:(MXRoomState*)roomState
+                     andLatestRoomState:(MXRoomState*)latestRoomState;
 
 /**
  Defines the replacement attributed string for a redacted message.

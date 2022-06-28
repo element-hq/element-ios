@@ -24,7 +24,6 @@ struct TimelinePollCoordinatorParameters {
     let pollStartEvent: MXEvent
 }
 
-@available(iOS 14.0, *)
 final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDelegate {
     
     // MARK: - Properties
@@ -45,7 +44,6 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: TimelinePollCoordinatorParameters) throws {
         self.parameters = parameters
         

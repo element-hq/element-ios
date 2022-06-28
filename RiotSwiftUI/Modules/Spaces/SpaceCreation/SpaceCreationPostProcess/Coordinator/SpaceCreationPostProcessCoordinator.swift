@@ -38,7 +38,6 @@ final class SpaceCreationPostProcessCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: SpaceCreationPostProcessCoordinatorParameters) {
         self.parameters = parameters
         let viewModel = SpaceCreationPostProcessViewModel.makeSpaceCreationPostProcessViewModel(spaceCreationPostProcessService: SpaceCreationPostProcessService(session: parameters.session, creationParams: parameters.creationParams))

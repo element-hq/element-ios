@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct LiveLocationListItem: View {
     
     // MARK: - Properties
@@ -121,7 +120,6 @@ struct LiveLocationListItem: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct LiveLocationListPreview: View {
     
     let liveLocationSharingViewerService: LiveLocationSharingViewerServiceProtocol = MockLiveLocationSharingViewerService()
@@ -181,7 +179,6 @@ struct LiveLocationListPreview: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct LiveLocationListItem_Previews: PreviewProvider {
     static var previews: some View {
         Group {

@@ -29,7 +29,6 @@ protocol MatrixItemChooserProcessorProtocol {
     func isItemIncluded(_ item: (MatrixListItemData)) -> Bool
 }
 
-@available(iOS 14.0, *)
 class MatrixItemChooserService: MatrixItemChooserServiceProtocol {
 
     // MARK: - Properties

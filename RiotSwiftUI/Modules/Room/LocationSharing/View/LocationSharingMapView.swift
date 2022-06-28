@@ -18,7 +18,6 @@ import SwiftUI
 import Combine
 import Mapbox
 
-@available(iOS 14, *)
 struct LocationSharingMapView: UIViewRepresentable {
     
     // MARK: - Constants
@@ -109,7 +108,6 @@ struct LocationSharingMapView: UIViewRepresentable {
 }
 
 // MARK: - Coordinator
-@available(iOS 14, *)
 extension LocationSharingMapView {
     
     class Coordinator: NSObject, MGLMapViewDelegate, UIGestureRecognizerDelegate {

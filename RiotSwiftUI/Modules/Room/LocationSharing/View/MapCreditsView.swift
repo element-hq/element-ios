@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct MapCreditsView: View {
     
     // MARK: - Properties
@@ -36,7 +35,6 @@ struct MapCreditsView: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct MapCreditsView_Previews: PreviewProvider {
     static var previews: some View {
         MapCreditsView()

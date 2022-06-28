@@ -316,4 +316,60 @@ import XCTest
         XCTAssertEqual(viewData.ssoIdentityProviders, [], "There shouldn't be any sso identity providers.")
         XCTAssertTrue(viewData.showRegistrationForm, "The registration form should be shown.")
     }
+    
+    func testLogsForPassword() {
+        // Given all of the coordinator and view model results that contain passwords.
+        let password = "supersecretpassword"
+        let loginViewModelResult: AuthenticationLoginViewModelResult = .login(username: "Alice", password: password)
+        let loginCoordinatorResult: AuthenticationLoginCoordinatorResult = .success(session: MXSession(), password: password)
+        let registerViewModelResult: AuthenticationRegistrationViewModelResult = .createAccount(username: "Alice", password: password)
+        let registerCoordinatorResult: AuthenticationRegistrationCoordinatorResult = .completed(result: RegistrationResult.success(MXSession()), password: password)
+        let softLogoutViewModelResult: AuthenticationSoftLogoutViewModelResult = .login(password)
+        let softLogoutCoordinatorResult: AuthenticationSoftLogoutCoordinatorResult = .success(session: MXSession(), password: password)
+        let forgotPasswordResult: AuthenticationChoosePasswordViewModelResult = .submit(password, false)
+        let changePasswordResult: ChangePasswordViewModelResult = .submit(oldPassword: password, newPassword: password, signoutAllDevices: false)
+        
+        // When creating a string representation of those results (e.g. for logging).
+        let loginViewModelString = "\(loginViewModelResult)"
+        let loginCoordinatorString = "\(loginCoordinatorResult)"
+        let registerViewModelString = "\(registerViewModelResult)"
+        let registerCoordinatorString = "\(registerCoordinatorResult)"
+        let softLogoutViewModelString = "\(softLogoutViewModelResult)"
+        let softLogoutCoordinatorString = "\(softLogoutCoordinatorResult)"
+        let forgotPasswordString = "\(forgotPasswordResult)"
+        let changePasswordString = "\(changePasswordResult)"
+        
+        // Then the password should not be included in that string.
+        XCTAssertFalse(loginViewModelString.contains(password), "The password must not be included in any strings.")
+        XCTAssertFalse(loginCoordinatorString.contains(password), "The password must not be included in any strings.")
+        XCTAssertFalse(registerViewModelString.contains(password), "The password must not be included in any strings.")
+        XCTAssertFalse(registerCoordinatorString.contains(password), "The password must not be included in any strings.")
+        XCTAssertFalse(softLogoutViewModelString.contains(password), "The password must not be included in any strings.")
+        XCTAssertFalse(softLogoutCoordinatorString.contains(password), "The password must not be included in any strings.")
+        XCTAssertFalse(forgotPasswordString.contains(password), "The password must not be included in any strings.")
+        XCTAssertFalse(changePasswordString.contains(password), "The password must not be included in any strings.")
+    }
+    
+    func testHomeserverAddressSanitization() {
+        let basicAddress = "matrix.org"
+        let httpAddress = "http://localhost"
+        let trailingSlashAddress = "https://matrix.example.com/"
+        let whitespaceAddress = " https://matrix.example.com/  "
+        let validAddress = "https://matrix.example.com"
+        let validAddressWithPort = "https://matrix.example.com:8484"
+        
+        let sanitizedBasicAddress = HomeserverAddress.sanitized(basicAddress)
+        let sanitizedHTTPAddress = HomeserverAddress.sanitized(httpAddress)
+        let sanitizedTrailingSlashAddress = HomeserverAddress.sanitized(trailingSlashAddress)
+        let sanitizedWhitespaceAddress = HomeserverAddress.sanitized(whitespaceAddress)
+        let sanitizedValidAddress = HomeserverAddress.sanitized(validAddress)
+        let sanitizedValidAddressWithPort = HomeserverAddress.sanitized(validAddressWithPort)
+        
+        XCTAssertEqual(sanitizedBasicAddress, "https://matrix.org")
+        XCTAssertEqual(sanitizedHTTPAddress, "http://localhost")
+        XCTAssertEqual(sanitizedTrailingSlashAddress, "https://matrix.example.com")
+        XCTAssertEqual(sanitizedWhitespaceAddress, "https://matrix.example.com")
+        XCTAssertEqual(sanitizedValidAddress, validAddress)
+        XCTAssertEqual(sanitizedValidAddressWithPort, validAddressWithPort)
+    }
 }

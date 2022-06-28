@@ -32,7 +32,6 @@ enum StaticLocationViewingViewModelResult {
 
 // MARK: View
 
-@available(iOS 14, *)
 struct StaticLocationViewingViewState: BindableState {
     
     /// Map style URL

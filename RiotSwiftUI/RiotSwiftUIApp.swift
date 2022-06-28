@@ -15,7 +15,6 @@
 //
 import SwiftUI
 
-@available(iOS 14.0, *)
 @main
 /// RiotSwiftUI screens rendered for UI Tests.
 struct RiotSwiftUIApp: App {

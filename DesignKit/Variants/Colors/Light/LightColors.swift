@@ -48,7 +48,6 @@ public class LightColors {
     )
     
     public static var uiKit = ColorsUIKit(values: values)
-    @available(iOS 14.0, *)
     public static var swiftUI = ColorSwiftUI(values: values)
 }
 

@@ -74,7 +74,6 @@ final class MediaPickerPresenter: NSObject {
 }
 
 // MARK: - PHPickerViewControllerDelegate
-@available(iOS 14, *)
 extension MediaPickerPresenter: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         // TODO: Handle videos and multi-selection

@@ -153,7 +153,7 @@ final class RiotSettings: NSObject {
     var enableUISIAutoReporting
     
     /// Indicates if live location sharing is enabled
-    @UserDefault(key: UserDefaultsKeys.enableLiveLocationSharing, defaultValue: BuildSettings.liveLocationSharingEnabled, storage: defaults)
+    @UserDefault(key: UserDefaultsKeys.enableLiveLocationSharing, defaultValue: false, storage: defaults)
     var enableLiveLocationSharing
     
     // MARK: Calls

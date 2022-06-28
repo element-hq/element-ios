@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct VectorForm<Content: View>: View {
     
     @Environment(\.theme) var theme: ThemeSwiftUI
@@ -43,7 +42,6 @@ struct VectorForm<Content: View>: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct VectorForm_Previews: PreviewProvider {
     
     static var previews: some View {

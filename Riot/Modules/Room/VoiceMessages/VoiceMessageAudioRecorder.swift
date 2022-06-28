@@ -75,6 +75,13 @@ class VoiceMessageAudioRecorder: NSObject, AVAudioRecorderDelegate {
 
     func stopRecording() {
         audioRecorder?.stop()
+        do {
+            try AVAudioSession.sharedInstance().setActive(false)
+        } catch {
+            delegateContainer.notifyDelegatesWithBlock { delegate in
+                (delegate as? VoiceMessageAudioRecorderDelegate)?.audioRecorder(self, didFailWithError: VoiceMessageAudioRecorderError.genericError) }
+        }
+
     }
     
     func peakPowerForChannelNumber(_ channelNumber: Int) -> Float {

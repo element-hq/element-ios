@@ -38,7 +38,6 @@ final class SpaceCreationRoomsCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: SpaceCreationRoomsCoordinatorParameters) {
         self.parameters = parameters
         let viewModel = SpaceCreationRoomsViewModel(creationParameters: parameters.creationParams)

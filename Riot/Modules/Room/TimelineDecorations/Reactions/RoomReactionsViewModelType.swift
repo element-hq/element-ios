@@ -26,11 +26,12 @@ enum RoomReactionsViewAction {
     enum ShowAction {
         case showAll
         case showLess
+        case addReaction
     }
 }
 
 enum RoomReactionsViewState {
-    case loaded(reactionsViewData: [RoomReactionViewData], showAllButtonState: ShowAllButtonState)
+    case loaded(reactionsViewData: [RoomReactionViewData], remainingViewData: [RoomReactionViewData], showAllButtonState: ShowAllButtonState, showAddReaction: Bool)
 
     enum ShowAllButtonState {
         case none
@@ -44,6 +45,7 @@ enum RoomReactionsViewState {
     func roomReactionsViewModel(_ viewModel: RoomReactionsViewModel, didRemoveReaction reactionCount: MXReactionCount, forEventId eventId: String)
     func roomReactionsViewModel(_ viewModel: RoomReactionsViewModel, didShowAllTappedForEventId eventId: String)
     func roomReactionsViewModel(_ viewModel: RoomReactionsViewModel, didShowLessTappedForEventId eventId: String)
+    func roomReactionsViewModel(_ viewModel: RoomReactionsViewModel, didTapAddReactionForEventId eventId: String)
     func roomReactionsViewModel(_ viewModel: RoomReactionsViewModel, didLongPressForEventId eventId: String)
 }
 

@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct SpaceCreationPostProcessItem: View {
     // MARK: - Properties
     
@@ -65,7 +64,6 @@ struct SpaceCreationPostProcessItem: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct SpaceCreationPostProcessItem_Previews: PreviewProvider {
     static var previews: some View {
         Group {

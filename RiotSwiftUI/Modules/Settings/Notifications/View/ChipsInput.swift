@@ -17,7 +17,6 @@
 import SwiftUI
 
 /// Renders an input field and a collection of chips.
-@available(iOS 14.0, *)
 struct ChipsInput: View {
     
     @Environment(\.theme) var theme: ThemeSwiftUI
@@ -47,7 +46,6 @@ struct ChipsInput: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct ChipsInput_Previews: PreviewProvider {
     static var chips = Set<String>(["Website", "Element", "Design", "Matrix/Element"])
     static var previews: some View {

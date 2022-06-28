@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 /// A visual cue to user that something is in progress.
 struct ActivityIndicator: View {
     
@@ -34,7 +33,6 @@ struct ActivityIndicator: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct ActivityIndicator_Previews: PreviewProvider {
     static var previews: some View {
         Group {

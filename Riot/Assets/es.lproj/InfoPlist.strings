@@ -6,3 +6,4 @@
 "NSFaceIDUsageDescription" = "Face ID se usa para acceder a tu aplicación.";
 "NSCalendarsUsageDescription" = "Mostrar tus reuniones en la aplicación.";
 "NSLocationWhenInUseUsageDescription" = "Cuando compartes tu ubicación con otras personas, Element necesita acceso para que puedan verla en el mapa.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Cuando compartes tu ubicación con los demás, Element necesita acceso a tu ubicación para mostrársela en un mapa.";
