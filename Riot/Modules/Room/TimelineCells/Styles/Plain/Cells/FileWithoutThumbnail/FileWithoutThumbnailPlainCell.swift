@@ -1,5 +1,5 @@
 // 
-// Copyright 2021 New Vector Ltd
+// Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,43 +14,60 @@
 // limitations under the License.
 //
 
-import UIKit
+import Foundation
 
-class FileWithoutThumbnailBaseBubbleCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable {
+class FileWithoutThumbnailPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable, RoomCellThreadSummaryDisplayable {
     
-    weak var fileAttachementView: FileWithoutThumbnailCellContentView?
+    private(set) var fileAttachementView: FileWithoutThumbnailCellContentView!
     
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
         
+        guard let data = cellData as? RoomBubbleCellData else {
+            return
+        }
+        
+        guard data.attachment.type == .file else {
+            fatalError("Invalid attachment type passed to a file without thumbnail cell.")
+        }
+        
         let attributedText = NSMutableAttributedString(attributedString: self.suitableAttributedTextMessage)
         attributedText.addAttributes([.foregroundColor: ThemeService.shared().theme.colors.secondaryContent],
                                      range: NSRange(location: 0, length: attributedText.length))
-        self.fileAttachementView?.titleLabel.attributedText = attributedText
-        
+        self.fileAttachementView.titleLabel.attributedText = attributedText
+
         self.update(theme: ThemeService.shared().theme)
     }
     
     override func setupViews() {
         super.setupViews()
         
-        roomCellContentView?.backgroundColor = .clear
+        roomCellContentView?.showSenderInfo = true
+        roomCellContentView?.showPaginationTitle = false
         
         guard let contentView = roomCellContentView?.innerContentView else {
             return
         }
         
-        let fileAttachementView = FileWithoutThumbnailCellContentView.instantiate()
-                
+        fileAttachementView = FileWithoutThumbnailCellContentView.loadFromNib()
         contentView.vc_addSubViewMatchingParent(fileAttachementView)
+    }
+    
+    override func update(theme: Theme) {
+        super.update(theme: theme)
         
-        self.fileAttachementView = fileAttachementView
+        guard let fileAttachementView = fileAttachementView else {
+            return
+        }
+        
+        fileAttachementView.update(theme: theme)
+        fileAttachementView.backgroundColor = theme.colors.quinaryContent
     }
     
     override func onContentViewTap(_ sender: UITapGestureRecognizer!) {
         
         if let bubbleData = self.bubbleData, bubbleData.isAttachment {
-            self.delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellTapOnAttachmentView, userInfo: nil)            
+            self.delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellTapOnAttachmentView, userInfo: nil)
         } else {
             super.onContentViewTap(sender)
         }
