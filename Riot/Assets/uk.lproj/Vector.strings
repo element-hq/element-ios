@@ -2529,3 +2529,21 @@
 "location_sharing_allow_background_location_title" = "Дозволити доступ";
 "settings_labs_enable_live_location_sharing" = "Поширення місцеперебування наживо - діліться поточним розташуванням (в активній розробці, місця тимчасово зберігаються в історії кімнат)";
 "settings_ui_show_redactions_in_room_history" = "Показувати заповнювач для вилучених повідомлень";
+
+// MARK: Reactions
+
+"room_event_action_reaction_more" = "Ще %@";
+"leave_space_selection_no_rooms" = "Не вибирати кімнати";
+"leave_space_selection_all_rooms" = "Вибрати всі кімнати";
+"leave_space_selection_title" = "ВИБРАТИ КІМНАТИ";
+"leave_space_and_more_rooms" = "Вийти з простору та %@ кімнат";
+"leave_space_and_one_room" = "Вийти з простору та однієї кімнати";
+
+// Mark: Leave space
+
+"leave_space_action" = "Вийти з простору";
+"spaces_feature_not_available" = "Ця функція тут недоступна. Наразі ви можете це зробити з %@ на своєму комп’ютері.";
+"home_context_menu_mark_as_read" = "Позначити прочитаним";
+"settings_timeline" = "СТРІЧКА";
+"room_accessibility_record_voice_message_hint" = "Двічі торкніться й утримуйте для запису.";
+"room_accessibility_record_voice_message" = "Записати голосове повідомлення";
