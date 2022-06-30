@@ -45,10 +45,6 @@
     self = [super init];
     if (self)
     {
-        _startAudioCallIntentHandler = [[StartAudioCallIntentHandler alloc] init];
-        _startVideoCallIntentHandler = [[StartVideoCallIntentHandler alloc] init];
-        _sendMessageIntentHandler = [[SendMessageIntentHandler alloc] init];
-        
         // Set static application settings
         _configuration = [CommonConfiguration new];
         [_configuration setupSettings];
@@ -71,6 +67,10 @@
         Analytics *analytics = Analytics.shared;
         [MXSDKOptions sharedInstance].analyticsDelegate = analytics;
         [analytics startIfEnabled];
+        
+        _startAudioCallIntentHandler = [[StartAudioCallIntentHandler alloc] init];
+        _startVideoCallIntentHandler = [[StartVideoCallIntentHandler alloc] init];
+        _sendMessageIntentHandler = [[SendMessageIntentHandler alloc] init];
     }
     return self;
 }
