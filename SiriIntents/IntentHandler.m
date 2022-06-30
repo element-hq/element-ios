@@ -38,6 +38,7 @@
 
 @property (nonatomic) id<ContactResolving> contactResolver;
 @property (nonatomic) id<INStartAudioCallIntentHandling> startAudioCallIntentHandler;
+@property (nonatomic) id<INStartVideoCallIntentHandling> startVideoCallIntentHandler;
 
 @end
 
@@ -50,6 +51,7 @@
     {
         _contactResolver = [[ContactResolver alloc] init];
         _startAudioCallIntentHandler = [[StartAudioCallIntentHandler alloc] init];
+        _startVideoCallIntentHandler = self;
         
         // Set static application settings
         _configuration = [CommonConfiguration new];
@@ -81,6 +83,8 @@
 {
     if ([intent isKindOfClass:[INStartAudioCallIntent class]]) {
         return self.startAudioCallIntentHandler;
+    } else if ([intent isKindOfClass:[INStartVideoCallIntent class]]) {
+        return self.startVideoCallIntentHandler;
     }
     
     return self;
