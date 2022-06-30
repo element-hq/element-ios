@@ -154,7 +154,11 @@ final class RiotSettings: NSObject {
     
     /// Indicates if live location sharing is enabled
     @UserDefault(key: UserDefaultsKeys.enableLiveLocationSharing, defaultValue: false, storage: defaults)
-    var enableLiveLocationSharing
+    var enableLiveLocationSharing {
+        didSet {
+            NotificationCenter.default.post(name: RiotSettings.didUpdateLiveLocationSharingActivation, object: self)
+        }
+    }
     
     // MARK: Calls
     
@@ -374,4 +378,9 @@ final class RiotSettings: NSObject {
     /// Number of spaces previously tracked by the `AnalyticsSpaceTracker` instance.
     @UserDefault(key: "lastNumberOfTrackedSpaces", defaultValue: nil, storage: defaults)
     var lastNumberOfTrackedSpaces: Int?
+}
+
+// MARK: - RiotSettings notification constants
+extension RiotSettings {
+    public static let didUpdateLiveLocationSharingActivation = Notification.Name("RiotSettingsDidUpdateLiveLocationSharingActivation")
 }
