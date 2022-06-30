@@ -1,0 +1,1 @@
+Split `IntentHandler` into smaller, dedicated entities
