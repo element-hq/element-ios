@@ -32,7 +32,6 @@
 // Build Settings
 @property (nonatomic) id<Configurable> configuration;
 
-@property (nonatomic) id<ContactResolving> contactResolver;
 @property (nonatomic) id<INStartAudioCallIntentHandling> startAudioCallIntentHandler;
 @property (nonatomic) id<INStartVideoCallIntentHandling> startVideoCallIntentHandler;
 @property (nonatomic) id<INSendMessageIntentHandling> sendMessageIntentHandler;
@@ -46,7 +45,6 @@
     self = [super init];
     if (self)
     {
-        _contactResolver = [[ContactResolver alloc] init];
         _startAudioCallIntentHandler = [[StartAudioCallIntentHandler alloc] init];
         _startVideoCallIntentHandler = [[StartVideoCallIntentHandler alloc] init];
         _sendMessageIntentHandler = [[SendMessageIntentHandler alloc] init];
