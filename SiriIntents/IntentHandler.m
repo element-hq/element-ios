@@ -34,6 +34,8 @@
  */
 @property (nonatomic) MXRoom *selectedRoom;
 
+@property (nonatomic) id<ContactResolving> contactResolver;
+
 @end
 
 @interface IntentHandler (ContactResolving) <ContactResolving>
@@ -46,6 +48,8 @@
     self = [super init];
     if (self)
     {
+        _contactResolver = self;
+        
         // Set static application settings
         _configuration = [CommonConfiguration new];
         [_configuration setupSettings];
@@ -81,7 +85,7 @@
 
 - (void)resolveContactsForStartAudioCall:(INStartAudioCallIntent *)intent withCompletion:(void (^)(NSArray<INPersonResolutionResult *> * _Nonnull))completion
 {
-    [self resolveContacts:intent.contacts withCompletion:completion];
+    [self.contactResolver resolveContacts:intent.contacts withCompletion:completion];
 }
 
 - (void)confirmStartAudioCall:(INStartAudioCallIntent *)intent completion:(void (^)(INStartAudioCallIntentResponse * _Nonnull))completion
@@ -132,7 +136,7 @@
 
 - (void)resolveContactsForStartVideoCall:(INStartVideoCallIntent *)intent withCompletion:(void (^)(NSArray<INPersonResolutionResult *> * _Nonnull))completion
 {
-    [self resolveContacts:intent.contacts withCompletion:completion];
+    [self.contactResolver resolveContacts:intent.contacts withCompletion:completion];
 }
 
 - (void)confirmStartVideoCall:(INStartVideoCallIntent *)intent completion:(void (^)(INStartVideoCallIntentResponse * _Nonnull))completion
@@ -183,7 +187,7 @@
 
 - (void)resolveRecipientsForSendMessage:(INSendMessageIntent *)intent completion:(void (^)(NSArray<INSendMessageRecipientResolutionResult *> * _Nonnull))completion
 {
-    [self resolveContacts:intent.recipients withCompletion:completion];
+    [self.contactResolver resolveContacts:intent.recipients withCompletion:completion];
 }
 
 - (void)resolveContentForSendMessage:(INSendMessageIntent *)intent withCompletion:(void (^)(INStringResolutionResult * _Nonnull))completion
