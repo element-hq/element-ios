@@ -38,7 +38,7 @@
 
 @end
 
-@interface IntentHandler (ContactResolving) <ContactResolving>
+@interface ContactResolver: NSObject <ContactResolving>
 @end
 
 @implementation IntentHandler
@@ -48,7 +48,7 @@
     self = [super init];
     if (self)
     {
-        _contactResolver = self;
+        _contactResolver = [[ContactResolver alloc] init];
         
         // Set static application settings
         _configuration = [CommonConfiguration new];
@@ -301,7 +301,7 @@
 
 @end
 
-@implementation IntentHandler (ContactResolving)
+@implementation ContactResolver
 
 - (void)resolveContacts:(nullable NSArray<INPerson *> *)contacts
          withCompletion:(void (^)(NSArray<INPersonResolutionResult *> * _Nonnull))completion {
