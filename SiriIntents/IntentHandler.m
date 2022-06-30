@@ -36,6 +36,7 @@
 @property (nonatomic) MXRoom *selectedRoom;
 
 @property (nonatomic) id<ContactResolving> contactResolver;
+@property (nonatomic) id<INStartAudioCallIntentHandling> startAudioCallIntentHandler;
 
 @end
 
@@ -47,6 +48,7 @@
     if (self)
     {
         _contactResolver = [[ContactResolver alloc] init];
+        _startAudioCallIntentHandler = self;
         
         // Set static application settings
         _configuration = [CommonConfiguration new];
@@ -76,6 +78,10 @@
 
 - (id)handlerForIntent:(INIntent *)intent
 {
+    if ([intent isKindOfClass:[INStartAudioCallIntent class]]) {
+        return self.startAudioCallIntentHandler;
+    }
+    
     return self;
 }
 
