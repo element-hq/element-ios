@@ -36,6 +36,9 @@
 
 @end
 
+@interface IntentHandler (ContactResolving) <ContactResolving>
+@end
+
 @implementation IntentHandler
 
 - (instancetype)init
@@ -292,10 +295,12 @@
     }
 }
 
-#pragma mark - Private
+@end
 
-- (void)resolveContacts:(nullable NSArray<INPerson *> *)contacts withCompletion:(void (^)(NSArray<INPersonResolutionResult *> * _Nonnull))completion
-{
+@implementation IntentHandler (ContactResolving)
+
+- (void)resolveContacts:(nullable NSArray<INPerson *> *)contacts
+         withCompletion:(void (^)(NSArray<INPersonResolutionResult *> * _Nonnull))completion {
     if (contacts.count == 0)
     {
         completion(@[[INPersonResolutionResult needsValue]]);
@@ -448,3 +453,4 @@
 }
 
 @end
+
