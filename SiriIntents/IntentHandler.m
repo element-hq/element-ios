@@ -85,7 +85,7 @@
         return self.sendMessageIntentHandler;
     }
     
-    return self;
+    return nil;
 }
 
 @end
