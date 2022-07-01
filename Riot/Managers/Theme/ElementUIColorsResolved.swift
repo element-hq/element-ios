@@ -63,16 +63,7 @@ extension UIColor {
         self.system = dynamicColors.system.resolvedColor(with: traitCollection)
         self.background = dynamicColors.background.resolvedColor(with: traitCollection)
         
-        self.namesAndAvatars = [
-            dynamicColors.globalAzure.resolvedColor(with: traitCollection),
-            dynamicColors.globalGrape.resolvedColor(with: traitCollection),
-            dynamicColors.globalVerde.resolvedColor(with: traitCollection),
-            dynamicColors.globalPolly.resolvedColor(with: traitCollection),
-            dynamicColors.globalMelon.resolvedColor(with: traitCollection),
-            dynamicColors.globalAqua.resolvedColor(with: traitCollection),
-            dynamicColors.globalPrune.resolvedColor(with: traitCollection),
-            dynamicColors.globalKiwi.resolvedColor(with: traitCollection)
-        ]
+        self.namesAndAvatars = dynamicColors.contentAndAvatars
         
         // Legacy colours
         self.quarterlyContent = dynamicColors.quaternaryContent.resolvedColor(with: traitCollection)

@@ -72,7 +72,7 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
         self.parameters = parameters
         let viewModel = OnboardingAvatarViewModel(userId: parameters.userSession.userId,
                                                   displayName: parameters.userSession.account.userDisplayName,
-                                                  avatarColorCount: DefaultThemeSwiftUI().colors.namesAndAvatars.count)
+                                                  avatarColorCount: DefaultThemeSwiftUI().colors.contentAndAvatars.count)
         viewModel.updateAvatarImage(with: parameters.avatar)
         
         let view = OnboardingAvatarScreen(viewModel: viewModel.context)

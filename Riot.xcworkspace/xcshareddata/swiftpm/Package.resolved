@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vector-im/element-design-tokens.git",
       "state" : {
-        "revision" : "4aafdc25ca0e322c0de930d4ec86121f5503023e",
-        "version" : "0.0.1"
+        "revision" : "02ba42d9ec02f90370a6cfc35a68d7312696636c",
+        "version" : "0.0.2"
       }
     },
     {
@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vector-im/element-x-ios",
       "state" : {
-        "branch" : "develop",
-        "revision" : "272fc5000bfe6e15a0f0ea669ef3088c7d163ce7"
+        "revision" : "0a199ee61126feb8c8a462200cb4749d6eb3ba77",
+        "version" : "1.0.1-202207011447"
       }
     },
     {
