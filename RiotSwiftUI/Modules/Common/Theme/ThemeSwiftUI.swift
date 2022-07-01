@@ -36,24 +36,11 @@ public protocol ThemeSwiftUIType {
     /// may contain more design components in future, like icons, audio files etc.
 }
 
+// MARK: - Legacy Colors
+
 public extension ElementColors {
-    // MARK: - Legacy
     var legacyTile: Color {
         let dynamicColor = UIColor { $0.userInterfaceStyle == .light ? .elementLight.tile : .elementDark.tile }
         return Color(dynamicColor)
-    }
-    
-    // TODO: Generate in DesignTokens repo.
-    var namesAndAvatars: [Color] {
-        [
-            globalAzure,
-            globalGrape,
-            globalVerde,
-            globalPolly,
-            globalMelon,
-            globalAqua,
-            globalPrune,
-            globalKiwi
-        ]
     }
 }
