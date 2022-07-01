@@ -33,6 +33,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     private var selectedEventId: String?
     private var loadingCancel: UserIndicatorCancel?
     private var locationSharingIndicatorCancel: UserIndicatorCancel? // Used for location sharing advertizements
+    private var foundDiscussionTargetUser: MXUser?
     
     private var roomDataSourceManager: MXKRoomDataSourceManager {
         return MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.parameters.session)
@@ -80,6 +81,11 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         if let threadId = parameters.threadId {
             self.roomViewController = ThreadViewController.instantiate(withThreadId: threadId,
                                                                        configuration: parameters.displayConfiguration)
+        } else if let discussionTargetUserId = parameters.discussionTargetUserId {
+            let discussionTargetUser: MXUser = parameters.session.user(withUserId: discussionTargetUserId)
+            
+            // Use target user information to populate RoomViewController view
+            self.roomViewController = RoomViewController.instantiate(with: parameters.displayConfiguration, andDiscussionTargetUser: discussionTargetUser, session: parameters.session)
         } else {
             self.roomViewController = RoomViewController.instantiate(with: parameters.displayConfiguration)
         }
@@ -114,15 +120,20 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         
         if let previewData = self.parameters.previewData {
             self.loadRoomPreview(withData: previewData, completion: completion)
-        } else if let threadId = self.parameters.threadId {
-            self.loadRoom(withId: self.parameters.roomId,
-                          andThreadId: threadId,
-                          eventId: self.parameters.eventId,
-                          completion: completion)
-        } else if let eventId = self.selectedEventId {
-            self.loadRoom(withId: self.parameters.roomId, andEventId: eventId, completion: completion)
-        } else {
-            self.loadRoom(withId: self.parameters.roomId, completion: completion)
+        } else if let roomId = self.parameters.roomId {
+            if let threadId = self.parameters.threadId {
+                self.loadRoom(withId: roomId,
+                              andThreadId: threadId,
+                              eventId: self.parameters.eventId,
+                              completion: completion)
+            } else if let eventId = self.selectedEventId {
+                self.loadRoom(withId: roomId, andEventId: eventId, completion: completion)
+            } else {
+                self.loadRoom(withId: roomId, completion: completion)
+            }
+        } else if let discussionTargetUserId = self.parameters.discussionTargetUserId {
+            // Start flow for a direct chat, try to find an existing room with target user
+            self.loadRoom(withDiscussionTargetUserId: discussionTargetUserId)
         }
 
         // Add `roomViewController` to the NavigationRouter, only if it has been explicitly set as parameter
@@ -243,6 +254,39 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
             self.mxSession?.updateBreadcrumbsWithRoom(withId: roomId, success: nil, failure: nil)
 
             completion?()
+        }
+    }
+    
+    private func loadRoom(withDiscussionTargetUserId discussionTargetUserId: String) {
+        
+        // Present activity indicator when retrieving roomDataSource for given room ID
+        startLoading()
+        
+        // Try to find an existing room with target user otherwise start a new discussion
+        if let room = self.parameters.session.directJoinedRoom(withUserId: discussionTargetUserId) {
+            // Open the found discussion
+            self.stopLoading()
+            self.loadRoom(withId: room.roomId, completion: nil)
+        } else {
+            // Start a new discussion
+            
+            // Try to search target user if not exist in local session
+            if let discussionTargetUserId = self.parameters.discussionTargetUserId, self.foundDiscussionTargetUser == nil {
+                
+                let user = self.parameters.session.user(withUserId: discussionTargetUserId)
+                
+                self.stopLoading()
+                
+                if let user = user {
+                    self.foundDiscussionTargetUser = user
+                    // Update RoomViewController with found target user
+                    self.roomViewController.displayNewDiscussion(withTargetUser: user, session: self.parameters.session)
+                }
+                
+            } else {
+                // User has already been found from local session no update needed
+                self.stopLoading()
+            }
         }
     }
     
@@ -518,7 +562,7 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     }
     
     func roomViewController(_ roomViewController: RoomViewController, startChatWithUserId userId: String, completion: @escaping () -> Void) {
-        AppDelegate.theDelegate().createDirectChat(withUserId: userId, completion: completion)
+        AppDelegate.theDelegate().showNewDirectRoom(userId, withMatrixSession: self.mxSession, completion: completion)
     }
     
     func roomViewController(_ roomViewController: RoomViewController, showCompleteSecurityFor session: MXSession) {

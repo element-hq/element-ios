@@ -90,6 +90,12 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 @property (nonatomic) BOOL showMissedDiscussionsBadge;
 
 /**
+ Tell whether input tool bar should be hidden in every case.
+ NO by default.
+ */
+@property (nonatomic) BOOL forceHideInputToolBar;
+
+/**
  ID of the parent space. `nil` for home space.
  */
 @property (nonatomic, nullable) NSString *parentSpaceId;
@@ -128,6 +134,14 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 - (void)displayRoomPreview:(RoomPreviewData*)roomPreviewData;
 
 /**
+ Display a new discussion with a target user without associated room.
+ 
+ @param discussionTargetUser Direct chat target user.
+ @param session The Matrix session.
+ */
+- (void)displayNewDiscussionWithTargetUser:(nonnull MXUser*)discussionTargetUser session:(nonnull MXSession*)session;
+
+/**
  If `YES`, the room settings screen will be initially displayed. Default `NO`
  */
 @property (nonatomic) BOOL showSettingsInitially;
@@ -155,6 +169,17 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
  @return An initialized `RoomViewController` object.
  */
 + (instancetype)instantiateWithConfiguration:(RoomDisplayConfiguration *)configuration;
+
+/**
+ Creates and returns a new `RoomViewController` object.
+ 
+ @param configuration display configuration for the room view controller.
+ @param discussionTargetUser Direct chat target user.
+ @param session The Matrix session.
+ 
+ @return An initialized `RoomViewController` object.
+ */
++ (instancetype)instantiateWithConfiguration:(RoomDisplayConfiguration *)configuration AndDiscussionTargetUser:(nonnull MXUser*)discussionTargetUser session:(nonnull MXSession*)session;
 
 @end
 
