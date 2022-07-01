@@ -224,6 +224,9 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 @property (nonatomic, readwrite) RoomDisplayConfiguration *displayConfiguration;
 
+// Direct chat target user when create a discussion without associated room
+@property (nonatomic, nullable, strong) MXUser *discussionTargetUser;
+
 // When layout of the screen changes (e.g. height), we no longer know whether
 // to autoscroll to the bottom again or not. Instead we need to capture the
 // scroll state just before the layout change, and restore it after the layout.
@@ -264,6 +267,14 @@ static CGSize kThreadListBarButtonItemImageSize;
     RoomViewController *controller = [storyboard instantiateViewControllerWithIdentifier:storyboardId];
     controller.displayConfiguration = configuration;
     return controller;
+}
+
++ (instancetype)instantiateWithConfiguration:(RoomDisplayConfiguration *)configuration AndDiscussionTargetUser:(nonnull MXUser*)discussionTargetUser session:(nonnull MXSession*)session
+{
+    RoomViewController *roomViewController = [self instantiateWithConfiguration:configuration];
+    roomViewController.discussionTargetUser = discussionTargetUser;
+    [roomViewController addMatrixSession:session];
+    return roomViewController;
 }
 
 + (NSString *)className
@@ -1025,6 +1036,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         [self removeMatrixSession:self.mainSession];
     }
     
+    // Set potential discussion target user to nil, now use the dataSource to populate the view
+    self.discussionTargetUser = nil;
+    
     // Enable the read marker display, and disable its update.
     dataSource.showReadMarker = YES;
     self.updateRoomReadMarker = NO;
@@ -1102,6 +1116,10 @@ static CGSize kThreadListBarButtonItemImageSize;
             // Force the layout of subviews (some constraints may have been updated)
             [self forceLayoutRefresh];
         }
+    }
+    else if (self.isNewDiscussion)
+    {
+        [self refreshRoomInputToolbar];
     }
     else
     {
@@ -1322,40 +1340,51 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)sendTextMessage:(NSString*)msgTxt
 {
-    // The event modified is always fetch from the actual data source
-    MXEvent *eventModified = [self.roomDataSource eventWithEventId:self.customizedRoomDataSource.selectedEventId];
-    
-    // In the case the event is a reply or and edit, and it's done on a non-live timeline
-    // we have to fetch live timeline in order to display the event properly
-    [self setupRoomDataSourceToResolveEvent:^(MXKRoomDataSource *roomDataSource) {
-        if (self.inputToolBarSendMode == RoomInputToolbarViewSendModeReply && eventModified)
+    // Re-invite the left member before sending the message in case of a discussion (direct chat)
+    MXWeakify(self);
+    [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
+        MXStrongifyAndReturnIfNil(self);
+        if (success)
         {
-            [roomDataSource sendReplyToEvent:eventModified withTextMessage:msgTxt success:nil failure:^(NSError *error) {
-                // Just log the error. The message will be displayed in red in the room history
-                MXLogDebug(@"[MXKRoomViewController] sendTextMessage failed.");
+            // The event modified is always fetch from the actual data source
+            MXEvent *eventModified = [self.roomDataSource eventWithEventId:self.customizedRoomDataSource.selectedEventId];
+            
+            // In the case the event is a reply or and edit, and it's done on a non-live timeline
+            // we have to fetch live timeline in order to display the event properly
+            [self setupRoomDataSourceToResolveEvent:^(MXKRoomDataSource *roomDataSource) {
+                if (self.inputToolBarSendMode == RoomInputToolbarViewSendModeReply && eventModified)
+                {
+                    [roomDataSource sendReplyToEvent:eventModified withTextMessage:msgTxt success:nil failure:^(NSError *error) {
+                        // Just log the error. The message will be displayed in red in the room history
+                        MXLogDebug(@"[MXKRoomViewController] sendTextMessage failed.");
+                    }];
+                }
+                else if (self.inputToolBarSendMode == RoomInputToolbarViewSendModeEdit && eventModified)
+                {
+                    [roomDataSource replaceTextMessageForEvent:eventModified withTextMessage:msgTxt success:nil failure:^(NSError *error) {
+                        // Just log the error. The message will be displayed in red
+                        MXLogDebug(@"[MXKRoomViewController] sendTextMessage failed.");
+                    }];
+                }
+                else
+                {
+                    // Let the datasource send it and manage the local echo
+                    [roomDataSource sendTextMessage:msgTxt success:nil failure:^(NSError *error)
+                     {
+                        // Just log the error. The message will be displayed in red in the room history
+                        MXLogDebug(@"[MXKRoomViewController] sendTextMessage failed.");
+                    }];
+                }
+                
+                if (self.customizedRoomDataSource.selectedEventId)
+                {
+                    [self cancelEventSelection];
+                }
             }];
-        }
-        else if (self.inputToolBarSendMode == RoomInputToolbarViewSendModeEdit && eventModified)
-        {
-            [roomDataSource replaceTextMessageForEvent:eventModified withTextMessage:msgTxt success:nil failure:^(NSError *error) {
-                // Just log the error. The message will be displayed in red
-                MXLogDebug(@"[MXKRoomViewController] sendTextMessage failed.");
-            }];
-        }
-        else
-        {
-            // Let the datasource send it and manage the local echo
-            [roomDataSource sendTextMessage:msgTxt success:nil failure:^(NSError *error)
-             {
-                // Just log the error. The message will be displayed in red in the room history
-                MXLogDebug(@"[MXKRoomViewController] sendTextMessage failed.");
-            }];
+            
         }
         
-        if (self.customizedRoomDataSource.selectedEventId)
-        {
-            [self cancelEventSelection];
-        }
+        [self cancelEventSelection];
     }];
 }
 
@@ -1401,6 +1430,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self setValue:titleView forKey:@"titleView"];
     titleView.delegate = self;
     titleView.mxRoom = self.roomDataSource.room;
+    titleView.mxUser = self.discussionTargetUser;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:titleView];
     
     if ([titleView isKindOfClass:RoomTitleView.class])
@@ -1490,6 +1520,138 @@ static CGSize kThreadListBarButtonItemImageSize;
     [super destroy];
 }
 
+#pragma mark - Start DM
+
+/**
+ Check whether the current room is a direct chat left by the other member.
+ */
+- (void)isDirectChatLeftByTheOther:(void (^)(BOOL isEmptyDirect))onComplete
+{
+    // In the case of a direct chat, we check if the other member has left the room.
+    if (self.roomDataSource)
+    {
+        NSString *directUserId = self.roomDataSource.room.directUserId;
+        if (directUserId)
+        {
+            [self.roomDataSource.room members:^(MXRoomMembers *roomMembers) {
+                MXRoomMember *directUserMember = [roomMembers memberWithUserId:directUserId];
+                if (directUserMember)
+                {
+                    MXMembership directUserMembership = directUserMember.membership;
+                    if (directUserMembership != MXMembershipJoin && directUserMembership != MXMembershipInvite)
+                    {
+                        onComplete(YES);
+                    }
+                    else
+                    {
+                        onComplete(NO);
+                    }
+                }
+                else
+                {
+                    NSLog(@"[RoomViewController] isEmptyDirectChat: the direct user has disappeared");
+                    onComplete(YES);
+                }
+            } failure:^(NSError *error) {
+                NSLog(@"[RoomViewController] isEmptyDirectChat: cannot get all room members");
+                onComplete(NO);
+            }];
+            return;
+        }
+    }
+    
+    // This is not a direct chat
+    onComplete(NO);
+}
+
+/**
+ Check whether the current room is a direct chat left by the other member.
+ In this case, this method will invite again the left member.
+ */
+- (void)restoreDiscussionIfNeed:(void (^)(BOOL success))onComplete
+{
+    [self isDirectChatLeftByTheOther:^(BOOL isEmptyDirect) {
+        if (isEmptyDirect)
+        {
+            NSString *directUserId = self.roomDataSource.room.directUserId;
+            
+            MXWeakify(self);
+            NSLog(@"[RoomViewController] restoreDiscussionIfNeed: check left member %@", directUserId);
+            // Invite again the direct user
+            MXStrongifyAndReturnIfNil(self);
+            NSLog(@"[RoomViewController] restoreDiscussionIfNeed: invite again %@", directUserId);
+            [self.roomDataSource.room inviteUser:directUserId success:^{
+                // Delay the completion in order to display the invite before the local echo of the new message.
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    onComplete(YES);
+                });
+            } failure:^(NSError *error) {
+                NSLog(@"[RoomViewController] restoreDiscussionIfNeed: invite failed");
+                // Alert user
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+                onComplete(NO);
+            }];
+        }
+        else
+        {
+            // Nothing to do
+            onComplete(YES);
+        }
+    }];
+}
+
+/**
+ Create a direct chat with given user.
+ */
+- (void)createDiscussionWithUser:(MXUser*)user completion:(void (^)(BOOL success))onComplete
+{
+    [self startActivityIndicator];
+    
+    [[AppDelegate theDelegate] createDirectChatWithUserId:user.userId completion:^(NSString *roomId) {
+        if (roomId)
+        {
+            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
+            [roomDataSourceManager roomDataSourceForRoom:roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
+                [self stopActivityIndicator];
+                [self displayRoom:roomDataSource];
+                
+                onComplete(YES);
+            }];
+        }
+        else
+        {
+            onComplete(NO);
+        }
+    }];
+}
+
+/**
+ Check whether the current room is a direct chat left by the other member.
+ In this case, this method will invite again the left member.
+ */
+- (void)createOrRestoreDiscussionIfNeeded:(void (^)(BOOL success))onComplete
+{
+    // Disable the input tool bar during this operation. This prevents us from creating several discussions, or
+    // trying to send several invites.
+    self.inputToolbarView.userInteractionEnabled = false;
+    
+    void(^completion)(BOOL) = ^(BOOL success) {
+        self.inputToolbarView.userInteractionEnabled = true;
+        if (onComplete) {
+            onComplete(success);
+        }
+    };
+    
+    if (self.discussionTargetUser)
+    {
+        [self createDiscussionWithUser:self.discussionTargetUser completion:completion];
+    }
+    else
+    {
+        [self restoreDiscussionIfNeed:completion];
+    }
+}
+
 #pragma mark - Properties
 
 -(void)setActivitiesViewExpanded:(BOOL)activitiesViewExpanded
@@ -1536,6 +1698,13 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (BOOL)shouldShowLiveLocationSharingBannerView
 {
     return self.customizedRoomDataSource.isCurrentUserSharingActiveLocation;
+}
+
+- (void)setForceHideInputToolBar:(BOOL)forceHideInputToolBar
+{
+    _forceHideInputToolBar = forceHideInputToolBar;
+    
+    [self refreshRoomInputToolbar];
 }
 
 #pragma mark - Internals
@@ -1656,6 +1825,12 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
     
     return NO;
+}
+
+// Indicates if a new discussion with a target user (without associated room) is occuring.
+- (BOOL)isNewDiscussion
+{
+    return self.discussionTargetUser != nil;
 }
 
 - (BOOL)isEncryptionEnabled
@@ -1859,13 +2034,48 @@ static CGSize kThreadListBarButtonItemImageSize;
             }
         }
     }
+    else if (self.isNewDiscussion)
+    {
+        [self showPreviewHeader:NO];
+        
+        [self setRoomTitleViewClass:RoomTitleView.class];
+        MXKImageView *userPictureView = ((RoomTitleView*)self.titleView).pictureView;
+        
+        // Set user picture in input toolbar
+        if (userPictureView)
+        {
+            [userPictureView vc_setRoomAvatarImageWith:self.discussionTargetUser.avatarUrl
+                                                roomId:self.discussionTargetUser.userId
+                                           displayName:self.discussionTargetUser.displayname
+                                          mediaManager:self.mainSession.mediaManager];
+        }
+    }
     
     self.navigationItem.rightBarButtonItems = rightBarButtonItems;
+}
+
+- (void)updateInputToolBarVisibility
+{
+    BOOL hideInputToolBar = NO;
+    
+    if (self.forceHideInputToolBar)
+    {
+        hideInputToolBar = YES;
+    }
+    else if (self.roomDataSource)
+    {
+        hideInputToolBar = (self.roomDataSource.state != MXKDataSourceStateReady);
+    }
+    
+    self.inputToolbarView.hidden = hideInputToolBar;
 }
 
 - (void)refreshRoomInputToolbar
 {
     MXKImageView *userPictureView;
+    
+    // Show or hide input tool bar
+    [self updateInputToolBarVisibility];
     
     // Check whether the input toolbar is ready before updating it.
     if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
@@ -2139,7 +2349,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             [self showMediaPickerAnimated:YES];
         }]];
     }
-    if (RiotSettings.shared.roomScreenAllowStickerAction)
+    if (RiotSettings.shared.roomScreenAllowStickerAction && !self.isNewDiscussion)
     {
         [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionSticker.image andAction:^{
             MXStrongifyAndReturnIfNil(self);
@@ -2159,7 +2369,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             [self roomInputToolbarViewDidTapFileUpload];
         }]];
     }
-    if (BuildSettings.pollsEnabled && self.displayConfiguration.sendingPollsEnabled)
+    if (BuildSettings.pollsEnabled && self.displayConfiguration.sendingPollsEnabled && !self.isNewDiscussion)
     {
         [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionPoll.image andAction:^{
             MXStrongifyAndReturnIfNil(self);
@@ -2169,7 +2379,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             [self.delegate roomViewControllerDidRequestPollCreationFormPresentation:self];
         }]];
     }
-    if (BuildSettings.locationSharingEnabled)
+    if (BuildSettings.locationSharingEnabled && !self.isNewDiscussion)
     {
         [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionLocation.image andAction:^{
             MXStrongifyAndReturnIfNil(self);
@@ -2303,7 +2513,14 @@ static CGSize kThreadListBarButtonItemImageSize;
             
             // Set the chosen preset and send the video (conversion takes place in the SDK).
             [MXSDKOptions sharedInstance].videoConversionPresetName = presetName;
-            [roomInputToolbarView sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:isPhotoLibraryAsset];
+            
+            // Re-invite the left member before sending the message in case of a discussion (direct chat)
+            [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
+                if (success)
+                {
+                    [roomInputToolbarView sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:isPhotoLibraryAsset];
+                }
+            }];
         }];
         compressionPrompt.popoverPresentationController.sourceView = roomInputToolbarView.attachMediaButton;
         compressionPrompt.popoverPresentationController.sourceRect = roomInputToolbarView.attachMediaButton.bounds;
@@ -2314,7 +2531,14 @@ static CGSize kThreadListBarButtonItemImageSize;
     {
         // Otherwise default to 1080p and send the video.
         [MXSDKOptions sharedInstance].videoConversionPresetName = AVAssetExportPreset1920x1080;
-        [roomInputToolbarView sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:isPhotoLibraryAsset];
+        
+        // Re-invite the left member before sending the message in case of a discussion (direct chat)
+        [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
+            if (success)
+            {
+                [roomInputToolbarView sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:isPhotoLibraryAsset];
+            }
+        }];
     }
 }
 
@@ -2384,7 +2608,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
     else
     {
-        [[AppDelegate theDelegate] createDirectChatWithUserId:userId completion:completion];
+        [[AppDelegate theDelegate] showNewDirectRoom:userId withMatrixSession:self.mainSession completion:completion];
     }
 }
 
@@ -2812,6 +3036,23 @@ static CGSize kThreadListBarButtonItemImageSize;
             [super displayRoom:roomPreviewData.roomDataSource];
         }
     }
+}
+
+#pragma mark - New discussion
+
+- (void)displayNewDiscussionWithTargetUser:(nonnull MXUser*)discussionTargetUser session:(nonnull MXSession*)session
+{
+    // Release existing room data source or preview
+    [self displayRoom:nil];
+    
+    self.eventsAcknowledgementEnabled = NO;
+    
+    [self addMatrixSession:session];
+    
+    self.discussionTargetUser = discussionTargetUser;
+    
+    [self refreshRoomTitle];
+    [self refreshRoomInputToolbar];
 }
 
 #pragma mark - MXKDataSourceDelegate
@@ -4798,28 +5039,34 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)roomInputToolbarView:(RoomInputToolbarView *)toolbarView sendAttributedTextMessage:(NSAttributedString *)attributedTextMessage
 {
-    BOOL isMessageAHandledCommand = NO;
-    // "/me" command is supported with Pills in RoomDataSource.
-    if (![attributedTextMessage.string hasPrefix:kMXKSlashCmdEmote])
-    {
-        // Other commands currently work with identifiers (e.g. ban, invite, op, etc).
-        NSString *message;
-        if (@available(iOS 15.0, *))
+    // Re-invite the left member before sending the message in case of a discussion (direct chat)
+    MXWeakify(self);
+    [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        BOOL isMessageAHandledCommand = NO;
+        // "/me" command is supported with Pills in RoomDataSource.
+        if (![attributedTextMessage.string hasPrefix:kMXKSlashCmdEmote])
         {
-            message = [PillsFormatter stringByReplacingPillsIn:attributedTextMessage mode:PillsReplacementTextModeIdentifier];
+            // Other commands currently work with identifiers (e.g. ban, invite, op, etc).
+            NSString *message;
+            if (@available(iOS 15.0, *))
+            {
+                message = [PillsFormatter stringByReplacingPillsIn:attributedTextMessage mode:PillsReplacementTextModeIdentifier];
+            }
+            else
+            {
+                message = attributedTextMessage.string;
+            }
+            // Try to send the slash command
+            isMessageAHandledCommand = [self sendAsIRCStyleCommandIfPossible:message];
         }
-        else
-        {
-            message = attributedTextMessage.string;
-        }
-        // Try to send the slash command
-        isMessageAHandledCommand = [self sendAsIRCStyleCommandIfPossible:message];
-    }
 
-    if (!isMessageAHandledCommand)
-    {
-        [self sendAttributedTextMessage:attributedTextMessage];
-    }
+        if (!isMessageAHandledCommand)
+        {
+            [self sendAttributedTextMessage:attributedTextMessage];
+        }
+    }];
 }
 
 #pragma mark - MXKRoomMemberDetailsViewControllerDelegate
@@ -4973,7 +5220,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self checkReadMarkerVisibility];
     
     // Switch back to the live mode when the user scrolls to the bottom of the non live timeline.
-    if (!self.roomDataSource.isLive && ![self isRoomPreview])
+    if (!self.roomDataSource.isLive && ![self isRoomPreview] && !self.isNewDiscussion)
     {
         CGFloat contentBottomPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.frame.size.height - self.bubblesTableView.adjustedContentInset.bottom;
         if (contentBottomPosY >= self.bubblesTableView.contentSize.height && ![self.roomDataSource.timeline canPaginate:MXTimelineDirectionForwards])
@@ -7248,24 +7495,15 @@ static CGSize kThreadListBarButtonItemImageSize;
     {
         NSData *imageData = [[NSData alloc] initWithContentsOfURL:url];
         
-        [self.roomDataSource sendImage:imageData mimeType:mimeType success:nil failure:^(NSError *error) {
-            // Nothing to do. The image is marked as unsent in the room history by the datasource
-            MXLogDebug(@"[MXKRoomViewController] sendImage failed.");
-        }];
+        [self sendImage:imageData mimeType:mimeType];
     }
     else if (fileUTI.isVideo)
     {
-        [(RoomDataSource*)self.roomDataSource sendVideo:url success:nil failure:^(NSError *error) {
-            // Nothing to do. The video is marked as unsent in the room history by the datasource
-            MXLogDebug(@"[MXKRoomViewController] sendVideo failed.");
-        }];
+        [self sendVideo:url];
     }
     else if (fileUTI.isFile)
     {
-        [self.roomDataSource sendFile:url mimeType:mimeType success:nil failure:^(NSError *error) {
-            // Nothing to do. The file is marked as unsent in the room history by the datasource
-            MXLogDebug(@"[MXKRoomViewController] sendFile failed.");
-        }];
+        [self sendFile:url mimeType:mimeType];
     }
     else
     {
@@ -7274,6 +7512,54 @@ static CGSize kThreadListBarButtonItemImageSize;
         [self showAlertWithTitle:[VectorL10n fileUploadErrorTitle]
                          message:[VectorL10n fileUploadErrorUnsupportedFileTypeMessage]];
     }
+}
+
+- (void)sendImage:(NSData *)imageData mimeType:(NSString *)mimeType {
+    // Re-invite the left member before sending the message in case of a discussion (direct chat)
+    MXWeakify(self);
+    [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
+        MXStrongifyAndReturnIfNil(self);
+        if (success)
+        {
+            // Let the datasource send it and manage the local echo
+            [self.roomDataSource sendImage:imageData mimeType:mimeType success:nil failure:^(NSError *error) {
+                // Nothing to do. The image is marked as unsent in the room history by the datasource
+                MXLogDebug(@"[MXKRoomViewController] sendImage failed.");
+            }];
+        }
+    }];
+}
+
+- (void)sendVideo:(NSURL * _Nonnull)url {
+    // Re-invite the left member before sending the message in case of a discussion (direct chat)
+    MXWeakify(self);
+    [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
+        MXStrongifyAndReturnIfNil(self);
+        if (success)
+        {
+            // Let the datasource send it and manage the local echo
+            [(RoomDataSource*)self.roomDataSource sendVideo:url success:nil failure:^(NSError *error) {
+                // Nothing to do. The video is marked as unsent in the room history by the datasource
+                MXLogDebug(@"[MXKRoomViewController] sendVideo failed.");
+            }];
+        }
+    }];
+}
+
+- (void)sendFile:(NSURL * _Nonnull)url mimeType:(NSString *)mimeType {
+    // Re-invite the left member before sending the message in case of a discussion (direct chat)
+    MXWeakify(self);
+    [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
+        MXStrongifyAndReturnIfNil(self);
+        if (success)
+        {
+            // Let the datasource send it and manage the local echo
+            [self.roomDataSource sendFile:url mimeType:mimeType success:nil failure:^(NSError *error) {
+                // Nothing to do. The file is marked as unsent in the room history by the datasource
+                MXLogDebug(@"[MXKRoomViewController] sendFile failed.");
+            }];
+        }
+    }];
 }
 
 #pragma mark - EmojiPickerCoordinatorBridgePresenterDelegate
@@ -7343,10 +7629,17 @@ static CGSize kThreadListBarButtonItemImageSize;
     if (roomInputToolbarView)
     {
         NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
-        [roomInputToolbarView sendSelectedImage:imageData
-                                   withMimeType:MXKUTI.jpeg.mimeType
-                             andCompressionMode:MediaCompressionHelper.defaultCompressionMode
-                            isPhotoLibraryAsset:NO];
+        
+        // Re-invite the left member before sending the message in case of a discussion (direct chat)
+        [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
+            if (success)
+            {
+                [roomInputToolbarView sendSelectedImage:imageData
+                                           withMimeType:MXKUTI.jpeg.mimeType
+                                     andCompressionMode:MediaCompressionHelper.defaultCompressionMode
+                                    isPhotoLibraryAsset:NO];
+            }
+        }];
     }
 }
 
@@ -7375,10 +7668,16 @@ static CGSize kThreadListBarButtonItemImageSize;
     RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
     if (roomInputToolbarView)
     {
-        [roomInputToolbarView sendSelectedImage:imageData
-                                   withMimeType:uti.mimeType
-                             andCompressionMode:MediaCompressionHelper.defaultCompressionMode
-                            isPhotoLibraryAsset:YES];
+        // Re-invite the left member before sending the message in case of a discussion (direct chat)
+        [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
+            if (success)
+            {
+                [roomInputToolbarView sendSelectedImage:imageData
+                                           withMimeType:uti.mimeType
+                                     andCompressionMode:MediaCompressionHelper.defaultCompressionMode
+                                    isPhotoLibraryAsset:YES];
+            }
+        }];
     }
 }
 
@@ -7401,7 +7700,13 @@ static CGSize kThreadListBarButtonItemImageSize;
         // Set a 1080p video conversion preset as compression mode only has an effect on the images.
         [MXSDKOptions sharedInstance].videoConversionPresetName = AVAssetExportPreset1920x1080;
         
-        [roomInputToolbarView sendSelectedAssets:assets withCompressionMode:MediaCompressionHelper.defaultCompressionMode];
+        // Re-invite the left member before sending the message in case of a discussion (direct chat)
+        [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
+            if (success)
+            {
+                [roomInputToolbarView sendSelectedAssets:assets withCompressionMode:MediaCompressionHelper.defaultCompressionMode];
+            }
+        }];
     }
 }
 
@@ -7497,6 +7802,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                        samples:(NSArray<NSNumber *> *)samples
                     completion:(void (^)(BOOL))completion
 {
+    //TODO firstDM
     [self.roomDataSource sendVoiceMessage:url mimeType:nil duration:duration samples:samples success:^(NSString *eventId) {
         MXLogDebug(@"Success with event id %@", eventId);
         completion(YES);

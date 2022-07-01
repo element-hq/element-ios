@@ -3191,7 +3191,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
 - (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController startChatWithMemberId:(NSString *)matrixId completion:(void (^)(void))completion
 {
-    [[AppDelegate theDelegate] createDirectChatWithUserId:matrixId completion:completion];
+    [[AppDelegate theDelegate] showNewDirectRoom:matrixId withMatrixSession:mxRoom.mxSession completion:completion];
 }
 
 #pragma mark - actions
