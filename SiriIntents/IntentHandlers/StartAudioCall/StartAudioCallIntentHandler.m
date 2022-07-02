@@ -26,7 +26,8 @@
 
 @implementation StartAudioCallIntentHandler
 
-- (instancetype)init {
+- (instancetype)init
+{
     if (self = [super init]) {
         _contactResolver = [[ContactResolver alloc] init];
     }

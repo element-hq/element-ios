@@ -21,7 +21,8 @@
 @implementation ContactResolver
 
 - (void)resolveContacts:(nullable NSArray<INPerson *> *)contacts
-         withCompletion:(void (^)(NSArray<INPersonResolutionResult *> * _Nonnull))completion {
+         withCompletion:(void (^)(NSArray<INPersonResolutionResult *> * _Nonnull))completion
+{
     if (contacts.count == 0)
     {
         completion(@[[INPersonResolutionResult needsValue]]);
