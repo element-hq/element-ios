@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-final class LiveLocationLabPromotionCoordinator: Coordinator, Presentable {
+final class LiveLocationLabPromotionCoordinator: NSObject, Coordinator, Presentable {
     
     // MARK: - Properties
     
@@ -35,14 +35,17 @@ final class LiveLocationLabPromotionCoordinator: Coordinator, Presentable {
         
     // MARK: - Setup
     
-    init() {
+    override init() {
         let viewModel = LiveLocationLabPromotionViewModel()
         let view = LiveLocationLabPromotionView(viewModel: viewModel.context)
         liveLocationLabPromotionViewModel = viewModel
-        liveLocationLabPromotionHostingController = VectorHostingController(rootView: view)        
+        liveLocationLabPromotionHostingController = VectorHostingController(rootView: view)
+        
+        super.init()
     }
     
     // MARK: - Public
+    
     func start() {
         MXLog.debug("[LiveLocationLabPromotionCoordinator] did start.")
         
@@ -53,9 +56,20 @@ final class LiveLocationLabPromotionCoordinator: Coordinator, Presentable {
 
             self.completion?(enableLiveLocation)
         }
+        
+        liveLocationLabPromotionHostingController.presentationController?.delegate = self
     }
     
     func toPresentable() -> UIViewController {
         return self.liveLocationLabPromotionHostingController
+    }
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+
+extension LiveLocationLabPromotionCoordinator: UIAdaptivePresentationControllerDelegate {
+    
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        self.completion?(RiotSettings.shared.enableLiveLocationSharing)
     }
 }
