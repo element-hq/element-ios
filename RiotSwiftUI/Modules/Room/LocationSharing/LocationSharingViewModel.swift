@@ -138,7 +138,7 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
         }
     }
     
-    private func startLiveLocationSharing() {
+    private func checkLocationAuthorizationAndPresentTimerSelector() {
         
         self.locationSharingService.requestAuthorization { [weak self] authorizationStatus in
             
@@ -164,5 +164,18 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
                 self.state.bindings.showingTimerSelector = true
             }
         }
+    }
+    
+    private func startLiveLocationSharing() {
+        
+        guard let completion = completion else {
+            return
+        }
+        
+        completion(.showLabFlagPromotionIfNeeded({ liveLocationEnabled in
+            if liveLocationEnabled {
+                self.checkLocationAuthorizationAndPresentTimerSelector()
+            }
+        }))
     }
 }
