@@ -2192,6 +2192,10 @@ To enable access, tap Settings> Location and select Always";
 "location_sharing_live_stop_sharing_error" = "Fail to stop sharing location";
 "location_sharing_live_stop_sharing_progress" = "Stop location sharing";
 
+"location_sharing_live_lab_promotion_title" = "Live location sharing";
+"location_sharing_live_lab_promotion_text" = "Please note: this is a labs feature using a temporary implementation that allows the history of your shared location to be permanently visible to other people in the room.";
+"location_sharing_live_lab_promotion_activation" = "Enable live location sharing";
+
 // MARK: - MatrixKit
 
 
