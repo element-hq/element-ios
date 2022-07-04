@@ -30,10 +30,3 @@ xcassets:
   outputs:
     templatePath: Templates/Assets/swift4-element.stencil
     output: Images.swift
-plist:
-  inputs: Assets/Riot-Defaults.plist
-  outputs:
-    templateName: runtime-swift4
-    output: RiotDefaults.swift
-    params:
-      enumName: RiotDefaults
