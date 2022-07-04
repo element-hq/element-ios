@@ -18,6 +18,8 @@ import Foundation
 
 protocol LiveLocationLabPromotionViewModelProtocol {
     
+    /// Closure called when screen completes. Indicates true if the lab flag has been enabled.
     var completion: ((Bool) -> Void)? { get set }
+    
     var context: LiveLocationLabPromotionViewModelType.Context { get }
 }
