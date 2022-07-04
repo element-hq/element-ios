@@ -80,7 +80,7 @@ import CommonKit
     ///
     /// Note: This is a convenience function callable by objective-c code
     @objc func presentAppState(label: String, icon: UIImage?) -> UserIndicatorCancel {
-        let indicator = presenter.present(.appState(label: label, icon: icon))
+        let indicator = presenter.present(.custom(label: label, icon: icon))
         indicators.append(indicator)
         return {
             indicator.cancel()

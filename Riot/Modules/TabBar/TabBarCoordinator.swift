@@ -31,7 +31,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private let indicatorPresenter: UserIndicatorTypePresenterProtocol
     private let userIndicatorStore: UserIndicatorStore
     private var appStateIndicatorCancel: UserIndicatorCancel?
-//    private var indicators: [UserIndicator] = []
     private var appSateIndicator: UserIndicator?
 
     // Indicate if the Coordinator has started once
@@ -218,7 +217,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     func showAppStateIndicator(with text: String, icon: UIImage?) {
         hideAppStateIndicator()
-        appSateIndicator = self.indicatorPresenter.present(.appState(label: text, icon: icon))
+        appSateIndicator = self.indicatorPresenter.present(.custom(label: text, icon: icon))
     }
     
     func hideAppStateIndicator() {

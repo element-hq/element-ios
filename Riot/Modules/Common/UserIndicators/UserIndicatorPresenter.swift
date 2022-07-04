@@ -24,7 +24,7 @@ enum UserIndicatorType {
     case loading(label: String, isInteractionBlocking: Bool)
     case success(label: String)
     case failure(label: String)
-    case appState(label: String, icon: UIImage?)
+    case custom(label: String, icon: UIImage?)
 }
 
 /// A presenter which can handle `UserIndicatorType` by creating the underlying `UserIndicator`
@@ -79,7 +79,7 @@ class UserIndicatorTypePresenter: UserIndicatorTypePresenterProtocol {
             return successRequest(label: label)
         case .failure(let label):
             return failureRequest(label: label)
-        case .appState(let label, let icon):
+        case .custom(let label, let icon):
             return appStateRequest(label: label, icon: icon)
         }
     }
