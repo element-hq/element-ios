@@ -1851,6 +1851,7 @@ Tap the + to start adding people.";
 "home_context_menu_low_priority" = "Low priority";
 "home_context_menu_normal_priority" = "Normal priority";
 "home_context_menu_leave" = "Leave";
+"home_context_menu_mark_as_read" = "Mark as read";
 "home_syncing" = "Syncing";
 
 // MARK: - Favourites

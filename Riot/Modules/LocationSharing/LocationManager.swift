@@ -112,7 +112,7 @@ class LocationManager: NSObject {
         
         switch accuracy {
         case .full:
-            self.locationManager.startUpdatingLocation()
+            self.locationManager.stopUpdatingLocation()
         case .reduced:
             self.locationManager.stopMonitoringSignificantLocationChanges()
         }

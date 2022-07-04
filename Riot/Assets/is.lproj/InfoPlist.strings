@@ -8,3 +8,4 @@
 "NSPhotoLibraryUsageDescription" = "Myndasafnið er notað til að senda myndir og myndskeið.";
 // Permissions usage explanations
 "NSCameraUsageDescription" = "Myndavélin er notuð til að taka myndir og myndskeið og fyrir myndsímtöl.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Þegar þú deilir staðsetningu þinni til annarra, þarf Element aðgang til að geta birt hana á landakorti.";

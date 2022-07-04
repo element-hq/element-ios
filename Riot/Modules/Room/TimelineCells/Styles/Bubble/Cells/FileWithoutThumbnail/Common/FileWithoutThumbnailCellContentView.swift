@@ -23,9 +23,10 @@ final class FileWithoutThumbnailCellContentView: UIView, NibLoadable {
     
     // MARK: Outlets
     
+    @IBOutlet private weak var iconBackgroundView: UIView!
     @IBOutlet private weak var iconImageView: UIImageView!
     @IBOutlet private(set) weak var titleLabel: UILabel!
-    
+
     // MARK: Public
     
     var badgeImage: UIImage? {
@@ -49,17 +50,23 @@ final class FileWithoutThumbnailCellContentView: UIView, NibLoadable {
         super.awakeFromNib()
         
         self.layer.masksToBounds = true
+        self.iconImageView.image = Asset.Images.fileAttachment.image.withRenderingMode(.alwaysTemplate)
+        self.iconBackgroundView.layer.masksToBounds = true
+        
+        update(theme: ThemeService.shared().theme)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
         self.layer.cornerRadius = BubbleRoomCellLayoutConstants.bubbleCornerRadius
+        self.iconBackgroundView.layer.cornerRadius = self.iconBackgroundView.bounds.midX
     }
     
     // MARK: - Public
     
     func update(theme: Theme) {
-        self.titleLabel.textColor = theme.textPrimaryColor
+        self.iconBackgroundView.backgroundColor = theme.roomCellIncomingBubbleBackgroundColor
+        self.iconImageView.tintColor = theme.colors.secondaryContent
     }
 }
