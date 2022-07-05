@@ -87,21 +87,24 @@ class VectorHostingBottomSheetPreferences {
     // MARK: - Public
     
     func setup(viewController: UIViewController) {
-        if #available(iOS 15.0, *) {
-            if let sheetController = viewController.sheetPresentationController {
-                sheetController.detents = self.uiSheetDetents()
-                if let prefersGrabberVisible = self.prefersGrabberVisible {
-                    sheetController.prefersGrabberVisible = prefersGrabberVisible
-                } else {
-                    sheetController.prefersGrabberVisible = self.detents.count > 1
-                }
-                sheetController.selectedDetentIdentifier = self.defaultDetent?.uiSheetDetentId()
-                sheetController.largestUndimmedDetentIdentifier = self.largestUndimmedDetent?.uiSheetDetentId()
-                sheetController.prefersScrollingExpandsWhenScrolledToEdge = self.prefersScrollingExpandsWhenScrolledToEdge
-                if let cornerRadius = self.cornerRadius {
-                    sheetController.preferredCornerRadius = cornerRadius
-                }
-            }
+        guard #available(iOS 15.0, *)else { return }
+        
+        guard let sheetController = viewController.sheetPresentationController else {
+            MXLog.debug("[VectorHostingBottomSheetPreferences] setup: no sheetPresentationController found")
+            return
+        }
+        
+        sheetController.detents = self.uiSheetDetents()
+        if let prefersGrabberVisible = self.prefersGrabberVisible {
+            sheetController.prefersGrabberVisible = prefersGrabberVisible
+        } else {
+            sheetController.prefersGrabberVisible = self.detents.count > 1
+        }
+        sheetController.selectedDetentIdentifier = self.defaultDetent?.uiSheetDetentId()
+        sheetController.largestUndimmedDetentIdentifier = self.largestUndimmedDetent?.uiSheetDetentId()
+        sheetController.prefersScrollingExpandsWhenScrolledToEdge = self.prefersScrollingExpandsWhenScrolledToEdge
+        if let cornerRadius = self.cornerRadius {
+            sheetController.preferredCornerRadius = cornerRadius
         }
     }
     
