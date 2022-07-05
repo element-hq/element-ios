@@ -41,6 +41,16 @@ class VectorHostingController: UIHostingController<AnyView> {
     /// When non-nil, the style will be applied to the status bar.
     var statusBarStyle: UIStatusBarStyle?
     
+    /// Whether to force-set the hosting view's safe area insets to zero. Useful when the view is used as part of a table view.
+    var forceZeroSafeAreaInsets: Bool {
+        get {
+            self.view.forceZeroSafeAreaInsets
+        }
+        set {
+            self.view.forceZeroSafeAreaInsets = newValue
+        }
+    }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         statusBarStyle ?? super.preferredStatusBarStyle
     }
@@ -48,6 +58,7 @@ class VectorHostingController: UIHostingController<AnyView> {
     init<Content>(rootView: Content) where Content: View {
         self.theme = ThemeService.shared().theme
         super.init(rootView: AnyView(rootView.vectorContent()))
+        self.view.swizzleSafeAreaMethodsIfNeeded()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -109,4 +120,84 @@ class VectorHostingController: UIHostingController<AnyView> {
             theme.applyStyle(onNavigationBar: navigationBar, withModernScrollEdgeAppearance: enableNavigationBarScrollEdgeAppearance)
         }
     }
+}
+
+// Hack for forcing zero safe area insets on hosting views. This problem occurs when the hosting view is embedded
+// in a table view. See https://stackoverflow.com/questions/61552497 for further info.
+
+private var hasSwizzledSafeAreaMethods = false
+private var forceZeroSafeAreaInsetsKey: Void?
+
+private extension UIView {
+    
+    var forceZeroSafeAreaInsets: Bool {
+        get {
+            return objc_getAssociatedObject(self, &forceZeroSafeAreaInsetsKey) as? Bool == true
+        }
+        set {
+            objc_setAssociatedObject(self, &forceZeroSafeAreaInsetsKey, newValue, .OBJC_ASSOCIATION_RETAIN)
+        }
+    }
+    
+    @objc private var _safeAreaInsets: UIEdgeInsets {
+        return forceZeroSafeAreaInsets ? .zero : self._safeAreaInsets
+    }
+    
+    @objc private var _safeAreaLayoutGuide: UILayoutGuide? {
+        return forceZeroSafeAreaInsets ? nil : self._safeAreaLayoutGuide
+    }
+    
+    func swizzleSafeAreaMethodsIfNeeded() {
+        guard !hasSwizzledSafeAreaMethods else {
+            return
+        }
+        hasSwizzledSafeAreaMethods = true
+        
+        guard let getSafeAreaInsets = class_getInstanceMethod(classForCoder.self, #selector(getter: UIView.safeAreaInsets)) else {
+            return
+        }
+        
+        guard let _getSafeAreaInsets = class_getInstanceMethod(classForCoder.self, #selector(getter: UIView._safeAreaInsets)) else {
+            return
+        }
+        
+        let getSafeAreaInsetsImplementation = method_getImplementation(getSafeAreaInsets)
+        let _getSafeAreaInsetsImplementation = method_getImplementation(_getSafeAreaInsets)
+        
+        class_replaceMethod(
+            classForCoder,
+            #selector(getter: UIView.safeAreaInsets),
+            _getSafeAreaInsetsImplementation,
+            method_getTypeEncoding(getSafeAreaInsets))
+        
+        class_replaceMethod(
+            classForCoder,
+            #selector(getter: UIView._safeAreaInsets),
+            getSafeAreaInsetsImplementation,
+            method_getTypeEncoding(_getSafeAreaInsets))
+
+        guard let getSafeAreaLayoutGuide = class_getInstanceMethod(classForCoder.self, #selector(getter: UIView.safeAreaLayoutGuide)) else {
+            return
+        }
+        
+        guard let _getSafeAreaLayoutGuide = class_getInstanceMethod(classForCoder.self, #selector(getter: UIView._safeAreaLayoutGuide)) else {
+            return
+        }
+        
+        let getSafeAreaLayoutGuideImplementation = method_getImplementation(getSafeAreaLayoutGuide)
+        let _getSafeAreaLayoutGuideImplementation = method_getImplementation(_getSafeAreaLayoutGuide)
+        
+        class_replaceMethod(
+            classForCoder,
+            #selector(getter: UIView.safeAreaLayoutGuide),
+            _getSafeAreaLayoutGuideImplementation,
+            method_getTypeEncoding(getSafeAreaLayoutGuide))
+        
+        class_replaceMethod(
+            classForCoder,
+            #selector(getter: UIView._safeAreaLayoutGuide),
+            getSafeAreaLayoutGuideImplementation,
+            method_getTypeEncoding(_getSafeAreaLayoutGuide))
+    }
+
 }
