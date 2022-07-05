@@ -80,7 +80,7 @@ class UserIndicatorTypePresenter: UserIndicatorTypePresenterProtocol {
         case .failure(let label):
             return failureRequest(label: label)
         case .custom(let label, let icon):
-            return appStateRequest(label: label, icon: icon)
+            return customRequest(label: label, icon: icon)
         }
     }
     
@@ -137,10 +137,10 @@ class UserIndicatorTypePresenter: UserIndicatorTypePresenterProtocol {
         )
     }
     
-    private func appStateRequest(label: String, icon: UIImage?) -> UserIndicatorRequest {
+    private func customRequest(label: String, icon: UIImage?) -> UserIndicatorRequest {
         let presenter = ToastViewPresenter(
             viewState: .init(
-                style: .appState(icon: icon),
+                style: .custom(icon: icon),
                 label: label
             ),
             presentationContext: presentationContext

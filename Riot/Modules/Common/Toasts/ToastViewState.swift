@@ -21,7 +21,7 @@ struct ToastViewState {
         case loading
         case success
         case failure
-        case appState(icon: UIImage?)
+        case custom(icon: UIImage?)
     }
     
     let style: Style

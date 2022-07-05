@@ -5512,9 +5512,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         }
         else if ([AppDelegate theDelegate].isOffline)
         {
-            // Doing nothing here as the affline notification is now handled by the AppCoordinator
-//            self.activitiesViewExpanded = YES;
-//            [roomActivitiesView displayNetworkErrorNotification:[VectorL10n roomOfflineNotification]];
+            // Doing nothing here as the offline notification is now handled by the AppCoordinator
         }
         else if (self.customizedRoomDataSource.roomState.isObsolete)
         {

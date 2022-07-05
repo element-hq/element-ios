@@ -75,11 +75,11 @@ import CommonKit
         indicators.append(indicator)
     }
     
-    /// Present an application state message
+    /// Present an custom message
     /// To remove the indicator call the returned `UserIndicatorCancel` function
     ///
     /// Note: This is a convenience function callable by objective-c code
-    @objc func presentAppState(label: String, icon: UIImage?) -> UserIndicatorCancel {
+    @objc func presentCustom(label: String, icon: UIImage?) -> UserIndicatorCancel {
         let indicator = presenter.present(.custom(label: label, icon: icon))
         indicators.append(indicator)
         return {
