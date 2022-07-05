@@ -87,7 +87,7 @@ class VectorHostingBottomSheetPreferences {
     // MARK: - Public
     
     func setup(viewController: UIViewController) {
-        guard #available(iOS 15.0, *)else { return }
+        guard #available(iOS 15.0, *) else { return }
         
         guard let sheetController = viewController.sheetPresentationController else {
             MXLog.debug("[VectorHostingBottomSheetPreferences] setup: no sheetPresentationController found")
