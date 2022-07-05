@@ -16,7 +16,7 @@
 
 #import <Foundation/Foundation.h>
 @import Intents;
-#import "GeneratedInterface-Swift.h"
+@protocol ContactResolving;
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -17,6 +17,7 @@
 #import "StartAudioCallIntentHandler.h"
 #import "MXKAccountManager.h"
 #import "ContactResolver.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface StartAudioCallIntentHandler ()
 

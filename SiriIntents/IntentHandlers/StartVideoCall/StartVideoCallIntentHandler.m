@@ -17,6 +17,7 @@
 #import "StartVideoCallIntentHandler.h"
 #import "ContactResolver.h"
 #import "MXKAccountManager.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface StartVideoCallIntentHandler ()
 
