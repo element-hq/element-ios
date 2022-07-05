@@ -94,6 +94,16 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
             self.addSideMenu()
         }
         
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.appDelegateNetworkStatusDidChange, object: nil, queue: OperationQueue.main) { [weak self] notification in
+            guard let self = self else { return }
+
+            if AppDelegate.theDelegate().isOffline {
+                self.splitViewCoordinator?.showAppStateIndicator(with: VectorL10n.networkOfflineTitle, icon: UIImage(systemName: "wifi.slash"))
+            } else {
+                self.splitViewCoordinator?.hideAppStateIndicator()
+            }
+        }
+        
         // NOTE: When split view is shown there can be no Matrix sessions ready. Keep this behavior or use a loading screen before showing the split view.
         self.showSplitView()
         MXLog.debug("[AppCoordinator] Showed split view")

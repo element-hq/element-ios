@@ -1867,6 +1867,13 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
                 MXJSONModelSetString(repliedEventContent, repliedEvent.content[kMXMessageBodyKey]);
             }
         }
+
+        // No message content in a non-redacted event. Formatter should use fallback.
+        if (!repliedEventContent)
+        {
+            MXLogWarning(@"[MXKEventFormatter] Unable to retrieve content from replied event %@", repliedEvent.description)
+            return nil;
+        }
     }
 
     if (event.content[kMXMessageContentKeyNewContent])
@@ -1899,7 +1906,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
     }
     else
     {
-        MXLogDebug(@"[MXKEventFormatter] Unable to build reply event %@", event.description)
+        MXLogWarning(@"[MXKEventFormatter] Unable to build reply event %@", event.description)
     }
 
     return html;

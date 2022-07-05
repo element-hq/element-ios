@@ -139,8 +139,6 @@
 			<string>im.vector.app.pills</string>
 		</dict>
 	</array>
-	<key>UserDefaults</key>
-	<string>${PRODUCT_NAME}-Defaults</string>
 	<key>applicationGroupIdentifier</key>
 	<string>$(APPLICATION_GROUP_IDENTIFIER)</string>
 	<key>baseBundleIdentifier</key>

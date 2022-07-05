@@ -25,9 +25,23 @@ class VectorHostingController: UIHostingController<AnyView> {
     
     // MARK: Private
     
-    var isNavigationBarHidden: Bool = false
-    var hidesBackTitleWhenPushed: Bool = false
+    private var theme: Theme
+    
+    // MARK: Public
 
+    /// Wether or not the navigation bar should be hidden. Default `false`
+    var isNavigationBarHidden: Bool = false
+    /// Wether or not the title of the back item should be hidden. Default `false`
+    var hidesBackTitleWhenPushed: Bool = false
+    /// Defines the behaviour of the `VectorHostingController` as a bottom sheet. Default `nil`
+    var bottomSheetPreferences: VectorHostingBottomSheetPreferences?
+
+    /// Whether or not to use the iOS 15 style scroll edge appearance when the controller has a navigation bar.
+    var enableNavigationBarScrollEdgeAppearance = false
+    /// When non-nil, the style will be applied to the status bar.
+    var statusBarStyle: UIStatusBarStyle?
+    
+    /// Whether to force-set the hosting view's safe area insets to zero. Useful when the view is used as part of a table view.
     var forceZeroSafeAreaInsets: Bool {
         get {
             self.view.forceZeroSafeAreaInsets
@@ -36,15 +50,6 @@ class VectorHostingController: UIHostingController<AnyView> {
             self.view.forceZeroSafeAreaInsets = newValue
         }
     }
-
-    private var theme: Theme
-    
-    // MARK: Public
-    
-    /// Whether or not to use the iOS 15 style scroll edge appearance when the controller has a navigation bar.
-    var enableNavigationBarScrollEdgeAppearance = false
-    /// When non-nil, the style will be applied to the status bar.
-    var statusBarStyle: UIStatusBarStyle?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         statusBarStyle ?? super.preferredStatusBarStyle
@@ -69,6 +74,8 @@ class VectorHostingController: UIHostingController<AnyView> {
         
         self.registerThemeServiceDidChangeThemeNotification()
         self.update(theme: self.theme)
+        
+        bottomSheetPreferences?.setup(viewController: self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
