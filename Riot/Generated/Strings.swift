@@ -3251,9 +3251,17 @@ public class VectorL10n: NSObject {
   public static var networkErrorNotReachable: String { 
     return VectorL10n.tr("Vector", "network_error_not_reachable") 
   }
+  /// You're offline, check your connection.
+  public static var networkOfflineMessage: String { 
+    return VectorL10n.tr("Vector", "network_offline_message") 
+  }
   /// The Internet connection appears to be offline.
   public static var networkOfflinePrompt: String { 
     return VectorL10n.tr("Vector", "network_offline_prompt") 
+  }
+  /// You're offline
+  public static var networkOfflineTitle: String { 
+    return VectorL10n.tr("Vector", "network_offline_title") 
   }
   /// New
   public static var newWord: String { 

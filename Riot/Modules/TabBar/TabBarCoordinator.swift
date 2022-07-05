@@ -29,7 +29,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private let parameters: TabBarCoordinatorParameters
     private let activityIndicatorPresenter: ActivityIndicatorPresenterType
     private let indicatorPresenter: UserIndicatorTypePresenterProtocol
-    
+    private let userIndicatorStore: UserIndicatorStore
+    private var appStateIndicatorCancel: UserIndicatorCancel?
+    private var appSateIndicator: UserIndicator?
+
     // Indicate if the Coordinator has started once
     private var hasStartedOnce: Bool {
         return self.masterTabBarController != nil
@@ -84,6 +87,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.masterNavigationController = masterNavigationController
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         self.indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: masterNavigationController)
+        self.userIndicatorStore = UserIndicatorStore(presenter: indicatorPresenter)
     }
     
     // MARK: - Public methods
@@ -188,6 +192,37 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             masterTabBarController.selectTab(at: .home)
             completion?()
         }
+    }
+    
+    func showErroIndicator(with error: Error) {
+        let error = error as NSError
+        
+        // Ignore fake error, or connection cancellation error
+        guard error.domain != NSURLErrorDomain || error.code != NSURLErrorCancelled else {
+            return
+        }
+        
+        // Ignore GDPR Consent not given error. Already caught by kMXHTTPClientUserConsentNotGivenErrorNotification observation
+        let mxError = MXError.isMXError(error) ? MXError(nsError: error) : nil
+        guard mxError?.errcode != kMXErrCodeStringConsentNotGiven else {
+            return
+        }
+        
+        let msg = error.userInfo[NSLocalizedFailureReasonErrorKey] as? String
+        let localizedDescription = error.userInfo[NSLocalizedDescriptionKey] as? String
+        let title = (error.userInfo[NSLocalizedFailureReasonErrorKey] as? String) ?? (msg ?? (localizedDescription ?? VectorL10n.error))
+        
+        indicators.append(self.indicatorPresenter.present(.failure(label: title)))
+    }
+    
+    func showAppStateIndicator(with text: String, icon: UIImage?) {
+        hideAppStateIndicator()
+        appSateIndicator = self.indicatorPresenter.present(.custom(label: text, icon: icon))
+    }
+    
+    func hideAppStateIndicator() {
+        appSateIndicator?.cancel()
+        appSateIndicator = nil
     }
     
     // MARK: - SplitViewMasterPresentable
