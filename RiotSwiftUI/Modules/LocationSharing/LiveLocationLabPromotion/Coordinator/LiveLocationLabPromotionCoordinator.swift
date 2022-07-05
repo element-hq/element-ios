@@ -40,6 +40,7 @@ final class LiveLocationLabPromotionCoordinator: NSObject, Coordinator, Presenta
         let view = LiveLocationLabPromotionView(viewModel: viewModel.context)
         liveLocationLabPromotionViewModel = viewModel
         liveLocationLabPromotionHostingController = VectorHostingController(rootView: view)
+        liveLocationLabPromotionHostingController.bottomSheetPreferences = VectorHostingBottomSheetPreferences()
         
         super.init()
     }
