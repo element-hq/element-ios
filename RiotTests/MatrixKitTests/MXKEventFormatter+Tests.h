@@ -20,5 +20,6 @@
 
 - (NSString*)userDisplayNameFromContentInEvent:(MXEvent*)event withMembershipFilter:(NSString *)filter;
 - (NSString*)userAvatarUrlFromContentInEvent:(MXEvent*)event withMembershipFilter:(NSString *)filter;
+- (NSString*)buildHTMLStringForEvent:(MXEvent*)event inReplyToEvent:(MXEvent*)repliedEvent;
 
 @end
