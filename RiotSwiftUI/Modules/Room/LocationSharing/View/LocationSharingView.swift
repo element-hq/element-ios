@@ -40,6 +40,7 @@ struct LocationSharingView: View {
                         .clipShape(RoundedCornerShape(radius: 8, corners: [.topLeft, .topRight]))
                 }
             }
+            .background(theme.colors.background.ignoresSafeArea())
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(VectorL10n.cancel, action: {
