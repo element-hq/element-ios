@@ -16,10 +16,13 @@
 
 #import <Foundation/Foundation.h>
 @import Intents;
+#import "GeneratedInterface-Swift.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface SendMessageIntentHandler : NSObject <INSendMessageIntentHandling>
+
+- (instancetype)initWithContactResolver:(id<ContactResolving>)contactResolver;
 
 @end
 

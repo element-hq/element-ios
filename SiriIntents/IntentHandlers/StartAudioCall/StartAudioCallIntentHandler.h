@@ -22,6 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface StartAudioCallIntentHandler : NSObject <INStartAudioCallIntentHandling>
 
+- (instancetype)initWithContactResolver:(id<ContactResolving>)contactResolver;
+
 @end
 
 NS_ASSUME_NONNULL_END

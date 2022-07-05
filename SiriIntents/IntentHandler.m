@@ -68,9 +68,10 @@
         [MXSDKOptions sharedInstance].analyticsDelegate = analytics;
         [analytics startIfEnabled];
         
-        _startAudioCallIntentHandler = [[StartAudioCallIntentHandler alloc] init];
-        _startVideoCallIntentHandler = [[StartVideoCallIntentHandler alloc] init];
-        _sendMessageIntentHandler = [[SendMessageIntentHandler alloc] init];
+        id<ContactResolving> contactResolver = [[ContactResolver alloc] init];
+        _startAudioCallIntentHandler = [[StartAudioCallIntentHandler alloc] initWithContactResolver:contactResolver];
+        _startVideoCallIntentHandler = [[StartVideoCallIntentHandler alloc] initWithContactResolver:contactResolver];
+        _sendMessageIntentHandler = [[SendMessageIntentHandler alloc] initWithContactResolver:contactResolver];
     }
     return self;
 }

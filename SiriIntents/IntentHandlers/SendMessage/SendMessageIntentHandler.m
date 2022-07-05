@@ -32,10 +32,10 @@
 
 @implementation SendMessageIntentHandler
 
-- (instancetype)init
+- (instancetype)initWithContactResolver:(id<ContactResolving>)contactResolver
 {
     if (self = [super init]) {
-        _contactResolver = [[ContactResolver alloc] init];
+        _contactResolver = contactResolver;
     }
     
     return self;
