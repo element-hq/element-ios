@@ -63,7 +63,7 @@ struct LiveLocationLabPromotionView: View {
                         .font(theme.fonts.bodySB)
                 }
                 .buttonStyle(PrimaryActionButtonStyle())
-                .padding(.top)
+                .padding(.top, 20)
             }
             .padding()
         }
