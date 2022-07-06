@@ -85,6 +85,7 @@ struct LiveLocationSharingViewer: View {
             }
             .padding()
         }
+        .background(theme.colors.background.ignoresSafeArea())
     }
 }
 
