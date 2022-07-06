@@ -2815,6 +2815,18 @@ public class VectorL10n: NSObject {
   public static var locationSharingLiveError: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_error") 
   }
+  /// Enable live location sharing
+  public static var locationSharingLiveLabPromotionActivation: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_lab_promotion_activation") 
+  }
+  /// Please note: this is a labs feature using a temporary implementation that allows the history of your shared location to be permanently visible to other people in the room.
+  public static var locationSharingLiveLabPromotionText: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_lab_promotion_text") 
+  }
+  /// Live location sharing
+  public static var locationSharingLiveLabPromotionTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_lab_promotion_title") 
+  }
   /// You
   public static var locationSharingLiveListItemCurrentUserDisplayName: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_list_item_current_user_display_name") 

@@ -46,6 +46,7 @@ enum LocationSharingViewModelResult {
     case cancel
     case share(latitude: Double, longitude: Double, coordinateType: LocationSharingCoordinateType)
     case shareLiveLocation(timeout: TimeInterval)
+    case showLabFlagPromotionIfNeeded(_ completion: ((Bool) -> Void))
 }
 
 enum LocationSharingViewError {
