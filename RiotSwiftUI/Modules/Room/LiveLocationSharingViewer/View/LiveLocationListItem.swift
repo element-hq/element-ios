@@ -85,7 +85,7 @@ struct LiveLocationListItem: View {
                 Button(VectorL10n.locationSharingLiveListItemStopSharingAction) {
                     onStopSharingAction?()
                 }
-                .font(theme.fonts.caption1)
+                .font(theme.fonts.body)
                 .foregroundColor(theme.colors.alert)
             }
         }
