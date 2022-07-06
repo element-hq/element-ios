@@ -38,7 +38,6 @@ final class SpaceCreationMenuCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: SpaceCreationMenuCoordinatorParameters) {
         self.parameters = parameters
         let viewModel = SpaceCreationMenuViewModel(navTitle: parameters.navTitle, creationParams: parameters.creationParams, title: parameters.title, detail: parameters.detail, options: parameters.options)

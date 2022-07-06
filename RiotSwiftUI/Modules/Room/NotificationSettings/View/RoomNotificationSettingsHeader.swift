@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct RoomNotificationSettingsHeader: View {
     
     @Environment(\.theme) var theme: ThemeSwiftUI
@@ -41,7 +40,6 @@ struct RoomNotificationSettingsHeader: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct RoomNotificationSettingsHeader_Previews: PreviewProvider {
     static let name = "Element"
     static var previews: some View {

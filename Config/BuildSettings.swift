@@ -398,36 +398,24 @@ final class BuildSettings: NSObject {
     
     // MARK: - Polls
     
-    static var pollsEnabled: Bool {
-        guard #available(iOS 14, *) else {
-            return false
-        }
-        
-        return true
-    }
+    static let pollsEnabled = true
     
     // MARK: - Location Sharing
     
     static let tileServerMapStyleURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx")!
     
-    static var locationSharingEnabled: Bool {
-        guard #available(iOS 14, *) else {
-            return false
-        }
-        
-        return true
-    }
-    
-    static var liveLocationSharingEnabled: Bool {
-        guard #available(iOS 14, *) else {
-            return false
-        }
-        
-        guard self.locationSharingEnabled else {
-            return false
-        }
-        
-        // Do not enable live location sharing atm
-        return false
-    }
+    static let locationSharingEnabled = true
+
+    // MARK: - MXKAppSettings
+    static let enableBotCreation: Bool = false
+    static let maxAllowedMediaCacheSize: Int = 1073741824
+    static let presenceColorForOfflineUser: Int = 15020851
+    static let presenceColorForOnlineUser: Int = 3401011
+    static let presenceColorForUnavailableUser: Int = 15066368
+    static let showAllEventsInRoomHistory: Bool = false
+    static let showLeftMembersInRoomMemberList: Bool = false
+    static let showRedactionsInRoomHistory: Bool = true
+    static let showUnsupportedEventsInRoomHistory: Bool = false
+    static let sortRoomMembersUsingLastSeenTime: Bool = true
+    static let syncLocalContacts: Bool = false
 }

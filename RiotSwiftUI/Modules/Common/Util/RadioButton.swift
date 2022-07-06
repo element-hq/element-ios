@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct RadioButton: View {
     
     // MARK: - Properties
@@ -51,7 +50,6 @@ struct RadioButton: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct RadioButton_Previews: PreviewProvider {
     static var previews: some View {
         Group {

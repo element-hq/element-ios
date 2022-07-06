@@ -21,7 +21,6 @@ struct AuthenticationVerifyEmailCoordinatorParameters {
     let registrationWizard: RegistrationWizard
 }
 
-@available(iOS 14.0, *)
 final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties
@@ -91,6 +90,8 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
                 self.resendEmail()
             case .cancel:
                 self.callback?(.cancel)
+            case .goBack:
+                self.authenticationVerifyEmailViewModel.goBackToEnterEmailForm()
             }
         }
     }

@@ -25,6 +25,7 @@ final class RoomReactionActionViewCell: UICollectionViewCell, NibReusable, Thema
     
     // MARK: Outlets
 
+    @IBOutlet private weak var reactionBackgroundView: UIView!
     @IBOutlet private weak var actionLabel: UILabel!
     
     // MARK: Private
@@ -33,6 +34,19 @@ final class RoomReactionActionViewCell: UICollectionViewCell, NibReusable, Thema
     
     // MARK: Public
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+        
+        self.reactionBackgroundView.layer.masksToBounds = true
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        self.reactionBackgroundView.layer.cornerRadius = self.reactionBackgroundView.bounds.midY
+    }
+
     // MARK: - Life cycle
     
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
@@ -54,6 +68,14 @@ final class RoomReactionActionViewCell: UICollectionViewCell, NibReusable, Thema
         self.updateViews()
     }
     
+    func fill(actionIcon: UIImage) {
+        let attachment = NSTextAttachment()
+        attachment.image = actionIcon.vc_resized(with: CGSize(width: self.actionLabel.bounds.size.height, height: self.actionLabel.bounds.size.height))?.withRenderingMode(.alwaysTemplate)
+
+        self.actionLabel.attributedText = NSAttributedString(attachment: attachment)
+        self.updateViews()
+    }
+    
     func update(theme: Theme) {
         self.theme = theme
         self.updateViews()
@@ -62,6 +84,9 @@ final class RoomReactionActionViewCell: UICollectionViewCell, NibReusable, Thema
     // MARK: - Private
     
     private func updateViews() {
-        self.actionLabel.textColor = self.theme?.tintColor
+        self.actionLabel.textColor = self.theme?.textSecondaryColor
+        
+        self.reactionBackgroundView.layer.borderWidth = 0.0
+        self.reactionBackgroundView.backgroundColor = self.theme?.headerBackgroundColor
     }
 }

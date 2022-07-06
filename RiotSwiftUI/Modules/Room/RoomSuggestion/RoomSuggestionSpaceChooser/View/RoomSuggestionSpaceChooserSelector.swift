@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct RoomSuggestionSpaceChooserSelector: View {
     
     // MARK: Properties

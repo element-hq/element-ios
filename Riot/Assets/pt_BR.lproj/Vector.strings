@@ -133,8 +133,8 @@
 // Directory
 "directory_cell_title" = "Navegar diretório";
 "directory_cell_description" = "%tu salas";
-"directory_search_results" = "%tu resultados encontrados para %@";
-"directory_search_results_more_than" = ">%tu resultados encontrados para %@";
+"directory_search_results" = "%1$tu resultados encontrados para %2$@";
+"directory_search_results_more_than" = ">%1$tu resultados encontrados para %2$@";
 "directory_searching_title" = "Pesquisando diretório…";
 // Contacts
 "contacts_address_book_section" = "CONTATOS LOCAIS";
@@ -347,10 +347,10 @@
 "settings_send_crash_report" = "Enviar dados de cash & uso anon";
 "settings_enable_rageshake" = "Agitar com raiva para reportar bug";
 "settings_clear_cache" = "Limpar cache";
-"settings_change_password" = "Mudar senha de conta Matrix";
-"settings_old_password" = "senha antiga";
-"settings_new_password" = "senha nova";
-"settings_confirm_password" = "confirmar senha";
+"settings_change_password" = "Mudar senha";
+"settings_old_password" = "Senha antiga";
+"settings_new_password" = "Senha nova";
+"settings_confirm_password" = "Confirmar senha";
 "settings_fail_to_update_password" = "Falha para atualizar senha de conta Matrix";
 "settings_password_updated" = "A senha de sua conta Matrix tem sido atualizada";
 "settings_crypto_device_name" = "Nome de sessão: ";
@@ -2295,3 +2295,9 @@
 "location_sharing_live_timer_incoming" = "Ao vivo até %@";
 "live_location_sharing_ended" = "Localização ao vivo terminou";
 "confirm" = "Confirmar";
+"location_sharing_allow_background_location_cancel_action" = "Não agora";
+"location_sharing_allow_background_location_validate_action" = "Ajustes";
+"location_sharing_allow_background_location_message" = "Se você gostaria de acessar sua localização Ao Vivo, Element precisa de acesso de localização quando o app está no background. Para habilitar acesso, toque Ajustes > Localização e selecione Sempre";
+"location_sharing_allow_background_location_title" = "Permitir acesso";
+"settings_labs_enable_live_location_sharing" = "Compartilhamento de localização ao vivo - compartilhar localização atual (desenvolvimento ativo, e temporariamente, localizações persistem em histórico de sala)";
+"settings_ui_show_redactions_in_room_history" = "Mostrar um placeholder para mensagens removidas";

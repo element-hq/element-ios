@@ -48,14 +48,33 @@
         self.readReceipts = [NSMutableDictionary dictionary];
         
         // Create the bubble component based on matrix event
-        MXKRoomBubbleComponent *firstComponent = [[MXKRoomBubbleComponent alloc] initWithEvent:event roomState:roomState eventFormatter:roomDataSource.eventFormatter session:roomDataSource.mxSession];
+        MXKRoomBubbleComponent *firstComponent = [[MXKRoomBubbleComponent alloc] initWithEvent:event
+                                                                                     roomState:roomState
+                                                                            andLatestRoomState:roomDataSource.roomState
+                                                                                eventFormatter:roomDataSource.eventFormatter
+                                                                                       session:roomDataSource.mxSession];
         if (firstComponent)
         {
             bubbleComponents = [NSMutableArray array];
             [bubbleComponents addObject:firstComponent];
             
             senderId = event.sender;
-            targetId = [event.type isEqualToString:kMXEventTypeStringRoomMember] ? event.stateKey : nil;
+            if ([event.type isEqualToString:kMXEventTypeStringRoomMember])
+            {
+                MXRoomMemberEventContent *content = [MXRoomMemberEventContent modelFromJSON:event.content];
+                if (![content.membership isEqualToString:kMXMembershipStringJoin])
+                {
+                    targetId = event.stateKey;
+                }
+                else
+                {
+                    targetId = event.sender;
+                }
+            }
+            else
+            {
+                targetId = nil;
+            }
             roomId = roomDataSource.roomId;
 
             // If `roomScreenUseOnlyLatestUserAvatarAndName`is enabled, the avatar and name are
@@ -110,6 +129,21 @@
     bubbleComponents = nil;
 }
 
+- (void)refreshProfilesIfNeeded:(MXRoomState *)latestRoomState
+{
+    if (RiotSettings.shared.roomScreenUseOnlyLatestUserAvatarAndName)
+    {
+        [self setRoomState:latestRoomState];
+    }
+}
+
+/**
+ Sets the `MXRoomState` for a buble cell. This allows to adapt the display
+ of a cell with a different room state than its historical. This won't update critical
+ flag/status, such as `isEncryptedRoom`.
+
+ @param roomState the `MXRoomState` to use for this cell.
+ */
 - (void)setRoomState:(MXRoomState *)roomState;
 {
     MXEvent* firstEvent = self.events.firstObject;
@@ -141,7 +175,10 @@
             MXKRoomBubbleComponent *roomBubbleComponent = [bubbleComponents objectAtIndex:index];
             if ([roomBubbleComponent.event.eventId isEqualToString:eventId])
             {
-                [roomBubbleComponent updateWithEvent:event roomState:roomDataSource.roomState session:self.mxSession];
+                [roomBubbleComponent updateWithEvent:event
+                                           roomState:roomDataSource.roomState
+                                  andLatestRoomState:nil
+                                             session:self.mxSession];
                 if (!roomBubbleComponent.textMessage.length)
                 {
                     [bubbleComponents removeObjectAtIndex:index];
@@ -467,6 +504,22 @@
     }
 }
 
+- (BOOL)hasThreadRoot
+{
+    @synchronized (bubbleComponents)
+    {
+        for (MXKRoomBubbleComponent *component in bubbleComponents)
+        {
+            if (component.thread)
+            {
+                return YES;
+            }
+        }
+    }
+
+    return NO;
+}
+
 #pragma mark -
 
 - (void)invalidateTextLayout
@@ -538,7 +591,7 @@
         // Select the right text view for measurement
         UITextView *selectedTextView = (removeVerticalInset ? measurementTextViewWithoutInset : measurementTextView);
         
-        selectedTextView.frame = CGRectMake(0, 0, _maxTextViewWidth, MAXFLOAT);
+        selectedTextView.frame = CGRectMake(0, 0, _maxTextViewWidth, 0);
         selectedTextView.attributedText = attributedText;
             
         CGSize size = [selectedTextView sizeThatFits:selectedTextView.frame.size];
@@ -656,22 +709,6 @@
     return NO;
 }
 
-- (BOOL)hasThreadRoot
-{
-    @synchronized (bubbleComponents)
-    {
-        for (MXKRoomBubbleComponent *component in bubbleComponents)
-        {
-            if (component.thread)
-            {
-                return YES;
-            }
-        }
-    }
-    
-    return NO;
-}
-
 - (MXKRoomBubbleComponentDisplayFix)displayFix
 {
     MXKRoomBubbleComponentDisplayFix displayFix = MXKRoomBubbleComponentDisplayFixNone;
@@ -699,6 +736,13 @@
     }
     
     return res;
+}
+
+- (BOOL)canInvitePeople
+{
+    NSInteger requiredLevel = roomDataSource.roomState.powerLevels.invite;
+    NSInteger myLevel = [roomDataSource.roomState.powerLevels powerLevelOfUserWithUserID:roomDataSource.mxSession.myUserId];
+    return myLevel >= requiredLevel;
 }
 
 - (NSArray*)events

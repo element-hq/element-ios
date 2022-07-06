@@ -6,3 +6,4 @@
 "NSCalendarsUsageDescription" = "Voir vos rendez-vous dans l’application.";
 "NSFaceIDUsageDescription" = "Face ID est utilisé pour accéder à votre application.";
 "NSLocationWhenInUseUsageDescription" = "Element doit accéder à votre emplacement pour vous permettre de la partager aux autres utilisateurs sur une carte.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Element doit accéder à votre localisation afin de pouvoir la partager avec d'autres utilisateurs sur une carte.";

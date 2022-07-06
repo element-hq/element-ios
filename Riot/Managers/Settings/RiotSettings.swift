@@ -31,6 +31,7 @@ final class RiotSettings: NSObject {
         static let pinRoomsWithUnreadMessagesOnHome = "pinRoomsWithUnread"
         static let showAllRoomsInHomeSpace = "showAllRoomsInHomeSpace"
         static let enableUISIAutoReporting = "enableUISIAutoReporting"
+        static let enableLiveLocationSharing = "enableLiveLocationSharing"
     }
     
     static let shared = RiotSettings()
@@ -150,6 +151,14 @@ final class RiotSettings: NSObject {
     /// Indicates if auto reporting of decryption errors is enabled
     @UserDefault(key: UserDefaultsKeys.enableUISIAutoReporting, defaultValue: BuildSettings.cryptoUISIAutoReportingEnabled, storage: defaults)
     var enableUISIAutoReporting
+    
+    /// Indicates if live location sharing is enabled
+    @UserDefault(key: UserDefaultsKeys.enableLiveLocationSharing, defaultValue: false, storage: defaults)
+    var enableLiveLocationSharing {
+        didSet {
+            NotificationCenter.default.post(name: RiotSettings.didUpdateLiveLocationSharingActivation, object: self)
+        }
+    }
     
     // MARK: Calls
     
@@ -372,4 +381,9 @@ final class RiotSettings: NSObject {
     
     @UserDefault(key: "needsClearCacheForEditLayoutPrototype", defaultValue: true, storage: defaults)
     var needsClearCacheForEditLayoutPrototype: Bool
+}
+
+// MARK: - RiotSettings notification constants
+extension RiotSettings {
+    public static let didUpdateLiveLocationSharingActivation = Notification.Name("RiotSettingsDidUpdateLiveLocationSharingActivation")
 }

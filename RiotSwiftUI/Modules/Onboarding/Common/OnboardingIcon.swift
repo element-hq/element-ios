@@ -35,7 +35,6 @@ struct OnboardingIconImage: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct OnboardingIconImage_Previews: PreviewProvider {
     static var previews: some View {
         OnboardingIconImage(image: Asset.Images.authenticationEmailIcon)

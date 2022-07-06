@@ -19,7 +19,6 @@
 import Foundation
 import Combine
 
-@available(iOS 14.0, *)
 class MockSpaceCreationEmailInvitesService: SpaceCreationEmailInvitesServiceProtocol {
     var isLoadingSubject: CurrentValueSubject<Bool, Never>
     

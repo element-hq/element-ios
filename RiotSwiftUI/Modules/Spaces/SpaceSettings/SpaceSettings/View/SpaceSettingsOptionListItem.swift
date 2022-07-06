@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct SpaceSettingsOptionListItem: View {
     
     // MARK: Private
@@ -85,7 +84,6 @@ struct SpaceSettingsOptionListItem: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct SpaceSettingsOptionListItem_Previews: PreviewProvider {
     
     static var previews: some View {

@@ -20,7 +20,6 @@ import CoreLocation
 
 @testable import RiotSwiftUI
 
-@available(iOS 14.0, *)
 class LocationSharingViewModelTests: XCTestCase {
     
     var cancellables = Set<AnyCancellable>()
@@ -50,6 +49,8 @@ class LocationSharingViewModelTests: XCTestCase {
             case .cancel:
                 expectation.fulfill()
             case .shareLiveLocation:
+                XCTFail()
+            case .showLabFlagPromotionIfNeeded:
                 XCTFail()
             }
         }

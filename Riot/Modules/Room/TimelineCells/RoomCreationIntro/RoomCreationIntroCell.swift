@@ -28,6 +28,7 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
         
     static let tapOnAvatarView = "RoomCreationIntroCellTapOnAvatarView"
     static let tapOnAddTopic = "RoomCreationIntroCellTapOnAddTopic"
+    static let tapOnRoomName = "RoomCreationIntroCellTapOnRoomName"
     static let tapOnAddParticipants = "RoomCreationIntroCellTapOnAddParticipants"
     
     // MARK: - Properties
@@ -156,6 +157,10 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
             self?.notifyDelegate(with: RoomCreationIntroCell.tapOnAddTopic)
         }
         
+        roomCellContentView.didTapRoomName = { [weak self] in
+            self?.notifyDelegate(with: RoomCreationIntroCell.tapOnRoomName)
+        }
+        
         roomCellContentView.didTapAddParticipants = { [weak self] in
             self?.notifyDelegate(with: RoomCreationIntroCell.tapOnAddParticipants)
         }
@@ -181,7 +186,7 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
                 discussionType = .multipleDirectMessage
             }
         } else {
-            discussionType = .room(topic: roomSummary.topic)
+            discussionType = .room(topic: roomSummary.topic, canInvitePeople: bubbleData.canInvitePeople)
         }
         
         let displayName = roomSummary.displayname ?? ""

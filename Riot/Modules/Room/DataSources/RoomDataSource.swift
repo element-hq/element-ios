@@ -155,30 +155,40 @@ extension RoomDataSource {
         let editableTextMessage: NSAttributedString?
 
         if event.isReply() {
-            let parser = MXReplyEventParser()
-            let replyEventParts = parser.parse(event)
+            let body: String
+            if let newContent = event.content[kMXMessageContentKeyNewContent] as? [String: Any] {
+                // Use new content if available.
+                body = newContent["formatted_body"] as? String ?? newContent[kMXMessageBodyKey] as? String ?? ""
+            } else {
+                // Otherwise parse MXReply.
+                let parser = MXReplyEventParser()
+                let replyEventParts = parser.parse(event)
 
-            let body: String = replyEventParts?.formattedBodyParts?.replyText ?? replyEventParts?.bodyParts.replyText ?? ""
-            let attributed = eventFormatter.renderHTMLString(body, for: event, with: self.roomState, isEditMode: true)
+                body = replyEventParts?.formattedBodyParts?.replyText ?? replyEventParts?.bodyParts.replyText ?? ""
+            }
+
+            let attributed = eventFormatter.renderHTMLString(body, for: event, with: nil, andLatestRoomState: nil)
             if let attributed = attributed, #available(iOS 15.0, *) {
                 editableTextMessage = PillsFormatter.insertPills(in: attributed,
                                                                  withSession: self.mxSession,
                                                                  eventFormatter: self.eventFormatter,
                                                                  event: event,
-                                                                 andRoomState: self.roomState,
+                                                                 roomState: self.roomState,
+                                                                 andLatestRoomState: nil,
                                                                  isEditMode: true)
             } else {
                 editableTextMessage = attributed
             }
         } else {
             let body: String = event.content["formatted_body"] as? String ?? event.content["body"] as? String ?? ""
-            let attributed = eventFormatter.renderHTMLString(body, for: event, with: self.roomState, isEditMode: true)
+            let attributed = eventFormatter.renderHTMLString(body, for: event, with: nil, andLatestRoomState: nil)
             if let attributed = attributed, #available(iOS 15.0, *) {
                 editableTextMessage = PillsFormatter.insertPills(in: attributed,
                                                                  withSession: self.mxSession,
                                                                  eventFormatter: self.eventFormatter,
                                                                  event: event,
-                                                                 andRoomState: self.roomState,
+                                                                 roomState: self.roomState,
+                                                                 andLatestRoomState: nil,
                                                                  isEditMode: true)
             } else {
                 editableTextMessage = attributed

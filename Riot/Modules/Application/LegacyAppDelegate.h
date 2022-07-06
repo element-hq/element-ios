@@ -112,7 +112,7 @@ UINavigationControllerDelegate
 /**
  Last handled universal link (url will be formatted for several hash keys).
  */
-@property (nonatomic, readonly) UniversalLink *lastHandledUniversalLink;
+@property (nonatomic, copy, readonly) UniversalLink *lastHandledUniversalLink;
 
 // New message sound id.
 @property (nonatomic, readonly) SystemSoundID messageSound;
@@ -161,6 +161,9 @@ UINavigationControllerDelegate
 
 // Reload all running matrix sessions
 - (void)reloadMatrixSessions:(BOOL)clearCache;
+
+- (void)displayLogoutConfirmationForLink:(UniversalLink *)link
+                              completion:(void (^)(BOOL loggedOut))completion;
 
 /**
  Log out all the accounts after asking for a potential confirmation.
@@ -253,19 +256,6 @@ UINavigationControllerDelegate
 - (BOOL)handleUniversalLinkWithParameters:(UniversalLinkParameters*)parameters;
 
 /**
- Extract params from the URL fragment part (after '#') of a vector.im Universal link:
- 
- The fragment can contain a '?'. So there are two kinds of parameters: path params and query params.
- It is in the form of /[pathParam1]/[pathParam2]?[queryParam1Key]=[queryParam1Value]&[queryParam2Key]=[queryParam2Value]
- @note this method should be private but is used by RoomViewController. This should be moved to a univresal link parser class
-
- @param fragment the fragment to parse.
- @param outPathParams the decoded path params.
- @param outQueryParams the decoded query params. If there is no query params, it will be nil.
- */
-- (void)parseUniversalLinkFragment:(NSString*)fragment outPathParams:(NSArray<NSString*> **)outPathParams outQueryParams:(NSMutableDictionary **)outQueryParams;
-
-/**
  Open the dedicated space with the given ID.
  
  This method will open only joined or invited spaces.
@@ -281,14 +271,6 @@ UINavigationControllerDelegate
  Check for app version related informations to display
 */
 - (void)checkAppVersion;
-
-#pragma mark - Authentication
-
-/// When SSO login succeeded, when SFSafariViewController is used, continue login with success parameters.
-/// @param loginToken The login token provided when SSO succeeded.
-/// @param txnId transaction id generated during SSO page presentation.
-/// returns YES if the SSO login can be continued.
-- (BOOL)continueSSOLoginWithToken:(NSString*)loginToken txnId:(NSString*)txnId;
 
 @end
 

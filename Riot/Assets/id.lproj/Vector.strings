@@ -122,9 +122,9 @@
 "settings_crypto_device_id" = "\nID Sesi: ";
 "settings_crypto_device_name" = "Nama sesi: ";
 "settings_add_3pid_invalid_password_message" = "Kredential tidak valid";
-"settings_confirm_password" = "konfirmasi kata sandi";
-"settings_new_password" = "kata sandi baru";
-"settings_old_password" = "kata sandi lama";
+"settings_confirm_password" = "Konfirmasi kata sandi";
+"settings_new_password" = "Kata sandi baru";
+"settings_old_password" = "Kata sandi lama";
 "settings_third_party_notices" = "Pemberitahuan Pihak Ketiga";
 "settings_privacy_policy" = "Kebijakan Privasi";
 "settings_version" = "Versi %@";
@@ -133,7 +133,7 @@
 "settings_integrations_allow_button" = "Kelola integrasi";
 "settings_enable_callkit" = "Panggilan yang diintegrasi";
 "settings_night_mode" = "Mode Malam";
-"settings_change_password" = "Ubah kata sandi akun Matrix";
+"settings_change_password" = "Ubah kata sandi";
 "settings_first_name" = "Nama Depan";
 "settings_display_name" = "Nama Tampilan";
 "settings_profile_picture" = "Gambar Profil";
@@ -885,8 +885,8 @@
 "room_event_action_kick_prompt_reason" = "Alasan untuk mengeluarkan pengguna ini";
 "room_event_action_report_prompt_reason" = "Alasan untuk melaporkan konten ini";
 "room_message_unable_open_link_error_message" = "Tidak dapat membuka tautan ini.";
-"directory_search_results_more_than" = ">%tu hasil ditemukan untuk %@";
-"directory_search_results" = "%tu hasil ditemukan untuk %@";
+"directory_search_results_more_than" = ">%1$tu hasil ditemukan untuk %2$@";
+"directory_search_results" = "%1$tu hasil ditemukan untuk %2$@";
 "room_creation_invite_another_user" = "ID Pengguna, nama atau email";
 "space_participants_action_ban" = "Cekal dari space ini";
 "space_participants_action_remove" = "Keluarkan dari space ini";
@@ -2525,3 +2525,8 @@
 "location_sharing_live_timer_incoming" = "Langsung sampai %@";
 "live_location_sharing_ended" = "Lokasi langsung berakhir";
 "confirm" = "Konfirmasi";
+"location_sharing_allow_background_location_cancel_action" = "Jangan sekarang";
+"location_sharing_allow_background_location_validate_action" = "Pengaturan";
+"location_sharing_allow_background_location_message" = "Jika Anda ingin membagikan lokasi langsung Anda, Element membutuhkan akses lokasi ketika aplikasi berada di latar belakang.Untuk memberikan akses, ketuk Pengaturan> Lokasi dan pilih Selalu";
+"location_sharing_allow_background_location_title" = "Perbolehkan akses";
+"settings_labs_enable_live_location_sharing" = "Pembagian lokasi langsung — bagikan lokasi saat ini (dalam pengembangan aktif, dan sementara, lokasi tetap di riwayat ruangan)";

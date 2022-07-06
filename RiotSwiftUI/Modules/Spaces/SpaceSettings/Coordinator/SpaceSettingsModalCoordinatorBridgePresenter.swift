@@ -16,7 +16,6 @@
 
 import UIKit
 
-@available(iOS 14.0, *)
 @objc protocol SpaceSettingsModalCoordinatorBridgePresenterDelegate {
     func spaceSettingsModalCoordinatorBridgePresenterDelegateDidCancel(_ coordinatorBridgePresenter: SpaceSettingsModalCoordinatorBridgePresenter)
     func spaceSettingsModalCoordinatorBridgePresenterDelegateDidFinish(_ coordinatorBridgePresenter: SpaceSettingsModalCoordinatorBridgePresenter)
@@ -27,7 +26,6 @@ import UIKit
 /// It breaks the Coordinator abstraction and it has been introduced for Objective-C compatibility (mainly for integration in legacy view controllers).
 /// Each bridge should be removed once the underlying Coordinator has been integrated by another Coordinator.
 @objcMembers
-@available(iOS 14.0, *)
 final class SpaceSettingsModalCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Properties
@@ -92,7 +90,6 @@ final class SpaceSettingsModalCoordinatorBridgePresenter: NSObject {
 
 // MARK: - UIAdaptivePresentationControllerDelegate
 
-@available(iOS 14.0, *)
 extension SpaceSettingsModalCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
     
     func roomNotificationSettingsCoordinatorDidComplete(_ presentationController: UIPresentationController) {

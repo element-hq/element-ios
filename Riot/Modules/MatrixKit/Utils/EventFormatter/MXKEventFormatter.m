@@ -28,8 +28,9 @@
 #import "MXRoom+Sync.h"
 
 #import "MXKRoomNameStringLocalizer.h"
+#import "GeneratedInterface-Swift.h"
 
-static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
+static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>([^<]*)</a>";
 
 @interface MXKEventFormatter ()
 {
@@ -295,10 +296,16 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
 
 
 #pragma mark - Events to strings conversion methods
-- (NSString*)stringFromEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState error:(MXKEventFormatterError*)error
+- (NSString*)stringFromEvent:(MXEvent*)event
+               withRoomState:(MXRoomState*)roomState
+          andLatestRoomState:(MXRoomState*)latestRoomState
+                       error:(MXKEventFormatterError*)error
 {
     NSString *stringFromEvent;
-    NSAttributedString *attributedStringFromEvent = [self attributedStringFromEvent:event withRoomState:roomState error:error];
+    NSAttributedString *attributedStringFromEvent = [self attributedStringFromEvent:event
+                                                                      withRoomState:roomState
+                                                                 andLatestRoomState:latestRoomState
+                                                                              error:error];
     if (*error == MXKEventFormatterErrorNone)
     {
         stringFromEvent = attributedStringFromEvent.string;
@@ -307,7 +314,10 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     return stringFromEvent;
 }
 
-- (NSAttributedString *)attributedStringFromEvent:(MXEvent *)event withRoomState:(MXRoomState *)roomState error:(MXKEventFormatterError *)error
+- (NSAttributedString *)attributedStringFromEvent:(MXEvent*)event
+                                    withRoomState:(MXRoomState*)roomState
+                               andLatestRoomState:(MXRoomState*)latestRoomState
+                                            error:(MXKEventFormatterError *)error
 {
     // Check we can output the error
     NSParameterAssert(error);
@@ -1346,9 +1356,22 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                     }
                     else if ([msgtype isEqualToString:kMXMessageTypeFile])
                     {
-                        body = body? body : [VectorL10n noticeFileAttachment];
                         // Check attachment validity
-                        if (![self isSupportedAttachment:event])
+                        if ([self isSupportedAttachment:event])
+                        {
+                            body = body? body : [VectorL10n noticeFileAttachment];
+                            
+                            NSDictionary *fileInfo = contentToUse[@"info"];
+                            if (fileInfo)
+                            {
+                                NSNumber *fileSize = fileInfo[@"size"];
+                                if (fileSize)
+                                {
+                                    body = [NSString stringWithFormat:@"%@ (%@)", body, [MXTools fileSizeToString: fileSize.longValue]];
+                                }
+                            }
+                        }
+                        else
                         {
                             MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported attachment %@", event.description);
                             body = [VectorL10n noticeInvalidAttachment];
@@ -1359,7 +1382,10 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                     if (isHTML)
                     {
                         // Build the attributed string from the HTML string
-                        attributedDisplayText = [self renderHTMLString:body forEvent:event withRoomState:roomState];
+                        attributedDisplayText = [self renderHTMLString:body
+                                                              forEvent:event
+                                                         withRoomState:roomState
+                                                    andLatestRoomState:latestRoomState];
                     }
                     else
                     {
@@ -1605,6 +1631,11 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
             displayText = [MXEventContentPollStart modelFromJSON:event.content].question;
             break;
         }
+        case MXEventTypeBeaconInfo:
+        {
+            displayText = [MXBeaconInfo modelFromJSON:event.content].desc;
+            break;
+        }
         default:
             *error = MXKEventFormatterErrorUnknownEventType;
             break;
@@ -1663,7 +1694,10 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     return attributedDisplayText;
 }
 
-- (NSAttributedString*)attributedStringFromEvents:(NSArray<MXEvent*>*)events withRoomState:(MXRoomState*)roomState error:(MXKEventFormatterError*)error
+- (NSAttributedString*)attributedStringFromEvents:(NSArray<MXEvent*>*)events
+                                    withRoomState:(MXRoomState*)roomState
+                               andLatestRoomState:(MXRoomState*)latestRoomState
+                                            error:(MXKEventFormatterError*)error
 {
     // TODO: Do a full summary
     return nil;
@@ -1723,7 +1757,8 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     {
         //  body font is the same with the whole string font, no need to change body font
         //  apply additional treatments
-        return [self postRenderAttributedString:str];
+        [self postRenderAttributedString:str];
+        return str;
     }
 
     NSString *body;
@@ -1740,96 +1775,141 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     {
         //  body not found in the whole string
         //  apply additional treatments
-        return [self postRenderAttributedString:str];
+        [self postRenderAttributedString:str];
+        return str;
     }
 
-    NSMutableAttributedString *mutableStr = [str mutableCopy];
-    [mutableStr addAttribute:NSFontAttributeName value:fontForBody range:bodyRange];
+    [str addAttribute:NSFontAttributeName value:fontForBody range:bodyRange];
     //  apply additional treatments
-    return [self postRenderAttributedString:mutableStr];
+    [self postRenderAttributedString:str];
+    return str;
 }
 
-- (NSAttributedString*)renderHTMLString:(NSString*)htmlString forEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState
-{
-    return [self renderHTMLString:htmlString forEvent:event withRoomState:roomState isEditMode:NO];
-}
-
-- (NSAttributedString*)renderHTMLString:(NSString*)htmlString forEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState isEditMode:(BOOL)isEditMode
+- (NSAttributedString*)renderHTMLString:(NSString*)htmlString
+                               forEvent:(MXEvent*)event
+                          withRoomState:(MXRoomState*)roomState
+                     andLatestRoomState:(MXRoomState*)latestRoomState
 {
     NSString *html = htmlString;
+    MXEvent *repliedEvent;
 
     // Special treatment for "In reply to" message
-    // Note: `isEditMode` fixes an issue where editing a reply would display an "In reply to" span instead of a mention.
-    if (!isEditMode && (event.isReplyEvent || (!RiotSettings.shared.enableThreads && event.isInThread)))
+    if (roomState && (event.isReplyEvent || (!RiotSettings.shared.enableThreads && event.isInThread)))
     {
+        repliedEvent = [self->mxSession.store eventWithEventId:event.relatesTo.inReplyTo.eventId inRoom:roomState.roomId];
+        if (repliedEvent)
+        {
+            // Try to construct rich reply.
+            html = [self buildHTMLStringForEvent:event inReplyToEvent:repliedEvent] ?: html;
+        }
+
         html = [self renderReplyTo:html withRoomState:roomState];
     }
 
     // Apply the css style that corresponds to the event state
     UIFont *fontForWholeString = [self fontForEvent:event string:htmlString];
-    
-    // Do some sanitisation before finalizing the string
+
     MXWeakify(self);
-    DTHTMLAttributedStringBuilderWillFlushCallback sanitizeCallback = ^(DTHTMLElement *element) {
+    NSAttributedString *str = [HTMLFormatter formatHTML:html
+                                        withAllowedTags:_allowedHTMLTags
+                                                   font:fontForWholeString
+                                        andImageHandler:_htmlImageHandler
+                                           extraOptions:@{ DTDefaultTextColor: [self textColorForEvent:event],
+                                                           DTDefaultStyleSheet: dtCSS }
+                                   postFormatOperations:^(NSMutableAttributedString *mutableStr) {
         MXStrongifyAndReturnIfNil(self);
-        [element sanitizeWith:self.allowedHTMLTags bodyFont:fontForWholeString imageHandler:self.htmlImageHandler];
-    };
+        [self postFormatMutableAttributedString:mutableStr
+                                       forEvent:event
+                                andRepliedEvent:repliedEvent
+                                    defaultFont:fontForWholeString];
+    }];
 
-    NSDictionary *options = @{
-                              DTUseiOS6Attributes: @(YES),              // Enable it to be able to display the attributed string in a UITextView
-                              DTDefaultFontFamily: fontForWholeString.familyName,
-                              DTDefaultFontName: fontForWholeString.fontName,
-                              DTDefaultFontSize: @(fontForWholeString.pointSize),
-                              DTDefaultTextColor: [self textColorForEvent:event],
-                              DTDefaultLinkDecoration: @(NO),
-                              DTDefaultStyleSheet: dtCSS,
-                              DTWillFlushBlockCallBack: sanitizeCallback
-                              };
+    return str;
+}
 
-    // Do not use the default HTML renderer of NSAttributedString because this method
-    // runs on the UI thread which we want to avoid because renderHTMLString is called
-    // most of the time from a background thread.
-    // Use DTCoreText HTML renderer instead.
-    // Using DTCoreText, which renders static string, helps to avoid code injection attacks
-    // that could happen with the default HTML renderer of NSAttributedString which is a
-    // webview.
-    NSAttributedString *str = [[NSAttributedString alloc] initWithHTMLData:[html dataUsingEncoding:NSUTF8StringEncoding] options:options documentAttributes:NULL];
-        
-    // Apply additional treatments
-    str = [self postRenderAttributedString:str];
+- (NSAttributedString*)redactedMessageReplacementAttributedString
+{
+    return [[NSAttributedString alloc] initWithString:VectorL10n.eventFormatterMessageDeleted];
+}
 
-    // Finalize the attributed string by removing DTCoreText artifacts (Trim trailing newlines).
-    str = [MXKTools removeDTCoreTextArtifacts:str];
+/**
+ Build the HTML body of a reply from its related event (rich replies).
 
-    // Finalize HTML blockquote blocks marking
-    str = [MXKTools removeMarkedBlockquotesArtifacts:str];
+ @param event the reply event.
+ @param repliedEvent the event it replies to.
+ @return an html string containing the updated content of both events.
+ */
+- (NSString*)buildHTMLStringForEvent:(MXEvent*)event inReplyToEvent:(MXEvent*)repliedEvent
+{
+    NSString *repliedEventContent;
+    NSString *eventContent;
+    NSString *html;
 
-    UIFont *fontForBody = [self fontForEvent:event string:nil];
-    if ([fontForWholeString isEqual:fontForBody])
+    if (repliedEvent.isRedactedEvent)
     {
-        //  body font is the same with the whole string font, no need to change body font
-        return str;
-    }
-
-    NSString *body;
-    if (event.content[kMXMessageContentKeyNewContent])
-    {
-        MXJSONModelSetString(body, event.content[kMXMessageContentKeyNewContent][kMXMessageBodyKey]);
+        repliedEventContent = nil;
     }
     else
     {
-        MXJSONModelSetString(body, event.content[kMXMessageBodyKey]);
-    }
-    NSRange bodyRange = [str.string rangeOfString:body];
-    if (bodyRange.location == NSNotFound)
-    {
-        //  body not found in the whole string
-        return str;
+        if (repliedEvent.content[kMXMessageContentKeyNewContent])
+        {
+            MXJSONModelSetString(repliedEventContent, repliedEvent.content[kMXMessageContentKeyNewContent][@"formatted_body"]);
+            if (!repliedEventContent)
+            {
+                MXJSONModelSetString(repliedEventContent, repliedEvent.content[kMXMessageContentKeyNewContent][kMXMessageBodyKey]);
+            }
+        }
+        else
+        {
+            MXJSONModelSetString(repliedEventContent, repliedEvent.content[@"formatted_body"]);
+            if (!repliedEventContent)
+            {
+                MXJSONModelSetString(repliedEventContent, repliedEvent.content[kMXMessageBodyKey]);
+            }
+        }
+
+        // No message content in a non-redacted event. Formatter should use fallback.
+        if (!repliedEventContent)
+        {
+            MXLogWarning(@"[MXKEventFormatter] Unable to retrieve content from replied event %@", repliedEvent.description)
+            return nil;
+        }
     }
 
-    NSMutableAttributedString *mutableStr = [str mutableCopy];
-    [mutableStr addAttribute:NSFontAttributeName value:fontForBody range:bodyRange];
-    return mutableStr;
+    if (event.content[kMXMessageContentKeyNewContent])
+    {
+        MXJSONModelSetString(eventContent, event.content[kMXMessageContentKeyNewContent][@"formatted_body"]);
+        if (!eventContent)
+        {
+            MXJSONModelSetString(eventContent, event.content[kMXMessageContentKeyNewContent][kMXMessageBodyKey]);
+        }
+    }
+    else
+    {
+        MXReplyEventParser *parser = [[MXReplyEventParser alloc] init];
+        MXReplyEventParts *parts = [parser parse:event];
+        MXJSONModelSetString(eventContent, parts.formattedBodyParts.replyText)
+        if (!eventContent)
+        {
+            MXJSONModelSetString(eventContent, parts.bodyParts.replyText)
+        }
+    }
+
+    if (eventContent && repliedEvent.sender)
+    {
+        html = [NSString stringWithFormat:@"<mx-reply><blockquote><a href=\"%@\">In reply to</a> <a href=\"%@\">%@</a><br>%@</blockquote></mx-reply>%@",
+                [MXTools permalinkToEvent:repliedEvent.eventId inRoom:repliedEvent.roomId],
+                [MXTools permalinkToUserWithUserId:repliedEvent.sender],
+                repliedEvent.sender,
+                repliedEventContent,
+                eventContent];
+    }
+    else
+    {
+        MXLogWarning(@"[MXKEventFormatter] Unable to build reply event %@", event.description)
+    }
+
+    return html;
 }
 
 /**
@@ -1843,6 +1923,14 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
  */
 - (NSString*)renderReplyTo:(NSString*)htmlString withRoomState:(MXRoomState*)roomState
 {
+    NSInteger mxReplyEndLocation = [htmlString rangeOfString:@"</mx-reply>"].location;
+
+    if (mxReplyEndLocation == NSNotFound)
+    {
+        MXLogWarning(@"[MXKEventFormatter] Missing mx-reply block in html string");
+        return htmlString;
+    }
+
     NSString *html = htmlString;
     
     static NSRegularExpression *htmlATagRegex;
@@ -1860,7 +1948,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     
     [htmlATagRegex enumerateMatchesInString:html
                                     options:0
-                                      range:NSMakeRange(0, html.length)
+                                      range:NSMakeRange(0, mxReplyEndLocation)
                                  usingBlock:^(NSTextCheckingResult *match, NSMatchingFlags flags, BOOL *stop) {
                                      
                                      if (hrefCount > 1)
@@ -1895,7 +1983,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
         
         if (senderDisplayName)
         {
-            html = [html stringByReplacingCharactersInRange:userIdRange withString:senderDisplayName];
+            html = [html stringByReplacingCharactersInRange:userIdRange withString:senderDisplayName.stringByAddingHTMLEntities];
         }
     }
     
@@ -1917,11 +2005,55 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     return html;
 }
 
-- (NSAttributedString*)postRenderAttributedString:(NSAttributedString*)attributedString
+- (void)postFormatMutableAttributedString:(NSMutableAttributedString*)mutableAttributedString
+                                 forEvent:(MXEvent*)event
+                          andRepliedEvent:(MXEvent*)repliedEvent
+                              defaultFont:(UIFont*)defaultFont
 {
-    if (!attributedString)
+    [self postRenderAttributedString:mutableAttributedString];
+    [MXKTools removeMarkedBlockquotesArtifacts:mutableAttributedString];
+
+    if (repliedEvent && repliedEvent.isRedactedEvent)
     {
-        return nil;
+        // Replace the description of an empty replied event
+        NSRange nullRange = [mutableAttributedString.string rangeOfString:@"(null)"];
+        if (nullRange.location != NSNotFound)
+        {
+            [mutableAttributedString replaceCharactersInRange:nullRange withAttributedString:[self redactedMessageReplacementAttributedString]];
+        }
+    }
+
+    UIFont *fontForBody = [self fontForEvent:event string:nil];
+    if ([defaultFont isEqual:fontForBody])
+    {
+        //  body font is the same with the whole string font, no need to change body font
+        return;
+    }
+
+    NSString *body;
+    if (event.content[kMXMessageContentKeyNewContent])
+    {
+        MXJSONModelSetString(body, event.content[kMXMessageContentKeyNewContent][kMXMessageBodyKey]);
+    }
+    else
+    {
+        MXJSONModelSetString(body, event.content[kMXMessageBodyKey]);
+    }
+    NSRange bodyRange = [mutableAttributedString.string rangeOfString:body];
+    if (bodyRange.location == NSNotFound)
+    {
+        //  body not found in the whole string
+        return;
+    }
+
+    [mutableAttributedString addAttribute:NSFontAttributeName value:fontForBody range:bodyRange];
+}
+
+- (void)postRenderAttributedString:(NSMutableAttributedString*)mutableAttributedString
+{
+    if (!mutableAttributedString)
+    {
+        return;
     }
     
     NSInteger enabledMatrixIdsBitMask= 0;
@@ -1956,7 +2088,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
         enabledMatrixIdsBitMask |= MXKTOOLS_GROUP_IDENTIFIER_BITWISE;
     }
 
-    return [MXKTools createLinksInAttributedString:attributedString forEnabledMatrixIds:enabledMatrixIdsBitMask];
+    [MXKTools createLinksInMutableAttributedString:mutableAttributedString forEnabledMatrixIds:enabledMatrixIdsBitMask];
 }
 
 - (NSAttributedString *)renderString:(NSString *)string withPrefix:(NSString *)prefix forEvent:(MXEvent *)event
@@ -2037,7 +2169,10 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
         // Note that we use the current room state (roomState) because when we display
         // users displaynames, we want current displaynames
         MXKEventFormatterError error;
-        NSString *lastMessageString = [self stringFromEvent:event withRoomState:roomState error:&error];
+        NSString *lastMessageString = [self stringFromEvent:event
+                                              withRoomState:roomState
+                                         andLatestRoomState:nil
+                                                      error:&error];
         
         if (0 == lastMessageString.length)
         {

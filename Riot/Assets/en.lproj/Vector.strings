@@ -485,6 +485,8 @@ Tap the + to start adding people.";
 "room_accessibility_threads" = "Threads";
 "room_accessibility_hangup" = "Hang up";
 "room_accessibility_thread_more" = "More";
+"room_accessibility_record_voice_message" = "Record Voice Message";
+"room_accessibility_record_voice_message_hint" = "Double-tap and hold to record.";
 "room_place_voice_call" = "Voice call";
 "room_open_dialpad" = "Dial pad";
 "room_join_group_call" = "Join";
@@ -570,6 +572,7 @@ Tap the + to start adding people.";
 "settings_identity_server_settings" = "IDENTITY SERVER";
 "settings_integrations" = "INTEGRATIONS";
 "settings_user_interface" = "USER INTERFACE";
+"settings_timeline" = "TIMELINE";
 "settings_ignored_users" = "IGNORED USERS";
 "settings_contacts" = "DEVICE CONTACTS";
 "settings_phone_contacts" = "PHONE CONTACTS";
@@ -597,7 +600,7 @@ Tap the + to start adding people.";
 "settings_add_email_address" = "Add email address";
 "settings_phone_number" = "Phone";
 "settings_add_phone_number" = "Add phone number";
-"settings_change_password" = "Change Matrix account password";
+"settings_change_password" = "Change password";
 "settings_night_mode" = "Night Mode";
 "settings_fail_to_update_profile" = "Fail to update profile";
 "settings_three_pids_management_information_part1" = "Manage which email addresses or phone numbers you can use to log in or recover your account here. Control who can find you in ";
@@ -643,6 +646,7 @@ Tap the + to start adding people.";
 "settings_calls_stun_server_fallback_description" = "Allow fallback call assist server %@ when your homeserver does not offer one (your IP address would be shared during a call).";
 
 "settings_integrations_allow_button" = "Manage integrations";
+/* The %@ placeholder will be replaced with the integration manager's URL. */
 "settings_integrations_allow_description" = "Use an integration manager (%@) to manage bots, bridges, widgets and sticker packs.\n\nIntegration managers receive configuration data, and can modify widgets, send room invites and set power levels on your behalf.";
 
 "settings_ui_language" = "Language";
@@ -654,6 +658,7 @@ Tap the + to start adding people.";
 "settings_ui_theme_picker_title" = "Select a theme";
 "settings_ui_theme_picker_message_invert_colours" = "\"Auto\" uses your device's \"Invert Colours\" settings";
 "settings_ui_theme_picker_message_match_system_theme" = "\"Auto\" matches your device's system theme";
+"settings_ui_show_redactions_in_room_history" = "Show a placeholder for removed messages";
 
 "settings_show_url_previews" = "Show website preview";
 "settings_show_url_previews_description" = "Previews will only be shown in unencrypted rooms.";
@@ -673,6 +678,7 @@ Tap the + to start adding people.";
 "settings_labs_enable_threads" = "Threaded messaging";
 "settings_labs_enable_auto_report_decryption_errors" = "Auto Report Decryption Errors";
 "settings_labs_use_only_latest_user_avatar_and_name" = "Show latest avatar and name for users in message history";
+"settings_labs_enable_live_location_sharing" = "Live location sharing - share current location (active development, and temporarily, locations persist in room history)";
 
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";
@@ -683,9 +689,9 @@ Tap the + to start adding people.";
 "settings_analytics_and_crash_data" = "Send crash and analytics data";
 "settings_enable_rageshake" = "Rage shake to report bug";
 
-"settings_old_password" = "old password";
-"settings_new_password" = "new password";
-"settings_confirm_password" = "confirm password";
+"settings_old_password" = "Old password";
+"settings_new_password" = "New password";
+"settings_confirm_password" = "Confirm password";
 "settings_fail_to_update_password" = "Fail to update Matrix account password";
 "settings_password_updated" = "Your Matrix account password has been updated";
 
@@ -1054,6 +1060,8 @@ Tap the + to start adding people.";
 "today" = "Today";
 "yesterday" = "Yesterday";
 "network_offline_prompt" = "The Internet connection appears to be offline.";
+"network_offline_title" = "You're offline";
+"network_offline_message" = "You're offline, check your connection.";
 "homeserver_connection_lost" = "Could not connect to the homeserver.";
 "public_room_section_title" = "Public Rooms (at %@):";
 "bug_report_prompt" = "The application has crashed last time. Would you like to submit a crash report?";
@@ -1843,6 +1851,7 @@ Tap the + to start adding people.";
 "home_context_menu_low_priority" = "Low priority";
 "home_context_menu_normal_priority" = "Normal priority";
 "home_context_menu_leave" = "Leave";
+"home_context_menu_mark_as_read" = "Mark as read";
 "home_syncing" = "Syncing";
 
 // MARK: - Favourites
@@ -1944,6 +1953,8 @@ Tap the + to start adding people.";
 "space_settings_update_failed_message" = "Failed to update space settings. Do you want to retry?";
 "space_settings_current_address_message" = "Your space is viewable at\n%@";
 
+"spaces_feature_not_available" = "This feature isn't available here. For now, you can do this with %@ on your computer.";
+
 // Mark: - Space Creation
 
 "spaces_creation_hint" = "Spaces are a new way to group rooms and people.";
@@ -2004,6 +2015,19 @@ Tap the + to start adding people.";
 "spaces_add_room_missing_permission_message" = "You do not have permissions to add rooms to this space.";
 "spaces_add_space" = "Add space";
 
+// Mark: Leave space
+
+"leave_space_action" = "Leave space";
+"leave_space_and_one_room" = "Leave space and 1 room";
+"leave_space_and_more_rooms" = "Leave space and %@ rooms";
+"leave_space_selection_title" = "SELECT ROOMS";
+"leave_space_selection_all_rooms" = "Select all rooms";
+"leave_space_selection_no_rooms" = "Select no rooms";
+
+// MARK: Reactions
+
+"room_event_action_reaction_more" = "%@ more";
+
 // Mark: Avatar
 
 "space_avatar_view_accessibility_label" = "avatar";
@@ -2046,6 +2070,25 @@ Tap the + to start adding people.";
 "version_check_modal_title_deprecated" = "We’re no longer supporting iOS %@";
 "version_check_modal_subtitle_deprecated" = "We've been working on enhancing %@ for a faster and more polished experience. Unfortunately your current version of iOS is not  compatible with some of those fixes and is no longer supported.\nWe're advising you to upgrade your operating system to use %@ to its full potential.";
 "version_check_modal_action_title_deprecated" = "Find out how";
+
+// Mark: - All Chats
+
+"all_chats_title" = "All chats";
+"all_chats_section_title" = "Chats";
+"all_chats_edit_layout" = "Edit layout";
+"all_chats_edit_layout_recents" = "Recents";
+"all_chats_edit_layout_unreads" = "Unreads";
+"all_chats_edit_layout_activity_order" = "Activity";
+"all_chats_edit_layout_alphabetical_order" = "A-Z";
+"all_chats_edit_layout_add_section_title" = "Add section to home";
+"all_chats_edit_layout_add_section_message" = "Pin sections to home for easy access";
+"all_chats_edit_layout_add_filters_title" = "Filter your messages";
+"all_chats_edit_layout_add_filters_message" = "Automatically filter your messages into the categories of your choice";
+"all_chats_edit_layout_pin_spaces_title" = "Pin your spaces";
+"all_chats_edit_layout_sorting_options_title" = "Sort messages by";
+"all_chats_all_filter" = "All";
+
+"room_recents_recently_viewed_section" = "Recently viewed";
 
 // Mark: - Polls
 
@@ -2169,6 +2212,10 @@ To enable access, tap Settings> Location and select Always";
 "location_sharing_live_no_user_locations_error_title" = "No user locations available";
 "location_sharing_live_stop_sharing_error" = "Fail to stop sharing location";
 "location_sharing_live_stop_sharing_progress" = "Stop location sharing";
+
+"location_sharing_live_lab_promotion_title" = "Live location sharing";
+"location_sharing_live_lab_promotion_text" = "Please note: this is a labs feature using a temporary implementation that allows the history of your shared location to be permanently visible to other people in the room.";
+"location_sharing_live_lab_promotion_activation" = "Enable live location sharing";
 
 // MARK: - MatrixKit
 

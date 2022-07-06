@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct PollEditForm: View {
     
     // MARK: - Properties
@@ -128,7 +127,6 @@ struct PollEditForm: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct PollEditForm_Previews: PreviewProvider {
     static let stateRenderer = MockPollEditFormScreenState.stateRenderer
     static var previews: some View {

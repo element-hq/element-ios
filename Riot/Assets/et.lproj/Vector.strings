@@ -487,7 +487,7 @@
 "settings_add_email_address" = "Lisa e-posti aadress";
 "settings_phone_number" = "Telefon";
 "settings_add_phone_number" = "Lisa telefoninumber";
-"settings_change_password" = "Muuda Matrix'i konto salasõna";
+"settings_change_password" = "Muuda salasõna";
 "settings_fail_to_update_profile" = "Profiili uuendamine ei õnnestunud";
 "settings_global_settings_info" = "Üldised teavituste seadistused leiduvad sinu %@ veebikliendis";
 "settings_pin_rooms_with_missed_notif" = "Klammerda jututoad, kus leidub lugemata teavitusi";
@@ -521,9 +521,9 @@
 "settings_third_party_notices" = "Kolmandate osapoolte litsentsid";
 "settings_send_crash_report" = "Saada anonüümset kasutusteavet ning vigade kirjeldusi";
 "settings_enable_rageshake" = "Veateate saatmiseks raputa väga kõvasti";
-"settings_old_password" = "vana salasõna";
-"settings_new_password" = "uus salasõna";
-"settings_confirm_password" = "korda uut salasõna";
+"settings_old_password" = "Vana salasõna";
+"settings_new_password" = "Uus salasõna";
+"settings_confirm_password" = "Korda uut salasõna";
 "settings_fail_to_update_password" = "Matrix'i konto salasõna uuendamine ei õnnestunud";
 "settings_password_updated" = "Sinu Matrix'i konto salasõna on muudetud";
 "settings_add_3pid_password_title_email" = "Lisa e-posti aadress";
@@ -2262,3 +2262,13 @@
 "location_sharing_live_timer_incoming" = "Asukoha jagamine toimib kuni %@";
 "live_location_sharing_ended" = "Reaalajas asukoha jagamine on lõppenud";
 "confirm" = "Kinnita";
+/* The placeholder %1$tu will be replaced with a number and %2$@ with the user's search terms. Note the > at the start indicates "more than 20 results". */
+"directory_search_results_more_than" = ">%2$@ kohta leidsin %1$tu tulemust";
+/* The placeholder %1$tu will be replaced with a number and %2$@ with the user's search terms. */
+"directory_search_results" = "%2$@ kohta leidsin %1$tu tulemust";
+"location_sharing_allow_background_location_message" = "Kui sa soovid praegust asukohta jagada reaalajas, siis Element vajab taustal töötades õigusi asukohta tuvastada. Selleks klõpsi Seadistused > Asukoht ning vali Alati";
+"location_sharing_allow_background_location_cancel_action" = "Mitte praegu";
+"location_sharing_allow_background_location_validate_action" = "Seadistused";
+"location_sharing_allow_background_location_title" = "Luba ligipääs asukohale";
+"settings_labs_enable_live_location_sharing" = "Praeguse asukoha jagamine reaalajas (funktsionaalsus on arendamisel ning ajutiselt on asukohad jututoa ajaloos näha)";
+"settings_ui_show_redactions_in_room_history" = "Näita kustutatud sõnumite asemel kohatäidet";

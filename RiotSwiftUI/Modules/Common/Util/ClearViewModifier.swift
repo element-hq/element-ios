@@ -16,24 +16,14 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
-extension ThemableTextField {
-    func showClearButton(text: Binding<String>, alignement: VerticalAlignment = .center) -> some View {
-        return modifier(ClearViewModifier(alignment: alignement, text: text))
-    }
-}
-
-@available(iOS 14.0, *)
 extension ThemableTextEditor {
-    func showClearButton(text: Binding<String>, alignement: VerticalAlignment = .top) -> some View {
-        return modifier(ClearViewModifier(alignment: alignement, text: text))
+    func showClearButton(text: Binding<String>, alignment: VerticalAlignment = .top) -> some View {
+        return modifier(ClearViewModifier(alignment: alignment, text: text))
     }
 }
 
 /// `ClearViewModifier` aims to add a clear button (e.g. `x` button) on the right side of any text editing view
-@available(iOS 14.0, *)
-struct ClearViewModifier: ViewModifier
-{
+struct ClearViewModifier: ViewModifier {
     // MARK: - Properties
     
     let alignment: VerticalAlignment
@@ -48,8 +38,7 @@ struct ClearViewModifier: ViewModifier
 
     // MARK: - Public
     
-    public func body(content: Content) -> some View
-    {
+    public func body(content: Content) -> some View {
         HStack(alignment: alignment) {
             content
             if !text.isEmpty {
@@ -60,7 +49,9 @@ struct ClearViewModifier: ViewModifier
                         .renderingMode(.template)
                         .foregroundColor(theme.colors.quarterlyContent)
                 }
-                .padding(EdgeInsets(top: alignment == .top ? 8 : 0, leading: 0, bottom: alignment == .bottom ? 8 : 0, trailing: 8))
+                .padding(.top, alignment == .top ? 8 : 0)
+                .padding(.bottom, alignment == .bottom ? 8 : 0)
+                .padding(.trailing, 12)
             }
         }
     }

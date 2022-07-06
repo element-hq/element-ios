@@ -222,7 +222,10 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
     private func process(event: MXEvent, ts: UInt64) -> EditHistoryMessage? {
 
         let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
-        guard let message = self.formatter.attributedString(from: event, with: nil, error: formatterError) else {
+        guard let message = self.formatter.attributedString(from: event,
+                                                            with: nil,
+                                                            andLatestRoomState: nil,
+                                                            error: formatterError) else {
             MXLog.debug("[EditHistoryViewModel] processEditEvent: cannot format(error: \(formatterError)) event: \(event.eventId ?? "")")
             return nil
         }

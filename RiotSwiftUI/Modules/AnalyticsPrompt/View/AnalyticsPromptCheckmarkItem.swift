@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct AnalyticsPromptCheckmarkItem: View {
     
     // MARK: - Properties
@@ -75,7 +74,6 @@ struct AnalyticsPromptCheckmarkItem: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct AnalyticsPromptCheckmarkItem_Previews: PreviewProvider {
     
     static let strings = MockAnalyticsPromptStrings()

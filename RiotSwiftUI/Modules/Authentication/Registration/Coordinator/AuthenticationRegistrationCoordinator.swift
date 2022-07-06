@@ -27,9 +27,25 @@ struct AuthenticationRegistrationCoordinatorParameters {
     let loginMode: LoginMode
 }
 
-enum AuthenticationRegistrationCoordinatorResult {
+enum AuthenticationRegistrationCoordinatorResult: CustomStringConvertible {
+    /// Continue using the supplied SSO provider.
+    case continueWithSSO(SSOIdentityProvider)
     /// The screen completed with the associated registration result.
-    case completed(RegistrationResult)
+    case completed(result: RegistrationResult, password: String)
+    /// Continue using the fallback
+    case fallback
+    
+    /// A string representation of the result, ignoring any associated values that could leak PII.
+    var description: String {
+        switch self {
+        case .continueWithSSO(let provider):
+            return "continueWithSSO: \(provider)"
+        case .completed:
+            return "completed"
+        case .fallback:
+            return "fallback"
+        }
+    }
 }
 
 final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
@@ -53,26 +69,23 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
     private var waitingIndicator: UserIndicator?
     
     /// The authentication service used for the registration.
-    var authenticationService: AuthenticationService { parameters.authenticationService }
+    private var authenticationService: AuthenticationService { parameters.authenticationService }
     /// The wizard used to handle the registration flow. May be `nil` when only SSO is supported.
-    var registrationWizard: RegistrationWizard?
+    private var registrationWizard: RegistrationWizard? { parameters.authenticationService.registrationWizard }
     
     // MARK: Public
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    @MainActor var callback: ((AuthenticationRegistrationCoordinatorResult) -> Void)?
+    var callback: (@MainActor (AuthenticationRegistrationCoordinatorResult) -> Void)?
     
     // MARK: - Setup
     
     @MainActor init(parameters: AuthenticationRegistrationCoordinatorParameters) {
         self.parameters = parameters
-        self.registrationWizard = parameters.authenticationService.registrationWizard
         
         let homeserver = parameters.authenticationService.state.homeserver
-        let viewModel = AuthenticationRegistrationViewModel(homeserverAddress: homeserver.addressFromUser ?? homeserver.address,
-                                                            showRegistrationForm: homeserver.registrationFlow != nil,
-                                                            ssoIdentityProviders: parameters.loginMode.ssoIdentityProviders ?? [])
+        let viewModel = AuthenticationRegistrationViewModel(homeserver: homeserver.viewData)
         authenticationRegistrationViewModel = viewModel
         
         let view = AuthenticationRegistrationScreen(viewModel: viewModel.context)
@@ -100,6 +113,7 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
         authenticationRegistrationViewModel.callback = { [weak self] result in
             guard let self = self else { return }
             MXLog.debug("[AuthenticationRegistrationCoordinator] AuthenticationRegistrationViewModel did complete with result: \(result).")
+            
             switch result {
             case .selectServer:
                 self.presentServerSelectionScreen()
@@ -107,13 +121,17 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
                 self.validateUsername(username)
             case .createAccount(let username, let password):
                 self.createAccount(username: username, password: password)
+            case .continueWithSSO(let provider):
+                self.callback?(.continueWithSSO(provider))
+            case .fallback:
+                self.callback?(.fallback)
             }
         }
     }
     
     /// Show a blocking activity indicator whilst saving.
-    @MainActor private func startLoading(label: String? = nil) {
-        waitingIndicator = indicatorPresenter.present(.loading(label: label ?? VectorL10n.loading, isInteractionBlocking: true))
+    @MainActor private func startLoading() {
+        waitingIndicator = indicatorPresenter.present(.loading(label: VectorL10n.loading, isInteractionBlocking: true))
     }
     
     /// Hide the currently displayed activity indicator.
@@ -149,17 +167,16 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
             return
         }
         
-        // reAuthHelper.data = state.password
-        let deviceDisplayName = UIDevice.current.isPhone ? VectorL10n.loginMobileDevice : VectorL10n.loginTabletDevice
-        
         startLoading()
         
         currentTask = Task { [weak self] in
             do {
-                let result = try await registrationWizard.createAccount(username: username, password: password, initialDeviceDisplayName: deviceDisplayName)
+                let result = try await registrationWizard.createAccount(username: username,
+                                                                        password: password,
+                                                                        initialDeviceDisplayName: UIDevice.current.initialDisplayName)
                 
                 guard !Task.isCancelled else { return }
-                callback?(.completed(result))
+                callback?(.completed(result: result, password: password))
                 
                 self?.stopLoading()
             } catch {
@@ -180,8 +197,6 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
             switch authenticationError {
             case .invalidHomeserver:
                 authenticationRegistrationViewModel.displayError(.invalidHomeserver)
-            case .dictionaryError:
-                authenticationRegistrationViewModel.displayError(.unknown)
             case .loginFlowNotCalled:
                 #warning("Reset the flow")
             case .missingMXRestClient:
@@ -194,7 +209,7 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
             switch registrationError {
             case .registrationDisabled:
                 authenticationRegistrationViewModel.displayError(.registrationDisabled)
-            case .createAccountNotCalled, .missingThreePIDData, .missingThreePIDURL, .threePIDClientFailure, .threePIDValidationFailure, .waitingForThreePIDValidation:
+            case .createAccountNotCalled, .missingThreePIDData, .missingThreePIDURL, .threePIDClientFailure, .threePIDValidationFailure, .waitingForThreePIDValidation, .invalidPhoneNumber:
                 // Shouldn't happen at this stage
                 authenticationRegistrationViewModel.displayError(.unknown)
             }
@@ -206,8 +221,9 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
     
     /// Presents the server selection screen as a modal.
     @MainActor private func presentServerSelectionScreen() {
-        MXLog.debug("[AuthenticationCoordinator] showServerSelectionScreen")
+        MXLog.debug("[AuthenticationRegistrationCoordinator] presentServerSelectionScreen")
         let parameters = AuthenticationServerSelectionCoordinatorParameters(authenticationService: authenticationService,
+                                                                            flow: .register,
                                                                             hasModalPresentation: true)
         let coordinator = AuthenticationServerSelectionCoordinator(parameters: parameters)
         coordinator.callback = { [weak self, weak coordinator] result in
@@ -229,11 +245,7 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
                                                        didCompleteWith result: AuthenticationServerSelectionCoordinatorResult) {
         if result == .updated {
             let homeserver = authenticationService.state.homeserver
-            authenticationRegistrationViewModel.update(homeserverAddress: homeserver.addressFromUser ?? homeserver.address,
-                                                       showRegistrationForm: homeserver.registrationFlow != nil,
-                                                       ssoIdentityProviders: homeserver.preferredLoginMode.ssoIdentityProviders ?? [])
-            
-            self.registrationWizard = authenticationService.registrationWizard
+            authenticationRegistrationViewModel.update(homeserver: homeserver.viewData)
         }
         
         navigationRouter.dismissModule(animated: true) { [weak self] in

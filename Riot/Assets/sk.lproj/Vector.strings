@@ -172,8 +172,8 @@
 "settings_crypto_device_id" = "\nID relácie: ";
 "settings_crypto_device_name" = "Názov relácie: ";
 "settings_confirm_password" = "Potvrdiť heslo";
-"settings_new_password" = "nové heslo";
-"settings_old_password" = "staré heslo";
+"settings_new_password" = "Nové heslo";
+"settings_old_password" = "Staré heslo";
 "settings_third_party_notices" = "Poznámky tretích strán";
 "settings_privacy_policy" = "Zásady ochrany súkromia";
 "settings_labs_e2e_encryption" = "End-to-End šifrovanie";
@@ -186,7 +186,7 @@
 "settings_notifications_disabled_alert_title" = "Oznámenia vypnuté";
 "settings_device_notifications" = "Oznámenia zariadenia";
 "settings_night_mode" = "Nočný režim";
-"settings_change_password" = "Zmeniť heslo k účtu Matrix";
+"settings_change_password" = "Zmeniť heslo";
 "settings_first_name" = "Krstné meno";
 "settings_display_name" = "Zobrazované meno";
 "settings_profile_picture" = "Profilový obrázok";
@@ -886,8 +886,8 @@
 "contacts_address_book_permission_denied_alert_message" = "Ak chcete povoliť kontakty, prejdite do nastavení zariadenia.";
 "contacts_address_book_permission_denied_alert_title" = "Kontakty sú vypnuté";
 "contacts_address_book_permission_required" = "Povolenie potrebné na prístup k lokálnym kontaktom";
-"directory_search_results_more_than" = ">%tu nájdených výsledkov pre %@";
-"directory_search_results" = "%tu nájdených výsledkov pre %@";
+"directory_search_results_more_than" = ">%1$tu nájdených výsledkov pre %2$@";
+"directory_search_results" = "%1$tu nájdených výsledkov pre %2$@";
 "search_people_placeholder" = "Vyhľadať podľa ID používateľa, mena alebo e-mailu";
 "rooms_empty_view_information" = "Miestnosti sú skvelé na akýkoľvek skupinový rozhovor, súkromný alebo verejný. Ťuknutím na tlačidlo + vyhľadajte existujúce miestnosti alebo vytvorte nové.";
 "people_empty_view_information" = "Bezpečne komunikujte s kýmkoľvek.Ťuknutím na tlačidlo + začnite pridávať ľudí.";
@@ -2521,3 +2521,9 @@
 "location_sharing_live_loading" = "Načítavanie polohy v reálnom čase...";
 "live_location_sharing_ended" = "Ukončenie polohy v reálnom čase";
 "confirm" = "Potvrdiť";
+"location_sharing_allow_background_location_cancel_action" = "Teraz nie";
+"location_sharing_allow_background_location_validate_action" = "Nastavenia";
+"location_sharing_allow_background_location_message" = "Ak chcete zdieľať svoju polohu v reálnom čase, Element potrebuje prístup k polohe, keď beží aplikácia na pozadí.Ak chcete povoliť prístup, ťuknite na položku Nastavenia> Poloha a vyberte položku Vždy";
+"location_sharing_allow_background_location_title" = "Povoliť prístup";
+"settings_labs_enable_live_location_sharing" = "Zdieľanie polohy v reálnom čase - zdieľanie aktuálnej polohy (v aktívnom vývoji a polohy dočasne pretrvávajú v histórii miestnosti)";
+"settings_ui_show_redactions_in_room_history" = "Zobrazovať náhrady za odstránené správy";

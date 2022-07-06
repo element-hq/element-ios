@@ -10,89 +10,81 @@ import Foundation
 
 // swiftlint:disable function_parameter_count identifier_name line_length type_body_length
 public extension VectorL10n {
-  /// All
-  static var allChatsAllFilter: String { 
-    return VectorL10n.tr("Untranslated", "all_chats_all_filter") 
-  }
-  /// Edit layout
-  static var allChatsEditLayout: String { 
-    return VectorL10n.tr("Untranslated", "all_chats_edit_layout") 
-  }
-  /// Activity
-  static var allChatsEditLayoutActivityOrder: String { 
-    return VectorL10n.tr("Untranslated", "all_chats_edit_layout_activity_order") 
-  }
-  /// Automatically filter your messages into the categories of your choice
-  static var allChatsEditLayoutAddFiltersMessage: String { 
-    return VectorL10n.tr("Untranslated", "all_chats_edit_layout_add_filters_message") 
-  }
-  /// Filter your messages
-  static var allChatsEditLayoutAddFiltersTitle: String { 
-    return VectorL10n.tr("Untranslated", "all_chats_edit_layout_add_filters_title") 
-  }
-  /// Pin sections to home for easy access
-  static var allChatsEditLayoutAddSectionMessage: String { 
-    return VectorL10n.tr("Untranslated", "all_chats_edit_layout_add_section_message") 
-  }
-  /// Add section to home
-  static var allChatsEditLayoutAddSectionTitle: String { 
-    return VectorL10n.tr("Untranslated", "all_chats_edit_layout_add_section_title") 
-  }
-  /// A-Z
-  static var allChatsEditLayoutAlphabeticalOrder: String { 
-    return VectorL10n.tr("Untranslated", "all_chats_edit_layout_alphabetical_order") 
-  }
-  /// Pin your spaces
-  static var allChatsEditLayoutPinSpacesTitle: String { 
-    return VectorL10n.tr("Untranslated", "all_chats_edit_layout_pin_spaces_title") 
-  }
-  /// Recents
-  static var allChatsEditLayoutRecents: String { 
-    return VectorL10n.tr("Untranslated", "all_chats_edit_layout_recents") 
-  }
-  /// Sort messages by
-  static var allChatsEditLayoutSortingOptionsTitle: String { 
-    return VectorL10n.tr("Untranslated", "all_chats_edit_layout_sorting_options_title") 
-  }
-  /// Unreads
-  static var allChatsEditLayoutUnreads: String { 
-    return VectorL10n.tr("Untranslated", "all_chats_edit_layout_unreads") 
-  }
-  /// Chats
-  static var allChatsSectionTitle: String { 
-    return VectorL10n.tr("Untranslated", "all_chats_section_title") 
-  }
-  /// All chats
-  static var allChatsTitle: String { 
-    return VectorL10n.tr("Untranslated", "all_chats_title") 
-  }
   /// Your account is not created yet. Stop the registration process?
   static var authenticationCancelFlowConfirmationMessage: String { 
     return VectorL10n.tr("Untranslated", "authentication_cancel_flow_confirmation_message") 
+  }
+  /// Make sure it’s 8 characters or more.
+  static var authenticationChoosePasswordInputMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_choose_password_input_message") 
+  }
+  /// Choose a new password
+  static var authenticationChoosePasswordInputTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_choose_password_input_title") 
+  }
+  /// Sign out of all devices
+  static var authenticationChoosePasswordSignoutAllDevices: String { 
+    return VectorL10n.tr("Untranslated", "authentication_choose_password_signout_all_devices") 
+  }
+  /// Reset Password
+  static var authenticationChoosePasswordSubmitButton: String { 
+    return VectorL10n.tr("Untranslated", "authentication_choose_password_submit_button") 
+  }
+  /// New Password
+  static var authenticationChoosePasswordTextFieldPlaceholder: String { 
+    return VectorL10n.tr("Untranslated", "authentication_choose_password_text_field_placeholder") 
+  }
+  /// We will send you a verification link.
+  static var authenticationForgotPasswordInputMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_forgot_password_input_message") 
+  }
+  /// Enter your email address
+  static var authenticationForgotPasswordInputTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_forgot_password_input_title") 
+  }
+  /// Email Address
+  static var authenticationForgotPasswordTextFieldPlaceholder: String { 
+    return VectorL10n.tr("Untranslated", "authentication_forgot_password_text_field_placeholder") 
+  }
+  /// Resend email
+  static var authenticationForgotPasswordWaitingButton: String { 
+    return VectorL10n.tr("Untranslated", "authentication_forgot_password_waiting_button") 
+  }
+  /// Did not receive an email?
+  static var authenticationForgotPasswordWaitingHint: String { 
+    return VectorL10n.tr("Untranslated", "authentication_forgot_password_waiting_hint") 
+  }
+  /// To confirm your email address, tap the button in the email we just sent to %@
+  static func authenticationForgotPasswordWaitingMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Untranslated", "authentication_forgot_password_waiting_message", p1)
+  }
+  /// Check your email
+  static var authenticationForgotPasswordWaitingTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_forgot_password_waiting_title") 
+  }
+  /// Forgot password
+  static var authenticationLoginForgotPassword: String { 
+    return VectorL10n.tr("Untranslated", "authentication_login_forgot_password") 
+  }
+  /// Welcome back!
+  static var authenticationLoginTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_login_title") 
+  }
+  /// Username or Email
+  static var authenticationLoginUsername: String { 
+    return VectorL10n.tr("Untranslated", "authentication_login_username") 
   }
   /// This server would like to make sure you are not a robot
   static var authenticationRecaptchaMessage: String { 
     return VectorL10n.tr("Untranslated", "authentication_recaptcha_message") 
   }
-  /// Join millions for free on the largest public server
-  static var authenticationRegistrationMatrixDescription: String { 
-    return VectorL10n.tr("Untranslated", "authentication_registration_matrix_description") 
-  }
   /// We’ll need some info to get you set up.
   static var authenticationRegistrationMessage: String { 
     return VectorL10n.tr("Untranslated", "authentication_registration_message") 
   }
-  /// Password
-  static var authenticationRegistrationPassword: String { 
-    return VectorL10n.tr("Untranslated", "authentication_registration_password") 
-  }
   /// Must be 8 characters or more
   static var authenticationRegistrationPasswordFooter: String { 
     return VectorL10n.tr("Untranslated", "authentication_registration_password_footer") 
-  }
-  /// Choose your server to store your data
-  static var authenticationRegistrationServerTitle: String { 
-    return VectorL10n.tr("Untranslated", "authentication_registration_server_title") 
   }
   /// Create your account
   static var authenticationRegistrationTitle: String { 
@@ -105,6 +97,14 @@ public extension VectorL10n {
   /// You can’t change this later
   static var authenticationRegistrationUsernameFooter: String { 
     return VectorL10n.tr("Untranslated", "authentication_registration_username_footer") 
+  }
+  /// Join millions for free on the largest public server
+  static var authenticationServerInfoMatrixDescription: String { 
+    return VectorL10n.tr("Untranslated", "authentication_server_info_matrix_description") 
+  }
+  /// Choose your server to store your data
+  static var authenticationServerInfoTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_server_info_title") 
   }
   /// Cannot find a server at this URL, please check it is correct.
   static var authenticationServerSelectionGenericError: String { 
@@ -166,41 +166,77 @@ public extension VectorL10n {
   static var authenticationVerifyEmailWaitingTitle: String { 
     return VectorL10n.tr("Untranslated", "authentication_verify_email_waiting_title") 
   }
+  /// This will help verify your account and enables password recovery.
+  static var authenticationVerifyMsisdnInputMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_msisdn_input_message") 
+  }
+  /// Enter your phone number
+  static var authenticationVerifyMsisdnInputTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_msisdn_input_title") 
+  }
+  /// Invalid phone number
+  static var authenticationVerifyMsisdnInvalidPhoneNumber: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_msisdn_invalid_phone_number") 
+  }
+  /// Verification Code
+  static var authenticationVerifyMsisdnOtpTextFieldPlaceholder: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_msisdn_otp_text_field_placeholder") 
+  }
+  /// Phone Number
+  static var authenticationVerifyMsisdnTextFieldPlaceholder: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_msisdn_text_field_placeholder") 
+  }
+  /// Resend code
+  static var authenticationVerifyMsisdnWaitingButton: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_msisdn_waiting_button") 
+  }
+  /// We just sent a code to %@. Enter it  below to verify it’s you.
+  static func authenticationVerifyMsisdnWaitingMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Untranslated", "authentication_verify_msisdn_waiting_message", p1)
+  }
+  /// Confirm your phone number
+  static var authenticationVerifyMsisdnWaitingTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_msisdn_waiting_title") 
+  }
   /// Choose from files
   static var imagePickerActionFiles: String { 
     return VectorL10n.tr("Untranslated", "image_picker_action_files") 
   }
-  /// Leave space
-  static var leaveSpaceAction: String { 
-    return VectorL10n.tr("Untranslated", "leave_space_action") 
+  /// Contain a lower-case letter.
+  static var passwordValidationErrorContainLowercaseLetter: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_contain_lowercase_letter") 
   }
-  /// Leave space and %@ rooms
-  static func leaveSpaceAndMoreRooms(_ p1: String) -> String {
-    return VectorL10n.tr("Untranslated", "leave_space_and_more_rooms", p1)
+  /// Contain a number.
+  static var passwordValidationErrorContainNumber: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_contain_number") 
   }
-  /// Leave space and 1 room
-  static var leaveSpaceAndOneRoom: String { 
-    return VectorL10n.tr("Untranslated", "leave_space_and_one_room") 
+  /// Contain a symbol.
+  static var passwordValidationErrorContainSymbol: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_contain_symbol") 
   }
-  /// Select all rooms
-  static var leaveSpaceSelectionAllRooms: String { 
-    return VectorL10n.tr("Untranslated", "leave_space_selection_all_rooms") 
+  /// Contain an upper-case letter.
+  static var passwordValidationErrorContainUppercaseLetter: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_contain_uppercase_letter") 
   }
-  /// Select no rooms
-  static var leaveSpaceSelectionNoRooms: String { 
-    return VectorL10n.tr("Untranslated", "leave_space_selection_no_rooms") 
+  /// Given password does not meet the criteria below:
+  static var passwordValidationErrorHeader: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_header") 
   }
-  /// SELECT ROOMS
-  static var leaveSpaceSelectionTitle: String { 
-    return VectorL10n.tr("Untranslated", "leave_space_selection_title") 
+  /// Not exceed %d characters.
+  static func passwordValidationErrorMaxLength(_ p1: Int) -> String {
+    return VectorL10n.tr("Untranslated", "password_validation_error_max_length", p1)
   }
-  /// Recently viewed
-  static var roomRecentsRecentlyViewedSection: String { 
-    return VectorL10n.tr("Untranslated", "room_recents_recently_viewed_section") 
+  /// At least %d characters.
+  static func passwordValidationErrorMinLength(_ p1: Int) -> String {
+    return VectorL10n.tr("Untranslated", "password_validation_error_min_length", p1)
   }
-  /// This feature isn't available here. For now, you can do this with %@ on your computer.
-  static func spacesFeatureNotAvailable(_ p1: String) -> String {
-    return VectorL10n.tr("Untranslated", "spaces_feature_not_available", p1)
+  /// Your password should meet the criteria below:
+  static var passwordValidationInfoHeader: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_info_header") 
+  }
+  /// Room Info
+  static var roomInfoBackButtonTitle: String { 
+    return VectorL10n.tr("Untranslated", "room_info_back_button_title") 
   }
 }
 // swiftlint:enable function_parameter_count identifier_name line_length type_body_length

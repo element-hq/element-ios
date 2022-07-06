@@ -96,7 +96,7 @@ class RoundedToastView: UIView, Themable {
     }
     
     func update(theme: Theme) {
-        backgroundColor = theme.colors.background
+        backgroundColor = theme.colors.system
         stackView.arrangedSubviews.first?.tintColor = theme.colors.primaryContent
         label.font = theme.fonts.subheadline
         label.textColor = theme.colors.primaryContent
@@ -114,6 +114,12 @@ class RoundedToastView: UIView, Themable {
             return activityIndicator
         case .success:
             imageView.image = Asset.Images.checkmark.image
+            return imageView
+        case .failure:
+            imageView.image = Asset.Images.errorIcon.image
+            return imageView
+        case .custom(let icon):
+            imageView.image = icon?.withRenderingMode(.alwaysTemplate)
             return imageView
         }
     }

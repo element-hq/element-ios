@@ -21,7 +21,6 @@ import Combine
 
 @testable import RiotSwiftUI
 
-@available(iOS 14.0, *)
 class SpaceCreationRoomsViewModelTests: XCTestCase {
     var creationParameters = SpaceCreationParameters()
     var viewModel: SpaceCreationRoomsViewModelProtocol!

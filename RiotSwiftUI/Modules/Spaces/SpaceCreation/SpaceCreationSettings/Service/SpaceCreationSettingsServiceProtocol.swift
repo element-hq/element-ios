@@ -19,7 +19,6 @@
 import Foundation
 import Combine
 
-@available(iOS 14.0, *)
 protocol SpaceCreationSettingsServiceProtocol: AnyObject {
     var defaultAddressSubject: CurrentValueSubject<String, Never> { get }
     var addressValidationSubject: CurrentValueSubject<SpaceCreationSettingsAddressValidationStatus, Never> { get }

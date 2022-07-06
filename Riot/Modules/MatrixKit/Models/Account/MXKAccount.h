@@ -287,11 +287,15 @@ typedef BOOL (^MXKAccountOnCertificateChange)(MXKAccount *mxAccount, NSData *cer
  
  @param oldPassword the old password.
  @param newPassword the new password.
- 
+ @param logoutDevices flag to logout from all devices.
  @param success A block object called when the operation succeeds.
  @param failure A block object called when the operation fails.
  */
-- (void)changePassword:(NSString*)oldPassword with:(NSString*)newPassword success:(void (^)(void))success failure:(void (^)(NSError *error))failure;
+- (void)changePassword:(NSString*)oldPassword
+                  with:(NSString*)newPassword
+         logoutDevices:(BOOL)logoutDevices
+               success:(void (^)(void))success
+               failure:(void (^)(NSError *error))failure;
 
 /**
  Load the 3PIDs linked to this account.

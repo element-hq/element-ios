@@ -30,6 +30,8 @@
 
 #import "MXKSwiftHeader.h"
 
+#import "GeneratedInterface-Swift.h"
+
 @interface MXKAuthenticationViewController ()
 {
     /**
@@ -1626,7 +1628,7 @@
 
 - (void)updateRESTClient
 {
-    NSString *homeserverURL = _homeServerTextField.text;
+    NSString *homeserverURL = [HomeserverAddress sanitized:_homeServerTextField.text];
     
     if (homeserverURL.length)
     {

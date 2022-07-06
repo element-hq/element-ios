@@ -16,7 +16,7 @@ env:
 jobs:
   tests:
     name: Tests
-    runs-on: macos-11
+    runs-on: macos-12
     
     concurrency:
       # When running on develop, use the sha to allow all runs of this workflow to run concurrently.
@@ -60,3 +60,6 @@ jobs:
       # Main step
       - name: Unit tests
         run: bundle exec fastlane test
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3

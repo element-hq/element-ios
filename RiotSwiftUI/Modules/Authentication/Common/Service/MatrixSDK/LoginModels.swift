@@ -16,6 +16,7 @@
 
 import Foundation
 
+/// The result returned when querying a homeserver's available login flows.
 struct LoginFlowResult {
     let supportedLoginTypes: [MXLoginFlow]
     let ssoIdentityProviders: [SSOIdentityProvider]
@@ -35,11 +36,17 @@ struct LoginFlowResult {
     }
 }
 
+/// The supported forms of login that a homeserver allows.
 enum LoginMode {
+    /// The login mode hasn't been determined yet.
     case unknown
+    /// The homeserver supports login with a password.
     case password
+    /// The homeserver supports login via one or more SSO providers.
     case sso(ssoIdentityProviders: [SSOIdentityProvider])
+    /// The homeserver supports login with either a password or via an SSO provider.
     case ssoAndPassword(ssoIdentityProviders: [SSOIdentityProvider])
+    /// The homeserver only allows login with unsupported mechanisms. Use fallback instead.
     case unsupported
     
     var ssoIdentityProviders: [SSOIdentityProvider]? {
@@ -60,7 +67,7 @@ enum LoginMode {
         }
     }
     
-    var supportsSignModeScreen: Bool {
+    var supportsPasswordFlow: Bool {
         switch self {
         case .password, .ssoAndPassword:
             return true
@@ -68,4 +75,20 @@ enum LoginMode {
             return false
         }
     }
+
+    var isUnsupported: Bool {
+        switch self {
+        case .unsupported:
+            return true
+        default:
+            return false
+        }
+    }
 }
+
+/// Data obtained when calling `LoginWizard.resetPassword` that will be used
+/// when calling `LoginWizard.checkResetPasswordMailConfirmed`.
+struct ResetPasswordData {
+    let addThreePIDSessionID: String
+}
+

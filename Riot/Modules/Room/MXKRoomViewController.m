@@ -985,7 +985,11 @@
     if (event)
     {
         MXKEventFormatterError error;
-        reason = [roomDataSource.eventFormatter stringFromEvent:event withRoomState:roomDataSource.roomState error:&error];
+        reason = [roomDataSource.eventFormatter
+                  stringFromEvent:event
+                  withRoomState:roomDataSource.roomState
+                  andLatestRoomState:nil
+                  error:&error];
         if (error != MXKEventFormatterErrorNone)
         {
             reason = nil;
@@ -1903,6 +1907,8 @@
         return;
     }
     
+    UserIndicatorCancel cancelIndicator = [self.userIndicatorStore presentLoadingWithLabel:[VectorL10n loading] isInteractionBlocking:NO];
+    
     // Store the current height of the first bubble (if any)
     backPaginationSavedFirstBubbleHeight = 0;
     if (direction == MXTimelineDirectionBackwards && [roomDataSource tableView:_bubblesTableView numberOfRowsInSection:0])
@@ -1987,6 +1993,10 @@
         {
             [self updateCurrentEventIdAtTableBottom:NO];
         }
+        
+        if (cancelIndicator) {
+            cancelIndicator();
+        }
 
     } failure:^(NSError *error) {
         
@@ -2001,7 +2011,10 @@
         [self reloadBubblesTable:NO];
         
         self.bubbleTableViewDisplayInTransition = NO;
-        
+
+        if (cancelIndicator) {
+            cancelIndicator();
+        }
     }];
 }
 

@@ -79,6 +79,9 @@ class LocationManager: NSObject {
         locationManager.desiredAccuracy = desiredLocationAccuracy
         locationManager.allowsBackgroundLocationUpdates = allowsBackgroundLocationUpdates
         
+        // Indicate to change status bar appearance when the app uses location services in the background
+        locationManager.showsBackgroundLocationIndicator = true
+        
         self.locationManager = locationManager
         
         super.init()
@@ -109,7 +112,7 @@ class LocationManager: NSObject {
         
         switch accuracy {
         case .full:
-            self.locationManager.startUpdatingLocation()
+            self.locationManager.stopUpdatingLocation()
         case .reduced:
             self.locationManager.stopMonitoringSignificantLocationChanges()
         }

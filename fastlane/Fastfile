@@ -21,7 +21,7 @@ platform :ios do
 
   before_all do
     # Ensure used Xcode version
-    xcversion(version: "~> 13.2")
+    xcversion(version: "~> 13.4")
   end
 
   #### Public ####
@@ -171,6 +171,14 @@ platform :ios do
       output_directory: "./build/test",
       output_files: "riot.unit.test.html,riot.unit.test.report.junit.xml",
       open_report: !is_ci?
+    )
+
+    slather(
+      cobertura_xml: true,
+      output_directory: "./build/test",
+      workspace: "Riot.xcworkspace",
+      proj: "Riot.xcodeproj",
+      scheme: "Riot",
     )
   end
   

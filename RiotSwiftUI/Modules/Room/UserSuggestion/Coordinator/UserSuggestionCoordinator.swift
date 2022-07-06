@@ -18,7 +18,6 @@ import Foundation
 import UIKit
 import SwiftUI
 
-@available(iOS 14.0, *)
 protocol UserSuggestionCoordinatorDelegate: AnyObject {
     func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didRequestMentionForMember member: MXRoomMember, textTrigger: String?)
 }
@@ -28,7 +27,6 @@ struct UserSuggestionCoordinatorParameters {
     let room: MXRoom
 }
 
-@available(iOS 14.0, *)
 final class UserSuggestionCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties
@@ -52,7 +50,6 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: UserSuggestionCoordinatorParameters) {
         self.parameters = parameters
         

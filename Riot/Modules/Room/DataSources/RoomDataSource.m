@@ -238,7 +238,7 @@ const CGFloat kTypingCellHeight = 24;
 
 - (void)roomSummaryDidChange:(NSNotification*)notification
 {
-    if (BuildSettings.liveLocationSharingEnabled)
+    if (RiotSettings.shared.enableLiveLocationSharing)
     {
         [self updateCurrentUserLocationSharingStatus];
     }
@@ -1075,6 +1075,11 @@ const CGFloat kTypingCellHeight = 24;
 - (void)roomReactionsViewModel:(RoomReactionsViewModel *)viewModel didShowLessTappedForEventId:(NSString * _Nonnull)eventId
 {
     [self setShowAllReactions:NO forEvent:eventId];
+}
+
+- (void)roomReactionsViewModel:(RoomReactionsViewModel *)viewModel didTapAddReactionForEventId:(NSString * _Nonnull)eventId
+{
+    [self.delegate dataSource:self didRecognizeAction:kMXKRoomBubbleCellTapOnAddReaction inCell:nil userInfo:@{ kMXKRoomBubbleCellEventIdKey: eventId }];
 }
 
 - (void)setShowAllReactions:(BOOL)showAllReactions forEvent:(NSString*)eventId

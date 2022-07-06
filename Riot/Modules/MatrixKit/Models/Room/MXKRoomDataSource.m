@@ -1021,13 +1021,13 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             
             MXStrongifyAndReturnIfNil(self);
 
-            if (event.eventType == MXEventTypeRoomMember && event.isUserProfileChange)
-            {
-                [self refreshProfilesIfNeeded];
-            }
-            
             if (MXTimelineDirectionForwards == direction)
             {
+                if (event.eventType == MXEventTypeRoomMember && event.isUserProfileChange)
+                {
+                    [self refreshProfilesIfNeeded];
+                }
+
                 // Check for local echo suppression
                 MXEvent *localEcho;
                 if (self.room.outgoingMessages.count && [event.sender isEqualToString:self.mxSession.myUser.userId])
@@ -1127,6 +1127,8 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
                         {
                             // Update bubble data
                             NSUInteger remainingEvents = [bubbleData updateEvent:redactionEvent.redacts withEvent:redactedEvent];
+
+                            [self refreshRepliesWithUpdatedEventId:redactedEvent.eventId];
 
                             hasChanged = YES;
 
@@ -3666,7 +3668,10 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
                     while ((nextBubbleData = nextBubbleData.nextCollapsableCellData));
 
                     // Build the summary string for the series
-                    bubbleData.collapsedAttributedTextMessage = [self.eventFormatter attributedStringFromEvents:events withRoomState:bubbleData.collapseState error:nil];
+                    bubbleData.collapsedAttributedTextMessage = [self.eventFormatter attributedStringFromEvents:events
+                                                                                                  withRoomState:bubbleData.collapseState
+                                                                                             andLatestRoomState:self.roomState
+                                                                                                          error:nil];
 
                     // Release collapseState objects, even the one of collapsableSeriesAtStart.
                     // We do not need to keep its state because if an collapsable event comes before collapsableSeriesAtStart,
@@ -4242,10 +4247,34 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     }
 }
 
+- (BOOL)refreshRepliesWithUpdatedEventId:(NSString*)updatedEventId
+{
+    BOOL hasChanged = NO;
+
+    @synchronized (bubbles) {
+        for (id<MXKRoomBubbleCellDataStoring> bubbleCellData in bubbles)
+        {
+            for (MXEvent *event in bubbleCellData.events)
+            {
+                if ([event.relatesTo.inReplyTo.eventId isEqual:updatedEventId])
+                {
+                    [bubbleCellData updateEvent:event.eventId withEvent:event];
+                    [bubbleCellData invalidateTextLayout];
+                    hasChanged = YES;
+                }
+            }
+        }
+    }
+
+    return hasChanged;
+}
+
 - (BOOL)updateCellData:(id<MXKRoomBubbleCellDataStoring>)bubbleCellData forEditionWithReplaceEvent:(MXEvent*)replaceEvent andEventId:(NSString*)eventId
 {
     BOOL hasChanged = NO;
-    
+
+    hasChanged = [self refreshRepliesWithUpdatedEventId:eventId];
+
     @synchronized (bubbleCellData)
     {
         // Retrieve the original event to edit it
@@ -4333,18 +4362,14 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 #pragma mark - Use Only Latest Profiles
 
 /**
- Refreshes the avatars and display names if needed. This has no effect
- if `roomScreenUseOnlyLatestUserAvatarAndName` is disabled.
+ Refresh avatars and display names (AKA profiles) if needed.
  */
 - (void)refreshProfilesIfNeeded
 {
-    if (RiotSettings.shared.roomScreenUseOnlyLatestUserAvatarAndName)
-    {
-        @synchronized (bubbles) {
-            for (id<MXKRoomBubbleCellDataStoring> bubble in bubbles)
-            {
-                [bubble setRoomState:self.roomState];
-            }
+   @synchronized (bubbles) {
+        for (id<MXKRoomBubbleCellDataStoring> bubble in bubbles)
+        {
+            [bubble refreshProfilesIfNeeded:self.roomState];
         }
     }
 }

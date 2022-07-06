@@ -1077,6 +1077,12 @@ static BOOL _disableLongPressGestureOnEvent;
     
     NSArray *bubbleComponents = bubbleData.bubbleComponents;
     
+    if (bubbleComponents.count == 1) {
+        return bubbleComponents.firstObject;
+    }
+    
+    // The position check below fails for bubble data with a single component when message
+    // bubbles are enabled, thus the early bailout above
     for (MXKRoomBubbleComponent *component in bubbleComponents)
     {
         // Ignore components without display (For example redacted event or state events)
@@ -1556,38 +1562,20 @@ static NSMutableDictionary *childClasses;
             associatedEvent = bubbleComponent.event;
         }
         
+        // Tapping a file attachment who's name triggers a data detector will try to open that URL.
+        // Detect this and instead map the interaction into a tap on the cell.
+        if (associatedEvent.isMediaAttachment)
+        {
+            [delegate cell:self didRecognizeAction:kMXKRoomBubbleCellTapOnAttachmentView userInfo:nil];
+            return NO;
+        }
+        
         // Ask the delegate if iOS can open the link
         shouldInteractWithURL = [self shouldInteractWithURL:URL urlItemInteraction:interaction associatedEvent:associatedEvent];
     }
     
     return shouldInteractWithURL;
 }
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-implementations"
-// Delegate method only called on iOS 9. iOS 10+ use method above.
-- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
-{
-    BOOL shouldInteractWithURL = YES;
-    
-    if (delegate && URL)
-    {
-        MXEvent *associatedEvent;
-        
-        if ([textView isMemberOfClass:[MXKMessageTextView class]])
-        {
-            MXKMessageTextView *mxkMessageTextView = (MXKMessageTextView *)textView;
-            MXKRoomBubbleComponent *bubbleComponent = [self closestBubbleComponentAtPosition:mxkMessageTextView.lastHitTestLocation];
-            associatedEvent = bubbleComponent.event;
-        }
-        
-        // Ask the delegate if iOS can open the link
-        shouldInteractWithURL = [self shouldInteractWithURL:URL urlItemInteractionValue:@(0) associatedEvent:associatedEvent];
-    }
-    
-    return shouldInteractWithURL;
-}
-#pragma clang diagnostic pop
 
 #pragma mark - WKNavigationDelegate
 

@@ -115,6 +115,62 @@ public class VectorL10n: NSObject {
   public static var add: String { 
     return VectorL10n.tr("Vector", "add") 
   }
+  /// All
+  public static var allChatsAllFilter: String { 
+    return VectorL10n.tr("Vector", "all_chats_all_filter") 
+  }
+  /// Edit layout
+  public static var allChatsEditLayout: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout") 
+  }
+  /// Activity
+  public static var allChatsEditLayoutActivityOrder: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout_activity_order") 
+  }
+  /// Automatically filter your messages into the categories of your choice
+  public static var allChatsEditLayoutAddFiltersMessage: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout_add_filters_message") 
+  }
+  /// Filter your messages
+  public static var allChatsEditLayoutAddFiltersTitle: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout_add_filters_title") 
+  }
+  /// Pin sections to home for easy access
+  public static var allChatsEditLayoutAddSectionMessage: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout_add_section_message") 
+  }
+  /// Add section to home
+  public static var allChatsEditLayoutAddSectionTitle: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout_add_section_title") 
+  }
+  /// A-Z
+  public static var allChatsEditLayoutAlphabeticalOrder: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout_alphabetical_order") 
+  }
+  /// Pin your spaces
+  public static var allChatsEditLayoutPinSpacesTitle: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout_pin_spaces_title") 
+  }
+  /// Recents
+  public static var allChatsEditLayoutRecents: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout_recents") 
+  }
+  /// Sort messages by
+  public static var allChatsEditLayoutSortingOptionsTitle: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout_sorting_options_title") 
+  }
+  /// Unreads
+  public static var allChatsEditLayoutUnreads: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout_unreads") 
+  }
+  /// Chats
+  public static var allChatsSectionTitle: String { 
+    return VectorL10n.tr("Vector", "all_chats_section_title") 
+  }
+  /// All chats
+  public static var allChatsTitle: String { 
+    return VectorL10n.tr("Vector", "all_chats_title") 
+  }
   /// Help us identify issues and improve %@ by sharing anonymous usage data. To understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.
   public static func analyticsPromptMessageNewUser(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "analytics_prompt_message_new_user", p1)
@@ -2063,6 +2119,10 @@ public class VectorL10n: NSObject {
   public static var homeContextMenuMakeRoom: String { 
     return VectorL10n.tr("Vector", "home_context_menu_make_room") 
   }
+  /// Mark as read
+  public static var homeContextMenuMarkAsRead: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_mark_as_read") 
+  }
   /// Mute
   public static var homeContextMenuMute: String { 
     return VectorL10n.tr("Vector", "home_context_menu_mute") 
@@ -2699,9 +2759,21 @@ public class VectorL10n: NSObject {
   public static var leave: String { 
     return VectorL10n.tr("Vector", "leave") 
   }
+  /// Leave space
+  public static var leaveSpaceAction: String { 
+    return VectorL10n.tr("Vector", "leave_space_action") 
+  }
   /// Leave all rooms and spaces
   public static var leaveSpaceAndAllRoomsAction: String { 
     return VectorL10n.tr("Vector", "leave_space_and_all_rooms_action") 
+  }
+  /// Leave space and %@ rooms
+  public static func leaveSpaceAndMoreRooms(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "leave_space_and_more_rooms", p1)
+  }
+  /// Leave space and 1 room
+  public static var leaveSpaceAndOneRoom: String { 
+    return VectorL10n.tr("Vector", "leave_space_and_one_room") 
   }
   /// Are you sure you want to leave %@? Do you also want to leave all rooms and spaces of this space?
   public static func leaveSpaceMessage(_ p1: String) -> String {
@@ -2714,6 +2786,18 @@ public class VectorL10n: NSObject {
   /// Don't leave any rooms
   public static var leaveSpaceOnlyAction: String { 
     return VectorL10n.tr("Vector", "leave_space_only_action") 
+  }
+  /// Select all rooms
+  public static var leaveSpaceSelectionAllRooms: String { 
+    return VectorL10n.tr("Vector", "leave_space_selection_all_rooms") 
+  }
+  /// Select no rooms
+  public static var leaveSpaceSelectionNoRooms: String { 
+    return VectorL10n.tr("Vector", "leave_space_selection_no_rooms") 
+  }
+  /// SELECT ROOMS
+  public static var leaveSpaceSelectionTitle: String { 
+    return VectorL10n.tr("Vector", "leave_space_selection_title") 
   }
   /// Leave %@
   public static func leaveSpaceTitle(_ p1: String) -> String {
@@ -2786,6 +2870,18 @@ public class VectorL10n: NSObject {
   /// Live location error
   public static var locationSharingLiveError: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_error") 
+  }
+  /// Enable live location sharing
+  public static var locationSharingLiveLabPromotionActivation: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_lab_promotion_activation") 
+  }
+  /// Please note: this is a labs feature using a temporary implementation that allows the history of your shared location to be permanently visible to other people in the room.
+  public static var locationSharingLiveLabPromotionText: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_lab_promotion_text") 
+  }
+  /// Live location sharing
+  public static var locationSharingLiveLabPromotionTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_lab_promotion_title") 
   }
   /// You
   public static var locationSharingLiveListItemCurrentUserDisplayName: String { 
@@ -3211,9 +3307,17 @@ public class VectorL10n: NSObject {
   public static var networkErrorNotReachable: String { 
     return VectorL10n.tr("Vector", "network_error_not_reachable") 
   }
+  /// You're offline, check your connection.
+  public static var networkOfflineMessage: String { 
+    return VectorL10n.tr("Vector", "network_offline_message") 
+  }
   /// The Internet connection appears to be offline.
   public static var networkOfflinePrompt: String { 
     return VectorL10n.tr("Vector", "network_offline_prompt") 
+  }
+  /// You're offline
+  public static var networkOfflineTitle: String { 
+    return VectorL10n.tr("Vector", "network_offline_title") 
   }
   /// New
   public static var newWord: String { 
@@ -4427,6 +4531,14 @@ public class VectorL10n: NSObject {
   public static var roomAccessibilityIntegrations: String { 
     return VectorL10n.tr("Vector", "room_accessibility_integrations") 
   }
+  /// Record Voice Message
+  public static var roomAccessibilityRecordVoiceMessage: String { 
+    return VectorL10n.tr("Vector", "room_accessibility_record_voice_message") 
+  }
+  /// Double-tap and hold to record.
+  public static var roomAccessibilityRecordVoiceMessageHint: String { 
+    return VectorL10n.tr("Vector", "room_accessibility_record_voice_message_hint") 
+  }
   /// Search
   public static var roomAccessibilitySearch: String { 
     return VectorL10n.tr("Vector", "room_accessibility_search") 
@@ -5014,6 +5126,10 @@ public class VectorL10n: NSObject {
   /// Reaction history
   public static var roomEventActionReactionHistory: String { 
     return VectorL10n.tr("Vector", "room_event_action_reaction_history") 
+  }
+  /// %@ more
+  public static func roomEventActionReactionMore(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_event_action_reaction_more", p1)
   }
   /// Show all
   public static var roomEventActionReactionShowAll: String { 
@@ -5755,6 +5871,10 @@ public class VectorL10n: NSObject {
   public static var roomRecentsPeopleSection: String { 
     return VectorL10n.tr("Vector", "room_recents_people_section") 
   }
+  /// Recently viewed
+  public static var roomRecentsRecentlyViewedSection: String { 
+    return VectorL10n.tr("Vector", "room_recents_recently_viewed_section") 
+  }
   /// SYSTEM ALERTS
   public static var roomRecentsServerNoticeSection: String { 
     return VectorL10n.tr("Vector", "room_recents_server_notice_section") 
@@ -6495,7 +6615,7 @@ public class VectorL10n: NSObject {
   public static func settingsCallsStunServerFallbackDescription(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_calls_stun_server_fallback_description", p1)
   }
-  /// Change Matrix account password
+  /// Change password
   public static var settingsChangePassword: String { 
     return VectorL10n.tr("Vector", "settings_change_password") 
   }
@@ -6527,7 +6647,7 @@ public class VectorL10n: NSObject {
   public static var settingsConfirmMediaSizeDescription: String { 
     return VectorL10n.tr("Vector", "settings_confirm_media_size_description") 
   }
-  /// confirm password
+  /// Confirm password
   public static var settingsConfirmPassword: String { 
     return VectorL10n.tr("Vector", "settings_confirm_password") 
   }
@@ -6883,6 +7003,10 @@ public class VectorL10n: NSObject {
   public static var settingsLabsEnableAutoReportDecryptionErrors: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_auto_report_decryption_errors") 
   }
+  /// Live location sharing - share current location (active development, and temporarily, locations persist in room history)
+  public static var settingsLabsEnableLiveLocationSharing: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enable_live_location_sharing") 
+  }
   /// Ring for group calls
   public static var settingsLabsEnableRingingForGroupCalls: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_ringing_for_group_calls") 
@@ -6943,7 +7067,7 @@ public class VectorL10n: NSObject {
   public static var settingsNewKeyword: String { 
     return VectorL10n.tr("Vector", "settings_new_keyword") 
   }
-  /// new password
+  /// New password
   public static var settingsNewPassword: String { 
     return VectorL10n.tr("Vector", "settings_new_password") 
   }
@@ -6967,7 +7091,7 @@ public class VectorL10n: NSObject {
   public static var settingsNotifyMeFor: String { 
     return VectorL10n.tr("Vector", "settings_notify_me_for") 
   }
-  /// old password
+  /// Old password
   public static var settingsOldPassword: String { 
     return VectorL10n.tr("Vector", "settings_old_password") 
   }
@@ -7103,6 +7227,10 @@ public class VectorL10n: NSObject {
   public static var settingsThreePidsManagementInformationPart3: String { 
     return VectorL10n.tr("Vector", "settings_three_pids_management_information_part3") 
   }
+  /// TIMELINE
+  public static var settingsTimeline: String { 
+    return VectorL10n.tr("Vector", "settings_timeline") 
+  }
   /// Settings
   public static var settingsTitle: String { 
     return VectorL10n.tr("Vector", "settings_title") 
@@ -7118,6 +7246,10 @@ public class VectorL10n: NSObject {
   /// Language
   public static var settingsUiLanguage: String { 
     return VectorL10n.tr("Vector", "settings_ui_language") 
+  }
+  /// Show a placeholder for removed messages
+  public static var settingsUiShowRedactionsInRoomHistory: String { 
+    return VectorL10n.tr("Vector", "settings_ui_show_redactions_in_room_history") 
   }
   /// Theme
   public static var settingsUiTheme: String { 
@@ -7638,6 +7770,10 @@ public class VectorL10n: NSObject {
   /// %@ rooms
   public static func spacesExploreRoomsRoomNumber(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "spaces_explore_rooms_room_number", p1)
+  }
+  /// This feature isn't available here. For now, you can do this with %@ on your computer.
+  public static func spacesFeatureNotAvailable(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_feature_not_available", p1)
   }
   /// Home
   public static var spacesHomeSpaceTitle: String { 

@@ -8,3 +8,4 @@
 // Permissions usage explanations
 "NSCameraUsageDescription" = "Fotoaparát sa používa na snímanie fotografií a videí, uskutočňovanie videohovorov.";
 "NSLocationWhenInUseUsageDescription" = "Keď zdieľate svoju polohu s ľuďmi, Element potrebuje prístup, aby im mohol zobraziť mapu.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Keď zdieľate svoju polohu s ľuďmi, Element potrebuje prístup, aby im mohol zobraziť mapu.";

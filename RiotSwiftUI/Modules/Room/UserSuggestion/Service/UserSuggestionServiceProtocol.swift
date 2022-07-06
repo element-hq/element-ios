@@ -23,7 +23,6 @@ protocol UserSuggestionItemProtocol: Avatarable {
     var avatarUrl: String? { get }
 }
 
-@available(iOS 14.0, *)
 protocol UserSuggestionServiceProtocol {
     
     var items: CurrentValueSubject<[UserSuggestionItemProtocol], Never> { get }

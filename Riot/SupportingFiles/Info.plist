@@ -6,6 +6,21 @@
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>$(BUNDLE_DISPLAY_NAME)</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Mention Pills</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>im.vector.app.pills</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -46,6 +61,8 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<false/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -59,19 +76,20 @@
 	<string>The contact book is used to send room invitation to your contacts with their emails.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Face ID is used to access your app.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>When you share your location to people, Element needs access to show them a map.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>When you share your location to people, Element needs access to show them a map.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>The microphone is used to take videos, make calls.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>The photo library is used to send photos and videos.</string>
 	<key>NSSiriUsageDescription</key>
 	<string>Siri is used to perform calls even from the lock screen.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>When you share your location to people, Element needs access to show them a map.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>When you share your location to people, Element needs access to show them a map.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
+		<string>location</string>
 		<string>remote-notification</string>
 		<string>voip</string>
 	</array>
@@ -108,29 +126,6 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
-	<key>UserDefaults</key>
-	<string>${PRODUCT_NAME}-Defaults</string>
-	<key>applicationGroupIdentifier</key>
-	<string>$(APPLICATION_GROUP_IDENTIFIER)</string>
-	<key>baseBundleIdentifier</key>
-	<string>$(BASE_BUNDLE_IDENTIFIER)</string>
-	<key>keychainAccessGroup</key>
-	<string>$(KEYCHAIN_ACCESS_GROUP)</string>
-	<key>CFBundleDocumentTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeName</key>
-			<string>Mention Pills</string>
-			<key>CFBundleTypeRole</key>
-			<string>Viewer</string>
-			<key>LSHandlerRank</key>
-			<string>Owner</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>im.vector.app.pills</string>
-			</array>
-		</dict>
-	</array>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
@@ -144,5 +139,11 @@
 			<string>im.vector.app.pills</string>
 		</dict>
 	</array>
+	<key>applicationGroupIdentifier</key>
+	<string>$(APPLICATION_GROUP_IDENTIFIER)</string>
+	<key>baseBundleIdentifier</key>
+	<string>$(BASE_BUNDLE_IDENTIFIER)</string>
+	<key>keychainAccessGroup</key>
+	<string>$(KEYCHAIN_ACCESS_GROUP)</string>
 </dict>
 </plist>

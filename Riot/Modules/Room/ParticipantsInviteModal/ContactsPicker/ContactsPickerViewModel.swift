@@ -126,6 +126,7 @@ class ContactsPickerViewModel: NSObject, ContactsPickerViewModelProtocol {
         
         contactsViewController.showSearch(true)
         contactsViewController.searchBar.placeholder = VectorL10n.roomParticipantsInviteAnotherUser
+        contactsViewController.searchBar.resignFirstResponder()
         
         // Apply the search pattern if any
         if currentSearchText != nil {

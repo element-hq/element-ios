@@ -6,6 +6,8 @@
 	<array>
 		<string>$(APPLICATION_GROUP_IDENTIFIER)</string>
 	</array>
+	<key>com.apple.developer.usernotifications.filtering</key>
+	<true/>
 	<key>keychain-access-groups</key>
 	<array>
 		<string>$(KEYCHAIN_ACCESS_GROUP)</string>

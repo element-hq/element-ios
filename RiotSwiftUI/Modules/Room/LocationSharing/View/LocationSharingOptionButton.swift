@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct LocationSharingOptionButton<Content: View>: View {
     
     // MARK: - Properties
@@ -42,7 +41,6 @@ struct LocationSharingOptionButton<Content: View>: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct LocationSharingOptionButton_Previews: PreviewProvider {
     static var previews: some View {
         VStack(alignment: .leading) {

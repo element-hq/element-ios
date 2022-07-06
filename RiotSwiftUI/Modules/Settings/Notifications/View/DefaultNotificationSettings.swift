@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct DefaultNotificationSettings: View {
     
     @ObservedObject var viewModel: NotificationSettingsViewModel
@@ -28,7 +27,6 @@ struct DefaultNotificationSettings: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct DefaultNotifications_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {

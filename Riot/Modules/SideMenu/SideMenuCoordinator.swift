@@ -260,7 +260,6 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         self.spaceDetailPresenter.present(forSpaceWithId: spaceId, from: self.sideMenuViewController, sourceView: sourceView, session: session, animated: true)
     }
     
-    @available(iOS 14.0, *)
     private func showCreateSpace() {
         guard let session = self.parameters.userSessionsService.mainUserSession?.matrixSession else {
             return
@@ -301,7 +300,6 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         self.createRoomCoordinator = createRoomCoordinator
     }
     
-    @available(iOS 14.0, *)
     private func showSpaceSettings(spaceId: String, session: MXSession) {
         let coordinator = SpaceSettingsModalCoordinator(parameters: SpaceSettingsModalCoordinatorParameters(session: session, spaceId: spaceId, parentSpaceId: nil))
         coordinator.callback = { [weak self] result in
@@ -432,9 +430,7 @@ extension SideMenuCoordinator: SpaceListCoordinatorDelegate {
     }
     
     func spaceListCoordinatorDidSelectCreateSpace(_ coordinator: SpaceListCoordinatorType) {
-        if #available(iOS 14.0, *) {
-            self.showCreateSpace()
-        }
+        self.showCreateSpace()
     }
 }
 
@@ -462,11 +458,7 @@ extension SideMenuCoordinator: SpaceMenuPresenterDelegate {
             case .addSpace:
                 AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.spacesAddSpace, message: VectorL10n.spacesFeatureNotAvailable(AppInfo.current.displayName))
             case .settings:
-                if #available(iOS 14.0, *) {
-                    self.showSpaceSettings(spaceId: spaceId, session: session)
-                } else {
-                    AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.settingsTitle, message: VectorL10n.spacesFeatureNotAvailable(AppInfo.current.displayName))
-                }
+                self.showSpaceSettings(spaceId: spaceId, session: session)
             case .invite:
                 self.showSpaceInvite(spaceId: spaceId, session: session)
             }

@@ -17,7 +17,6 @@
 import Foundation
 
 protocol TimelinePollViewModelProtocol {
-    @available(iOS 14, *)
     var context: TimelinePollViewModelType.Context { get }
     var completion: ((TimelinePollViewModelResult) -> Void)? { get set }
     

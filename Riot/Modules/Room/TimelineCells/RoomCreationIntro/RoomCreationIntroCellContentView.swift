@@ -49,6 +49,7 @@ final class RoomCreationIntroCellContentView: UIView, NibLoadable, Themable {
     // MARK: Public
     
     var didTapTopic: (() -> Void)?
+    var didTapRoomName: (() -> Void)?
     var didTapAddParticipants: (() -> Void)?
     
     // MARK: - Setup
@@ -93,8 +94,8 @@ final class RoomCreationIntroCellContentView: UIView, NibLoadable, Themable {
         let hideAddParticipants: Bool
         
         switch viewData.dicussionType {
-        case .room(topic: _):
-            hideAddParticipants = false
+        case .room(_, let canInvitePeople):
+            hideAddParticipants = !canInvitePeople
         default:
             hideAddParticipants = true
         }
@@ -129,7 +130,7 @@ final class RoomCreationIntroCellContentView: UIView, NibLoadable, Themable {
         let informationAttributedText: NSAttributedString
         
         switch viewData.dicussionType {
-        case .room(topic: let topic):
+        case .room(let topic, _):
             informationAttributedText = self.buildRoomInformationText(with: viewData.roomDisplayName, topic: topic)
         case .directMessage:
             informationAttributedText = self.buildDMInformationText(with: viewData.roomDisplayName, isDirect: true)
@@ -186,9 +187,13 @@ final class RoomCreationIntroCellContentView: UIView, NibLoadable, Themable {
     }        
     
     private func setupInformationTextTapGestureRecognizer() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleInformationTextTap(_:)))
+        var tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleInformationTextTap(_:)))
         self.informationLabel.isUserInteractionEnabled = true
         self.informationLabel.addGestureRecognizer(tapGestureRecognizer)
+        
+        tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleRoomNameTextTap(_:)))
+        self.titleLabel.isUserInteractionEnabled = true
+        self.titleLabel.addGestureRecognizer(tapGestureRecognizer)
     }
     
     @objc private func handleInformationTextTap(_ gestureRecognizer: UITapGestureRecognizer) {        
@@ -196,12 +201,16 @@ final class RoomCreationIntroCellContentView: UIView, NibLoadable, Themable {
             return
         }
         
-        if case DiscussionType.room(topic: let topic) = viewData.dicussionType {
+        if case DiscussionType.room(let topic, _) = viewData.dicussionType {
             // There is no topic defined
             if topic.isEmptyOrNil {
                 self.didTapTopic?()
             }
         }
+    }
+    
+    @objc private func handleRoomNameTextTap(_ gestureRecognizer: UITapGestureRecognizer) {
+        self.didTapRoomName?()
     }
     
     @objc private func socialButtonAction(_ sender: UIButton) {

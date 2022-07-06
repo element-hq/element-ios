@@ -19,7 +19,6 @@ import Combine
 
 @testable import RiotSwiftUI
 
-@available(iOS 14.0, *)
 class UserSuggestionServiceTests: XCTestCase {
     
     var service: UserSuggestionService?
@@ -106,7 +105,6 @@ class UserSuggestionServiceTests: XCTestCase {
     }
 }
 
-@available(iOS 14.0, *)
 extension UserSuggestionServiceTests: RoomMembersProviderProtocol {
     func fetchMembers(_ members: @escaping ([RoomMembersProviderMember]) -> Void) {
         

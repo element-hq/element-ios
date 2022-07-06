@@ -1547,6 +1547,38 @@ static CGSize kThreadListBarButtonItemImageSize;
     return item;
 }
 
+- (UIBarButtonItem *)joinJitsiBarButtonItem
+{
+    CallTileActionButton *button = [CallTileActionButton new];
+    [button setImage:AssetImages.callVideoIcon.image
+            forState:UIControlStateNormal];
+    [button setTitle:[VectorL10n roomJoinGroupCall]
+            forState:UIControlStateNormal];
+    [button addTarget:self
+               action:@selector(onVideoCallPressed:)
+     forControlEvents:UIControlEventTouchUpInside];
+    button.contentEdgeInsets = UIEdgeInsetsMake(4, 12, 4, 12);
+    
+    UIBarButtonItem *item;
+    
+    if (RiotSettings.shared.enableThreads)
+    {
+        // Add some spacing when there is a threads button
+        UIView *buttonContainer = [[UIView alloc] initWithFrame:CGRectZero];
+        [buttonContainer vc_addSubViewMatchingParent:button withInsets:UIEdgeInsetsMake(0, 0, 0, -12)];
+        
+        item = [[UIBarButtonItem alloc] initWithCustomView:buttonContainer];
+    }
+    else
+    {
+        item = [[UIBarButtonItem alloc] initWithCustomView:button];
+    }
+    
+    item.accessibilityLabel = [VectorL10n roomAccessibilityVideoCall];
+    
+    return item;
+}
+
 - (UIBarButtonItem *)threadMoreBarButtonItem
 {
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:AssetImages.roomContextMenuMore.image
@@ -1751,18 +1783,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                         }
                         else
                         {
-                            //  show Join button
-                            CallTileActionButton *button = [CallTileActionButton new];
-                            [button setImage:AssetImages.callVideoIcon.image
-                                    forState:UIControlStateNormal];
-                            [button setTitle:[VectorL10n roomJoinGroupCall]
-                                    forState:UIControlStateNormal];
-                            [button addTarget:self
-                                       action:@selector(onVideoCallPressed:)
-                             forControlEvents:UIControlEventTouchUpInside];
-                            button.contentEdgeInsets = UIEdgeInsetsMake(4, 12, 4, 12);
-                            UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
-                            item.accessibilityLabel = [VectorL10n roomAccessibilityVideoCall];
+                            UIBarButtonItem *item = [self joinJitsiBarButtonItem];
                             [rightBarButtonItems addObject:item];
                             
                             hasCustomJoinButton = YES;
@@ -1849,6 +1870,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         
         // Update encryption decoration if needed
         [self updateEncryptionDecorationForRoomInputToolbar:roomInputToolbarView];
+
+        // Update actions when the input toolbar refreshed
+        [self setupActions];
     }
     else if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:DisabledRoomInputToolbarView.class])
     {
@@ -2034,11 +2058,11 @@ static CGSize kThreadListBarButtonItemImageSize;
     self.mediaPickerPresenter = mediaPickerPresenter;
 }
 
-- (void)showRoomCreationModalWithBubbleData:(id<MXKRoomBubbleCellDataStoring>) bubbleData
+- (void)showRoomCreationModal
 {
     [self.roomCreationModalCoordinatorBridgePresenter dismissWithAnimated:NO completion:nil];
     
-    self.roomCreationModalCoordinatorBridgePresenter = [[RoomCreationModalCoordinatorBridgePresenter alloc] initWithSession:self.mainSession bubbleData:bubbleData roomState:self.roomDataSource.roomState];
+    self.roomCreationModalCoordinatorBridgePresenter = [[RoomCreationModalCoordinatorBridgePresenter alloc] initWithSession:self.mainSession roomState:self.roomDataSource.roomState];
     self.roomCreationModalCoordinatorBridgePresenter.delegate = self;
     [self.roomCreationModalCoordinatorBridgePresenter presentFrom:self animated:YES];
 }
@@ -2375,16 +2399,21 @@ static CGSize kThreadListBarButtonItemImageSize;
     return [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:BuildSettings.allowSplitViewDetailsScreenStacking sender:self sourceView:nil];
 }
 
-- (BOOL)handleUniversalLinkURL:(NSURL*)universalLinkURL
+- (BOOL)handleUniversalLinkURL:(NSURL*)url
 {
-    UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithUniversalLinkURL:universalLinkURL presentationParameters:[self buildUniversalLinkPresentationParameters]];
+    ScreenPresentationParameters *screenParameters = [self buildUniversalLinkPresentationParameters];
+    UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithUrl:url
+                                                                presentationParameters:screenParameters];
     return [self handleUniversalLinkWithParameters:parameters];
 }
 
-- (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL
+- (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)url
 {
+    ScreenPresentationParameters *screenParameters = [self buildUniversalLinkPresentationParameters];
+    UniversalLink *universalLink = [[UniversalLink alloc] initWithUrl:url];
     UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithFragment:fragment
-                                                                           universalLinkURL:universalLinkURL presentationParameters:[self buildUniversalLinkPresentationParameters]];
+                                                                              universalLink:universalLink
+                                                                     presentationParameters:screenParameters];
     return [self handleUniversalLinkWithParameters:parameters];
 }
 
@@ -2433,6 +2462,35 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self.view bringSubviewToFront:self.topBannersStackView];
     
     [self updateLiveLocationBannerViewVisibility];
+}
+
+- (void)showEmojiPickerForEventId:(NSString *)eventId
+{
+    EmojiPickerCoordinatorBridgePresenter *emojiPickerCoordinatorBridgePresenter = [[EmojiPickerCoordinatorBridgePresenter alloc] initWithSession:self.mainSession roomId:self.roomDataSource.roomId eventId:eventId];
+    emojiPickerCoordinatorBridgePresenter.delegate = self;
+    
+    NSInteger cellRow = [self.roomDataSource indexOfCellDataWithEventId:eventId];
+    
+    UIView *sourceView;
+    CGRect sourceRect = CGRectNull;
+    
+    if (cellRow >= 0)
+    {
+        NSIndexPath *cellIndexPath = [NSIndexPath indexPathForRow:cellRow inSection:0];
+        UITableViewCell *cell = [self.bubblesTableView cellForRowAtIndexPath:cellIndexPath];
+        sourceView = cell;
+        
+        if ([cell isKindOfClass:[MXKRoomBubbleTableViewCell class]])
+        {
+            MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)cell;
+            NSInteger bubbleComponentIndex = [roomBubbleTableViewCell.bubbleData bubbleComponentIndexForEventId:eventId];
+            sourceRect = [roomBubbleTableViewCell componentFrameInContentViewForIndex:bubbleComponentIndex];
+        }
+        
+    }
+    
+    [emojiPickerCoordinatorBridgePresenter presentFrom:self sourceView:sourceView sourceRect:sourceRect animated:YES];
+    self.emojiPickerCoordinatorBridgePresenter = emojiPickerCoordinatorBridgePresenter;
 }
 
 #pragma mark - Jitsi
@@ -3216,7 +3274,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                         // Show contextual menu on single tap if bubble is not collapsed
                         if (bubbleData.collapsed)
                         {
-                            [self showRoomCreationModalWithBubbleData:bubbleData];
+                            // Do nothing here as we display room creation modal only if the user taps on the room name
                         }
                         else
                         {
@@ -3382,6 +3440,14 @@ static CGSize kThreadListBarButtonItemImageSize;
                 [self showReactionHistoryForEventId:tappedEventId animated:YES];
             }
         }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAddReaction])
+        {
+            NSString *tappedEventId = userInfo[kMXKRoomBubbleCellEventIdKey];
+            if (tappedEventId)
+            {
+                [self showEmojiPickerForEventId:tappedEventId];
+            }
+        }
         else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.callBackAction])
         {
             MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
@@ -3470,6 +3536,10 @@ static CGSize kThreadListBarButtonItemImageSize;
         {
             [self showRoomTopicChange];
         }
+        else if ([actionIdentifier isEqualToString:RoomCreationIntroCell.tapOnRoomName])
+        {
+            [self showRoomCreationModal];
+        }
         else
         {
             // Keep default implementation for other actions
@@ -3519,6 +3589,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     BOOL showThreadOption = [self showThreadOptionForEvent:selectedEvent];
     if (showThreadOption && [self canCopyEvent:selectedEvent andCell:cell])
     {
+        MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
+        MXKRoomBubbleCellData *cellData = roomBubbleTableViewCell.bubbleData;
         [self.eventMenuBuilder addItemWithType:EventMenuItemTypeCopy
                                         action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCopy]
                                                                         style:UIAlertActionStyleDefault
@@ -3527,7 +3599,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             
             [self cancelEventSelection];
             
-            [self copyEvent:selectedEvent inCell:cell];
+            [self copyEvent:selectedEvent inCell:cell withCellData:cellData];
         }]];
     }
     
@@ -3611,22 +3683,6 @@ static CGSize kThreadListBarButtonItemImageSize;
             }]];
         }
 
-        if (selectedEvent.sentState == MXEventSentStateSent &&
-            selectedEvent.eventType != MXEventTypePollStart &&
-            !selectedEvent.location)
-        {
-            [self.eventMenuBuilder addItemWithType:EventMenuItemTypeForward
-                                            action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
-                                                                            style:UIAlertActionStyleDefault
-                                                                          handler:^(UIAlertAction * action) {
-                MXStrongifyAndReturnIfNil(self);
-
-                [self cancelEventSelection];
-
-                [self presentEventForwardingDialogForSelectedEvent:selectedEvent];
-            }]];
-        }
-
         if (!isJitsiCallEvent && selectedEvent.eventType != MXEventTypePollStart)
         {
             [self.eventMenuBuilder addItemWithType:EventMenuItemTypeQuote
@@ -3636,16 +3692,20 @@ static CGSize kThreadListBarButtonItemImageSize;
                 MXStrongifyAndReturnIfNil(self);
                 
                 [self cancelEventSelection];
-                
+
                 // Quote the message a la Markdown into the input toolbar composer
-                self.inputToolbarView.textMessage = [NSString stringWithFormat:@"%@\n>%@\n\n", self.inputToolbarView.textMessage, selectedComponent.textMessage];
+                NSString *prefix = [self.inputToolbarView.textMessage length] ? [NSString stringWithFormat:@"%@\n", self.inputToolbarView.textMessage] : @"";
+                self.inputToolbarView.textMessage = [NSString stringWithFormat:@"%@>%@\n\n", prefix, selectedComponent.textMessage];
                 
                 // And display the keyboard
                 [self.inputToolbarView becomeFirstResponder];
             }]];
         }
         
-        if (selectedEvent.sentState == MXEventSentStateSent && selectedEvent.eventType != MXEventTypePollStart)
+        if (selectedEvent.sentState == MXEventSentStateSent &&
+            selectedEvent.eventType != MXEventTypePollStart &&
+            // Forwarding of live-location shares still to be implemented
+            selectedEvent.eventType != MXEventTypeBeaconInfo)
         {
             [self.eventMenuBuilder addItemWithType:EventMenuItemTypeForward
                                             action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
@@ -4098,17 +4158,16 @@ static CGSize kThreadListBarButtonItemImageSize;
                 [self showEncryptionInformation:selectedEvent];
             }]];
         }
-        
-        [self.eventMenuBuilder addItemWithType:EventMenuItemTypeCancel
-                                        action:[UIAlertAction actionWithTitle:[VectorL10n cancel]
-                                                                        style:UIAlertActionStyleCancel
-                                                                      handler:^(UIAlertAction * action) {
-            MXStrongifyAndReturnIfNil(self);
-            
-            [self hideContextualMenuAnimated:YES];
-        }]];
-        
     }
+
+    [self.eventMenuBuilder addItemWithType:EventMenuItemTypeCancel
+                                    action:[UIAlertAction actionWithTitle:[VectorL10n cancel]
+                                                                    style:UIAlertActionStyleCancel
+                                                                  handler:^(UIAlertAction * action) {
+        MXStrongifyAndReturnIfNil(self);
+
+        [self hideContextualMenuAnimated:YES];
+    }]];
     
     // Do not display empty action sheet
     if (!self.eventMenuBuilder.isEmpty)
@@ -4275,36 +4334,12 @@ static CGSize kThreadListBarButtonItemImageSize;
                         default:
                         {
                             MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
-                            NSString *format = tappedEvent.content[@"format"];
-                            NSString *formattedBody = tappedEvent.content[@"formatted_body"];
-                            //  if an html formatted body exists
-                            if ([format isEqualToString:kMXRoomMessageFormatHTML] && formattedBody)
+                            URLValidationResult *result = [URLValidator validateTappedURL:url in:tappedEvent];
+                            if (result.shouldShowConfirmationAlert)
                             {
-                                NSURL *visibleURL = [formattedBodyParser getVisibleURLForURL:url inFormattedBody:formattedBody];
-                                
-                                if (visibleURL && ![url isEqual:visibleURL])
-                                {
-                                    //  urls are different, show confirmation alert
-                                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[VectorL10n externalLinkConfirmationTitle] message:[VectorL10n externalLinkConfirmationMessage:visibleURL.absoluteString :url.absoluteString] preferredStyle:UIAlertControllerStyleAlert];
-                                    
-                                    UIAlertAction *continueAction = [UIAlertAction actionWithTitle:[VectorL10n continue] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                                        // Try to open the link
-                                        [[UIApplication sharedApplication] vc_open:url completionHandler:^(BOOL success) {
-                                            if (!success)
-                                            {
-                                                [self showUnableToOpenLinkErrorAlert];
-                                            }
-                                        }];
-                                    }];
-                                    
-                                    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:[VectorL10n cancel] style:UIAlertActionStyleCancel handler:nil];
-                                    
-                                    [alert addAction:continueAction];
-                                    [alert addAction:cancelAction];
-                                    
-                                    [self presentViewController:alert animated:YES completion:nil];
-                                    return NO;
-                                }
+                                [self showDifferentURLsAlertFor:url
+                                                  visibleURLString:result.visibleURLString];
+                                return NO;
                             }
                             // Try to open the link
                             [[UIApplication sharedApplication] vc_open:url completionHandler:^(BOOL success) {
@@ -4430,6 +4465,29 @@ static CGSize kThreadListBarButtonItemImageSize;
     return roomInputToolbarView;
 }
 
+- (void)showDifferentURLsAlertFor:(NSURL *)url visibleURLString:(NSString *)visibleURLString
+{
+    //  urls are different, show confirmation alert
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[VectorL10n externalLinkConfirmationTitle] message:[VectorL10n externalLinkConfirmationMessage:visibleURLString :url.absoluteString] preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction *continueAction = [UIAlertAction actionWithTitle:[VectorL10n continue] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        // Try to open the link
+        [[UIApplication sharedApplication] vc_open:url completionHandler:^(BOOL success) {
+            if (!success)
+            {
+                [self showUnableToOpenLinkErrorAlert];
+            }
+        }];
+    }];
+
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:[VectorL10n cancel] style:UIAlertActionStyleCancel handler:nil];
+
+    [alert addAction:continueAction];
+    [alert addAction:cancelAction];
+
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
 #pragma mark - RoomDataSourceDelegate
 
 - (void)roomDataSourceDidUpdateEncryptionTrustLevel:(RoomDataSource *)roomDataSource
@@ -4489,9 +4547,6 @@ static CGSize kThreadListBarButtonItemImageSize;
             unknownDevices = nil;
         }
     }
-    
-    // Hide back button title
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 #pragma mark - VoIP
@@ -5457,8 +5512,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         }
         else if ([AppDelegate theDelegate].isOffline)
         {
-            self.activitiesViewExpanded = YES;
-            [roomActivitiesView displayNetworkErrorNotification:[VectorL10n roomOfflineNotification]];
+            // Doing nothing here as the offline notification is now handled by the AppCoordinator
         }
         else if (self.customizedRoomDataSource.roomState.isObsolete)
         {
@@ -6678,10 +6732,12 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     RoomContextualMenuItem *copyMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionCopy];
     copyMenuItem.isEnabled = [self canCopyEvent:event andCell:cell];
+    MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
+    MXKRoomBubbleCellData *cellData = roomBubbleTableViewCell.bubbleData;
     copyMenuItem.action = ^{
         MXStrongifyAndReturnIfNil(self);
         
-        [self copyEvent:event inCell:cell];
+        [self copyEvent:event inCell:cell withCellData:cellData];
     };
     
     return copyMenuItem;
@@ -6739,14 +6795,14 @@ static CGSize kThreadListBarButtonItemImageSize;
     return result;
 }
 
-- (void)copyEvent:(MXEvent*)event inCell:(id<MXKCellRendering>)cell
+- (void)copyEvent:(MXEvent*)event inCell:(id<MXKCellRendering>)cell withCellData:(MXKRoomBubbleCellData *)cellData
 {
     MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
-    MXKAttachment *attachment = roomBubbleTableViewCell.bubbleData.attachment;
+    MXKAttachment *attachment = cellData.attachment;
     
     if (!attachment)
     {
-        NSArray *components = roomBubbleTableViewCell.bubbleData.bubbleComponents;
+        NSArray *components = cellData.bubbleComponents;
         MXKRoomBubbleComponent *selectedComponent;
         for (selectedComponent in components)
         {
@@ -7122,32 +7178,8 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (void)reactionsMenuViewModelDidTapMoreReactions:(ReactionsMenuViewModel *)viewModel forEventId:(NSString *)eventId
 {
     [self hideContextualMenuAnimated:YES];
-    
-    EmojiPickerCoordinatorBridgePresenter *emojiPickerCoordinatorBridgePresenter = [[EmojiPickerCoordinatorBridgePresenter alloc] initWithSession:self.mainSession roomId:self.roomDataSource.roomId eventId:eventId];
-    emojiPickerCoordinatorBridgePresenter.delegate = self;
-    
-    NSInteger cellRow = [self.roomDataSource indexOfCellDataWithEventId:eventId];
-    
-    UIView *sourceView;
-    CGRect sourceRect = CGRectNull;
-    
-    if (cellRow >= 0)
-    {
-        NSIndexPath *cellIndexPath = [NSIndexPath indexPathForRow:cellRow inSection:0];
-        UITableViewCell *cell = [self.bubblesTableView cellForRowAtIndexPath:cellIndexPath];
-        sourceView = cell;
-        
-        if ([cell isKindOfClass:[MXKRoomBubbleTableViewCell class]])
-        {
-            MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)cell;
-            NSInteger bubbleComponentIndex = [roomBubbleTableViewCell.bubbleData bubbleComponentIndexForEventId:eventId];
-            sourceRect = [roomBubbleTableViewCell componentFrameInContentViewForIndex:bubbleComponentIndex];
-        }
-        
-    }
-    
-    [emojiPickerCoordinatorBridgePresenter presentFrom:self sourceView:sourceView sourceRect:sourceRect animated:YES];
-    self.emojiPickerCoordinatorBridgePresenter = emojiPickerCoordinatorBridgePresenter;
+
+    [self showEmojiPickerForEventId:eventId];
 }
 
 #pragma mark -

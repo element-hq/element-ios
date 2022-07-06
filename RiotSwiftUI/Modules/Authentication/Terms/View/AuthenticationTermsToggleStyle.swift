@@ -22,10 +22,9 @@ struct AuthenticationTermsToggleStyle: ToggleStyle {
     
     func makeBody(configuration: Configuration) -> some View {
         Button { configuration.isOn.toggle() } label: {
-            Image(systemName: configuration.isOn ? "checkmark.square.fill" : "square")
+            Image(systemName: configuration.isOn ? "checkmark.circle.fill" : "circle")
                 .font(.title3.weight(.regular))
-                .imageScale(.large)
-                .foregroundColor(configuration.isOn ? theme.colors.accent : theme.colors.tertiaryContent)
+                .foregroundColor(theme.colors.accent)
         }
         .buttonStyle(.plain)
     }

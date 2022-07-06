@@ -18,6 +18,7 @@ import Foundation
 import MatrixSDK.MXLog
 
 public extension NSString {
+
     /// Gets the first URL contained in the string ignoring any links to hosts defined in
     /// the `firstURLDetectionIgnoredHosts` property of `MXKAppSettings`.
     /// - Returns: A URL if detected, otherwise nil.

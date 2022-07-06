@@ -19,6 +19,5 @@ import Foundation
 protocol LiveLocationSharingViewerViewModelProtocol {
     
     var completion: ((LiveLocationSharingViewerViewModelResult) -> Void)? { get set }
-    @available(iOS 14, *)
     var context: LiveLocationSharingViewerViewModelType.Context { get }
 }

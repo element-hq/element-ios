@@ -17,7 +17,6 @@
 import Foundation
 import Combine
 
-@available(iOS 14.0, *)
 extension Publisher where Failure == Never {
     /// Same as `assign(to:on:)` but maintains a weak reference to object
     ///

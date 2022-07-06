@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -61,7 +61,7 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oJa-2k-bLm">
-                        <rect key="frame" x="46" y="4" width="469" height="30"/>
+                        <rect key="frame" x="46" y="4" width="469" height="24"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                 </subviews>
@@ -78,7 +78,7 @@
                     <constraint firstItem="q9c-0p-QyP" firstAttribute="leading" secondItem="hgp-Z5-rAj" secondAttribute="trailing" constant="13" id="YWK-C2-15w"/>
                     <constraint firstItem="oJa-2k-bLm" firstAttribute="top" secondItem="q9c-0p-QyP" secondAttribute="top" constant="-6" id="YqE-ag-Clf"/>
                     <constraint firstItem="oJa-2k-bLm" firstAttribute="leading" secondItem="q9c-0p-QyP" secondAttribute="leading" constant="-10" id="aAt-io-r0S"/>
-                    <constraint firstItem="oJa-2k-bLm" firstAttribute="bottom" secondItem="q9c-0p-QyP" secondAttribute="bottom" constant="6" id="ceT-ga-bdN"/>
+                    <constraint firstItem="oJa-2k-bLm" firstAttribute="bottom" secondItem="q9c-0p-QyP" secondAttribute="bottom" id="ceT-ga-bdN"/>
                     <constraint firstItem="oJa-2k-bLm" firstAttribute="trailing" secondItem="q9c-0p-QyP" secondAttribute="trailing" id="edQ-WD-Vf4"/>
                     <constraint firstAttribute="bottom" secondItem="IOg-Kt-8vW" secondAttribute="bottom" id="f24-Fr-D4j"/>
                     <constraint firstItem="HTH-5n-MSU" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="21" id="mkw-3s-H8B"/>

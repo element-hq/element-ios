@@ -141,8 +141,8 @@
 "directory_cell_title" = "Bladeren door de catalogus";
 "directory_cell_description" = "%tu kamers";
 "directory_search_results_title" = "Bladeren door catalogusresultaten";
-"directory_search_results" = "%tu resultaten gevonden voor %@";
-"directory_search_results_more_than" = ">%tu resultaten gevonden voor %@";
+"directory_search_results" = "%1$tu resultaten gevonden voor %2$@";
+"directory_search_results_more_than" = ">%1$tu resultaten gevonden voor %2$@";
 "directory_searching_title" = "Catalogus wordt doorzocht…";
 "directory_search_fail" = "Ophalen van gegevens is mislukt";
 // Contacts
@@ -309,9 +309,9 @@
 "settings_privacy_policy" = "Privacybeleid";
 "settings_third_party_notices" = "Derdepartijmeldingen";
 "settings_send_crash_report" = "Anonieme crash- en gebruiksgegevens versturen";
-"settings_old_password" = "oud wachtwoord";
-"settings_new_password" = "nieuw wachtwoord";
-"settings_confirm_password" = "wachtwoord bevestigen";
+"settings_old_password" = "Oud wachtwoord";
+"settings_new_password" = "Nieuw wachtwoord";
+"settings_confirm_password" = "Wachtwoord bevestigen";
 "settings_fail_to_update_password" = "Bijwerken van Matrix account wachtwoord is mislukt";
 "settings_password_updated" = "Uw Matrix account wachtwoord is bijgewerkt";
 "settings_crypto_device_name" = "Apparaatnaam: ";
@@ -2483,3 +2483,11 @@
 "location_sharing_live_timer_incoming" = "Live tot %@";
 "live_location_sharing_ended" = "Live locatie beëindigd";
 "confirm" = "Bevestigen";
+"location_sharing_allow_background_location_cancel_action" = "Niet nu";
+"location_sharing_allow_background_location_validate_action" = "Instellingen";
+"location_sharing_allow_background_location_message" = "Als u live locatie wilt delen, heeft Element locatietoegang nodig wanneer de app op de achtergrond is. Om toegang in te schakelen, tik je op Instellingen> Locatie en selecteert u Altijd";
+"location_sharing_allow_background_location_title" = "Toegang te verlenen";
+"settings_labs_enable_live_location_sharing" = "Live locatie delen - deel huidige locatie (actieve ontwikkeling, en tijdelijk, locaties blijven bestaan in kamergeschiedenis)";
+/* The %@ placeholder will be replaced with the integration manager's URL. */
+"settings_integrations_allow_description" = "Gebruik een integratiebeheerder (%@) om bots, bruggen, widgets en stickerpakketten te beheren.\n\nIntegratiebeheerders ontvangen configuratiedata en kunnen widgets aanpassen, kameruitnodigingen versturen en bestuursniveaus instellen namens u.";
+"settings_ui_show_redactions_in_room_history" = "Toon een aanduiding voor verwijderde berichten";

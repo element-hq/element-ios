@@ -127,8 +127,8 @@
 "search_no_result" = "Inga resultat";
 "search_in_progress" = "Söker…";
 "directory_cell_description" = "%tu rum";
-"directory_search_results" = "%tu resultat hittades för %@";
-"directory_search_results_more_than" = ">%tu resultat hittades för %@";
+"directory_search_results" = "%1$tu resultat hittades för %2$@";
+"directory_search_results_more_than" = ">%1$tu resultat hittades för %2$@";
 // Contacts
 "contacts_address_book_section" = "LOKALA KONTAKTER";
 "contacts_address_book_matrix_users_toggle" = "Endast Matrix-användare";
@@ -2262,3 +2262,8 @@
 "location_sharing_live_timer_incoming" = "Realtid tills %@";
 "live_location_sharing_ended" = "Realtidsplats avslutad";
 "confirm" = "Bekräfta";
+"location_sharing_allow_background_location_cancel_action" = "Inte nu";
+"location_sharing_allow_background_location_validate_action" = "Inställningar";
+"location_sharing_allow_background_location_message" = "Om du vill dela din realtidsplats så behöver Element platsåtkomst när appen är i bakgrunden. För att aktivera åtkomst, gå till Inställningar > Plats och välj Alltid";
+"location_sharing_allow_background_location_title" = "Tillåt åtkomst";
+"settings_labs_enable_live_location_sharing" = "Platsdelning i realtid - dela nuvarande plats (aktiv utveckling, och för tillfället ligger platser kvar i rumshistoriken)";

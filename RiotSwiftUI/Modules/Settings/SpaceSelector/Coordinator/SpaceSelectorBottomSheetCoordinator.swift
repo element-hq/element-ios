@@ -60,7 +60,7 @@ final class SpaceSelectorBottomSheetCoordinator: Coordinator, Presentable {
             .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
         spaceSelectorBottomSheetViewModel = viewModel
         let hostingViewController = VectorHostingController(rootView: view)
-        hostingViewController.isBottomSheet = true
+        hostingViewController.bottomSheetPreferences = VectorHostingBottomSheetPreferences()
         spaceSelectorBottomSheetHostingController = hostingViewController
         
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: spaceSelectorBottomSheetHostingController)

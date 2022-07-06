@@ -46,12 +46,12 @@
 #import "NSArray+Element.h"
 #import "ShareItemSender.h"
 #import "Contact.h"
-#import "HTMLFormatter.h"
 #import "RoomTimelineCellProvider.h"
 #import "PlainRoomTimelineCellProvider.h"
 #import "BubbleRoomTimelineCellProvider.h"
 #import "RoomSelectedStickerBubbleCell.h"
 #import "MXRoom+Riot.h"
+#import "UniversalLink.h"
 
 // MatrixKit common imports, shared with all targets
 #import "MatrixKit-Bridging-Header.h"

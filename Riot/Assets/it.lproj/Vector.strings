@@ -146,8 +146,8 @@
 "directory_cell_title" = "Esplora l'elenco";
 "directory_cell_description" = "%tu stanze";
 "directory_search_results_title" = "Esplora risultati elenco";
-"directory_search_results" = "%tu risultati trovati per %@";
-"directory_search_results_more_than" = ">%tu risultati trovati per %@";
+"directory_search_results" = "%1$tu risultati trovati per %2$@";
+"directory_search_results_more_than" = ">%1$tu risultati trovati per %2$@";
 "directory_searching_title" = "Ricerca negli elenchi…";
 "directory_search_fail" = "La ricerca di informazioni è fallita";
 // Contacts
@@ -318,7 +318,7 @@
 "settings_add_email_address" = "Aggiungi indirizzo email";
 "settings_phone_number" = "Telefono";
 "settings_add_phone_number" = "Aggiungi numero di telefono";
-"settings_change_password" = "Cambia password dell'account Matrix";
+"settings_change_password" = "Cambia password";
 "settings_night_mode" = "Modalità notte";
 "settings_fail_to_update_profile" = "Errore nell'aggiornamento del profilo";
 "settings_enable_push_notif" = "Notifiche per questo dispositivo";
@@ -352,9 +352,9 @@
 "settings_third_party_notices" = "Avvisi di terze parti";
 "settings_send_crash_report" = "Invia dati di utilizzo anonimi";
 "settings_enable_rageshake" = "Per segnalare un errore agita il dispositivo con rabbia";
-"settings_old_password" = "vecchia password";
-"settings_new_password" = "nuova password";
-"settings_confirm_password" = "conferma password";
+"settings_old_password" = "Vecchia password";
+"settings_new_password" = "Nuova password";
+"settings_confirm_password" = "Conferma password";
 "settings_fail_to_update_password" = "Aggiornamento password dell'account Matrix fallito";
 "settings_password_updated" = "La password del tuo account Matrix è stata aggiornata";
 "settings_crypto_device_name" = "Nome sessione: ";
@@ -2298,3 +2298,9 @@
 "location_sharing_live_timer_incoming" = "In tempo reale fino a %@";
 "live_location_sharing_ended" = "Posizione in tempo reale terminata";
 "confirm" = "Conferma";
+"location_sharing_allow_background_location_cancel_action" = "Non ora";
+"location_sharing_allow_background_location_validate_action" = "Impostazioni";
+"location_sharing_allow_background_location_message" = "Se vuoi condividere la posizione in tempo reale, Element deve accedere alla posizione quando l'app è in secondo piano. Per attivarla, tocca Impostazioni > Posizione e seleziona Sempre";
+"location_sharing_allow_background_location_title" = "Permetti accesso";
+"settings_labs_enable_live_location_sharing" = "Condivisione posizione in tempo reale - condividi la posizione attuale (in sviluppo attivo e, per ora, le posizioni restano nella cronologia della stanza)";
+"settings_ui_show_redactions_in_room_history" = "Mostra un segnaposto per i messaggi rimossi";
