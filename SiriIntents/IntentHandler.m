@@ -18,21 +18,23 @@
 
 #import "GeneratedInterface-Swift.h"
 #import "MXKAccountManager.h"
+#import "ContactResolver.h"
+#import "StartAudioCallIntentHandler.h"
+#import "StartVideoCallIntentHandler.h"
+#import "SendMessageIntentHandler.h"
 
 #if __has_include(<MatrixSDK/MXJingleCallStack.h>)
 #define CALL_STACK_JINGLE
 #endif
 
-@interface IntentHandler () <INStartAudioCallIntentHandling, INStartVideoCallIntentHandling, INSendMessageIntentHandling>
+@interface IntentHandler ()
 
 // Build Settings
 @property (nonatomic) id<Configurable> configuration;
 
-/**
- The room that is currently being used to send a message. This is to ensure a
- strong ref is maintained on the `MXRoom` until sending has completed.
- */
-@property (nonatomic) MXRoom *selectedRoom;
+@property (nonatomic) id<INStartAudioCallIntentHandling> startAudioCallIntentHandler;
+@property (nonatomic) id<INStartVideoCallIntentHandling> startVideoCallIntentHandler;
+@property (nonatomic) id<INSendMessageIntentHandling> sendMessageIntentHandler;
 
 @end
 
@@ -65,386 +67,26 @@
         Analytics *analytics = Analytics.shared;
         [MXSDKOptions sharedInstance].analyticsDelegate = analytics;
         [analytics startIfEnabled];
+        
+        id<ContactResolving> contactResolver = [[ContactResolver alloc] init];
+        _startAudioCallIntentHandler = [[StartAudioCallIntentHandler alloc] initWithContactResolver:contactResolver];
+        _startVideoCallIntentHandler = [[StartVideoCallIntentHandler alloc] initWithContactResolver:contactResolver];
+        _sendMessageIntentHandler = [[SendMessageIntentHandler alloc] initWithContactResolver:contactResolver];
     }
     return self;
 }
 
 - (id)handlerForIntent:(INIntent *)intent
 {
-    return self;
-}
-
-#pragma mark - INStartAudioCallIntentHandling
-
-- (void)resolveContactsForStartAudioCall:(INStartAudioCallIntent *)intent withCompletion:(void (^)(NSArray<INPersonResolutionResult *> * _Nonnull))completion
-{
-    [self resolveContacts:intent.contacts withCompletion:completion];
-}
-
-- (void)confirmStartAudioCall:(INStartAudioCallIntent *)intent completion:(void (^)(INStartAudioCallIntentResponse * _Nonnull))completion
-{
-    INStartAudioCallIntentResponse *response = nil;
-    
-    MXKAccount *account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-    if (account)
-    {
-#if defined MX_CALL_STACK_OPENWEBRTC || defined MX_CALL_STACK_ENDPOINT || defined CALL_STACK_JINGLE
-        NSUserActivity *userActivity = [[NSUserActivity alloc] initWithActivityType:NSStringFromClass([INStartAudioCallIntent class])];
-        response = [[INStartAudioCallIntentResponse alloc] initWithCode:INStartAudioCallIntentResponseCodeReady userActivity:userActivity];
-#else
-        response = [[INStartAudioCallIntentResponse alloc] initWithCode:INStartAudioCallIntentResponseCodeFailureCallingServiceNotAvailable userActivity:nil];
-#endif
-    }
-    else
-    {
-        // User hasn't logged in
-        response = [[INStartAudioCallIntentResponse alloc] initWithCode:INStartAudioCallIntentResponseCodeFailureAppConfigurationRequired userActivity:nil];
+    if ([intent isKindOfClass:[INStartAudioCallIntent class]]) {
+        return self.startAudioCallIntentHandler;
+    } else if ([intent isKindOfClass:[INStartVideoCallIntent class]]) {
+        return self.startVideoCallIntentHandler;
+    } else if ([intent isKindOfClass:[INSendMessageIntent class]]) {
+        return self.sendMessageIntentHandler;
     }
     
-    completion(response);
-}
-
-- (void)handleStartAudioCall:(INStartAudioCallIntent *)intent completion:(void (^)(INStartAudioCallIntentResponse * _Nonnull))completion
-{
-    INStartAudioCallIntentResponse *response = nil;
-    
-    INPerson *person = intent.contacts.firstObject;
-    if (person && person.customIdentifier)
-    {
-        NSUserActivity *userActivity = [[NSUserActivity alloc] initWithActivityType:NSStringFromClass(INStartAudioCallIntent.class)];
-        userActivity.userInfo = @{ @"roomID" : person.customIdentifier };
-        
-        response = [[INStartAudioCallIntentResponse alloc] initWithCode:INStartAudioCallIntentResponseCodeContinueInApp
-                                                           userActivity:userActivity];
-    }
-    else
-    {
-        response = [[INStartAudioCallIntentResponse alloc] initWithCode:INStartAudioCallIntentResponseCodeFailure userActivity:nil];
-    }
-
-    completion(response);
-}
-
-#pragma mark - INStartVideoCallIntentHandling
-
-- (void)resolveContactsForStartVideoCall:(INStartVideoCallIntent *)intent withCompletion:(void (^)(NSArray<INPersonResolutionResult *> * _Nonnull))completion
-{
-    [self resolveContacts:intent.contacts withCompletion:completion];
-}
-
-- (void)confirmStartVideoCall:(INStartVideoCallIntent *)intent completion:(void (^)(INStartVideoCallIntentResponse * _Nonnull))completion
-{
-    INStartVideoCallIntentResponse *response = nil;
-    
-    MXKAccount *account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-    if (account)
-    {
-#if defined MX_CALL_STACK_OPENWEBRTC || defined MX_CALL_STACK_ENDPOINT || defined CALL_STACK_JINGLE
-        NSUserActivity *userActivity = [[NSUserActivity alloc] initWithActivityType:NSStringFromClass([INStartVideoCallIntent class])];
-        response = [[INStartVideoCallIntentResponse alloc] initWithCode:INStartVideoCallIntentResponseCodeReady userActivity:userActivity];
-#else
-        response = [[INStartVideoCallIntentResponse alloc] initWithCode:INStartVideoCallIntentResponseCodeFailureCallingServiceNotAvailable userActivity:nil];
-#endif
-    }
-    else
-    {
-        // User hasn't logged in
-        response = [[INStartVideoCallIntentResponse alloc] initWithCode:INStartVideoCallIntentResponseCodeFailureRequiringAppLaunch userActivity:nil];
-    }
-    
-    completion(response);
-}
-
-- (void)handleStartVideoCall:(INStartVideoCallIntent *)intent completion:(void (^)(INStartVideoCallIntentResponse * _Nonnull))completion
-{
-    INStartVideoCallIntentResponse *response = nil;
-    
-    INPerson *person = intent.contacts.firstObject;
-    if (person && person.customIdentifier)
-    {
-        NSUserActivity *userActivity = [[NSUserActivity alloc] initWithActivityType:NSStringFromClass(INStartVideoCallIntent.class)];
-        userActivity.userInfo = @{ @"roomID" : person.customIdentifier };
-        
-        response = [[INStartVideoCallIntentResponse alloc] initWithCode:INStartVideoCallIntentResponseCodeContinueInApp
-                                                           userActivity:userActivity];
-    }
-    else
-    {
-        response = [[INStartVideoCallIntentResponse alloc] initWithCode:INStartVideoCallIntentResponseCodeFailure userActivity:nil];
-    }
-    
-    completion(response);
-}
-
-#pragma mark - INSendMessageIntentHandling
-
-- (void)resolveRecipientsForSendMessage:(INSendMessageIntent *)intent completion:(void (^)(NSArray<INSendMessageRecipientResolutionResult *> * _Nonnull))completion
-{
-    [self resolveContacts:intent.recipients withCompletion:completion];
-}
-
-- (void)resolveContentForSendMessage:(INSendMessageIntent *)intent withCompletion:(void (^)(INStringResolutionResult * _Nonnull))completion
-{
-    NSString *message = intent.content;
-    if (message && ![message isEqualToString:@""])
-        completion([INStringResolutionResult successWithResolvedString:message]);
-    else
-        completion([INStringResolutionResult needsValue]);
-}
-
-- (void)confirmSendMessage:(INSendMessageIntent *)intent completion:(void (^)(INSendMessageIntentResponse * _Nonnull))completion
-{
-    INSendMessageIntentResponse *response = nil;
-    
-    MXKAccount *account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-    if (account)
-    {
-        NSUserActivity *userActivity = [[NSUserActivity alloc] initWithActivityType:NSStringFromClass([INSendMessageIntent class])];
-        response = [[INSendMessageIntentResponse alloc] initWithCode:INSendMessageIntentResponseCodeReady userActivity:userActivity];
-    }
-    else
-    {
-        // User hasn't logged in
-        response = [[INSendMessageIntentResponse alloc] initWithCode:INSendMessageIntentResponseCodeFailureRequiringAppLaunch userActivity:nil];
-    }
-    
-    completion(response);
-}
-
-- (void)handleSendMessage:(INSendMessageIntent *)intent completion:(void (^)(INSendMessageIntentResponse * _Nonnull))completion
-{
-    void (^completeWithCode)(INSendMessageIntentResponseCode) = ^(INSendMessageIntentResponseCode code) {
-        NSUserActivity *userActivity = nil;
-        if (code == INSendMessageIntentResponseCodeSuccess)
-            userActivity = [[NSUserActivity alloc] initWithActivityType:NSStringFromClass([INSendMessageIntent class])];
-        INSendMessageIntentResponse *response = [[INSendMessageIntentResponse alloc] initWithCode:INSendMessageIntentResponseCodeSuccess
-                                                                                     userActivity:userActivity];
-        completion(response);
-    };
-    
-    INPerson *person = intent.recipients.firstObject;
-    if (person && person.customIdentifier)
-    {
-        MXKAccount *account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-        MXFileStore *fileStore = [[MXFileStore alloc] initWithCredentials:account.mxCredentials];
-        [fileStore.roomSummaryStore fetchAllSummaries:^(NSArray<id<MXRoomSummaryProtocol>> * _Nonnull summaries) {
-            NSString *roomID = person.customIdentifier;
-            
-            BOOL isEncrypted = NO;
-            for (id<MXRoomSummaryProtocol> summary in summaries)
-            {
-                if ([summary.roomId isEqualToString:roomID])
-                {
-                    isEncrypted = summary.isEncrypted;
-                    break;
-                }
-            }
-
-            if (isEncrypted)
-            {
-                [MXFileStore setPreloadOptions:0];
-
-                MXSession *session = [[MXSession alloc] initWithMatrixRestClient:account.mxRestClient];
-                MXWeakify(session);
-                [session setStore:fileStore success:^{
-                    MXStrongifyAndReturnIfNil(session);
-
-                    self.selectedRoom = [MXRoom loadRoomFromStore:fileStore withRoomId:roomID matrixSession:session];
-
-                    // Do not warn for unknown devices. We have cross-signing now
-                    session.crypto.warnOnUnknowDevices = NO;
-
-                    MXWeakify(self);
-                    [self.selectedRoom sendTextMessage:intent.content
-                                              threadId:nil
-                                               success:^(NSString *eventId) {
-                        completeWithCode(INSendMessageIntentResponseCodeSuccess);
-                        MXStrongifyAndReturnIfNil(self);
-                        self.selectedRoom = nil;
-                    } failure:^(NSError *error) {
-                        completeWithCode(INSendMessageIntentResponseCodeFailure);
-                        MXStrongifyAndReturnIfNil(self);
-                        self.selectedRoom = nil;
-                    }];
-
-                } failure:^(NSError *error) {
-                    completeWithCode(INSendMessageIntentResponseCodeFailure);
-                }];
-
-                return;
-            }
-            
-            [account.mxRestClient sendTextMessageToRoom:roomID
-                                               threadId:nil
-                                                   text:intent.content
-                                                success:^(NSString *eventId) {
-                completeWithCode(INSendMessageIntentResponseCodeSuccess);
-            }
-                                                failure:^(NSError *error) {
-                completeWithCode(INSendMessageIntentResponseCodeFailure);
-            }];
-            
-        }];
-    }
-    else
-    {
-        completeWithCode(INSendMessageIntentResponseCodeFailure);
-    }
-}
-
-#pragma mark - Private
-
-- (void)resolveContacts:(nullable NSArray<INPerson *> *)contacts withCompletion:(void (^)(NSArray<INPersonResolutionResult *> * _Nonnull))completion
-{
-    if (contacts.count == 0)
-    {
-        completion(@[[INPersonResolutionResult needsValue]]);
-        return;
-    }
-    else
-    {
-        // We don't iterate over array of contacts from passed intent
-        // since it's hard to imagine scenario with several callee
-        // so we just extract the first one
-        INPerson *callee = contacts.firstObject;
-        
-        // If this method is called after selection of the appropriate user, it will hold userId of an user to whom we must call
-        NSString *selectedUserId;
-        
-        // Check if the user has selected right room among several direct rooms from previous resolution process run
-        if (callee.customIdentifier.length)
-        {
-            // If callee will have the same name as one of the contact in the system contacts app
-            // Siri will pass us this contact in the intent.contacts array and we must provide the same count of
-            // resolution results as elements count in the intent.contact.
-            // So we just pass the same result at all iterations
-            NSMutableArray *resolutionResults = [NSMutableArray array];
-            for (NSInteger i = 0; i < contacts.count; ++i)
-                [resolutionResults addObject:[INPersonResolutionResult successWithResolvedPerson:callee]];
-            completion(resolutionResults);
-            return;
-        }
-        else
-        {
-            // This resolution process run after selecting appropriate user among suggested user list
-            selectedUserId = callee.personHandle.value;
-        }
-        
-        MXKAccount *account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-        if (account)
-        {
-            MXFileStore *fileStore = [[MXFileStore alloc] initWithCredentials:account.mxCredentials];
-            [fileStore.roomSummaryStore fetchAllSummaries:^(NSArray<id<MXRoomSummaryProtocol>> * _Nonnull summaries) {
-                
-                // Contains userIds of all users with whom the current user has direct chats
-                // Use set to avoid duplicates
-                NSMutableSet<NSString *> *directUserIds = [NSMutableSet set];
-                
-                // Contains room summaries for all direct rooms connected with particular userId
-                NSMutableDictionary<NSString *, NSMutableArray<id<MXRoomSummaryProtocol>> *> *roomSummaries = [NSMutableDictionary dictionary];
-                
-                for (id<MXRoomSummaryProtocol> summary in summaries)
-                {
-                    // TODO: We also need to check if joined room members count equals 2
-                    // It is pointlessly to save rooms with 1 joined member or room with more than 2 joined members
-                    if (summary.isDirect)
-                    {
-                        NSString *directUserId = summary.directUserId;
-                        
-                        // Collect room summaries only for specified user
-                        if (selectedUserId && ![directUserId isEqualToString:selectedUserId])
-                            continue;
-                        
-                        // Save userId
-                        [directUserIds addObject:directUserId];
-                        
-                        // Save associated with diretUserId room summary
-                        NSMutableArray<id<MXRoomSummaryProtocol>> *userRoomSummaries = roomSummaries[directUserId];
-                        if (userRoomSummaries)
-                            [userRoomSummaries addObject:summary];
-                        else
-                            roomSummaries[directUserId] = [NSMutableArray arrayWithObject:summary];
-                    }
-                }
-                
-                [fileStore asyncUsersWithUserIds:directUserIds.allObjects success:^(NSArray<MXUser *> * _Nonnull users) {
-                    
-                    // Find users whose display name contains string presented us by Siri
-                    NSMutableArray<MXUser *> *matchingUsers = [NSMutableArray array];
-                    for (MXUser *user in users)
-                    {
-                        if (!user.displayname)
-                            continue;
-                        
-                        if (!NSEqualRanges([callee.displayName rangeOfString:user.displayname options:NSCaseInsensitiveSearch], (NSRange){NSNotFound,0}))
-                        {
-                            [matchingUsers addObject:user];
-                        }
-                    }
-
-                    NSMutableArray<INPerson *> *persons = [NSMutableArray array];
-                    
-                    if (matchingUsers.count == 1)
-                    {
-                        MXUser *user = matchingUsers.firstObject;
-                        
-                        // Provide to the user a list of direct rooms to choose from
-                        NSArray<id<MXRoomSummaryProtocol>> *summaries = roomSummaries[user.userId];
-                        for (id<MXRoomSummaryProtocol> summary in summaries)
-                        {
-                            INPersonHandle *personHandle = [[INPersonHandle alloc] initWithValue:user.userId type:INPersonHandleTypeUnknown];
-                            
-                            // For rooms we try to use room display name
-                            NSString *displayName = summary.displayname ? summary.displayname : user.displayname;
-                            
-                            INPerson *person = [[INPerson alloc] initWithPersonHandle:personHandle
-                                                                       nameComponents:nil
-                                                                          displayName:displayName
-                                                                                image:nil
-                                                                    contactIdentifier:nil
-                                                                     customIdentifier:summary.roomId];
-                            
-                            [persons addObject:person];
-                        }
-                    }
-                    else if (matchingUsers.count > 1)
-                    {
-                        // Provide to the user a list of users to choose from
-                        // This is the case when there are several users with the same name
-                        for (MXUser *user in matchingUsers)
-                        {
-                            INPersonHandle *personHandle = [[INPersonHandle alloc] initWithValue:user.userId type:INPersonHandleTypeUnknown];
-                            INPerson *person = [[INPerson alloc] initWithPersonHandle:personHandle
-                                                                       nameComponents:nil
-                                                                          displayName:user.displayname
-                                                                                image:nil
-                                                                    contactIdentifier:nil
-                                                                     customIdentifier:nil];
-                            
-                            [persons addObject:person];
-                        }
-                    }
-                    
-                    if (persons.count == 0)
-                    {
-                        completion(@[[INPersonResolutionResult unsupported]]);
-                    }
-                    else if (persons.count == 1)
-                    {
-                        completion(@[[INPersonResolutionResult successWithResolvedPerson:persons.firstObject]]);
-                    }
-                    else
-                    {
-                        completion(@[[INPersonResolutionResult disambiguationWithPeopleToDisambiguate:persons]]);
-                    }
-                } failure:nil];
-            }];
-        }
-        else
-        {
-            completion(@[[INPersonResolutionResult notRequired]]);
-        }
-    }
+    return nil;
 }
 
 @end
