@@ -43,7 +43,7 @@ struct LocationSharingView: View {
             .background(theme.colors.background.ignoresSafeArea())
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(VectorL10n.cancel, action: {
+                    Button(VectorL10n.close, action: {
                         context.send(viewAction: .cancel)
                     })
                 }
