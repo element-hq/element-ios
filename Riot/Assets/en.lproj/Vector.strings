@@ -2339,7 +2339,7 @@ To enable access, tap Settings> Location and select Always";
 
 // Settings
 "settings" = "Settings";
-"settings_enable_inapp_notifications" = "Enable In-App notifications";
+"settings_enable_inapp_notifications" = "Enable in-app notifications";
 "settings_enable_push_notifications" = "Enable push notifications";
 "settings_enter_validation_token_for" = "Enter validation token for %@:";
 
