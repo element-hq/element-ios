@@ -57,7 +57,7 @@ struct LiveLocationSharingViewer: View {
         .navigationTitle(VectorL10n.locationSharingLiveViewerTitle)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                Button(VectorL10n.cancel) {
+                Button(VectorL10n.close) {
                     viewModel.send(viewAction: .done)
                 }
             }
