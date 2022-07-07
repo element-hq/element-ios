@@ -195,8 +195,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     UIView *launchAnimationContainerView;
 }
 
-@property (strong, nonatomic) UIAlertController *mxInAppNotification;
-
 @property (strong, nonatomic) UIAlertController *logoutConfirmation;
 
 @property (weak, nonatomic) UIAlertController *gdprConsentNotGivenAlertController;
@@ -586,13 +584,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     // Remove expired URL previews from the cache
     [URLPreviewService.shared removeExpiredCacheData];
-    
-    // Hide potential notification
-    if (self.mxInAppNotification)
-    {
-        [self.mxInAppNotification dismissViewControllerAnimated:NO completion:nil];
-        self.mxInAppNotification = nil;
-    }
     
     // Discard any process on pending universal link
     [self resetPendingUniversalLink];
@@ -1820,18 +1811,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             //  start the call service
             [self.callPresenter start];
             
-            // Look for the account related to this session.
-            NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
-            for (MXKAccount *account in mxAccounts)
-            {
-                if (account.mxSession == mxSession)
-                {
-                    // Enable inApp notifications (if they are allowed for this account).
-                    [self enableInAppNotificationsForAccount:account];
-                    break;
-                }
-            }
-            
             [self.configuration setupSettingsWhenLoadedFor:mxSession];
             
             // Register to user new device sign in notification
@@ -1888,9 +1867,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 // Set up push notifications
                 [self.pushNotificationService registerUserNotificationSettings];
             }
-            
-            // Observe inApp notifications toggle change
-            [account addObserver:self forKeyPath:@"enableInAppNotifications" options:0 context:nil];
         }
         
         [self.delegate legacyAppDelegate:self didAddAccount:account];
@@ -1901,10 +1877,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         
         // Remove inApp notifications toggle change
         MXKAccount *account = notif.object;
-        if (!account.isSoftLogout)
-        {
-            [account removeObserver:self forKeyPath:@"enableInAppNotifications"];
-        }
 
         // Clear Modular data
         [[WidgetManager sharedManager] deleteDataForUser:account.mxCredentials.userId];
@@ -1984,12 +1956,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         
         // Set up push notifications
         [self.pushNotificationService registerUserNotificationSettings];
-        
-        // Observe inApp notifications toggle change for each account
-        for (MXKAccount *account in mxAccounts)
-        {
-            [account addObserver:self forKeyPath:@"enableInAppNotifications" options:0 context:nil];
-        }
     }
 }
 
@@ -2255,10 +2221,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         // Flush and restore Matrix data
         [self reloadMatrixSessions:NO];
-    }
-    else if ([@"enableInAppNotifications" isEqualToString:keyPath] && [object isKindOfClass:[MXKAccount class]])
-    {
-        [self enableInAppNotificationsForAccount:(MXKAccount*)object];
     }
     else if (object == [MXKAppSettings standardAppSettings] && [keyPath isEqualToString:@"enableCallKit"])
     {
@@ -2655,100 +2617,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 }
 
 #pragma mark - Matrix Accounts handling
-
-- (void)enableInAppNotificationsForAccount:(MXKAccount*)account
-{
-    if (account.mxSession)
-    {
-        if (account.enableInAppNotifications)
-        {
-            // Build MXEvent -> NSString formatter
-            EventFormatter *eventFormatter = [[EventFormatter alloc] initWithMatrixSession:account.mxSession];
-            eventFormatter.isForSubtitle = YES;
-            
-            [account listenToNotifications:^(MXEvent *event, MXRoomState *roomState, MXPushRule *rule) {
-                
-                // Check conditions to display this notification
-                if (![self.visibleRoomId isEqualToString:event.roomId]
-                    && !self.window.rootViewController.presentedViewController)
-                {
-                    MXKEventFormatterError error;
-                    NSString* messageText = [eventFormatter stringFromEvent:event
-                                                              withRoomState:roomState
-                                                         andLatestRoomState:nil
-                                                                      error:&error];
-                    if (messageText.length && (error == MXKEventFormatterErrorNone))
-                    {
-                        // Removing existing notification (if any)
-                        if (self.mxInAppNotification)
-                        {
-                            [self.mxInAppNotification dismissViewControllerAnimated:NO completion:nil];
-                        }
-                        
-                        // Check whether tweak is required
-                        for (MXPushRuleAction *ruleAction in rule.actions)
-                        {
-                            if (ruleAction.actionType == MXPushRuleActionTypeSetTweak)
-                            {
-                                if ([[ruleAction.parameters valueForKey:@"set_tweak"] isEqualToString:@"sound"])
-                                {
-                                    // Play message sound
-                                    AudioServicesPlaySystemSound(self->_messageSound);
-                                }
-                            }
-                        }
-                        
-                        MXRoomSummary *roomSummary = [account.mxSession roomSummaryWithRoomId:event.roomId];
-                        
-                        __weak typeof(self) weakSelf = self;
-                        self.mxInAppNotification = [UIAlertController alertControllerWithTitle:roomSummary.displayname
-                                                                                       message:messageText
-                                                                                preferredStyle:UIAlertControllerStyleAlert];
-                        
-                        [self.mxInAppNotification addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
-                                                                                     style:UIAlertActionStyleCancel
-                                                                                   handler:^(UIAlertAction * action) {
-                                                                                       
-                                                                                       if (weakSelf)
-                                                                                       {
-                                                                                           typeof(self) self = weakSelf;
-                                                                                           self.mxInAppNotification = nil;
-                                                                                           [account updateNotificationListenerForRoomId:event.roomId ignore:YES];
-                                                                                       }
-                                                                                       
-                                                                                   }]];
-                        
-                        [self.mxInAppNotification addAction:[UIAlertAction actionWithTitle:[VectorL10n view]
-                                                                                     style:UIAlertActionStyleDefault
-                                                                                   handler:^(UIAlertAction * action) {
-                                                                                       
-                                                                                       if (weakSelf)
-                                                                                       {
-                                                                                           typeof(self) self = weakSelf;
-                                                                                           self.mxInAppNotification = nil;
-                                                                                           // Show the room
-                                                                                           [self showRoom:event.roomId andEventId:nil withMatrixSession:account.mxSession];
-                                                                                       }
-                                                                                       
-                                                                                   }]];
-                        
-                        [self.window.rootViewController presentViewController:self.mxInAppNotification animated:YES completion:nil];
-                    }
-                }
-            }];
-        }
-        else
-        {
-            [account removeNotificationListener];
-        }
-    }
-    
-    if (self.mxInAppNotification)
-    {
-        [self.mxInAppNotification dismissViewControllerAnimated:NO completion:nil];
-        self.mxInAppNotification = nil;
-    }
-}
 
 - (void)selectMatrixAccount:(void (^)(MXKAccount *selectedAccount))onSelection
 {

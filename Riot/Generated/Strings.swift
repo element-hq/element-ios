@@ -6743,7 +6743,7 @@ public class VectorL10n: NSObject {
   public static var settingsEnableCallkit: String { 
     return VectorL10n.tr("Vector", "settings_enable_callkit") 
   }
-  /// Enable In-App notifications
+  /// Enable in-app notifications
   public static var settingsEnableInappNotifications: String { 
     return VectorL10n.tr("Vector", "settings_enable_inapp_notifications") 
   }

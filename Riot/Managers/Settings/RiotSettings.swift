@@ -80,6 +80,10 @@ final class RiotSettings: NSObject {
         return RiotSettings.defaults.object(forKey: UserDefaultsKeys.notificationsShowDecryptedContent) != nil
     }
     
+    /// Indicate if notifications should be shown whilst the app is in the foreground.
+    @UserDefault(key: "showInAppNotifications", defaultValue: true, storage: defaults)
+    var showInAppNotifications
+    
     /// Indicate if encrypted messages content should be displayed in notifications.
     @UserDefault(key: UserDefaultsKeys.notificationsShowDecryptedContent, defaultValue: false, storage: defaults)
     var showDecryptedContentInNotifications
