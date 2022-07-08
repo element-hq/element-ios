@@ -26,6 +26,8 @@
 
 #import "GeneratedInterface-Swift.h"
 
+@import DesignKit;
+
 // Dev flag to have more options
 //#define CROSS_SIGNING_AND_BACKUP_DEV
 
@@ -1297,7 +1299,7 @@ TableViewSectionsDelegate>
         // Customize label style
         UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
         tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.colors.secondaryContent;
-        tableViewHeaderFooterView.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+        tableViewHeaderFooterView.textLabel.font = ThemeService.shared.theme.fonts.footnote;
     }
 }
 
