@@ -45,6 +45,8 @@
 
 #import "GeneratedInterface-Swift.h"
 
+@import DesignKit;
+
 NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewControllerPhoneBookCountryCellId";
 
 typedef NS_ENUM(NSUInteger, SECTION_TAG)
@@ -2634,7 +2636,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         // Customize label style
         UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
         tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.colors.secondaryContent;
-        tableViewHeaderFooterView.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+        tableViewHeaderFooterView.textLabel.font = ThemeService.shared.theme.fonts.footnote;
     }
 }
 

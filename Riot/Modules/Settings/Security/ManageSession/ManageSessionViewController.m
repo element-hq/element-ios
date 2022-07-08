@@ -24,6 +24,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
+@import DesignKit;
 
 enum
 {
@@ -493,7 +494,7 @@ enum {
         // Customize label style
         UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
         tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.colors.secondaryContent;
-        tableViewHeaderFooterView.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+        tableViewHeaderFooterView.textLabel.font = ThemeService.shared.theme.fonts.footnote;
     }
 }
 
