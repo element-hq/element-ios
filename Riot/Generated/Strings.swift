@@ -2899,7 +2899,7 @@ public class VectorL10n: NSObject {
   public static var locationSharingLiveListItemSharingExpired: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_list_item_sharing_expired") 
   }
-  /// Stop sharing
+  /// Stop
   public static var locationSharingLiveListItemStopSharingAction: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_list_item_stop_sharing_action") 
   }
@@ -6803,7 +6803,7 @@ public class VectorL10n: NSObject {
   public static var settingsEnableCallkit: String { 
     return VectorL10n.tr("Vector", "settings_enable_callkit") 
   }
-  /// Enable In-App notifications
+  /// Enable in-app notifications
   public static var settingsEnableInappNotifications: String { 
     return VectorL10n.tr("Vector", "settings_enable_inapp_notifications") 
   }

@@ -1,5 +1,5 @@
 // 
-// Copyright 2021 Vector Creations Ltd
+// Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,24 @@
 // limitations under the License.
 //
 
-// Configuration settings file format documentation can be found at:
-// https://help.apple.com/xcode/#/dev745c5c974
+import Foundation
+import UIKit
 
-#include "Common.xcconfig"
+// TODO: Move into element-design-tokens repo.
+
+// Figma Avatar Sizes: https://www.figma.com/file/X4XTH9iS2KGJ2wFKDqkyed/Compound?node-id=1258%3A19678
+public enum AvatarSize: Int {
+    case xxSmall = 16
+    case xSmall = 32
+    case small = 36
+    case medium = 42
+    case large = 44
+    case xLarge = 52
+    case xxLarge = 80
+}
+
+extension AvatarSize {
+    public var size: CGSize {
+        return CGSize(width: self.rawValue, height: self.rawValue)
+    }
+}

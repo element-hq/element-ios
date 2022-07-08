@@ -14,7 +14,6 @@
  limitations under the License.
  */
 
-import Foundation
 import UIKit
 import DesignKit
 
@@ -186,8 +185,8 @@ class DefaultTheme: NSObject, Theme {
         button.setTitleColor(self.tintColor, for: .normal)
     }
     
-    ///  MARK: - Theme v2
-    var colors: ColorsUIKit = LightColors.uiKit
+    // MARK: - Theme v2
+    var colors = UIColor.elementLight
     
-    var fonts: FontsUIKit = FontsUIKit(values: ElementFonts())
+    var fonts = UIFont.element
 }

@@ -158,7 +158,7 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
                 self.state.bindings.alertInfo = AlertInfo(id: .userLocatingError,
                                                           title: VectorL10n.locationSharingAllowBackgroundLocationTitle,
                                                           message:  VectorL10n.locationSharingAllowBackgroundLocationMessage,
-                                                          primaryButton: (VectorL10n.locationSharingAllowBackgroundLocationCancelAction, { [weak self] in self?.state.bindings.showingTimerSelector = true }),
+                                                          primaryButton: (VectorL10n.locationSharingAllowBackgroundLocationCancelAction, {}),
                                                           secondaryButton: (VectorL10n.locationSharingAllowBackgroundLocationValidateAction, { UIApplication.shared.vc_openSettings() }))
             case .authorizedAlways:
                 self.state.bindings.showingTimerSelector = true

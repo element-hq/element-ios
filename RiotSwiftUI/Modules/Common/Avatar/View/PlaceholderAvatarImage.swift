@@ -36,7 +36,7 @@ struct PlaceholderAvatarImage: View {
     
     var body: some View {
         ZStack {
-            theme.colors.namesAndAvatars[colorIndex]
+            theme.colors.contentAndAvatars[colorIndex]
             
             Text(String(firstCharacter))
                 .padding(4)

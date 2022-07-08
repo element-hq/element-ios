@@ -1,5 +1,5 @@
 // 
-// Copyright 2021 Vector Creations Ltd
+// Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,18 @@
 // limitations under the License.
 //
 
-// Configuration settings file format documentation can be found at:
-// https://help.apple.com/xcode/#/dev745c5c974
+import UIKit
+import DesignKit
+import DesignTokens
 
-#include "Common.xcconfig"
+/// Theme v2. May be named again as `Theme` when the migration completed.
+@objc public protocol ThemeV2 {
+    
+    /// Colors object
+    var colors: ElementUIColorsResolved { get }
+    
+    /// Fonts object
+    var fonts: ElementUIFonts { get }
+    
+    /// may contain more design components in future, like icons, audio files etc.
+}
