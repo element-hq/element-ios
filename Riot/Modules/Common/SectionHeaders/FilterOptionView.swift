@@ -45,11 +45,11 @@ class FilterOptionView: UIView, Themable {
                 stackView.addArrangedSubview(label)
                 self.label = label
                 
-                let settings = AllChatLayoutSettingsManager.shared.allChatLayoutSettings
+                let settings = AllChatsLayoutSettingsManager.shared.allChatLayoutSettings
                 self.isSelected = settings.activePinnedSpaceId == nil && settings.activeFilters.isEmpty
 
-                NotificationCenter.default.addObserver(forName: AllChatLayoutSettings.didUpdateFilters, object: nil, queue: OperationQueue.main) { [weak self] notification in
-                    guard let self = self, let settings = notification.object as? AllChatLayoutSettings else {
+                NotificationCenter.default.addObserver(forName: AllChatsLayoutSettings.didUpdateFilters, object: nil, queue: OperationQueue.main) { [weak self] notification in
+                    guard let self = self, let settings = notification.object as? AllChatsLayoutSettings else {
                         return
                     }
                     
@@ -80,10 +80,10 @@ class FilterOptionView: UIView, Themable {
             }
             
             update(theme: ThemeService.shared().theme)
-            updateView(withActivePinnedSpaceId: AllChatLayoutSettingsManager.shared.allChatLayoutSettings.activePinnedSpaceId)
+            updateView(withActivePinnedSpaceId: AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.activePinnedSpaceId)
 
-            NotificationCenter.default.addObserver(forName: AllChatLayoutSettings.didUpdateFilters, object: nil, queue: OperationQueue.main) { [weak self] notification in
-                guard let self = self, let settings = notification.object as? AllChatLayoutSettings else {
+            NotificationCenter.default.addObserver(forName: AllChatsLayoutSettings.didUpdateFilters, object: nil, queue: OperationQueue.main) { [weak self] notification in
+                guard let self = self, let settings = notification.object as? AllChatsLayoutSettings else {
                     return
                 }
                 
@@ -113,7 +113,7 @@ class FilterOptionView: UIView, Themable {
 //        }
 //    }
     
-    var data: AllChatLayoutEditorFilter? {
+    var data: AllChatsLayoutEditorFilter? {
         didSet {
             for subView in stackView.arrangedSubviews {
                 stackView.removeArrangedSubview(subView)
@@ -139,8 +139,8 @@ class FilterOptionView: UIView, Themable {
             
             update(theme: ThemeService.shared().theme)
             
-            NotificationCenter.default.addObserver(forName: AllChatLayoutSettings.didUpdateFilters, object: nil, queue: OperationQueue.main) { [weak self] notification in
-                guard let settings = notification.object as? AllChatLayoutSettings, let data = self?.data else {
+            NotificationCenter.default.addObserver(forName: AllChatsLayoutSettings.didUpdateFilters, object: nil, queue: OperationQueue.main) { [weak self] notification in
+                guard let settings = notification.object as? AllChatsLayoutSettings, let data = self?.data else {
                     return
                 }
                 

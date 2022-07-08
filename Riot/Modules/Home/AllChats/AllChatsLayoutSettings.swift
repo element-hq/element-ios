@@ -39,32 +39,32 @@ import Foundation
 
 // MARK: - Notification constants
 
-extension AllChatLayoutSettings {
+extension AllChatsLayoutSettings {
     /// Posted if settings have changed
     public static let didUpdateFilters = Notification.Name("AllChatLayoutSettingsDidUpdateFilters")
 }
 
 @objcMembers
-@objc class AllChatLayoutSettings: NSObject, NSCoding {
+@objc class AllChatsLayoutSettings: NSObject, NSCoding {
     
-    let sections: AllChatLayoutSectionType
-    let filters: AllChatLayoutFilterType
-    var activeFilters: AllChatLayoutFilterType = [] {
+    let sections: AllChatsLayoutSectionType
+    let filters: AllChatsLayoutFilterType
+    var activeFilters: AllChatsLayoutFilterType = [] {
         didSet {
-            NotificationCenter.default.post(name: AllChatLayoutSettings.didUpdateFilters, object: self)
+            NotificationCenter.default.post(name: AllChatsLayoutSettings.didUpdateFilters, object: self)
         }
     }
-    let sorting: AllChatLayoutSortingType
+    let sorting: AllChatsLayoutSortingType
     let pinnedSpaceIds: [String]
     var activePinnedSpaceId: String? {
         didSet {
-            NotificationCenter.default.post(name: AllChatLayoutSettings.didUpdateFilters, object: self)
+            NotificationCenter.default.post(name: AllChatsLayoutSettings.didUpdateFilters, object: self)
         }
     }
     
-    init(sections: AllChatLayoutSectionType = [],
-         filters: AllChatLayoutFilterType = [],
-         sorting: AllChatLayoutSortingType = .activity,
+    init(sections: AllChatsLayoutSectionType = [],
+         filters: AllChatsLayoutFilterType = [],
+         sorting: AllChatsLayoutSortingType = .activity,
          pinnedSpaceIds: [String] = []) {
         self.sections = sections
         self.filters = filters
@@ -84,10 +84,10 @@ extension AllChatLayoutSettings {
     }
     
     required init?(coder: NSCoder) {
-        self.sections = AllChatLayoutSectionType(rawValue: UInt(coder.decodeInt64(forKey: "sections")))
-        self.filters = AllChatLayoutFilterType(rawValue: UInt(coder.decodeInt64(forKey: "filters")))
-        self.activeFilters = AllChatLayoutFilterType(rawValue: UInt(coder.decodeInt64(forKey: "activeFilters")))
-        self.sorting = AllChatLayoutSortingType(rawValue: UInt(coder.decodeInt64(forKey: "sorting"))) ?? .activity
+        self.sections = AllChatsLayoutSectionType(rawValue: UInt(coder.decodeInt64(forKey: "sections")))
+        self.filters = AllChatsLayoutFilterType(rawValue: UInt(coder.decodeInt64(forKey: "filters")))
+        self.activeFilters = AllChatsLayoutFilterType(rawValue: UInt(coder.decodeInt64(forKey: "activeFilters")))
+        self.sorting = AllChatsLayoutSortingType(rawValue: UInt(coder.decodeInt64(forKey: "sorting"))) ?? .activity
         self.pinnedSpaceIds = coder.decodeObject(forKey: "pinnedSpaceIds") as? [String] ?? []
         self.activePinnedSpaceId = coder.decodeObject(forKey: "activePinnedSpaceId") as? String
     }

@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-struct AllChatLayoutEditorFilterItem: View {
+struct AllChatsLayoutEditorSectionItem: View {
     // MARK: - Properties
     
     // MARK: Private
@@ -24,45 +24,36 @@ struct AllChatLayoutEditorFilterItem: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     private var tintColor: Color {
-        filter.selected ? theme.colors.background : theme.colors.secondaryContent
+        section.selected ? theme.colors.background : theme.colors.secondaryContent
     }
     
     private var backColor: Color {
-        filter.selected ? theme.colors.accent : theme.colors.background
-    }
-    
-    private var accessoryImageName: String {
-        filter.selected ? "checkmark" : "plus"
+        section.selected ? theme.colors.accent : theme.colors.background
     }
     
     // MARK: Public
     
-    var filter: AllChatLayoutEditorFilter
+    var section: AllChatsLayoutEditorSection
     
     @ViewBuilder
     var body: some View {
-        HStack(spacing: 10) {
-            Image(uiImage: filter.image)
+        VStack {
+            Image(uiImage: section.image)
                 .renderingMode(.template)
-                .resizable()
                 .foregroundColor(tintColor)
-                .frame(width: 20, height: 20)
-            Text(filter.name)
+            Text(section.name)
                 .foregroundColor(tintColor)
                 .font(theme.fonts.callout)
-            Image(systemName: accessoryImageName)
-                .renderingMode(.template)
-                .font(theme.fonts.footnote)
-                .foregroundColor(tintColor)
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 8)
+        .frame(minWidth: 100, minHeight: 64)
         .background(backColor)
         .cornerRadius(16)
     }
 }
 
-struct AllChatLayoutEditorFilterItem_Previews: PreviewProvider {
+struct AllChatLayoutEditorSectionItem_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             preview
@@ -77,13 +68,13 @@ struct AllChatLayoutEditorFilterItem_Previews: PreviewProvider {
     private static var preview: some View {
         VStack(spacing: 16) {
             HStack(spacing: 16) {
-                AllChatLayoutEditorFilterItem(filter: AllChatLayoutEditorFilter(type: .favourites, name: VectorL10n.titleFavourites, image: Asset.Images.tabFavourites.image, selected: false))
-                AllChatLayoutEditorFilterItem(filter: AllChatLayoutEditorFilter(type: .unreads, name: VectorL10n.allChatsEditLayoutUnreads, image: Asset.Images.allChatUnreads.image, selected: false))
+                AllChatsLayoutEditorSectionItem(section: AllChatsLayoutEditorSection(type: .favourites, name: VectorL10n.titleFavourites, image: Asset.Images.tabFavourites.image, selected: false))
+                AllChatsLayoutEditorSectionItem(section: AllChatsLayoutEditorSection(type: .recents, name: VectorL10n.allChatsEditLayoutRecents, image: Asset.Images.allChatRecents.image, selected: false))
             }
             
             HStack(spacing: 16) {
-                AllChatLayoutEditorFilterItem(filter: AllChatLayoutEditorFilter(type: .favourites, name: VectorL10n.titleFavourites, image: Asset.Images.tabFavourites.image, selected: true))
-                AllChatLayoutEditorFilterItem(filter: AllChatLayoutEditorFilter(type: .unreads, name: VectorL10n.allChatsEditLayoutUnreads, image: Asset.Images.allChatUnreads.image, selected: true))
+                AllChatsLayoutEditorSectionItem(section: AllChatsLayoutEditorSection(type: .favourites, name: VectorL10n.titleFavourites, image: Asset.Images.tabFavourites.image, selected: true))
+                AllChatsLayoutEditorSectionItem(section: AllChatsLayoutEditorSection(type: .recents, name: VectorL10n.allChatsEditLayoutRecents, image: Asset.Images.allChatRecents.image, selected: true))
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

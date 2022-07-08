@@ -479,8 +479,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             return
         }
 
-        let settings = AllChatLayoutSettingsManager.shared.allChatLayoutSettings
-        let coordinator = AllChatLayoutEditorCoordinator(parameters: AllChatLayoutEditorCoordinatorParameters(settings: settings, session: session))
+        let settings = AllChatsLayoutSettingsManager.shared.allChatLayoutSettings
+        let coordinator = AllChatsLayoutEditorCoordinator(parameters: AllChatsLayoutEditorCoordinatorParameters(settings: settings, session: session))
         coordinator.start()
         coordinator.completion = {  [weak self] result in
             guard let self = self else { return }
@@ -489,7 +489,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             case .cancel:
                 break
             case .done(let newSettings):
-                AllChatLayoutSettingsManager.shared.allChatLayoutSettings = newSettings
+                AllChatsLayoutSettingsManager.shared.allChatLayoutSettings = newSettings
             }
             
             self.remove(childCoordinator: coordinator)

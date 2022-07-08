@@ -17,35 +17,35 @@
 import Foundation
 
 @available(iOS 14.0, *)
-@objc protocol AllChatLayoutEditorCoordinatorBridgePresenterDelegate {
-    func allChatLayoutEditorCoordinatorBridgePresenterDidCancel(_ coordinatorBridgePresenter: AllChatLayoutEditorCoordinatorBridgePresenter)
-    func allChatLayoutEditorCoordinatorBridgePresenter(_ coordinatorBridgePresenter: AllChatLayoutEditorCoordinatorBridgePresenter, didCompleteWith newSettings: AllChatLayoutSettings)
+@objc protocol AllChatsLayoutEditorCoordinatorBridgePresenterDelegate {
+    func allChatsLayoutEditorCoordinatorBridgePresenterDidCancel(_ coordinatorBridgePresenter: AllChatsLayoutEditorCoordinatorBridgePresenter)
+    func allChatsLayoutEditorCoordinatorBridgePresenter(_ coordinatorBridgePresenter: AllChatsLayoutEditorCoordinatorBridgePresenter, didCompleteWith newSettings: AllChatsLayoutSettings)
 }
 
-/// `AllChatLayoutEditorCoordinatorBridgePresenter` enables to start `AllChatLayoutEditorCoordinator` from a view controller.
+/// `AllChatsLayoutEditorCoordinatorBridgePresenter` enables to start `AllChatsLayoutEditorCoordinator` from a view controller.
 /// This bridge is used while waiting for global usage of coordinator pattern.
 /// It breaks the Coordinator abstraction and it has been introduced for Objective-C compatibility (mainly for integration in legacy view controllers).
 /// Each bridge should be removed once the underlying Coordinator has been integrated by another Coordinator.
 @available(iOS 14.0, *)
 @objcMembers
-final class AllChatLayoutEditorCoordinatorBridgePresenter: NSObject {
+final class AllChatsLayoutEditorCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Properties
     
     // MARK: Private
     
-    private let settings: AllChatLayoutSettings
+    private let settings: AllChatsLayoutSettings
     private let session: MXSession
-    private var coordinator: AllChatLayoutEditorCoordinator?
+    private var coordinator: AllChatsLayoutEditorCoordinator?
     private var router: NavigationRouterType?
     
     // MARK: Public
     
-    weak var delegate: AllChatLayoutEditorCoordinatorBridgePresenterDelegate?
+    weak var delegate: AllChatsLayoutEditorCoordinatorBridgePresenterDelegate?
     
     // MARK: - Setup
     
-    init(settings: AllChatLayoutSettings,
+    init(settings: AllChatsLayoutSettings,
          session: MXSession) {
         self.settings = settings
         self.session = session
@@ -56,15 +56,15 @@ final class AllChatLayoutEditorCoordinatorBridgePresenter: NSObject {
     
     func present(from viewController: UIViewController, animated: Bool) {
         let navigationRouter = NavigationRouter()
-        let coordinator = AllChatLayoutEditorCoordinator(parameters: AllChatLayoutEditorCoordinatorParameters(settings: settings, session: session))
+        let coordinator = AllChatsLayoutEditorCoordinator(parameters: AllChatsLayoutEditorCoordinatorParameters(settings: settings, session: session))
         coordinator.completion = { [weak self] result in
             guard let self = self else { return }
             
             switch result {
             case .cancel:
-                self.delegate?.allChatLayoutEditorCoordinatorBridgePresenterDidCancel(self)
+                self.delegate?.allChatsLayoutEditorCoordinatorBridgePresenterDidCancel(self)
             case .done(let newSettings):
-                self.delegate?.allChatLayoutEditorCoordinatorBridgePresenter(self, didCompleteWith: newSettings)
+                self.delegate?.allChatsLayoutEditorCoordinatorBridgePresenter(self, didCompleteWith: newSettings)
             }
         }
         let presentable = coordinator.toPresentable()

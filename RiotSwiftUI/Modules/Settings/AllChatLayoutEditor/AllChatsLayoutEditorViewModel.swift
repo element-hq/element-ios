@@ -18,35 +18,35 @@ import SwiftUI
 import Combine
 
 @available(iOS 14, *)
-typealias AllChatLayoutEditorViewModelType = StateStoreViewModel<AllChatLayoutEditorViewState,
+typealias AllChatsLayoutEditorViewModelType = StateStoreViewModel<AllChatsLayoutEditorViewState,
                                                                  Never,
-                                                                 AllChatLayoutEditorViewAction>
+                                                                 AllChatsLayoutEditorViewAction>
 @available(iOS 14, *)
-class AllChatLayoutEditorViewModel: AllChatLayoutEditorViewModelType, AllChatLayoutEditorViewModelProtocol {
+class AllChatsLayoutEditorViewModel: AllChatsLayoutEditorViewModelType, AllChatsLayoutEditorViewModelProtocol {
     
     // MARK: - Properties
 
     // MARK: Private
 
-    private let service: AllChatLayoutEditorServiceProtocol
+    private let service: AllChatsLayoutEditorServiceProtocol
 
     // MARK: Public
 
-    var completion: ((AllChatLayoutEditorViewModelResult) -> Void)?
+    var completion: ((AllChatsLayoutEditorViewModelResult) -> Void)?
 
     // MARK: - Setup
 
-    static func makeAllChatLayoutEditorViewModel(service: AllChatLayoutEditorServiceProtocol) -> AllChatLayoutEditorViewModelProtocol {
-        return AllChatLayoutEditorViewModel(service: service)
+    static func makeAllChatsLayoutEditorViewModel(service: AllChatsLayoutEditorServiceProtocol) -> AllChatsLayoutEditorViewModelProtocol {
+        return AllChatsLayoutEditorViewModel(service: service)
     }
 
-    private init(service: AllChatLayoutEditorServiceProtocol) {
+    private init(service: AllChatsLayoutEditorServiceProtocol) {
         self.service = service
         super.init(initialViewState: Self.defaultState(service: service))
     }
 
-    private static func defaultState(service: AllChatLayoutEditorServiceProtocol) -> AllChatLayoutEditorViewState {
-        return AllChatLayoutEditorViewState(sections: service.sections,
+    private static func defaultState(service: AllChatsLayoutEditorServiceProtocol) -> AllChatsLayoutEditorViewState {
+        return AllChatsLayoutEditorViewState(sections: service.sections,
                                             filters: service.filters,
                                             sortingOptions: service.sortingOptions,
                                             pinnedSpaces: service.pinnedSpaces)
@@ -62,7 +62,7 @@ class AllChatLayoutEditorViewModel: AllChatLayoutEditorViewModelType, AllChatLay
         state.pinnedSpaces.append(item)
     }
 
-    override func process(viewAction: AllChatLayoutEditorViewAction) {
+    override func process(viewAction: AllChatsLayoutEditorViewAction) {
         switch viewAction {
         case .cancel:
             completion?(.cancel)
@@ -86,7 +86,7 @@ class AllChatLayoutEditorViewModel: AllChatLayoutEditorViewModelType, AllChatLay
     
     // MARK: - Private
     
-    private func revertSelection(of sectionItem: AllChatLayoutEditorSection) {
+    private func revertSelection(of sectionItem: AllChatsLayoutEditorSection) {
         guard let index = state.sections.firstIndex(of: sectionItem) else {
             return
         }
@@ -94,7 +94,7 @@ class AllChatLayoutEditorViewModel: AllChatLayoutEditorViewModelType, AllChatLay
         state.sections[index].selected = !state.sections[index].selected
     }
     
-    private func revertSelection(of filter: AllChatLayoutEditorFilter) {
+    private func revertSelection(of filter: AllChatsLayoutEditorFilter) {
         guard let index = state.filters.firstIndex(of: filter) else {
             return
         }
@@ -102,7 +102,7 @@ class AllChatLayoutEditorViewModel: AllChatLayoutEditorViewModelType, AllChatLay
         state.filters[index].selected = !state.filters[index].selected
     }
     
-    private func updateSelection(of filter: AllChatLayoutEditorSortingOption) {
+    private func updateSelection(of filter: AllChatsLayoutEditorSortingOption) {
         for i in 0..<state.sortingOptions.count {
             state.sortingOptions[i].selected = state.sortingOptions[i].id == filter.id
         }

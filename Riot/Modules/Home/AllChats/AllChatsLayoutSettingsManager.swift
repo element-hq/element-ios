@@ -18,16 +18,16 @@ import Foundation
 
 // MARK: - Notification constants
 
-extension AllChatLayoutSettingsManager {
+extension AllChatsLayoutSettingsManager {
     /// Posted if settings have changed
     public static let willUpdateSettings = Notification.Name("AllChatLayoutSettingsManagerWillUpdateSettings")
     public static let didUpdateSettings = Notification.Name("AllChatLayoutSettingsManagerDidUpdateSettings")
 }
 
 @objcMembers
-final class AllChatLayoutSettingsManager: NSObject {
+final class AllChatsLayoutSettingsManager: NSObject {
     
-    static let shared = AllChatLayoutSettingsManager()
+    static let shared = AllChatsLayoutSettingsManager()
     private var notifyChanges: Bool = true
     
     /// UserDefaults to be used on reads and writes.
@@ -40,8 +40,8 @@ final class AllChatLayoutSettingsManager: NSObject {
     
     private override init() {
         super.init()
-        NotificationCenter.default.addObserver(forName: AllChatLayoutSettings.didUpdateFilters, object: nil, queue: OperationQueue.main) { [weak self] notification in
-            guard let self = self, let settings = notification.object as? AllChatLayoutSettings else {
+        NotificationCenter.default.addObserver(forName: AllChatsLayoutSettings.didUpdateFilters, object: nil, queue: OperationQueue.main) { [weak self] notification in
+            guard let self = self, let settings = notification.object as? AllChatsLayoutSettings else {
                 return
             }
             
@@ -50,22 +50,22 @@ final class AllChatLayoutSettingsManager: NSObject {
         }
     }
 
-    var allChatLayoutSettings: AllChatLayoutSettings {
+    var allChatLayoutSettings: AllChatsLayoutSettings {
         get {
             guard let data = Self.defaults.object(forKey: "allChatLayoutSettings") as? Data else {
-                return AllChatLayoutSettings()
+                return AllChatsLayoutSettings()
             }
             
             do {
-                return try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? AllChatLayoutSettings ?? AllChatLayoutSettings()
+                return try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? AllChatsLayoutSettings ?? AllChatsLayoutSettings()
             } catch {
-                return AllChatLayoutSettings()
+                return AllChatsLayoutSettings()
             }
         }
         set {
             DispatchQueue.main.async {
                 if self.notifyChanges {
-                    NotificationCenter.default.post(name: AllChatLayoutSettingsManager.willUpdateSettings, object: self)
+                    NotificationCenter.default.post(name: AllChatsLayoutSettingsManager.willUpdateSettings, object: self)
                 }
             }
             let data = NSKeyedArchiver.archivedData(withRootObject: newValue)
@@ -74,7 +74,7 @@ final class AllChatLayoutSettingsManager: NSObject {
             
             DispatchQueue.main.async {
                 if self.notifyChanges {
-                    NotificationCenter.default.post(name: AllChatLayoutSettingsManager.didUpdateSettings, object: self)
+                    NotificationCenter.default.post(name: AllChatsLayoutSettingsManager.didUpdateSettings, object: self)
                 }
                 self.notifyChanges = true
             }

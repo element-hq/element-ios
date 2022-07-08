@@ -20,7 +20,7 @@ import SwiftUI
 /// Using an enum for the screen allows you define the different state cases with
 /// the relevant associated data for each case.
 @available(iOS 14.0, *)
-enum MockAllChatLayoutEditorScreenState: MockScreenState, CaseIterable {
+enum MockAllChatsLayoutEditorScreenState: MockScreenState, CaseIterable {
     // A case for each state you want to represent
     // with specific, minimal associated data that will allow you
     // mock that screen.
@@ -28,28 +28,28 @@ enum MockAllChatLayoutEditorScreenState: MockScreenState, CaseIterable {
     
     /// The associated screen
     var screenType: Any.Type {
-        AllChatLayoutEditor.self
+        AllChatsLayoutEditor.self
     }
     
     /// A list of screen state definitions
-    static var allCases: [MockAllChatLayoutEditorScreenState] {
+    static var allCases: [MockAllChatsLayoutEditorScreenState] {
         [.initial]
     }
     
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView)  {
-        let service: MockAllChatLayoutEditorService
+        let service: MockAllChatsLayoutEditorService
         switch self {
         case .initial:
-            service = MockAllChatLayoutEditorService()
+            service = MockAllChatsLayoutEditorService()
         }
-        let viewModel = AllChatLayoutEditorViewModel.makeAllChatLayoutEditorViewModel(service: service)
+        let viewModel = AllChatsLayoutEditorViewModel.makeAllChatsLayoutEditorViewModel(service: service)
         
         // can simulate service and viewModel actions here if needs be.
         
         return (
             [service, viewModel],
-            AnyView(AllChatLayoutEditor(viewModel: viewModel.context))
+            AnyView(AllChatsLayoutEditor(viewModel: viewModel.context))
         )
     }
 }

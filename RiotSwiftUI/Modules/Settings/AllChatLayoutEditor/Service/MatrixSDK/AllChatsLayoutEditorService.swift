@@ -18,37 +18,37 @@ import Foundation
 import Combine
 
 @available(iOS 14.0, *)
-class AllChatLayoutEditorService: AllChatLayoutEditorServiceProtocol {
+class AllChatsLayoutEditorService: AllChatsLayoutEditorServiceProtocol {
     
     // MARK: - Properties
     
     // MARK: Private
     
     private let session: MXSession
-    private let settings: AllChatLayoutSettings
+    private let settings: AllChatsLayoutSettings
 
     // MARK: Public
     
-    var sections: [AllChatLayoutEditorSection] {
+    var sections: [AllChatsLayoutEditorSection] {
         [
-            AllChatLayoutEditorSection(type: .recents, name: VectorL10n.allChatsEditLayoutRecents, image: Asset.Images.allChatRecents.image, selected: settings.sections.contains(.recents)),
-            AllChatLayoutEditorSection(type: .favourites, name: VectorL10n.titleFavourites, image: Asset.Images.tabFavourites.image, selected: settings.sections.contains(.favourites))
+            AllChatsLayoutEditorSection(type: .recents, name: VectorL10n.allChatsEditLayoutRecents, image: Asset.Images.allChatRecents.image, selected: settings.sections.contains(.recents)),
+            AllChatsLayoutEditorSection(type: .favourites, name: VectorL10n.titleFavourites, image: Asset.Images.tabFavourites.image, selected: settings.sections.contains(.favourites))
         ]
     }
     
-    var filters: [AllChatLayoutEditorFilter] {
+    var filters: [AllChatsLayoutEditorFilter] {
         [
-            AllChatLayoutEditorFilter(type: .people, name: VectorL10n.titlePeople, image: Asset.Images.tabPeople.image, selected: settings.filters.contains(.people)),
-            AllChatLayoutEditorFilter(type: .rooms, name: VectorL10n.titleRooms, image: Asset.Images.tabRooms.image, selected: settings.filters.contains(.rooms)),
-            AllChatLayoutEditorFilter(type: .favourites, name: VectorL10n.titleFavourites, image: Asset.Images.tabFavourites.image, selected: settings.filters.contains(.favourites)),
-            AllChatLayoutEditorFilter(type: .unreads, name: VectorL10n.allChatsEditLayoutUnreads, image: Asset.Images.allChatUnreads.image, selected: settings.filters.contains(.unreads)),
+            AllChatsLayoutEditorFilter(type: .people, name: VectorL10n.titlePeople, image: Asset.Images.tabPeople.image, selected: settings.filters.contains(.people)),
+            AllChatsLayoutEditorFilter(type: .rooms, name: VectorL10n.titleRooms, image: Asset.Images.tabRooms.image, selected: settings.filters.contains(.rooms)),
+            AllChatsLayoutEditorFilter(type: .favourites, name: VectorL10n.titleFavourites, image: Asset.Images.tabFavourites.image, selected: settings.filters.contains(.favourites)),
+            AllChatsLayoutEditorFilter(type: .unreads, name: VectorL10n.allChatsEditLayoutUnreads, image: Asset.Images.allChatUnreads.image, selected: settings.filters.contains(.unreads)),
         ]
     }
     
-    var sortingOptions: [AllChatLayoutEditorSortingOption] {
+    var sortingOptions: [AllChatsLayoutEditorSortingOption] {
         [
-            AllChatLayoutEditorSortingOption(type: .activity, name: VectorL10n.allChatsEditLayoutActivityOrder, selected: settings.sorting == .activity),
-            AllChatLayoutEditorSortingOption(type: .alphabetical, name: VectorL10n.allChatsEditLayoutAlphabeticalOrder, selected: settings.sorting == .alphabetical)
+            AllChatsLayoutEditorSortingOption(type: .activity, name: VectorL10n.allChatsEditLayoutActivityOrder, selected: settings.sorting == .activity),
+            AllChatsLayoutEditorSortingOption(type: .alphabetical, name: VectorL10n.allChatsEditLayoutAlphabeticalOrder, selected: settings.sorting == .alphabetical)
         ]
     }
     
@@ -65,16 +65,16 @@ class AllChatLayoutEditorService: AllChatLayoutEditorServiceProtocol {
     // MARK: - Setup
     
     init(session: MXSession,
-         settings: AllChatLayoutSettings) {
+         settings: AllChatsLayoutSettings) {
         self.session = session
         self.settings = settings
     }
     
     // MARK: - Public
     
-    func trackDoneAction(sections: [AllChatLayoutEditorSection],
-                         filters: [AllChatLayoutEditorFilter],
-                         sortingOptions: [AllChatLayoutEditorSortingOption],
+    func trackDoneAction(sections: [AllChatsLayoutEditorSection],
+                         filters: [AllChatsLayoutEditorFilter],
+                         sortingOptions: [AllChatsLayoutEditorSortingOption],
                          pinnedSpaces: [SpaceSelectorListItemData]) {
         for section in sections {
             switch section.type {
@@ -105,22 +105,22 @@ class AllChatLayoutEditorService: AllChatLayoutEditorServiceProtocol {
         Analytics.shared.trackEditLayoutPinnedSpaces(with: pinnedSpaces.count)
     }
     
-    func outputSettings(sections: [AllChatLayoutEditorSection],
-                        filters: [AllChatLayoutEditorFilter],
-                        sortingOptions: [AllChatLayoutEditorSortingOption],
-                        pinnedSpaces: [SpaceSelectorListItemData]) -> AllChatLayoutSettings {
-        let sections: AllChatLayoutSectionType = AllChatLayoutSectionType(rawValue: sections.reduce(0, { $1.selected ? $0 | $1.type.rawValue : $0 }))
-        let filters: AllChatLayoutFilterType = AllChatLayoutFilterType(rawValue: filters.reduce(0, { $1.selected ? $0 | $1.type.rawValue : $0 }))
-        let sorting: AllChatLayoutSortingType = sortingOptions.first(where: { $0.selected })?.type ?? .activity
+    func outputSettings(sections: [AllChatsLayoutEditorSection],
+                        filters: [AllChatsLayoutEditorFilter],
+                        sortingOptions: [AllChatsLayoutEditorSortingOption],
+                        pinnedSpaces: [SpaceSelectorListItemData]) -> AllChatsLayoutSettings {
+        let sections: AllChatsLayoutSectionType = AllChatsLayoutSectionType(rawValue: sections.reduce(0, { $1.selected ? $0 | $1.type.rawValue : $0 }))
+        let filters: AllChatsLayoutFilterType = AllChatsLayoutFilterType(rawValue: filters.reduce(0, { $1.selected ? $0 | $1.type.rawValue : $0 }))
+        let sorting: AllChatsLayoutSortingType = sortingOptions.first(where: { $0.selected })?.type ?? .activity
         let pinnedSpaceIds: [String] = pinnedSpaces.map{ $0.id }
-        let settings = AllChatLayoutSettings(sections: sections, filters: filters, sorting: sorting, pinnedSpaceIds: pinnedSpaceIds)
+        let settings = AllChatsLayoutSettings(sections: sections, filters: filters, sorting: sorting, pinnedSpaceIds: pinnedSpaceIds)
         settings.activeFilters = self.settings.activeFilters
         return settings
     }
     
     // MARK: - Private
     
-    private func trackChangeFor(section: AllChatLayoutEditorSection, selectedEvent: AnalyticsUIElement, unselectedEvent: AnalyticsUIElement) {
+    private func trackChangeFor(section: AllChatsLayoutEditorSection, selectedEvent: AnalyticsUIElement, unselectedEvent: AnalyticsUIElement) {
         if section.selected && !settings.sections.contains(section.type) {
             MXLog.debug("[AllChatLayoutEditorService] tracking \(selectedEvent.name)")
             Analytics.shared.trackInteraction(selectedEvent)
@@ -130,7 +130,7 @@ class AllChatLayoutEditorService: AllChatLayoutEditorServiceProtocol {
         }
     }
     
-    private func trackChangeFor(filter: AllChatLayoutEditorFilter, selectedEvent: AnalyticsUIElement, unselectedEvent: AnalyticsUIElement) {
+    private func trackChangeFor(filter: AllChatsLayoutEditorFilter, selectedEvent: AnalyticsUIElement, unselectedEvent: AnalyticsUIElement) {
         if filter.selected && !settings.filters.contains(filter.type) {
             MXLog.debug("[AllChatLayoutEditorService] tracking \(selectedEvent.name)")
             Analytics.shared.trackInteraction(selectedEvent)

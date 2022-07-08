@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-struct AllChatLayoutEditor: View {
+struct AllChatsLayoutEditor: View {
 
     // MARK: - Properties
     
@@ -28,13 +28,13 @@ struct AllChatLayoutEditor: View {
     
     // MARK: Public
     
-    @ObservedObject var viewModel: AllChatLayoutEditorViewModel.Context
+    @ObservedObject var viewModel: AllChatsLayoutEditorViewModel.Context
     
     @ViewBuilder
     var body: some View {
         mainScrollView
             .padding(.vertical)
-            .background(theme.colors.navigation.ignoresSafeArea())
+            .background(theme.colors.system.ignoresSafeArea())
             .frame(maxHeight: .infinity)
             .navigationTitle(VectorL10n.allChatsEditLayout)
             .toolbar {
@@ -95,7 +95,7 @@ struct AllChatLayoutEditor: View {
             ScrollView(.horizontal) {
                 LazyHStack {
                     ForEach(viewModel.viewState.sections) { section in
-                        AllChatLayoutEditorSectionItem(section: section)
+                        AllChatsLayoutEditorSectionItem(section: section)
                             .onTapGesture {
                                 viewModel.send(viewAction: .tappedSectionItem(section))
                             }
@@ -114,7 +114,7 @@ struct AllChatLayoutEditor: View {
             ScrollView(.horizontal) {
                 LazyHGrid(rows: gridItemLayout) {
                     ForEach(viewModel.viewState.filters) { filter in
-                        AllChatLayoutEditorFilterItem(filter: filter)
+                        AllChatsLayoutEditorFilterItem(filter: filter)
                             .onTapGesture {
                                 viewModel.send(viewAction: .tappedFilterItem(filter))
                             }
@@ -133,12 +133,12 @@ struct AllChatLayoutEditor: View {
             text(VectorL10n.allChatsEditLayoutPinSpacesTitle.uppercased())
             ScrollView(.horizontal) {
                 LazyHStack(alignment: .top, spacing: 16) {
-                    AllChatLayoutEditorPinnedSpaceItem(avatar: nil, image: UIImage(systemName: "plus"), displayName: "Add space", isDeletable: false)
+                    AllChatsLayoutEditorPinnedSpaceItem(avatar: nil, image: UIImage(systemName: "plus"), displayName: "Add space", isDeletable: false)
                         .onTapGesture {
                             viewModel.send(viewAction: .addPinnedSpace)
                         }
                     ForEach(viewModel.viewState.pinnedSpaces) { item in
-                        AllChatLayoutEditorPinnedSpaceItem(avatar: item.avatar, image: nil/*UIImage(systemName: "folder.fill")*/, displayName: item.displayName, isDeletable: true)
+                        AllChatsLayoutEditorPinnedSpaceItem(avatar: item.avatar, image: nil/*UIImage(systemName: "folder.fill")*/, displayName: item.displayName, isDeletable: true)
                             .onTapGesture {
                                 viewModel.send(viewAction: .removePinnedSpace(item))
                             }
@@ -154,7 +154,7 @@ struct AllChatLayoutEditor: View {
         VStack(alignment: .leading) {
             text(VectorL10n.allChatsEditLayoutSortingOptionsTitle.uppercased())
             ForEach(viewModel.viewState.sortingOptions) { option in
-                AllChatLayoutEditorSortingRow(option: option)
+                AllChatsLayoutEditorSortingRow(option: option)
                     .onTapGesture {
                         viewModel.send(viewAction: .tappedSortingOption(option))
                     }
@@ -172,8 +172,8 @@ struct AllChatLayoutEditor: View {
 
 // MARK: - Previews
 
-struct AllChatLayoutEditor_Previews: PreviewProvider {
-    static let stateRenderer = MockAllChatLayoutEditorScreenState.stateRenderer
+struct AllChatsLayoutEditor_Previews: PreviewProvider {
+    static let stateRenderer = MockAllChatsLayoutEditorScreenState.stateRenderer
     static var previews: some View {
         Group {
             stateRenderer.screenGroup()

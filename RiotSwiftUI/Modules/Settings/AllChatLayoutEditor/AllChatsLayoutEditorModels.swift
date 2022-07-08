@@ -19,55 +19,55 @@ import UIKit
 
 // MARK: - Coordinator
 
-enum AllChatLayoutEditorCoordinatorResult {
+enum AllChatsLayoutEditorCoordinatorResult {
     case cancel
-    case done(_ newSettings: AllChatLayoutSettings)
+    case done(_ newSettings: AllChatsLayoutSettings)
 }
 
 // MARK: View model
 
-enum AllChatLayoutEditorViewModelResult {
+enum AllChatsLayoutEditorViewModelResult {
     case cancel
-    case done(_ newSettings: AllChatLayoutSettings)
+    case done(_ newSettings: AllChatsLayoutSettings)
     case addPinnedSpace
 }
 
 // MARK: View
 
-struct AllChatLayoutEditorSection: Identifiable, Equatable {
+struct AllChatsLayoutEditorSection: Identifiable, Equatable {
     let id = UUID().uuidString
-    let type: AllChatLayoutSectionType
+    let type: AllChatsLayoutSectionType
     let name: String
     let image: UIImage
     var selected: Bool
 }
 
-struct AllChatLayoutEditorFilter: Identifiable, Equatable {
+struct AllChatsLayoutEditorFilter: Identifiable, Equatable {
     let id = UUID().uuidString
-    let type: AllChatLayoutFilterType
+    let type: AllChatsLayoutFilterType
     let name: String
     let image: UIImage
     var selected: Bool
 }
 
-struct AllChatLayoutEditorSortingOption: Identifiable, Equatable {
+struct AllChatsLayoutEditorSortingOption: Identifiable, Equatable {
     let id = UUID().uuidString
-    let type: AllChatLayoutSortingType
+    let type: AllChatsLayoutSortingType
     let name: String
     var selected: Bool
 }
 
-struct AllChatLayoutEditorViewState: BindableState {
-    var sections: [AllChatLayoutEditorSection]
-    var filters: [AllChatLayoutEditorFilter]
-    var sortingOptions: [AllChatLayoutEditorSortingOption]
+struct AllChatsLayoutEditorViewState: BindableState {
+    var sections: [AllChatsLayoutEditorSection]
+    var filters: [AllChatsLayoutEditorFilter]
+    var sortingOptions: [AllChatsLayoutEditorSortingOption]
     var pinnedSpaces: [SpaceSelectorListItemData]
 }
 
-enum AllChatLayoutEditorViewAction {
-    case tappedSectionItem(_ section: AllChatLayoutEditorSection)
-    case tappedFilterItem(_ filter: AllChatLayoutEditorFilter)
-    case tappedSortingOption(_ filter: AllChatLayoutEditorSortingOption)
+enum AllChatsLayoutEditorViewAction {
+    case tappedSectionItem(_ section: AllChatsLayoutEditorSection)
+    case tappedFilterItem(_ filter: AllChatsLayoutEditorFilter)
+    case tappedSortingOption(_ filter: AllChatsLayoutEditorSortingOption)
     case addPinnedSpace
     case removePinnedSpace(_ item: SpaceSelectorListItemData)
     case cancel

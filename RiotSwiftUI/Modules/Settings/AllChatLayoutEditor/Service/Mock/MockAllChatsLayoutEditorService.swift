@@ -18,21 +18,21 @@ import Foundation
 import Combine
 
 @available(iOS 14.0, *)
-class MockAllChatLayoutEditorService: AllChatLayoutEditorServiceProtocol {
-    var sections: [AllChatLayoutEditorSection] = []
-    var filters: [AllChatLayoutEditorFilter] = []
-    var sortingOptions: [AllChatLayoutEditorSortingOption] = []
+class MockAllChatsLayoutEditorService: AllChatsLayoutEditorServiceProtocol {
+    var sections: [AllChatsLayoutEditorSection] = []
+    var filters: [AllChatsLayoutEditorFilter] = []
+    var sortingOptions: [AllChatsLayoutEditorSortingOption] = []
     var pinnedSpaces: [SpaceSelectorListItemData] = []
     
     init() {
     }
 
-    func outputSettings(sections: [AllChatLayoutEditorSection], filters: [AllChatLayoutEditorFilter], sortingOptions: [AllChatLayoutEditorSortingOption], pinnedSpaces: [SpaceSelectorListItemData]) -> AllChatLayoutSettings {
-        return AllChatLayoutSettings()
+    func outputSettings(sections: [AllChatsLayoutEditorSection], filters: [AllChatsLayoutEditorFilter], sortingOptions: [AllChatsLayoutEditorSortingOption], pinnedSpaces: [SpaceSelectorListItemData]) -> AllChatsLayoutSettings {
+        return AllChatsLayoutSettings()
     }
     
-    func trackDoneAction(sections: [AllChatLayoutEditorSection],
-                         filters: [AllChatLayoutEditorFilter],
-                         sortingOptions: [AllChatLayoutEditorSortingOption],
+    func trackDoneAction(sections: [AllChatsLayoutEditorSection],
+                         filters: [AllChatsLayoutEditorFilter],
+                         sortingOptions: [AllChatsLayoutEditorSortingOption],
                          pinnedSpaces: [SpaceSelectorListItemData]) {}
 }

@@ -17,20 +17,20 @@
 import SwiftUI
 import CommonKit
 
-struct AllChatLayoutEditorCoordinatorParameters {
-    let settings: AllChatLayoutSettings
+struct AllChatsLayoutEditorCoordinatorParameters {
+    let settings: AllChatsLayoutSettings
     let session: MXSession
 }
 
-final class AllChatLayoutEditorCoordinator: Coordinator, Presentable {
+final class AllChatsLayoutEditorCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties
     
     // MARK: Private
     
-    private let parameters: AllChatLayoutEditorCoordinatorParameters
-    private let allChatLayoutEditorHostingController: UIViewController
-    private var allChatLayoutEditorViewModel: AllChatLayoutEditorViewModelProtocol
+    private let parameters: AllChatsLayoutEditorCoordinatorParameters
+    private let hostingViewController: UIViewController
+    private var viewModel: AllChatsLayoutEditorViewModelProtocol
     
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol
     private var loadingIndicator: UserIndicator?
@@ -41,7 +41,7 @@ final class AllChatLayoutEditorCoordinator: Coordinator, Presentable {
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    var completion: ((_ result: AllChatLayoutEditorCoordinatorResult) -> Void)? {
+    var completion: ((_ result: AllChatsLayoutEditorCoordinatorResult) -> Void)? {
         didSet {
             adaptivePresentationDelegate.completion = completion
         }
@@ -50,24 +50,24 @@ final class AllChatLayoutEditorCoordinator: Coordinator, Presentable {
     // MARK: - Setup
     
     @available(iOS 14.0, *)
-    init(parameters: AllChatLayoutEditorCoordinatorParameters) {
+    init(parameters: AllChatsLayoutEditorCoordinatorParameters) {
         self.parameters = parameters
-        let service = AllChatLayoutEditorService(session: parameters.session, settings: parameters.settings)
-        let viewModel = AllChatLayoutEditorViewModel.makeAllChatLayoutEditorViewModel(service: service)
-        let view = AllChatLayoutEditor(viewModel: viewModel.context)
+        let service = AllChatsLayoutEditorService(session: parameters.session, settings: parameters.settings)
+        let viewModel = AllChatsLayoutEditorViewModel.makeAllChatsLayoutEditorViewModel(service: service)
+        let view = AllChatsLayoutEditor(viewModel: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
-        allChatLayoutEditorViewModel = viewModel
-        allChatLayoutEditorHostingController = VectorHostingController(rootView: view)
-        allChatLayoutEditorHostingController.presentationController?.delegate = adaptivePresentationDelegate
+        self.viewModel = viewModel
+        hostingViewController = VectorHostingController(rootView: view)
+        hostingViewController.presentationController?.delegate = adaptivePresentationDelegate
 
-        indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: allChatLayoutEditorHostingController)
+        indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: hostingViewController)
     }
     
     // MARK: - Public
     
     func start() {
         MXLog.debug("[AllChatLayoutEditorCoordinator] did start.")
-        allChatLayoutEditorViewModel.completion = { [weak self] result in
+        viewModel.completion = { [weak self] result in
             guard let self = self else { return }
             MXLog.debug("[AllChatLayoutEditorCoordinator] AllChatLayoutEditorViewModel did complete with result: \(result).")
             
@@ -83,7 +83,7 @@ final class AllChatLayoutEditorCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.allChatLayoutEditorHostingController
+        return self.hostingViewController
     }
     
     // MARK: - Private
@@ -111,20 +111,20 @@ final class AllChatLayoutEditorCoordinator: Coordinator, Presentable {
             case .cancel: break
             case .allSelected: break
             case .spaceSelected(let item):
-                self.allChatLayoutEditorViewModel.pinSpace(with: item)
+                self.viewModel.pinSpace(with: item)
             }
             
             coordinator.toPresentable().dismiss(animated: true)
             self.remove(childCoordinator: coordinator)
         }
         self.add(childCoordinator: coordinator)
-        self.allChatLayoutEditorHostingController.present(coordinator.toPresentable(), animated: true)
+        self.hostingViewController.present(coordinator.toPresentable(), animated: true)
     }
     
     // MARK: - UIAdaptivePresentationControllerDelegate
 
     private class AdaptivePresentationDelegate: NSObject, UIAdaptivePresentationControllerDelegate {
-        var completion: ((_ result: AllChatLayoutEditorCoordinatorResult) -> Void)?
+        var completion: ((_ result: AllChatsLayoutEditorCoordinatorResult) -> Void)?
         
         func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
             self.completion?(.cancel)

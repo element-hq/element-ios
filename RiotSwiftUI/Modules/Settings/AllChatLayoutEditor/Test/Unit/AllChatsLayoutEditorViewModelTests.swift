@@ -20,7 +20,7 @@ import Combine
 @testable import RiotSwiftUI
 
 @available(iOS 14.0, *)
-class AllChatLayoutEditorViewModelTests: XCTestCase {
+class AllChatsLayoutEditorViewModelTests: XCTestCase {
     private enum Constants {
         static let presenceInitialValue: AllChatLayoutEditorPresence = .offline
         static let displayName = "Alice"

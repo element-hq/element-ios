@@ -164,7 +164,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         case .home:
             let pinMissed = RiotSettings.shared.pinRoomsWithMissedNotificationsOnHome
             let pinUnread = RiotSettings.shared.pinRoomsWithUnreadMessagesOnHome
-            switch AllChatLayoutSettingsManager.shared.allChatLayoutSettings.sorting {
+            switch AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.sorting {
             case .alphabetical:
                 return MXRoomListDataSortOptions(invitesFirst: false,
                                                  sentStatus: false,
@@ -212,7 +212,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         addRiotSettingsObserver()
         addSessionStateObserver()
         
-        allChatLayoutSettingsManagerObserver = NotificationCenter.default.addObserver(forName: AllChatLayoutSettingsManager.didUpdateSettings, object: nil, queue: OperationQueue.main) { [weak self] notification in
+        allChatLayoutSettingsManagerObserver = NotificationCenter.default.addObserver(forName: AllChatsLayoutSettingsManager.didUpdateSettings, object: nil, queue: OperationQueue.main) { [weak self] notification in
             guard let self = self else { return }
 //            self?.createFetchers()
             self.refresh()
@@ -221,7 +221,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
             }
         }
         
-        allChatLayoutSettingsObserver = NotificationCenter.default.addObserver(forName: AllChatLayoutSettings.didUpdateFilters, object: nil, queue: OperationQueue.main) { [weak self] notification in
+        allChatLayoutSettingsObserver = NotificationCenter.default.addObserver(forName: AllChatsLayoutSettings.didUpdateFilters, object: nil, queue: OperationQueue.main) { [weak self] notification in
             guard let self = self else { return }
             if let fetcher = self.conversationRoomListDataFetcherForHome {
                 self.updateConversationFetcher(fetcher, for: .home)
@@ -667,7 +667,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
 
         switch mode {
         case .home:
-            let settings = AllChatLayoutSettingsManager.shared.allChatLayoutSettings
+            let settings = AllChatsLayoutSettingsManager.shared.allChatLayoutSettings
             if space != nil || (settings.sections.contains(.favourites) && !settings.filters.contains(.favourites)) {
                 notDataTypes.insert(.favorited)
             }
@@ -680,7 +680,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
                     fetcher.fetchOptions.filterOptions.space = nil
                 }
                 
-                let settings = AllChatLayoutSettingsManager.shared.allChatLayoutSettings
+                let settings = AllChatsLayoutSettingsManager.shared.allChatLayoutSettings
                 if settings.filters.contains(.unreads) && settings.activeFilters.contains(.unreads) {
                     fetcher.fetchOptions.filterOptions.dataTypes = [.unread]
                     return

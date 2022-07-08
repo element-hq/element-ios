@@ -18,14 +18,14 @@ import XCTest
 import RiotSwiftUI
 
 @available(iOS 14.0, *)
-class AllChatLayoutEditorUITests: MockScreenTest {
+class AllChatsLayoutEditorUITests: MockScreenTest {
 
     override class var screenType: MockScreenState.Type {
-        return MockAllChatLayoutEditorScreenState.self
+        return MockAllChatsLayoutEditorScreenState.self
     }
 
     override class func createTest() -> MockScreenTest {
-        return AllChatLayoutEditorUITests(selector: #selector(verifyAllChatLayoutEditorScreen))
+        return AllChatsLayoutEditorUITests(selector: #selector(verifyAllChatLayoutEditorScreen))
     }
 
     func verifyAllChatLayoutEditorScreen() throws {

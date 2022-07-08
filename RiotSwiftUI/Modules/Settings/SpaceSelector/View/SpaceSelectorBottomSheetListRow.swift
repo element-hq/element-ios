@@ -40,7 +40,7 @@ struct SpaceSelectorBottomSheetListRow: View {
                     .renderingMode(.template)
                     .foregroundColor(theme.colors.primaryContent)
                     .frame(width: 42, height: 42)
-                    .background(theme.colors.navigation)
+                    .background(theme.colors.system)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
             }
             Text(displayName ?? "")

@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-struct AllChatLayoutEditorSortingRow: View {
+struct AllChatsLayoutEditorSortingRow: View {
     // MARK: - Properties
     
     // MARK: Private
@@ -33,7 +33,7 @@ struct AllChatLayoutEditorSortingRow: View {
     
     // MARK: Public
     
-    var option: AllChatLayoutEditorSortingOption
+    var option: AllChatsLayoutEditorSortingOption
     
     @ViewBuilder
     var body: some View {
@@ -63,8 +63,8 @@ struct AllChatLayoutEditorSortingRow_Previews: PreviewProvider {
     
     private static var preview: some View {
         VStack(spacing: 16) {
-            AllChatLayoutEditorSortingRow(option: AllChatLayoutEditorSortingOption(type: .activity, name: VectorL10n.allChatsEditLayoutActivityOrder, selected: false))
-            AllChatLayoutEditorSortingRow(option: AllChatLayoutEditorSortingOption(type: .alphabetical, name: VectorL10n.allChatsEditLayoutAlphabeticalOrder, selected: false))
+            AllChatsLayoutEditorSortingRow(option: AllChatsLayoutEditorSortingOption(type: .activity, name: VectorL10n.allChatsEditLayoutActivityOrder, selected: false))
+            AllChatsLayoutEditorSortingRow(option: AllChatsLayoutEditorSortingOption(type: .alphabetical, name: VectorL10n.allChatsEditLayoutAlphabeticalOrder, selected: false))
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

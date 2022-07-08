@@ -27,6 +27,7 @@
 #import "NSArray+Element.h"
 
 #import "GeneratedInterface-Swift.h"
+@import DesignKit;
 
 #define RECENTSDATASOURCE_SECTION_DIRECTORY     0x01
 #define RECENTSDATASOURCE_SECTION_INVITES       0x02
@@ -44,7 +45,7 @@
 
 NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSourceTapOnDirectoryServerChange";
 
-@interface RecentsDataSource() <SecureBackupBannerCellDelegate, CrossSigningSetupBannerCellDelegate, RecentsListServiceDelegate, AllChatFilterOptionsDelegate, SpaceSelectorBottomSheetCoordinatorBridgePresenterDelegate>
+@interface RecentsDataSource() <SecureBackupBannerCellDelegate, CrossSigningSetupBannerCellDelegate, RecentsListServiceDelegate, AllChatsFilterOptionsDelegate, SpaceSelectorBottomSheetCoordinatorBridgePresenterDelegate>
 {
     dispatch_queue_t processingQueue;
     
@@ -64,9 +65,9 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 @property (nonatomic, strong) CrossSigningService *crossSigningService;
 
-@property (nonatomic, strong) AllChatFilterOptions *allChatFilterOptions;
+@property (nonatomic, strong) AllChatsFilterOptions *allChatsFilterOptions;
 @property (nonatomic, strong) SpaceSelectorBottomSheetCoordinatorBridgePresenter *spaceSelectorPresenter;
-@property (nonatomic, strong) UIView *allChatOptionsView;
+@property (nonatomic, strong) UIView *allChatsOptionsView;
 
 @end
 
@@ -99,8 +100,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         [self.recentsListService addDelegate:self];
         
         [self registerAllChatSettingsUpdateNotification];
-        self.allChatFilterOptions = [AllChatFilterOptions new];
-        self.allChatFilterOptions.delegate = self;
+        self.allChatsFilterOptions = [AllChatsFilterOptions new];
+        self.allChatsFilterOptions.delegate = self;
     }
     return self;
 }
@@ -182,8 +183,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     
     if (self.currentSpace == nil && self.recentRoomCellDataArray.count > 0 && _recentsDataSourceMode == RecentsDataSourceModeHome)
     {
-        AllChatLayoutSettings *settings = AllChatLayoutSettingsManager.shared.allChatLayoutSettings;
-        if ((settings.sections & AllChatLayoutSectionTypeRecents) == AllChatLayoutSectionTypeRecents)
+        AllChatsLayoutSettings *settings = AllChatsLayoutSettingsManager.shared.allChatLayoutSettings;
+        if ((settings.sections & AllChatsLayoutSectionTypeRecents) == AllChatsLayoutSectionTypeRecents)
         {
             [types addObject:@(RecentsDataSourceSectionTypeRecentRooms)];
         }
@@ -197,8 +198,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         }
         else
         {
-            AllChatLayoutSettings *settings = AllChatLayoutSettingsManager.shared.allChatLayoutSettings;
-            if ((settings.sections & AllChatLayoutSectionTypeFavourites) == AllChatLayoutSectionTypeFavourites)
+            AllChatsLayoutSettings *settings = AllChatsLayoutSettingsManager.shared.allChatLayoutSettings;
+            if ((settings.sections & AllChatsLayoutSectionTypeFavourites) == AllChatsLayoutSectionTypeFavourites)
             {
                 [types addObject:@(RecentsDataSourceSectionTypeFavorites)];
             }
@@ -293,17 +294,17 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (void)registerAllChatSettingsUpdateNotification
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allChatSettingsWillUpdateNotification:) name:AllChatLayoutSettingsManager.willUpdateSettings object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allChatSettingsWillUpdateNotification:) name:AllChatsLayoutSettingsManager.willUpdateSettings object:nil];
 }
 
 - (void)allChatSettingsWillUpdateNotification:(NSNotification*)notification
 {
-    self.allChatOptionsView = nil;
+    self.allChatsOptionsView = nil;
 }
 
 - (void)unregisterAllChatSettingsUpdateNotification
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:AllChatLayoutSettingsManager.willUpdateSettings object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:AllChatsLayoutSettingsManager.willUpdateSettings object:nil];
 }
 
 #pragma mark - Space Service notifications
@@ -649,7 +650,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     
     if (self.recentsListService.space == nil && sectionType == RecentsDataSourceSectionTypeConversation && _recentsDataSourceMode == RecentsDataSourceModeHome)
     {
-        if (self.allChatFilterOptions.optionsCount)
+        if (self.allChatsFilterOptions.optionsCount)
         {
             return baseHeight + RECENTSDATASOURCE_ALL_CHATS_SECTION_BOTTOM_VIEW_HEIGHT;
         }
@@ -940,13 +941,13 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 //    }
     
     if (self.recentsListService.space == nil && _recentsDataSourceMode == RecentsDataSourceModeHome && sectionType == RecentsDataSourceSectionTypeConversation) {
-        if (!self.allChatOptionsView) {
-            self.allChatOptionsView = [self.allChatFilterOptions createFilterListView];
+        if (!self.allChatsOptionsView) {
+            self.allChatsOptionsView = [self.allChatsFilterOptions createFilterListView];
         }
 
-        if (self.allChatOptionsView)
+        if (self.allChatsOptionsView)
         {
-            return self.allChatOptionsView;
+            return self.allChatsOptionsView;
         }
     }
     else
@@ -1735,9 +1736,9 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     return NO;
 }
 
-#pragma mark - AllChatFilterOptionsDelegate
+#pragma mark - AllChatsFilterOptionsDelegate
 
-- (void)allChatFilterOptions:(AllChatFilterOptions *)allChatFilterOptions presentSpaceSelectorForSpacesWithIds:(NSArray<NSString *> *)spaceIds
+- (void)allChatsFilterOptions:(AllChatsFilterOptions *)allChatsFilterOptions presentSpaceSelectorForSpacesWithIds:(NSArray<NSString *> *)spaceIds
 {
     SpaceSelectorBottomSheetCoordinatorBridgePresenter *presenter = [[SpaceSelectorBottomSheetCoordinatorBridgePresenter alloc] initWithSession:self.mxSession spaceIds:spaceIds isAllEnabled:YES];
     [presenter presentFrom:(UIViewController *)self.delegate animated:YES];
@@ -1745,7 +1746,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     self.spaceSelectorPresenter = presenter;
 }
 
-- (NSString *)allChatFilterOptions:(AllChatFilterOptions *)allChatFilterOptions nameForSpaceWithId:(NSString *)spaceId
+- (NSString *)allChatsFilterOptions:(AllChatsFilterOptions *)allChatsFilterOptions nameForSpaceWithId:(NSString *)spaceId
 {
     return [self.mxSession roomSummaryWithRoomId:spaceId].displayname;
 }
@@ -1761,7 +1762,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 - (void)spaceSelectorBottomSheetCoordinatorBridgePresenterDidSelectAll:(SpaceSelectorBottomSheetCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
     [Analytics.shared trackInteraction:AnalyticsUIElementAllChatAllSpacesActivated];
-    [self.allChatFilterOptions updateActivePinnedSpaceWithId:nil];
+    [self.allChatsFilterOptions updateActivePinnedSpaceWithId:nil];
     self.spaceSelectorPresenter = nil;
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
 }
@@ -1769,7 +1770,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 - (void)spaceSelectorBottomSheetCoordinatorBridgePresenter:(SpaceSelectorBottomSheetCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectSpaceWithId:(NSString *)spaceId
 {
     [Analytics.shared trackInteraction:AnalyticsUIElementAllChatPinnedSpaceActivated];
-    [self.allChatFilterOptions updateActivePinnedSpaceWithId:spaceId];
+    [self.allChatsFilterOptions updateActivePinnedSpaceWithId:spaceId];
     self.spaceSelectorPresenter = nil;
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
 }

@@ -18,19 +18,19 @@ import Foundation
 import Combine
 
 @available(iOS 14.0, *)
-protocol AllChatLayoutEditorServiceProtocol {
-    var sections: [AllChatLayoutEditorSection] { get }
-    var filters: [AllChatLayoutEditorFilter] { get }
-    var sortingOptions: [AllChatLayoutEditorSortingOption] { get }
+protocol AllChatsLayoutEditorServiceProtocol {
+    var sections: [AllChatsLayoutEditorSection] { get }
+    var filters: [AllChatsLayoutEditorFilter] { get }
+    var sortingOptions: [AllChatsLayoutEditorSortingOption] { get }
     var pinnedSpaces: [SpaceSelectorListItemData] { get }
     
-    func trackDoneAction(sections: [AllChatLayoutEditorSection],
-                         filters: [AllChatLayoutEditorFilter],
-                         sortingOptions: [AllChatLayoutEditorSortingOption],
+    func trackDoneAction(sections: [AllChatsLayoutEditorSection],
+                         filters: [AllChatsLayoutEditorFilter],
+                         sortingOptions: [AllChatsLayoutEditorSortingOption],
                          pinnedSpaces: [SpaceSelectorListItemData])
-    func outputSettings(sections: [AllChatLayoutEditorSection],
-                        filters: [AllChatLayoutEditorFilter],
-                        sortingOptions: [AllChatLayoutEditorSortingOption],
-                        pinnedSpaces: [SpaceSelectorListItemData]) -> AllChatLayoutSettings
+    func outputSettings(sections: [AllChatsLayoutEditorSection],
+                        filters: [AllChatsLayoutEditorFilter],
+                        sortingOptions: [AllChatsLayoutEditorSortingOption],
+                        pinnedSpaces: [SpaceSelectorListItemData]) -> AllChatsLayoutSettings
 
 }

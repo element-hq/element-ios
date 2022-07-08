@@ -16,12 +16,12 @@
 
 import Foundation
 
-protocol AllChatLayoutEditorViewModelProtocol {
+protocol AllChatsLayoutEditorViewModelProtocol {
     
-    var completion: ((AllChatLayoutEditorViewModelResult) -> Void)? { get set }
+    var completion: ((AllChatsLayoutEditorViewModelResult) -> Void)? { get set }
     @available(iOS 14, *)
-    static func makeAllChatLayoutEditorViewModel(service: AllChatLayoutEditorServiceProtocol) -> AllChatLayoutEditorViewModelProtocol
+    static func makeAllChatsLayoutEditorViewModel(service: AllChatsLayoutEditorServiceProtocol) -> AllChatsLayoutEditorViewModelProtocol
     @available(iOS 14, *)
-    var context: AllChatLayoutEditorViewModelType.Context { get }
+    var context: AllChatsLayoutEditorViewModelType.Context { get }
     func pinSpace(with item: SpaceSelectorListItemData)
 }

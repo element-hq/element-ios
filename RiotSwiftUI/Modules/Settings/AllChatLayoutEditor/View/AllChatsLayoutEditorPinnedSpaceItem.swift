@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-struct AllChatLayoutEditorPinnedSpaceItem: View {
+struct AllChatsLayoutEditorPinnedSpaceItem: View {
     // MARK: - Properties
     
     // MARK: Private
@@ -60,7 +60,7 @@ struct AllChatLayoutEditorPinnedSpaceItem: View {
                     .foregroundColor(theme.colors.secondaryContent)
                     .frame(width: 24, height: 24)
                     .background(Circle()
-                        .strokeBorder(theme.colors.navigation, lineWidth: 2, antialiased: true)
+                        .strokeBorder(theme.colors.system, lineWidth: 2, antialiased: true)
                         .background(Circle().fill(theme.colors.quinaryContent)))
             }
         }
