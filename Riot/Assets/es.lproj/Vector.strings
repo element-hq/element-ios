@@ -2424,3 +2424,20 @@
 "location_sharing_allow_background_location_validate_action" = "Ajustes";
 "location_sharing_allow_background_location_title" = "Permitir acceso";
 "settings_ui_show_redactions_in_room_history" = "Mostrar un indicador donde se haya eliminado un mensaje";
+"settings_timeline" = "LÍNEA DE TIEMPO";
+"room_accessibility_record_voice_message_hint" = "Toca dos veces y mantén para grabar.";
+
+// MARK: Reactions
+
+"room_event_action_reaction_more" = "%@ más";
+"leave_space_selection_no_rooms" = "No seleccionar ninguna sala";
+"leave_space_selection_all_rooms" = "Seleccionar todas las salas";
+"leave_space_selection_title" = "SELECCIONAR SALAS";
+"leave_space_and_more_rooms" = "Salir del espacio y %@ salas";
+"leave_space_and_one_room" = "Salir del espacio y 1 sala";
+
+// Mark: Leave space
+
+"leave_space_action" = "Salir del espacio";
+"home_context_menu_mark_as_read" = "Marcar como leído";
+"room_accessibility_record_voice_message" = "Grabar mensaje de voz";

@@ -2491,3 +2491,21 @@
 /* The %@ placeholder will be replaced with the integration manager's URL. */
 "settings_integrations_allow_description" = "Gebruik een integratiebeheerder (%@) om bots, bruggen, widgets en stickerpakketten te beheren.\n\nIntegratiebeheerders ontvangen configuratiedata en kunnen widgets aanpassen, kameruitnodigingen versturen en bestuursniveaus instellen namens u.";
 "settings_ui_show_redactions_in_room_history" = "Toon een aanduiding voor verwijderde berichten";
+
+// MARK: Reactions
+
+"room_event_action_reaction_more" = "%@ meer";
+"leave_space_selection_no_rooms" = "Selecteer geen kamers";
+"leave_space_selection_all_rooms" = "Selecteer alle kamers";
+"leave_space_selection_title" = "KAMERS KIEZEN";
+"leave_space_and_more_rooms" = "Verlaat space en %@ kamers";
+"leave_space_and_one_room" = "Verlaat space en 1 kamer";
+
+// Mark: Leave space
+
+"leave_space_action" = "Verlaat space";
+"spaces_feature_not_available" = "Deze functie is hier niet beschikbaar. Voor nu kunt u dit doen met %@ op uw computer.";
+"home_context_menu_mark_as_read" = "Markeer als gelezen";
+"settings_timeline" = "TIJDLIJN";
+"room_accessibility_record_voice_message_hint" = "Dubbeltik en houd vast om op te nemen.";
+"room_accessibility_record_voice_message" = "Spraakbericht opnemen";

@@ -294,7 +294,7 @@
 "settings_add_email_address" = "Lägg till e-postadress";
 "settings_phone_number" = "Telefon";
 "settings_add_phone_number" = "Lägg till telefonnummer";
-"settings_change_password" = "Byt Matrixkontolösenord";
+"settings_change_password" = "Byt lösenord";
 "settings_night_mode" = "Nattläge";
 "settings_fail_to_update_profile" = "Misslyckades att uppdatera profil";
 "settings_three_pids_management_information_part1" = "Hantera vilka e-postadresser eller telefonnummer som du kan använda för att logga in eller återfå ditt konto här. Kontrollera vilka som kan hitta dig i ";
@@ -325,9 +325,9 @@
 "settings_privacy_policy" = "Integritetspolicy";
 "settings_send_crash_report" = "Skicka anonyma krasch- och användningsdata";
 "settings_enable_rageshake" = "Raseriskaka för att rapportera bugg";
-"settings_old_password" = "gammalt lösenord";
-"settings_new_password" = "nytt lösenord";
-"settings_confirm_password" = "bekräfta lösenord";
+"settings_old_password" = "Gammalt lösenord";
+"settings_new_password" = "Nytt lösenord";
+"settings_confirm_password" = "Bekräfta lösenord";
 "settings_fail_to_update_password" = "Misslyckades att uppdatera Matrixkontolösenord";
 "settings_password_updated" = "Ditt Matrixkontolösenord har uppdaterats";
 "settings_add_3pid_password_title_email" = "Lägg till e-postadress";
@@ -2267,3 +2267,22 @@
 "location_sharing_allow_background_location_message" = "Om du vill dela din realtidsplats så behöver Element platsåtkomst när appen är i bakgrunden. För att aktivera åtkomst, gå till Inställningar > Plats och välj Alltid";
 "location_sharing_allow_background_location_title" = "Tillåt åtkomst";
 "settings_labs_enable_live_location_sharing" = "Platsdelning i realtid - dela nuvarande plats (aktiv utveckling, och för tillfället ligger platser kvar i rumshistoriken)";
+
+// MARK: Reactions
+
+"room_event_action_reaction_more" = "%@ till";
+"leave_space_selection_no_rooms" = "Välj inga rum";
+"leave_space_selection_all_rooms" = "Välj alla rum";
+"leave_space_selection_title" = "VÄLJ RUM";
+"leave_space_and_more_rooms" = "Lämna utrymme och %@ rum";
+"leave_space_and_one_room" = "Lämna utrymme och 1 rum";
+
+// Mark: Leave space
+
+"leave_space_action" = "Lämna utrymme";
+"spaces_feature_not_available" = "Den här funktionen är inte tillgänglig här. För tillfället kan du göra det med %@ på din dator.";
+"home_context_menu_mark_as_read" = "Markera som läst";
+"settings_ui_show_redactions_in_room_history" = "Visa en platshållare för borttagna meddelanden";
+"settings_timeline" = "TIDSLINJE";
+"room_accessibility_record_voice_message_hint" = "Dubbeltryck och håll för att spela in.";
+"room_accessibility_record_voice_message" = "Spela in röstmeddelande";
