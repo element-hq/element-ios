@@ -234,10 +234,6 @@ public extension VectorL10n {
   static var passwordValidationInfoHeader: String { 
     return VectorL10n.tr("Untranslated", "password_validation_info_header") 
   }
-  /// Room Info
-  static var roomInfoBackButtonTitle: String { 
-    return VectorL10n.tr("Untranslated", "room_info_back_button_title") 
-  }
 }
 // swiftlint:enable function_parameter_count identifier_name line_length type_body_length
 

@@ -5251,6 +5251,10 @@ public class VectorL10n: NSObject {
   public static var roomEventFailedToSend: String { 
     return VectorL10n.tr("Vector", "room_event_failed_to_send") 
   }
+  /// Room Info
+  public static var roomInfoBackButtonTitle: String { 
+    return VectorL10n.tr("Vector", "room_info_back_button_title") 
+  }
   /// 1 member
   public static var roomInfoListOneMember: String { 
     return VectorL10n.tr("Vector", "room_info_list_one_member") 

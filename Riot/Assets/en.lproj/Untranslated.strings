@@ -88,6 +88,3 @@
 "password_validation_error_contain_uppercase_letter" = "Contain an upper-case letter.";
 "password_validation_error_contain_number" = "Contain a number.";
 "password_validation_error_contain_symbol" = "Contain a symbol.";
-
-// MARK: Room Info
-"room_info_back_button_title" = "Room Info";
