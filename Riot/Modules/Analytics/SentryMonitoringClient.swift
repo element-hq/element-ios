@@ -35,7 +35,7 @@ struct SentryMonitoringClient {
             options.tracesSampleRate = 1.0
             
             options.beforeSend = { event in
-                MXLog.error("[SentryMonitoringClient] Issue detected: \(event)")
+                MXLog.debug("[SentryMonitoringClient] Issue detected: \(event)")
                 return event
             }
 
