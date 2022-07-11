@@ -2166,6 +2166,7 @@ Tap the + to start adding people.";
 To enable access, tap Settings> Location and select Always";
 "location_sharing_allow_background_location_validate_action" = "Settings";
 "location_sharing_allow_background_location_cancel_action" = "Not now";
+"location_sharing_map_credits_title" = "© Copyright";
 
 // MARK: Live location sharing
 
