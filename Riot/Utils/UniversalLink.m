@@ -16,6 +16,7 @@
 
 #import "UniversalLink.h"
 #import "NSArray+Element.h"
+#import "MXTools.h"
 
 @implementation UniversalLink
 
@@ -50,6 +51,13 @@
 
     // Remove the first empty path param string
     pathParams = [pathParams filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"length > 0"]];
+
+    // Handle room links with aliases/identifiers
+    if ([MXTools isMatrixRoomAlias:[_url.absoluteString stringByRemovingPercentEncoding]]
+        || [MXTools isMatrixRoomIdentifier:[_url.absoluteString stringByRemovingPercentEncoding]])
+    {
+        pathParams = @[_url.absoluteString];
+    }
 
     // URL decode each path param
     pathParams = [pathParams vc_map:^id _Nonnull(NSString * _Nonnull item) {
