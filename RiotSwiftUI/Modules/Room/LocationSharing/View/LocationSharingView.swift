@@ -25,6 +25,8 @@ struct LocationSharingView: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
+    @Environment(\.openURL) var openURL
+    
     // MARK: Public
     
     @ObservedObject var context: LocationSharingViewModel.Context
@@ -34,7 +36,15 @@ struct LocationSharingView: View {
             ZStack(alignment: .bottom) {
                 mapView
                 VStack(spacing: 0) {
-                    MapCreditsView()
+                    MapCreditsView(action: {
+                        context.send(viewAction: .mapCreditsDidTap)
+                    })
+                    .padding(.bottom, 10.0)
+                    .actionSheet(isPresented: $context.showMapCreditsSheet) {
+                        return MapCreditsActionSheet(openURL: { url in
+                            openURL(url)
+                        }).sheet
+                    }
                     buttonsView
                         .background(theme.colors.background)
                         .clipShape(RoundedCornerShape(radius: 8, corners: [.topLeft, .topRight]))
