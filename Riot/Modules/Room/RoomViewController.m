@@ -4801,7 +4801,22 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)roomInputToolbarView:(RoomInputToolbarView *)toolbarView sendAttributedTextMessage:(NSAttributedString *)attributedTextMessage
 {
-    [self sendAttributedTextMessage:attributedTextMessage];
+    // "/me" command is supported with Pills in RoomDataSource. Other commands
+    // currently work with identifiers (e.g. ban, invite, op, etc).
+    NSString *message;
+    if (@available(iOS 15.0, *))
+    {
+        message = [PillsFormatter stringByReplacingPillsIn:attributedTextMessage mode:PillsReplacementTextModeIdentifier];
+    }
+    else
+    {
+        message = attributedTextMessage.string;
+    }
+
+    if ([message hasPrefix:kMXKSlashCmdEmote] || [self isIRCStyleCommand:message] == NO)
+    {
+        [self sendAttributedTextMessage:attributedTextMessage];
+    }
 }
 
 #pragma mark - MXKRoomMemberDetailsViewControllerDelegate
@@ -6819,7 +6834,8 @@ static CGSize kThreadListBarButtonItemImageSize;
         {
             if (@available(iOS 15.0, *))
             {
-                MXKPasteboardManager.shared.pasteboard.string = [PillsFormatter stringByReplacingPillsIn:attributedTextMessage asMarkdown:YES];
+                MXKPasteboardManager.shared.pasteboard.string = [PillsFormatter stringByReplacingPillsIn:attributedTextMessage
+                                                                                                    mode:PillsReplacementTextModeMarkdown];
             }
             else
             {
