@@ -1,1 +1,0 @@
-Server Offline Activity Indicator
