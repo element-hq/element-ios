@@ -23,7 +23,7 @@ import MatrixSDK
 /// It is managed by an `UserIndicator`, meaning the `present` and `dismiss` methods will be called when the parent `UserIndicator` starts or completes.
 class ToastViewPresenter: UserIndicatorViewPresentable {
     struct Constants {
-        static let navigationBarPatting = CGFloat(10)
+        static let navigationBarPatting = CGFloat(12)
     }
     
     private let viewState: ToastViewState
@@ -50,7 +50,7 @@ class ToastViewPresenter: UserIndicatorViewPresentable {
             navigation.view.addSubview(view)
             NSLayoutConstraint.activate([
                 view.centerXAnchor.constraint(equalTo: navigation.view.centerXAnchor),
-                view.topAnchor.constraint(equalTo: navigation.navigationBar.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.navigationBarPatting)
+                view.topAnchor.constraint(equalTo: navigation.navigationBar.safeAreaLayoutGuide.bottomAnchor, constant: Constants.navigationBarPatting)
             ])
         } else {
             viewController.view.addSubview(view)

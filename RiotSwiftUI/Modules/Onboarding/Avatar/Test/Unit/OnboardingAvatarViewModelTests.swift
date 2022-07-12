@@ -23,7 +23,7 @@ class OnboardingAvatarViewModelTests: XCTestCase {
     private enum Constants {
         static let userId = "@user:matrix.org"
         static let displayName = "Alice"
-        static let avatarColorCount = DefaultThemeSwiftUI().colors.namesAndAvatars.count
+        static let avatarColorCount = DefaultThemeSwiftUI().colors.contentAndAvatars.count
         static let avatarImage = Asset.Images.appSymbol.image
     }
     

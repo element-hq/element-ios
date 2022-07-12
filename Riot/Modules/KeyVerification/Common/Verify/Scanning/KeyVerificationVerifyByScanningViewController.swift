@@ -17,6 +17,7 @@
  */
 
 import UIKit
+import MatrixSDK
 
 final class KeyVerificationVerifyByScanningViewController: UIViewController {
     
@@ -215,7 +216,12 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
     
     private func qrCodeImage(from data: Data) -> UIImage? {
         let codeGenerator = QRCodeGenerator()
-        return codeGenerator.generateCode(from: data, with: self.codeImageView.frame.size)
+        do {
+            return try codeGenerator.generateCode(from: data, with: codeImageView.frame.size)
+        } catch {
+            MXLog.error("[KeyVerificationVerifyByScanningViewController] qrCodeImage: cannot generate QR code - \(error)")
+            return nil
+        }
     }
     
     private func presentQRCodeReader(animated: Bool) {

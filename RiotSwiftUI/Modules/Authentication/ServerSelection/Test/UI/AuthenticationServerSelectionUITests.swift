@@ -43,7 +43,7 @@ class AuthenticationServerSelectionUITests: MockScreenTest {
     
     func verifyNormalState() {
         let serverTextField = app.textFields.element
-        XCTAssertEqual(serverTextField.value as? String, "matrix.org", "The server shown should be matrix.org with the https scheme hidden.")
+        XCTAssertEqual(serverTextField.value as? String, "matrix.org", "The server shown should be matrix.org as passed to the view model init.")
         
         let confirmButton = app.buttons["confirmButton"]
         XCTAssertEqual(confirmButton.label, VectorL10n.confirm, "The confirm button should say Confirm when in modal presentation.")

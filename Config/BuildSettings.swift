@@ -405,4 +405,17 @@ final class BuildSettings: NSObject {
     static let tileServerMapStyleURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx")!
     
     static let locationSharingEnabled = true
+
+    // MARK: - MXKAppSettings
+    static let enableBotCreation: Bool = false
+    static let maxAllowedMediaCacheSize: Int = 1073741824
+    static let presenceColorForOfflineUser: Int = 15020851
+    static let presenceColorForOnlineUser: Int = 3401011
+    static let presenceColorForUnavailableUser: Int = 15066368
+    static let showAllEventsInRoomHistory: Bool = false
+    static let showLeftMembersInRoomMemberList: Bool = false
+    static let showRedactionsInRoomHistory: Bool = true
+    static let showUnsupportedEventsInRoomHistory: Bool = false
+    static let sortRoomMembersUsingLastSeenTime: Bool = true
+    static let syncLocalContacts: Bool = false
 }

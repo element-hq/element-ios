@@ -26,12 +26,20 @@ struct MapCreditsView: View {
     
     // MARK: Public
     
+    var action: (() -> Void)?
+    
     var body: some View {
         HStack {
-            Link("© MapTiler", destination: URL(string: "https://www.maptiler.com/copyright/")!)
-            Link("© OpenStreetMap contributors", destination: URL(string: "https://www.openstreetmap.org/copyright")!)
+            Spacer()
+            Button {
+                action?()
+            } label: {
+                Text(VectorL10n.locationSharingMapCreditsTitle)
+                    .font(theme.fonts.footnote)
+                    .foregroundColor(theme.colors.accent)
+            }
+            .padding(.horizontal)
         }
-        .font(theme.fonts.caption1)
     }
 }
 

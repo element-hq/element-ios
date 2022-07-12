@@ -2815,6 +2815,18 @@ public class VectorL10n: NSObject {
   public static var locationSharingLiveError: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_error") 
   }
+  /// Enable live location sharing
+  public static var locationSharingLiveLabPromotionActivation: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_lab_promotion_activation") 
+  }
+  /// Please note: this is a labs feature using a temporary implementation that allows the history of your shared location to be permanently visible to other people in the room.
+  public static var locationSharingLiveLabPromotionText: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_lab_promotion_text") 
+  }
+  /// Live location sharing
+  public static var locationSharingLiveLabPromotionTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_lab_promotion_title") 
+  }
   /// You
   public static var locationSharingLiveListItemCurrentUserDisplayName: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_list_item_current_user_display_name") 
@@ -2831,7 +2843,7 @@ public class VectorL10n: NSObject {
   public static var locationSharingLiveListItemSharingExpired: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_list_item_sharing_expired") 
   }
-  /// Stop sharing
+  /// Stop
   public static var locationSharingLiveListItemStopSharingAction: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_list_item_stop_sharing_action") 
   }
@@ -2894,6 +2906,10 @@ public class VectorL10n: NSObject {
   /// %@ could not access your location. Please try again later.
   public static func locationSharingLocatingUserErrorTitle(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "location_sharing_locating_user_error_title", p1)
+  }
+  /// © Copyright
+  public static var locationSharingMapCreditsTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_map_credits_title") 
   }
   /// Open in Apple Maps
   public static var locationSharingOpenAppleMaps: String { 
@@ -3239,9 +3255,17 @@ public class VectorL10n: NSObject {
   public static var networkErrorNotReachable: String { 
     return VectorL10n.tr("Vector", "network_error_not_reachable") 
   }
+  /// You're offline, check your connection.
+  public static var networkOfflineMessage: String { 
+    return VectorL10n.tr("Vector", "network_offline_message") 
+  }
   /// The Internet connection appears to be offline.
   public static var networkOfflinePrompt: String { 
     return VectorL10n.tr("Vector", "network_offline_prompt") 
+  }
+  /// You're offline
+  public static var networkOfflineTitle: String { 
+    return VectorL10n.tr("Vector", "network_offline_title") 
   }
   /// New
   public static var newWord: String { 
@@ -5231,6 +5255,10 @@ public class VectorL10n: NSObject {
   public static var roomEventFailedToSend: String { 
     return VectorL10n.tr("Vector", "room_event_failed_to_send") 
   }
+  /// Room Info
+  public static var roomInfoBackButtonTitle: String { 
+    return VectorL10n.tr("Vector", "room_info_back_button_title") 
+  }
   /// 1 member
   public static var roomInfoListOneMember: String { 
     return VectorL10n.tr("Vector", "room_info_list_one_member") 
@@ -6723,7 +6751,7 @@ public class VectorL10n: NSObject {
   public static var settingsEnableCallkit: String { 
     return VectorL10n.tr("Vector", "settings_enable_callkit") 
   }
-  /// Enable In-App notifications
+  /// Enable in-app notifications
   public static var settingsEnableInappNotifications: String { 
     return VectorL10n.tr("Vector", "settings_enable_inapp_notifications") 
   }

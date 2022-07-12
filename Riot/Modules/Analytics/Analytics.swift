@@ -17,8 +17,12 @@
 import PostHog
 import AnalyticsEvents
 
-/// A class responsible for managing an analytics client
-/// and sending events through this client.
+/// A class responsible for managing a variety of analytics clients
+/// and sending events through these clients.
+///
+/// Events may include user activity, or app health data such as crashes,
+/// non-fatal issues and performance. `Analytics` class serves as a façade
+/// to all these use cases.
 ///
 /// ## Creating Analytics Events
 ///
@@ -41,6 +45,9 @@ import AnalyticsEvents
     
     /// The analytics client to send events with.
     private var client: AnalyticsClientProtocol = PostHogAnalyticsClient()
+    
+    /// The monitoring client to track crashes, issues and performance
+    private var monitoringClient = SentryMonitoringClient()
     
     /// The service used to interact with account data settings.
     private var service: AnalyticsService?
@@ -106,6 +113,7 @@ import AnalyticsEvents
         // The order is important here. PostHog ignores the reset if stopped.
         reset()
         client.stop()
+        monitoringClient.stop()
         
         MXLog.debug("[Analytics] Stopped.")
     }
@@ -115,6 +123,7 @@ import AnalyticsEvents
         guard RiotSettings.shared.enableAnalytics, !isRunning else { return }
         
         client.start()
+        monitoringClient.start()
         
         // Sanity check in case something went wrong.
         guard client.isRunning else { return }
@@ -163,6 +172,7 @@ import AnalyticsEvents
     /// Note: **MUST** be called before stopping PostHog or the reset is ignored.
     func reset() {
         client.reset()
+        monitoringClient.reset()
         MXLog.debug("[Analytics] Reset.")
         RiotSettings.shared.isIdentifiedForAnalytics = false
         
@@ -374,4 +384,7 @@ extension Analytics: MXAnalyticsDelegate {
         capture(event: event)
     }
 
+    func trackNonFatalIssue(_ issue: String, details: [String : Any]?) {
+        monitoringClient.trackNonFatalIssue(issue, details: details)
+    }
 }

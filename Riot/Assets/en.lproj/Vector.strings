@@ -1060,6 +1060,8 @@ Tap the + to start adding people.";
 "today" = "Today";
 "yesterday" = "Yesterday";
 "network_offline_prompt" = "The Internet connection appears to be offline.";
+"network_offline_title" = "You're offline";
+"network_offline_message" = "You're offline, check your connection.";
 "homeserver_connection_lost" = "Could not connect to the homeserver.";
 "public_room_section_title" = "Public Rooms (at %@):";
 "bug_report_prompt" = "The application has crashed last time. Would you like to submit a crash report?";
@@ -1822,6 +1824,7 @@ Tap the + to start adding people.";
 "room_info_list_one_member" = "1 member";
 "room_info_list_several_members" = "%@ members";
 "room_info_list_section_other" = "Other";
+"room_info_back_button_title" = "Room Info";
 
 // MARK: - Dial Pad
 "dialpad_title" = "Dial pad";
@@ -2164,6 +2167,7 @@ Tap the + to start adding people.";
 To enable access, tap Settings> Location and select Always";
 "location_sharing_allow_background_location_validate_action" = "Settings";
 "location_sharing_allow_background_location_cancel_action" = "Not now";
+"location_sharing_map_credits_title" = "© Copyright";
 
 // MARK: Live location sharing
 
@@ -2180,7 +2184,7 @@ To enable access, tap Settings> Location and select Always";
 "location_sharing_live_list_item_last_update" = "Updated %@ ago";
 "location_sharing_live_list_item_last_update_invalid" = "Unknown last update";
 "location_sharing_live_list_item_current_user_display_name" = "You";
-"location_sharing_live_list_item_stop_sharing_action" = "Stop sharing";
+"location_sharing_live_list_item_stop_sharing_action" = "Stop";
 "location_sharing_live_timer_incoming" = "Live until %@";
 "location_sharing_live_loading" = "Loading Live location...";
 "location_sharing_live_error" = "Live location error";
@@ -2191,6 +2195,10 @@ To enable access, tap Settings> Location and select Always";
 "location_sharing_live_no_user_locations_error_title" = "No user locations available";
 "location_sharing_live_stop_sharing_error" = "Fail to stop sharing location";
 "location_sharing_live_stop_sharing_progress" = "Stop location sharing";
+
+"location_sharing_live_lab_promotion_title" = "Live location sharing";
+"location_sharing_live_lab_promotion_text" = "Please note: this is a labs feature using a temporary implementation that allows the history of your shared location to be permanently visible to other people in the room.";
+"location_sharing_live_lab_promotion_activation" = "Enable live location sharing";
 
 // MARK: - MatrixKit
 
@@ -2340,7 +2348,7 @@ To enable access, tap Settings> Location and select Always";
 
 // Settings
 "settings" = "Settings";
-"settings_enable_inapp_notifications" = "Enable In-App notifications";
+"settings_enable_inapp_notifications" = "Enable in-app notifications";
 "settings_enable_push_notifications" = "Enable push notifications";
 "settings_enter_validation_token_for" = "Enter validation token for %@:";
 

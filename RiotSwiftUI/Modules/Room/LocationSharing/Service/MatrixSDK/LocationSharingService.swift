@@ -24,20 +24,26 @@ class LocationSharingService: LocationSharingServiceProtocol {
     
     // MARK: Private
     
-    private let userLocationService: UserLocationServiceProtocol?
+    private let session: MXSession
+    
+    private var userLocationService: UserLocationServiceProtocol? {
+        return self.session.userLocationService
+    }
     
     // MARK: Public
     
     // MARK: - Setup
     
-    init(userLocationService: UserLocationServiceProtocol?) {
-        self.userLocationService = userLocationService
+    init(session: MXSession) {
+        self.session = session
     }
     
     // MARK: - Public
     
     func requestAuthorization(_ handler: @escaping LocationAuthorizationHandler) {
         guard let userLocationService = self.userLocationService else {
+            
+            MXLog.error("[LocationSharingService] No userLocationService found for the current session")
             handler(LocationAuthorizationStatus.unknown)
             return
         }

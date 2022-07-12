@@ -47,7 +47,7 @@ struct OnboardingSplashScreenPageIndicator: View {
             ForEach(0..<pageCount) { index in
                 Circle()
                     .frame(width: 8, height: 8)
-                    .foregroundColor(index == pageIndex ? .accentColor : theme.colors.quarterlyContent)
+                    .foregroundColor(index == pageIndex ? .accentColor : theme.colors.quaternaryContent)
             }
         }
     }

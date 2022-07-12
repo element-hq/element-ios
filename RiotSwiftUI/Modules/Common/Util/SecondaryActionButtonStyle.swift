@@ -68,7 +68,7 @@ struct SecondaryActionButtonStyle_Previews: PreviewProvider {
                 Text("Custom")
                     .foregroundColor(theme.colors.secondaryContent)
             }
-            .buttonStyle(SecondaryActionButtonStyle(customColor: theme.colors.quarterlyContent))
+            .buttonStyle(SecondaryActionButtonStyle(customColor: theme.colors.quaternaryContent))
         }
         .padding()
     }

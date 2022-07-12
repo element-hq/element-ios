@@ -22,7 +22,7 @@
 
 @import DTCoreText;
 
-@interface MXEventFormatterTests : XCTestCase
+@interface MXKEventFormatterTests : XCTestCase
 {
     MXKEventFormatter *eventFormatter;
     MXEvent *anEvent;
@@ -31,7 +31,7 @@
 
 @end
 
-@implementation MXEventFormatterTests
+@implementation MXKEventFormatterTests
 
 - (void)setUp
 {
