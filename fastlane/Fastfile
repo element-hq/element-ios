@@ -48,7 +48,7 @@ platform :ios do
   desc "Builds an Alpha ipa for pull request branches"
   lane :alpha do
     UI.user_error!("'DIAWI_API_TOKEN' environment variable should be set to use this lane") unless !ENV["DIAWI_API_TOKEN"].to_s.empty?
-    UI.user_error!("'SENTRY_API_TOKEN' environment variable should be set to use this lane") unless !ENV["SENTRY_API_TOKEN"].to_s.empty?
+    UI.user_error!("'SENTRY_AUTH_TOKEN' environment variable should be set to use this lane") unless !ENV["SENTRY_AUTH_TOKEN"].to_s.empty?
             
     # Generate the "Alpha" app variant    
     setup_app_variant(name: "Alpha")    
@@ -446,13 +446,12 @@ platform :ios do
 
   desc "Upload dsym files to Sentry to symbolicate crashes"
   private_lane :upload_dsyms_to_sentry do
-    auth_token = ENV["SENTRY_AUTH_TOKEN"]
-    UI.user_error!("Invalid Sentry Auth token.") unless !auth_token.to_s.empty?
+    UI.user_error!("'SENTRY_AUTH_TOKEN' environment variable should be set to use this lane") unless !ENV["SENTRY_AUTH_TOKEN"].to_s.empty?
 
     dsym_path = "#{ENV["BUILD_OUTPUT_DIRECTORY"]}/#{ENV["IPA_NAME"]}.app.dSYM.zip"
   
     sentry_upload_dif(
-      auth_token: auth_token,
+      auth_token: ENV["SENTRY_AUTH_TOKEN"],
       org_slug: 'element',
       project_slug: 'element-ios',
       url: 'https://sentry.tools.element.io/',
