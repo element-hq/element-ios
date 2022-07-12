@@ -256,59 +256,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             tabBarController.navigationItem.leftBarButtonItem = settingsBarButtonItem
         }
         
-//        let settingsItem = UIAction(title: VectorL10n.settings, image: UIImage(systemName: "gearshape")) { [weak self] action in
-//            self?.showSettings()
-//        }
-//
-//        let editLayoutItem = UIAction(title: VectorL10n.allChatEditLayout, image: Asset.Images.allChatEditLayout.image) { [weak self] action in
-//            self?.showAllChatEditLayout()
-//        }
-//
-//        let inviteUserItem = UIAction(title: VectorL10n.sideMenuActionInviteFriends, image: UIImage(systemName: "square.and.arrow.up.fill")) { [weak self] action in
-//            self?.showInviteFriends(from: nil)
-//        }
-//
-//        let searchItem = UIAction(title: VectorL10n.roomAccessibilitySearch, image: UIImage(systemName: "magnifyingglass")) { [weak self] action in
-//            self?.showUnifiedSearch()
-//        }
-//
-//        let feedbackItem = UIAction(title: VectorL10n.sideMenuActionFeedback, image: UIImage(systemName: "exclamationmark.bubble")) { [weak self] action in
-//            self?.showBugReport()
-//        }
-//
-//        let avatar = userAvatarViewData(from: currentMatrixSession)
-//
-//        let menu = UIMenu(options: .displayInline, children: [settingsItem , editLayoutItem, inviteUserItem, feedbackItem , searchItem])
-
-        
-//        tabBarController.navigationItem.rightBarButtonItems = navItems
-        
-//        let avatarView = UserAvatarView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-//        if let session = currentMatrixSession, let avatar = userAvatarViewData(from: session) {
-//            avatarView.fill(with: avatar)
-//        }
-//        let navItem = UIBarButtonItem(customView: avatarView)
-//        tabBarController.navigationItem.rightBarButtonItem = navItem
-        
-//        var button: UIButton = UIButton()
-//        button.setImage(Asset.Images.tabPeople.image, for: .normal)
-//        button.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-//        button.menu = menu
-//        button.showsMenuAsPrimaryAction = true
-//        tabBarController.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
-        
-//        let searchBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.searchIcon.image, style: .plain) { [weak self] in
-//            self?.showUnifiedSearch()
-//        }
-//        searchBarButtonItem.accessibilityLabel = VectorL10n.allChatEditLayout
-//
-//        let allChatEditLayout: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.allChatEditLayout.image, style: .plain) { [weak self] in
-//            self?.showAllChatEditLayout()
-//        }
-//        allChatEditLayout.accessibilityLabel = VectorL10n.sideMenuRevealActionAccessibilityLabel
-//
-//        tabBarController.navigationItem.rightBarButtonItems = [searchBarButtonItem, allChatEditLayout]
-        
         return tabBarController
     }
     
@@ -350,14 +297,25 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         return versionCheckCoordinator
     }
     
+    private func createAllChatsViewController() -> AllChatsViewControllerWithBannerWrapperViewController {
+        let allChatsViewController = AllChatsViewController.instantiate()
+        allChatsViewController.tabBarItem.tag = Int(TABBAR_HOME_INDEX)
+        allChatsViewController.tabBarItem.image = allChatsViewController.tabBarItem.image
+        allChatsViewController.accessibilityLabel = VectorL10n.allChatsTitle
+        allChatsViewController.userIndicatorStore = UserIndicatorStore(presenter: indicatorPresenter)
+        
+        let wrapperViewController = AllChatsViewControllerWithBannerWrapperViewController(viewController: allChatsViewController)
+        return wrapperViewController
+    }
+    
     private func createHomeViewController() -> HomeViewControllerWithBannerWrapperViewController {
         let homeViewController: HomeViewController = HomeViewController.instantiate()
         homeViewController.tabBarItem.tag = Int(TABBAR_HOME_INDEX)
         homeViewController.tabBarItem.image = homeViewController.tabBarItem.image
-        homeViewController.accessibilityLabel = VectorL10n.allChatsTitle
+        homeViewController.accessibilityLabel = VectorL10n.titleHome
         homeViewController.userIndicatorStore = UserIndicatorStore(presenter: indicatorPresenter)
         
-        let wrapperViewController = HomeViewControllerWithBannerWrapperViewController(viewController: homeViewController)        
+        let wrapperViewController = HomeViewControllerWithBannerWrapperViewController(viewController: homeViewController)
         return wrapperViewController
     }
     
@@ -427,7 +385,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private func updateTabControllers(for tabBarController: MasterTabBarController, showCommunities: Bool) {
         var viewControllers: [UIViewController] = []
           
-        let homeViewController = self.createHomeViewController()
+        let homeViewController = BuildSettings.newAppLayoutEnaled ? self.createAllChatsViewController() : self.createHomeViewController()
         
         viewControllers.append(homeViewController)
         
@@ -815,6 +773,16 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private weak var rightMenuAvatarView: AvatarView?
     
     private func createRightButtonItem() {
+        guard BuildSettings.newAppLayoutEnaled else {
+            let searchBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.searchIcon.image, style: .plain) { [weak self] in
+                self?.showUnifiedSearch()
+            }
+            searchBarButtonItem.accessibilityLabel = VectorL10n.searchDefaultPlaceholder
+            masterTabBarController.navigationItem.rightBarButtonItem = searchBarButtonItem
+            
+            return
+        }
+
         if let avatarView = rightMenuAvatarView {
             if let avatar = userAvatarViewData(from: currentMatrixSession) {
                 avatarView.fill(with: avatar)

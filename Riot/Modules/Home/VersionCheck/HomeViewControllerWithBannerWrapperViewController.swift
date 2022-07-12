@@ -114,6 +114,6 @@ class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKVi
     // MARK: - MasterTabBarItemDisplayProtocol
     
     var masterTabBarItemTitle: String {
-        return VectorL10n.allChatsTitle
+        return VectorL10n.titleHome
     }
 }

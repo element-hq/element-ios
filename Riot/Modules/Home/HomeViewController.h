@@ -16,6 +16,7 @@
  */
 
 #import "RecentsViewController.h"
+#import "RecentsDataSource.h"
 
 /**
  The `HomeViewController` screen is the main app screen.
@@ -23,5 +24,7 @@
 @interface HomeViewController : RecentsViewController <UITableViewDataSource, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 + (instancetype)instantiate;
+
+@property (nonatomic, readonly) RecentsDataSourceMode recentsDataSourceMode;
 
 @end

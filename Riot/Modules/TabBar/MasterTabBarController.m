@@ -164,7 +164,7 @@
         [self userInterfaceThemeDidChange];
     }
     
-    self.tabBar.hidden = YES;
+    self.tabBar.hidden = BuildSettings.newAppLayoutEnaled;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -323,7 +323,6 @@
         RecentsListService *recentsListService = [[RecentsListService alloc] initWithSession:mainSession];
         recentsDataSource = [[RecentsDataSource alloc] initWithMatrixSession:mainSession
                                                           recentsListService:recentsListService];
-        recentsDataSource.areSectionsShrinkable = NO;
         
         [self.homeViewController displayList:recentsDataSource];
         [self.favouritesViewController displayList:recentsDataSource];
@@ -332,7 +331,7 @@
         
         // Restore the right delegate of the shared recent data source.
         id<MXKDataSourceDelegate> recentsDataSourceDelegate = self.homeViewController;
-        RecentsDataSourceMode recentsDataSourceMode = RecentsDataSourceModeHome;
+        RecentsDataSourceMode recentsDataSourceMode = self.homeViewController.recentsDataSourceMode;
         
         NSInteger tabItemTag = self.tabBar.items[self.selectedIndex].tag;
         

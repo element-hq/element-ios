@@ -166,7 +166,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G2g-bd-dSj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="476" y="-3899"/>
+            <point key="canvasLocation" x="458" y="-4469"/>
         </scene>
         <!--Home View Controller-->
         <scene sceneID="SZi-Ac-WJp">
@@ -231,6 +231,7 @@
                         <segue destination="IGB-jr-yFz" kind="relationship" relationship="viewControllers" id="CeF-yL-aO0"/>
                         <segue destination="HPQ-zg-lZR" kind="relationship" relationship="viewControllers" id="y12-eg-vhO"/>
                         <segue destination="SLx-Wj-p7E" kind="relationship" relationship="viewControllers" id="MLn-VT-30W"/>
+                        <segue destination="EOr-kV-8pa" kind="relationship" relationship="viewControllers" id="j67-Px-Dkd"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k1S-FF-3Zu" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -304,7 +305,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b5t-fe-rSJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1223" y="-3899"/>
+            <point key="canvasLocation" x="1204" y="-4469"/>
         </scene>
         <!--Contact Details View Controller-->
         <scene sceneID="grY-bt-CcD">
@@ -495,9 +496,36 @@
             </objects>
             <point key="canvasLocation" x="-153" y="-419"/>
         </scene>
+        <!--All Chats View Controller-->
+        <scene sceneID="VNs-EF-YAe">
+            <objects>
+                <viewController storyboardIdentifier="AllChatsViewController" extendedLayoutIncludesOpaqueBars="YES" id="EOr-kV-8pa" customClass="AllChatsViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="5IA-we-z5u"/>
+                        <viewControllerLayoutGuide type="bottom" id="9LE-SN-vqG"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Xlh-cv-klm">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="" image="tab_home" id="6G5-X5-VuX">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="TabBarItemHome"/>
+                        </userDefinedRuntimeAttributes>
+                    </tabBarItem>
+                    <navigationItem key="navigationItem" id="svS-Xb-Dua"/>
+                    <connections>
+                        <segue destination="WDS-Ip-RQ9" kind="presentation" identifier="presentStartChat" id="y6u-0X-urR"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tob-iO-hhY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="942" y="-3530"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Tfl-tq-LQp"/>
+        <segue reference="y6u-0X-urR"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="launch_screen_logo" width="240" height="240"/>

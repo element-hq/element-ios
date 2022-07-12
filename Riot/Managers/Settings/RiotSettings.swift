@@ -382,9 +382,6 @@ final class RiotSettings: NSObject {
     /// Number of spaces previously tracked by the `AnalyticsSpaceTracker` instance.
     @UserDefault(key: "lastNumberOfTrackedSpaces", defaultValue: nil, storage: defaults)
     var lastNumberOfTrackedSpaces: Int?
-    
-    @UserDefault(key: "needsClearCacheForEditLayoutPrototype", defaultValue: true, storage: defaults)
-    var needsClearCacheForEditLayoutPrototype: Bool
 }
 
 // MARK: - RiotSettings notification constants

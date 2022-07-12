@@ -178,19 +178,19 @@ final class BuildSettings: NSObject {
         let termsURL: URL
     }
     
-//    #if DEBUG
+    #if DEBUG
     /// The configuration to use for analytics during development. Set `isEnabled` to false to disable analytics in debug builds.
     static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: BuildSettings.baseBundleIdentifier.starts(with: "im.vector.app"),
                                                                host: "https://posthog.element.dev",
                                                                apiKey: "phc_VtA1L35nw3aeAtHIx1ayrGdzGkss7k1xINeXcoIQzXN",
                                                                termsURL: URL(string: "https://element.io/cookie-policy")!)
-//    #else
-//    /// The configuration to use for analytics. Set `isEnabled` to false to disable analytics.
-//    static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: BuildSettings.baseBundleIdentifier.starts(with: "im.vector.app"),
-//                                                               host: "https://posthog.hss.element.io",
-//                                                               apiKey: "phc_Jzsm6DTm6V2705zeU5dcNvQDlonOR68XvX2sh1sEOHO",
-//                                                               termsURL: URL(string: "https://element.io/cookie-policy")!)
-//    #endif
+    #else
+    /// The configuration to use for analytics. Set `isEnabled` to false to disable analytics.
+    static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: BuildSettings.baseBundleIdentifier.starts(with: "im.vector.app"),
+                                                               host: "https://posthog.hss.element.io",
+                                                               apiKey: "phc_Jzsm6DTm6V2705zeU5dcNvQDlonOR68XvX2sh1sEOHO",
+                                                               termsURL: URL(string: "https://element.io/cookie-policy")!)
+    #endif
     
     
     // MARK: - Bug report
@@ -418,4 +418,8 @@ final class BuildSettings: NSObject {
     static let showUnsupportedEventsInRoomHistory: Bool = false
     static let sortRoomMembersUsingLastSeenTime: Bool = true
     static let syncLocalContacts: Bool = false
+    
+    // MARK: - New App Layout
+    
+    static let newAppLayoutEnaled = false
 }

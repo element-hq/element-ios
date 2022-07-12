@@ -27,7 +27,7 @@ static CGFloat const kEditionViewCornerRadius = 10.0;
     [super awakeFromNib];
     
     self.editionViewHeightConstraint.constant = 0;
-    self.editionViewBottomConstraint.constant = 24;
+    self.editionViewBottomConstraint.constant = 0;
     
     self.editionView.layer.masksToBounds = YES;
     
@@ -53,12 +53,10 @@ static CGFloat const kEditionViewCornerRadius = 10.0;
     self.collectionView.delegate = nil;
     
     self.editionViewHeightConstraint.constant = 0;
-    self.editionViewBottomConstraint.constant = 24;
+    self.editionViewBottomConstraint.constant = 0;
     self.editionView.hidden = YES;
     
     self.collectionView.scrollEnabled = YES;
-    
-    self.contentView.backgroundColor = [ThemeService shared].theme.backgroundColor;
 }
 
 - (void)layoutSubviews

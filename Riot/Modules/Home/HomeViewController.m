@@ -87,30 +87,11 @@
     
     // Tag the recents table with the its recents data source mode.
     // This will be used by the shared RecentsDataSource instance for sanity checks (see UITableViewDataSource methods).
-    self.recentsTableView.tag = RecentsDataSourceModeHome;
+    self.recentsTableView.tag = self.recentsDataSourceMode;
     self.recentsTableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     
     // Add the (+) button programmatically
-//    plusButtonImageView = [self vc_addFABWithImage:AssetImages.plusFloatingAction.image
-//                                            target:self
-//                                            action:@selector(onPlusButtonPressed)];
-
-    MXWeakify(self);
-    UIMenu *menu = [UIMenu menuWithChildren:@[
-        [UIAction actionWithTitle:VectorL10n.roomRecentsJoinRoom image:AssetImages.homeFabJoinRoom.image identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
-            MXStrongifyAndReturnIfNil(self);
-            [self joinARoom];
-        }],
-        [UIAction actionWithTitle:VectorL10n.roomRecentsCreateEmptyRoom image:AssetImages.homeFabCreateRoom.image identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
-            MXStrongifyAndReturnIfNil(self);
-            [self createNewRoom];
-        }],
-        [UIAction actionWithTitle:VectorL10n.roomRecentsStartChatWith image:AssetImages.sideMenuActionIconFeedback.image identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
-            MXStrongifyAndReturnIfNil(self);
-            [self startChat];
-        }],
-    ]];
-    [self vc_addFABWithImage:AssetImages.plusFloatingAction.image menu:menu];
+    [self addFabButton];
     
     // Register table view cells used for rooms collection.
     [self registerCellsWithCollectionViews];
@@ -127,36 +108,14 @@
 
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
-    if (recentsDataSource.recentsDataSourceMode != RecentsDataSourceModeHome)
+    if (recentsDataSource.recentsDataSourceMode != self.recentsDataSourceMode)
     {
         // Take the lead on the shared data source.
-        [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeHome];
+        [recentsDataSource setDelegate:self andRecentsDataSourceMode:self.recentsDataSourceMode];
         
         // Reset filtering on the shared data source when switching tabs
         [recentsDataSource searchWithPatterns:nil];
         [self.recentsSearchBar setText:nil];
-    }
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    if (RiotSettings.shared.needsClearCacheForEditLayoutPrototype)
-    {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
-                                                                       message:@"To fully enjoy this new experience, we just need to refresh your data just this time."
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-        
-        [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n settingsClearCache]
-                                                  style:UIAlertActionStyleDefault
-                                                handler:^(UIAlertAction * action) {
-                                                    [[AppDelegate theDelegate] reloadMatrixSessions:YES];
-                                                    RiotSettings.shared.needsClearCacheForEditLayoutPrototype = NO;
-                                                }]];
-        
-        [self presentViewController:alert animated:YES completion:nil];
-
     }
 }
 
@@ -204,6 +163,18 @@
     self.secureBackupSetupCoordinatorBridgePresenter = keyBackupSetupCoordinatorBridgePresenter;
 }
 
+- (void)addFabButton
+{
+    plusButtonImageView = [self vc_addFABWithImage:AssetImages.plusFloatingAction.image
+                                            target:self
+                                            action:@selector(onPlusButtonPressed)];
+}
+
+- (RecentsDataSourceMode)recentsDataSourceMode
+{
+    return RecentsDataSourceModeHome;
+}
+
 #pragma mark - Override RecentsViewController
 
 - (void)displayList:(MXKRecentsDataSource *)listDataSource
@@ -223,7 +194,7 @@
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible
 {
     // Check whether the recents data source is correctly configured.
-    if (recentsDataSource.recentsDataSourceMode != RecentsDataSourceModeHome)
+    if (recentsDataSource.recentsDataSourceMode != self.recentsDataSourceMode)
     {
         return;
     }
@@ -353,7 +324,15 @@
 // is reused, rather than cells getting randomly swapped around.
 - (void)registerCellsWithCollectionViews
 {
-    NSArray<NSNumber *> *sections = @[
+    for (NSNumber *section in self.sections) {
+        NSString *cellIdentifier = [self cellIdentifierForSectionType:section.integerValue];
+        [self.recentsTableView registerClass:TableViewCellWithCollectionView.class forCellReuseIdentifier:cellIdentifier];
+    }
+}
+
+- (NSArray<NSNumber *> *)sections
+{
+    return @[
         @(RecentsDataSourceSectionTypeDirectory),
         @(RecentsDataSourceSectionTypeInvites),
         @(RecentsDataSourceSectionTypeFavorites),
@@ -364,10 +343,6 @@
         @(RecentsDataSourceSectionTypeSuggestedRooms),
         @(RecentsDataSourceSectionTypeRecentRooms)
     ];
-    for (NSNumber *section in sections) {
-        NSString *cellIdentifier = [self cellIdentifierForSectionType:section.integerValue];
-        [self.recentsTableView registerClass:TableViewCellWithCollectionView.class forCellReuseIdentifier:cellIdentifier];
-    }
 }
 
 - (NSString *)cellIdentifierForSectionType:(RecentsDataSourceSectionType)sectionType
@@ -394,8 +369,8 @@
     }
     else
     {
-        // Each rooms section is represented by only one collection view.
-        NSInteger index = [recentsDataSource.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeConversation];
+        // Each rooms section is represented by only one collection view except for the all chats section.
+        NSInteger index = [recentsDataSource.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeAllChats];
         if (section == index)
         {
             return [self.dataSource tableView:tableView numberOfRowsInSection:section];
@@ -406,7 +381,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger index = [recentsDataSource.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeConversation];
+    NSInteger index = [recentsDataSource.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeAllChats];
     if (indexPath.section == index)
     {
         return [self.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
@@ -499,7 +474,7 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger index = [recentsDataSource.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeConversation];
+    NSInteger index = [recentsDataSource.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeAllChats];
     if (indexPath.section == index)
     {
         return [self.dataSource tableView:tableView canEditRowAtIndexPath:indexPath];
@@ -512,17 +487,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger index = [recentsDataSource.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeConversation];
+    NSInteger index = [recentsDataSource.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeAllChats];
     if (indexPath.section == index)
     {
-        CGFloat height = [super tableView:tableView heightForRowAtIndexPath:indexPath];
-        if (indexPath.section < [recentsDataSource numberOfSectionsInTableView:tableView] - 1 && indexPath.row == [recentsDataSource tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
-        {
-            // Add padding to the last row of each sections except the last one.
-           height += 24.0;
-        }
-        
-        return height;
+        return [super tableView:tableView heightForRowAtIndexPath:indexPath];
     }
 
     RecentsDataSourceSectionType sectionType = [recentsDataSource.sections sectionTypeForSectionIndex:indexPath.section];
@@ -571,9 +539,6 @@
         height += 65.0;
     }
     
-    // Add padding to the last row of each sections except the last one.
-    height += 24.0;
-
     return height;
 }
 
@@ -588,7 +553,7 @@
     }
     else
     {
-        return [(RecentsDataSource *)self.dataSource heightForHeaderInSection:section];//[super tableView:tableView heightForHeaderInSection:section];
+        return [(RecentsDataSource *)self.dataSource heightForHeaderInSection:section];
     }
 }
 
@@ -609,7 +574,7 @@
     {
         [self showCrossSigningSetup];
     }
-    else if (sectionType == RecentsDataSourceSectionTypeConversation)
+    else if (sectionType == RecentsDataSourceSectionTypeAllChats)
     {
         [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     }
@@ -618,7 +583,7 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     RecentsDataSourceSectionType sectionType = [recentsDataSource.sections sectionTypeForSectionIndex:indexPath.section];
-    if (sectionType != RecentsDataSourceSectionTypeConversation)
+    if (sectionType != RecentsDataSourceSectionTypeAllChats)
     {
         return;
     }
@@ -958,7 +923,7 @@
         animationCompletion();
         
         // TODO: Remove this line and refresh key verification setup banner by listening to a local notification cross-signing state change (Add this behavior into the SDK).
-        [self->recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeHome];
+        [self->recentsDataSource setDelegate:self andRecentsDataSourceMode:self.recentsDataSourceMode];
         [self refreshRecentsTable];
         
         success();
@@ -1036,7 +1001,7 @@
 - (UIContextMenuConfiguration *)tableView:(UITableView *)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point API_AVAILABLE(ios(13.0))
 {
     RecentsDataSourceSectionType sectionType = [recentsDataSource.sections sectionTypeForSectionIndex:indexPath.section];
-    if (sectionType == RecentsDataSourceSectionTypeConversation)
+    if (sectionType == RecentsDataSourceSectionTypeAllChats)
     {
         return [super tableView:tableView contextMenuConfigurationForRowAtIndexPath:indexPath point:point];
     }

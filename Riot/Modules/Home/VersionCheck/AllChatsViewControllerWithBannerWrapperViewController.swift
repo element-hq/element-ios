@@ -16,19 +16,11 @@
 
 import Foundation
 
-@objc enum RecentsDataSourceSectionType: Int {
-    case crossSigningBanner
-    case secureBackupBanner
-    case directory
-    case invites
-    case favorites
-    case people
-    case conversation
-    case lowPriority
-    case serverNotice
-    case suggestedRooms
-    case recentRooms
-    case searchedRoom
-    case allChats
-    case unknown
+class AllChatsViewControllerWithBannerWrapperViewController: HomeViewControllerWithBannerWrapperViewController {
+    
+    // MARK: - MasterTabBarItemDisplayProtocol
+    
+    override var masterTabBarItemTitle: String {
+        return VectorL10n.allChatsTitle
+    }
 }

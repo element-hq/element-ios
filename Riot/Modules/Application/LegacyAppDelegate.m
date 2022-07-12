@@ -421,7 +421,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     _configuration = [AppConfiguration new];
 
     self.clearingCache = NO;
-    
     // Log app information
     NSString *appDisplayName = self.appInfo.displayName;
     NSString* appVersion = self.appVersion;
