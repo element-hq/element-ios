@@ -4801,19 +4801,25 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)roomInputToolbarView:(RoomInputToolbarView *)toolbarView sendAttributedTextMessage:(NSAttributedString *)attributedTextMessage
 {
-    // "/me" command is supported with Pills in RoomDataSource. Other commands
-    // currently work with identifiers (e.g. ban, invite, op, etc).
-    NSString *message;
-    if (@available(iOS 15.0, *))
+    BOOL isMessageAHandledCommand = NO;
+    // "/me" command is supported with Pills in RoomDataSource.
+    if (![attributedTextMessage.string hasPrefix:kMXKSlashCmdEmote])
     {
-        message = [PillsFormatter stringByReplacingPillsIn:attributedTextMessage mode:PillsReplacementTextModeIdentifier];
-    }
-    else
-    {
-        message = attributedTextMessage.string;
+        // Other commands currently work with identifiers (e.g. ban, invite, op, etc).
+        NSString *message;
+        if (@available(iOS 15.0, *))
+        {
+            message = [PillsFormatter stringByReplacingPillsIn:attributedTextMessage mode:PillsReplacementTextModeIdentifier];
+        }
+        else
+        {
+            message = attributedTextMessage.string;
+        }
+        // Try to send the slash command
+        isMessageAHandledCommand = [self isIRCStyleCommand:message];
     }
 
-    if ([message hasPrefix:kMXKSlashCmdEmote] || [self isIRCStyleCommand:message] == NO)
+    if (!isMessageAHandledCommand)
     {
         [self sendAttributedTextMessage:attributedTextMessage];
     }
