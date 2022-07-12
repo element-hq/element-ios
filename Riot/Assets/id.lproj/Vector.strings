@@ -2530,3 +2530,22 @@
 "location_sharing_allow_background_location_message" = "Jika Anda ingin membagikan lokasi langsung Anda, Element membutuhkan akses lokasi ketika aplikasi berada di latar belakang.Untuk memberikan akses, ketuk Pengaturan> Lokasi dan pilih Selalu";
 "location_sharing_allow_background_location_title" = "Perbolehkan akses";
 "settings_labs_enable_live_location_sharing" = "Pembagian lokasi langsung — bagikan lokasi saat ini (dalam pengembangan aktif, dan sementara, lokasi tetap di riwayat ruangan)";
+
+// MARK: Reactions
+
+"room_event_action_reaction_more" = "%@ lainnya";
+"leave_space_selection_no_rooms" = "Pilih tidak ada ruangan";
+"leave_space_selection_all_rooms" = "Pilih semua ruangan";
+"leave_space_selection_title" = "PILIH RUANGAN";
+"leave_space_and_more_rooms" = "Tinggalkan space dan %@ ruangan";
+"leave_space_and_one_room" = "Tinggalkan space dan 1 ruangan";
+
+// Mark: Leave space
+
+"leave_space_action" = "Tinggalkan space";
+"spaces_feature_not_available" = "Fitur ini tidak tersedia di sini. Untuk sekarang, Anda dapat melakukannya dengan %@ di komputer Anda.";
+"home_context_menu_mark_as_read" = "Tandai sebagai dibaca";
+"settings_ui_show_redactions_in_room_history" = "Tampilkan tampungan untuk pesan yang dihapus";
+"settings_timeline" = "LINIMASA";
+"room_accessibility_record_voice_message_hint" = "Ketuk dua kali dan tekan untuk merekam.";
+"room_accessibility_record_voice_message" = "Rekam Pesan Suara";
