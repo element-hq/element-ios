@@ -1824,6 +1824,7 @@ Tap the + to start adding people.";
 "room_info_list_one_member" = "1 member";
 "room_info_list_several_members" = "%@ members";
 "room_info_list_section_other" = "Other";
+"room_info_back_button_title" = "Room Info";
 
 // MARK: - Dial Pad
 "dialpad_title" = "Dial pad";

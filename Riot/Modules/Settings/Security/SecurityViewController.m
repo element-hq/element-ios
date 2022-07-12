@@ -26,6 +26,8 @@
 
 #import "GeneratedInterface-Swift.h"
 
+@import DesignKit;
+
 // Dev flag to have more options
 //#define CROSS_SIGNING_AND_BACKUP_DEV
 
@@ -1297,7 +1299,7 @@ TableViewSectionsDelegate>
         // Customize label style
         UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
         tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.colors.secondaryContent;
-        tableViewHeaderFooterView.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+        tableViewHeaderFooterView.textLabel.font = ThemeService.shared.theme.fonts.footnote;
     }
 }
 
@@ -1443,7 +1445,7 @@ TableViewSectionsDelegate>
     currentAlert = exportView.alertController;
 
     // Use a temporary file for the export
-    keyExportsFile = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"riot-keys.txt"]];
+    keyExportsFile = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"element-keys.txt"]];
 
     // Make sure the file is empty
     [self deleteKeyExportFile];

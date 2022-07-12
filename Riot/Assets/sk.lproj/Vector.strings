@@ -2527,3 +2527,21 @@
 "location_sharing_allow_background_location_title" = "Povoliť prístup";
 "settings_labs_enable_live_location_sharing" = "Zdieľanie polohy v reálnom čase - zdieľanie aktuálnej polohy (v aktívnom vývoji a polohy dočasne pretrvávajú v histórii miestnosti)";
 "settings_ui_show_redactions_in_room_history" = "Zobrazovať náhrady za odstránené správy";
+
+// MARK: Reactions
+
+"room_event_action_reaction_more" = "%@ viac";
+"leave_space_selection_no_rooms" = "Nevybrať žiadne miestnosti";
+"leave_space_selection_all_rooms" = "Vybrať všetky miestnosti";
+"leave_space_selection_title" = "VYBRAŤ MIESTNOSTI";
+"leave_space_and_more_rooms" = "Opustiť priestor a %@ miestností";
+"leave_space_and_one_room" = "Opustiť priestor a 1 miestnosť";
+
+// Mark: Leave space
+
+"leave_space_action" = "Opustiť priestor";
+"spaces_feature_not_available" = "Táto funkcia tu nie je k dispozícii. Zatiaľ to môžete urobiť pomocou %@ na vašom počítači.";
+"home_context_menu_mark_as_read" = "Označiť ako prečítané";
+"settings_timeline" = "ČASOVÁ OS";
+"room_accessibility_record_voice_message_hint" = "Ak chcete nahrávať, dvakrát ťuknite a podržte.";
+"room_accessibility_record_voice_message" = "Nahrať hlasovú správu";

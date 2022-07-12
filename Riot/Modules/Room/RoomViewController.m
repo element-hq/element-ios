@@ -1228,7 +1228,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
 }
 
-- (BOOL)isIRCStyleCommand:(NSString*)string
+- (BOOL)sendAsIRCStyleCommandIfPossible:(NSString*)string
 {
     // Override the default behavior for `/join` command in order to open automatically the joined room
     
@@ -1271,7 +1271,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         }
         return YES;
     }
-    return [super isIRCStyleCommand:string];
+    return [super sendAsIRCStyleCommandIfPossible:string];
 }
 
 - (void)setKeyboardHeight:(CGFloat)keyboardHeight
@@ -4801,7 +4801,28 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)roomInputToolbarView:(RoomInputToolbarView *)toolbarView sendAttributedTextMessage:(NSAttributedString *)attributedTextMessage
 {
-    [self sendAttributedTextMessage:attributedTextMessage];
+    BOOL isMessageAHandledCommand = NO;
+    // "/me" command is supported with Pills in RoomDataSource.
+    if (![attributedTextMessage.string hasPrefix:kMXKSlashCmdEmote])
+    {
+        // Other commands currently work with identifiers (e.g. ban, invite, op, etc).
+        NSString *message;
+        if (@available(iOS 15.0, *))
+        {
+            message = [PillsFormatter stringByReplacingPillsIn:attributedTextMessage mode:PillsReplacementTextModeIdentifier];
+        }
+        else
+        {
+            message = attributedTextMessage.string;
+        }
+        // Try to send the slash command
+        isMessageAHandledCommand = [self sendAsIRCStyleCommandIfPossible:message];
+    }
+
+    if (!isMessageAHandledCommand)
+    {
+        [self sendAttributedTextMessage:attributedTextMessage];
+    }
 }
 
 #pragma mark - MXKRoomMemberDetailsViewControllerDelegate
@@ -6819,7 +6840,8 @@ static CGSize kThreadListBarButtonItemImageSize;
         {
             if (@available(iOS 15.0, *))
             {
-                MXKPasteboardManager.shared.pasteboard.string = [PillsFormatter stringByReplacingPillsIn:attributedTextMessage asMarkdown:YES];
+                MXKPasteboardManager.shared.pasteboard.string = [PillsFormatter stringByReplacingPillsIn:attributedTextMessage
+                                                                                                    mode:PillsReplacementTextModeMarkdown];
             }
             else
             {

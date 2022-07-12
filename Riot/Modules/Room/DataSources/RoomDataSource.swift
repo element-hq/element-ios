@@ -219,7 +219,7 @@ private extension RoomDataSource {
     func htmlMessageFromSanitizedAttributedText(_ sanitizedText: NSAttributedString) -> String? {
         let rawText: String
         if #available(iOS 15.0, *) {
-            rawText = PillsFormatter.stringByReplacingPills(in: sanitizedText, asMarkdown: true)
+            rawText = PillsFormatter.stringByReplacingPills(in: sanitizedText, mode: .markdown)
         } else {
             rawText = sanitizedText.string
         }
