@@ -1312,8 +1312,17 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // Sanity check
     if (!pathParams.count)
     {
-        MXLogDebug(@"[AppDelegate] Universal link: Error: No path parameters");
-        return NO;
+        // Handle simple room links with aliases/identifiers as UniversalLink will not parse these.
+        NSString* absoluteUrl = [universalLink.url.absoluteString stringByRemovingPercentEncoding];
+        if ([MXTools isMatrixRoomAlias:absoluteUrl]
+            || [MXTools isMatrixRoomIdentifier:absoluteUrl])
+        {
+            pathParams = @[absoluteUrl];
+        }
+        else {
+            MXLogDebug(@"[AppDelegate] Universal link: Error: No path parameters");
+            return NO;
+        }
     }
     
     NSString *roomIdOrAlias;
