@@ -57,7 +57,8 @@ struct LiveLocationSharingViewer: View {
                 MapCreditsView(action: {
                     viewModel.send(viewAction: .mapCreditsDidTap)
                 })
-                    .offset(y: -(bottomSheetCollapsedHeight + 10))
+                .offset(y: -(bottomSheetCollapsedHeight)) // Put the copyright action above the collapsed bottom sheet
+                .padding(.bottom, 10)
             }
             .ignoresSafeArea()
         }
