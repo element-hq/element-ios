@@ -48,6 +48,7 @@ platform :ios do
   desc "Builds an Alpha ipa for pull request branches"
   lane :alpha do
     UI.user_error!("'DIAWI_API_TOKEN' environment variable should be set to use this lane") unless !ENV["DIAWI_API_TOKEN"].to_s.empty?
+    UI.user_error!("'SENTRY_API_TOKEN' environment variable should be set to use this lane") unless !ENV["SENTRY_API_TOKEN"].to_s.empty?
             
     # Generate the "Alpha" app variant    
     setup_app_variant(name: "Alpha")    
