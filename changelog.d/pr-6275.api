@@ -1,1 +1,0 @@
-Replace DesignKit framework with [DesignKit package](https://github.com/vector-im/element-x-ios/tree/develop/DesignKit/Sources). Colours are now generated in the [DesignTokens repo](https://github.com/vector-im/element-design-tokens) to be shared across all of our apps.

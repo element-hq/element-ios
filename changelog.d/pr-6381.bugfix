@@ -1,1 +1,0 @@
-VectorHostingController: Fix infinite loop due to the safe area insets fix.
