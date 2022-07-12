@@ -26,16 +26,16 @@ class UserLocationServiceProvider {
     
     // MARK: - Properties
     
+    // UserLocationService per user id
     private var locationServices: [String: UserLocationServiceProtocol] = [:]
     
     // MARK: - Setup
     
     private init() {
-        guard RiotSettings.shared.enableLiveLocationSharing else {
-            return
-        }
+        self.setupOrTeardownLocationServices()
         
-        self.registerUserSessionsServiceNotifications()
+        // Listen to lab flag changes
+        self.registerRiotSettingsNotifications()
     }
     
     // MARK: - Public
@@ -71,7 +71,7 @@ class UserLocationServiceProvider {
         MXLog.debug("Start monitoring user live location sharing")
     }
     
-    func setupUserLocationServiceIfNeeded(for userSession: UserSession) {
+    private func setupUserLocationServiceIfNeeded(for userSession: UserSession) {
         
         // Be sure Matrix session has is store setup to access beacon info summaries
         guard userSession.matrixSession.state.rawValue >= MXSessionState.storeDataReady.rawValue else {
@@ -100,6 +100,30 @@ class UserLocationServiceProvider {
         MXLog.debug("Stop monitoring user live location sharing")
     }
     
+    private func setupOrTeardownLocationServices() {
+        
+        self.unregisterUserSessionsServiceNotifications()
+        
+        if RiotSettings.shared.enableLiveLocationSharing {
+            self.setupUserLocationServiceForAllUsers()
+            self.registerUserSessionsServiceNotifications()
+        } else {
+            self.tearDownUserLocationServiceForAllUsers()
+        }
+    }
+    
+    private func setupUserLocationServiceForAllUsers() {
+        for userSession in  UserSessionsService.shared.userSessions {
+            self.setupUserLocationService(for: userSession)
+        }
+    }
+    
+    private func tearDownUserLocationServiceForAllUsers() {
+        for (userId, _) in self.locationServices {
+            self.tearDownUserLocationService(for: userId)
+        }
+    }
+    
     // MARK: UserSessions management
     
     private func registerUserSessionsServiceNotifications() {
@@ -109,6 +133,15 @@ class UserLocationServiceProvider {
         NotificationCenter.default.addObserver(self, selector: #selector(userSessionsServiceDidUpdateUserSession(_:)), name: UserSessionsService.userSessionDidChange, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(userSessionsServiceDidRemoveUserSession(_:)), name: UserSessionsService.didRemoveUserSession, object: nil)
+    }
+    
+    private func unregisterUserSessionsServiceNotifications() {
+        
+        NotificationCenter.default.removeObserver(self, name: UserSessionsService.didAddUserSession, object: nil)
+        
+        NotificationCenter.default.removeObserver(self, name: UserSessionsService.userSessionDidChange, object: nil)
+        
+        NotificationCenter.default.removeObserver(self, name: UserSessionsService.didRemoveUserSession, object: nil)
     }
     
     @objc private func userSessionsServiceDidAddUserSession(_ notification: Notification) {
@@ -136,5 +169,18 @@ class UserLocationServiceProvider {
         }
         
         self.tearDownUserLocationService(for: userId)
+    }
+    
+    // MARK: - RiotSettings
+    
+    private func registerRiotSettingsNotifications() {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(riotSettingsDidUpdateLiveLocationSharingActivation(_:)), name: RiotSettings.didUpdateLiveLocationSharingActivation, object: nil)
+    }
+    
+    @objc private func riotSettingsDidUpdateLiveLocationSharingActivation(_ notification: Notification) {
+        
+        // Lab flag value has changed, check if we should enable or disable location services
+        self.setupOrTeardownLocationServices()
     }
 }

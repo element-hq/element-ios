@@ -24,6 +24,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
+@import DesignKit;
 
 enum
 {

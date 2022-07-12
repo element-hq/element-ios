@@ -86,6 +86,8 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
         case .userDidPan:
             state.showsUserLocation = false
             state.isPinDropSharing = true
+        case .mapCreditsDidTap:
+            state.bindings.showMapCreditsSheet.toggle()
         }
     }
     
@@ -138,7 +140,7 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
         }
     }
     
-    private func startLiveLocationSharing() {
+    private func checkLocationAuthorizationAndPresentTimerSelector() {
         
         self.locationSharingService.requestAuthorization { [weak self] authorizationStatus in
             
@@ -158,11 +160,24 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
                 self.state.bindings.alertInfo = AlertInfo(id: .userLocatingError,
                                                           title: VectorL10n.locationSharingAllowBackgroundLocationTitle,
                                                           message:  VectorL10n.locationSharingAllowBackgroundLocationMessage,
-                                                          primaryButton: (VectorL10n.locationSharingAllowBackgroundLocationCancelAction, { [weak self] in self?.state.bindings.showingTimerSelector = true }),
+                                                          primaryButton: (VectorL10n.locationSharingAllowBackgroundLocationCancelAction, {}),
                                                           secondaryButton: (VectorL10n.locationSharingAllowBackgroundLocationValidateAction, { UIApplication.shared.vc_openSettings() }))
             case .authorizedAlways:
                 self.state.bindings.showingTimerSelector = true
             }
         }
+    }
+    
+    private func startLiveLocationSharing() {
+        
+        guard let completion = completion else {
+            return
+        }
+        
+        completion(.showLabFlagPromotionIfNeeded({ liveLocationEnabled in
+            if liveLocationEnabled {
+                self.checkLocationAuthorizationAndPresentTimerSelector()
+            }
+        }))
     }
 }

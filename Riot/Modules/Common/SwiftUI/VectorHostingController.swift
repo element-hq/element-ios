@@ -25,23 +25,34 @@ class VectorHostingController: UIHostingController<AnyView> {
     
     // MARK: Private
     
-    var isNavigationBarHidden: Bool = false
-    var hidesBackTitleWhenPushed: Bool = false
     private var theme: Theme
     
     // MARK: Public
-    
+
+    /// Wether or not the navigation bar should be hidden. Default `false`
+    var isNavigationBarHidden: Bool = false
+    /// Wether or not the title of the back item should be hidden. Default `false`
+    var hidesBackTitleWhenPushed: Bool = false
+    /// Defines the behaviour of the `VectorHostingController` as a bottom sheet. Default `nil`
+    var bottomSheetPreferences: VectorHostingBottomSheetPreferences?
+
     /// Whether or not to use the iOS 15 style scroll edge appearance when the controller has a navigation bar.
     var enableNavigationBarScrollEdgeAppearance = false
     /// When non-nil, the style will be applied to the status bar.
     var statusBarStyle: UIStatusBarStyle?
+
+    private let forceZeroSafeAreaInsets: Bool
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         statusBarStyle ?? super.preferredStatusBarStyle
     }
-    
-    init<Content>(rootView: Content) where Content: View {
+    /// Initializer
+    /// - Parameter rootView: Root view for the controller.
+    /// - Parameter forceZeroSafeAreaInsets: Whether to force-set the hosting view's safe area insets to zero. Useful when the view is used as part of a table view.
+    init<Content>(rootView: Content,
+                  forceZeroSafeAreaInsets: Bool = false) where Content: View {
         self.theme = ThemeService.shared().theme
+        self.forceZeroSafeAreaInsets = forceZeroSafeAreaInsets
         super.init(rootView: AnyView(rootView.vectorContent()))
     }
     
@@ -58,6 +69,8 @@ class VectorHostingController: UIHostingController<AnyView> {
         
         self.registerThemeServiceDidChangeThemeNotification()
         self.update(theme: self.theme)
+        
+        bottomSheetPreferences?.setup(viewController: self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -88,6 +101,22 @@ class VectorHostingController: UIHostingController<AnyView> {
             self.view.invalidateIntrinsicContentSize()
         }
     }
+
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+
+        guard forceZeroSafeAreaInsets else {
+            return
+        }
+
+        let counterSafeAreaInsets = UIEdgeInsets(top: -view.safeAreaInsets.top,
+                                                 left: -view.safeAreaInsets.left,
+                                                 bottom: -view.safeAreaInsets.bottom,
+                                                 right: -view.safeAreaInsets.right)
+        if additionalSafeAreaInsets != counterSafeAreaInsets, counterSafeAreaInsets != .zero {
+            additionalSafeAreaInsets = counterSafeAreaInsets
+        }
+    }
     
     private func registerThemeServiceDidChangeThemeNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
@@ -98,6 +127,9 @@ class VectorHostingController: UIHostingController<AnyView> {
     }
     
     private func update(theme: Theme) {
+        // Ensure dynamic colors are shown correctly when the theme is the opposite appearance to the system.
+        overrideUserInterfaceStyle = theme.userInterfaceStyle
+        
         if let navigationBar = self.navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar, withModernScrollEdgeAppearance: enableNavigationBarScrollEdgeAppearance)
         }

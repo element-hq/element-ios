@@ -44,7 +44,7 @@ enum MockOnboardingAvatarScreenState: MockScreenState, CaseIterable {
     
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView)  {
-        let avatarColorCount = DefaultThemeSwiftUI().colors.namesAndAvatars.count
+        let avatarColorCount = DefaultThemeSwiftUI().colors.contentAndAvatars.count
         let viewModel: OnboardingAvatarViewModel
         switch self {
         case .placeholderAvatar(let userId, let displayName):

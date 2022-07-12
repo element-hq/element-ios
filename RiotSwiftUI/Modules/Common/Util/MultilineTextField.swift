@@ -56,7 +56,7 @@ struct MultilineTextField: View {
             return theme.colors.accent
         }
         
-        return theme.colors.quarterlyContent
+        return theme.colors.quaternaryContent
     }
     
     private var borderWidth: CGFloat {
@@ -75,7 +75,7 @@ struct MultilineTextField: View {
             .overlay(rect.stroke(borderColor, lineWidth: borderWidth))
             .introspectTextView { textView in
                 textView.textColor = UIColor(textColor)
-                textView.font = theme.fonts.uiFonts.callout
+                textView.font = .element.callout
             }
     }
 

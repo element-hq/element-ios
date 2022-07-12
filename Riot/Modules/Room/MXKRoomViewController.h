@@ -394,7 +394,7 @@ typedef NS_ENUM(NSUInteger, MXKRoomViewControllerJoinRoomResult) {
  @param string to analyse
  @return YES if IRC style command has been detected and interpreted.
  */
-- (BOOL)isIRCStyleCommand:(NSString*)string;
+- (BOOL)sendAsIRCStyleCommandIfPossible:(NSString*)string;
 
 /**
  Mention the member display name in the current text of the message composer.

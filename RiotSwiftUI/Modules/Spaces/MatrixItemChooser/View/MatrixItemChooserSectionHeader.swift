@@ -52,7 +52,7 @@ struct MatrixItemChooserSectionHeader: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical, 8)
                 .padding(.horizontal)
-                .background(theme.colors.navigation)
+                .background(theme.colors.system)
                 .cornerRadius(8)
             }
         }

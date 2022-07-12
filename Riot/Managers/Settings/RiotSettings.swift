@@ -80,6 +80,10 @@ final class RiotSettings: NSObject {
         return RiotSettings.defaults.object(forKey: UserDefaultsKeys.notificationsShowDecryptedContent) != nil
     }
     
+    /// Indicate if notifications should be shown whilst the app is in the foreground.
+    @UserDefault(key: "showInAppNotifications", defaultValue: true, storage: defaults)
+    var showInAppNotifications
+    
     /// Indicate if encrypted messages content should be displayed in notifications.
     @UserDefault(key: UserDefaultsKeys.notificationsShowDecryptedContent, defaultValue: false, storage: defaults)
     var showDecryptedContentInNotifications
@@ -154,7 +158,11 @@ final class RiotSettings: NSObject {
     
     /// Indicates if live location sharing is enabled
     @UserDefault(key: UserDefaultsKeys.enableLiveLocationSharing, defaultValue: false, storage: defaults)
-    var enableLiveLocationSharing
+    var enableLiveLocationSharing {
+        didSet {
+            NotificationCenter.default.post(name: RiotSettings.didUpdateLiveLocationSharingActivation, object: self)
+        }
+    }
     
     // MARK: Calls
     
@@ -374,4 +382,9 @@ final class RiotSettings: NSObject {
     /// Number of spaces previously tracked by the `AnalyticsSpaceTracker` instance.
     @UserDefault(key: "lastNumberOfTrackedSpaces", defaultValue: nil, storage: defaults)
     var lastNumberOfTrackedSpaces: Int?
+}
+
+// MARK: - RiotSettings notification constants
+extension RiotSettings {
+    public static let didUpdateLiveLocationSharingActivation = Notification.Name("RiotSettingsDidUpdateLiveLocationSharingActivation")
 }

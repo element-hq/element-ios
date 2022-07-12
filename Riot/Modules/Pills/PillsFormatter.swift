@@ -25,6 +25,14 @@ class PillsFormatter: NSObject {
     /// UTType identifier for pills. Should be declared as Document type & Exported type identifier inside Info.plist
     static let pillUTType: String = "im.vector.app.pills"
 
+    // MARK: - Internal Enums
+    /// Defines a replacement mode for converting Pills to plain text.
+    @objc enum PillsReplacementTextMode: Int {
+        case displayname
+        case identifier
+        case markdown
+    }
+
     // MARK: - Internal Methods
     /// Insert text attachments for pills inside given message attributed string.
     ///
@@ -66,15 +74,24 @@ class PillsFormatter: NSObject {
     ///
     /// - Parameters:
     ///   - attributedString: attributed string with pills
-    ///   - asMarkdown: wether pill should be replaced by markdown links or raw text
+    ///   - mode: replacement mode for pills (default: displayname)
     /// - Returns: string with display names
-    static func stringByReplacingPills(in attributedString: NSAttributedString, asMarkdown: Bool = false) -> String {
+    static func stringByReplacingPills(in attributedString: NSAttributedString,
+                                       mode: PillsReplacementTextMode = .displayname) -> String {
         let newAttr = NSMutableAttributedString(attributedString: attributedString)
         newAttr.vc_enumerateAttribute(.attachment) { (attachment: PillTextAttachment, range: NSRange, _) in
             if let displayText = attachment.data?.displayText,
                let userId = attachment.data?.matrixItemId,
                let permalink = MXTools.permalinkToUser(withUserId: userId) {
-                let pillString = asMarkdown ? "[\(displayText)](\(permalink))" : "\(displayText)"
+                let pillString: String
+                switch mode {
+                case .displayname:
+                    pillString = displayText
+                case .identifier:
+                    pillString = userId
+                case .markdown:
+                    pillString = "[\(displayText)](\(permalink))"
+                }
                 newAttr.replaceCharacters(in: range, with: pillString)
             }
         }

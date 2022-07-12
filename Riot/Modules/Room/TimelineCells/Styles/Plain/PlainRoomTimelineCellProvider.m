@@ -110,7 +110,9 @@
     [self registerPollCellsForTableView:tableView];
     
     [self registerLocationCellsForTableView:tableView];
-        
+    
+    [self registerFileWithoutThumbnailCellsForTableView:tableView];
+
     [tableView registerClass:RoomEmptyBubbleCell.class forCellReuseIdentifier:RoomEmptyBubbleCell.defaultReuseIdentifier];
     
     [tableView registerClass:RoomSelectedStickerBubbleCell.class forCellReuseIdentifier:RoomSelectedStickerBubbleCell.defaultReuseIdentifier];
@@ -259,6 +261,13 @@
     [tableView registerClass:LocationPlainCell.class forCellReuseIdentifier:LocationPlainCell.defaultReuseIdentifier];
     [tableView registerClass:LocationWithoutSenderInfoPlainCell.class forCellReuseIdentifier:LocationWithoutSenderInfoPlainCell.defaultReuseIdentifier];
     [tableView registerClass:LocationWithPaginationTitlePlainCell.class forCellReuseIdentifier:LocationWithPaginationTitlePlainCell.defaultReuseIdentifier];
+}
+
+- (void)registerFileWithoutThumbnailCellsForTableView:(UITableView*)tableView
+{
+    [tableView registerClass:FileWithoutThumbnailPlainCell.class forCellReuseIdentifier:FileWithoutThumbnailPlainCell.defaultReuseIdentifier];
+    [tableView registerClass:FileWithoutThumbnailWithoutSenderInfoPlainCell.class forCellReuseIdentifier:FileWithoutThumbnailWithoutSenderInfoPlainCell.defaultReuseIdentifier];
+    [tableView registerClass:FileWithoutThumbnailWithPaginationTitlePlainCell.class forCellReuseIdentifier:FileWithoutThumbnailWithPaginationTitlePlainCell.defaultReuseIdentifier];
 }
 
 #pragma mark Cell class association
@@ -435,13 +444,13 @@
 {
     return @{
         // Clear
-        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnail) : RoomIncomingTextMsgBubbleCell.class,
-        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailWithoutSenderInfo) : RoomIncomingTextMsgWithoutSenderInfoBubbleCell.class,
-        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailWithPaginationTitle) : RoomIncomingTextMsgWithPaginationTitleBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnail) : FileWithoutThumbnailPlainCell.class,
+        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailWithoutSenderInfo) : FileWithoutThumbnailWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailWithPaginationTitle) : FileWithoutThumbnailWithPaginationTitlePlainCell.class,
         // Encrypted
-        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncrypted) : RoomIncomingEncryptedTextMsgBubbleCell.class,
-        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncryptedWithoutSenderInfo) : RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.class,
-        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncryptedWithPaginationTitle) : RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.class
+        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncrypted) : FileWithoutThumbnailPlainCell.class,
+        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncryptedWithoutSenderInfo) : FileWithoutThumbnailWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncryptedWithPaginationTitle) : FileWithoutThumbnailWithPaginationTitlePlainCell.class
     };
 }
 
@@ -449,13 +458,13 @@
 {
     return @{
         // Clear
-        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnail) : RoomOutgoingTextMsgBubbleCell.class,
-        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailWithoutSenderInfo) : RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.class,
-        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailWithPaginationTitle) : RoomOutgoingTextMsgWithPaginationTitleBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnail) : FileWithoutThumbnailWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailWithoutSenderInfo) : FileWithoutThumbnailWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailWithPaginationTitle) : FileWithoutThumbnailWithPaginationTitlePlainCell.class,
         // Encrypted
-        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncrypted) : RoomOutgoingEncryptedTextMsgBubbleCell.class,
-        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncryptedWithoutSenderInfo) : RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.class,
-        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncryptedWithPaginationTitle) : RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.class
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncrypted) : FileWithoutThumbnailWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncryptedWithoutSenderInfo) : FileWithoutThumbnailWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncryptedWithPaginationTitle) : FileWithoutThumbnailWithPaginationTitlePlainCell.class
     };
 }
 

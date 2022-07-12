@@ -22,8 +22,11 @@ class FileWithoutThumbnailBaseBubbleCell: SizableBaseRoomCell, RoomCellReactions
     
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
-                
-        self.fileAttachementView?.titleLabel.attributedText = self.suitableAttributedTextMessage
+        
+        let attributedText = NSMutableAttributedString(attributedString: self.suitableAttributedTextMessage)
+        attributedText.addAttributes([.foregroundColor: ThemeService.shared().theme.colors.secondaryContent],
+                                     range: NSRange(location: 0, length: attributedText.length))
+        self.fileAttachementView?.titleLabel.attributedText = attributedText
         
         self.update(theme: ThemeService.shared().theme)
     }

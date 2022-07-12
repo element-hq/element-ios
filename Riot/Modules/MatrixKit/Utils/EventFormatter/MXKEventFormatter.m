@@ -1356,9 +1356,22 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
                     }
                     else if ([msgtype isEqualToString:kMXMessageTypeFile])
                     {
-                        body = body? body : [VectorL10n noticeFileAttachment];
                         // Check attachment validity
-                        if (![self isSupportedAttachment:event])
+                        if ([self isSupportedAttachment:event])
+                        {
+                            body = body? body : [VectorL10n noticeFileAttachment];
+                            
+                            NSDictionary *fileInfo = contentToUse[@"info"];
+                            if (fileInfo)
+                            {
+                                NSNumber *fileSize = fileInfo[@"size"];
+                                if (fileSize)
+                                {
+                                    body = [NSString stringWithFormat:@"%@ (%@)", body, [MXTools fileSizeToString: fileSize.longValue]];
+                                }
+                            }
+                        }
+                        else
                         {
                             MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported attachment %@", event.description);
                             body = [VectorL10n noticeInvalidAttachment];

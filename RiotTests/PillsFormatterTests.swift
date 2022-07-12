@@ -21,10 +21,11 @@ import XCTest
 private enum Inputs {
     static let messageStart = "Hello "
     static let aliceDisplayname = "Alice"
+    static let aliceUserId = "@alice:matrix.org"
     static let aliceAvatarUrl = "mxc://matrix.org/VyNYAgahaiAzUoOeZETtQ"
     static let aliceAwayDisplayname = "Alice_away"
     static let aliceNewAvatarUrl = "mxc://matrix.org/VyNYAgaFdlLojoOeZETtQ"
-    static let aliceMember = FakeMXRoomMember(displayname: aliceDisplayname, avatarUrl: aliceAvatarUrl, userId: "@alice:matrix.org")
+    static let aliceMember = FakeMXRoomMember(displayname: aliceDisplayname, avatarUrl: aliceAvatarUrl, userId: aliceUserId)
     static let aliceMemberAway = FakeMXRoomMember(displayname: aliceAwayDisplayname, avatarUrl: aliceNewAvatarUrl, userId: "@alice:matrix.org")
     static let bobMember = FakeMXRoomMember(displayname: "Bob", avatarUrl: "", userId: "@bob:matrix.org")
     static let alicePermalink = "https://matrix.to/#/@alice:matrix.org"
@@ -77,14 +78,16 @@ class PillsFormatterTests: XCTestCase {
 
     func testPillsToMarkdown() {
         let messageWithPills = createMessageWithMentionFromBobToAlice()
-        let markdownMessage = PillsFormatter.stringByReplacingPills(in: messageWithPills, asMarkdown: true)
+        let markdownMessage = PillsFormatter.stringByReplacingPills(in: messageWithPills, mode: .markdown)
         XCTAssertEqual(markdownMessage, Inputs.messageStart + Inputs.markdownLinkToAlice)
     }
 
     func testPillsToRawBody() {
         let messageWithPills = createMessageWithMentionFromBobToAlice()
-        let rawMessage = PillsFormatter.stringByReplacingPills(in: messageWithPills, asMarkdown: false)
-        XCTAssertEqual(rawMessage, Inputs.messageStart + Inputs.aliceDisplayname)
+        let messageWithDisplayname = PillsFormatter.stringByReplacingPills(in: messageWithPills, mode: .displayname)
+        let messageWithUserId = PillsFormatter.stringByReplacingPills(in: messageWithPills, mode: .identifier)
+        XCTAssertEqual(messageWithDisplayname, Inputs.messageStart + Inputs.aliceDisplayname)
+        XCTAssertEqual(messageWithUserId, Inputs.messageStart + Inputs.aliceUserId)
     }
 }
 
