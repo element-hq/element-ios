@@ -1228,7 +1228,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
 }
 
-- (BOOL)isIRCStyleCommand:(NSString*)string
+- (BOOL)sendAsIRCStyleCommandIfPossible:(NSString*)string
 {
     // Override the default behavior for `/join` command in order to open automatically the joined room
     
@@ -1271,7 +1271,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         }
         return YES;
     }
-    return [super isIRCStyleCommand:string];
+    return [super sendAsIRCStyleCommandIfPossible:string];
 }
 
 - (void)setKeyboardHeight:(CGFloat)keyboardHeight
@@ -4816,7 +4816,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             message = attributedTextMessage.string;
         }
         // Try to send the slash command
-        isMessageAHandledCommand = [self isIRCStyleCommand:message];
+        isMessageAHandledCommand = [self sendAsIRCStyleCommandIfPossible:message];
     }
 
     if (!isMessageAHandledCommand)
