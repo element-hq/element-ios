@@ -2907,6 +2907,10 @@ public class VectorL10n: NSObject {
   public static func locationSharingLocatingUserErrorTitle(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "location_sharing_locating_user_error_title", p1)
   }
+  /// © Copyright
+  public static var locationSharingMapCreditsTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_map_credits_title") 
+  }
   /// Open in Apple Maps
   public static var locationSharingOpenAppleMaps: String { 
     return VectorL10n.tr("Vector", "location_sharing_open_apple_maps") 

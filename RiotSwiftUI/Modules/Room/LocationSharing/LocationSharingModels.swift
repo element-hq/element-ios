@@ -40,6 +40,7 @@ enum LocationSharingViewAction {
     case startLiveSharing
     case shareLiveLocation(timeout: LiveLocationSharingTimeout)
     case userDidPan
+    case mapCreditsDidTap
 }
 
 enum LocationSharingViewModelResult {
@@ -95,6 +96,7 @@ struct LocationSharingViewStateBindings {
     var userLocation: CLLocationCoordinate2D?
     var pinLocation: CLLocationCoordinate2D?
     var showingTimerSelector = false
+    var showMapCreditsSheet = false
 }
 
 enum LocationSharingAlertType {

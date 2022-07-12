@@ -25,8 +25,12 @@ struct LiveLocationSharingViewer: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
+    @Environment(\.openURL) var openURL
+    
     var isBottomSheetVisible = true
     @State private var isBottomSheetExpanded = false
+    
+    var bottomSheetCollapsedHeight: CGFloat = 150.0
     
     // MARK: Public
     
@@ -50,9 +54,13 @@ struct LiveLocationSharingViewer: View {
                                    errorSubject: viewModel.viewState.errorSubject)
             VStack(alignment: .center) {
                 Spacer()
-                MapCreditsView()
-                    .offset(y: -130)
+                MapCreditsView(action: {
+                    viewModel.send(viewAction: .mapCreditsDidTap)
+                })
+                .offset(y: -(bottomSheetCollapsedHeight)) // Put the copyright action above the collapsed bottom sheet
+                .padding(.bottom, 10)
             }
+            .ignoresSafeArea()
         }
         .navigationTitle(VectorL10n.locationSharingLiveViewerTitle)
         .toolbar {
@@ -64,6 +72,11 @@ struct LiveLocationSharingViewer: View {
         }
         .accentColor(theme.colors.accent)
         .bottomSheet(sheet, if: isBottomSheetVisible)
+        .actionSheet(isPresented: $viewModel.showMapCreditsSheet) {
+            return MapCreditsActionSheet(openURL: { url in
+                openURL(url)
+            }).sheet
+        }
         .alert(item: $viewModel.alertInfo) { info in
             info.alert
         }
@@ -108,7 +121,7 @@ extension LiveLocationSharingViewer {
     var sheet: some BottomSheetView {
         BottomSheet(
             isExpanded: $isBottomSheetExpanded,
-            minHeight: .points(150),
+            minHeight: .points(bottomSheetCollapsedHeight),
             maxHeight: .available,
             style: sheetStyle) {
                 userLocationList
