@@ -712,12 +712,6 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
             fetcher.fetchOptions.filterOptions.notDataTypes = notDataTypes
             
             if space == nil {
-                if let parentId = settings.activePinnedSpaceId {
-                    fetcher.fetchOptions.filterOptions.space = session?.spaceService.getSpace(withId: parentId)
-                } else {
-                    fetcher.fetchOptions.filterOptions.space = nil
-                }
-                
                 let settings = AllChatsLayoutSettingsManager.shared.allChatLayoutSettings
                 if settings.filters.contains(.unreads) && settings.activeFilters.contains(.unreads) {
                     fetcher.fetchOptions.filterOptions.dataTypes = [.unread]

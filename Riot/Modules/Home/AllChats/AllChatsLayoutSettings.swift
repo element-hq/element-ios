@@ -55,21 +55,13 @@ extension AllChatsLayoutSettings {
         }
     }
     let sorting: AllChatsLayoutSortingType
-    let pinnedSpaceIds: [String]
-    var activePinnedSpaceId: String? {
-        didSet {
-            NotificationCenter.default.post(name: AllChatsLayoutSettings.didUpdateFilters, object: self)
-        }
-    }
     
     init(sections: AllChatsLayoutSectionType = [],
          filters: AllChatsLayoutFilterType = [],
-         sorting: AllChatsLayoutSortingType = .activity,
-         pinnedSpaceIds: [String] = []) {
+         sorting: AllChatsLayoutSortingType = .activity) {
         self.sections = sections
         self.filters = filters
         self.sorting = sorting
-        self.pinnedSpaceIds = pinnedSpaceIds
     }
     
     func encode(with coder: NSCoder) {
@@ -77,10 +69,6 @@ extension AllChatsLayoutSettings {
         coder.encode(Int64(filters.rawValue), forKey: "filters")
         coder.encode(Int64(activeFilters.rawValue), forKey: "activeFilters")
         coder.encode(Int64(sorting.rawValue), forKey: "sorting")
-        coder.encode(pinnedSpaceIds, forKey: "pinnedSpaceIds")
-        if let activePinnedSpaceId = activePinnedSpaceId {
-            coder.encode(activePinnedSpaceId, forKey: "activePinnedSpaceId")
-        }
     }
     
     required init?(coder: NSCoder) {
@@ -88,7 +76,5 @@ extension AllChatsLayoutSettings {
         self.filters = AllChatsLayoutFilterType(rawValue: UInt(coder.decodeInt64(forKey: "filters")))
         self.activeFilters = AllChatsLayoutFilterType(rawValue: UInt(coder.decodeInt64(forKey: "activeFilters")))
         self.sorting = AllChatsLayoutSortingType(rawValue: UInt(coder.decodeInt64(forKey: "sorting"))) ?? .activity
-        self.pinnedSpaceIds = coder.decodeObject(forKey: "pinnedSpaceIds") as? [String] ?? []
-        self.activePinnedSpaceId = coder.decodeObject(forKey: "activePinnedSpaceId") as? String
     }
 }

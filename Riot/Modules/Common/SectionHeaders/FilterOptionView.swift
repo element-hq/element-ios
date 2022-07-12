@@ -46,72 +46,18 @@ class FilterOptionView: UIView, Themable {
                 self.label = label
                 
                 let settings = AllChatsLayoutSettingsManager.shared.allChatLayoutSettings
-                self.isSelected = settings.activePinnedSpaceId == nil && settings.activeFilters.isEmpty
+                self.isSelected = settings.activeFilters.isEmpty
 
                 NotificationCenter.default.addObserver(forName: AllChatsLayoutSettings.didUpdateFilters, object: nil, queue: OperationQueue.main) { [weak self] notification in
                     guard let self = self, let settings = notification.object as? AllChatsLayoutSettings else {
                         return
                     }
                     
-                    self.isSelected = settings.activePinnedSpaceId == nil && settings.activeFilters.isEmpty
+                    self.isSelected = settings.activeFilters.isEmpty
                 }
             }
         }
     }
-    
-    var spaceNameByIds: [String: String]? {
-        didSet {
-            for subView in stackView.arrangedSubviews {
-                stackView.removeArrangedSubview(subView)
-                subView.removeFromSuperview()
-            }
-
-            let label = UILabel()
-            label.text = VectorL10n.allChatsAllFilter
-            stackView.addArrangedSubview(label)
-            self.label = label
-            
-            if let image = UIImage(systemName: "chevron.down") {
-                let imageView = UIImageView(image: image.withRenderingMode(.alwaysTemplate))
-                stackView.addArrangedSubview(imageView)
-                imageView.heightAnchor.constraint(equalToConstant: 16).isActive = true
-                imageView.widthAnchor.constraint(equalToConstant: 16).isActive = true
-                self.imageView = imageView
-            }
-            
-            update(theme: ThemeService.shared().theme)
-            updateView(withActivePinnedSpaceId: AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.activePinnedSpaceId)
-
-            NotificationCenter.default.addObserver(forName: AllChatsLayoutSettings.didUpdateFilters, object: nil, queue: OperationQueue.main) { [weak self] notification in
-                guard let self = self, let settings = notification.object as? AllChatsLayoutSettings else {
-                    return
-                }
-                
-                self.updateView(withActivePinnedSpaceId: settings.activePinnedSpaceId)
-            }
-        }
-    }
-    
-    private func updateView(withActivePinnedSpaceId activePinnedSpaceId: String?) {
-        isSelected = activePinnedSpaceId != nil
-        if let activePinnedSpaceId = activePinnedSpaceId {
-            if let spaceName = self.spaceNameByIds?[activePinnedSpaceId] {
-                label?.text = spaceName
-            } else {
-                label?.text = VectorL10n.spaceTag
-            }
-        } else {
-            label?.text = VectorL10n.allChatsAllFilter
-        }
-    }
-//
-//    var selectedSpaceName: String? {
-//        didSet {
-//            label?.text = selectedSpaceName ?? "All"
-//            isSelected = selectedSpaceName != nil
-//            self.layoutIfNeeded()
-//        }
-//    }
     
     var data: AllChatsLayoutEditorFilter? {
         didSet {

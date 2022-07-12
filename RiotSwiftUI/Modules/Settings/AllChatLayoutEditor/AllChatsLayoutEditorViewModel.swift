@@ -48,39 +48,24 @@ class AllChatsLayoutEditorViewModel: AllChatsLayoutEditorViewModelType, AllChats
     private static func defaultState(service: AllChatsLayoutEditorServiceProtocol) -> AllChatsLayoutEditorViewState {
         return AllChatsLayoutEditorViewState(sections: service.sections,
                                             filters: service.filters,
-                                            sortingOptions: service.sortingOptions,
-                                            pinnedSpaces: service.pinnedSpaces)
+                                            sortingOptions: service.sortingOptions)
     }
     
     // MARK: - Public
-
-    func pinSpace(with item: SpaceSelectorListItemData) {
-        guard state.pinnedSpaces.firstIndex(of: item) == nil else {
-            return
-        }
-        
-        state.pinnedSpaces.append(item)
-    }
 
     override func process(viewAction: AllChatsLayoutEditorViewAction) {
         switch viewAction {
         case .cancel:
             completion?(.cancel)
         case .done:
-            service.trackDoneAction(sections: state.sections, filters: state.filters, sortingOptions: state.sortingOptions, pinnedSpaces: state.pinnedSpaces)
-            completion?(.done(service.outputSettings(sections: state.sections, filters: state.filters, sortingOptions: state.sortingOptions, pinnedSpaces: state.pinnedSpaces)))
+            service.trackDoneAction(sections: state.sections, filters: state.filters, sortingOptions: state.sortingOptions)
+            completion?(.done(service.outputSettings(sections: state.sections, filters: state.filters, sortingOptions: state.sortingOptions)))
         case .tappedSectionItem(let sectionItem):
             revertSelection(of: sectionItem)
         case .tappedFilterItem(let filter):
             revertSelection(of: filter)
         case .tappedSortingOption(let option):
             updateSelection(of: option)
-        case .addPinnedSpace:
-            completion?(.addPinnedSpace)
-        case .removePinnedSpace(let item):
-            if let index = state.pinnedSpaces.firstIndex(of: item) {
-                state.pinnedSpaces.remove(at: index)
-            }
         }
     }
     

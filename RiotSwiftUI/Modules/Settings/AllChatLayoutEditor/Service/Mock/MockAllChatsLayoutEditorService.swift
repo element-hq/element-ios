@@ -22,17 +22,15 @@ class MockAllChatsLayoutEditorService: AllChatsLayoutEditorServiceProtocol {
     var sections: [AllChatsLayoutEditorSection] = []
     var filters: [AllChatsLayoutEditorFilter] = []
     var sortingOptions: [AllChatsLayoutEditorSortingOption] = []
-    var pinnedSpaces: [SpaceSelectorListItemData] = []
     
     init() {
     }
 
-    func outputSettings(sections: [AllChatsLayoutEditorSection], filters: [AllChatsLayoutEditorFilter], sortingOptions: [AllChatsLayoutEditorSortingOption], pinnedSpaces: [SpaceSelectorListItemData]) -> AllChatsLayoutSettings {
+    func outputSettings(sections: [AllChatsLayoutEditorSection], filters: [AllChatsLayoutEditorFilter], sortingOptions: [AllChatsLayoutEditorSortingOption]) -> AllChatsLayoutSettings {
         return AllChatsLayoutSettings()
     }
     
     func trackDoneAction(sections: [AllChatsLayoutEditorSection],
                          filters: [AllChatsLayoutEditorFilter],
-                         sortingOptions: [AllChatsLayoutEditorSortingOption],
-                         pinnedSpaces: [SpaceSelectorListItemData]) {}
+                         sortingOptions: [AllChatsLayoutEditorSortingOption]) {}
 }

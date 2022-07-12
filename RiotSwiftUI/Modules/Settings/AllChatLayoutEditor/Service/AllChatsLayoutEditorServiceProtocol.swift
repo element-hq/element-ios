@@ -22,15 +22,12 @@ protocol AllChatsLayoutEditorServiceProtocol {
     var sections: [AllChatsLayoutEditorSection] { get }
     var filters: [AllChatsLayoutEditorFilter] { get }
     var sortingOptions: [AllChatsLayoutEditorSortingOption] { get }
-    var pinnedSpaces: [SpaceSelectorListItemData] { get }
     
     func trackDoneAction(sections: [AllChatsLayoutEditorSection],
                          filters: [AllChatsLayoutEditorFilter],
-                         sortingOptions: [AllChatsLayoutEditorSortingOption],
-                         pinnedSpaces: [SpaceSelectorListItemData])
+                         sortingOptions: [AllChatsLayoutEditorSortingOption])
     func outputSettings(sections: [AllChatsLayoutEditorSection],
                         filters: [AllChatsLayoutEditorFilter],
-                        sortingOptions: [AllChatsLayoutEditorSortingOption],
-                        pinnedSpaces: [SpaceSelectorListItemData]) -> AllChatsLayoutSettings
+                        sortingOptions: [AllChatsLayoutEditorSortingOption]) -> AllChatsLayoutSettings
 
 }

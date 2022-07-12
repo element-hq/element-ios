@@ -52,16 +52,6 @@ class AllChatsLayoutEditorService: AllChatsLayoutEditorServiceProtocol {
         ]
     }
     
-    var pinnedSpaces: [SpaceSelectorListItemData] {
-        settings.pinnedSpaceIds.compactMap { spaceId in
-            guard let summary = session.roomSummary(withRoomId: spaceId) else {
-                return nil
-            }
-            
-            return SpaceSelectorListItemData(id: spaceId, avatar: summary.room.avatarData, icon: nil, displayName: summary.displayname)
-        }
-    }
-
     // MARK: - Setup
     
     init(session: MXSession,
@@ -74,8 +64,7 @@ class AllChatsLayoutEditorService: AllChatsLayoutEditorServiceProtocol {
     
     func trackDoneAction(sections: [AllChatsLayoutEditorSection],
                          filters: [AllChatsLayoutEditorFilter],
-                         sortingOptions: [AllChatsLayoutEditorSortingOption],
-                         pinnedSpaces: [SpaceSelectorListItemData]) {
+                         sortingOptions: [AllChatsLayoutEditorSortingOption]) {
         for section in sections {
             switch section.type {
             case .favourites:
@@ -101,19 +90,15 @@ class AllChatsLayoutEditorService: AllChatsLayoutEditorServiceProtocol {
                 break
             }
         }
-        
-        Analytics.shared.trackEditLayoutPinnedSpaces(with: pinnedSpaces.count)
     }
     
     func outputSettings(sections: [AllChatsLayoutEditorSection],
                         filters: [AllChatsLayoutEditorFilter],
-                        sortingOptions: [AllChatsLayoutEditorSortingOption],
-                        pinnedSpaces: [SpaceSelectorListItemData]) -> AllChatsLayoutSettings {
+                        sortingOptions: [AllChatsLayoutEditorSortingOption]) -> AllChatsLayoutSettings {
         let sections: AllChatsLayoutSectionType = AllChatsLayoutSectionType(rawValue: sections.reduce(0, { $1.selected ? $0 | $1.type.rawValue : $0 }))
         let filters: AllChatsLayoutFilterType = AllChatsLayoutFilterType(rawValue: filters.reduce(0, { $1.selected ? $0 | $1.type.rawValue : $0 }))
         let sorting: AllChatsLayoutSortingType = sortingOptions.first(where: { $0.selected })?.type ?? .activity
-        let pinnedSpaceIds: [String] = pinnedSpaces.map{ $0.id }
-        let settings = AllChatsLayoutSettings(sections: sections, filters: filters, sorting: sorting, pinnedSpaceIds: pinnedSpaceIds)
+        let settings = AllChatsLayoutSettings(sections: sections, filters: filters, sorting: sorting)
         settings.activeFilters = self.settings.activeFilters
         return settings
     }

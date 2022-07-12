@@ -73,12 +73,6 @@ struct AllChatsLayoutEditor: View {
                     .padding(.leading)
                 Divider()
                     .padding(.bottom)
-                pinSpaces
-                    .padding(.leading)
-                    .frame(height: 160)
-//                    .padding(.bottom, 24)
-                Divider()
-                    .padding(.bottom)
                 sortingOptions
                     .padding(.horizontal)
                     .padding(.bottom, 24)
@@ -125,28 +119,6 @@ struct AllChatsLayoutEditor: View {
         }
         text(VectorL10n.allChatsEditLayoutAddFiltersMessage)
             .padding(.bottom, 24)
-    }
-    
-    @ViewBuilder
-    private var pinSpaces: some View {
-        VStack(alignment: .leading) {
-            text(VectorL10n.allChatsEditLayoutPinSpacesTitle.uppercased())
-            ScrollView(.horizontal) {
-                LazyHStack(alignment: .top, spacing: 16) {
-                    AllChatsLayoutEditorPinnedSpaceItem(avatar: nil, image: UIImage(systemName: "plus"), displayName: "Add space", isDeletable: false)
-                        .onTapGesture {
-                            viewModel.send(viewAction: .addPinnedSpace)
-                        }
-                    ForEach(viewModel.viewState.pinnedSpaces) { item in
-                        AllChatsLayoutEditorPinnedSpaceItem(avatar: item.avatar, image: nil/*UIImage(systemName: "folder.fill")*/, displayName: item.displayName, isDeletable: true)
-                            .onTapGesture {
-                                viewModel.send(viewAction: .removePinnedSpace(item))
-                            }
-                    }
-                }
-                .animation(.default, value: viewModel.viewState.pinnedSpaces)
-            }
-        }
     }
     
     @ViewBuilder

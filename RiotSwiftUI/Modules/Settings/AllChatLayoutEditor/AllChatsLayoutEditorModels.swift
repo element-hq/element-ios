@@ -29,7 +29,6 @@ enum AllChatsLayoutEditorCoordinatorResult {
 enum AllChatsLayoutEditorViewModelResult {
     case cancel
     case done(_ newSettings: AllChatsLayoutSettings)
-    case addPinnedSpace
 }
 
 // MARK: View
@@ -61,15 +60,12 @@ struct AllChatsLayoutEditorViewState: BindableState {
     var sections: [AllChatsLayoutEditorSection]
     var filters: [AllChatsLayoutEditorFilter]
     var sortingOptions: [AllChatsLayoutEditorSortingOption]
-    var pinnedSpaces: [SpaceSelectorListItemData]
 }
 
 enum AllChatsLayoutEditorViewAction {
     case tappedSectionItem(_ section: AllChatsLayoutEditorSection)
     case tappedFilterItem(_ filter: AllChatsLayoutEditorFilter)
     case tappedSortingOption(_ filter: AllChatsLayoutEditorSortingOption)
-    case addPinnedSpace
-    case removePinnedSpace(_ item: SpaceSelectorListItemData)
     case cancel
     case done
 }

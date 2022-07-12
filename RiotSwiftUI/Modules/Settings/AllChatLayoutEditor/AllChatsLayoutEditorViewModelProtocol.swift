@@ -23,5 +23,4 @@ protocol AllChatsLayoutEditorViewModelProtocol {
     static func makeAllChatsLayoutEditorViewModel(service: AllChatsLayoutEditorServiceProtocol) -> AllChatsLayoutEditorViewModelProtocol
     @available(iOS 14, *)
     var context: AllChatsLayoutEditorViewModelType.Context { get }
-    func pinSpace(with item: SpaceSelectorListItemData)
 }

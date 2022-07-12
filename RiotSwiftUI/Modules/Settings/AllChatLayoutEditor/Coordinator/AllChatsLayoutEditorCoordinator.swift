@@ -76,8 +76,6 @@ final class AllChatsLayoutEditorCoordinator: Coordinator, Presentable {
                 self.completion?(.cancel)
             case .done(let newSettings):
                 self.completion?(.done(newSettings))
-            case .addPinnedSpace:
-                self.showSpaceSelector()
             }
         }
     }
@@ -99,26 +97,6 @@ final class AllChatsLayoutEditorCoordinator: Coordinator, Presentable {
     /// Hide the currently displayed activity indicator.
     private func stopLoading() {
         loadingIndicator = nil
-    }
-    
-    private func showSpaceSelector() {
-        let coordinator = SpaceSelectorBottomSheetCoordinator(parameters: SpaceSelectorBottomSheetCoordinatorParameters(session: parameters.session))
-        coordinator.start()
-        coordinator.completion = { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .cancel: break
-            case .allSelected: break
-            case .spaceSelected(let item):
-                self.viewModel.pinSpace(with: item)
-            }
-            
-            coordinator.toPresentable().dismiss(animated: true)
-            self.remove(childCoordinator: coordinator)
-        }
-        self.add(childCoordinator: coordinator)
-        self.hostingViewController.present(coordinator.toPresentable(), animated: true)
     }
     
     // MARK: - UIAdaptivePresentationControllerDelegate

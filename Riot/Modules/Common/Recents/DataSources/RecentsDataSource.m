@@ -46,7 +46,7 @@
 
 NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSourceTapOnDirectoryServerChange";
 
-@interface RecentsDataSource() <SecureBackupBannerCellDelegate, CrossSigningSetupBannerCellDelegate, RecentsListServiceDelegate, AllChatsFilterOptionsDelegate, SpaceSelectorBottomSheetCoordinatorBridgePresenterDelegate>
+@interface RecentsDataSource() <SecureBackupBannerCellDelegate, CrossSigningSetupBannerCellDelegate, RecentsListServiceDelegate>
 {
     dispatch_queue_t processingQueue;
     
@@ -67,7 +67,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 @property (nonatomic, strong) CrossSigningService *crossSigningService;
 
 @property (nonatomic, strong) AllChatsFilterOptions *allChatsFilterOptions;
-@property (nonatomic, strong) SpaceSelectorBottomSheetCoordinatorBridgePresenter *spaceSelectorPresenter;
 @property (nonatomic, strong) UIView *allChatsOptionsView;
 
 @end
@@ -102,7 +101,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         
         [self registerAllChatsSettingsUpdateNotification];
         self.allChatsFilterOptions = [AllChatsFilterOptions new];
-        self.allChatsFilterOptions.delegate = self;
     }
     return self;
 }
@@ -1789,45 +1787,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
 
     return NO;
-}
-
-#pragma mark - AllChatsFilterOptionsDelegate
-
-- (void)allChatsFilterOptions:(AllChatsFilterOptions *)allChatsFilterOptions presentSpaceSelectorForSpacesWithIds:(NSArray<NSString *> *)spaceIds
-{
-    SpaceSelectorBottomSheetCoordinatorBridgePresenter *presenter = [[SpaceSelectorBottomSheetCoordinatorBridgePresenter alloc] initWithSession:self.mxSession spaceIds:spaceIds isAllEnabled:YES];
-    [presenter presentFrom:(UIViewController *)self.delegate animated:YES];
-    presenter.delegate = self;
-    self.spaceSelectorPresenter = presenter;
-}
-
-- (NSString *)allChatsFilterOptions:(AllChatsFilterOptions *)allChatsFilterOptions nameForSpaceWithId:(NSString *)spaceId
-{
-    return [self.mxSession roomSummaryWithRoomId:spaceId].displayname;
-}
-
-#pragma mark - SpaceSelectorBottomSheetCoordinatorBridgePresenterDelegate
-
-- (void)spaceSelectorBottomSheetCoordinatorBridgePresenterDidCancel:(SpaceSelectorBottomSheetCoordinatorBridgePresenter *)coordinatorBridgePresenter
-{
-    self.spaceSelectorPresenter = nil;
-    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-}
-
-- (void)spaceSelectorBottomSheetCoordinatorBridgePresenterDidSelectAll:(SpaceSelectorBottomSheetCoordinatorBridgePresenter *)coordinatorBridgePresenter
-{
-    [Analytics.shared trackInteraction:AnalyticsUIElementAllChatAllSpacesActivated];
-    [self.allChatsFilterOptions updateActivePinnedSpaceWithId:nil];
-    self.spaceSelectorPresenter = nil;
-    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-}
-
-- (void)spaceSelectorBottomSheetCoordinatorBridgePresenter:(SpaceSelectorBottomSheetCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectSpaceWithId:(NSString *)spaceId
-{
-    [Analytics.shared trackInteraction:AnalyticsUIElementAllChatPinnedSpaceActivated];
-    [self.allChatsFilterOptions updateActivePinnedSpaceWithId:spaceId];
-    self.spaceSelectorPresenter = nil;
-    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
 }
 
 @end

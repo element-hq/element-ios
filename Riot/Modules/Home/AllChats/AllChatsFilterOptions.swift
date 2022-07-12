@@ -17,63 +17,24 @@
 import Foundation
 import UIKit
 
-@objc protocol AllChatsFilterOptionsDelegate: NSObjectProtocol {
-    func allChatsFilterOptions(_ allChatsFilterOptions: AllChatsFilterOptions, presentSpaceSelectorForSpacesWithIds spaceIds: [String])
-    func allChatsFilterOptions(_ allChatsFilterOptions: AllChatsFilterOptions, nameForSpaceWithId spaceId: String) -> String?
-}
-
 @objcMembers
 @objc class AllChatsFilterOptions: NSObject {
-    weak var delegate: AllChatsFilterOptionsDelegate?
-    
+
     func createFilterListView() -> UIView? {
         guard optionsCount > 0 else {
             return nil
         }
         
-        let spaceIds = AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.pinnedSpaceIds
-//        let activeSpaceId = AllChatLayoutSettingsManager.shared.allChatLayoutSettings.activePinnedSpaceId
-        
         var filterViews: [FilterOptionView] = []
         
-        if !options.isEmpty && spaceIds.isEmpty {
+        if !options.isEmpty {
             let optionView = FilterOptionView()
             optionView.isAll = true
             optionView.didTap = { optionView in
                 if !optionView.isSelected {
                     Analytics.shared.trackInteraction(.allChatAllOptionActivated)
                     AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.activeFilters = []
-//                    self.updateActivePinnedSpace(withId: nil)
                 }
-            }
-            filterViews.append(optionView)
-        }
-
-        if !spaceIds.isEmpty {
-            let optionView = FilterOptionView()
-            let pairs: [(String, String)] = spaceIds.compactMap { spaceId in
-                guard let spaceName = self.delegate?.allChatsFilterOptions(self, nameForSpaceWithId: spaceId) else {
-                    return nil
-                }
-                
-                return (spaceId, spaceName)
-            }
-            optionView.spaceNameByIds = Dictionary(uniqueKeysWithValues: pairs)
-//            if let spaceId = activeSpaceId {
-//                optionView.selectedSpaceName = self.delegate?.allChatFilterOptions(self, nameForSpaceWithId: spaceId)
-//            } else {
-//                optionView.selectedSpaceName = nil
-//            }
-            optionView.didTap = { [weak self] optionView in
-                guard let self = self else {
-                    return
-                }
-                
-//                if !optionView.isSelected {
-                    self.delegate?.allChatsFilterOptions(self, presentSpaceSelectorForSpacesWithIds: spaceIds)
-//                } else {
-//                    self.updateActivePinnedSpace(withId: nil)
-//                }
             }
             filterViews.append(optionView)
         }
@@ -118,15 +79,7 @@ import UIKit
     }
     
     var optionsCount: Int {
-        if AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.pinnedSpaceIds.isEmpty {
-            return options.count
-        } else {
-            return options.count + 1
-        }
-    }
-    
-    func updateActivePinnedSpace(withId spaceId: String?) {
-        AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.activePinnedSpaceId = spaceId
+        return options.count
     }
     
     private var options: [AllChatsLayoutEditorFilter] {
