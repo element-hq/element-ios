@@ -4047,7 +4047,7 @@ public class VectorL10n: NSObject {
   public static var onboardingUseCaseMessage: String { 
     return VectorL10n.tr("Vector", "onboarding_use_case_message") 
   }
-  /// Not sure yet? You can %@
+  /// Not sure yet? %@
   public static func onboardingUseCaseNotSureYet(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "onboarding_use_case_not_sure_yet", p1)
   }
@@ -4055,7 +4055,7 @@ public class VectorL10n: NSObject {
   public static var onboardingUseCasePersonalMessaging: String { 
     return VectorL10n.tr("Vector", "onboarding_use_case_personal_messaging") 
   }
-  /// skip this question
+  /// Skip this question
   public static var onboardingUseCaseSkipButton: String { 
     return VectorL10n.tr("Vector", "onboarding_use_case_skip_button") 
   }

@@ -22,17 +22,17 @@
 
 // MARK: Onboarding Authentication WIP
 "authentication_registration_title" = "Create your account";
-"authentication_registration_message" = "We’ll need some info to get you set up.";
 "authentication_registration_username" = "Username";
 "authentication_registration_username_footer" = "You can’t change this later";
+/* The placeholder will show the full Matrix ID that has been entered. */
+"authentication_registration_username_footer_available" = "Others can discover you %@";
 "authentication_registration_password_footer" = "Must be 8 characters or more";
 
 "authentication_login_title" = "Welcome back!";
 "authentication_login_username" = "Username or Email";
 "authentication_login_forgot_password" = "Forgot password";
 
-"authentication_server_info_title" = "Choose your server to store your data";
-"authentication_server_info_matrix_description" = "Join millions for free on the largest public server";
+"authentication_server_info_title" = "Where your conversations will live";
 
 "authentication_server_selection_title" = "Choose your server";
 "authentication_server_selection_message" = "What is the address of your server? A server is like a home for all your data.";
@@ -46,6 +46,7 @@
 "authentication_verify_email_input_message" = "This will help verify your account and enables password recovery.";
 "authentication_verify_email_text_field_placeholder" = "Email Address";
 "authentication_verify_email_waiting_title" = "Check your email to verify.";
+/* The placeholder will show the email address that was entered. */
 "authentication_verify_email_waiting_message" = "To confirm your email address, tap the button in the email we just sent to %@";
 "authentication_verify_email_waiting_hint" = "Did not receive an email?";
 "authentication_verify_email_waiting_button" = "Resend email";
@@ -54,6 +55,7 @@
 "authentication_forgot_password_input_message" = "We will send you a verification link.";
 "authentication_forgot_password_text_field_placeholder" = "Email Address";
 "authentication_forgot_password_waiting_title" = "Check your email";
+/* The placeholder will show the email address that was entered. */
 "authentication_forgot_password_waiting_message" = "To confirm your email address, tap the button in the email we just sent to %@";
 "authentication_forgot_password_waiting_hint" = "Did not receive an email?";
 "authentication_forgot_password_waiting_button" = "Resend email";
@@ -69,6 +71,7 @@
 "authentication_verify_msisdn_text_field_placeholder" = "Phone Number";
 "authentication_verify_msisdn_otp_text_field_placeholder" = "Verification Code";
 "authentication_verify_msisdn_waiting_title" = "Confirm your phone number";
+/* The placeholder will show the phone number that was entered. */
 "authentication_verify_msisdn_waiting_message" = "We just sent a code to %@. Enter it  below to verify it’s you.";
 "authentication_verify_msisdn_waiting_button" = "Resend code";
 "authentication_verify_msisdn_invalid_phone_number" = "Invalid phone number";
@@ -82,7 +85,9 @@
 // MARK: Password Validation
 "password_validation_info_header" = "Your password should meet the criteria below:";
 "password_validation_error_header" = "Given password does not meet the criteria below:";
+/* The placeholder will show a number */
 "password_validation_error_min_length" = "At least %d characters.";
+/* The placeholder will show a number */
 "password_validation_error_max_length" = "Not exceed %d characters.";
 "password_validation_error_contain_lowercase_letter" = "Contain a lower-case letter.";
 "password_validation_error_contain_uppercase_letter" = "Contain an upper-case letter.";

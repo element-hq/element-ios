@@ -78,10 +78,6 @@ public extension VectorL10n {
   static var authenticationRecaptchaMessage: String { 
     return VectorL10n.tr("Untranslated", "authentication_recaptcha_message") 
   }
-  /// We’ll need some info to get you set up.
-  static var authenticationRegistrationMessage: String { 
-    return VectorL10n.tr("Untranslated", "authentication_registration_message") 
-  }
   /// Must be 8 characters or more
   static var authenticationRegistrationPasswordFooter: String { 
     return VectorL10n.tr("Untranslated", "authentication_registration_password_footer") 
@@ -98,11 +94,11 @@ public extension VectorL10n {
   static var authenticationRegistrationUsernameFooter: String { 
     return VectorL10n.tr("Untranslated", "authentication_registration_username_footer") 
   }
-  /// Join millions for free on the largest public server
-  static var authenticationServerInfoMatrixDescription: String { 
-    return VectorL10n.tr("Untranslated", "authentication_server_info_matrix_description") 
+  /// Others can discover you %@
+  static func authenticationRegistrationUsernameFooterAvailable(_ p1: String) -> String {
+    return VectorL10n.tr("Untranslated", "authentication_registration_username_footer_available", p1)
   }
-  /// Choose your server to store your data
+  /// Where your conversations will live
   static var authenticationServerInfoTitle: String { 
     return VectorL10n.tr("Untranslated", "authentication_server_info_title") 
   }

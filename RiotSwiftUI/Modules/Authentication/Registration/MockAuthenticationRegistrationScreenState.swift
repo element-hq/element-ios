@@ -47,6 +47,7 @@ enum MockAuthenticationRegistrationScreenState: MockScreenState, CaseIterable {
             viewModel = AuthenticationRegistrationViewModel(homeserver: .mockBasicServer)
             viewModel.context.username = "alice"
             viewModel.context.password = "password"
+            Task { await viewModel.confirmUsernameAvailability("alice") }
         case .passwordWithUsernameError:
             viewModel = AuthenticationRegistrationViewModel(homeserver: .mockBasicServer)
             viewModel.state.hasEditedUsername = true

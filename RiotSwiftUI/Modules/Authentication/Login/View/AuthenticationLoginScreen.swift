@@ -37,15 +37,16 @@ struct AuthenticationLoginScreen: View {
             VStack(spacing: 0) {
                 header
                     .padding(.top, OnboardingMetrics.topPaddingToNavigationBar)
-                    .padding(.bottom, 36)
+                    .padding(.bottom, 28)
                 
                 serverInfo
                     .padding(.leading, 12)
+                    .padding(.bottom, 16)
                 
                 Rectangle()
                     .fill(theme.colors.quinaryContent)
                     .frame(height: 1)
-                    .padding(.vertical, 21)
+                    .padding(.bottom, 22)
                 
                 if viewModel.viewState.homeserver.showLoginForm {
                     loginForm
@@ -86,8 +87,7 @@ struct AuthenticationLoginScreen: View {
     
     /// The sever information section that includes a button to select a different server.
     var serverInfo: some View {
-        AuthenticationServerInfoSection(address: viewModel.viewState.homeserver.address,
-                                        showMatrixDotOrgInfo: viewModel.viewState.homeserver.isMatrixDotOrg) {
+        AuthenticationServerInfoSection(address: viewModel.viewState.homeserver.address) {
             viewModel.send(viewAction: .selectServer)
         }
     }

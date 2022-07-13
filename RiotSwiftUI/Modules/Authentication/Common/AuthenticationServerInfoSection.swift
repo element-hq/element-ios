@@ -27,7 +27,6 @@ struct AuthenticationServerInfoSection: View {
     // MARK: - Public
     
     let address: String
-    let showMatrixDotOrgInfo: Bool
     let editAction: () -> Void
     
     // MARK: - Views
@@ -39,18 +38,9 @@ struct AuthenticationServerInfoSection: View {
                 .foregroundColor(theme.colors.secondaryContent)
             
             HStack {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(address)
-                        .font(theme.fonts.body)
-                        .foregroundColor(theme.colors.primaryContent)
-                    
-                    if showMatrixDotOrgInfo {
-                        Text(VectorL10n.authenticationServerInfoMatrixDescription)
-                            .font(theme.fonts.caption1)
-                            .foregroundColor(theme.colors.tertiaryContent)
-                            .accessibilityIdentifier("serverDescriptionText")
-                    }
-                }
+                Text(address)
+                    .font(theme.fonts.body)
+                    .foregroundColor(theme.colors.primaryContent)
                 
                 Spacer()
                 
