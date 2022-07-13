@@ -48,13 +48,6 @@ final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinator
     var childCoordinators: [Coordinator] = []
     var callback: ((AuthenticationCoordinatorResult) -> Void)?
     
-    var customServerFieldsVisible = false {
-        didSet {
-            guard customServerFieldsVisible != oldValue else { return }
-            authenticationViewController.setCustomServerFieldsVisible(customServerFieldsVisible)
-        }
-    }
-    
     // MARK: - Setup
     
     init(parameters: LegacyAuthenticationCoordinatorParameters) {

@@ -48,8 +48,8 @@ class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelTy
             Task { await validateUsername() }
         case .enablePasswordValidation:
             Task { await enablePasswordValidation() }
-        case .clearUsernameError:
-            Task { await clearUsernameError() }
+        case .resetUsernameAvailability:
+            Task { await resetUsernameAvailability() }
         case .next:
             Task { await callback?(.createAccount(username: state.bindings.username, password: state.bindings.password)) }
         case .continueWithSSO(let provider):
@@ -63,10 +63,15 @@ class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelTy
         state.homeserver = homeserver
     }
     
+    @MainActor func confirmUsernameAvailability(_ username: String) {
+        guard username == state.bindings.username else { return }
+        state.usernameAvailability = .available
+    }
+    
     @MainActor func displayError(_ type: AuthenticationRegistrationErrorType) {
         switch type {
         case .usernameUnavailable(let message):
-            state.usernameErrorMessage = message
+            state.usernameAvailability = .invalid(message)
         case .mxError(let message):
             state.bindings.alertInfo = AlertInfo(id: type,
                                                  title: VectorL10n.error,
@@ -101,9 +106,9 @@ class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelTy
         state.hasEditedPassword = true
     }
     
-    /// Clear any errors being shown in the username text field footer.
-    @MainActor private func clearUsernameError() {
-        guard state.usernameErrorMessage != nil else { return }
-        state.usernameErrorMessage = nil
+    /// Reset the username's availability, clearing any messages being shown in the username text field footer.
+    @MainActor private func resetUsernameAvailability() {
+        if case .unknown = state.usernameAvailability { return }
+        state.usernameAvailability = .unknown
     }
 }

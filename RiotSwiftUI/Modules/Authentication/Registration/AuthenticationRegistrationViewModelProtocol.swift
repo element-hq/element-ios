@@ -25,6 +25,10 @@ protocol AuthenticationRegistrationViewModelProtocol {
     /// - Parameter homeserver: The view data for the homeserver. This can be generated using `AuthenticationService.Homeserver.viewData`.
     @MainActor func update(homeserver: AuthenticationHomeserverViewData)
     
+    /// Update the view to confirm that the chosen username is available.
+    /// - Parameter username: The username that was checked.
+    @MainActor func confirmUsernameAvailability(_ username: String)
+    
     /// Display an error to the user.
     /// - Parameter type: The type of error to be displayed.
     @MainActor func displayError(_ type: AuthenticationRegistrationErrorType)

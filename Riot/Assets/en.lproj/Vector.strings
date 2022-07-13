@@ -114,8 +114,8 @@
 "onboarding_use_case_work_messaging" = "Teams";
 "onboarding_use_case_community_messaging" = "Communities";
 /* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
-"onboarding_use_case_not_sure_yet" = "Not sure yet? You can %@";
-"onboarding_use_case_skip_button" = "skip this question";
+"onboarding_use_case_not_sure_yet" = "Not sure yet? %@";
+"onboarding_use_case_skip_button" = "Skip this question";
 "onboarding_use_case_existing_server_message" = "Looking to join an existing server?";
 "onboarding_use_case_existing_server_button" = "Connect to server";
 

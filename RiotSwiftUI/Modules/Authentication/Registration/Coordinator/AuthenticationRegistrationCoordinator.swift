@@ -149,6 +149,7 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
         currentTask = Task {
             do {
                 _ = try await registrationWizard.registrationAvailable(username: username)
+                authenticationRegistrationViewModel.confirmUsernameAvailability(username)
             } catch {
                 guard !Task.isCancelled, let mxError = MXError(nsError: error as NSError) else { return }
                 if mxError.errcode == kMXErrCodeStringUserInUse

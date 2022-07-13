@@ -205,11 +205,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             return
         }
         
-        if result == .customServer {
-            beginAuthentication(with: .selectServerForRegistration, onStart: coordinator.stop)
-        } else {
-            beginAuthentication(with: .registration, onStart: coordinator.stop)
-        }
+        beginAuthentication(with: .registration, onStart: coordinator.stop)
     }
     
     // MARK: - Authentication
@@ -265,8 +261,6 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
                 break
             }
         }
-
-        coordinator.customServerFieldsVisible = useCaseResult == .customServer
 
         authenticationCoordinator = coordinator
         
@@ -630,7 +624,7 @@ extension OnboardingSplashScreenViewModelResult {
 
 extension OnboardingUseCaseViewModelResult {
     /// The result converted into the type stored in the user session.
-    var userSessionPropertyValue: UserSessionProperties.UseCase? {
+    var userSessionPropertyValue: UserSessionProperties.UseCase {
         switch self {
         case .personalMessaging:
             return .personalMessaging
@@ -640,8 +634,6 @@ extension OnboardingUseCaseViewModelResult {
             return .communityMessaging
         case .skipped:
             return .skipped
-        case .customServer:
-            return nil
         }
     }
 }

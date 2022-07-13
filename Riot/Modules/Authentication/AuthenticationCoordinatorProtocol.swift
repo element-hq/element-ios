@@ -36,9 +36,6 @@ enum AuthenticationCoordinatorResult {
 protocol AuthenticationCoordinatorProtocol: Coordinator, Presentable {
     var callback: ((AuthenticationCoordinatorResult) -> Void)? { get set }
     
-    /// Whether the custom homeserver checkbox is enabled for the user to enter a homeserver URL.
-    var customServerFieldsVisible: Bool { get set }
-    
     /// Update the screen to display registration or login.
     func update(authenticationFlow: AuthenticationFlow)
 
