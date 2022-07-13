@@ -69,6 +69,7 @@ jobs:
         run: |
           bundle config path vendor/bundle
           bundle install --jobs 4 --retry 3
+          bundle exec fastlane update_plugins
       - name: Use right MatrixSDK versions
         run: bundle exec fastlane point_dependencies_to_related_branches
 
