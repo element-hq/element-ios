@@ -49,13 +49,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pods-
 
+      # Note: it is recommended to use setup-ruby action to cache gems
+      # https://github.com/actions/cache/blob/main/examples.md#ruby---bundler
       - name: Cache Ruby gems
-        uses: actions/cache@v2
+        uses: ruby/setup-ruby@v1
         with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gems-
+          ruby-version: 2.6.9
+          bundler-cache: true
 
       # Make sure we use the latest version of MatrixSDK
       - name: Reset MatrixSDK pod
