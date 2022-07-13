@@ -335,7 +335,7 @@
 "unknown_devices_send_anyway" = "Усе одно надіслати";
 "media_type_accessibility_sticker" = "Наліпка";
 "media_type_accessibility_file" = "Файл";
-"media_type_accessibility_location" = "Місцеперебування";
+"media_type_accessibility_location" = "Місце перебування";
 "media_type_accessibility_video" = "Відео";
 "media_type_accessibility_audio" = "Аудіо";
 "media_type_accessibility_image" = "Зображення";
@@ -1712,7 +1712,7 @@
 
 // MARK: - Location sharing
 
-"location_sharing_title" = "Місцеперебування";
+"location_sharing_title" = "Місце перебування";
 "ok" = "Гаразд";
 "settings_enable_room_message_bubbles" = "Бульбашки повідомлень";
 "onboarding_splash_page_4_message" = "Елемент також чудово підходить для роботи. Йому довіряють найбезпечніші організації світу.";
@@ -2330,13 +2330,13 @@
 "side_menu_coach_message" = "Проведіть праворуч або торкніть, щоб переглянути всі кімнати";
 "ignore_user" = "Нехтувати користувачем";
 "location_sharing_pin_drop_share_title" = "Надіслати ці координати";
-"location_sharing_static_share_title" = "Надіслати моє поточне місцеперебування";
+"location_sharing_static_share_title" = "Надіслати моє поточне місце перебування";
 "live_location_sharing_banner_stop" = "Припинити";
-"live_location_sharing_banner_title" = "Місцеперебування поширюється наживо";
+"live_location_sharing_banner_title" = "Місце перебування поширюється наживо";
 
 // MARK: Live location sharing
 
-"location_sharing_live_share_title" = "Поширити місцеперебування наживо";
+"location_sharing_live_share_title" = "Поширити місце перебування наживо";
 "spaces_add_room_missing_permission_message" = "Ви не маєте дозволу додавати кімнати в цей простір.";
 "spaces_creation_in_one_space" = "в 1 простір";
 "spaces_creation_in_many_spaces" = "у %@ простори";
@@ -2488,16 +2488,16 @@
 "add" = "Додати";
 "existing" = "Наявне";
 "new_word" = "Нове";
-"stop" = "Зупинити";
+"stop" = "Припинити";
 "joining" = "Приєднання";
-"location_sharing_live_list_item_stop_sharing_action" = "Припинити надсилання";
+"location_sharing_live_list_item_stop_sharing_action" = "Припинити";
 "location_sharing_live_list_item_current_user_display_name" = "Ви";
 "location_sharing_live_list_item_last_update_invalid" = "Час останнього оновлення невідомий";
 "location_sharing_live_list_item_last_update" = "Оновлено %@ тому";
 "location_sharing_live_list_item_sharing_expired" = "Надсилання завершено";
 "location_sharing_live_list_item_time_left" = "%@ виходить";
-"location_sharing_live_viewer_title" = "Місцеперебування";
-"location_sharing_live_map_callout_title" = "Поділитися місцеперебуванням";
+"location_sharing_live_viewer_title" = "Місце перебування";
+"location_sharing_live_map_callout_title" = "Поділитися місцем перебування";
 "room_access_settings_screen_upgrade_alert_note" = "Зауважте, що оновлення створить нову версію кімнати. Усі поточні повідомлення залишаться в цій архівованій кімнаті.";
 "room_access_settings_screen_upgrade_alert_message_no_param" = "Будь-хто з батьківського простору зможе знайти цю кімнату та приєднатися до неї — не потрібно вручну запрошувати всіх. Ви зможете будь-коли змінити це в налаштуваннях кімнати.";
 "room_access_settings_screen_upgrade_alert_message" = "Будь-хто в %@ зможе знайти та приєднатися до цієї кімнати — не потрібно вручну запрошувати всіх. Ви зможете змінити це в налаштуваннях кімнати у будь-який час.";
@@ -2521,7 +2521,7 @@
 "location_sharing_live_error" = "Помилка показу місцеперебування наживо";
 "location_sharing_live_loading" = "Завантаження місцеперебування наживо...";
 "location_sharing_live_timer_incoming" = "Наживо до %@";
-"live_location_sharing_ended" = "Показ місцеперебування наживо завершено";
+"live_location_sharing_ended" = "Показ місця перебування наживо завершено";
 "confirm" = "Підтвердити";
 "location_sharing_allow_background_location_cancel_action" = "Не зараз";
 "location_sharing_allow_background_location_validate_action" = "Налаштування";
@@ -2547,3 +2547,10 @@
 "settings_timeline" = "СТРІЧКА";
 "room_accessibility_record_voice_message_hint" = "Двічі торкніться й утримуйте для запису.";
 "room_accessibility_record_voice_message" = "Записати голосове повідомлення";
+"location_sharing_live_lab_promotion_activation" = "Увімкнути надсилання геоданих наживо";
+"location_sharing_live_lab_promotion_text" = "Зверніть увагу: це експериментальна функція, яка використовує тимчасову реалізацію, яка дозволяє іншим людям у кімнаті постійно бачити історію поширеного вами місця перебування.";
+"location_sharing_live_lab_promotion_title" = "Надсилання місця перебування наживо";
+"location_sharing_map_credits_title" = "© Авторське право";
+"room_info_back_button_title" = "Відомості кімнати";
+"network_offline_message" = "Ви офлайн, перевірте своє з'єднання.";
+"network_offline_title" = "Ви офлайн";
