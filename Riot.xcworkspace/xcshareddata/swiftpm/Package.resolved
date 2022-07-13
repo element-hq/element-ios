@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vector-im/ogg-swift.git",
       "state" : {
-        "revision" : "803f94f7e2379c41ab0c645b5f95e6c933e73ce0",
-        "version" : "0.8.1"
+        "revision" : "9d82ed838404f10b607a1a1689f404563e9115c3",
+        "version" : "0.8.3"
       }
     },
     {
@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vector-im/opus-swift",
       "state" : {
-        "revision" : "4c1bbe02b2f092f26562eb66fd77995de81abb48",
-        "version" : "0.8.1"
+        "revision" : "11f1887767cbc87c4b64b789ee830b779cc744cb",
+        "version" : "0.8.4"
       }
     },
     {
@@ -60,7 +60,7 @@
       "location" : "https://github.com/vector-im/swift-ogg",
       "state" : {
         "branch" : "langleyd/sim_arm64_suppport",
-        "revision" : "0ba496281f2242970a098b548d45c1ca15f1cd2e"
+        "revision" : "a0b3bd2a58167d2248ca2fb8038f7268e88c6b99"
       }
     },
     {
