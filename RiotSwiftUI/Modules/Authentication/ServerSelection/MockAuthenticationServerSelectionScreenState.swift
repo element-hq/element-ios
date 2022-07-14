@@ -26,6 +26,7 @@ enum MockAuthenticationServerSelectionScreenState: MockScreenState, CaseIterable
     case matrix
     case emptyAddress
     case invalidAddress
+    case login
     case nonModal
     
     /// The associated screen
@@ -39,16 +40,24 @@ enum MockAuthenticationServerSelectionScreenState: MockScreenState, CaseIterable
         switch self {
         case .matrix:
             viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: "matrix.org",
+                                                               flow: .register,
                                                                hasModalPresentation: true)
         case .emptyAddress:
             viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: "",
+                                                               flow: .register,
                                                                hasModalPresentation: true)
         case .invalidAddress:
             viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: "thisisbad",
+                                                               flow: .register,
                                                                hasModalPresentation: true)
             Task { await viewModel.displayError(.footerMessage(VectorL10n.errorCommonMessage)) }
+        case .login:
+            viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: "matrix.org",
+                                                               flow: .login,
+                                                               hasModalPresentation: true)
         case .nonModal:
             viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: "matrix.org",
+                                                               flow: .register,
                                                                hasModalPresentation: false)
         }
         

@@ -22,8 +22,8 @@ struct AuthenticationTermsCoordinatorParameters {
     let registrationWizard: RegistrationWizard
     /// The policies to be accepted by the user.
     let localizedPolicies: [MXLoginPolicyData]
-    /// The address of the homeserver (shown beneath the policies).
-    let homeserverAddress: String
+    /// The homeserver that provided the policies.
+    let homeserver: AuthenticationState.Homeserver
 }
 
 final class AuthenticationTermsCoordinator: Coordinator, Presentable {
@@ -59,10 +59,10 @@ final class AuthenticationTermsCoordinator: Coordinator, Presentable {
     @MainActor init(parameters: AuthenticationTermsCoordinatorParameters) {
         self.parameters = parameters
         
-        let subtitle = parameters.homeserverAddress
+        let subtitle = parameters.homeserver.displayableAddress
         let policies = parameters.localizedPolicies.compactMap { AuthenticationTermsPolicy(url: $0.url, title: $0.name, subtitle: subtitle) }
         
-        let viewModel = AuthenticationTermsViewModel(policies: policies)
+        let viewModel = AuthenticationTermsViewModel(homeserver: parameters.homeserver.viewData, policies: policies)
         let view = AuthenticationTermsScreen(viewModel: viewModel.context)
         authenticationTermsViewModel = viewModel
         authenticationTermsHostingController = VectorHostingController(rootView: view)

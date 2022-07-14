@@ -50,7 +50,8 @@ class AuthenticationVerifyMsisdnUITests: MockScreenTest {
         
         let phoneNumberTextField = app.textFields["phoneNumberTextField"]
         XCTAssertTrue(phoneNumberTextField.exists, "The text field should be shown before an SMS is sent.")
-        XCTAssertEqual(phoneNumberTextField.value as? String, "Phone Number", "The text field should be showing the placeholder before text is input.")
+        XCTAssertEqual(phoneNumberTextField.value as? String, VectorL10n.authenticationVerifyMsisdnTextFieldPlaceholder,
+                       "The text field should be showing the placeholder before text is input.")
         
         let nextButton = app.buttons["nextButton"]
         XCTAssertTrue(nextButton.exists, "The next button should be shown.")
@@ -99,7 +100,8 @@ class AuthenticationVerifyMsisdnUITests: MockScreenTest {
 
         let otpTextField = app.textFields["otpTextField"]
         XCTAssertTrue(otpTextField.exists, "The OTP text field should be shown once an SMS has been sent.")
-        XCTAssertEqual(otpTextField.value as? String, "Verification Code", "The text field should be showing the placeholder before text is input.")
+        XCTAssertEqual(otpTextField.value as? String, VectorL10n.authenticationVerifyMsisdnOtpTextFieldPlaceholder,
+                       "The text field should be showing the placeholder before text is input.")
 
         let nextButton = app.buttons["nextButton"]
         XCTAssertTrue(nextButton.exists, "The next button should be shown.")

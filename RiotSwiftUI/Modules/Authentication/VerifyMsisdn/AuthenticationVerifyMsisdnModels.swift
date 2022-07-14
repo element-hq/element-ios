@@ -34,10 +34,17 @@ enum AuthenticationVerifyMsisdnViewModelResult {
 // MARK: View
 
 struct AuthenticationVerifyMsisdnViewState: BindableState {
+    /// The homeserver requesting MSISDN verification.
+    let homeserver: AuthenticationHomeserverViewData
     /// An SMS has been sent.
     var hasSentSMS = false
     /// View state that can be bound to from SwiftUI.
     var bindings: AuthenticationVerifyMsisdnBindings
+    
+    /// The message shown in the header while asking for a phone number to be entered.
+    var formHeaderMessage: String {
+        VectorL10n.authenticationVerifyMsisdnInputMessage(homeserver.address)
+    }
     
     /// Whether the phone number is valid and the user can continue.
     var hasInvalidPhoneNumber: Bool {

@@ -38,14 +38,19 @@ enum MockAuthenticationVerifyMsisdnScreenState: MockScreenState, CaseIterable {
         let viewModel: AuthenticationVerifyMsisdnViewModel
         switch self {
         case .emptyPhoneNumber:
-            viewModel = AuthenticationVerifyMsisdnViewModel(phoneNumber: "")
+            viewModel = AuthenticationVerifyMsisdnViewModel(homeserver: .mockMatrixDotOrg,
+                                                            phoneNumber: "")
         case .enteredPhoneNumber:
-            viewModel = AuthenticationVerifyMsisdnViewModel(phoneNumber: "+44 XXXXXXXXX")
+            viewModel = AuthenticationVerifyMsisdnViewModel(homeserver: .mockMatrixDotOrg,
+                                                            phoneNumber: "+44 XXXXXXXXX")
         case .hasSentSMS:
-            viewModel = AuthenticationVerifyMsisdnViewModel(phoneNumber: "+44 XXXXXXXXX")
+            viewModel = AuthenticationVerifyMsisdnViewModel(homeserver: .mockMatrixDotOrg,
+                                                            phoneNumber: "+44 XXXXXXXXX")
             Task { await viewModel.updateForSentSMS() }
         case .enteredOTP:
-            viewModel = AuthenticationVerifyMsisdnViewModel(phoneNumber: "+44 XXXXXXXXX", otp: "123456")
+            viewModel = AuthenticationVerifyMsisdnViewModel(homeserver: .mockMatrixDotOrg,
+                                                            phoneNumber: "+44 XXXXXXXXX",
+                                                            otp: "123456")
             Task { await viewModel.updateForSentSMS() }
         }
         

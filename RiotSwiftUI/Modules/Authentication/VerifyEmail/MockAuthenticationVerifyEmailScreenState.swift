@@ -37,11 +37,14 @@ enum MockAuthenticationVerifyEmailScreenState: MockScreenState, CaseIterable {
         let viewModel: AuthenticationVerifyEmailViewModel
         switch self {
         case .emptyAddress:
-            viewModel = AuthenticationVerifyEmailViewModel(emailAddress: "")
+            viewModel = AuthenticationVerifyEmailViewModel(homeserver: .mockMatrixDotOrg,
+                                                           emailAddress: "")
         case .enteredAddress:
-            viewModel = AuthenticationVerifyEmailViewModel(emailAddress: "test@example.com")
+            viewModel = AuthenticationVerifyEmailViewModel(homeserver: .mockMatrixDotOrg,
+                                                           emailAddress: "test@example.com")
         case .hasSentEmail:
-            viewModel = AuthenticationVerifyEmailViewModel(emailAddress: "test@example.com")
+            viewModel = AuthenticationVerifyEmailViewModel(homeserver: .mockMatrixDotOrg,
+                                                           emailAddress: "test@example.com")
             Task { await viewModel.updateForSentEmail() }
         }
         

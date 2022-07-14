@@ -83,7 +83,9 @@ struct AuthenticationRegistrationViewState: BindableState {
         case .invalid(let errorMessage):
             return errorMessage
         case .available:
-            let userID = "@\(bindings.username):\(homeserver.address)"
+            // https is never shown to the user but http is, so strip the scheme.
+            let domain = homeserver.address.replacingOccurrences(of: "http://", with: "")
+            let userID = "@\(bindings.username):\(domain)"
             return VectorL10n.authenticationRegistrationUsernameFooterAvailable(userID)
         }
     }

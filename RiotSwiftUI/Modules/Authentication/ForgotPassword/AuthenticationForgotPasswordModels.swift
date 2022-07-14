@@ -32,10 +32,17 @@ enum AuthenticationForgotPasswordViewModelResult {
 // MARK: View
 
 struct AuthenticationForgotPasswordViewState: BindableState {
+    /// The homeserver that the user is using to reset their password.
+    let homeserver: AuthenticationHomeserverViewData
     /// An email has been sent and the app is waiting for the user to tap the link.
     var hasSentEmail = false
     /// View state that can be bound to from SwiftUI.
     var bindings: AuthenticationForgotPasswordBindings
+    
+    /// The message shown in the header while asking for an email address to be entered.
+    var formHeaderMessage: String {
+        VectorL10n.authenticationForgotPasswordInputMessage(homeserver.address)
+    }
     
     /// Whether the email address is valid and the user can continue.
     var hasInvalidAddress: Bool {

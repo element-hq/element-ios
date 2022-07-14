@@ -27,14 +27,14 @@ class AuthenticationServerSelectionViewModelTests: XCTestCase {
     var context: AuthenticationServerSelectionViewModelType.Context!
     
     override func setUp() {
-        viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: "", hasModalPresentation: true)
+        viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: "", flow: .login, hasModalPresentation: true)
         context = viewModel.context
     }
 
     @MainActor func testErrorMessage() async throws {
         // Given a new instance of the view model.
         XCTAssertNil(context.viewState.footerErrorMessage, "There should not be an error message for a new view model.")
-        XCTAssertEqual(context.viewState.footerMessage, VectorL10n.authenticationServerSelectionServerFooter, "The standard footer message should be shown.")
+        XCTAssertFalse(context.viewState.isShowingFooterError, "There should not be an error shown.")
         
         // When an error occurs.
         let message = "Unable to contact server."
@@ -42,16 +42,16 @@ class AuthenticationServerSelectionViewModelTests: XCTestCase {
         
         // Then the footer should now be showing an error.
         XCTAssertEqual(context.viewState.footerErrorMessage, message, "The error message should be stored.")
-        XCTAssertEqual(context.viewState.footerMessage, message, "The error message should be shown.")
+        XCTAssertTrue(context.viewState.isShowingFooterError, "There should be an error shown.")
         
         // And when clearing the error.
         context.send(viewAction: .clearFooterError)
         
         // Wait for the action to spawn a Task on the main actor as the Context protocol doesn't support actors.
-        try await Task.sleep(nanoseconds: 100_000_000)
+        await Task.yield()
         
         // Then the error message should now be removed.
         XCTAssertNil(context.viewState.footerErrorMessage, "The error message should have been cleared.")
-        XCTAssertEqual(context.viewState.footerMessage, VectorL10n.authenticationServerSelectionServerFooter, "The standard footer message should be shown again.")
+        XCTAssertFalse(context.viewState.isShowingFooterError, "There should not be an error shown anymore.")
     }
 }

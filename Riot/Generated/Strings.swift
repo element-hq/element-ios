@@ -3927,7 +3927,7 @@ public class VectorL10n: NSObject {
   public static var onboardingAvatarAccessibilityLabel: String { 
     return VectorL10n.tr("Vector", "onboarding_avatar_accessibility_label") 
   }
-  /// You can change this anytime.
+  /// Time to put a face to the name
   public static var onboardingAvatarMessage: String { 
     return VectorL10n.tr("Vector", "onboarding_avatar_message") 
   }
@@ -3939,11 +3939,11 @@ public class VectorL10n: NSObject {
   public static var onboardingCelebrationButton: String { 
     return VectorL10n.tr("Vector", "onboarding_celebration_button") 
   }
-  /// Your preferences have been saved.
+  /// Head to settings anytime to update your profile.
   public static var onboardingCelebrationMessage: String { 
     return VectorL10n.tr("Vector", "onboarding_celebration_message") 
   }
-  /// You’re all set!
+  /// Looking good!
   public static var onboardingCelebrationTitle: String { 
     return VectorL10n.tr("Vector", "onboarding_celebration_title") 
   }
@@ -4043,7 +4043,7 @@ public class VectorL10n: NSObject {
   public static var onboardingUseCaseExistingServerMessage: String { 
     return VectorL10n.tr("Vector", "onboarding_use_case_existing_server_message") 
   }
-  /// We’ll help you get connected.
+  /// We’ll help you get connected
   public static var onboardingUseCaseMessage: String { 
     return VectorL10n.tr("Vector", "onboarding_use_case_message") 
   }

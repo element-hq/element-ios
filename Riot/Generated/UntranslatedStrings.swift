@@ -14,7 +14,7 @@ public extension VectorL10n {
   static var authenticationCancelFlowConfirmationMessage: String { 
     return VectorL10n.tr("Untranslated", "authentication_cancel_flow_confirmation_message") 
   }
-  /// Make sure it’s 8 characters or more.
+  /// Make sure it’s 8 characters or more
   static var authenticationChoosePasswordInputMessage: String { 
     return VectorL10n.tr("Untranslated", "authentication_choose_password_input_message") 
   }
@@ -34,15 +34,15 @@ public extension VectorL10n {
   static var authenticationChoosePasswordTextFieldPlaceholder: String { 
     return VectorL10n.tr("Untranslated", "authentication_choose_password_text_field_placeholder") 
   }
-  /// We will send you a verification link.
-  static var authenticationForgotPasswordInputMessage: String { 
-    return VectorL10n.tr("Untranslated", "authentication_forgot_password_input_message") 
+  /// %@ will send you a verification link
+  static func authenticationForgotPasswordInputMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Untranslated", "authentication_forgot_password_input_message", p1)
   }
-  /// Enter your email address
+  /// Enter your email
   static var authenticationForgotPasswordInputTitle: String { 
     return VectorL10n.tr("Untranslated", "authentication_forgot_password_input_title") 
   }
-  /// Email Address
+  /// Email
   static var authenticationForgotPasswordTextFieldPlaceholder: String { 
     return VectorL10n.tr("Untranslated", "authentication_forgot_password_text_field_placeholder") 
   }
@@ -50,15 +50,11 @@ public extension VectorL10n {
   static var authenticationForgotPasswordWaitingButton: String { 
     return VectorL10n.tr("Untranslated", "authentication_forgot_password_waiting_button") 
   }
-  /// Did not receive an email?
-  static var authenticationForgotPasswordWaitingHint: String { 
-    return VectorL10n.tr("Untranslated", "authentication_forgot_password_waiting_hint") 
-  }
-  /// To confirm your email address, tap the button in the email we just sent to %@
+  /// Follow the instructions sent to %@
   static func authenticationForgotPasswordWaitingMessage(_ p1: String) -> String {
     return VectorL10n.tr("Untranslated", "authentication_forgot_password_waiting_message", p1)
   }
-  /// Check your email
+  /// Check your email.
   static var authenticationForgotPasswordWaitingTitle: String { 
     return VectorL10n.tr("Untranslated", "authentication_forgot_password_waiting_title") 
   }
@@ -70,13 +66,13 @@ public extension VectorL10n {
   static var authenticationLoginTitle: String { 
     return VectorL10n.tr("Untranslated", "authentication_login_title") 
   }
-  /// Username or Email
+  /// Username / Email / Phone
   static var authenticationLoginUsername: String { 
     return VectorL10n.tr("Untranslated", "authentication_login_username") 
   }
-  /// This server would like to make sure you are not a robot
-  static var authenticationRecaptchaMessage: String { 
-    return VectorL10n.tr("Untranslated", "authentication_recaptcha_message") 
+  /// Are you a human?
+  static var authenticationRecaptchaTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_recaptcha_title") 
   }
   /// Must be 8 characters or more
   static var authenticationRegistrationPasswordFooter: String { 
@@ -106,43 +102,47 @@ public extension VectorL10n {
   static var authenticationServerSelectionGenericError: String { 
     return VectorL10n.tr("Untranslated", "authentication_server_selection_generic_error") 
   }
-  /// What is the address of your server? A server is like a home for all your data.
-  static var authenticationServerSelectionMessage: String { 
-    return VectorL10n.tr("Untranslated", "authentication_server_selection_message") 
+  /// What is the address of your server?
+  static var authenticationServerSelectionLoginMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_server_selection_login_message") 
   }
-  /// You can only connect to a server that has already been set up
-  static var authenticationServerSelectionServerFooter: String { 
-    return VectorL10n.tr("Untranslated", "authentication_server_selection_server_footer") 
+  /// Connect to homeserver
+  static var authenticationServerSelectionLoginTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_server_selection_login_title") 
   }
-  /// Server URL
+  /// What is the address of your server? This is like a home for all your data
+  static var authenticationServerSelectionRegisterMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_server_selection_register_message") 
+  }
+  /// Select your homeserver
+  static var authenticationServerSelectionRegisterTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_server_selection_register_title") 
+  }
+  /// Homeserver URL
   static var authenticationServerSelectionServerUrl: String { 
     return VectorL10n.tr("Untranslated", "authentication_server_selection_server_url") 
   }
-  /// Choose your server
-  static var authenticationServerSelectionTitle: String { 
-    return VectorL10n.tr("Untranslated", "authentication_server_selection_title") 
-  }
-  /// Please read through T&C. You must accept in order to continue.
-  static var authenticationTermsMessage: String { 
-    return VectorL10n.tr("Untranslated", "authentication_terms_message") 
+  /// Please read %@’s terms and policies
+  static func authenticationTermsMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Untranslated", "authentication_terms_message", p1)
   }
   /// Unable to find the selected policy. Please try again later.
   static var authenticationTermsPolicyUrlError: String { 
     return VectorL10n.tr("Untranslated", "authentication_terms_policy_url_error") 
   }
-  /// Privacy policy
+  /// Server policies
   static var authenticationTermsTitle: String { 
     return VectorL10n.tr("Untranslated", "authentication_terms_title") 
   }
-  /// This will help verify your account and enables password recovery.
-  static var authenticationVerifyEmailInputMessage: String { 
-    return VectorL10n.tr("Untranslated", "authentication_verify_email_input_message") 
+  /// %@ needs to verify your account
+  static func authenticationVerifyEmailInputMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Untranslated", "authentication_verify_email_input_message", p1)
   }
-  /// Enter your email address
+  /// Enter your email
   static var authenticationVerifyEmailInputTitle: String { 
     return VectorL10n.tr("Untranslated", "authentication_verify_email_input_title") 
   }
-  /// Email Address
+  /// Email
   static var authenticationVerifyEmailTextFieldPlaceholder: String { 
     return VectorL10n.tr("Untranslated", "authentication_verify_email_text_field_placeholder") 
   }
@@ -154,7 +154,7 @@ public extension VectorL10n {
   static var authenticationVerifyEmailWaitingHint: String { 
     return VectorL10n.tr("Untranslated", "authentication_verify_email_waiting_hint") 
   }
-  /// To confirm your email address, tap the button in the email we just sent to %@
+  /// To confirm your email, tap the button in the email we just sent to %@
   static func authenticationVerifyEmailWaitingMessage(_ p1: String) -> String {
     return VectorL10n.tr("Untranslated", "authentication_verify_email_waiting_message", p1)
   }
@@ -162,9 +162,9 @@ public extension VectorL10n {
   static var authenticationVerifyEmailWaitingTitle: String { 
     return VectorL10n.tr("Untranslated", "authentication_verify_email_waiting_title") 
   }
-  /// This will help verify your account and enables password recovery.
-  static var authenticationVerifyMsisdnInputMessage: String { 
-    return VectorL10n.tr("Untranslated", "authentication_verify_msisdn_input_message") 
+  /// %@ needs to verify your account
+  static func authenticationVerifyMsisdnInputMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Untranslated", "authentication_verify_msisdn_input_message", p1)
   }
   /// Enter your phone number
   static var authenticationVerifyMsisdnInputTitle: String { 
@@ -174,7 +174,7 @@ public extension VectorL10n {
   static var authenticationVerifyMsisdnInvalidPhoneNumber: String { 
     return VectorL10n.tr("Untranslated", "authentication_verify_msisdn_invalid_phone_number") 
   }
-  /// Verification Code
+  /// Confirmation Code
   static var authenticationVerifyMsisdnOtpTextFieldPlaceholder: String { 
     return VectorL10n.tr("Untranslated", "authentication_verify_msisdn_otp_text_field_placeholder") 
   }
@@ -186,11 +186,11 @@ public extension VectorL10n {
   static var authenticationVerifyMsisdnWaitingButton: String { 
     return VectorL10n.tr("Untranslated", "authentication_verify_msisdn_waiting_button") 
   }
-  /// We just sent a code to %@. Enter it  below to verify it’s you.
+  /// A code was sent to %@
   static func authenticationVerifyMsisdnWaitingMessage(_ p1: String) -> String {
     return VectorL10n.tr("Untranslated", "authentication_verify_msisdn_waiting_message", p1)
   }
-  /// Confirm your phone number
+  /// Verify your phone number
   static var authenticationVerifyMsisdnWaitingTitle: String { 
     return VectorL10n.tr("Untranslated", "authentication_verify_msisdn_waiting_title") 
   }

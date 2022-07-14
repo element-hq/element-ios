@@ -24,7 +24,7 @@ class AuthenticationVerifyEmailViewModelTests: XCTestCase {
     var context: AuthenticationVerifyEmailViewModelType.Context!
     
     override func setUpWithError() throws {
-        viewModel = AuthenticationVerifyEmailViewModel()
+        viewModel = AuthenticationVerifyEmailViewModel(homeserver: .mockMatrixDotOrg)
         context = viewModel.context
     }
 
