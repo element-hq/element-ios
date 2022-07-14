@@ -52,4 +52,4 @@ packages:
     maxVersion: 2.0.0
   SwiftOGG:
     url: https://github.com/vector-im/swift-ogg
-    branch: langleyd/sim_arm64_suppport
+    branch: main

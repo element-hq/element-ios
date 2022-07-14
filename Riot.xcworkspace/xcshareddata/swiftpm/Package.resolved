@@ -59,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vector-im/swift-ogg",
       "state" : {
-        "branch" : "langleyd/sim_arm64_suppport",
-        "revision" : "6ef5ca6bc10ec5b7336e8c042accf76b17fa7a3c"
+        "branch" : "main",
+        "revision" : "0ffad3f7b45a6a4760db090d503b00f094bbecc0"
       }
     },
     {
