@@ -106,7 +106,7 @@ class AuthenticationRegistrationUITests: MockScreenTestCase {
         let passwordTextField = app.secureTextFields.element
         let nextButton = app.buttons["nextButton"]
         
-        XCTAssertFalse(usernameTextField.exists, "Username input should not be shown for \(state).")
+        XCTAssertTrue(usernameTextField.exists, "Username input should not be shown for \(state).")
         XCTAssertFalse(passwordTextField.exists, "Password input should not be shown for \(state).")
         XCTAssertFalse(nextButton.exists, "The next button should not be shown for \(state).")
     }
