@@ -250,7 +250,6 @@ import XCTest
         
         // Then the view data should correctly represent the homeserver.
         XCTAssertEqual(viewData.address, "matrix.org", "The displayed address should match the address supplied by the user, but without the scheme.")
-        XCTAssertEqual(viewData.isMatrixDotOrg, true, "The server should be detected as matrix.org.")
         XCTAssertTrue(viewData.showLoginForm, "The login form should be shown.")
         XCTAssertEqual(viewData.ssoIdentityProviders, ssoIdentityProviders, "The sso identity providers should match.")
         XCTAssertTrue(viewData.showRegistrationForm, "The registration form should be shown.")
@@ -270,7 +269,6 @@ import XCTest
         
         // Then the view data should correctly represent the homeserver.
         XCTAssertEqual(viewData.address, "example.com", "The displayed address should match the address supplied by the user, but without the scheme.")
-        XCTAssertEqual(viewData.isMatrixDotOrg, false, "The server should not be detected as matrix.org.")
         XCTAssertTrue(viewData.showLoginForm, "The login form should be shown.")
         XCTAssertEqual(viewData.ssoIdentityProviders, [], "There shouldn't be any sso identity providers.")
         XCTAssertFalse(viewData.showRegistrationForm, "The registration form should not be shown.")
@@ -291,7 +289,6 @@ import XCTest
         
         // Then the view data should correctly represent the homeserver.
         XCTAssertEqual(viewData.address, "company.com", "The displayed address should match the address supplied by the user, but without the scheme.")
-        XCTAssertEqual(viewData.isMatrixDotOrg, false, "The server should not be detected as matrix.org.")
         XCTAssertFalse(viewData.showLoginForm, "The login form should not be shown.")
         XCTAssertEqual(viewData.ssoIdentityProviders, ssoIdentityProviders, "The sso identity providers should match.")
         XCTAssertFalse(viewData.showRegistrationForm, "The registration form should not be shown.")
@@ -311,7 +308,6 @@ import XCTest
         
         // Then the view data should correctly represent the homeserver.
         XCTAssertEqual(viewData.address, "http://localhost:8008", "The displayed address should match address supplied by the user, complete with the scheme.")
-        XCTAssertEqual(viewData.isMatrixDotOrg, false, "The server should not be detected as matrix.org.")
         XCTAssertTrue(viewData.showLoginForm, "The login form should be shown.")
         XCTAssertEqual(viewData.ssoIdentityProviders, [], "There shouldn't be any sso identity providers.")
         XCTAssertTrue(viewData.showRegistrationForm, "The registration form should be shown.")
