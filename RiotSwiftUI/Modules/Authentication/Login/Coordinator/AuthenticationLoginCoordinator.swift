@@ -260,7 +260,8 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
         let modalRouter = NavigationRouter()
 
         let parameters = AuthenticationForgotPasswordCoordinatorParameters(navigationRouter: modalRouter,
-                                                                           loginWizard: loginWizard)
+                                                                           loginWizard: loginWizard,
+                                                                           homeserver: parameters.authenticationService.state.homeserver)
         let coordinator = AuthenticationForgotPasswordCoordinator(parameters: parameters)
         coordinator.callback = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }

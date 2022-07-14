@@ -31,8 +31,9 @@ class AuthenticationVerifyMsisdnViewModel: AuthenticationVerifyMsisdnViewModelTy
 
     // MARK: - Setup
 
-    init(phoneNumber: String = "", otp: String = "") {
-        let viewState = AuthenticationVerifyMsisdnViewState(bindings: AuthenticationVerifyMsisdnBindings(phoneNumber: phoneNumber, otp: otp))
+    init(homeserver: AuthenticationHomeserverViewData, phoneNumber: String = "", otp: String = "") {
+        let viewState = AuthenticationVerifyMsisdnViewState(homeserver: .mockMatrixDotOrg,
+                                                            bindings: AuthenticationVerifyMsisdnBindings(phoneNumber: phoneNumber, otp: otp))
         super.init(initialViewState: viewState)
     }
 

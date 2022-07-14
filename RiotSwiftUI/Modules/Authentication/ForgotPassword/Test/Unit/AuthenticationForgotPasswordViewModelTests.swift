@@ -24,7 +24,7 @@ class AuthenticationForgotPasswordViewModelTests: XCTestCase {
     var context: AuthenticationForgotPasswordViewModelType.Context!
     
     override func setUpWithError() throws {
-        viewModel = AuthenticationForgotPasswordViewModel()
+        viewModel = AuthenticationForgotPasswordViewModel(homeserver: .mockMatrixDotOrg)
         context = viewModel.context
     }
 

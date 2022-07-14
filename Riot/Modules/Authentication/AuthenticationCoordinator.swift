@@ -394,7 +394,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     @MainActor private func showVerifyEmailScreen(registrationWizard: RegistrationWizard) {
         MXLog.debug("[AuthenticationCoordinator] showVerifyEmailScreen")
         
-        let parameters = AuthenticationVerifyEmailCoordinatorParameters(registrationWizard: registrationWizard)
+        let parameters = AuthenticationVerifyEmailCoordinatorParameters(registrationWizard: registrationWizard,
+                                                                        homeserver: authenticationService.state.homeserver)
         let coordinator = AuthenticationVerifyEmailCoordinator(parameters: parameters)
         coordinator.callback = { [weak self] result in
             self?.registrationStageDidComplete(with: result)
@@ -412,11 +413,10 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     @MainActor private func showTermsScreen(terms: MXLoginTerms?, registrationWizard: RegistrationWizard) {
         MXLog.debug("[AuthenticationCoordinator] showTermsScreen")
         
-        let homeserver = authenticationService.state.homeserver
         let localizedPolicies = terms?.policiesData(forLanguage: Bundle.mxk_language(), defaultLanguage: Bundle.mxk_fallbackLanguage())
         let parameters = AuthenticationTermsCoordinatorParameters(registrationWizard: registrationWizard,
                                                                   localizedPolicies: localizedPolicies ?? [],
-                                                                  homeserverAddress: homeserver.displayableAddress)
+                                                                  homeserver: authenticationService.state.homeserver)
         let coordinator = AuthenticationTermsCoordinator(parameters: parameters)
         coordinator.callback = { [weak self] result in
             self?.registrationStageDidComplete(with: result)
@@ -459,7 +459,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     @MainActor private func showVerifyMSISDNScreen(registrationWizard: RegistrationWizard) {
         MXLog.debug("[AuthenticationCoordinator] showVerifyMSISDNScreen")
 
-        let parameters = AuthenticationVerifyMsisdnCoordinatorParameters(registrationWizard: registrationWizard)
+        let parameters = AuthenticationVerifyMsisdnCoordinatorParameters(registrationWizard: registrationWizard,
+                                                                         homeserver: authenticationService.state.homeserver)
         let coordinator = AuthenticationVerifyMsisdnCoordinator(parameters: parameters)
         coordinator.callback = { [weak self] result in
             self?.registrationStageDidComplete(with: result)

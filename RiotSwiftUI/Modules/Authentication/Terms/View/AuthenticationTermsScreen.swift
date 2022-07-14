@@ -62,7 +62,7 @@ struct AuthenticationTermsScreen: View {
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.primaryContent)
             
-            Text(VectorL10n.authenticationTermsMessage)
+            Text(viewModel.viewState.headerMessage)
                 .font(theme.fonts.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.secondaryContent)

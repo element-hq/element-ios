@@ -104,8 +104,7 @@ struct AuthenticationLoginScreen: View {
                                    onEditingChanged: usernameEditingChanged,
                                    onCommit: { isPasswordFocused = true })
             .accessibilityIdentifier("usernameTextField")
-            
-            Spacer().frame(height: 20)
+            .padding(.bottom, 7)
             
             RoundedBorderTextField(placeHolder: VectorL10n.authPasswordPlaceholder,
                                    text: $viewModel.password,

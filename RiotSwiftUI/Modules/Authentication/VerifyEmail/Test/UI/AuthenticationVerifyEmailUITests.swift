@@ -45,7 +45,8 @@ class AuthenticationVerifyEmailUITests: MockScreenTest {
         
         let addressTextField = app.textFields["addressTextField"]
         XCTAssertTrue(addressTextField.exists, "The text field should be shown before an email is sent.")
-        XCTAssertEqual(addressTextField.value as? String, "Email Address", "The text field should be showing the placeholder before text is input.")
+        XCTAssertEqual(addressTextField.value as? String, VectorL10n.authenticationVerifyEmailTextFieldPlaceholder,
+                       "The text field should be showing the placeholder before text is input.")
         
         let nextButton = app.buttons["nextButton"]
         XCTAssertTrue(nextButton.exists, "The next button should be shown before an email is sent.")

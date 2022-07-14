@@ -44,8 +44,14 @@ enum AuthenticationTermsViewModelResult {
 // MARK: View
 
 struct AuthenticationTermsViewState: BindableState {
+    /// The homeserver asking the user to accept the terms.
+    let homeserver: AuthenticationHomeserverViewData
     /// View state that can be bound to from SwiftUI.
     var bindings: AuthenticationTermsBindings
+    
+    var headerMessage: String {
+        VectorL10n.authenticationTermsMessage(homeserver.address)
+    }
     
     /// Whether or not all of the policies have been accepted.
     var hasAcceptedAllPolicies: Bool {
