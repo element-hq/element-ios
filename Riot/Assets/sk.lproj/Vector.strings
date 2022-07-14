@@ -2481,7 +2481,7 @@
 "room_access_settings_screen_upgrade_alert_message_no_param" = "Každý, kto sa nachádza v nadradenom priestore, bude môcť túto miestnosť nájsť a pripojiť sa k nej - nie je potrebné každého ručne pozývať. V nastaveniach miestnosti to budete môcť kedykoľvek zmeniť.";
 "ssl_fingerprint_hash" = "Odtlačok (%@):";
 "notice_ended_video_call" = "%@ ukončil/a hovor";
-"location_sharing_live_list_item_stop_sharing_action" = "Zastaviť zdieľanie";
+"location_sharing_live_list_item_stop_sharing_action" = "Zastaviť";
 "location_sharing_live_list_item_current_user_display_name" = "Vy";
 "location_sharing_live_list_item_last_update_invalid" = "Posledná aktualizácia neznáma";
 "location_sharing_live_list_item_last_update" = "Aktualizované pred %@";
@@ -2545,3 +2545,10 @@
 "settings_timeline" = "ČASOVÁ OS";
 "room_accessibility_record_voice_message_hint" = "Ak chcete nahrávať, dvakrát ťuknite a podržte.";
 "room_accessibility_record_voice_message" = "Nahrať hlasovú správu";
+"location_sharing_live_lab_promotion_activation" = "Povoliť zdieľanie polohy v reálnom čase";
+"location_sharing_live_lab_promotion_text" = "Upozornenie: ide o funkciu laboratórií, ktorá používa dočasnú implementáciu, ktorá umožňuje, aby bola história vášho zdieľaného miesta trvalo viditeľná pre ostatných ľudí v miestnosti.";
+"location_sharing_live_lab_promotion_title" = "Zdieľanie polohy v reálnom čase";
+"location_sharing_map_credits_title" = "© Autorské práva";
+"room_info_back_button_title" = "Informácie o miestnosti";
+"network_offline_message" = "Ste v režime offline, skontrolujte svoje pripojenie.";
+"network_offline_title" = "Ste offline";

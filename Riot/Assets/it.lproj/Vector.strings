@@ -1756,7 +1756,7 @@
 "room_displayname_more_than_two_members" = "%@ e %@ altri";
 // Settings
 "settings" = "Impostazioni";
-"settings_enable_inapp_notifications" = "Abilita notifiche In-App";
+"settings_enable_inapp_notifications" = "Attiva notifiche In-app";
 "settings_enable_push_notifications" = "Abilita notifiche push";
 "settings_enter_validation_token_for" = "Inserisci token di validazione per %@:";
 "notification_settings_room_rule_title" = "Canale: '%@'";
@@ -2268,7 +2268,7 @@
 "new_word" = "Nuovo";
 "stop" = "Ferma";
 "joining" = "Ingresso";
-"location_sharing_live_list_item_stop_sharing_action" = "Non condividere più";
+"location_sharing_live_list_item_stop_sharing_action" = "Ferma";
 "location_sharing_live_list_item_current_user_display_name" = "Tu";
 "location_sharing_live_list_item_last_update_invalid" = "Ultimo aggiornamento sconosciuto";
 "location_sharing_live_list_item_last_update" = "Aggiornato %@ fa";
@@ -2322,3 +2322,10 @@
 "settings_timeline" = "LINEA TEMPORALE";
 "room_accessibility_record_voice_message_hint" = "Doppio tocco e tieni premuto per registrare.";
 "room_accessibility_record_voice_message" = "Registra messaggio vocale";
+"location_sharing_live_lab_promotion_activation" = "Attiva condivisione posizione in tempo reale";
+"location_sharing_live_lab_promotion_text" = "Nota: questa è una funzione sperimentale che usa un'implementazione temporanea, la quale rende permanentemente visibile la tua cronologia delle posizioni alle altre persone nella stanza.";
+"location_sharing_live_lab_promotion_title" = "Condivisione posizione in tempo reale";
+"location_sharing_map_credits_title" = "© Copyright";
+"room_info_back_button_title" = "Info stanza";
+"network_offline_message" = "Sei offline, controlla la tua connessione.";
+"network_offline_title" = "Sei offline";

@@ -762,7 +762,7 @@
 "room_displayname_two_members" = "%@ y %@";
 // Settings
 "settings" = "Ajustes";
-"settings_enable_inapp_notifications" = "Habilitar notificaciones de la aplicación";
+"settings_enable_inapp_notifications" = "Activar notificaciones dentro de la aplicación";
 "settings_enable_push_notifications" = "Habilitar notificaciones push";
 "settings_enter_validation_token_for" = "Ingresar el código de validación para %@:";
 "notification_settings_room_rule_title" = "Sala: '%@'";
@@ -2225,7 +2225,7 @@
 "stop" = "Parar";
 "room_displayname_more_than_two_members" = "%@ y %@ más";
 "ignore_user" = "Ignorar usuario";
-"location_sharing_live_list_item_stop_sharing_action" = "Dejar de compartir";
+"location_sharing_live_list_item_stop_sharing_action" = "Parar";
 "location_sharing_live_list_item_current_user_display_name" = "Tú";
 "location_sharing_live_list_item_last_update_invalid" = "Última actualización desconocida";
 "location_sharing_live_list_item_last_update" = "Actualizado hace %@";
@@ -2441,3 +2441,11 @@
 "leave_space_action" = "Salir del espacio";
 "home_context_menu_mark_as_read" = "Marcar como leído";
 "room_accessibility_record_voice_message" = "Grabar mensaje de voz";
+"network_offline_message" = "No hay conexión a internet.";
+"spaces_feature_not_available" = "Esta funcionalidad todavía no está disponible aquí. Por ahora, puedes usarla con %@ en tu ordenador.";
+"location_sharing_live_lab_promotion_text" = "Ten en cuenta: esta funcionalidad es experimental, no funcionará así cuando la lancemos. Ahora mismo, el historial de la ubicación aparecerá visible permanentemente en el historial de la sala.";
+"location_sharing_live_lab_promotion_activation" = "Activar compartir ubicación en tiempo real";
+"location_sharing_live_lab_promotion_title" = "Compartir ubicación en tiempo real";
+"location_sharing_map_credits_title" = "© Copyright";
+"room_info_back_button_title" = "Info. de la sala";
+"network_offline_title" = "No tienes conexión";

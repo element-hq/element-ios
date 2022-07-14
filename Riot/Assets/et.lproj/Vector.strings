@@ -2230,7 +2230,7 @@
 
 "room_invite_to_space_option_title" = "Kasutajale %@";
 "location_sharing_live_list_item_last_update" = "Uuendamise välp: %@";
-"location_sharing_live_list_item_stop_sharing_action" = "Lõpeta asukoha jagamine";
+"location_sharing_live_list_item_stop_sharing_action" = "Peata";
 "location_sharing_live_list_item_current_user_display_name" = "Sina";
 "location_sharing_live_list_item_last_update_invalid" = "Viimase uuendamise aeg pole teada";
 "location_sharing_live_list_item_sharing_expired" = "Asukoha jagamine aegus";
@@ -2290,3 +2290,10 @@
 "settings_timeline" = "AJAJOON";
 "room_accessibility_record_voice_message_hint" = "Salvestamiseks klõpsi kaks korda ja hoia.";
 "room_accessibility_record_voice_message" = "Salvesta häälsõnum";
+"location_sharing_live_lab_promotion_activation" = "Luba asukohta jagada reaalajas";
+"location_sharing_live_lab_promotion_text" = "Palun arvesta: see on katseline funktsionaalsus, mis kasutab ajutist lahendust ja selle alusel kõik jututoas osalejad saavad kogu aeg näha sinu asukoha ajalugu.";
+"location_sharing_live_lab_promotion_title" = "Asukoha jagamine reaalajas";
+"location_sharing_map_credits_title" = "© Autoriõigused";
+"room_info_back_button_title" = "Jututoa teave";
+"network_offline_message" = "Sa ei ole võrgus, kontrolli oma nutiseadme võrguühendust.";
+"network_offline_title" = "Sa ei ole võrgus";
