@@ -63,6 +63,7 @@ class MockScreenTest: XCTestCase {
     open override func setUpWithError() throws {
         // For every test case launch the app and go to the relevant screen
         continueAfterFailure = false
+        app.launchEnvironment = ["IS_RUNNING_UI_TESTS": "1"]
         app.launch()
         
         guard let screenKey = screenStateKey else { fatalError("no screen") }
