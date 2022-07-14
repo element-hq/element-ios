@@ -871,7 +871,7 @@
 "secure_key_backup_setup_intro_use_security_passphrase_info" = "Voer een veiligheidswachtwoord in die alleen u weet, en genereer een veiligheidssleutel voor uw back-up.";
 "secure_key_backup_setup_intro_use_security_passphrase_title" = "Gebruik een veiligheidswachtwoord";
 "secrets_setup_recovery_key_storage_alert_message" = "✓ Print het en bewaar het op een veilige plek\n✓ Sla het op een USB-sleutel of back-upschijf op\n✓ Kopieer het naar uw persoonlijke cloud opslag";
-"room_intro_cell_information_multiple_dm_sentence2" = "Alleen u bent in dit gesprek, tenzij u iemand uitnodigd voor dit gesprek.";
+"room_intro_cell_information_multiple_dm_sentence2" = "Alleen u bent in dit gesprek, tenzij u iemand uitnodigt voor dit gesprek.";
 "room_intro_cell_information_dm_sentence2" = "Alleen u twee zijn in dit gesprek, niemand anders kan deelnemen.";
 "room_intro_cell_information_dm_sentence1_part3" = ". ";
 "room_intro_cell_information_dm_sentence1_part1" = "Dit is het begin van uw directe gesprek met ";
