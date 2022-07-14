@@ -17,31 +17,10 @@
 import XCTest
 import RiotSwiftUI
 
-class AuthenticationVerifyMsisdnUITests: MockScreenTest {
-
-    override class var screenType: MockScreenState.Type {
-        return MockAuthenticationVerifyMsisdnScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return AuthenticationVerifyMsisdnUITests(selector: #selector(verifyAuthenticationVerifyMsisdnScreen))
-    }
-
-    func verifyAuthenticationVerifyMsisdnScreen() throws {
-        guard let screenState = screenState as? MockAuthenticationVerifyMsisdnScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .emptyPhoneNumber:
-            verifyEmptyPhoneNumber()
-        case .enteredPhoneNumber:
-            verifyEnteredPhoneNumber()
-        case .hasSentSMS:
-            verifyHasSentSMS()
-        case .enteredOTP:
-            verifyEnteredOTP()
-        }
-    }
-    
-    func verifyEmptyPhoneNumber() {
+class AuthenticationVerifyMsisdnUITests: MockScreenTestCase {
+    func testEmptyPhoneNumber() {
+        app.goToScreenWithIdentifier(MockAuthenticationVerifyMsisdnScreenState.emptyPhoneNumber.title)
+        
         let titleLabel = app.staticTexts["titleLabel"]
         XCTAssertTrue(titleLabel.exists, "The title should be shown.")
 
@@ -65,7 +44,9 @@ class AuthenticationVerifyMsisdnUITests: MockScreenTest {
         XCTAssertEqual(cancelButton.label, "Cancel")
     }
     
-    func verifyEnteredPhoneNumber() {
+    func testEnteredPhoneNumber() {
+        app.goToScreenWithIdentifier(MockAuthenticationVerifyMsisdnScreenState.enteredPhoneNumber.title)
+        
         let titleLabel = app.staticTexts["titleLabel"]
         XCTAssertTrue(titleLabel.exists, "The title should be shown.")
 
@@ -88,7 +69,9 @@ class AuthenticationVerifyMsisdnUITests: MockScreenTest {
         XCTAssertEqual(cancelButton.label, "Cancel")
     }
     
-    func verifyHasSentSMS() {
+    func testHasSentSMS() {
+        app.goToScreenWithIdentifier(MockAuthenticationVerifyMsisdnScreenState.hasSentSMS.title)
+        
         let titleLabel = app.staticTexts["titleLabel"]
         XCTAssertTrue(titleLabel.exists, "The title should be shown.")
 
@@ -116,7 +99,9 @@ class AuthenticationVerifyMsisdnUITests: MockScreenTest {
         XCTAssertEqual(backButton.label, "Back")
     }
 
-    func verifyEnteredOTP() {
+    func testEnteredOTP() {
+        app.goToScreenWithIdentifier(MockAuthenticationVerifyMsisdnScreenState.enteredOTP.title)
+        
         let titleLabel = app.staticTexts["titleLabel"]
         XCTAssertTrue(titleLabel.exists, "The title should be shown.")
 

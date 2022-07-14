@@ -17,28 +17,6 @@
 import XCTest
 import RiotSwiftUI
 
-class StaticLocationViewingUITests: MockScreenTest {
-    
-    override class var screenType: MockScreenState.Type {
-        return MockStaticLocationViewingScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return StaticLocationViewingUITests(selector: #selector(verifyStaticLocationViewingScreen))
-    }
-
-    func verifyStaticLocationViewingScreen() {
-        guard let screenState = screenState as? MockStaticLocationViewingScreenState else { fatalError("no screen") }
-        
-        switch screenState {
-        case .showUserLocation:
-            verifyInitialExistingLocation()
-        case .showPinLocation:
-            verifyInitialExistingLocation()
-        }
-    }
-    
-    func verifyInitialExistingLocation() {
-        // This test has issues running consistently on CI. Removed for now until the issue has been fixed.
-    }
+class StaticLocationViewingUITests: MockScreenTestCase {
+    // This test has issues running consistently on CI. Removed for now until the issue has been fixed.
 }

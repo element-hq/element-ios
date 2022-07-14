@@ -17,35 +17,10 @@
 import XCTest
 import RiotSwiftUI
 
-class AuthenticationSoftLogoutUITests: MockScreenTest {
-
-    override class var screenType: MockScreenState.Type {
-        return MockAuthenticationSoftLogoutScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return AuthenticationSoftLogoutUITests(selector: #selector(verifyAuthenticationSoftLogoutScreen))
-    }
-
-    func verifyAuthenticationSoftLogoutScreen() throws {
-        guard let screenState = screenState as? MockAuthenticationSoftLogoutScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .emptyPassword:
-            verifyEmptyPassword()
-        case .enteredPassword:
-            verifyEnteredPassword()
-        case .ssoOnly:
-            verifySSOOnly()
-        case .noSSO:
-            verifyNoSSO()
-        case .fallback:
-            verifyFallback()
-        case .noKeyBackup:
-            verifyNoKeyBackup()
-        }
-    }
-    
-    func verifyEmptyPassword() {
+class AuthenticationSoftLogoutUITests: MockScreenTestCase {
+    func testEmptyPassword() {
+        app.goToScreenWithIdentifier(MockAuthenticationSoftLogoutScreenState.emptyPassword.title)
+        
         XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown.")
         XCTAssertTrue(app.staticTexts["messageLabel1"].exists, "The message 1 should be shown.")
         XCTAssertTrue(app.staticTexts["messageLabel2"].exists, "The message 2 should be shown.")
@@ -77,7 +52,9 @@ class AuthenticationSoftLogoutUITests: MockScreenTest {
         XCTAssertGreaterThan(ssoButtons.count, 0, "There should be at least 1 SSO button shown.")
     }
 
-    func verifyEnteredPassword() {
+    func testEnteredPassword() {
+        app.goToScreenWithIdentifier(MockAuthenticationSoftLogoutScreenState.enteredPassword.title)
+        
         XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown.")
         XCTAssertTrue(app.staticTexts["messageLabel1"].exists, "The message 1 should be shown.")
         XCTAssertTrue(app.staticTexts["messageLabel2"].exists, "The message 2 should be shown.")
@@ -109,7 +86,9 @@ class AuthenticationSoftLogoutUITests: MockScreenTest {
         XCTAssertGreaterThan(ssoButtons.count, 0, "There should be at least 1 SSO button shown.")
     }
 
-    func verifySSOOnly() {
+    func testSSOOnly() {
+        app.goToScreenWithIdentifier(MockAuthenticationSoftLogoutScreenState.ssoOnly.title)
+        
         XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown.")
         XCTAssertTrue(app.staticTexts["messageLabel1"].exists, "The message 1 should be shown.")
         XCTAssertTrue(app.staticTexts["messageLabel2"].exists, "The message 2 should be shown.")
@@ -138,7 +117,9 @@ class AuthenticationSoftLogoutUITests: MockScreenTest {
         XCTAssertGreaterThan(ssoButtons.count, 0, "There should be at least 1 SSO button shown.")
     }
 
-    func verifyNoSSO() {
+    func testNoSSO() {
+        app.goToScreenWithIdentifier(MockAuthenticationSoftLogoutScreenState.noSSO.title)
+        
         XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown.")
         XCTAssertTrue(app.staticTexts["messageLabel1"].exists, "The message 1 should be shown.")
         XCTAssertTrue(app.staticTexts["messageLabel2"].exists, "The message 2 should be shown.")
@@ -167,7 +148,9 @@ class AuthenticationSoftLogoutUITests: MockScreenTest {
         XCTAssertEqual(ssoButtons.count, 0, "There should be no SSO button shown.")
     }
 
-    func verifyFallback() {
+    func testFallback() {
+        app.goToScreenWithIdentifier(MockAuthenticationSoftLogoutScreenState.fallback.title)
+        
         XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown.")
         XCTAssertTrue(app.staticTexts["messageLabel1"].exists, "The message 1 should be shown.")
         XCTAssertTrue(app.staticTexts["messageLabel2"].exists, "The message 2 should be shown.")
@@ -197,7 +180,9 @@ class AuthenticationSoftLogoutUITests: MockScreenTest {
         XCTAssertEqual(ssoButtons.count, 0, "There should be no SSO button shown.")
     }
 
-    func verifyNoKeyBackup() {
+    func testNoKeyBackup() {
+        app.goToScreenWithIdentifier(MockAuthenticationSoftLogoutScreenState.noKeyBackup.title)
+        
         XCTAssertFalse(app.staticTexts["messageLabel2"].exists, "The message 2 should not be shown.")
     }
 

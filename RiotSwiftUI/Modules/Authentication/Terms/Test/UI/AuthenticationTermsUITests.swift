@@ -17,26 +17,20 @@
 import XCTest
 import RiotSwiftUI
 
-class AuthenticationTermsUITests: MockScreenTest {
-
-    override class var screenType: MockScreenState.Type {
-        return MockAuthenticationTermsScreenState.self
+class AuthenticationTermsUITests: MockScreenTestCase {
+    func testMatrixDotOrg() {
+        app.goToScreenWithIdentifier(MockAuthenticationTermsScreenState.matrixDotOrg.title)
+        verifyTerms(accepted: false)
     }
-
-    override class func createTest() -> MockScreenTest {
-        return AuthenticationTermsUITests(selector: #selector(verifyAuthenticationTermsScreen))
+    
+    func testAccepted() {
+        app.goToScreenWithIdentifier(MockAuthenticationTermsScreenState.accepted.title)
+        verifyTerms(accepted: true)
     }
-
-    func verifyAuthenticationTermsScreen() throws {
-        guard let screenState = screenState as? MockAuthenticationTermsScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .matrixDotOrg:
-            verifyTerms(accepted: false)
-        case .accepted:
-            verifyTerms(accepted: true)
-        case .multiple:
-            verifyTerms(accepted: false)
-        }
+    
+    func testMultiple() {
+        app.goToScreenWithIdentifier(MockAuthenticationTermsScreenState.multiple.title)
+        verifyTerms(accepted: false)
     }
     
     func verifyTerms(accepted: Bool) {
