@@ -2149,7 +2149,7 @@
 "add" = "Hinzufügen";
 "new_word" = "Neu";
 "stop" = "Stop";
-"onboarding_display_name_placeholder" = "Anzeigenamen";
+"onboarding_display_name_placeholder" = "Anzeigename";
 "onboarding_personalization_skip" = "Schritt überspringen";
 /* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
 "onboarding_use_case_not_sure_yet" = "Noch nicht sicher? Du kannst %@";
