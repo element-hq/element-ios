@@ -17,6 +17,6 @@
 import XCTest
 import RiotSwiftUI
 
-class SpaceSettingsUITests: MockScreenTest {
+class SpaceSettingsUITests: MockScreenTestCase {
     // Tests to be implemented.
 }

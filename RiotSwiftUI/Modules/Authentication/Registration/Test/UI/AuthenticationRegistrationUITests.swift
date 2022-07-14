@@ -17,68 +17,77 @@
 import XCTest
 import RiotSwiftUI
 
-class AuthenticationRegistrationUITests: MockScreenTest {
-
-    override class var screenType: MockScreenState.Type {
-        return MockAuthenticationRegistrationScreenState.self
+class AuthenticationRegistrationUITests: MockScreenTestCase {
+    func testMatrixDotOrg() {
+        app.goToScreenWithIdentifier(MockAuthenticationRegistrationScreenState.matrixDotOrg.title)
+        
+        let state = "matrix.org"
+        validateRegistrationFormIsVisible(for: state)
+        validateSSOButtonsAreShown(for: state)
+        validateFallbackButtonIsHidden(for: state)
+        
+        validateUnknownUsernameAvailability(for: state)
+        validateNoPasswordErrorsAreShown(for: state)
     }
-
-    override class func createTest() -> MockScreenTest {
-        return AuthenticationRegistrationUITests(selector: #selector(verifyAuthenticationRegistrationScreen))
+    
+    func testPasswordOnly() {
+        app.goToScreenWithIdentifier(MockAuthenticationRegistrationScreenState.passwordOnly.title)
+        
+        let state = "a password only server"
+        validateRegistrationFormIsVisible(for: state)
+        validateSSOButtonsAreHidden(for: state)
+        validateFallbackButtonIsHidden(for: state)
+        
+        validateNextButtonIsDisabled(for: state)
+        
+        validateUnknownUsernameAvailability(for: state)
+        validateNoPasswordErrorsAreShown(for: state)
     }
-
-    func verifyAuthenticationRegistrationScreen() throws {
-        guard let screenState = screenState as? MockAuthenticationRegistrationScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .matrixDotOrg:
-            let state = "matrix.org"
-            validateRegistrationFormIsVisible(for: state)
-            validateSSOButtonsAreShown(for: state)
-            validateFallbackButtonIsHidden(for: state)
-            
-            validateUnknownUsernameAvailability(for: state)
-            validateNoPasswordErrorsAreShown(for: state)
-        case .passwordOnly:
-            let state = "a password only server"
-            validateRegistrationFormIsVisible(for: state)
-            validateSSOButtonsAreHidden(for: state)
-            validateFallbackButtonIsHidden(for: state)
-            
-            validateNextButtonIsDisabled(for: state)
-            
-            validateUnknownUsernameAvailability(for: state)
-            validateNoPasswordErrorsAreShown(for: state)
-        case .passwordWithCredentials:
-            let state = "a password only server with credentials entered"
-            validateRegistrationFormIsVisible(for: state)
-            validateSSOButtonsAreHidden(for: state)
-            validateFallbackButtonIsHidden(for: state)
-            
-            validateNextButtonIsEnabled(for: state)
-            
-            validateUsernameAvailable(for: state)
-            validateNoPasswordErrorsAreShown(for: state)
-        case .passwordWithUsernameError:
-            let state = "a password only server with an invalid username"
-            validateRegistrationFormIsVisible(for: state)
-            validateSSOButtonsAreHidden(for: state)
-            validateFallbackButtonIsHidden(for: state)
-            
-            validateNextButtonIsDisabled(for: state)
-            
-            validateUsernameError(for: state)
-        case .ssoOnly:
-            let state = "an SSO only server"
-            validateRegistrationFormIsHidden(for: state)
-            validateSSOButtonsAreShown(for: state)
-            validateFallbackButtonIsHidden(for: state)
-        case .fallback:
-            let state = "fallback"
-            validateRegistrationFormIsHidden(for: state)
-            validateSSOButtonsAreHidden(for: state)
-            validateFallbackButtonIsShown(for: state)
-        }
+    
+    func testPasswordWithCredentials() {
+        app.goToScreenWithIdentifier(MockAuthenticationRegistrationScreenState.passwordWithCredentials.title)
+        
+        let state = "a password only server with credentials entered"
+        validateRegistrationFormIsVisible(for: state)
+        validateSSOButtonsAreHidden(for: state)
+        validateFallbackButtonIsHidden(for: state)
+        
+        validateNextButtonIsEnabled(for: state)
+        
+        validateUsernameAvailable(for: state)
+        validateNoPasswordErrorsAreShown(for: state)
     }
+    
+    func testPasswordWithUsernameError() {
+        app.goToScreenWithIdentifier(MockAuthenticationRegistrationScreenState.passwordWithUsernameError.title)
+        
+        let state = "a password only server with an invalid username"
+        validateRegistrationFormIsVisible(for: state)
+        validateSSOButtonsAreHidden(for: state)
+        validateFallbackButtonIsHidden(for: state)
+        
+        validateNextButtonIsDisabled(for: state)
+        validateUsernameError(for: state)
+    }
+    
+    func testSSOOnly() {
+        app.goToScreenWithIdentifier(MockAuthenticationRegistrationScreenState.ssoOnly.title)
+        
+        let state = "an SSO only server"
+        validateRegistrationFormIsHidden(for: state)
+        validateSSOButtonsAreShown(for: state)
+        validateFallbackButtonIsHidden(for: state)
+    }
+    
+    func testFallback() {
+        app.goToScreenWithIdentifier(MockAuthenticationRegistrationScreenState.fallback.title)
+        
+        let state = "fallback"
+        validateRegistrationFormIsHidden(for: state)
+        validateSSOButtonsAreHidden(for: state)
+        validateFallbackButtonIsShown(for: state)
+    }
+    
     
     /// Checks that the username and password text fields are shown along with the next button.
     func validateRegistrationFormIsVisible(for state: String) {

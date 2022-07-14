@@ -19,25 +19,10 @@
 import XCTest
 import RiotSwiftUI
 
-class SpaceCreationMenuUITests: MockScreenTest {
-    
-    override class var screenType: MockScreenState.Type {
-        return MockSpaceCreationMenuScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return SpaceCreationMenuUITests(selector: #selector(verifySpaceCreationMenuScreen))
-    }
-    
-    func verifySpaceCreationMenuScreen() throws {
-        guard let screenState = screenState as? MockSpaceCreationMenuScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .options:
-            verifySpaceCreationMenuOptions()
-        }
-    }
-    
-    func verifySpaceCreationMenuOptions() {
+class SpaceCreationMenuUITests: MockScreenTestCase {
+    func testSpaceCreationMenuOptions() {
+        app.goToScreenWithIdentifier(MockSpaceCreationMenuScreenState.options.title)
+        
         let optionButtonCount = app.buttons.matching(identifier:"optionButton").count
         XCTAssertEqual(optionButtonCount, 2)
         
@@ -49,5 +34,4 @@ class SpaceCreationMenuUITests: MockScreenTest {
         XCTAssert(detailText.exists)
         XCTAssertEqual(detailText.label, "Some detail text")
     }
-
 }
