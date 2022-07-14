@@ -60,7 +60,7 @@
       "location" : "https://github.com/vector-im/swift-ogg",
       "state" : {
         "branch" : "langleyd/sim_arm64_suppport",
-        "revision" : "a0b3bd2a58167d2248ca2fb8038f7268e88c6b99"
+        "revision" : "6ef5ca6bc10ec5b7336e8c042accf76b17fa7a3c"
       }
     },
     {
