@@ -1,3 +1,10 @@
+## Changes in 1.8.23 (2022-07-15)
+
+🙌 Improvements
+
+- Reword account deactivation button on the Settings screen. ([#6436](https://github.com/vector-im/element-ios/issues/6436))
+
+
 ## Changes in 1.8.22 (2022-07-13)
 
 🙌 Improvements
