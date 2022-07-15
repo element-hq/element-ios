@@ -706,7 +706,7 @@ Tap the + to start adding people.";
 "settings_crypto_export" = "Export keys";
 "settings_crypto_blacklist_unverified_devices" = "Encrypt to verified sessions only";
 
-"settings_deactivate_my_account" = "Deactivate my account";
+"settings_deactivate_my_account" = "Permanently deactivate my account";
 
 "settings_key_backup_info" = "Encrypted messages are secured with end-to-end encryption. Only you and the recipient(s) have the keys to read these messages.";
 "settings_key_backup_info_checking" = "Checking…";

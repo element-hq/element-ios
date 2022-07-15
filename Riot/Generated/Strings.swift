@@ -6647,7 +6647,7 @@ public class VectorL10n: NSObject {
   public static var settingsDeactivateAccount: String { 
     return VectorL10n.tr("Vector", "settings_deactivate_account") 
   }
-  /// Deactivate my account
+  /// Permanently deactivate my account
   public static var settingsDeactivateMyAccount: String { 
     return VectorL10n.tr("Vector", "settings_deactivate_my_account") 
   }

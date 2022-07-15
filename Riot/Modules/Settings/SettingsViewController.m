@@ -617,7 +617,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     {
         Section *sectionDeactivate = [Section sectionWithTag:SECTION_TAG_DEACTIVATE_ACCOUNT];
         [sectionDeactivate addRowWithTag:0];
-        sectionDeactivate.headerTitle = [VectorL10n settingsDeactivateMyAccount];
+        sectionDeactivate.headerTitle = [VectorL10n settingsDeactivateAccount];
         [tmpSections addObject:sectionDeactivate];
     }
     
