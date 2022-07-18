@@ -195,8 +195,8 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
     
     @MainActor private func parseUsername(_ username: String) {
         guard MXTools.isMatrixUserIdentifier(username) else { return }
-        let domain = username.split(separator: ":")[1]
-        let homeserverAddress = HomeserverAddress.sanitized(String(domain))
+        let domain = username.components(separatedBy: ":")[1]
+        let homeserverAddress = HomeserverAddress.sanitized(domain)
         
         startLoading(isInteractionBlocking: false)
         

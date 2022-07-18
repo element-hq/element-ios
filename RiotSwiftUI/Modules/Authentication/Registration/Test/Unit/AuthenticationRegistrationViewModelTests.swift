@@ -232,6 +232,45 @@ import Combine
         XCTAssertFalse(context.viewState.isUsernameInvalid, "The username should be valid when unverified.")
         XCTAssertTrue(context.viewState.hasValidCredentials, "The credentials should be valid when the username and password are valid.")
     }
+    
+    @MainActor func testLoadingServer() {
+        // Given a form with valid credentials.
+        context.username = "bob"
+        context.password = "12345678"
+        XCTAssertTrue(context.viewState.hasValidCredentials, "The credentials should be valid.")
+        XCTAssertTrue(context.viewState.canSubmit, "The form should be valid to submit.")
+        XCTAssertFalse(context.viewState.isLoading, "The view shouldn't start in a loading state.")
+        
+        // When updating the view model whilst loading a homeserver.
+        viewModel.update(isLoading: true)
+        
+        // Then the view state should reflect that the homeserver is loading.
+        XCTAssertTrue(context.viewState.isLoading, "The view should now be in a loading state.")
+        XCTAssertFalse(context.viewState.canSubmit, "The form should be blocked from submission.")
+        
+        // When updating the view model after loading a homeserver.
+        viewModel.update(isLoading: false)
+        
+        // Then the view state should reflect that the homeserver is now loaded.
+        XCTAssertFalse(context.viewState.isLoading, "The view should be back in a loaded state.")
+        XCTAssertTrue(context.viewState.canSubmit, "The form should once again be valid to submit.")
+    }
+    
+    @MainActor func testUpdatingUsername() {
+        // Given a form with valid credentials.
+        let fullMXID = "@bob:example.com"
+        context.username = fullMXID
+        XCTAssertFalse(context.viewState.hasValidCredentials, "The credentials should be invalid without a password.")
+        XCTAssertFalse(context.viewState.canSubmit, "The form not be ready to submit without a password.")
+        XCTAssertFalse(context.viewState.isLoading, "The view shouldn't start in a loading state.")
+        
+        // When updating the view model with a new username.
+        let localPart = "bob"
+        viewModel.update(username: localPart)
+        
+        // Then the view state should reflect that the homeserver is loading.
+        XCTAssertEqual(context.username, localPart, "The username should match the value passed to the update method.")
+    }
 }
 
 extension AuthenticationRegistrationViewState.UsernameAvailability: Equatable {

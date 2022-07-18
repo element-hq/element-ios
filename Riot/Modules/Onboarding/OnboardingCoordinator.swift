@@ -566,6 +566,9 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         trackSignup()
         
         completion?()
+        
+        // Reset the authentication service back to using matrix.org
+        authenticationService.reset(useDefaultServer: true)
     }
     
     /// Sends a signup event to the Analytics class if onboarding has completed via the register flow.

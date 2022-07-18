@@ -59,8 +59,18 @@ class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelTy
         }
     }
     
+    @MainActor func update(isLoading: Bool) {
+        guard state.isLoading != isLoading else { return }
+        state.isLoading = isLoading
+    }
+    
     @MainActor func update(homeserver: AuthenticationHomeserverViewData) {
         state.homeserver = homeserver
+    }
+    
+    @MainActor func update(username: String) {
+        guard username != state.bindings.username else { return }
+        state.bindings.username = username
     }
     
     @MainActor func confirmUsernameAvailability(_ username: String) {
