@@ -678,7 +678,7 @@ const CGFloat kTypingCellHeight = 24;
     return roomBubbleCellData;
 }
 
-- (MXKeyVerificationRequest*)keyVerificationRequestFromEventId:(NSString*)eventId
+- (id<MXKeyVerificationRequest>)keyVerificationRequestFromEventId:(NSString*)eventId
 {
     RoomBubbleCellData *roomBubbleCellData = [self roomBubbleCellDataForEventId:eventId];
     
@@ -745,7 +745,7 @@ const CGFloat kTypingCellHeight = 24;
                                                                                                                          queue:[NSOperationQueue mainQueue]
                                                                                                                     usingBlock:^(NSNotification *notification)
                                                                        {
-                                                                           MXKeyVerificationTransaction *keyVerificationTransaction = (MXKeyVerificationTransaction*)notification.object;
+                                                                           id<MXKeyVerificationTransaction> keyVerificationTransaction = (id<MXKeyVerificationTransaction>)notification.object;
                                                                            
                                                                            if ([keyVerificationTransaction.dmRoomId isEqualToString:self.roomId])
                                                                            {
@@ -927,7 +927,7 @@ const CGFloat kTypingCellHeight = 24;
 
 - (void)acceptVerificationRequestForEventId:(NSString*)eventId success:(void(^)(void))success failure:(void(^)(NSError*))failure
 {
-    MXKeyVerificationRequest *keyVerificationRequest = [self keyVerificationRequestFromEventId:eventId];
+    id<MXKeyVerificationRequest> keyVerificationRequest = [self keyVerificationRequestFromEventId:eventId];
     
     if (!keyVerificationRequest)
     {
@@ -950,7 +950,7 @@ const CGFloat kTypingCellHeight = 24;
 
 - (void)declineVerificationRequestForEventId:(NSString*)eventId success:(void(^)(void))success failure:(void(^)(NSError*))failure
 {
-    MXKeyVerificationRequest *keyVerificationRequest = [self keyVerificationRequestFromEventId:eventId];
+    id<MXKeyVerificationRequest> keyVerificationRequest = [self keyVerificationRequestFromEventId:eventId];
     
     if (!keyVerificationRequest)
     {
