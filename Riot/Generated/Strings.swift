@@ -4127,7 +4127,7 @@ public class VectorL10n: NSObject {
   public static var onboardingCelebrationButton: String { 
     return VectorL10n.tr("Vector", "onboarding_celebration_button") 
   }
-  /// Head to settings anytime to update your profile.
+  /// Head to settings anytime to update your profile
   public static var onboardingCelebrationMessage: String { 
     return VectorL10n.tr("Vector", "onboarding_celebration_message") 
   }
@@ -4139,7 +4139,7 @@ public class VectorL10n: NSObject {
   public static var onboardingCongratulationsHomeButton: String { 
     return VectorL10n.tr("Vector", "onboarding_congratulations_home_button") 
   }
-  /// Your account %@ has been created.
+  /// Your account %@ has been created
   public static func onboardingCongratulationsMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "onboarding_congratulations_message", p1)
   }

@@ -128,7 +128,7 @@ struct AuthenticationRegistrationScreen: View {
                 Text(VectorL10n.next)
             }
             .buttonStyle(PrimaryActionButtonStyle())
-            .disabled(!viewModel.viewState.hasValidCredentials)
+            .disabled(!viewModel.viewState.canSubmit)
             .accessibilityIdentifier("nextButton")
         }
     }
@@ -172,7 +172,7 @@ struct AuthenticationRegistrationScreen: View {
     
     /// Sends the `next` view action so long as valid credentials have been input.
     func submit() {
-        guard viewModel.viewState.hasValidCredentials else { return }
+        guard viewModel.viewState.canSubmit else { return }
         viewModel.send(viewAction: .next)
     }
 

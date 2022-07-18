@@ -121,7 +121,7 @@
 
 "onboarding_congratulations_title" = "Congratulations!";
 /* The placeholder string contains the user's matrix ID */
-"onboarding_congratulations_message" = "Your account %@ has been created.";
+"onboarding_congratulations_message" = "Your account %@ has been created";
 "onboarding_congratulations_personalize_button" = "Personalise profile";
 "onboarding_congratulations_home_button" = "Take me home";
 
@@ -139,7 +139,7 @@
 "onboarding_avatar_accessibility_label" = "Profile picture";
 
 "onboarding_celebration_title" = "Looking good!";
-"onboarding_celebration_message" = "Head to settings anytime to update your profile.";
+"onboarding_celebration_message" = "Head to settings anytime to update your profile";
 "onboarding_celebration_button" = "Let's go";
 
 // MARK: Authentication

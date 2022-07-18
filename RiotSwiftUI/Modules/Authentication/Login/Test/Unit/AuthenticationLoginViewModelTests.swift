@@ -96,6 +96,7 @@ class AuthenticationLoginViewModelTests: XCTestCase {
         context.username = "bob"
         context.password = "12345678"
         XCTAssertTrue(context.viewState.hasValidCredentials, "The credentials should be valid.")
+        XCTAssertTrue(context.viewState.canSubmit, "The form should be valid to submit.")
         XCTAssertFalse(context.viewState.isLoading, "The view shouldn't start in a loading state.")
         
         // When updating the view model whilst loading a homeserver.
@@ -103,12 +104,14 @@ class AuthenticationLoginViewModelTests: XCTestCase {
         
         // Then the view state should reflect that the homeserver is loading.
         XCTAssertTrue(context.viewState.isLoading, "The view should now be in a loading state.")
+        XCTAssertFalse(context.viewState.canSubmit, "The form should be blocked from submission.")
         
         // When updating the view model after loading a homeserver.
         viewModel.update(isLoading: false)
         
         // Then the view state should reflect that the homeserver is now loaded.
         XCTAssertFalse(context.viewState.isLoading, "The view should be back in a loaded state.")
+        XCTAssertTrue(context.viewState.canSubmit, "The form should once again be valid to submit.")
     }
 
     @MainActor func testFallbackServer() {

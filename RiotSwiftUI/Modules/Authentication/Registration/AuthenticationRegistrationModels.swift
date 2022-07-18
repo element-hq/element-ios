@@ -61,6 +61,8 @@ struct AuthenticationRegistrationViewState: BindableState {
     
     /// Data about the selected homeserver.
     var homeserver: AuthenticationHomeserverViewData
+    /// Whether a new homeserver is currently being loaded.
+    var isLoading: Bool = false
     /// View state that can be bound to from SwiftUI.
     var bindings: AuthenticationRegistrationBindings
     /// Whether or not the username field has been edited yet.
@@ -112,6 +114,11 @@ struct AuthenticationRegistrationViewState: BindableState {
     /// `true` if it is possible to continue, otherwise `false`.
     var hasValidCredentials: Bool {
         !isUsernameInvalid && !isPasswordInvalid
+    }
+    
+    /// `true` if valid credentials have been entered and the homeserver is loaded.
+    var canSubmit: Bool {
+        hasValidCredentials && !isLoading
     }
 }
 
