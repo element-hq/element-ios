@@ -2520,7 +2520,7 @@ To enable access, tap Settings> Location and select Always";
 "message_reply_to_sender_sent_a_voice_message" = "sent a voice message.";
 "message_reply_to_sender_sent_a_file" = "sent a file.";
 "message_reply_to_sender_sent_their_location" = "has shared their location.";
-"message_reply_to_sender_sent_their_live_location" = "has shared their live location.";
+"message_reply_to_sender_sent_their_live_location" = "Live location.";
 "message_reply_to_message_to_reply_to_prefix" = "In reply to";
 
 // Room members
