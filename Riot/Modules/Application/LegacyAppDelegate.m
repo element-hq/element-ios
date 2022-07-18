@@ -3636,11 +3636,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         return;
     }
 
-    [mxSession.crypto.keyVerificationManager transactions:^(NSArray<MXKeyVerificationTransaction *> * _Nonnull transactions) {
+    [mxSession.crypto.keyVerificationManager transactions:^(NSArray<id<MXKeyVerificationTransaction>> * _Nonnull transactions) {
 
         MXLogDebug(@"[AppDelegate][MXKeyVerification] checkPendingIncomingKeyVerificationsInSession: transactions: %@", transactions);
 
-        for (MXKeyVerificationTransaction *transaction in transactions)
+        for (id<MXKeyVerificationTransaction> transaction in transactions)
         {
             if (transaction.isIncoming)
             {
@@ -3664,7 +3664,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (BOOL)presentIncomingKeyVerificationRequest:(MXKeyVerificationRequest*)incomingKeyVerificationRequest
+- (BOOL)presentIncomingKeyVerificationRequest:(id<MXKeyVerificationRequest>)incomingKeyVerificationRequest
                                     inSession:(MXSession*)session
 {
     BOOL presented = NO;
@@ -3810,7 +3810,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     NSDictionary *userInfo = notification.userInfo;
     
-    MXKeyVerificationRequest *keyVerificationRequest = userInfo[MXKeyVerificationManagerNotificationRequestKey];
+    id<MXKeyVerificationRequest> keyVerificationRequest = userInfo[MXKeyVerificationManagerNotificationRequestKey];
     
     if ([keyVerificationRequest isKindOfClass:MXKeyVerificationByDMRequest.class])
     {
@@ -3893,7 +3893,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 - (void)presentNewKeyVerificationRequestAlertForSession:(MXSession*)session
                                              senderName:(NSString*)senderName
                                                senderId:(NSString*)senderId
-                                                request:(MXKeyVerificationRequest*)keyVerificationRequest
+                                                request:(id<MXKeyVerificationRequest>)keyVerificationRequest
 {
     if (keyVerificationRequest.state != MXKeyVerificationRequestStatePending)
     {
