@@ -3415,7 +3415,7 @@ public class VectorL10n: NSObject {
   public static var messageReplyToSenderSentAnImage: String { 
     return VectorL10n.tr("Vector", "message_reply_to_sender_sent_an_image") 
   }
-  /// has shared their live location.
+  /// Live location.
   public static var messageReplyToSenderSentTheirLiveLocation: String { 
     return VectorL10n.tr("Vector", "message_reply_to_sender_sent_their_live_location") 
   }
