@@ -952,7 +952,7 @@
 "settings_discovery_three_pid_details_cancel_email_validation_action" = "Zrušiť overenie e-mailu";
 "settings_discovery_three_pid_details_title_phone_number" = "Spravovať telefónne číslo";
 "settings_key_backup_button_restore" = "Obnoviť zo zálohy";
-"settings_deactivate_my_account" = "Deaktivovať účet";
+"settings_deactivate_my_account" = "Deaktivovať účet natrvalo";
 "settings_add_3pid_password_title_msidsn" = "Pridať telefónne číslo";
 "settings_add_3pid_password_title_email" = "Pridať emailovú adresu";
 "settings_term_conditions" = "Podmienky používania";
@@ -2451,7 +2451,7 @@
 "threads_notice_title" = "Vlákna už nie sú experimentálne 🎉";
 "room_participants_invite_prompt_to_msg" = "Ste si istí, že chcete pozvať používateľa %@ do %@?";
 "onboarding_celebration_button" = "Poďme na to";
-"onboarding_celebration_message" = "Kedykoľvek prejdite do nastavení a aktualizujte svoj profil.";
+"onboarding_celebration_message" = "Kedykoľvek prejdite do nastavení a aktualizujte svoj profil";
 "onboarding_celebration_title" = "Vyzerá to dobre!";
 "onboarding_avatar_accessibility_label" = "Profilový obrázok";
 "onboarding_avatar_message" = "Je čas priradiť k menu aj tvár";
@@ -2465,7 +2465,7 @@
 "onboarding_personalization_save" = "Uložiť a pokračovať";
 "onboarding_congratulations_personalize_button" = "Prispôsobiť profil";
 /* The placeholder string contains the user's matrix ID */
-"onboarding_congratulations_message" = "Váš účet %@ bol vytvorený.";
+"onboarding_congratulations_message" = "Váš účet %@ bol vytvorený";
 "onboarding_congratulations_title" = "Gratulujeme!";
 "saving" = "Ukladanie";
 
@@ -2552,7 +2552,7 @@
 "room_info_back_button_title" = "Informácie o miestnosti";
 "network_offline_message" = "Ste v režime offline, skontrolujte svoje pripojenie.";
 "network_offline_title" = "Ste offline";
-"message_reply_to_sender_sent_their_live_location" = "zdieľal/a svoju polohu v reálnom čase.";
+"message_reply_to_sender_sent_their_live_location" = "Poloha v reálnom čase.";
 "password_validation_error_contain_symbol" = "Obsahuje symbol.";
 "password_validation_error_contain_number" = "Obsahuje číslo.";
 "password_validation_error_contain_uppercase_letter" = "Obsahuje veľké písmeno.";
@@ -2593,8 +2593,8 @@
 "authentication_verify_email_waiting_button" = "Opätovne odoslať e-mail";
 "authentication_verify_email_waiting_hint" = "Nedostali ste e-mail?";
 /* The placeholder will show the email address that was entered. */
-"authentication_verify_email_waiting_message" = "Ak chcete potvrdiť svoj e-mail, ťuknite na tlačidlo v e-maile, ktorý sme práve poslali na adresu %@";
-"authentication_verify_email_waiting_title" = "Pre overenie skontrolujte svoj e-mail.";
+"authentication_verify_email_waiting_message" = "Postupujte podľa pokynov zaslaných na adresu %@";
+"authentication_verify_email_waiting_title" = "Overte svoj e-mail.";
 "authentication_verify_email_text_field_placeholder" = "Email";
 "authentication_verify_email_input_message" = "%@ potrebuje overiť vaše konto";
 "authentication_verify_email_input_title" = "Zadajte svoj email";
@@ -2617,3 +2617,4 @@
 
 // MARK: Authentication
 "authentication_registration_title" = "Vytvorte si účet";
+"authentication_server_info_title_login" = "Kde vaše rozhovory žijú";
