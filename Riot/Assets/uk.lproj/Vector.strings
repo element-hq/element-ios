@@ -1153,7 +1153,7 @@
 "security_settings_secure_backup_info_checking" = "Перевірка…";
 "settings_key_backup_info_checking" = "Перевірка…";
 "settings_key_backup_info" = "Зашифровані повідомлення захищені наскрізним шифруванням. Лише ви та отримувачі повідомлень мають ключі для їх читання.";
-"settings_deactivate_my_account" = "Деактивувати обліковий запис";
+"settings_deactivate_my_account" = "Деактивувати обліковий запис назавжди";
 "settings_enable_rageshake" = "Струснути пристрій, щоб повідомити про ваду";
 "settings_third_party_notices" = "Примітки третіх сторін";
 "settings_labs_enable_ringing_for_group_calls" = "Дзвінок групових викликів";
@@ -2462,7 +2462,7 @@
 "threads_notice_title" = "Гілки більше не експериментальна функція 🎉";
 "room_participants_invite_prompt_to_msg" = "Ви впевнені, що хочете запросити %@ до %@?";
 "onboarding_celebration_button" = "Поїхали";
-"onboarding_celebration_message" = "Будь-коли оновлюйте свій профіль у налаштуваннях.";
+"onboarding_celebration_message" = "Будь-коли оновіть свій профіль у налаштуваннях";
 "onboarding_celebration_title" = "Схоже, все чудово!";
 "onboarding_avatar_accessibility_label" = "Зображення профілю";
 "onboarding_avatar_message" = "Час додати обличчя до імені";
@@ -2477,7 +2477,7 @@
 "onboarding_congratulations_home_button" = "На головну";
 "onboarding_congratulations_personalize_button" = "Персоналізувати профіль";
 /* The placeholder string contains the user's matrix ID */
-"onboarding_congratulations_message" = "Ваш обліковий запис %@ створено.";
+"onboarding_congratulations_message" = "Ваш обліковий запис %@ створений";
 "onboarding_congratulations_title" = "Вітаємо!";
 "saving" = "Збереження";
 
@@ -2554,7 +2554,7 @@
 "room_info_back_button_title" = "Відомості кімнати";
 "network_offline_message" = "Ви офлайн, перевірте своє з'єднання.";
 "network_offline_title" = "Ви офлайн";
-"message_reply_to_sender_sent_their_live_location" = "надсилає дані про своє місце перебування наживо.";
+"message_reply_to_sender_sent_their_live_location" = "Місце перебування наживо.";
 "password_validation_error_contain_symbol" = "Містить символ.";
 "password_validation_error_contain_number" = "Містить цифру.";
 "password_validation_error_contain_uppercase_letter" = "Містить велику літеру.";
@@ -2593,8 +2593,8 @@
 "authentication_verify_email_waiting_button" = "Повторно надіслати електронний лист";
 "authentication_verify_email_waiting_hint" = "Не отримали електронного листа?";
 /* The placeholder will show the email address that was entered. */
-"authentication_verify_email_waiting_message" = "Щоб підтвердити свою електронну адресу, торкніться кнопки в електронному листі, який ми щойно надіслали на адресу %@";
-"authentication_verify_email_waiting_title" = "Перегляньте свою електронну пошту для підтвердження.";
+"authentication_verify_email_waiting_message" = "Виконайте вказівки, надіслані на %@";
+"authentication_verify_email_waiting_title" = "Підтвердьте свою електронну пошту.";
 "authentication_verify_email_text_field_placeholder" = "Електронна пошта";
 "authentication_verify_msisdn_input_message" = "%@ потребує підтвердження вашого облікового запису";
 "authentication_verify_email_input_message" = "%@ потребує підтвердження вашого облікового запису";
@@ -2619,3 +2619,4 @@
 
 // MARK: Authentication
 "authentication_registration_title" = "Створити обліковий запис";
+"authentication_server_info_title_login" = "Де відбуватимуться ваші розмови";
