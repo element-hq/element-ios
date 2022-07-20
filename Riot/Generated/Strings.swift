@@ -619,6 +619,10 @@ public class VectorL10n: NSObject {
   public static var authenticationServerInfoTitle: String { 
     return VectorL10n.tr("Vector", "authentication_server_info_title") 
   }
+  /// Where your conversations live
+  public static var authenticationServerInfoTitleLogin: String { 
+    return VectorL10n.tr("Vector", "authentication_server_info_title_login") 
+  }
   /// Cannot find a server at this URL, please check it is correct.
   public static var authenticationServerSelectionGenericError: String { 
     return VectorL10n.tr("Vector", "authentication_server_selection_generic_error") 
@@ -675,11 +679,11 @@ public class VectorL10n: NSObject {
   public static var authenticationVerifyEmailWaitingHint: String { 
     return VectorL10n.tr("Vector", "authentication_verify_email_waiting_hint") 
   }
-  /// To confirm your email, tap the button in the email we just sent to %@
+  /// Follow the instructions sent to %@
   public static func authenticationVerifyEmailWaitingMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "authentication_verify_email_waiting_message", p1)
   }
-  /// Check your email to verify.
+  /// Verify your email.
   public static var authenticationVerifyEmailWaitingTitle: String { 
     return VectorL10n.tr("Vector", "authentication_verify_email_waiting_title") 
   }

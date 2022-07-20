@@ -27,13 +27,18 @@ struct AuthenticationServerInfoSection: View {
     // MARK: - Public
     
     let address: String
+    let flow: AuthenticationFlow
     let editAction: () -> Void
+    
+    var title: String {
+        flow == .login ? VectorL10n.authenticationServerInfoTitleLogin : VectorL10n.authenticationServerInfoTitle
+    }
     
     // MARK: - Views
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(VectorL10n.authenticationServerInfoTitle)
+            Text(title)
                 .font(theme.fonts.subheadline)
                 .foregroundColor(theme.colors.secondaryContent)
             
