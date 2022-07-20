@@ -535,7 +535,7 @@
 "settings_crypto_device_key" = "\nSessiooni võti:\n";
 "settings_crypto_export" = "Ekspordi võtmed";
 "settings_crypto_blacklist_unverified_devices" = "Kasuta krüptimist vaid verifitseeritud sessioonides";
-"settings_deactivate_my_account" = "Eemalda minu konto kasutusest";
+"settings_deactivate_my_account" = "Eemalda konto lõplikult kasutusest";
 "security_settings_crypto_sessions_loading" = "Laadin sessioone…";
 "security_settings_user_password_description" = "Tuvasta oma isik sisestades Matrix'i konto salasõna";
 // Manage session
@@ -2197,7 +2197,7 @@
 "threads_notice_title" = "Jutulõngad ei ole enam katsetusjärgus! 🎉";
 "room_participants_invite_prompt_to_msg" = "Kas sa oled kindel, et soovid kutsuda %@ %@ jututuppa?";
 "onboarding_celebration_button" = "Alustame nüüd";
-"onboarding_celebration_message" = "Seadistusest saad alati oma profiili muuta.";
+"onboarding_celebration_message" = "Seadistusest saad alati oma profiili muuta";
 "onboarding_celebration_title" = "Tundub õige!";
 "onboarding_avatar_accessibility_label" = "Profiilipilt";
 "onboarding_avatar_message" = "On aeg lisada oma nime juurde sobilik pilt";
@@ -2212,7 +2212,7 @@
 "onboarding_congratulations_home_button" = "Mine avalehele";
 "onboarding_congratulations_personalize_button" = "Isikupärasta oma profiili";
 /* The placeholder string contains the user's matrix ID */
-"onboarding_congratulations_message" = "Sinu kasutajakonto %@ on nüüd olemas.";
+"onboarding_congratulations_message" = "Sinu kasutajakonto %@ on nüüd olemas";
 "onboarding_congratulations_title" = "Õnnitlused!";
 "saving" = "Salvestame";
 
@@ -2317,3 +2317,4 @@
 
 // MARK: Authentication
 "authentication_registration_title" = "Loo endale konto";
+"authentication_server_info_title_login" = "Kuidas sinu vestlusi hallatakse";
