@@ -149,12 +149,12 @@
 /* The placeholder will show the full Matrix ID that has been entered. */
 "authentication_registration_username_footer_available" = "Others can discover you %@";
 "authentication_registration_password_footer" = "Must be 8 characters or more";
+"authentication_server_info_title" = "Where your conversations will live";
 
 "authentication_login_title" = "Welcome back!";
 "authentication_login_username" = "Username / Email / Phone";
 "authentication_login_forgot_password" = "Forgot password";
-
-"authentication_server_info_title" = "Where your conversations will live";
+"authentication_server_info_title_login" = "Where your conversations live";
 
 "authentication_server_selection_login_title" = "Connect to homeserver";
 "authentication_server_selection_login_message" = "What is the address of your server?";
@@ -166,15 +166,17 @@
 "authentication_cancel_flow_confirmation_message" = "Your account is not created yet. Stop the registration process?";
 
 "authentication_verify_email_input_title" = "Enter your email";
+/* The placeholder will show the homeserver's domain */
 "authentication_verify_email_input_message" = "%@ needs to verify your account";
 "authentication_verify_email_text_field_placeholder" = "Email";
-"authentication_verify_email_waiting_title" = "Check your email to verify.";
+"authentication_verify_email_waiting_title" = "Verify your email.";
 /* The placeholder will show the email address that was entered. */
-"authentication_verify_email_waiting_message" = "To confirm your email, tap the button in the email we just sent to %@";
+"authentication_verify_email_waiting_message" = "Follow the instructions sent to %@";
 "authentication_verify_email_waiting_hint" = "Did not receive an email?";
 "authentication_verify_email_waiting_button" = "Resend email";
 
 "authentication_forgot_password_input_title" = "Enter your email";
+/* The placeholder will show the homeserver's domain */
 "authentication_forgot_password_input_message" = "%@ will send you a verification link";
 "authentication_forgot_password_text_field_placeholder" = "Email";
 "authentication_forgot_password_waiting_title" = "Check your email.";
@@ -189,6 +191,7 @@
 "authentication_choose_password_submit_button" = "Reset Password";
 
 "authentication_verify_msisdn_input_title" = "Enter your phone number";
+/* The placeholder will show the homeserver's domain */
 "authentication_verify_msisdn_input_message" = "%@ needs to verify your account";
 "authentication_verify_msisdn_text_field_placeholder" = "Phone Number";
 "authentication_verify_msisdn_otp_text_field_placeholder" = "Confirmation Code";
@@ -199,6 +202,7 @@
 "authentication_verify_msisdn_invalid_phone_number" = "Invalid phone number";
 
 "authentication_terms_title" = "Server policies";
+/* The placeholder will show the homeserver's domain */
 "authentication_terms_message" = "Please read %@’s terms and policies";
 "authentication_terms_policy_url_error" = "Unable to find the selected policy. Please try again later.";
 

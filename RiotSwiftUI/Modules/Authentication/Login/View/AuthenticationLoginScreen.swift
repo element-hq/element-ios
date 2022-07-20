@@ -87,7 +87,8 @@ struct AuthenticationLoginScreen: View {
     
     /// The sever information section that includes a button to select a different server.
     var serverInfo: some View {
-        AuthenticationServerInfoSection(address: viewModel.viewState.homeserver.address) {
+        AuthenticationServerInfoSection(address: viewModel.viewState.homeserver.address,
+                                        flow: .login) {
             viewModel.send(viewAction: .selectServer)
         }
     }
