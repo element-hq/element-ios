@@ -64,18 +64,11 @@ final class SSOAuthentificationSession: SSOAuthentificationSessionProtocol {
             
             completionHandler(callbackURL, finalError)
         }
-
-        // Ask the browser for a private authentication session
-        if #available(iOS 13.0, *) {
-            authentificationSession.prefersEphemeralWebBrowserSession = true
-        }
         
         self.authentificationSession = authentificationSession
         
-        if #available(iOS 13.0, *) {
-            if let asWebContextProvider = contextProvider as? ASWebAuthenticationPresentationContextProviding {
-                authentificationSession.presentationContextProvider = asWebContextProvider
-            }
+        if let asWebContextProvider = contextProvider as? ASWebAuthenticationPresentationContextProviding {
+            authentificationSession.presentationContextProvider = asWebContextProvider
         }
         
         authentificationSession.start()
