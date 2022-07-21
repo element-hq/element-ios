@@ -804,7 +804,7 @@
 "key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Tidak tahu Frasa Keamanan Anda? Anda dapat ";
 "service_terms_modal_footer" = "Ini dapat dinonaktifkan di pengaturan.";
 "room_widget_permission_information_title" = "Menggunakannya mungkin membagikan data dengan %@:\n";
-"widget_sticker_picker_no_stickerpacks_alert" = "Saat ini Anda tidak mengaktifkan paket stiker apapun.";
+"widget_sticker_picker_no_stickerpacks_alert" = "Saat ini Anda tidak mengaktifkan paket stiker apa pun.";
 "call_already_displayed" = "Sudah ada panggilan yang sedang berlangsung.";
 "camera_unavailable" = "Kamera tidak tersedia di perangkat Anda";
 "network_offline_prompt" = "Koneksi internetnya terlihat offline.";
@@ -890,7 +890,7 @@
 "room_creation_invite_another_user" = "ID Pengguna, nama atau email";
 "space_participants_action_ban" = "Cekal dari space ini";
 "space_participants_action_remove" = "Keluarkan dari space ini";
-"leave_space_only_action" = "Jangan tinggalkan ruangan apapun";
+"leave_space_only_action" = "Jangan tinggalkan ruangan apa pun";
 "space_beta_announce_title" = "Space akan segera datang";
 
 // Mark: - Spaces
@@ -1173,7 +1173,7 @@
 "settings_discovery_three_pid_details_cancel_email_validation_action" = "Batalkan validasi email";
 "settings_discovery_three_pid_details_title_phone_number" = "Kelola nomor telepon";
 "settings_key_backup_button_restore" = "Pulihkan dari Cadangan";
-"settings_deactivate_my_account" = "Nonaktifkan akun saya";
+"settings_deactivate_my_account" = "Nonaktifkan akun secara permanen";
 "settings_add_3pid_password_title_msidsn" = "Tambahkan nomor telepon";
 "settings_add_3pid_password_title_email" = "Tambahkan alamat email";
 "settings_term_conditions" = "Syarat & Ketentuan";
@@ -1690,7 +1690,7 @@
 /* Note: The word "don't" is formatted in bold */
 "analytics_prompt_point_2" = "Kami <b>tidak</b> membagikan informasi ini dengan pihak ketiga";
 /* Note: The word "don't" is formatted in bold */
-"analytics_prompt_point_1" = "Kami <b>tidak</b> merekam atau memprofil data akun apapun";
+"analytics_prompt_point_1" = "Kami <b>tidak</b> merekam atau memprofil data akun apa pun";
 "analytics_prompt_terms_link_upgrade" = "di sini";
 /* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
 "analytics_prompt_terms_upgrade" = "Baca semua kebijakan kami %@. Apakah Anda tidak keberatan?";
@@ -2468,7 +2468,7 @@
 "threads_notice_title" = "Utasan tidak lagi eksperimental 🎉";
 "room_participants_invite_prompt_to_msg" = "Apakah Anda yakin ingin mengundang %@ ke %@?";
 "onboarding_celebration_button" = "Ayo";
-"onboarding_celebration_message" = "Pergi ke pengaturan kapan saja untuk memperbarui profil Anda.";
+"onboarding_celebration_message" = "Pergi ke pengaturan kapan saja untuk memperbarui profil Anda";
 "onboarding_celebration_title" = "Kelihatan bagus!";
 "onboarding_avatar_accessibility_label" = "Foto profil";
 "onboarding_avatar_message" = "Saatnya pasang wajah pada nama";
@@ -2483,7 +2483,7 @@
 "onboarding_congratulations_home_button" = "Kembalikan saya ke beranda";
 "onboarding_congratulations_personalize_button" = "Ubah profil";
 /* The placeholder string contains the user's matrix ID */
-"onboarding_congratulations_message" = "Akun %@ Anda telah dibuat.";
+"onboarding_congratulations_message" = "Akun %@ Anda telah dibuat";
 "onboarding_congratulations_title" = "Selamat!";
 "saving" = "Menyimpan";
 
@@ -2549,7 +2549,7 @@
 "settings_timeline" = "LINIMASA";
 "room_accessibility_record_voice_message_hint" = "Ketuk dua kali dan tekan untuk merekam.";
 "room_accessibility_record_voice_message" = "Rekam Pesan Suara";
-"message_reply_to_sender_sent_their_live_location" = "telah membagikan lokasi langsung.";
+"message_reply_to_sender_sent_their_live_location" = "Lokasi langsung.";
 "location_sharing_live_lab_promotion_activation" = "Aktifkan pembagian lokasi langsung";
 "location_sharing_live_lab_promotion_text" = "Mohon dicatat: ini adalah fitur uji coba menggunakan implementasi sementara yang memungkinkan riwayat lokasi terbagi Anda terlihat secara permanen ke orang lain di ruangan.";
 "location_sharing_live_lab_promotion_title" = "Pembagian lokasi langsung";
@@ -2597,8 +2597,8 @@
 "authentication_forgot_password_input_title" = "Masukkan email Anda";
 "authentication_verify_email_waiting_hint" = "Tidak menerima sebuah email?";
 /* The placeholder will show the email address that was entered. */
-"authentication_verify_email_waiting_message" = "Untuk mengonfirmasi email Anda, ketuk tombol dalam email yang kami baru saja kirim ke %@";
-"authentication_verify_email_waiting_title" = "Periksa email Anda untuk memverifikasi.";
+"authentication_verify_email_waiting_message" = "Ikuti petunjuk yang terkirim ke %@";
+"authentication_verify_email_waiting_title" = "Verifikasi email Anda.";
 "authentication_verify_email_text_field_placeholder" = "Email";
 "authentication_verify_email_input_message" = "%@ harus memverifikasi akun Anda";
 "authentication_verify_email_input_title" = "Masukkan email Anda";
@@ -2621,3 +2621,4 @@
 
 // MARK: Authentication
 "authentication_registration_title" = "Buat akun Anda";
+"authentication_server_info_title_login" = "Di mana percakapan Anda tinggal";
