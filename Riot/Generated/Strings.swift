@@ -543,6 +543,14 @@ public class VectorL10n: NSObject {
   public static var authenticationChoosePasswordInputTitle: String { 
     return VectorL10n.tr("Vector", "authentication_choose_password_input_title") 
   }
+  /// Check your inbox
+  public static var authenticationChoosePasswordNotVerifiedMessage: String { 
+    return VectorL10n.tr("Vector", "authentication_choose_password_not_verified_message") 
+  }
+  /// Email not verified
+  public static var authenticationChoosePasswordNotVerifiedTitle: String { 
+    return VectorL10n.tr("Vector", "authentication_choose_password_not_verified_title") 
+  }
   /// Sign out of all devices
   public static var authenticationChoosePasswordSignoutAllDevices: String { 
     return VectorL10n.tr("Vector", "authentication_choose_password_signout_all_devices") 

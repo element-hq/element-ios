@@ -189,6 +189,8 @@
 "authentication_choose_password_text_field_placeholder" = "New Password";
 "authentication_choose_password_signout_all_devices" = "Sign out of all devices";
 "authentication_choose_password_submit_button" = "Reset Password";
+"authentication_choose_password_not_verified_title" = "Email not verified";
+"authentication_choose_password_not_verified_message" = "Check your inbox";
 
 "authentication_verify_msisdn_input_title" = "Enter your phone number";
 /* The placeholder will show the homeserver's domain */
