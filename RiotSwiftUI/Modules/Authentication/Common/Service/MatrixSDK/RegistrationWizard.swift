@@ -268,17 +268,17 @@ class RegistrationWizard {
             let flowResult = authenticationSession.flowResult
             
             if isCreatingAccount || isRegistrationStarted {
-                return try await handleMandatoryDummyStage(flowResult: flowResult)
+                return try await handleDummyStage(flowResult: flowResult)
             }
             
             return .flowResponse(flowResult)
         }
     }
     
-    /// Checks for a mandatory dummy stage and handles it automatically when possible.
-    private func handleMandatoryDummyStage(flowResult: FlowResult) async throws -> RegistrationResult {
+    /// Checks for a dummy stage and handles it automatically when possible.
+    private func handleDummyStage(flowResult: FlowResult) async throws -> RegistrationResult {
         // If the dummy stage is mandatory, do the dummy stage now
-        guard flowResult.missingStages.contains(where: { $0.isDummy && $0.isMandatory }) else { return .flowResponse(flowResult) }
+        guard flowResult.missingStages.contains(where: { $0.isDummy }) else { return .flowResponse(flowResult) }
         return try await dummy()
     }
     
