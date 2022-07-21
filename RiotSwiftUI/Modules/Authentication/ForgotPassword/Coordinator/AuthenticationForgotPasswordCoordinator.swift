@@ -20,6 +20,8 @@ import CommonKit
 struct AuthenticationForgotPasswordCoordinatorParameters {
     let navigationRouter: NavigationRouterType
     let loginWizard: LoginWizard
+    /// The homeserver currently being used.
+    let homeserver: AuthenticationState.Homeserver
 }
 
 enum AuthenticationForgotPasswordCoordinatorResult {
@@ -63,7 +65,7 @@ final class AuthenticationForgotPasswordCoordinator: Coordinator, Presentable {
     @MainActor init(parameters: AuthenticationForgotPasswordCoordinatorParameters) {
         self.parameters = parameters
         
-        let viewModel = AuthenticationForgotPasswordViewModel()
+        let viewModel = AuthenticationForgotPasswordViewModel(homeserver: parameters.homeserver.viewData)
         let view = AuthenticationForgotPasswordScreen(viewModel: viewModel.context)
         authenticationForgotPasswordViewModel = viewModel
         authenticationForgotPasswordHostingController = VectorHostingController(rootView: view)

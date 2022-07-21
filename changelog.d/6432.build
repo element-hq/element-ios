@@ -1,0 +1,1 @@
+Fix UI tests failing on CI but not being reported by prefixing all tests with `test`.

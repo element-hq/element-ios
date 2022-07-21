@@ -65,7 +65,6 @@ struct AuthenticationState {
         /// The homeserver mapped into view data that is ready for display.
         var viewData: AuthenticationHomeserverViewData {
             AuthenticationHomeserverViewData(address: displayableAddress,
-                                             isMatrixDotOrg: isMatrixDotOrg,
                                              showLoginForm: preferredLoginMode.supportsPasswordFlow,
                                              showRegistrationForm: registrationFlow != nil && !needsRegistrationFallback,
                                              ssoIdentityProviders: preferredLoginMode.ssoIdentityProviders ?? [])

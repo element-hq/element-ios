@@ -17,29 +17,10 @@
 import XCTest
 import RiotSwiftUI
 
-class OnboardingDisplayNameUITests: MockScreenTest {
-
-    override class var screenType: MockScreenState.Type {
-        return MockOnboardingDisplayNameScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return OnboardingDisplayNameUITests(selector: #selector(verifyOnboardingDisplayNameScreen))
-    }
-
-    func verifyOnboardingDisplayNameScreen() throws {
-        guard let screenState = screenState as? MockOnboardingDisplayNameScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .emptyTextField:
-            verifyEmptyTextField()
-        case .filledTextField(let displayName):
-            verifyDisplayName(displayName: displayName)
-        case .longDisplayName(displayName: let displayName):
-            verifyLongDisplayName(displayName: displayName)
-        }
-    }
-
-    func verifyEmptyTextField() {
+class OnboardingDisplayNameUITests: MockScreenTestCase {
+    func testEmptyTextField() {
+        app.goToScreenWithIdentifier(MockOnboardingDisplayNameScreenState.emptyTextField.title)
+        
         let textField = app.textFields.element
         XCTAssertTrue(textField.exists, "The textfield should always be shown.")
         XCTAssertEqual(textField.value as? String, VectorL10n.onboardingDisplayNamePlaceholder, "When the textfield is empty, the value should match the placeholder.")
@@ -54,7 +35,10 @@ class OnboardingDisplayNameUITests: MockScreenTest {
         XCTAssertFalse(saveButton.isEnabled, "The save button should not be enabled.")
     }
 
-    func verifyDisplayName(displayName: String) {
+    func testDisplayName() {
+        let displayName = "Test User"
+        app.goToScreenWithIdentifier(MockOnboardingDisplayNameScreenState.filledTextField(displayName: displayName).title)
+        
         let textField = app.textFields.element
         XCTAssertTrue(textField.exists, "The textfield should always be shown.")
         XCTAssertEqual(textField.value as? String, displayName, "When a name has been set, it should show in the textfield.")
@@ -69,7 +53,12 @@ class OnboardingDisplayNameUITests: MockScreenTest {
         XCTAssertEqual(footer.label, VectorL10n.onboardingDisplayNameHint, "The footer should display a hint when an acceptable name is entered.")
     }
     
-    func verifyLongDisplayName(displayName: String) {
+    func testLongDisplayName() {
+        let displayName = """
+            Bacon ipsum dolor amet filet mignon chicken kevin andouille. Doner shoulder beef, brisket bresaola turkey jowl venison. Ham hock cow turducken, chislic venison doner short loin strip steak tri-tip jowl. Sirloin pork belly hamburger ribeye. Tail capicola alcatra short ribs turkey doner.
+            """
+        app.goToScreenWithIdentifier(MockOnboardingDisplayNameScreenState.longDisplayName(displayName: displayName).title)
+        
         let textField = app.textFields.element
         XCTAssertTrue(textField.exists, "The textfield should always be shown.")
         XCTAssertEqual(textField.value as? String, displayName, "When a name has been set, it should show in the textfield.")

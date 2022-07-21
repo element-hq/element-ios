@@ -19,10 +19,14 @@ import XCTest
 
 extension XCUIApplication {
     func goToScreenWithIdentifier(_ identifier: String) {
-        let button = self.buttons[identifier]
-        let lastLabel = staticTexts["lastItem"]
+        // Search for the screen identifier
+        textFields["searchQueryTextField"].tap()
+        typeText(identifier)
         
-        while !button.isHittable && !lastLabel.isHittable {
+        let button = self.buttons[identifier]
+        let footer = staticTexts["footerText"]
+        
+        while !button.isHittable && !footer.isHittable {
             self.tables.firstMatch.swipeUp()
         }
         

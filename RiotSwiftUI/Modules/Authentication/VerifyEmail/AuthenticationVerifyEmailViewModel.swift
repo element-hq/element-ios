@@ -31,8 +31,9 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
 
     // MARK: - Setup
 
-    init(emailAddress: String = "") {
-        let viewState = AuthenticationVerifyEmailViewState(bindings: AuthenticationVerifyEmailBindings(emailAddress: emailAddress))
+    init(homeserver: AuthenticationHomeserverViewData, emailAddress: String = "") {
+        let viewState = AuthenticationVerifyEmailViewState(homeserver: homeserver,
+                                                           bindings: AuthenticationVerifyEmailBindings(emailAddress: emailAddress))
         super.init(initialViewState: viewState)
     }
 

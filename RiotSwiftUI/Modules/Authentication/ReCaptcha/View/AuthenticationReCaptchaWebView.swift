@@ -92,7 +92,7 @@ struct AuthenticationRecaptchaWebView: UIViewRepresentable {
             """
             <html>
             <head>
-            <meta name='viewport' content='initial-scale=1.0' />
+            <meta name='viewport' content='initial-scale=1.0, user-scalable=no' />
             <style>@media (prefers-color-scheme: dark) { body { background-color: #15191E; } }</style>
             <script type="text/javascript">
             var verifyCallback = function(response) {

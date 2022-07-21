@@ -17,28 +17,22 @@
 import XCTest
 import RiotSwiftUI
 
-class TemplateSimpleScreenUITests: MockScreenTest {
-
-    override class var screenType: MockScreenState.Type {
-        return MockTemplateSimpleScreenScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return TemplateSimpleScreenUITests(selector: #selector(verifyTemplateSimpleScreenScreen))
-    }
-
-    func verifyTemplateSimpleScreenScreen() throws {
-        guard let screenState = screenState as? MockTemplateSimpleScreenScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .promptType(let promptType):
-            verifyTemplateSimpleScreenPromptType(promptType: promptType)
-        }
-    }
-    
-    func verifyTemplateSimpleScreenPromptType(promptType: TemplateSimpleScreenPromptType) {
+class TemplateSimpleScreenUITests: MockScreenTestCase {
+    func testTemplateSimpleScreenPromptRegular() {
+        let promptType = TemplateSimpleScreenPromptType.regular
+        app.goToScreenWithIdentifier(MockTemplateSimpleScreenScreenState.promptType(promptType).title)
+        
         let title = app.staticTexts["title"]
         XCTAssert(title.exists)
         XCTAssertEqual(title.label, promptType.title)
     }
-
+    
+    func testTemplateSimpleScreenPromptUpgrade() {
+        let promptType = TemplateSimpleScreenPromptType.upgrade
+        app.goToScreenWithIdentifier(MockTemplateSimpleScreenScreenState.promptType(promptType).title)
+        
+        let title = app.staticTexts["title"]
+        XCTAssert(title.exists)
+        XCTAssertEqual(title.label, promptType.title)
+    }
 }

@@ -1,3 +1,21 @@
+## Changes in 1.8.23 (2022-07-15)
+
+🙌 Improvements
+
+- Reword account deactivation button on the Settings screen. ([#6436](https://github.com/vector-im/element-ios/issues/6436))
+
+
+## Changes in 1.8.22 (2022-07-13)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.23.12](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.23.12)).
+
+🐛 Bugfixes
+
+- Fix a bug where the login screen is shown after choosing to create an account. ([#6417](https://github.com/vector-im/element-ios/pull/6417))
+
+
 ## Changes in 1.8.21 (2022-07-12)
 
 ✨ Features

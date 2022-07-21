@@ -17,17 +17,7 @@
 import XCTest
 import RiotSwiftUI
 
-class LocationSharingUITests: XCTestCase {
-    
-    private var app: XCUIApplication!
-    
-    override func setUp() {
-        continueAfterFailure = false
-                
-        app = XCUIApplication()
-        app.launch()
-    }
-    
+class LocationSharingUITests: MockScreenTestCase {
     func testInitialUserLocation() {
         goToScreenWithIdentifier(MockLocationSharingScreenState.shareUserLocation.title)
         

@@ -17,31 +17,10 @@
 import XCTest
 import RiotSwiftUI
 
-class ChangePasswordUITests: MockScreenTest {
-
-    override class var screenType: MockScreenState.Type {
-        return MockChangePasswordScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return ChangePasswordUITests(selector: #selector(verifyChangePasswordScreen))
-    }
-
-    func verifyChangePasswordScreen() throws {
-        guard let screenState = screenState as? MockChangePasswordScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .allEmpty:
-            verifyAllEmpty()
-        case .cannotSubmit:
-            verifyCannotSubmit()
-        case .canSubmit:
-            verifyCanSubmit()
-        case .canSubmitAndSignoutAllDevicesChecked:
-            verifyCanSubmitAndSignoutAllDevicesChecked()
-        }
-    }
-    
-    func verifyAllEmpty() {
+class ChangePasswordUITests: MockScreenTestCase {
+    func testAllEmpty() {
+        app.goToScreenWithIdentifier(MockChangePasswordScreenState.allEmpty.title)
+        
         XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown.")
         XCTAssertTrue(app.staticTexts["passwordRequirementsLabel"].exists, "The password requirements label should be shown.")
         
@@ -66,7 +45,9 @@ class ChangePasswordUITests: MockScreenTest {
         XCTAssertFalse(signoutAllDevicesToggle.isOn, "Sign out all devices should be unchecked")
     }
     
-    func verifyCannotSubmit() {
+    func testCannotSubmit() {
+        app.goToScreenWithIdentifier(MockChangePasswordScreenState.cannotSubmit.title)
+        
         XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown.")
         XCTAssertTrue(app.staticTexts["passwordRequirementsLabel"].exists, "The password requirements label should be shown.")
 
@@ -91,7 +72,9 @@ class ChangePasswordUITests: MockScreenTest {
         XCTAssertFalse(signoutAllDevicesToggle.isOn, "Sign out all devices should be unchecked")
     }
     
-    func verifyCanSubmit() {
+    func testCanSubmit() {
+        app.goToScreenWithIdentifier(MockChangePasswordScreenState.canSubmit.title)
+        
         XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown.")
         XCTAssertTrue(app.staticTexts["passwordRequirementsLabel"].exists, "The password requirements label should be shown.")
 
@@ -116,7 +99,9 @@ class ChangePasswordUITests: MockScreenTest {
         XCTAssertFalse(signoutAllDevicesToggle.isOn, "Sign out all devices should be unchecked")
     }
 
-    func verifyCanSubmitAndSignoutAllDevicesChecked() {
+    func testCanSubmitAndSignoutAllDevicesChecked() {
+        app.goToScreenWithIdentifier(MockChangePasswordScreenState.canSubmitAndSignoutAllDevicesChecked.title)
+        
         XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown.")
         XCTAssertTrue(app.staticTexts["passwordRequirementsLabel"].exists, "The password requirements label should be shown.")
 

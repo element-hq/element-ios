@@ -17,6 +17,6 @@
 import XCTest
 import RiotSwiftUI
 
-class RoomUpgradeUITests: MockScreenTest {
+class RoomUpgradeUITests: MockScreenTestCase {
     // Tests to be implemented.
 }

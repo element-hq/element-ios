@@ -223,6 +223,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
         placeholderBackground.isHidden = bannerViewData.showMap
         placeholderBackground.image = placeholderBackgroundImage
         mapView.isHidden = !bannerViewData.showMap
+        attributionLabel.isHidden = !bannerViewData.showMap
         
         switch bannerViewData.status {
         case .starting:
@@ -237,7 +238,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     
     private func liveLocationBannerViewData(from viewState: TimelineLiveLocationViewState) -> TimelineLiveLocationViewData {
         
-        var status: LiveLocationSharingStatus
+        let status: LiveLocationSharingStatus
         let iconTint: UIColor
         let title: String
         var titleColor: UIColor = theme.colors.primaryContent

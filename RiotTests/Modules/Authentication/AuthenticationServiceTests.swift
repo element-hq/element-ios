@@ -59,26 +59,40 @@ import XCTest
     
     func testReset() async throws {
         // Given a service that has begun registration.
-        try await service.startFlow(.register, for: "https://matrix.org")
+        try await service.startFlow(.register, for: "https://example.com")
         _ = try await service.registrationWizard?.createAccount(username: UUID().uuidString, password: UUID().uuidString, initialDeviceDisplayName: "Test")
         XCTAssertNotNil(service.loginWizard, "The login wizard should exist after starting a registration flow.")
         XCTAssertNotNil(service.registrationWizard, "The registration wizard should exist after starting a registration flow.")
         XCTAssertNotNil(service.state.homeserver.registrationFlow, "The supported registration flow should be stored after starting a registration flow.")
         XCTAssertTrue(service.isRegistrationStarted, "The service should show as having started registration.")
         XCTAssertEqual(service.state.flow, .register, "The service should show as using a registration flow.")
-        XCTAssertEqual(service.state.homeserver.address, "https://matrix-client.matrix.org", "The actual homeserver address should be discovered.")
-        XCTAssertEqual(service.state.homeserver.addressFromUser, "https://matrix.org", "The address from the startFlow call should be stored.")
+        XCTAssertEqual(service.state.homeserver.address, "https://matrix.example.com", "The actual homeserver address should be discovered.")
+        XCTAssertEqual(service.state.homeserver.addressFromUser, "https://example.com", "The address from the startFlow call should be stored.")
         
         // When resetting the service.
         service.reset()
         
-        // Then the wizards should no longer exist.
+        // Then the wizards should no longer exist, but the chosen server should be remembered.
         XCTAssertNil(service.loginWizard, "The login wizard should be cleared after calling reset.")
         XCTAssertNil(service.registrationWizard, "The registration wizard should be cleared after calling reset.")
         XCTAssertNil(service.state.homeserver.registrationFlow, "The supported registration flow should be cleared when calling reset.")
         XCTAssertFalse(service.isRegistrationStarted, "The service should not indicate it has started registration after calling reset.")
         XCTAssertEqual(service.state.flow, .login, "The flow should have been set back to login when calling reset.")
-        XCTAssertEqual(service.state.homeserver.address, "https://matrix.org", "The address should reset to the value entered by the user.")
+        XCTAssertEqual(service.state.homeserver.address, "https://example.com", "The address should reset to the value entered by the user.")
+    }
+    
+    func testResetDefaultServer() async throws {
+        // Given a service that has begun login on one server.
+        try await service.startFlow(.login, for: "https://example.com")
+        XCTAssertEqual(service.state.homeserver.address, "https://matrix.example.com", "The actual homeserver address should be discovered.")
+        XCTAssertEqual(service.state.homeserver.addressFromUser, "https://example.com", "The address from the startFlow call should be stored.")
+        
+        // When resetting the service to use the default server.
+        service.reset(useDefaultServer: true)
+        
+        // Then the service should reset back to the default server.
+        XCTAssertEqual(service.state.homeserver.address, BuildSettings.serverConfigDefaultHomeserverUrlString,
+                       "The address should reset to the value configured in the build settings.")
     }
     
     func testHomeserverState() async throws {
@@ -250,7 +264,6 @@ import XCTest
         
         // Then the view data should correctly represent the homeserver.
         XCTAssertEqual(viewData.address, "matrix.org", "The displayed address should match the address supplied by the user, but without the scheme.")
-        XCTAssertEqual(viewData.isMatrixDotOrg, true, "The server should be detected as matrix.org.")
         XCTAssertTrue(viewData.showLoginForm, "The login form should be shown.")
         XCTAssertEqual(viewData.ssoIdentityProviders, ssoIdentityProviders, "The sso identity providers should match.")
         XCTAssertTrue(viewData.showRegistrationForm, "The registration form should be shown.")
@@ -270,7 +283,6 @@ import XCTest
         
         // Then the view data should correctly represent the homeserver.
         XCTAssertEqual(viewData.address, "example.com", "The displayed address should match the address supplied by the user, but without the scheme.")
-        XCTAssertEqual(viewData.isMatrixDotOrg, false, "The server should not be detected as matrix.org.")
         XCTAssertTrue(viewData.showLoginForm, "The login form should be shown.")
         XCTAssertEqual(viewData.ssoIdentityProviders, [], "There shouldn't be any sso identity providers.")
         XCTAssertFalse(viewData.showRegistrationForm, "The registration form should not be shown.")
@@ -291,7 +303,6 @@ import XCTest
         
         // Then the view data should correctly represent the homeserver.
         XCTAssertEqual(viewData.address, "company.com", "The displayed address should match the address supplied by the user, but without the scheme.")
-        XCTAssertEqual(viewData.isMatrixDotOrg, false, "The server should not be detected as matrix.org.")
         XCTAssertFalse(viewData.showLoginForm, "The login form should not be shown.")
         XCTAssertEqual(viewData.ssoIdentityProviders, ssoIdentityProviders, "The sso identity providers should match.")
         XCTAssertFalse(viewData.showRegistrationForm, "The registration form should not be shown.")
@@ -311,7 +322,6 @@ import XCTest
         
         // Then the view data should correctly represent the homeserver.
         XCTAssertEqual(viewData.address, "http://localhost:8008", "The displayed address should match address supplied by the user, complete with the scheme.")
-        XCTAssertEqual(viewData.isMatrixDotOrg, false, "The server should not be detected as matrix.org.")
         XCTAssertTrue(viewData.showLoginForm, "The login form should be shown.")
         XCTAssertEqual(viewData.ssoIdentityProviders, [], "There shouldn't be any sso identity providers.")
         XCTAssertTrue(viewData.showRegistrationForm, "The registration form should be shown.")

@@ -129,18 +129,58 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
         }
     }
     
-    /// Show a blocking activity indicator whilst saving.
-    @MainActor private func startLoading() {
-        waitingIndicator = indicatorPresenter.present(.loading(label: VectorL10n.loading, isInteractionBlocking: true))
+    /// Show an activity indicator whilst loading.
+    /// - Parameter isInteractionBlocking: Whether or not the indicator blocks user interaction.
+    @MainActor private func startLoading(isInteractionBlocking: Bool = true) {
+        waitingIndicator = indicatorPresenter.present(.loading(label: VectorL10n.loading, isInteractionBlocking: isInteractionBlocking))
+        
+        if !isInteractionBlocking {
+            authenticationRegistrationViewModel.update(isLoading: true)
+        }
     }
     
     /// Hide the currently displayed activity indicator.
     @MainActor private func stopLoading() {
+        authenticationRegistrationViewModel.update(isLoading: false)
         waitingIndicator = nil
     }
     
-    /// Asks the homeserver to check the supplied username's format and availability.
+    /// Updates the homeserver if a full MXID is entered, then requests whether the username is valid and available.
     @MainActor private func validateUsername(_ username: String) {
+        guard MXTools.isMatrixUserIdentifier(username) else {
+            // Continue with availability check for a normal username.
+            confirmAvailability(of: username)
+            return
+        }
+        
+        // Otherwise split out the domain and username and update the homeserver first.
+        let components = username.dropFirst().components(separatedBy: ":")
+        let domain = components[1]
+        let username = components[0]
+        let homeserverAddress = HomeserverAddress.sanitized(domain)
+        
+        startLoading(isInteractionBlocking: false)
+        
+        currentTask = Task { [weak self] in
+            do {
+                try await authenticationService.startFlow(.register, for: homeserverAddress)
+                
+                guard !Task.isCancelled else { return }
+                
+                self?.updateViewModelHomeserver()
+                self?.authenticationRegistrationViewModel.update(username: username)
+                self?.stopLoading()
+                
+                self?.confirmAvailability(of: username)
+            } catch {
+                self?.stopLoading()
+                self?.handleError(error)
+            }
+        }
+    }
+    
+    /// Asks the homeserver to check the supplied username's format and availability.
+    @MainActor private func confirmAvailability(of username: String) {
         guard let registrationWizard = registrationWizard else {
             MXLog.failure("[AuthenticationRegistrationCoordinator] The registration wizard was requested before getting the login flow.")
             return
@@ -149,6 +189,7 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
         currentTask = Task {
             do {
                 _ = try await registrationWizard.registrationAvailable(username: username)
+                authenticationRegistrationViewModel.confirmUsernameAvailability(username)
             } catch {
                 guard !Task.isCancelled, let mxError = MXError(nsError: error as NSError) else { return }
                 if mxError.errcode == kMXErrCodeStringUserInUse
@@ -244,12 +285,16 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
     @MainActor private func serverSelectionCoordinator(_ coordinator: AuthenticationServerSelectionCoordinator,
                                                        didCompleteWith result: AuthenticationServerSelectionCoordinatorResult) {
         if result == .updated {
-            let homeserver = authenticationService.state.homeserver
-            authenticationRegistrationViewModel.update(homeserver: homeserver.viewData)
+            updateViewModelHomeserver()
         }
         
         navigationRouter.dismissModule(animated: true) { [weak self] in
             self?.remove(childCoordinator: coordinator)
         }
+    }
+    
+    @MainActor private func updateViewModelHomeserver() {
+        let homeserver = authenticationService.state.homeserver
+        authenticationRegistrationViewModel.update(homeserver: homeserver.viewData)
     }
 }
