@@ -349,7 +349,7 @@
 "settings_crypto_device_key" = "\nMunkamenet kulcsa:\n";
 "settings_crypto_export" = "Kulcsok kimentése";
 "settings_crypto_blacklist_unverified_devices" = "Csak ellenőrzött munkameneteknek titkosít";
-"settings_deactivate_my_account" = "Felhasználói fiókom felfüggesztése";
+"settings_deactivate_my_account" = "Felhasználói fiókom végleges felfüggesztése";
 "room_details_people" = "Tagok";
 "room_details_files" = "Feltöltések";
 "room_details_settings" = "Beállítások";
@@ -2169,7 +2169,7 @@
 "threads_notice_title" = "Az üzenetszálak többé már nem kísérleti funkció! 🎉";
 "room_participants_invite_prompt_to_msg" = "Biztos, hogy meg akarod hívni őt: %@ ide: %@?";
 "onboarding_celebration_button" = "Gyerünk";
-"onboarding_celebration_message" = "A beállításokban bármikor megváltoztatható a profilod.";
+"onboarding_celebration_message" = "A beállításokban bármikor megváltoztatható a profilod";
 "onboarding_celebration_title" = "Jól néz ki!";
 "onboarding_avatar_accessibility_label" = "Profilkép";
 "onboarding_avatar_message" = "Ideje képet adni a névhez";
@@ -2184,7 +2184,7 @@
 "onboarding_congratulations_home_button" = "Vigyél haza";
 "onboarding_congratulations_personalize_button" = "Profil személyre szabása";
 /* The placeholder string contains the user's matrix ID */
-"onboarding_congratulations_message" = "A fiókod elkészült: %@.";
+"onboarding_congratulations_message" = "A fiókod elkészült: %@";
 "onboarding_congratulations_title" = "Gratulálunk!";
 "saving" = "Mentés";
 
@@ -2324,7 +2324,7 @@
 "location_sharing_allow_background_location_title" = "Hozzáférés engedélyezése";
 "settings_labs_enable_live_location_sharing" = "Folyamatos helymeghatározás megosztása - a jelenlegi helyzet megosztása (aktív fejlesztés alatt, átmenetileg a megosztott helyek megmaradnak a szoba idővonalán)";
 "settings_ui_show_redactions_in_room_history" = "Helykitöltő megjelenítése a törölt szövegek helyett";
-"message_reply_to_sender_sent_their_live_location" = "megosztotta az élő földrajzi helyzetét.";
+"message_reply_to_sender_sent_their_live_location" = "Élő földrajzi helyzet.";
 "location_sharing_live_lab_promotion_activation" = "Élő helymegosztás engedélyezése";
 "location_sharing_live_lab_promotion_text" = "Megjegyzés: ez egy kísérleti lehetőség, egy átmeneti megvalósítás ami permanensen elérhetővé teszi a megosztott földrajzi helyzetedet a szobában a többiek számára.";
 "location_sharing_live_lab_promotion_title" = "Élő földrajzi hely megosztása";
@@ -2390,8 +2390,8 @@
 "authentication_verify_email_waiting_button" = "E-mail újraküldése";
 "authentication_verify_email_waiting_hint" = "Megkaptad az e-mailt?";
 /* The placeholder will show the email address that was entered. */
-"authentication_verify_email_waiting_message" = "Az e-mail cím megerősítéséhez csak koppints az e-mailben küldött gombra amit az imént küldtünk ide: %@";
-"authentication_verify_email_waiting_title" = "Nézd meg az e-mailedet az ellenőrzéshez.";
+"authentication_verify_email_waiting_message" = "Kövesd az utasításokat amit ide küldtünk: %@";
+"authentication_verify_email_waiting_title" = "Ellenőrizd az e-mailedet.";
 "authentication_verify_email_text_field_placeholder" = "E-mail";
 "authentication_verify_email_input_message" = "%@ ellenőrizni kell a fiókodat";
 "authentication_verify_email_input_title" = "Add meg az e-mail címed";
@@ -2414,3 +2414,4 @@
 
 // MARK: Authentication
 "authentication_registration_title" = "Felhasználói fiók létrehozása";
+"authentication_server_info_title_login" = "Ahol a beszélgetéseid lesznek";
