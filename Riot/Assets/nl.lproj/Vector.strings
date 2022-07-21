@@ -263,7 +263,7 @@
 "settings_ignored_users" = "GENEGEERDE PERSONEN";
 "settings_contacts" = "APPARAAT CONTACTEN";
 "settings_advanced" = "GEAVANCEERD";
-"settings_other" = "OVERIG";
+"settings_other" = "Overig";
 "settings_labs" = "EXPERIMENTEEL";
 "settings_devices" = "APPARATEN";
 "settings_cryptography" = "CRYPTOGRAFIE";
@@ -539,7 +539,7 @@
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Aanvraag verstuurd";
 "rerequest_keys_alert_message" = "Start %@ op een ander apparaat dat het bericht kan ontsleutelen, zodat het de sleutels kan sturen naar dit apparaat.";
-"settings_deactivate_my_account" = "Mijn account deactiveren";
+"settings_deactivate_my_account" = "Account permanent deactiveren";
 "event_formatter_rerequest_keys_part1_link" = "Versleutelingssleutels opnieuw aanvragen";
 "event_formatter_rerequest_keys_part2" = " van uw andere apparaten.";
 "widget_sticker_picker_no_stickerpacks_alert" = "U heeft momenteel geen stickerpakketten ingeschakeld.";
@@ -1530,10 +1530,10 @@
 "event_formatter_call_has_ended_with_time" = "Oproep beëindigd • %@";
 "settings_new_keyword" = "Trefwoorden toevoegen";
 "settings_your_keywords" = "Jouw trefwoorden";
-"settings_room_upgrades" = "Kamer upgrades";
+"settings_room_upgrades" = "Kamer-upgrades";
 "settings_messages_by_a_bot" = "Berichten van een bot";
-"settings_call_invitations" = "Oproep uitnodigingen";
-"settings_room_invitations" = "Kamer uitnodigingen";
+"settings_call_invitations" = "Oproep-uitnodigingen";
+"settings_room_invitations" = "Kamer-uitnodigingen";
 "settings_messages_containing_keywords" = "Trefwoorden";
 "settings_messages_containing_at_room" = "@kamer";
 "settings_messages_containing_user_name" = "Mijn inlognaam";
@@ -1543,8 +1543,8 @@
 "settings_direct_messages" = "Directe berichten";
 "settings_encrypted_direct_messages" = "Versleutelde directe berichten";
 "settings_notify_me_for" = "Stuur een melding voor";
-"settings_mentions_and_keywords" = "Vermeldingen en Trefwoorden";
-"settings_default" = "Standaard Notificaties";
+"settings_mentions_and_keywords" = "Vermeldingen en trefwoorden";
+"settings_default" = "Standaardnotificaties";
 "settings_notifications" = "NOTIFICATIES";
 "version_check_modal_action_title_deprecated" = "Ontdek hoe";
 "version_check_modal_subtitle_deprecated" = "We hebben gewerkt aan het verbeteren van %@ voor een snellere en meer gepolijste ervaring. Helaas is uw huidige iOS-versie niet geschikt voor sommige van deze verbeteringen en worden deze niet langer ondersteund.\nWe adviseren u om uw besturingssysteem te upgraden om %@ volledig te kunnen gebruiken.";
@@ -1697,7 +1697,7 @@
 
 "location_sharing_title" = "Locatie";
 "ok" = "OK";
-"settings_enable_room_message_bubbles" = "Bericht bubbels";
+"settings_enable_room_message_bubbles" = "Berichtbubbels";
 "onboarding_splash_page_4_message" = "Element is ook zeer geschikt voor op de werkvloer. Het wordt vertrouwd door 's werelds veiligste organisaties.";
 "onboarding_splash_page_4_title_no_pun" = "Berichten voor uw team.";
 "onboarding_splash_page_3_message" = "End-to-end versleuteld en geen telefoonnummer vereist. Geen advertenties of datamining.";
@@ -2418,7 +2418,7 @@
 "room_participants_leave_processing" = "Verlaten";
 "search_filter_placeholder" = "Filter";
 "onboarding_celebration_button" = "Laten we beginnen";
-"onboarding_celebration_message" = "Ga op elk gewenst moment naar instellingen om uw profiel bij te werken.";
+"onboarding_celebration_message" = "Ga op elk gewenst moment naar de instellingen om uw profiel bij te werken";
 "onboarding_celebration_title" = "Ziet er goed uit!";
 "onboarding_avatar_accessibility_label" = "Profielfoto";
 "onboarding_avatar_message" = "Tijd om een gezicht aan uw naam te geven";
@@ -2469,7 +2469,7 @@
 "threads_discourage_information_2" = "\n\nWilt u toch threads inschakelen?";
 "threads_discourage_information_1" = "Uw server ondersteunt momenteel geen discussies, dus deze functie kan onbetrouwbaar zijn. Sommige berichten in een discussie zijn mogelijk niet betrouwbaar beschikbaar. ";
 /* The placeholder string contains the user's matrix ID */
-"onboarding_congratulations_message" = "Uw account %@ is aangemaakt.";
+"onboarding_congratulations_message" = "Uw account %@ is aangemaakt";
 "onboarding_use_case_skip_button" = "Sla deze vraag over";
 "location_sharing_live_stop_sharing_progress" = "Stop locatie delen";
 "location_sharing_live_stop_sharing_error" = "Kan locatie delen niet stoppen";
@@ -2509,7 +2509,7 @@
 "settings_timeline" = "TIJDLIJN";
 "room_accessibility_record_voice_message_hint" = "Dubbeltik en houd vast om op te nemen.";
 "room_accessibility_record_voice_message" = "Spraakbericht opnemen";
-"message_reply_to_sender_sent_their_live_location" = "heeft hun live locatie gedeeld.";
+"message_reply_to_sender_sent_their_live_location" = "Live locatie.";
 "location_sharing_live_lab_promotion_activation" = "Live locatie delen inschakelen";
 "location_sharing_live_lab_promotion_text" = "Let op: dit is een labfunctie met een tijdelijke implementatie waarmee de geschiedenis van uw gedeelde locatie permanent zichtbaar is voor andere mensen in de kamer.";
 "location_sharing_live_lab_promotion_title" = "Live locatie delen";
@@ -2557,8 +2557,8 @@
 "authentication_verify_email_waiting_button" = "Email opnieuw verzenden";
 "authentication_verify_email_waiting_hint" = "Geen e-mail ontvangen?";
 /* The placeholder will show the email address that was entered. */
-"authentication_verify_email_waiting_message" = "Om uw e-mail te bevestigen, tikt u op de knop in de e-mail die we zojuist naar %@ hebben gestuurd";
-"authentication_verify_email_waiting_title" = "Controleer uw e-mailadres om te verifiëren.";
+"authentication_verify_email_waiting_message" = "Volg de instructies die naar %@ gestuurd zijn";
+"authentication_verify_email_waiting_title" = "Verifieer uw e-mailadres.";
 "authentication_verify_email_text_field_placeholder" = "E-mailadres";
 "authentication_verify_email_input_message" = "%@ moet uw account verifiëren";
 "authentication_verify_email_input_title" = "Vul uw e-mailadres in";
@@ -2581,3 +2581,4 @@
 
 // MARK: Authentication
 "authentication_registration_title" = "Maak een account aan";
+"authentication_server_info_title_login" = "Waar uw gesprekken leven";
