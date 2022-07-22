@@ -179,7 +179,6 @@ platform :ios do
       workspace: "Riot.xcworkspace",
       proj: "Riot.xcodeproj",
       scheme: "Riot",
-      binary_file: "Element",
     )
   end
   
