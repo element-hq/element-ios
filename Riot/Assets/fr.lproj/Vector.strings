@@ -2216,3 +2216,4 @@
 "room_access_settings_screen_nav_title" = "Permissions du salon";
 "room_details_promote_room_suggest_title" = "Proposer aux membres de l'espace";
 "room_details_promote_room_title" = "Promouvoir le salon";
+"settings_labs_enable_live_location_sharing" = "Partage de votre localisation en temps réel - partager votre géolocalisation actuelle (actuellement en développement, temporaire, la géolocalisation persiste dans l'histoire du salon)";
