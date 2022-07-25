@@ -649,9 +649,8 @@
 {
     if (roomParentId) {
         NSString *parentName = [mxSession roomSummaryWithRoomId:roomParentId].displayname;
-        if (BuildSettings.newAppLayoutEnaled) {
-//            self.title = parentName;
-        } else {
+        if (!BuildSettings.newAppLayoutEnaled)
+        {
             NSMutableArray<NSString *> *breadcrumbs = [[NSMutableArray alloc] initWithObjects:parentName, nil];
 
             MXSpace *firstRootAncestor = roomParentId ? [mxSession.spaceService firstRootAncestorForRoomWithId:roomParentId] : nil;
@@ -666,9 +665,8 @@
     }
     else
     {
-        if (BuildSettings.newAppLayoutEnaled) {
-//            self.title = VectorL10n.allChatsTitle;
-        } else {
+        if (!BuildSettings.newAppLayoutEnaled)
+        {
             titleView.breadcrumbView.breadcrumbs = @[];
         }
     }
@@ -679,6 +677,8 @@
 
 - (void)updateSideMenuNotifcationIcon
 {
+    if (BuildSettings.newAppLayoutEnaled) { return; }
+    
     BOOL displayNotification = NO;
     
     for (MXRoomSummary *summary in recentsDataSource.mxSession.spaceService.rootSpaceSummaries) {
