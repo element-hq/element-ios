@@ -35,32 +35,16 @@ import UIKit
         
         filterOptionListView.options = filterOptions
         filterOptionListView.selectedOptionType = AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.activeFilters
-        filterOptionListView.selectionChanged = { [weak self] filter in
+        filterOptionListView.selectionChanged = { filter in
             guard filter != .all else {
-                Analytics.shared.trackInteraction(.allChatAllOptionActivated)
                 AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.activeFilters = []
                 return
             }
          
-            self?.trackSelectionChangeFor(filter)
             AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.activeFilters = filter
         }
 
         return filterOptionListView
-    }
-    
-    private func trackSelectionChangeFor(_ optionType: AllChatsLayoutFilterType) {
-        switch optionType {
-        case .favourites:
-            Analytics.shared.trackInteraction(.allChatFavouritesOptionActivated)
-        case .people:
-            Analytics.shared.trackInteraction(.allChatPeopleOptionActivated)
-        case .rooms:
-            Analytics.shared.trackInteraction(.allChatRoomsOptionActivated)
-        case .unreads:
-            Analytics.shared.trackInteraction(.allChatUnreadsOptionActivated)
-        default: break
-        }
     }
     
     var optionsCount: Int {

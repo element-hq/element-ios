@@ -58,7 +58,6 @@ import AnalyticsEvents
     case spaceMembers
     case spaceExploreRooms
     case dialpad
-    case editLayout
     
     /// The screen name reported to the AnalyticsEvent.
     var screenName: AnalyticsEvent.MobileScreen.ScreenName {
@@ -143,8 +142,6 @@ import AnalyticsEvents
             return .SpaceExploreRooms
         case .dialpad:
             return .Dialpad
-        case .editLayout:
-            return .EditLayout
         }
     }
 }
