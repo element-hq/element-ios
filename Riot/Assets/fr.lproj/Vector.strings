@@ -2289,3 +2289,4 @@
 // MARK: Authentication
 "authentication_registration_title" = "Créez votre compte";
 "room_access_settings_screen_upgrade_alert_title" = "Mettre à niveau le salon";
+"room_access_settings_screen_upgrade_required" = "Mise à jour requise";
