@@ -1209,18 +1209,18 @@
 "room_info_list_one_member" = "1 membre";
 "create_room_placeholder_address" = "#salondetest:matrix.org";
 "create_room_section_header_address" = "ADRESSE";
-"create_room_show_in_directory" = "Publier le salon dans le répertoire";
+"create_room_show_in_directory" = "Afficher le salon dans le répertoire";
 "create_room_section_footer_type" = "Les personnes ne rejoignent un salon privé que sur invitation.";
 "create_room_type_public" = "Salon public (tout le monde)";
 "create_room_type_private" = "Salon privé (seulement sur invitation)";
-"create_room_section_header_type" = "Type de salon";
+"create_room_section_header_type" = "QUI PEUT Y ACCÉDER";
 "create_room_section_footer_encryption" = "Le chiffrement ne peut pas être désactivé ensuite.";
 "create_room_enable_encryption" = "Activer le chiffrement";
 "create_room_section_header_encryption" = "Chiffrement";
 "create_room_placeholder_topic" = "De quoi parle ce salon ?";
-"create_room_section_header_topic" = "Sujet du salon (facultatif)";
+"create_room_section_header_topic" = "SUJET (facultatif)";
 "create_room_placeholder_name" = "Nom";
-"create_room_section_header_name" = "Nom du salon";
+"create_room_section_header_name" = "NOM";
 
 // MARK: - Create Room
 
@@ -2289,4 +2289,141 @@
 // MARK: Authentication
 "authentication_registration_title" = "Créez votre compte";
 "room_access_settings_screen_upgrade_alert_title" = "Mettre à niveau le salon";
-"room_access_settings_screen_upgrade_required" = "Mise à jour requise";
+"room_access_settings_screen_upgrade_required" = "Mise à niveau requise";
+"location_sharing_allow_background_location_message" = "Si vous voulez partager votre localisation en temps réel, Element doit avoir accès à vos données de localisation lorsque l’application est en arrière-plan. Pour lui donner accès, rendez-vous dans Réglages > Position et sélectionnez Toujours";
+"settings_timeline" = "HISTORIQUE";
+"authentication_server_selection_login_title" = "Connexion à un serveur d’accueil";
+"message_reply_to_sender_sent_their_live_location" = "Localisation en temps réel.";
+"room_displayname_more_than_two_members" = "%@ et %@ autres";
+"ignore_user" = "Ignorer l’utilisateur";
+"location_sharing_live_lab_promotion_activation" = "Activer le partage de localisation en temps réel";
+"location_sharing_live_lab_promotion_text" = "Pour information : il s’agit d’une fonctionnalité expérimentale et d’une implémentation temporaire qui rend votre historique de localisation visible de manière permanente à toutes les autres personnes dans le salon.";
+"location_sharing_live_lab_promotion_title" = "Partage de localisation en temps réel";
+"location_sharing_live_stop_sharing_progress" = "Arrêter de partager ma localisation";
+"location_sharing_live_stop_sharing_error" = "Échec de l’arrêt du partage de la localisation";
+"location_sharing_live_no_user_locations_error_title" = "Aucune localisation d’utilisateur disponible";
+"location_sharing_live_timer_selector_long" = "pour 8 heures";
+"location_sharing_live_timer_selector_medium" = "pour 1 heure";
+"location_sharing_live_timer_selector_short" = "pour 15 minutes";
+"location_sharing_live_timer_selector_title" = "Choisissez pour combien de temps les autres peuvent voir votre localisation précise.";
+"location_sharing_live_error" = "Erreur de localisation en temps réel";
+"location_sharing_live_loading" = "Chargement de la localisation en temps réel…";
+"location_sharing_live_timer_incoming" = "Partage jusqu’à %@";
+"location_sharing_live_list_item_stop_sharing_action" = "Arrêter";
+"location_sharing_live_list_item_current_user_display_name" = "Vous";
+"location_sharing_live_list_item_last_update_invalid" = "Dernière mise à jour inconnue";
+"location_sharing_live_list_item_last_update" = "Mis à jour il y a %@";
+"location_sharing_live_list_item_sharing_expired" = "Partage expiré";
+"location_sharing_live_list_item_time_left" = "%@ restant";
+"location_sharing_live_viewer_title" = "Localisation";
+"location_sharing_live_map_callout_title" = "Partager la localisation";
+"location_sharing_pin_drop_share_title" = "Envoyer cette localisation";
+"location_sharing_static_share_title" = "Envoyer ma localisation actuelle";
+"live_location_sharing_banner_stop" = "Arrêter";
+"live_location_sharing_ended" = "Localisation en temps réel désactivée";
+"live_location_sharing_banner_title" = "Localisation en temps réel activée";
+
+// MARK: Live location sharing
+
+"location_sharing_live_share_title" = "Partager la localisation en temps réel";
+"location_sharing_map_credits_title" = "© Copyright";
+"location_sharing_allow_background_location_cancel_action" = "Pas maintenant";
+"location_sharing_allow_background_location_validate_action" = "Paramètres";
+"location_sharing_allow_background_location_title" = "Autoriser l’accès";
+"location_sharing_post_failure_subtitle" = "%@ n’a pas pu envoyer votre localisation. Veuillez réessayer plus tard.";
+"side_menu_coach_message" = "Balayez vers la droite ou appuyez pour voir tous les salons";
+
+// MARK: Reactions
+
+"room_event_action_reaction_more" = "%@ de plus";
+"leave_space_selection_no_rooms" = "Ne sélectionner aucun salon";
+"leave_space_selection_all_rooms" = "Sélectionner tous les salons";
+"leave_space_selection_title" = "SÉLECTIONNER LES SALONS";
+"leave_space_and_more_rooms" = "Quitter l’espace et %@ salons";
+"leave_space_and_one_room" = "Quitter l’espace et 1 salon";
+
+// Mark: Leave space
+
+"leave_space_action" = "Quitter l’espace";
+"spaces_add_room_missing_permission_message" = "Vous n’avez pas la permission d’ajouter des salons à cet espace.";
+"spaces_creation_in_one_space" = "dans 1 espace";
+"spaces_creation_in_many_spaces" = "dans %@ espaces";
+"spaces_creation_in_spacename_plus_many" = "dans %@ et %@ autres espaces";
+"spaces_creation_in_spacename_plus_one" = "dans %@ et un autre espace";
+"spaces_creation_in_spacename" = "dans %@";
+"spaces_creation_post_process_inviting_users" = "Invitation de %@ utilisateurs";
+"spaces_creation_post_process_adding_rooms" = "Ajout de %@ salons";
+"spaces_creation_post_process_creating_room" = "Création de %@";
+"spaces_creation_post_process_uploading_avatar" = "Envoi de l’avatar";
+"spaces_creation_post_process_creating_space_task" = "Création de %@";
+"spaces_creation_post_process_creating_space" = "Création de l’espace";
+"spaces_creation_invite_by_username_message" = "Vous pouvez aussi les inviter plus tard.";
+"spaces_creation_invite_by_username_title" = "Inviter votre équipe";
+"spaces_creation_invite_by_username" = "Inviter par nom d’utilisateur";
+"spaces_creation_add_rooms_message" = "Cet espace n’est que pour vous : personne ne sera au courant. Vous pouvez en ajouter d’autres plus tard.";
+"spaces_creation_add_rooms_title" = "Que voulez-vous ajouter ?";
+"spaces_creation_sharing_type_me_and_teammates_detail" = "Un espace privé pour vous et votre équipe";
+"spaces_creation_sharing_type_me_and_teammates_title" = "Moi et mon équipe";
+"spaces_creation_sharing_type_just_me_detail" = "Un espace privé pour organiser vos salons";
+"spaces_creation_sharing_type_just_me_title" = "Seulement moi";
+"spaces_creation_sharing_type_message" = "Assurez-vous que les bonnes personnes ont accès %@. Vous pouvez changer ceci plus tard.";
+"spaces_creation_sharing_type_title" = "Avec qui travaillez-vous ?";
+"spaces_creation_email_invites_email_title" = "E-mail";
+"spaces_creation_email_invites_message" = "Vous pouvez aussi les inviter plus tard.";
+"spaces_creation_email_invites_title" = "Invitez votre équipe";
+"spaces_creation_new_rooms_support" = "Support";
+"spaces_creation_new_rooms_random" = "Hors-sujet";
+"spaces_creation_new_rooms_general" = "Général";
+"spaces_creation_new_rooms_room_name_title" = "Nom du salon";
+"spaces_creation_new_rooms_message" = "Nous allons créer un salon pour chacune.";
+"spaces_creation_new_rooms_title" = "Quel type de discussions allez-vous avoir ?";
+"spaces_creation_cancel_message" = "Ces informations seront perdues.";
+"spaces_creation_cancel_title" = "Interrompre la création de l’espace ?";
+"spaces_creation_private_space_title" = "Votre espace privé";
+"spaces_creation_public_space_title" = "Votre espace public";
+"spaces_creation_address_already_exists" = "%@\nexiste déjà";
+"spaces_creation_address_invalid_characters" = "%@\na des caractères invalides";
+"spaces_creation_address_default_message" = "Votre espace pourra être visualisé via\n%@";
+"spaces_creation_empty_room_name_error" = "Nom requis";
+"spaces_creation_address" = "Adresse";
+"spaces_creation_settings_message" = "Ajoutez des détails pour lui donner de la personnalité. Vous pouvez les mettre à jour n’importe quand.";
+"spaces_creation_footer" = "Vous pouvez changer ceci plus tard";
+"spaces_creation_visibility_message" = "Pour rejoindre un espace existant, vous avez besoin d’une invitation.";
+"spaces_creation_visibility_title" = "Quel type d’espace voulez-vous créer ?";
+
+// Mark: - Space Creation
+
+"spaces_creation_hint" = "Les espaces sont une nouvelle manière de regrouper les salons et les gens.";
+"spaces_feature_not_available" = "Cette fonctionnalité n’est pas disponible ici. Pour l’instant, vous devez utiliser %@ sur votre ordinateur.";
+"space_settings_current_address_message" = "Votre espace peut être visualisé via\n%@";
+"space_settings_update_failed_message" = "Échec de la mise à jour des paramètres de l’espace. Voulez-vous réessayer ?";
+"space_settings_access_section" = "Qui peut accéder à cet espace ?";
+"space_topic" = "Description";
+"space_public_join_rule_detail" = "Ouvert à tous, idéal pour les communautés";
+"spaces_add_space" = "Ajouter un espace";
+"spaces_add_room" = "Ajouter un salon";
+"spaces_invite_people" = "Inviter des gens";
+"space_private_join_rule_detail" = "Sur invitation, idéal pour vous ou votre équipe";
+"spaces_explore_rooms_one_room" = "1 salon";
+"spaces_explore_rooms_room_number" = "%@ salons";
+"spaces_create_space_title" = "Créer un espace";
+"spaces_add_space_title" = "Créer un espace";
+"space_invite_not_enough_permission" = "Vous n’êtes pas autorisés à inviter des personnes dans cet espace";
+"room_invite_not_enough_permission" = "Vous n’êtes pas autorisés à inviter des personnes dans ce salon";
+"room_invite_to_room_option_detail" = "Ils ne feront pas partie de %@.";
+"room_invite_to_space_option_detail" = "Ils peuvent parcourir %@, mais ne seront pas membre de %@.";
+"share_invite_link_space_text" = "Hé, rejoignez cet espace sur %@";
+"share_invite_link_room_text" = "Hé, rejoignez ce salon sur %@";
+
+// MARK: - Share invite link
+
+"share_invite_link_action" = "Partager le lien d’invitation";
+"home_context_menu_mark_as_read" = "Marquer comme lu";
+"room_info_back_button_title" = "Informations du salon";
+"create_room_suggest_room_footer" = "Les salons recommandés sont suggérés aux membres de l’espace comme salons de qualité.";
+"create_room_show_in_directory_footer" = "Ceci aidera les gens à le trouver et le rejoindre.";
+"network_offline_message" = "Vous êtes déconnecté, merci de vérifier votre connexion.";
+"network_offline_title" = "Vous êtes déconnecté";
+"room_access_settings_screen_upgrade_alert_upgrading" = "Mise à niveau du salon";
+"room_access_settings_screen_upgrade_alert_upgrade_button" = "Mettre à niveau";
+"room_access_settings_screen_upgrade_alert_note" = "Veuillez noter que la mise à niveau va créer une nouvelle version de ce salon. Tous les messages actuels vont rester dans ce salon archivé.";
