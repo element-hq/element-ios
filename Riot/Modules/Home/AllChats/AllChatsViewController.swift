@@ -46,7 +46,7 @@ class AllChatsViewController: HomeViewController {
         recentsTableView.clipsToBounds = false
         recentsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -70).isActive = true
         
-        self.tabBarController?.title = VectorL10n.allChatsTitle
+        setNavTile()
         setLargeTitleDisplayMode(.automatic)
 
         searchController.obscuresBackgroundDuringPresentation = false
@@ -136,6 +136,10 @@ class AllChatsViewController: HomeViewController {
         self.tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), menu: AllChatsActionProvider().menu)
     }
 
+    private func setNavTile() {
+        self.tabBarController?.title = self.dataSource?.currentSpace?.summary?.displayname ?? VectorL10n.allChatsTitle
+    }
+    
     private func showCreateSpace(parentSpaceId: String?) {
         let coordinator = SpaceCreationCoordinator(parameters: SpaceCreationCoordinatorParameters(session: self.mainSession))
         let presentable = coordinator.toPresentable()
@@ -176,7 +180,7 @@ class AllChatsViewController: HomeViewController {
         }
         
         self.dataSource.currentSpace = space
-        self.tabBarController?.title = space.summary?.displayname ?? VectorL10n.allChatsTitle
+        setNavTile()
         self.recentsTableView.setContentOffset(.zero, animated: true)
     }
 }
