@@ -120,3 +120,6 @@
 /** General **/
 
 "Notification" = "通知";
+
+/* New file message from a specific person, not referencing a room. */
+"LOCATION_FROM_USER" = "%@ 分享了他们的位置";
