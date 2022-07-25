@@ -511,7 +511,7 @@
 "room_action_send_photo_or_video" = "Envoyer une photo ou une vidéo";
 "room_action_send_sticker" = "Envoyer un autocollant";
 "settings_deactivate_account" = "DÉSACTIVER LE COMPTE";
-"settings_deactivate_my_account" = "Désactiver mon compte";
+"settings_deactivate_my_account" = "Désactiver le compte pour toujours";
 "widget_sticker_picker_no_stickerpacks_alert" = "Vous n’avez aucun jeu d’autocollants activé.";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "En ajouter maintenant ?";
 "deactivate_account_title" = "Désactiver le compte";
@@ -2216,7 +2216,7 @@
 "room_access_settings_screen_nav_title" = "Permissions du salon";
 "room_details_promote_room_suggest_title" = "Proposer aux membres de l'espace";
 "room_details_promote_room_title" = "Promouvoir le salon";
-"settings_labs_enable_live_location_sharing" = "Partage de votre localisation en temps réel - partager votre géolocalisation actuelle (actuellement en développement, temporaire, la géolocalisation persiste dans l'histoire du salon)";
+"settings_labs_enable_live_location_sharing" = "Partage de votre localisation en temps réel - partager votre géolocalisation actuelle (actuellement en développement, et de manière temporaire la géolocalisation persiste dans l’historique du salon)";
 "settings_ui_show_redactions_in_room_history" = "Afficher un message générique à la place de messages supprimés";
 "authentication_verify_msisdn_waiting_title" = "Surveillez vos messages";
 "room_accessibility_record_voice_message_hint" = "Appuyez deux fois et maintenez pour enregistrer.";
@@ -2288,3 +2288,4 @@
 
 // MARK: Authentication
 "authentication_registration_title" = "Créez votre compte";
+"room_access_settings_screen_upgrade_alert_title" = "Mettre à niveau le salon";
