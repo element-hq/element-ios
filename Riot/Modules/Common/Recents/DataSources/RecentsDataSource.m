@@ -41,8 +41,7 @@
 #define RECENTSDATASOURCE_SECTION_ALL_CHATS     0x101
 
 #define RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT             30.0
-#define RECENTSDATASOURCE_SECTION_HEADER_TOP_PADDING                0
-#define RECENTSDATASOURCE_ALL_CHATS_SECTION_BOTTOM_VIEW_HEIGHT      50.0
+#define RECENTSDATASOURCE_ALL_CHATS_SECTION_BOTTOM_VIEW_HEIGHT      38.0
 
 NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSourceTapOnDirectoryServerChange";
 
@@ -189,7 +188,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         [types addObject:@(RecentsDataSourceSectionTypeInvites)];
     }
     
-    if (self.currentSpace == nil && self.recentRoomCellDataArray.count > 0 && _recentsDataSourceMode == RecentsDataSourceModeAllChats)
+    if (self.recentRoomCellDataArray.count > 0 && _recentsDataSourceMode == RecentsDataSourceModeAllChats)
     {
         AllChatsLayoutSettings *settings = AllChatsLayoutSettingsManager.shared.allChatLayoutSettings;
         if ((settings.sections & AllChatsLayoutSectionTypeRecents) == AllChatsLayoutSectionTypeRecents)
@@ -631,7 +630,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         count = self.recentRoomCellDataArray.count;
     }
-    else if (sectionType == RecentsDataSourceSectionTypeAllChats && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_RECENTS))
+    else if (sectionType == RecentsDataSourceSectionTypeAllChats && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_ALL_CHATS))
     {
         count = self.allChatsRoomCellDataArray.count;
     }
@@ -653,12 +652,15 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 - (CGFloat)heightForHeaderInSection:(NSInteger)section
 {
     RecentsDataSourceSectionType sectionType = [self.sections sectionTypeForSectionIndex:section];
-    if (sectionType == RecentsDataSourceSectionTypeSecureBackupBanner || sectionType == RecentsDataSourceSectionTypeCrossSigningBanner)
+    if (sectionType == RecentsDataSourceSectionTypeSecureBackupBanner ||
+        sectionType == RecentsDataSourceSectionTypeCrossSigningBanner ||
+        sectionType == RecentsDataSourceSectionTypeRecentRooms ||
+        (sectionType == RecentsDataSourceSectionTypeAllChats && !self.allChatsFilterOptions.optionsCount))
     {
         return 0.0;
     }
 
-    CGFloat baseHeight = section > 0 ? RECENTSDATASOURCE_SECTION_HEADER_TOP_PADDING : 0;
+    CGFloat baseHeight = 0;
     
     if (sectionType == RecentsDataSourceSectionTypeAllChats && _recentsDataSourceMode == RecentsDataSourceModeAllChats)
     {
@@ -851,7 +853,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 {
     // No header view in key backup banner section
     RecentsDataSourceSectionType sectionType = [self.sections sectionTypeForSectionIndex:section];
-    if (sectionType == RecentsDataSourceSectionTypeSecureBackupBanner || sectionType == RecentsDataSourceSectionTypeCrossSigningBanner)
+    if (sectionType == RecentsDataSourceSectionTypeSecureBackupBanner ||
+        sectionType == RecentsDataSourceSectionTypeCrossSigningBanner ||
+        sectionType == RecentsDataSourceSectionTypeRecentRooms ||
+        (sectionType == RecentsDataSourceSectionTypeAllChats && !self.allChatsFilterOptions.optionsCount))
     {
         return nil;
     }
@@ -864,14 +869,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     sectionHeader.backgroundView = [UIView new];
     sectionHeader.frame = frame;
     sectionHeader.backgroundView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
-    if (section > 0)
-    {
-        sectionHeader.topPadding = RECENTSDATASOURCE_SECTION_HEADER_TOP_PADDING;
-    }
-    else
-    {
-        sectionHeader.topPadding = 0;
-    }
+    sectionHeader.topPadding = 0;
     sectionHeader.topViewHeight = RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT + sectionHeader.topPadding;
     NSInteger sectionBitwise = 0;
 
@@ -958,7 +956,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         }
     }
     
-    if (self.recentsListService.space == nil && _recentsDataSourceMode == RecentsDataSourceModeAllChats && sectionType == RecentsDataSourceSectionTypeAllChats) {
+    if (_recentsDataSourceMode == RecentsDataSourceModeAllChats && sectionType == RecentsDataSourceSectionTypeAllChats) {
         if (!self.allChatsOptionsView) {
             self.allChatsOptionsView = [self.allChatsFilterOptions createFilterListView];
         }

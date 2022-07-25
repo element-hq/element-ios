@@ -4284,6 +4284,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         RiotSettings.shared.showDecryptedContentInNotifications = BuildSettings.decryptNotificationsByDefault;
     }
+    
+    // Need to set `showAllRoomsInHomeSpace` to `true` for the new App Layout
+    if (BuildSettings.newAppLayoutEnaled)
+    {
+        RiotSettings.shared.showAllRoomsInHomeSpace = YES;
+    }
 }
 
 #pragma mark - App version management

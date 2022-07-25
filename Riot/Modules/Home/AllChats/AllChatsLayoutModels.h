@@ -23,10 +23,11 @@ typedef NS_OPTIONS(NSUInteger, AllChatsLayoutSectionType) {
 };
 
 typedef NS_OPTIONS(NSUInteger, AllChatsLayoutFilterType) {
-    AllChatsLayoutFilterTypePeople       = 1 << 0,
-    AllChatsLayoutFilterTypeRooms        = 1 << 1,
-    AllChatsLayoutFilterTypeFavourites   = 1 << 2,
-    AllChatsLayoutFilterTypeUnreads      = 1 << 3
+    AllChatsLayoutFilterTypeAll          = 1 << 0,
+    AllChatsLayoutFilterTypePeople       = 1 << 1,
+    AllChatsLayoutFilterTypeRooms        = 1 << 2,
+    AllChatsLayoutFilterTypeFavourites   = 1 << 3,
+    AllChatsLayoutFilterTypeUnreads      = 1 << 4
 };
 
 typedef NS_ENUM(NSUInteger, AllChatsLayoutSortingType) {

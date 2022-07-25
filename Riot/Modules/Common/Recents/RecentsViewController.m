@@ -2549,7 +2549,10 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         return nil;
     }
     
+#if TARGET_IPHONE_SIMULATOR
+#else
     self.recentsUpdateEnabled = NO;
+#endif
     return [self.contextMenuProvider contextMenuConfigurationWith:cellData from:cell session:self.dataSource.mxSession];
 }
 

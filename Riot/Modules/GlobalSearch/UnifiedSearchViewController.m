@@ -145,6 +145,12 @@
     recentsDataSource.publicRoomsDirectoryDataSource.showNSFWRooms = RiotSettings.shared.showNSFWPublicRooms;
     
     [self updateSearch];
+    
+    if (BuildSettings.newAppLayoutEnaled)
+    {
+        [self.searchBar vc_searchTextField].backgroundColor = nil;
+        [self setLargeTitleDisplayMode: UINavigationItemLargeTitleDisplayModeAutomatic];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated

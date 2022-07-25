@@ -649,20 +649,28 @@
 {
     if (roomParentId) {
         NSString *parentName = [mxSession roomSummaryWithRoomId:roomParentId].displayname;
-        NSMutableArray<NSString *> *breadcrumbs = [[NSMutableArray alloc] initWithObjects:parentName, nil];
+        if (BuildSettings.newAppLayoutEnaled) {
+//            self.title = parentName;
+        } else {
+            NSMutableArray<NSString *> *breadcrumbs = [[NSMutableArray alloc] initWithObjects:parentName, nil];
 
-        MXSpace *firstRootAncestor = roomParentId ? [mxSession.spaceService firstRootAncestorForRoomWithId:roomParentId] : nil;
-        NSString *rootName = nil;
-        if (firstRootAncestor)
-        {
-            rootName = [mxSession roomSummaryWithRoomId:firstRootAncestor.spaceId].displayname;
-            [breadcrumbs insertObject:rootName atIndex:0];
+            MXSpace *firstRootAncestor = roomParentId ? [mxSession.spaceService firstRootAncestorForRoomWithId:roomParentId] : nil;
+            NSString *rootName = nil;
+            if (firstRootAncestor)
+            {
+                rootName = [mxSession roomSummaryWithRoomId:firstRootAncestor.spaceId].displayname;
+                [breadcrumbs insertObject:rootName atIndex:0];
+            }
+            titleView.breadcrumbView.breadcrumbs = breadcrumbs;
         }
-        titleView.breadcrumbView.breadcrumbs = breadcrumbs;
     }
     else
     {
-        titleView.breadcrumbView.breadcrumbs = @[];
+        if (BuildSettings.newAppLayoutEnaled) {
+//            self.title = VectorL10n.allChatsTitle;
+        } else {
+            titleView.breadcrumbView.breadcrumbs = @[];
+        }
     }
     
     recentsDataSource.currentSpace = [mxSession.spaceService getSpaceWithId:roomParentId];
@@ -701,8 +709,11 @@
 
 -(void)setupTitleView
 {
-    titleView = [MainTitleView new];
-    self.navigationItem.titleView = titleView;
+    if (!BuildSettings.newAppLayoutEnaled)
+    {
+        titleView = [MainTitleView new];
+        self.navigationItem.titleView = titleView;
+    }
 }
 
 -(void)setTitleLabelText:(NSString *)text

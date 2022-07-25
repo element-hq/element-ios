@@ -123,7 +123,7 @@ public class VectorL10n: NSObject {
   public static var allChatsEditLayout: String { 
     return VectorL10n.tr("Vector", "all_chats_edit_layout") 
   }
-  /// Activity
+  /// Sort by activity
   public static var allChatsEditLayoutActivityOrder: String { 
     return VectorL10n.tr("Vector", "all_chats_edit_layout_activity_order") 
   }
@@ -143,7 +143,7 @@ public class VectorL10n: NSObject {
   public static var allChatsEditLayoutAddSectionTitle: String { 
     return VectorL10n.tr("Vector", "all_chats_edit_layout_add_section_title") 
   }
-  /// A-Z
+  /// Sort A-Z
   public static var allChatsEditLayoutAlphabeticalOrder: String { 
     return VectorL10n.tr("Vector", "all_chats_edit_layout_alphabetical_order") 
   }
@@ -154,6 +154,14 @@ public class VectorL10n: NSObject {
   /// Recents
   public static var allChatsEditLayoutRecents: String { 
     return VectorL10n.tr("Vector", "all_chats_edit_layout_recents") 
+  }
+  /// Show filters
+  public static var allChatsEditLayoutShowFilters: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout_show_filters") 
+  }
+  /// Show recents
+  public static var allChatsEditLayoutShowRecents: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout_show_recents") 
   }
   /// Sort messages by
   public static var allChatsEditLayoutSortingOptionsTitle: String { 
@@ -7523,6 +7531,10 @@ public class VectorL10n: NSObject {
   public static var spacePublicJoinRuleDetail: String { 
     return VectorL10n.tr("Vector", "space_public_join_rule_detail") 
   }
+  /// Choose space
+  public static var spaceSelectorTitle: String { 
+    return VectorL10n.tr("Vector", "space_selector_title") 
+  }
   /// Who can access this space?
   public static var spaceSettingsAccessSection: String { 
     return VectorL10n.tr("Vector", "space_settings_access_section") 
@@ -7562,6 +7574,10 @@ public class VectorL10n: NSObject {
   /// Create space
   public static var spacesAddSpaceTitle: String { 
     return VectorL10n.tr("Vector", "spaces_add_space_title") 
+  }
+  /// Create space within %@
+  public static func spacesAddSubspaceTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_add_subspace_title", p1)
   }
   /// This feature hasn’t been implemented here, but it’s on the way. For now, you can do that with %@ on your computer.
   public static func spacesComingSoonDetail(_ p1: String) -> String {

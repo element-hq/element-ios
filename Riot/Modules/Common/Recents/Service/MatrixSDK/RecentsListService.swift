@@ -87,7 +87,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         .favourites: [.favorited],
         .people: [.invited, .directPeople],
         .rooms: [.invited, .conversationRooms, .suggested],
-        .allChats: [.recents, .invited, .allChats, .lowPriority, .serverNotice, .suggested]
+        .allChats: [.recents, .favorited, .invited, .allChats, .lowPriority, .serverNotice, .suggested]
     ]
     
     private var allFetchers: [MXRoomListDataFetcher] {
@@ -137,7 +137,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         if let fetcher = serverNoticeRoomListDataFetcher, fetcherTypes.contains(.serverNotice) {
             result.append(fetcher)
         }
-        if let fetcher = suggestedRoomListDataFetcher, fetcherTypes.contains(.suggested) {
+        if space != nil, let fetcher = suggestedRoomListDataFetcher, fetcherTypes.contains(.suggested) {
             result.append(fetcher)
         }
         if let fetcher = recentRoomListDataFetcher, fetcherTypes.contains(.recents) {
@@ -168,6 +168,11 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     private var sortOptions: MXRoomListDataSortOptions {
         switch mode {
         case .home:
+            let pinMissed = RiotSettings.shared.pinRoomsWithMissedNotificationsOnHome
+            let pinUnread = RiotSettings.shared.pinRoomsWithUnreadMessagesOnHome
+            return MXRoomListDataSortOptions(missedNotificationsFirst: pinMissed,
+                                             unreadMessagesFirst: pinUnread)
+        case .allChats:
             let pinMissed = RiotSettings.shared.pinRoomsWithMissedNotificationsOnHome
             let pinUnread = RiotSettings.shared.pinRoomsWithUnreadMessagesOnHome
             switch AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.sorting {
@@ -223,6 +228,10 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
             self.refresh()
             for fetcher in self.allFetchers {
                 fetcher.refresh()
+            }
+            if let fetcher = self.allChatsRoomListDataFetcher {
+                self.updateConversationFetcher(fetcher, for: .allChats)
+                fetcher.paginate()
             }
         }
         
@@ -706,29 +715,26 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
             fetcher.fetchOptions.filterOptions.notDataTypes = notDataTypes
         case .allChats:
             let settings = AllChatsLayoutSettingsManager.shared.allChatLayoutSettings
-            if space != nil || (settings.sections.contains(.favourites) && !settings.filters.contains(.favourites)) {
+            if settings.sections.contains(.favourites) && !settings.filters.contains(.favourites) {
                 notDataTypes.insert(.favorited)
             }
             fetcher.fetchOptions.filterOptions.notDataTypes = notDataTypes
             
-            if space == nil {
-                let settings = AllChatsLayoutSettingsManager.shared.allChatLayoutSettings
-                if settings.filters.contains(.unreads) && settings.activeFilters.contains(.unreads) {
-                    fetcher.fetchOptions.filterOptions.dataTypes = [.unread]
-                    return
-                }
-                if settings.filters.contains(.rooms) && settings.activeFilters.contains(.rooms) {
-                    fetcher.fetchOptions.filterOptions.dataTypes = [.notDirect]
-                    return
-                }
-                if settings.filters.contains(.people) && settings.activeFilters.contains(.people) {
-                    fetcher.fetchOptions.filterOptions.dataTypes = [.direct]
-                    return
-                }
-                if settings.filters.contains(.favourites) && settings.activeFilters.contains(.favourites) {
-                    fetcher.fetchOptions.filterOptions.dataTypes = [.favorited]
-                    return
-                }
+            if settings.filters.contains(.unreads) && settings.activeFilters.contains(.unreads) {
+                fetcher.fetchOptions.filterOptions.dataTypes = [.unread]
+                return
+            }
+            if settings.filters.contains(.rooms) && settings.activeFilters.contains(.rooms) {
+                fetcher.fetchOptions.filterOptions.dataTypes = [.notDirect]
+                return
+            }
+            if settings.filters.contains(.people) && settings.activeFilters.contains(.people) {
+                fetcher.fetchOptions.filterOptions.dataTypes = [.direct]
+                return
+            }
+            if settings.filters.contains(.favourites) && settings.activeFilters.contains(.favourites) {
+                fetcher.fetchOptions.filterOptions.dataTypes = [.favorited]
+                return
             }
             fetcher.fetchOptions.filterOptions.dataTypes = []
         default:

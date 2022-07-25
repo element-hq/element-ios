@@ -126,7 +126,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         }
         
         self.currentSpaceId = spaceId
-        createRightButtonItem()
+        createAvatarButtonItem()
     }
     
     func toPresentable() -> UIViewController {
@@ -247,7 +247,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             sideMenuBarButtonItem.accessibilityLabel = VectorL10n.sideMenuRevealActionAccessibilityLabel
             
             tabBarController.navigationItem.leftBarButtonItem = sideMenuBarButtonItem
-        } else {
+        } else if !BuildSettings.newAppLayoutEnaled {
             let settingsBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.settingsIcon.image, style: .plain) { [weak self] in
                 self?.showSettings()
             }
@@ -384,29 +384,30 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     // TODO: Avoid to reinstantiate controllers everytime
     private func updateTabControllers(for tabBarController: MasterTabBarController, showCommunities: Bool) {
         var viewControllers: [UIViewController] = []
-          
+
         let homeViewController = BuildSettings.newAppLayoutEnaled ? self.createAllChatsViewController() : self.createHomeViewController()
-        
         viewControllers.append(homeViewController)
         
-        if RiotSettings.shared.homeScreenShowFavouritesTab {
-            let favouritesViewController = self.createFavouritesViewController()
-            viewControllers.append(favouritesViewController)
-        }
-        
-        if RiotSettings.shared.homeScreenShowPeopleTab {
-            let peopleViewController = self.createPeopleViewController()
-            viewControllers.append(peopleViewController)
-        }
-        
-        if RiotSettings.shared.homeScreenShowRoomsTab {
-            let roomsViewController = self.createRoomsViewController()
-            viewControllers.append(roomsViewController)
-        }
-        
-        if RiotSettings.shared.homeScreenShowCommunitiesTab && !(self.currentMatrixSession?.groups().isEmpty ?? false) && showCommunities {
-            let groupsViewController = self.createGroupsViewController()
-            viewControllers.append(groupsViewController)
+        if !BuildSettings.newAppLayoutEnaled {
+            if RiotSettings.shared.homeScreenShowFavouritesTab {
+                let favouritesViewController = self.createFavouritesViewController()
+                viewControllers.append(favouritesViewController)
+            }
+            
+            if RiotSettings.shared.homeScreenShowPeopleTab {
+                let peopleViewController = self.createPeopleViewController()
+                viewControllers.append(peopleViewController)
+            }
+            
+            if RiotSettings.shared.homeScreenShowRoomsTab {
+                let roomsViewController = self.createRoomsViewController()
+                viewControllers.append(roomsViewController)
+            }
+            
+            if RiotSettings.shared.homeScreenShowCommunitiesTab && !(self.currentMatrixSession?.groups().isEmpty ?? false) && showCommunities {
+                let groupsViewController = self.createGroupsViewController()
+                viewControllers.append(groupsViewController)
+            }
         }
         
         tabBarController.updateViewControllers(viewControllers)
@@ -430,34 +431,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     private func dismissSideMenu(animated: Bool) {
         self.parameters.appNavigator.sideMenu.dismiss(animated: animated)
-    }
-    
-    private func showAllChatEditLayout() {
-        guard let session = currentMatrixSession else {
-            return
-        }
-
-        let settings = AllChatsLayoutSettingsManager.shared.allChatLayoutSettings
-        let coordinator = AllChatsLayoutEditorCoordinator(parameters: AllChatsLayoutEditorCoordinatorParameters(settings: settings, session: session))
-        coordinator.start()
-        coordinator.completion = {  [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .cancel:
-                break
-            case .done(let newSettings):
-                AllChatsLayoutSettingsManager.shared.allChatLayoutSettings = newSettings
-            }
-            
-            self.remove(childCoordinator: coordinator)
-            self.navigationRouter.dismissModule(animated: true, completion: nil)
-        }
-        self.add(childCoordinator: coordinator)
-        
-        let navigationRouter = NavigationRouter()
-        navigationRouter.setRootModule(coordinator.toPresentable())
-        self.navigationRouter.present(navigationRouter, animated: true)
     }
     
     // FIXME: Should be displayed per tab.
@@ -767,12 +740,12 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             showCoachMessageIfNeeded(with: session)
         }
         
-        createRightButtonItem()
+        createAvatarButtonItem()
     }
     
     private weak var rightMenuAvatarView: AvatarView?
     
-    private func createRightButtonItem() {
+    private func createAvatarButtonItem() {
         guard BuildSettings.newAppLayoutEnaled else {
             let searchBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.searchIcon.image, style: .plain) { [weak self] in
                 self?.showUnifiedSearch()
@@ -793,32 +766,35 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             return
         }
         
-        var actions: [UIAction] = []
+        var actions: [UIMenuElement] = []
         
-        actions.append(UIAction(title: VectorL10n.settings, image: UIImage(systemName: "gearshape.fill")) { [weak self] action in
+        actions.append(UIAction(title: VectorL10n.settings, image: UIImage(systemName: "gearshape")) { [weak self] action in
             self?.showSettings()
         })
         
-        if currentSpaceId == nil {
-            actions.append(UIAction(title: VectorL10n.allChatsEditLayout, image: Asset.Images.allChatEditLayout.image) { [weak self] action in
-                self?.showAllChatEditLayout()
-            })
-        }
-        
+        var subMenuActions: [UIAction] = []
         if BuildSettings.sideMenuShowInviteFriends {
-            actions.append(UIAction(title: VectorL10n.sideMenuActionInviteFriends, image: UIImage(systemName: "square.and.arrow.up.fill")) { [weak self] action in
+            subMenuActions.append(UIAction(title: VectorL10n.sideMenuActionInviteFriends, image: UIImage(systemName: "square.and.arrow.up.fill")) { [weak self] action in
                         self?.showInviteFriends(from: nil)
             })
         }
 
+        subMenuActions.append(UIAction(title: VectorL10n.sideMenuActionFeedback, image: UIImage(systemName: "questionmark.circle")) { [weak self] action in
+            self?.showBugReport()
+        })
+        
+        actions.append(UIMenu(title: "", options: .displayInline, children: subMenuActions))
+        
         actions.append(UIAction(title: VectorL10n.roomAccessibilitySearch, image: UIImage(systemName: "magnifyingglass")) { [weak self] action in
             self?.showUnifiedSearch()
         })
 
-        actions.append(UIAction(title: VectorL10n.sideMenuActionFeedback, image: Asset.Images.sideMenuActionIconFeedback.image) { [weak self] action in
-            self?.showBugReport()
-        })
-        
+        actions.append(UIMenu(title: "", options: .displayInline, children: [
+            UIAction(title: VectorL10n.settingsSignOut, image: UIImage(systemName: "rectangle.portrait.and.arrow.right.fill"), attributes: .destructive) { [weak self] action in
+                // TODO: implement sign out
+            }
+        ]))
+
         let menu = UIMenu(options: .displayInline, children: actions)
         
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
@@ -895,6 +871,10 @@ extension TabBarCoordinator: MasterTabBarControllerDelegate {
     }
     
     func masterTabBarController(_ masterTabBarController: MasterTabBarController!, needsSideMenuIconWithNotification displayNotification: Bool) {
+        guard BuildSettings.enableSideMenu else {
+            return
+        }
+        
         let image = displayNotification ? Asset.Images.sideMenuNotifIcon.image : Asset.Images.sideMenuIcon.image
         let sideMenuBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: image, style: .plain) { [weak self] in
             self?.showSideMenu()

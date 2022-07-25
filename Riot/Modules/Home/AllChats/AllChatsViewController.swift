@@ -19,6 +19,17 @@ import Reusable
 
 class AllChatsViewController: HomeViewController {
     
+    // MARK: - Class methods
+    
+    static override func nib() -> UINib! {
+        return UINib(nibName: String(describing: self), bundle: Bundle(for: self.classForCoder()))
+    }
+    
+    // MARK: - Private
+    
+    private let searchController = UISearchController(searchResultsController: nil)
+    private let actionPanelView = AllChatsActionPanelView.loadFromNib()
+    
     static override func instantiate() -> Self {
         let storyboard = UIStoryboard(name: "Main", bundle: .main)
         guard let viewController = storyboard.instantiateViewController(withIdentifier: "AllChatsViewController") as? Self else {
@@ -30,15 +41,35 @@ class AllChatsViewController: HomeViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.recentsTableView.tag = RecentsDataSourceMode.allChats.rawValue
+        recentsTableView.tag = RecentsDataSourceMode.allChats.rawValue
+        recentsTableView.clipsToBounds = false
+        recentsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -70).isActive = true
+        
+        self.tabBarController?.title = VectorL10n.allChatsTitle
+        setLargeTitleDisplayMode(.automatic)
+
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchResultsUpdater = self
+
+        NotificationCenter.default.addObserver(self, selector: #selector(self.setupEditOptions), name: AllChatsLayoutSettingsManager.didUpdateSettings, object: nil)
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if self.tabBarController?.navigationItem.searchController == nil {
+            self.tabBarController?.navigationItem.searchController = searchController
+        }
+    }
+    
+    // MARK: - HomeViewController
     
     override var recentsDataSourceMode: RecentsDataSourceMode {
         .allChats
     }
     
     @objc private func addFabButton() {
-        let menu = UIMenu(children: [
+        let editMenu = UIMenu(children: [
             UIAction(title: VectorL10n.roomRecentsJoinRoom,
                      image: Asset.Images.homeFabJoinRoom.image,
                      discoverabilityTitle: VectorL10n.roomRecentsJoinRoom,
@@ -58,7 +89,17 @@ class AllChatsViewController: HomeViewController {
                 self?.startChat()
             })
         ])
-        vc_addFAB(withImage: Asset.Images.plusFloatingAction.image, menu: menu)
+        
+        actionPanelView.editButton.showsMenuAsPrimaryAction = true
+        actionPanelView.editButton.menu = editMenu
+        self.setupEditOptions()
+
+        view?.addSubview(actionPanelView)
+        actionPanelView.translatesAutoresizingMaskIntoConstraints = false
+        actionPanelView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        actionPanelView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        actionPanelView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        actionPanelView.heightAnchor.constraint(equalToConstant: 70).isActive = true
     }
 
     @objc private func sections() -> Array<Int> {
@@ -70,7 +111,29 @@ class AllChatsViewController: HomeViewController {
             RecentsDataSourceSectionType.allChats.rawValue,
             RecentsDataSourceSectionType.lowPriority.rawValue,
             RecentsDataSourceSectionType.serverNotice.rawValue,
+            RecentsDataSourceSectionType.suggestedRooms.rawValue,
             RecentsDataSourceSectionType.recentRooms.rawValue
         ]
     }
+    
+    // MARK: - Private
+    
+    @objc private func setupEditOptions() {
+        actionPanelView.layoutButton.showsMenuAsPrimaryAction = true
+        actionPanelView.layoutButton.menu = AllChatsActionProvider().menu
+    }
+}
+
+// MARK: - UISearchResultsUpdating
+extension AllChatsViewController: UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text, !searchText.isEmpty else {
+            self.dataSource.search(withPatterns: nil)
+            return
+        }
+        
+        self.dataSource.search(withPatterns: [searchText])
+    }
+
 }

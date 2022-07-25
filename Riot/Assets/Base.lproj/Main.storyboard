@@ -168,6 +168,33 @@
             </objects>
             <point key="canvasLocation" x="458" y="-4469"/>
         </scene>
+        <!--All Chats View Controller-->
+        <scene sceneID="VNs-EF-YAe">
+            <objects>
+                <viewController storyboardIdentifier="AllChatsViewController" extendedLayoutIncludesOpaqueBars="YES" id="EOr-kV-8pa" customClass="AllChatsViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="5IA-we-z5u"/>
+                        <viewControllerLayoutGuide type="bottom" id="9LE-SN-vqG"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Xlh-cv-klm">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="" image="tab_home" id="6G5-X5-VuX">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="TabBarItemHome"/>
+                        </userDefinedRuntimeAttributes>
+                    </tabBarItem>
+                    <navigationItem key="navigationItem" id="svS-Xb-Dua"/>
+                    <connections>
+                        <segue destination="WDS-Ip-RQ9" kind="presentation" identifier="presentStartChat" id="y6u-0X-urR"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tob-iO-hhY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="941.60000000000002" y="-3530.2848575712146"/>
+        </scene>
         <!--Home View Controller-->
         <scene sceneID="SZi-Ac-WJp">
             <objects>
@@ -495,33 +522,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kHX-sJ-uYE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-153" y="-419"/>
-        </scene>
-        <!--All Chats View Controller-->
-        <scene sceneID="VNs-EF-YAe">
-            <objects>
-                <viewController storyboardIdentifier="AllChatsViewController" extendedLayoutIncludesOpaqueBars="YES" id="EOr-kV-8pa" customClass="AllChatsViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="5IA-we-z5u"/>
-                        <viewControllerLayoutGuide type="bottom" id="9LE-SN-vqG"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Xlh-cv-klm">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="" image="tab_home" id="6G5-X5-VuX">
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="TabBarItemHome"/>
-                        </userDefinedRuntimeAttributes>
-                    </tabBarItem>
-                    <navigationItem key="navigationItem" id="svS-Xb-Dua"/>
-                    <connections>
-                        <segue destination="WDS-Ip-RQ9" kind="presentation" identifier="presentStartChat" id="y6u-0X-urR"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tob-iO-hhY" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="942" y="-3530"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

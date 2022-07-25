@@ -25,55 +25,40 @@ import UIKit
             return nil
         }
         
-        var filterViews: [FilterOptionView] = []
+        let filterOptionListView = AllChatsFilterOptionListView()
         
-        if !options.isEmpty {
-            let optionView = FilterOptionView()
-            optionView.isAll = true
-            optionView.didTap = { optionView in
-                if !optionView.isSelected {
-                    Analytics.shared.trackInteraction(.allChatAllOptionActivated)
-                    AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.activeFilters = []
-                }
+        let options = options
+        var filterOptions: [AllChatsFilterOptionListView.Option] = [
+            AllChatsFilterOptionListView.Option(type: .all, name: VectorL10n.allChatsAllFilter)
+        ]
+        filterOptions.append(contentsOf: options)
+        
+        filterOptionListView.options = filterOptions
+        filterOptionListView.selectedOptionType = AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.activeFilters
+        filterOptionListView.selectionChanged = { [weak self] filter in
+            guard filter != .all else {
+                Analytics.shared.trackInteraction(.allChatAllOptionActivated)
+                AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.activeFilters = []
+                return
             }
-            filterViews.append(optionView)
+         
+            self?.trackSelectionChangeFor(filter)
+            AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.activeFilters = filter
         }
-        
-        for option in options {
-            let optionView = FilterOptionView()
-            optionView.data = option
-            optionView.didTap = { [weak self] optionView in
-                self?.trackSelectionChangeFor(optionView)
-                
-                if !optionView.isSelected {
-                    AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.activeFilters = option.type
-                } else {
-                    AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.activeFilters.remove(option.type)
-                }
-            }
-            filterViews.append(optionView)
-        }
-        
-        let filterOptionListView = FilterOptionListView()
-        filterOptionListView.filterViews = filterViews
 
         return filterOptionListView
     }
     
-    private func trackSelectionChangeFor(_ optionView: FilterOptionView) {
-        guard let optionType = optionView.data?.type else {
-            return
-        }
-        
+    private func trackSelectionChangeFor(_ optionType: AllChatsLayoutFilterType) {
         switch optionType {
         case .favourites:
-            Analytics.shared.trackInteraction(optionView.isSelected ? .allChatFavouritesOptionDeactivated : .allChatFavouritesOptionActivated)
+            Analytics.shared.trackInteraction(.allChatFavouritesOptionActivated)
         case .people:
-            Analytics.shared.trackInteraction(optionView.isSelected ? .allChatPeopleOptionDeactivated : .allChatPeopleOptionActivated)
+            Analytics.shared.trackInteraction(.allChatPeopleOptionActivated)
         case .rooms:
-            Analytics.shared.trackInteraction(optionView.isSelected ? .allChatRoomsOptionDeactivated : .allChatRoomsOptionActivated)
+            Analytics.shared.trackInteraction(.allChatRoomsOptionActivated)
         case .unreads:
-            Analytics.shared.trackInteraction(optionView.isSelected ? .allChatUnreadsOptionDeactivated : .allChatUnreadsOptionActivated)
+            Analytics.shared.trackInteraction(.allChatUnreadsOptionActivated)
         default: break
         }
     }
@@ -82,34 +67,23 @@ import UIKit
         return options.count
     }
     
-    private var options: [AllChatsLayoutEditorFilter] {
-        var options: [AllChatsLayoutEditorFilter] = []
+    private var options: [AllChatsFilterOptionListView.Option] {
+        var options: [AllChatsFilterOptionListView.Option] = []
         let filters = AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.filters
-        let activeFilters = AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.activeFilters
-        if filters.contains(.people) {
-            options.append(AllChatsLayoutEditorFilter(type: .people,
-                                                     name: VectorL10n.titlePeople,
-                                                     image: Asset.Images.tabPeople.image,
-                                                     selected: activeFilters.contains(.people)))
-        }
-        if filters.contains(.rooms) {
-            options.append(AllChatsLayoutEditorFilter(type: .rooms,
-                                                     name: VectorL10n.titleRooms,
-                                                     image: Asset.Images.tabRooms.image,
-                                                     selected: activeFilters.contains(.rooms)))
+
+        if filters.contains(.unreads) {
+            options.append(AllChatsFilterOptionListView.Option(type: .unreads, name: VectorL10n.allChatsEditLayoutUnreads))
         }
         if filters.contains(.favourites) {
-            options.append(AllChatsLayoutEditorFilter(type: .favourites,
-                                                     name: VectorL10n.titleFavourites,
-                                                     image: Asset.Images.tabFavourites.image,
-                                                     selected: activeFilters.contains(.favourites)))
+            options.append(AllChatsFilterOptionListView.Option(type: .favourites, name: VectorL10n.titleFavourites))
         }
-        if filters.contains(.unreads) {
-            options.append(AllChatsLayoutEditorFilter(type: .unreads,
-                                                     name: VectorL10n.allChatsEditLayoutUnreads,
-                                                     image: Asset.Images.allChatUnreads.image,
-                                                     selected: activeFilters.contains(.unreads)))
+        if filters.contains(.people) {
+            options.append(AllChatsFilterOptionListView.Option(type: .people, name: VectorL10n.titlePeople))
         }
+        if filters.contains(.rooms) {
+            options.append(AllChatsFilterOptionListView.Option(type: .rooms, name: VectorL10n.titleRooms))
+        }
+        
         return options
     }
 }

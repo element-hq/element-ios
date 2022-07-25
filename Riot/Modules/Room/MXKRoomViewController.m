@@ -336,6 +336,11 @@
     {
         _bubblesTableView.hidden = NO;
     }
+
+    if (BuildSettings.newAppLayoutEnaled)
+    {
+        [self setLargeTitleDisplayMode: UINavigationItemLargeTitleDisplayModeNever];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
