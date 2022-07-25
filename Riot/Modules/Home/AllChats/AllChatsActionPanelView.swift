@@ -23,7 +23,7 @@ class AllChatsActionPanelView: UIVisualEffectView, NibLoadable, Themable {
     // MARK: - Outlets
     
     @IBOutlet weak var editButton: UIButton!
-    @IBOutlet weak var layoutButton: UIButton!
+    @IBOutlet weak var spaceButton: UIButton!
     
     // MARK: - Lifecycle
     
@@ -31,14 +31,14 @@ class AllChatsActionPanelView: UIVisualEffectView, NibLoadable, Themable {
         super.willMove(toSuperview: newSuperview)
         
         setup(button: editButton)
-        setup(button: layoutButton)
+        setup(button: spaceButton)
     }
     
     // MARK: - Themable
     
     func update(theme: Theme) {
         editButton.tintColor = theme.colors.accent
-        layoutButton.tintColor = theme.colors.accent
+        spaceButton.tintColor = theme.colors.accent
     }
 
     // MARK: - Private

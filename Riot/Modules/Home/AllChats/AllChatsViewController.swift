@@ -28,7 +28,8 @@ class AllChatsViewController: HomeViewController {
     // MARK: - Private
     
     private let searchController = UISearchController(searchResultsController: nil)
-    private let actionPanelView = AllChatsActionPanelView.loadFromNib()
+    private var spaceSelectorBridgePresenter: SpaceSelectorBottomSheetCoordinatorBridgePresenter?
+    private var createSpaceCoordinator: SpaceCreationCoordinator?
     
     static override func instantiate() -> Self {
         let storyboard = UIStoryboard(name: "Main", bundle: .main)
@@ -51,6 +52,7 @@ class AllChatsViewController: HomeViewController {
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchResultsUpdater = self
 
+        self.setupEditOptions()
         NotificationCenter.default.addObserver(self, selector: #selector(self.setupEditOptions), name: AllChatsLayoutSettingsManager.didUpdateSettings, object: nil)
     }
     
@@ -69,7 +71,7 @@ class AllChatsViewController: HomeViewController {
     }
     
     @objc private func addFabButton() {
-        let editMenu = UIMenu(children: [
+        let menu = UIMenu(children: [
             UIAction(title: VectorL10n.roomRecentsJoinRoom,
                      image: Asset.Images.homeFabJoinRoom.image,
                      discoverabilityTitle: VectorL10n.roomRecentsJoinRoom,
@@ -90,16 +92,18 @@ class AllChatsViewController: HomeViewController {
             })
         ])
         
-        actionPanelView.editButton.showsMenuAsPrimaryAction = true
-        actionPanelView.editButton.menu = editMenu
-        self.setupEditOptions()
+        let panel = AllChatsActionPanelView.loadFromNib()
+        panel.editButton.showsMenuAsPrimaryAction = true
+        panel.editButton.menu = menu
+        
+        panel.spaceButton .addTarget(self, action: #selector(showSpaceSelectorAction(sender:)), for: .touchUpInside)
 
-        view?.addSubview(actionPanelView)
-        actionPanelView.translatesAutoresizingMaskIntoConstraints = false
-        actionPanelView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        actionPanelView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        actionPanelView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        actionPanelView.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        view?.addSubview(panel)
+        panel.translatesAutoresizingMaskIntoConstraints = false
+        panel.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        panel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        panel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        panel.heightAnchor.constraint(equalToConstant: 70).isActive = true
     }
 
     @objc private func sections() -> Array<Int> {
@@ -116,11 +120,95 @@ class AllChatsViewController: HomeViewController {
         ]
     }
     
+    // MARK: - Actions
+    
+    @objc private func showSpaceSelectorAction(sender: UIButton) {
+        let currentSpaceId = self.dataSource.currentSpace?.spaceId ?? SpaceSelectorListItemDataHomeSpaceId
+        let spaceSelectorBridgePresenter = SpaceSelectorBottomSheetCoordinatorBridgePresenter(session: self.mainSession, selectedSpaceId: currentSpaceId, showHomeSpace: true)
+        spaceSelectorBridgePresenter.present(from: self, animated: true)
+        spaceSelectorBridgePresenter.delegate = self
+        self.spaceSelectorBridgePresenter = spaceSelectorBridgePresenter
+    }
+    
     // MARK: - Private
     
     @objc private func setupEditOptions() {
-        actionPanelView.layoutButton.showsMenuAsPrimaryAction = true
-        actionPanelView.layoutButton.menu = AllChatsActionProvider().menu
+        self.tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), menu: AllChatsActionProvider().menu)
+    }
+
+    private func showCreateSpace(parentSpaceId: String?) {
+        let coordinator = SpaceCreationCoordinator(parameters: SpaceCreationCoordinatorParameters(session: self.mainSession))
+        let presentable = coordinator.toPresentable()
+        self.present(presentable, animated: true, completion: nil)
+        coordinator.callback = { [weak self] result in
+            guard let self = self else {
+                return
+            }
+            
+            self.createSpaceCoordinator?.toPresentable().dismiss(animated: true) {
+                self.createSpaceCoordinator = nil
+                switch result {
+                case .cancel:
+                    break
+                case .done(let spaceId):
+                    self.switchSpace(withId: spaceId)
+                }
+            }
+        }
+        coordinator.start()
+        
+        self.createSpaceCoordinator = coordinator
+    }
+    
+    private func switchSpace(withId spaceId: String?) {
+        searchController.isActive = false
+
+        guard let spaceId = spaceId else {
+            self.dataSource.currentSpace = nil
+            self.tabBarController?.title = VectorL10n.allChatsTitle
+
+            return
+        }
+
+        guard let space = self.mainSession.spaceService.getSpace(withId: spaceId) else {
+            MXLog.warning("[AllChatsViewController] switchSpace: no space found with id \(spaceId)")
+            return
+        }
+        
+        self.dataSource.currentSpace = space
+        self.tabBarController?.title = space.summary?.displayname ?? VectorL10n.allChatsTitle
+        self.recentsTableView.setContentOffset(.zero, animated: true)
+    }
+}
+
+// MARK: - SpaceSelectorBottomSheetCoordinatorBridgePresenterDelegate
+extension AllChatsViewController: SpaceSelectorBottomSheetCoordinatorBridgePresenterDelegate {
+    
+    func spaceSelectorBottomSheetCoordinatorBridgePresenterDidCancel(_ coordinatorBridgePresenter: SpaceSelectorBottomSheetCoordinatorBridgePresenter) {
+        self.spaceSelectorBridgePresenter = nil
+    }
+    
+    func spaceSelectorBottomSheetCoordinatorBridgePresenterDidSelectHome(_ coordinatorBridgePresenter: SpaceSelectorBottomSheetCoordinatorBridgePresenter) {
+        coordinatorBridgePresenter.dismiss(animated: true) {
+            self.spaceSelectorBridgePresenter = nil
+        }
+        
+        switchSpace(withId: nil)
+    }
+    
+    func spaceSelectorBottomSheetCoordinatorBridgePresenter(_ coordinatorBridgePresenter: SpaceSelectorBottomSheetCoordinatorBridgePresenter, didSelectSpaceWithId spaceId: String) {
+        coordinatorBridgePresenter.dismiss(animated: true) {
+            self.spaceSelectorBridgePresenter = nil
+        }
+        
+        switchSpace(withId: spaceId)
+    }
+
+    func spaceSelectorBottomSheetCoordinatorBridgePresenter(_ coordinatorBridgePresenter: SpaceSelectorBottomSheetCoordinatorBridgePresenter, didCreateSpaceWithinSpaceWithId parentSpaceId: String?) {
+        coordinatorBridgePresenter.dismiss(animated: true) {
+            self.spaceSelectorBridgePresenter = nil
+        }
+        self.showCreateSpace(parentSpaceId: parentSpaceId)
     }
 }
 

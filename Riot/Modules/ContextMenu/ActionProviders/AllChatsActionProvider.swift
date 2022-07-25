@@ -29,12 +29,12 @@ class AllChatsActionProvider {
     
     var menu: UIMenu {
         return UIMenu(children: [
-            UIMenu(title: "", options: .displayInline, children: [
-                alphabeticalOrderAction,
-                activityOrderAction
-            ]),
+            self.recentsAction,
             self.filtersAction,
-            self.recentsAction
+            UIMenu(title: "", options: .displayInline, children: [
+                activityOrderAction,
+                alphabeticalOrderAction
+            ])
         ])
     }
     

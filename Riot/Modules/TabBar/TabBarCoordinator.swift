@@ -784,11 +784,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         })
         
         actions.append(UIMenu(title: "", options: .displayInline, children: subMenuActions))
-        
-        actions.append(UIAction(title: VectorL10n.roomAccessibilitySearch, image: UIImage(systemName: "magnifyingglass")) { [weak self] action in
-            self?.showUnifiedSearch()
-        })
-
         actions.append(UIMenu(title: "", options: .displayInline, children: [
             UIAction(title: VectorL10n.settingsSignOut, image: UIImage(systemName: "rectangle.portrait.and.arrow.right.fill"), attributes: .destructive) { [weak self] action in
                 // TODO: implement sign out
@@ -817,7 +812,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             self.rightMenuAvatarView = avatarView
         }
         
-        self.masterTabBarController.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: view)
+        self.masterTabBarController.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: view)
     }
     
     // MARK: Coach Message
