@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import libPhoneNumber_iOS
 
 /// Set of methods to be able to login to an existing account on a homeserver.
 ///
@@ -42,11 +43,6 @@ class LoginWizard {
         self.state = State()
     }
     
-//    /// Get some information about a matrixId: displayName and avatar url
-//    func profileInfo(for matrixID: String) async -> LoginProfileInfo {
-//
-//    }
-    
     /// Login to the homeserver.
     /// - Parameters:
     ///   - login: The login field. Can be a user name, or a msisdn (email or phone number) associated to the account.
@@ -64,6 +60,13 @@ class LoginWizard {
         
         if MXTools.isEmailAddress(login) {
             parameters = LoginPasswordParameters(id: .thirdParty(medium: .email, address: login),
+                                                 password: password,
+                                                 deviceDisplayName: initialDeviceName,
+                                                 deviceID: deviceID)
+        } else if let number = try? NBPhoneNumberUtil.sharedInstance().parse(login, defaultRegion: nil),
+                  NBPhoneNumberUtil.sharedInstance().isValidNumber(number) {
+            let msisdn = login.replacingOccurrences(of: "+", with: "")
+            parameters = LoginPasswordParameters(id: .thirdParty(medium: .msisdn, address: msisdn),
                                                  password: password,
                                                  deviceDisplayName: initialDeviceName,
                                                  deviceID: deviceID)
@@ -92,12 +95,6 @@ class LoginWizard {
                                             client: client,
                                             removeOtherAccounts: removeOtherAccounts)
     }
-    
-//    /// Login to the homeserver by sending a custom JsonDict.
-//    /// The data should contain at least one entry `type` with a String value.
-//    func loginCustom(data: Codable) async -> MXSession {
-//
-//    }
 
     /// Ask the homeserver to reset the user password. The password will not be
     /// reset until `resetPasswordMailConfirmed` is successfully called.

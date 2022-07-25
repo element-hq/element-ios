@@ -55,7 +55,7 @@ struct AuthenticationVerifyEmailForm: View {
                 .foregroundColor(theme.colors.primaryContent)
                 .accessibilityIdentifier("titleLabel")
             
-            Text(VectorL10n.authenticationVerifyEmailInputMessage)
+            Text(viewModel.viewState.formHeaderMessage)
                 .font(theme.fonts.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.secondaryContent)

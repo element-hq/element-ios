@@ -17,6 +17,6 @@
 import XCTest
 import RiotSwiftUI
 
-class OnboardingUseCaseUITests: MockScreenTest {
+class OnboardingUseCaseUITests: MockScreenTestCase {
     // The view has no parameters or changing state to test.
 }

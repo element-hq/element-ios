@@ -69,6 +69,8 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
             self.highlighAnnotation(with: userId)
         case .share(let userLocationAnnotation):
             completion?(.share(userLocationAnnotation.coordinate))
+        case .mapCreditsDidTap:
+            state.bindings.showMapCreditsSheet.toggle()
         }
     }
     

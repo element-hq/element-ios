@@ -86,6 +86,8 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
         case .userDidPan:
             state.showsUserLocation = false
             state.isPinDropSharing = true
+        case .mapCreditsDidTap:
+            state.bindings.showMapCreditsSheet.toggle()
         }
     }
     

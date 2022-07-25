@@ -62,15 +62,10 @@ struct AuthenticationReCaptchaScreen: View {
             OnboardingIconImage(image: Asset.Images.onboardingCongratulationsIcon)
                 .padding(.bottom, 8)
             
-            Text(VectorL10n.authenticationRegistrationTitle)
+            Text(VectorL10n.authenticationRecaptchaTitle)
                 .font(theme.fonts.title2B)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.primaryContent)
-            
-            Text(VectorL10n.authenticationRecaptchaMessage)
-                .font(theme.fonts.body)
-                .multilineTextAlignment(.center)
-                .foregroundColor(theme.colors.secondaryContent)
         }
     }
     

@@ -17,35 +17,17 @@
 import XCTest
 import RiotSwiftUI
 
-class AuthenticationForgotPasswordUITests: MockScreenTest {
-
-    override class var screenType: MockScreenState.Type {
-        return MockAuthenticationForgotPasswordScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return AuthenticationForgotPasswordUITests(selector: #selector(verifyAuthenticationForgotPasswordScreen))
-    }
-
-    func verifyAuthenticationForgotPasswordScreen() throws {
-        guard let screenState = screenState as? MockAuthenticationForgotPasswordScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .emptyAddress:
-            verifyEmptyAddress()
-        case .enteredAddress:
-            verifyEnteredAddress()
-        case .hasSentEmail:
-            verifyWaitingForEmailLink()
-        }
-    }
-    
-    func verifyEmptyAddress() {
+class AuthenticationForgotPasswordUITests: MockScreenTestCase {
+    func testEmptyAddress() {
+        app.goToScreenWithIdentifier(MockAuthenticationForgotPasswordScreenState.emptyAddress.title)
+        
         XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown before an email is sent.")
         XCTAssertTrue(app.staticTexts["messageLabel"].exists, "The message should be shown before an email is sent.")
         
         let addressTextField = app.textFields["addressTextField"]
         XCTAssertTrue(addressTextField.exists, "The text field should be shown before an email is sent.")
-        XCTAssertEqual(addressTextField.value as? String, "Email Address", "The text field should be showing the placeholder before text is input.")
+        XCTAssertEqual(addressTextField.value as? String, VectorL10n.authenticationForgotPasswordTextFieldPlaceholder,
+                       "The text field should be showing the placeholder before text is input.")
         
         let nextButton = app.buttons["nextButton"]
         XCTAssertTrue(nextButton.exists, "The next button should be shown before an email is sent.")
@@ -65,7 +47,9 @@ class AuthenticationForgotPasswordUITests: MockScreenTest {
         XCTAssertEqual(cancelButton.label, "Cancel")
     }
     
-    func verifyEnteredAddress() {
+    func testEnteredAddress() {
+        app.goToScreenWithIdentifier(MockAuthenticationForgotPasswordScreenState.enteredAddress.title)
+        
         XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown before an email is sent.")
         XCTAssertTrue(app.staticTexts["messageLabel"].exists, "The message should be shown before an email is sent.")
         
@@ -91,7 +75,9 @@ class AuthenticationForgotPasswordUITests: MockScreenTest {
         XCTAssertEqual(cancelButton.label, "Cancel")
     }
     
-    func verifyWaitingForEmailLink() {
+    func testWaitingForEmailLink() {
+        app.goToScreenWithIdentifier(MockAuthenticationForgotPasswordScreenState.hasSentEmail.title)
+        
         XCTAssertFalse(app.staticTexts["titleLabel"].exists, "The title should be hidden once an email has been sent.")
         XCTAssertFalse(app.staticTexts["messageLabel"].exists, "The message should be hidden once an email has been sent.")
         XCTAssertFalse(app.textFields["addressTextField"].exists, "The text field should be hidden once an email has been sent.")

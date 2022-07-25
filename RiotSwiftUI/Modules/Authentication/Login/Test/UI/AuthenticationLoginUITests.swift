@@ -17,57 +17,45 @@
 import XCTest
 import RiotSwiftUI
 
-class AuthenticationLoginUITests: MockScreenTest {
-
-    override class var screenType: MockScreenState.Type {
-        return MockAuthenticationLoginScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return AuthenticationLoginUITests(selector: #selector(verifyAuthenticationLoginScreen))
-    }
-    
-    func verifyAuthenticationLoginScreen() throws {
-        guard let screenState = screenState as? MockAuthenticationLoginScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .matrixDotOrg:
-            let state = "matrix.org"
-            validateServerDescriptionIsVisible(for: state)
-            validateLoginFormIsVisible(for: state)
-            validateSSOButtonsAreShown(for: state)
-        case .passwordOnly:
-            let state = "a password only server"
-            validateServerDescriptionIsHidden(for: state)
-            validateLoginFormIsVisible(for: state)
-            validateSSOButtonsAreHidden(for: state)
-            
-            validateNextButtonIsDisabled(for: state)
-        case .passwordWithCredentials:
-            let state = "a password only server with credentials entered"
-            validateNextButtonIsEnabled(for: state)
-        case .ssoOnly:
-            let state = "an SSO only server"
-            validateServerDescriptionIsHidden(for: state)
-            validateLoginFormIsHidden(for: state)
-            validateSSOButtonsAreShown(for: state)
-        case .fallback:
-            let state = "a fallback server"
-            validateFallback(for: state)
-        }
-    }
-    
-    /// Checks that the server description label is shown.
-    func validateServerDescriptionIsVisible(for state: String) {
-        let descriptionLabel = app.staticTexts["serverDescriptionText"]
+class AuthenticationLoginUITests: MockScreenTestCase {
+    func testMatrixDotOrg() {
+        app.goToScreenWithIdentifier(MockAuthenticationLoginScreenState.matrixDotOrg.title)
         
-        XCTAssertTrue(descriptionLabel.exists, "The server description should be shown for \(state).")
-        XCTAssertEqual(descriptionLabel.label, VectorL10n.authenticationServerInfoMatrixDescription, "The server description should be correct for \(state).")
+        let state = "matrix.org"
+        validateLoginFormIsVisible(for: state)
+        validateSSOButtonsAreShown(for: state)
     }
     
-    /// Checks that the server description label is hidden.
-    func validateServerDescriptionIsHidden(for state: String) {
-        let descriptionLabel = app.staticTexts["serverDescriptionText"]
-        XCTAssertFalse(descriptionLabel.exists, "The server description should be shown for \(state).")
+    func testPasswordOnly() {
+        app.goToScreenWithIdentifier(MockAuthenticationLoginScreenState.passwordOnly.title)
+        
+        let state = "a password only server"
+        validateLoginFormIsVisible(for: state)
+        validateSSOButtonsAreHidden(for: state)
+        
+        validateNextButtonIsDisabled(for: state)
+    }
+    
+    func testPasswordWithCredentials() {
+        app.goToScreenWithIdentifier(MockAuthenticationLoginScreenState.passwordWithCredentials.title)
+        
+        let state = "a password only server with credentials entered"
+        validateNextButtonIsEnabled(for: state)
+    }
+    
+    func testSSOOnly() {
+        app.goToScreenWithIdentifier(MockAuthenticationLoginScreenState.ssoOnly.title)
+        
+        let state = "an SSO only server"
+        validateLoginFormIsHidden(for: state)
+        validateSSOButtonsAreShown(for: state)
+    }
+    
+    func testFallback() {
+        app.goToScreenWithIdentifier(MockAuthenticationLoginScreenState.fallback.title)
+        
+        let state = "a fallback server"
+        validateFallback(for: state)
     }
     
     /// Checks that the username and password text fields are shown along with the next button.

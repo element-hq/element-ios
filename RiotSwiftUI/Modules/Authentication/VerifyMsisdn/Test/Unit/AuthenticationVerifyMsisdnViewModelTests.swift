@@ -24,7 +24,7 @@ class AuthenticationVerifyMsisdnViewModelTests: XCTestCase {
     var context: AuthenticationVerifyMsisdnViewModelType.Context!
     
     override func setUpWithError() throws {
-        viewModel = AuthenticationVerifyMsisdnViewModel()
+        viewModel = AuthenticationVerifyMsisdnViewModel(homeserver: .mockMatrixDotOrg)
         context = viewModel.context
     }
 

@@ -17,27 +17,13 @@
 import XCTest
 import RiotSwiftUI
 
-class OnboardingAvatarUITests: MockScreenTest {
-
-    override class var screenType: MockScreenState.Type {
-        return MockOnboardingAvatarScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return OnboardingAvatarUITests(selector: #selector(verifyOnboardingAvatarScreen))
-    }
-
-    func verifyOnboardingAvatarScreen() throws {
-        guard let screenState = screenState as? MockOnboardingAvatarScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .placeholderAvatar(let userId, let displayName):
-            verifyPlaceholderAvatar(userId: userId, displayName: displayName)
-        case .userSelectedAvatar:
-            verifyUserSelectedAvatar()
-        }
-    }
+class OnboardingAvatarUITests: MockScreenTestCase {
+    let userId = "@example:matrix.org"
+    let displayName = "Jane"
     
-    func verifyPlaceholderAvatar(userId: String, displayName: String) {
+    func testPlaceholderAvatar() {
+        app.goToScreenWithIdentifier(MockOnboardingAvatarScreenState.placeholderAvatar(userId: userId, displayName: displayName).title)
+        
         guard let firstLetter = displayName.uppercased().first else {
             XCTFail("Unable to get the first letter of the display name.")
             return
@@ -55,7 +41,9 @@ class OnboardingAvatarUITests: MockScreenTest {
         XCTAssertFalse(saveButton.isEnabled, "The save button should not be enabled.")
     }
     
-    func verifyUserSelectedAvatar() {
+    func testUserSelectedAvatar() {
+        app.goToScreenWithIdentifier(MockOnboardingAvatarScreenState.userSelectedAvatar(userId: userId, displayName: displayName).title)
+        
         let placeholderAvatar = app.otherElements["placeholderAvatar"]
         XCTAssertFalse(placeholderAvatar.exists, "The placeholder avatar should be hidden.")
         

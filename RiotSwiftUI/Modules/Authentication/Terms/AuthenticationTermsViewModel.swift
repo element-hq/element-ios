@@ -33,8 +33,9 @@ class AuthenticationTermsViewModel: AuthenticationTermsViewModelType, Authentica
 
     // MARK: - Setup
 
-    init(policies: [AuthenticationTermsPolicy]) {
-        super.init(initialViewState: AuthenticationTermsViewState(bindings: AuthenticationTermsBindings(policies: policies)))
+    init(homeserver: AuthenticationHomeserverViewData, policies: [AuthenticationTermsPolicy]) {
+        super.init(initialViewState: AuthenticationTermsViewState(homeserver: homeserver,
+                                                                  bindings: AuthenticationTermsBindings(policies: policies)))
     }
 
     // MARK: - Public

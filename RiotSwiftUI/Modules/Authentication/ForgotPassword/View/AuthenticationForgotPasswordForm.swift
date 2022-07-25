@@ -55,7 +55,7 @@ struct AuthenticationForgotPasswordForm: View {
                 .foregroundColor(theme.colors.primaryContent)
                 .accessibilityIdentifier("titleLabel")
             
-            Text(VectorL10n.authenticationForgotPasswordInputMessage)
+            Text(viewModel.viewState.formHeaderMessage)
                 .font(theme.fonts.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.secondaryContent)

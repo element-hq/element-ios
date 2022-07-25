@@ -17,31 +17,10 @@
 import XCTest
 import RiotSwiftUI
 
-class AuthenticationChoosePasswordUITests: MockScreenTest {
-
-    override class var screenType: MockScreenState.Type {
-        return MockAuthenticationChoosePasswordScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return AuthenticationChoosePasswordUITests(selector: #selector(verifyAuthenticationChoosePasswordScreen))
-    }
-
-    func verifyAuthenticationChoosePasswordScreen() throws {
-        guard let screenState = screenState as? MockAuthenticationChoosePasswordScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .emptyPassword:
-            verifyEmptyPassword()
-        case .enteredInvalidPassword:
-            verifyEnteredInvalidPassword()
-        case .enteredValidPassword:
-            verifyEnteredValidPassword()
-        case .enteredValidPasswordAndSignoutAllDevicesChecked:
-            verifyEnteredValidPasswordAndSignoutAllDevicesChecked()
-        }
-    }
-    
-    func verifyEmptyPassword() {
+class AuthenticationChoosePasswordUITests: MockScreenTestCase {
+    func testEmptyPassword() {
+        app.goToScreenWithIdentifier(MockAuthenticationChoosePasswordScreenState.emptyPassword.title)
+        
         XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown.")
         XCTAssertTrue(app.staticTexts["messageLabel"].exists, "The message should be shown.")
         
@@ -58,7 +37,9 @@ class AuthenticationChoosePasswordUITests: MockScreenTest {
         XCTAssertFalse(signoutAllDevicesToggle.isOn, "Sign out all devices should be unchecked")
     }
     
-    func verifyEnteredInvalidPassword() {
+    func testEnteredInvalidPassword() {
+        app.goToScreenWithIdentifier(MockAuthenticationChoosePasswordScreenState.enteredInvalidPassword.title)
+        
         XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown.")
         XCTAssertTrue(app.staticTexts["messageLabel"].exists, "The message should be shown.")
 
@@ -75,7 +56,9 @@ class AuthenticationChoosePasswordUITests: MockScreenTest {
         XCTAssertFalse(signoutAllDevicesToggle.isOn, "Sign out all devices should be unchecked")
     }
     
-    func verifyEnteredValidPassword() {
+    func testEnteredValidPassword() {
+        app.goToScreenWithIdentifier(MockAuthenticationChoosePasswordScreenState.enteredValidPassword.title)
+        
         XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown.")
         XCTAssertTrue(app.staticTexts["messageLabel"].exists, "The message should be shown.")
 
@@ -92,7 +75,9 @@ class AuthenticationChoosePasswordUITests: MockScreenTest {
         XCTAssertFalse(signoutAllDevicesToggle.isOn, "Sign out all devices should be unchecked")
     }
 
-    func verifyEnteredValidPasswordAndSignoutAllDevicesChecked() {
+    func testEnteredValidPasswordAndSignoutAllDevicesChecked() {
+        app.goToScreenWithIdentifier(MockAuthenticationChoosePasswordScreenState.enteredValidPasswordAndSignoutAllDevicesChecked.title)
+        
         XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown.")
         XCTAssertTrue(app.staticTexts["messageLabel"].exists, "The message should be shown.")
 

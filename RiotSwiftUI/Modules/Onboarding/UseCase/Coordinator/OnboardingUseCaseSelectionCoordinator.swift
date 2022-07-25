@@ -57,9 +57,7 @@ final class OnboardingUseCaseSelectionCoordinator: Coordinator, Presentable {
             MXLog.debug("[OnboardingUseCaseSelectionCoordinator] OnboardingUseCaseViewModel did complete with result: \(result).")
             
             // Show a loading indicator which can be dismissed externally by calling `stop`.
-            if result != .customServer {
-                self.startLoading()
-            }
+            self.startLoading()
             self.completion?(result)
         }
     }

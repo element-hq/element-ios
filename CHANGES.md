@@ -1,3 +1,68 @@
+## Changes in 1.8.23 (2022-07-15)
+
+🙌 Improvements
+
+- Reword account deactivation button on the Settings screen. ([#6436](https://github.com/vector-im/element-ios/issues/6436))
+
+
+## Changes in 1.8.22 (2022-07-13)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.23.12](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.23.12)).
+
+🐛 Bugfixes
+
+- Fix a bug where the login screen is shown after choosing to create an account. ([#6417](https://github.com/vector-im/element-ios/pull/6417))
+
+
+## Changes in 1.8.21 (2022-07-12)
+
+✨ Features
+
+- Analytics: Track non-fatal issues if consent provided ([#6308](https://github.com/vector-im/element-ios/pull/6308))
+- Notifications: Add a setting for in-app notifications and use the value with existing functionality in PushNotificationService. ([#1108](https://github.com/vector-im/element-ios/issues/1108))
+- Server Offline Activity Indicator ([#5607](https://github.com/vector-im/element-ios/issues/5607))
+
+🙌 Improvements
+
+- Add formatter build reply HTML unit tests ([#6380](https://github.com/vector-im/element-ios/pull/6380))
+- Upgrade MatrixSDK version ([v0.23.11](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.23.11)).
+- Update Files component ([#5372](https://github.com/vector-im/element-ios/issues/5372))
+- Location sharing: Update map credits display and behavior. ([#6108](https://github.com/vector-im/element-ios/issues/6108))
+- Location sharing: Add view to promote live location sharing labs flag on the sharing screen. ([#6238](https://github.com/vector-im/element-ios/issues/6238))
+- Remove legacy Riot-Defaults property list ([#6273](https://github.com/vector-im/element-ios/issues/6273))
+- DesignKit: Replace the local DesignKit target with the shared Swift package from ElementX. ([#6276](https://github.com/vector-im/element-ios/issues/6276))
+- Enhance the VectorHostingController to be presented as a bottom sheet ([#6376](https://github.com/vector-im/element-ios/issues/6376))
+- Location sharing: Live location sharing UI polishing. ([#6382](https://github.com/vector-im/element-ios/issues/6382))
+
+🐛 Bugfixes
+
+- VectorHostingController: Fix infinite loop due to the safe area insets fix. ([#6381](https://github.com/vector-im/element-ios/pull/6381))
+- Fix layout issues in timeline poll cells (PSB-125) ([#5326](https://github.com/vector-im/element-ios/issues/5326))
+- Fixed Invite user UI is always hidden by the keyboard ([#5341](https://github.com/vector-im/element-ios/issues/5341))
+- Cross-Signing: Use ZXing library to generate QR codes ([#6358](https://github.com/vector-im/element-ios/issues/6358))
+- Location sharing: Fix live location sharing lab flag activation, no more app relaunch needed. ([#6361](https://github.com/vector-im/element-ios/issues/6361))
+- Display fallback when replied event content is partially missing ([#6371](https://github.com/vector-im/element-ios/issues/6371))
+- Fix a few failing UI tests. ([#6386](https://github.com/vector-im/element-ios/issues/6386))
+- Rename riot-keys.txt to element-keys.txt. ([#6391](https://github.com/vector-im/element-ios/issues/6391))
+- Fix inoperant room links with alias/identifiers ([#6395](https://github.com/vector-im/element-ios/issues/6395))
+- Fix slash commands from room composer ([#6398](https://github.com/vector-im/element-ios/issues/6398))
+
+⚠️ API Changes
+
+- Replace DesignKit framework with [DesignKit package](https://github.com/vector-im/element-x-ios/tree/develop/DesignKit/Sources). Colours are now generated in the [DesignTokens repo](https://github.com/vector-im/element-design-tokens) to be shared across all of our apps. ([#6275](https://github.com/vector-im/element-ios/pull/6275))
+
+🧱 Build
+
+- Update Podfile.lock ([#6387](https://github.com/vector-im/element-ios/pull/6387))
+- Split `IntentHandler` into smaller, dedicated entities ([#6203](https://github.com/vector-im/element-ios/issues/6203))
+
+Others
+
+- Revert some font changes made when merging #6392. ([#6392](https://github.com/vector-im/element-ios/issues/6392))
+
+
 ## Changes in 1.8.20 (2022-06-28)
 
 ✨ Features
