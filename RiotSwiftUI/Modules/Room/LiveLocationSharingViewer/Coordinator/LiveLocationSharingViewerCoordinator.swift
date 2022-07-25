@@ -49,7 +49,9 @@ final class LiveLocationSharingViewerCoordinator: Coordinator, Presentable {
         
         let service = LiveLocationSharingViewerService(session: parameters.session, roomId: parameters.roomId)
         
-        let viewModel = LiveLocationSharingViewerViewModel(mapStyleURL: BuildSettings.tileServerMapStyleURL, service: service)
+        let viewModel = LiveLocationSharingViewerViewModel(
+            mapStyleURL: parameters.session.vc_homeserverConfiguration().tileServer.mapStyleURL,
+            service: service)
         let view = LiveLocationSharingViewer(viewModel: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
         liveLocationSharingViewerViewModel = viewModel

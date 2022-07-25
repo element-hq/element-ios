@@ -20,6 +20,7 @@ import SwiftUI
 import MatrixSDK
 
 struct LocationSharingCoordinatorParameters {
+    let session: MXSession
     let roomDataSource: MXKRoomDataSource
     let mediaManager: MXMediaManager
     let avatarData: AvatarInputProtocol
@@ -78,10 +79,11 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
         
         let locationSharingService = LocationSharingService(session: parameters.roomDataSource.mxSession)
         
-        let viewModel = LocationSharingViewModel(mapStyleURL: BuildSettings.tileServerMapStyleURL,
-                                                 avatarData: parameters.avatarData,
-                                                 isLiveLocationSharingEnabled: true,
-                                                 service: locationSharingService)
+        let viewModel = LocationSharingViewModel(
+            mapStyleURL: parameters.session.vc_homeserverConfiguration().tileServer.mapStyleURL,
+            avatarData: parameters.avatarData,
+            isLiveLocationSharingEnabled: true,
+            service: locationSharingService)
         
         let view = LocationSharingView(context: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
