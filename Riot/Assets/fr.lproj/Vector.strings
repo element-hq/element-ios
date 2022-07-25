@@ -2282,3 +2282,9 @@
 "authentication_server_info_title" = "Où seront vous conversations";
 /* The placeholder will show the full Matrix ID that has been entered. */
 "authentication_registration_username_footer_available" = "Les autres peuvent vous trouver %@";
+"authentication_registration_password_footer" = "Le mot de passe doit contenir au moins 8 caractères";
+"authentication_registration_username_footer" = "Vous ne pourrez pas le changer par la suite";
+"authentication_registration_username" = "Nom d'utilisateur.ice";
+
+// MARK: Authentication
+"authentication_registration_title" = "Créez votre compte";
