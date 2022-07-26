@@ -17,9 +17,6 @@
 import XCTest
 import RiotSwiftUI
 
-class LiveLocationSharingViewerUITests: MockScreenTest {
-
-    override class var screenType: MockScreenState.Type {
-        return MockLiveLocationSharingViewerScreenState.self
-    }
+class LiveLocationSharingViewerUITests: MockScreenTestCase {
+    // Tests to be implemented.
 }

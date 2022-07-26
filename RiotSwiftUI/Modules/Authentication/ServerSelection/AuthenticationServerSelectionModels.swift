@@ -32,12 +32,17 @@ struct AuthenticationServerSelectionViewState: BindableState {
     var bindings: AuthenticationServerSelectionBindings
     /// An error message to be shown in the text field footer.
     var footerErrorMessage: String?
+    /// The flow that the screen is being used for.
+    let flow: AuthenticationFlow
     /// Whether the screen is presented modally or within a navigation stack.
     var hasModalPresentation: Bool
     
-    /// The message to show in the text field footer.
-    var footerMessage: String {
-        footerErrorMessage ?? VectorL10n.authenticationServerSelectionServerFooter
+    var headerTitle: String {
+        flow == .login ? VectorL10n.authenticationServerSelectionLoginTitle : VectorL10n.authenticationServerSelectionRegisterTitle
+    }
+    
+    var headerMessage: String {
+        flow == .login ? VectorL10n.authenticationServerSelectionLoginMessage : VectorL10n.authenticationServerSelectionRegisterMessage
     }
     
     /// The title shown on the confirm button.

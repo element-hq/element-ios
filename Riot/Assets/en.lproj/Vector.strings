@@ -96,7 +96,7 @@
 "accessibility_checkbox_label" = "checkbox";
 "accessibility_button_label" = "button";
 
-// Onboarding
+// MARK: Onboarding
 "onboarding_splash_register_button_title" = "Create account";
 "onboarding_splash_login_button_title" = "I already have an account";
 "onboarding_splash_page_1_title" = "Own your conversations.";
@@ -109,19 +109,19 @@
 "onboarding_splash_page_4_message" = "Element is also great for the workplace. It’s trusted by the world’s most secure organisations.";
 
 "onboarding_use_case_title" = "Who will you chat to the most?";
-"onboarding_use_case_message" = "We’ll help you get connected.";
+"onboarding_use_case_message" = "We’ll help you get connected";
 "onboarding_use_case_personal_messaging" = "Friends and family";
 "onboarding_use_case_work_messaging" = "Teams";
 "onboarding_use_case_community_messaging" = "Communities";
 /* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
-"onboarding_use_case_not_sure_yet" = "Not sure yet? You can %@";
-"onboarding_use_case_skip_button" = "skip this question";
+"onboarding_use_case_not_sure_yet" = "Not sure yet? %@";
+"onboarding_use_case_skip_button" = "Skip this question";
 "onboarding_use_case_existing_server_message" = "Looking to join an existing server?";
 "onboarding_use_case_existing_server_button" = "Connect to server";
 
 "onboarding_congratulations_title" = "Congratulations!";
 /* The placeholder string contains the user's matrix ID */
-"onboarding_congratulations_message" = "Your account %@ has been created.";
+"onboarding_congratulations_message" = "Your account %@ has been created";
 "onboarding_congratulations_personalize_button" = "Personalise profile";
 "onboarding_congratulations_home_button" = "Take me home";
 
@@ -135,14 +135,95 @@
 "onboarding_display_name_max_length" = "Your display name must be less than 256 characters";
 
 "onboarding_avatar_title" = "Add a profile picture";
-"onboarding_avatar_message" = "You can change this anytime.";
+"onboarding_avatar_message" = "Time to put a face to the name";
 "onboarding_avatar_accessibility_label" = "Profile picture";
 
-"onboarding_celebration_title" = "You’re all set!";
-"onboarding_celebration_message" = "Your preferences have been saved.";
+"onboarding_celebration_title" = "Looking good!";
+"onboarding_celebration_message" = "Head to settings anytime to update your profile";
 "onboarding_celebration_button" = "Let's go";
 
-// Authentication
+// MARK: Authentication
+"authentication_registration_title" = "Create your account";
+"authentication_registration_username" = "Username";
+"authentication_registration_username_footer" = "You can’t change this later";
+/* The placeholder will show the full Matrix ID that has been entered. */
+"authentication_registration_username_footer_available" = "Others can discover you %@";
+"authentication_registration_password_footer" = "Must be 8 characters or more";
+"authentication_server_info_title" = "Where your conversations will live";
+
+"authentication_login_title" = "Welcome back!";
+"authentication_login_username" = "Username / Email / Phone";
+"authentication_login_forgot_password" = "Forgot password";
+"authentication_server_info_title_login" = "Where your conversations live";
+
+"authentication_server_selection_login_title" = "Connect to homeserver";
+"authentication_server_selection_login_message" = "What is the address of your server?";
+"authentication_server_selection_register_title" = "Select your homeserver";
+"authentication_server_selection_register_message" = "What is the address of your server? This is like a home for all your data";
+"authentication_server_selection_server_url" = "Homeserver URL";
+"authentication_server_selection_generic_error" = "Cannot find a server at this URL, please check it is correct.";
+
+"authentication_cancel_flow_confirmation_message" = "Your account is not created yet. Stop the registration process?";
+
+"authentication_verify_email_input_title" = "Enter your email";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_email_input_message" = "%@ needs to verify your account";
+"authentication_verify_email_text_field_placeholder" = "Email";
+"authentication_verify_email_waiting_title" = "Verify your email.";
+/* The placeholder will show the email address that was entered. */
+"authentication_verify_email_waiting_message" = "Follow the instructions sent to %@";
+"authentication_verify_email_waiting_hint" = "Did not receive an email?";
+"authentication_verify_email_waiting_button" = "Resend email";
+
+"authentication_forgot_password_input_title" = "Enter your email";
+/* The placeholder will show the homeserver's domain */
+"authentication_forgot_password_input_message" = "%@ will send you a verification link";
+"authentication_forgot_password_text_field_placeholder" = "Email";
+"authentication_forgot_password_waiting_title" = "Check your email.";
+/* The placeholder will show the email address that was entered. */
+"authentication_forgot_password_waiting_message" = "Follow the instructions sent to %@";
+"authentication_forgot_password_waiting_button" = "Resend email";
+
+"authentication_choose_password_input_title" = "Choose a new password";
+"authentication_choose_password_input_message" = "Make sure it’s 8 characters or more";
+"authentication_choose_password_text_field_placeholder" = "New Password";
+"authentication_choose_password_signout_all_devices" = "Sign out of all devices";
+"authentication_choose_password_submit_button" = "Reset Password";
+"authentication_choose_password_not_verified_title" = "Email not verified";
+"authentication_choose_password_not_verified_message" = "Check your inbox";
+
+"authentication_verify_msisdn_input_title" = "Enter your phone number";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_msisdn_input_message" = "%@ needs to verify your account";
+"authentication_verify_msisdn_text_field_placeholder" = "Phone Number";
+"authentication_verify_msisdn_otp_text_field_placeholder" = "Confirmation Code";
+"authentication_verify_msisdn_waiting_title" = "Verify your phone number";
+/* The placeholder will show the phone number that was entered. */
+"authentication_verify_msisdn_waiting_message" = "A code was sent to %@";
+"authentication_verify_msisdn_waiting_button" = "Resend code";
+"authentication_verify_msisdn_invalid_phone_number" = "Invalid phone number";
+
+"authentication_terms_title" = "Server policies";
+/* The placeholder will show the homeserver's domain */
+"authentication_terms_message" = "Please read %@’s terms and policies";
+"authentication_terms_policy_url_error" = "Unable to find the selected policy. Please try again later.";
+
+"authentication_recaptcha_title" = "Are you a human?";
+
+// MARK: Password Validation
+"password_validation_info_header" = "Your password should meet the criteria below:";
+"password_validation_error_header" = "Given password does not meet the criteria below:";
+/* The placeholder will show a number */
+"password_validation_error_min_length" = "At least %d characters.";
+/* The placeholder will show a number */
+"password_validation_error_max_length" = "Not exceed %d characters.";
+"password_validation_error_contain_lowercase_letter" = "Contain a lower-case letter.";
+"password_validation_error_contain_uppercase_letter" = "Contain an upper-case letter.";
+"password_validation_error_contain_number" = "Contain a number.";
+"password_validation_error_contain_symbol" = "Contain a symbol.";
+
+
+// MARK: Legacy Authentication
 "auth_login" = "Log in";
 "auth_register" = "Register";
 "auth_submit" = "Submit";
@@ -2152,6 +2233,9 @@ Tap the + to start adding people.";
 
 "location_sharing_invalid_authorization_settings" = "Settings";
 
+"location_sharing_invalid_power_level_title" = "You don’t have permission to share live location";
+"location_sharing_invalid_power_level_message" = "You need to have the right permissions in order to share live location in this room.";
+
 "location_sharing_open_apple_maps" = "Open in Apple Maps";
 
 "location_sharing_open_google_maps" = "Open in Google Maps";
@@ -2445,6 +2529,7 @@ To enable access, tap Settings> Location and select Always";
 "message_reply_to_sender_sent_a_voice_message" = "sent a voice message.";
 "message_reply_to_sender_sent_a_file" = "sent a file.";
 "message_reply_to_sender_sent_their_location" = "has shared their location.";
+"message_reply_to_sender_sent_their_live_location" = "Live location.";
 "message_reply_to_message_to_reply_to_prefix" = "In reply to";
 
 // Room members

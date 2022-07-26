@@ -28,12 +28,39 @@
       }
     },
     {
+      "identity" : "ogg-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vector-im/ogg-swift.git",
+      "state" : {
+        "revision" : "9d82ed838404f10b607a1a1689f404563e9115c3",
+        "version" : "0.8.3"
+      }
+    },
+    {
+      "identity" : "opus-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vector-im/opus-swift",
+      "state" : {
+        "revision" : "11f1887767cbc87c4b64b789ee830b779cc744cb",
+        "version" : "0.8.4"
+      }
+    },
+    {
       "identity" : "swift-collections",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-collections",
       "state" : {
         "revision" : "48254824bb4248676bf7ce56014ff57b142b77eb",
         "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "swift-ogg",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vector-im/swift-ogg",
+      "state" : {
+        "branch" : "main",
+        "revision" : "0ffad3f7b45a6a4760db090d503b00f094bbecc0"
       }
     },
     {

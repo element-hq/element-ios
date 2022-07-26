@@ -80,7 +80,7 @@ struct OnboardingCongratulationsScreen: View {
                     .font(theme.fonts.title2B)
                     .foregroundColor(.white)
                 
-                Text(VectorL10n.onboardingCongratulationsMessage(viewModel.viewState.userId))
+                StyledText(viewModel.viewState.messageString)
                     .font(theme.fonts.body)
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)

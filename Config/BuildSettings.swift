@@ -384,8 +384,8 @@ final class BuildSettings: NSObject {
     static let authEnableRefreshTokens = false
     
     // MARK: - Onboarding
-    static let onboardingShowAccountPersonalization = false
-    static let onboardingEnableNewAuthenticationFlow = false
+    static let onboardingShowAccountPersonalization = true
+    static let onboardingEnableNewAuthenticationFlow = true
     
     // MARK: - Unified Search
     static let unifiedSearchScreenShowPublicDirectory = true
@@ -402,7 +402,8 @@ final class BuildSettings: NSObject {
     
     // MARK: - Location Sharing
     
-    static let tileServerMapStyleURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx")!
+    /// Overwritten by the home server's .well-known configuration (if any exists)
+    static let defaultTileServerMapStyleURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx")!
     
     static let locationSharingEnabled = true
 

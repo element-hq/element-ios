@@ -130,6 +130,17 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
         super.prepareForReuse()
         self.event = nil
     }
+    
+    override func onLongPressGesture(_ longPressGestureRecognizer: UILongPressGestureRecognizer!) {
+        
+        var userInfo: [String: Any]?
+        
+        if let event = self.event {
+            userInfo = [kMXKRoomBubbleCellEventKey: event]
+        }
+        
+        delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellLongPressOnEvent, userInfo: userInfo)
+    }
 }
 
 extension LocationPlainCell: RoomTimelineLocationViewDelegate {

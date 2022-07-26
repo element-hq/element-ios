@@ -32,7 +32,6 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     enum EntryPoint {
         case registration
-        case selectServerForRegistration
         case login
     }
     
@@ -131,15 +130,13 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         }
 
         let flow: AuthenticationFlow = initialScreen == .login ? .login : .register
-        if initialScreen != .selectServerForRegistration {
-            do {
-                let homeserverAddress = authenticationService.state.homeserver.addressFromUser ?? authenticationService.state.homeserver.address
-                try await authenticationService.startFlow(flow, for: homeserverAddress)
-            } catch {
-                MXLog.error("[AuthenticationCoordinator] start: Failed to start")
-                displayError(message: error.localizedDescription)
-                return
-            }
+        do {
+            let homeserverAddress = authenticationService.state.homeserver.addressFromUser ?? authenticationService.state.homeserver.address
+            try await authenticationService.startFlow(flow, for: homeserverAddress)
+        } catch {
+            MXLog.error("[AuthenticationCoordinator] start: Failed to start")
+            displayError(message: error.localizedDescription)
+            return
         }
 
         switch initialScreen {
@@ -149,8 +146,6 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             } else {
                 showRegistrationScreen()
             }
-        case .selectServerForRegistration:
-            showServerSelectionScreen()
         case .login:
             if authenticationService.state.homeserver.needsLoginFallback {
                 showFallback(for: flow)
@@ -312,6 +307,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     // MARK: - Registration
     
+    #warning("Unused.")
     /// Pushes the server selection screen into the flow (other screens may also present it modally later).
     @MainActor private func showServerSelectionScreen() {
         MXLog.debug("[AuthenticationCoordinator] showServerSelectionScreen")
@@ -398,7 +394,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     @MainActor private func showVerifyEmailScreen(registrationWizard: RegistrationWizard) {
         MXLog.debug("[AuthenticationCoordinator] showVerifyEmailScreen")
         
-        let parameters = AuthenticationVerifyEmailCoordinatorParameters(registrationWizard: registrationWizard)
+        let parameters = AuthenticationVerifyEmailCoordinatorParameters(registrationWizard: registrationWizard,
+                                                                        homeserver: authenticationService.state.homeserver)
         let coordinator = AuthenticationVerifyEmailCoordinator(parameters: parameters)
         coordinator.callback = { [weak self] result in
             self?.registrationStageDidComplete(with: result)
@@ -416,11 +413,10 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     @MainActor private func showTermsScreen(terms: MXLoginTerms?, registrationWizard: RegistrationWizard) {
         MXLog.debug("[AuthenticationCoordinator] showTermsScreen")
         
-        let homeserver = authenticationService.state.homeserver
         let localizedPolicies = terms?.policiesData(forLanguage: Bundle.mxk_language(), defaultLanguage: Bundle.mxk_fallbackLanguage())
         let parameters = AuthenticationTermsCoordinatorParameters(registrationWizard: registrationWizard,
                                                                   localizedPolicies: localizedPolicies ?? [],
-                                                                  homeserverAddress: homeserver.displayableAddress)
+                                                                  homeserver: authenticationService.state.homeserver)
         let coordinator = AuthenticationTermsCoordinator(parameters: parameters)
         coordinator.callback = { [weak self] result in
             self?.registrationStageDidComplete(with: result)
@@ -463,7 +459,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     @MainActor private func showVerifyMSISDNScreen(registrationWizard: RegistrationWizard) {
         MXLog.debug("[AuthenticationCoordinator] showVerifyMSISDNScreen")
 
-        let parameters = AuthenticationVerifyMsisdnCoordinatorParameters(registrationWizard: registrationWizard)
+        let parameters = AuthenticationVerifyMsisdnCoordinatorParameters(registrationWizard: registrationWizard,
+                                                                         homeserver: authenticationService.state.homeserver)
         let coordinator = AuthenticationVerifyMsisdnCoordinator(parameters: parameters)
         coordinator.callback = { [weak self] result in
             self?.registrationStageDidComplete(with: result)
@@ -788,15 +785,9 @@ extension AuthenticationCoordinator: UIAdaptivePresentationControllerDelegate {
 
 // MARK: - Unused conformances
 extension AuthenticationCoordinator {
-    var customServerFieldsVisible: Bool {
-        get { false }
-        set { /* no-op */ }
-    }
-    
     func update(authenticationFlow: AuthenticationFlow) {
         // unused
     }
-    
 }
 
 // MARK: - AuthFallBackViewControllerDelegate

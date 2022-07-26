@@ -17,33 +17,18 @@
 import XCTest
 import RiotSwiftUI
 
-class TemplateRoomListUITests: MockScreenTest {
-    
-    override class var screenType: MockScreenState.Type {
-        return MockTemplateRoomListScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return TemplateRoomListUITests(selector: #selector(verifyTemplateRoomListScreen))
-    }
-    
-    func verifyTemplateRoomListScreen() throws {
-        guard let screenState = screenState as? MockTemplateRoomListScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .noRooms:
-            verifyTemplateRoomListNoRooms()
-        case .rooms:
-            verifyTemplateRoomListRooms()
-        }
-    }
-    
-    func verifyTemplateRoomListNoRooms() {
+class TemplateRoomListUITests: MockScreenTestCase {
+    func testTemplateRoomListNoRooms() {
+        app.goToScreenWithIdentifier(MockTemplateRoomListScreenState.noRooms.title)
+        
         let errorMessage = app.staticTexts["errorMessage"]
         XCTAssert(errorMessage.exists)
         XCTAssert(errorMessage.label == "No Rooms")
     }
     
-    func verifyTemplateRoomListRooms() {
+    func testTemplateRoomListRooms() {
+        app.goToScreenWithIdentifier(MockTemplateRoomListScreenState.rooms.title)
+        
         let displayNameCount = app.buttons.matching(identifier:"roomNameText").count
         XCTAssertEqual(displayNameCount, 3)
     }

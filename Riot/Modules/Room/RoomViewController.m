@@ -3683,7 +3683,8 @@ static CGSize kThreadListBarButtonItemImageSize;
             }]];
         }
 
-        if (!isJitsiCallEvent && selectedEvent.eventType != MXEventTypePollStart)
+        if (!isJitsiCallEvent && selectedEvent.eventType != MXEventTypePollStart &&
+            selectedEvent.eventType != MXEventTypeBeaconInfo)
         {
             [self.eventMenuBuilder addItemWithType:EventMenuItemTypeQuote
                                             action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionQuote]
@@ -3719,7 +3720,8 @@ static CGSize kThreadListBarButtonItemImageSize;
             }]];
         }
         
-        if (!isJitsiCallEvent && BuildSettings.messageDetailsAllowShare && selectedEvent.eventType != MXEventTypePollStart)
+        if (!isJitsiCallEvent && BuildSettings.messageDetailsAllowShare && selectedEvent.eventType != MXEventTypePollStart &&
+            selectedEvent.eventType != MXEventTypeBeaconInfo)
         {
             [self.eventMenuBuilder addItemWithType:EventMenuItemTypeShare
                                             action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionShare]
@@ -6769,7 +6771,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
     MXKAttachment *attachment = roomBubbleTableViewCell.bubbleData.attachment;
     
-    BOOL result = (event.eventType != MXEventTypePollStart && (!attachment || attachment.type != MXKAttachmentTypeSticker));
+    BOOL result = !attachment || attachment.type != MXKAttachmentTypeSticker;
     
     if (attachment && !BuildSettings.messageDetailsAllowCopyMedia)
     {
@@ -6795,6 +6797,8 @@ static CGSize kThreadListBarButtonItemImageSize;
             case MXEventTypeKeyVerificationMac:
             case MXEventTypeKeyVerificationDone:
             case MXEventTypeKeyVerificationCancel:
+            case MXEventTypePollStart:
+            case MXEventTypeBeaconInfo:
                 result = NO;
                 break;
             case MXEventTypeCustom:

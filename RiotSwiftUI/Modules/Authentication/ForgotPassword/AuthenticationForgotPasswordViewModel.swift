@@ -31,8 +31,9 @@ class AuthenticationForgotPasswordViewModel: AuthenticationForgotPasswordViewMod
 
     // MARK: - Setup
 
-    init(emailAddress: String = "") {
-        let viewState = AuthenticationForgotPasswordViewState(bindings: AuthenticationForgotPasswordBindings(emailAddress: emailAddress))
+    init(homeserver: AuthenticationHomeserverViewData, emailAddress: String = "") {
+        let viewState = AuthenticationForgotPasswordViewState(homeserver: homeserver,
+                                                              bindings: AuthenticationForgotPasswordBindings(emailAddress: emailAddress))
         super.init(initialViewState: viewState)
     }
 

@@ -37,11 +37,14 @@ enum MockAuthenticationForgotPasswordScreenState: MockScreenState, CaseIterable 
         let viewModel: AuthenticationForgotPasswordViewModel
         switch self {
         case .emptyAddress:
-            viewModel = AuthenticationForgotPasswordViewModel(emailAddress: "")
+            viewModel = AuthenticationForgotPasswordViewModel(homeserver: .mockMatrixDotOrg,
+                                                              emailAddress: "")
         case .enteredAddress:
-            viewModel = AuthenticationForgotPasswordViewModel(emailAddress: "test@example.com")
+            viewModel = AuthenticationForgotPasswordViewModel(homeserver: .mockMatrixDotOrg,
+                                                              emailAddress: "test@example.com")
         case .hasSentEmail:
-            viewModel = AuthenticationForgotPasswordViewModel(emailAddress: "test@example.com")
+            viewModel = AuthenticationForgotPasswordViewModel(homeserver: .mockMatrixDotOrg,
+                                                              emailAddress: "test@example.com")
             Task { await viewModel.updateForSentEmail() }
         }
         

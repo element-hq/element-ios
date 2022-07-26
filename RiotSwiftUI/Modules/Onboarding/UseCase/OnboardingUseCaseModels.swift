@@ -29,7 +29,6 @@ enum OnboardingUseCaseViewModelResult {
     case workMessaging
     case communityMessaging
     case skipped
-    case customServer
 }
 
 // MARK: View

@@ -32,10 +32,17 @@ enum AuthenticationVerifyEmailViewModelResult {
 // MARK: View
 
 struct AuthenticationVerifyEmailViewState: BindableState {
+    /// The homeserver requesting email verification.
+    let homeserver: AuthenticationHomeserverViewData
     /// An email has been sent and the app is waiting for the user to tap the link.
     var hasSentEmail = false
     /// View state that can be bound to from SwiftUI.
     var bindings: AuthenticationVerifyEmailBindings
+    
+    /// The message shown in the header while asking for an email address to be entered.
+    var formHeaderMessage: String {
+        VectorL10n.authenticationVerifyEmailInputMessage(homeserver.address)
+    }
     
     /// Whether the email address is valid and the user can continue.
     var hasInvalidAddress: Bool {

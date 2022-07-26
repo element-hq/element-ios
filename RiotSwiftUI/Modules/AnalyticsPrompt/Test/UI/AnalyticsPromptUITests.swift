@@ -17,46 +17,32 @@
 import XCTest
 import RiotSwiftUI
 
-class AnalyticsPromptUITests: MockScreenTest {
-
-    override class var screenType: MockScreenState.Type {
-        return MockAnalyticsPromptScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return AnalyticsPromptUITests(selector: #selector(verifyAnalyticsPromptScreen))
-    }
-
-    func verifyAnalyticsPromptScreen() throws {
-        guard let screenState = screenState as? MockAnalyticsPromptScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .promptType(let promptType):
-            verifyAnalyticsPromptType(promptType)
-        }
-    }
-    
-    /// Verify that the prompt is displayed correctly for new users compared to upgrading from Matomo
-    func verifyAnalyticsPromptType(_ promptType: AnalyticsPromptType) {
+class AnalyticsPromptUITests: MockScreenTestCase {
+    /// Verify that the prompt is displayed correctly for new users.
+    func testAnalyticsPromptNewUser() {
+        app.goToScreenWithIdentifier(MockAnalyticsPromptScreenState.promptType(.newUser).title)
+        
         let enableButton = app.buttons["enableButton"]
         let disableButton = app.buttons["disableButton"]
         
         XCTAssert(enableButton.exists)
         XCTAssert(disableButton.exists)
         
-        switch promptType {
-        case .newUser:
-            XCTAssertEqual(enableButton.label, VectorL10n.enable)
-            XCTAssertEqual(disableButton.label, VectorL10n.locationSharingInvalidAuthorizationNotNow)
-        case .upgrade:
-            XCTAssertEqual(enableButton.label, VectorL10n.analyticsPromptYes)
-            XCTAssertEqual(disableButton.label, VectorL10n.analyticsPromptStop)
-        }
+        XCTAssertEqual(enableButton.label, VectorL10n.enable)
+        XCTAssertEqual(disableButton.label, VectorL10n.locationSharingInvalidAuthorizationNotNow)
     }
-
-    func verifyAnalyticsPromptLongName(name: String) {
-        let displayNameText = app.staticTexts["displayNameText"]
-        XCTAssert(displayNameText.exists)
-        XCTAssertEqual(displayNameText.label, name)
+    
+    /// Verify that the prompt is displayed correctly for when upgrading from Matomo.
+    func testAnalyticsPromptUpgrade() {
+        app.goToScreenWithIdentifier(MockAnalyticsPromptScreenState.promptType(.upgrade).title)
+        
+        let enableButton = app.buttons["enableButton"]
+        let disableButton = app.buttons["disableButton"]
+        
+        XCTAssert(enableButton.exists)
+        XCTAssert(disableButton.exists)
+        
+        XCTAssertEqual(enableButton.label, VectorL10n.analyticsPromptYes)
+        XCTAssertEqual(disableButton.label, VectorL10n.analyticsPromptStop)
     }
-
 }

@@ -19,31 +19,31 @@
 import XCTest
 import RiotSwiftUI
 
-class SpaceCreationEmailInvitesUITests: MockScreenTest {
-
-    override class var screenType: MockScreenState.Type {
-        return MockSpaceCreationEmailInvitesScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return SpaceCreationEmailInvitesUITests(selector: #selector(verifySpaceCreationEmailInvitesScreen))
-    }
-
-    func verifySpaceCreationEmailInvitesScreen() throws {
-        guard let screenState = screenState as? MockSpaceCreationEmailInvitesScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .defaultEmailValues:
-            verifyEmailValues()
-        case .emailEntered:
-            verifyEmailValues()
-        case .emailValidationFailed:
-            verifyEmailValues()
-        case .loading:
-            verifyEmailValues()
-        }
+class SpaceCreationEmailInvitesUITests: MockScreenTestCase {
+    func testDefaultEmailValues() {
+        app.goToScreenWithIdentifier(MockSpaceCreationEmailInvitesScreenState.defaultEmailValues.title)
+        
+        let emailTextFieldsCount = app.textFields.matching(identifier: "emailTextField").count
+        XCTAssertEqual(emailTextFieldsCount, 2)
     }
     
-    func verifyEmailValues() {
+    func testEmailEntered() {
+        app.goToScreenWithIdentifier(MockSpaceCreationEmailInvitesScreenState.emailEntered.title)
+        
+        let emailTextFieldsCount = app.textFields.matching(identifier: "emailTextField").count
+        XCTAssertEqual(emailTextFieldsCount, 2)
+    }
+    
+    func testEmailValidationFailed() {
+        app.goToScreenWithIdentifier(MockSpaceCreationEmailInvitesScreenState.emailValidationFailed.title)
+        
+        let emailTextFieldsCount = app.textFields.matching(identifier: "emailTextField").count
+        XCTAssertEqual(emailTextFieldsCount, 2)
+    }
+    
+    func testLoading() {
+        app.goToScreenWithIdentifier(MockSpaceCreationEmailInvitesScreenState.loading.title)
+        
         let emailTextFieldsCount = app.textFields.matching(identifier: "emailTextField").count
         XCTAssertEqual(emailTextFieldsCount, 2)
     }

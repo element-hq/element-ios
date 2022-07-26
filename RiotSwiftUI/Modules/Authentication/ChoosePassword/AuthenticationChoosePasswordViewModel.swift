@@ -55,6 +55,10 @@ class AuthenticationChoosePasswordViewModel: AuthenticationChoosePasswordViewMod
             state.bindings.alertInfo = AlertInfo(id: type,
                                                  title: VectorL10n.error,
                                                  message: message)
+        case .emailNotVerified:
+            state.bindings.alertInfo = AlertInfo(id: type,
+                                                 title: VectorL10n.authenticationChoosePasswordNotVerifiedTitle,
+                                                 message: VectorL10n.authenticationChoosePasswordNotVerifiedMessage)
         case .unknown:
             state.bindings.alertInfo = AlertInfo(id: type)
         }

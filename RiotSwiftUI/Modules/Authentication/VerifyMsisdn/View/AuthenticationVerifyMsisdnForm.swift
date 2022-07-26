@@ -55,7 +55,7 @@ struct AuthenticationVerifyMsisdnForm: View {
                 .foregroundColor(theme.colors.primaryContent)
                 .accessibilityIdentifier("titleLabel")
             
-            Text(VectorL10n.authenticationVerifyMsisdnInputMessage)
+            Text(viewModel.viewState.formHeaderMessage)
                 .font(theme.fonts.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.secondaryContent)

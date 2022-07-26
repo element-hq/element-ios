@@ -50,8 +50,19 @@ enum AuthenticationRegistrationViewModelResult: CustomStringConvertible {
 // MARK: View
 
 struct AuthenticationRegistrationViewState: BindableState {
+    enum UsernameAvailability {
+        /// The availability of the username is unknown.
+        case unknown
+        /// The username is available.
+        case available
+        /// The username is invalid for the following reason.
+        case invalid(String)
+    }
+    
     /// Data about the selected homeserver.
     var homeserver: AuthenticationHomeserverViewData
+    /// Whether a new homeserver is currently being loaded.
+    var isLoading: Bool = false
     /// View state that can be bound to from SwiftUI.
     var bindings: AuthenticationRegistrationBindings
     /// Whether or not the username field has been edited yet.
@@ -63,12 +74,22 @@ struct AuthenticationRegistrationViewState: BindableState {
     /// This is used to delay showing an error state until the user has tried 1 password.
     var hasEditedPassword = false
     
-    /// An error message to be shown in the username text field footer.
-    var usernameErrorMessage: String?
+    /// The availability of the currently enetered username.
+    var usernameAvailability: UsernameAvailability = .unknown
     
     /// The message to show in the username text field footer.
     var usernameFooterMessage: String {
-        usernameErrorMessage ?? VectorL10n.authenticationRegistrationUsernameFooter
+        switch usernameAvailability {
+        case .unknown:
+            return VectorL10n.authenticationRegistrationUsernameFooter
+        case .invalid(let errorMessage):
+            return errorMessage
+        case .available:
+            // https is never shown to the user but http is, so strip the scheme.
+            let domain = homeserver.address.replacingOccurrences(of: "http://", with: "")
+            let userID = "@\(bindings.username):\(domain)"
+            return VectorL10n.authenticationRegistrationUsernameFooterAvailable(userID)
+        }
     }
     
     /// Whether to show any SSO buttons.
@@ -76,19 +97,28 @@ struct AuthenticationRegistrationViewState: BindableState {
         !homeserver.ssoIdentityProviders.isEmpty
     }
     
-    /// Whether the current `username` is valid.
-    var isUsernameValid: Bool {
-        !bindings.username.isEmpty && usernameErrorMessage == nil
+    /// Whether the current `username` is invalid.
+    var isUsernameInvalid: Bool {
+        if case .invalid = usernameAvailability {
+            return true
+        } else {
+            return bindings.username.isEmpty
+        }
     }
     
-    /// Whether the current `password` is valid.
-    var isPasswordValid: Bool {
-        bindings.password.count >= 8
+    /// Whether the current `password` is invalid.
+    var isPasswordInvalid: Bool {
+        bindings.password.count < 8
     }
     
     /// `true` if it is possible to continue, otherwise `false`.
     var hasValidCredentials: Bool {
-        isUsernameValid && isPasswordValid
+        !isUsernameInvalid && !isPasswordInvalid
+    }
+    
+    /// `true` if valid credentials have been entered and the homeserver is loaded.
+    var canSubmit: Bool {
+        hasValidCredentials && !isLoading
     }
 }
 
@@ -108,8 +138,8 @@ enum AuthenticationRegistrationViewAction {
     case validateUsername
     /// Allows password validation to take place (sent after editing the password for the first time).
     case enablePasswordValidation
-    /// Clear any errors being shown in the username text field footer.
-    case clearUsernameError
+    /// Clear any availability messages being shown in the username text field footer.
+    case resetUsernameAvailability
     /// Continue using the input username and password.
     case next
     /// Continue using the supplied SSO provider.
