@@ -1628,12 +1628,12 @@
 "room_event_action_view_in_room" = "Im Raum anzeigen";
 "location_sharing_open_open_street_maps" = "In OpenStreetMap öffnen";
 "onboarding_use_case_title" = "Mit wem wirst du am meisten chatten?";
-"onboarding_use_case_message" = "Wir helfen dir, dich zu verbinden.";
+"onboarding_use_case_message" = "Wir helfen dir, dich zu verbinden";
 "onboarding_use_case_personal_messaging" = "Freunde und Familie";
 "onboarding_use_case_work_messaging" = "Teams";
 "onboarding_use_case_community_messaging" = "Gemeinschaften";
 /* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
-"onboarding_use_case_skip_button" = "diese Frage überspringen";
+"onboarding_use_case_skip_button" = "Diese Frage überspringen";
 "onboarding_use_case_existing_server_message" = "Willst du einem existierenden Server beitreten?";
 "onboarding_use_case_existing_server_button" = "Mit Server verbinden";
 "search_filter_placeholder" = "Filtern";
@@ -2137,7 +2137,7 @@
 "callbar_active_and_single_paused" = "1 aktiver Anruf (%@) · 1 unterbrochener Anruf";
 "onboarding_congratulations_personalize_button" = "Profil personalisieren";
 /* The placeholder string contains the user's matrix ID */
-"onboarding_congratulations_message" = "Dein Account %@ wurde erstellt.";
+"onboarding_congratulations_message" = "Dein Account %@ wurde erstellt";
 "onboarding_congratulations_title" = "Herzlichen Glückwunsch!";
 "saving" = "Speichern";
 
@@ -2149,3 +2149,86 @@
 "add" = "Hinzufügen";
 "new_word" = "Neu";
 "stop" = "Stop";
+"onboarding_display_name_placeholder" = "Anzeigename";
+"onboarding_personalization_skip" = "Schritt überspringen";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "Noch nicht sicher? %@";
+"onboarding_avatar_message" = "Zeit dem Gesicht einen Namen zu geben";
+"onboarding_display_name_message" = "Dies wird angezeigt wenn du Nachrichten sendest.";
+"onboarding_display_name_hint" = "Du kannst dies später noch ändern";
+"onboarding_congratulations_home_button" = "Zurück nach hause";
+"onboarding_celebration_title" = "Sieht gut aus!";
+"authentication_verify_email_waiting_hint" = "Keine E-Mail erhalten?";
+/* The placeholder will show the email address that was entered. */
+"authentication_verify_email_waiting_message" = "Folge den Anweisungen, die an %@ geschickt wurden";
+"authentication_verify_email_waiting_title" = "Bestätige deine E-Mail-Adresse.";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_email_input_message" = "%@ muss deinen Account verifizieren";
+"authentication_cancel_flow_confirmation_message" = "Dein Account ist noch nicht angelegt. Registrierung wirklich abbrechen?";
+"authentication_server_selection_generic_error" = "Unter dieser URL konnte kein Server gefunden werden. Bitte überprüfe die Eingabe.";
+"authentication_server_selection_register_message" = "Wie ist die Adresse deines Servers? Der Server ist wie ein Zuhause für all deine Daten";
+"authentication_server_info_title_login" = "Wo deine Unterhaltungen zum Leben erwachen";
+"authentication_server_info_title" = "Wo deine Unterhaltungen zum Leben erwachen";
+"authentication_registration_username_footer" = "Du kannst dies später nicht mehr ändern";
+
+// MARK: Authentication
+"authentication_registration_title" = "Account erstellen";
+"password_validation_error_contain_symbol" = "Mindestens ein Sonderzeichen.";
+"password_validation_error_contain_number" = "Mindestens eine Ziffer.";
+"password_validation_error_contain_uppercase_letter" = "Mindestens ein Großbuchstabe.";
+"password_validation_error_contain_lowercase_letter" = "Mindestens ein Kleinbuchstabe.";
+/* The placeholder will show a number */
+"password_validation_error_max_length" = "Nicht mehr als %d Zeichen.";
+/* The placeholder will show a number */
+"password_validation_error_min_length" = "Mindestens %d Zeichen.";
+"password_validation_error_header" = "Das eingegebene Passwort erfüllt nicht die folgenden Anforderungen:";
+
+// MARK: Password Validation
+"password_validation_info_header" = "Dein Passwort muss die folgenden Anforderungen erfüllen:";
+"authentication_recaptcha_title" = "Bist du ein Mensch?";
+"authentication_terms_policy_url_error" = "Richtlinie konnte nicht gefunden werden. Versuche es später noch einmal.";
+/* The placeholder will show the homeserver's domain */
+"authentication_terms_message" = "Bitte lies %@s Nutzungsbedingungen";
+"authentication_terms_title" = "Serverrichtlinien";
+"authentication_verify_msisdn_invalid_phone_number" = "Ungültige Telefonnummer";
+"authentication_verify_msisdn_waiting_button" = "Code erneut senden";
+/* The placeholder will show the phone number that was entered. */
+"authentication_verify_msisdn_waiting_message" = "Ein Code wurde an %@ gesendet";
+"authentication_verify_msisdn_waiting_title" = "Bestätige deine Telefonnummer";
+"authentication_verify_msisdn_otp_text_field_placeholder" = "Bestätigungscode";
+"authentication_verify_msisdn_text_field_placeholder" = "Telefonnummer";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_msisdn_input_message" = "%@ muss deinen Account verifizieren";
+"authentication_verify_msisdn_input_title" = "Gib deine Telefonnummer ein";
+"authentication_choose_password_submit_button" = "Passwort zurücksetzen";
+"authentication_choose_password_signout_all_devices" = "Auf allen Geräten abmelden";
+"authentication_choose_password_text_field_placeholder" = "Neues Passwort";
+"authentication_choose_password_input_message" = "Gib 8 Zeichen oder mehr ein";
+"authentication_choose_password_input_title" = "Wähle ein neues Passwort";
+/* The placeholder will show the email address that was entered. */
+"authentication_forgot_password_waiting_message" = "Folge den Anweisungen, die an %@ gesendet wurden";
+"authentication_forgot_password_waiting_title" = "Schau in deine E-Mails.";
+"authentication_forgot_password_text_field_placeholder" = "E-Mail-Adresse";
+/* The placeholder will show the homeserver's domain */
+"authentication_forgot_password_input_message" = "%@ wird dir einen Bestätigungslink senden";
+"authentication_forgot_password_input_title" = "Gib deine E-Mail-Adresse ein";
+"authentication_verify_email_waiting_button" = "E-mail erneut senden";
+"authentication_server_selection_server_url" = "Homeserver-URL";
+"authentication_server_selection_login_message" = "Wie ist die Adresse deines Servers?";
+"authentication_server_selection_register_title" = "Wähle deinen Homeserver aus";
+"authentication_verify_email_text_field_placeholder" = "E-Mail-Adresse";
+"authentication_forgot_password_waiting_button" = "E-Mail erneut senden";
+"authentication_verify_email_input_title" = "Gib deine E-Mail-Adresse ein";
+/* The placeholder will show the full Matrix ID that has been entered. */
+"authentication_registration_username_footer_available" = "Andere Nutzer können dich als %@ finden";
+"authentication_registration_username" = "Nutzername";
+"onboarding_celebration_message" = "Dein kannst dein Profil jederzeit in den Einstellungen ändern";
+"authentication_registration_password_footer" = "8 Zeichen oder mehr";
+"onboarding_avatar_title" = "Profilbild hinzufügen";
+"onboarding_display_name_max_length" = "Dein Nutzername muss weniger als 256 Zeichen haben";
+"onboarding_celebration_button" = "Los geht's";
+"onboarding_avatar_accessibility_label" = "Profilbild";
+"authentication_login_forgot_password" = "Passwort vergessen";
+"authentication_login_username" = "Nutzername / E-Mail-Adresse / Telefonnummer";
+"authentication_login_title" = "Willkommen zurück!";
+"authentication_server_selection_login_title" = "Mit Homeserver verbinden";

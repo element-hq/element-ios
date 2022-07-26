@@ -6,3 +6,4 @@
 "NSCalendarsUsageDescription" = "Zobacz swoje zaplanowane spotkania w aplikacji.";
 "NSFaceIDUsageDescription" = "Face ID wykorzystywane jest do odblokowywania aplikacji.";
 "NSLocationWhenInUseUsageDescription" = "Gdy udostępniasz innym swoją lokalizację, Element potrzebuje dostępu, aby pokazać im mapę.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Gdy udostępniasz innym swoją lokalizację, Element potrzebuje dostępu, aby pokazać im mapę.";

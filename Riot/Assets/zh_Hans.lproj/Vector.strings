@@ -2,7 +2,7 @@
 "title_home" = "主页";
 "title_favourites" = "收藏夹";
 "title_people" = "联系人";
-"title_rooms" = "聊天室";
+"title_rooms" = "房间";
 "warning" = "警告";
 // Actions
 "view" = "视图";
@@ -69,7 +69,7 @@
 "auth_msisdn_validation_message" = "我们通过短信向您发送了一条验证码，请在下方输入它。";
 "auth_msisdn_validation_error" = "无法验证此手机号。";
 "auth_recaptcha_message" = "此主服务器想确定您不是机器人";
-"auth_reset_password_message" = "为了重置您的密码，请输入与您帐号关联的邮箱地址：";
+"auth_reset_password_message" = "为了重置您的密码，请输入与您账户关联的邮箱地址：";
 "auth_reset_password_missing_email" = "必须输入与您的账户关联的邮箱地址。";
 "auth_reset_password_missing_password" = "必须输入新的密码。";
 "auth_reset_password_email_validation_message" = "一封邮件已经发送到 %@。当您已经按照其中的链接操作以后，请点下面。";
@@ -86,35 +86,35 @@
 "room_creation_appearance_picture" = "聊天图片（可选）";
 "room_creation_privacy" = "因此";
 "room_creation_private_room" = "此聊天是私密的";
-"room_creation_public_room" = "此聊天室为公开聊天室";
+"room_creation_public_room" = "此房间为公开房间";
 "room_creation_make_public" = "使其公开";
 "room_creation_make_public_prompt_title" = "要让此聊天公开吗？";
 "room_creation_make_public_prompt_msg" = "你确认要让此聊天公开吗？任何人都可以读到您的消息并加入此聊天。";
 "room_creation_keep_private" = "保持私密";
 "room_creation_make_private" = "使其变成私密";
-"room_creation_wait_for_creation" = "聊天室已创建。请稍候。";
+"room_creation_wait_for_creation" = "房间已创建。请稍候。";
 "room_creation_invite_another_user" = "用户 ID、名称或电子邮件";
 // Room recents
-"room_recents_directory_section" = "聊天室目录";
+"room_recents_directory_section" = "房间目录";
 "room_recents_favourites_section" = "收藏夹";
 "room_recents_people_section" = "联系人";
-"room_recents_conversations_section" = "聊天室";
-"room_recents_no_conversation" = "没有聊天室";
+"room_recents_conversations_section" = "房间";
+"room_recents_no_conversation" = "没有房间";
 "room_recents_low_priority_section" = "低优先级";
 "room_recents_invites_section" = "邀请";
 "room_recents_start_chat_with" = "开始聊天";
-"room_recents_create_empty_room" = "创建聊天室";
-"room_recents_join_room" = "加入聊天室";
-"room_recents_join_room_title" = "加入聊天室";
+"room_recents_create_empty_room" = "创建房间";
+"room_recents_join_room" = "加入房间";
+"room_recents_join_room_title" = "加入房间";
 "room_recents_join_room_prompt" = "输入房间 ID 或者房间别名";
 // People tab
 "people_invites_section" = "邀请";
 "people_conversation_section" = "对话";
 "people_no_conversation" = "没有对话";
 // Rooms tab
-"room_directory_no_public_room" = "没有可用的公共的聊天室";
+"room_directory_no_public_room" = "没有可用的公共的房间";
 // Search
-"search_rooms" = "聊天室";
+"search_rooms" = "房间";
 "search_messages" = "消息";
 "search_people" = "联系人";
 "search_files" = "文件";
@@ -123,7 +123,7 @@
 "search_no_result" = "没有结果";
 // Directory
 "directory_cell_title" = "浏览目录";
-"directory_cell_description" = "%tu 个聊天室";
+"directory_cell_description" = "%tu 个房间";
 "directory_search_results_title" = "浏览目录结果";
 "directory_search_results_more_than" = ">找到了%tu个 %@的搜索结果";
 "directory_searching_title" = "正在搜索目录…";
@@ -140,14 +140,14 @@
 "room_participants_add_participant" = "添加参加者";
 "room_participants_one_participant" = "1 个参加者";
 "room_participants_multi_participants" = "%d 个参加者";
-"room_participants_leave_prompt_title" = "离开聊天室";
-"room_participants_leave_prompt_msg" = "您确定要离开此聊天室吗？";
+"room_participants_leave_prompt_title" = "离开房间";
+"room_participants_leave_prompt_msg" = "您确定要离开此房间吗？";
 "room_participants_remove_prompt_title" = "确认";
-"room_participants_remove_prompt_msg" = "您确定要将 %@ 从此聊天室里移除？";
+"room_participants_remove_prompt_msg" = "您确定要将 %@ 从此房间里移除？";
 "room_participants_remove_third_party_invite_msg" = "在 API 实现之前还不支持移除第三方邀请";
 "room_participants_invite_prompt_title" = "确认";
 "room_participants_invite_prompt_msg" = "确定要邀请 %@ 加入此聊天？";
-"room_participants_filter_room_members" = "筛选聊天室成员";
+"room_participants_filter_room_members" = "筛选房间成员";
 "room_participants_invite_another_user" = "通过用户 ID、名称或电子邮件搜索 / 邀请";
 "room_participants_invite_malformed_id_title" = "邀请错误";
 "room_participants_invite_malformed_id" = "ID 格式错误。必须是一个电子邮件或者 Matrix ID 类似“@本地部分:域名”";
@@ -163,9 +163,9 @@
 "room_participants_action_section_devices" = "会话";
 "room_participants_action_section_other" = "选项";
 "room_participants_action_invite" = "邀请";
-"room_participants_action_leave" = "离开此聊天室";
-"room_participants_action_remove" = "从此聊天室移除";
-"room_participants_action_ban" = "从此聊天室封禁";
+"room_participants_action_leave" = "离开此房间";
+"room_participants_action_remove" = "从此房间移除";
+"room_participants_action_ban" = "从此房间封禁";
 "room_participants_action_unban" = "解封";
 "room_participants_action_ignore" = "隐藏此用户的所有信息";
 "room_participants_action_unignore" = "显示此用户的所有信息";
@@ -209,31 +209,31 @@
 "room_event_action_cancel_upload" = "取消上传";
 "room_event_action_cancel_download" = "取消下载";
 "room_event_action_view_encryption" = "加密信息";
-"room_warning_about_encryption" = "端对端加密依然在测试阶段，可能不可靠。\n\n你不应该相信它来保护你的数据。\n\n还将无法解密设备加入聊天室之前的历史记录。\n\n加密消息对还没有实现加密的客户端将会不可见。";
+"room_warning_about_encryption" = "端对端加密依然在测试阶段，可能不可靠。\n\n你不应该相信它来保护你的数据。\n\n还将无法解密设备加入房间之前的历史记录。\n\n加密消息对还没有实现加密的客户端将会不可见。";
 // Unknown devices
-"unknown_devices_alert_title" = "聊天室内包含未知会话";
-"unknown_devices_alert" = "这个聊天室包含未经验证的未知会话。\n这意味着无法保证会话属于所声称的用户。\n我们建议您在继续操作之前，先验证每个会话，如果你愿意也可以重新发送消息而不验证。";
+"unknown_devices_alert_title" = "房间内包含未知会话";
+"unknown_devices_alert" = "这个房间包含未经验证的未知会话。\n这意味着无法保证会话属于所声称的用户。\n我们建议您在继续操作之前，先验证每个会话，如果你愿意也可以重新发送消息而不验证。";
 "unknown_devices_send_anyway" = "总是发送";
 "unknown_devices_call_anyway" = "总是通话";
 "unknown_devices_answer_anyway" = "总是接听";
 "unknown_devices_verify" = "验证…";
 "unknown_devices_title" = "未知会话";
 // Room Title
-"room_title_new_room" = "新聊天室";
+"room_title_new_room" = "新房间";
 "room_title_multiple_active_members" = "%@/%@ 人在线";
 "room_title_one_active_member" = "%@/%@ 人在线";
 "room_title_invite_members" = "邀请成员";
 "room_title_members" = "%@ 位成员";
 "room_title_one_member" = "1 位成员";
 // Room Preview
-"room_preview_invitation_format" = "您已经通过 %@ 的邀请而加入此聊天室";
-"room_preview_subtitle" = "这是此聊天室的一个预览。聊天室交互已禁用。";
+"room_preview_invitation_format" = "您已经通过 %@ 的邀请而加入此房间";
+"room_preview_subtitle" = "这是此房间的一个预览。房间交互已禁用。";
 "room_preview_unlinked_email_warning" = "此邀请已发送至未与此帐户关联的 %@。你可能希望用一个不同的账户登录，或者把这个电子邮箱加入到您的账户。";
 "room_preview_try_join_an_unknown_room" = "你正在尝试访问 %@。你要加入以参与讨论吗？";
-"room_preview_try_join_an_unknown_room_default" = "一间聊天室";
+"room_preview_try_join_an_unknown_room_default" = "一间房间";
 // Settings
 "settings_title" = "设置";
-"account_logout_all" = "登出所有帐号";
+"account_logout_all" = "登出所有账户";
 "settings_config_no_build_info" = "没有编译信息";
 "settings_mark_all_as_read" = "将所有消息标记为已读";
 "settings_report_bug" = "报告 bug";
@@ -249,9 +249,9 @@
 "settings_labs" = "实验室";
 "settings_devices" = "会话";
 "settings_cryptography" = "加密";
-"settings_sign_out" = "退出登陆";
+"settings_sign_out" = "登出";
 "settings_sign_out_confirmation" = "你确定？";
-"settings_sign_out_e2e_warn" = "您将丢失所有端对端加密密钥。这意味着在此设备上您将再也无法阅读已加密聊天室里的旧消息。";
+"settings_sign_out_e2e_warn" = "您将丢失所有端对端加密密钥。这意味着在此设备上您将再也无法阅读已加密房间里的旧消息。";
 "settings_profile_picture" = "档案图片";
 "settings_display_name" = "显示名";
 "settings_first_name" = "名称";
@@ -268,8 +268,8 @@
 "settings_fail_to_update_profile" = "个人档案更新失败";
 "settings_enable_push_notif" = "在此设备上发送通知";
 "settings_global_settings_info" = "全局通知设置可在 %@ 的网页客户端中修改";
-"settings_pin_rooms_with_missed_notif" = "置顶含有错过的通知的聊天室";
-"settings_pin_rooms_with_unread" = "置顶含有未读消息的聊天室";
+"settings_pin_rooms_with_missed_notif" = "置顶含有错过的通知的房间";
+"settings_pin_rooms_with_unread" = "置顶含有未读消息的房间";
 "settings_unignore_user" = "显示所有来自 %@ 的消息？";
 "settings_contacts_discover_matrix_users" = "使用电子邮件和手机号码来发现用户";
 "settings_contacts_phonebook_country" = "电话本国家";
@@ -295,22 +295,22 @@
 "settings_crypto_export" = "导出密钥";
 "settings_crypto_blacklist_unverified_devices" = "只加密到已验证的会话";
 // Room Details
-"room_details_title" = "聊天室详情";
+"room_details_title" = "房间详情";
 "room_details_people" = "成员";
 "room_details_files" = "上传";
 "room_details_settings" = "设置";
-"room_details_photo" = "聊天室图片";
-"room_details_room_name" = "聊天室名称";
+"room_details_photo" = "房间图片";
+"room_details_room_name" = "房间名称";
 "room_details_topic" = "话题";
 "room_details_favourite_tag" = "收藏夹";
 "room_details_low_priority_tag" = "低优先级";
 "room_details_mute_notifs" = "静音通知";
-"room_details_access_section" = "谁能访问此聊天室？";
+"room_details_access_section" = "谁能访问此房间？";
 "room_details_access_section_invited_only" = "只有邀请的人";
-"room_details_access_section_anyone_apart_from_guest" = "任何知道此聊天室链接的人，除了访客";
-"room_details_access_section_anyone" = "任何知道此聊天室链接的人，包括访客";
-"room_details_access_section_no_address_warning" = "要链接一个聊天室必须设置地址";
-"room_details_access_section_directory_toggle" = "将此聊天室列入聊天室目录";
+"room_details_access_section_anyone_apart_from_guest" = "任何知道此房间链接的人，除了访客";
+"room_details_access_section_anyone" = "任何知道此房间链接的人，包括访客";
+"room_details_access_section_no_address_warning" = "要链接一个房间必须设置地址";
+"room_details_access_section_directory_toggle" = "将此房间列入房间目录";
 "room_details_history_section" = "谁可以阅读历史？";
 "room_details_history_section_anyone" = "任何人";
 "room_details_history_section_members_only" = "只有成员（从选择这个选项的时间开始）";
@@ -318,39 +318,39 @@
 "room_details_history_section_members_only_since_joined" = "只有成员（从他们加入开始）";
 "room_details_history_section_prompt_title" = "隐私警告";
 "room_details_addresses_section" = "地址";
-"room_details_no_local_addresses" = "此聊天室没有本地地址";
-"room_details_history_section_prompt_msg" = "改成谁都可以阅读历史只会应用于此聊天室未来的消息。已经存在的历史消息的可见性将不会改变。";
+"room_details_no_local_addresses" = "此房间没有本地地址";
+"room_details_history_section_prompt_msg" = "改成谁都可以阅读历史只会应用于此房间未来的消息。已经存在的历史消息的可见性将不会改变。";
 "room_details_new_address" = "添加新地址";
 "room_details_new_address_placeholder" = "添加新地址（例如 #foo%@）";
 "room_details_addresses_invalid_address_prompt_title" = "别名格式无效";
 "room_details_addresses_invalid_address_prompt_msg" = "%@ 不是一个有效的别名格式";
 "room_details_addresses_disable_main_address_prompt_title" = "主要地址警告";
-"room_details_addresses_disable_main_address_prompt_msg" = "您没有指定主要地址。此聊天室的默认主要地址会随机选取";
+"room_details_addresses_disable_main_address_prompt_msg" = "您没有指定主要地址。此房间的默认主要地址会随机选取";
 "room_details_banned_users_section" = "封禁的用户";
 "room_details_advanced_section" = "高级";
-"room_details_advanced_room_id" = "聊天室 ID：";
+"room_details_advanced_room_id" = "房间 ID：";
 "room_details_advanced_enable_e2e_encryption" = "启用加密（警告：启用后不能禁用）";
-"room_details_advanced_e2e_encryption_enabled" = "此聊天室已经启用加密";
-"room_details_advanced_e2e_encryption_disabled" = "此聊天室未启用加密。";
+"room_details_advanced_e2e_encryption_enabled" = "此房间已经启用加密";
+"room_details_advanced_e2e_encryption_disabled" = "此房间未启用加密。";
 "room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "只加密到已验证的会话";
 "room_details_advanced_e2e_encryption_prompt_message" = "端对端加密依然在测试阶段，可能不可靠。\n\n你不应该相信它来保护你的数据。\n\n将无法解密设备加入聊天室之前的历史记录。\n\n一旦加密对一个聊天室启用了，它不能再关闭（对于现在来说）。\n\n加密消息对还没有实现加密的客户端将会不可见。";
-"room_details_fail_to_update_avatar" = "更新聊天室图片失败";
-"room_details_fail_to_update_room_name" = "更新聊天室名称失败";
+"room_details_fail_to_update_avatar" = "更新房间图片失败";
+"room_details_fail_to_update_room_name" = "更新房间名称失败";
 "room_details_fail_to_update_topic" = "更新话题失败";
-"room_details_fail_to_update_room_guest_access" = "更新聊天室访客访问失败";
+"room_details_fail_to_update_room_guest_access" = "更新房间访客访问失败";
 "room_details_fail_to_update_room_join_rule" = "更新加入规则失败";
-"room_details_fail_to_update_room_directory_visibility" = "更新聊天室目录可见性失败";
+"room_details_fail_to_update_room_directory_visibility" = "更新房间目录可见性失败";
 "room_details_fail_to_update_history_visibility" = "更新历史可见性失败";
-"room_details_fail_to_add_room_aliases" = "添加新聊天室地址失败";
-"room_details_fail_to_remove_room_aliases" = "移除聊天室地址失败";
+"room_details_fail_to_add_room_aliases" = "添加新房间地址失败";
+"room_details_fail_to_remove_room_aliases" = "移除房间地址失败";
 "room_details_fail_to_update_room_canonical_alias" = "更新主要地址失败";
-"room_details_fail_to_enable_encryption" = "为此聊天室启用加密失败";
+"room_details_fail_to_enable_encryption" = "为此房间启用加密失败";
 "room_details_save_changes_prompt" = "您要保存更改吗？";
 "room_details_set_main_address" = "设置为主要地址";
 "room_details_unset_main_address" = "取消设置主要地址";
-"room_details_copy_room_id" = "复制聊天室 ID";
-"room_details_copy_room_address" = "复制聊天室地址";
-"room_details_copy_room_url" = "复制聊天室 URL";
+"room_details_copy_room_id" = "复制房间 ID";
+"room_details_copy_room_address" = "复制房间地址";
+"room_details_copy_room_url" = "复制房间 URL";
 // Read Receipts
 "read_receipts_list" = "读取收件人列表";
 "receipt_status_read" = "读取： ";
@@ -360,9 +360,9 @@
 // Directory
 "directory_title" = "目录";
 "directory_server_picker_title" = "选择一个目录";
-"directory_server_all_rooms" = "%@ 服务器上的所有聊天室";
-"directory_server_all_native_rooms" = "所有本地 Matrix 聊天室";
-"directory_server_type_homeserver" = "输入一个主服务器来列出公共聊天室";
+"directory_server_all_rooms" = "%@ 服务器上的所有房间";
+"directory_server_all_native_rooms" = "所有本地 Matrix 房间";
+"directory_server_type_homeserver" = "输入一个主服务器来列出公共房间";
 "directory_server_placeholder" = "matrix.org";
 // Others
 "or" = "或";
@@ -370,7 +370,7 @@
 "today" = "今天";
 "yesterday" = "昨天";
 "network_offline_prompt" = "貌似互联网连接已经离线。";
-"public_room_section_title" = "公共聊天室（在 %@）：";
+"public_room_section_title" = "公共房间（在 %@）：";
 "bug_report_prompt" = "上一次应用程序崩溃了。您是否要提交一份崩溃报告？";
 "bug_report_send" = "发送";
 "rage_shake_prompt" = "你似乎在沮丧地摇晃手机。您要提交 bug 报告吗？";
@@ -416,7 +416,7 @@
 "send_to" = "发送至 %@";
 "sending" = "正在发送";
 "search_in_progress" = "正在搜索…";
-"room_conference_call_no_power" = "你需要此聊天室的管理会议通话的权限";
+"room_conference_call_no_power" = "你需要此房间的管理会议通话的权限";
 "room_event_action_cancel_send" = "取消发送";
 "room_event_failed_to_send" = "发送失败";
 "settings_calls_settings" = "通话";
@@ -434,19 +434,19 @@
 // Groups tab
 "group_invite_section" = "邀请";
 "group_section" = "社区";
-"room_do_not_have_permission_to_post" = "你无权在此聊天室发送消息";
+"room_do_not_have_permission_to_post" = "你无权在此房间发送消息";
 "settings_enable_rageshake" = "摇一摇报告 bug";
 "room_details_direct_chat" = "私聊";
 // Group Details
 "group_details_title" = "社区信息";
 "group_details_home" = "主页";
 "group_details_people" = "用户";
-"group_details_rooms" = "聊天室";
+"group_details_rooms" = "房间";
 // Group Home
 "group_home_one_member_format" = "1 位用户";
 "group_home_multi_members_format" = "%tu 位用户";
-"group_home_one_room_format" = "1 个聊天室";
-"group_home_multi_rooms_format" = "%tu 个聊天室";
+"group_home_one_room_format" = "1 个房间";
+"group_home_multi_rooms_format" = "%tu 个房间";
 // Group participants
 "group_participants_add_participant" = "添加成员";
 "group_participants_leave_prompt_title" = "离开群组";
@@ -460,7 +460,7 @@
 "group_participants_invite_malformed_id_title" = "邀请出错";
 "group_participants_invited_section" = "已邀请";
 // Group rooms
-"group_rooms_filter_rooms" = "过滤社区聊天室";
+"group_rooms_filter_rooms" = "过滤社区房间";
 "event_formatter_widget_added" = "挂件 %@ 已被 %@ 添加";
 "event_formatter_widget_removed" = "挂件 %@ 已被 %@ 移除";
 "do_not_ask_again" = "不再询问";
@@ -471,7 +471,7 @@
 "widget_integration_failed_to_send_request" = "发送请求失败。";
 "widget_integration_room_not_recognised" = "无法识别此房间。";
 "widget_integration_positive_power_level" = "权限级别必须是整数。";
-"widget_integration_must_be_in_room" = "您不在此聊天室中。";
+"widget_integration_must_be_in_room" = "您不在此房间中。";
 "e2e_room_key_request_start_verification" = "开始验证…";
 "e2e_room_key_request_share_without_verifying" = "在不验证的情况下分享";
 "e2e_room_key_request_ignore_request" = "忽略请求";
@@ -484,7 +484,7 @@
 "group_invitation_format" = "%@ 邀请您加入此社区";
 "group_participants_invite_malformed_id" = "ID 格式错误。一个 Matrix ID 看起来应该像是 “@localpart:domain”";
 // Widget
-"widget_no_power_to_manage" = "你需要相关权限以管理此聊天室的挂件";
+"widget_no_power_to_manage" = "你需要相关权限以管理此房间的挂件";
 "widget_creation_failure" = "挂件创建失败";
 // Room key request dialog
 "e2e_room_key_request_title" = "密钥共享请求";
@@ -501,7 +501,7 @@
 "settings_deactivate_account" = "停用帐户";
 "settings_labs_room_members_lazy_loading" = "延迟加载聊天室成员";
 "settings_labs_room_members_lazy_loading_error_message" = "您的主服务器尚不支持延迟加载聊天室成员。请稍后再试。";
-"settings_deactivate_my_account" = "停用我的帐户";
+"settings_deactivate_my_account" = "永久停用账户";
 "event_formatter_jitsi_widget_added" = "VoIP 会议已被 %@ 添加";
 "event_formatter_rerequest_keys_part1_link" = "重新请求加密密钥";
 "event_formatter_rerequest_keys_part2" = " （从您的其他会话中）。";
@@ -514,7 +514,7 @@
 "rerequest_keys_alert_title" = "请求已发送";
 "settings_callkit_info" = "在锁屏上接收来电。在系统通话记录中查看你的%@通话。如果启用iCloud，此通话记录将与苹果公司共享。";
 "room_replacement_link" = "对话自此继续。";
-"room_predecessor_information" = "这个聊天室是另一个对话的延续。";
+"room_predecessor_information" = "这个房间是另一个对话的延续。";
 "room_predecessor_link" = "点击此处查看更早的消息。";
 "room_resource_usage_limit_reached_message_1_default" = "此主服务器某资源已超出使用限制，导致 ";
 "room_resource_usage_limit_reached_message_1_monthly_active_user" = "此主服务器已达到月活跃用户限制，导致 ";
@@ -524,7 +524,7 @@
 "store_short_description" = "安全、去中心化的聊天及 VoIP 应用";
 "store_full_description" = "Element 是一种新型的通讯与协作应用：\n\n1. 使您可以掌控您的隐私\n2. 使您与 Matrix 网络中的任何人交流，甚至可以通过集成功能与如 Slack 之类的其他应用通讯\n3. 保护您免受广告，大数据挖掘和封闭服务的侵害\n4. 通过端到端加密保证安全，通过交叉签名验证其他人\n\nElement 与其他通讯与协作应用完全不同，因为它是去中心化且开源的。\n\nElement 允许您自托管——或者选择托管商——因此，您能拥有数据和会话的隐私权，所有权和控制权。它允许您访问开放网络；因此，您可以与 Element 用户以外的人交流。并且它非常安全。\n\nElement 之所以可以做到这些，是因为它在 Matrix 上运行——开放，去中心化通讯的标准。\n\n通过让您选择由谁来托管您的会话，Element 让您掌控一切。在 Element 应用中，您可以选择不同的托管方式：\n\n1. 在由 Matrix 开发者托管的 matrix.org 公共服务器上获取免费帐户，或从志愿者托管的上千个公共服务器中选择\n2. 在您自己的硬件上运行服务器，自托管您的会话\n3. 通过订阅 Element Matrix Services 托管平台，简单地在自定义服务器上注册账户\n\n为什么选择 Element？\n\n掌控您的数据：您来决定存放您的数据和消息的位置。拥有并控制它的是您，而不是挖掘您的数据或与第三方分享的巨型企业。\n\n开放通讯与协作：您可以与 Matrix 网络中的任何人聊天，不论他们使用 Element 还是其他 Matrix 应用，甚至/即使他们在使用不同的通讯系统，例如 Slack，IRC 或 XMPP。\n\n超级安全：支持真正的端到端加密（仅有会话中的人可以解密消息），还有能够验证会话参与方的设备的交叉签名。\n\n完善的通讯方式：消息，语音和视频通话，文件共享，屏幕共享和大量集成功能，机器人和挂件。建立房间与社区，保持联系并完成工作。\n\n随时随地：消息历史可在您的全部设备和 https://app.element.io 网页端之间完全同步，无论您在哪里，都可以保持联系。";
 "auth_accept_policies" = "请查看并接受此主页服务器的服务条款：";
-"room_replacement_information" = "这个聊天室已被替换，不再有效。";
+"room_replacement_information" = "这个房间已被替换，不再有效。";
 "settings_flair" = "在允许的地方显示个性徽章";
 "settings_key_backup" = "密钥备份";
 "settings_key_backup_info" = "消息已被端对端安全加密。只有您和持有密钥的接收方可以阅读这些消息。";
@@ -550,9 +550,9 @@
 "settings_key_backup_delete_confirmation_prompt_title" = "删除备份";
 "settings_key_backup_delete_confirmation_prompt_msg" = "您确定吗？如果您的密钥未正确备份，您将丢失您的已加密信息。";
 "room_details_flair_section" = "显示社区徽章";
-"room_details_fail_to_update_room_direct" = "此聊天室的直接标记更新失败";
+"room_details_fail_to_update_room_direct" = "此房间的直接标记更新失败";
 "event_formatter_jitsi_widget_removed" = "VoIP 会议已被 %@ 移除";
-"room_does_not_exist" = "%@ 聊天室不存在";
+"room_does_not_exist" = "%@ 房间不存在";
 "call_incoming_voice" = "收到来电…";
 "call_incoming_video" = "收到视频通话…";
 // Key backup wrong version
@@ -562,10 +562,10 @@
 "e2e_key_backup_wrong_version_button_wasme" = "那是我操作的";
 "widget_sticker_picker_no_stickerpacks_alert" = "您目前并未启用任何贴纸包。";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "要立即添加吗？";
-"widget_integration_no_permission_in_room" = "您在这个聊天室中没有此操作的权限。";
+"widget_integration_no_permission_in_room" = "您在这个房间中没有此操作的权限。";
 "widget_integration_missing_room_id" = "请求中缺少 room_id 。";
 "widget_integration_missing_user_id" = "请求中缺少 user_id 。";
-"widget_integration_room_not_visible" = "%@ 聊天室不可见。";
+"widget_integration_room_not_visible" = "%@ 房间不可见。";
 // Share extension
 "share_extension_auth_prompt" = "登录主应用程序以共享内容";
 "share_extension_failed_to_encrypt" = "发送失败。 请在主应用程序中检查此房间的加密设置";
@@ -575,7 +575,7 @@
 "gdpr_consent_not_given_alert_message" = "要继续使用该 %@ 主服务器，您必须查看并同意其服务条款和条件。";
 "gdpr_consent_not_given_alert_review_now_action" = "立即查看";
 "deactivate_account_title" = "停用帐户";
-"deactivate_account_informations_part1" = "这将使您的账号永久无法使用。 您将无法登录，也无法重新注册相同的用户 ID 。 这将导致您的账号离开其参与的所有聊天室，并且会从您的身份服务器中删除您的账号详细信息。 ";
+"deactivate_account_informations_part1" = "这将使您的账号永久无法使用。 您将无法登录，也无法重新注册相同的用户 ID 。 这将导致您的账号离开其参与的所有房间，并且会从您的身份服务器中删除您的账号详细信息。 ";
 "deactivate_account_informations_part2_emphasize" = "此项操作无法逆转。";
 "deactivate_account_informations_part3" = "\n\n正在停用您的账号 ";
 "deactivate_account_informations_part4_emphasize" = "默认情况下不会导致我们忘记您发送的消息。 ";
@@ -589,7 +589,7 @@
 "key_backup_setup_skip_alert_message" = "如果您登出或丢失设备，可能会丢失安全消息。";
 "key_backup_setup_skip_alert_skip_action" = "跳过";
 "key_backup_setup_intro_title" = "永不丢失加密消息";
-"key_backup_setup_intro_info" = "加密聊天室中的消息使用端到端加密进行保护。 只有您和拥有密钥的收件人才能阅读这些消息。\n\n安全备份密钥以避免丢失密钥。";
+"key_backup_setup_intro_info" = "加密房间中的消息使用端到端加密进行保护。 只有您和拥有密钥的收件人才能阅读这些消息。\n\n安全备份密钥以避免丢失密钥。";
 "key_backup_setup_intro_setup_action_without_existing_backup" = "开始使用密钥备份";
 "key_backup_setup_intro_setup_action_with_existing_backup" = "使用密钥备份";
 "key_backup_setup_intro_manual_export_info" = "（高级）";
@@ -687,8 +687,8 @@
 "room_participants_action_security_status_verify" = "验证";
 "room_participants_action_security_status_warning" = "警告";
 "room_participants_security_loading" = "正在载入…";
-"room_participants_security_information_room_not_encrypted" = "此聊天室中的消息未经端对端加密。";
-"room_participants_security_information_room_encrypted" = "本聊天室中的消息已被端对端加密。\n\n您的消息受加密保护，并且只有您和消息接收者拥有唯一解密密钥。";
+"room_participants_security_information_room_not_encrypted" = "此房间中的消息未经端对端加密。";
+"room_participants_security_information_room_encrypted" = "本房间中的消息已被端对端加密。\n\n您的消息受加密保护，并且只有您和消息接收者拥有唯一解密密钥。";
 "room_accessiblity_scroll_to_bottom" = "滚动到底部";
 "room_event_action_reply" = "回复";
 "room_event_action_edit" = "编辑";
@@ -720,7 +720,7 @@
 "settings_calls_stun_server_fallback_button" = "允许使用通话辅助服务器作为备用手段";
 "settings_calls_stun_server_fallback_description" = "允许在你的主服务器不能提供时使用通话辅助服务器 %@ 作为备用手段（你的IP地址在通话时会被分享）。";
 "settings_integrations_allow_button" = "管理集成";
-"settings_integrations_allow_description" = "使用集成管理器（%@）来管理机器人，桥接，小插件和贴图包。\n\n集成管理器会收到设置数据，而且能修改小插件，发送聊天室邀请以及代表你设置权限级别。";
+"settings_integrations_allow_description" = "使用集成管理器（%@）来管理机器人，桥接，小插件和贴图包。\n\n集成管理器会收到设置数据，而且能修改小插件，发送房间邀请以及代表你设置权限级别。";
 "settings_labs_message_reaction" = "用emoji表情回应消息";
 "settings_labs_enable_cross_signing" = "开启交叉签名按用户验证而不是按设备验证（开发中）";
 "settings_add_3pid_password_title_email" = "添加邮箱地址";
@@ -731,14 +731,14 @@
 "settings_devices_description" = "会话的公开名字会对你联络的人可见";
 "settings_discovery_no_identity_server" = "你现在没有在用身份认证服务器。想要被你认识的现有联系人发现，请添加。";
 "settings_discovery_terms_not_signed" = "同意身份认证服务器（%@）的服务条款以使你能通过邮箱地址或电话号码被发现。";
-"settings_discovery_three_pids_management_information_part1" = "管理能让其他用户发现你和邀请你到聊天室的邮箱地址或电话号码。从来自以下位置的列表中添加或删除邮箱地址或电话号码： ";
+"settings_discovery_three_pids_management_information_part1" = "管理能让其他用户发现你和邀请你到房间的邮箱地址或电话号码。从来自以下位置的列表中添加或删除邮箱地址或电话号码： ";
 "settings_discovery_three_pids_management_information_part2" = "用户设置";
 "settings_discovery_three_pids_management_information_part3" = "。";
 "settings_discovery_error_message" = "发生错误。请重试。";
 "settings_discovery_three_pid_details_title_email" = "管理邮箱";
-"settings_discovery_three_pid_details_information_email" = "设置此邮箱地址的偏好，其他用户可使用它发现你和邀请你加入聊天室。在“账号”中添加或者删除邮箱地址。";
+"settings_discovery_three_pid_details_information_email" = "设置此邮箱地址的偏好，其他用户可使用它发现你和邀请你加入房间。在“账号”中添加或者删除邮箱地址。";
 "settings_discovery_three_pid_details_title_phone_number" = "管理电话号码";
-"settings_discovery_three_pid_details_information_phone_number" = "设置此电话号码的偏好，其他用户可使用它发现你和邀请你加入聊天室。在“账号”中添加或者删除电话号码。";
+"settings_discovery_three_pid_details_information_phone_number" = "设置此电话号码的偏好，其他用户可使用它发现你和邀请你加入房间。在“账号”中添加或者删除电话号码。";
 "settings_discovery_three_pid_details_share_action" = "分享";
 "settings_discovery_three_pid_details_revoke_action" = "撤回";
 "settings_discovery_three_pid_details_cancel_email_validation_action" = "取消邮箱验证";
@@ -816,7 +816,7 @@
 "room_widget_permission_user_id_permission" = "你的用户ID";
 "room_widget_permission_theme_permission" = "你的主题";
 "room_widget_permission_widget_id_permission" = "小插件ID";
-"room_widget_permission_room_id_permission" = "聊天室ID";
+"room_widget_permission_room_id_permission" = "房间ID";
 // Service terms
 "service_terms_modal_title" = "服务条款";
 "service_terms_modal_accept_button" = "接受";
@@ -961,7 +961,7 @@
 "user_verification_sessions_list_user_trust_level_trusted_title" = "已信任";
 "user_verification_sessions_list_user_trust_level_warning_title" = "警告";
 "user_verification_sessions_list_user_trust_level_unknown_title" = "未知";
-"user_verification_sessions_list_information" = "与此聊天室里的这个用户的消息是端到端加密的，并且不能够被第三方所读取。";
+"user_verification_sessions_list_information" = "与此房间里的这个用户的消息是端到端加密的，并且不能够被第三方所读取。";
 "user_verification_sessions_list_table_title" = "会话";
 "user_verification_sessions_list_session_trusted" = "已信任";
 "user_verification_sessions_list_session_untrusted" = "不信任";
@@ -979,9 +979,9 @@
 "room_participants_action_security_status_complete_security" = "完整安全性";
 "room_participants_action_security_status_loading" = "正在加载…";
 "room_member_power_level_admin_in" = "管理员（%@）";
-"room_member_power_level_moderator_in" = "协管员（%@）";
+"room_member_power_level_moderator_in" = "%@里的协管员";
 "room_member_power_level_short_admin" = "管理";
-"room_member_power_level_short_moderator" = "协管";
+"room_member_power_level_short_moderator" = "协管员";
 "security_settings_crosssigning" = "交叉签名";
 "security_settings_crosssigning_info_not_bootstrapped" = "交叉签名还没有被设置。";
 "security_settings_crosssigning_info_exists" = "您的帐户有一个交叉签名身份，但是还没有被这个会话信任。完全安全的会话。";
@@ -1014,7 +1014,7 @@
 "key_verification_self_verify_current_session_alert_title" = "验证此会话";
 "key_verification_self_verify_current_session_alert_message" = "其他用户可能不信任它。";
 "key_verification_self_verify_current_session_alert_validate_action" = "验证";
-"key_verification_self_verify_unverified_sessions_alert_title" = "查看您的登陆位置";
+"key_verification_self_verify_unverified_sessions_alert_title" = "查看您的登录位置";
 "key_verification_self_verify_unverified_sessions_alert_message" = "验证您的所有会话以确保您的帐户和消息的安全。";
 "key_verification_self_verify_unverified_sessions_alert_validate_action" = "检查";
 "device_verification_self_verify_wait_title" = "绝对安全";
@@ -1083,7 +1083,7 @@
 "secrets_recovery_with_key_invalid_recovery_key_message" = "请验证您输入的安全密钥是否正确。";
 "rooms_empty_view_information" = "房间非常适合任何群聊，无论是私人的还是公共的。点击+以查找现有房间，或新建房间。";
 "security_settings_user_password_description" = "通过输入您的帐户密码确认您的身份";
-"rooms_empty_view_title" = "聊天室";
+"rooms_empty_view_title" = "房间";
 "people_empty_view_information" = "与任何人安全聊天。点击+开始添加人员。";
 "people_empty_view_title" = "用户";
 "less" = "较小地";
@@ -1105,14 +1105,14 @@
 "security_settings_secure_backup_setup" = "设置";
 "security_settings_secure_backup_description" = "备份你的帐户数据备份和加密密钥，以防你无法访问会话。 你的密钥将受到唯一的安全密钥保护。";
 "security_settings_crypto_sessions_description_2" = "如果您未曾发起登录，请更改密码并重置安全备份。";
-"settings_show_NSFW_public_rooms" = "显示 NSFW 公共聊天室";
+"settings_show_NSFW_public_rooms" = "显示 NSFW 公共房间";
 "external_link_confirmation_message" = "此链接 %@ 会将您带至另一个网站：%@\n\n是否前往？";
 "external_link_confirmation_title" = "双击此链接";
 "room_open_dialpad" = "拨号键盘";
 "room_place_voice_call" = "语音通话";
 "room_event_action_delete_confirmation_message" = "您确定要删除这条未发送的消息吗？";
 "room_event_action_delete_confirmation_title" = "删除未发送的消息";
-"room_unsent_messages_cancel_message" = "您确定要删除此聊天室中所有未发送的消息吗？";
+"room_unsent_messages_cancel_message" = "您确定要删除此房间中所有未发送的消息吗？";
 "room_unsent_messages_cancel_title" = "删除未发送的消息";
 "room_participants_security_information_room_encrypted_for_dm" = "这里的消息已被端对端加密。\n\n您的消息受加密保护，并且只有您和消息接收者拥有唯一解密密钥。";
 "room_participants_security_information_room_not_encrypted_for_dm" = "此处的消息未经端对端加密。";
@@ -1135,7 +1135,7 @@
 // Mark: - Room creation introduction cell
 
 "room_intro_cell_add_participants_action" = "添加人员";
-"room_avatar_view_accessibility_hint" = "修改聊天室头像";
+"room_avatar_view_accessibility_hint" = "修改房间头像";
 
 // Mark: - Room avatar view
 
@@ -1147,7 +1147,7 @@
 
 // MARK: - Favourites
 
-"favourites_empty_view_title" = "收藏聊天室与对话";
+"favourites_empty_view_title" = "收藏房间与对话";
 
 // MARK: - Home
 
@@ -1167,35 +1167,35 @@
 "room_info_list_section_other" = "其他";
 "create_room_section_footer_encryption" = "加密一经启用，便无法禁用。";
 "create_room_placeholder_address" = "#testroom:matrix.org";
-"create_room_section_header_address" = "聊天室地址";
-"create_room_section_header_type" = "聊天室类型";
+"create_room_section_header_address" = "房间地址";
+"create_room_section_header_type" = "房间类型";
 "create_room_enable_encryption" = "启用加密";
-"create_room_section_header_encryption" = "聊天室加密";
-"create_room_placeholder_topic" = "话题";
-"create_room_section_header_topic" = "聊天室话题（可选）";
+"create_room_section_header_encryption" = "房间加密";
+"create_room_placeholder_topic" = "这个房间是关于什么的？";
+"create_room_section_header_topic" = "房间话题（可选）";
 "create_room_placeholder_name" = "名称";
-"create_room_section_header_name" = "聊天室名称";
+"create_room_section_header_name" = "房间名称";
 
 // MARK: - Create Room
 
-"create_room_title" = "新聊天室";
+"create_room_title" = "新房间";
 "searchable_directory_search_placeholder" = "名称或 ID";
 "searchable_directory_x_network" = "%@ 网络";
 
 // MARK: - Searchable Directory View Controller
 
-"searchable_directory_create_new_room" = "创建新聊天室";
+"searchable_directory_create_new_room" = "创建新房间";
 "biometrics_cant_unlocked_alert_message_retry" = "重试";
 "biometrics_desetup_disable_button_title_x" = "禁用 %@";
 "biometrics_desetup_title_x" = "禁用 %@";
 "biometrics_setup_enable_button_title_x" = "启用 %@";
 "biometrics_setup_title_x" = "启用 %@";
 "biometrics_settings_enable_x" = "启用 %@";
-"biometrics_mode_face_id" = "Face ID";
+"biometrics_mode_face_id" = "面容ID";
 
 // MARK: - Biometrics Protection
 
-"biometrics_mode_touch_id" = "Touch ID";
+"biometrics_mode_touch_id" = "触控ID";
 "pin_protection_mismatch_error_message" = "请再试一次";
 "pin_protection_reset_alert_action_reset" = "重置";
 "pin_protection_choose_pin_welcome_after_register" = "欢迎。";
@@ -1233,11 +1233,11 @@
 
 "room_info_list_one_member" = "1 位成员";
 "security_settings_secure_backup" = "安全备份";
-"space_beta_announce_information" = "空间是一种将聊天室和人们进行分组的新方式。它们在 iOS 上尚不可用，但你现在可以在网页端和桌面端上使用。";
+"space_beta_announce_information" = "空间是一种将房间和人们进行分组的新方式。它们在 iOS 上尚不可用，但你现在可以在网页端和桌面端上使用。";
 "space_beta_announce_subtitle" = "新版社群";
 "space_beta_announce_title" = "空间即将到来";
 "space_beta_announce_badge" = "测试版";
-"space_feature_unavailable_information" = "空间是一种将将聊天室和人们进行分组的新方式。\n\n他们即将到来。现在，如果你在另一个平台上加入其中一个空间，你将能够进入你在这里加入的任何聊天室。";
+"space_feature_unavailable_information" = "空间是一种将将房间和人们进行分组的新方式。\n\n他们即将到来。现在，如果你在另一个平台上加入其中一个空间，你将能够进入你在这里加入的任何房间。";
 "space_feature_unavailable_subtitle" = "空间在 iOS 上尚不可用，但你现在可以在网页端和桌面端上使用它";
 
 // Mark: - Spaces
@@ -1246,15 +1246,15 @@
 "room_intro_cell_information_multiple_dm_sentence2" = "仅有你在此对话中，除非你邀请其他人加入。";
 "room_intro_cell_information_dm_sentence2" = "仅有你们两个在此对话中，没有其他人可以加入。";
 "room_intro_cell_information_dm_sentence1_part1" = "这是你私信的开始： ";
-"room_intro_cell_information_room_without_topic_sentence2_part2" = " 让大家知道此聊天室是做什么的。";
+"room_intro_cell_information_room_without_topic_sentence2_part2" = " 让大家知道此房间是做什么的。";
 "room_intro_cell_information_room_sentence1_part1" = "这是一切的开始： ";
 "invite_friends_share_text" = "嗨，在 %@ 跟我说：%@";
 "favourites_empty_view_information" = "你可以选择几种方法 - 最快只需按住。点击星星，它们会自动出现在这里，以确保安全。";
-"home_empty_view_information" = "团队、朋友和组织的一体化安全聊天应用程序。 点击下面的「+」按钮添加人员和聊天室。";
-"create_room_show_in_directory" = "在目录中显示聊天室";
+"home_empty_view_information" = "团队、朋友和组织的一体化安全聊天应用程序。 点击下面的「+」按钮添加人员和房间。";
+"create_room_show_in_directory" = "在目录中显示房间";
 "create_room_section_footer_type" = "人们只有在收到聊天室邀请后才可以进入私有房间。";
-"create_room_type_public" = "公开聊天室";
-"create_room_type_private" = "私有聊天室";
+"create_room_type_public" = "公开房间";
+"create_room_type_private" = "私有房间";
 "biometrics_cant_unlocked_alert_message_login" = "重新登录";
 "biometrics_cant_unlocked_alert_message_x" = "若要解锁，请使用 %@ 或重新登录并启用 %@";
 "biometrics_cant_unlocked_alert_title" = "无法解锁应用程序";
@@ -1364,15 +1364,15 @@
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "此处没有启用加密。";
 "room_details_advanced_e2e_encryption_enabled_for_dm" = "此处已启用加密";
 "room_details_advanced_room_id_for_dm" = "ID：";
-"room_details_no_local_addresses_for_dm" = "此聊天室没有本地地址";
-"room_details_access_section_directory_toggle_for_dm" = "在聊天室列表中列出";
-"room_details_access_section_anyone_for_dm" = "任何知道此聊天室链接的人，除了访客";
-"room_details_access_section_anyone_apart_from_guest_for_dm" = "任何知道此聊天室链接的人，除了访客";
+"room_details_no_local_addresses_for_dm" = "此房间没有本地地址";
+"room_details_access_section_directory_toggle_for_dm" = "在房间列表中列出";
+"room_details_access_section_anyone_for_dm" = "任何知道此房间链接的人，除了访客";
+"room_details_access_section_anyone_apart_from_guest_for_dm" = "任何知道此房间链接的人，除了访客";
 "room_details_access_section_for_dm" = "谁可以访问此？";
 "room_details_room_name_for_dm" = "名称";
 "room_details_photo_for_dm" = "照片";
 "room_details_integrations" = "集成";
-"room_details_search" = "搜索聊天室";
+"room_details_search" = "搜索房间";
 "room_details_title_for_dm" = "详细信息";
 
 // AuthenticatedSessionViewControllerFactory
@@ -1422,7 +1422,7 @@
 
 "voice_message_release_to_send" = "按住录音，松开发送";
 "key_verification_verify_qr_code_scan_code_other_device_action" = "用这部设备扫描";
-"room_notifs_settings_encrypted_room_notice" = "请注意，移动设备上的加密聊天室不提供提及和关键字通知。";
+"room_notifs_settings_encrypted_room_notice" = "请注意，移动设备上的加密房间不提供提及和关键字通知。";
 "room_notifs_settings_account_settings" = "账户设置";
 "room_notifs_settings_manage_notifications" = "你可以管理 %@ 中的消息";
 "room_notifs_settings_cancel_action" = "取消";
@@ -1483,7 +1483,7 @@
 "settings_confirm_media_size_description" = "当打开此选项时，你会被要求确认将被发送的图片和视频的大小。";
 "settings_confirm_media_size" = "发送时确认大小";
 "settings_sending_media" = "发送图片和视频";
-"spaces_add_rooms_coming_soon_title" = "添加聊天室功能即将到来";
+"spaces_add_rooms_coming_soon_title" = "添加房间功能即将到来";
 "space_avatar_view_accessibility_hint" = "更改空间头像";
 
 // Mark: Avatar
@@ -1498,20 +1498,20 @@
 "spaces_no_member_found_detail" = "寻找不在 %@ 中的某人？现在，你可以通过网页或桌面端邀请他们。";
 "spaces_no_room_found_detail" = "有些结果可能是隐藏的，因为它们是私密的，你需要邀请才能加入它们。";
 "spaces_no_result_found_title" = "未找到结果";
-"spaces_empty_space_detail" = "有些聊天室可能是隐藏的，因为它们是私人的，你需要邀请。";
-"spaces_empty_space_title" = "此空间尚无聊天室";
+"spaces_empty_space_detail" = "有些房间可能是隐藏的，因为它们是私人的，你需要邀请。";
+"spaces_empty_space_title" = "此空间尚无房间";
 "space_tag" = "空间";
 "spaces_suggested_room" = "建议的";
-"spaces_explore_rooms" = "探索聊天室";
-"leave_space_and_all_rooms_action" = "离开所有聊天室和空间";
-"leave_space_only_action" = "不离开任何聊天室";
+"spaces_explore_rooms" = "探索房间";
+"leave_space_and_all_rooms_action" = "离开所有房间和空间";
+"leave_space_only_action" = "不离开任何房间";
 "leave_space_message_admin_warning" = "您是此空间的管理员，请确保您在离开前已将管理员权限转移给其他成员。";
-"leave_space_message" = "你确定要离开 %@ 吗？您还想离开这个空间的所有聊天室和空间吗？";
+"leave_space_message" = "你确定要离开 %@ 吗？您还想离开这个空间的所有房间和空间吗？";
 "leave_space_title" = "离开 %@";
 "spaces_left_panel_title" = "空间";
 "spaces_home_space_title" = "主页";
 "settings_links" = "链接";
-"room_recents_suggested_rooms_section" = "建议的聊天室";
+"room_recents_suggested_rooms_section" = "建议的房间";
 "done" = "完成";
 "open" = "打开";
 "service_terms_modal_information_description_integration_manager" = "集成管理器允许您添加来自第三方的功能。";
@@ -1538,7 +1538,7 @@
 "find_your_contacts_title" = "从列出你的联系人开始";
 "contacts_address_book_permission_denied_alert_message" = "要启用联系人，请转到设备设置。";
 "contacts_address_book_permission_denied_alert_title" = "联系人被禁用";
-"space_home_show_all_rooms" = "显示所有聊天室";
+"space_home_show_all_rooms" = "显示所有房间";
 "room_event_action_forward" = "转发";
 "poll_edit_form_add_option" = "添加选项";
 "poll_edit_form_option_number" = "选项 %lu";
@@ -1646,7 +1646,7 @@
 "submit" = "提交";
 "submit_code" = "提交码";
 "set_default_power_level" = "重置权限级别";
-"set_moderator" = "设置主持人";
+"set_moderator" = "设置协管员";
 "set_admin" = "设置管理员";
 "start_chat" = "启动聊天";
 "start_voice_call" = "启动语音通话";
@@ -1669,18 +1669,18 @@
 "unignore" = "取消忽略";
 // Events formatter
 "notice_avatar_changed_too" = "（头像也已经改变）";
-"notice_room_name_removed" = "%@ 移除了此聊天室的名称";
+"notice_room_name_removed" = "%@ 移除了此房间的名称";
 "notice_room_topic_removed" = "%@ 移除了话题";
 "notice_event_redacted" = "<redacted%@>";
 "notice_event_redacted_by" = " 由 %@";
 "notice_event_redacted_reason" = " [理由：%@]";
 "notice_profile_change_redacted" = "%@ 已经更新了他的个人档案 %@";
-"notice_room_created" = "%@ 创建并配置了此聊天室。";
+"notice_room_created" = "%@ 创建并配置了此房间。";
 "notice_room_join_rule" = "加入规则是：%@";
-"notice_room_power_level_intro" = "此聊天室成员的权限级别是：";
+"notice_room_power_level_intro" = "此房间成员的权限级别是：";
 "notice_room_power_level_acting_requirement" = "要进行此操作，用户必须具备的最低权限级别是 ：";
 "notice_room_power_level_event_requirement" = "事件所需的最小权限级别：";
-"notice_room_aliases" = "此聊天室的别名是：%@";
+"notice_room_aliases" = "此房间的别名是：%@";
 "notice_encrypted_message" = "已加密消息";
 "notice_image_attachment" = "图片附件";
 "notice_audio_attachment" = "音频附件";
@@ -1697,13 +1697,13 @@
 "notice_error_unsupported_event" = "不支持的事件";
 "notice_error_unexpected_event" = "意外的事件";
 "notice_error_unknown_event_type" = "未知的事件类型";
-"notice_room_history_visible_to_anyone" = "%@ 将未来的聊天室消息历史设为对所有人可见。";
-"notice_room_history_visible_to_members" = "%@ 将未来的聊天室消息历史设为对所有聊天室成员可见。";
-"notice_room_history_visible_to_members_from_joined_point" = "%@ 将未来的聊天室消息历史设为对所有聊天室成员可见，从他们加入时开始。";
+"notice_room_history_visible_to_anyone" = "%@ 将未来的房间消息历史设为对所有人可见。";
+"notice_room_history_visible_to_members" = "%@ 将未来的房间消息历史设为对所有房间成员可见。";
+"notice_room_history_visible_to_members_from_joined_point" = "%@ 将未来的房间消息历史设为对所有房间成员可见，从他们加入时开始。";
 "notice_crypto_unable_to_decrypt" = "** 无法解密：%@ **";
 "notice_crypto_error_unknown_inbound_session_id" = "发送者的会话没有向我们发送此消息的密钥。";
 // room display name
-"room_displayname_empty_room" = "空聊天室";
+"room_displayname_empty_room" = "空房间";
 "room_displayname_two_members" = "%@ 和 %@";
 "room_displayname_more_than_two_members" = "%@ 和 %@ 个其他人";
 // Settings
@@ -1711,7 +1711,7 @@
 "settings_enable_inapp_notifications" = "启用应用内通知";
 "settings_enable_push_notifications" = "启用推送通知";
 "settings_enter_validation_token_for" = "请输入 %@ 的验证令牌：";
-"notification_settings_room_rule_title" = "聊天室：“%@”";
+"notification_settings_room_rule_title" = "房间：“%@”";
 // Devices
 "device_details_title" = "会话信息\n";
 "device_details_name" = "公开名称\n";
@@ -1729,7 +1729,7 @@
 "login_mobile_device" = "移动设备";
 "login_tablet_device" = "平板电脑";
 "login_desktop_device" = "桌面设备";
-"notice_room_related_groups" = "和此聊天室关联的社群是：%@";
+"notice_room_related_groups" = "和此房间关联的社群是：%@";
 "room_event_encryption_info_event_session_id" = "会话 ID\n";
 "room_event_encryption_info_event_decryption_error" = "解密错误\n";
 "room_event_encryption_info_event_unencrypted" = "未加密";
@@ -1749,14 +1749,14 @@
 "account_error_email_wrong_title" = "邮箱地址无效";
 "account_error_msisdn_wrong_title" = "手机号码无效";
 // Room creation
-"room_creation_name_title" = "聊天室名称：";
+"room_creation_name_title" = "房间名称：";
 "room_creation_name_placeholder" = "（例如：今天中午吃啥）";
 // Room
-"room_please_select" = "请选择一个聊天室";
-"room_error_join_failed_title" = "加入聊天室失败";
+"room_please_select" = "请选择一个房间";
+"room_error_join_failed_title" = "加入房间失败";
 "room_error_cannot_load_timeline" = "时间线加载失败";
 "room_error_timeline_event_not_found_title" = "时间线位置加载失败";
-"room_left" = "你离开了聊天室";
+"room_left" = "你离开了房间";
 "attachment_small" = "小 (~%@）";
 "attachment_medium" = "中 (~%@)";
 "attachment_large" = "大 (~%@)";
@@ -1772,11 +1772,11 @@
 "format_time_h" = "小时";
 "format_time_d" = "天";
 // E2E import
-"e2e_import_room_keys" = "导入聊天室密钥";
+"e2e_import_room_keys" = "导入房间密钥";
 "e2e_import" = "导入";
 "e2e_passphrase_enter" = "输入密码";
 // E2E export
-"e2e_export_room_keys" = "导出聊天室密钥";
+"e2e_export_room_keys" = "导出房间密钥";
 "e2e_export" = "导出";
 "e2e_passphrase_empty" = "密码不能为空";
 // Others
@@ -1797,7 +1797,7 @@
 "language_picker_title" = "请选择语言";
 "language_picker_default_language" = "默认（%@）";
 "notice_room_invite" = "%@ 邀请了 %@";
-"notice_room_third_party_invite" = "%@ 邀请 %@ 加入聊天室";
+"notice_room_third_party_invite" = "%@ 邀请 %@ 加入房间";
 "notice_room_third_party_registered_invite" = "%@ 同意了 %@ 的邀请";
 "notice_room_join" = "%@ 已加入";
 "notice_room_leave" = "%@ 已退出";
@@ -1811,7 +1811,7 @@
 "notice_display_name_set" = "%@ 将自己的昵称设置为 %@";
 "notice_display_name_changed_from" = "%@ 将自己的昵称从 %@ 改成 %@";
 "notice_display_name_removed" = "%@ 删除了自己的昵称";
-"notice_room_name_changed" = "%@ 将聊天室名称修改为 %@。";
+"notice_room_name_changed" = "%@ 将房间名称修改为 %@。";
 // button names 
 "ok" = "确定";
 "send" = "发送";
@@ -1821,7 +1821,7 @@
 "redact" = "移除";
 "set_power_level" = "设置权限级别";
 "delete" = "删除";
-"create_room" = "创建聊天室";
+"create_room" = "创建房间";
 "login" = "登录";
 "create_account" = "创建账号";
 "membership_invite" = "邀请";
@@ -1847,9 +1847,9 @@
 "room_creation_participants_title" = "成员：";
 "room_creation_alias_placeholder_with_homeserver" = "（例如：#foo%@）";
 "room_creation_alias_placeholder" = "（例如：#foo:example.org）";
-"room_error_join_failed_empty_room" = "目前无法加入空聊天室。";
-"room_error_name_edition_not_authorized" = "你没有修改聊天室名称所需的权限";
-"room_error_topic_edition_not_authorized" = "你没有修改聊天室话题所需的权限";
+"room_error_join_failed_empty_room" = "目前无法加入空房间。";
+"room_error_name_edition_not_authorized" = "你没有修改房间名称所需的权限";
+"room_error_topic_edition_not_authorized" = "你没有修改房间话题所需的权限";
 // Room members
 "room_member_ignore_prompt" = "你确定要隐藏所有此用户发送的消息吗？";
 // Contacts
@@ -1862,7 +1862,7 @@
 "notification_settings_disable_all" = "禁用通知";
 "notification_settings_highlight" = "高亮";
 "notification_settings_custom_sound" = "自定义铃声";
-"notification_settings_select_room" = "选择一个聊天室";
+"notification_settings_select_room" = "选择一个房间";
 "notification_settings_other_alerts" = "其他警报";
 // gcm section 
 "call_ended" = "通话结束";
@@ -1905,7 +1905,7 @@
 "room_event_encryption_verify_ok" = "验证";
 "room_event_encryption_info_block" = "拉黑";
 "room_event_encryption_info_unblock" = "取消拉黑";
-"room_creation_alias_title" = "聊天室别称：";
+"room_creation_alias_title" = "房间别称：";
 "notice_conference_call_started" = "VoIP 会议已开始";
 "notice_conference_call_request" = "%@ 发起了 VoIP 会议";
 "notice_conference_call_finished" = "VoIP 会议已结束";
@@ -1919,9 +1919,9 @@
 "login_error_resource_limit_exceeded_message_monthly_active_user" = "此主服务器已达到月活跃用户限制。";
 "login_error_resource_limit_exceeded_message_contact" = "\n\n请联系管理员以继续使用本服务。";
 "account_msisdn_validation_message" = "我们通过短信向您发送了一条验证码，请在下方输入它。";
-"room_error_timeline_event_not_found" = "应用程序试图加载此聊天室时间线中的特定点，但无法找到该时间点";
-"room_no_power_to_create_conference_call" = "您需要获得邀请权限才能在此聊天室开始会议";
-"room_no_conference_call_in_encrypted_rooms" = "加密聊天室暂不支持通话会议";
+"room_error_timeline_event_not_found" = "应用程序试图加载此房间时间线中的特定点，但无法找到该时间点";
+"room_no_power_to_create_conference_call" = "您需要获得邀请权限才能在此房间开始会议";
+"room_no_conference_call_in_encrypted_rooms" = "加密房间暂不支持通话会议";
 // Reply to message
 "message_reply_to_sender_sent_an_image" = "发送了一张图片。";
 "message_reply_to_sender_sent_an_audio_file" = "发送了一个音频文件。";
@@ -1938,7 +1938,7 @@
 "call_invite_expired" = "通话邀请已过期";
 "ssl_fingerprint_hash" = "指纹（%@）：";
 "e2e_import_prompt" = "此操作允许您导入此前从其他 Matrix 客户端上导出的加密密钥。您将能够解密任何该客户端能解密的消息。\n该导出文件受密码保护。您应在此处输入密码以解密该文件。";
-"e2e_export_prompt" = "此操作允许您将加密聊天室中接收到的消息导出为一个本地文件。您将来可以将此文件导入到其他 Matrix 客户端中去解密这些消息。\n导出的文件将允许任何能够读取它的人解密您可以看到的任何加密消息，因此您应该小心保证其安全。";
+"e2e_export_prompt" = "此操作允许您将加密房间中接收到的消息导出为一个本地文件。您将来可以将此文件导入到其他 Matrix 客户端中去解密这些消息。\n导出的文件将允许任何能够读取它的人解密您可以看到的任何加密消息，因此您应该小心保证其安全。";
 "e2e_passphrase_create" = "创建密码";
 "error_common_message" = "出现错误。请稍后再试。";
 // Permissions
@@ -1946,21 +1946,21 @@
 "microphone_access_not_granted_for_call" = "通话需要麦克风使用权限，但 %@ 无此权限";
 "local_contacts_access_not_granted" = "本地通讯录用户查找功能需要通讯录权限，但 %@ 无此权限";
 "local_contacts_access_discovery_warning" = "为了发现已经使用 Matrix 的联系人，%@ 可以把你地址簿里的邮箱地址和电话号码发送给你选定的 Matrix 身份认证服务器。如果支持的话，个人数据会在发送前被哈希——请检查你的身份认证服务器的隐私条款获知更多细节。";
-"notification_settings_global_info" = "通知设置已保存在您的账号中并在所有支持的客户端中共享（包括桌面通知）。\n\n规则会按顺序应用；第一条匹配的规则定义了消息的输出结果。\n因此：按字符规则的通知比按聊天室规则的通知级别更高，而这两者都比按发送者规则的通知级别更高。\n对于同一类型的多条规则，匹配列表中的第一条优先级最高。";
+"notification_settings_global_info" = "通知设置已保存在您的账号中并在所有支持的客户端中共享（包括桌面通知）。\n\n规则会按顺序应用；第一条匹配的规则定义了消息的输出结果。\n因此：按字符规则的通知比按房间规则的通知级别更高，而这两者都比按发送者规则的通知级别更高。\n对于同一类型的多条规则，匹配列表中的第一条优先级最高。";
 "notification_settings_per_word_notifications" = "按字符通知";
 "notification_settings_per_word_info" = "单词不区分大小写，并且可能包含 * 通配符。 所以：\nfoo 匹配由单词分隔符包围的字符串 foo（例如标点符号和空格，或一行的开头/结尾）。\nfoo* 匹配任何以 foo 开头的单词。\n*foo* 匹配任何包含3个字母 foo 的单词。";
 "notification_settings_word_to_match" = "匹配的单词";
-"notification_settings_per_room_notifications" = "按聊天室通知";
+"notification_settings_per_room_notifications" = "按房间通知";
 "notification_settings_per_sender_notifications" = "按发送者通知";
 "notification_settings_contain_my_user_name" = "有包含我的用户名的消息时用铃声通知";
 "notification_settings_contain_my_display_name" = "有包含我的昵称的消息时用铃声通知";
 "notification_settings_just_sent_to_me" = "有发送给我的消息时用铃声通知";
-"notification_settings_invite_to_a_new_room" = "我被邀请去一个新聊天室时用铃声通知";
-"notification_settings_people_join_leave_rooms" = "有人加入或离开聊天室时发送通知";
+"notification_settings_invite_to_a_new_room" = "我被邀请去一个新房间时用铃声通知";
+"notification_settings_people_join_leave_rooms" = "有人加入或离开房间时发送通知";
 "notification_settings_receive_a_call" = "当我收到通话请求时发送通知";
 "notification_settings_suppress_from_bots" = "取消来自机器人的通知";
 "notification_settings_by_default" = "默认…";
-"notification_settings_notify_all_other" = "为所有其他消息/聊天室发送通知";
+"notification_settings_notify_all_other" = "为所有其他消息/房间发送通知";
 "incoming_video_call" = "视频通话来电";
 "incoming_voice_call" = "语音通话来电";
 "ssl_cert_not_trust" = "这可能意味着有人正在恶意劫持您的流量，或者您的手机不信任远程服务器提供的数字证书。";
@@ -1972,12 +1972,12 @@
 "notice_encryption_enabled_unknown_algorithm" = "%1$@ 启用了端到端加密（无法识别的算法 %2$@）。";
 "device_details_rename_prompt_title" = "会话名称";
 "account_error_push_not_allowed" = "未允许通知";
-"notice_room_third_party_revoked_invite" = "%@ 撤回了对 %@ 加入聊天室的邀请";
+"notice_room_third_party_revoked_invite" = "%@ 撤回了对 %@ 加入房间的邀请";
 "notice_encryption_enabled_ok_by_you" = "你启用了端对端加密。";
 "notice_room_created_by_you_for_dm" = "你加入了。";
 "notice_room_topic_removed_by_you" = "你移除了话题";
 "notice_room_name_removed_by_you_for_dm" = "你移除了名称";
-"notice_room_name_removed_by_you" = "你移除了聊天室名称";
+"notice_room_name_removed_by_you" = "你移除了房间名称";
 "notice_conference_call_request_by_you" = "你请求了 VoIP 会议";
 "notice_room_ban_by_you" = "你封禁了 %@";
 "notice_room_unban_by_you" = "你解封了 %@";
@@ -2003,27 +2003,27 @@
 "resume_call" = "恢复";
 "notice_encryption_enabled_unknown_algorithm_by_you" = "你启用了端对端加密（无法识别的算法 %@）。";
 "notice_event_redacted_by_you" = " 被你";
-"notice_room_third_party_revoked_invite_by_you" = "你撤回了对 %@ 加入此聊天室的邀请";
+"notice_room_third_party_revoked_invite_by_you" = "你撤回了对 %@ 加入此房间的邀请";
 "notice_room_join_rule_public_by_you_for_dm" = "你将此聊天设为公开。";
-"notice_room_join_rule_public_by_you" = "你将此聊天室设为公开。";
+"notice_room_join_rule_public_by_you" = "你将此房间设为公开。";
 "notice_room_join_rule_public_for_dm" = "%@ 将此聊天设为公开。";
-"notice_room_join_rule_public" = "%@ 将此聊天室设为公开。";
+"notice_room_join_rule_public" = "%@ 将此房间设为公开。";
 "notice_room_join_rule_invite_by_you_for_dm" = "你将此聊天设为仅邀请。";
-"notice_room_join_rule_invite_by_you" = "你将此聊天室设为仅邀请。";
+"notice_room_join_rule_invite_by_you" = "你将此房间设为仅邀请。";
 "notice_room_join_rule_invite_for_dm" = "%@ 将此聊天设为仅邀请。";
 //  New
-"notice_room_join_rule_invite" = "%@ 将此聊天室设为仅邀请。";
+"notice_room_join_rule_invite" = "%@ 将此房间设为仅邀请。";
 "notice_room_history_visible_to_members_from_invited_point_for_dm" = "%@ 将未来的消息设为对所有人可见，从他们被邀请时开始。";
 "notice_room_history_visible_to_members_from_invited_point_by_you_for_dm" = "你将未来的消息设为对所有人可见，从他们被邀请时开始。";
 "notice_room_history_visible_to_members_from_joined_point_by_you_for_dm" = "你将未来的消息设为对所有人可见，从他们加入时开始。";
 "notice_room_history_visible_to_members_from_joined_point_for_dm" = "%@ 将未来的消息设为对所有人可见，从他们加入时开始。";
-"notice_room_history_visible_to_members_from_joined_point_by_you" = "你将未来的聊天室消息历史设为对所有聊天室成员可见，从他们加入时开始。";
-"notice_room_history_visible_to_members_from_invited_point_by_you" = "你将未来的聊天室消息历史设为对所有聊天室成员可见，从他们被邀请时开始。";
-"notice_room_history_visible_to_members_for_dm" = "%@ 将未来的消息设为对所有聊天室成员可见。";
-"notice_room_third_party_invite_by_you" = "你邀请 %@ 加入此聊天室";
-"notice_room_history_visible_to_members_by_you_for_dm" = "你将未来的消息设为对所有聊天室成员可见。";
-"notice_room_history_visible_to_members_by_you" = "你将未来的聊天室消息历史设为对所有聊天室成员可见。";
-"notice_room_history_visible_to_anyone_by_you" = "你将未来的聊天室消息历史设为对所有人可见。";
+"notice_room_history_visible_to_members_from_joined_point_by_you" = "你将未来的房间消息历史设为对所有房间成员可见，从他们加入时开始。";
+"notice_room_history_visible_to_members_from_invited_point_by_you" = "你将未来的房间消息历史设为对所有房间成员可见，从他们被邀请时开始。";
+"notice_room_history_visible_to_members_for_dm" = "%@ 将未来的消息设为对所有房间成员可见。";
+"notice_room_third_party_invite_by_you" = "你邀请 %@ 加入此房间";
+"notice_room_history_visible_to_members_by_you_for_dm" = "你将未来的消息设为对所有房间成员可见。";
+"notice_room_history_visible_to_members_by_you" = "你将未来的房间消息历史设为对所有房间成员可见。";
+"notice_room_history_visible_to_anyone_by_you" = "你将未来的房间消息历史设为对所有人可见。";
 "notice_redaction_by_you" = "你撤回了一个事件（id：%@）";
 "notice_room_withdraw_by_you" = "你撤回了对 %@ 的邀请";
 "notice_room_third_party_revoked_invite_by_you_for_dm" = "你撤回了对 %@ 的邀请";
@@ -2036,7 +2036,7 @@
 "call_more_actions_hold" = "挂起";
 "call_holded" = "你挂起了通话";
 "call_remote_holded" = "%@ 挂起了通话";
-"notice_room_created_by_you" = "你创建并配置了此聊天室。";
+"notice_room_created_by_you" = "你创建并配置了此房间。";
 "notice_profile_change_redacted_by_you" = "你更新了你的资料 %@";
 "notice_declined_video_call_by_you" = "你拒绝了通话";
 "notice_ended_video_call_by_you" = "你挂断了通话";
@@ -2044,7 +2044,7 @@
 "notice_placed_video_call_by_you" = "你发起了视频通话";
 "notice_placed_voice_call_by_you" = "你发起了语音通话";
 "notice_room_name_changed_by_you_for_dm" = "你将名称修改为 %@。";
-"notice_room_name_changed_by_you" = "你将聊天室名称修改为 %@。";
+"notice_room_name_changed_by_you" = "你将房间名称修改为 %@。";
 "notice_topic_changed_by_you" = "你将话题修改为 \"%@\"。";
 "notice_display_name_set_by_you" = "你将你的昵称设置为 %@";
 "notice_display_name_changed_from_by_you" = "你将你的昵称从 %@ 更改为 %@";
@@ -2066,3 +2066,24 @@
 "room_displayname_all_other_members_left" = "%@ (离开)";
 "attachment_unsupported_preview_message" = "文件类型不受支持。";
 "attachment_unsupported_preview_title" = "无法预览";
+"onboarding_use_case_personal_messaging" = "朋友和家人";
+"onboarding_splash_page_3_title" = "安全的信息传输。";
+"onboarding_splash_login_button_title" = "我已拥有一个账户";
+"saving" = "保存中";
+
+// Activities
+"loading" = "加载中";
+"confirm" = "确认";
+"edit" = "编辑";
+"suggest" = "建议";
+"add" = "添加";
+"existing" = "已存在";
+"new_word" = "新建";
+"stop" = "停止";
+"joining" = "加入中";
+"spaces_add_room" = "添加房间";
+"security_settings_coming_soon" = "对不起。这个操作在%@ iOS上还不可用。请使用另一个Matrix客户端来设置。%@ iOS会沿用其他客户端的设置。";
+"room_many_users_are_typing" = "%@、%@和其他人正在输入……";
+/* The placeholder %1$tu will be replaced with a number and %2$@ with the user's search terms. */
+"directory_search_results" = "为%2$@找到%1$tu个结果";
+"onboarding_splash_page_2_title" = "一切都在你的掌控中。";

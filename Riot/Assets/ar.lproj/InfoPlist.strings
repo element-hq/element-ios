@@ -1,10 +1,11 @@
 
 
-"NSContactsUsageDescription" = "سيعَرض Element جِهات الاتصال الخاصّة بِك حَتى تتمَكَّنَ من دَعوتهم للمُحادثَة.";
-"NSFaceIDUsageDescription" = "يُستخدَم Face ID لِلوُصُول إلى التَّطبيق الخاصّ بِك.";
+"NSContactsUsageDescription" = "سيعَرض إيليمنت جِهات الاتصال الخاصّة بِك حَتى تتمَكَّنَ من دَعوتهم للمُحادثَة.";
+"NSFaceIDUsageDescription" = "يُستخدَم خاصية التعرف على الوجه لِلوُصُول إلى التَّطبيق الخاصّ بِك.";
 "NSCalendarsUsageDescription" = "اطَّلِع عَلَى اِجتِماعاتِك المُجَدوَلَة في التَّطبيق.";
-"NSMicrophoneUsageDescription" = "يحتاجَ Element الوُصول إلى المِيكرُوفُون لإجراء المُكالمات واستِقبالها، والتِقاط مقاطَع الفيدِيو، وتَسجيل الرسائل الصَوتية.";
+"NSMicrophoneUsageDescription" = "يحتاجَ إيليمنت الوُصول إلى المِيكرُوفُون لإجراء المُكالمات واستِقبالها، والتِقاط مقاطَع الفيدِيو، وتَسجيل الرسائل الصَوتية.";
 // Permissions usage explanations
 "NSCameraUsageDescription" = "تُستَخدَم الكاميرا لاِلتِقاط الصُّوَر، المَقاطِع المَرئيَّة وإجراءُ مُكالَمَةٍ مَرئيَّة.";
 "NSPhotoLibraryUsageDescription" = "مَكتَبَة الصُّوَر تُستَخدَم لإرسال الصُّوَر وَالمَقاطِع المَرئيَّة.";
-"NSLocationWhenInUseUsageDescription" = "عِندَما تَشارَكَ مَوقِعك مَعَ أشَخاص، يحتاجَ Element إلى الوُصول لإظهار خَريطة لهم.";
+"NSLocationWhenInUseUsageDescription" = "عِندَما تَشارَكَ مَوقِعك مَعَ أشَخاص آخرين، سيحتاجَ إيليمنت إلى الصلاحية لإظهار الخَريطة لهم.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "إذاما شاركت موقعك مع أشخاص آخرين, فسيحتاج إيليمنت الصلاحية لإظهار خريطة لهم.";
