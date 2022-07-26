@@ -164,7 +164,7 @@
 "room_event_action_redact" = "Usuń";
 "room_event_action_more" = "Więcej";
 "room_event_action_share" = "Udostępnij";
-"room_event_action_permalink" = "Odnośnik bezpośredni";
+"room_event_action_permalink" = "Skopiuj link do wiadomości";
 "room_event_action_view_source" = "Pokaż źródło";
 "room_event_action_view_decrypted_source" = "Pokaż odszyfrowane źródło";
 "room_event_action_report" = "Zgłoś zawartość";
@@ -248,9 +248,9 @@
 "settings_enable_rageshake" = "Potrząśnij wściekle, aby zgłosić błąd";
 "settings_clear_cache" = "Wyczyść pamięć podręczną";
 "settings_change_password" = "Zmień hasło";
-"settings_old_password" = "stare hasło";
-"settings_new_password" = "nowe hasło";
-"settings_confirm_password" = "potwierdź hasło";
+"settings_old_password" = "Stare hasło";
+"settings_new_password" = "Nowe hasło";
+"settings_confirm_password" = "Potwierdź hasło";
 "settings_password_updated" = "Twoje hasło zostało zmienione";
 "settings_crypto_device_name" = "Nazwa Sesji: ";
 "settings_crypto_device_id" = "\nID Sesji: ";
@@ -394,7 +394,7 @@
 "room_unsent_messages_notification" = "Wiadomość nie została wysłana.";
 "room_ongoing_conference_call_with_close" = "W tym pokoju dostępna jest konferencja. Dołącz wybierając %@ lub %@. %@ konferencję z tego pokoju.";
 "directory_search_results_title" = "Przeglądaj wyniki katalogów";
-"room_event_action_kick_prompt_reason" = "Powód wyrzucenia użytkownika";
+"room_event_action_kick_prompt_reason" = "Powód usunięcia użytkownika";
 "room_action_send_photo_or_video" = "Wyślij zdjęcie lub film";
 "settings_mark_all_as_read" = "Oznacz wszystkie wiadomości jako przeczytane";
 "settings_labs" = "LABORATORIUM";
@@ -932,7 +932,7 @@
 "create_room_section_footer_encryption" = "Szyfrowania nie można później wyłączyć.";
 "create_room_enable_encryption" = "Włącz szyfrowanie";
 "create_room_section_header_encryption" = "Szyfrowanie pokoju";
-"create_room_placeholder_topic" = "Temat";
+"create_room_placeholder_topic" = "O czym chcesz rozmawiać w tym pokoju?";
 "create_room_section_header_topic" = "Temat pokoju (opcjonalnie)";
 "create_room_placeholder_name" = "Nazwa";
 "create_room_section_header_name" = "Nazwa pokoju";
@@ -2074,3 +2074,439 @@
 "message_reply_to_sender_sent_their_location" = "udostępnił(-a) swoją lokację.";
 "room_displayname_all_other_members_left" = "%@ (Opuścił-a)";
 "call_jitsi_unable_to_start" = "Nie można rozpocząć połączenia konferencyjnego";
+"spaces_creation_invite_by_username_title" = "Zaproś swój zespół";
+"message_reply_to_sender_sent_their_live_location" = "udostępnił swoją lokalizację na żywo.";
+"notice_error_unformattable_event" = "** Nie można wyrenderować wiadomości. Proszę zgłosić błąd";
+"ignore_user" = "Ignoruj użytkownika";
+"location_sharing_live_lab_promotion_activation" = "Włącz udostępnianie lokalizacji na żywo";
+"location_sharing_live_lab_promotion_text" = "Uwaga: jest to funkcja laboratorium wykorzystująca tymczasową implementację, która umożliwia stałe wyświetlanie historii udostępnionej lokalizacji dla innych osób w pokoju.";
+"location_sharing_live_lab_promotion_title" = "Udostępnianie lokalizacji na żywo";
+"location_sharing_live_stop_sharing_progress" = "Zatrzymaj udostępnianie lokalizacji";
+"location_sharing_live_stop_sharing_error" = "Nie udało się zatrzymać udostępniania lokalizacji";
+"location_sharing_live_no_user_locations_error_title" = "Brak dostępnych lokalizacji użytkownika";
+"location_sharing_live_timer_selector_long" = "przez 8 godzin";
+"location_sharing_live_timer_selector_medium" = "przez 1 godzinę";
+"location_sharing_live_timer_selector_short" = "przez 15 minut";
+"location_sharing_live_timer_selector_title" = "Wybierz, jak długo inni będą widzieć Twoją dokładną lokalizację.";
+"location_sharing_live_error" = "Błąd lokalizacji na żywo";
+"location_sharing_live_loading" = "Wczytuję lokalizację na żywo...";
+"location_sharing_live_timer_incoming" = "Na żywo do %@";
+"location_sharing_live_list_item_stop_sharing_action" = "Zatrzymaj";
+"location_sharing_live_list_item_current_user_display_name" = "Ty";
+"location_sharing_live_list_item_last_update_invalid" = "Nieznana ostatnia aktualizacja";
+"location_sharing_live_list_item_last_update" = "Zaktualizowano %@ temu";
+"location_sharing_live_list_item_sharing_expired" = "Udostępnianie wygasło";
+"location_sharing_live_list_item_time_left" = "pozostało %@";
+"location_sharing_live_viewer_title" = "Lokalizacja";
+"location_sharing_live_map_callout_title" = "Udostępnij lokalizację";
+"location_sharing_pin_drop_share_title" = "Wyślij tę lokalizację";
+"location_sharing_static_share_title" = "Wyślij moją aktualną lokalizację";
+"live_location_sharing_banner_stop" = "Zatrzymaj";
+"live_location_sharing_ended" = "Lokalizacja na żywo zakończona";
+"live_location_sharing_banner_title" = "Włączona lokalizacja na żywo";
+
+// MARK: Live location sharing
+
+"location_sharing_live_share_title" = "Udostępnij lokalizację na żywo";
+"location_sharing_map_credits_title" = "© Copyright";
+"location_sharing_allow_background_location_cancel_action" = "Nie teraz";
+"location_sharing_allow_background_location_validate_action" = "Ustawienia";
+"location_sharing_allow_background_location_message" = "Jeśli chcesz udostępnić swoją lokalizację Live, Element potrzebuje dostępu do lokalizacji, gdy aplikacja działa w tle. Aby włączyć dostęp, dotknij Ustawienia > Lokalizacja i wybierz Zawsze";
+"location_sharing_allow_background_location_title" = "Zapewnij dostęp";
+"location_sharing_settings_toggle_title" = "Włącz udostępnianie lokalizacji";
+"location_sharing_settings_header" = "Udostępnianie lokalizacji";
+"location_sharing_open_open_street_maps" = "Otwórz w OpenStreetMap";
+"location_sharing_open_google_maps" = "Otwórz w Mapach Google";
+"location_sharing_open_apple_maps" = "Otwórz w Mapach Apple";
+"location_sharing_invalid_authorization_settings" = "Ustawienia";
+"location_sharing_invalid_authorization_not_now" = "Nie teraz";
+"location_sharing_invalid_authorization_error_title" = "%@ nie ma uprawnień dostępu do Twojej lokalizacji. Możesz włączyć dostęp w Ustawienia > Lokalizacja";
+"location_sharing_locating_user_error_title" = "%@ nie może uzyskać dostępu do Twojej lokalizacji. Spróbuj ponownie później.";
+"location_sharing_loading_map_error_title" = "%@ nie może załadować mapy. Spróbuj ponownie później.";
+"location_sharing_post_failure_subtitle" = "%@ nie może wysłać Twojej lokalizacji. Spróbuj ponownie później.";
+"location_sharing_post_failure_title" = "Nie mogliśmy wysłać Twojej lokalizacji";
+"location_sharing_close_action" = "Zamknij";
+
+// MARK: - Location sharing
+
+"location_sharing_title" = "Lokalizacja";
+"poll_timeline_not_closed_subtitle" = "Proszę spróbuj ponownie";
+"poll_timeline_not_closed_title" = "Nie udało się zakończyć ankiety";
+"poll_timeline_vote_not_registered_subtitle" = "Przepraszamy, Twój głos nie został zarejestrowany, spróbuj ponownie";
+"poll_timeline_vote_not_registered_title" = "Głos niezarejestrowany";
+"poll_timeline_total_final_results" = "Ostateczne wyniki na podstawie %lu głosów";
+"poll_timeline_total_final_results_one_vote" = "Wyniki końcowe na podstawie 1 głosu";
+"poll_timeline_total_votes_not_voted" = "%lu oddane/ych głosy/ów. Zagłosuj, aby zobaczyć wyniki";
+"poll_timeline_total_one_vote_not_voted" = "1 oddany głos. Zagłosuj, aby zobaczyć wyniki";
+"poll_timeline_total_votes" = "%lu głosy/ów";
+"poll_timeline_total_one_vote" = "1 głos";
+"poll_timeline_total_no_votes" = "Brak głosów";
+"poll_timeline_votes_count" = "%lu głosy/ów";
+"poll_timeline_one_vote" = "1 głos";
+"poll_edit_form_poll_type_closed_description" = "Wyniki są ujawniane dopiero po zakończeniu ankiety";
+"poll_edit_form_poll_type_closed" = "Ankieta zamknięta";
+"poll_edit_form_poll_type_open_description" = "Głosujący mogą zobaczyć wyniki zaraz po oddaniu głosu";
+"poll_edit_form_poll_type_open" = "Otwórz ankietę";
+"poll_edit_form_update_failure_subtitle" = "Proszę spróbuj ponownie";
+"poll_edit_form_update_failure_title" = "Nie udało się zaktualizować ankiety";
+"poll_edit_form_post_failure_subtitle" = "Proszę spróbuj ponownie";
+"poll_edit_form_post_failure_title" = "Nie udało się opublikować ankiety";
+"poll_edit_form_create_options" = "Utwórz odpowiedź";
+"poll_edit_form_option_number" = "Odpowiedź %lu";
+"poll_edit_form_add_option" = "Dodaj odpowiedź";
+"poll_edit_form_input_placeholder" = "Napisz coś";
+"poll_edit_form_question_or_topic" = "Pytanie lub temat";
+"poll_edit_form_poll_question_or_topic" = "Pytanie lub temat ankiety";
+"poll_edit_form_poll_type" = "Rodzaj ankiety";
+
+// Mark: - Polls
+
+"poll_edit_form_create_poll" = "Utwórz ankietę";
+"version_check_modal_subtitle_deprecated" = "Pracowaliśmy nad ulepszeniem %@, aby polepszyć korzystanie z aplikacji. Niestety Twoja obecna wersja systemu iOS nie jest zgodna z niektórymi z tych poprawek i nie będzie już obsługiwana. \nRadzimy uaktualnić system operacyjny, aby w pełni wykorzystać potencjał %@.";
+"version_check_modal_subtitle_supported" = "Pracowaliśmy nad ulepszeniem %@, aby polepszyć korzystanie z aplikacji. Niestety Twoja obecna wersja systemu iOS nie jest zgodna z niektórymi z tych poprawek i nie będzie już obsługiwana. \nRadzimy uaktualnić system operacyjny, aby w pełni wykorzystać potencjał %@.";
+"side_menu_coach_message" = "Przesuń w prawo lub dotknij, aby zobaczyć wszystkie pokoje";
+"space_avatar_view_accessibility_hint" = "Zmień awatar przestrzeni";
+
+// Mark: Avatar
+
+"space_avatar_view_accessibility_label" = "avatar";
+
+// MARK: Reactions
+
+"room_event_action_reaction_more" = "%@ jeszcze";
+"leave_space_selection_no_rooms" = "Nie zaznaczaj pokoi";
+"leave_space_selection_all_rooms" = "Wybierz wszystkie pokoje";
+"leave_space_selection_title" = "WYBIERZ POKOJE";
+"leave_space_and_more_rooms" = "Zostaw miejsce i %@ pokoje";
+"leave_space_and_one_room" = "Zostaw miejsce i 1 pokój";
+
+// Mark: Leave space
+
+"leave_space_action" = "Opuść przestrzeń";
+"spaces_add_room_missing_permission_message" = "Nie masz uprawnień do dodawania pokoi do tej przestrzeni.";
+"spaces_creation_in_one_space" = "w 1 przestrzeni";
+"spaces_creation_in_many_spaces" = "w %@ przestrzeniach";
+"spaces_creation_in_spacename_plus_many" = "w %@ + %@ przestrzeni";
+"spaces_creation_in_spacename_plus_one" = "w %@ + 1 przestrzeń";
+"spaces_creation_in_spacename" = "w %@";
+"spaces_creation_post_process_inviting_users" = "Zapraszanie %@ użytkowników";
+"spaces_creation_post_process_adding_rooms" = "Dodawanie %@ pokoi";
+"spaces_creation_post_process_creating_room" = "Tworzę %@";
+"spaces_creation_post_process_uploading_avatar" = "Przesyłam awatar";
+"spaces_creation_post_process_creating_space_task" = "Tworzę %@";
+"spaces_creation_post_process_creating_space" = "Tworzenie przestrzeni";
+"spaces_creation_invite_by_username_message" = "Możesz ich też zaprosić później.";
+"spaces_creation_invite_by_username" = "Zaproś według nazwy użytkownika";
+"spaces_creation_add_rooms_message" = "Ponieważ ta przestrzeń jest tylko dla Ciebie, nikt nie zostanie o tym poinformowany. Możesz dodać więcej później.";
+"spaces_creation_add_rooms_title" = "Co chcesz dodać?";
+"spaces_creation_sharing_type_me_and_teammates_detail" = "Prywatna przestrzeń dla Ciebie i Twoich kolegów z drużyny";
+"spaces_creation_sharing_type_me_and_teammates_title" = "Ja i koledzy z drużyny";
+"spaces_creation_sharing_type_just_me_detail" = "Prywatna przestrzeń do organizacji Twoich pokoi";
+"spaces_creation_sharing_type_just_me_title" = "Tylko ja";
+"spaces_creation_sharing_type_message" = "Upewnij się, że odpowiednie osoby mają dostęp %@. Możesz to zmienić później.";
+"spaces_creation_sharing_type_title" = "Z kim pracujesz?";
+"spaces_creation_email_invites_email_title" = "Email";
+"spaces_creation_email_invites_message" = "Możesz ich też zaprosić później.";
+"spaces_creation_email_invites_title" = "Zaproś swój zespół";
+"spaces_creation_new_rooms_support" = "Wspierać się";
+"spaces_creation_new_rooms_random" = "Losowy";
+"spaces_creation_new_rooms_general" = "Ogólny";
+"spaces_creation_new_rooms_room_name_title" = "Nazwa pokoju";
+"spaces_creation_new_rooms_message" = "Dla każdego stworzymy pokój.";
+"spaces_creation_new_rooms_title" = "Jakie dyskusje będziesz mieć?";
+"spaces_creation_cancel_message" = "Twoje postępy zostaną utracone.";
+"spaces_creation_cancel_title" = "Przestać tworzyć przestrzeń?";
+"spaces_creation_private_space_title" = "Twoja prywatna przestrzeń";
+"spaces_creation_public_space_title" = "Twoja przestrzeń publiczna";
+"spaces_creation_address_already_exists" = "%@\njuż istnieje";
+"spaces_creation_address_invalid_characters" = "%@\nma nieprawidłowe znaki";
+"spaces_creation_address_default_message" = "Twoja przestrzeń będzie widoczna w\n%@";
+"spaces_creation_empty_room_name_error" = "Nazwa jest wymagana";
+"spaces_creation_address" = "Adres";
+"spaces_creation_settings_message" = "Dodaj kilka szczegółów, aby wyróżnić się. Możesz je zmienić w dowolnym momencie.";
+"spaces_creation_footer" = "Możesz to zmienić później";
+"spaces_creation_visibility_message" = "Aby dołączyć do istniejącej przestrzeni, potrzebujesz zaproszenia.";
+"spaces_creation_visibility_title" = "Jaki rodzaj przestrzeni chcesz stworzyć?";
+
+// Mark: - Space Creation
+
+"spaces_creation_hint" = "Spaces to nowy sposób grupowania pokojów i osób.";
+"spaces_feature_not_available" = "Ta funkcja nie jest tutaj dostępna. Na razie możesz to zrobić za pomocą %@ na swoim komputerze.";
+"space_settings_current_address_message" = "Twoja przestrzeń jest widoczna w\n%@";
+"space_settings_update_failed_message" = "Nie udało się zaktualizować ustawień miejsca. Czy chcesz spróbować ponownie?";
+"space_settings_access_section" = "Kto ma dostęp do tej przestrzeni?";
+"space_topic" = "Opis";
+"space_public_join_rule_detail" = "Otwarty dla każdego, najlepszy dla społeczności";
+"spaces_add_space" = "Dodaj miejsce";
+"spaces_add_room" = "Dodaj pokój";
+"spaces_invite_people" = "Zaproś ludzi";
+"space_public_join_rule" = "Miejsce publiczne";
+"space_private_join_rule_detail" = "Tylko zapraszaj, najlepiej dla siebie lub zespołów";
+"space_private_join_rule" = "Prywatna przestrzeń";
+"space_home_show_all_rooms" = "Pokaż wszystkie pokoje";
+"space_participants_action_ban" = "Zakaz z tej przestrzeni";
+"space_participants_action_remove" = "Usuń z tego miejsca";
+"spaces_coming_soon_detail" = "Ta funkcja nie została tutaj zaimplementowana, ale jest w drodze. Na razie możesz to zrobić za pomocą %@ na swoim komputerze.";
+"spaces_invites_coming_soon_title" = "Zaproszenia już wkrótce";
+"spaces_add_rooms_coming_soon_title" = "Wkrótce dodam pokoje";
+"spaces_coming_soon_title" = "Wkrótce";
+"spaces_no_member_found_detail" = "Szukasz kogoś spoza %@? Na razie możesz zaprosić ich przez przeglądarkę lub komputer.";
+"spaces_no_room_found_detail" = "Niektóre wyniki mogą być ukryte, ponieważ są prywatne i potrzebujesz zaproszenia, aby do nich dołączyć.";
+"spaces_no_result_found_title" = "Nie znaleziono wyników";
+"spaces_empty_space_detail" = "Niektóre pokoje mogą być ukryte, ponieważ są prywatne i potrzebujesz zaproszenia.";
+"spaces_empty_space_title" = "W tej przestrzeni nie ma (jeszcze) pokoi";
+"space_tag" = "przestrzeń";
+"spaces_explore_rooms_one_room" = "1 pokój";
+"spaces_explore_rooms_room_number" = "%@ pokoje";
+"spaces_suggested_room" = "Zasugerował";
+"spaces_explore_rooms" = "Przeglądaj pokoje";
+"leave_space_and_all_rooms_action" = "Opuść wszystkie pokoje i przestrzenie";
+"leave_space_only_action" = "Nie opuszczaj żadnych pokoi";
+"leave_space_message_admin_warning" = "Jesteś administratorem tego miejsca, przed opuszczeniem upewnij się, że przeniosłeś uprawnienia administratora na innego członka.";
+"leave_space_message" = "Jesteś pewny, że chcesz wyjść %@? Czy chcesz również opuścić wszystkie pomieszczenia i przestrzenie tej przestrzeni?";
+"leave_space_title" = "Opuść %@";
+"spaces_left_panel_title" = "Przestrzenie";
+"spaces_create_space_title" = "Stwórz przestrzeń";
+"spaces_add_space_title" = "Stwórz przestrzeń";
+"spaces_home_space_title" = "Główny";
+"space_invite_not_enough_permission" = "Nie masz uprawnień do zapraszania osób do tej przestrzeni";
+"room_invite_not_enough_permission" = "Nie masz uprawnień do zapraszania osób do tego pokoju";
+"room_invite_to_room_option_detail" = "Nie będą częścią %@.";
+"room_invite_to_room_option_title" = "Tylko do tego pokoju";
+"room_invite_to_space_option_detail" = "Mogą odkrywać %@, ale nie będą członkami %@.";
+
+// Mark: - Room invite
+
+"room_invite_to_space_option_title" = "Do %@";
+"share_invite_link_space_text" = "Hej, dołącz do tej przestrzeni na %@";
+"share_invite_link_room_text" = "Hej, dołącz do tego pokoju na %@";
+
+// MARK: - Share invite link
+
+"share_invite_link_action" = "Udostępnij link z zaproszeniem";
+"home_syncing" = "Synchronizuję";
+"home_context_menu_mark_as_read" = "Oznacz jako przeczytane";
+"home_context_menu_leave" = "Wyjdź";
+"home_context_menu_normal_priority" = "Normalny priorytet";
+"home_context_menu_low_priority" = "Niski priorytet";
+"home_context_menu_unfavourite" = "Usuń z ulubionych";
+"home_context_menu_favourite" = "Dodaj do ulubionych";
+"home_context_menu_mute" = "Zmutuj";
+"home_context_menu_unmute" = "Odmutuj";
+"home_context_menu_notifications" = "Powiadomienia";
+"home_context_menu_make_dm" = "Przenieś do osób";
+"home_context_menu_make_room" = "Przenieś do pokoi";
+"room_info_back_button_title" = "Informacje o pokoju";
+"create_room_processing" = "Tworzenie pokoju";
+"create_room_suggest_room_footer" = "Sugerowane pokoje są promowane na członków przestrzeni, do których warto dołączyć.";
+"create_room_suggest_room" = "Zaproponuj członkom przestrzeni";
+"create_room_show_in_directory_footer" = "Pomoże to ludziom znaleźć i dołączyć do pokoju.";
+"create_room_promotion_header" = "AWANS";
+"create_room_section_footer_type_public" = "Tylko zaproszone osoby mogą znajdować i dołączać, a nie tylko osoby o nazwie Space.";
+"create_room_section_footer_type_restricted" = "Każda osoba w Przestrzeni może wyszukiwać i dołączać.";
+"create_room_section_footer_type_private" = "Tylko zaproszone osoby mogą znaleźć i dołączyć do tego pokoju.";
+"create_room_type_restricted" = "Członkowie przestrzeni";
+"key_verification_manually_verify_device_instruction" = "Potwierdź zgodność poniższych informacji porównując następujące elementy z ustawieniami użytkownika w drugiej sesji:";
+"service_terms_modal_information_description_integration_manager" = "Menedżer integracji umożliwia dodawanie funkcji od stron trzecich.";
+"service_terms_modal_information_description_identity_server" = "Serwer tożsamości pomaga znaleźć kontakty, wyszukując ich numer telefonu lub adres e-mail, aby sprawdzić, czy mają już konto.";
+"service_terms_modal_information_title_integration_manager" = "Menedżer integracji";
+
+// Alert explaining what an identity server / integration manager is.
+"service_terms_modal_information_title_identity_server" = "Serwer Tożsamości";
+"service_terms_modal_description_integration_manager" = "Umożliwi to korzystanie z botów, mostów, widżetów i pakietów naklejek.";
+"service_terms_modal_description_identity_server" = "Umożliwi to komuś znalezienie Cię, jeśli ma Twój numer telefonu lub adres e-mail zapisany w swoich kontaktach telefonicznych.";
+"analytics_prompt_message_new_user" = "Pomóż nam zidentyfikować problemy i ulepszyć %@, udostępniając anonimowe dane o użytkowaniu. Aby zrozumieć, w jaki sposób ludzie korzystają z wielu urządzeń, wygenerujemy losowy identyfikator udostępniany przez Twoje urządzenia.";
+"network_offline_message" = "Jesteś offline, sprawdź swoje połączenie.";
+"network_offline_title" = "Jesteś offline";
+"event_formatter_message_deleted" = "Wiadomość usunięta";
+"room_suggestion_settings_screen_message" = "Sugerowane pokoje są promowane na członków kosmosu jako dobre, do których można dołączyć.";
+"room_suggestion_settings_screen_title" = "Stwórz sugerowany pokój w przestrzeni";
+
+// Room suggestion Settings
+"room_suggestion_settings_screen_nav_title" = "Zaproponuj pokój";
+"room_access_space_chooser_other_spaces_section_info" = "Są to prawdopodobnie rzeczy, których częścią są inni administratorzy %@.";
+"room_access_space_chooser_other_spaces_section" = "Inne przestrzenie lub pokoje";
+"room_access_space_chooser_known_spaces_section" = "Pomieszczenia, które znasz, zawierające %@";
+"room_access_settings_screen_setting_room_access" = "Ustawianie dostępu do pokoju";
+"room_access_settings_screen_upgrade_alert_upgrading" = "Ulepszanie pokoju";
+"room_access_settings_screen_upgrade_alert_upgrade_button" = "Aktualizuj";
+"room_access_settings_screen_upgrade_alert_auto_invite_switch" = "Automatycznie zapraszaj członków do nowego pokoju";
+"room_access_settings_screen_upgrade_alert_note" = "Uwaga: modernizacja spowoduje powstanie nowej wersji pokoju. Wszystkie bieżące wiadomości pozostaną w tym zarchiwizowanym pokoju.";
+"room_access_settings_screen_upgrade_alert_message_no_param" = "Każdy w przestrzeni nadrzędnej będzie mógł znaleźć ten pokój i dołączyć do niego — nie ma potrzeby ręcznego zapraszania wszystkich. W każdej chwili możesz to zmienić w ustawieniach pokoju.";
+"room_access_settings_screen_upgrade_alert_message" = "Każdy w %@ będzie mógł znaleźć ten pokój i dołączyć do niego - nie ma potrzeby ręcznego zapraszania wszystkich. W każdej chwili możesz to zmienić w ustawieniach pokoju.";
+"room_access_settings_screen_upgrade_alert_title" = "Ulepsz pokój";
+"room_access_settings_screen_public_message" = "Każdy może znaleźć i dołączyć.";
+"room_access_settings_screen_edit_spaces" = "Edytuj \"Przestrzenie\"";
+"room_access_settings_screen_upgrade_required" = "Wymagana aktualizacja";
+"room_access_settings_screen_restricted_message" = "Pozwól każdemu w \"przestrzeni\" znaleźć i dołączyć.\nZostaniesz poproszony o potwierdzenie do których \"Przestrzeni\", chcesz dać dostęp.";
+"room_access_settings_screen_private_message" = "Tylko zaproszone osoby mogą znajdować i dołączać.";
+"room_access_settings_screen_message" = "Zdecyduj, kto może znaleźć i dołączyć do %@.";
+"room_access_settings_screen_title" = "Kto ma dostęp do tego pokoju?";
+
+// Room Access Settings
+"room_access_settings_screen_nav_title" = "Dostęp do pokoju";
+"room_details_promote_room_suggest_title" = "Zaproponuj członkom \"Przestrzeń\"";
+"room_details_promote_room_title" = "Promuj pokój";
+"room_details_access_row_title" = "Dostęp";
+"settings_presence_offline_mode_description" = "Jeśli ta opcja jest włączona, dla innych użytkowników zawsze będziesz widoczny w trybie offline, nawet podczas korzystania z aplikacji.";
+"settings_presence_offline_mode" = "Tryb offline";
+"settings_presence" = "Widoczność obecności";
+"settings_enable_room_message_bubbles" = "Dymki wiadomości";
+"settings_labs_enable_live_location_sharing" = "Udostępnianie lokalizacji na żywo - udostępniaj bieżącą lokalizację (BETA)";
+"settings_labs_use_only_latest_user_avatar_and_name" = "Pokaż najnowsze awatary i nazwy użytkowników w historii wiadomości";
+"settings_labs_enable_auto_report_decryption_errors" = "Automatycznie raportuj błędy związane z szyfrowaniem";
+"settings_labs_enable_threads" = "Wiadomości w wątkach";
+"settings_contacts_enable_sync_description" = "To użyje Twojego serwera tożsamości, aby połączyć Cię z Twoimi kontaktami i pomóc im Cię znaleźć.";
+"settings_ui_show_redactions_in_room_history" = "Pokaż ślad po usuniętych wiadomości";
+"settings_about" = "WIĘCEJ";
+"settings_timeline" = "OŚ CZASU";
+"room_preview_decline_invitation_options" = "Chcesz odrzucić zaproszenie lub zignorować tego użytkownika?";
+"threads_discourage_information_2" = "\n\nCzy mimo to chcesz włączyć wątki?";
+"threads_discourage_information_1" = "Twój serwer domowy nie obsługuje obecnie wątków, więc ta funkcja może nie działać poprawnie. Niektóre wiadomości w wątkach mogą nie działać poprawnie. ";
+"threads_beta_cancel" = "Nie teraz";
+"threads_beta_enable" = "Wypróbuj";
+"threads_beta_information_link" = "Dowiedź się więcej";
+"threads_beta_information" = "Organizuj dyskusje za pomocą wątków.\n\nDzięki wątkom Twoje rozmowy są mogą być lepiej zorganizowane i łatwiej je przeszukiwać. ";
+"threads_beta_title" = "Wątki";
+"threads_notice_done" = "Rozumiem";
+"threads_notice_information" = "Wszystkie wątki utworzone w okresie eksperymentalnym będą teraz <b>renderowane jako zwykłe odpowiedzi</b>.<br/><br/>Będzie to jednorazowe przejście, ponieważ wątki są teraz częścią specyfikacji Matrix.";
+"threads_notice_title" = "Wątki nie są już eksperymentalne 🎉";
+"message_from_a_thread" = "Z wątku";
+"threads_empty_show_all_threads" = "Pokaż wszystkie wątki";
+"threads_empty_tip" = "Wskazówka: dotknij wiadomości i użyj „Nowy wątek”, aby go utworzyć.";
+"threads_empty_info_my" = "Odpowiedz w danym wątku lub dotknij wiadomości i użyj „Nowy wątek”, aby go rozpocząć.";
+"threads_empty_info_all" = "Wątki umożliwiają łatwiejsze wyszukiwanie i agregowanie wiadomości dotyczących danego tematu.";
+"threads_empty_title" = "Organizuj dyskusje za pomocą wątków";
+"threads_action_my_threads" = "Moje wątki";
+"threads_action_all_threads" = "Wszystkie wątki";
+"threads_title" = "Wątki";
+"thread_copy_link_to_thread" = "Skopiuj link do wątku";
+
+// MARK: Threads
+"room_thread_title" = "Wątek";
+"room_accessibility_record_voice_message_hint" = "Kliknij dwukrotnie i przytrzymaj, aby nagrać.";
+"room_accessibility_record_voice_message" = "Nagraj wiadomość głosową";
+"room_accessibility_thread_more" = "Więcej";
+"room_accessibility_threads" = "Wątki";
+"room_event_copy_link_info" = "Link skopiowany do schowka.";
+"room_event_action_reply_in_thread" = "Wątek";
+"room_event_action_view_in_room" = "Zobacz w pokoju";
+"room_participants_invite_prompt_to_msg" = "Czy na pewno chcesz zaprosić %@ do %@?";
+"room_participants_leave_success" = "Opuszczono pokój";
+"room_participants_leave_processing" = "Opuszczanie";
+"find_your_contacts_footer" = "W każdej chwili można to wyłączyć w ustawieniach.";
+"find_your_contacts_button_title" = "Znajdź swoje kontakty";
+"find_your_contacts_message" = "Pozwól %@ pokazać Twoje kontakty, abyś mógł szybko zacząć rozmawiać z tymi, których znasz najlepiej.";
+"find_your_contacts_title" = "Zacznij od listy swoich kontaktów";
+"search_filter_placeholder" = "Filtr";
+"password_validation_error_contain_symbol" = "Zawiera znak specjalny.";
+"password_validation_error_contain_number" = "Zawiera liczbę.";
+"password_validation_error_contain_uppercase_letter" = "Zawiera wielką literę.";
+"password_validation_error_contain_lowercase_letter" = "Zawiera małą literę.";
+/* The placeholder will show a number */
+"password_validation_error_max_length" = "Nie przekraczaj %d znaków.";
+/* The placeholder will show a number */
+"password_validation_error_min_length" = "Co najmniej %d znaków.";
+"password_validation_error_header" = "Podane hasło nie spełnia poniższych kryteriów:";
+
+// MARK: Password Validation
+"password_validation_info_header" = "Twoje hasło powinno spełniać poniższe kryteria:";
+"authentication_recaptcha_title" = "Jesteś człowiekiem?";
+"authentication_terms_policy_url_error" = "Nie można znaleźć wybranych reguł lub zasad. Spróbuj ponownie później.";
+"authentication_terms_message" = "Przeczytaj warunki i zasady %@";
+"authentication_terms_title" = "Zasady serwera";
+"authentication_verify_msisdn_invalid_phone_number" = "Nieprawidłowy numer telefonu";
+"authentication_verify_msisdn_waiting_button" = "Ponownie wyślij kod";
+/* The placeholder will show the phone number that was entered. */
+"authentication_verify_msisdn_waiting_message" = "Kod został wysłany do %@";
+"authentication_verify_msisdn_waiting_title" = "Zweryfikuj swój numer telefonu";
+"authentication_verify_msisdn_otp_text_field_placeholder" = "Kod potwierdzający";
+"authentication_verify_msisdn_text_field_placeholder" = "Numer telefonu";
+"authentication_verify_msisdn_input_message" = "%@ musi zweryfikować Twoje konto";
+"authentication_verify_msisdn_input_title" = "Wprowadź swój numer telefonu";
+"authentication_choose_password_submit_button" = "Zresetuj hasło";
+"authentication_choose_password_signout_all_devices" = "Wyloguj się ze wszystkich urządzeń";
+"authentication_choose_password_text_field_placeholder" = "Nowe Hasło";
+"authentication_choose_password_input_message" = "Upewnij się, że ma 8 znaków lub więcej";
+"authentication_forgot_password_waiting_button" = "Wyślij e-maila ponownie";
+"authentication_choose_password_input_title" = "Wprowadź nowe hasło";
+/* The placeholder will show the email address that was entered. */
+"authentication_forgot_password_waiting_message" = "Postępuj zgodnie z instrukcjami wysłanymi do %@";
+"authentication_forgot_password_waiting_title" = "Sprawdź swój email.";
+"authentication_forgot_password_text_field_placeholder" = "Email";
+"authentication_forgot_password_input_message" = "%@ wyśle Ci link weryfikacyjny";
+"authentication_forgot_password_input_title" = "Wprowadź swój email";
+"authentication_verify_email_waiting_button" = "Wyślij ponownie wiadomość e-mail";
+"authentication_verify_email_waiting_hint" = "Nie otrzymałeś e-maila?";
+/* The placeholder will show the email address that was entered. */
+"authentication_verify_email_waiting_message" = "Aby potwierdzić swój adres e-mail, dotknij przycisku w e-mailu, który właśnie wysłaliśmy do %@";
+"authentication_verify_email_waiting_title" = "Sprawdź swój adres e-mail, aby zweryfikować.";
+"authentication_verify_email_text_field_placeholder" = "Email";
+"authentication_verify_email_input_message" = "%@ musi zweryfikować Twoje konto";
+"authentication_verify_email_input_title" = "Wprowadź swój email";
+"authentication_cancel_flow_confirmation_message" = "Twoje konto nie zostało jeszcze utworzone. Zatrzymać proces rejestracji?";
+"authentication_server_selection_generic_error" = "Nie można znaleźć serwera pod tym adresem URL, sprawdź, czy jest poprawny.";
+"authentication_server_selection_server_url" = "URL serwera domowego";
+"authentication_server_selection_register_message" = "Jaki jest adres Twojego serwera domowego? Będzie to miejsce przechowywania Twoich danych";
+"authentication_server_selection_register_title" = "Wybierz swój serwer domowy";
+"authentication_server_selection_login_message" = "Jaki jest adres Twojego serwera?";
+"authentication_server_selection_login_title" = "Połącz się z serwerem domowym";
+"authentication_server_info_title" = "Twoje rozmowy będą przechowywane tutaj";
+"authentication_login_forgot_password" = "Zapomniałem/am hasła";
+"authentication_login_username" = "Nazwa użytkownika / e-mail / telefon";
+"authentication_login_title" = "Witamy!";
+"authentication_registration_password_footer" = "Musi mieć co najmniej 8 znaków";
+/* The placeholder will show the full Matrix ID that has been entered. */
+"authentication_registration_username_footer_available" = "Inni mogą Cię wyszukać %@";
+"authentication_registration_username_footer" = "Nie możesz jej później zmienić";
+"authentication_registration_username" = "Nazwa użytkownika";
+
+// MARK: Authentication
+"authentication_registration_title" = "Utwórz swoje konto";
+"onboarding_celebration_button" = "Ruszajmy dalej";
+"onboarding_celebration_message" = "Przejdź do ustawień w dowolnym momencie, aby zaktualizować swój profil.";
+"onboarding_celebration_title" = "Wygląda dobrze!";
+"onboarding_avatar_accessibility_label" = "Obraz profilowy";
+"onboarding_avatar_message" = "Ustaw avatar";
+"onboarding_avatar_title" = "Dodaj zdjęcie profilowe";
+"onboarding_display_name_title" = "Wybierz wyświetlaną nazwę";
+"onboarding_display_name_placeholder" = "Wyświetlana nazwa";
+"onboarding_display_name_max_length" = "Twoja wyświetlana nazwa musi mieć mniej niż 256 znaków";
+"onboarding_display_name_hint" = "Możesz ją później zmienić";
+"onboarding_display_name_message" = "Będzie ona widoczna podczas wysyłania wiadomości.";
+"onboarding_personalization_skip" = "Pomiń ten krok";
+"onboarding_personalization_save" = "Zapisz i kontynuuj";
+"onboarding_congratulations_home_button" = "Wróć do ekranu głównego";
+"onboarding_congratulations_personalize_button" = "Spersonalizuj profil";
+/* The placeholder string contains the user's matrix ID */
+"onboarding_congratulations_message" = "Twoje konto %@ zostało utworzone.";
+"onboarding_congratulations_title" = "Gratulacje!";
+"onboarding_use_case_existing_server_button" = "Połącz się z serwerem";
+"onboarding_use_case_existing_server_message" = "Chcesz dołączyć do istniejącego serwera?";
+"onboarding_use_case_skip_button" = "Pomiń to pytanie";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "Nie jestem jeszcze pewny/a %@";
+"onboarding_use_case_community_messaging" = "Społeczności";
+"onboarding_use_case_work_messaging" = "Zespoły z pracy";
+"onboarding_use_case_personal_messaging" = "Przyjaciele i rodzina";
+"onboarding_use_case_message" = "Pomożemy Ci się połączyć";
+"onboarding_use_case_title" = "Z kim będziesz najczęściej rozmawiać?";
+"onboarding_splash_page_4_message" = "Element świetnie sprawdzi się również w miejscu pracy. Cieszy się zaufaniem najbardziej bezpiecznych organizacji na świecie.";
+"onboarding_splash_page_4_title_no_pun" = "Wiadomości dla Twojego zespołu.";
+"onboarding_splash_page_3_message" = "Szyfrowanie end-to-end, brak wymogu podawania numeru telefonu. Brak reklam i dataminingu.";
+"onboarding_splash_page_3_title" = "Bezpieczne przesyłanie wiadomości.";
+"onboarding_splash_page_2_message" = "Wybierz, gdzie chcesz przechowywać swoje rozmowy. Połączenie ustanowione poprzez Matrix.";
+"onboarding_splash_page_2_title" = "Masz kontrolę.";
+"onboarding_splash_page_1_title" = "Zarządzaj swoimi rozmowami.";
+"saving" = "Zapisywanie";
+
+// Activities
+"loading" = "Ładowanie";
+"confirm" = "Potwierdź";
+"edit" = "Edytuj";
+"suggest" = "Proponowany";
+"add" = "Dodaj";
+"existing" = "Istniejący";
+"new_word" = "Nowy";
+"stop" = "Stop";
+"joining" = "Dołączanie";

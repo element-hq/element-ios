@@ -1139,3 +1139,6 @@
 "notice_error_unknown_event_type" = "未知的事件類型";
 "notice_room_history_visible_to_anyone" = "%@ 讓任何人都能看到未來的聊天室歷史記錄。";
 "notice_room_history_visible_to_members" = "%@ 讓所有聊天室成員都能看到未來的房間歷史記錄。";
+"stop" = "停止";
+"joining" = "正在加入";
+"enable" = "啓用";
