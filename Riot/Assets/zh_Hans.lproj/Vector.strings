@@ -2086,3 +2086,4 @@
 "room_many_users_are_typing" = "%@、%@和其他人正在输入……";
 /* The placeholder %1$tu will be replaced with a number and %2$@ with the user's search terms. */
 "directory_search_results" = "为%2$@找到%1$tu个结果";
+"onboarding_splash_page_2_title" = "一切都在你的掌控中。";
