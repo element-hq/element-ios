@@ -20,6 +20,7 @@ import SwiftUI
 import MatrixSDK
 
 struct StaticLocationViewingCoordinatorParameters {
+    let session: MXSession
     let mediaManager: MXMediaManager
     let avatarData: AvatarInputProtocol
     let location: CLLocationCoordinate2D
@@ -48,11 +49,12 @@ final class StaticLocationViewingCoordinator: Coordinator, Presentable {
     
     init(parameters: StaticLocationViewingCoordinatorParameters) {
         self.parameters = parameters
-        
-        let viewModel = StaticLocationViewingViewModel(mapStyleURL: BuildSettings.tileServerMapStyleURL,
-                                                             avatarData: parameters.avatarData,
-                                                             location: parameters.location,
-                                                             coordinateType: parameters.coordinateType)
+
+        let viewModel = StaticLocationViewingViewModel(
+            mapStyleURL: parameters.session.vc_homeserverConfiguration().tileServer.mapStyleURL,
+            avatarData: parameters.avatarData,
+            location: parameters.location,
+            coordinateType: parameters.coordinateType)
         let view = StaticLocationView(viewModel: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
         staticLocationViewingViewModel = viewModel

@@ -28,7 +28,7 @@ class LiveLocationSharingViewerViewModelTests: XCTestCase {
     
     override func setUpWithError() throws {
         service = MockLiveLocationSharingViewerService()
-        viewModel = LiveLocationSharingViewerViewModel(mapStyleURL: BuildSettings.tileServerMapStyleURL, service: service)
+        viewModel = LiveLocationSharingViewerViewModel(mapStyleURL: BuildSettings.defaultTileServerMapStyleURL, service: service)
         context = viewModel.context
     }
 }
