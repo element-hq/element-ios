@@ -2299,9 +2299,9 @@
 "password_validation_error_contain_uppercase_letter" = "Innehåller en versal.";
 "password_validation_error_contain_lowercase_letter" = "Innehåller en gemen.";
 /* The placeholder will show a number */
-"password_validation_error_max_length" = "Max %@ tecken.";
+"password_validation_error_max_length" = "Max %d tecken.";
 /* The placeholder will show a number */
-"password_validation_error_min_length" = "Minst %@ tecken.";
+"password_validation_error_min_length" = "Minst %d tecken.";
 "password_validation_error_header" = "Det angivna lösenordet uppfyller inte kriterierna nedan:";
 
 // MARK: Password Validation
