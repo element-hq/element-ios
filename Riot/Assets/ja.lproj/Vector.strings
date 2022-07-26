@@ -265,10 +265,10 @@
 "settings_labs" = "実験的";
 "settings_devices" = "セッション";
 "settings_cryptography" = "暗号化";
-"settings_sign_out" = "通信完全切断";
+"settings_sign_out" = "サインアウト";
 "settings_sign_out_confirmation" = "本当によろしいですか？";
 "settings_sign_out_e2e_warn" = "あなたはエンドツーエンド暗号鍵を失ってしまいます。この端末で暗号化されたルームの昔の発言を読むことができなくなります。";
-"settings_profile_picture" = "自分のアイコン画像";
+"settings_profile_picture" = "プロフィール画像";
 "settings_display_name" = "表示名";
 "settings_first_name" = "名";
 "settings_surname" = "姓";
@@ -568,8 +568,8 @@
 "create_room_section_header_address" = "ルームのアドレス";
 "create_room_show_in_directory" = "このルームを一覧に掲載";
 "create_room_section_footer_type" = "非公開のルームは、ルームに招待された人のみ参加できます。";
-"create_room_type_public" = "公開されたルーム";
-"create_room_type_private" = "非公開のルーム";
+"create_room_type_public" = "公開ルーム (誰でも参加可能)";
+"create_room_type_private" = "非公開ルーム (招待者のみ参加可能)";
 "create_room_section_header_type" = "ルームの種類";
 "create_room_section_footer_encryption" = "暗号化はあとから無効にすることはできません。";
 "create_room_section_header_encryption" = "ルームの暗号化";
@@ -1656,3 +1656,15 @@
 "space_topic" = "説明文";
 "spaces_creation_cancel_message" = "進捗状況は失われます。";
 "spaces_creation_cancel_title" = "スペースの作成を停止しますか？";
+"create_room_section_footer_type_private" = "招待した人のみが検索や参加できます。";
+
+// MARK: - Searchable Directory View Controller
+
+"searchable_directory_create_new_room" = "新しいルームを作成";
+"settings_timeline" = "タイムライン";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_sign_out_action" = "サインアウト";
+"sign_out_existing_key_backup_alert_sign_out_action" = "サインアウト";
+
+// MARK: Sign out warning
+
+"sign_out_existing_key_backup_alert_title" = "サインアウトしてよろしいですか？";
