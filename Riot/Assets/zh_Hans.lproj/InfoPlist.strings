@@ -5,3 +5,5 @@
 "NSContactsUsageDescription" = "Element 将显示您的联系人，以便您可以邀请他们聊天。";
 "NSCalendarsUsageDescription" = "在此应用中查看你计划的会议。";
 "NSFaceIDUsageDescription" = "Face ID 权限用于访问您的应用。";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "当你分享你的位置给人们的时候，Element需要权限以显示地图。";
+"NSLocationWhenInUseUsageDescription" = "当你分享你的位置给人们的时候, Element需要权限以显示地图.";
