@@ -2233,6 +2233,9 @@ Tap the + to start adding people.";
 
 "location_sharing_invalid_authorization_settings" = "Settings";
 
+"location_sharing_invalid_power_level_title" = "You don’t have permission to share live location";
+"location_sharing_invalid_power_level_message" = "You need to have the right permissions in order to share live location in this room.";
+
 "location_sharing_open_apple_maps" = "Open in Apple Maps";
 
 "location_sharing_open_google_maps" = "Open in Google Maps";

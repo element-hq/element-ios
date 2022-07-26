@@ -3007,6 +3007,14 @@ public class VectorL10n: NSObject {
   public static var locationSharingInvalidAuthorizationSettings: String { 
     return VectorL10n.tr("Vector", "location_sharing_invalid_authorization_settings") 
   }
+  /// You need to have the right permissions in order to share live location in this room.
+  public static var locationSharingInvalidPowerLevelMessage: String { 
+    return VectorL10n.tr("Vector", "location_sharing_invalid_power_level_message") 
+  }
+  /// You don’t have permission to share live location
+  public static var locationSharingInvalidPowerLevelTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_invalid_power_level_title") 
+  }
   /// Live location error
   public static var locationSharingLiveError: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_error") 

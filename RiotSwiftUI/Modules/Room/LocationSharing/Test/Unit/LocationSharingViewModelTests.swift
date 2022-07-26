@@ -50,7 +50,7 @@ class LocationSharingViewModelTests: XCTestCase {
                 expectation.fulfill()
             case .shareLiveLocation:
                 XCTFail()
-            case .showLabFlagPromotionIfNeeded:
+            case .checkLiveLocationCanBeStarted:
                 XCTFail()
             }
         }
