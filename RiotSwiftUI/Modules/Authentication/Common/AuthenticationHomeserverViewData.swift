@@ -20,8 +20,6 @@ import Foundation
 struct AuthenticationHomeserverViewData: Equatable {
     /// The homeserver string to be shown to the user.
     let address: String
-    /// Whether or not the homeserver is matrix.org.
-    let isMatrixDotOrg: Bool
     /// Whether or not to display the username and password text fields during login.
     let showLoginForm: Bool
     /// Whether or not to display the username and password text fields during registration.
@@ -36,7 +34,6 @@ extension AuthenticationHomeserverViewData {
     /// A mock homeserver that is configured just like matrix.org.
     static var mockMatrixDotOrg: AuthenticationHomeserverViewData {
         AuthenticationHomeserverViewData(address: "matrix.org",
-                                         isMatrixDotOrg: true,
                                          showLoginForm: true,
                                          showRegistrationForm: true,
                                          ssoIdentityProviders: [
@@ -51,7 +48,6 @@ extension AuthenticationHomeserverViewData {
     /// A mock homeserver that supports login and registration via a password but has no SSO providers.
     static var mockBasicServer: AuthenticationHomeserverViewData {
         AuthenticationHomeserverViewData(address: "example.com",
-                                         isMatrixDotOrg: false,
                                          showLoginForm: true,
                                          showRegistrationForm: true,
                                          ssoIdentityProviders: [])
@@ -60,7 +56,6 @@ extension AuthenticationHomeserverViewData {
     /// A mock homeserver that supports only supports authentication via a single SSO provider.
     static var mockEnterpriseSSO: AuthenticationHomeserverViewData {
         AuthenticationHomeserverViewData(address: "company.com",
-                                         isMatrixDotOrg: false,
                                          showLoginForm: false,
                                          showRegistrationForm: false,
                                          ssoIdentityProviders: [SSOIdentityProvider(id: "test", name: "SAML", brand: nil, iconURL: nil)])
@@ -69,7 +64,6 @@ extension AuthenticationHomeserverViewData {
     /// A mock homeserver that supports only supports authentication via fallback.
     static var mockFallback: AuthenticationHomeserverViewData {
         AuthenticationHomeserverViewData(address: "company.com",
-                                         isMatrixDotOrg: false,
                                          showLoginForm: false,
                                          showRegistrationForm: false,
                                          ssoIdentityProviders: [])

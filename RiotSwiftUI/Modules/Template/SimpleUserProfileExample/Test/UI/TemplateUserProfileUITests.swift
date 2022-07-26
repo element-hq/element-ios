@@ -17,33 +17,38 @@
 import XCTest
 import RiotSwiftUI
 
-class TemplateUserProfileUITests: MockScreenTest {
-
-    override class var screenType: MockScreenState.Type {
-        return MockTemplateUserProfileScreenState.self
+class TemplateUserProfileUITests: MockScreenTestCase {
+    func testTemplateUserProfilePresenceIdle() {
+        let presence = TemplateUserProfilePresence.idle
+        app.goToScreenWithIdentifier(MockTemplateUserProfileScreenState.presence(presence).title)
+        
+        let presenceText = app.staticTexts["presenceText"]
+        XCTAssert(presenceText.exists)
+        XCTAssertEqual(presenceText.label, presence.title)
     }
-
-    override class func createTest() -> MockScreenTest {
-        return TemplateUserProfileUITests(selector: #selector(verifyTemplateUserProfileScreen))
+    
+    func testTemplateUserProfilePresenceOffline() {
+        let presence = TemplateUserProfilePresence.offline
+        app.goToScreenWithIdentifier(MockTemplateUserProfileScreenState.presence(presence).title)
+        
+        let presenceText = app.staticTexts["presenceText"]
+        XCTAssert(presenceText.exists)
+        XCTAssertEqual(presenceText.label, presence.title)
     }
-
-    func verifyTemplateUserProfileScreen() throws {
-        guard let screenState = screenState as? MockTemplateUserProfileScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .presence(let presence):
-            verifyTemplateUserProfilePresence(presence: presence)
-        case .longDisplayName(let name):
-            verifyTemplateUserProfileLongName(name: name)
-        }
-    }
-
-    func verifyTemplateUserProfilePresence(presence: TemplateUserProfilePresence) {
+    
+    func testTemplateUserProfilePresenceOnline() {
+        let presence = TemplateUserProfilePresence.online
+        app.goToScreenWithIdentifier(MockTemplateUserProfileScreenState.presence(presence).title)
+        
         let presenceText = app.staticTexts["presenceText"]
         XCTAssert(presenceText.exists)
         XCTAssertEqual(presenceText.label, presence.title)
     }
 
-    func verifyTemplateUserProfileLongName(name: String) {
+    func testTemplateUserProfileLongName() {
+        let name = "Somebody with a super long name we would like to test"
+        app.goToScreenWithIdentifier(MockTemplateUserProfileScreenState.longDisplayName(name).title)
+        
         let displayNameText = app.staticTexts["displayNameText"]
         XCTAssert(displayNameText.exists)
         XCTAssertEqual(displayNameText.label, name)

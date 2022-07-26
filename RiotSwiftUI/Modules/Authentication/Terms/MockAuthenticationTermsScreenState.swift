@@ -37,16 +37,18 @@ enum MockAuthenticationTermsScreenState: MockScreenState, CaseIterable {
         let viewModel: AuthenticationTermsViewModel
         switch self {
         case .matrixDotOrg:
-            viewModel = AuthenticationTermsViewModel(policies: [AuthenticationTermsPolicy(url: "https://matrix-client.matrix.org/_matrix/consent?v=1.0",
+            viewModel = AuthenticationTermsViewModel(homeserver: .mockMatrixDotOrg,
+                                                     policies: [AuthenticationTermsPolicy(url: "https://matrix-client.matrix.org/_matrix/consent?v=1.0",
                                                                                           title: "Terms and Conditions",
                                                                                           subtitle: "matrix.org")])
         case .accepted:
-            viewModel = AuthenticationTermsViewModel(policies: [AuthenticationTermsPolicy(url: "https://matrix-client.matrix.org/_matrix/consent?v=1.0",
+            viewModel = AuthenticationTermsViewModel(homeserver: .mockMatrixDotOrg,
+                                                     policies: [AuthenticationTermsPolicy(url: "https://matrix-client.matrix.org/_matrix/consent?v=1.0",
                                                                                           title: "Terms and Conditions",
                                                                                           subtitle: "matrix.org",
                                                                                           accepted: true)])
         case .multiple:
-            viewModel = AuthenticationTermsViewModel(policies: [
+            viewModel = AuthenticationTermsViewModel(homeserver: .mockBasicServer, policies: [
                 AuthenticationTermsPolicy(url: "https://example.com/terms", title: "Terms and Conditions", subtitle: "example.com"),
                 AuthenticationTermsPolicy(url: "https://example.com/privacy", title: "Privacy Policy", subtitle: "example.com"),
                 AuthenticationTermsPolicy(url: "https://example.com/conduct", title: "Code of Conduct", subtitle: "example.com")

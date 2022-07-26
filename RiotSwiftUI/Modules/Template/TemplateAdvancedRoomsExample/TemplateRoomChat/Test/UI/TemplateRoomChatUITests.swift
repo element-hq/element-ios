@@ -17,46 +17,31 @@
 import XCTest
 import RiotSwiftUI
 
-class TemplateRoomChatUITests: MockScreenTest {
-    
-    override class var screenType: MockScreenState.Type {
-        return MockTemplateRoomChatScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return TemplateRoomChatUITests(selector: #selector(verifyTemplateRoomChatScreen))
-    }
-    
-    func verifyTemplateRoomChatScreen() throws {
-        guard let screenState = screenState as? MockTemplateRoomChatScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .initializingRoom:
-            verifyInitializingRoom()
-        case .failedToInitializeRoom:
-            verifyFailedToInitializeRoom()
-        case .noMessages:
-            verifyNoMessages()
-        case .messages:
-            verifyMessages()
-        }
-    }
-    
-    func verifyInitializingRoom() {
+class TemplateRoomChatUITests: MockScreenTestCase {
+    func testInitializingRoom() {
+        app.goToScreenWithIdentifier(MockTemplateRoomChatScreenState.initializingRoom.title)
+        
         let loadingProgress = app.activityIndicators["loadingProgress"]
         XCTAssert(loadingProgress.exists)
     }
     
-    func verifyFailedToInitializeRoom() {
+    func testFailedToInitializeRoom() {
+        app.goToScreenWithIdentifier(MockTemplateRoomChatScreenState.failedToInitializeRoom.title)
+        
         let errorMessage = app.staticTexts["errorMessage"]
         XCTAssert(errorMessage.exists)
     }
     
-    func verifyNoMessages() {
+    func testNoMessages() {
+        app.goToScreenWithIdentifier(MockTemplateRoomChatScreenState.noMessages.title)
+        
         let errorMessage = app.staticTexts["errorMessage"]
         XCTAssert(errorMessage.exists)
     }
     
-    func verifyMessages() {
+    func testMessages() {
+        app.goToScreenWithIdentifier(MockTemplateRoomChatScreenState.messages.title)
+        
         // Verify bubble grouping with:
         // 3 bubbles
         let bubbleCount = app.images.matching(identifier:"bubbleImage").count
@@ -65,8 +50,6 @@ class TemplateRoomChatUITests: MockScreenTest {
         // and 4 text items
         let bubbleTextItemCount = app.staticTexts.matching(identifier:"bubbleTextContent").count
         XCTAssertEqual(bubbleTextItemCount, 4)
-        
-        
     }
 
 }

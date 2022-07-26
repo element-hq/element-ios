@@ -35,15 +35,16 @@ struct AuthenticationRegistrationScreen: View {
             VStack(spacing: 0) {
                 header
                     .padding(.top, OnboardingMetrics.topPaddingToNavigationBar)
-                    .padding(.bottom, 36)
+                    .padding(.bottom, 28)
                 
                 serverInfo
                     .padding(.leading, 12)
+                    .padding(.bottom, 16)
                 
                 Rectangle()
                     .fill(theme.colors.quinaryContent)
                     .frame(height: 1)
-                    .padding(.vertical, 21)
+                    .padding(.bottom, 22)
                 
                 if viewModel.viewState.homeserver.showRegistrationForm {
                     registrationForm
@@ -84,18 +85,13 @@ struct AuthenticationRegistrationScreen: View {
                 .font(theme.fonts.title2B)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.primaryContent)
-            
-            Text(VectorL10n.authenticationRegistrationMessage)
-                .font(theme.fonts.body)
-                .multilineTextAlignment(.center)
-                .foregroundColor(theme.colors.secondaryContent)
         }
     }
     
     /// The sever information section that includes a button to select a different server.
     var serverInfo: some View {
         AuthenticationServerInfoSection(address: viewModel.viewState.homeserver.address,
-                                        showMatrixDotOrgInfo: viewModel.viewState.homeserver.isMatrixDotOrg) {
+                                        flow: .register) {
             viewModel.send(viewAction: .selectServer)
         }
     }
@@ -107,21 +103,21 @@ struct AuthenticationRegistrationScreen: View {
                                    placeHolder: VectorL10n.authenticationRegistrationUsername,
                                    text: $viewModel.username,
                                    footerText: viewModel.viewState.usernameFooterMessage,
-                                   isError: viewModel.viewState.hasEditedUsername && !viewModel.viewState.isUsernameValid,
+                                   isError: viewModel.viewState.hasEditedUsername && viewModel.viewState.isUsernameInvalid,
                                    isFirstResponder: false,
                                    configuration: UIKitTextInputConfiguration(returnKeyType: .next,
                                                                               autocapitalizationType: .none,
                                                                               autocorrectionType: .no),
                                    onEditingChanged: usernameEditingChanged,
                                    onCommit: { isPasswordFocused = true })
-            .onChange(of: viewModel.username) { _ in viewModel.send(viewAction: .clearUsernameError) }
+            .onChange(of: viewModel.username) { _ in viewModel.send(viewAction: .resetUsernameAvailability) }
             .accessibilityIdentifier("usernameTextField")
             
             RoundedBorderTextField(title: nil,
                                    placeHolder: VectorL10n.authPasswordPlaceholder,
                                    text: $viewModel.password,
                                    footerText: VectorL10n.authenticationRegistrationPasswordFooter,
-                                   isError: viewModel.viewState.hasEditedPassword && !viewModel.viewState.isPasswordValid,
+                                   isError: viewModel.viewState.hasEditedPassword && viewModel.viewState.isPasswordInvalid,
                                    isFirstResponder: isPasswordFocused,
                                    configuration: UIKitTextInputConfiguration(returnKeyType: .done,
                                                                               isSecureTextEntry: true),
@@ -133,7 +129,7 @@ struct AuthenticationRegistrationScreen: View {
                 Text(VectorL10n.next)
             }
             .buttonStyle(PrimaryActionButtonStyle())
-            .disabled(!viewModel.viewState.hasValidCredentials)
+            .disabled(!viewModel.viewState.canSubmit)
             .accessibilityIdentifier("nextButton")
         }
     }
@@ -177,7 +173,7 @@ struct AuthenticationRegistrationScreen: View {
     
     /// Sends the `next` view action so long as valid credentials have been input.
     func submit() {
-        guard viewModel.viewState.hasValidCredentials else { return }
+        guard viewModel.viewState.canSubmit else { return }
         viewModel.send(viewAction: .next)
     }
 

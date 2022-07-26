@@ -101,10 +101,23 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
         state.showLoadingIndicator = false
         
         if let error = error {
-            state.bindings.alertInfo = AlertInfo(id: error,
-                                                 title: VectorL10n.locationSharingPostFailureTitle,
-                                                 message: VectorL10n.locationSharingPostFailureSubtitle(AppInfo.current.displayName),
-                                                 primaryButton: (VectorL10n.ok, nil))
+            
+            let alertInfo:  AlertInfo<LocationSharingAlertType>
+            
+            switch error {
+            case .locationSharingPowerLevelError:
+                alertInfo = AlertInfo(id: error,
+                                      title: VectorL10n.locationSharingInvalidPowerLevelTitle,
+                                      message: VectorL10n.locationSharingInvalidPowerLevelMessage,
+                                      primaryButton: (VectorL10n.ok, nil))
+            default:
+                alertInfo = AlertInfo(id: error,
+                                      title: VectorL10n.locationSharingPostFailureTitle,
+                                      message: VectorL10n.locationSharingPostFailureSubtitle(AppInfo.current.displayName),
+                                      primaryButton: (VectorL10n.ok, nil))
+            }
+            
+            state.bindings.alertInfo = alertInfo
         }
     }
     
@@ -174,9 +187,15 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
             return
         }
         
-        completion(.showLabFlagPromotionIfNeeded({ liveLocationEnabled in
-            if liveLocationEnabled {
+        completion(.checkLiveLocationCanBeStarted({ result in
+            
+            switch result {
+            case .success:
                 self.checkLocationAuthorizationAndPresentTimerSelector()
+            case .failure(let error):
+                if case LiveLocationStartError.powerLevelNotHighEnough = error {
+                    self.stopLoading(error: .locationSharingPowerLevelError)
+                }
             }
         }))
     }

@@ -19,6 +19,8 @@ import CommonKit
 
 struct AuthenticationVerifyEmailCoordinatorParameters {
     let registrationWizard: RegistrationWizard
+    /// The homeserver that is requesting email verification.
+    let homeserver: AuthenticationState.Homeserver
 }
 
 final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
@@ -54,7 +56,7 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     @MainActor init(parameters: AuthenticationVerifyEmailCoordinatorParameters) {
         self.parameters = parameters
         
-        let viewModel = AuthenticationVerifyEmailViewModel()
+        let viewModel = AuthenticationVerifyEmailViewModel(homeserver: parameters.homeserver.viewData)
         let view = AuthenticationVerifyEmailScreen(viewModel: viewModel.context)
         authenticationVerifyEmailViewModel = viewModel
         authenticationVerifyEmailHostingController = VectorHostingController(rootView: view)
@@ -108,7 +110,7 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     
     /// Sends a validation email to the supplied address and then begins polling the server.
     @MainActor private func sendEmail(_ address: String) {
-        let threePID = RegisterThreePID.email(address)
+        let threePID = RegisterThreePID.email(address.trimmingCharacters(in: .whitespaces))
         
         startLoading()
         

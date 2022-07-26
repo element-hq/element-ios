@@ -17,44 +17,27 @@
 import XCTest
 import RiotSwiftUI
 
-class MatrixItemChooserUITests: MockScreenTest {
-
-    override class var screenType: MockScreenState.Type {
-        return MockMatrixItemChooserScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return MatrixItemChooserUITests(selector: #selector(verifyMatrixItemChooserScreen))
-    }
-
-    func verifyMatrixItemChooserScreen() throws {
-        guard let screenState = screenState as? MockMatrixItemChooserScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .noItems:
-            verifyEmptyScreen()
-        case .items:
-            verifyPopulatedScreen()
-        case .selectedItems:
-            verifyPopulatedWithSelectionScreen()
-        case .selectionHeader:
-            break
-        }
-    }
-    
-    func verifyEmptyScreen() {
+class MatrixItemChooserUITests: MockScreenTestCase {
+    func testEmptyScreen() {
+        app.goToScreenWithIdentifier(MockMatrixItemChooserScreenState.noItems.title)
+        
         XCTAssertEqual(app.staticTexts["titleText"].label, VectorL10n.spacesCreationAddRoomsTitle)
         XCTAssertEqual(app.staticTexts["messageText"].label, VectorL10n.spacesCreationAddRoomsMessage)
         XCTAssertEqual(app.staticTexts["emptyListMessage"].exists, true)
         XCTAssertEqual(app.staticTexts["emptyListMessage"].label, VectorL10n.spacesNoResultFoundTitle)
     }
 
-    func verifyPopulatedScreen() {
+    func testPopulatedScreen() {
+        app.goToScreenWithIdentifier(MockMatrixItemChooserScreenState.items.title)
+        
         XCTAssertEqual(app.staticTexts["titleText"].label, VectorL10n.spacesCreationAddRoomsTitle)
         XCTAssertEqual(app.staticTexts["messageText"].label, VectorL10n.spacesCreationAddRoomsMessage)
         XCTAssertEqual(app.staticTexts["emptyListMessage"].exists, false)
     }
 
-    func verifyPopulatedWithSelectionScreen() {
+    func testPopulatedWithSelectionScreen() {
+        app.goToScreenWithIdentifier(MockMatrixItemChooserScreenState.selectedItems.title)
+        
         XCTAssertEqual(app.staticTexts["titleText"].label, VectorL10n.spacesCreationAddRoomsTitle)
         XCTAssertEqual(app.staticTexts["messageText"].label, VectorL10n.spacesCreationAddRoomsMessage)
         XCTAssertEqual(app.staticTexts["emptyListMessage"].exists, false)

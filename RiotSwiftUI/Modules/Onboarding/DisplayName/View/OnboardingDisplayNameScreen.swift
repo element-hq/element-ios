@@ -72,11 +72,6 @@ struct OnboardingDisplayNameScreen: View {
                 .font(theme.fonts.title2B)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.primaryContent)
-            
-            Text(VectorL10n.onboardingDisplayNameMessage)
-                .font(theme.fonts.body)
-                .multilineTextAlignment(.center)
-                .foregroundColor(theme.colors.secondaryContent)
         }
     }
     

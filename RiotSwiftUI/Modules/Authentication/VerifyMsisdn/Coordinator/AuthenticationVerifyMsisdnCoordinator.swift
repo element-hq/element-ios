@@ -20,6 +20,8 @@ import libPhoneNumber_iOS
 
 struct AuthenticationVerifyMsisdnCoordinatorParameters {
     let registrationWizard: RegistrationWizard
+    /// The homeserver that is requesting MSISDN verification.
+    let homeserver: AuthenticationState.Homeserver
 }
 
 final class AuthenticationVerifyMsisdnCoordinator: Coordinator, Presentable {
@@ -55,7 +57,7 @@ final class AuthenticationVerifyMsisdnCoordinator: Coordinator, Presentable {
     @MainActor init(parameters: AuthenticationVerifyMsisdnCoordinatorParameters) {
         self.parameters = parameters
         
-        let viewModel = AuthenticationVerifyMsisdnViewModel()
+        let viewModel = AuthenticationVerifyMsisdnViewModel(homeserver: parameters.homeserver.viewData)
         let view = AuthenticationVerifyMsisdnScreen(viewModel: viewModel.context)
         authenticationVerifyMsisdnViewModel = viewModel
         authenticationVerifyMsisdnHostingController = VectorHostingController(rootView: view)

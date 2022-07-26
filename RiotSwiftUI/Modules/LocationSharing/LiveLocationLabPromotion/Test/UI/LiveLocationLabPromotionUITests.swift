@@ -17,6 +17,6 @@
 import XCTest
 import RiotSwiftUI
 
-class LiveLocationLabPromotionUITests: MockScreenTest {
+class LiveLocationLabPromotionUITests: MockScreenTestCase {
     // Nothing to test as the view is completely static
 }

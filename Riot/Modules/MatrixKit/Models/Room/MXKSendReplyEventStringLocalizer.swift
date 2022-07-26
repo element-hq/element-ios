@@ -40,6 +40,10 @@ class MXKSendReplyEventStringLocalizer: NSObject, MXSendReplyEventStringLocalize
     func senderSentTheirLocation() -> String {
         return VectorL10n.messageReplyToSenderSentTheirLocation
     }
+    
+    func senderSentTheirLiveLocation() -> String {
+        return VectorL10n.messageReplyToSenderSentTheirLiveLocation
+    }
 
     func messageToReplyToPrefix() -> String {
         return VectorL10n.messageReplyToMessageToReplyToPrefix
