@@ -18,7 +18,7 @@
 /* A single unread message */
 "SINGLE_UNREAD" = "你收到了一条消息";
 /* Multiple unread messages in a room */
-"UNREAD_IN_ROOM" = "%@ 条未读消息 (来自聊天室 %@)";
+"UNREAD_IN_ROOM" = "%@ 条未读消息 (来自房间 %@)";
 /* Multiple unread messages from a specific person, not referencing a room */
 "MSGS_FROM_USER" = "%@ 条未读消息 (来自 %@)";
 /* Multiple unread messages from two people */
@@ -28,15 +28,15 @@
 /* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
 "MSGS_FROM_TWO_PLUS_USERS" = "%@ 条未读消息 (来自 %@、%@ 与其他)";
 /* Multiple messages in two rooms */
-"MSGS_IN_TWO_ROOMS" = "%@ 条未读消息 (来自聊天室 %@ 和 %@)";
+"MSGS_IN_TWO_ROOMS" = "%@ 条未读消息 (来自房间 %@ 和 %@)";
 /* Look, stuff's happened, alright? Just open the app. */
 "MSGS_IN_TWO_PLUS_ROOMS" = "%@ 条未读消息 (来自 %@、%@ 与其他)";
 /* A user has invited you to a chat */
 "USER_INVITE_TO_CHAT" = "%@ 邀请您加入私聊";
 /* A user has invited you to an (unamed) group chat */
-"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ 邀请您加入聊天室";
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ 邀请您加入房间";
 /* A user has invited you to a named room */
-"USER_INVITE_TO_NAMED_ROOM" = "%@ 邀请您加入聊天室 %@";
+"USER_INVITE_TO_NAMED_ROOM" = "%@ 邀请您加入房间 %@";
 /* Incoming one-to-one voice call */
 "VOICE_CALL_FROM_USER" = "来自 %@ 的通话";
 /* Incoming one-to-one video call */
@@ -120,3 +120,6 @@
 /** General **/
 
 "Notification" = "通知";
+
+/* New file message from a specific person, not referencing a room. */
+"LOCATION_FROM_USER" = "%@ 分享了他们的位置";
