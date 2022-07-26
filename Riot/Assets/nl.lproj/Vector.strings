@@ -263,7 +263,7 @@
 "settings_ignored_users" = "GENEGEERDE PERSONEN";
 "settings_contacts" = "APPARAAT CONTACTEN";
 "settings_advanced" = "GEAVANCEERD";
-"settings_other" = "OVERIG";
+"settings_other" = "Overig";
 "settings_labs" = "EXPERIMENTEEL";
 "settings_devices" = "APPARATEN";
 "settings_cryptography" = "CRYPTOGRAFIE";
@@ -539,7 +539,7 @@
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Aanvraag verstuurd";
 "rerequest_keys_alert_message" = "Start %@ op een ander apparaat dat het bericht kan ontsleutelen, zodat het de sleutels kan sturen naar dit apparaat.";
-"settings_deactivate_my_account" = "Mijn account deactiveren";
+"settings_deactivate_my_account" = "Account permanent deactiveren";
 "event_formatter_rerequest_keys_part1_link" = "Versleutelingssleutels opnieuw aanvragen";
 "event_formatter_rerequest_keys_part2" = " van uw andere apparaten.";
 "widget_sticker_picker_no_stickerpacks_alert" = "U heeft momenteel geen stickerpakketten ingeschakeld.";
@@ -1530,10 +1530,10 @@
 "event_formatter_call_has_ended_with_time" = "Oproep beëindigd • %@";
 "settings_new_keyword" = "Trefwoorden toevoegen";
 "settings_your_keywords" = "Jouw trefwoorden";
-"settings_room_upgrades" = "Kamer upgrades";
+"settings_room_upgrades" = "Kamer-upgrades";
 "settings_messages_by_a_bot" = "Berichten van een bot";
-"settings_call_invitations" = "Oproep uitnodigingen";
-"settings_room_invitations" = "Kamer uitnodigingen";
+"settings_call_invitations" = "Oproep-uitnodigingen";
+"settings_room_invitations" = "Kamer-uitnodigingen";
 "settings_messages_containing_keywords" = "Trefwoorden";
 "settings_messages_containing_at_room" = "@kamer";
 "settings_messages_containing_user_name" = "Mijn inlognaam";
@@ -1543,8 +1543,8 @@
 "settings_direct_messages" = "Directe berichten";
 "settings_encrypted_direct_messages" = "Versleutelde directe berichten";
 "settings_notify_me_for" = "Stuur een melding voor";
-"settings_mentions_and_keywords" = "Vermeldingen en Trefwoorden";
-"settings_default" = "Standaard Notificaties";
+"settings_mentions_and_keywords" = "Vermeldingen en trefwoorden";
+"settings_default" = "Standaardnotificaties";
 "settings_notifications" = "NOTIFICATIES";
 "version_check_modal_action_title_deprecated" = "Ontdek hoe";
 "version_check_modal_subtitle_deprecated" = "We hebben gewerkt aan het verbeteren van %@ voor een snellere en meer gepolijste ervaring. Helaas is uw huidige iOS-versie niet geschikt voor sommige van deze verbeteringen en worden deze niet langer ondersteund.\nWe adviseren u om uw besturingssysteem te upgraden om %@ volledig te kunnen gebruiken.";
@@ -1697,7 +1697,7 @@
 
 "location_sharing_title" = "Locatie";
 "ok" = "OK";
-"settings_enable_room_message_bubbles" = "Bericht bubbels";
+"settings_enable_room_message_bubbles" = "Berichtbubbels";
 "onboarding_splash_page_4_message" = "Element is ook zeer geschikt voor op de werkvloer. Het wordt vertrouwd door 's werelds veiligste organisaties.";
 "onboarding_splash_page_4_title_no_pun" = "Berichten voor uw team.";
 "onboarding_splash_page_3_message" = "End-to-end versleuteld en geen telefoonnummer vereist. Geen advertenties of datamining.";
@@ -2286,7 +2286,7 @@
 "settings_labs_use_only_latest_user_avatar_and_name" = "Toon laatste avatar en naam voor persoon in berichtgeschiedenis";
 "room_preview_decline_invitation_options" = "Wilt u de uitnodiging afwijzen of deze persoon negeren?";
 /* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
-"onboarding_use_case_not_sure_yet" = "Nog niet zeker? U kunt %@";
+"onboarding_use_case_not_sure_yet" = "Nog niet zeker? %@";
 "notice_error_unformattable_event" = "** Kan bericht niet weergeven. Meld een bug a.u.b.";
 "location_sharing_pin_drop_share_title" = "Stuur deze locatie";
 "location_sharing_static_share_title" = "Stuur mijn huidige locatie";
@@ -2418,10 +2418,10 @@
 "room_participants_leave_processing" = "Verlaten";
 "search_filter_placeholder" = "Filter";
 "onboarding_celebration_button" = "Laten we beginnen";
-"onboarding_celebration_message" = "Uw voorkeuren zijn opgeslagen.";
-"onboarding_celebration_title" = "U bent gereed!";
+"onboarding_celebration_message" = "Ga op elk gewenst moment naar de instellingen om uw profiel bij te werken";
+"onboarding_celebration_title" = "Ziet er goed uit!";
 "onboarding_avatar_accessibility_label" = "Profielfoto";
-"onboarding_avatar_message" = "U kunt dit op elk moment wijzigen.";
+"onboarding_avatar_message" = "Tijd om een gezicht aan uw naam te geven";
 "onboarding_avatar_title" = "Voeg een profielfoto toe";
 "onboarding_display_name_max_length" = "Uw weergavenaam mag niet langer zijn dan 256 tekens";
 "onboarding_display_name_hint" = "U kunt dit later wijzigen";
@@ -2439,7 +2439,7 @@
 "onboarding_use_case_community_messaging" = "Gemeenschappen";
 "onboarding_use_case_work_messaging" = "Teams";
 "onboarding_use_case_personal_messaging" = "Vrienden en familie";
-"onboarding_use_case_message" = "We helpen je om contact te maken.";
+"onboarding_use_case_message" = "We helpen je om contact te maken";
 "onboarding_use_case_title" = "Met wie ga je het meest chatten?";
 "saving" = "Opslaan";
 
@@ -2452,7 +2452,7 @@
 "new_word" = "Nieuw";
 "stop" = "Stop";
 "joining" = "Meedoen";
-"location_sharing_live_list_item_stop_sharing_action" = "Stop delen";
+"location_sharing_live_list_item_stop_sharing_action" = "Stop";
 "location_sharing_live_list_item_current_user_display_name" = "U";
 "location_sharing_live_list_item_last_update_invalid" = "Onbekende laatste update";
 "location_sharing_live_list_item_last_update" = "%@ geleden bijgewerkt";
@@ -2469,8 +2469,8 @@
 "threads_discourage_information_2" = "\n\nWilt u toch threads inschakelen?";
 "threads_discourage_information_1" = "Uw server ondersteunt momenteel geen discussies, dus deze functie kan onbetrouwbaar zijn. Sommige berichten in een discussie zijn mogelijk niet betrouwbaar beschikbaar. ";
 /* The placeholder string contains the user's matrix ID */
-"onboarding_congratulations_message" = "Uw account %@ is aangemaakt.";
-"onboarding_use_case_skip_button" = "sla deze vraag over";
+"onboarding_congratulations_message" = "Uw account %@ is aangemaakt";
+"onboarding_use_case_skip_button" = "Sla deze vraag over";
 "location_sharing_live_stop_sharing_progress" = "Stop locatie delen";
 "location_sharing_live_stop_sharing_error" = "Kan locatie delen niet stoppen";
 "location_sharing_live_no_user_locations_error_title" = "Geen persoonslocaties beschikbaar";
@@ -2509,3 +2509,76 @@
 "settings_timeline" = "TIJDLIJN";
 "room_accessibility_record_voice_message_hint" = "Dubbeltik en houd vast om op te nemen.";
 "room_accessibility_record_voice_message" = "Spraakbericht opnemen";
+"message_reply_to_sender_sent_their_live_location" = "Live locatie.";
+"location_sharing_live_lab_promotion_activation" = "Live locatie delen inschakelen";
+"location_sharing_live_lab_promotion_text" = "Let op: dit is een labfunctie met een tijdelijke implementatie waarmee de geschiedenis van uw gedeelde locatie permanent zichtbaar is voor andere mensen in de kamer.";
+"location_sharing_live_lab_promotion_title" = "Live locatie delen";
+"location_sharing_map_credits_title" = "© Auteursrecht";
+"room_info_back_button_title" = "Kamer Informatie";
+"network_offline_message" = "U bent offline, controleer uw verbinding.";
+"network_offline_title" = "U bent offline";
+"password_validation_error_contain_symbol" = "Bevat een symbool.";
+"password_validation_error_contain_number" = "Bevat een cijfer.";
+"password_validation_error_contain_uppercase_letter" = "Bevat een hoofdletter.";
+"password_validation_error_contain_lowercase_letter" = "Bevat een kleine letter.";
+/* The placeholder will show a number */
+"password_validation_error_max_length" = "Niet meer dan %d tekens.";
+/* The placeholder will show a number */
+"password_validation_error_min_length" = "Minstens %d tekens.";
+"password_validation_error_header" = "Het opgegeven wachtwoord voldoet niet aan de onderstaande criteria:";
+
+// MARK: Password Validation
+"password_validation_info_header" = "Uw wachtwoord moet aan de onderstaande criteria voldoen:";
+"authentication_recaptcha_title" = "Bent u een mens?";
+"authentication_terms_policy_url_error" = "Kan het geselecteerde beleid niet vinden. Probeer het later opnieuw.";
+"authentication_terms_message" = "Lees de voorwaarden en het beleid van %@ a.u.b.";
+"authentication_terms_title" = "Serverbeleid";
+"authentication_verify_msisdn_invalid_phone_number" = "Ongeldig telefoonnummer";
+"authentication_verify_msisdn_waiting_button" = "Code nogmaals versturen";
+/* The placeholder will show the phone number that was entered. */
+"authentication_verify_msisdn_waiting_message" = "Er is een code verzonden naar %@";
+"authentication_verify_msisdn_waiting_title" = "Verifieer uw telefoonnummer";
+"authentication_verify_msisdn_otp_text_field_placeholder" = "Bevestigingscode";
+"authentication_verify_msisdn_text_field_placeholder" = "Telefoonnummer";
+"authentication_verify_msisdn_input_message" = "%@ moet uw account verifiëren";
+"authentication_verify_msisdn_input_title" = "Vul uw telefoonnummer in";
+"authentication_choose_password_submit_button" = "Wachtwoord opnieuw instellen";
+"authentication_choose_password_signout_all_devices" = "Uitloggen op alle apparaten";
+"authentication_choose_password_text_field_placeholder" = "Nieuw Wachtwoord";
+"authentication_choose_password_input_message" = "Zorg ervoor dat het 8 tekens of meer zijn";
+"authentication_choose_password_input_title" = "Kies een nieuw wachtwoord";
+"authentication_forgot_password_waiting_button" = "Email opnieuw verzenden";
+/* The placeholder will show the email address that was entered. */
+"authentication_forgot_password_waiting_message" = "Volg de instructies die naar %@ zijn gestuurd";
+"authentication_forgot_password_waiting_title" = "Controleer uw e-mail.";
+"authentication_forgot_password_text_field_placeholder" = "E-mailadres";
+"authentication_forgot_password_input_message" = "%@ stuurt uw een verificatie link";
+"authentication_forgot_password_input_title" = "Vul uw e-mailadres in";
+"authentication_verify_email_waiting_button" = "Email opnieuw verzenden";
+"authentication_verify_email_waiting_hint" = "Geen e-mail ontvangen?";
+/* The placeholder will show the email address that was entered. */
+"authentication_verify_email_waiting_message" = "Volg de instructies die naar %@ gestuurd zijn";
+"authentication_verify_email_waiting_title" = "Verifieer uw e-mailadres.";
+"authentication_verify_email_text_field_placeholder" = "E-mailadres";
+"authentication_verify_email_input_message" = "%@ moet uw account verifiëren";
+"authentication_verify_email_input_title" = "Vul uw e-mailadres in";
+"authentication_cancel_flow_confirmation_message" = "Uw account is nog niet aangemaakt. Het registratieproces stoppen?";
+"authentication_server_selection_generic_error" = "Kan geen server vinden op deze URL, controleer of deze correct is.";
+"authentication_server_selection_server_url" = "Server URL";
+"authentication_server_selection_register_message" = "Wat is het adres van uw server? Dit is als een thuis voor al uw gegevens";
+"authentication_server_selection_register_title" = "Selecteer uw server";
+"authentication_server_selection_login_message" = "Wat is het adres van uw server?";
+"authentication_server_selection_login_title" = "Verbinding maken met server";
+"authentication_server_info_title" = "Waar uw gesprekken zullen leven";
+"authentication_login_forgot_password" = "Wachtwoord vergeten";
+"authentication_login_username" = "Inlognaam / E-mailadres / Telefoon";
+"authentication_login_title" = "Welkom terug!";
+"authentication_registration_password_footer" = "Moet 8 tekens of meer zijn";
+/* The placeholder will show the full Matrix ID that has been entered. */
+"authentication_registration_username_footer_available" = "Anderen kunnen u %@ ontdekken";
+"authentication_registration_username_footer" = "U kunt dit later niet meer wijzigen";
+"authentication_registration_username" = "Inlognaam";
+
+// MARK: Authentication
+"authentication_registration_title" = "Maak een account aan";
+"authentication_server_info_title_login" = "Waar uw gesprekken leven";
