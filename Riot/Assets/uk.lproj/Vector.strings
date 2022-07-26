@@ -2620,3 +2620,7 @@
 // MARK: Authentication
 "authentication_registration_title" = "Створити обліковий запис";
 "authentication_server_info_title_login" = "Де відбуватимуться ваші розмови";
+"location_sharing_invalid_power_level_message" = "Ви повинні мати відповідні дозволи, щоб ділитися поточним місцем перебування в цій кімнаті.";
+"location_sharing_invalid_power_level_title" = "Ви не маєте дозволу ділитися поточним місцем перебування";
+"authentication_choose_password_not_verified_message" = "Перевірте свою поштову скриньку";
+"authentication_choose_password_not_verified_title" = "Електронна адреса не підтверджена";
