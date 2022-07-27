@@ -256,7 +256,7 @@
 "settings_crypto_device_id" = "\nID Sesji: ";
 "settings_crypto_device_key" = "\nKlucz Sesji:\n";
 "settings_crypto_blacklist_unverified_devices" = "Szyfruj wiadomości tylko do zaufanych sesji";
-"settings_deactivate_my_account" = "Dezaktywuj moje konto";
+"settings_deactivate_my_account" = "Dezaktywuj konto na stałe";
 // Room Details
 "room_details_title" = "Szczegóły pokoju";
 "room_details_files" = "Pliki";
@@ -2075,7 +2075,7 @@
 "room_displayname_all_other_members_left" = "%@ (Opuścił-a)";
 "call_jitsi_unable_to_start" = "Nie można rozpocząć połączenia konferencyjnego";
 "spaces_creation_invite_by_username_title" = "Zaproś swój zespół";
-"message_reply_to_sender_sent_their_live_location" = "udostępnił swoją lokalizację na żywo.";
+"message_reply_to_sender_sent_their_live_location" = "Lokalizacja na żywo.";
 "notice_error_unformattable_event" = "** Nie można wyrenderować wiadomości. Proszę zgłosić błąd";
 "ignore_user" = "Ignoruj użytkownika";
 "location_sharing_live_lab_promotion_activation" = "Włącz udostępnianie lokalizacji na żywo";
@@ -2439,8 +2439,8 @@
 "authentication_verify_email_waiting_button" = "Wyślij ponownie wiadomość e-mail";
 "authentication_verify_email_waiting_hint" = "Nie otrzymałeś e-maila?";
 /* The placeholder will show the email address that was entered. */
-"authentication_verify_email_waiting_message" = "Aby potwierdzić swój adres e-mail, dotknij przycisku w e-mailu, który właśnie wysłaliśmy do %@";
-"authentication_verify_email_waiting_title" = "Sprawdź swój adres e-mail, aby zweryfikować.";
+"authentication_verify_email_waiting_message" = "Postępuj zgodnie z instrukcjami wysłanymi do %@";
+"authentication_verify_email_waiting_title" = "Zweryfikuj swój adres email.";
 "authentication_verify_email_text_field_placeholder" = "Email";
 "authentication_verify_email_input_message" = "%@ musi zweryfikować Twoje konto";
 "authentication_verify_email_input_title" = "Wprowadź swój email";
@@ -2464,7 +2464,7 @@
 // MARK: Authentication
 "authentication_registration_title" = "Utwórz swoje konto";
 "onboarding_celebration_button" = "Ruszajmy dalej";
-"onboarding_celebration_message" = "Przejdź do ustawień w dowolnym momencie, aby zaktualizować swój profil.";
+"onboarding_celebration_message" = "Przejdź do ustawień w dowolnym momencie, aby zaktualizować swój profil";
 "onboarding_celebration_title" = "Wygląda dobrze!";
 "onboarding_avatar_accessibility_label" = "Obraz profilowy";
 "onboarding_avatar_message" = "Ustaw avatar";
@@ -2479,7 +2479,7 @@
 "onboarding_congratulations_home_button" = "Wróć do ekranu głównego";
 "onboarding_congratulations_personalize_button" = "Spersonalizuj profil";
 /* The placeholder string contains the user's matrix ID */
-"onboarding_congratulations_message" = "Twoje konto %@ zostało utworzone.";
+"onboarding_congratulations_message" = "Twoje konto %@ zostało utworzone";
 "onboarding_congratulations_title" = "Gratulacje!";
 "onboarding_use_case_existing_server_button" = "Połącz się z serwerem";
 "onboarding_use_case_existing_server_message" = "Chcesz dołączyć do istniejącego serwera?";
@@ -2510,3 +2510,8 @@
 "new_word" = "Nowy";
 "stop" = "Stop";
 "joining" = "Dołączanie";
+"location_sharing_invalid_power_level_message" = "Aby udostępniać lokalizację na żywo w tym pokoju, musisz mieć odpowiednie uprawnienia.";
+"location_sharing_invalid_power_level_title" = "Nie masz uprawnień do udostępniania lokalizacji na żywo";
+"authentication_choose_password_not_verified_message" = "Sprawdź swoją skrzynkę odbiorczą";
+"authentication_choose_password_not_verified_title" = "E-mail niezweryfikowany";
+"authentication_server_info_title_login" = "Miejsce twoich konwersacji";
