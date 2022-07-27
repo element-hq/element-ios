@@ -535,7 +535,7 @@
 "settings_crypto_device_key" = "\nSessiooni võti:\n";
 "settings_crypto_export" = "Ekspordi võtmed";
 "settings_crypto_blacklist_unverified_devices" = "Kasuta krüptimist vaid verifitseeritud sessioonides";
-"settings_deactivate_my_account" = "Eemalda minu konto kasutusest";
+"settings_deactivate_my_account" = "Eemalda konto lõplikult kasutusest";
 "security_settings_crypto_sessions_loading" = "Laadin sessioone…";
 "security_settings_user_password_description" = "Tuvasta oma isik sisestades Matrix'i konto salasõna";
 // Manage session
@@ -1590,13 +1590,13 @@
 "search_filter_placeholder" = "Filtreeri";
 "onboarding_use_case_existing_server_button" = "Alusta koduserveri kasutamist";
 "onboarding_use_case_existing_server_message" = "Tahad kasutada mõnda olemasolevat koduserverit?";
-"onboarding_use_case_skip_button" = "jätta selle küsimuse vahele";
+"onboarding_use_case_skip_button" = "Jäta see küsimus vahele";
 /* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
-"onboarding_use_case_not_sure_yet" = "Sa pole veel otsustanud? Sa võid %@";
+"onboarding_use_case_not_sure_yet" = "Sa pole veel otsustanud? %@";
 "onboarding_use_case_community_messaging" = "Kogukonnad";
 "onboarding_use_case_work_messaging" = "Töökaaslased";
 "onboarding_use_case_personal_messaging" = "Perekond ja sõbrad";
-"onboarding_use_case_message" = "Me aitame sind Matrix'i võrgu kasutamisel.";
+"onboarding_use_case_message" = "Me aitame sind Matrix'i võrgu kasutamisel";
 "onboarding_use_case_title" = "Kellega sa kõige rohkem vestled?";
 
 
@@ -2197,10 +2197,10 @@
 "threads_notice_title" = "Jutulõngad ei ole enam katsetusjärgus! 🎉";
 "room_participants_invite_prompt_to_msg" = "Kas sa oled kindel, et soovid kutsuda %@ %@ jututuppa?";
 "onboarding_celebration_button" = "Alustame nüüd";
-"onboarding_celebration_message" = "Sinu eelistused on salvestatud.";
-"onboarding_celebration_title" = "Kõik on valmis!";
+"onboarding_celebration_message" = "Seadistusest saad alati oma profiili muuta";
+"onboarding_celebration_title" = "Tundub õige!";
 "onboarding_avatar_accessibility_label" = "Profiilipilt";
-"onboarding_avatar_message" = "Sa võid seda hiljem alati muuta.";
+"onboarding_avatar_message" = "On aeg lisada oma nime juurde sobilik pilt";
 "onboarding_avatar_title" = "Lisa profiilipilt";
 "onboarding_display_name_max_length" = "Sinu kuvatav nimi peab olema lühem, kui 256 tähemärki";
 "onboarding_display_name_hint" = "Sa võid seda hiljem muuta";
@@ -2212,7 +2212,7 @@
 "onboarding_congratulations_home_button" = "Mine avalehele";
 "onboarding_congratulations_personalize_button" = "Isikupärasta oma profiili";
 /* The placeholder string contains the user's matrix ID */
-"onboarding_congratulations_message" = "Sinu kasutajakonto %@ on nüüd olemas.";
+"onboarding_congratulations_message" = "Sinu kasutajakonto %@ on nüüd olemas";
 "onboarding_congratulations_title" = "Õnnitlused!";
 "saving" = "Salvestame";
 
@@ -2230,7 +2230,7 @@
 
 "room_invite_to_space_option_title" = "Kasutajale %@";
 "location_sharing_live_list_item_last_update" = "Uuendamise välp: %@";
-"location_sharing_live_list_item_stop_sharing_action" = "Lõpeta asukoha jagamine";
+"location_sharing_live_list_item_stop_sharing_action" = "Peata";
 "location_sharing_live_list_item_current_user_display_name" = "Sina";
 "location_sharing_live_list_item_last_update_invalid" = "Viimase uuendamise aeg pole teada";
 "location_sharing_live_list_item_sharing_expired" = "Asukoha jagamine aegus";
@@ -2290,3 +2290,31 @@
 "settings_timeline" = "AJAJOON";
 "room_accessibility_record_voice_message_hint" = "Salvestamiseks klõpsi kaks korda ja hoia.";
 "room_accessibility_record_voice_message" = "Salvesta häälsõnum";
+"location_sharing_live_lab_promotion_activation" = "Luba asukohta jagada reaalajas";
+"location_sharing_live_lab_promotion_text" = "Palun arvesta: see on katseline funktsionaalsus, mis kasutab ajutist lahendust ja selle alusel kõik jututoas osalejad saavad kogu aeg näha sinu asukoha ajalugu.";
+"location_sharing_live_lab_promotion_title" = "Asukoha jagamine reaalajas";
+"location_sharing_map_credits_title" = "© Autoriõigused";
+"room_info_back_button_title" = "Jututoa teave";
+"network_offline_message" = "Sa ei ole võrgus, kontrolli oma nutiseadme võrguühendust.";
+"network_offline_title" = "Sa ei ole võrgus";
+"authentication_verify_email_input_title" = "Sisesta oma e-posti aadress";
+"authentication_cancel_flow_confirmation_message" = "Sinu kasutajakonto pole veel loodud. Kas katkestame konto registreerimise?";
+"authentication_server_selection_generic_error" = "Sellelt aadressilt ei leia serverit, palun kontrolli, kas aadress on õige.";
+"authentication_server_selection_server_url" = "Koduserveri aadress";
+"authentication_server_selection_register_message" = "Mis on sinu serveri aadress? Mingis mõttes on see sinu andmete kodu";
+"authentication_server_info_title" = "Kuidas sinu vestlusi hallatakse";
+"authentication_server_selection_register_title" = "Vali oma koduserver";
+"authentication_server_selection_login_message" = "Mis on sinu koduserveri aadress?";
+"authentication_server_selection_login_title" = "Alusta koduserveri kasutamist";
+"authentication_login_forgot_password" = "Kas unustasid oma salasõna";
+"authentication_login_username" = "Kasutajanimi / E-post / Telefon";
+"authentication_login_title" = "Tere tulemast tagasi!";
+"authentication_registration_password_footer" = "Peab olema 8 või enam tähemärki";
+/* The placeholder will show the full Matrix ID that has been entered. */
+"authentication_registration_username_footer_available" = "Teised saavad sind otsida sellisena: %@";
+"authentication_registration_username_footer" = "Sa ei saa seda hiljem muuta";
+"authentication_registration_username" = "Kasutajanimi";
+
+// MARK: Authentication
+"authentication_registration_title" = "Loo endale konto";
+"authentication_server_info_title_login" = "Kuidas sinu vestlusi hallatakse";

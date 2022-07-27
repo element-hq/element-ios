@@ -1,1 +1,0 @@
-AuthenticationViewController is now correctly configured for a deep link if the link is opened before the view gets shown.

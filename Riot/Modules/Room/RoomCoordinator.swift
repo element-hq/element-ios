@@ -335,8 +335,9 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     }
     
     private func showLocationCoordinatorWithEvent(_ event: MXEvent, bubbleData: MXKRoomBubbleCellDataStoring) {
-        guard let navigationRouter = self.navigationRouter,
-              let mediaManager = mxSession?.mediaManager,
+        guard let mxSession = self.mxSession,
+              let navigationRouter = self.navigationRouter,
+              let mediaManager = mxSession.mediaManager,
               let locationContent = event.location else {
                   MXLog.error("[RoomCoordinator] Invalid location showing coordinator parameters. Returning.")
                   return
@@ -354,10 +355,12 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
             fatalError("[LocationSharingCoordinator] event asset type is not supported: \(coordinateType)")
         }
         
-        let parameters = StaticLocationViewingCoordinatorParameters(mediaManager: mediaManager,
-                                                                    avatarData: avatarData,
-                                                                    location: location,
-                                                                    coordinateType: locationSharingCoordinatetype)
+        let parameters = StaticLocationViewingCoordinatorParameters(
+            session: mxSession,
+            mediaManager: mediaManager,
+            avatarData: avatarData,
+            location: location,
+            coordinateType: locationSharingCoordinatetype)
         
         let coordinator = StaticLocationViewingCoordinator(parameters: parameters)
         
@@ -377,9 +380,10 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     }
 
     private func startLocationCoordinator() {
-        guard let navigationRouter = self.navigationRouter,
-              let mediaManager = mxSession?.mediaManager,
-              let user = mxSession?.myUser else {
+        guard let mxSession = mxSession,
+              let navigationRouter = self.navigationRouter,
+              let mediaManager = mxSession.mediaManager,
+              let user = mxSession.myUser else {
             MXLog.error("[RoomCoordinator] Invalid location sharing coordinator parameters. Returning.")
             return
         }
@@ -388,7 +392,8 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
                                      matrixItemId: user.userId,
                                      displayName: user.displayname)
         
-        let parameters = LocationSharingCoordinatorParameters(roomDataSource: roomViewController.roomDataSource,
+        let parameters = LocationSharingCoordinatorParameters(session: mxSession,
+                                                              roomDataSource: roomViewController.roomDataSource,
                                                               mediaManager: mediaManager,
                                                               avatarData: avatarData)
         

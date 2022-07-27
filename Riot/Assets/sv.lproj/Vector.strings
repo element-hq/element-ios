@@ -336,7 +336,7 @@
 "settings_add_3pid_invalid_password_message" = "Ogiltiga uppgifter";
 "settings_crypto_export" = "Exportera nycklar";
 "settings_crypto_blacklist_unverified_devices" = "Kryptera endast till verifierade sessioner";
-"settings_deactivate_my_account" = "Inaktivera mitt konto";
+"settings_deactivate_my_account" = "Inaktivera kontot permanent";
 "settings_key_backup_info_checking" = "Kontrollerar…";
 "settings_key_backup_info_none" = "Dina nycklar säkerhetskopieras inte från den här sessionen.";
 "settings_key_backup_info_algorithm" = "Algoritm: %@";
@@ -1582,17 +1582,17 @@
 "ok" = "OK";
 "enable" = "Aktivera";
 /* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
-"onboarding_use_case_not_sure_yet" = "Inte säker än? Du kan %@";
+"onboarding_use_case_not_sure_yet" = "Inte säker än? %@";
 "onboarding_use_case_community_messaging" = "Gemenskaper";
 "onboarding_use_case_work_messaging" = "Team";
 "onboarding_use_case_personal_messaging" = "Vänner och familj";
-"onboarding_use_case_message" = "Vi kommer hjälpa dig att få kontakt.";
+"onboarding_use_case_message" = "Vi kommer hjälpa dig att få kontakt";
 "onboarding_use_case_title" = "Vem vill du chatta med mest?";
 "onboarding_use_case_existing_server_message" = "Vill du gå med i en existerande server?";
 "onboarding_use_case_existing_server_button" = "Anslut till server";
 "search_filter_placeholder" = "Filter";
 "location_sharing_open_open_street_maps" = "Öppna i OpenStreetMap";
-"onboarding_use_case_skip_button" = "hoppa över den här frågan";
+"onboarding_use_case_skip_button" = "Hoppa över den här frågan";
 
 
 // MARK: - MatrixKit
@@ -2196,10 +2196,10 @@
 "threads_notice_information" = "Alla trådar som skapades under experimentperioden kommer nu att <b>skrivas ut som vanliga svar. </b><br/><br/>Detta kommer vara en engångshändelse under övergången, eftersom trådar nu är en del av Matrix-specen.";
 "threads_notice_title" = "Trådar är inte längre experimentella 🎉";
 "room_participants_invite_prompt_to_msg" = "Är du säker på att du vill bjuda in %@ till %@?";
-"onboarding_celebration_message" = "Dina val har sparats.";
-"onboarding_celebration_title" = "Nu är du klar!";
+"onboarding_celebration_message" = "Gå till inställningar när som helst för att uppdatera din profil";
+"onboarding_celebration_title" = "Ser bra ut!";
 "onboarding_avatar_accessibility_label" = "Profilbild";
-"onboarding_avatar_message" = "Du kan ändra detta när som helst.";
+"onboarding_avatar_message" = "Dags att lägga till ett ansikte till namnet";
 "onboarding_avatar_title" = "Lägg till en profilbild";
 "onboarding_display_name_max_length" = "Ditt visningsnamn måste vara kortare än 256 tecken";
 "onboarding_display_name_hint" = "Du kan ändra detta senare";
@@ -2211,7 +2211,7 @@
 "onboarding_congratulations_home_button" = "Ta mig hem";
 "onboarding_congratulations_personalize_button" = "Personifiera profil";
 /* The placeholder string contains the user's matrix ID */
-"onboarding_congratulations_message" = "Ditt konto %@ har skapats.";
+"onboarding_congratulations_message" = "Ditt konto %@ har skapats";
 "onboarding_congratulations_title" = "Grattis!";
 "new_word" = "Ny";
 "joining" = "Går med";
@@ -2225,7 +2225,7 @@
 "existing" = "Existerande";
 "stop" = "Stopp";
 "settings_enter_validation_token_for" = "Ange valideringstoken för %@:";
-"location_sharing_live_list_item_stop_sharing_action" = "Sluta dela";
+"location_sharing_live_list_item_stop_sharing_action" = "Sluta";
 "location_sharing_live_list_item_current_user_display_name" = "Du";
 "location_sharing_live_list_item_last_update_invalid" = "Okänd senast uppdatering";
 "location_sharing_live_list_item_last_update" = "Uppdaterades för %@ sen";
@@ -2286,3 +2286,80 @@
 "settings_timeline" = "TIDSLINJE";
 "room_accessibility_record_voice_message_hint" = "Dubbeltryck och håll för att spela in.";
 "room_accessibility_record_voice_message" = "Spela in röstmeddelande";
+"message_reply_to_sender_sent_their_live_location" = "Realtidsplats.";
+"location_sharing_live_lab_promotion_activation" = "Aktivera realtidsplatsdelning";
+"location_sharing_live_lab_promotion_text" = "OBS: Det här är en experimentell funktion som använder en temporär implementation vilken låter historiken över din delade plats synas permanent för personer i rummet.";
+"location_sharing_live_lab_promotion_title" = "Platsdelning i realtid";
+"location_sharing_map_credits_title" = "© Upphovsrätt";
+"room_info_back_button_title" = "Rumsinfo";
+"network_offline_message" = "Du är offline, kolla din anslutning.";
+"network_offline_title" = "Du är offline";
+"password_validation_error_contain_symbol" = "Innehåller ett specialtecken.";
+"password_validation_error_contain_number" = "Innehåller ett nummer.";
+"password_validation_error_contain_uppercase_letter" = "Innehåller en versal.";
+"password_validation_error_contain_lowercase_letter" = "Innehåller en gemen.";
+/* The placeholder will show a number */
+"password_validation_error_max_length" = "Max %d tecken.";
+/* The placeholder will show a number */
+"password_validation_error_min_length" = "Minst %d tecken.";
+"password_validation_error_header" = "Det angivna lösenordet uppfyller inte kriterierna nedan:";
+
+// MARK: Password Validation
+"password_validation_info_header" = "Ditt lösenord bör uppfylla följande kriterier:";
+"authentication_recaptcha_title" = "Är du en människa?";
+"authentication_terms_policy_url_error" = "Kan inte hitta den valda policyn. Vänligen pröva igen senare.";
+/* The placeholder will show the homeserver's domain */
+"authentication_terms_message" = "Vänligen läs villkor och policyer för %@";
+"authentication_terms_title" = "Serverpolicyer";
+"authentication_verify_msisdn_invalid_phone_number" = "Ogiltigt telefonnummer";
+"authentication_verify_msisdn_waiting_button" = "Skicka kod igen";
+/* The placeholder will show the phone number that was entered. */
+"authentication_verify_msisdn_waiting_message" = "En kod skickades till %@";
+"authentication_verify_msisdn_waiting_title" = "Verifiera ditt telefonnummer";
+"authentication_verify_msisdn_otp_text_field_placeholder" = "Bekräftelsekod";
+"authentication_verify_msisdn_text_field_placeholder" = "Telefonnummer";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_msisdn_input_message" = "%@ behöver verifiera ditt konto";
+"authentication_verify_msisdn_input_title" = "Ange ditt telefonnummer";
+"authentication_choose_password_submit_button" = "Återställ lösenord";
+"authentication_choose_password_signout_all_devices" = "Logga ut ur alla enheter";
+"authentication_choose_password_text_field_placeholder" = "Nytt lösenord";
+"authentication_choose_password_input_message" = "Se till att det är minst 8 tecken";
+"authentication_choose_password_input_title" = "Välj ett nytt lösenord";
+"authentication_forgot_password_waiting_button" = "Skicka e-brev igen";
+/* The placeholder will show the email address that was entered. */
+"authentication_forgot_password_waiting_message" = "Följ instruktionerna som skickades till %@";
+"authentication_forgot_password_waiting_title" = "Kolla din e-post.";
+"authentication_forgot_password_text_field_placeholder" = "E-postadress";
+/* The placeholder will show the homeserver's domain */
+"authentication_forgot_password_input_message" = "%@ kommer att skicka en verifieringslänk";
+"authentication_forgot_password_input_title" = "Ange din e-postadress";
+"authentication_verify_email_waiting_button" = "Skicka e-brev igen";
+"authentication_verify_email_waiting_hint" = "Fick du inte ett e-brev?";
+/* The placeholder will show the email address that was entered. */
+"authentication_verify_email_waiting_message" = "Följ instruktionerna som skickades till %@";
+"authentication_verify_email_waiting_title" = "Verifiera din e-post.";
+"authentication_verify_email_text_field_placeholder" = "E-postadress";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_email_input_message" = "%@ behöver verifiera ditt konto";
+"authentication_verify_email_input_title" = "Ange din e-postadress";
+"authentication_cancel_flow_confirmation_message" = "Ditt konto har inte skapats än. Avbryt registreringsprocessen?";
+"authentication_server_selection_generic_error" = "Kan inte hitta en server på den här URL:en, kolla om den stämmer.";
+"authentication_server_selection_server_url" = "Hemserver-URL";
+"authentication_server_selection_register_message" = "Vad är adressen för din server? Det är som ett hem för all din data";
+"authentication_server_selection_register_title" = "Välj din hemserver";
+"authentication_server_selection_login_message" = "Vad är adressen för din server?";
+"authentication_server_selection_login_title" = "Anslut till hemserver";
+"authentication_server_info_title_login" = "Där dina konversationer kommer att bo";
+"authentication_login_forgot_password" = "Glömt lösenordet";
+"authentication_login_username" = "Användarnamn / e-postadress / telefonnummer";
+"authentication_login_title" = "Välkommen tillbaka!";
+"authentication_server_info_title" = "Där dina konversationer kommer att bo";
+"authentication_registration_password_footer" = "Måste vara minst 8 tecken";
+/* The placeholder will show the full Matrix ID that has been entered. */
+"authentication_registration_username_footer_available" = "Andra kan hitta dig %@";
+"authentication_registration_username_footer" = "Du kan inte ändra detta senare";
+"authentication_registration_username" = "Användarnamn";
+
+// MARK: Authentication
+"authentication_registration_title" = "Skapa ditt konto";

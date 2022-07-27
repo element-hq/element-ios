@@ -362,7 +362,7 @@
 "settings_crypto_device_key" = "\nChiave sessione:\n";
 "settings_crypto_export" = "Esporta chiavi";
 "settings_crypto_blacklist_unverified_devices" = "Crittografia solo per le sessioni verificate";
-"settings_deactivate_my_account" = "Disattiva il mio account";
+"settings_deactivate_my_account" = "Disattiva account definitivamente";
 "settings_key_backup_info" = "I messaggi nelle stanze cifrate sono protetti con crittografia E2E. Solo tu e il/i destinatario/i avete le chiavi crittografiche per leggere questi messaggi.";
 "settings_key_backup_info_checking" = "Controllo…";
 "settings_key_backup_info_none" = "Questa sessione non sta facendo il Backup delle chiavi.";
@@ -1628,13 +1628,13 @@
 "search_filter_placeholder" = "Filtra";
 "onboarding_use_case_existing_server_button" = "Connetti al server";
 "onboarding_use_case_existing_server_message" = "Vuoi unirti ad un server esistente?";
-"onboarding_use_case_skip_button" = "salta questa domanda";
+"onboarding_use_case_skip_button" = "Salta questa domanda";
 /* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
-"onboarding_use_case_not_sure_yet" = "Ancora non lo sai? Puoi %@";
+"onboarding_use_case_not_sure_yet" = "Ancora non lo sai? %@";
 "onboarding_use_case_community_messaging" = "Comunità";
 "onboarding_use_case_work_messaging" = "Squadre";
 "onboarding_use_case_personal_messaging" = "Amici e famiglia";
-"onboarding_use_case_message" = "Vi aiuteremo a connettervi.";
+"onboarding_use_case_message" = "Vi aiuteremo a connettervi";
 "onboarding_use_case_title" = "Con chi parlerai di più?";
 
 
@@ -1756,7 +1756,7 @@
 "room_displayname_more_than_two_members" = "%@ e %@ altri";
 // Settings
 "settings" = "Impostazioni";
-"settings_enable_inapp_notifications" = "Abilita notifiche In-App";
+"settings_enable_inapp_notifications" = "Attiva notifiche In-app";
 "settings_enable_push_notifications" = "Abilita notifiche push";
 "settings_enter_validation_token_for" = "Inserisci token di validazione per %@:";
 "notification_settings_room_rule_title" = "Canale: '%@'";
@@ -2240,10 +2240,10 @@
 "threads_notice_title" = "I messaggi in conversazioni non sono più sperimentali! 🎉";
 "room_participants_invite_prompt_to_msg" = "Vuoi davvero invitare %@ in %@?";
 "onboarding_celebration_button" = "Andiamo";
-"onboarding_celebration_message" = "Le tue preferenze sono state salvate.";
-"onboarding_celebration_title" = "Tutto pronto!";
+"onboarding_celebration_message" = "Vai nelle impostazioni quando vuoi per aggiornare il tuo profilo";
+"onboarding_celebration_title" = "Stai bene!";
 "onboarding_avatar_accessibility_label" = "Immagine del profilo";
-"onboarding_avatar_message" = "Puoi cambiarla in qualsiasi momento.";
+"onboarding_avatar_message" = "È ora di dare una faccia al nome";
 "onboarding_avatar_title" = "Aggiungi un'immagine del profilo";
 "onboarding_display_name_max_length" = "Il nome da mostrare deve avere meno di 256 caratteri";
 "onboarding_display_name_hint" = "Puoi cambiarlo in seguito";
@@ -2255,7 +2255,7 @@
 "onboarding_congratulations_home_button" = "Portami a casa";
 "onboarding_congratulations_personalize_button" = "Personalizza profilo";
 /* The placeholder string contains the user's matrix ID */
-"onboarding_congratulations_message" = "Il tuo account %@ è stato creato.";
+"onboarding_congratulations_message" = "Il tuo account %@ è stato creato";
 "onboarding_congratulations_title" = "Congratulazioni!";
 "saving" = "Salvando";
 
@@ -2268,7 +2268,7 @@
 "new_word" = "Nuovo";
 "stop" = "Ferma";
 "joining" = "Ingresso";
-"location_sharing_live_list_item_stop_sharing_action" = "Non condividere più";
+"location_sharing_live_list_item_stop_sharing_action" = "Ferma";
 "location_sharing_live_list_item_current_user_display_name" = "Tu";
 "location_sharing_live_list_item_last_update_invalid" = "Ultimo aggiornamento sconosciuto";
 "location_sharing_live_list_item_last_update" = "Aggiornato %@ fa";
@@ -2322,3 +2322,76 @@
 "settings_timeline" = "LINEA TEMPORALE";
 "room_accessibility_record_voice_message_hint" = "Doppio tocco e tieni premuto per registrare.";
 "room_accessibility_record_voice_message" = "Registra messaggio vocale";
+"location_sharing_live_lab_promotion_activation" = "Attiva condivisione posizione in tempo reale";
+"location_sharing_live_lab_promotion_text" = "Nota: questa è una funzione sperimentale che usa un'implementazione temporanea, la quale rende permanentemente visibile la tua cronologia delle posizioni alle altre persone nella stanza.";
+"location_sharing_live_lab_promotion_title" = "Condivisione posizione in tempo reale";
+"location_sharing_map_credits_title" = "© Copyright";
+"room_info_back_button_title" = "Info stanza";
+"network_offline_message" = "Sei offline, controlla la tua connessione.";
+"network_offline_title" = "Sei offline";
+"message_reply_to_sender_sent_their_live_location" = "Posizione in tempo reale.";
+"password_validation_error_contain_symbol" = "Contenere un simbolo.";
+"password_validation_error_contain_number" = "Contenere un numero.";
+"password_validation_error_contain_uppercase_letter" = "Contenere una maiuscola.";
+"password_validation_error_contain_lowercase_letter" = "Contenere una minuscola.";
+/* The placeholder will show a number */
+"password_validation_error_max_length" = "Non più di %d caratteri.";
+/* The placeholder will show a number */
+"password_validation_error_min_length" = "Almeno %d caratteri.";
+"password_validation_error_header" = "La password non soddisfa i criteri sottostanti:";
+
+// MARK: Password Validation
+"password_validation_info_header" = "La password deve soddisfare i criteri sottostanti:";
+"authentication_recaptcha_title" = "Sei un umano?";
+"authentication_terms_policy_url_error" = "Impossibile trovare la politica selezionata. Riprova più tardi.";
+"authentication_terms_message" = "Leggi i termini e condizioni di %@";
+"authentication_terms_title" = "Politiche del server";
+"authentication_verify_msisdn_invalid_phone_number" = "Numero di telefono non valido";
+"authentication_verify_msisdn_waiting_button" = "Reinvia codice";
+/* The placeholder will show the phone number that was entered. */
+"authentication_verify_msisdn_waiting_message" = "È stato inviato un codice a %@";
+"authentication_verify_msisdn_waiting_title" = "Verifica il tuo numero di telefono";
+"authentication_verify_msisdn_otp_text_field_placeholder" = "Codice di conferma";
+"authentication_verify_msisdn_text_field_placeholder" = "Numero di telefono";
+"authentication_verify_msisdn_input_message" = "%@ deve verificare il tuo account";
+"authentication_verify_msisdn_input_title" = "Inserisci il tuo numero di telefono";
+"authentication_choose_password_submit_button" = "Reimposta la password";
+"authentication_choose_password_signout_all_devices" = "Disconnetti tutti i dispositivi";
+"authentication_choose_password_text_field_placeholder" = "Nuova password";
+"authentication_choose_password_input_message" = "Assicurati che sia almeno di 8 caratteri";
+"authentication_choose_password_input_title" = "Scegli una nuova password";
+"authentication_forgot_password_waiting_button" = "Reinvia email";
+/* The placeholder will show the email address that was entered. */
+"authentication_forgot_password_waiting_message" = "Segui le istruzioni inviate a %@";
+"authentication_forgot_password_waiting_title" = "Controlla la tua email.";
+"authentication_forgot_password_text_field_placeholder" = "Email";
+"authentication_forgot_password_input_message" = "%@ ti invierà un link di verifica";
+"authentication_forgot_password_input_title" = "Inserisci la tua email";
+"authentication_verify_email_waiting_button" = "Reinvia email";
+"authentication_verify_email_waiting_hint" = "Non hai ricevuto un'email?";
+/* The placeholder will show the email address that was entered. */
+"authentication_verify_email_waiting_message" = "Segui le istruzioni inviate a %@";
+"authentication_verify_email_waiting_title" = "Verifica la tua email.";
+"authentication_verify_email_text_field_placeholder" = "Email";
+"authentication_verify_email_input_message" = "%@ deve verificare il tuo account";
+"authentication_verify_email_input_title" = "Inserisci la tua email";
+"authentication_cancel_flow_confirmation_message" = "Il tuo account non è ancora stato creato. Fermare il processo di registrazione?";
+"authentication_server_selection_generic_error" = "Impossibile trovare un server con questo URL, controlla che sia giusto.";
+"authentication_server_selection_server_url" = "URL homeserver";
+"authentication_server_selection_register_message" = "Qual è l'indirizzo del tuo server? È come una casa per tutti i tuoi dati";
+"authentication_server_selection_register_title" = "Seleziona il tuo homeserver";
+"authentication_server_selection_login_message" = "Qual è l'indirizzo del tuo server?";
+"authentication_server_selection_login_title" = "Connetti all'homeserver";
+"authentication_server_info_title" = "Dove vivranno le tue conversazioni";
+"authentication_login_forgot_password" = "Password dimenticata";
+"authentication_login_username" = "Nome utente / Email / Telefono";
+"authentication_login_title" = "Bentornato/a!";
+"authentication_registration_password_footer" = "Deve essere di almeno 8 caratteri";
+/* The placeholder will show the full Matrix ID that has been entered. */
+"authentication_registration_username_footer_available" = "Gli altri ti possono trovare come %@";
+"authentication_registration_username_footer" = "Non puoi cambiarlo in seguito";
+"authentication_registration_username" = "Nome utente";
+
+// MARK: Authentication
+"authentication_registration_title" = "Crea il tuo account";
+"authentication_server_info_title_login" = "Dove vivono le tue conversazioni";
