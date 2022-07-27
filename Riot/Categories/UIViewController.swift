@@ -125,30 +125,27 @@ extension UIViewController {
         return fabImageView
     }
     
-    @discardableResult
-    @objc func vc_addFAB(withImage image: UIImage, menu: UIMenu) -> UIButton {
-        let button = UIButton()
-        button.setImage(image, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .clear
-        button.contentMode = .center
-        button.layer.shadowOpacity = 0.3
-        button.layer.shadowOffset = CGSize(width: 0, height: 3)
-        button.showsMenuAsPrimaryAction = true
-        button.menu = menu
-        
-        self.view.addSubview(button)
-        
-        button.widthAnchor.constraint(equalToConstant: UIViewControllerConstants.fabButtonSize.width).isActive = true
-        button.heightAnchor.constraint(equalToConstant: UIViewControllerConstants.fabButtonSize.height).isActive = true
-        button.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor,
-                                               constant: UIViewControllerConstants.fabButtonTrailingMargin).isActive = true
-        self.view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: button.bottomAnchor,
-                                                              constant: UIViewControllerConstants.fabButtonBottomMargin).isActive = true
-        
-        return button
+    /// Defines the large title display mode for the view controller
+    /// - Parameters:
+    ///   - largeTitleDisplayMode: large title display mode
+    @objc func vc_setLargeTitleDisplayMode(_ largeTitleDisplayMode: UINavigationItem.LargeTitleDisplayMode) {
+        switch largeTitleDisplayMode {
+        case .automatic:
+              guard let navigationController = navigationController else { break }
+            if let index = navigationController.children.firstIndex(of: self) {
+                vc_setLargeTitleDisplayMode(index == 0 ? .always : .never)
+            } else {
+                vc_setLargeTitleDisplayMode(.always)
+            }
+        case .always, .never:
+            navigationItem.largeTitleDisplayMode = largeTitleDisplayMode
+            // Even when .never, needs to be true otherwise animation will be broken on iOS11, 12, 13
+            navigationController?.navigationBar.prefersLargeTitles = true
+        @unknown default:
+            MXLog.failure("[UIViewController] setLargeTitleDisplayMode: Missing handler for \(largeTitleDisplayMode)")
+        }
     }
-    
+
     /// Set leftBarButtonItem with split view display mode button if there is no leftBarButtonItem defined and splitViewController exists.
     /// To be Used when view controller is displayed as detail controller in split view.
     func vc_setupDisplayModeLeftBarButtonItemIfNeeded() {

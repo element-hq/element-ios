@@ -52,7 +52,7 @@ class AllChatsViewController: HomeViewController {
         recentsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -Constants.actionPanelHeight).isActive = true
         
         self.tabBarController?.title = VectorL10n.allChatsTitle
-        setLargeTitleDisplayMode(.automatic)
+        vc_setLargeTitleDisplayMode(.automatic)
 
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchResultsUpdater = self

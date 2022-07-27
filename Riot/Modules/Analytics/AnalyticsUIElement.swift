@@ -24,7 +24,7 @@ import AnalyticsEvents
     case threadListFilterItem
     case spacePanelSelectedSpace
     case spacePanelSwitchSpace
-
+    
     /// The element name reported to the AnalyticsEvent.
     var name: AnalyticsEvent.Interaction.Name {
         switch self {
