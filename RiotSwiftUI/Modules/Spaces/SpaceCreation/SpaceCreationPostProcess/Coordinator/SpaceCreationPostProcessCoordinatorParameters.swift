@@ -20,5 +20,6 @@ import Foundation
 
 struct SpaceCreationPostProcessCoordinatorParameters {
     let session: MXSession
+    let parentSpaceId: String?
     let creationParams: SpaceCreationParameters
 }

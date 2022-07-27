@@ -30,6 +30,8 @@ struct SpaceSelectorListRow: View {
     let displayName: String?
     let hasSubItems: Bool
     let isSelected: Bool
+    let notificationCount: UInt
+    let highlightedNotificationCount: UInt
     let disclosureAction: (() -> Void)?
     
     @ViewBuilder
@@ -58,6 +60,17 @@ struct SpaceSelectorListRow: View {
                         .font(theme.fonts.bodySB)
                         .accessibility(identifier: "itemNameText")
                     Spacer()
+                    if notificationCount > 0 {
+                        Text("\(notificationCount)")
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(theme.colors.background)
+                            .font(theme.fonts.footnote)
+                            .padding(.vertical, 2)
+                            .padding(.horizontal, 6)
+                            .background(highlightedNotificationCount > 0 ? theme.colors.alert : theme.colors.secondaryContent)
+                            .clipShape(Capsule())
+                            .accessibility(identifier: "notificationBadge")
+                    }
                     if hasSubItems {
                         Button {
                             disclosureAction?()
@@ -69,16 +82,12 @@ struct SpaceSelectorListRow: View {
                     }
                 }
                 .padding(.vertical, 8)
-                if !isSelected {
-                    Divider()
-                        .background(theme.colors.system)
-                        .padding(0)
-                }
             }
             .padding(.horizontal)
         }
-        .padding(.horizontal)
+        .padding(.horizontal, 8)
         .frame(maxWidth: .infinity)
+        .background(theme.colors.background)
     }
 
 }

@@ -265,7 +265,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
             return
         }
         
-        let coordinator = SpaceCreationCoordinator(parameters: SpaceCreationCoordinatorParameters(session: session))
+        let coordinator = SpaceCreationCoordinator(parameters: SpaceCreationCoordinatorParameters(session: session, parentSpaceId: nil))
         let presentable = coordinator.toPresentable()
         presentable.presentationController?.delegate = self
         self.sideMenuViewController.present(presentable, animated: true, completion: nil)

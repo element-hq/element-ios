@@ -229,7 +229,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         [types addObject:@(RecentsDataSourceSectionTypeAllChats)];
     }
     
-    if (self.suggestedRoomCellDataArray.count > 0)
+    if (self.currentSpace != nil && self.suggestedRoomCellDataArray.count > 0)
     {
         [types addObject:@(RecentsDataSourceSectionTypeSuggestedRooms)];
     }

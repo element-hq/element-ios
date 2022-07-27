@@ -35,7 +35,25 @@ struct SpaceSelectorListItemData {
     let avatar: AvatarInput?
     let icon: UIImage?
     let displayName: String?
+    let notificationCount: UInt
+    let highlightedNotificationCount: UInt
     let hasSubItems: Bool
+    
+    init(id: String,
+         avatar: AvatarInput? = nil,
+         icon: UIImage? = nil,
+         displayName: String?,
+         notificationCount: UInt = 0,
+         highlightedNotificationCount: UInt = 0,
+         hasSubItems: Bool = false) {
+        self.id = id
+        self.avatar = avatar
+        self.icon = icon
+        self.displayName = displayName
+        self.notificationCount = notificationCount
+        self.highlightedNotificationCount = highlightedNotificationCount
+        self.hasSubItems = hasSubItems
+    }
 }
 
 extension SpaceSelectorListItemData: Identifiable, Equatable {}

@@ -16,6 +16,7 @@
 
 import Foundation
 import Combine
+import MatrixSDK
 
 @available(iOS 14.0, *)
 class SpaceSelectorService: SpaceSelectorServiceProtocol {
@@ -29,23 +30,17 @@ class SpaceSelectorService: SpaceSelectorServiceProtocol {
     private let showHomeSpace: Bool
 
     private var spaceList: [SpaceSelectorListItemData] {
-        var itemList = showHomeSpace && parentSpaceId == nil ? [SpaceSelectorListItemData(id: SpaceSelectorListItemDataHomeSpaceId, avatar: nil, icon: Asset.Images.sideMenuActionIconFeedback.image, displayName: VectorL10n.allChatsTitle, hasSubItems: false)] : []
+        var itemList = showHomeSpace && parentSpaceId == nil ? [SpaceSelectorListItemData(id: SpaceSelectorListItemDataHomeSpaceId, icon: Asset.Images.sideMenuActionIconFeedback.image, displayName: VectorL10n.allChatsTitle)] : []
+        
+        let notificationCounter = session.spaceService.notificationCounter
         
         if let parentSpaceId = parentSpaceId, let parentSpace = session.spaceService.getSpace(withId: parentSpaceId) {
             itemList.append(contentsOf: parentSpace.childSpaces.compactMap { space in
-                guard let summary = space.summary else {
-                    return nil
-                }
-                
-                return SpaceSelectorListItemData(id:summary.roomId, avatar: summary.room.avatarData, icon: nil, displayName: summary.displayname, hasSubItems: !space.childSpaces.isEmpty)
+                SpaceSelectorListItemData.itemData(with: space, notificationCounter: notificationCounter)
             })
         } else {
             itemList.append(contentsOf: session.spaceService.rootSpaces.compactMap { space in
-                guard let summary = space.summary else {
-                    return nil
-                }
-                
-                return SpaceSelectorListItemData(id:summary.roomId, avatar: summary.room.avatarData, icon: nil, displayName: summary.displayname, hasSubItems: !space.childSpaces.isEmpty)
+                SpaceSelectorListItemData.itemData(with: space, notificationCounter: notificationCounter)
             })
         }
         return itemList
@@ -77,5 +72,22 @@ class SpaceSelectorService: SpaceSelectorServiceProtocol {
 
         spaceListSubject.send(spaceList)
         parentSpaceNameSubject.send(parentSpaceName)
+    }
+}
+
+fileprivate extension SpaceSelectorListItemData {
+    static func itemData(with space: MXSpace, notificationCounter: MXSpaceNotificationCounter) -> SpaceSelectorListItemData? {
+        guard let summary = space.summary else {
+            return nil
+        }
+        
+        let notificationState = notificationCounter.notificationState(forSpaceWithId: space.spaceId)
+        
+        return SpaceSelectorListItemData(id:summary.roomId,
+                                         avatar: summary.room.avatarData,
+                                         displayName: summary.displayname,
+                                         notificationCount: notificationState?.groupMissedDiscussionsCount ?? 0,
+                                         highlightedNotificationCount: notificationState?.groupMissedDiscussionsHighlightedCount ?? 0,
+                                         hasSubItems: !space.childSpaces.isEmpty)
     }
 }

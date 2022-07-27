@@ -32,17 +32,9 @@ struct SpaceSelector: View {
         return parentName
     }
     
-    private var spaceCreationTitle: String {
-        guard let parentName = viewModel.viewState.parentName else {
-            return VectorL10n.spacesAddSpaceTitle
-        }
-        
-        return VectorL10n.spacesAddSubspaceTitle(parentName)
-    }
-    
     @ViewBuilder
     private var rightButton: some View {
-        Button(VectorL10n.spacesAddSpaceTitle) {
+        Button(VectorL10n.create) {
             viewModel.send(viewAction: .createSpace)
         }
     }
@@ -55,9 +47,17 @@ struct SpaceSelector: View {
         ScrollView {
             LazyVStack {
                 ForEach(viewModel.viewState.items) { item in
-                    SpaceSelectorListRow(avatar: item.avatar, icon: item.icon, displayName: item.displayName, hasSubItems: item.hasSubItems, isSelected: item.id == viewModel.viewState.selectedSpaceId, disclosureAction: {
-                        viewModel.send(viewAction: .spaceDisclosure(item))
-                    })
+                    SpaceSelectorListRow(avatar: item.avatar,
+                                         icon: item.icon,
+                                         displayName: item.displayName,
+                                         hasSubItems: item.hasSubItems,
+                                         isSelected: item.id == viewModel.viewState.selectedSpaceId,
+                                         notificationCount: item.notificationCount,
+                                         highlightedNotificationCount: item.highlightedNotificationCount,
+                                         disclosureAction: {
+                                            viewModel.send(viewAction: .spaceDisclosure(item))
+                                         }
+                        )
                         .onTapGesture {
                             viewModel.send(viewAction: .spaceSelected(item))
                         }

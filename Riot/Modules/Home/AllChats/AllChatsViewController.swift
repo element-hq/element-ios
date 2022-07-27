@@ -28,8 +28,14 @@ class AllChatsViewController: HomeViewController {
     // MARK: - Private
     
     private let searchController = UISearchController(searchResultsController: nil)
+    private let actionPanelView = AllChatsActionPanelView.loadFromNib()
+    
+    private let editActionProvider = AllChatsEditActionProvider()
+
     private var spaceSelectorBridgePresenter: SpaceSelectorBottomSheetCoordinatorBridgePresenter?
     private var createSpaceCoordinator: SpaceCreationCoordinator?
+    
+    private var childCoordinators: [Coordinator] = []
     
     static override func instantiate() -> Self {
         let storyboard = UIStoryboard(name: "Main", bundle: .main)
@@ -42,11 +48,13 @@ class AllChatsViewController: HomeViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        editActionProvider.delegate = self
+        
         recentsTableView.tag = RecentsDataSourceMode.allChats.rawValue
         recentsTableView.clipsToBounds = false
         recentsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -70).isActive = true
         
-        setNavTile()
+        updateUI()
         setLargeTitleDisplayMode(.automatic)
 
         searchController.obscuresBackgroundDuringPresentation = false
@@ -71,39 +79,15 @@ class AllChatsViewController: HomeViewController {
     }
     
     @objc private func addFabButton() {
-        let menu = UIMenu(children: [
-            UIAction(title: VectorL10n.roomRecentsJoinRoom,
-                     image: Asset.Images.homeFabJoinRoom.image,
-                     discoverabilityTitle: VectorL10n.roomRecentsJoinRoom,
-                     handler: { [weak self] action in
-                self?.joinARoom()
-            }),
-            UIAction(title: VectorL10n.roomRecentsCreateEmptyRoom,
-                     image: Asset.Images.homeFabCreateRoom.image,
-                     discoverabilityTitle: VectorL10n.roomRecentsCreateEmptyRoom,
-                     handler: { [weak self] action in
-                self?.createNewRoom()
-            }),
-            UIAction(title: VectorL10n.roomRecentsStartChatWith,
-                     image: Asset.Images.sideMenuActionIconFeedback.image,
-                     discoverabilityTitle: VectorL10n.roomRecentsStartChatWith,
-                     handler: { [weak self] action in
-                self?.startChat()
-            })
-        ])
-        
-        let panel = AllChatsActionPanelView.loadFromNib()
-        panel.editButton.showsMenuAsPrimaryAction = true
-        panel.editButton.menu = menu
-        
-        panel.spaceButton .addTarget(self, action: #selector(showSpaceSelectorAction(sender:)), for: .touchUpInside)
+        actionPanelView.editButton.showsMenuAsPrimaryAction = true
+        actionPanelView.spaceButton .addTarget(self, action: #selector(showSpaceSelectorAction(sender:)), for: .touchUpInside)
 
-        view?.addSubview(panel)
-        panel.translatesAutoresizingMaskIntoConstraints = false
-        panel.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        panel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        panel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        panel.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        view?.addSubview(actionPanelView)
+        actionPanelView.translatesAutoresizingMaskIntoConstraints = false
+        actionPanelView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        actionPanelView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        actionPanelView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        actionPanelView.heightAnchor.constraint(equalToConstant: 70).isActive = true
     }
 
     @objc private func sections() -> Array<Int> {
@@ -136,12 +120,16 @@ class AllChatsViewController: HomeViewController {
         self.tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), menu: AllChatsActionProvider().menu)
     }
 
-    private func setNavTile() {
+    private func updateUI() {
         self.tabBarController?.title = self.dataSource?.currentSpace?.summary?.displayname ?? VectorL10n.allChatsTitle
+        
+        actionPanelView.editButton.menu = editActionProvider.updateMenu(with: mainSession, parentSpace: dataSource?.currentSpace, completion: { [weak self] menu in
+            self?.actionPanelView.editButton.menu = menu
+        })
     }
     
     private func showCreateSpace(parentSpaceId: String?) {
-        let coordinator = SpaceCreationCoordinator(parameters: SpaceCreationCoordinatorParameters(session: self.mainSession))
+        let coordinator = SpaceCreationCoordinator(parameters: SpaceCreationCoordinatorParameters(session: self.mainSession, parentSpaceId: parentSpaceId))
         let presentable = coordinator.toPresentable()
         self.present(presentable, animated: true, completion: nil)
         coordinator.callback = { [weak self] result in
@@ -169,7 +157,7 @@ class AllChatsViewController: HomeViewController {
 
         guard let spaceId = spaceId else {
             self.dataSource.currentSpace = nil
-            self.tabBarController?.title = VectorL10n.allChatsTitle
+            updateUI()
 
             return
         }
@@ -180,8 +168,92 @@ class AllChatsViewController: HomeViewController {
         }
         
         self.dataSource.currentSpace = space
-        setNavTile()
+        updateUI()
+        
         self.recentsTableView.setContentOffset(.zero, animated: true)
+    }
+    
+    private func add(childCoordinator: Coordinator) {
+        self.childCoordinators.append(childCoordinator)
+    }
+    
+    private func remove(childCoordinator: Coordinator) {
+        self.childCoordinators.append(childCoordinator)
+    }
+    
+    private func showSpaceInvite() {
+        guard let session = mainSession, let spaceRoom = dataSource.currentSpace?.room else {
+            return
+        }
+        
+        let coordinator = ContactsPickerCoordinator(session: session, room: spaceRoom, initialSearchText: nil, actualParticipants: nil, invitedParticipants: nil, userParticipant: nil)
+        coordinator.delegate = self
+        coordinator.start()
+        add(childCoordinator: coordinator)
+        present(coordinator.toPresentable(), animated: true)
+    }
+    
+    private func showSpaceMembers() {
+        guard let session = mainSession, let spaceId = dataSource.currentSpace?.spaceId else {
+            return
+        }
+        
+        let coordinator = SpaceMembersCoordinator(parameters: SpaceMembersCoordinatorParameters(userSessionsService: UserSessionsService.shared, session: session, spaceId: spaceId))
+        coordinator.delegate = self
+        let presentable = coordinator.toPresentable()
+        presentable.presentationController?.delegate = self
+        coordinator.start()
+        add(childCoordinator: coordinator)
+        present(presentable, animated: true, completion: nil)
+    }
+
+    private func showSpaceSettings() {
+        guard let session = mainSession, let spaceId = dataSource.currentSpace?.spaceId else {
+            return
+        }
+        
+        let coordinator = SpaceSettingsModalCoordinator(parameters: SpaceSettingsModalCoordinatorParameters(session: session, spaceId: spaceId, parentSpaceId: nil))
+        coordinator.callback = { [weak self] result in
+            guard let self = self else { return }
+            
+            coordinator.toPresentable().dismiss(animated: true) {
+                self.remove(childCoordinator: coordinator)
+            }
+        }
+        
+        let presentable = coordinator.toPresentable()
+        presentable.presentationController?.delegate = self
+        present(presentable, animated: true, completion: nil)
+        coordinator.start()
+        add(childCoordinator: coordinator)
+    }
+    
+    private func showLeaveSpace() {
+        guard let session = mainSession, let spaceSummary = dataSource.currentSpace?.summary else {
+            return
+        }
+        
+        let name = spaceSummary.displayname ?? VectorL10n.spaceTag
+        
+        let selectionHeader = MatrixItemChooserSelectionHeader(title: VectorL10n.leaveSpaceSelectionTitle,
+                                                               selectAllTitle: VectorL10n.leaveSpaceSelectionAllRooms,
+                                                               selectNoneTitle: VectorL10n.leaveSpaceSelectionNoRooms)
+        let paramaters = MatrixItemChooserCoordinatorParameters(session: session,
+                                                                title: VectorL10n.leaveSpaceTitle(name),
+                                                                detail: VectorL10n.leaveSpaceMessage(name),
+                                                                selectionHeader: selectionHeader,
+                                                                viewProvider: LeaveSpaceViewProvider(navTitle: nil),
+                                                                itemsProcessor: LeaveSpaceItemsProcessor(spaceId: spaceSummary.roomId, session: session))
+        let coordinator = MatrixItemChooserCoordinator(parameters: paramaters)
+        coordinator.toPresentable().presentationController?.delegate = self
+        coordinator.start()
+        add(childCoordinator: coordinator)
+        coordinator.completion = { [weak self] result in
+            coordinator.toPresentable().dismiss(animated: true) {
+                self?.remove(childCoordinator: coordinator)
+            }
+        }
+        present(coordinator.toPresentable(), animated: true)
     }
 }
 
@@ -214,6 +286,7 @@ extension AllChatsViewController: SpaceSelectorBottomSheetCoordinatorBridgePrese
         }
         self.showCreateSpace(parentSpaceId: parentSpaceId)
     }
+
 }
 
 // MARK: - UISearchResultsUpdating
@@ -228,4 +301,68 @@ extension AllChatsViewController: UISearchResultsUpdating {
         self.dataSource.search(withPatterns: [searchText])
     }
 
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+extension AllChatsViewController: UIAdaptivePresentationControllerDelegate {
+    
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        guard let coordinator = childCoordinators.last else {
+            return
+        }
+        
+        remove(childCoordinator: coordinator)
+    }
+}
+
+// MARK: - AllChatsEditActionProviderDelegate
+extension AllChatsViewController: AllChatsEditActionProviderDelegate {
+    
+    func allChatsEditActionProvider(_ ationProvider: AllChatsEditActionProvider, didSelect option: AllChatsEditActionProviderOption) {
+        switch option {
+        case .exploreRooms:
+            joinARoom()
+        case .createRoom:
+            createNewRoom()
+        case .startChat:
+            startChat()
+        case .invitePeople:
+            showSpaceInvite()
+        case .spaceMembers:
+            showSpaceMembers()
+        case .spaceSettings:
+            showSpaceSettings()
+        case .leaveSpace:
+            showLeaveSpace()
+        case .createSpace:
+            showCreateSpace(parentSpaceId: dataSource.currentSpace?.spaceId)
+        }
+    }
+    
+}
+
+// MARK: - ContactsPickerCoordinatorDelegate
+extension AllChatsViewController: ContactsPickerCoordinatorDelegate {
+    
+    func contactsPickerCoordinatorDidStartLoading(_ coordinator: ContactsPickerCoordinatorProtocol) {
+    }
+    
+    func contactsPickerCoordinatorDidEndLoading(_ coordinator: ContactsPickerCoordinatorProtocol) {
+    }
+    
+    func contactsPickerCoordinatorDidClose(_ coordinator: ContactsPickerCoordinatorProtocol) {
+        remove(childCoordinator: coordinator)
+    }
+    
+}
+
+// MARK: - SpaceMembersCoordinatorDelegate
+extension AllChatsViewController: SpaceMembersCoordinatorDelegate {
+    
+    func spaceMembersCoordinatorDidCancel(_ coordinator: SpaceMembersCoordinatorType) {
+        coordinator.toPresentable().dismiss(animated: true) {
+            self.remove(childCoordinator: coordinator)
+        }
+    }
+    
 }
