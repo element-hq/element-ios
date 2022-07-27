@@ -20,6 +20,7 @@ import SwiftUI
 import MatrixSDK
 
 struct LocationSharingCoordinatorParameters {
+    let session: MXSession
     let roomDataSource: MXKRoomDataSource
     let mediaManager: MXMediaManager
     let avatarData: AvatarInputProtocol
@@ -78,10 +79,11 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
         
         let locationSharingService = LocationSharingService(session: parameters.roomDataSource.mxSession)
         
-        let viewModel = LocationSharingViewModel(mapStyleURL: BuildSettings.tileServerMapStyleURL,
-                                                 avatarData: parameters.avatarData,
-                                                 isLiveLocationSharingEnabled: true,
-                                                 service: locationSharingService)
+        let viewModel = LocationSharingViewModel(
+            mapStyleURL: parameters.session.vc_homeserverConfiguration().tileServer.mapStyleURL,
+            avatarData: parameters.avatarData,
+            isLiveLocationSharingEnabled: true,
+            service: locationSharingService)
         
         let view = LocationSharingView(context: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
@@ -102,8 +104,8 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
                 self.shareStaticLocation(latitude: latitude, longitude: longitude, coordinateType: coordinateType)
             case .shareLiveLocation(let timeout):
                 self.startLiveLocationSharing(with: timeout)
-            case .showLabFlagPromotionIfNeeded(let completion):
-                self.showLabFlagPromotionIfNeeded(completion: completion)
+            case .checkLiveLocationCanBeStarted(let completion):
+                self.checkLiveLocationCanBeStarted(completion: completion)
             }
         }
     }
@@ -162,6 +164,38 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
             }
         }
     }
+    
+    private func checkLiveLocationCanBeStarted(completion: @escaping ((Result<Void, Error>) -> Void)) {
+        
+        guard self.canShareLiveLocation() else {
+            completion(.failure(LiveLocationStartError.powerLevelNotHighEnough))
+            return
+        }
+
+        self.showLabFlagPromotionIfNeeded { labFlagEnabled in
+            
+            if labFlagEnabled {
+                completion(.success(Void()))
+            } else {
+                completion(.failure(LiveLocationStartError.labFlagNotEnabled))
+            }
+        }
+    }
+    
+    // Check if user can send beacon info state event
+    private func canShareLiveLocation() -> Bool {
+        guard let myUserId = self.parameters.roomDataSource.mxSession.myUserId else {
+            return false
+        }
+        
+        let userPowerLevelRawValue = self.parameters.roomDataSource.roomState.powerLevels.powerLevelOfUser(withUserID: myUserId)
+        
+        guard let userPowerLevel = RoomPowerLevel(rawValue: userPowerLevelRawValue) else {
+            return false
+        }
+        
+        return userPowerLevel.rawValue >= RoomPowerLevel.moderator.rawValue
+    }    
     
     private func showLabFlagPromotionIfNeeded(completion: @escaping ((Bool) -> Void)) {
         guard RiotSettings.shared.enableLiveLocationSharing == false else {

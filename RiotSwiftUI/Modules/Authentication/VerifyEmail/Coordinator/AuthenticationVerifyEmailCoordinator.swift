@@ -110,7 +110,7 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     
     /// Sends a validation email to the supplied address and then begins polling the server.
     @MainActor private func sendEmail(_ address: String) {
-        let threePID = RegisterThreePID.email(address)
+        let threePID = RegisterThreePID.email(address.trimmingCharacters(in: .whitespaces))
         
         startLoading()
         

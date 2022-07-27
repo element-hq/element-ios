@@ -339,7 +339,7 @@
 
     if (BuildSettings.newAppLayoutEnaled)
     {
-        [self setLargeTitleDisplayMode: UINavigationItemLargeTitleDisplayModeNever];
+        [self vc_setLargeTitleDisplayMode: UINavigationItemLargeTitleDisplayModeNever];
     }
 }
 

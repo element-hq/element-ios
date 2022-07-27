@@ -19,6 +19,12 @@ import Reusable
 
 class AllChatsViewController: HomeViewController {
     
+    // MARK: - Constants
+    
+    private enum Constants {
+        static let actionPanelHeight: Double = 64
+    }
+    
     // MARK: - Class methods
     
     static override func nib() -> UINib! {
@@ -52,10 +58,10 @@ class AllChatsViewController: HomeViewController {
         
         recentsTableView.tag = RecentsDataSourceMode.allChats.rawValue
         recentsTableView.clipsToBounds = false
-        recentsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -70).isActive = true
+        recentsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -Constants.actionPanelHeight).isActive = true
         
         updateUI()
-        setLargeTitleDisplayMode(.automatic)
+        vc_setLargeTitleDisplayMode(.automatic)
 
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchResultsUpdater = self
@@ -87,7 +93,7 @@ class AllChatsViewController: HomeViewController {
         actionPanelView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         actionPanelView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         actionPanelView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        actionPanelView.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        actionPanelView.heightAnchor.constraint(equalToConstant: Constants.actionPanelHeight).isActive = true
     }
 
     @objc private func sections() -> Array<Int> {

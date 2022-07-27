@@ -149,7 +149,7 @@
     if (BuildSettings.newAppLayoutEnaled)
     {
         [self.searchBar vc_searchTextField].backgroundColor = nil;
-        [self setLargeTitleDisplayMode: UINavigationItemLargeTitleDisplayModeAutomatic];
+        [self vc_setLargeTitleDisplayMode: UINavigationItemLargeTitleDisplayModeAutomatic];
     }
 }
 
