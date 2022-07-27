@@ -2582,3 +2582,7 @@
 // MARK: Authentication
 "authentication_registration_title" = "Maak een account aan";
 "authentication_server_info_title_login" = "Waar uw gesprekken leven";
+"location_sharing_invalid_power_level_message" = "U moet de juiste rechten hebben om de live locatie in deze kamer te delen.";
+"location_sharing_invalid_power_level_title" = "U heeft geen toestemming om de live locatie te delen";
+"authentication_choose_password_not_verified_message" = "Controleer uw inbox";
+"authentication_choose_password_not_verified_title" = "E-mailadres niet geverifieerd";
