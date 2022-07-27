@@ -178,6 +178,10 @@ class DefaultTheme: NSObject, Theme {
         searchBar.backgroundImage = UIImage() // Remove top and bottom shadow
         searchBar.tintColor = self.tintColor
         
+        guard !BuildSettings.newAppLayoutEnaled else {
+            return
+        }
+        
         if #available(iOS 13.0, *) {
             searchBar.searchTextField.backgroundColor = self.searchBackgroundColor
             searchBar.searchTextField.textColor = self.searchPlaceholderColor

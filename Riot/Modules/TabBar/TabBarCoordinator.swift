@@ -70,6 +70,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     }
     
     private var indicators = [UserIndicator]()
+    private var signOutAlertPresenter = SignOutAlertPresenter()
     
     // MARK: Public
 
@@ -103,6 +104,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                 
         // If start has been done once do not setup view controllers again
         if self.hasStartedOnce == false {
+            signOutAlertPresenter.delegate = self
+
             let masterTabBarController = self.createMasterTabBarController()
             masterTabBarController.masterTabBarDelegate = self
             self.masterTabBarController = masterTabBarController
@@ -121,7 +124,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             self.registerSessionChange()
             
             self.updateMasterTabBarController(with: spaceId, forceReload: true)
-        } else {            
+        } else {
             self.updateMasterTabBarController(with: spaceId)
         }
         
@@ -791,7 +794,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
 
         actions.append(UIMenu(title: "", options: .displayInline, children: [
             UIAction(title: VectorL10n.settingsSignOut, image: UIImage(systemName: "rectangle.portrait.and.arrow.right.fill"), attributes: .destructive) { [weak self] action in
-                // TODO: implement sign out
+                self?.signOut()
             }
         ]))
 
@@ -820,6 +823,109 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.masterTabBarController.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: view)
     }
     
+    // MARK: Sign out process
+    
+    private func signOut() {
+        guard let keyBackup = currentMatrixSession?.crypto.backup else {
+            return
+        }
+        
+        signOutAlertPresenter.present(for: keyBackup.state,
+                                      areThereKeysToBackup: keyBackup.hasKeysToBackup,
+                                      from: self.masterTabBarController,
+                                      sourceView: nil,
+                                      animated: true)
+    }
+    
+    // MARK: - SecureBackupSetupCoordinatorBridgePresenter
+    
+    private var secureBackupSetupCoordinatorBridgePresenter: SecureBackupSetupCoordinatorBridgePresenter?
+    private var crossSigningSetupCoordinatorBridgePresenter: CrossSigningSetupCoordinatorBridgePresenter?
+
+    private func showSecureBackupSetupFromSignOutFlow() {
+        if canSetupSecureBackup {
+            setupSecureBackup2()
+        } else {
+            // Set up cross-signing first
+            setupCrossSigning(title: VectorL10n.secureKeyBackupSetupIntroTitle,
+                              message: VectorL10n.securitySettingsUserPasswordDescription) { [weak self] result in
+                switch result {
+                case .success(let isCompleted):
+                    if isCompleted {
+                        self?.setupSecureBackup2()
+                    }
+                case .failure:
+                    break
+                }
+            }
+        }
+    }
+    
+    private var canSetupSecureBackup: Bool {
+        // Accept to create a setup only if we have the 3 cross-signing keys
+        // This is the path to have a sane state
+        // TODO: What about missing MSK that was not gossiped before?
+        
+        guard let recoveryService = currentMatrixSession?.crypto.recoveryService else {
+            return false
+        }
+        
+        let crossSigningServiceSecrets = [
+            MXSecretId.crossSigningMaster.takeRetainedValue() as String,
+            MXSecretId.crossSigningSelfSigning.takeRetainedValue() as String,
+            MXSecretId.crossSigningUserSigning.takeRetainedValue() as String
+        ]
+        
+        return recoveryService.secretsStoredLocally().filter { secret in
+            guard let secret = secret as? String else { return false }
+            return crossSigningServiceSecrets.contains(secret)
+        }.count == crossSigningServiceSecrets.count
+    }
+    
+    private func setupSecureBackup2() {
+        guard let session = currentMatrixSession else {
+            return
+        }
+        
+        let secureBackupSetupCoordinatorBridgePresenter = SecureBackupSetupCoordinatorBridgePresenter(session: session, allowOverwrite: true)
+        secureBackupSetupCoordinatorBridgePresenter.delegate = self
+        secureBackupSetupCoordinatorBridgePresenter.present(from: masterTabBarController, animated: true)
+        self.secureBackupSetupCoordinatorBridgePresenter = secureBackupSetupCoordinatorBridgePresenter
+    }
+    
+    private func setupCrossSigning(title: String, message: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+        guard let session = currentMatrixSession else {
+            return
+        }
+
+        masterTabBarController.homeViewController.startActivityIndicator()
+        masterTabBarController.view.isUserInteractionEnabled = false
+        
+        let dismissAnimation = { [weak self] in
+            guard let self = self else { return }
+            
+            self.masterTabBarController.homeViewController.stopActivityIndicator()
+            self.masterTabBarController.view.isUserInteractionEnabled = true
+            self.crossSigningSetupCoordinatorBridgePresenter?.dismiss(animated: true, completion: {
+                self.crossSigningSetupCoordinatorBridgePresenter = nil
+            })
+        }
+        
+        let crossSigningSetupCoordinatorBridgePresenter = CrossSigningSetupCoordinatorBridgePresenter(session: session)
+        crossSigningSetupCoordinatorBridgePresenter.present(with: title, message: message, from: masterTabBarController, animated: true) {
+            dismissAnimation()
+            completion(.success(true))
+        } cancel: {
+            dismissAnimation()
+            completion(.success(false))
+        } failure: { error in
+            dismissAnimation()
+            completion(.failure(error))
+        }
+
+        self.crossSigningSetupCoordinatorBridgePresenter = crossSigningSetupCoordinatorBridgePresenter
+    }
+
     // MARK: Coach Message
     
     private var windowOverlay: WindowOverlayPresenter?
@@ -946,6 +1052,40 @@ extension TabBarCoordinator: UIGestureRecognizerDelegate {
             return false
         } else {
             return true
+        }
+    }
+}
+
+extension TabBarCoordinator: SignOutAlertPresenterDelegate {
+    
+    func signOutAlertPresenterDidTapSignOutAction(_ presenter: SignOutAlertPresenter) {
+        // Prevent user to perform user interaction in settings when sign out
+        // TODO: Prevent user interaction in all application (navigation controller and split view controller included)
+        masterNavigationController.view.isUserInteractionEnabled = false
+        masterTabBarController.homeViewController.startActivityIndicator()
+        
+        AppDelegate.theDelegate().logout(withConfirmation: false) { [weak self] isLoggedOut in
+            self?.masterTabBarController.homeViewController.stopActivityIndicator()
+            self?.masterNavigationController.view.isUserInteractionEnabled = true
+        }
+    }
+    
+    func signOutAlertPresenterDidTapBackupAction(_ presenter: SignOutAlertPresenter) {
+        showSecureBackupSetupFromSignOutFlow()
+    }
+    
+}
+
+extension TabBarCoordinator: SecureBackupSetupCoordinatorBridgePresenterDelegate {
+    func secureBackupSetupCoordinatorBridgePresenterDelegateDidCancel(_ coordinatorBridgePresenter: SecureBackupSetupCoordinatorBridgePresenter) {
+        coordinatorBridgePresenter.dismiss(animated: true) {
+            self.secureBackupSetupCoordinatorBridgePresenter = nil
+        }
+    }
+    
+    func secureBackupSetupCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: SecureBackupSetupCoordinatorBridgePresenter) {
+        coordinatorBridgePresenter.dismiss(animated: true) {
+            self.secureBackupSetupCoordinatorBridgePresenter = nil
         }
     }
 }

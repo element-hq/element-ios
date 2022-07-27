@@ -30,7 +30,7 @@ struct LeaveSpace: View {
     @ViewBuilder
     var body: some View {
         mainView
-            .background(theme.colors.background)
+            .background(theme.colors.background.ignoresSafeArea())
     }
     
     // MARK: - Private

@@ -28,13 +28,13 @@ class AllChatsActionProvider {
     // MARK: - RoomActionProviderProtocol
     
     var menu: UIMenu {
-        return UIMenu(children: [
+        return UIMenu(title: VectorL10n.allChatsEditLayout, children: [
+            self.recentsAction,
+            self.filtersAction,
             UIMenu(title: "", options: .displayInline, children: [
                 alphabeticalOrderAction,
                 activityOrderAction
-            ]),
-            self.filtersAction,
-            self.recentsAction
+            ])
         ])
     }
     
