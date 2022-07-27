@@ -21,37 +21,22 @@ import Combine
 
 @available(iOS 14.0, *)
 class SpaceSelectorViewModelTests: XCTestCase {
-    private enum Constants {
-        static let presenceInitialValue: SpaceSelectorBottomSheetPresence = .offline
-        static let displayName = "Alice"
-    }
-    var service: MockSpaceSelectorBottomSheetService!
-    var viewModel: SpaceSelectorBottomSheetViewModelProtocol!
-    var context: SpaceSelectorBottomSheetViewModelType.Context!
+    
+    var service: MockSpaceSelectorService!
+    var viewModel: SpaceSelectorViewModelProtocol!
+    var context: SpaceSelectorViewModelType.Context!
     var cancellables = Set<AnyCancellable>()
+    
     override func setUpWithError() throws {
-        service = MockSpaceSelectorService(displayName: Constants.displayName, presence: Constants.presenceInitialValue)
-        viewModel = SpaceSelectorViewModel.makeSpaceSelectorViewModel(service: service)
+        service = MockSpaceSelectorService()
+        viewModel = SpaceSelectorViewModel.makeViewModel(service: service)
         context = viewModel.context
     }
 
     func testInitialState() {
-        XCTAssertEqual(context.viewState.displayName, Constants.displayName)
-        XCTAssertEqual(context.viewState.presence, Constants.presenceInitialValue)
+        XCTAssertEqual(context.viewState.selectedSpaceId, MockSpaceSelectorService.homeItem.id)
+        XCTAssertEqual(context.viewState.items, MockSpaceSelectorService.defaultSpaceList)
+        XCTAssertNil(context.viewState.parentName)
     }
 
-    func testFirstPresenceReceived() throws {
-        let presencePublisher = context.$viewState.map(\.presence).removeDuplicates().collect(1).first()
-        XCTAssertEqual(try xcAwait(presencePublisher), [Constants.presenceInitialValue])
-    }
-
-    func testPresenceUpdatesReceived() throws {
-        let presencePublisher = context.$viewState.map(\.presence).removeDuplicates().collect(3).first()
-        let awaitDeferred = xcAwaitDeferred(presencePublisher)
-        let newPresenceValue1: SpaceSelectorBottomSheetPresence = .online
-        let newPresenceValue2: SpaceSelectorBottomSheetPresence = .idle
-        service.simulateUpdate(presence: newPresenceValue1)
-        service.simulateUpdate(presence: newPresenceValue2)
-        XCTAssertEqual(try awaitDeferred(), [Constants.presenceInitialValue, newPresenceValue1, newPresenceValue2])
-    }
 }

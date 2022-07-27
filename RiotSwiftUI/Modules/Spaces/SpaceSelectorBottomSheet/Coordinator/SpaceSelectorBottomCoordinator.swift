@@ -106,8 +106,10 @@ final class SpaceSelectorBottomSheetCoordinator: Coordinator, Presentable {
             case .cancel:
                 self.completion?(.cancel)
             case .homeSelected:
+                self.trackSpaceSelection(with: nil)
                 self.completion?(.homeSelected)
             case .spaceSelected(let item):
+                self.trackSpaceSelection(with: item.id)
                 self.completion?(.spaceSelected(item))
             case .spaceDisclosure(let item):
                 self.pushSpace(withId: item.id)
@@ -139,5 +141,14 @@ final class SpaceSelectorBottomSheetCoordinator: Coordinator, Presentable {
                 self.spaceIdStack.removeLast()
             }
         }
+    }
+    
+    private func trackSpaceSelection(with spaceId: String?) {
+        guard parameters.selectedSpaceId != spaceId else {
+            Analytics.shared.trackInteraction(.spacePanelSelectedSpace)
+            return
+        }
+        
+        Analytics.shared.trackInteraction(.spacePanelSwitchSpace)
     }
 }

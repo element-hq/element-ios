@@ -18,36 +18,26 @@ import XCTest
 import RiotSwiftUI
 
 @available(iOS 14.0, *)
-class SpaceSelectorUITests: MockScreenTest {
+class SpaceSelectorUITests: MockScreenTestCase {
+    
+    func testAnalyticsPromptNewUser() {
+        app.goToScreenWithIdentifier(MockSpaceSelectorScreenState.initialList.title)
+        
+        let disclosureButtons = app.buttons.matching(identifier: "disclosureButton").allElementsBoundByIndex
+        XCTAssertEqual(disclosureButtons.count, MockSpaceSelectorService.defaultSpaceList.filter { $0.hasSubItems }.count)
 
-    override class var screenType: MockScreenState.Type {
-        return MockSpaceSelectorBottomSheetScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return SpaceSelectorUITests(selector: #selector(verifySpaceSelectorBottomSheetScreen))
-    }
-
-    func verifySpaceSelectorBottomSheetScreen() throws {
-        guard let screenState = screenState as? MockSpaceSelectorBottomSheetScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .presence(let presence):
-            verifySpaceSelectorBottomSheetPresence(presence: presence)
-        case .longDisplayName(let name):
-            verifySpaceSelectorBottomSheetLongName(name: name)
+        let notificationBadges = app.staticTexts.matching(identifier: "notificationBadge").allElementsBoundByIndex
+        let itemsWithNotifications = MockSpaceSelectorService.defaultSpaceList.filter { $0.notificationCount > 0 }
+        XCTAssertEqual(notificationBadges.count, itemsWithNotifications.count)
+        for (index, notificationBadge) in notificationBadges.enumerated() {
+            XCTAssertEqual("\(itemsWithNotifications[index].notificationCount)", notificationBadge.label)
         }
-    }
-
-    func verifySpaceSelectorBottomSheetPresence(presence: SpaceSelectorBottomSheetPresence) {
-        let presenceText = app.staticTexts["presenceText"]
-        XCTAssert(presenceText.exists)
-        XCTAssertEqual(presenceText.label, presence.title)
-    }
-
-    func verifySpaceSelectorBottomSheetLongName(name: String) {
-        let displayNameText = app.staticTexts["displayNameText"]
-        XCTAssert(displayNameText.exists)
-        XCTAssertEqual(displayNameText.label, name)
+        
+        let spaceItemNameList = app.staticTexts.matching(identifier: "itemName").allElementsBoundByIndex
+        XCTAssertEqual(spaceItemNameList.count, MockSpaceSelectorService.defaultSpaceList.count)
+        for (index, item) in MockSpaceSelectorService.defaultSpaceList.enumerated() {
+            XCTAssertEqual(item.displayName, spaceItemNameList[index].label)
+        }
     }
 
 }

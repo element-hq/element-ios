@@ -58,7 +58,7 @@ struct SpaceSelectorListRow: View {
                     Text(displayName ?? "")
                         .foregroundColor(theme.colors.primaryContent)
                         .font(theme.fonts.bodySB)
-                        .accessibility(identifier: "itemNameText")
+                        .accessibility(identifier: "itemName")
                     Spacer()
                     if notificationCount > 0 {
                         Text("\(notificationCount)")
@@ -79,6 +79,7 @@ struct SpaceSelectorListRow: View {
                                 .renderingMode(.template)
                                 .foregroundColor(theme.colors.accent)
                         }
+                        .accessibility(identifier: "disclosureButton")
                     }
                 }
                 .padding(.vertical, 8)
@@ -90,4 +91,25 @@ struct SpaceSelectorListRow: View {
         .background(theme.colors.background)
     }
 
+}
+
+// MARK: - Previews
+
+struct SpaceSelectorListRow_Previews: PreviewProvider {
+    
+    static var previews: some View {
+        sampleView.theme(.light).preferredColorScheme(.light)
+        sampleView.theme(.dark).preferredColorScheme(.dark)
+    }
+    
+    static var sampleView: some View {
+        VStack(spacing: 8) {
+            SpaceSelectorListRow(avatar: nil, icon: UIImage(systemName: "house"), displayName: "Space name", hasSubItems: false, isSelected: false, notificationCount: 0, highlightedNotificationCount: 0, disclosureAction: nil)
+            SpaceSelectorListRow(avatar: nil, icon: UIImage(systemName: "house"), displayName: "Space name", hasSubItems: true, isSelected: false, notificationCount: 0, highlightedNotificationCount: 0, disclosureAction: nil)
+            SpaceSelectorListRow(avatar: nil, icon: UIImage(systemName: "house"), displayName: "Space name", hasSubItems: true, isSelected: false, notificationCount: 99, highlightedNotificationCount: 0, disclosureAction: nil)
+            SpaceSelectorListRow(avatar: nil, icon: UIImage(systemName: "house"), displayName: "Space name", hasSubItems: false, isSelected: false, notificationCount: 99, highlightedNotificationCount: 1, disclosureAction: nil)
+            SpaceSelectorListRow(avatar: nil, icon: UIImage(systemName: "house"), displayName: "Space name", hasSubItems: true, isSelected: true, notificationCount: 99, highlightedNotificationCount: 1, disclosureAction: nil)
+        }
+    }
+    
 }
