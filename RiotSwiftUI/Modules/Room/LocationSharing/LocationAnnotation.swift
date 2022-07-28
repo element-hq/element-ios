@@ -60,3 +60,6 @@ class UserLocationAnnotation: LocationAnnotation {
         super.title = self.avatarData.displayName ?? self.userId
     }
 }
+
+/// Invisible annotation
+class InvisibleLocationAnnotation: LocationAnnotation {}
