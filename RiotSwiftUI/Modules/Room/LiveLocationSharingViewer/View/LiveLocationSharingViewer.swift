@@ -51,7 +51,6 @@ struct LiveLocationSharingViewer: View {
                 }
             },
                                    errorSubject: viewModel.viewState.errorSubject)
-            .background(theme.colors.alert.ignoresSafeArea())
             
             if viewModel.viewState.isBottomSheetVisible {
                 VStack(alignment: .center) {
