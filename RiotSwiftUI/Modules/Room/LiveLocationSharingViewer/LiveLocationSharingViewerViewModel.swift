@@ -32,6 +32,10 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
     private var mapViewErrorAlertInfoBuilder: MapViewErrorAlertInfoBuilder
     
     private var screenUpdateTimer: Timer?
+    
+    // Last annotation that could be highlighted
+    // Used to set map position when location sharing is ended
+    private var lastHighlightableAnnotation: LocationAnnotation?
 
     // MARK: Public
 
@@ -94,14 +98,6 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
             
             self?.updateUsersLiveLocation(highlightFirstLocation: false)
         }
-    }
-    
-    private func showNoUserLocationsAlert() {
-        let alertInfo: AlertInfo<LocationSharingAlertType> = AlertInfo(id: .userLocatingError, title: VectorL10n.locationSharingLiveNoUserLocationsErrorTitle, primaryButton:(VectorL10n.ok, { [weak self] in
-            self?.completion?(.done)
-        }))
-        
-        state.bindings.alertInfo = alertInfo
     }
     
     private func processError(_ error: LocationSharingViewError) {
@@ -189,10 +185,18 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
         
         let annotations: [UserLocationAnnotation] = self.userLocationAnnotations(from: usersLiveLocation)
         
-        var highlightedAnnotation: UserLocationAnnotation?
+        var highlightedAnnotation: LocationAnnotation?
         
         if highlightFirstLocation {
             highlightedAnnotation = self.getHighlightedAnnotation(from: annotations)
+        }
+        
+        if let highlightableAnnotation = self.getHighlightedAnnotation(from: annotations) {
+            self.lastHighlightableAnnotation = highlightableAnnotation
+        }
+        
+        if let lastHighlightableAnnotation = self.lastHighlightableAnnotation, usersLiveLocation.isEmpty {
+            highlightedAnnotation = InvisibleLocationAnnotation(coordinate: lastHighlightableAnnotation.coordinate)
         }
         
         let listViewItems = self.listItemsViewData(from: usersLiveLocation)
@@ -200,12 +204,6 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
         self.state.annotations = annotations
         self.state.highlightedAnnotation = highlightedAnnotation
         self.state.listItemsViewData = listViewItems
-        
-        if usersLiveLocation.isEmpty {
-            // Advertize user that there is no locations
-            // Avoid to let the screen empty
-            self.showNoUserLocationsAlert()
-        }
     }
     
     private func highlighAnnotation(with userId: String) {

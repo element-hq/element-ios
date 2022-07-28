@@ -27,7 +27,6 @@ struct LiveLocationSharingViewer: View {
     
     @Environment(\.openURL) var openURL
     
-    var isBottomSheetVisible = true
     @State private var isBottomSheetExpanded = false
     
     var bottomSheetCollapsedHeight: CGFloat = 150.0
@@ -52,15 +51,41 @@ struct LiveLocationSharingViewer: View {
                 }
             },
                                    errorSubject: viewModel.viewState.errorSubject)
-            VStack(alignment: .center) {
-                Spacer()
-                MapCreditsView(action: {
-                    viewModel.send(viewAction: .mapCreditsDidTap)
-                })
-                .offset(y: -(bottomSheetCollapsedHeight)) // Put the copyright action above the collapsed bottom sheet
-                .padding(.bottom, 10)
+            
+            if viewModel.viewState.isBottomSheetVisible {
+                VStack(alignment: .center) {
+                    Spacer()
+                    MapCreditsView(action: {
+                        viewModel.send(viewAction: .mapCreditsDidTap)
+                    })
+                    .offset(y: -(bottomSheetCollapsedHeight)) // Put the copyright action above the collapsed bottom sheet
+                    .padding(.bottom, 10)
+                }
+                .ignoresSafeArea()
             }
-            .ignoresSafeArea()
+            
+            if viewModel.viewState.isAllLocationSharingEnded {
+                VStack(alignment: .center) {
+                    Spacer()
+                    MapCreditsView(action: {
+                        viewModel.send(viewAction: .mapCreditsDidTap)
+                    })
+                    .padding(.bottom, 5)
+                    HStack(spacing: 10) {
+                        Image(uiImage: Asset.Images.locationLiveCellIcon.image)
+                            .renderingMode(.template)
+                            .foregroundColor(theme.colors.quaternaryContent)
+                            .frame(width: 40, height: 40)
+                        Text(VectorL10n.liveLocationSharingEnded)
+                            .font(theme.fonts.body)
+                            .foregroundColor(theme.colors.tertiaryContent)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.top, 10)
+                    .padding(.bottom, 10)
+                    .background(theme.colors.background.ignoresSafeArea())
+                }
+            }
         }
         .navigationTitle(VectorL10n.locationSharingLiveViewerTitle)
         .toolbar {
@@ -71,7 +96,7 @@ struct LiveLocationSharingViewer: View {
             }
         }
         .accentColor(theme.colors.accent)
-        .bottomSheet(sheet, if: isBottomSheetVisible)
+        .bottomSheet(sheet, if: viewModel.viewState.isBottomSheetVisible)
         .actionSheet(isPresented: $viewModel.showMapCreditsSheet) {
             return MapCreditsActionSheet(openURL: { url in
                 openURL(url)

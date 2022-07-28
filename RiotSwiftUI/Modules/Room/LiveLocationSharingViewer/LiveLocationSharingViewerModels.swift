@@ -38,7 +38,7 @@ struct LiveLocationSharingViewerViewState: BindableState {
     var annotations: [UserLocationAnnotation]
 
     /// Map annotation to focus on
-    var highlightedAnnotation: UserLocationAnnotation?
+    var highlightedAnnotation: LocationAnnotation?
     
     /// Live location list items
     var listItemsViewData: [LiveLocationListItemViewData]
@@ -47,6 +47,15 @@ struct LiveLocationSharingViewerViewState: BindableState {
     
     var shareButtonEnabled: Bool {
         !showLoadingIndicator
+    }
+    
+    /// True to indicate that everybody stopped to share live location sharing in the room
+    var isAllLocationSharingEnded: Bool {
+        return listItemsViewData.isEmpty
+    }
+    
+    var isBottomSheetVisible: Bool {
+        return isAllLocationSharingEnded == false
     }
 
     let errorSubject = PassthroughSubject<LocationSharingViewError, Never>()
