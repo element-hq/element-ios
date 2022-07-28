@@ -470,7 +470,7 @@
 "widget_integration_unable_to_create" = "无法创建挂件。";
 "widget_integration_failed_to_send_request" = "发送请求失败。";
 "widget_integration_room_not_recognised" = "无法识别此房间。";
-"widget_integration_positive_power_level" = "权限级别必须是整数。";
+"widget_integration_positive_power_level" = "权力级别必须是正整数。";
 "widget_integration_must_be_in_room" = "您不在此房间中。";
 "e2e_room_key_request_start_verification" = "开始验证…";
 "e2e_room_key_request_share_without_verifying" = "在不验证的情况下分享";
@@ -720,7 +720,7 @@
 "settings_calls_stun_server_fallback_button" = "允许使用通话辅助服务器作为备用手段";
 "settings_calls_stun_server_fallback_description" = "允许在你的主服务器不能提供时使用通话辅助服务器 %@ 作为备用手段（你的IP地址在通话时会被分享）。";
 "settings_integrations_allow_button" = "管理集成";
-"settings_integrations_allow_description" = "使用集成管理器（%@）来管理机器人，桥接，小插件和贴图包。\n\n集成管理器会收到设置数据，而且能修改小插件，发送房间邀请以及代表你设置权限级别。";
+"settings_integrations_allow_description" = "使用集成管理器（%@）来管理机器人，桥接，小插件和贴图包。\n\n集成管理器会收到设置数据，而且能修改小插件，发送房间邀请以及代表你设置权力级别。";
 "settings_labs_message_reaction" = "用emoji表情回应消息";
 "settings_labs_enable_cross_signing" = "开启交叉签名按用户验证而不是按设备验证（开发中）";
 "settings_add_3pid_password_title_email" = "添加邮箱地址";
@@ -926,7 +926,7 @@
 "file_upload_error_title" = "文件上传";
 "file_upload_error_unsupported_file_type_message" = "不支持的文件类型。";
 // MARK: Emoji picker
-"emoji_picker_title" = "回应";
+"emoji_picker_title" = "反应";
 "emoji_picker_people_category" = "表情和人物";
 "emoji_picker_nature_category" = "动物和自热";
 "emoji_picker_foods_category" = "食物和饮料";
@@ -936,7 +936,7 @@
 "emoji_picker_symbols_category" = "符号";
 "emoji_picker_flags_category" = "旗帜";
 // MARK: Reaction history
-"reaction_history_title" = "回应";
+"reaction_history_title" = "反应";
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "在你的设置里添加身份认证服务器以便用邮箱邀请。";
 "error_not_supported_on_mobile" = "你不能从移动版%@中进行此操作。";
@@ -978,15 +978,15 @@
 "user_verification_session_details_verify_action_other_user" = "手动验证";
 "room_participants_action_security_status_complete_security" = "完整安全性";
 "room_participants_action_security_status_loading" = "正在加载…";
-"room_member_power_level_admin_in" = "管理员（%@）";
+"room_member_power_level_admin_in" = "%@里的管理员";
 "room_member_power_level_moderator_in" = "%@里的协管员";
-"room_member_power_level_short_admin" = "管理";
+"room_member_power_level_short_admin" = "管理员";
 "room_member_power_level_short_moderator" = "协管员";
 "security_settings_crosssigning" = "交叉签名";
 "security_settings_crosssigning_info_not_bootstrapped" = "交叉签名还没有被设置。";
 "security_settings_crosssigning_info_exists" = "您的帐户有一个交叉签名身份，但是还没有被这个会话信任。完全安全的会话。";
 "skip" = "跳过";
-"room_member_power_level_custom_in" = "自定义（%@）（%@）";
+"room_member_power_level_custom_in" = "%@里的自定义（%@）";
 "room_member_power_level_short_custom" = "自定义";
 "security_settings_crosssigning_info_trusted" = "已启用交叉签名。您可以基于交叉签名信任其他用户和其他会话，但不能从此会话交叉签名，因为它没有交叉签名私钥。此会话完全安全。";
 "security_settings_crosssigning_info_ok" = "交叉登录已准备就绪。";
@@ -1645,7 +1645,7 @@
 "sign_up" = "注册";
 "submit" = "提交";
 "submit_code" = "提交码";
-"set_default_power_level" = "重置权限级别";
+"set_default_power_level" = "重置权力级别";
 "set_moderator" = "设置协管员";
 "set_admin" = "设置管理员";
 "start_chat" = "启动聊天";
@@ -1677,9 +1677,9 @@
 "notice_profile_change_redacted" = "%@ 已经更新了他的个人档案 %@";
 "notice_room_created" = "%@ 创建并配置了此房间。";
 "notice_room_join_rule" = "加入规则是：%@";
-"notice_room_power_level_intro" = "此房间成员的权限级别是：";
-"notice_room_power_level_acting_requirement" = "要进行此操作，用户必须具备的最低权限级别是 ：";
-"notice_room_power_level_event_requirement" = "事件所需的最小权限级别：";
+"notice_room_power_level_intro" = "此房间成员的权力级别是：";
+"notice_room_power_level_acting_requirement" = "要进行此操作，用户必须具备的最低权力级别是 ：";
+"notice_room_power_level_event_requirement" = "事件所需的最小权力级别：";
 "notice_room_aliases" = "此房间的别名是：%@";
 "notice_encrypted_message" = "已加密消息";
 "notice_image_attachment" = "图片附件";
@@ -1787,7 +1787,7 @@
 "default" = "默认";
 "private" = "私人";
 "public" = "公开";
-"power_level" = "权限级别";
+"power_level" = "权力级别";
 "network_error_not_reachable" = "请检查你的网络连接";
 "user_id_placeholder" = "例如：@bob:homeserver";
 "ssl_homeserver_url" = "主服务器网址：%@";
@@ -1819,7 +1819,7 @@
 "resend" = "重新发送";
 "share" = "分享";
 "redact" = "移除";
-"set_power_level" = "设置权限级别";
+"set_power_level" = "设置权力级别";
 "delete" = "删除";
 "create_room" = "创建房间";
 "login" = "登录";
@@ -1927,7 +1927,7 @@
 "message_reply_to_sender_sent_an_audio_file" = "发送了一个音频文件。";
 "message_reply_to_sender_sent_a_file" = "发送了一个文件。";
 "message_reply_to_message_to_reply_to_prefix" = "回复";
-"room_member_power_level_prompt" = "该用户将被提升至与您一样的权限级别，所以此操作将无法撤销。\n您确定吗？";
+"room_member_power_level_prompt" = "该用户将被提升至与您一样的权力级别，所以此操作将无法撤销。\n您确定吗？";
 // Attachment
 "attachment_size_prompt" = "发送为：";
 "attachment_original" = "实际大小 (%@)";
@@ -1996,7 +1996,7 @@
 "notice_room_third_party_revoked_invite_for_dm" = "%@ 撤回了对 %@ 的邀请";
 "notice_room_third_party_invite_for_dm" = "%@ 邀请了 %@";
 "room_left_for_dm" = "你离开了";
-"notice_room_power_level_intro_for_dm" = "成员的权限级别是：";
+"notice_room_power_level_intro_for_dm" = "成员的权力级别是：";
 "notice_room_aliases_for_dm" = "别名是：%@";
 "notice_room_created_for_dm" = "%@ 已加入。";
 "notice_room_name_removed_for_dm" = "%@ 移除了名称";
@@ -2087,3 +2087,23 @@
 /* The placeholder %1$tu will be replaced with a number and %2$@ with the user's search terms. */
 "directory_search_results" = "为%2$@找到%1$tu个结果";
 "onboarding_splash_page_2_title" = "一切都在你的掌控中。";
+"onboarding_congratulations_personalize_button" = "个性化用户资料";
+/* The placeholder string contains the user's matrix ID */
+"onboarding_congratulations_message" = "你的账户%@已创建";
+"onboarding_congratulations_title" = "祝贺！";
+"onboarding_use_case_existing_server_button" = "连接到服务器";
+"onboarding_use_case_existing_server_message" = "想加入一个现有得服务器？";
+"onboarding_use_case_skip_button" = "跳过此问题";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "还不确定？%@";
+"onboarding_use_case_community_messaging" = "社群";
+"onboarding_use_case_work_messaging" = "团队";
+"onboarding_use_case_title" = "你会和谁聊得最多？";
+"onboarding_splash_page_4_message" = "Element也很适合工作场所。受世界最安全的组织的信任。";
+"onboarding_splash_page_3_message" = "端到端加密且不要求电话号码。无广告或数据挖掘。";
+"onboarding_splash_page_2_message" = "选择在哪里保存你的对话，给你控制和独立。通过Matrix连接。";
+
+// MARK: Reactions
+
+"room_event_action_reaction_more" = "还有%@个";
+"location_sharing_invalid_power_level_title" = "你没有权限分享实时位置";
