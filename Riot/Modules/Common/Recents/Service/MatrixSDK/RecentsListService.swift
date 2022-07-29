@@ -35,7 +35,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     
     private var invitedRoomListDataFetcher: MXRoomListDataFetcher? {
         switch mode {
-        case .home:
+        case .home, .allChats:
             return invitedRoomListDataFetcherForHome
         case .people:
             return invitedRoomListDataFetcherForPeople
