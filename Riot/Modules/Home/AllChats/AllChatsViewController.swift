@@ -23,12 +23,21 @@ class AllChatsViewController: HomeViewController {
     
     private enum Constants {
         static let actionPanelHeight: Double = 64
+        static let ectionPanelHorizontalPadding: Double = 12
     }
     
     // MARK: - Class methods
     
     static override func nib() -> UINib! {
         return UINib(nibName: String(describing: self), bundle: Bundle(for: self.classForCoder()))
+    }
+    
+    static override func instantiate() -> Self {
+        let storyboard = UIStoryboard(name: "Main", bundle: .main)
+        guard let viewController = storyboard.instantiateViewController(withIdentifier: "AllChatsViewController") as? Self else {
+            fatalError("No view controller of type \(self) in the main storyboard")
+        }
+        return viewController
     }
     
     // MARK: - Private
@@ -43,13 +52,9 @@ class AllChatsViewController: HomeViewController {
     
     private var childCoordinators: [Coordinator] = []
     
-    static override func instantiate() -> Self {
-        let storyboard = UIStoryboard(name: "Main", bundle: .main)
-        guard let viewController = storyboard.instantiateViewController(withIdentifier: "AllChatsViewController") as? Self else {
-            fatalError("No view controller of type \(self) in the main storyboard")
-        }
-        return viewController
-    }
+    private var actionPanelHeightConstraint: NSLayoutConstraint!
+    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,7 +63,7 @@ class AllChatsViewController: HomeViewController {
         
         recentsTableView.tag = RecentsDataSourceMode.allChats.rawValue
         recentsTableView.clipsToBounds = false
-        recentsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -Constants.actionPanelHeight).isActive = true
+        self.recentsTableViewBottomConstraint.constant = Constants.actionPanelHeight
         
         updateUI()
         vc_setLargeTitleDisplayMode(.automatic)
@@ -93,7 +98,8 @@ class AllChatsViewController: HomeViewController {
         actionPanelView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         actionPanelView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         actionPanelView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        actionPanelView.heightAnchor.constraint(equalToConstant: Constants.actionPanelHeight).isActive = true
+        actionPanelHeightConstraint = actionPanelView.heightAnchor.constraint(equalToConstant: Constants.actionPanelHeight)
+        actionPanelHeightConstraint.isActive = true
     }
 
     @objc private func sections() -> Array<Int> {
@@ -120,14 +126,59 @@ class AllChatsViewController: HomeViewController {
         self.spaceSelectorBridgePresenter = spaceSelectorBridgePresenter
     }
     
+    // MARK: - Action panel animation
+    
+    private var actionPanelHeight: Double = Constants.actionPanelHeight {
+        didSet {
+            self.recentsTableViewBottomConstraint.constant = actionPanelHeight
+            self.actionPanelHeightConstraint.constant = actionPanelHeight
+            let ratio = actionPanelHeight / Constants.actionPanelHeight
+            self.actionPanelView.spaceButtonLeadingConstraint.constant = -5 * Constants.ectionPanelHorizontalPadding + 6 * Constants.ectionPanelHorizontalPadding * ratio
+            self.actionPanelView.editButtonTrailingConstraint.constant = -5 * Constants.ectionPanelHorizontalPadding + 6 * Constants.ectionPanelHorizontalPadding * ratio
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    private var initialScrollPosition: Double = 0
+    private var initialActionPanelHeight: Double = 0
+    
+    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        initialScrollPosition = self.recentsTableView.contentOffset.y
+        initialActionPanelHeight = actionPanelHeightConstraint.constant
+    }
+    
+    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn) {
+            self.actionPanelHeight = self.actionPanelHeightConstraint.constant < Constants.actionPanelHeight / 2 ? 0 : Constants.actionPanelHeight
+        } completion: { finished in
+        }
+    }
+    
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        super.scrollViewDidScroll(scrollView)
+        
+        guard self.recentsTableView.isDragging else {
+            return
+        }
+        
+        let scrollPosition = max(self.recentsTableView.contentOffset.y, 0)
+        guard scrollPosition < self.recentsTableView.contentSize.height - self.recentsTableView.bounds.height else {
+            return
+        }
+        
+        self.actionPanelHeight = min(max(initialActionPanelHeight + (initialScrollPosition - scrollPosition) / 4, 0), Constants.actionPanelHeight)
+    }
+    
     // MARK: - Private
     
     @objc private func setupEditOptions() {
-        self.tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), menu: AllChatsActionProvider().menu)
+        self.tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal.decrease.circle"), menu: AllChatsActionProvider().menu)
     }
 
     private func updateUI() {
-        self.tabBarController?.title = self.dataSource?.currentSpace?.summary?.displayname ?? VectorL10n.allChatsTitle
+        let currentSpace = self.dataSource?.currentSpace
+        self.tabBarController?.title = currentSpace?.summary?.displayname ?? VectorL10n.allChatsTitle
+        self.actionPanelView.editButton.setImage(UIImage(systemName: currentSpace == nil ? "square.and.pencil" : "ellipsis.circle"), for: .normal)
         
         actionPanelView.editButton.menu = editActionProvider.updateMenu(with: mainSession, parentSpace: dataSource?.currentSpace, completion: { [weak self] menu in
             self?.actionPanelView.editButton.menu = menu

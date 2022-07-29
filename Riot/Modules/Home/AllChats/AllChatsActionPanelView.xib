@@ -17,14 +17,14 @@
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iny-AL-dNx">
-                        <rect key="frame" x="501" y="4" width="46" height="31"/>
+                        <rect key="frame" x="502" y="4" width="45" height="31"/>
                         <state key="normal" title="Button"/>
-                        <buttonConfiguration key="configuration" style="plain" image="square.and.pencil" catalog="system"/>
+                        <buttonConfiguration key="configuration" style="plain" image="ellipsis.circle" catalog="system"/>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i6Z-u3-V1Z">
-                        <rect key="frame" x="12" y="4" width="45.5" height="31"/>
+                        <rect key="frame" x="12" y="4" width="45" height="35"/>
                         <state key="normal" title="Button"/>
-                        <buttonConfiguration key="configuration" style="plain" image="square.grid.2x2" catalog="system"/>
+                        <buttonConfiguration key="configuration" style="plain" image="spaces_action"/>
                     </button>
                 </subviews>
                 <constraints>
@@ -37,13 +37,15 @@
             <blurEffect style="regular"/>
             <connections>
                 <outlet property="editButton" destination="iny-AL-dNx" id="VfV-XH-aAd"/>
+                <outlet property="editButtonTrailingConstraint" destination="qQn-ku-t8s" id="43E-D5-bRq"/>
                 <outlet property="spaceButton" destination="i6Z-u3-V1Z" id="Bhg-3F-ejC"/>
+                <outlet property="spaceButtonLeadingConstraint" destination="kvL-cg-72f" id="ZWX-E7-3jp"/>
             </connections>
             <point key="canvasLocation" x="-621.01449275362324" y="-48.883928571428569"/>
         </visualEffectView>
     </objects>
     <resources>
-        <image name="square.and.pencil" catalog="system" width="128" height="115"/>
-        <image name="square.grid.2x2" catalog="system" width="128" height="114"/>
+        <image name="ellipsis.circle" catalog="system" width="128" height="121"/>
+        <image name="spaces_action" width="20.5" height="20.5"/>
     </resources>
 </document>

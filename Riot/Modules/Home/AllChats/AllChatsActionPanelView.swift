@@ -22,9 +22,11 @@ class AllChatsActionPanelView: UIVisualEffectView, NibLoadable, Themable {
     
     // MARK: - Outlets
     
-    @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var spaceButton: UIButton!
-    
+    @IBOutlet weak var spaceButtonLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var editButton: UIButton!
+    @IBOutlet weak var editButtonTrailingConstraint: NSLayoutConstraint!
+
     // MARK: - Lifecycle
     
     override func willMove(toSuperview newSuperview: UIView?) {

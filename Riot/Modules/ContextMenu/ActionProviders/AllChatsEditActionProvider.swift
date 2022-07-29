@@ -111,7 +111,7 @@ class AllChatsEditActionProvider {
     
     private var exploreRoomsAction: UIAction {
         UIAction(title: VectorL10n.spacesExploreRooms,
-                 image: parentSpace == nil ? UIImage(systemName: "list.bullet") : UIImage(systemName: "list.star"),
+                 image: parentSpace == nil ? UIImage(systemName: "list.bullet") : UIImage(systemName: "square.fill.text.grid.1x2"),
                  discoverabilityTitle: VectorL10n.spacesExploreRooms) { [weak self] action in
             guard let self = self else { return }
             
@@ -142,7 +142,7 @@ class AllChatsEditActionProvider {
     
     private var createSpaceAction: UIAction {
         UIAction(title: parentSpace == nil ? VectorL10n.spacesCreateSpaceTitle : VectorL10n.spacesCreateSubspaceTitle,
-                 image: UIImage(systemName: "star.fill"),
+                 image: UIImage(systemName: "plus"),
                  discoverabilityTitle: VectorL10n.spacesCreateSpaceTitle,
                  attributes: isAddRoomAvailable ? [] : .disabled) { [weak self] action in
             guard let self = self else { return }
@@ -174,7 +174,7 @@ class AllChatsEditActionProvider {
     
     private var spaceSettingsAction: UIAction {
         UIAction(title: VectorL10n.allChatsEditMenuSpaceSettings,
-                 image: UIImage(systemName: "text.badge.star"),
+                 image: UIImage(systemName: "gearshape"),
                  discoverabilityTitle: VectorL10n.sideMenuActionSettings) { [weak self] action in
             guard let self = self else { return }
             

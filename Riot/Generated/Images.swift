@@ -117,6 +117,7 @@ internal class Asset: NSObject {
     internal static let homeFabCreateRoom = ImageAsset(name: "home_fab_create_room")
     internal static let homeFabJoinRoom = ImageAsset(name: "home_fab_join_room")
     internal static let plusFloatingAction = ImageAsset(name: "plus_floating_action")
+    internal static let spacesAction = ImageAsset(name: "spaces_action")
     internal static let versionCheckCloseIcon = ImageAsset(name: "version_check_close_icon")
     internal static let versionCheckInfoIcon = ImageAsset(name: "version_check_info_icon")
     internal static let integrationManagerIconpile = ImageAsset(name: "integration_manager_iconpile")
