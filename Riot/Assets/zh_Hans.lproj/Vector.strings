@@ -2107,3 +2107,22 @@
 
 "room_event_action_reaction_more" = "还有%@个";
 "location_sharing_invalid_power_level_title" = "你没有权限分享实时位置";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_msisdn_input_message" = "%@需要验证你的账户";
+"space_settings_update_failed_message" = "更新空间设置失败。要重试吗？";
+"space_settings_access_section" = "谁能访问此空间？";
+"space_topic" = "描述";
+"space_public_join_rule_detail" = "对任何人开放，最适合社群";
+"spaces_invite_people" = "邀请人";
+"space_private_join_rule_detail" = "仅邀请，最适合你自己或团队";
+"spaces_coming_soon_detail" = "此特性尚未实现，但是快了。目前可以在计算机上使用%@来体验。";
+"spaces_explore_rooms_room_number" = "%@个房间";
+"spaces_create_space_title" = "创建空间";
+"spaces_add_space_title" = "创建空间";
+"space_invite_not_enough_permission" = "你没权限邀请人来此空间";
+"room_invite_not_enough_permission" = "你没权限邀请人来此房间";
+"room_invite_to_space_option_detail" = "他们可以探索%@，但不会成为其成员。";
+
+// MARK: - Share invite link
+
+"share_invite_link_action" = "分享邀请链接";
