@@ -104,7 +104,26 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     @IBOutlet private var rightButton: UIButton!
     @IBOutlet private var activityIndicatorView: UIActivityIndicatorView!
     
+    @IBOutlet private var mapLoadingErrorContainerView: UIView!
+    @IBOutlet private var mapLoadingErrorImageView: UIImageView!
+    @IBOutlet private var mapLoadingErrorMessageLabel: UILabel!
+    
     private var mapView: MGLMapView!
+    
+    private var _isMapViewLoadingFailed: Bool = false
+    
+    private var isMapViewLoadingFailed: Bool {
+        get {
+            return _isMapViewLoadingFailed
+        }
+        set {
+            if newValue != _isMapViewLoadingFailed {
+                _isMapViewLoadingFailed = newValue
+                
+                self.mapViewLoadingStateDidChange()
+            }
+        }
+    }
     private var annotationView: LocationMarkerView?
     private static var usernameColorGenerator = UserNameColorGenerator()
     private var theme: Theme!
@@ -157,15 +176,35 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
         layer.borderWidth = Constants.cellBorderRadius
         layer.cornerRadius = Constants.cellCornerRadius
         
+        mapLoadingErrorContainerView.isHidden = true
+        mapLoadingErrorImageView.image = Asset.Images.locationMapError.image
+        mapLoadingErrorMessageLabel.text = VectorL10n.locationSharingMapLoadingError
+        
         theme = ThemeService.shared().theme
     }
     
     // MARK: - Private
     
+    private func resetMapViewLoadingState() {
+        _isMapViewLoadingFailed = false
+    }
+    
+    private func mapViewLoadingStateDidChange() {
+        
+        if mapView.isHidden == false && self.isMapViewLoadingFailed {
+            mapLoadingErrorContainerView.isHidden = false
+            mapView.isHidden = true
+            attributionLabel.isHidden = true
+        }
+    }
+    
     private func displayLocation(_ location: CLLocationCoordinate2D?,
                                  userAvatarData: AvatarViewData? = nil,
                                  mapStyleURL: URL,
                                  bannerViewData: TimelineLiveLocationViewData? = nil) {
+        
+        mapLoadingErrorContainerView.isHidden = true
+        resetMapViewLoadingState()
         
         if let location = location {
             mapView.isHidden = false
@@ -350,12 +389,26 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
         self.theme = theme
         placeholderIcon = ThemeService.shared().isCurrentThemeDark() ? Asset.Images.locationLiveCellEndedDarkIcon.image : Asset.Images.locationLiveCellEndedLightIcon.image
         placeholderBackgroundImage = ThemeService.shared().isCurrentThemeDark() ? Asset.Images.locationBackgroundDarkImage.image : Asset.Images.locationBackgroundLightImage.image
+        
+        mapLoadingErrorContainerView.backgroundColor = theme.colors.system
+        mapLoadingErrorMessageLabel.textColor = theme.colors.primaryContent
     }
     
     // MARK: - MGLMapViewDelegate
     
     func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
         return annotationView
+    }
+    
+    func mapViewDidFailLoadingMap(_ mapView: MGLMapView, withError error: Error) {
+        
+        MXLog.error("[RoomTimelineLocationView] Failed to load map with error: \(error)")
+        
+        self.isMapViewLoadingFailed = true
+    }
+    
+    func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
+        self.isMapViewLoadingFailed = false
     }
     
     // MARK: - Action
