@@ -341,7 +341,7 @@
         @(RecentsDataSourceSectionTypeLowPriority),
         @(RecentsDataSourceSectionTypeServerNotice),
         @(RecentsDataSourceSectionTypeSuggestedRooms),
-        @(RecentsDataSourceSectionTypeRecentRooms)
+        @(RecentsDataSourceSectionTypeBreadcrumbs)
     ];
 }
 

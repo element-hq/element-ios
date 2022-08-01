@@ -26,5 +26,5 @@ public enum RecentsListServiceSection: Int {
     case serverNotice
     case suggested
     case allChats
-    case recents
+    case breadcrumbs
 }

@@ -37,7 +37,7 @@
 #define RECENTSDATASOURCE_SECTION_SERVERNOTICE  0x20
 #define RECENTSDATASOURCE_SECTION_PEOPLE        0x40
 #define RECENTSDATASOURCE_SECTION_SUGGESTED     0x80
-#define RECENTSDATASOURCE_SECTION_RECENTS       0x100
+#define RECENTSDATASOURCE_SECTION_BREADCRUMBS   0x100
 #define RECENTSDATASOURCE_SECTION_ALL_CHATS     0x101
 
 #define RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT             30.0
@@ -193,7 +193,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         AllChatsLayoutSettings *settings = AllChatsLayoutSettingsManager.shared.allChatLayoutSettings;
         if ((settings.sections & AllChatsLayoutSectionTypeRecents) == AllChatsLayoutSectionTypeRecents)
         {
-            [types addObject:@(RecentsDataSourceSectionTypeRecentRooms)];
+            [types addObject:@(RecentsDataSourceSectionTypeBreadcrumbs)];
         }
     }
 
@@ -626,7 +626,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         count = self.suggestedRoomCellDataArray.count;
     }
-    else if (sectionType == RecentsDataSourceSectionTypeRecentRooms && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_RECENTS))
+    else if (sectionType == RecentsDataSourceSectionTypeBreadcrumbs && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_BREADCRUMBS))
     {
         count = self.recentRoomCellDataArray.count;
     }
@@ -654,7 +654,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     RecentsDataSourceSectionType sectionType = [self.sections sectionTypeForSectionIndex:section];
     if (sectionType == RecentsDataSourceSectionTypeSecureBackupBanner ||
         sectionType == RecentsDataSourceSectionTypeCrossSigningBanner ||
-        sectionType == RecentsDataSourceSectionTypeRecentRooms ||
+        sectionType == RecentsDataSourceSectionTypeBreadcrumbs ||
         (sectionType == RecentsDataSourceSectionTypeAllChats && !self.allChatsFilterOptions.optionsCount))
     {
         return 0.0;
@@ -733,7 +733,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         count = self.recentsListService.suggestedRoomListData.counts.total.numberOfRooms;
         title = [VectorL10n roomRecentsSuggestedRoomsSection];
     }
-    else if (sectionType == RecentsDataSourceSectionTypeRecentRooms)
+    else if (sectionType == RecentsDataSourceSectionTypeBreadcrumbs)
     {
         count = self.recentsListService.recentRoomListData.counts.total.numberOfRooms;
         title = [VectorL10n roomRecentsRecentlyViewedSection];
@@ -853,7 +853,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     RecentsDataSourceSectionType sectionType = [self.sections sectionTypeForSectionIndex:section];
     if (sectionType == RecentsDataSourceSectionTypeSecureBackupBanner ||
         sectionType == RecentsDataSourceSectionTypeCrossSigningBanner ||
-        sectionType == RecentsDataSourceSectionTypeRecentRooms ||
+        sectionType == RecentsDataSourceSectionTypeBreadcrumbs ||
         (sectionType == RecentsDataSourceSectionTypeAllChats && !self.allChatsFilterOptions.optionsCount))
     {
         return nil;
@@ -905,9 +905,9 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         {
             sectionBitwise = RECENTSDATASOURCE_SECTION_SUGGESTED;
         }
-        else if (sectionType == RecentsDataSourceSectionTypeRecentRooms)
+        else if (sectionType == RecentsDataSourceSectionTypeBreadcrumbs)
         {
-            sectionBitwise = RECENTSDATASOURCE_SECTION_RECENTS;
+            sectionBitwise = RECENTSDATASOURCE_SECTION_BREADCRUMBS;
         }
         else if (sectionType == RecentsDataSourceSectionTypeAllChats)
         {
@@ -1141,7 +1141,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             summary = self.suggestedRoomCellDataArray[cellDataIndex];
         }
     }
-    else if (sectionType == RecentsDataSourceSectionTypeRecentRooms)
+    else if (sectionType == RecentsDataSourceSectionTypeBreadcrumbs)
     {
         if (cellDataIndex < self.recentRoomCellDataArray.count)
         {
@@ -1336,18 +1336,18 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         }
     }
     
-    if (!indexPath && ([self.sections contains:RecentsDataSourceSectionTypeRecentRooms]))
+    if (!indexPath && ([self.sections contains:RecentsDataSourceSectionTypeBreadcrumbs]))
     {
         index = [self cellIndexPosWithRoomId:roomId andMatrixSession:matrixSession within:self.recentRoomCellDataArray];
 
         if (index != NSNotFound)
         {
             // Check whether the recent rooms are shrinked
-            if (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_RECENTS)
+            if (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_BREADCRUMBS)
             {
                 return nil;
             }
-            NSInteger sectionIndex = [self.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeRecentRooms];
+            NSInteger sectionIndex = [self.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeBreadcrumbs];
             indexPath = [NSIndexPath indexPathForRow:index inSection:sectionIndex];
         }
     }
@@ -1716,8 +1716,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             return RecentsDataSourceSectionTypeServerNotice;
         case RecentsListServiceSectionSuggested:
             return RecentsDataSourceSectionTypeSuggestedRooms;
-        case RecentsListServiceSectionRecents:
-            return RecentsDataSourceSectionTypeRecentRooms;
+        case RecentsListServiceSectionBreadcrumbs:
+            return RecentsDataSourceSectionTypeBreadcrumbs;
         case RecentsListServiceSectionAllChats:
             return RecentsDataSourceSectionTypeAllChats;
     }
@@ -1772,7 +1772,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         return YES;
     }
 
-    if (sectionType == RecentsDataSourceSectionTypeRecentRooms && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_RECENTS))
+    if (sectionType == RecentsDataSourceSectionTypeBreadcrumbs && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_BREADCRUMBS))
     {
         return YES;
     }

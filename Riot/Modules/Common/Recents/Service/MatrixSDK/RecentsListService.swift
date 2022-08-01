@@ -516,7 +516,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
             return serverNoticeRoomListDataFetcher
         case .suggested:
             return suggestedRoomListDataFetcher
-        case .recents:
+        case .breadcrumbs:
             return recentRoomListDataFetcher
         case .allChats:
             return allChatsRoomListDataFetcher
@@ -539,7 +539,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         } else if fetcher === suggestedRoomListDataFetcher {
             return .suggested
         } else if fetcher === recentRoomListDataFetcher {
-            return .recents
+            return .breadcrumbs
         } else if fetcher === allChatsRoomListDataFetcher {
             return .allChats
         }

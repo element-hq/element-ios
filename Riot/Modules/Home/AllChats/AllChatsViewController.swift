@@ -83,7 +83,7 @@ class AllChatsViewController: HomeViewController {
             RecentsDataSourceSectionType.lowPriority.rawValue,
             RecentsDataSourceSectionType.serverNotice.rawValue,
             RecentsDataSourceSectionType.suggestedRooms.rawValue,
-            RecentsDataSourceSectionType.recentRooms.rawValue
+            RecentsDataSourceSectionType.breadcrumbs.rawValue
         ]
     }
     
