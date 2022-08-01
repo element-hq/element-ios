@@ -19,8 +19,9 @@ import Foundation
 // MARK: - Notification constants
 
 extension AllChatsLayoutSettingsManager {
-    /// Posted if settings have changed
+    /// Posted if settings are about to change.
     public static let willUpdateSettings = Notification.Name("AllChatLayoutSettingsManagerWillUpdateSettings")
+    /// Posted if settings have changed.
     public static let didUpdateSettings = Notification.Name("AllChatLayoutSettingsManagerDidUpdateSettings")
 }
 
