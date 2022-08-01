@@ -190,8 +190,6 @@ final class ShowDirectoryViewController: UIViewController {
             self.renderLoaded(sections: sections)
         case .error(let error):
             self.render(error: error)
-        case .loadedWithoutUpdate:
-            self.renderLoadedWithoutUpdate()
         }
     }
     
@@ -203,10 +201,6 @@ final class ShowDirectoryViewController: UIViewController {
         removeSpinnerFooterView()
         self.sections = sections
         self.mainTableView.reloadData()
-    }
-    
-    private func renderLoadedWithoutUpdate() {
-        removeSpinnerFooterView()
     }
     
     private func render(error: Error) {
