@@ -22,37 +22,53 @@ extension AllChatsLayoutSettingsManager {
     /// Posted if settings have changed
     public static let willUpdateSettings = Notification.Name("AllChatLayoutSettingsManagerWillUpdateSettings")
     public static let didUpdateSettings = Notification.Name("AllChatLayoutSettingsManagerDidUpdateSettings")
+    
+    /// Posted when active filters change
+    public static let didUpdateActiveFilters = Notification.Name("AllChatLayoutSettingsManagerDidUpdateActiveFilters")
 }
 
+/// `AllChatsLayoutSettingsManager` single instance allows to read and write the settings data for the All Chat screen.
 @objcMembers
 final class AllChatsLayoutSettingsManager: NSObject {
     
-    static let shared = AllChatsLayoutSettingsManager()
-    private var notifyChanges: Bool = true
+    // MARK: - Singleton
     
-    /// UserDefaults to be used on reads and writes.
-    static var defaults: UserDefaults = {
-        guard let userDefaults = UserDefaults(suiteName: BuildSettings.applicationGroupIdentifier) else {
-            fatalError("[AllChatLayoutSettingsManager] Fail to load shared UserDefaults")
-        }
-        return userDefaults
-    }()
+    static let shared = AllChatsLayoutSettingsManager()
+    
+    // MARK: - Constants
+    
+    fileprivate enum Constants {
+        static let settingsKey = "allChatLayoutSettings"
+        static let activeFiltersKey = "allChatLayoutActiveFilters"
+    }
+    
+    // MARK: - Setup
     
     private override init() {
         super.init()
-        NotificationCenter.default.addObserver(forName: AllChatsLayoutSettings.didUpdateFilters, object: nil, queue: OperationQueue.main) { [weak self] notification in
-            guard let self = self, let settings = notification.object as? AllChatsLayoutSettings else {
-                return
-            }
-            
-            self.notifyChanges = false
-            self.allChatLayoutSettings = settings
-        }
     }
 
+    // MARK: - Public
+    
+    var activeFilters: AllChatsLayoutFilterType {
+        get {
+            guard let value = RiotSettings.defaults.object(forKey: Constants.activeFiltersKey) as? NSNumber else {
+                return .all
+            }
+            return AllChatsLayoutFilterType(rawValue: value.uintValue)
+        }
+        set {
+            RiotSettings.defaults.set(newValue.rawValue, forKey: Constants.activeFiltersKey)
+            
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: AllChatsLayoutSettingsManager.didUpdateActiveFilters, object: self)
+            }
+        }
+    }
+    
     var allChatLayoutSettings: AllChatsLayoutSettings {
         get {
-            guard let data = Self.defaults.object(forKey: "allChatLayoutSettings") as? Data else {
+            guard let data = RiotSettings.defaults.data(forKey: Constants.settingsKey) else {
                 return AllChatsLayoutSettings()
             }
             
@@ -64,19 +80,18 @@ final class AllChatsLayoutSettingsManager: NSObject {
         }
         set {
             DispatchQueue.main.async {
-                if self.notifyChanges {
-                    NotificationCenter.default.post(name: AllChatsLayoutSettingsManager.willUpdateSettings, object: self)
-                }
+                NotificationCenter.default.post(name: AllChatsLayoutSettingsManager.willUpdateSettings, object: self)
             }
-            let data = NSKeyedArchiver.archivedData(withRootObject: newValue)
-            Self.defaults.set(data, forKey: "allChatLayoutSettings")
-            Self.defaults.synchronize()
+            
+            guard let data = try? NSKeyedArchiver.archivedData(withRootObject: newValue, requiringSecureCoding: false) else {
+                MXLog.warning("[AllChatsLayoutSettingsManager] set allChatLayoutSettings: failed to archive settings")
+                return
+            }
+            
+            RiotSettings.defaults.set(data, forKey: Constants.settingsKey)
             
             DispatchQueue.main.async {
-                if self.notifyChanges {
-                    NotificationCenter.default.post(name: AllChatsLayoutSettingsManager.didUpdateSettings, object: self)
-                }
-                self.notifyChanges = true
+                NotificationCenter.default.post(name: AllChatsLayoutSettingsManager.didUpdateSettings, object: self)
             }
         }
     }

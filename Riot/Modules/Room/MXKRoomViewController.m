@@ -337,7 +337,7 @@
         _bubblesTableView.hidden = NO;
     }
 
-    if (BuildSettings.newAppLayoutEnaled)
+    if (BuildSettings.newAppLayoutEnabled)
     {
         [self vc_setLargeTitleDisplayMode: UINavigationItemLargeTitleDisplayModeNever];
     }

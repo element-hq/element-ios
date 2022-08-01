@@ -62,7 +62,7 @@ class AllChatsFilterOptionListView: UIView, Themable {
     // MARK: - Lifecycle
     
     override init(frame: CGRect) {
-        super .init(frame: frame)
+        super.init(frame: frame)
         setupView()
     }
     

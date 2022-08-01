@@ -4286,7 +4286,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     
     // Need to set `showAllRoomsInHomeSpace` to `true` for the new App Layout
-    if (BuildSettings.newAppLayoutEnaled)
+    if (BuildSettings.newAppLayoutEnabled)
     {
         RiotSettings.shared.showAllRoomsInHomeSpace = YES;
     }

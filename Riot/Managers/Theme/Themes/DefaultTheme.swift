@@ -25,7 +25,7 @@ class DefaultTheme: NSObject, Theme {
     
     var backgroundColor: UIColor = UIColor(rgb: 0xFFFFFF)
 
-    var baseColor: UIColor = BuildSettings.newAppLayoutEnaled ? UIColor(rgb: 0xFFFFFF) : UIColor(rgb: 0xF5F7FA)
+    var baseColor: UIColor = BuildSettings.newAppLayoutEnabled ? UIColor(rgb: 0xFFFFFF) : UIColor(rgb: 0xF5F7FA)
     var baseIconPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
     var baseTextPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
     var baseTextSecondaryColor: UIColor = UIColor(rgb: 0x8F97A3)
@@ -34,7 +34,7 @@ class DefaultTheme: NSObject, Theme {
     var searchPlaceholderColor: UIColor = UIColor(rgb: 0x8F97A3)
     var searchResultHighlightColor: UIColor = UIColor(rgb: 0xFCC639).withAlphaComponent(0.2)
 
-    var headerBackgroundColor: UIColor = BuildSettings.newAppLayoutEnaled ? UIColor(rgb: 0xFFFFFF) : UIColor(rgb: 0xF5F7FA)
+    var headerBackgroundColor: UIColor = BuildSettings.newAppLayoutEnabled ? UIColor(rgb: 0xFFFFFF) : UIColor(rgb: 0xF5F7FA)
     var headerBorderColor: UIColor  = UIColor(rgb: 0xE9EDF1)
     var headerTextPrimaryColor: UIColor = UIColor(rgb: 0x17191C)
     var headerTextSecondaryColor: UIColor = UIColor(rgb: 0x737D8C)
@@ -134,7 +134,7 @@ class DefaultTheme: NSObject, Theme {
         if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
             
-            if BuildSettings.newAppLayoutEnaled {
+            if BuildSettings.newAppLayoutEnabled {
                 appearance.configureWithDefaultBackground()
             } else {
                 appearance.configureWithOpaqueBackground()
@@ -150,7 +150,7 @@ class DefaultTheme: NSObject, Theme {
             
             navigationBar.standardAppearance = appearance
             
-            if BuildSettings.newAppLayoutEnaled {
+            if BuildSettings.newAppLayoutEnabled {
                 appearance.configureWithOpaqueBackground()
                 appearance.backgroundColor = baseColor
                 appearance.shadowColor = nil
@@ -178,7 +178,7 @@ class DefaultTheme: NSObject, Theme {
         searchBar.backgroundImage = UIImage() // Remove top and bottom shadow
         searchBar.tintColor = self.tintColor
         
-        guard !BuildSettings.newAppLayoutEnaled else {
+        guard !BuildSettings.newAppLayoutEnabled else {
             return
         }
         

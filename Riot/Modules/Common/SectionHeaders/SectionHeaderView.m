@@ -245,8 +245,8 @@ static const CGFloat kInterItemsSpaceHorizontal = 8.0;
     if (_bottomView)
     {
         //  reset margins
-        leftMargin = MAX(_leftInset, 0);
-        rightMargin = MAX(_rightInset, 0);
+        leftMargin = MAX(_leftInset, 16);
+        rightMargin = MAX(_rightInset, 16);
 
         CGRect frame = _bottomView.frame;
         frame.origin.x = leftMargin;

@@ -84,7 +84,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         _crossSigningBannerDisplay = CrossSigningBannerDisplayNone;
         _secureBackupBannerDisplay = SecureBackupBannerDisplayNone;
         
-        _areSectionsShrinkable = !BuildSettings.newAppLayoutEnaled;
+        _areSectionsShrinkable = !BuildSettings.newAppLayoutEnabled;
         shrinkedSectionsBitMask = 0;
         
         roomTagsListenerByUserId = [[NSMutableDictionary alloc] init];
@@ -660,17 +660,15 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         return 0.0;
     }
 
-    CGFloat baseHeight = 0;
-    
     if (sectionType == RecentsDataSourceSectionTypeAllChats && _recentsDataSourceMode == RecentsDataSourceModeAllChats)
     {
         if (self.allChatsFilterOptions.optionsCount)
         {
-            return baseHeight + RECENTSDATASOURCE_ALL_CHATS_SECTION_BOTTOM_VIEW_HEIGHT;
+            return RECENTSDATASOURCE_ALL_CHATS_SECTION_BOTTOM_VIEW_HEIGHT;
         }
     }
     
-    return baseHeight + RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT;
+    return RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT;
 }
 
 - (NSAttributedString *)attributedStringForHeaderTitleInSection:(NSInteger)section
@@ -747,24 +745,24 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
 
     
-    if (count && !(sectionType == RecentsDataSourceSectionTypeInvites) && !BuildSettings.newAppLayoutEnaled)
+    if (count && !(sectionType == RecentsDataSourceSectionTypeInvites) && !BuildSettings.newAppLayoutEnabled)
     {
         NSString *roomCount = [NSString stringWithFormat:@"   %tu", count];
 
         NSMutableAttributedString *mutableSectionTitle = [[NSMutableAttributedString alloc] initWithString:title
-                                                                                         attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.headerTextPrimaryColor,
-                                                                                                      NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}];
+                                                                                                attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.headerTextPrimaryColor,
+                                                                                                             NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}];
         [mutableSectionTitle appendAttributedString:[[NSMutableAttributedString alloc] initWithString:roomCount
-                                                                                    attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.headerTextSecondaryColor,
-                                                                                                 NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}]];
+                                                                                           attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.headerTextSecondaryColor,
+                                                                                                        NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}]];
 
         sectionTitle = mutableSectionTitle;
     }
     else if (title)
     {
         sectionTitle = [[NSAttributedString alloc] initWithString:[title capitalizedString]
-                                               attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.headerTextPrimaryColor,
-                                                            NSFontAttributeName: [ThemeService shared].theme.fonts.calloutSB}];
+                                                       attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.headerTextPrimaryColor,
+                                                                    NSFontAttributeName: [ThemeService shared].theme.fonts.calloutSB}];
     }
     
     return sectionTitle;
@@ -851,7 +849,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame inTableView:(UITableView*)tableView
 {
-    // No header view in key backup banner section
+    // No header view in key backup banner section, in cross signing banner section, in recent section, nor in all chats section if flters are disabled
     RecentsDataSourceSectionType sectionType = [self.sections sectionTypeForSectionIndex:section];
     if (sectionType == RecentsDataSourceSectionTypeSecureBackupBanner ||
         sectionType == RecentsDataSourceSectionTypeCrossSigningBanner ||
@@ -870,7 +868,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     sectionHeader.frame = frame;
     sectionHeader.backgroundView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     sectionHeader.topPadding = 0;
-    sectionHeader.topViewHeight = RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT + sectionHeader.topPadding;
+    sectionHeader.topViewHeight = RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT;
     NSInteger sectionBitwise = 0;
 
     if (_areSectionsShrinkable)
@@ -971,7 +969,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         sectionHeader.bottomView = nil;
     }
     
-    if (!BuildSettings.newAppLayoutEnaled || !sectionHeader.bottomView)
+    if (!BuildSettings.newAppLayoutEnabled || !sectionHeader.bottomView)
     {
         // Add label
         frame.size.height = RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT - 10;

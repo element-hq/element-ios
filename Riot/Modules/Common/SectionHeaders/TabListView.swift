@@ -47,7 +47,7 @@ class TabListView: UIView {
             updateCursor()
         }
     }
-    var unselectedItemColor: UIColor! = .lightGray {
+    var unselectedItemColor: UIColor = .lightGray {
         didSet {
             updateCursor()
         }
@@ -86,13 +86,10 @@ class TabListView: UIView {
         setupView()
     }
     
-    override func willMove(toSuperview newSuperview: UIView?) {
-        super.willMove(toSuperview: newSuperview)
-    }
-    
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        itemsContentView.layoutIfNeeded()
         updateCursor()
     }
     
@@ -190,18 +187,18 @@ class TabListView: UIView {
             return
         }
         
-        let focusedbutton = itemViews[Int(integral)]
+        let focusedButton = itemViews[Int(integral)]
         let nextButtonIndex = Int(integral) + 1
         
         let x: Double
         let width: Double
         if nextButtonIndex < itemViews.count {
             let nextButton = itemViews[nextButtonIndex]
-            x = focusedbutton.frame.minX + (nextButton.frame.minX - focusedbutton.frame.minX) * fractional
-            width = focusedbutton.frame.width + (nextButton.frame.width - focusedbutton.frame.width) * fractional
+            x = focusedButton.frame.minX + (nextButton.frame.minX - focusedButton.frame.minX) * fractional
+            width = focusedButton.frame.width + (nextButton.frame.width - focusedButton.frame.width) * fractional
         } else {
-            x = focusedbutton.frame.minX
-            width = focusedbutton.frame.width
+            x = focusedButton.frame.minX
+            width = focusedButton.frame.width
         }
         
         cursorView.frame = CGRect(x: x,
@@ -210,7 +207,7 @@ class TabListView: UIView {
                                   height: Constants.cursorHeight)
         
         for button in self.itemViews {
-            if button == focusedbutton {
+            if button == focusedButton {
                 button.tintColor = self.tintColor
             } else {
                 button.tintColor = self.unselectedItemColor

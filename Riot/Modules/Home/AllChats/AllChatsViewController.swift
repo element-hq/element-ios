@@ -19,12 +19,6 @@ import Reusable
 
 class AllChatsViewController: HomeViewController {
     
-    // MARK: - Constants
-    
-    private enum Constants {
-        static let actionPanelHeight: Double = 64
-    }
-    
     // MARK: - Class methods
     
     static override func nib() -> UINib! {
@@ -33,8 +27,9 @@ class AllChatsViewController: HomeViewController {
     
     // MARK: - Private
     
+    @IBOutlet private weak var toolbar: UIToolbar!
+    
     private let searchController = UISearchController(searchResultsController: nil)
-    private let actionPanelView = AllChatsActionPanelView.loadFromNib()
     
     static override func instantiate() -> Self {
         let storyboard = UIStoryboard(name: "Main", bundle: .main)
@@ -49,7 +44,6 @@ class AllChatsViewController: HomeViewController {
         
         recentsTableView.tag = RecentsDataSourceMode.allChats.rawValue
         recentsTableView.clipsToBounds = false
-        recentsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -Constants.actionPanelHeight).isActive = true
         
         self.tabBarController?.title = VectorL10n.allChatsTitle
         vc_setLargeTitleDisplayMode(.automatic)
@@ -63,6 +57,7 @@ class AllChatsViewController: HomeViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        toolbar.tintColor = ThemeService.shared().theme.colors.accent
         if self.tabBarController?.navigationItem.searchController == nil {
             self.tabBarController?.navigationItem.searchController = searchController
         }
@@ -75,6 +70,29 @@ class AllChatsViewController: HomeViewController {
     }
     
     @objc private func addFabButton() {
+        self.setupEditOptions()
+    }
+
+    @objc private func sections() -> Array<Int> {
+        return [
+            RecentsDataSourceSectionType.directory.rawValue,
+            RecentsDataSourceSectionType.invites.rawValue,
+            RecentsDataSourceSectionType.favorites.rawValue,
+            RecentsDataSourceSectionType.people.rawValue,
+            RecentsDataSourceSectionType.allChats.rawValue,
+            RecentsDataSourceSectionType.lowPriority.rawValue,
+            RecentsDataSourceSectionType.serverNotice.rawValue,
+            RecentsDataSourceSectionType.suggestedRooms.rawValue,
+            RecentsDataSourceSectionType.recentRooms.rawValue
+        ]
+    }
+    
+    // MARK: - Private
+    
+    @objc private func setupEditOptions() {
+        // Note: updating toolbar items doesn't work as expected and has weird behaviour
+        // Also this piece of code is going to be updated in the next PR
+        
         let editMenu = UIMenu(children: [
             UIAction(title: VectorL10n.roomRecentsJoinRoom,
                      image: Asset.Images.homeFabJoinRoom.image,
@@ -96,37 +114,11 @@ class AllChatsViewController: HomeViewController {
             })
         ])
         
-        actionPanelView.editButton.showsMenuAsPrimaryAction = true
-        actionPanelView.editButton.menu = editMenu
-        self.setupEditOptions()
-
-        view?.addSubview(actionPanelView)
-        actionPanelView.translatesAutoresizingMaskIntoConstraints = false
-        actionPanelView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        actionPanelView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        actionPanelView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        actionPanelView.heightAnchor.constraint(equalToConstant: Constants.actionPanelHeight).isActive = true
-    }
-
-    @objc private func sections() -> Array<Int> {
-        return [
-            RecentsDataSourceSectionType.directory.rawValue,
-            RecentsDataSourceSectionType.invites.rawValue,
-            RecentsDataSourceSectionType.favorites.rawValue,
-            RecentsDataSourceSectionType.people.rawValue,
-            RecentsDataSourceSectionType.allChats.rawValue,
-            RecentsDataSourceSectionType.lowPriority.rawValue,
-            RecentsDataSourceSectionType.serverNotice.rawValue,
-            RecentsDataSourceSectionType.suggestedRooms.rawValue,
-            RecentsDataSourceSectionType.recentRooms.rawValue
+        toolbar.items = [
+            UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), menu: AllChatsActionProvider().menu),
+            UIBarButtonItem.flexibleSpace(),
+            UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), menu: editMenu)
         ]
-    }
-    
-    // MARK: - Private
-    
-    @objc private func setupEditOptions() {
-        actionPanelView.layoutButton.showsMenuAsPrimaryAction = true
-        actionPanelView.layoutButton.menu = AllChatsActionProvider().menu
     }
 }
 

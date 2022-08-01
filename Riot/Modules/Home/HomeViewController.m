@@ -1019,7 +1019,6 @@
         return nil;
     }
     
-    self.recentsUpdateEnabled = NO;
     return [self.contextMenuProvider contextMenuConfigurationWith:cellData from:cell session:self.dataSource.mxSession];
 }
 
