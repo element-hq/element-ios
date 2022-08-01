@@ -3115,6 +3115,10 @@ public class VectorL10n: NSObject {
   public static var locationSharingMapCreditsTitle: String { 
     return VectorL10n.tr("Vector", "location_sharing_map_credits_title") 
   }
+  /// Unable to load map\nThis homeserver is not configured to display maps
+  public static var locationSharingMapLoadingError: String { 
+    return VectorL10n.tr("Vector", "location_sharing_map_loading_error") 
+  }
   /// Open in Apple Maps
   public static var locationSharingOpenAppleMaps: String { 
     return VectorL10n.tr("Vector", "location_sharing_open_apple_maps") 
