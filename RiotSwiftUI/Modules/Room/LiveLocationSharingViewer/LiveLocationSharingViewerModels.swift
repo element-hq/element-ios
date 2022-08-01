@@ -57,6 +57,8 @@ struct LiveLocationSharingViewerViewState: BindableState {
     var isBottomSheetVisible: Bool {
         return isAllLocationSharingEnded == false
     }
+    
+    var showMapLoadingError: Bool = false
 
     let errorSubject = PassthroughSubject<LocationSharingViewError, Never>()
     

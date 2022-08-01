@@ -105,6 +105,10 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
             return
         }
         
+        if case .failedLoadingMap = error {
+            state.showMapLoadingError = true
+        }
+        
         let alertInfo = mapViewErrorAlertInfoBuilder.build(with: error) { [weak self] in
          
             switch error {
