@@ -140,9 +140,9 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 {
     return self.recentsListService.suggestedRoomListData.rooms;
 }
-- (NSArray<id<MXRoomSummaryProtocol>> *)recentRoomCellDataArray
+- (NSArray<id<MXRoomSummaryProtocol>> *)breadcrumbsRoomCellDataArray
 {
-    return self.recentsListService.recentRoomListData.rooms;
+    return self.recentsListService.breadcrumbsRoomListData.rooms;
 }
 - (NSArray<id<MXRoomSummaryProtocol>> *)allChatsRoomCellDataArray
 {
@@ -188,7 +188,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         [types addObject:@(RecentsDataSourceSectionTypeInvites)];
     }
     
-    if (self.recentRoomCellDataArray.count > 0 && _recentsDataSourceMode == RecentsDataSourceModeAllChats)
+    if (self.breadcrumbsRoomCellDataArray.count > 0 && _recentsDataSourceMode == RecentsDataSourceModeAllChats)
     {
         AllChatsLayoutSettings *settings = AllChatsLayoutSettingsManager.shared.allChatLayoutSettings;
         if ((settings.sections & AllChatsLayoutSectionTypeRecents) == AllChatsLayoutSectionTypeRecents)
@@ -628,7 +628,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
     else if (sectionType == RecentsDataSourceSectionTypeBreadcrumbs && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_BREADCRUMBS))
     {
-        count = self.recentRoomCellDataArray.count;
+        count = self.breadcrumbsRoomCellDataArray.count;
     }
     else if (sectionType == RecentsDataSourceSectionTypeAllChats && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_ALL_CHATS))
     {
@@ -735,7 +735,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
     else if (sectionType == RecentsDataSourceSectionTypeBreadcrumbs)
     {
-        count = self.recentsListService.recentRoomListData.counts.total.numberOfRooms;
+        count = self.recentsListService.breadcrumbsRoomListData.counts.total.numberOfRooms;
         title = [VectorL10n roomRecentsRecentlyViewedSection];
     }
     else if (sectionType == RecentsDataSourceSectionTypeAllChats)
@@ -1143,9 +1143,9 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
     else if (sectionType == RecentsDataSourceSectionTypeBreadcrumbs)
     {
-        if (cellDataIndex < self.recentRoomCellDataArray.count)
+        if (cellDataIndex < self.breadcrumbsRoomCellDataArray.count)
         {
-            summary = self.recentRoomCellDataArray[cellDataIndex];
+            summary = self.breadcrumbsRoomCellDataArray[cellDataIndex];
         }
     }
     else if (sectionType == RecentsDataSourceSectionTypeAllChats)
@@ -1338,7 +1338,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     
     if (!indexPath && ([self.sections contains:RecentsDataSourceSectionTypeBreadcrumbs]))
     {
-        index = [self cellIndexPosWithRoomId:roomId andMatrixSession:matrixSession within:self.recentRoomCellDataArray];
+        index = [self cellIndexPosWithRoomId:roomId andMatrixSession:matrixSession within:self.breadcrumbsRoomCellDataArray];
 
         if (index != NSNotFound)
         {

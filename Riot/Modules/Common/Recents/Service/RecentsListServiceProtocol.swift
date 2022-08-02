@@ -54,7 +54,7 @@ public protocol RecentsListServiceProtocol {
     var suggestedRoomListData: MXRoomListData? { get }
     
     /// Breadcrumbs
-    var recentRoomListData: MXRoomListData? { get }
+    var breadcrumbsRoomListData: MXRoomListData? { get }
     
     /// All Chats room for current mode
     var allChatsRoomListData: MXRoomListData? { get }

@@ -69,7 +69,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     private var lowPriorityRoomListDataFetcher: MXRoomListDataFetcher?
     private var serverNoticeRoomListDataFetcher: MXRoomListDataFetcher?
     private var suggestedRoomListDataFetcher: MXRoomListDataFetcher?
-    private var recentRoomListDataFetcher: MXRoomListDataFetcher?
+    private var breadcrumbsRoomListDataFetcher: MXRoomListDataFetcher?
     private var allChatsRoomListDataFetcher: MXRoomListDataFetcher?
 
     private var conversationRoomListDataFetcherForHome: MXRoomListDataFetcher?
@@ -87,7 +87,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         .favourites: [.favorited],
         .people: [.invited, .directPeople],
         .rooms: [.invited, .conversationRooms, .suggested],
-        .allChats: [.recents, .favorited, .invited, .allChats, .lowPriority, .serverNotice, .suggested]
+        .allChats: [.breadcrumbs, .favorited, .invited, .allChats, .lowPriority, .serverNotice, .suggested]
     ]
     
     private var allFetchers: [MXRoomListDataFetcher] {
@@ -103,7 +103,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
             lowPriorityRoomListDataFetcher,
             serverNoticeRoomListDataFetcher,
             suggestedRoomListDataFetcher,
-            recentRoomListDataFetcher,
+            breadcrumbsRoomListDataFetcher,
             allChatsRoomListDataFetcher
         ].compactMap({ $0 })
     }
@@ -140,7 +140,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         if space != nil, let fetcher = suggestedRoomListDataFetcher, fetcherTypes.contains(.suggested) {
             result.append(fetcher)
         }
-        if let fetcher = recentRoomListDataFetcher, fetcherTypes.contains(.recents) {
+        if let fetcher = breadcrumbsRoomListDataFetcher, fetcherTypes.contains(.breadcrumbs) {
             result.append(fetcher)
         }
         if let fetcher = allChatsRoomListDataFetcher, fetcherTypes.contains(.allChats) {
@@ -274,9 +274,9 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         guard shouldShowSuggested else { return nil }
         return suggestedRoomListDataFetcher?.data
     }
-    public var recentRoomListData: MXRoomListData? {
-        guard shouldShowRecents else { return nil }
-        return recentRoomListDataFetcher?.data
+    public var breadcrumbsRoomListData: MXRoomListData? {
+        guard shouldShowBreadcrumbs else { return nil }
+        return breadcrumbsRoomListDataFetcher?.data
     }
     public var allChatsRoomListData: MXRoomListData? {
         guard shouldShowAllChats else { return nil }
@@ -373,7 +373,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         lowPriorityRoomListDataFetcher = nil
         serverNoticeRoomListDataFetcher = nil
         suggestedRoomListDataFetcher = nil
-        recentRoomListDataFetcher = nil
+        breadcrumbsRoomListDataFetcher = nil
         allChatsRoomListDataFetcher = nil
     }
     
@@ -492,8 +492,8 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         return fetcherTypesForMode[mode]?.contains(.suggested) ?? false
     }
     
-    private var shouldShowRecents: Bool {
-        return fetcherTypesForMode[mode]?.contains(.recents) ?? false
+    private var shouldShowBreadcrumbs: Bool {
+        return fetcherTypesForMode[mode]?.contains(.breadcrumbs) ?? false
     }
     
     private var shouldShowAllChats: Bool {
@@ -517,7 +517,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         case .suggested:
             return suggestedRoomListDataFetcher
         case .breadcrumbs:
-            return recentRoomListDataFetcher
+            return breadcrumbsRoomListDataFetcher
         case .allChats:
             return allChatsRoomListDataFetcher
         }
@@ -538,7 +538,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
             return .serverNotice
         } else if fetcher === suggestedRoomListDataFetcher {
             return .suggested
-        } else if fetcher === recentRoomListDataFetcher {
+        } else if fetcher === breadcrumbsRoomListDataFetcher {
             return .breadcrumbs
         } else if fetcher === allChatsRoomListDataFetcher {
             return .allChats
@@ -653,7 +653,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         lowPriorityRoomListDataFetcher = createCommonRoomListDataFetcher(withDataTypes: [.lowPriority])
         serverNoticeRoomListDataFetcher = createCommonRoomListDataFetcher(withDataTypes: [.serverNotice])
         suggestedRoomListDataFetcher = createCommonRoomListDataFetcher(onlySuggested: true)
-        recentRoomListDataFetcher = createCommonRoomListDataFetcher(onlyRecents: true)
+        breadcrumbsRoomListDataFetcher = createCommonRoomListDataFetcher(onlyRecents: true)
         allChatsRoomListDataFetcher = createConversationRoomListDataFetcherForAllChats()
         
         fetchersCreated = true
@@ -794,10 +794,10 @@ private struct FetcherTypes: OptionSet {
     static let lowPriority = FetcherTypes(rawValue: 1 << 6)
     static let serverNotice = FetcherTypes(rawValue: 1 << 7)
     static let suggested = FetcherTypes(rawValue: 1 << 8)
-    static let recents = FetcherTypes(rawValue: 1 << 9)
+    static let breadcrumbs = FetcherTypes(rawValue: 1 << 9)
     static let allChats = FetcherTypes(rawValue: 1 << 10)
 
     static let none: FetcherTypes = []
     static let all: FetcherTypes = [
-        .invited, .favorited, .directHome, .directPeople, .conversationHome, .conversationRooms, .lowPriority, .serverNotice, .suggested, .recents, .allChats]
+        .invited, .favorited, .directHome, .directPeople, .conversationHome, .conversationRooms, .lowPriority, .serverNotice, .suggested, .breadcrumbs, .allChats]
 }
