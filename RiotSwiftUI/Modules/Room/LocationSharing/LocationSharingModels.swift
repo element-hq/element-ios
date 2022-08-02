@@ -90,6 +90,8 @@ struct LocationSharingViewState: BindableState {
     var shareButtonEnabled: Bool {
         !showLoadingIndicator
     }
+    
+    var showMapLoadingError: Bool = false
 
     let errorSubject = PassthroughSubject<LocationSharingViewError, Never>()
     
