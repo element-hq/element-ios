@@ -258,7 +258,7 @@ This homeserver is not configured to display maps</string>
         <image name="location_background_light_image" width="847.5" height="556"/>
         <image name="location_live_cell_ended_light_icon" width="46" height="65"/>
         <image name="location_live_cell_icon" width="32" height="32"/>
-        <image name="location_map_error" width="32" height="32"/>
+        <image name="location_map_error" width="33" height="32"/>
         <image name="location_marker_icon" width="24" height="24"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -1,23 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "location_map_error.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "location_map_error@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "location_map_error@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "location_map_error.svg",
+      "idiom" : "universal"
     }
   ],
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "template-rendering-intent" : "original"
   }
 }
