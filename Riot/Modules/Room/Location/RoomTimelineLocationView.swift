@@ -110,16 +110,9 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     
     private var mapView: MGLMapView!
     
-    private var _isMapViewLoadingFailed: Bool = false
-    
-    private var isMapViewLoadingFailed: Bool {
-        get {
-            return _isMapViewLoadingFailed
-        }
-        set {
-            if newValue != _isMapViewLoadingFailed {
-                _isMapViewLoadingFailed = newValue
-                
+    private var isMapViewLoadingFailed: Bool = false {
+        didSet {
+            if oldValue != isMapViewLoadingFailed {
                 self.mapViewLoadingStateDidChange()
             }
         }
@@ -186,7 +179,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     // MARK: - Private
     
     private func resetMapViewLoadingState() {
-        _isMapViewLoadingFailed = false
+        self.isMapViewLoadingFailed = false
     }
     
     private func mapViewLoadingStateDidChange() {
@@ -195,6 +188,8 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
             mapLoadingErrorContainerView.isHidden = false
             mapView.isHidden = true
             attributionLabel.isHidden = true
+        } else {
+            mapLoadingErrorContainerView.isHidden = true
         }
     }
     
@@ -203,7 +198,6 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
                                  mapStyleURL: URL,
                                  bannerViewData: TimelineLiveLocationViewData? = nil) {
         
-        mapLoadingErrorContainerView.isHidden = true
         resetMapViewLoadingState()
         
         if let location = location {
