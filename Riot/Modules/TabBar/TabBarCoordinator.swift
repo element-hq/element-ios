@@ -922,6 +922,11 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private var windowOverlay: WindowOverlayPresenter?
 
     func showCoachMessageIfNeeded(with session: MXSession) {
+        guard !BuildSettings.newAppLayoutEnabled else {
+            // Showing coach message makes no sense with the new App Layout
+            return
+        }
+        
         if !RiotSettings.shared.slideMenuRoomsCoachMessageHasBeenDisplayed {
             let isAuthenticated = MXKAccountManager.shared().activeAccounts.first != nil || MXKAccountManager.shared().accounts.first?.isSoftLogout == false
 
