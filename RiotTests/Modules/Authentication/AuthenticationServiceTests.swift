@@ -16,7 +16,7 @@
 
 import XCTest
 
-@testable import Riot
+@testable import Element
 
 @MainActor class AuthenticationServiceTests: XCTestCase {
     var service: AuthenticationService!

@@ -153,7 +153,7 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
     
     public var suggestedRoomListData: MXRoomListData?
     
-    public var recentRoomListData: MXRoomListData?
+    public var breadcrumbsRoomListData: MXRoomListData?
     
     public var allChatsRoomListData: MXRoomListData?
 

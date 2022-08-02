@@ -52,6 +52,8 @@ class AllChatsViewController: HomeViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        editActionProvider.delegate = self
+        
         recentsTableView.tag = RecentsDataSourceMode.allChats.rawValue
         recentsTableView.clipsToBounds = false
         

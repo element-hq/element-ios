@@ -196,6 +196,7 @@ internal class Asset: NSObject {
     internal static let locationLiveCellIcon = ImageAsset(name: "location_live_cell_icon")
     internal static let locationLiveCellLoadingIcon = ImageAsset(name: "location_live_cell_loading_icon")
     internal static let locationLiveIcon = ImageAsset(name: "location_live_icon")
+    internal static let locationMapError = ImageAsset(name: "location_map_error")
     internal static let locationMarkerIcon = ImageAsset(name: "location_marker_icon")
     internal static let locationPinIcon = ImageAsset(name: "location_pin_icon")
     internal static let locationShareIcon = ImageAsset(name: "location_share_icon")

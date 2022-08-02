@@ -137,6 +137,9 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
             state.bindings.alertInfo = AlertInfo(id: .mapLoadingError,
                                                  title: VectorL10n.locationSharingLoadingMapErrorTitle(AppInfo.current.displayName),
                                                  primaryButton: (VectorL10n.ok, primaryButtonCompletion))
+            
+            state.showMapLoadingError = true
+            
         case .failedLocatingUser:
             state.bindings.alertInfo = AlertInfo(id: .userLocatingError,
                                                  title: VectorL10n.locationSharingLocatingUserErrorTitle(AppInfo.current.displayName),

@@ -16,7 +16,7 @@
 
 import XCTest
 
-@testable import Riot
+@testable import Element
 
 class RegistrationTests: XCTestCase {
     /// Makes an authentication session that mimics the matrix.org flow.
