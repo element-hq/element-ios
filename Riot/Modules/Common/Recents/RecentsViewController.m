@@ -1130,6 +1130,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (nullable UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (BuildSettings.newAppLayoutEnabled)
+    {
+        return nil;
+    }
+    
     MXRoom *room = [self.dataSource getRoomAtIndexPath:indexPath];
     
     if (!room)
