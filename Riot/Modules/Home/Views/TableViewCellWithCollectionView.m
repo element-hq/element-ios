@@ -41,6 +41,7 @@ static CGFloat const kEditionViewCornerRadius = 10.0;
 {
     [super customizeTableViewCellRendering];
     
+    self.collectionView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.editionView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
 }
 

@@ -95,7 +95,7 @@
         // Notify unreads and bing
         if (roomCellData.hasUnread)
         {
-            self.missedNotifAndUnreadIndicator.hidden = NO;
+            self.missedNotifAndUnreadIndicator.hidden = BuildSettings.newAppLayoutEnabled;
             
             if (0 < roomCellData.notificationCount)
             {
@@ -113,7 +113,7 @@
             {
                 self.missedNotifAndUnreadIndicator.backgroundColor = ThemeService.shared.theme.unreadRoomIndentColor;
             }
-            
+
             // Use bold font for the room title
             self.roomTitle.font = [UIFont systemFontOfSize:17 weight:UIFontWeightBold];
         }

@@ -419,8 +419,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     MXLogDebug(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@", @([application isProtectedDataAvailable]));
 
     _configuration = [AppConfiguration new];
+
     self.clearingCache = NO;
-    
     // Log app information
     NSString *appDisplayName = self.appInfo.displayName;
     NSString* appVersion = self.appVersion;
@@ -4283,6 +4283,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     if (!RiotSettings.shared.isShowDecryptedContentInNotificationsHasBeenSetOnce)
     {
         RiotSettings.shared.showDecryptedContentInNotifications = BuildSettings.decryptNotificationsByDefault;
+    }
+    
+    // Need to set `showAllRoomsInHomeSpace` to `true` for the new App Layout
+    if (BuildSettings.newAppLayoutEnabled)
+    {
+        RiotSettings.shared.showAllRoomsInHomeSpace = YES;
     }
 }
 

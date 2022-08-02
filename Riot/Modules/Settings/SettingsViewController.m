@@ -4258,19 +4258,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
 - (BOOL)canSetupSecureBackup
 {
-    // Accept to create a setup only if we have the 3 cross-signing keys
-    // This is the path to have a sane state
-    // TODO: What about missing MSK that was not gossiped before?
-    
-    MXRecoveryService *recoveryService = self.mainSession.crypto.recoveryService;
-    
-    NSArray *crossSigningServiceSecrets = @[
-                                            MXSecretId.crossSigningMaster,
-                                            MXSecretId.crossSigningSelfSigning,
-                                            MXSecretId.crossSigningUserSigning];
-    
-    return ([recoveryService.secretsStoredLocally mx_intersectArray:crossSigningServiceSecrets].count
-            == crossSigningServiceSecrets.count);
+    return [self.mainSession vc_canSetupSecureBackup];
 }
 
 #pragma mark - SecureBackupSetupCoordinatorBridgePresenterDelegate

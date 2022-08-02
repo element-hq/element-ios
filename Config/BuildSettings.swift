@@ -419,4 +419,7 @@ final class BuildSettings: NSObject {
     static let showUnsupportedEventsInRoomHistory: Bool = false
     static let sortRoomMembersUsingLastSeenTime: Bool = true
     static let syncLocalContacts: Bool = false
+    
+    // MARK: - New App Layout
+    static let newAppLayoutEnabled = false
 }

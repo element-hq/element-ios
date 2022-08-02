@@ -1996,6 +1996,7 @@ Tap the + to start adding people.";
 
 "spaces_home_space_title" = "Home";
 "spaces_add_space_title" = "Create space";
+"spaces_add_subspace_title" = "Create space within %@";
 "spaces_create_space_title" = "Create a space";
 "spaces_left_panel_title" = "Spaces";
 "leave_space_title" = "Leave %@";
@@ -2152,6 +2153,32 @@ Tap the + to start adding people.";
 "version_check_modal_title_deprecated" = "We’re no longer supporting iOS %@";
 "version_check_modal_subtitle_deprecated" = "We've been working on enhancing %@ for a faster and more polished experience. Unfortunately your current version of iOS is not  compatible with some of those fixes and is no longer supported.\nWe're advising you to upgrade your operating system to use %@ to its full potential.";
 "version_check_modal_action_title_deprecated" = "Find out how";
+
+// Mark: - All Chats
+
+"all_chats_title" = "All chats";
+"all_chats_section_title" = "Chats";
+"all_chats_edit_layout" = "Edit layout";
+"all_chats_edit_layout_recents" = "Recents";
+"all_chats_edit_layout_unreads" = "Unreads";
+"all_chats_edit_layout_add_section_title" = "Add section to home";
+"all_chats_edit_layout_add_section_message" = "Pin sections to home for easy access";
+"all_chats_edit_layout_add_filters_title" = "Filter your messages";
+"all_chats_edit_layout_add_filters_message" = "Automatically filter your messages into the categories of your choice";
+"all_chats_edit_layout_pin_spaces_title" = "Pin your spaces";
+"all_chats_edit_layout_sorting_options_title" = "Sort messages by";
+
+"all_chats_edit_layout_show_recents" = "Show recents";
+"all_chats_edit_layout_show_filters" = "Show filters";
+"all_chats_edit_layout_activity_order" = "Sort by activity";
+"all_chats_edit_layout_alphabetical_order" = "Sort A-Z";
+"all_chats_all_filter" = "All";
+
+"room_recents_recently_viewed_section" = "Recently viewed";
+
+// Mark: - Space Selector
+
+"space_selector_title" = "Choose space";
 
 // Mark: - Polls
 
