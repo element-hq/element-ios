@@ -235,7 +235,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
             }
         }
         
-        allChatLayoutSettingsObserver = NotificationCenter.default.addObserver(forName: AllChatsLayoutSettings.didUpdateFilters, object: nil, queue: OperationQueue.main) { [weak self] notification in
+        allChatLayoutSettingsObserver = NotificationCenter.default.addObserver(forName: AllChatsLayoutSettingsManager.didUpdateActiveFilters, object: nil, queue: OperationQueue.main) { [weak self] notification in
             guard let self = self else { return }
             if let fetcher = self.allChatsRoomListDataFetcher {
                 self.updateConversationFetcher(fetcher, for: .allChats)
@@ -516,7 +516,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
             return serverNoticeRoomListDataFetcher
         case .suggested:
             return suggestedRoomListDataFetcher
-        case .recents:
+        case .breadcrumbs:
             return recentRoomListDataFetcher
         case .allChats:
             return allChatsRoomListDataFetcher
@@ -539,7 +539,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         } else if fetcher === suggestedRoomListDataFetcher {
             return .suggested
         } else if fetcher === recentRoomListDataFetcher {
-            return .recents
+            return .breadcrumbs
         } else if fetcher === allChatsRoomListDataFetcher {
             return .allChats
         }
@@ -714,25 +714,25 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         case .rooms:
             fetcher.fetchOptions.filterOptions.notDataTypes = notDataTypes
         case .allChats:
+            let settingsManager = AllChatsLayoutSettingsManager.shared
             let settings = AllChatsLayoutSettingsManager.shared.allChatLayoutSettings
             if settings.sections.contains(.favourites) && !settings.filters.contains(.favourites) {
                 notDataTypes.insert(.favorited)
             }
+            if settings.filters.contains(.rooms) && settingsManager.activeFilters.contains(.rooms) {
+                notDataTypes.insert(.direct)
+            }
             fetcher.fetchOptions.filterOptions.notDataTypes = notDataTypes
             
-            if settings.filters.contains(.unreads) && settings.activeFilters.contains(.unreads) {
+            if settings.filters.contains(.unreads) && settingsManager.activeFilters.contains(.unreads) {
                 fetcher.fetchOptions.filterOptions.dataTypes = [.unread]
                 return
             }
-            if settings.filters.contains(.rooms) && settings.activeFilters.contains(.rooms) {
-                fetcher.fetchOptions.filterOptions.dataTypes = [.notDirect]
-                return
-            }
-            if settings.filters.contains(.people) && settings.activeFilters.contains(.people) {
+            if settings.filters.contains(.people) && settingsManager.activeFilters.contains(.people) {
                 fetcher.fetchOptions.filterOptions.dataTypes = [.direct]
                 return
             }
-            if settings.filters.contains(.favourites) && settings.activeFilters.contains(.favourites) {
+            if settings.filters.contains(.favourites) && settingsManager.activeFilters.contains(.favourites) {
                 fetcher.fetchOptions.filterOptions.dataTypes = [.favorited]
                 return
             }

@@ -235,7 +235,7 @@ final class BuildSettings: NSObject {
     static let allowInviteExernalUsers: Bool = true
     
     // MARK: - Side Menu
-    static let enableSideMenu: Bool = true && !newAppLayoutEnaled
+    static let enableSideMenu: Bool = true && !newAppLayoutEnabled
     static let sideMenuShowInviteFriends: Bool = true
 
     /// Whether to read the `io.element.functional_members` state event and exclude any service members when computing a room's name and avatar.
@@ -421,5 +421,5 @@ final class BuildSettings: NSObject {
     static let syncLocalContacts: Bool = false
     
     // MARK: - New App Layout
-    static let newAppLayoutEnaled = false
+    static let newAppLayoutEnabled = false
 }

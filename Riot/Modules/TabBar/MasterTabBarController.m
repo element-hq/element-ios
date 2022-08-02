@@ -164,7 +164,7 @@
         [self userInterfaceThemeDidChange];
     }
     
-    self.tabBar.hidden = BuildSettings.newAppLayoutEnaled;
+    self.tabBar.hidden = BuildSettings.newAppLayoutEnabled;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -649,7 +649,7 @@
 {
     if (roomParentId) {
         NSString *parentName = [mxSession roomSummaryWithRoomId:roomParentId].displayname;
-        if (!BuildSettings.newAppLayoutEnaled)
+        if (!BuildSettings.newAppLayoutEnabled)
         {
             NSMutableArray<NSString *> *breadcrumbs = [[NSMutableArray alloc] initWithObjects:parentName, nil];
 
@@ -665,7 +665,7 @@
     }
     else
     {
-        if (!BuildSettings.newAppLayoutEnaled)
+        if (!BuildSettings.newAppLayoutEnabled)
         {
             titleView.breadcrumbView.breadcrumbs = @[];
         }
@@ -677,7 +677,7 @@
 
 - (void)updateSideMenuNotifcationIcon
 {
-    if (BuildSettings.newAppLayoutEnaled) { return; }
+    if (BuildSettings.newAppLayoutEnabled) { return; }
     
     BOOL displayNotification = NO;
     
@@ -709,7 +709,7 @@
 
 -(void)setupTitleView
 {
-    if (!BuildSettings.newAppLayoutEnaled)
+    if (!BuildSettings.newAppLayoutEnabled)
     {
         titleView = [MainTitleView new];
         self.navigationItem.titleView = titleView;

@@ -16,44 +16,17 @@
 
 import Foundation
 
-//struct AllChatLayoutSectionType: OptionSet {
-//    let rawValue: UInt
-//    
-//    static let recents = AllChatLayoutSectionType(rawValue: 1 << 0)
-//    static let favourites = AllChatLayoutSectionType(rawValue: 1 << 1)
-//}
-//
-//struct AllChatLayoutFilterType: OptionSet {
-//    let rawValue: UInt
-//    
-//    static let people = AllChatLayoutFilterType(rawValue: 1 << 0)
-//    static let rooms = AllChatLayoutFilterType(rawValue: 1 << 1)
-//    static let favourites = AllChatLayoutFilterType(rawValue: 1 << 2)
-//    static let unreads = AllChatLayoutFilterType(rawValue: 1 << 3)
-//}
-//
-//enum AllChatLayoutSortingType: UInt {
-//    case activity
-//    case alphabetical
-//}
-
-// MARK: - Notification constants
-
-extension AllChatsLayoutSettings {
-    /// Posted if settings have changed
-    public static let didUpdateFilters = Notification.Name("AllChatLayoutSettingsDidUpdateFilters")
-}
-
 @objcMembers
-@objc class AllChatsLayoutSettings: NSObject, NSCoding {
+class AllChatsLayoutSettings: NSObject, NSCoding {
+    
+    fileprivate enum Constants {
+        static let sectionsKey = "sections"
+        static let filtersKey = "filters"
+        static let sortingKey = "sorting"
+    }
     
     let sections: AllChatsLayoutSectionType
     let filters: AllChatsLayoutFilterType
-    var activeFilters: AllChatsLayoutFilterType = [] {
-        didSet {
-            NotificationCenter.default.post(name: AllChatsLayoutSettings.didUpdateFilters, object: self)
-        }
-    }
     let sorting: AllChatsLayoutSortingType
     
     init(sections: AllChatsLayoutSectionType = [],
@@ -65,16 +38,14 @@ extension AllChatsLayoutSettings {
     }
     
     func encode(with coder: NSCoder) {
-        coder.encode(Int64(sections.rawValue), forKey: "sections")
-        coder.encode(Int64(filters.rawValue), forKey: "filters")
-        coder.encode(Int64(activeFilters.rawValue), forKey: "activeFilters")
-        coder.encode(Int64(sorting.rawValue), forKey: "sorting")
+        coder.encode(Int(sections.rawValue), forKey: Constants.sectionsKey)
+        coder.encode(Int(filters.rawValue), forKey: Constants.filtersKey)
+        coder.encode(Int(sorting.rawValue), forKey: Constants.sortingKey)
     }
     
     required init?(coder: NSCoder) {
-        self.sections = AllChatsLayoutSectionType(rawValue: UInt(coder.decodeInt64(forKey: "sections")))
-        self.filters = AllChatsLayoutFilterType(rawValue: UInt(coder.decodeInt64(forKey: "filters")))
-        self.activeFilters = AllChatsLayoutFilterType(rawValue: UInt(coder.decodeInt64(forKey: "activeFilters")))
-        self.sorting = AllChatsLayoutSortingType(rawValue: UInt(coder.decodeInt64(forKey: "sorting"))) ?? .activity
+        self.sections = AllChatsLayoutSectionType(rawValue: UInt(coder.decodeInteger(forKey: Constants.sectionsKey)))
+        self.filters = AllChatsLayoutFilterType(rawValue: UInt(coder.decodeInteger(forKey: Constants.filtersKey)))
+        self.sorting = AllChatsLayoutSortingType(rawValue: UInt(coder.decodeInteger(forKey: Constants.sortingKey))) ?? .activity
     }
 }

@@ -19,13 +19,6 @@ import Reusable
 
 class AllChatsViewController: HomeViewController {
     
-    // MARK: - Constants
-    
-    private enum Constants {
-        static let actionPanelHeight: Double = 64
-        static let ectionPanelHorizontalPadding: Double = 12
-    }
-    
     // MARK: - Class methods
     
     static override func nib() -> UINib! {
@@ -42,8 +35,10 @@ class AllChatsViewController: HomeViewController {
     
     // MARK: - Private
     
+    @IBOutlet private weak var toolbar: UIToolbar!
+    @IBOutlet private weak var toolBarBottomConstraint: NSLayoutConstraint!
+    
     private let searchController = UISearchController(searchResultsController: nil)
-    private let actionPanelView = AllChatsActionPanelView.loadFromNib()
     
     private let editActionProvider = AllChatsEditActionProvider()
 
@@ -52,18 +47,13 @@ class AllChatsViewController: HomeViewController {
     
     private var childCoordinators: [Coordinator] = []
     
-    private var actionPanelHeightConstraint: NSLayoutConstraint!
-    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        editActionProvider.delegate = self
-        
         recentsTableView.tag = RecentsDataSourceMode.allChats.rawValue
         recentsTableView.clipsToBounds = false
-        self.recentsTableViewBottomConstraint.constant = Constants.actionPanelHeight
         
         updateUI()
         vc_setLargeTitleDisplayMode(.automatic)
@@ -78,9 +68,16 @@ class AllChatsViewController: HomeViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        toolbar.tintColor = ThemeService.shared().theme.colors.accent
         if self.tabBarController?.navigationItem.searchController == nil {
             self.tabBarController?.navigationItem.searchController = searchController
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        initialActionPanelHeight = self.view.bounds.height - toolbar.frame.minY
     }
     
     // MARK: - HomeViewController
@@ -90,16 +87,7 @@ class AllChatsViewController: HomeViewController {
     }
     
     @objc private func addFabButton() {
-        actionPanelView.editButton.showsMenuAsPrimaryAction = true
-        actionPanelView.spaceButton .addTarget(self, action: #selector(showSpaceSelectorAction(sender:)), for: .touchUpInside)
-
-        view?.addSubview(actionPanelView)
-        actionPanelView.translatesAutoresizingMaskIntoConstraints = false
-        actionPanelView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        actionPanelView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        actionPanelView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        actionPanelHeightConstraint = actionPanelView.heightAnchor.constraint(equalToConstant: Constants.actionPanelHeight)
-        actionPanelHeightConstraint.isActive = true
+        // Nothing to do. We don't need FAB
     }
 
     @objc private func sections() -> Array<Int> {
@@ -112,13 +100,13 @@ class AllChatsViewController: HomeViewController {
             RecentsDataSourceSectionType.lowPriority.rawValue,
             RecentsDataSourceSectionType.serverNotice.rawValue,
             RecentsDataSourceSectionType.suggestedRooms.rawValue,
-            RecentsDataSourceSectionType.recentRooms.rawValue
+            RecentsDataSourceSectionType.breadcrumbs.rawValue
         ]
     }
     
     // MARK: - Actions
     
-    @objc private func showSpaceSelectorAction(sender: UIButton) {
+    @objc private func showSpaceSelectorAction(sender: AnyObject) {
         let currentSpaceId = self.dataSource.currentSpace?.spaceId ?? SpaceSelectorListItemDataHomeSpaceId
         let spaceSelectorBridgePresenter = SpaceSelectorBottomSheetCoordinatorBridgePresenter(session: self.mainSession, selectedSpaceId: currentSpaceId, showHomeSpace: true)
         spaceSelectorBridgePresenter.present(from: self, animated: true)
@@ -128,45 +116,41 @@ class AllChatsViewController: HomeViewController {
     
     // MARK: - Action panel animation
     
-    private var actionPanelHeight: Double = Constants.actionPanelHeight {
+    private var toolbarOffset: Double = 0 {
         didSet {
-            self.recentsTableViewBottomConstraint.constant = actionPanelHeight
-            self.actionPanelHeightConstraint.constant = actionPanelHeight
-            let ratio = actionPanelHeight / Constants.actionPanelHeight
-            self.actionPanelView.spaceButtonLeadingConstraint.constant = -5 * Constants.ectionPanelHorizontalPadding + 6 * Constants.ectionPanelHorizontalPadding * ratio
-            self.actionPanelView.editButtonTrailingConstraint.constant = -5 * Constants.ectionPanelHorizontalPadding + 6 * Constants.ectionPanelHorizontalPadding * ratio
-            self.view.layoutIfNeeded()
+            self.toolBarBottomConstraint.constant = -toolbarOffset
         }
     }
-    
-    private var initialScrollPosition: Double = 0
+
+    private var lastScrollPosition: Double = 0
     private var initialActionPanelHeight: Double = 0
-    
+
     override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        initialScrollPosition = self.recentsTableView.contentOffset.y
-        initialActionPanelHeight = actionPanelHeightConstraint.constant
+        lastScrollPosition = self.recentsTableView.contentOffset.y
     }
-    
+
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn) {
-            self.actionPanelHeight = self.actionPanelHeightConstraint.constant < Constants.actionPanelHeight / 2 ? 0 : Constants.actionPanelHeight
+            self.toolbarOffset = self.toolbarOffset > self.initialActionPanelHeight / 2 ? self.initialActionPanelHeight : 0
+            self.view.layoutIfNeeded()
         } completion: { finished in
         }
     }
-    
+
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         super.scrollViewDidScroll(scrollView)
-        
+
         guard self.recentsTableView.isDragging else {
             return
         }
-        
+
         let scrollPosition = max(self.recentsTableView.contentOffset.y, 0)
         guard scrollPosition < self.recentsTableView.contentSize.height - self.recentsTableView.bounds.height else {
             return
         }
-        
-        self.actionPanelHeight = min(max(initialActionPanelHeight + (initialScrollPosition - scrollPosition) / 4, 0), Constants.actionPanelHeight)
+
+        self.toolbarOffset = min(max(self.toolbarOffset + (scrollPosition - lastScrollPosition) / 4, 0), initialActionPanelHeight)
+        lastScrollPosition = scrollPosition
     }
     
     // MARK: - Private
@@ -178,11 +162,20 @@ class AllChatsViewController: HomeViewController {
     private func updateUI() {
         let currentSpace = self.dataSource?.currentSpace
         self.tabBarController?.title = currentSpace?.summary?.displayname ?? VectorL10n.allChatsTitle
-        self.actionPanelView.editButton.setImage(UIImage(systemName: currentSpace == nil ? "square.and.pencil" : "ellipsis.circle"), for: .normal)
         
-        actionPanelView.editButton.menu = editActionProvider.updateMenu(with: mainSession, parentSpace: dataSource?.currentSpace, completion: { [weak self] menu in
-            self?.actionPanelView.editButton.menu = menu
-        })
+        toolbar.items = [
+            UIBarButtonItem(image: Asset.Images.spacesAction.image, style: .done, target: self, action: #selector(self.showSpaceSelectorAction(sender: ))),
+            UIBarButtonItem.flexibleSpace(),
+            UIBarButtonItem(image: UIImage(systemName: currentSpace == nil ? "square.and.pencil" : "ellipsis.circle"), menu: editActionProvider.updateMenu(with: mainSession, parentSpace: dataSource?.currentSpace, completion: { [weak self] menu in
+                guard let self = self else { return }
+                
+                self.toolbar.items = [
+                    UIBarButtonItem(image: Asset.Images.spacesAction.image, style: .done, target: self, action: #selector(self.showSpaceSelectorAction(sender: ))),
+                    UIBarButtonItem.flexibleSpace(),
+                    UIBarButtonItem(image: UIImage(systemName: currentSpace == nil ? "square.and.pencil" : "ellipsis.circle"), menu: menu)
+                ]
+            }))
+        ]
     }
     
     private func showCreateSpace(parentSpaceId: String?) {

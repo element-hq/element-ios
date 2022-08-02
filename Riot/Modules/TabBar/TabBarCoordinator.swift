@@ -129,7 +129,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         }
         
         self.currentSpaceId = spaceId
-        createAvatarButtonItem()
     }
     
     func toPresentable() -> UIViewController {
@@ -243,22 +242,9 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private func createMasterTabBarController() -> MasterTabBarController {
         let tabBarController = MasterTabBarController()
         
-        if BuildSettings.enableSideMenu {
-            let sideMenuBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.sideMenuIcon.image, style: .plain) { [weak self] in
-                self?.showSideMenu()
-            }
-            sideMenuBarButtonItem.accessibilityLabel = VectorL10n.sideMenuRevealActionAccessibilityLabel
-            
-            tabBarController.navigationItem.leftBarButtonItem = sideMenuBarButtonItem
-        } else if !BuildSettings.newAppLayoutEnaled {
-            let settingsBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.settingsIcon.image, style: .plain) { [weak self] in
-                self?.showSettings()
-            }
-            settingsBarButtonItem.accessibilityLabel = VectorL10n.settingsTitle
-            
-            tabBarController.navigationItem.leftBarButtonItem = settingsBarButtonItem
-        }
-        
+        createLeftButtonItem(for: tabBarController)
+        createRightButtonItem(for: tabBarController)
+
         return tabBarController
     }
     
@@ -388,10 +374,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private func updateTabControllers(for tabBarController: MasterTabBarController, showCommunities: Bool) {
         var viewControllers: [UIViewController] = []
 
-        let homeViewController = BuildSettings.newAppLayoutEnaled ? self.createAllChatsViewController() : self.createHomeViewController()
+        let homeViewController = BuildSettings.newAppLayoutEnabled ? self.createAllChatsViewController() : self.createHomeViewController()
         viewControllers.append(homeViewController)
         
-        if !BuildSettings.newAppLayoutEnaled {
+        if !BuildSettings.newAppLayoutEnabled {
             if RiotSettings.shared.homeScreenShowFavouritesTab {
                 let favouritesViewController = self.createFavouritesViewController()
                 viewControllers.append(favouritesViewController)
@@ -743,32 +729,50 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             showCoachMessageIfNeeded(with: session)
         }
         
-        createAvatarButtonItem()
+        updateAvatarButtonItem()
     }
+    
+    // MARK: Navigation bar items management
     
     private weak var rightMenuAvatarView: AvatarView?
     
-    private func createAvatarButtonItem() {
-        guard BuildSettings.newAppLayoutEnaled else {
-            let searchBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.searchIcon.image, style: .plain) { [weak self] in
-                self?.showUnifiedSearch()
-            }
-            searchBarButtonItem.accessibilityLabel = VectorL10n.searchDefaultPlaceholder
-            masterTabBarController.navigationItem.rightBarButtonItem = searchBarButtonItem
-            
-            return
-        }
-
-        if let avatarView = rightMenuAvatarView {
-            if let avatar = userAvatarViewData(from: currentMatrixSession) {
-                avatarView.fill(with: avatar)
-                avatarView.update(theme: ThemeService.shared().theme)
-                self.rightMenuAvatarView = avatarView
-            }
-            
+    private func createLeftButtonItem(for viewController: UIViewController) {
+        guard !BuildSettings.newAppLayoutEnabled else {
+            createAvatarButtonItem(for: viewController)
             return
         }
         
+        guard BuildSettings.enableSideMenu else {
+            let settingsBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.settingsIcon.image, style: .plain) { [weak self] in
+                self?.showSettings()
+            }
+            settingsBarButtonItem.accessibilityLabel = VectorL10n.settingsTitle
+            
+            viewController.navigationItem.leftBarButtonItem = settingsBarButtonItem
+            return
+        }
+        
+        let sideMenuBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.sideMenuIcon.image, style: .plain) { [weak self] in
+            self?.showSideMenu()
+        }
+        sideMenuBarButtonItem.accessibilityLabel = VectorL10n.sideMenuRevealActionAccessibilityLabel
+        
+        viewController.navigationItem.leftBarButtonItem = sideMenuBarButtonItem
+    }
+
+    private func createRightButtonItem(for viewController: UIViewController) {
+        guard !BuildSettings.newAppLayoutEnabled else {
+            return
+        }
+        
+        let searchBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.searchIcon.image, style: .plain) { [weak self] in
+            self?.showUnifiedSearch()
+        }
+        searchBarButtonItem.accessibilityLabel = VectorL10n.searchDefaultPlaceholder
+        viewController.navigationItem.rightBarButtonItem = searchBarButtonItem
+    }
+    
+    private func createAvatarButtonItem(for viewController: UIViewController) {
         var actions: [UIMenuElement] = []
         
         actions.append(UIAction(title: VectorL10n.allChatsUserMenuSettings, image: UIImage(systemName: "gearshape")) { [weak self] action in
@@ -805,17 +809,26 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         button.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         view.addSubview(button)
         
+        let avatarView = UserAvatarView(frame: view.frame.inset(by: UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)))
+        avatarView.isUserInteractionEnabled = false
+        avatarView.update(theme: ThemeService.shared().theme)
+        avatarView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        view.addSubview(avatarView)
+        self.rightMenuAvatarView = avatarView
+
         if let avatar = userAvatarViewData(from: currentMatrixSession) {
-            let avatarView = UserAvatarView(frame: view.frame.inset(by: UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)))
-            avatarView.isUserInteractionEnabled = false
             avatarView.fill(with: avatar)
-            avatarView.update(theme: ThemeService.shared().theme)
-            avatarView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-            view.addSubview(avatarView)
-            self.rightMenuAvatarView = avatarView
         }
         
-        self.masterTabBarController.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: view)
+        viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: view)
+    }
+    
+    private func updateAvatarButtonItem() {
+        guard let avatarView = rightMenuAvatarView, let avatar = userAvatarViewData(from: currentMatrixSession) else {
+            return
+        }
+        
+        avatarView.fill(with: avatar)
     }
     
     // MARK: Sign out process
@@ -857,24 +870,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     }
     
     private var canSetupSecureBackup: Bool {
-        // Accept to create a setup only if we have the 3 cross-signing keys
-        // This is the path to have a sane state
-        // TODO: What about missing MSK that was not gossiped before?
-        
-        guard let recoveryService = currentMatrixSession?.crypto.recoveryService else {
-            return false
-        }
-        
-        let crossSigningServiceSecrets = [
-            MXSecretId.crossSigningMaster.takeRetainedValue() as String,
-            MXSecretId.crossSigningSelfSigning.takeRetainedValue() as String,
-            MXSecretId.crossSigningUserSigning.takeRetainedValue() as String
-        ]
-        
-        return recoveryService.secretsStoredLocally().filter { secret in
-            guard let secret = secret as? String else { return false }
-            return crossSigningServiceSecrets.contains(secret)
-        }.count == crossSigningServiceSecrets.count
+        return currentMatrixSession?.vc_canSetupSecureBackup() ?? false
     }
     
     private func setupSecureBackup2() {

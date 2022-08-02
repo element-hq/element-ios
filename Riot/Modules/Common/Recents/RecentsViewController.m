@@ -36,7 +36,7 @@
 
 NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewControllerDataReadyNotification";
 
-@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate, SpaceChildRoomDetailBridgePresenterDelegate, RoomContextActionServiceDelegate>
+@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate, SpaceChildRoomDetailBridgePresenterDelegate, RoomContextActionServiceDelegate, RecentCellContextMenuProviderDelegate>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -140,6 +140,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     
     _contextMenuProvider = [RecentCellContextMenuProvider new];
     self.contextMenuProvider.serviceDelegate = self;
+    self.contextMenuProvider.menuProviderDelegate = self;
 
     // Set itself as delegate by default.
     self.delegate = self;
@@ -2549,10 +2550,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         return nil;
     }
     
-#if TARGET_IPHONE_SIMULATOR
-#else
-    self.recentsUpdateEnabled = NO;
-#endif
     return [self.contextMenuProvider contextMenuConfigurationWith:cellData from:cell session:self.dataSource.mxSession];
 }
 
@@ -2612,6 +2609,13 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     editedRoomId = roomId;
     [self changeEditedRoomNotificationSettings];
     editedRoomId = nil;
+}
+
+#pragma mark - RecentCellContextMenuProviderDelegate
+
+- (void)recentCellContextMenuProviderDidStartShowingPreview:(RecentCellContextMenuProvider *)menuProvider
+{
+    self.recentsUpdateEnabled = NO;
 }
 
 @end

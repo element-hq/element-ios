@@ -18,7 +18,7 @@ import Foundation
 import UIKit
 
 @objcMembers
-@objc class AllChatsFilterOptions: NSObject {
+class AllChatsFilterOptions: NSObject {
 
     func createFilterListView() -> UIView? {
         guard optionsCount > 0 else {
@@ -34,14 +34,14 @@ import UIKit
         filterOptions.append(contentsOf: options)
         
         filterOptionListView.options = filterOptions
-        filterOptionListView.selectedOptionType = AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.activeFilters
+        filterOptionListView.selectedOptionType = AllChatsLayoutSettingsManager.shared.activeFilters
         filterOptionListView.selectionChanged = { filter in
             guard filter != .all else {
-                AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.activeFilters = []
+                AllChatsLayoutSettingsManager.shared.activeFilters = []
                 return
             }
          
-            AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.activeFilters = filter
+            AllChatsLayoutSettingsManager.shared.activeFilters = filter
         }
 
         return filterOptionListView

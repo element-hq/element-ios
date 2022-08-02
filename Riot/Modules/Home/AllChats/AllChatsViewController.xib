@@ -8,14 +8,15 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RecentsViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AllChatsViewController" customModule="Riot" customModuleProvider="target">
             <connections>
                 <outlet property="recentsTableView" destination="orV-HH-88x" id="lgA-2k-pXJ"/>
-                <outlet property="recentsTableViewBottomConstraint" destination="zIT-Mi-Y7K" id="iIx-a7-hPO"/>
                 <outlet property="stickyHeadersBottomContainer" destination="EXH-mK-0eB" id="95Y-KP-bwF"/>
                 <outlet property="stickyHeadersBottomContainerHeightConstraint" destination="SNq-Js-N7s" id="vom-iM-s6W"/>
                 <outlet property="stickyHeadersTopContainer" destination="JJC-Bw-6sa" id="JIy-sf-4Ya"/>
                 <outlet property="stickyHeadersTopContainerHeightConstraint" destination="xT1-rL-nCC" id="VaK-0W-2Mi"/>
+                <outlet property="toolBarBottomConstraint" destination="Ord-4E-Pvk" id="nEH-yo-tQF"/>
+                <outlet property="toolbar" destination="7eM-ZH-m1e" id="s2M-8i-KI8"/>
                 <outlet property="view" destination="iN0-l3-epB" id="NUQ-LI-M61"/>
             </connections>
         </placeholder>
@@ -25,7 +26,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="orV-HH-88x">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JJC-Bw-6sa">
@@ -44,22 +45,37 @@
                         <constraint firstAttribute="height" id="SNq-Js-N7s"/>
                     </constraints>
                 </view>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7eM-ZH-m1e">
+                    <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                    <items>
+                        <barButtonItem image="ellipsis.circle" catalog="system" changesSelectionAsPrimaryAction="YES" id="Vkf-Sh-ckk"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="7kJ-Np-DjU"/>
+                        <barButtonItem image="square.and.pencil" catalog="system" changesSelectionAsPrimaryAction="YES" id="Iam-Gs-cJP"/>
+                    </items>
+                </toolbar>
             </subviews>
             <viewLayoutGuide key="safeArea" id="4qf-KS-Fc9"/>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="orV-HH-88x" secondAttribute="trailing" id="3Np-64-AUe"/>
+                <constraint firstItem="7eM-ZH-m1e" firstAttribute="leading" secondItem="4qf-KS-Fc9" secondAttribute="leading" id="Dfw-Ep-vIx"/>
                 <constraint firstItem="orV-HH-88x" firstAttribute="top" secondItem="JJC-Bw-6sa" secondAttribute="bottom" id="IMR-dV-gUS"/>
-                <constraint firstItem="EXH-mK-0eB" firstAttribute="bottom" secondItem="orV-HH-88x" secondAttribute="bottom" id="KXF-3M-x1M"/>
+                <constraint firstItem="EXH-mK-0eB" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="bottom" id="Kmg-aC-GOO"/>
+                <constraint firstItem="7eM-ZH-m1e" firstAttribute="trailing" secondItem="4qf-KS-Fc9" secondAttribute="trailing" id="NG9-KI-4ZF"/>
                 <constraint firstItem="JJC-Bw-6sa" firstAttribute="top" secondItem="4qf-KS-Fc9" secondAttribute="top" id="OBu-sH-mqE"/>
+                <constraint firstItem="4qf-KS-Fc9" firstAttribute="bottom" secondItem="7eM-ZH-m1e" secondAttribute="bottom" id="Ord-4E-Pvk"/>
                 <constraint firstItem="EXH-mK-0eB" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="S3i-DW-PUB"/>
                 <constraint firstAttribute="trailing" secondItem="EXH-mK-0eB" secondAttribute="trailing" id="bPP-yu-FTa"/>
+                <constraint firstItem="7eM-ZH-m1e" firstAttribute="top" secondItem="orV-HH-88x" secondAttribute="bottom" id="clZ-LH-5Cr"/>
                 <constraint firstItem="orV-HH-88x" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="dTn-zC-Axs"/>
                 <constraint firstItem="JJC-Bw-6sa" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="l5C-zt-Env"/>
                 <constraint firstAttribute="trailing" secondItem="JJC-Bw-6sa" secondAttribute="trailing" id="trw-3x-yjO"/>
-                <constraint firstItem="orV-HH-88x" firstAttribute="bottom" secondItem="4qf-KS-Fc9" secondAttribute="bottom" id="zIT-Mi-Y7K"/>
             </constraints>
             <point key="canvasLocation" x="140" y="138"/>
         </view>
     </objects>
+    <resources>
+        <image name="ellipsis.circle" catalog="system" width="128" height="121"/>
+        <image name="square.and.pencil" catalog="system" width="128" height="115"/>
+    </resources>
 </document>

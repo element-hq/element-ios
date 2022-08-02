@@ -26,7 +26,7 @@ class DarkTheme: NSObject, Theme {
 
     var backgroundColor: UIColor = UIColor(rgb: 0x15191E)
 
-    var baseColor: UIColor = BuildSettings.newAppLayoutEnaled ? UIColor(rgb: 0x15191E) : UIColor(rgb: 0x21262C)
+    var baseColor: UIColor = BuildSettings.newAppLayoutEnabled ? UIColor(rgb: 0x15191E) : UIColor(rgb: 0x21262C)
     var baseIconPrimaryColor: UIColor = UIColor(rgb: 0xEDF3FF)
     var baseTextPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
     var baseTextSecondaryColor: UIColor = UIColor(rgb: 0xA9B2BC)
@@ -35,7 +35,7 @@ class DarkTheme: NSObject, Theme {
     var searchPlaceholderColor: UIColor = UIColor(rgb: 0xA9B2BC)
     var searchResultHighlightColor: UIColor = UIColor(rgb: 0xFCC639).withAlphaComponent(0.3)
 
-    var headerBackgroundColor: UIColor = BuildSettings.newAppLayoutEnaled ? UIColor(rgb: 0x15191E) : UIColor(rgb: 0x21262C)
+    var headerBackgroundColor: UIColor = BuildSettings.newAppLayoutEnabled ? UIColor(rgb: 0x15191E) : UIColor(rgb: 0x21262C)
     var headerBorderColor: UIColor  = UIColor(rgb: 0x15191E)
     var headerTextPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
     var headerTextSecondaryColor: UIColor = UIColor(rgb: 0xA9B2BC)
@@ -129,7 +129,7 @@ class DarkTheme: NSObject, Theme {
         if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
             
-            if BuildSettings.newAppLayoutEnaled {
+            if BuildSettings.newAppLayoutEnabled {
                 appearance.configureWithDefaultBackground()
             } else {
                 appearance.configureWithOpaqueBackground()
@@ -146,15 +146,7 @@ class DarkTheme: NSObject, Theme {
             
             navigationBar.standardAppearance = appearance
             
-            if BuildSettings.newAppLayoutEnaled {
-                appearance.configureWithOpaqueBackground()
-                appearance.backgroundColor = baseColor
-                appearance.shadowColor = nil
-                appearance.titleTextAttributes = [
-                    NSAttributedString.Key.foregroundColor: textPrimaryColor
-                ]
-            }
-            navigationBar.scrollEdgeAppearance = modernScrollEdgeAppearance ? nil : appearance
+            navigationBar.scrollEdgeAppearance = modernScrollEdgeAppearance || BuildSettings.newAppLayoutEnabled ? nil : appearance
         } else {
             navigationBar.titleTextAttributes = [
                 NSAttributedString.Key.foregroundColor: textPrimaryColor
