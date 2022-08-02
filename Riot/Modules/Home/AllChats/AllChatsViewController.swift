@@ -35,9 +35,6 @@ class AllChatsViewController: HomeViewController {
     
     // MARK: - Private
     
-    @IBOutlet private weak var toolbar: UIToolbar!
-    @IBOutlet private weak var toolBarBottomConstraint: NSLayoutConstraint!
-    
     private let searchController = UISearchController(searchResultsController: nil)
     
     private let editActionProvider = AllChatsEditActionProvider()
@@ -70,16 +67,10 @@ class AllChatsViewController: HomeViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        toolbar.tintColor = ThemeService.shared().theme.colors.accent
+        self.navigationController?.toolbar.tintColor = ThemeService.shared().theme.colors.accent
         if self.tabBarController?.navigationItem.searchController == nil {
             self.tabBarController?.navigationItem.searchController = searchController
         }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        initialActionPanelHeight = self.view.bounds.height - toolbar.frame.minY
     }
     
     // MARK: - HomeViewController
@@ -116,31 +107,20 @@ class AllChatsViewController: HomeViewController {
         self.spaceSelectorBridgePresenter = spaceSelectorBridgePresenter
     }
     
-    // MARK: - Action panel animation
+    // MARK: - Toolbar animation
     
-    private var toolbarOffset: Double = 0 {
-        didSet {
-            self.toolBarBottomConstraint.constant = -toolbarOffset
-        }
-    }
-
     private var lastScrollPosition: Double = 0
-    private var initialActionPanelHeight: Double = 0
 
     override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         lastScrollPosition = self.recentsTableView.contentOffset.y
     }
 
-    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn) {
-            self.toolbarOffset = self.toolbarOffset > self.initialActionPanelHeight / 2 ? self.initialActionPanelHeight : 0
-            self.view.layoutIfNeeded()
-        } completion: { finished in
-        }
-    }
-
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         super.scrollViewDidScroll(scrollView)
+        
+        if self.recentsTableView.contentOffset.y == 0 {
+            self.navigationController?.setToolbarHidden(false, animated: true)
+        }
 
         guard self.recentsTableView.isDragging else {
             return
@@ -151,7 +131,7 @@ class AllChatsViewController: HomeViewController {
             return
         }
 
-        self.toolbarOffset = min(max(self.toolbarOffset + (scrollPosition - lastScrollPosition) / 4, 0), initialActionPanelHeight)
+        self.navigationController?.setToolbarHidden(scrollPosition - lastScrollPosition > 0, animated: true)
         lastScrollPosition = scrollPosition
     }
     
@@ -172,11 +152,12 @@ class AllChatsViewController: HomeViewController {
     
     private func updateToolbar(with menu: UIMenu) {
         let currentSpace = self.dataSource?.currentSpace
-        self.toolbar.items = [
+        self.navigationController?.isToolbarHidden = false
+        self.tabBarController?.setToolbarItems([
             UIBarButtonItem(image: Asset.Images.homeMySpacesAction.image, style: .done, target: self, action: #selector(self.showSpaceSelectorAction(sender: ))),
             UIBarButtonItem.flexibleSpace(),
             UIBarButtonItem(image: UIImage(systemName: currentSpace == nil ? "square.and.pencil" : "ellipsis.circle"), menu: menu)
-        ]
+        ], animated: true)
     }
     
     private func showCreateSpace(parentSpaceId: String?) {
