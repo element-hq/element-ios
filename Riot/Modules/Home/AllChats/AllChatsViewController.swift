@@ -165,18 +165,17 @@ class AllChatsViewController: HomeViewController {
         let currentSpace = self.dataSource?.currentSpace
         self.tabBarController?.title = currentSpace?.summary?.displayname ?? VectorL10n.allChatsTitle
         
-        toolbar.items = [
-            UIBarButtonItem(image: Asset.Images.spacesAction.image, style: .done, target: self, action: #selector(self.showSpaceSelectorAction(sender: ))),
+        updateToolbar(with: editActionProvider.updateMenu(with: mainSession, parentSpace: currentSpace, completion: { [weak self] menu in
+            self?.updateToolbar(with: menu)
+        }))
+    }
+    
+    private func updateToolbar(with menu: UIMenu) {
+        let currentSpace = self.dataSource?.currentSpace
+        self.toolbar.items = [
+            UIBarButtonItem(image: Asset.Images.homeMySpacesAction.image, style: .done, target: self, action: #selector(self.showSpaceSelectorAction(sender: ))),
             UIBarButtonItem.flexibleSpace(),
-            UIBarButtonItem(image: UIImage(systemName: currentSpace == nil ? "square.and.pencil" : "ellipsis.circle"), menu: editActionProvider.updateMenu(with: mainSession, parentSpace: dataSource?.currentSpace, completion: { [weak self] menu in
-                guard let self = self else { return }
-                
-                self.toolbar.items = [
-                    UIBarButtonItem(image: Asset.Images.spacesAction.image, style: .done, target: self, action: #selector(self.showSpaceSelectorAction(sender: ))),
-                    UIBarButtonItem.flexibleSpace(),
-                    UIBarButtonItem(image: UIImage(systemName: currentSpace == nil ? "square.and.pencil" : "ellipsis.circle"), menu: menu)
-                ]
-            }))
+            UIBarButtonItem(image: UIImage(systemName: currentSpace == nil ? "square.and.pencil" : "ellipsis.circle"), menu: menu)
         ]
     }
     
