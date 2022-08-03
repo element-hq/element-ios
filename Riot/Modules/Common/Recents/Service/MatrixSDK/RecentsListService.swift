@@ -48,7 +48,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     private var favoritedRoomListDataFetcher: MXRoomListDataFetcher?
     private var directRoomListDataFetcher: MXRoomListDataFetcher? {
         switch mode {
-        case .home:
+        case .home, .allChats:
             return directRoomListDataFetcherForHome
         case .people:
             return directRoomListDataFetcherForPeople
@@ -87,7 +87,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         .favourites: [.favorited],
         .people: [.invited, .directPeople],
         .rooms: [.invited, .conversationRooms, .suggested],
-        .allChats: [.breadcrumbs, .favorited, .invited, .allChats, .lowPriority, .serverNotice, .suggested]
+        .allChats: [.breadcrumbs, .favorited, .directHome, .invited, .allChats, .lowPriority, .serverNotice, .suggested]
     ]
     
     private var allFetchers: [MXRoomListDataFetcher] {
@@ -460,7 +460,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     
     private var shouldShowDirect: Bool {
         switch mode {
-        case .home:
+        case .home, .allChats:
             return fetcherTypesForMode[mode]?.contains(.directHome) ?? false
         case .people:
             return fetcherTypesForMode[mode]?.contains(.directPeople) ?? false

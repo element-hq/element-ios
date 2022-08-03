@@ -20,7 +20,7 @@ import UIKit
 @objcMembers
 class AllChatsFilterOptions: NSObject {
 
-    func createFilterListView() -> UIView? {
+    func createFilterListView() -> AllChatsFilterOptionListView? {
         guard optionsCount > 0 else {
             return nil
         }
@@ -45,6 +45,30 @@ class AllChatsFilterOptions: NSObject {
         }
 
         return filterOptionListView
+    }
+    
+    func update(filterOptionListView: AllChatsFilterOptionListView, unreadsCount: Int, favouritesCount: Int, directRoomsCount: Int) {
+        let options = options.filter { option in
+            switch option.type {
+            case .all: return true
+            case .unreads: return unreadsCount > 0
+            case .favourites: return favouritesCount > 0
+            case .people: return directRoomsCount > 0
+            case .rooms: return false
+            default:
+                return false
+            }
+        }
+        var filterOptions: [AllChatsFilterOptionListView.Option] = [
+            AllChatsFilterOptionListView.Option(type: .all, name: VectorL10n.allChatsAllFilter)
+        ]
+        filterOptions.append(contentsOf: options)
+        filterOptionListView.options = filterOptions
+        
+        if !filterOptions.contains(where: { $0.type == filterOptionListView.selectedOptionType }) {
+            filterOptionListView.setSelectedOptionType(.all, animated: true)
+            AllChatsLayoutSettingsManager.shared.activeFilters = []
+        }
     }
     
     var optionsCount: Int {
