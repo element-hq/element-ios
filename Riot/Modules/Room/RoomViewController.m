@@ -4279,10 +4279,11 @@ static CGSize kThreadListBarButtonItemImageSize;
             
             NSString *roomIdOrAlias = absoluteURLString;
             
-            // Open the room or preview it
-            NSString *fragment = [NSString stringWithFormat:@"/room/%@", [MXTools encodeURIComponent:roomIdOrAlias]];
+            // Create a permalink to open or preview the room.
+            NSString *permalink = [MXTools permalinkToRoom:roomIdOrAlias];
+            NSURL *permalinkURL = [NSURL URLWithString:permalink];
             
-            [self handleUniversalLinkFragment:fragment fromURL:url];
+            [self handleUniversalLinkFragment:permalinkURL.fragment fromURL:permalinkURL];
         }
         // Preview the clicked group
         else if ([MXTools isMatrixGroupIdentifier:absoluteURLString])
