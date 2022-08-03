@@ -14,7 +14,8 @@
 // limitations under the License.
 //
 
-import Foundation
+import UIKit
+import CoreLocation
 
 extension UIActivity.ActivityType {
     static let shareToMapsApp = UIActivity.ActivityType("Element.ShareToMapsApp")
