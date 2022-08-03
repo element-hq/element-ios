@@ -1242,7 +1242,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 // Continue the registration with the passed nextLink
                 MXLogDebug(@"[AppDelegate] handleUniversalLink. Complete registration with nextLink");
                 NSURL *nextLink = [NSURL URLWithString:queryParams[@"nextLink"]];
-                [self handleUniversalLinkFragment:nextLink.fragment fromURL:nextLink];
+                UniversalLink *link = [[UniversalLink alloc] initWithUrl:nextLink];
+                [self handleUniversalLinkFragment:nextLink.fragment fromLink:link];
             }
             else
             {
@@ -1704,8 +1705,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     // iOS Patch: fix vector.im urls before using it
     NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:universalLinkURL];
+    UniversalLink *link = [[UniversalLink alloc] initWithUrl:universalLinkURL];
     
-    return [self handleUniversalLinkFragment:fixedURL.fragment fromURL:universalLinkURL];
+    return [self handleUniversalLinkFragment:fixedURL.fragment fromLink:link];
 }
 
 - (void)resetPendingUniversalLink
