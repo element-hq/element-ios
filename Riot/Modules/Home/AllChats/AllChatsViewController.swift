@@ -67,10 +67,17 @@ class AllChatsViewController: HomeViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.navigationController?.isToolbarHidden = false
         self.navigationController?.toolbar.tintColor = ThemeService.shared().theme.colors.accent
         if self.tabBarController?.navigationItem.searchController == nil {
             self.tabBarController?.navigationItem.searchController = searchController
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.navigationController?.isToolbarHidden = true
     }
     
     // MARK: - HomeViewController
