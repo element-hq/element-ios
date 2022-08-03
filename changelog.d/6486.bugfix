@@ -1,0 +1,1 @@
+Media: Fix a bug where the navigation bar shown when viewing an image wasn't taking the safe area into account.

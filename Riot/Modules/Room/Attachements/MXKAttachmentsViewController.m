@@ -463,7 +463,7 @@
 
 - (IBAction)hideNavigationBar
 {
-    self.navigationBar.hidden = YES;
+    self.navigationBarContainer.hidden = YES;
     
     [navigationBarDisplayTimer invalidate];
     navigationBarDisplayTimer = nil;
@@ -953,10 +953,10 @@
                     }
                     
                     // Apply the same display to the navigation bar
-                    self.navigationBar.hidden = !controlsVisible;
+                    self.navigationBarContainer.hidden = !controlsVisible;
                     
                     navigationBarDisplayHandled = YES;
-                    if (!self.navigationBar.hidden)
+                    if (!self.navigationBarContainer.hidden)
                     {
                         // Automaticaly hide the nav bar after 5s. This is the same timer value that
                         // MPMoviePlayerController uses for its controls bar
@@ -1032,7 +1032,7 @@
                         [pieChartView removeFromSuperview];
                         
                         // Display the navigation bar so that the user can leave this screen
-                        self.navigationBar.hidden = NO;
+                        self.navigationBarContainer.hidden = NO;
                         
                         // Notify MatrixKit user
                         [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
@@ -1049,9 +1049,9 @@
     // Animate navigation bar if it is has not been handled
     if (!navigationBarDisplayHandled)
     {
-        if (self.navigationBar.hidden)
+        if (self.navigationBarContainer.hidden)
         {
-            self.navigationBar.hidden = NO;
+            self.navigationBarContainer.hidden = NO;
             [navigationBarDisplayTimer invalidate];
             navigationBarDisplayTimer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(hideNavigationBar) userInfo:self repeats:NO];
         }
@@ -1141,7 +1141,7 @@
         MXLogDebug(@"[MXKAttachmentsVC] Playback failed with error description: %@", [mediaPlayerError localizedDescription]);
 
         // Display the navigation bar so that the user can leave this screen
-        self.navigationBar.hidden = NO;
+        self.navigationBarContainer.hidden = NO;
 
         // Notify MatrixKit user
         [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:mediaPlayerError];
