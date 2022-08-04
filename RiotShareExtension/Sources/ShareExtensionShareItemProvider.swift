@@ -96,11 +96,13 @@ public class ShareExtensionShareItemProvider: NSObject	 {
         
         shareExtensionItem.loaded = false
         shareExtensionItem.itemProvider.loadItem(forTypeIdentifier: typeIdentifier, options: nil) { result, error in
-            if error == nil {
-                shareExtensionItem.loaded = true
-            }
-            
             DispatchQueue.main.async {
+                // Mark the item as loaded when back on the main queue to avoid
+                // a race condition where the share extension sends duplicates.
+                if error == nil {
+                    shareExtensionItem.loaded = true
+                }
+                
                 completion(result, error)
             }
         }
