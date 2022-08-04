@@ -3920,6 +3920,10 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                 // The user wants to select this theme
                 RiotSettings.shared.userInterfaceTheme = newTheme;
                 ThemeService.shared.themeId = newTheme;
+                
+                // This is a hack to force the background colour of the container view of the navigation controller
+                // This is needed only for hot theme update as the UIViewControllerWrapperView of the RioNavigationController is not updated
+                self.view.superview.backgroundColor = ThemeService.shared.theme.backgroundColor;
 
                 [self updateSections];
             }

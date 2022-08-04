@@ -130,32 +130,26 @@ class DarkTheme: NSObject, Theme {
             let appearance = UINavigationBarAppearance()
             
             if BuildSettings.newAppLayoutEnabled {
-                appearance.configureWithDefaultBackground()
+                appearance.configureWithTransparentBackground()
+                appearance.backgroundEffect = UIBlurEffect(style: .dark)
             } else {
                 appearance.configureWithOpaqueBackground()
                 appearance.backgroundColor = baseColor
             }
 
-            appearance.backgroundColor = baseColor
             if !modernScrollEdgeAppearance {
                 appearance.shadowColor = nil
             }
             appearance.titleTextAttributes = [
-                NSAttributedString.Key.foregroundColor: textPrimaryColor
+                .foregroundColor: textPrimaryColor
             ]
-            
+            appearance.largeTitleTextAttributes = [
+                .foregroundColor: textPrimaryColor
+            ]
+
             navigationBar.standardAppearance = appearance
-            
-            if BuildSettings.newAppLayoutEnabled {
-                 appearance.configureWithOpaqueBackground()
-                 appearance.backgroundColor = baseColor
-                 appearance.shadowColor = nil
-                 appearance.titleTextAttributes = [
-                     NSAttributedString.Key.foregroundColor: textPrimaryColor
-                 ]
-             }
-             navigationBar.scrollEdgeAppearance = modernScrollEdgeAppearance ? nil : appearance
-            } else {
+            navigationBar.scrollEdgeAppearance = modernScrollEdgeAppearance && !BuildSettings.newAppLayoutEnabled ? nil : appearance
+        } else {
             navigationBar.titleTextAttributes = [
                 NSAttributedString.Key.foregroundColor: textPrimaryColor
             ]

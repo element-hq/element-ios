@@ -437,6 +437,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
     // Set up theme
     ThemeService.shared.themeId = RiotSettings.shared.userInterfaceTheme;
+    
+    application.windows.firstObject.overrideUserInterfaceStyle = [ThemeService.shared isCurrentThemeDark] ? UIUserInterfaceStyleDark : UIUserInterfaceStyleLight;
 
     mxSessionArray = [NSMutableArray array];
     callEventsListeners = [NSMutableDictionary dictionary];

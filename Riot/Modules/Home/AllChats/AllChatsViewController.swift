@@ -142,6 +142,22 @@ class AllChatsViewController: HomeViewController {
         lastScrollPosition = scrollPosition
     }
     
+    // MARK: - Theme management
+    
+    override func userInterfaceThemeDidChange() {
+        super.userInterfaceThemeDidChange()
+        
+        guard self.tabBarController?.toolbarItems != nil else {
+            return
+        }
+        
+        self.update(with: ThemeService.shared().theme)
+    }
+    
+    private func update(with theme: Theme) {
+        self.navigationController?.toolbar?.tintColor = theme.colors.accent
+    }
+    
     // MARK: - Private
     
     @objc private func setupEditOptions() {
@@ -160,6 +176,7 @@ class AllChatsViewController: HomeViewController {
     private func updateToolbar(with menu: UIMenu) {
         let currentSpace = self.dataSource?.currentSpace
         self.navigationController?.isToolbarHidden = false
+        self.update(with: ThemeService.shared().theme)
         self.tabBarController?.setToolbarItems([
             UIBarButtonItem(image: Asset.Images.homeMySpacesAction.image, style: .done, target: self, action: #selector(self.showSpaceSelectorAction(sender: ))),
             UIBarButtonItem.flexibleSpace(),
