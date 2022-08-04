@@ -72,6 +72,9 @@ class AllChatsViewController: HomeViewController {
         if self.tabBarController?.navigationItem.searchController == nil {
             self.tabBarController?.navigationItem.searchController = searchController
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.spaceListDidChange), name: MXSpaceService.didInitialise, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.spaceListDidChange), name: MXSpaceService.didBuildSpaceGraph, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -86,6 +89,14 @@ class AllChatsViewController: HomeViewController {
         .allChats
     }
     
+    @objc private func spaceListDidChange() {
+        guard self.editActionProvider.shouldUpdate(with: self.mainSession, parentSpace: self.dataSource?.currentSpace) else {
+            return
+        }
+        
+        updateUI()
+    }
+
     @objc private func addFabButton() {
         // Nothing to do. We don't need FAB
     }
@@ -300,7 +311,9 @@ class AllChatsViewController: HomeViewController {
 extension AllChatsViewController: SpaceSelectorBottomSheetCoordinatorBridgePresenterDelegate {
     
     func spaceSelectorBottomSheetCoordinatorBridgePresenterDidCancel(_ coordinatorBridgePresenter: SpaceSelectorBottomSheetCoordinatorBridgePresenter) {
-        self.spaceSelectorBridgePresenter = nil
+        coordinatorBridgePresenter.dismiss(animated: true) {
+            self.spaceSelectorBridgePresenter = nil
+        }
     }
     
     func spaceSelectorBottomSheetCoordinatorBridgePresenterDidSelectHome(_ coordinatorBridgePresenter: SpaceSelectorBottomSheetCoordinatorBridgePresenter) {

@@ -799,17 +799,17 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
 
         let menu = UIMenu(options: .displayInline, children: actions)
         
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
         view.backgroundColor = .clear
         
-        let button: UIButton = UIButton(frame: view.frame)
+        let button: UIButton = UIButton(frame: view.bounds.inset(by: UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)))
         button.setImage(Asset.Images.tabPeople.image, for: .normal)
         button.menu = menu
         button.showsMenuAsPrimaryAction = true
         button.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         view.addSubview(button)
         
-        let avatarView = UserAvatarView(frame: view.frame.inset(by: UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)))
+        let avatarView = UserAvatarView(frame: view.bounds.inset(by: UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)))
         avatarView.isUserInteractionEnabled = false
         avatarView.update(theme: ThemeService.shared().theme)
         avatarView.autoresizingMask = [.flexibleHeight, .flexibleWidth]

@@ -41,6 +41,7 @@ class AllChatsEditActionProvider {
     
     // MARK: - Private
     
+    private var rootSpaceCount: Int = 0
     private var parentSpace: MXSpace? {
         didSet {
             parentName = parentSpace?.summary?.displayname ?? VectorL10n.spaceTag
@@ -54,13 +55,16 @@ class AllChatsEditActionProvider {
     
     var menu: UIMenu {
         guard parentSpace != nil else {
+            var createActions = [
+                self.startChatAction,
+                self.createRoomAction
+            ]
+            if rootSpaceCount > 0 {
+                createActions.append(self.createSpaceAction)
+            }
             return UIMenu(title: VectorL10n.allChatsTitle, children: [
                 self.exploreRoomsAction,
-                UIMenu(title: "", options: .displayInline, children: [
-                    self.startChatAction,
-                    self.createRoomAction,
-                    self.createSpaceAction
-                ])
+                UIMenu(title: "", options: .displayInline, children: createActions)
             ])
         }
         
@@ -81,8 +85,14 @@ class AllChatsEditActionProvider {
     
     // MARK: - Public
     
+    func shouldUpdate(with session: MXSession?, parentSpace: MXSpace?) -> Bool {
+        let rootSpaceCount = session?.spaceService.rootSpaces.count ?? 0
+        return parentSpace != self.parentSpace || (rootSpaceCount == 0 && self.rootSpaceCount > 0 || rootSpaceCount > 0 && self.rootSpaceCount == 0)
+    }
+    
     func updateMenu(with session: MXSession?, parentSpace: MXSpace?, completion: @escaping (UIMenu) -> Void) -> UIMenu {
         self.parentSpace = parentSpace
+        self.rootSpaceCount = session?.spaceService.rootSpaces.count ?? 0
         isInviteAvailable = false
         isAddRoomAvailable = parentSpace == nil
         
