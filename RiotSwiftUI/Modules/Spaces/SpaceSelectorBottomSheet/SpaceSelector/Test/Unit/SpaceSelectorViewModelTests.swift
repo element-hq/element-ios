@@ -19,7 +19,6 @@ import Combine
 
 @testable import RiotSwiftUI
 
-@available(iOS 14.0, *)
 class SpaceSelectorViewModelTests: XCTestCase {
     
     var service: MockSpaceSelectorService!
@@ -36,7 +35,7 @@ class SpaceSelectorViewModelTests: XCTestCase {
     func testInitialState() {
         XCTAssertEqual(context.viewState.selectedSpaceId, MockSpaceSelectorService.homeItem.id)
         XCTAssertEqual(context.viewState.items, MockSpaceSelectorService.defaultSpaceList)
-        XCTAssertNil(context.viewState.parentName)
+        XCTAssertEqual(context.viewState.navigationTitle, VectorL10n.spaceSelectorTitle)
     }
 
 }

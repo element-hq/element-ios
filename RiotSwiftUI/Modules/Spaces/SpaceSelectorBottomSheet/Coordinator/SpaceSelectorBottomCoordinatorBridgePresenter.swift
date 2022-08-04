@@ -86,9 +86,7 @@ final class SpaceSelectorBottomSheetCoordinatorBridgePresenter: NSObject {
         coordinator.toPresentable().dismiss(animated: animated) {
             self.coordinator = nil
 
-            if let completion = completion {
-                completion()
-            }
+            completion?()
         }
     }
 }

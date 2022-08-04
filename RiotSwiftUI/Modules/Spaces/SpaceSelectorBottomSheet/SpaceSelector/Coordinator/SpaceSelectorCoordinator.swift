@@ -55,7 +55,6 @@ final class SpaceSelectorCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: SpaceSelectorCoordinatorParameters) {
         self.parameters = parameters
         let service = SpaceSelectorService(session: parameters.session, parentSpaceId: parameters.parentSpaceId, showHomeSpace: parameters.showHomeSpace, selectedSpaceId: parameters.selectedSpaceId)

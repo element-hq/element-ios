@@ -24,14 +24,6 @@ struct SpaceSelector: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
-    private var navigationTitle: String {
-        guard let parentName = viewModel.viewState.parentName else {
-            return VectorL10n.spaceSelectorTitle
-        }
-        
-        return parentName
-    }
-    
     @ViewBuilder
     private var rightButton: some View {
         Button(VectorL10n.create) {
@@ -66,7 +58,7 @@ struct SpaceSelector: View {
         }
         .frame(maxHeight: .infinity)
         .background(theme.colors.background.edgesIgnoringSafeArea(.all))
-        .navigationTitle(navigationTitle)
+        .navigationTitle(viewModel.viewState.navigationTitle)
         .navigationBarItems(
             trailing: rightButton
         )

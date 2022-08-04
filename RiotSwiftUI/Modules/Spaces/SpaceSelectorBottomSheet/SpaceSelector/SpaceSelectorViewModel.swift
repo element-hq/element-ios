@@ -17,11 +17,10 @@
 import SwiftUI
 import Combine
 
-@available(iOS 14, *)
 typealias SpaceSelectorViewModelType = StateStoreViewModel<SpaceSelectorViewState,
                                                                  Never,
                                                                  SpaceSelectorViewAction>
-@available(iOS 14, *)
+
 class SpaceSelectorViewModel: SpaceSelectorViewModelType, SpaceSelectorViewModelProtocol {
 
     // MARK: - Properties
@@ -46,9 +45,10 @@ class SpaceSelectorViewModel: SpaceSelectorViewModelType, SpaceSelectorViewModel
     }
 
     private static func defaultState(service: SpaceSelectorServiceProtocol) -> SpaceSelectorViewState {
+        let parentName = service.parentSpaceNameSubject.value
         return SpaceSelectorViewState(items: service.spaceListSubject.value,
                                       selectedSpaceId: service.selectedSpaceId,
-                                      parentName: service.parentSpaceNameSubject.value)
+                                      navigationTitle: parentName ?? VectorL10n.spaceSelectorTitle)
     }
     
     // MARK: - Public
@@ -58,7 +58,7 @@ class SpaceSelectorViewModel: SpaceSelectorViewModelType, SpaceSelectorViewModel
         case .cancel:
             completion?(.cancel)
         case .spaceSelected(let item):
-            if item.id == SpaceSelectorListItemDataHomeSpaceId {
+            if item.id == SpaceSelectorConstants.homeSpaceId {
                 completion?(.homeSelected)
             } else {
                 completion?(.spaceSelected(item))
