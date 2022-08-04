@@ -1391,7 +1391,8 @@
     if (attachment.type == MXKAttachmentTypeImage && attachment.contentURL && [mimeType isEqualToString:@"image/gif"])
     {
         UIView *customView = cell.customView;
-        for (UIView * v in customView.subviews) {
+        for (UIView *v in customView.subviews)
+        {
             if ([v isKindOfClass:[WKWebView class]]) {
                 v.hidden = isStartInteraction;
                 return true;
