@@ -1396,7 +1396,7 @@
             if ([v isKindOfClass:[WKWebView class]])
             {
                 v.hidden = isStartInteraction;
-                return true;
+                return YES;
             }
         }
     }
