@@ -161,7 +161,7 @@
             [self.transitionContext cancelInteractiveTransition];
             [self.transitionContext completeTransition:NO];
 
-            [self.destinationViewController prepareSubviewsForTransition:false];
+            [self.destinationViewController prepareSubviewsForTransition:NO];
         }
     }];
 }
