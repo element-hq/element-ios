@@ -1242,8 +1242,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 // Continue the registration with the passed nextLink
                 MXLogDebug(@"[AppDelegate] handleUniversalLink. Complete registration with nextLink");
                 NSURL *nextLink = [NSURL URLWithString:queryParams[@"nextLink"]];
-                UniversalLink *link = [[UniversalLink alloc] initWithUrl:nextLink];
-                [self handleUniversalLinkFragment:nextLink.fragment fromLink:link];
+                [self handleUniversalLinkURL:nextLink];
             }
             else
             {

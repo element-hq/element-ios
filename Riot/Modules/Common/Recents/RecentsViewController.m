@@ -1605,8 +1605,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
             // Create a permalink to open or preview the room.
             NSString *permalink = [MXTools permalinkToRoom:roomIdOrAlias];
             NSURL *permalinkURL = [NSURL URLWithString:permalink];
-            UniversalLink *link = [[UniversalLink alloc] initWithUrl:permalinkURL];
-            [[AppDelegate theDelegate] handleUniversalLinkFragment:permalinkURL.fragment fromLink:link];
+            [[AppDelegate theDelegate] handleUniversalLinkURL:permalinkURL];
         }
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
     }

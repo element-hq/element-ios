@@ -4283,7 +4283,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             NSString *permalink = [MXTools permalinkToRoom:roomIdOrAlias];
             NSURL *permalinkURL = [NSURL URLWithString:permalink];
             
-            [self handleUniversalLinkFragment:permalinkURL.fragment fromURL:permalinkURL];
+            [self handleUniversalLinkURL:permalinkURL];
         }
         // Preview the clicked group
         else if ([MXTools isMatrixGroupIdentifier:absoluteURLString])
