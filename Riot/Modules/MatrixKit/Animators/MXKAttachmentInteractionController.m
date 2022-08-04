@@ -112,7 +112,7 @@
 {
     self.transitionContext = transitionContext;
 
-    [self.destinationViewController prepareSubviewsForTransition:true];
+    [self.destinationViewController prepareSubviewsForTransition:YES];
 
     UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIImageView *destinationImageView = [self.destinationViewController finalImageView];
