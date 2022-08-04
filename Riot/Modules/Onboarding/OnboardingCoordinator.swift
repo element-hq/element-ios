@@ -306,8 +306,11 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         if authenticationFlow == .register,
            let userId = session.credentials.userId,
            let userSession = UserSessionsService.shared.userSession(withUserId: userId) {
+            // Skip personalisation when a generic SSO provider was used in case it already included the same steps.
+            let shouldShowPersonalization = BuildSettings.onboardingShowAccountPersonalization && authenticationType.analyticsType != .SSO
+            
             // If personalisation is to be shown, check that the homeserver supports it otherwise show the congratulations screen
-            if BuildSettings.onboardingShowAccountPersonalization {
+            if shouldShowPersonalization {
                 checkHomeserverCapabilities(for: userSession)
                 return
             } else {
