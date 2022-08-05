@@ -85,11 +85,30 @@ class AllChatsEditActionProvider {
     
     // MARK: - Public
     
+    /// Indicates if the context menu should be updated accordingly to the given parameters.
+    ///
+    /// If `shouldUpdate()` reutrns `true`, you should update the context menu by calling `updateMenu()`.
+    ///
+    /// - Parameters:
+    ///     - session: The current `MXSession` instance
+    ///     - parentSpace: The current parent space (`nil` for home space)
+    /// - Returns: `true` if the context menu should be updated (call `updateMenu()` in this case). `false` otherwise
     func shouldUpdate(with session: MXSession?, parentSpace: MXSpace?) -> Bool {
         let rootSpaceCount = session?.spaceService.rootSpaces.count ?? 0
         return parentSpace != self.parentSpace || (rootSpaceCount == 0 && self.rootSpaceCount > 0 || rootSpaceCount > 0 && self.rootSpaceCount == 0)
     }
     
+    /// Returns an instance of the updated menu accordingly to the given parameters.
+    ///
+    /// Some menu items can be disabled depending on the required power levels of the `parentSpace`. Therefore, `updateMenu()` first returns a temporary context menu
+    /// with all sensible items disabled, asynchronously fetches power levels of the `parentSpace`, then gives a new instance of the menu with, potentially, all sensible items
+    /// enabled via the `completion` callback.
+    ///
+    /// - Parameters:
+    ///     - session: The current `MXSession` instance
+    ///     - parentSpace: The current parent space (`nil` for home space)
+    ///     - completion: callback called once the power levels of the `parentSpace` have been fetched and the menu items have been computed accordingly.
+    /// - Returns: If the `parentSpace` is `nil`, the context menu, the temporary context menu otherwise.
     func updateMenu(with session: MXSession?, parentSpace: MXSpace?, completion: @escaping (UIMenu) -> Void) -> UIMenu {
         self.parentSpace = parentSpace
         self.rootSpaceCount = session?.spaceService.rootSpaces.count ?? 0
