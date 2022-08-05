@@ -217,12 +217,6 @@ UINavigationControllerDelegate
 // Restore display and show the room
 - (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession;
 
-// Display a new discussion with a target user without associated room.
-- (void)showNewDirectRoom:(NSString*)discussionTargetUserId withMatrixSession:(MXSession*)mxSession completion:(void (^)(void))completion;
-
-// Creates a new direct chat with the provided user id
-- (void)createDirectChatWithUserId:(NSString*)userId completion:(void (^)(NSString *roomId))completion;
-
 // Show room preview
 - (void)showRoomPreviewWithParameters:(RoomPreviewNavigationParameters*)parameters completion:(void (^)(void))completion;
 
@@ -230,6 +224,12 @@ UINavigationControllerDelegate
 
 // Restore display and show the room preview
 - (void)showRoomPreview:(RoomPreviewData*)roomPreviewData;
+
+// Display a new direct room with a target user without associated room.
+- (void)showNewDirectChat:(NSString*)userId withMatrixSession:(MXSession*)mxSession completion:(void (^)(void))completion;
+
+// Creates a new direct room with the provided user id
+- (void)createDirectChatWithUserId:(NSString*)userId completion:(void (^)(NSString *roomId))completion;
 
 // Reopen an existing direct room with this userId or creates a new one (if it doesn't exist)
 - (void)startDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion;

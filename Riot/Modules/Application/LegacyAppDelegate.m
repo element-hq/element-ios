@@ -2828,14 +2828,14 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self showRoomWithParameters:parameters];
 }
 
-- (void)showNewDirectRoom:(NSString*)discussionTargetUserId withMatrixSession:(MXSession*)mxSession completion:(void (^)(void))completion
+- (void)showNewDirectChat:(NSString*)userId withMatrixSession:(MXSession*)mxSession completion:(void (^)(void))completion
 {
     // Ask to restore initial display
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
     
-    RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithDiscussionTargetUserId:discussionTargetUserId
-                                                                                                  mxSession:mxSession
-                                                                                     presentationParameters:presentationParameters];
+    RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithUserId:userId
+                                                                                  mxSession:mxSession
+                                                                     presentationParameters:presentationParameters];
     
     [self showRoomWithParameters:parameters completion:completion];
 }
@@ -3050,7 +3050,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             }
             else
             {
-                [self showNewDirectRoom:userId withMatrixSession:mxSession completion:completion];
+                [self showNewDirectChat:userId withMatrixSession:mxSession completion:completion];
             }
         }
         else if (completion)

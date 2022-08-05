@@ -468,7 +468,7 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
                                                                       roomId: roomNavigationParameters.roomId,
                                                                       eventId: roomNavigationParameters.eventId,
                                                                       threadId: threadId,
-                                                                      discussionTargetUserId: roomNavigationParameters.discussionTargetUserId,
+                                                                      userId: roomNavigationParameters.userId,
                                                                       showSettingsInitially: roomNavigationParameters.showSettingsInitially,
                                                                       displayConfiguration: displayConfig,
                                                                       autoJoinInvitedRoom: roomNavigationParameters.autoJoinInvitedRoom)

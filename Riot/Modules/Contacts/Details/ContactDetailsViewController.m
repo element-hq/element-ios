@@ -954,7 +954,7 @@
                 
                 if (_contact.matrixIdentifiers.count)
                 {
-                    [[AppDelegate theDelegate] showNewDirectRoom:self.firstMatrixId withMatrixSession:self.mainSession completion:^{
+                    [[AppDelegate theDelegate] showNewDirectChat:self.firstMatrixId withMatrixSession:self.mainSession completion:^{
                         
                         [self removePendingActionMask];
                     }];
