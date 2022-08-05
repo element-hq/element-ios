@@ -95,6 +95,39 @@ import XCTest
                        "The address should reset to the value configured in the build settings.")
     }
     
+    func testProvisioningLink() async throws {
+        // Given a service that has begun login using a provisioning link.
+        let homeserverURL = "https://example.com"
+        let provisioningLink = URL(string: "app.element.io/register/?hs_url=\(homeserverURL)")!
+        let universalLink = UniversalLink(url: provisioningLink)
+        service.handleServerProvisioningLink(universalLink)
+        
+        try await service.startFlow(.login)
+        XCTAssertEqual(universalLink.homeserverUrl, homeserverURL)
+        XCTAssertNotNil(service.provisioningLink, "The provisioning link should be stored in the service.")
+        XCTAssertEqual(service.provisioningLink?.homeserverUrl, homeserverURL, "The provisioning link's homeserver should not change.")
+        XCTAssertEqual(service.state.homeserver.address, "https://matrix.example.com", "The actual homeserver address should be discovered.")
+        XCTAssertEqual(service.state.homeserver.addressFromUser, homeserverURL, "The address from the provisioning link should be stored.")
+        
+        // When resetting the service.
+        service.reset()
+        
+        // Then the link should be remembered.
+        XCTAssertNotNil(service.provisioningLink, "The provisioning link should not be cleared.")
+        XCTAssertEqual(service.provisioningLink?.homeserverUrl, homeserverURL, "The provisioning link's homeserver should not change.")
+        XCTAssertEqual(service.state.homeserver.address, homeserverURL, "The address from the provisioning link should be stored.")
+        XCTAssertNil(service.state.homeserver.addressFromUser, "There shouldn't be an address from the user after resetting the service.")
+        
+        // When resetting the service back to the default server.
+        service.reset(useDefaultServer: true)
+        
+        // Then the link should be forgotten.
+        XCTAssertNil(service.provisioningLink, "The provisioning link should be forgotten after resetting back to the default server.")
+        XCTAssertNil(service.state.homeserver.addressFromUser, "There shouldn't be an address from the user after resetting the service.")
+        XCTAssertEqual(service.state.homeserver.address, BuildSettings.serverConfigDefaultHomeserverUrlString,
+                       "The address should reset to the value configured in the build settings.")
+    }
+    
     func testHomeserverState() async throws {
         // Given a service that has begun login for one homeserver.
         try await service.startFlow(.login, for: "https://example.com")
