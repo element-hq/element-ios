@@ -1317,7 +1317,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     NSString *roomIdOrAlias;
     NSString *eventId;
     NSString *userId;
-    NSString *groupId;
     
     // Check permalink to room or event
     if ([pathParams[0] isEqualToString:@"room"] && pathParams.count >= 2)
@@ -1327,11 +1326,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         
         // Is it a link to an event of a room?
         eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
-    }
-    else if ([pathParams[0] isEqualToString:@"group"] && pathParams.count >= 2)
-    {
-        // The link is the form of "/group/[groupId]"
-        groupId = pathParams[1];
     }
     else if (([pathParams[0] hasPrefix:@"#"] || [pathParams[0] hasPrefix:@"!"]) && pathParams.count >= 1)
     {
@@ -1638,44 +1632,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         [self showContact:contact presentationParameters:presentationParameters];
 
         continueUserActivity = YES;
-    }
-    else if (groupId)
-    {
-        // @FIXME: In case of multi-account, ask the user which one to use
-        MXKAccount* account = accountManager.activeAccounts.firstObject;
-        if (account)
-        {
-            MXGroup *group = [account.mxSession groupWithGroupId:groupId];
-            
-            if (!group)
-            {
-                // Create a group instance to display its preview
-                group = [[MXGroup alloc] initWithGroupId:groupId];
-            }
-            
-            // Display the group details
-            [self showGroup:group withMatrixSession:account.mxSession presentationParamters:presentationParameters];
-            
-            continueUserActivity = YES;
-        }
-        else
-        {
-            // There is no account. The app will display the AuthenticationVC.
-            // Wait for a successful login
-            MXLogDebug(@"[AppDelegate] Universal link: The user is not logged in. Wait for a successful login");
-            universalLinkFragmentPending = fragment;
-            
-            // Register an observer in order to handle new account
-            universalLinkWaitingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-                
-                // Check that 'fragment' has not been cancelled
-                if ([self->universalLinkFragmentPending isEqualToString:fragment])
-                {
-                    MXLogDebug(@"[AppDelegate] Universal link: The user is now logged in. Retry the link");
-                    [self handleUniversalLinkWithParameters:universalLinkParameters];
-                }
-            }];
-        }
     }
     else
     {
@@ -3072,26 +3028,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-#pragma mark - Matrix Groups handling
-
-- (void)showGroup:(MXGroup*)group withMatrixSession:(MXSession*)mxSession presentationParamters:(ScreenPresentationParameters*)presentationParameters
-{
-    void(^showGroup)(void) = ^{
-        // Select group to display its details (dispatch this action in order to let TabBarController end its refresh)
-        [self.masterTabBarController selectGroup:group inMatrixSession:mxSession presentationParameters:presentationParameters];
-    };
-
-    if (presentationParameters.restoreInitialDisplay)
-    {
-        [self restoreInitialDisplay:^{
-            showGroup();
-        }];
-    }
-    else
-    {
-        showGroup();
-    }
-}
+#pragma mark - VoIP
 
 - (void)promptForStunServerFallback
 {

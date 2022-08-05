@@ -287,9 +287,6 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "homeScreenShowRoomsTab", defaultValue: BuildSettings.homeScreenShowRoomsTab, storage: defaults)
     var homeScreenShowRoomsTab
     
-    @UserDefault(key: "homeScreenShowCommunitiesTab", defaultValue: BuildSettings.homeScreenShowCommunitiesTab, storage: defaults)
-    var homeScreenShowCommunitiesTab
-    
     // MARK: General Settings
     
     @UserDefault(key: "settingsScreenShowChangePassword", defaultValue: BuildSettings.settingsScreenShowChangePassword, storage: defaults)

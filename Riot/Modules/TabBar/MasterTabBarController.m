@@ -18,7 +18,6 @@
 #import "MasterTabBarController.h"
 
 #import "RecentsDataSource.h"
-#import "GroupsDataSource.h"
 
 
 #import "MXRoom+Riot.h"
@@ -45,9 +44,6 @@
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
-    
-    // The groups data source
-    GroupsDataSource *groupsDataSource;
     
     // Custom title view of the navigation bar
     MainTitleView *titleView;
@@ -90,11 +86,6 @@
 - (RoomsViewController *)roomsViewController
 {
     return (RoomsViewController*)[self viewControllerForClass:RoomsViewController.class];
-}
-
-- (GroupsViewController *)groupsViewController
-{
-    return (GroupsViewController*)[self viewControllerForClass:GroupsViewController.class];
 }
 
 #pragma mark - Life cycle
@@ -357,11 +348,6 @@
         }
         [recentsDataSource setDelegate:recentsDataSourceDelegate andRecentsDataSourceMode:recentsDataSourceMode];
         
-        // Init the recents data source
-        groupsDataSource = [[GroupsDataSource alloc] initWithMatrixSession:mainSession];
-        [groupsDataSource finalizeInitialization];
-        [self.groupsViewController displayList:groupsDataSource];
-        
         // Check whether there are others sessions
         NSArray<MXSession*>* mxSessions = self.mxSessions;
         if (mxSessions.count > 1)
@@ -418,8 +404,6 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMatrixSessionStateDidChange:) name:kMXSessionStateDidChangeNotification object:nil];
     }
     [mxSessionArray addObject:mxSession];
-    
-    // @TODO: handle multi sessions for groups
 }
 
 - (void)removeMatrixSession:(MXSession *)mxSession
@@ -448,8 +432,6 @@
     }
     
     [mxSessionArray removeObject:mxSession];
-    
-    // @TODO: handle multi sessions for groups
 }
 
 - (void)onMatrixSessionStateDidChange:(NSNotification *)notif
@@ -566,25 +548,6 @@
     [self refreshSelectedControllerSelectedCellIfNeeded];
 }
 
-- (void)selectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession
-{
-    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES stackAboveVisibleViews:NO];
-    
-    [self selectGroup:group inMatrixSession:matrixSession presentationParameters:presentationParameters];
-}
-
-- (void)selectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession presentationParameters:(ScreenPresentationParameters*)presentationParameters
-{
-    [self releaseSelectedItem];
-    
-    _selectedGroup = group;
-    _selectedGroupSession = matrixSession;
-    
-    [self.masterTabBarDelegate masterTabBarController:self didSelectGroup:group inMatrixSession:matrixSession presentationParameters:presentationParameters];
-    
-    [self refreshSelectedControllerSelectedCellIfNeeded];
-}
-
 - (void)releaseSelectedItem
 {
     _selectedRoomId = nil;
@@ -593,9 +556,6 @@
     _selectedRoomPreviewData = nil;
     
     _selectedContact = nil;
-    
-    _selectedGroup = nil;
-    _selectedGroupSession = nil;        
 }
 
 - (NSUInteger)missedDiscussionsCount
