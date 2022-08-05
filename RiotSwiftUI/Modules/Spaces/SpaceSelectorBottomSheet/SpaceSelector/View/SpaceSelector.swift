@@ -24,13 +24,6 @@ struct SpaceSelector: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
-    @ViewBuilder
-    private var rightButton: some View {
-        Button(VectorL10n.create) {
-            viewModel.send(viewAction: .createSpace)
-        }
-    }
-
     // MARK: Public
     
     @ObservedObject var viewModel: SpaceSelectorViewModel.Context
@@ -59,9 +52,18 @@ struct SpaceSelector: View {
         .frame(maxHeight: .infinity)
         .background(theme.colors.background.edgesIgnoringSafeArea(.all))
         .navigationTitle(viewModel.viewState.navigationTitle)
-        .navigationBarItems(
-            trailing: rightButton
-        )
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                Button(VectorL10n.create) {
+                    viewModel.send(viewAction: .createSpace)
+                }
+            }
+            ToolbarItem(placement: .cancellationAction) {
+                Button(VectorL10n.cancel) {
+                    viewModel.send(viewAction: .cancel)
+                }
+            }
+        }
         .accentColor(theme.colors.accent)
     }
 }

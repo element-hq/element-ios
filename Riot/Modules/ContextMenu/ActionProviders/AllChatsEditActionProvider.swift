@@ -41,6 +41,7 @@ class AllChatsEditActionProvider {
     
     // MARK: - Private
     
+    private var rootSpaceCount: Int = 0
     private var parentSpace: MXSpace? {
         didSet {
             parentName = parentSpace?.summary?.displayname ?? VectorL10n.spaceTag
@@ -54,13 +55,16 @@ class AllChatsEditActionProvider {
     
     var menu: UIMenu {
         guard parentSpace != nil else {
+            var createActions = [
+                self.startChatAction,
+                self.createRoomAction
+            ]
+            if rootSpaceCount > 0 {
+                createActions.append(self.createSpaceAction)
+            }
             return UIMenu(title: VectorL10n.allChatsTitle, children: [
                 self.exploreRoomsAction,
-                UIMenu(title: "", options: .displayInline, children: [
-                    self.startChatAction,
-                    self.createRoomAction,
-                    self.createSpaceAction
-                ])
+                UIMenu(title: "", options: .displayInline, children: createActions)
             ])
         }
         
@@ -81,6 +85,19 @@ class AllChatsEditActionProvider {
     
     // MARK: - Public
     
+    /// Indicates if the context menu should be updated accordingly to the given parameters.
+    ///
+    /// If `shouldUpdate()` reutrns `true`, you should update the context menu by calling `updateMenu()`.
+    ///
+    /// - Parameters:
+    ///     - session: The current `MXSession` instance
+    ///     - parentSpace: The current parent space (`nil` for home space)
+    /// - Returns: `true` if the context menu should be updated (call `updateMenu()` in this case). `false` otherwise
+    func shouldUpdate(with session: MXSession?, parentSpace: MXSpace?) -> Bool {
+        let rootSpaceCount = session?.spaceService.rootSpaces.count ?? 0
+        return parentSpace != self.parentSpace || (rootSpaceCount == 0 && self.rootSpaceCount > 0 || rootSpaceCount > 0 && self.rootSpaceCount == 0)
+    }
+    
     /// Returns an instance of the updated menu accordingly to the given parameters.
     ///
     /// Some menu items can be disabled depending on the required power levels of the `parentSpace`. Therefore, `updateMenu()` first returns a temporary context menu
@@ -94,6 +111,7 @@ class AllChatsEditActionProvider {
     /// - Returns: If the `parentSpace` is `nil`, the context menu, the temporary context menu otherwise.
     func updateMenu(with session: MXSession?, parentSpace: MXSpace?, completion: @escaping (UIMenu) -> Void) -> UIMenu {
         self.parentSpace = parentSpace
+        self.rootSpaceCount = session?.spaceService.rootSpaces.count ?? 0
         isInviteAvailable = false
         isAddRoomAvailable = parentSpace == nil
         
