@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yEe-Sn-mN0">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yEe-Sn-mN0">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Show Directory View Controller-->
         <scene sceneID="bXw-aP-pys">
             <objects>
-                <viewController storyboardIdentifier="SearchableDirectoryViewController" id="yEe-Sn-mN0" customClass="ShowDirectoryViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SearchableDirectoryViewController" id="yEe-Sn-mN0" customClass="ShowDirectoryViewController" customModule="Element" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ALX-A9-ywk">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hBr-zt-GEh">
+                            <tableView contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hBr-zt-GEh">
                                 <rect key="frame" x="0.0" y="44" width="414" height="852"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="yEe-Sn-mN0" id="FHU-nL-H9g"/>
                                     <outlet property="delegate" destination="yEe-Sn-mN0" id="V30-de-Prc"/>
@@ -40,10 +41,10 @@
                                                 <blurEffect style="regular"/>
                                             </vibrancyEffect>
                                         </visualEffectView>
-                                        <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qGk-Os-0Dj">
-                                            <rect key="frame" x="140" y="27" width="134" height="30"/>
+                                        <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qGk-Os-0Dj">
+                                            <rect key="frame" x="139.5" y="27" width="135" height="30"/>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                            <color key="tintColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="tintColor" systemColor="systemGreenColor"/>
                                             <state key="normal" title="Create a new room"/>
                                             <connections>
                                                 <action selector="createRoomButtonTapped:" destination="yEe-Sn-mN0" eventType="touchUpInside" id="7TP-Tn-kuq"/>
@@ -65,7 +66,8 @@
                                 <blurEffect style="regular"/>
                             </visualEffectView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="PMt-fQ-rFh"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="hBr-zt-GEh" secondAttribute="bottom" id="2m9-dZ-hbT"/>
                             <constraint firstAttribute="trailing" secondItem="hBr-zt-GEh" secondAttribute="trailing" id="9rC-zz-tGb"/>
@@ -75,7 +77,6 @@
                             <constraint firstAttribute="bottom" secondItem="shK-Lq-qu8" secondAttribute="bottom" id="n8O-5X-KlB"/>
                             <constraint firstItem="hBr-zt-GEh" firstAttribute="top" secondItem="PMt-fQ-rFh" secondAttribute="top" id="z0k-qY-JPZ"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="PMt-fQ-rFh"/>
                     </view>
                     <connections>
                         <outlet property="blurEffectContentView" destination="4ka-0i-i4y" id="xYO-0s-q7b"/>
@@ -91,4 +92,12 @@
             <point key="canvasLocation" x="-2479.1999999999998" y="-36.431784107946029"/>
         </scene>
     </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
 </document>
