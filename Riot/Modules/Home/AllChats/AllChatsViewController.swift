@@ -40,7 +40,6 @@ class AllChatsViewController: HomeViewController {
     private let editActionProvider = AllChatsEditActionProvider()
 
     private var spaceSelectorBridgePresenter: SpaceSelectorBottomSheetCoordinatorBridgePresenter?
-    private var createSpaceCoordinator: SpaceCreationCoordinator?
     
     private var childCoordinators: [Coordinator] = []
     
@@ -118,7 +117,7 @@ class AllChatsViewController: HomeViewController {
     // MARK: - Actions
     
     @objc private func showSpaceSelectorAction(sender: AnyObject) {
-        let currentSpaceId = self.dataSource.currentSpace?.spaceId ?? SpaceSelectorListItemDataHomeSpaceId
+        let currentSpaceId = self.dataSource.currentSpace?.spaceId ?? SpaceSelectorConstants.homeSpaceId
         let spaceSelectorBridgePresenter = SpaceSelectorBottomSheetCoordinatorBridgePresenter(session: self.mainSession, selectedSpaceId: currentSpaceId, showHomeSpace: true)
         spaceSelectorBridgePresenter.present(from: self, animated: true)
         spaceSelectorBridgePresenter.delegate = self
@@ -187,8 +186,8 @@ class AllChatsViewController: HomeViewController {
                 return
             }
             
-            self.createSpaceCoordinator?.toPresentable().dismiss(animated: true) {
-                self.createSpaceCoordinator = nil
+            coordinator.toPresentable().dismiss(animated: true) {
+                self.remove(childCoordinator: coordinator)
                 switch result {
                 case .cancel:
                     break
@@ -197,9 +196,8 @@ class AllChatsViewController: HomeViewController {
                 }
             }
         }
+        add(childCoordinator: coordinator)
         coordinator.start()
-        
-        self.createSpaceCoordinator = coordinator
     }
     
     private func switchSpace(withId spaceId: String?) {
@@ -370,7 +368,7 @@ extension AllChatsViewController: UIAdaptivePresentationControllerDelegate {
 // MARK: - AllChatsEditActionProviderDelegate
 extension AllChatsViewController: AllChatsEditActionProviderDelegate {
     
-    func allChatsEditActionProvider(_ ationProvider: AllChatsEditActionProvider, didSelect option: AllChatsEditActionProviderOption) {
+    func allChatsEditActionProvider(_ actionProvider: AllChatsEditActionProvider, didSelect option: AllChatsEditActionProviderOption) {
         switch option {
         case .exploreRooms:
             joinARoom()

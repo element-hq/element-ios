@@ -17,10 +17,9 @@
 import XCTest
 import RiotSwiftUI
 
-@available(iOS 14.0, *)
 class SpaceSelectorUITests: MockScreenTestCase {
     
-    func testAnalyticsPromptNewUser() {
+    func testInitialDisplay() {
         app.goToScreenWithIdentifier(MockSpaceSelectorScreenState.initialList.title)
         
         let disclosureButtons = app.buttons.matching(identifier: "disclosureButton").allElementsBoundByIndex

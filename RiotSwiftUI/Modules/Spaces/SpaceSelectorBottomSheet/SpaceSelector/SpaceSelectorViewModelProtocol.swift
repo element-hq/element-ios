@@ -19,8 +19,6 @@ import Foundation
 protocol SpaceSelectorViewModelProtocol {
     
     var completion: ((SpaceSelectorViewModelResult) -> Void)? { get set }
-    @available(iOS 14, *)
     static func makeViewModel(service: SpaceSelectorServiceProtocol) -> SpaceSelectorViewModelProtocol
-    @available(iOS 14, *)
     var context: SpaceSelectorViewModelType.Context { get }
 }

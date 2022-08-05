@@ -24,14 +24,6 @@ struct SpaceSelector: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
-    private var navigationTitle: String {
-        guard let parentName = viewModel.viewState.parentName else {
-            return VectorL10n.spaceSelectorTitle
-        }
-        
-        return parentName
-    }
-    
     // MARK: Public
     
     @ObservedObject var viewModel: SpaceSelectorViewModel.Context
@@ -59,7 +51,7 @@ struct SpaceSelector: View {
         }
         .frame(maxHeight: .infinity)
         .background(theme.colors.background.edgesIgnoringSafeArea(.all))
-        .navigationTitle(navigationTitle)
+        .navigationTitle(viewModel.viewState.navigationTitle)
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button(VectorL10n.create) {
