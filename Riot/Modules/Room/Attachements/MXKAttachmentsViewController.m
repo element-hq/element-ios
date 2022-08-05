@@ -701,7 +701,7 @@
                     width = minSize;
                     height = minSize;
                 }
-                
+
                 WKWebView *animatedGifViewer = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
                 animatedGifViewer.center = cell.customView.center;
                 animatedGifViewer.opaque = NO;
@@ -1377,6 +1377,30 @@
         [currentSharedAttachment onShareEnded];
         currentSharedAttachment = nil;
     }
+}
+
+#pragma mark - MXKDestinationAttachmentAnimatorDelegate
+
+- (BOOL)prepareSubviewsForTransition:(BOOL)isStartInteraction
+{
+    MXKMediaCollectionViewCell *cell = (MXKMediaCollectionViewCell *)[self.attachmentsCollection.visibleCells firstObject];
+    MXKAttachment *attachment = attachments[currentVisibleItemIndex];
+    NSString *mimeType = attachment.contentInfo[@"mimetype"];
+
+    // Check attachment type for GIFs - this is required because of the extra WKWebView
+    if (attachment.type == MXKAttachmentTypeImage && attachment.contentURL && [mimeType isEqualToString:@"image/gif"])
+    {
+        UIView *customView = cell.customView;
+        for (UIView *v in customView.subviews)
+        {
+            if ([v isKindOfClass:[WKWebView class]])
+            {
+                v.hidden = isStartInteraction;
+                return YES;
+            }
+        }
+    }
+    return NO;
 }
 
 - (UIImageView *)finalImageView
