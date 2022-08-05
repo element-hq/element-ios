@@ -136,10 +136,10 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 /**
  Display a new discussion with a target user without associated room.
  
- @param discussionTargetUser Direct chat target user.
+ @param directChatTargetUser Direct chat target user.
  @param session The Matrix session.
  */
-- (void)displayNewDiscussionWithTargetUser:(nonnull MXUser*)discussionTargetUser session:(nonnull MXSession*)session;
+- (void)displayNewDirectChatWithTargetUser:(nonnull MXUser*)directChatTargetUser session:(nonnull MXSession*)session;
 
 /**
  If `YES`, the room settings screen will be initially displayed. Default `NO`
@@ -174,12 +174,11 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
  Creates and returns a new `RoomViewController` object.
  
  @param configuration display configuration for the room view controller.
- @param discussionTargetUser Direct chat target user.
  @param session The Matrix session.
  
  @return An initialized `RoomViewController` object.
  */
-+ (instancetype)instantiateWithConfiguration:(RoomDisplayConfiguration *)configuration AndDiscussionTargetUser:(nonnull MXUser*)discussionTargetUser session:(nonnull MXSession*)session;
++ (instancetype)instantiateWithConfiguration:(RoomDisplayConfiguration *)configuration session:(nonnull MXSession*)session;
 
 @end
 

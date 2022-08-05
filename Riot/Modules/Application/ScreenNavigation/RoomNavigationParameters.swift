@@ -44,7 +44,7 @@ class RoomNavigationParameters: NSObject {
     let roomId: String?
     
     /// The user identifier to create a new DM
-    let discussionTargetUserId: String?
+    let userId: String?
     
     /// If not nil, the room will be opened on this event.
     let eventId: String?
@@ -77,7 +77,7 @@ class RoomNavigationParameters: NSObject {
          autoJoinInvitedRoom: Bool
     ) {
         self.roomId = roomId
-        self.discussionTargetUserId = nil
+        self.userId = nil
         self.eventId = eventId
         self.mxSession = mxSession
         self.threadParameters = threadParameters
@@ -96,7 +96,7 @@ class RoomNavigationParameters: NSObject {
          presentationParameters: ScreenPresentationParameters
     ) {
         self.roomId = roomId
-        self.discussionTargetUserId = nil
+        self.userId = nil
         self.eventId = eventId
         self.mxSession = mxSession
         self.threadParameters = threadParameters
@@ -115,7 +115,7 @@ class RoomNavigationParameters: NSObject {
          threadParameters: ThreadParameters?,
          presentationParameters: ScreenPresentationParameters) {
         self.roomId = roomId
-        self.discussionTargetUserId = nil
+        self.userId = nil
         self.eventId = eventId
         self.mxSession = mxSession
         self.threadParameters = threadParameters
@@ -133,7 +133,7 @@ class RoomNavigationParameters: NSObject {
          presentationParameters: ScreenPresentationParameters,
          showSettingsInitially: Bool) {
         self.roomId = roomId
-        self.discussionTargetUserId = nil
+        self.userId = nil
         self.eventId = eventId
         self.mxSession = mxSession
         self.presentationParameters = presentationParameters
@@ -145,11 +145,11 @@ class RoomNavigationParameters: NSObject {
         super.init()
     }
     
-    init(discussionTargetUserId: String,
+    init(userId: String,
          mxSession: MXSession,
          presentationParameters: ScreenPresentationParameters) {
         self.roomId = nil
-        self.discussionTargetUserId = discussionTargetUserId
+        self.userId = userId
         self.eventId = nil
         self.mxSession = mxSession
         self.threadParameters = nil

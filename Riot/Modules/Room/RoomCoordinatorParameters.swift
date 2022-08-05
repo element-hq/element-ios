@@ -47,7 +47,7 @@ struct RoomCoordinatorParameters {
     let threadId: String?
     
     /// The user identifier to create a new DM
-    let discussionTargetUserId: String?
+    let userId: String?
     
     /// Display configuration for the room
     let displayConfiguration: RoomDisplayConfiguration
@@ -71,7 +71,7 @@ struct RoomCoordinatorParameters {
                  parentSpaceId: String?,
                  eventId: String?,
                  threadId: String?,
-                 discussionTargetUserId: String?,
+                 userId: String?,
                  displayConfiguration: RoomDisplayConfiguration,
                  previewData: RoomPreviewData?,
                  showSettingsInitially: Bool,
@@ -84,7 +84,7 @@ struct RoomCoordinatorParameters {
         self.parentSpaceId = parentSpaceId
         self.eventId = eventId
         self.threadId = threadId
-        self.discussionTargetUserId = discussionTargetUserId
+        self.userId = userId
         self.displayConfiguration = displayConfiguration
         self.previewData = previewData
         self.showSettingsInitially = showSettingsInitially
@@ -100,7 +100,7 @@ struct RoomCoordinatorParameters {
          roomId: String? = nil,
          eventId: String? = nil,
          threadId: String? = nil,
-         discussionTargetUserId: String? = nil,
+         userId: String? = nil,
          showSettingsInitially: Bool,
          displayConfiguration: RoomDisplayConfiguration = .default,
          autoJoinInvitedRoom: Bool = false) {
@@ -113,7 +113,7 @@ struct RoomCoordinatorParameters {
                   parentSpaceId: parentSpaceId,
                   eventId: eventId,
                   threadId: threadId,
-                  discussionTargetUserId: discussionTargetUserId,
+                  userId: userId,
                   displayConfiguration: displayConfiguration,
                   previewData: nil,
                   showSettingsInitially: showSettingsInitially,
@@ -135,7 +135,7 @@ struct RoomCoordinatorParameters {
                   parentSpaceId: parentSpaceId,
                   eventId: nil,
                   threadId: nil,
-                  discussionTargetUserId: nil,
+                  userId: nil,
                   displayConfiguration: .default,
                   previewData: previewData,
                   showSettingsInitially: false,

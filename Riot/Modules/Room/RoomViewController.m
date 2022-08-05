@@ -224,8 +224,8 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 @property (nonatomic, readwrite) RoomDisplayConfiguration *displayConfiguration;
 
-// Direct chat target user when create a discussion without associated room
-@property (nonatomic, nullable, strong) MXUser *discussionTargetUser;
+// The direct chat target user. The room timeline is presented without an actual room until the direct chat is created
+@property (nonatomic, nullable, strong) MXUser *directChatTargetUser;
 
 // When layout of the screen changes (e.g. height), we no longer know whether
 // to autoscroll to the bottom again or not. Instead we need to capture the
@@ -269,10 +269,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     return controller;
 }
 
-+ (instancetype)instantiateWithConfiguration:(RoomDisplayConfiguration *)configuration AndDiscussionTargetUser:(nonnull MXUser*)discussionTargetUser session:(nonnull MXSession*)session
++ (instancetype)instantiateWithConfiguration:(RoomDisplayConfiguration *)configuration session:(nonnull MXSession*)session
 {
     RoomViewController *roomViewController = [self instantiateWithConfiguration:configuration];
-    roomViewController.discussionTargetUser = discussionTargetUser;
     [roomViewController addMatrixSession:session];
     return roomViewController;
 }
@@ -1035,7 +1034,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
     
     // Set potential discussion target user to nil, now use the dataSource to populate the view
-    self.discussionTargetUser = nil;
+    self.directChatTargetUser = nil;
     
     // Enable the read marker display, and disable its update.
     dataSource.showReadMarker = YES;
@@ -1428,7 +1427,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self setValue:titleView forKey:@"titleView"];
     titleView.delegate = self;
     titleView.mxRoom = self.roomDataSource.room;
-    titleView.mxUser = self.discussionTargetUser;
+    titleView.mxUser = self.directChatTargetUser;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:titleView];
     
     if ([titleView isKindOfClass:RoomTitleView.class])
@@ -1640,9 +1639,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         }
     };
     
-    if (self.discussionTargetUser)
+    if (self.directChatTargetUser)
     {
-        [self createDiscussionWithUser:self.discussionTargetUser completion:completion];
+        [self createDiscussionWithUser:self.directChatTargetUser completion:completion];
     }
     else
     {
@@ -1828,7 +1827,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 // Indicates if a new discussion with a target user (without associated room) is occuring.
 - (BOOL)isNewDiscussion
 {
-    return self.discussionTargetUser != nil;
+    return self.directChatTargetUser != nil;
 }
 
 - (BOOL)isEncryptionEnabled
@@ -2042,9 +2041,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         // Set user picture in input toolbar
         if (userPictureView)
         {
-            [userPictureView vc_setRoomAvatarImageWith:self.discussionTargetUser.avatarUrl
-                                                roomId:self.discussionTargetUser.userId
-                                           displayName:self.discussionTargetUser.displayname
+            [userPictureView vc_setRoomAvatarImageWith:self.directChatTargetUser.avatarUrl
+                                                roomId:self.directChatTargetUser.userId
+                                           displayName:self.directChatTargetUser.displayname
                                           mediaManager:self.mainSession.mediaManager];
         }
     }
@@ -2606,7 +2605,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
     else
     {
-        [[AppDelegate theDelegate] showNewDirectRoom:userId withMatrixSession:self.mainSession completion:completion];
+        [[AppDelegate theDelegate] showNewDirectChat:userId withMatrixSession:self.mainSession completion:completion];
     }
 }
 
@@ -3038,7 +3037,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 #pragma mark - New discussion
 
-- (void)displayNewDiscussionWithTargetUser:(nonnull MXUser*)discussionTargetUser session:(nonnull MXSession*)session
+- (void)displayNewDirectChatWithTargetUser:(nonnull MXUser*)directChatTargetUser session:(nonnull MXSession*)session
 {
     // Release existing room data source or preview
     [self displayRoom:nil];
@@ -3047,7 +3046,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     [self addMatrixSession:session];
     
-    self.discussionTargetUser = discussionTargetUser;
+    self.directChatTargetUser = directChatTargetUser;
     
     [self refreshRoomTitle];
     [self refreshRoomInputToolbar];
