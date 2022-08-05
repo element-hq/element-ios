@@ -29,6 +29,7 @@ limitations under the License.
 @interface MXKAttachmentsViewController : MXKViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIDocumentInteractionControllerDelegate, MXKDestinationAttachmentAnimatorDelegate>
 
 @property (nonatomic) IBOutlet UICollectionView *attachmentsCollection;
+@property (nonatomic) IBOutlet UIView *navigationBarContainer;
 @property (nonatomic) IBOutlet UINavigationBar *navigationBar;
 @property (unsafe_unretained, nonatomic) IBOutlet UIBarButtonItem *backButton;
 

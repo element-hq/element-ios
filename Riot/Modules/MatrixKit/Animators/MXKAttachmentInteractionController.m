@@ -111,7 +111,9 @@
 - (void)startInteractiveTransition:(id <UIViewControllerContextTransitioning>)transitionContext
 {
     self.transitionContext = transitionContext;
-    
+
+    [self.destinationViewController prepareSubviewsForTransition:YES];
+
     UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIImageView *destinationImageView = [self.destinationViewController finalImageView];
     destinationImageView.hidden = YES;
@@ -158,6 +160,8 @@
 
             [self.transitionContext cancelInteractiveTransition];
             [self.transitionContext completeTransition:NO];
+
+            [self.destinationViewController prepareSubviewsForTransition:NO];
         }
     }];
 }

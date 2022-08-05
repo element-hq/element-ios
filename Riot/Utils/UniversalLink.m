@@ -27,7 +27,22 @@
         _url = url;
 
         // Extract required parameters from the link
-        [self parsePathAndQueryParams];
+        [self parsePathAndQueryParamsForURL:url];
+    }
+    return self;
+}
+
+- (id)initWithUrl:(NSURL *)url updatedFragment:(NSString *)fragment
+{
+    self = [super init];
+    if (self)
+    {
+        _url = url;
+
+        // Update the url with the fragment
+        NSURLComponents *components = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:NO];
+        components.fragment = fragment;
+        [self parsePathAndQueryParamsForURL:components.URL];
     }
     return self;
 }
@@ -38,12 +53,12 @@
  The fragment can contain a '?'. So there are two kinds of parameters: path params and query params.
  It is in the form of /[pathParam1]/[pathParam2]?[queryParam1Key]=[queryParam1Value]&[queryParam2Key]=[queryParam2Value]
  */
-- (void)parsePathAndQueryParams
+- (void)parsePathAndQueryParamsForURL:(NSURL *)url
 {
     NSArray<NSString*> *pathParams;
     NSMutableDictionary *queryParams = [NSMutableDictionary dictionary];
 
-    NSArray<NSString*> *fragments = [_url.fragment componentsSeparatedByString:@"?"];
+    NSArray<NSString*> *fragments = [url.fragment componentsSeparatedByString:@"?"];
 
     // Extract path params
     pathParams = [[fragments[0] stringByRemovingPercentEncoding] componentsSeparatedByString:@"/"];
@@ -57,7 +72,7 @@
     }];
     
     // Extract query params
-    NSURLComponents *components = [NSURLComponents componentsWithURL:_url resolvingAgainstBaseURL:NO];
+    NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
     for (NSURLQueryItem *item in components.queryItems)
     {
         if (item.value)

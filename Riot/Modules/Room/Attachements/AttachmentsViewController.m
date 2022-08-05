@@ -58,7 +58,12 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationBar];
+    
+    // Remove the background effect as that won't match the container.
+    self.navigationBar.standardAppearance.backgroundEffect = nil;
+    self.navigationBar.standardAppearance.backgroundColor = ThemeService.shared.theme.colors.system;
+    self.navigationBarContainer.backgroundColor = ThemeService.shared.theme.colors.system;
 
     self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;

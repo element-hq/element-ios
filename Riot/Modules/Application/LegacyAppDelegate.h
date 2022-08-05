@@ -234,10 +234,10 @@ UINavigationControllerDelegate
  Process the fragment part of a vector.im link.
 
  @param fragment the fragment part of the universal link.
- @param universalLinkURL the unprocessed the universal link URL (optional).
+ @param universalLink the original universal link.
  @return YES in case of processing success.
  */
-- (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL;
+- (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromLink:(UniversalLink*)universalLink;
 
 /**
  Process the URL of a vector.im link.
