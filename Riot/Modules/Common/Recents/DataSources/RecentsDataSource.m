@@ -66,7 +66,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 @property (nonatomic, strong) CrossSigningService *crossSigningService;
 
 @property (nonatomic, strong) AllChatsFilterOptions *allChatsFilterOptions;
-@property (nonatomic, strong) UIView *allChatsOptionsView;
+@property (nonatomic, strong) AllChatsFilterOptionListView *allChatsOptionsView;
 
 @end
 
@@ -966,6 +966,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
         if (self.allChatsOptionsView)
         {
+            [self.allChatsFilterOptions updateWithFilterOptionListView:self.allChatsOptionsView
+                                                          unreadsCount:1 // unreads is allways visible
+                                                       favouritesCount:self.favoriteCellDataArray.count
+                                                      directRoomsCount:self.peopleCellDataArray.count];
             return self.allChatsOptionsView;
         }
     }

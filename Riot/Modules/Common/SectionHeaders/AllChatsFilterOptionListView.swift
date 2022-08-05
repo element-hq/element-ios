@@ -71,6 +71,14 @@ class AllChatsFilterOptionListView: UIView, Themable {
         setupView()
     }
     
+    // MARK: - Public
+    
+    func setSelectedOptionType(_ optionType: AllChatsLayoutFilterType, animated: Bool) {
+        UIView.animate(withDuration: animated ? 0.3 : 0) {
+            self.selectedOptionType = optionType
+        }
+    }
+    
     // MARK: - Themable
     
     func update(theme: Theme) {
@@ -117,9 +125,7 @@ extension AllChatsFilterOptionListView: TabListViewDelegate {
             return
         }
         
-        UIView.animate(withDuration: 0.3) {
-            self.selectedOptionType = optionType
-        }
+        self.setSelectedOptionType(optionType, animated: true)
         selectionChanged?(optionType)
     }
     
