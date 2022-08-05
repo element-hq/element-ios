@@ -134,13 +134,8 @@ class DefaultTheme: NSObject, Theme {
         if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
             
-            if BuildSettings.newAppLayoutEnabled {
-                appearance.configureWithTransparentBackground()
-                appearance.backgroundEffect = UIBlurEffect(style: .light)
-            } else {
-                appearance.configureWithOpaqueBackground()
-                appearance.backgroundColor = baseColor
-            }
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = baseColor
 
             if !modernScrollEdgeAppearance {
                 appearance.shadowColor = nil
@@ -153,7 +148,7 @@ class DefaultTheme: NSObject, Theme {
             ]
 
             navigationBar.standardAppearance = appearance
-            navigationBar.scrollEdgeAppearance = modernScrollEdgeAppearance && !BuildSettings.newAppLayoutEnabled ? nil : appearance
+            navigationBar.scrollEdgeAppearance = modernScrollEdgeAppearance ? nil : appearance
         } else {
             navigationBar.titleTextAttributes = [
                 NSAttributedString.Key.foregroundColor: textPrimaryColor

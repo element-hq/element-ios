@@ -133,7 +133,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     
     private func update(with theme: Theme) {
         for window in UIApplication.shared.windows {
-            window.overrideUserInterfaceStyle = ThemeService.shared().isCurrentThemeDark() ? .dark : .light
+            window.overrideUserInterfaceStyle = ThemeService.shared().theme.userInterfaceStyle
         }
     }
     

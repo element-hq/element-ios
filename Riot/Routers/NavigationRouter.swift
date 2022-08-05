@@ -52,7 +52,7 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         self.completions = [:]
         super.init()
         self.navigationController.delegate = self
-        self.navigationController.overrideUserInterfaceStyle = ThemeService.shared().isCurrentThemeDark() ? .dark : .light
+        self.navigationController.overrideUserInterfaceStyle = ThemeService.shared().theme.userInterfaceStyle
 
         // Post local notification on NavigationRouter creation
         let userInfo: [String: Any] = [NavigationRouter.NotificationUserInfoKey.navigationRouter: self,
@@ -296,8 +296,7 @@ final class NavigationRouter: NSObject, NavigationRouterType {
     // MARK: - Theme management
     
     @objc private func themeDidChange() {
-        self.navigationController.overrideUserInterfaceStyle = ThemeService.shared().isCurrentThemeDark() ? .dark : .light
-        ThemeService.shared().theme.applyStyle(onNavigationBar: self.navigationController.navigationBar, withModernScrollEdgeAppearance: false)
+        self.navigationController.overrideUserInterfaceStyle = ThemeService.shared().theme.userInterfaceStyle
     }
     
     // MARK: - Private
