@@ -41,7 +41,6 @@
 #import "Tools.h"
 #import "RoomViewController.h"
 #import "ContactDetailsViewController.h"
-#import "GroupDetailsViewController.h"
 #import "RoomInputToolbarView.h"
 #import "NSArray+Element.h"
 #import "ShareItemSender.h"
