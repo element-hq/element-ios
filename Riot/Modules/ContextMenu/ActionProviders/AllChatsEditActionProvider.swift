@@ -29,7 +29,7 @@ enum AllChatsEditActionProviderOption {
 }
 
 protocol AllChatsEditActionProviderDelegate: AnyObject {
-    func allChatsEditActionProvider(_ ationProvider: AllChatsEditActionProvider, didSelect option: AllChatsEditActionProviderOption)
+    func allChatsEditActionProvider(_ actionProvider: AllChatsEditActionProvider, didSelect option: AllChatsEditActionProviderOption)
 }
 
 /// `AllChatsEditActionProvider` provides the menu for accessing edit screens according to the current parent space
@@ -81,6 +81,17 @@ class AllChatsEditActionProvider {
     
     // MARK: - Public
     
+    /// Returns an instance of the updated menu accordingly to the given parameters.
+    ///
+    /// Some menu items can be disabled depending on the required power levels of the `parentSpace`. Therefore, `updateMenu()` first returns a temporary context menu
+    /// with all sensible items disabled, asynchronously fetches power levels of the `parentSpace`, then gives a new instance of the menu with, potentially, all sensible items
+    /// enabled via the `completion` callback.
+    ///
+    /// - Parameters:
+    ///     - session: The current `MXSession` instance
+    ///     - parentSpace: The current parent space (`nil` for home space)
+    ///     - completion: callback called once the power levels of the `parentSpace` have been fetched and the menu items have been computed accordingly.
+    /// - Returns: If the `parentSpace` is `nil`, the context menu, the temporary context menu otherwise.
     func updateMenu(with session: MXSession?, parentSpace: MXSpace?, completion: @escaping (UIMenu) -> Void) -> UIMenu {
         self.parentSpace = parentSpace
         isInviteAvailable = false
@@ -111,8 +122,7 @@ class AllChatsEditActionProvider {
     
     private var exploreRoomsAction: UIAction {
         UIAction(title: VectorL10n.spacesExploreRooms,
-                 image: parentSpace == nil ? UIImage(systemName: "list.bullet") : UIImage(systemName: "square.fill.text.grid.1x2"),
-                 discoverabilityTitle: VectorL10n.spacesExploreRooms) { [weak self] action in
+                 image: parentSpace == nil ? UIImage(systemName: "list.bullet") : UIImage(systemName: "square.fill.text.grid.1x2")) { [weak self] action in
             guard let self = self else { return }
             
             self.delegate?.allChatsEditActionProvider(self, didSelect: .exploreRooms)
@@ -122,7 +132,6 @@ class AllChatsEditActionProvider {
     private var createRoomAction: UIAction {
         UIAction(title: parentSpace == nil ? VectorL10n.roomRecentsCreateEmptyRoom : VectorL10n.spacesAddRoom,
                  image: UIImage(systemName: "number"),
-                 discoverabilityTitle: VectorL10n.roomRecentsCreateEmptyRoom,
                  attributes: isAddRoomAvailable ? [] : .disabled) { [weak self] action in
             guard let self = self else { return }
             
@@ -132,8 +141,7 @@ class AllChatsEditActionProvider {
     
     private var startChatAction: UIAction {
         UIAction(title: VectorL10n.roomRecentsStartChatWith,
-                 image: UIImage(systemName: "person"),
-                 discoverabilityTitle: VectorL10n.roomRecentsStartChatWith) { [weak self] action in
+                 image: UIImage(systemName: "person")) { [weak self] action in
             guard let self = self else { return }
             
             self.delegate?.allChatsEditActionProvider(self, didSelect: .startChat)
@@ -143,7 +151,6 @@ class AllChatsEditActionProvider {
     private var createSpaceAction: UIAction {
         UIAction(title: parentSpace == nil ? VectorL10n.spacesCreateSpaceTitle : VectorL10n.spacesCreateSubspaceTitle,
                  image: UIImage(systemName: "plus"),
-                 discoverabilityTitle: VectorL10n.spacesCreateSpaceTitle,
                  attributes: isAddRoomAvailable ? [] : .disabled) { [weak self] action in
             guard let self = self else { return }
             
@@ -154,7 +161,6 @@ class AllChatsEditActionProvider {
     private var invitePeopleAction: UIAction {
         UIAction(title: VectorL10n.spacesInvitePeople,
                  image: UIImage(systemName: "person.badge.plus"),
-                 discoverabilityTitle: VectorL10n.spacesInvitePeople,
                  attributes: isInviteAvailable ? [] : .disabled) { [weak self] action in
             guard let self = self else { return }
             
@@ -164,8 +170,7 @@ class AllChatsEditActionProvider {
     
     private var spaceMembersAction: UIAction {
         UIAction(title: VectorL10n.roomDetailsPeople,
-                 image: UIImage(systemName: "person.3"),
-                 discoverabilityTitle: VectorL10n.roomDetailsPeople) { [weak self] action in
+                 image: UIImage(systemName: "person.3")) { [weak self] action in
             guard let self = self else { return }
             
             self.delegate?.allChatsEditActionProvider(self, didSelect: .spaceMembers)
@@ -174,8 +179,7 @@ class AllChatsEditActionProvider {
     
     private var spaceSettingsAction: UIAction {
         UIAction(title: VectorL10n.allChatsEditMenuSpaceSettings,
-                 image: UIImage(systemName: "gearshape"),
-                 discoverabilityTitle: VectorL10n.sideMenuActionSettings) { [weak self] action in
+                 image: UIImage(systemName: "gearshape")) { [weak self] action in
             guard let self = self else { return }
             
             self.delegate?.allChatsEditActionProvider(self, didSelect: .spaceSettings)
@@ -185,7 +189,6 @@ class AllChatsEditActionProvider {
     private var leaveSpaceAction: UIAction {
         UIAction(title: VectorL10n.allChatsEditMenuLeaveSpace(parentName),
                  image: UIImage(systemName: "rectangle.portrait.and.arrow.right.fill"),
-                 discoverabilityTitle: VectorL10n.leave,
                  attributes: .destructive) { [weak self] action in
             guard let self = self else { return }
             

@@ -15,7 +15,6 @@
 //
 
 import SwiftUI
-import CommonKit
 
 enum SpaceSelectorBottomSheetCoordinatorResult {
     case cancel
@@ -58,7 +57,6 @@ final class SpaceSelectorBottomSheetCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: SpaceSelectorBottomSheetCoordinatorParameters,
          navigationRouter: NavigationRouterType = NavigationRouter(navigationController: RiotNavigationController())) {
         self.parameters = parameters

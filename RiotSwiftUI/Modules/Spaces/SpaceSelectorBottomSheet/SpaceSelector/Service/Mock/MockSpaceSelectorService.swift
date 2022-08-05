@@ -18,10 +18,9 @@ import Foundation
 import Combine
 import UIKit
 
-@available(iOS 14.0, *)
 class MockSpaceSelectorService: SpaceSelectorServiceProtocol {
     
-    static let homeItem = SpaceSelectorListItemData(id: SpaceSelectorListItemDataHomeSpaceId, avatar: nil, icon: UIImage(systemName: "house"), displayName: "All Chats", notificationCount: 0, highlightedNotificationCount: 0, hasSubItems: false)
+    static let homeItem = SpaceSelectorListItemData(id: SpaceSelectorConstants.homeSpaceId, avatar: nil, icon: UIImage(systemName: "house"), displayName: "All Chats", notificationCount: 0, highlightedNotificationCount: 0, hasSubItems: false)
     static let defaultSpaceList = [
         homeItem,
         SpaceSelectorListItemData(id: "!aaabaa:matrix.org", avatar: nil, icon: UIImage(systemName: "number"), displayName: "Default Space", notificationCount: 0, highlightedNotificationCount: 0, hasSubItems: false),
@@ -34,7 +33,7 @@ class MockSpaceSelectorService: SpaceSelectorServiceProtocol {
     var parentSpaceNameSubject: CurrentValueSubject<String?, Never>
     var selectedSpaceId: String?
 
-    init(spaceList: [SpaceSelectorListItemData] = defaultSpaceList, parentSpaceName: String? = nil, selectedSpaceId: String = SpaceSelectorListItemDataHomeSpaceId) {
+    init(spaceList: [SpaceSelectorListItemData] = defaultSpaceList, parentSpaceName: String? = nil, selectedSpaceId: String = SpaceSelectorConstants.homeSpaceId) {
         self.spaceListSubject = CurrentValueSubject(spaceList)
         self.parentSpaceNameSubject = CurrentValueSubject(parentSpaceName)
         self.selectedSpaceId = selectedSpaceId

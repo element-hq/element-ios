@@ -17,7 +17,6 @@
 import Foundation
 import Combine
 
-@available(iOS 14.0, *)
 protocol SpaceSelectorServiceProtocol {
     var spaceListSubject: CurrentValueSubject<[SpaceSelectorListItemData], Never> { get }
     var parentSpaceNameSubject: CurrentValueSubject<String?, Never> { get }

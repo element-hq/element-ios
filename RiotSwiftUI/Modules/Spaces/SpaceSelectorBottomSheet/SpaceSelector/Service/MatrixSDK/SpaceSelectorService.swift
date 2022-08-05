@@ -18,7 +18,6 @@ import Foundation
 import Combine
 import MatrixSDK
 
-@available(iOS 14.0, *)
 class SpaceSelectorService: SpaceSelectorServiceProtocol {
     
     // MARK: - Properties
@@ -30,7 +29,7 @@ class SpaceSelectorService: SpaceSelectorServiceProtocol {
     private let showHomeSpace: Bool
 
     private var spaceList: [SpaceSelectorListItemData] {
-        var itemList = showHomeSpace && parentSpaceId == nil ? [SpaceSelectorListItemData(id: SpaceSelectorListItemDataHomeSpaceId, icon: Asset.Images.sideMenuActionIconFeedback.image, displayName: VectorL10n.allChatsTitle)] : []
+        var itemList = showHomeSpace && parentSpaceId == nil ? [SpaceSelectorListItemData(id: SpaceSelectorConstants.homeSpaceId, icon: Asset.Images.sideMenuActionIconFeedback.image, displayName: VectorL10n.allChatsTitle)] : []
         
         let notificationCounter = session.spaceService.notificationCounter
         

@@ -93,9 +93,9 @@ struct LiveLocationSharingViewer: View {
                             .font(theme.fonts.body)
                             .foregroundColor(theme.colors.tertiaryContent)
                     }
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(.top, 10)
-                    .padding(.bottom, 10)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, 10)
+                    .padding(.horizontal, 15)
                     .background(theme.colors.background.ignoresSafeArea())
                 }
             }
