@@ -1,5 +1,3 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh Spaces/SpaceCreation/SpaceCreationPostProcess SpaceCreationPostProcess
 // 
 // Copyright 2021 New Vector Ltd
 //
@@ -17,9 +15,10 @@
 //
 
 import Foundation
+import Combine
 
-struct SpaceCreationPostProcessCoordinatorParameters {
-    let session: MXSession
-    let parentSpaceId: String?
-    let creationParams: SpaceCreationParameters
+protocol SpaceSelectorServiceProtocol {
+    var spaceListSubject: CurrentValueSubject<[SpaceSelectorListItemData], Never> { get }
+    var parentSpaceNameSubject: CurrentValueSubject<String?, Never> { get }
+    var selectedSpaceId: String? { get }
 }

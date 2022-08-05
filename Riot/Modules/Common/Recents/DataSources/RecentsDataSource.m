@@ -183,7 +183,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         [types addObject:@(RecentsDataSourceSectionTypeSecureBackupBanner)];
     }
     
-    if (self.invitesCellDataArray.count > 0)
+    if (!BuildSettings.newAppLayoutEnabled && self.invitesCellDataArray.count > 0)
     {
         [types addObject:@(RecentsDataSourceSectionTypeInvites)];
     }
@@ -229,7 +229,12 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         [types addObject:@(RecentsDataSourceSectionTypeAllChats)];
     }
     
-    if (self.suggestedRoomCellDataArray.count > 0)
+    if (self.currentSpace == nil && BuildSettings.newAppLayoutEnabled && self.invitesCellDataArray.count > 0)
+    {
+        [types addObject:@(RecentsDataSourceSectionTypeInvites)];
+    }
+    
+    if (self.currentSpace != nil && self.suggestedRoomCellDataArray.count > 0)
     {
         [types addObject:@(RecentsDataSourceSectionTypeSuggestedRooms)];
     }

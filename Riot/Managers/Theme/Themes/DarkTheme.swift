@@ -146,8 +146,16 @@ class DarkTheme: NSObject, Theme {
             
             navigationBar.standardAppearance = appearance
             
-            navigationBar.scrollEdgeAppearance = modernScrollEdgeAppearance || BuildSettings.newAppLayoutEnabled ? nil : appearance
-        } else {
+            if BuildSettings.newAppLayoutEnabled {
+                 appearance.configureWithOpaqueBackground()
+                 appearance.backgroundColor = baseColor
+                 appearance.shadowColor = nil
+                 appearance.titleTextAttributes = [
+                     NSAttributedString.Key.foregroundColor: textPrimaryColor
+                 ]
+             }
+             navigationBar.scrollEdgeAppearance = modernScrollEdgeAppearance ? nil : appearance
+            } else {
             navigationBar.titleTextAttributes = [
                 NSAttributedString.Key.foregroundColor: textPrimaryColor
             ]

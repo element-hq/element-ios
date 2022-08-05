@@ -32,8 +32,8 @@ class AllChatsActionProvider {
             self.recentsAction,
             self.filtersAction,
             UIMenu(title: "", options: .displayInline, children: [
-                alphabeticalOrderAction,
-                activityOrderAction
+                activityOrderAction,
+                alphabeticalOrderAction
             ])
         ])
     }

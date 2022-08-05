@@ -1998,6 +1998,7 @@ Tap the + to start adding people.";
 "spaces_add_space_title" = "Create space";
 "spaces_add_subspace_title" = "Create space within %@";
 "spaces_create_space_title" = "Create a space";
+"spaces_create_subspace_title" = "Create a subspace";
 "spaces_left_panel_title" = "Spaces";
 "leave_space_title" = "Leave %@";
 "leave_space_message" = "Are you sure you want to leave %@? Do you also want to leave all rooms and spaces of this space?";
@@ -2043,6 +2044,8 @@ Tap the + to start adding people.";
 "spaces_creation_hint" = "Spaces are a new way to group rooms and people.";
 "spaces_creation_visibility_title" = "What type of space do you want to create?";
 "spaces_creation_visibility_message" = "To join an existing space, you need an invite.";
+"spaces_subspace_creation_visibility_title" = "What type of subspace do you want to create?";
+"spaces_subspace_creation_visibility_message" = "The created space will be added to %@.";
 "spaces_creation_footer" = "You can change this later";
 "spaces_creation_settings_message" = "Add some details to help it stand out. You can change these at any point.";
 "spaces_creation_address" = "Address";
@@ -2158,7 +2161,7 @@ Tap the + to start adding people.";
 
 "all_chats_title" = "All chats";
 "all_chats_section_title" = "Chats";
-"all_chats_edit_layout" = "Edit layout";
+"all_chats_edit_layout" = "Layout preferences";
 "all_chats_edit_layout_recents" = "Recents";
 "all_chats_edit_layout_unreads" = "Unreads";
 "all_chats_edit_layout_add_section_title" = "Add section to home";
@@ -2176,9 +2179,14 @@ Tap the + to start adding people.";
 
 "room_recents_recently_viewed_section" = "Recently viewed";
 
+"all_chats_user_menu_settings" = "User settings";
+
+"all_chats_edit_menu_leave_space" = "Leave %@";
+"all_chats_edit_menu_space_settings" = "Space settings";
+
 // Mark: - Space Selector
 
-"space_selector_title" = "Choose space";
+"space_selector_title" = "My spaces";
 
 // Mark: - Polls
 

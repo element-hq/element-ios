@@ -119,7 +119,7 @@ public class VectorL10n: NSObject {
   public static var allChatsAllFilter: String { 
     return VectorL10n.tr("Vector", "all_chats_all_filter") 
   }
-  /// Edit layout
+  /// Layout preferences
   public static var allChatsEditLayout: String { 
     return VectorL10n.tr("Vector", "all_chats_edit_layout") 
   }
@@ -171,6 +171,14 @@ public class VectorL10n: NSObject {
   public static var allChatsEditLayoutUnreads: String { 
     return VectorL10n.tr("Vector", "all_chats_edit_layout_unreads") 
   }
+  /// Leave %@
+  public static func allChatsEditMenuLeaveSpace(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "all_chats_edit_menu_leave_space", p1)
+  }
+  /// Space settings
+  public static var allChatsEditMenuSpaceSettings: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_menu_space_settings") 
+  }
   /// Chats
   public static var allChatsSectionTitle: String { 
     return VectorL10n.tr("Vector", "all_chats_section_title") 
@@ -178,6 +186,10 @@ public class VectorL10n: NSObject {
   /// All chats
   public static var allChatsTitle: String { 
     return VectorL10n.tr("Vector", "all_chats_title") 
+  }
+  /// User settings
+  public static var allChatsUserMenuSettings: String { 
+    return VectorL10n.tr("Vector", "all_chats_user_menu_settings") 
   }
   /// Help us identify issues and improve %@ by sharing anonymous usage data. To understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.
   public static func analyticsPromptMessageNewUser(_ p1: String) -> String {
@@ -7779,7 +7791,7 @@ public class VectorL10n: NSObject {
   public static var spacePublicJoinRuleDetail: String { 
     return VectorL10n.tr("Vector", "space_public_join_rule_detail") 
   }
-  /// Choose space
+  /// My spaces
   public static var spaceSelectorTitle: String { 
     return VectorL10n.tr("Vector", "space_selector_title") 
   }
@@ -7838,6 +7850,10 @@ public class VectorL10n: NSObject {
   /// Create a space
   public static var spacesCreateSpaceTitle: String { 
     return VectorL10n.tr("Vector", "spaces_create_space_title") 
+  }
+  /// Create a subspace
+  public static var spacesCreateSubspaceTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_create_subspace_title") 
   }
   /// As this space is just for you, no one will be informed. You can add more later.
   public static var spacesCreationAddRoomsMessage: String { 
@@ -8070,6 +8086,14 @@ public class VectorL10n: NSObject {
   /// Some results may be hidden because they’re private and you need an invite to join them.
   public static var spacesNoRoomFoundDetail: String { 
     return VectorL10n.tr("Vector", "spaces_no_room_found_detail") 
+  }
+  /// The created space will be added to %@.
+  public static func spacesSubspaceCreationVisibilityMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_subspace_creation_visibility_message", p1)
+  }
+  /// What type of subspace do you want to create?
+  public static var spacesSubspaceCreationVisibilityTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_subspace_creation_visibility_title") 
   }
   /// Suggested
   public static var spacesSuggestedRoom: String { 

@@ -1,5 +1,3 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh Spaces/SpaceCreation/SpaceCreationPostProcess SpaceCreationPostProcess
 // 
 // Copyright 2021 New Vector Ltd
 //
@@ -18,8 +16,9 @@
 
 import Foundation
 
-struct SpaceCreationPostProcessCoordinatorParameters {
-    let session: MXSession
-    let parentSpaceId: String?
-    let creationParams: SpaceCreationParameters
+protocol SpaceSelectorViewModelProtocol {
+    
+    var completion: ((SpaceSelectorViewModelResult) -> Void)? { get set }
+    static func makeViewModel(service: SpaceSelectorServiceProtocol) -> SpaceSelectorViewModelProtocol
+    var context: SpaceSelectorViewModelType.Context { get }
 }

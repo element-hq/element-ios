@@ -74,7 +74,7 @@ class AllChatsFilterOptionListView: UIView, Themable {
     // MARK: - Themable
     
     func update(theme: Theme) {
-        backgroundColor = theme.colors.background.withAlphaComponent(0.3)
+        backgroundColor = theme.colors.background.withAlphaComponent(0.7)
         
         tabListView.itemFont = theme.fonts.callout
         tabListView.tintColor = theme.colors.accent

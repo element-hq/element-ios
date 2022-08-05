@@ -737,6 +737,11 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private weak var rightMenuAvatarView: AvatarView?
     
     private func createLeftButtonItem(for viewController: UIViewController) {
+        guard !BuildSettings.newAppLayoutEnabled else {
+            createAvatarButtonItem(for: viewController)
+            return
+        }
+        
         guard BuildSettings.enableSideMenu else {
             let settingsBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.settingsIcon.image, style: .plain) { [weak self] in
                 self?.showSettings()
@@ -756,23 +761,21 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     }
 
     private func createRightButtonItem(for viewController: UIViewController) {
-        guard BuildSettings.newAppLayoutEnabled else {
-            let searchBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.searchIcon.image, style: .plain) { [weak self] in
-                self?.showUnifiedSearch()
-            }
-            searchBarButtonItem.accessibilityLabel = VectorL10n.searchDefaultPlaceholder
-            viewController.navigationItem.rightBarButtonItem = searchBarButtonItem
-            
+        guard !BuildSettings.newAppLayoutEnabled else {
             return
         }
-
-        createAvatarButtonItem(for: viewController)
+        
+        let searchBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.searchIcon.image, style: .plain) { [weak self] in
+            self?.showUnifiedSearch()
+        }
+        searchBarButtonItem.accessibilityLabel = VectorL10n.searchDefaultPlaceholder
+        viewController.navigationItem.rightBarButtonItem = searchBarButtonItem
     }
     
     private func createAvatarButtonItem(for viewController: UIViewController) {
         var actions: [UIMenuElement] = []
         
-        actions.append(UIAction(title: VectorL10n.settings, image: UIImage(systemName: "gearshape")) { [weak self] action in
+        actions.append(UIAction(title: VectorL10n.allChatsUserMenuSettings, image: UIImage(systemName: "gearshape")) { [weak self] action in
             self?.showSettings()
         })
         
@@ -788,11 +791,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         })
         
         actions.append(UIMenu(title: "", options: .displayInline, children: subMenuActions))
-        
-        actions.append(UIAction(title: VectorL10n.roomAccessibilitySearch, image: UIImage(systemName: "magnifyingglass")) { [weak self] action in
-            self?.showUnifiedSearch()
-        })
-
         actions.append(UIMenu(title: "", options: .displayInline, children: [
             UIAction(title: VectorL10n.settingsSignOut, image: UIImage(systemName: "rectangle.portrait.and.arrow.right.fill"), attributes: .destructive) { [weak self] action in
                 self?.signOut()
@@ -822,7 +820,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             avatarView.fill(with: avatar)
         }
         
-        viewController.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: view)
+        viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: view)
     }
     
     private func updateAvatarButtonItem() {
@@ -924,6 +922,11 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private var windowOverlay: WindowOverlayPresenter?
 
     func showCoachMessageIfNeeded(with session: MXSession) {
+        guard !BuildSettings.newAppLayoutEnabled else {
+            // Showing coach message makes no sense with the new App Layout
+            return
+        }
+        
         if !RiotSettings.shared.slideMenuRoomsCoachMessageHasBeenDisplayed {
             let isAuthenticated = MXKAccountManager.shared().activeAccounts.first != nil || MXKAccountManager.shared().accounts.first?.isSoftLogout == false
 

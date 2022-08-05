@@ -35,7 +35,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     
     private var invitedRoomListDataFetcher: MXRoomListDataFetcher? {
         switch mode {
-        case .home:
+        case .home, .allChats:
             return invitedRoomListDataFetcherForHome
         case .people:
             return invitedRoomListDataFetcherForPeople
@@ -548,7 +548,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     
     private func createCommonRoomListDataFetcher(withDataTypes dataTypes: MXRoomSummaryDataTypes = [],
                                                  onlySuggested: Bool = false,
-                                                 onlyRecents: Bool = false,
+                                                 onlyBreadcrumbs: Bool = false,
                                                  paginate: Bool = true,
                                                  strictMatches: Bool = false) -> MXRoomListDataFetcher {
         guard let session = session else {
@@ -556,14 +556,14 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         }
         let filterOptions = MXRoomListDataFilterOptions(dataTypes: dataTypes,
                                                         onlySuggested: onlySuggested,
-                                                        onlyBreadcrumbs: onlyRecents,
+                                                        onlyBreadcrumbs: onlyBreadcrumbs,
                                                         query: query,
                                                         space: space,
                                                         showAllRoomsInHomeSpace: showAllRoomsInHomeSpace,
                                                         strictMatches: strictMatches)
         
         let fetchOptions = MXRoomListDataFetchOptions(filterOptions: filterOptions,
-                                                      sortOptions: onlyRecents ? noSortOptions : sortOptions,
+                                                      sortOptions: onlyBreadcrumbs ? noSortOptions : sortOptions,
                                                       async: true)
         let fetcher = session.roomListDataManager.fetcher(withOptions: fetchOptions)
         if paginate {
@@ -653,7 +653,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         lowPriorityRoomListDataFetcher = createCommonRoomListDataFetcher(withDataTypes: [.lowPriority])
         serverNoticeRoomListDataFetcher = createCommonRoomListDataFetcher(withDataTypes: [.serverNotice])
         suggestedRoomListDataFetcher = createCommonRoomListDataFetcher(onlySuggested: true)
-        breadcrumbsRoomListDataFetcher = createCommonRoomListDataFetcher(onlyRecents: true)
+        breadcrumbsRoomListDataFetcher = createCommonRoomListDataFetcher(onlyBreadcrumbs: true)
         allChatsRoomListDataFetcher = createConversationRoomListDataFetcherForAllChats()
         
         fetchersCreated = true
