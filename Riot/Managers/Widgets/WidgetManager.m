@@ -779,20 +779,9 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
         NSData *configsData = [userDefaults objectForKey:@"integrationManagerConfigs"];
         if (configsData)
         {
-            NSError *error;
-            NSDictionary *unarchived = [NSKeyedUnarchiver unarchivedDictionaryWithKeysOfClass:NSString.class
-                                                                               objectsOfClass:WidgetManagerConfig.class
-                                                                                     fromData:configsData
-                                                                                        error:&error];
-            if (!error)
-            {
-                configs = [NSMutableDictionary dictionaryWithDictionary:unarchived];
-            }
-            else
-            {
-                MXLogError(@"[WidgetManager] loadConfigs: Failed to unarchive the dictionary from the data.")
-                configs = [NSMutableDictionary dictionary];
-            }
+            // We need to map the config class name since the bundle name was updated otherwise unarchiving crashes.
+            [NSKeyedUnarchiver setClass:WidgetManagerConfig.class forClassName:@"Riot.WidgetManagerConfig"];
+            configs = [NSMutableDictionary dictionaryWithDictionary:[NSKeyedUnarchiver unarchiveObjectWithData:configsData]];
         }
 
         if (!configs)
