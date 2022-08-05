@@ -42,7 +42,6 @@ static NSRegularExpression *userIdRegex;
 static NSRegularExpression *roomIdRegex;
 static NSRegularExpression *roomAliasRegex;
 static NSRegularExpression *eventIdRegex;
-static NSRegularExpression *groupIdRegex;
 // A regex to find http URLs.
 static NSRegularExpression *httpLinksRegex;
 // A regex to find all HTML tags
@@ -59,7 +58,6 @@ static NSRegularExpression *htmlTagsRegex;
         roomIdRegex = [NSRegularExpression regularExpressionWithPattern:kMXToolsRegexStringForMatrixRoomIdentifier options:NSRegularExpressionCaseInsensitive error:nil];
         roomAliasRegex = [NSRegularExpression regularExpressionWithPattern:kMXToolsRegexStringForMatrixRoomAlias options:NSRegularExpressionCaseInsensitive error:nil];
         eventIdRegex = [NSRegularExpression regularExpressionWithPattern:kMXToolsRegexStringForMatrixEventIdentifier options:NSRegularExpressionCaseInsensitive error:nil];
-        groupIdRegex = [NSRegularExpression regularExpressionWithPattern:kMXToolsRegexStringForMatrixGroupIdentifier options:NSRegularExpressionCaseInsensitive error:nil];
         
         httpLinksRegex = [NSRegularExpression regularExpressionWithPattern:@"(?i)\\b(https?://\\S*)\\b" options:NSRegularExpressionCaseInsensitive error:nil];
         htmlTagsRegex  = [NSRegularExpression regularExpressionWithPattern:@"<(\\w+)[^>]*>" options:NSRegularExpressionCaseInsensitive error:nil];        
@@ -1038,12 +1036,6 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
     if (enabledMatrixIdsBitMask & MXKTOOLS_EVENT_IDENTIFIER_BITWISE)
     {
         [MXKTools createLinksInMutableAttributedString:mutableAttributedString matchingRegex:eventIdRegex];
-    }
-    
-    // If enabled, make group id clickable
-    if (enabledMatrixIdsBitMask & MXKTOOLS_GROUP_IDENTIFIER_BITWISE)
-    {
-        [MXKTools createLinksInMutableAttributedString:mutableAttributedString matchingRegex:groupIdRegex];
     }
 }
 

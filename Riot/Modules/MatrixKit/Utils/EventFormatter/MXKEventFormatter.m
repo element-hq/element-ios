@@ -1022,21 +1022,6 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
             }
             break;
         }
-        case MXEventTypeRoomRelatedGroups:
-        {
-            NSArray *groups;
-            MXJSONModelSetArray(groups, event.content[@"groups"]);
-            if (groups)
-            {
-                displayText = [VectorL10n noticeRoomRelatedGroups:[groups componentsJoinedByString:@", "]];
-                // Append redacted info if any
-                if (redactedInfo)
-                {
-                    displayText = [NSString stringWithFormat:@"%@\n %@", displayText, redactedInfo];
-                }
-            }
-            break;
-        }
         case MXEventTypeRoomEncrypted:
         {
             // Is redacted?
@@ -2080,12 +2065,6 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
     if (_treatMatrixEventIdAsLink)
     {
         enabledMatrixIdsBitMask |= MXKTOOLS_EVENT_IDENTIFIER_BITWISE;
-    }
-    
-    // If enabled, make group id clickable
-    if (_treatMatrixGroupIdAsLink)
-    {
-        enabledMatrixIdsBitMask |= MXKTOOLS_GROUP_IDENTIFIER_BITWISE;
     }
 
     [MXKTools createLinksInMutableAttributedString:mutableAttributedString forEnabledMatrixIds:enabledMatrixIdsBitMask];
