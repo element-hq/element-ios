@@ -339,9 +339,6 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "roomSettingsScreenShowAddressSettings", defaultValue: BuildSettings.roomSettingsScreenShowAddressSettings, storage: defaults)
     var roomSettingsScreenShowAddressSettings
     
-    @UserDefault(key: "roomSettingsScreenShowFlairSettings", defaultValue: BuildSettings.roomSettingsScreenShowFlairSettings, storage: defaults)
-    var roomSettingsScreenShowFlairSettings
-    
     @UserDefault(key: "roomSettingsScreenShowAdvancedSettings", defaultValue: BuildSettings.roomSettingsScreenShowAdvancedSettings, storage: defaults)
     var roomSettingsScreenShowAdvancedSettings
     

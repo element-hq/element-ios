@@ -620,13 +620,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
     [MXSDKOptions.sharedInstance.profiler resume];
     
-    // Force each session to refresh here their publicised groups by user dictionary.
-    // When these publicised groups are retrieved for a user, they are cached and reused until the app is backgrounded and enters in the foreground again
-    for (MXSession *session in mxSessionArray)
-    {
-        [session markOutdatedPublicisedGroupsByUserData];
-    }
-    
     _isAppForeground = YES;
 }
 
