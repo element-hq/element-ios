@@ -60,6 +60,8 @@ class AuthenticationService: NSObject {
     private(set) var loginWizard: LoginWizard?
     /// The current registration wizard or `nil` if `startFlow` hasn't been called for `.registration`.
     private(set) var registrationWizard: RegistrationWizard?
+    /// The provisioning link the service is currently configured with.
+    private(set) var provisioningLink: UniversalLink?
     
     /// The authentication service's delegate.
     weak var delegate: AuthenticationServiceDelegate?
@@ -110,6 +112,9 @@ class AuthenticationService: NSObject {
             state = AuthenticationState(flow: flow,
                                         homeserverAddress: hsUrl ?? BuildSettings.serverConfigDefaultHomeserverUrlString,
                                         identityServer: isUrl ?? BuildSettings.serverConfigDefaultIdentityServerUrlString)
+            
+            // store the link to override the default homeserver address.
+            provisioningLink = universalLink
             delegate?.authenticationService(self, didUpdateStateWithLink: universalLink)
         } else {
             //  logged in
@@ -133,8 +138,15 @@ class AuthenticationService: NSObject {
         MXKAccountManager.shared().activeAccounts?.first?.mxSession
     }
     
-    func startFlow(_ flow: AuthenticationFlow, for homeserverAddress: String) async throws {
-        var (client, homeserver) = try await loginFlow(for: homeserverAddress)
+    /// Set up the service to start a new authentication flow.
+    /// - Parameters:
+    ///   - flow: The flow to be started (login or register).
+    ///   - homeserverAddress: The homeserver to start the flow for, or `nil` to use the default.
+    ///   If a provisioning link has been set, it will override the default homeserver when passing `nil`.
+    func startFlow(_ flow: AuthenticationFlow, for homeserverAddress: String? = nil) async throws {
+        let address = homeserverAddress ?? provisioningLink?.homeserverUrl ?? BuildSettings.serverConfigDefaultHomeserverUrlString
+        
+        var (client, homeserver) = try await loginFlow(for: address)
         
         let loginWizard = LoginWizard(client: client, sessionCreator: sessionCreator)
         self.loginWizard = loginWizard
@@ -179,8 +191,13 @@ class AuthenticationService: NSObject {
         loginWizard = nil
         registrationWizard = nil
         softLogoutCredentials = nil
+        
+        if useDefaultServer {
+            provisioningLink = nil
+        }
 
-        // The previously used homeserver is re-used as `startFlow` will be called again a replace it anyway.
+        // This address will be replaced when `startFlow` is called, but for
+        // completeness revert to the default homeserver if requested anyway.
         let address = useDefaultServer ? BuildSettings.serverConfigDefaultHomeserverUrlString : state.homeserver.addressFromUser ?? state.homeserver.address
         let identityServer = state.identityServer
         self.state = AuthenticationState(flow: .login,

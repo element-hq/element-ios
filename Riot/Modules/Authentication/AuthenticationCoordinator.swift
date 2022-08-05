@@ -131,8 +131,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
 
         let flow: AuthenticationFlow = initialScreen == .login ? .login : .register
         do {
-            let homeserverAddress = authenticationService.state.homeserver.addressFromUser ?? authenticationService.state.homeserver.address
-            try await authenticationService.startFlow(flow, for: homeserverAddress)
+            // Start the flow using the default server (or a provisioning link if set).
+            try await authenticationService.startFlow(flow)
         } catch {
             MXLog.error("[AuthenticationCoordinator] start: Failed to start")
             displayError(message: error.localizedDescription)

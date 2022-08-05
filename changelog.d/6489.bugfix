@@ -1,0 +1,1 @@
+Authentication: Always start a new authentication flow with the default homeserver (or the provisioning link if set).
