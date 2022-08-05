@@ -1244,7 +1244,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 // Continue the registration with the passed nextLink
                 MXLogDebug(@"[AppDelegate] handleUniversalLink. Complete registration with nextLink");
                 NSURL *nextLink = [NSURL URLWithString:queryParams[@"nextLink"]];
-                [self handleUniversalLinkFragment:nextLink.fragment fromURL:nextLink];
+                [self handleUniversalLinkURL:nextLink];
             }
             else
             {
@@ -1297,8 +1297,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     BOOL continueUserActivity = NO;
     MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
     
-    MXLogDebug(@"[AppDelegate] Universal link: handleUniversalLinkFragment: %@", fragment);
-    
     // Make sure we have plain utf8 character for separators
     fragment = [fragment stringByRemovingPercentEncoding];
     MXLogDebug(@"[AppDelegate] Universal link: handleUniversalLinkFragment: %@", fragment);
@@ -1314,17 +1312,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // Sanity check
     if (!pathParams.count)
     {
-        // Handle simple room links with aliases/identifiers as UniversalLink will not parse these.
-        NSString* absoluteUrl = [universalLink.url.absoluteString stringByRemovingPercentEncoding];
-        if ([MXTools isMatrixRoomAlias:absoluteUrl]
-            || [MXTools isMatrixRoomIdentifier:absoluteUrl])
-        {
-            pathParams = @[absoluteUrl];
-        }
-        else {
-            MXLogDebug(@"[AppDelegate] Universal link: Error: No path parameters");
-            return NO;
-        }
+        MXLogFailure(@"[AppDelegate] Universal link: Error: No path parameters");
+        return NO;
     }
     
     NSString *roomIdOrAlias;
@@ -1500,9 +1489,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                     if (newFragment && ![newFragment isEqualToString:fragment])
                                     {
                                         self->universalLinkFragmentPendingRoomAlias = @{resolution.roomId: roomIdOrAlias};
-
+                                        
+                                        // Create a new link with the updated fragment, otherwise we loop back round resolving the room ID infinitely.
+                                        UniversalLink *newLink = [[UniversalLink alloc] initWithUrl:universalLink.url updatedFragment:newFragment];
                                         UniversalLinkParameters *newParameters = [[UniversalLinkParameters alloc] initWithFragment:newFragment
-                                                                                                                     universalLink:universalLink
+                                                                                                                     universalLink:newLink
                                                                                                             presentationParameters:presentationParameters];
                                         [self handleUniversalLinkWithParameters:newParameters];
                                     }
@@ -1706,8 +1697,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     // iOS Patch: fix vector.im urls before using it
     NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:universalLinkURL];
+    UniversalLink *link = [[UniversalLink alloc] initWithUrl:universalLinkURL];
     
-    return [self handleUniversalLinkFragment:fixedURL.fragment fromURL:universalLinkURL];
+    return [self handleUniversalLinkFragment:fixedURL.fragment fromLink:link];
 }
 
 - (void)resetPendingUniversalLink

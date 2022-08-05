@@ -81,6 +81,17 @@ class AllChatsEditActionProvider {
     
     // MARK: - Public
     
+    /// Returns an instance of the updated menu accordingly to the given parameters.
+    ///
+    /// Some menu items can be disabled depending on the required power levels of the `parentSpace`. Therefore, `updateMenu()` first returns a temporary context menu
+    /// with all sensible items disabled, asynchronously fetches power levels of the `parentSpace`, then gives a new instance of the menu with, potentially, all sensible items
+    /// enabled via the `completion` callback.
+    ///
+    /// - Parameters:
+    ///     - session: The current `MXSession` instance
+    ///     - parentSpace: The current parent space (`nil` for home space)
+    ///     - completion: callback called once the power levels of the `parentSpace` have been fetched and the menu items have been computed accordingly.
+    /// - Returns: If the `parentSpace` is `nil`, the context menu, the temporary context menu otherwise.
     func updateMenu(with session: MXSession?, parentSpace: MXSpace?, completion: @escaping (UIMenu) -> Void) -> UIMenu {
         self.parentSpace = parentSpace
         isInviteAvailable = false
