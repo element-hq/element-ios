@@ -2427,3 +2427,16 @@
 "room_access_settings_screen_upgrade_alert_upgrading" = "Mise à niveau du salon";
 "room_access_settings_screen_upgrade_alert_upgrade_button" = "Mettre à niveau";
 "room_access_settings_screen_upgrade_alert_note" = "Veuillez noter que la mise à niveau va créer une nouvelle version de ce salon. Tous les messages actuels vont rester dans ce salon archivé.";
+"joining" = "En train de rejoindre";
+"create_room_section_footer_type_public" = "Seules les personnes invitées peuvent trouver et rejoindre, pas uniquement les personnes dans le nom de l’espace.";
+"location_sharing_invalid_power_level_message" = "Vous devez avoir les bonnes permissions avant de pouvoir partager votre localisation en direct dans ce salon.";
+"location_sharing_invalid_power_level_title" = "Vous n’avez pas les permissions pour partager votre localisation en direct";
+"room_invite_to_room_option_title" = "Juste pour ce salon";
+
+// Mark: - Room invite
+
+"room_invite_to_space_option_title" = "Pour %@";
+"create_room_promotion_header" = "PROMOTION";
+"room_access_space_chooser_other_spaces_section_info" = "Ce sont probablement des choses auxquelles les autres admins de %@ participent.";
+"authentication_choose_password_not_verified_message" = "Vérifiez votre boîte de réception";
+"authentication_choose_password_not_verified_title" = "Email non vérifié";
