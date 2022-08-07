@@ -234,7 +234,7 @@
 "settings_term_conditions" = "Geschäftsbedingungen";
 "settings_privacy_policy" = "Datenschutzerklärung";
 "settings_send_crash_report" = "Sende anonyme Absturz- und Nutzungsdaten";
-"settings_change_password" = "Passwort deines Matrix-Kontos ändern";
+"settings_change_password" = "Passwort ändern";
 "settings_old_password" = "altes Passwort";
 "settings_new_password" = "neues Passwort";
 "settings_confirm_password" = "bestätige Passwort";
@@ -1181,7 +1181,7 @@
 "create_room_section_header_name" = "Raumname";
 "create_room_placeholder_name" = "Name";
 "create_room_section_header_topic" = "Raumthema (optional)";
-"create_room_placeholder_topic" = "Thema";
+"create_room_placeholder_topic" = "Um was geht es in diesem Raum?";
 "create_room_section_header_encryption" = "Raumverschlüsselung";
 "create_room_enable_encryption" = "Verschlüsselung aktivieren";
 "create_room_section_footer_encryption" = "Verschlüsselung kann im Nachhinein nicht deaktiviert werden.";
