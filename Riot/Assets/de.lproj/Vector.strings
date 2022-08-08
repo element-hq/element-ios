@@ -155,6 +155,7 @@
 "room_message_placeholder" = "Nachricht senden (unverschlüsselt)…";
 "encrypted_room_message_placeholder" = "Verschlüsselte Nachricht…";
 "room_message_short_placeholder" = "Sende eine Nachricht…";
+"room_first_message_placeholder" = "Sende deine erste Nachricht…";
 "room_offline_notification" = "Verbindung zum Server wurde unterbrochen.";
 "room_unsent_messages_notification" = "Nachrichten wurden nicht gesendet.";
 "room_unsent_messages_unknown_devices_notification" = "Nachrichten wurden nicht gesendet, da unbekannte Sitzungen vorhanden waren.";

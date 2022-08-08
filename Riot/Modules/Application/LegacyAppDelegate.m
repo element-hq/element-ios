@@ -2958,7 +2958,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
                 [mxSession createRoomWithParameters:roomCreationParameters success:^(MXRoom *room) {
 
-                    // Room is created.onComplete(YES);
+                    // Room is created
                     Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerCreated;
 
                     if (completion)

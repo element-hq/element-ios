@@ -494,6 +494,7 @@ Tap the + to start adding people.";
 "encrypted_room_message_placeholder" = "Send an encrypted message…";
 "encrypted_room_message_reply_to_placeholder" = "Send an encrypted reply…";
 "room_message_short_placeholder" = "Send a message…";
+"room_first_message_placeholder" = "Send your first message…";
 "room_message_reply_to_short_placeholder" = "Send a reply…";
 "room_offline_notification" = "Connectivity to the server has been lost.";
 "room_unsent_messages_notification" = "Messages failed to send.";
