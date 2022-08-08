@@ -1115,6 +1115,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
     else if (self.isNewDirectChat)
     {
+        [self setInputToolBarSendMode:RoomInputToolbarViewSendModeFirst forEventWithId:nil];
         [self refreshRoomInputToolbar];
     }
     else

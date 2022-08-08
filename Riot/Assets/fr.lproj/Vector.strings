@@ -193,6 +193,7 @@
 "room_message_placeholder" = "Envoyer un message (non chiffré)…";
 "encrypted_room_message_placeholder" = "Envoyer un message chiffré…";
 "room_message_short_placeholder" = "Envoyer un message…";
+"room_first_message_placeholder" = "Envoyer votre premier message…";
 "room_offline_notification" = "La connexion au serveur a été perdue.";
 "room_unsent_messages_notification" = "Messages non envoyés.";
 "room_unsent_messages_unknown_devices_notification" = "Message non envoyé car des sessions inconnues sont présentes.";
