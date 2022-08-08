@@ -1035,9 +1035,6 @@ static CGSize kThreadListBarButtonItemImageSize;
         [self removeMatrixSession:self.mainSession];
     }
     
-    // Set potential discussion target user to nil, now use the dataSource to populate the view
-    self.directChatTargetUser = nil;
-    
     // Enable the read marker display, and disable its update.
     dataSource.showReadMarker = YES;
     self.updateRoomReadMarker = NO;
@@ -1116,7 +1113,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             [self forceLayoutRefresh];
         }
     }
-    else if (self.isNewDiscussion)
+    else if (self.isNewDirectChat)
     {
         [self refreshRoomInputToolbar];
     }
@@ -1205,8 +1202,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     {
         [super setRoomInputToolbarViewClass:roomInputToolbarViewClass];
         
-        // The voice message toolbar cannot be set on DisabledInputToolbarView.
-        if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
+        // The voice message toolbar cannot be set on DisabledInputToolbarView and on new direct chat.
+        if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class] && !self.isNewDirectChat)
         {
             [(RoomInputToolbarView *)self.inputToolbarView setVoiceMessageToolbarView:self.voiceMessageController.voiceMessageToolbarView];
         }
@@ -1826,8 +1823,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     return NO;
 }
 
-// Indicates if a new discussion with a target user (without associated room) is occuring.
-- (BOOL)isNewDiscussion
+// Indicates if a new direct chat with a target user (without associated room) is occuring.
+- (BOOL)isNewDirectChat
 {
     return self.directChatTargetUser != nil;
 }
@@ -2033,7 +2030,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             }
         }
     }
-    else if (self.isNewDiscussion)
+    else if (self.isNewDirectChat)
     {
         [self showPreviewHeader:NO];
         
@@ -2348,7 +2345,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             [self showMediaPickerAnimated:YES];
         }]];
     }
-    if (RiotSettings.shared.roomScreenAllowStickerAction && !self.isNewDiscussion)
+    if (RiotSettings.shared.roomScreenAllowStickerAction && !self.isNewDirectChat)
     {
         [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionSticker.image andAction:^{
             MXStrongifyAndReturnIfNil(self);
@@ -2368,7 +2365,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             [self roomInputToolbarViewDidTapFileUpload];
         }]];
     }
-    if (BuildSettings.pollsEnabled && self.displayConfiguration.sendingPollsEnabled && !self.isNewDiscussion)
+    if (BuildSettings.pollsEnabled && self.displayConfiguration.sendingPollsEnabled && !self.isNewDirectChat)
     {
         [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionPoll.image andAction:^{
             MXStrongifyAndReturnIfNil(self);
@@ -2378,7 +2375,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             [self.delegate roomViewControllerDidRequestPollCreationFormPresentation:self];
         }]];
     }
-    if (BuildSettings.locationSharingEnabled && !self.isNewDiscussion)
+    if (BuildSettings.locationSharingEnabled && !self.isNewDirectChat)
     {
         [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionLocation.image andAction:^{
             MXStrongifyAndReturnIfNil(self);
@@ -3041,14 +3038,14 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)displayNewDirectChatWithTargetUser:(nonnull MXUser*)directChatTargetUser session:(nonnull MXSession*)session
 {
+    self.directChatTargetUser = directChatTargetUser;
+    
     // Release existing room data source or preview
     [self displayRoom:nil];
     
     self.eventsAcknowledgementEnabled = NO;
     
     [self addMatrixSession:session];
-    
-    self.directChatTargetUser = directChatTargetUser;
     
     [self refreshRoomTitle];
     [self refreshRoomInputToolbar];
@@ -5219,7 +5216,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self checkReadMarkerVisibility];
     
     // Switch back to the live mode when the user scrolls to the bottom of the non live timeline.
-    if (!self.roomDataSource.isLive && ![self isRoomPreview] && !self.isNewDiscussion)
+    if (!self.roomDataSource.isLive && ![self isRoomPreview] && !self.isNewDirectChat)
     {
         CGFloat contentBottomPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.frame.size.height - self.bubblesTableView.adjustedContentInset.bottom;
         if (contentBottomPosY >= self.bubblesTableView.contentSize.height && ![self.roomDataSource.timeline canPaginate:MXTimelineDirectionForwards])
@@ -7801,7 +7798,6 @@ static CGSize kThreadListBarButtonItemImageSize;
                        samples:(NSArray<NSNumber *> *)samples
                     completion:(void (^)(BOOL))completion
 {
-    //TODO firstDM
     [self.roomDataSource sendVoiceMessage:url mimeType:nil duration:duration samples:samples success:^(NSString *eventId) {
         MXLogDebug(@"Success with event id %@", eventId);
         completion(YES);
