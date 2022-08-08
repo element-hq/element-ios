@@ -2232,7 +2232,7 @@
 "authentication_login_username" = "Nutzername / E-Mail-Adresse / Telefonnummer";
 "authentication_login_title" = "Willkommen zurück!";
 "authentication_server_selection_login_title" = "Mit Homeserver verbinden";
-"location_sharing_invalid_power_level_message" = "Du brauchst du richtigen Berechtigungen, um deinen Live-Standort in diesem Raum zu teilen.";
+"location_sharing_invalid_power_level_message" = "Du brauchst die richtigen Berechtigungen, um deinen Live-Standort in diesem Raum zu teilen.";
 "location_sharing_invalid_power_level_title" = "Du hast keine Berechtigung deinen Live-Standort zu teilen";
 "authentication_choose_password_not_verified_message" = "Überprüfe deinen Posteingang";
 "authentication_choose_password_not_verified_title" = "E-Mail Adresse nicht bestätigt";
