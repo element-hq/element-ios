@@ -87,14 +87,20 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
 - (void)setVoiceMessageToolbarView:(UIView *)voiceMessageToolbarView
 {
-    _voiceMessageToolbarView = voiceMessageToolbarView;
-    self.voiceMessageToolbarView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:self.voiceMessageToolbarView];
+    if (voiceMessageToolbarView) {
+        _voiceMessageToolbarView = voiceMessageToolbarView;
+        self.voiceMessageToolbarView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addSubview:self.voiceMessageToolbarView];
 
-    [NSLayoutConstraint activateConstraints:@[[self.mainToolbarView.topAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.topAnchor],
-                                              [self.mainToolbarView.leftAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.leftAnchor],
-                                              [self.mainToolbarView.bottomAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.bottomAnchor],
-                                              [self.mainToolbarView.rightAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.rightAnchor]]];
+        [NSLayoutConstraint activateConstraints:@[[self.mainToolbarView.topAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.topAnchor],
+                                                  [self.mainToolbarView.leftAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.leftAnchor],
+                                                  [self.mainToolbarView.bottomAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.bottomAnchor],
+                                                  [self.mainToolbarView.rightAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.rightAnchor]]];
+    }
+    else
+    {
+        [self.voiceMessageToolbarView removeFromSuperview];
+    }
 }
 
 #pragma mark - Override MXKView

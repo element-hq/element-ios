@@ -1116,6 +1116,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     else if (self.isNewDirectChat)
     {
         [self setInputToolBarSendMode:RoomInputToolbarViewSendModeFirst forEventWithId:nil];
+        [(RoomInputToolbarView *)self.inputToolbarView setVoiceMessageToolbarView:nil];
         [self refreshRoomInputToolbar];
     }
     else
@@ -1697,13 +1698,6 @@ static CGSize kThreadListBarButtonItemImageSize;
     return self.customizedRoomDataSource.isCurrentUserSharingActiveLocation;
 }
 
-- (void)setForceHideInputToolBar:(BOOL)forceHideInputToolBar
-{
-    _forceHideInputToolBar = forceHideInputToolBar;
-    
-    [self refreshRoomInputToolbar];
-}
-
 #pragma mark - Internals
 
 - (UIBarButtonItem *)videoCallBarButtonItem
@@ -2055,11 +2049,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     BOOL hideInputToolBar = NO;
     
-    if (self.forceHideInputToolBar)
-    {
-        hideInputToolBar = YES;
-    }
-    else if (self.roomDataSource)
+    if (self.roomDataSource)
     {
         hideInputToolBar = (self.roomDataSource.state != MXKDataSourceStateReady);
     }

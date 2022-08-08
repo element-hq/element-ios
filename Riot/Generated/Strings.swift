@@ -5639,6 +5639,10 @@ public class VectorL10n: NSObject {
   public static var roomEventFailedToSend: String { 
     return VectorL10n.tr("Vector", "room_event_failed_to_send") 
   }
+  /// Send your first message…
+  public static var roomFirstMessagePlaceholder: String { 
+    return VectorL10n.tr("Vector", "room_first_message_placeholder") 
+  }
   /// Room Info
   public static var roomInfoBackButtonTitle: String { 
     return VectorL10n.tr("Vector", "room_info_back_button_title") 

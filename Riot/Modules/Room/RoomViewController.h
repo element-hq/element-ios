@@ -90,12 +90,6 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 @property (nonatomic) BOOL showMissedDiscussionsBadge;
 
 /**
- Tell whether input tool bar should be hidden in every case.
- NO by default.
- */
-@property (nonatomic) BOOL forceHideInputToolBar;
-
-/**
  ID of the parent space. `nil` for home space.
  */
 @property (nonatomic, nullable) NSString *parentSpaceId;
