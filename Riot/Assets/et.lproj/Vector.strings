@@ -2318,3 +2318,56 @@
 // MARK: Authentication
 "authentication_registration_title" = "Loo endale konto";
 "authentication_server_info_title_login" = "Kuidas sinu vestlusi hallatakse";
+"message_reply_to_sender_sent_their_live_location" = "Asukoht reaalajas.";
+"location_sharing_invalid_power_level_message" = "Selles jututoas asukoha jagamiseks peavad sul olema vastavad õigused.";
+"location_sharing_invalid_power_level_title" = "Sul pole vajalikke õigusi asukoha jagamiseks reaalajas";
+"password_validation_error_contain_symbol" = "Peab sisaldama sümbolit.";
+"password_validation_error_contain_number" = "Peab sisaldama numbrit.";
+"password_validation_error_contain_uppercase_letter" = "Peab sisaldama suurtähte.";
+"password_validation_error_contain_lowercase_letter" = "Peab sisaldama väiketähte.";
+/* The placeholder will show a number */
+"password_validation_error_max_length" = "Mitte enam kui %d tähemärki.";
+/* The placeholder will show a number */
+"password_validation_error_min_length" = "Vähemalt %d tähemärki.";
+"password_validation_error_header" = "Antud salasõna ei vasta järgnevatele tingimustele:";
+
+// MARK: Password Validation
+"password_validation_info_header" = "Sinu salasõna peaks vastama järgnevatele tingimustele:";
+"authentication_recaptcha_title" = "Kas sa ikka oled inimene?";
+"authentication_terms_policy_url_error" = "Serveri reeglite või kasutustingimuste aadressi ei õnnestu avada. Palun proovi hiljem uuesti.";
+/* The placeholder will show the homeserver's domain */
+"authentication_terms_message" = "Palun loe %@ serveri reegleid ja kasutustingimusi";
+"authentication_terms_title" = "Serveri reeglid";
+"authentication_verify_msisdn_invalid_phone_number" = "Vigane telefoninumber";
+"authentication_verify_msisdn_waiting_button" = "Saada kinnituskood uuesti";
+/* The placeholder will show the phone number that was entered. */
+"authentication_verify_msisdn_waiting_message" = "Kinnituskoodi saatsime telefoninumbrile %@";
+"authentication_verify_msisdn_waiting_title" = "Kinnita oma telefoninumber";
+"authentication_verify_msisdn_otp_text_field_placeholder" = "Kinnituskood";
+"authentication_verify_msisdn_text_field_placeholder" = "Telefoninumber";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_msisdn_input_message" = "%@ soovib sinu kasutajakonto verifitseerimist";
+"authentication_verify_msisdn_input_title" = "Sisesta oma telefoninumber";
+"authentication_choose_password_not_verified_message" = "Vaata oma saabuvate e-kirjade postkasti";
+"authentication_choose_password_not_verified_title" = "E-posti aadress on verifitseerimata";
+"authentication_choose_password_submit_button" = "Lähtesta salasõna";
+"authentication_choose_password_signout_all_devices" = "Logi kõik oma seadmed võrgust välja";
+"authentication_choose_password_text_field_placeholder" = "Uus salasõna";
+"authentication_choose_password_input_message" = "Palun kasuta vähemalt 8-tähelist salasõna";
+"authentication_choose_password_input_title" = "Vali uus salasõna";
+"authentication_forgot_password_waiting_button" = "Saada e-kiri uuesti";
+/* The placeholder will show the email address that was entered. */
+"authentication_forgot_password_waiting_message" = "Palun järgi juhtnööre, mille saatsime %@ aadressile";
+"authentication_forgot_password_waiting_title" = "Vaata oma e-kirju.";
+"authentication_forgot_password_text_field_placeholder" = "E-posti aadress";
+/* The placeholder will show the homeserver's domain */
+"authentication_forgot_password_input_message" = "%@ saadab sulle verifitseerimiseks lingi";
+"authentication_forgot_password_input_title" = "Sisesta oma e-posti aadress";
+"authentication_verify_email_waiting_button" = "Saada e-kiri uuesti";
+"authentication_verify_email_waiting_hint" = "Sa ei saanud e-kirja kätte?";
+/* The placeholder will show the email address that was entered. */
+"authentication_verify_email_waiting_message" = "Palun järgi juhtnööre, mille saatsime %@ aadressile";
+"authentication_verify_email_waiting_title" = "Verifitseeri oma e-posti aadress.";
+"authentication_verify_email_text_field_placeholder" = "E-posti aadress";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_email_input_message" = "%@ soovib sinu kasutajakonto verifitseerimist";
