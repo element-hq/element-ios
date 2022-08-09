@@ -2063,9 +2063,9 @@
 "password_validation_error_contain_uppercase_letter" = "Содержать заглавную букву.";
 "password_validation_error_contain_lowercase_letter" = "Содержать не заглавную букву.";
 /* The placeholder will show a number */
-"password_validation_error_max_length" = "Не более % символов.";
+"password_validation_error_max_length" = "Не более %d символов.";
 /* The placeholder will show a number */
-"password_validation_error_min_length" = "Как минимум % символов.";
+"password_validation_error_min_length" = "Как минимум %d символов.";
 "password_validation_error_header" = "Данный пароль не соответствует критериям ниже:";
 
 // MARK: Password Validation
@@ -2135,7 +2135,7 @@
 "authentication_verify_msisdn_invalid_phone_number" = "Недействительный номер телефона";
 "authentication_verify_msisdn_waiting_button" = "Отправить код повторно";
 /* The placeholder will show the phone number that was entered. */
-"authentication_verify_msisdn_waiting_message" = "Код был отправлен на";
+"authentication_verify_msisdn_waiting_message" = "Код был отправлен на %@";
 "authentication_verify_msisdn_waiting_title" = "Подтвердите свой номер телефона";
 "authentication_verify_msisdn_otp_text_field_placeholder" = "Код подтверждения";
 "authentication_verify_msisdn_text_field_placeholder" = "Номер телефона";
