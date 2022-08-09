@@ -2396,3 +2396,7 @@
 
 // MARK: Authentication
 "authentication_registration_title" = "Criar sua conta";
+"location_sharing_invalid_power_level_message" = "Você precisa ter as permissões certas a fim de compartilhar localização ao vivo nesta sala.";
+"location_sharing_invalid_power_level_title" = "Você não tem permissão para compartilhar localização ao vivo";
+"authentication_choose_password_not_verified_message" = "Cheque sua inbox";
+"authentication_choose_password_not_verified_title" = "Email não verificado";

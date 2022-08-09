@@ -111,8 +111,8 @@
 "room_recents_join_room_prompt" = "Введите идентификатор или псевдоним комнаты";
 // People tab
 "people_invites_section" = "ПРИГЛАШЕНИЯ";
-"people_conversation_section" = "БЕСЕДЫ";
-"people_no_conversation" = "Нет бесед";
+"people_conversation_section" = "ДИАЛОГИ";
+"people_no_conversation" = "Нет диалогов";
 // Rooms tab
 "room_directory_no_public_room" = "Общедоступных комнат нет";
 // Search
@@ -1995,3 +1995,161 @@
 
 // MARK: Authentication
 "authentication_registration_title" = "Создать аккаунт";
+"settings_presence_offline_mode" = "Режим офлайн";
+"settings_analytics_and_crash_data" = "Отправлять данные о сбоях и аналитике";
+"settings_labs_enable_live_location_sharing" = "Трансляция геопозиции - делиться текущей геопозицией (активная разработка и, временно, сохраняющиеся в истории комнаты локации)";
+"settings_labs_use_only_latest_user_avatar_and_name" = "Показывать последний аватар и имя пользователей в истории сообщений";
+"settings_labs_enable_threads" = "Потоковый обмен сообщениями";
+"settings_labs_enabled_polls" = "Опросы";
+"settings_ui_show_redactions_in_room_history" = "Показать место хранения удалённых сообщений";
+"settings_about" = "О";
+"room_preview_decline_invitation_options" = "Вы хотите отклонить приглашение или проигнорировать пользователя?";
+"threads_discourage_information_2" = "\n\nХотите всё равно включить потоки?";
+"threads_discourage_information_1" = "Ваш домашний сервер в настоящее время не поддерживает потоки, поэтому эта функция может быть ненадежной. Некоторые потоковые сообщения могут быть недоступны. ";
+"threads_beta_cancel" = "Не сейчас";
+"threads_beta_enable" = "Попробуйте";
+"threads_beta_information_link" = "Больше информации";
+"threads_beta_title" = "Потоки";
+"message_from_a_thread" = "Из потока";
+"threads_empty_show_all_threads" = "Показать все потоки";
+"threads_action_my_threads" = "Мои потоки";
+"threads_action_all_threads" = "Все потоки";
+"threads_title" = "Потоки";
+"thread_copy_link_to_thread" = "Скопировать ссылку потока";
+
+// MARK: Threads
+"room_thread_title" = "Поток";
+"room_accessibility_threads" = "Потоки";
+"message_reply_to_sender_sent_their_live_location" = "Трансляция геопозиции в реальном времени.";
+
+// Mark: - Space Creation
+
+"spaces_creation_hint" = "Пространства - это новый способ организации комнат и людей.";
+"spaces_feature_not_available" = "Эта функция тут недоступна. На данный момент, вы можете сделать это с помощью %@ на своём компьютере.";
+"space_topic" = "Описание";
+"space_public_join_rule_detail" = "Открыто для всех, лучше всего для сообществ";
+"spaces_add_room" = "Добавить комнату";
+"spaces_invite_people" = "Пригласить людей";
+"space_private_join_rule_detail" = "Только по приглашению, лучшее для себя или команд";
+"spaces_explore_rooms_one_room" = "1 комната";
+"spaces_explore_rooms_room_number" = "%@ комнаты";
+"room_invite_not_enough_permission" = "У вас нет возможности приглашать людей в эту комнату";
+"room_invite_to_room_option_detail" = "Они не будут состоять в %@.";
+"room_invite_to_room_option_title" = "Только в эту комнату";
+"room_invite_to_space_option_detail" = "Они могут исследовать %@, но не будут членами %@.";
+"share_invite_link_room_text" = "Привет, присоединяйся к этой комнате %@";
+
+// MARK: - Share invite link
+
+"share_invite_link_action" = "Поделиться ссылкой для приглашения";
+"home_syncing" = "Синхронизация";
+"home_context_menu_mark_as_read" = "Пометить как прочитанное";
+"home_context_menu_leave" = "Покинуть";
+"notice_room_third_party_registered_invite_by_you" = "Вы приняли приглашение в %@";
+"threads_notice_done" = "Понятно";
+"room_accessibility_record_voice_message_hint" = "Для записи нажмите 2 раза и задержите.";
+"room_accessibility_record_voice_message" = "Записать голосовое сообщение";
+"room_accessibility_thread_more" = "Больше";
+"room_event_copy_link_info" = "Ссылка скопирована в буфер обмена.";
+"room_event_action_reply_in_thread" = "Нить";
+"room_event_action_view_in_room" = "Посмотреть в комнате";
+"room_event_action_end_poll" = "Закончить опрос";
+"room_event_action_remove_poll" = "Удалить опрос";
+"room_participants_invite_prompt_to_msg" = "Вы уверены что хотите пригласить %@ в %@?";
+"room_participants_leave_success" = "Левая комната";
+"search_filter_placeholder" = "Фильтр";
+"password_validation_error_contain_symbol" = "Содержать символ.";
+"password_validation_error_contain_number" = "Содержать число.";
+"password_validation_error_contain_uppercase_letter" = "Содержать заглавную букву.";
+"password_validation_error_contain_lowercase_letter" = "Содержать не заглавную букву.";
+/* The placeholder will show a number */
+"password_validation_error_max_length" = "Не более %d символов.";
+/* The placeholder will show a number */
+"password_validation_error_min_length" = "Как минимум %d символов.";
+"password_validation_error_header" = "Данный пароль не соответствует критериям ниже:";
+
+// MARK: Password Validation
+"password_validation_info_header" = "Ваш пароль должен соответствовать критериям ниже:";
+"authentication_choose_password_not_verified_title" = "Электронная почта не подтверждена";
+"authentication_choose_password_submit_button" = "Сбросить пароль";
+"authentication_choose_password_signout_all_devices" = "Выйти из аккаунта на всех девайсах";
+"authentication_choose_password_text_field_placeholder" = "Новый пароль";
+"authentication_forgot_password_waiting_button" = "Отправить письмо повторно";
+/* The placeholder will show the email address that was entered. */
+"authentication_forgot_password_waiting_message" = "Следуйте инструкциям, отправленным %@";
+"authentication_forgot_password_waiting_title" = "Проверьте свою электронную почту.";
+"authentication_forgot_password_text_field_placeholder" = "Электронная почта";
+/* The placeholder will show the homeserver's domain */
+"authentication_forgot_password_input_message" = "%@ отправит вам ссылку для верификации";
+"authentication_forgot_password_input_title" = "Введите свою электронную почту";
+"authentication_verify_email_waiting_button" = "Отправить письмо повторно";
+"authentication_verify_email_waiting_hint" = "Не получили письмо на электронную почту?";
+/* The placeholder will show the email address that was entered. */
+"authentication_verify_email_waiting_message" = "Следуйте инструкциям, отправленным %@";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_email_input_message" = "%@ нужно проверить ваш аккаунт";
+"authentication_server_info_title_login" = "Где живут ваши разговоры";
+"authentication_server_info_title" = "Где будут жить ваши диалоги";
+/* The placeholder will show the full Matrix ID that has been entered. */
+"authentication_registration_username_footer_available" = "Другие могут обнаружить вас %@";
+"onboarding_celebration_button" = "Поехали";
+"onboarding_celebration_message" = "Зайдите в настройки в любое время, чтобы обновить свой профиль";
+"onboarding_avatar_title" = "Добавить фото профиля";
+"onboarding_display_name_max_length" = "Ваше отображаемое имя должно состоять из не более чем 256 символов";
+"onboarding_display_name_hint" = "Вы сможете изменить его позже";
+"onboarding_display_name_placeholder" = "Отображаемое имя";
+"onboarding_display_name_message" = "Его будет видно, когда вы будете отправляете сообщения.";
+"onboarding_display_name_title" = "Выберите отображаемое имя";
+"onboarding_personalization_skip" = "Пропустить этот шаг";
+"onboarding_personalization_save" = "Сохранить и продолжить";
+"onboarding_congratulations_personalize_button" = "Персонализировать профиль";
+/* The placeholder string contains the user's matrix ID */
+"onboarding_congratulations_message" = "Ваш аккаунт %@ был создан";
+"onboarding_congratulations_title" = "Поздравляем!";
+"onboarding_use_case_message" = "Мы поможем вам подключиться";
+"onboarding_use_case_title" = "С кем вы будете переписываться больше всего?";
+"onboarding_splash_page_4_message" = "Element также отлично подходит для работы. Ему доверяют самые безопасные организации мира.";
+"onboarding_splash_page_4_title_no_pun" = "Обмен сообщениями для вашей команды.";
+"onboarding_splash_page_3_message" = "Полностью зашифровано и не требует номера телефона. Без рекламы и сбора данных.";
+"onboarding_splash_page_3_title" = "Безопасный обмен сообщениями.";
+"onboarding_splash_page_2_message" = "Выберите, где будут храниться ваши диалоги, давая вам контроль и независимость. Подключен через Matrix.";
+"onboarding_splash_page_2_title" = "У вас всё под контролем.";
+"onboarding_splash_page_1_message" = "Безопасное и независимое общение, обеспечивающее такой же уровень конфиденциальности, как и при личном разговоре у вас дома.";
+"onboarding_splash_page_1_title" = "Будьте хозяином своих переписок.";
+"onboarding_splash_login_button_title" = "У меня уже есть аккаунт";
+"confirm" = "Подтвердить";
+"onboarding_celebration_title" = "Выглядит хорошо!";
+"onboarding_avatar_accessibility_label" = "Фото профиля";
+"onboarding_use_case_existing_server_button" = "Подключиться к серверу";
+"onboarding_use_case_existing_server_message" = "Хотите присоединиться к существующему серверу?";
+"onboarding_use_case_skip_button" = "Пропустить вопрос";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "Ещё не уверенны? %@";
+"onboarding_use_case_community_messaging" = "Сообщества";
+"onboarding_use_case_work_messaging" = "Команды";
+"onboarding_use_case_personal_messaging" = "Друзья и семья";
+"authentication_recaptcha_title" = "Вы человек?";
+/* The placeholder will show the homeserver's domain */
+"authentication_terms_message" = "Пожалуйста прочитайте условия и политику %@";
+"authentication_terms_title" = "Политика сервера";
+"authentication_verify_msisdn_invalid_phone_number" = "Недействительный номер телефона";
+"authentication_verify_msisdn_waiting_button" = "Отправить код повторно";
+/* The placeholder will show the phone number that was entered. */
+"authentication_verify_msisdn_waiting_message" = "Код был отправлен на %@";
+"authentication_verify_msisdn_waiting_title" = "Подтвердите свой номер телефона";
+"authentication_verify_msisdn_otp_text_field_placeholder" = "Код подтверждения";
+"authentication_verify_msisdn_text_field_placeholder" = "Номер телефона";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_msisdn_input_message" = "%@ нужно проверить ваш аккаунт";
+"authentication_verify_msisdn_input_title" = "Введите свой номер телефона";
+"authentication_choose_password_not_verified_message" = "Проверьте входящие сообщения";
+"authentication_choose_password_input_title" = "Выберите новый пароль";
+"authentication_choose_password_input_message" = "Убедитесь, что он состоит из не менее чем 8 символов";
+"authentication_server_selection_generic_error" = "Не получилось найти сервер по этому URL, проверьте, пожалуйста, всё ли правильно введено.";
+"authentication_server_selection_server_url" = "URL домашнего сервера";
+"authentication_server_selection_register_message" = "Какой адрес у вашего сервера? Это что-то вроде дома для всех ваших данных";
+"authentication_server_selection_register_title" = "Выберите ваш домашний сервер";
+"authentication_server_selection_login_message" = "Какой адрес у вашего сервера?";
+"authentication_server_selection_login_title" = "Подключиться к домашнему серверу";
+"authentication_cancel_flow_confirmation_message" = "Ваш аккаунт ещё не создан. Остановить процесс регистрации?";
+"settings_timeline" = "Лента сообщений";

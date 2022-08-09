@@ -1595,15 +1595,15 @@
 
 "location_sharing_title" = "Földrajzi helyzet";
 "ok" = "OK";
-"onboarding_splash_page_4_message" = "Element megállja a helyét a munkahelyen is. A világ legbiztonságosabb szervezetei bíznak meg benne.";
-"onboarding_splash_page_3_message" = "Telefonszám nélkül végpontok között titkosított. Reklámok és adatbányászat nélkül.";
-"onboarding_splash_page_2_message" = "Válaszd meg hol legyenek a beszélgetéseid tárolva, visszaadja az irányítást és függetlenné tesz. Csatlakozva a Matrixhoz.";
-"onboarding_splash_page_1_message" = "Biztonságos és független kommunikáció ami olyan biztonságos mintha valakivel négyszemközt beszélgetnél a házadban.";
+"onboarding_splash_page_4_message" = "Az Element megállja a helyét a munkahelyi kommunikációban is. A világ legbiztonságosabb szervezetei bíznak meg benne.";
+"onboarding_splash_page_3_message" = "Végponti titkosítással védett, és nem kell telefonszám a regiszrációhoz. Reklámok és adatbányászat nélkül.";
+"onboarding_splash_page_2_message" = "Kiválaszthatod, hogy hol legyenek a beszélgetéseid tárolva, így visszaadva neked az irányítást és a függetlenséget. Csatlakozz a Matrixhoz.";
+"onboarding_splash_page_1_message" = "Biztonságos és független kommunikáció, ami olyan biztonságos mintha valakivel négyszemközt beszélgetnél a házadban.";
 "settings_enable_room_message_bubbles" = "Üzenet buborékok";
 "onboarding_splash_page_4_title_no_pun" = "Üzenetküldés a csoportodnak.";
 "onboarding_splash_page_3_title" = "Biztonságos üzenetküldés.";
-"onboarding_splash_page_2_title" = "Te irányítasz.";
-"onboarding_splash_page_1_title" = "Az ön beszélgetései csak az öné.";
+"onboarding_splash_page_2_title" = "Tiéd az irányítás.";
+"onboarding_splash_page_1_title" = "Vedd birtokba a beszélgetéseid!";
 "onboarding_splash_login_button_title" = "Már van fiókom";
 
 // Onboarding
@@ -1651,14 +1651,14 @@
 "search_filter_placeholder" = "Szűrés";
 "onboarding_use_case_existing_server_button" = "Szerverhez csatlakozás";
 "onboarding_use_case_existing_server_message" = "Csatlakoznál egy már meglévő szerverhez?";
-"onboarding_use_case_skip_button" = "Kérdés kihagyása";
+"onboarding_use_case_skip_button" = "Kihagyhatod ezt a kérdést.";
 /* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
-"onboarding_use_case_not_sure_yet" = "Még nem vagy biztos? %@";
+"onboarding_use_case_not_sure_yet" = "Még nem tudod? %@";
 "onboarding_use_case_community_messaging" = "Közösségek";
-"onboarding_use_case_work_messaging" = "Csoportok";
+"onboarding_use_case_work_messaging" = "Munkahelyi csoportok";
 "onboarding_use_case_personal_messaging" = "Barátok és család";
 "onboarding_use_case_message" = "Segítünk a kapcsolatteremétésben";
-"onboarding_use_case_title" = "Kivel beszélgetnék leginkább?";
+"onboarding_use_case_title" = "Kikkel fogsz legtöbbet beszélgetni?";
 
 
 // MARK: - MatrixKit
@@ -2169,22 +2169,22 @@
 "threads_notice_title" = "Az üzenetszálak többé már nem kísérleti funkció! 🎉";
 "room_participants_invite_prompt_to_msg" = "Biztos, hogy meg akarod hívni őt: %@ ide: %@?";
 "onboarding_celebration_button" = "Gyerünk";
-"onboarding_celebration_message" = "A beállításokban bármikor megváltoztatható a profilod";
+"onboarding_celebration_message" = "A beállításokban bármikor megváltoztathatod ezeket";
 "onboarding_celebration_title" = "Jól néz ki!";
 "onboarding_avatar_accessibility_label" = "Profilkép";
-"onboarding_avatar_message" = "Ideje képet adni a névhez";
+"onboarding_avatar_message" = "Ideje képet adni a profilhoz";
 "onboarding_avatar_title" = "Profilkép hozzáadása";
-"onboarding_display_name_max_length" = "A megjelenítendő név 256 karakternél rövidebb legyen";
+"onboarding_display_name_max_length" = "A megjelenítendő név 256 karakternél rövidebb kell legyen";
 "onboarding_display_name_hint" = "Ezt később meg lehet változtatni";
 "onboarding_display_name_placeholder" = "Megjelenítendő név";
 "onboarding_display_name_message" = "Ez fog megjelenni amikor üzenetet küldesz.";
-"onboarding_display_name_title" = "Válassz egy megjelenítési nevet";
+"onboarding_display_name_title" = "Válassz egy megjelenített nevet";
 "onboarding_personalization_skip" = "Lépés kihagyása";
-"onboarding_personalization_save" = "Mentés és tovább";
-"onboarding_congratulations_home_button" = "Vigyél haza";
+"onboarding_personalization_save" = "Mentés és folytatás";
+"onboarding_congratulations_home_button" = "A kezdőlapra";
 "onboarding_congratulations_personalize_button" = "Profil személyre szabása";
 /* The placeholder string contains the user's matrix ID */
-"onboarding_congratulations_message" = "A fiókod elkészült: %@";
+"onboarding_congratulations_message" = "A fiókod elkészült. A Matrix címed: %@";
 "onboarding_congratulations_title" = "Gratulálunk!";
 "saving" = "Mentés";
 
@@ -2395,14 +2395,14 @@
 "authentication_verify_email_text_field_placeholder" = "E-mail";
 "authentication_verify_email_input_message" = "%@ ellenőrizni kell a fiókodat";
 "authentication_verify_email_input_title" = "Add meg az e-mail címed";
-"authentication_cancel_flow_confirmation_message" = "A felhasználói fiókod még nincs kész. Megállítód a regisztrációt?";
-"authentication_server_selection_generic_error" = "Ezen a címen nem található szerver, ellenőrizd, hogy helyesen adtad meg.";
-"authentication_server_selection_server_url" = "Matrixszerver URL";
+"authentication_cancel_flow_confirmation_message" = "A felhasználói fiókod még nincs kész. Félbehagyod a regisztrációt?";
+"authentication_server_selection_generic_error" = "Ezen a címen nem található szerver, kérlek ellenőrizd, hogy helyesen adtad-e meg.";
+"authentication_server_selection_server_url" = "Matrix szerver URL";
 "authentication_server_selection_register_message" = "Mi a szervered címe? Olyan mint az adataid otthona";
 "authentication_server_selection_register_title" = "Válaszd ki a matrix szerveredet";
 "authentication_server_selection_login_message" = "Mi a szervered címe?";
 "authentication_server_selection_login_title" = "Matrix szerverhez csatlakozás";
-"authentication_server_info_title" = "Ahol a beszélgetéseid lesznek";
+"authentication_server_info_title" = "Itt lesznek tárolva a beszélgetéseid";
 "authentication_login_forgot_password" = "Elfelejtetted a jelszót?";
 "authentication_login_username" = "Felhasználónév / E-mail / Telefonszám";
 "authentication_login_title" = "Üdv újra!";
@@ -2413,5 +2413,5 @@
 "authentication_registration_username" = "Felhasználónév";
 
 // MARK: Authentication
-"authentication_registration_title" = "Felhasználói fiók létrehozása";
+"authentication_registration_title" = "Fiók létrehozása";
 "authentication_server_info_title_login" = "Ahol a beszélgetéseid lesznek";

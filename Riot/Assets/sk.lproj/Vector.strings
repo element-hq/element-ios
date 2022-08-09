@@ -2618,3 +2618,7 @@
 // MARK: Authentication
 "authentication_registration_title" = "Vytvorte si účet";
 "authentication_server_info_title_login" = "Kde vaše rozhovory žijú";
+"location_sharing_invalid_power_level_message" = "Musíte mať príslušné oprávnenia na zdieľanie polôh v reálnom čase v tejto miestnosti.";
+"location_sharing_invalid_power_level_title" = "Nemáte oprávnenie na zdieľanie polohy v reálnom čase";
+"authentication_choose_password_not_verified_message" = "Skontrolujte si doručenú poštu";
+"authentication_choose_password_not_verified_title" = "E-mail nie je overený";

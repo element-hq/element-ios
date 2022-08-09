@@ -2622,3 +2622,7 @@
 // MARK: Authentication
 "authentication_registration_title" = "Buat akun Anda";
 "authentication_server_info_title_login" = "Di mana percakapan Anda tinggal";
+"location_sharing_invalid_power_level_message" = "Anda harus mempunyai izin yang diperlukan untuk membagikan lokasi di ruangan ini.";
+"location_sharing_invalid_power_level_title" = "Anda tidak memiliki izin untuk membagikan lokasi";
+"authentication_choose_password_not_verified_message" = "Periksa kotak masuk Anda";
+"authentication_choose_password_not_verified_title" = "Email belum diverifikasi";
