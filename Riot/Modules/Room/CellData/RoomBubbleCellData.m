@@ -165,7 +165,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                 self.collapsable = NO;
                 self.collapsed = NO;
                 
-                [self updateBeaconInfoSummaryWithEventId:event.eventId];
+                [self updateBeaconInfoSummaryWithId:event.eventId andEvent:event];
                 break;
             }
             case MXEventTypeCustom:
@@ -224,7 +224,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     
     if (self.tag == RoomBubbleCellDataTagLiveLocation)
     {
-        [self updateBeaconInfoSummaryWithEventId:eventId];
+        [self updateBeaconInfoSummaryWithId:eventId andEvent:event];
     }
 
     return retVal;
@@ -1361,9 +1361,26 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     }];
 }
 
-- (void)updateBeaconInfoSummaryWithEventId:(NSString *)eventId
+- (void)updateBeaconInfoSummaryWithId:(NSString *)eventId andEvent:(MXEvent*)event
 {
+    if (event.eventType != MXEventTypeBeaconInfo)
+    {
+        MXLogError(@"[RoomBubbleCellData] Try to update beacon info summary with wrong event type with event id %@", eventId);
+        return;
+    }
+    
     id<MXBeaconInfoSummaryProtocol> beaconInfoSummary = [self.mxSession.aggregations.beaconAggregations beaconInfoSummaryFor:eventId inRoomWithId:self.roomId];
+    
+    if (!beaconInfoSummary)
+    {
+        MXBeaconInfo *beaconInfo = [[MXBeaconInfo alloc] initWithMXEvent:event];
+        
+        // A start beacon info event (isLive == true) should have an associated BeaconInfoSummary
+        if (beaconInfo && beaconInfo.isLive)
+        {
+            MXLogError(@"[RoomBubbleCellData] No beacon info summary found for beacon info start event with id %@", eventId);
+        }
+    }
     
     self.beaconInfoSummary = beaconInfoSummary;
 }
