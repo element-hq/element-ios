@@ -347,7 +347,8 @@ Matrix session observer used to detect new opened sessions.
         {
             completionHandler(UNNotificationPresentationOptionBadge
                               | UNNotificationPresentationOptionSound
-                              | UNNotificationPresentationOptionBanner);
+                              | UNNotificationPresentationOptionBanner
+                              | UNNotificationPresentationOptionList);
         }
     }
     else

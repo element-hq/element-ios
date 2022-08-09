@@ -2395,3 +2395,7 @@
 // MARK: Authentication
 "authentication_registration_title" = "Crea il tuo account";
 "authentication_server_info_title_login" = "Dove vivono le tue conversazioni";
+"location_sharing_invalid_power_level_message" = "Devi avere le giuste autorizzazioni per potere condividere la posizione in tempo reale in questa stanza.";
+"location_sharing_invalid_power_level_title" = "Non hai l'autorizzazione di condividere la posizione in tempo reale";
+"authentication_choose_password_not_verified_message" = "Controlla la posta in arrivo";
+"authentication_choose_password_not_verified_title" = "Email non verificata";

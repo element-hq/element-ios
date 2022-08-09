@@ -26,6 +26,9 @@ struct SpaceCreationCoordinatorParameters {
     /// The Matrix session
     let session: MXSession
     
+    /// The identifier of the parent space. `nil` for creating a root space
+    let parentSpaceId: String?
+    
     /// Parameters needed to create the new space
     let creationParameters: SpaceCreationParameters = SpaceCreationParameters()
                 
@@ -33,8 +36,10 @@ struct SpaceCreationCoordinatorParameters {
     let navigationRouter: NavigationRouterType
     
     init(session: MXSession,
+         parentSpaceId: String?,
          navigationRouter: NavigationRouterType? = nil) {
         self.session = session
+        self.parentSpaceId = parentSpaceId
         self.navigationRouter = navigationRouter ?? NavigationRouter(navigationController: RiotNavigationController())
     }
 }

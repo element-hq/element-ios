@@ -115,6 +115,82 @@ public class VectorL10n: NSObject {
   public static var add: String { 
     return VectorL10n.tr("Vector", "add") 
   }
+  /// All
+  public static var allChatsAllFilter: String { 
+    return VectorL10n.tr("Vector", "all_chats_all_filter") 
+  }
+  /// Layout preferences
+  public static var allChatsEditLayout: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout") 
+  }
+  /// Sort by activity
+  public static var allChatsEditLayoutActivityOrder: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout_activity_order") 
+  }
+  /// Automatically filter your messages into the categories of your choice
+  public static var allChatsEditLayoutAddFiltersMessage: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout_add_filters_message") 
+  }
+  /// Filter your messages
+  public static var allChatsEditLayoutAddFiltersTitle: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout_add_filters_title") 
+  }
+  /// Pin sections to home for easy access
+  public static var allChatsEditLayoutAddSectionMessage: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout_add_section_message") 
+  }
+  /// Add section to home
+  public static var allChatsEditLayoutAddSectionTitle: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout_add_section_title") 
+  }
+  /// Sort A-Z
+  public static var allChatsEditLayoutAlphabeticalOrder: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout_alphabetical_order") 
+  }
+  /// Pin your spaces
+  public static var allChatsEditLayoutPinSpacesTitle: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout_pin_spaces_title") 
+  }
+  /// Recents
+  public static var allChatsEditLayoutRecents: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout_recents") 
+  }
+  /// Show filters
+  public static var allChatsEditLayoutShowFilters: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout_show_filters") 
+  }
+  /// Show recents
+  public static var allChatsEditLayoutShowRecents: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout_show_recents") 
+  }
+  /// Sort messages by
+  public static var allChatsEditLayoutSortingOptionsTitle: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout_sorting_options_title") 
+  }
+  /// Unreads
+  public static var allChatsEditLayoutUnreads: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_layout_unreads") 
+  }
+  /// Leave %@
+  public static func allChatsEditMenuLeaveSpace(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "all_chats_edit_menu_leave_space", p1)
+  }
+  /// Space settings
+  public static var allChatsEditMenuSpaceSettings: String { 
+    return VectorL10n.tr("Vector", "all_chats_edit_menu_space_settings") 
+  }
+  /// Chats
+  public static var allChatsSectionTitle: String { 
+    return VectorL10n.tr("Vector", "all_chats_section_title") 
+  }
+  /// All chats
+  public static var allChatsTitle: String { 
+    return VectorL10n.tr("Vector", "all_chats_title") 
+  }
+  /// User settings
+  public static var allChatsUserMenuSettings: String { 
+    return VectorL10n.tr("Vector", "all_chats_user_menu_settings") 
+  }
   /// Help us identify issues and improve %@ by sharing anonymous usage data. To understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.
   public static func analyticsPromptMessageNewUser(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "analytics_prompt_message_new_user", p1)
@@ -3115,6 +3191,10 @@ public class VectorL10n: NSObject {
   public static var locationSharingMapCreditsTitle: String { 
     return VectorL10n.tr("Vector", "location_sharing_map_credits_title") 
   }
+  /// Unable to load map\nThis homeserver is not configured to display maps
+  public static var locationSharingMapLoadingError: String { 
+    return VectorL10n.tr("Vector", "location_sharing_map_loading_error") 
+  }
   /// Open in Apple Maps
   public static var locationSharingOpenAppleMaps: String { 
     return VectorL10n.tr("Vector", "location_sharing_open_apple_maps") 
@@ -6063,6 +6143,10 @@ public class VectorL10n: NSObject {
   public static var roomRecentsPeopleSection: String { 
     return VectorL10n.tr("Vector", "room_recents_people_section") 
   }
+  /// Recently viewed
+  public static var roomRecentsRecentlyViewedSection: String { 
+    return VectorL10n.tr("Vector", "room_recents_recently_viewed_section") 
+  }
   /// SYSTEM ALERTS
   public static var roomRecentsServerNoticeSection: String { 
     return VectorL10n.tr("Vector", "room_recents_server_notice_section") 
@@ -7707,6 +7791,10 @@ public class VectorL10n: NSObject {
   public static var spacePublicJoinRuleDetail: String { 
     return VectorL10n.tr("Vector", "space_public_join_rule_detail") 
   }
+  /// My spaces
+  public static var spaceSelectorTitle: String { 
+    return VectorL10n.tr("Vector", "space_selector_title") 
+  }
   /// Who can access this space?
   public static var spaceSettingsAccessSection: String { 
     return VectorL10n.tr("Vector", "space_settings_access_section") 
@@ -7747,6 +7835,10 @@ public class VectorL10n: NSObject {
   public static var spacesAddSpaceTitle: String { 
     return VectorL10n.tr("Vector", "spaces_add_space_title") 
   }
+  /// Create space within %@
+  public static func spacesAddSubspaceTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_add_subspace_title", p1)
+  }
   /// This feature hasn’t been implemented here, but it’s on the way. For now, you can do that with %@ on your computer.
   public static func spacesComingSoonDetail(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "spaces_coming_soon_detail", p1)
@@ -7758,6 +7850,10 @@ public class VectorL10n: NSObject {
   /// Create a space
   public static var spacesCreateSpaceTitle: String { 
     return VectorL10n.tr("Vector", "spaces_create_space_title") 
+  }
+  /// Create a subspace
+  public static var spacesCreateSubspaceTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_create_subspace_title") 
   }
   /// As this space is just for you, no one will be informed. You can add more later.
   public static var spacesCreationAddRoomsMessage: String { 
@@ -7990,6 +8086,14 @@ public class VectorL10n: NSObject {
   /// Some results may be hidden because they’re private and you need an invite to join them.
   public static var spacesNoRoomFoundDetail: String { 
     return VectorL10n.tr("Vector", "spaces_no_room_found_detail") 
+  }
+  /// The created space will be added to %@.
+  public static func spacesSubspaceCreationVisibilityMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_subspace_creation_visibility_message", p1)
+  }
+  /// What type of subspace do you want to create?
+  public static var spacesSubspaceCreationVisibilityTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_subspace_creation_visibility_title") 
   }
   /// Suggested
   public static var spacesSuggestedRoom: String { 

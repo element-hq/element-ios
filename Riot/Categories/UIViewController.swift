@@ -125,6 +125,27 @@ extension UIViewController {
         return fabImageView
     }
     
+    /// Defines the large title display mode for the view controller
+    /// - Parameters:
+    ///   - largeTitleDisplayMode: large title display mode
+    @objc func vc_setLargeTitleDisplayMode(_ largeTitleDisplayMode: UINavigationItem.LargeTitleDisplayMode) {
+        switch largeTitleDisplayMode {
+        case .automatic:
+              guard let navigationController = navigationController else { break }
+            if let index = navigationController.children.firstIndex(of: self) {
+                vc_setLargeTitleDisplayMode(index == 0 ? .always : .never)
+            } else {
+                vc_setLargeTitleDisplayMode(.always)
+            }
+        case .always, .never:
+            navigationItem.largeTitleDisplayMode = largeTitleDisplayMode
+            // Even when .never, needs to be true otherwise animation will be broken on iOS11, 12, 13
+            navigationController?.navigationBar.prefersLargeTitles = true
+        @unknown default:
+            MXLog.failure("[UIViewController] setLargeTitleDisplayMode: Missing handler for \(largeTitleDisplayMode)")
+        }
+    }
+
     /// Set leftBarButtonItem with split view display mode button if there is no leftBarButtonItem defined and splitViewController exists.
     /// To be Used when view controller is displayed as detail controller in split view.
     func vc_setupDisplayModeLeftBarButtonItemIfNeeded() {

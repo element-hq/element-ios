@@ -27,6 +27,7 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
     // MARK: Private
     
     private let session: MXSession
+    private let parentSpaceId: String?
     private let creationParams: SpaceCreationParameters
     
     private var tasks: [SpaceCreationPostProcessTask] = []
@@ -66,8 +67,9 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
 
     // MARK: - Setup
     
-    init(session: MXSession, creationParams: SpaceCreationParameters) {
+    init(session: MXSession, parentSpaceId: String?, creationParams: SpaceCreationParameters) {
         self.session = session
+        self.parentSpaceId = parentSpaceId
         self.creationParams = creationParams
         self.tasks = Self.tasks(with: creationParams)
         self.tasksSubject = CurrentValueSubject(tasks)
@@ -168,13 +170,25 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
         let userIdInvites = creationParams.inviteType == .userId ? creationParams.userIdInvites : []
         session.spaceService.createSpace(withName: creationParams.name, topic: creationParams.topic, isPublic: creationParams.isPublic, aliasLocalPart: alias, inviteArray: userIdInvites) { [weak self] response in
             guard let self = self else { return }
+            
             if response.isFailure {
                 self.updateCurrentTask(with: .failure)
             } else {
                 self.creationParams.isModified = false
                 self.createdSpace = response.value
-                self.updateCurrentTask(with: .success)
-                self.runNextTask()
+
+                guard let createdSpaceId = self.createdSpace?.spaceId, let parentSpaceId = self.parentSpaceId, let parentSpace = self.session.spaceService.getSpace(withId: parentSpaceId) else {
+                    self.updateCurrentTask(with: .success)
+                    self.runNextTask()
+                    return
+                }
+                
+                parentSpace.addChild(roomId: createdSpaceId) { [weak self] response in
+                    guard let self = self else { return }
+                    
+                    self.updateCurrentTask(with: .success)
+                    self.runNextTask()
+                }
             }
         }
     }

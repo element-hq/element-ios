@@ -3920,6 +3920,10 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                 // The user wants to select this theme
                 RiotSettings.shared.userInterfaceTheme = newTheme;
                 ThemeService.shared.themeId = newTheme;
+                
+                // This is a hack to force the background colour of the container view of the navigation controller
+                // This is needed only for hot theme update as the UIViewControllerWrapperView of the RioNavigationController is not updated
+                self.view.superview.backgroundColor = ThemeService.shared.theme.backgroundColor;
 
                 [self updateSections];
             }
@@ -4258,19 +4262,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
 - (BOOL)canSetupSecureBackup
 {
-    // Accept to create a setup only if we have the 3 cross-signing keys
-    // This is the path to have a sane state
-    // TODO: What about missing MSK that was not gossiped before?
-    
-    MXRecoveryService *recoveryService = self.mainSession.crypto.recoveryService;
-    
-    NSArray *crossSigningServiceSecrets = @[
-                                            MXSecretId.crossSigningMaster,
-                                            MXSecretId.crossSigningSelfSigning,
-                                            MXSecretId.crossSigningUserSigning];
-    
-    return ([recoveryService.secretsStoredLocally mx_intersectArray:crossSigningServiceSecrets].count
-            == crossSigningServiceSecrets.count);
+    return [self.mainSession vc_canSetupSecureBackup];
 }
 
 #pragma mark - SecureBackupSetupCoordinatorBridgePresenterDelegate

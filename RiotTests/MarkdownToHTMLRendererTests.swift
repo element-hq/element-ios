@@ -16,7 +16,7 @@
 
 import XCTest
 
-@testable import Riot
+@testable import Element
 
 final class MarkdownToHTMLRendererTests: XCTestCase {
     // MARK: - Tests

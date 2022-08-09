@@ -112,7 +112,7 @@
     [self vc_removeBackTitle];
     
     [self setupTitleView];
-    self.titleLabelText = [VectorL10n titleHome];
+    titleView.titleLabel.text = [VectorL10n allChatsTitle];
     
     childViewControllers = [NSMutableArray array];
     
@@ -163,6 +163,8 @@
         }];
         [self userInterfaceThemeDidChange];
     }
+    
+    self.tabBar.hidden = BuildSettings.newAppLayoutEnabled;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -329,7 +331,7 @@
         
         // Restore the right delegate of the shared recent data source.
         id<MXKDataSourceDelegate> recentsDataSourceDelegate = self.homeViewController;
-        RecentsDataSourceMode recentsDataSourceMode = RecentsDataSourceModeHome;
+        RecentsDataSourceMode recentsDataSourceMode = self.homeViewController.recentsDataSourceMode;
         
         NSInteger tabItemTag = self.tabBar.items[self.selectedIndex].tag;
         
@@ -647,20 +649,26 @@
 {
     if (roomParentId) {
         NSString *parentName = [mxSession roomSummaryWithRoomId:roomParentId].displayname;
-        NSMutableArray<NSString *> *breadcrumbs = [[NSMutableArray alloc] initWithObjects:parentName, nil];
-
-        MXSpace *firstRootAncestor = roomParentId ? [mxSession.spaceService firstRootAncestorForRoomWithId:roomParentId] : nil;
-        NSString *rootName = nil;
-        if (firstRootAncestor)
+        if (!BuildSettings.newAppLayoutEnabled)
         {
-            rootName = [mxSession roomSummaryWithRoomId:firstRootAncestor.spaceId].displayname;
-            [breadcrumbs insertObject:rootName atIndex:0];
+            NSMutableArray<NSString *> *breadcrumbs = [[NSMutableArray alloc] initWithObjects:parentName, nil];
+
+            MXSpace *firstRootAncestor = roomParentId ? [mxSession.spaceService firstRootAncestorForRoomWithId:roomParentId] : nil;
+            NSString *rootName = nil;
+            if (firstRootAncestor)
+            {
+                rootName = [mxSession roomSummaryWithRoomId:firstRootAncestor.spaceId].displayname;
+                [breadcrumbs insertObject:rootName atIndex:0];
+            }
+            titleView.breadcrumbView.breadcrumbs = breadcrumbs;
         }
-        titleView.breadcrumbView.breadcrumbs = breadcrumbs;
     }
     else
     {
-        titleView.breadcrumbView.breadcrumbs = @[];
+        if (!BuildSettings.newAppLayoutEnabled)
+        {
+            titleView.breadcrumbView.breadcrumbs = @[];
+        }
     }
     
     recentsDataSource.currentSpace = [mxSession.spaceService getSpaceWithId:roomParentId];
@@ -669,6 +677,8 @@
 
 - (void)updateSideMenuNotifcationIcon
 {
+    if (BuildSettings.newAppLayoutEnabled) { return; }
+    
     BOOL displayNotification = NO;
     
     for (MXRoomSummary *summary in recentsDataSource.mxSession.spaceService.rootSpaceSummaries) {
@@ -699,8 +709,11 @@
 
 -(void)setupTitleView
 {
-    titleView = [MainTitleView new];
-    self.navigationItem.titleView = titleView;
+    if (!BuildSettings.newAppLayoutEnabled)
+    {
+        titleView = [MainTitleView new];
+        self.navigationItem.titleView = titleView;
+    }
 }
 
 -(void)setTitleLabelText:(NSString *)text

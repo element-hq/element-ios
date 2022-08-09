@@ -75,6 +75,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         super.init()
         
         setupFlexDebuggerOnWindow(window)
+        update(with: ThemeService.shared().theme)
     }
     
     // MARK: - Public methods
@@ -107,6 +108,8 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         // NOTE: When split view is shown there can be no Matrix sessions ready. Keep this behavior or use a loading screen before showing the split view.
         self.showSplitView()
         MXLog.debug("[AppCoordinator] Showed split view")
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.themeDidChange), name: Notification.Name.themeServiceDidChangeTheme, object: nil)
     }
     
     func open(url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
@@ -122,6 +125,18 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         }
     }
         
+    // MARK: - Theme management
+    
+    @objc private func themeDidChange() {
+        update(with: ThemeService.shared().theme)
+    }
+    
+    private func update(with theme: Theme) {
+        for window in UIApplication.shared.windows {
+            window.overrideUserInterfaceStyle = ThemeService.shared().theme.userInterfaceStyle
+        }
+    }
+    
     // MARK: - Private methods
     private func setupLogger() {
         UILog.configure(logger: MatrixSDKLogger.self)

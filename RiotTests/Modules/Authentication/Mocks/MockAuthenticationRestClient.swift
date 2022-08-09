@@ -16,7 +16,7 @@
 
 import Foundation
 
-@testable import Riot
+@testable import Element
 
 /// A mock REST client that can be used for authentication.
 class MockAuthenticationRestClient: AuthenticationRestClient {

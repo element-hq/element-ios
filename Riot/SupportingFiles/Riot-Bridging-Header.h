@@ -70,3 +70,4 @@
 #import "MXRoom+Sync.h"
 #import "UIAlertController+MatrixKit.h"
 #import "MXKMessageTextView.h"
+#import "AllChatsLayoutModels.h"

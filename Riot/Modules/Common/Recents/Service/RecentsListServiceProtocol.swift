@@ -53,6 +53,12 @@ public protocol RecentsListServiceProtocol {
     /// Suggested rooms for current mode
     var suggestedRoomListData: MXRoomListData? { get }
     
+    /// Breadcrumbs
+    var breadcrumbsRoomListData: MXRoomListData? { get }
+    
+    /// All Chats room for current mode
+    var allChatsRoomListData: MXRoomListData? { get }
+
     // MARK: Discussion counts
     
     /// Counts for favorite screen
