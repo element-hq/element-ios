@@ -50,6 +50,7 @@
 @property (nonatomic, strong) MXThrottler *collectionViewPaginationThrottler;
 
 @property(nonatomic) SpaceMembersCoordinatorBridgePresenter *spaceMembersCoordinatorBridgePresenter;
+@property (nonatomic, strong) MXThrottler *tableViewPaginationThrottler;
 
 @end
 
@@ -72,6 +73,7 @@
     
     self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenHome];
     self.collectionViewPaginationThrottler = [[MXThrottler alloc] initWithMinimumDelay:0.1];
+    self.tableViewPaginationThrottler = [[MXThrottler alloc] initWithMinimumDelay:0.1];
 }
 
 - (void)viewDidLoad
@@ -85,13 +87,11 @@
     
     // Tag the recents table with the its recents data source mode.
     // This will be used by the shared RecentsDataSource instance for sanity checks (see UITableViewDataSource methods).
-    self.recentsTableView.tag = RecentsDataSourceModeHome;
+    self.recentsTableView.tag = self.recentsDataSourceMode;
     self.recentsTableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     
     // Add the (+) button programmatically
-    plusButtonImageView = [self vc_addFABWithImage:AssetImages.plusFloatingAction.image
-                                            target:self
-                                            action:@selector(onPlusButtonPressed)];
+    [self addFabButton];
     
     // Register table view cells used for rooms collection.
     [self registerCellsWithCollectionViews];
@@ -108,10 +108,10 @@
 
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
-    if (recentsDataSource.recentsDataSourceMode != RecentsDataSourceModeHome)
+    if (recentsDataSource.recentsDataSourceMode != self.recentsDataSourceMode)
     {
         // Take the lead on the shared data source.
-        [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeHome];
+        [recentsDataSource setDelegate:self andRecentsDataSourceMode:self.recentsDataSourceMode];
         
         // Reset filtering on the shared data source when switching tabs
         [recentsDataSource searchWithPatterns:nil];
@@ -163,6 +163,18 @@
     self.secureBackupSetupCoordinatorBridgePresenter = keyBackupSetupCoordinatorBridgePresenter;
 }
 
+- (void)addFabButton
+{
+    plusButtonImageView = [self vc_addFABWithImage:AssetImages.plusFloatingAction.image
+                                            target:self
+                                            action:@selector(onPlusButtonPressed)];
+}
+
+- (RecentsDataSourceMode)recentsDataSourceMode
+{
+    return RecentsDataSourceModeHome;
+}
+
 #pragma mark - Override RecentsViewController
 
 - (void)displayList:(MXKRecentsDataSource *)listDataSource
@@ -182,7 +194,7 @@
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible
 {
     // Check whether the recents data source is correctly configured.
-    if (recentsDataSource.recentsDataSourceMode != RecentsDataSourceModeHome)
+    if (recentsDataSource.recentsDataSourceMode != self.recentsDataSourceMode)
     {
         return;
     }
@@ -312,7 +324,15 @@
 // is reused, rather than cells getting randomly swapped around.
 - (void)registerCellsWithCollectionViews
 {
-    NSArray<NSNumber *> *sections = @[
+    for (NSNumber *section in self.sections) {
+        NSString *cellIdentifier = [self cellIdentifierForSectionType:section.integerValue];
+        [self.recentsTableView registerClass:TableViewCellWithCollectionView.class forCellReuseIdentifier:cellIdentifier];
+    }
+}
+
+- (NSArray<NSNumber *> *)sections
+{
+    return @[
         @(RecentsDataSourceSectionTypeDirectory),
         @(RecentsDataSourceSectionTypeInvites),
         @(RecentsDataSourceSectionTypeFavorites),
@@ -320,12 +340,9 @@
         @(RecentsDataSourceSectionTypeConversation),
         @(RecentsDataSourceSectionTypeLowPriority),
         @(RecentsDataSourceSectionTypeServerNotice),
-        @(RecentsDataSourceSectionTypeSuggestedRooms)
+        @(RecentsDataSourceSectionTypeSuggestedRooms),
+        @(RecentsDataSourceSectionTypeBreadcrumbs)
     ];
-    for (NSNumber *section in sections) {
-        NSString *cellIdentifier = [self cellIdentifierForSectionType:section.integerValue];
-        [self.recentsTableView registerClass:TableViewCellWithCollectionView.class forCellReuseIdentifier:cellIdentifier];
-    }
 }
 
 - (NSString *)cellIdentifierForSectionType:(RecentsDataSourceSectionType)sectionType
@@ -352,13 +369,24 @@
     }
     else
     {
-        // Each rooms section is represented by only one collection view.
+        // Each rooms section is represented by only one collection view except for the all chats section.
+        NSInteger index = [recentsDataSource.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeAllChats];
+        if (section == index)
+        {
+            return [self.dataSource tableView:tableView numberOfRowsInSection:section];
+        }
         return 1;
     }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSInteger index = [recentsDataSource.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeAllChats];
+    if (indexPath.section == index)
+    {
+        return [self.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
+    }
+
     RecentsDataSourceSectionType sectionType = [recentsDataSource.sections sectionTypeForSectionIndex:indexPath.section];
     if ((sectionType == RecentsDataSourceSectionTypeConversation && !recentsDataSource.recentsListService.conversationRoomListData.counts.numberOfRooms)
         || (sectionType == RecentsDataSourceSectionTypePeople && !recentsDataSource.recentsListService.peopleRoomListData.counts.numberOfRooms)
@@ -446,6 +474,12 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSInteger index = [recentsDataSource.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeAllChats];
+    if (indexPath.section == index)
+    {
+        return [self.dataSource tableView:tableView canEditRowAtIndexPath:indexPath];
+    }
+
     return NO;
 }
 
@@ -453,6 +487,12 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSInteger index = [recentsDataSource.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeAllChats];
+    if (indexPath.section == index)
+    {
+        return [super tableView:tableView heightForRowAtIndexPath:indexPath];
+    }
+
     RecentsDataSourceSectionType sectionType = [recentsDataSource.sections sectionTypeForSectionIndex:indexPath.section];
     if ((sectionType == RecentsDataSourceSectionTypeConversation && !recentsDataSource.recentsListService.conversationRoomListData.counts.numberOfRooms)
         || (sectionType == RecentsDataSourceSectionTypePeople && !recentsDataSource.recentsListService.peopleRoomListData.counts.numberOfRooms))
@@ -513,7 +553,7 @@
     }
     else
     {
-        return [super tableView:tableView heightForHeaderInSection:section];
+        return [(RecentsDataSource *)self.dataSource heightForHeaderInSection:section];
     }
 }
 
@@ -534,6 +574,38 @@
     {
         [self showCrossSigningSetup];
     }
+    else if (sectionType == RecentsDataSourceSectionTypeAllChats)
+    {
+        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    RecentsDataSourceSectionType sectionType = [recentsDataSource.sections sectionTypeForSectionIndex:indexPath.section];
+    if (sectionType != RecentsDataSourceSectionTypeAllChats)
+    {
+        return;
+    }
+    
+    if ([super respondsToSelector:@selector(tableView:willDisplayCell:forRowAtIndexPath:)])
+    {
+        [super tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
+    }
+    
+    [self.tableViewPaginationThrottler throttle:^{
+        NSInteger section = indexPath.section;
+        if (tableView.numberOfSections <= section)
+        {
+            return;
+        }
+
+        NSInteger numberOfRowsInSection = [tableView numberOfRowsInSection:section];
+        if (indexPath.row == numberOfRowsInSection - 1)
+        {
+            [self->recentsDataSource paginateInSection:section];
+        }
+    }];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -851,7 +923,7 @@
         animationCompletion();
         
         // TODO: Remove this line and refresh key verification setup banner by listening to a local notification cross-signing state change (Add this behavior into the SDK).
-        [self->recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeHome];
+        [self->recentsDataSource setDelegate:self andRecentsDataSourceMode:self.recentsDataSourceMode];
         [self refreshRecentsTable];
         
         success();
@@ -928,6 +1000,12 @@
 
 - (UIContextMenuConfiguration *)tableView:(UITableView *)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point API_AVAILABLE(ios(13.0))
 {
+    RecentsDataSourceSectionType sectionType = [recentsDataSource.sections sectionTypeForSectionIndex:indexPath.section];
+    if (sectionType == RecentsDataSourceSectionTypeAllChats)
+    {
+        return [super tableView:tableView contextMenuConfigurationForRowAtIndexPath:indexPath point:point];
+    }
+    
     return nil;
 }
 
@@ -941,7 +1019,6 @@
         return nil;
     }
     
-    self.recentsUpdateEnabled = NO;
     return [self.contextMenuProvider contextMenuConfigurationWith:cellData from:cell session:self.dataSource.mxSession];
 }
 

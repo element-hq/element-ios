@@ -173,6 +173,8 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
                 self.roomViewController.displayRoom(roomDataSource)
             }
             
+            self.mxSession?.updateBreadcrumbsWithRoom(withId: roomId, success: nil, failure: nil)
+
             completion?()
         })
     }
@@ -204,6 +206,8 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
             // Give the data source ownership to the room view controller.
             self.roomViewController.hasRoomDataSourceOwnership = true
             
+            self.mxSession?.updateBreadcrumbsWithRoom(withId: roomId, success: nil, failure: nil)
+
             completion?()
         }
     }
@@ -236,6 +240,8 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
             // Give the data source ownership to the room view controller.
             self.roomViewController.hasRoomDataSourceOwnership = true
             
+            self.mxSession?.updateBreadcrumbsWithRoom(withId: roomId, success: nil, failure: nil)
+
             completion?()
         }
     }

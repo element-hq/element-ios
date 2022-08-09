@@ -40,7 +40,7 @@ final class SpaceCreationPostProcessCoordinator: Coordinator, Presentable {
     
     init(parameters: SpaceCreationPostProcessCoordinatorParameters) {
         self.parameters = parameters
-        let viewModel = SpaceCreationPostProcessViewModel.makeSpaceCreationPostProcessViewModel(spaceCreationPostProcessService: SpaceCreationPostProcessService(session: parameters.session, creationParams: parameters.creationParams))
+        let viewModel = SpaceCreationPostProcessViewModel.makeSpaceCreationPostProcessViewModel(spaceCreationPostProcessService: SpaceCreationPostProcessService(session: parameters.session, parentSpaceId: parameters.parentSpaceId, creationParams: parameters.creationParams))
         let view = SpaceCreationPostProcess(viewModel: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
         spaceCreationPostProcessViewModel = viewModel

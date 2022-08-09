@@ -131,11 +131,11 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
 
         let flow: AuthenticationFlow = initialScreen == .login ? .login : .register
         do {
-            let homeserverAddress = authenticationService.state.homeserver.addressFromUser ?? authenticationService.state.homeserver.address
-            try await authenticationService.startFlow(flow, for: homeserverAddress)
+            // Start the flow using the default server (or a provisioning link if set).
+            try await authenticationService.startFlow(flow)
         } catch {
-            MXLog.error("[AuthenticationCoordinator] start: Failed to start")
-            displayError(message: error.localizedDescription)
+            MXLog.error("[AuthenticationCoordinator] start: Failed to start, showing server selection.")
+            showServerSelectionScreen(for: flow)
             return
         }
 
@@ -152,6 +152,42 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             } else {
                 showLoginScreen()
             }
+        }
+    }
+    
+    /// Pushes the server selection screen into the flow (other screens may also present it modally later).
+    @MainActor private func showServerSelectionScreen(for flow: AuthenticationFlow) {
+        MXLog.debug("[AuthenticationCoordinator] showServerSelectionScreen")
+        let parameters = AuthenticationServerSelectionCoordinatorParameters(authenticationService: authenticationService,
+                                                                            flow: flow,
+                                                                            hasModalPresentation: false)
+        let coordinator = AuthenticationServerSelectionCoordinator(parameters: parameters)
+        coordinator.callback = { [weak self, weak coordinator] result in
+            guard let self = self, let coordinator = coordinator else { return }
+            self.serverSelectionCoordinator(coordinator, didCompleteWith: result, for: flow)
+        }
+        
+        coordinator.start()
+        add(childCoordinator: coordinator)
+        
+        navigationRouter.push(coordinator, animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
+    
+    /// Shows the next screen in the flow after the server selection screen.
+    @MainActor private func serverSelectionCoordinator(_ coordinator: AuthenticationServerSelectionCoordinator,
+                                                       didCompleteWith result: AuthenticationServerSelectionCoordinatorResult,
+                                                       for flow: AuthenticationFlow) {
+        switch result {
+        case .updated:
+            if flow == .register {
+                showRegistrationScreen()
+            } else {
+                showLoginScreen()
+            }
+        case .dismiss:
+            MXLog.failure("[AuthenticationCoordinator] AuthenticationServerSelectionScreen is requesting dismiss when part of a stack.")
         }
     }
     
@@ -306,48 +342,6 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     }
     
     // MARK: - Registration
-    
-    #warning("Unused.")
-    /// Pushes the server selection screen into the flow (other screens may also present it modally later).
-    @MainActor private func showServerSelectionScreen() {
-        MXLog.debug("[AuthenticationCoordinator] showServerSelectionScreen")
-        let parameters = AuthenticationServerSelectionCoordinatorParameters(authenticationService: authenticationService,
-                                                                            flow: .register,
-                                                                            hasModalPresentation: false)
-        let coordinator = AuthenticationServerSelectionCoordinator(parameters: parameters)
-        coordinator.callback = { [weak self, weak coordinator] result in
-            guard let self = self, let coordinator = coordinator else { return }
-            self.serverSelectionCoordinator(coordinator, didCompleteWith: result)
-        }
-        
-        coordinator.start()
-        add(childCoordinator: coordinator)
-        
-        if navigationRouter.modules.isEmpty {
-            navigationRouter.setRootModule(coordinator) { [weak self] in
-                self?.remove(childCoordinator: coordinator)
-            }
-        } else {
-            navigationRouter.push(coordinator, animated: true) { [weak self] in
-                self?.remove(childCoordinator: coordinator)
-            }
-        }
-    }
-    
-    /// Shows the next screen in the flow after the server selection screen.
-    @MainActor private func serverSelectionCoordinator(_ coordinator: AuthenticationServerSelectionCoordinator,
-                                                       didCompleteWith result: AuthenticationServerSelectionCoordinatorResult) {
-        switch result {
-        case .updated:
-            if authenticationService.state.homeserver.needsRegistrationFallback {
-                showFallback(for: .register)
-            } else {
-                showRegistrationScreen()
-            }
-        case .dismiss:
-            MXLog.failure("[AuthenticationCoordinator] AuthenticationServerSelectionScreen is requesting dismiss when part of a stack.")
-        }
-    }
     
     /// Shows the registration screen.
     @MainActor private func showRegistrationScreen() {

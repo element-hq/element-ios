@@ -56,7 +56,8 @@ enum MockAppScreens {
         MockTemplateSimpleScreenScreenState.self,
         MockTemplateUserProfileScreenState.self,
         MockTemplateRoomListScreenState.self,
-        MockTemplateRoomChatScreenState.self
+        MockTemplateRoomChatScreenState.self,
+        MockSpaceSelectorScreenState.self
     ]
 }
 

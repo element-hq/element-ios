@@ -46,6 +46,12 @@ static const CGFloat kInterItemsSpaceHorizontal = 8.0;
     [self setNeedsLayout];
 }
 
+- (void)setTopPadding:(CGFloat)topPadding
+{
+    _topPadding = topPadding;
+    [self setNeedsLayout];
+}
+
 - (void)setTopSpanningView:(UIView *)topSpanningView
 {
     //  remove old one
@@ -147,7 +153,7 @@ static const CGFloat kInterItemsSpaceHorizontal = 8.0;
 
 - (void)setup
 {
-    _minimumLeftInset = 20;
+    _minimumLeftInset = 16;
     _minimumRightInset = 16;
     _topViewHeight = 30;
 }
@@ -170,6 +176,7 @@ static const CGFloat kInterItemsSpaceHorizontal = 8.0;
     if (_topSpanningView)
     {
         CGRect frame = self.contentView.bounds;
+        frame.origin.y += _topPadding;
         frame.size.height = _topViewHeight;
         _topSpanningView.frame = frame;
     }
@@ -198,6 +205,7 @@ static const CGFloat kInterItemsSpaceHorizontal = 8.0;
         }
         frame.size.width = MIN(self.contentView.bounds.size.width - leftMargin - rightMargin,
                                [_headerLabel sizeThatFits:self.frame.size].width);
+        frame.origin.y += _topPadding;
         _headerLabel.frame = frame;
     }
 
@@ -217,6 +225,7 @@ static const CGFloat kInterItemsSpaceHorizontal = 8.0;
             frame.origin.x = leftMargin;
         }
         frame.origin.y = MAX(0, (_topViewHeight - frame.size.height)/2);
+        frame.origin.y += _topPadding;
         _accessoryView.frame = frame;
     }
 
@@ -229,14 +238,15 @@ static const CGFloat kInterItemsSpaceHorizontal = 8.0;
         CGRect frame = _rightAccessoryView.frame;
         frame.origin.x = self.contentView.bounds.size.width - frame.size.width - rightMargin;
         frame.origin.y = MAX(0, (_topViewHeight - frame.size.height)/2);
+        frame.origin.y += _topPadding;
         _rightAccessoryView.frame = frame;
     }
 
     if (_bottomView)
     {
         //  reset margins
-        leftMargin = MAX(_leftInset, 20);
-        rightMargin = MAX(_rightInset, 20);
+        leftMargin = MAX(_leftInset, 16);
+        rightMargin = MAX(_rightInset, 16);
 
         CGRect frame = _bottomView.frame;
         frame.origin.x = leftMargin;

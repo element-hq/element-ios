@@ -40,6 +40,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param url original url
 - (id)initWithUrl:(NSURL *)url;
 
+/// An Initializer that preserves the original URL, but parses the parameters from an updated fragment.
+/// @param url original url
+/// @param fragment the updated fragment to parse.
+- (id)initWithUrl:(NSURL *)url updatedFragment:(NSString *)fragment;
+
 @end
 
 NS_ASSUME_NONNULL_END

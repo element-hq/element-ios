@@ -358,7 +358,7 @@
 "settings_crypto_device_key" = "\nClave de la sesión:\n";
 "settings_crypto_export" = "Exportar claves";
 "settings_crypto_blacklist_unverified_devices" = "Cifrar solo a sesiones verificadas";
-"settings_deactivate_my_account" = "Desactivar mi cuenta";
+"settings_deactivate_my_account" = "Desactivar cuenta permanentemente";
 // Room Details
 "room_details_title" = "Detalles de Sala";
 "room_details_people" = "Miembros";
@@ -1083,13 +1083,13 @@
 "room_recents_suggested_rooms_section" = "SALAS SUGERIDAS";
 "onboarding_use_case_existing_server_button" = "Conectar a un servidor";
 "onboarding_use_case_existing_server_message" = "¿Te quieres unir a un servidor que ya existe?";
-"onboarding_use_case_skip_button" = "saltar esta pregunta";
+"onboarding_use_case_skip_button" = "Saltar esta pregunta";
 /* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
 "onboarding_use_case_not_sure_yet" = "¿Todavía no lo sabes? Puedes %@";
 "onboarding_use_case_community_messaging" = "Comunidades";
 "onboarding_use_case_work_messaging" = "Equipos";
 "onboarding_use_case_personal_messaging" = "Familia y amigos";
-"onboarding_use_case_message" = "Te vamos a ayudar a conectarte.";
+"onboarding_use_case_message" = "Te vamos a ayudar a conectarte";
 "onboarding_use_case_title" = "¿Con quién vas a hablar más?";
 "onboarding_splash_page_4_message" = "Element también funciona genial en el trabajo. Usado por algunas de las organizaciones más seguras.";
 "onboarding_splash_page_4_title_no_pun" = "Mensajería para tu equipo.";
@@ -2372,7 +2372,7 @@
 "threads_notice_done" = "Vale";
 "onboarding_celebration_button" = "Continuar";
 "onboarding_celebration_message" = "Ve a ajustes cuando quieras para actualizar tu perfil";
-"onboarding_celebration_title" = "¡Ya estás!";
+"onboarding_celebration_title" = "¡Ya está!";
 "onboarding_avatar_accessibility_label" = "Imagen de perfil";
 "onboarding_display_name_max_length" = "Tu nombre público debe tener menos de 256 caracteres";
 "onboarding_display_name_hint" = "Puedes cambiarlo más adelante";
@@ -2483,3 +2483,14 @@
 
 // MARK: Authentication
 "authentication_registration_title" = "Crea una cuenta";
+"message_reply_to_sender_sent_their_live_location" = "Ubicación en tiempo real.";
+"authentication_recaptcha_title" = "¿Eres una persona?";
+/* The placeholder will show the homeserver's domain */
+"authentication_terms_message" = "Por favor, lee las condiciones de uso de %@";
+"authentication_terms_title" = "Políticas del servidor";
+"authentication_verify_msisdn_waiting_button" = "Volver a enviar código";
+"authentication_verify_msisdn_otp_text_field_placeholder" = "Código de confirmación";
+"authentication_verify_msisdn_text_field_placeholder" = "Número de teléfono";
+"authentication_choose_password_not_verified_message" = "Comprueba tu bandeja de entrada";
+"authentication_choose_password_text_field_placeholder" = "Nueva contraseña";
+"authentication_forgot_password_waiting_button" = "Volver a enviar correo";

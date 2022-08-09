@@ -32,6 +32,8 @@ typedef NS_ENUM(NSInteger, PhotoBrowserAnimationType) {
 
 @protocol MXKDestinationAttachmentAnimatorDelegate <NSObject>
 
+- (BOOL)prepareSubviewsForTransition:(BOOL)isStartInteraction;
+
 - (UIImageView *)finalImageView;
 
 @end

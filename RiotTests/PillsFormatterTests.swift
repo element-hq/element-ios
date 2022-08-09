@@ -15,7 +15,7 @@
 //
 
 import XCTest
-@testable import Riot
+@testable import Element
 
 // MARK: - Inputs
 private enum Inputs {

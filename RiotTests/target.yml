@@ -46,7 +46,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: org.matrix.$(PRODUCT_NAME:rfc1034identifier)
         PRODUCT_NAME: RiotTests
         SWIFT_OBJC_BRIDGING_HEADER: RiotTests/RiotTests-Bridging-Header.h
-        TEST_HOST: $(BUILT_PRODUCTS_DIR)/Riot.app/Riot
+        TEST_HOST: $(BUILT_PRODUCTS_DIR)/Element.app/Element
       configs:
         Debug:
         Release:

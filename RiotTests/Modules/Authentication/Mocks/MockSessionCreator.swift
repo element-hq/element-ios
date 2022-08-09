@@ -16,7 +16,7 @@
 
 import Foundation
 
-@testable import Riot
+@testable import Element
 
 struct MockSessionCreator: SessionCreatorProtocol {
     /// Returns a basic session created from the supplied credentials. This prevents the app from setting up the account during tests.

@@ -22,6 +22,10 @@ class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKVi
     private var bannerContainerView: UIView!
     private var stackView: UIStackView!
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        homeViewController.preferredStatusBarStyle
+    }
+    
     init(viewController: HomeViewController) {
         self.homeViewController = viewController
         

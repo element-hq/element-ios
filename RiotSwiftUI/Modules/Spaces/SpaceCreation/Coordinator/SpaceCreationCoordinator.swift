@@ -46,14 +46,24 @@ final class SpaceCreationCoordinator: Coordinator {
     // MARK: - Setup
     
     init(parameters: SpaceCreationCoordinatorParameters) {
+        let title: String
+        let message: String
+        if let parentSpaceId = parameters.parentSpaceId, let parentSpaceName = parameters.session.spaceService.getSpace(withId: parentSpaceId)?.summary?.displayname {
+            title = VectorL10n.spacesSubspaceCreationVisibilityTitle
+            message = VectorL10n.spacesSubspaceCreationVisibilityMessage(parentSpaceName)
+        } else {
+            title = VectorL10n.spacesCreationVisibilityTitle
+            message = VectorL10n.spacesCreationVisibilityMessage
+        }
+
         self.parameters = parameters
         self.spaceVisibilityMenuParameters = SpaceCreationMenuCoordinatorParameters(
             session: parameters.session,
             creationParams: parameters.creationParameters,
             navTitle: VectorL10n.spacesCreateSpaceTitle,
             showBackButton: false,
-            title: VectorL10n.spacesCreationVisibilityTitle,
-            detail: VectorL10n.spacesCreationVisibilityMessage,
+            title: title,
+            detail: message,
             options: [
                 SpaceCreationMenuRoomOption(id: .publicSpace, icon: Asset.Images.spaceCreationPublic.image, title: VectorL10n.public, detail: VectorL10n.spacePublicJoinRuleDetail),
                 SpaceCreationMenuRoomOption(id: .privateSpace, icon: Asset.Images.spaceCreationPrivate.image, title: VectorL10n.private, detail: VectorL10n.spacePrivateJoinRuleDetail)
@@ -245,7 +255,7 @@ final class SpaceCreationCoordinator: Coordinator {
     }
 
     private func createPostProcessCoordinator() -> SpaceCreationPostProcessCoordinator {
-        let coordinator = SpaceCreationPostProcessCoordinator(parameters: SpaceCreationPostProcessCoordinatorParameters(session: parameters.session, creationParams: parameters.creationParameters))
+        let coordinator = SpaceCreationPostProcessCoordinator(parameters: SpaceCreationPostProcessCoordinatorParameters(session: parameters.session, parentSpaceId: parameters.parentSpaceId, creationParams: parameters.creationParameters))
         coordinator.callback = { [weak self] result in
             guard let self = self else { return }
             switch result {

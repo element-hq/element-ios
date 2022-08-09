@@ -427,7 +427,7 @@
 "settings_pin_rooms_with_unread" = "Fikso dhomat me mesazhe të palexuar";
 "settings_labs_create_conference_with_jitsi" = "Krijoni thirrje konferencë me Jitsi-n";
 "settings_fail_to_update_password" = "S’u arrit të përditësohet fjalëkalimi i llogarisë Matrix";
-"settings_deactivate_my_account" = "Çaktivizoje llogarinë time";
+"settings_deactivate_my_account" = "Çaktivizoje llogarinë përgjithmonë";
 "room_details_mute_notifs" = "Heshtoji njoftimet";
 "room_details_access_section_no_address_warning" = "Që të lidhni një dhomë, ajo duhet të ketë një adresë";
 "room_details_new_address_placeholder" = "Shtoni adresë të re (p.sh. #foo%@)";
@@ -1643,13 +1643,13 @@
 "search_filter_placeholder" = "Filtër";
 "onboarding_use_case_existing_server_button" = "Lidhu me shërbyesin";
 "onboarding_use_case_existing_server_message" = "Po shihni për t’u lidhur me një shërbyes ekzistues?";
-"onboarding_use_case_skip_button" = "anashkaloni këtë pyetje";
+"onboarding_use_case_skip_button" = "Anashkaloni këtë pyetje";
 /* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
-"onboarding_use_case_not_sure_yet" = "Ende jo i sigurt? Mundeni të %@";
+"onboarding_use_case_not_sure_yet" = "Ende jo i sigurt? %@";
 "onboarding_use_case_community_messaging" = "Bashkësi";
 "onboarding_use_case_work_messaging" = "Ekipe";
 "onboarding_use_case_personal_messaging" = "Shokë dhe familje";
-"onboarding_use_case_message" = "Do t’ju ndihmojmë të lidheni.";
+"onboarding_use_case_message" = "Do t’ju ndihmojmë të lidheni";
 "onboarding_use_case_title" = "Me kë do të bisedoni më të shumtën?";
 
 
@@ -1740,7 +1740,7 @@
 "room_displayname_more_than_two_members" = "%@ dhe %@ të tjerë";
 // Settings
 "settings" = "Rregullime";
-"settings_enable_inapp_notifications" = "Aktivizoni njoftime Aplikacioni";
+"settings_enable_inapp_notifications" = "Aktivizoni njoftime të aplikacionit";
 "settings_enable_push_notifications" = "Aktivizoni njoftime push";
 "settings_enter_validation_token_for" = "Jepni token vleftësimi për %@:";
 "notification_settings_room_rule_title" = "Dhomë: '%@'";
@@ -2254,10 +2254,10 @@
 "threads_notice_title" = "Rrjedhat s’janë më eksperimentale 🎉";
 "room_participants_invite_prompt_to_msg" = "Jeni i sigurt se doni të ftohet %@ te %@?";
 "onboarding_celebration_button" = "Shkojmë";
-"onboarding_celebration_message" = "Parapëlqimet tuaja u ruajtën.";
-"onboarding_celebration_title" = "Kaq qe!";
+"onboarding_celebration_message" = "Që të përditësoni profilin tuaj, shkoni kur të doni te rregullimet";
+"onboarding_celebration_title" = "Bukur duket!";
 "onboarding_avatar_accessibility_label" = "Foto profili";
-"onboarding_avatar_message" = "Këtë mund ta ndryshoni në çfarëdo kohe..";
+"onboarding_avatar_message" = "Koha për t’i dhënë pamje emrit";
 "onboarding_avatar_title" = "Shtoni një foto profili";
 "onboarding_display_name_max_length" = "Emri juaj për në ekran duhet të jetë më pak se 256 shenja";
 "onboarding_display_name_hint" = "Këtë mund ta ndryshoni më vonë";
@@ -2269,7 +2269,7 @@
 "onboarding_congratulations_home_button" = "Shpjemëni në shtëpi";
 "onboarding_congratulations_personalize_button" = "Personalizoni profilin";
 /* The placeholder string contains the user's matrix ID */
-"onboarding_congratulations_message" = "Llogaria juaj %@ u krijua.";
+"onboarding_congratulations_message" = "Llogaria juaj %@ u krijua";
 "onboarding_congratulations_title" = "Përgëzime!";
 "saving" = "Ruajtje";
 
@@ -2312,3 +2312,108 @@
 "threads_discourage_information_2" = "\n\nDoni të aktivizohen rrjedha, sido qoftë?";
 "threads_discourage_information_1" = "Shërbyesi juaj Home aktualisht s’mbulon rrjedha, ndaj kjo veçori mund të jetë e paqëndrueshme. Disa mesazhe rrjedhash mund të mos jenë të përdorshëm. ";
 "confirm" = "Ripohojeni";
+"message_reply_to_sender_sent_their_live_location" = "Vendndodhje drejtpërsëdrejti.";
+"location_sharing_live_lab_promotion_activation" = "Aktivizo tregim vendndodhjeje “live”";
+"location_sharing_live_lab_promotion_text" = "Ju lutemi, kini parasysh: kjo është një veçori në zhvillim, që përdor një sendërtim të përkohshëm i cili lejon që historiku i vendndodhjeve tuaja të dhëna për të tjerët të jenë përherë të dukshme për persona të tjerë te dhoma.";
+"location_sharing_live_lab_promotion_title" = "Tregim “live” vendndodhjeje";
+"location_sharing_live_loading" = "Po ngarkohet Vendndodhje “Live”…";
+"location_sharing_live_timer_incoming" = "“Live” deri më %@";
+"location_sharing_live_list_item_sharing_expired" = "Dhënia ka skaduar";
+"location_sharing_live_list_item_time_left" = "Edhe %@";
+"location_sharing_map_credits_title" = "© Të drejta kopjimi";
+"location_sharing_allow_background_location_message" = "Nëse do të donit të tregonit Vendndodhjen tuaj Drejtpërsëdrejti, Element-it i duhet hyrje te vendndodhja, kur aplikacioni është në prapaskenë.Që të aktivizoni hyrje, prekni Rregullime> Vendndodhje dhe përzgjidhni Përherë";
+"location_sharing_invalid_power_level_message" = "Që të mund të ndani me të tjerë në këtë dhomë vendndodhje, lypset të keni lejet e duhura.";
+"location_sharing_invalid_power_level_title" = "S’keni leje të tregoni vendndodhje drejtpërsëdrejti";
+
+// MARK: Reactions
+
+"room_event_action_reaction_more" = "%@ më tepër";
+"leave_space_selection_no_rooms" = "Mos përzgjidh dhoma";
+"leave_space_selection_all_rooms" = "Përzgjidhni krejt dhomat";
+"leave_space_selection_title" = "PËRZGJIDHNI DHOMA";
+"leave_space_and_more_rooms" = "Braktisni hapësirën dhe %@dhoma";
+"leave_space_and_one_room" = "Braktisni hapësirën dhe 1 dhomë";
+
+// Mark: Leave space
+
+"leave_space_action" = "Braktiseni hapësirën";
+"spaces_feature_not_available" = "Kjo veçori s’është e passhme këtu. Tani për tani, këtë mund ta bëni me %@ në kompjuterin tuaj.";
+"home_context_menu_mark_as_read" = "Vëri shenjë si të lexuar";
+"room_info_back_button_title" = "Hollësi Dhome";
+"network_offline_message" = "S’jeni në linjë, kontrolloni lidhjen tuaj në internet.";
+"network_offline_title" = "S’jeni në linjë";
+"settings_labs_enable_live_location_sharing" = "Tregim vendndodhjeje drejtpërsëdrejti - tregoju vendndodhjen e tanishme (në zhvillim aktiv dhe përkohësisht, vendndodhjet mbeten në historikun e dhomës)";
+"settings_timeline" = "RRJEDHË KOHORE";
+"room_accessibility_record_voice_message_hint" = "Për regjistrim, prekeni dyfish dhe mbajeni të prekur.";
+"room_accessibility_record_voice_message" = "Incizoni Mesazh Zanor";
+"password_validation_error_contain_symbol" = "Përmban një simbol.";
+"password_validation_error_contain_number" = "Përmban një numër.";
+"password_validation_error_contain_uppercase_letter" = "Përmban shkronjë të madhe.";
+"password_validation_error_contain_lowercase_letter" = "Përmban shkronjë të vogël.";
+/* The placeholder will show a number */
+"password_validation_error_max_length" = "S’tejkalon %d shenja.";
+/* The placeholder will show a number */
+"password_validation_error_min_length" = "E pakta %d shenja.";
+"password_validation_error_header" = "Fjalëkalimi i dhënë nuk plotëson kriteret më poshtë:";
+
+// MARK: Password Validation
+"password_validation_info_header" = "Fjalëkalimi juaj duhet të plotësojë kriteret më poshtë:";
+"authentication_recaptcha_title" = "Jeni qenie njerëzore?";
+"authentication_terms_policy_url_error" = "S’arrihet të gjendet rregulli i përzgjedhur. Ju lutemi, riprovoni.";
+/* The placeholder will show the homeserver's domain */
+"authentication_terms_message" = "Ju lutemi, lexoni kushte dhe rregulla të %@";
+"authentication_terms_title" = "Rregulla shërbyesi";
+"authentication_verify_msisdn_invalid_phone_number" = "Numër telefoni i pavlefshëm";
+"authentication_verify_msisdn_waiting_button" = "Ridërgomëni kodin";
+/* The placeholder will show the phone number that was entered. */
+"authentication_verify_msisdn_waiting_message" = "Te %@ u dërgua një kod";
+"authentication_verify_msisdn_waiting_title" = "Verifikoni numrin tuaj të telefonit";
+"authentication_verify_msisdn_otp_text_field_placeholder" = "Kod Ripohimi";
+"authentication_verify_msisdn_text_field_placeholder" = "Numër Telefoni";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_msisdn_input_message" = "%@ lyp verifikimin e llogarisë tuaj";
+"authentication_verify_msisdn_input_title" = "Jepni numrin e telefonit tuaj";
+"authentication_choose_password_not_verified_message" = "Kontrolloni te mesazhet tuaj të marrë";
+"authentication_choose_password_not_verified_title" = "Email i paverifikuar";
+"authentication_choose_password_submit_button" = "Ricaktoni Fjalëkalimin";
+"authentication_choose_password_signout_all_devices" = "Dil nga krejt pajisjet";
+"authentication_choose_password_text_field_placeholder" = "Fjalëkalim i Ri";
+"authentication_choose_password_input_message" = "Sigurohuni të jetë 8 ose më shumë shenja";
+"authentication_choose_password_input_title" = "Zgjidhni një fjalëkalim të ri";
+"authentication_forgot_password_waiting_button" = "Ridërgo email";
+/* The placeholder will show the email address that was entered. */
+"authentication_forgot_password_waiting_message" = "Ndiqni udhëzimet e dërguara te %@";
+"authentication_forgot_password_waiting_title" = "Kontrolloni email-et tuaj.";
+"authentication_forgot_password_text_field_placeholder" = "Email";
+/* The placeholder will show the homeserver's domain */
+"authentication_forgot_password_input_message" = "%@ do t’ju dërgojë një lidhje verifikimi";
+"authentication_forgot_password_input_title" = "Jepni email-in tuaj";
+"authentication_verify_email_waiting_button" = "Ridërgo email";
+"authentication_verify_email_waiting_hint" = "S’u mor email?";
+/* The placeholder will show the email address that was entered. */
+"authentication_verify_email_waiting_message" = "Ndiqni udhëzimet e dërguara te %@";
+"authentication_verify_email_waiting_title" = "Verifikoni email-in tuaj.";
+"authentication_verify_email_text_field_placeholder" = "Email";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_email_input_message" = "%@ lyp verifikimin e llogarisë tuaj";
+"authentication_verify_email_input_title" = "Jepni email-in tuaj";
+"authentication_cancel_flow_confirmation_message" = "Llogaria juaj s’është krijuar ende. Të ndalet procesi i regjistrimit?";
+"authentication_server_selection_generic_error" = "S’gjendet dot shërbyes në këtë URL, ju lutemi, shihni nëse është e saktë.";
+"authentication_server_selection_server_url" = "URL shërbyesi Home";
+"authentication_server_selection_register_message" = "Cila është adresa e shërbyesit tuaj? Kjo është si shtëpi për krejt të dhënat tuaja";
+"authentication_server_selection_register_title" = "Përzgjidhni shërbyesin tuaj Home";
+"authentication_server_selection_login_message" = "Cila është adresa e shërbyesit tuaj?";
+"authentication_server_selection_login_title" = "Lidhu me shërbyesin Home";
+"authentication_server_info_title_login" = "Ku gjenden bisedat tuaja";
+"authentication_login_forgot_password" = "Harruat fjalëkalimin";
+"authentication_login_username" = "Emër përdoruesi / Email / Telefon";
+"authentication_login_title" = "Mirë se u kthyet!";
+"authentication_server_info_title" = "Ku do të gjenden bisedat tuaja";
+"authentication_registration_password_footer" = "Duhet të jetë 8 ose më shumë shenja";
+/* The placeholder will show the full Matrix ID that has been entered. */
+"authentication_registration_username_footer_available" = "Të tjerët mund t’ju zbulojnë %@";
+"authentication_registration_username_footer" = "Këtë s’mund ta ndryshoni më vonë";
+"authentication_registration_username" = "Emër përdoruesi";
+
+// MARK: Authentication
+"authentication_registration_title" = "Krijoni llogarinë tuaj";
