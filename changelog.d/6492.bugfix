@@ -1,1 +1,0 @@
-Universal Links: Fix an infinite loop when handling a universal link for an unjoined room (or in some cases a crash).

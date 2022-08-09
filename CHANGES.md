@@ -1,3 +1,46 @@
+## Changes in 1.8.25 (2022-08-09)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.23.14](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.23.14)).
+- App Layout: Feature flag new App Layout ([#6406](https://github.com/vector-im/element-ios/issues/6406))
+- App Layout: Update All chats screen with latest design ([#6407](https://github.com/vector-im/element-ios/issues/6407))
+- App Layout: Change the App theme according to new design ([#6409](https://github.com/vector-im/element-ios/issues/6409))
+- App Layout: Implemented the new Space selector bottom sheet ([#6410](https://github.com/vector-im/element-ios/issues/6410))
+- Authentication: Update the ReCaptcha icon. ([#6427](https://github.com/vector-im/element-ios/issues/6427))
+- Location sharing: Improve live location sharing expanded map state when no more live location shares. ([#6488](https://github.com/vector-im/element-ios/issues/6488))
+- Location sharing: Render fallback UI when tile server unavailable. ([#6493](https://github.com/vector-im/element-ios/issues/6493))
+- In-app notifications will now also be delivered to Notification Centre. ([#6503](https://github.com/vector-im/element-ios/issues/6503))
+- Authentication: Don't show personalisation steps after registering with a generic SSO provider. ([#6530](https://github.com/vector-im/element-ios/issues/6530))
+
+🐛 Bugfixes
+
+- Room Directory: Show the "switch" button even if there are no public rooms in the homeserver's room directory. ([#4700](https://github.com/vector-im/element-ios/issues/4700))
+- Share Extension: Fix a bug where sending multiple images sometimes resulted in additional duplicates being sent. ([#5922](https://github.com/vector-im/element-ios/issues/5922))
+- Stop using an ephemeral web browser session for SSO authentication. ([#6462](https://github.com/vector-im/element-ios/issues/6462))
+- Media Attachments Viewer: Fixed an issue where dismissing GIFs would show the WebView playing the animation below the interaction transition animation. ([#6475](https://github.com/vector-im/element-ios/issues/6475))
+- Media: Fix a bug where the navigation bar shown when viewing an image wasn't taking the safe area into account. ([#6486](https://github.com/vector-im/element-ios/issues/6486))
+- Home: Use the correct status bar colour when using the dark theme with dark mode disabled. ([#6487](https://github.com/vector-im/element-ios/issues/6487))
+- Authentication: Always start a new authentication flow with the default homeserver (or the provisioning link if set). ([#6489](https://github.com/vector-im/element-ios/issues/6489))
+- Universal Links: Fix an infinite loop when handling a universal link for an unjoined room (or in some cases a crash). ([#6492](https://github.com/vector-im/element-ios/issues/6492))
+- App Layout: Conditionally hide favourite and people list tabs ([#6515](https://github.com/vector-im/element-ios/issues/6515))
+- Apply current theme to all the UI components ([#6526](https://github.com/vector-im/element-ios/issues/6526))
+- Some UI tweaks for New App Layout ([#6534](https://github.com/vector-im/element-ios/issues/6534))
+- Widgets: Fix a crash when loading the widget manager. ([#6539](https://github.com/vector-im/element-ios/issues/6539))
+
+⚠️ API Changes
+
+- Update the app's bundle name to show Element during SSO. ([#6462](https://github.com/vector-im/element-ios/issues/6462))
+
+📄 Documentation
+
+- Add docs/Customisation.md. ([#6473](https://github.com/vector-im/element-ios/issues/6473))
+
+🚧 In development 🚧
+
+- App Layout: Edit layout experiment ([#6079](https://github.com/vector-im/element-ios/issues/6079))
+
+
 ## Changes in 1.8.24 (2022-07-26)
 
 ✨ Features
