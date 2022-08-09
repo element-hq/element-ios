@@ -88,12 +88,12 @@
 "USER_UPDATED_DISPLAYNAME" = "%@ 将名称更改为 %@";
 
 /* A user has reacted to a message, but the reaction content is unknown */
-"GENERIC_REACTION_FROM_USER" = "%@ 发送了一则回应";
+"GENERIC_REACTION_FROM_USER" = "%@发送了一个反应";
 
 /** Reactions **/
 
 /* A user has reacted to a message, including the reaction e.g. "Alice reacted 👍". */
-"REACTION_FROM_USER" = "%@ 以 %@ 回应";
+"REACTION_FROM_USER" = "%@以%@作为反应";
 
 /* New file message from a specific person, not referencing a room. */
 "FILE_FROM_USER" = "%@ 发了个文件 %@";
