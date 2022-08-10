@@ -1383,13 +1383,19 @@
 
 - (BOOL)prepareSubviewsForTransition:(BOOL)isStartInteraction
 {
-    MXKMediaCollectionViewCell *cell = (MXKMediaCollectionViewCell *)[self.attachmentsCollection.visibleCells firstObject];
+    // Sanity check
+    if (currentVisibleItemIndex >= attachments.count)
+    {
+        return NO;
+    }
+    
     MXKAttachment *attachment = attachments[currentVisibleItemIndex];
     NSString *mimeType = attachment.contentInfo[@"mimetype"];
 
     // Check attachment type for GIFs - this is required because of the extra WKWebView
     if (attachment.type == MXKAttachmentTypeImage && attachment.contentURL && [mimeType isEqualToString:@"image/gif"])
     {
+        MXKMediaCollectionViewCell *cell = (MXKMediaCollectionViewCell *)[self.attachmentsCollection.visibleCells firstObject];
         UIView *customView = cell.customView;
         for (UIView *v in customView.subviews)
         {
