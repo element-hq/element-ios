@@ -73,7 +73,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>The camera is used to take photos and videos, make video calls.</string>
 	<key>NSContactsUsageDescription</key>
-	<string>The contact book is used to send room invitation to your contacts with their emails.</string>
+	<string>Element will check your contacts with your identity server to find who is on Matrix.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Face ID is used to access your app.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
