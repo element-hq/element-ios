@@ -1,3 +1,18 @@
+## Changes in 1.8.26 (2022-08-10)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.23.15](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.23.15)).
+
+🐛 Bugfixes
+
+- Media: Fix a potential crash when dismissing an image. ([#6548](https://github.com/vector-im/element-ios/issues/6548))
+
+Others
+
+- Contacts Prompt: Clarify how contacts are used in the app. ([#6549](https://github.com/vector-im/element-ios/issues/6549))
+
+
 ## Changes in 1.8.25 (2022-08-09)
 
 🙌 Improvements
