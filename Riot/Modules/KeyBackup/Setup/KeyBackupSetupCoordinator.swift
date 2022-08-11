@@ -134,7 +134,7 @@ final class KeyBackupSetupCoordinator: KeyBackupSetupCoordinatorType {
             return
         }
         
-        keyBackup.prepareKeyBackupVersion(withPassword: nil, success: { megolmBackupCreationInfo in
+        keyBackup.prepareKeyBackupVersion(withPassword: nil, algorithm: nil, success: { megolmBackupCreationInfo in
             keyBackup.createKeyBackupVersion(megolmBackupCreationInfo, success: { _ in
                 recoveryService.updateRecovery(forSecrets: [MXSecretId.keyBackup.takeUnretainedValue() as String], withPrivateKey: privateKey) {
                     completion(.success(Void()))
