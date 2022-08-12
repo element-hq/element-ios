@@ -203,7 +203,7 @@
 "authentication_verify_msisdn_waiting_button" = "Resend code";
 "authentication_verify_msisdn_invalid_phone_number" = "Invalid phone number";
 
-"authentication_terms_title" = "Server policies";
+"authentication_terms_title" = "Privacy policies";
 /* The placeholder will show the homeserver's domain */
 "authentication_terms_message" = "Please read %@’s terms and policies";
 "authentication_terms_policy_url_error" = "Unable to find the selected policy. Please try again later.";
