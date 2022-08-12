@@ -739,7 +739,7 @@ public class VectorL10n: NSObject {
   public static var authenticationTermsPolicyUrlError: String { 
     return VectorL10n.tr("Vector", "authentication_terms_policy_url_error") 
   }
-  /// Server policies
+  /// Privacy policies
   public static var authenticationTermsTitle: String { 
     return VectorL10n.tr("Vector", "authentication_terms_title") 
   }
