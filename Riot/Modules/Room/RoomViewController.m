@@ -4938,7 +4938,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         {
             readMarkerTableViewCell = roomBubbleTableViewCell;
             
-            [self checkReadMarkerVisibility];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self checkReadMarkerVisibility];
+            });
         }
     }
 }
