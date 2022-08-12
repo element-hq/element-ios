@@ -1,3 +1,10 @@
+## Changes in 1.8.27 (2022-08-12)
+
+Others
+
+- Update camera, contacts and photos usage strings for App Store review. ([#6559](https://github.com/vector-im/element-ios/issues/6559))
+
+
 ## Changes in 1.8.26 (2022-08-10)
 
 🙌 Improvements
