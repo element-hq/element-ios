@@ -353,7 +353,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     // Replace the default input toolbar view.
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
-    [self updateRoomInputToolbarViewClassIfNeeded];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self updateRoomInputToolbarViewClassIfNeeded];
+    });
     
     // set extra area
     [self setRoomActivitiesViewClass:RoomActivitiesView.class];
@@ -5680,25 +5682,28 @@ static CGSize kThreadListBarButtonItemImageSize;
                 continueBlock(threadDataSource, YES);
             }];
         }
-        else if (self.isContextPreview)
+        else if (self.roomDataSource.roomId)
         {
-            [RoomPreviewDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
-                                               andMatrixSession:self.mainSession
-                                                     onComplete:^(RoomPreviewDataSource *roomDataSource)
-             {
-                continueBlock(roomDataSource, YES);
-            }];
-        }
-        else
-        {
-            // Switch back to the room live timeline managed by MXKRoomDataSourceManager
-            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
+            if (self.isContextPreview)
+            {
+                [RoomPreviewDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
+                                                   andMatrixSession:self.mainSession
+                                                         onComplete:^(RoomPreviewDataSource *roomDataSource)
+                 {
+                    continueBlock(roomDataSource, YES);
+                }];
+            }
+            else
+            {
+                // Switch back to the room live timeline managed by MXKRoomDataSourceManager
+                MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
 
-            [roomDataSourceManager roomDataSourceForRoom:self.roomDataSource.roomId
-                                                  create:YES
-                                              onComplete:^(MXKRoomDataSource *roomDataSource) {
-                continueBlock(roomDataSource, NO);
-            }];
+                [roomDataSourceManager roomDataSourceForRoom:self.roomDataSource.roomId
+                                                      create:YES
+                                                  onComplete:^(MXKRoomDataSource *roomDataSource) {
+                    continueBlock(roomDataSource, NO);
+                }];
+            }
         }
     }
 }
