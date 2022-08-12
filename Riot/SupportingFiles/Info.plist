@@ -71,9 +71,9 @@
 	<key>NSCalendarsUsageDescription</key>
 	<string>See your scheduled meetings in the app.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>The camera is used to take photos and videos, make video calls.</string>
+	<string>The camera is used to make video calls, or take and upload photos and videos.</string>
 	<key>NSContactsUsageDescription</key>
-	<string>Element will check your contacts with your identity server to find who is on Matrix.</string>
+	<string>They will be shared with your identity server to help find your contacts on Matrix.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Face ID is used to access your app.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -83,7 +83,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>The microphone is used to take videos, make calls.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>The photo library is used to send photos and videos.</string>
+	<string>Allow access to photos to upload photos and videos from your library.</string>
 	<key>NSSiriUsageDescription</key>
 	<string>Siri is used to perform calls even from the lock screen.</string>
 	<key>UIBackgroundModes</key>
