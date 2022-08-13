@@ -98,7 +98,9 @@ extension UIViewController {
     @discardableResult
     @objc func vc_addFAB(withImage image: UIImage,
                          target: Any?,
-                         action: Selector?) -> UIImageView {
+                         action: Selector?,
+                         accessibilityLabel: String?,
+                         accessibilityHint: String?) -> UIImageView {
         
         let fabImageView = UIImageView(image: image)
         fabImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -121,6 +123,11 @@ extension UIViewController {
         tapGestureRecognizer.numberOfTouchesRequired = 1
         tapGestureRecognizer.numberOfTapsRequired = 1
         fabImageView.addGestureRecognizer(tapGestureRecognizer)
+        
+        fabImageView.isAccessibilityElement = true
+        fabImageView.accessibilityTraits = .button
+        fabImageView.accessibilityLabel = accessibilityLabel
+        fabImageView.accessibilityHint = accessibilityHint
         
         return fabImageView
     }

@@ -150,7 +150,9 @@
         // Add invite members button programmatically
         [self vc_addFABWithImage:AssetImages.addMemberFloatingAction.image
                           target:self
-                          action:@selector(onAddParticipantButtonPressed)];
+                          action:@selector(onAddParticipantButtonPressed)
+              accessibilityLabel:nil
+               accessibilityHint:nil];
     }
     
     // Observe user interface theme change.

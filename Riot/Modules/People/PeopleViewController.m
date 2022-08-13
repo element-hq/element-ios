@@ -72,7 +72,9 @@
     // Add the (+) button programmatically
     plusButtonImageView = [self vc_addFABWithImage:fabImage
                                             target:self
-                                            action:@selector(onPlusButtonPressed)];
+                                            action:@selector(onPlusButtonPressed)
+                                accessibilityLabel:[VectorL10n peoplePlusButtonAccessibilityLabel]
+                                 accessibilityHint:nil];
 }
 
 - (void)didReceiveMemoryWarning

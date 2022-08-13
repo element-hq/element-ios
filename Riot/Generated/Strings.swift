@@ -2355,6 +2355,14 @@ public class VectorL10n: NSObject {
   public static func homeEmptyViewTitle(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "home_empty_view_title", p1, p2)
   }
+  /// Starts a new chat, creates a new room, or joins an existing room.
+  public static var homePlusButtonAccessibilityHint: String { 
+    return VectorL10n.tr("Vector", "home_plus_button_accessibility_hint") 
+  }
+  /// Plus
+  public static var homePlusButtonAccessibilityLabel: String { 
+    return VectorL10n.tr("Vector", "home_plus_button_accessibility_label") 
+  }
   /// Syncing
   public static var homeSyncing: String { 
     return VectorL10n.tr("Vector", "home_syncing") 
@@ -4403,6 +4411,10 @@ public class VectorL10n: NSObject {
   public static var peopleNoConversation: String { 
     return VectorL10n.tr("Vector", "people_no_conversation") 
   }
+  /// Start new chat
+  public static var peoplePlusButtonAccessibilityLabel: String { 
+    return VectorL10n.tr("Vector", "people_plus_button_accessibility_label") 
+  }
   /// %@ doesn't have permission to access photo library, please change privacy settings
   public static func photoLibraryAccessNotGranted(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "photo_library_access_not_granted", p1)
@@ -6306,6 +6318,14 @@ public class VectorL10n: NSObject {
   /// Rooms
   public static var roomsEmptyViewTitle: String { 
     return VectorL10n.tr("Vector", "rooms_empty_view_title") 
+  }
+  /// Creates a new room or joins an existing room.
+  public static var roomsPlusButtonAccessibilityHint: String { 
+    return VectorL10n.tr("Vector", "rooms_plus_button_accessibility_hint") 
+  }
+  /// Plus
+  public static var roomsPlusButtonAccessibilityLabel: String { 
+    return VectorL10n.tr("Vector", "rooms_plus_button_accessibility_label") 
   }
   /// Save
   public static var save: String { 

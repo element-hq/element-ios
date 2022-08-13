@@ -167,7 +167,10 @@
 {
     plusButtonImageView = [self vc_addFABWithImage:AssetImages.plusFloatingAction.image
                                             target:self
-                                            action:@selector(onPlusButtonPressed)];
+                                            action:@selector(onPlusButtonPressed)
+                                accessibilityLabel:[VectorL10n homePlusButtonAccessibilityLabel]
+                                 accessibilityHint:[VectorL10n homePlusButtonAccessibilityHint]];
+
 }
 
 - (RecentsDataSourceMode)recentsDataSourceMode

@@ -2007,7 +2007,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     [actionSheet popoverPresentationController].sourceView = plusButtonImageView;
     [actionSheet popoverPresentationController].sourceRect = plusButtonImageView.bounds;
     
-    [actionSheet mxk_setAccessibilityIdentifier:@"RecentsVCCreateRoomAlert"];
     [self presentViewController:actionSheet animated:YES completion:nil];
     currentAlert = actionSheet;
 }

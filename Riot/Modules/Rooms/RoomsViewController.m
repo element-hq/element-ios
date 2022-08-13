@@ -60,7 +60,9 @@
     // Add the (+) button programmatically
     plusButtonImageView = [self vc_addFABWithImage:AssetImages.roomsFloatingAction.image
                                             target:self
-                                            action:@selector(onPlusButtonPressed)];
+                                            action:@selector(onPlusButtonPressed)
+                                accessibilityLabel:[VectorL10n roomsPlusButtonAccessibilityLabel]
+                                 accessibilityHint:[VectorL10n roomsPlusButtonAccessibilityHint]];
 }
 
 - (void)viewWillAppear:(BOOL)animated

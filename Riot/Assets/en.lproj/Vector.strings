@@ -353,11 +353,16 @@
 "people_empty_view_information" = "Chat securely with anyone.
 Tap the + to start adding people.";
 
+"people_plus_button_accessibility_label" = "Start new chat";
+
 // Rooms tab
 "room_directory_no_public_room" = "No public rooms available";
 
 "rooms_empty_view_title" = "Rooms";
 "rooms_empty_view_information" = "Rooms are great for any group chat, private or public. Tap the + to find existing rooms, or make new ones.";
+
+"rooms_plus_button_accessibility_label" = "Plus";
+"rooms_plus_button_accessibility_hint" = "Joins an existing room or creates a new room.";
 
 // Groups tab
 "group_invite_section" = "INVITES";
@@ -1935,6 +1940,8 @@ Tap the + to start adding people.";
 "home_context_menu_leave" = "Leave";
 "home_context_menu_mark_as_read" = "Mark as read";
 "home_syncing" = "Syncing";
+"home_plus_button_accessibility_label" = "Plus";
+"home_plus_button_accessibility_hint" = "Starts a new chat, creates a new room, or joins an existing room.";
 
 // MARK: - Favourites
 
