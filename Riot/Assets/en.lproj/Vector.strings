@@ -353,7 +353,7 @@
 "people_empty_view_information" = "Chat securely with anyone.
 Tap the + to start adding people.";
 
-"people_plus_button_accessibility_label" = "Starts new chat";
+"people_plus_button_accessibility_label" = "Start new chat";
 
 // Rooms tab
 "room_directory_no_public_room" = "No public rooms available";
