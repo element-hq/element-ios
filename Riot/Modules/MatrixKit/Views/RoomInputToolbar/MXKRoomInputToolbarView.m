@@ -61,7 +61,7 @@
 @end
 
 @implementation MXKRoomInputToolbarView
-@synthesize messageComposerContainer, inputAccessoryView;
+@synthesize messageComposerContainer, inputAccessoryViewForKeyboard;
 
 + (UINib *)nib
 {
@@ -103,7 +103,7 @@
 
 - (void)dealloc
 {
-    inputAccessoryView = nil;
+    inputAccessoryViewForKeyboard = nil;
     
     [self destroy];
 }

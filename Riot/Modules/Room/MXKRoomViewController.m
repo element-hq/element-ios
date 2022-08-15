@@ -495,7 +495,7 @@
     if (!keyboardView)
     {
         // Check whether the first responder is the input tool bar text composer
-        keyboardView = inputToolbarView.inputAccessoryView.superview;
+        keyboardView = inputToolbarView.inputAccessoryViewForKeyboard.superview;
     }
     
     // Report the keyboard view in order to track keyboard frame changes

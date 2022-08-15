@@ -80,6 +80,9 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     [self updateUIWithAttributedTextMessage:nil animated:NO];
     
     self.textView.toolbarDelegate = self;
+
+    inputAccessoryViewForKeyboard = [[UIView alloc] initWithFrame:CGRectZero];
+    self.textView.inputAccessoryView = inputAccessoryViewForKeyboard;
 }
 
 - (void)setVoiceMessageToolbarView:(UIView *)voiceMessageToolbarView
