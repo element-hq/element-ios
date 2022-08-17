@@ -28,7 +28,7 @@ class SpaceSelectorViewModelTests: XCTestCase {
     
     override func setUpWithError() throws {
         service = MockSpaceSelectorService()
-        viewModel = SpaceSelectorViewModel.makeViewModel(service: service)
+        viewModel = SpaceSelectorViewModel.makeViewModel(service: service, showCancel: true)
         context = viewModel.context
     }
 
