@@ -14,12 +14,14 @@
 // limitations under the License.
 //
 
-import Foundation
-import DesignKit
+#import <Foundation/Foundation.h>
 
-struct DarkThemeSwiftUI: ThemeSwiftUI {
-    var identifier: ThemeIdentifier = .dark
-    let isDark: Bool = true
-    var colors: ColorSwiftUI = DarkColors.swiftUI
-    var fonts: FontSwiftUI = FontSwiftUI(values: ElementFonts())
-}
+//! Project version number for DesignKit.
+FOUNDATION_EXPORT double DesignKitVersionNumber;
+
+//! Project version string for DesignKit.
+FOUNDATION_EXPORT const unsigned char DesignKitVersionString[];
+
+// In this header, you should import all the public headers of your framework using statements like #import <DesignKit/PublicHeader.h>
+
+

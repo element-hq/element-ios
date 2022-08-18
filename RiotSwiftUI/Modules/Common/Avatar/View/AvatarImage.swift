@@ -49,7 +49,7 @@ struct AvatarImage: View {
                 mxContentUri: mxContentUri,
                 matrixItemId: matrixItemId,
                 displayName: displayName,
-                colorCount: theme.colors.contentAndAvatars.count,
+                colorCount: theme.colors.namesAndAvatars.count,
                 avatarSize: size
             )
         }

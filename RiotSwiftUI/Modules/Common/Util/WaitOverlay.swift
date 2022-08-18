@@ -89,7 +89,7 @@ struct WaitOverlay: ViewModifier {
                     }
                     .padding(12)
                     .background(RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                    .fill(theme.colors.system.opacity(0.9)))
+                                    .fill(theme.colors.navigation.opacity(0.9)))
                 }
                 .edgesIgnoringSafeArea(.all)
                 .transition(.opacity)

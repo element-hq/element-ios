@@ -1,5 +1,5 @@
 // 
-// Copyright 2021 New Vector Ltd
+// Copyright 2021 Vector Creations Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,12 +14,15 @@
 // limitations under the License.
 //
 
-import Foundation
-import DesignKit
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
 
-struct DarkThemeSwiftUI: ThemeSwiftUI {
-    var identifier: ThemeIdentifier = .dark
-    let isDark: Bool = true
-    var colors: ColorSwiftUI = DarkColors.swiftUI
-    var fonts: FontSwiftUI = FontSwiftUI(values: ElementFonts())
-}
+#include "Config/AppIdentifiers.xcconfig"
+#include "Config/AppVersion.xcconfig"
+
+PRODUCT_NAME = DesignKit
+PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER).designkit
+
+INFOPLIST_FILE = DesignKit/Info.plist
+
+SKIP_INSTALL = YES

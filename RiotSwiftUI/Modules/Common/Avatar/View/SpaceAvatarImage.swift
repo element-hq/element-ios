@@ -38,7 +38,7 @@ struct SpaceAvatarImage: View {
                     .padding(10)
                     .frame(width: CGFloat(size.rawValue), height: CGFloat(size.rawValue))
                     .foregroundColor(.white)
-                    .background(theme.colors.contentAndAvatars[colorIndex])
+                    .background(theme.colors.namesAndAvatars[colorIndex])
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                     // Make the text resizable (i.e. Make it large and then allow it to scale down)
                     .font(.system(size: 200))
@@ -55,7 +55,7 @@ struct SpaceAvatarImage: View {
                 mxContentUri: mxContentUri,
                 matrixItemId: matrixItemId,
                 displayName: value,
-                colorCount: theme.colors.contentAndAvatars.count,
+                colorCount: theme.colors.namesAndAvatars.count,
                 avatarSize: size
             )
         })
@@ -65,7 +65,7 @@ struct SpaceAvatarImage: View {
                 mxContentUri: mxContentUri,
                 matrixItemId: matrixItemId,
                 displayName: displayName,
-                colorCount: theme.colors.contentAndAvatars.count,
+                colorCount: theme.colors.namesAndAvatars.count,
                 avatarSize: size
             )
         }
