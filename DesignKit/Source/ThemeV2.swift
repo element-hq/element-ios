@@ -15,11 +15,28 @@
 //
 
 import Foundation
-import DesignKit
+import UIKit
 
-struct DarkThemeSwiftUI: ThemeSwiftUI {
-    var identifier: ThemeIdentifier = .dark
-    let isDark: Bool = true
-    var colors: ColorSwiftUI = DarkColors.swiftUI
-    var fonts: FontSwiftUI = FontSwiftUI(values: ElementFonts())
+/// Theme v2. May be named again as `Theme` when the migration completed.
+@objc public protocol ThemeV2 {
+    
+    /// Colors object
+    var colors: ColorsUIKit { get }
+    
+    /// Fonts object
+    var fonts: FontsUIKit { get }
+    
+    /// may contain more design components in future, like icons, audio files etc.
+}
+
+/// Theme v2 for SwiftUI.
+public protocol ThemeSwiftUIType {
+    
+    /// Colors object
+    var colors: ColorSwiftUI { get }
+    
+    /// Fonts object
+    var fonts: FontSwiftUI { get }
+    
+    /// may contain more design components in future, like icons, audio files etc.
 }

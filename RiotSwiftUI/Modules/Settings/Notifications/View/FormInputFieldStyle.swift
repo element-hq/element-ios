@@ -25,7 +25,7 @@ struct FormInputFieldStyle: TextFieldStyle {
     
     private var textColor: Color {
         if !isEnabled {
-            return theme.colors.quaternaryContent
+            return theme.colors.quarterlyContent
         }
         return theme.colors.primaryContent
     }

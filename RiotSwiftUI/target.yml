@@ -30,7 +30,7 @@ targets:
     type: application
     platform: iOS
     dependencies:
-    - package: DesignKit
+    - target: DesignKit
     - package: Mapbox
     sources:
     - path: .

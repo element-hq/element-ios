@@ -55,7 +55,7 @@ struct OptionButton: View {
                     }
                 }
                 Spacer()
-                Image(systemName: "chevron.right").font(.system(size: 16, weight: .regular)).foregroundColor(theme.colors.quaternaryContent)
+                Image(systemName: "chevron.right").font(.system(size: 16, weight: .regular)).foregroundColor(theme.colors.quarterlyContent)
             }
             .padding(EdgeInsets(top: 15, leading: 16, bottom: 15, trailing: 16))
             .background(theme.colors.quinaryContent)

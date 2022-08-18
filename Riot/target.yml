@@ -34,8 +34,8 @@ targets:
     - target: RiotShareExtension
     - target: SiriIntents
     - target: RiotNSE
+    - target: DesignKit
     - target: CommonKit
-    - package: DesignKit
     - package: Mapbox
     - package: OrderedCollections
     - package: SwiftOGG

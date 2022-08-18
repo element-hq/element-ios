@@ -14,12 +14,12 @@
 // limitations under the License.
 //
 
-import SwiftUI
+import Foundation
 import DesignKit
 
 struct DefaultThemeSwiftUI: ThemeSwiftUI {
     var identifier: ThemeIdentifier = .light
     let isDark: Bool = false
-    var colors = Color.element
-    var fonts = Font.element
+    var colors: ColorSwiftUI = LightColors.swiftUI
+    var fonts: FontSwiftUI = FontSwiftUI(values: ElementFonts())
 }

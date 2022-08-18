@@ -67,7 +67,7 @@ struct SpaceSettingsOptionListItem: View {
                 Image(systemName: "chevron.right")
                     .renderingMode(.template)
                     .font(.system(size: 16, weight: .regular))
-                    .foregroundColor(theme.colors.quaternaryContent)
+                    .foregroundColor(theme.colors.quarterlyContent)
             }
             .opacity(isEnabled ? 1 : 0.5)
         }
