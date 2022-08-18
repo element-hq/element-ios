@@ -37,7 +37,7 @@ struct OnboardingCongratulationsViewState: BindableState {
         let attributedMessage = NSMutableAttributedString(string: message)
         let range = (message as NSString).range(of: userId)
         if range.location != NSNotFound {
-            attributedMessage.addAttributes([.font: UIFont.element.body.bold], range: range)
+            attributedMessage.addAttributes([.font: UIFont.preferredFont(forTextStyle: .body).vc_bold], range: range)
         }
         
         return attributedMessage
