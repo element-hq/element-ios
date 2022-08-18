@@ -2006,6 +2006,7 @@ Tap the + to start adding people.";
 "leave_space_only_action" = "Don't leave any rooms";
 "leave_space_and_all_rooms_action" = "Leave all rooms and spaces";
 "spaces_explore_rooms" = "Explore rooms";
+"spaces_explore_rooms_format" = "Explore %@";
 "spaces_suggested_room" = "Suggested";
 "spaces_explore_rooms_room_number" = "%@ rooms";
 "spaces_explore_rooms_one_room" = "1 room";
@@ -2097,6 +2098,7 @@ Tap the + to start adding people.";
 "spaces_creation_in_one_space" = "in 1 space";
 
 "spaces_invite_people" = "Invite people";
+"spaces_invite_people_format" = "Invite to %@";
 "spaces_add_room" = "Add room";
 "spaces_add_room_missing_permission_message" = "You do not have permissions to add rooms to this space.";
 "spaces_add_space" = "Add space";

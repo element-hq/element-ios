@@ -8047,6 +8047,10 @@ public class VectorL10n: NSObject {
   public static var spacesExploreRooms: String { 
     return VectorL10n.tr("Vector", "spaces_explore_rooms") 
   }
+  /// Explore %@
+  public static func spacesExploreRoomsFormat(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_explore_rooms_format", p1)
+  }
   /// 1 room
   public static var spacesExploreRoomsOneRoom: String { 
     return VectorL10n.tr("Vector", "spaces_explore_rooms_one_room") 
@@ -8066,6 +8070,10 @@ public class VectorL10n: NSObject {
   /// Invite people
   public static var spacesInvitePeople: String { 
     return VectorL10n.tr("Vector", "spaces_invite_people") 
+  }
+  /// Invite to %@
+  public static func spacesInvitePeopleFormat(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_invite_people_format", p1)
   }
   /// Invites coming soon
   public static var spacesInvitesComingSoonTitle: String { 

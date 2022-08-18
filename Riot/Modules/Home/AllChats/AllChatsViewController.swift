@@ -37,6 +37,8 @@ class AllChatsViewController: HomeViewController {
     
     private let searchController = UISearchController(searchResultsController: nil)
     
+    private let spaceActionProvider = AllChatsSpaceActionProvider()
+    
     private let editActionProvider = AllChatsEditActionProvider()
 
     private var spaceSelectorBridgePresenter: SpaceSelectorBottomSheetCoordinatorBridgePresenter?
@@ -49,6 +51,7 @@ class AllChatsViewController: HomeViewController {
         super.viewDidLoad()
         
         editActionProvider.delegate = self
+        spaceActionProvider.delegate = self
         
         recentsTableView.tag = RecentsDataSourceMode.allChats.rawValue
         recentsTableView.clipsToBounds = false
@@ -59,7 +62,6 @@ class AllChatsViewController: HomeViewController {
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchResultsUpdater = self
 
-        self.setupEditOptions()
         NotificationCenter.default.addObserver(self, selector: #selector(self.setupEditOptions), name: AllChatsLayoutSettingsManager.didUpdateSettings, object: nil)
     }
     
@@ -171,26 +173,37 @@ class AllChatsViewController: HomeViewController {
     // MARK: - Private
     
     @objc private func setupEditOptions() {
-        self.tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal.decrease.circle"), menu: AllChatsActionProvider().menu)
+        guard let currentSpace = self.dataSource?.currentSpace else {
+            updateRightNavigationItem(with: AllChatsActionProvider().menu)
+            return
+        }
+        
+        updateRightNavigationItem(with: spaceActionProvider.updateMenu(with: mainSession, space: currentSpace) { [weak self] menu in
+            self?.updateRightNavigationItem(with: menu)
+        })
     }
 
     private func updateUI() {
         let currentSpace = self.dataSource?.currentSpace
         self.tabBarController?.title = currentSpace?.summary?.displayname ?? VectorL10n.allChatsTitle
         
+        setupEditOptions()
         updateToolbar(with: editActionProvider.updateMenu(with: mainSession, parentSpace: currentSpace, completion: { [weak self] menu in
             self?.updateToolbar(with: menu)
         }))
     }
     
+    private func updateRightNavigationItem(with menu: UIMenu) {
+        self.tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), menu: menu)
+    }
+    
     private func updateToolbar(with menu: UIMenu) {
-        let currentSpace = self.dataSource?.currentSpace
         self.navigationController?.isToolbarHidden = false
         self.update(with: ThemeService.shared().theme)
         self.tabBarController?.setToolbarItems([
-            UIBarButtonItem(image: Asset.Images.homeMySpacesAction.image, style: .done, target: self, action: #selector(self.showSpaceSelectorAction(sender: ))),
+            UIBarButtonItem(image: UIImage(systemName: "square.grid.2x2"), style: .done, target: self, action: #selector(self.showSpaceSelectorAction(sender: ))),
             UIBarButtonItem.flexibleSpace(),
-            UIBarButtonItem(image: UIImage(systemName: currentSpace == nil ? "square.and.pencil" : "ellipsis.circle"), menu: menu)
+            UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), menu: menu)
         ], animated: true)
     }
     
@@ -393,6 +406,17 @@ extension AllChatsViewController: AllChatsEditActionProviderDelegate {
             createNewRoom()
         case .startChat:
             startChat()
+        case .createSpace:
+            showCreateSpace(parentSpaceId: dataSource.currentSpace?.spaceId)
+        }
+    }
+    
+}
+
+// MARK: - AllChatsSpaceActionProviderDelegate
+extension AllChatsViewController: AllChatsSpaceActionProviderDelegate {
+    func allChatsSpaceActionProvider(_ actionProvider: AllChatsSpaceActionProvider, didSelect option: AllChatsSpaceActionProviderOption) {
+        switch option {
         case .invitePeople:
             showSpaceInvite()
         case .spaceMembers:
@@ -401,11 +425,8 @@ extension AllChatsViewController: AllChatsEditActionProviderDelegate {
             showSpaceSettings()
         case .leaveSpace:
             showLeaveSpace()
-        case .createSpace:
-            showCreateSpace(parentSpaceId: dataSource.currentSpace?.spaceId)
         }
     }
-    
 }
 
 // MARK: - ContactsPickerCoordinatorDelegate
