@@ -314,6 +314,8 @@ class AllChatsViewController: HomeViewController {
         coordinator.start()
         add(childCoordinator: coordinator)
         coordinator.completion = { [weak self] result in
+            // switching to home space
+            self?.switchSpace(withId: nil)
             coordinator.toPresentable().dismiss(animated: true) {
                 self?.remove(childCoordinator: coordinator)
             }
