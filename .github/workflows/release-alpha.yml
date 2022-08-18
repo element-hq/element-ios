@@ -91,6 +91,7 @@ jobs:
           FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
           DIAWI_API_TOKEN: ${{ secrets.DIAWI_API_TOKEN }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
       - name: Add or update PR comment with Ad-hoc release informations
         uses: NejcZdovc/comment-pr@v1

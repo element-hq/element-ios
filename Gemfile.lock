@@ -159,6 +159,7 @@ GEM
     fastlane-plugin-brew (0.1.1)
     fastlane-plugin-diawi (2.1.0)
       rest-client (>= 2.0.0)
+    fastlane-plugin-sentry (1.12.1)
     fastlane-plugin-versioning (0.5.0)
     fastlane-plugin-xcodegen (1.1.0)
       fastlane-plugin-brew (~> 0.1.1)
@@ -310,10 +311,11 @@ DEPENDENCIES
   cocoapods (~> 1.11.2)
   fastlane
   fastlane-plugin-diawi
+  fastlane-plugin-sentry
   fastlane-plugin-versioning
   fastlane-plugin-xcodegen
   slather
   xcode-install
 
 BUNDLED WITH
-   2.3.9
+   2.3.14
