@@ -87,7 +87,7 @@ struct LiveLocationSharingViewer: View {
                     HStack(spacing: 10) {
                         Image(uiImage: Asset.Images.locationLiveCellIcon.image)
                             .renderingMode(.template)
-                            .foregroundColor(theme.colors.quaternaryContent)
+                            .foregroundColor(theme.colors.quarterlyContent)
                             .frame(width: 40, height: 40)
                         Text(VectorL10n.liveLocationSharingEnded)
                             .font(theme.fonts.body)
