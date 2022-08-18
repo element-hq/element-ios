@@ -59,8 +59,10 @@ struct SpaceSelector: View {
                 }
             }
             ToolbarItem(placement: .cancellationAction) {
-                Button(VectorL10n.cancel) {
-                    viewModel.send(viewAction: .cancel)
+                if viewModel.viewState.showCancel {
+                    Button(VectorL10n.cancel) {
+                        viewModel.send(viewAction: .cancel)
+                    }
                 }
             }
         }

@@ -96,6 +96,8 @@ struct SpaceSelectorViewState: BindableState {
     var selectedSpaceId: String?
     /// String to be displayed as title for the navigation bar
     var navigationTitle: String
+    /// `true` if the view should display the cancel button in the navigation bar
+    let showCancel: Bool
 }
 
 enum SpaceSelectorViewAction {

@@ -95,7 +95,8 @@ final class SpaceSelectorBottomSheetCoordinator: Coordinator, Presentable {
         let parameters = SpaceSelectorCoordinatorParameters(session: parameters.session,
                                                             parentSpaceId: parentSpaceId,
                                                             selectedSpaceId: parameters.selectedSpaceId,
-                                                            showHomeSpace: parameters.showHomeSpace)
+                                                            showHomeSpace: parameters.showHomeSpace,
+                                                            showCancel: navigationRouter.modules.isEmpty)
         let coordinator = SpaceSelectorCoordinator(parameters: parameters)
         coordinator.completion = { [weak self] result in
             guard let self = self else { return }
