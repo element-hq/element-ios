@@ -102,7 +102,7 @@ class AllChatsSpaceActionProvider {
     // MARK: - Private
     
     private var invitePeopleAction: UIAction {
-        UIAction(title: VectorL10n.spacesInvitePeopleFormat(spaceName),
+        UIAction(title: VectorL10n.inviteTo(spaceName),
                  image: UIImage(systemName: "square.and.arrow.up"),
                  attributes: isInviteAvailable ? [] : .disabled) { [weak self] action in
             guard let self = self else { return }

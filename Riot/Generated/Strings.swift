@@ -2491,6 +2491,10 @@ public class VectorL10n: NSObject {
   public static func inviteFriendsShareText(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "invite_friends_share_text", p1, p2)
   }
+  /// Invite to %@
+  public static func inviteTo(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "invite_to", p1)
+  }
   /// Invite matrix User
   public static var inviteUser: String { 
     return VectorL10n.tr("Vector", "invite_user") 
@@ -8070,10 +8074,6 @@ public class VectorL10n: NSObject {
   /// Invite people
   public static var spacesInvitePeople: String { 
     return VectorL10n.tr("Vector", "spaces_invite_people") 
-  }
-  /// Invite to %@
-  public static func spacesInvitePeopleFormat(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "spaces_invite_people_format", p1)
   }
   /// Invites coming soon
   public static var spacesInvitesComingSoonTitle: String { 

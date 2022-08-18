@@ -77,6 +77,7 @@
 "suggest" = "Suggest";
 "edit" = "Edit";
 "confirm" = "Confirm";
+"invite_to" = "Invite to %@";
 
 // Activities
 "loading" = "Loading";
@@ -2098,7 +2099,6 @@ Tap the + to start adding people.";
 "spaces_creation_in_one_space" = "in 1 space";
 
 "spaces_invite_people" = "Invite people";
-"spaces_invite_people_format" = "Invite to %@";
 "spaces_add_room" = "Add room";
 "spaces_add_room_missing_permission_message" = "You do not have permissions to add rooms to this space.";
 "spaces_add_space" = "Add space";
