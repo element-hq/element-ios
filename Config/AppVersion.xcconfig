@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 Vector Creations Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,5 +15,5 @@
 //
 
 // Version
-MARKETING_VERSION = 1.8.16
-CURRENT_PROJECT_VERSION = 20220713202416
+MARKETING_VERSION = 2.16.0
+CURRENT_PROJECT_VERSION = 20220819093203

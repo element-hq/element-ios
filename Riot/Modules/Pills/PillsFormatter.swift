@@ -98,6 +98,7 @@ class PillsFormatter: NSObject {
             return NSAttributedString(string: roomMember.displayname)
         }
         let string = NSMutableAttributedString(attachment: attachment)
+        string.replaceCharacters(in: NSRange(location: 0, length: string.length), with: roomMember.displayname)
         string.addAttribute(.font, value: font, range: .init(location: 0, length: string.length))
         if let url = url {
             string.addAttribute(.link, value: url, range: .init(location: 0, length: string.length))
