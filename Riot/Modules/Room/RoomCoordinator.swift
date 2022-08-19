@@ -282,7 +282,18 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
                 guard let self = self else { return }
                 self.stopLoading()
                 
-                // TODO: show error and close it
+                MXLog.error("[RoomCoordinator] User does not exist")
+                
+                // Alert user
+                let alert = UIAlertController(title: nil, message: VectorL10n.roomCreationDmError, preferredStyle: .alert)
+                
+                let cancelActionTitle = VectorL10n.ok
+                let cancelAction = UIAlertAction(title: cancelActionTitle, style: .cancel) { (_) in
+                    self.roomViewController.popToHomeViewController()
+                }
+                
+                alert.addAction(cancelAction)
+                self.toPresentable().present(alert, animated: true)
             }
         }
     }
