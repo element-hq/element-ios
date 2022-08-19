@@ -2384,7 +2384,7 @@
 "onboarding_congratulations_home_button" = "Ir al inicio";
 "onboarding_congratulations_personalize_button" = "Personalizar perfil";
 /* The placeholder string contains the user's matrix ID */
-"onboarding_congratulations_message" = "Has creado tu cuenta, %@.";
+"onboarding_congratulations_message" = "Tu cuenta %@ ha sido creada";
 "onboarding_congratulations_title" = "¡Enhorabuena!";
 "saving" = "Guardando";
 
@@ -2494,3 +2494,48 @@
 "authentication_choose_password_not_verified_message" = "Comprueba tu bandeja de entrada";
 "authentication_choose_password_text_field_placeholder" = "Nueva contraseña";
 "authentication_forgot_password_waiting_button" = "Volver a enviar correo";
+
+// Mark: - Space Selector
+
+"space_selector_title" = "Mis espacios";
+"all_chats_edit_menu_space_settings" = "Ajustes del espacio";
+"all_chats_edit_menu_leave_space" = "Salir de %@";
+"all_chats_user_menu_settings" = "Ajustes de usuario";
+"room_recents_recently_viewed_section" = "Visto recientemente";
+"all_chats_all_filter" = "Todos";
+"all_chats_edit_layout_alphabetical_order" = "Ordenar alfabéticamente";
+"all_chats_edit_layout_activity_order" = "Ordenar por última actividad";
+"all_chats_edit_layout_show_filters" = "Mostrar filtros";
+"all_chats_edit_layout_show_recents" = "Mostrar recientes";
+"all_chats_edit_layout_sorting_options_title" = "Ordenar mensajes por";
+"all_chats_edit_layout_add_filters_title" = "Filtrar tus mensajes";
+"all_chats_edit_layout_add_section_title" = "Añadir sección a inicio";
+"all_chats_edit_layout_unreads" = "Sin leer";
+"all_chats_edit_layout_recents" = "Recientes";
+"all_chats_edit_layout" = "Ajustes de disposición";
+"spaces_subspace_creation_visibility_message" = "El espacio se añadirá a %@.";
+"spaces_subspace_creation_visibility_title" = "¿Qué tipo de subespacio quieres crear?";
+"spaces_create_subspace_title" = "Crear un subespacio";
+"spaces_add_subspace_title" = "Crear espacio dentro de %@";
+"password_validation_error_contain_symbol" = "Tiene un símbolo.";
+"password_validation_error_contain_number" = "Tiene un número.";
+"password_validation_error_contain_lowercase_letter" = "Tiene una letra minúscula.";
+"password_validation_error_contain_uppercase_letter" = "Tiene una letra mayúscula.";
+/* The placeholder will show a number */
+"password_validation_error_max_length" = "%d caracteres como máximo.";
+/* The placeholder will show a number */
+"password_validation_error_min_length" = "Al menos %d caracteres.";
+"authentication_verify_msisdn_invalid_phone_number" = "Número de teléfono no válido";
+/* The placeholder will show the phone number that was entered. */
+"authentication_verify_msisdn_waiting_message" = "Código enviado a %@";
+"authentication_verify_msisdn_waiting_title" = "Verifica tu número de teléfono";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_msisdn_input_message" = "%@ necesita verificar tu cuenta";
+"authentication_verify_msisdn_input_title" = "Escribe tu número de teléfono";
+"authentication_choose_password_not_verified_title" = "Correo sin verificar";
+"authentication_choose_password_submit_button" = "Restablecer contraseña";
+"authentication_choose_password_signout_all_devices" = "Cerrar sesión de todos los dispositivos";
+"authentication_choose_password_input_message" = "Asegúrate de que tiene al menos 8 caracteres";
+"authentication_choose_password_input_title" = "Elige una nueva contraseña";
+/* The placeholder will show the email address that was entered. */
+"authentication_forgot_password_waiting_message" = "Sigue las instrucciones enviadas a %@";
