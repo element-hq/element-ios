@@ -21,10 +21,6 @@ enum AllChatsEditActionProviderOption {
     case exploreRooms
     case createRoom
     case startChat
-    case invitePeople
-    case spaceMembers
-    case spaceSettings
-    case leaveSpace
     case createSpace
 }
 
@@ -56,30 +52,26 @@ class AllChatsEditActionProvider {
     var menu: UIMenu {
         guard parentSpace != nil else {
             var createActions = [
-                self.startChatAction,
-                self.createRoomAction
+                self.createRoomAction,
+                self.startChatAction
             ]
             if rootSpaceCount > 0 {
-                createActions.append(self.createSpaceAction)
+                createActions.insert(self.createSpaceAction, at: 0)
             }
-            return UIMenu(title: VectorL10n.allChatsTitle, children: [
+            return UIMenu(title: "", children: [
                 self.exploreRoomsAction,
                 UIMenu(title: "", options: .displayInline, children: createActions)
             ])
         }
         
-        return UIMenu(title: parentName, children: [
+        return UIMenu(title: "", children: [
             UIMenu(title: "", options: .displayInline, children: [
-                self.spaceMembersAction,
-                self.exploreRoomsAction,
-                self.spaceSettingsAction
+                self.exploreRoomsAction
             ]),
             UIMenu(title: "", options: .displayInline, children: [
-                self.invitePeopleAction,
-                self.createRoomAction,
-                self.createSpaceAction
-            ]),
-            self.leaveSpaceAction
+                self.createSpaceAction,
+                self.createRoomAction
+            ])
         ])
     }
     
@@ -139,8 +131,8 @@ class AllChatsEditActionProvider {
     // MARK: - Private
     
     private var exploreRoomsAction: UIAction {
-        UIAction(title: VectorL10n.spacesExploreRooms,
-                 image: parentSpace == nil ? UIImage(systemName: "list.bullet") : UIImage(systemName: "square.fill.text.grid.1x2")) { [weak self] action in
+        UIAction(title: parentSpace == nil ? VectorL10n.spacesExploreRooms : VectorL10n.spacesExploreRoomsFormat(parentName),
+                 image: UIImage(systemName: "list.bullet")) { [weak self] action in
             guard let self = self else { return }
             
             self.delegate?.allChatsEditActionProvider(self, didSelect: .exploreRooms)
@@ -173,44 +165,6 @@ class AllChatsEditActionProvider {
             guard let self = self else { return }
             
             self.delegate?.allChatsEditActionProvider(self, didSelect: .createSpace)
-        }
-    }
-    
-    private var invitePeopleAction: UIAction {
-        UIAction(title: VectorL10n.spacesInvitePeople,
-                 image: UIImage(systemName: "person.badge.plus"),
-                 attributes: isInviteAvailable ? [] : .disabled) { [weak self] action in
-            guard let self = self else { return }
-            
-            self.delegate?.allChatsEditActionProvider(self, didSelect: .invitePeople)
-        }
-    }
-    
-    private var spaceMembersAction: UIAction {
-        UIAction(title: VectorL10n.roomDetailsPeople,
-                 image: UIImage(systemName: "person.3")) { [weak self] action in
-            guard let self = self else { return }
-            
-            self.delegate?.allChatsEditActionProvider(self, didSelect: .spaceMembers)
-        }
-    }
-    
-    private var spaceSettingsAction: UIAction {
-        UIAction(title: VectorL10n.allChatsEditMenuSpaceSettings,
-                 image: UIImage(systemName: "gearshape")) { [weak self] action in
-            guard let self = self else { return }
-            
-            self.delegate?.allChatsEditActionProvider(self, didSelect: .spaceSettings)
-        }
-    }
-    
-    private var leaveSpaceAction: UIAction {
-        UIAction(title: VectorL10n.allChatsEditMenuLeaveSpace(parentName),
-                 image: UIImage(systemName: "rectangle.portrait.and.arrow.right.fill"),
-                 attributes: .destructive) { [weak self] action in
-            guard let self = self else { return }
-            
-            self.delegate?.allChatsEditActionProvider(self, didSelect: .leaveSpace)
         }
     }
 }

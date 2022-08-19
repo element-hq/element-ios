@@ -77,6 +77,7 @@
 "suggest" = "Suggest";
 "edit" = "Edit";
 "confirm" = "Confirm";
+"invite_to" = "Invite to %@";
 
 // Activities
 "loading" = "Loading";
@@ -2006,6 +2007,7 @@ Tap the + to start adding people.";
 "leave_space_only_action" = "Don't leave any rooms";
 "leave_space_and_all_rooms_action" = "Leave all rooms and spaces";
 "spaces_explore_rooms" = "Explore rooms";
+"spaces_explore_rooms_format" = "Explore %@";
 "spaces_suggested_room" = "Suggested";
 "spaces_explore_rooms_room_number" = "%@ rooms";
 "spaces_explore_rooms_one_room" = "1 room";
