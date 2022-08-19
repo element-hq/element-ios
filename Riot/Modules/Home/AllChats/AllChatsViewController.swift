@@ -55,6 +55,7 @@ class AllChatsViewController: HomeViewController {
         
         recentsTableView.tag = RecentsDataSourceMode.allChats.rawValue
         recentsTableView.clipsToBounds = false
+        recentsTableView.register(RecentEmptySectionTableViewCell.nib, forCellReuseIdentifier: RecentEmptySectionTableViewCell.reuseIdentifier)
         
         updateUI()
         vc_setLargeTitleDisplayMode(.automatic)
@@ -154,6 +155,54 @@ class AllChatsViewController: HomeViewController {
         lastScrollPosition = scrollPosition
     }
     
+    // MARK: - Empty view management
+    
+    override func updateEmptyView() {
+        guard let mainSession = self.mainSession else {
+            return
+        }
+        
+        let title: String
+        let informationText: String
+        if let currentSpace = self.dataSource?.currentSpace {
+            title = VectorL10n.allChatsEmptyViewTitle(currentSpace.summary?.displayname ?? VectorL10n.spaceTag)
+            informationText = VectorL10n.allChatsEmptyViewInformation
+        } else {
+            let myUser = mainSession.myUser
+            let displayName = (myUser?.displayName ?? myUser?.userId) ?? ""
+            let appName = AppInfo.current.displayName
+            title = VectorL10n.homeEmptyViewTitle(appName, displayName)
+            informationText = VectorL10n.homeEmptyViewInformation
+        }
+        
+        self.emptyView?.fill(with: emptyViewArtwork, title: title, informationText: informationText)
+    }
+    
+    private var emptyViewArtwork: UIImage {
+        if self.dataSource?.currentSpace == nil {
+            return ThemeService.shared().isCurrentThemeDark() ? Asset.Images.roomsEmptyScreenArtworkDark.image : Asset.Images.roomsEmptyScreenArtwork.image
+        } else {
+            return ThemeService.shared().isCurrentThemeDark() ? Asset.Images.homeEmptyScreenArtworkDark.image : Asset.Images.homeEmptyScreenArtwork.image
+        }
+    }
+    
+    override func shouldShowEmptyView() -> Bool {
+        let shouldShowEmptyView = super.shouldShowEmptyView()
+        
+        if shouldShowEmptyView {
+            self.tabBarController?.navigationItem.searchController = nil
+            navigationItem.largeTitleDisplayMode = .never
+            navigationController?.navigationBar.prefersLargeTitles = false
+        } else {
+            self.tabBarController?.navigationItem.searchController = searchController
+            navigationItem.largeTitleDisplayMode = .automatic
+            navigationController?.navigationBar.prefersLargeTitles = true
+        }
+
+        return shouldShowEmptyView
+    }
+    
+
     // MARK: - Theme management
     
     override func userInterfaceThemeDidChange() {
@@ -191,6 +240,7 @@ class AllChatsViewController: HomeViewController {
         updateToolbar(with: editActionProvider.updateMenu(with: mainSession, parentSpace: currentSpace, completion: { [weak self] menu in
             self?.updateToolbar(with: menu)
         }))
+        updateEmptyView()
     }
     
     private func updateRightNavigationItem(with menu: UIMenu) {

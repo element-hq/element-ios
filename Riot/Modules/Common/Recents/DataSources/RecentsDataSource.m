@@ -637,7 +637,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
     else if (sectionType == RecentsDataSourceSectionTypeAllChats && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_ALL_CHATS))
     {
-        count = self.allChatsRoomCellDataArray.count;
+        count = self.allChatsRoomCellDataArray.count ?: 1;
     }
     
     // Adjust this count according to the potential dragged cell.
@@ -1052,8 +1052,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         return cell;
     }
     else if ((sectionType == RecentsDataSourceSectionTypeConversation && !self.conversationCellDataArray.count)
-             || (sectionType == RecentsDataSourceSectionTypePeople && !self.peopleCellDataArray.count)
-             || (sectionType == RecentsDataSourceSectionTypeAllChats && !self.allChatsRoomCellDataArray.count))
+             || (sectionType == RecentsDataSourceSectionTypePeople && !self.peopleCellDataArray.count))
     {
         MXKTableViewCell *tableViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
         if (!tableViewCell)
@@ -1078,6 +1077,15 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             tableViewCell.textLabel.text = [VectorL10n roomRecentsNoConversation];
         }
         
+        return tableViewCell;
+    }
+    else if (sectionType == RecentsDataSourceSectionTypeAllChats && !self.allChatsRoomCellDataArray.count) {
+        RecentEmptySectionTableViewCell *tableViewCell = [tableView dequeueReusableCellWithIdentifier:[RecentEmptySectionTableViewCell defaultReuseIdentifier]];
+        
+        tableViewCell.iconView.image = self.searchPatternsList ? [UIImage systemImageNamed:@"magnifyingglass"] : AssetImages.allChatsEmptyListPlaceholderIcon.image;
+        tableViewCell.titleLabel.text = VectorL10n.allChatsEmptyListPlaceholderTitle;
+        tableViewCell.messageLabel.text = self.searchPatternsList ? VectorL10n.searchNoResult : VectorL10n.allChatsEmptyUnreadsPlaceholderMessage;
+
         return tableViewCell;
     }
     
@@ -1184,9 +1192,12 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         return self.droppingCellBackGroundView.frame.size.height;
     }
     if ((sectionType == RecentsDataSourceSectionTypeConversation && !self.conversationCellDataArray.count)
-         || (sectionType == RecentsDataSourceSectionTypePeople && !self.peopleCellDataArray.count))
+        || (sectionType == RecentsDataSourceSectionTypePeople && !self.peopleCellDataArray.count))
     {
         return 50.0;
+    }
+    if (sectionType == RecentsDataSourceSectionTypeAllChats && !self.allChatsRoomCellDataArray.count) {
+        return 300.0;
     }
     
     // Override this method here to use our own cellDataAtIndexPath

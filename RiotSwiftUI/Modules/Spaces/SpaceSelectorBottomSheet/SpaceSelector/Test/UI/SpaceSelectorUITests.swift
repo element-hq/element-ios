@@ -37,6 +37,28 @@ class SpaceSelectorUITests: MockScreenTestCase {
         for (index, item) in MockSpaceSelectorService.defaultSpaceList.enumerated() {
             XCTAssertEqual(item.displayName, spaceItemNameList[index].label)
         }
+        
+        checkIfEmptyPlaceholder(exists: false)
+    }
+    
+    func testEmptyList() {
+        app.goToScreenWithIdentifier(MockSpaceSelectorScreenState.emptyList.title)
+        
+        let disclosureButtons = app.buttons.matching(identifier: "disclosureButton").allElementsBoundByIndex
+        XCTAssertEqual(disclosureButtons.count, 0)
+        let notificationBadges = app.staticTexts.matching(identifier: "notificationBadge").allElementsBoundByIndex
+        XCTAssertEqual(notificationBadges.count, 0)
+        let spaceItemNameList = app.staticTexts.matching(identifier: "itemName").allElementsBoundByIndex
+        XCTAssertEqual(spaceItemNameList.count, 0)
+        checkIfEmptyPlaceholder(exists: true)
+    }
+    
+    // MARK: - Private methods
+    
+    private func checkIfEmptyPlaceholder(exists: Bool) {
+        XCTAssertEqual(app.staticTexts["emptyListPlaceholderTitle"].exists, exists)
+        XCTAssertEqual(app.staticTexts["emptyListPlaceholderMessage"].exists, exists)
+        XCTAssertEqual(app.buttons["createSpaceButton"].exists, exists)
     }
 
 }
