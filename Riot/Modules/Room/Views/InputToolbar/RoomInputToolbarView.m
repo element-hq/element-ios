@@ -305,7 +305,7 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
                 placeholder = [VectorL10n roomMessageReplyToShortPlaceholder];
                 break;
                 
-            case RoomInputToolbarViewSendModeFirst:
+            case RoomInputToolbarViewSendModeCreateDM:
                 placeholder = [VectorL10n roomFirstMessagePlaceholder];
                 break;
 
@@ -337,7 +337,7 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
                     placeholder = [VectorL10n roomMessageReplyToPlaceholder];
                     break;
 
-                case RoomInputToolbarViewSendModeFirst:
+                case RoomInputToolbarViewSendModeCreateDM:
                     placeholder = [VectorL10n roomFirstMessagePlaceholder];
                     break;
                     

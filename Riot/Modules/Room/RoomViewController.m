@@ -1033,6 +1033,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         [self removeMatrixSession:self.mainSession];
     }
     
+    // Set potential discussion target user to nil, now use the dataSource to populate the view
+    self.directChatTargetUser = nil;
+    
     // Enable the read marker display, and disable its update.
     dataSource.showReadMarker = YES;
     self.updateRoomReadMarker = NO;
@@ -1113,8 +1116,6 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
     else if (self.isNewDirectChat)
     {
-        [self setInputToolBarSendMode:RoomInputToolbarViewSendModeFirst forEventWithId:nil];
-        [(RoomInputToolbarView *)self.inputToolbarView setVoiceMessageToolbarView:nil];
         [self refreshRoomInputToolbar];
     }
     else
@@ -1336,7 +1337,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)sendTextMessage:(NSString*)msgTxt
 {
-    // Re-invite the left member before sending the message in case of a discussion (direct chat)
+    // Create or invite again the left member before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
     [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
         MXStrongifyAndReturnIfNil(self);
@@ -1377,10 +1378,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                     [self cancelEventSelection];
                 }
             }];
-            
         }
-        
-        [self cancelEventSelection];
     }];
 }
 
@@ -1545,11 +1543,11 @@ static CGSize kThreadListBarButtonItemImageSize;
                 }
                 else
                 {
-                    NSLog(@"[RoomViewController] isEmptyDirectChat: the direct user has disappeared");
+                    MXLogDebug(@"[RoomViewController] isEmptyDirectChat: the direct user has disappeared");
                     onComplete(YES);
                 }
             } failure:^(NSError *error) {
-                NSLog(@"[RoomViewController] isEmptyDirectChat: cannot get all room members");
+                MXLogDebug(@"[RoomViewController] isEmptyDirectChat: cannot get all room members");
                 onComplete(NO);
             }];
             return;
@@ -1564,7 +1562,7 @@ static CGSize kThreadListBarButtonItemImageSize;
  Check whether the current room is a direct chat left by the other member.
  In this case, this method will invite again the left member.
  */
-- (void)restoreDiscussionIfNeed:(void (^)(BOOL success))onComplete
+- (void)restoreDiscussionIfNeeded:(void (^)(BOOL success))onComplete
 {
     [self isDirectChatLeftByTheOther:^(BOOL isEmptyDirect) {
         if (isEmptyDirect)
@@ -1572,17 +1570,17 @@ static CGSize kThreadListBarButtonItemImageSize;
             NSString *directUserId = self.roomDataSource.room.directUserId;
             
             MXWeakify(self);
-            NSLog(@"[RoomViewController] restoreDiscussionIfNeed: check left member %@", directUserId);
+            MXLogDebug(@"[RoomViewController] restoreDiscussionIfNeeded: check left member %@", directUserId);
             // Invite again the direct user
             MXStrongifyAndReturnIfNil(self);
-            NSLog(@"[RoomViewController] restoreDiscussionIfNeed: invite again %@", directUserId);
+            MXLogDebug(@"[RoomViewController] restoreDiscussionIfNeeded: invite again %@", directUserId);
             [self.roomDataSource.room inviteUser:directUserId success:^{
                 // Delay the completion in order to display the invite before the local echo of the new message.
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     onComplete(YES);
                 });
             } failure:^(NSError *error) {
-                NSLog(@"[RoomViewController] restoreDiscussionIfNeed: invite failed");
+                MXLogDebug(@"[RoomViewController] restoreDiscussionIfNeeded: invite failed");
                 // Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
                 onComplete(NO);
@@ -1609,6 +1607,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
             [roomDataSourceManager roomDataSourceForRoom:roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
                 [self stopActivityIndicator];
+                [self setRoomInputToolbarViewClass:nil];
                 [self displayRoom:roomDataSource];
                 
                 onComplete(YES);
@@ -1644,7 +1643,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
     else
     {
-        [self restoreDiscussionIfNeed:completion];
+        [self restoreDiscussionIfNeeded:completion];
     }
 }
 
@@ -2072,6 +2071,13 @@ static CGSize kThreadListBarButtonItemImageSize;
 
         // Update actions when the input toolbar refreshed
         [self setupActions];
+        
+        // Update placeholder and hide voice message view
+        if (self.isNewDirectChat)
+        {
+            [self setInputToolBarSendMode:RoomInputToolbarViewSendModeCreateDM forEventWithId:nil];
+            [roomInputToolbarView setVoiceMessageToolbarView:nil];
+        }
     }
     else if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:DisabledRoomInputToolbarView.class])
     {
@@ -2499,7 +2505,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             // Set the chosen preset and send the video (conversion takes place in the SDK).
             [MXSDKOptions sharedInstance].videoConversionPresetName = presetName;
             
-            // Re-invite the left member before sending the message in case of a discussion (direct chat)
+            // Create or invite again the left member before sending the message in case of a discussion (direct chat)
             [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
                 if (success)
                 {
@@ -2517,7 +2523,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         // Otherwise default to 1080p and send the video.
         [MXSDKOptions sharedInstance].videoConversionPresetName = AVAssetExportPreset1920x1080;
         
-        // Re-invite the left member before sending the message in case of a discussion (direct chat)
+        // Create or invite again the left member before sending the message in case of a discussion (direct chat)
         [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
             if (success)
             {
@@ -3027,10 +3033,10 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)displayNewDirectChatWithTargetUser:(nonnull MXUser*)directChatTargetUser session:(nonnull MXSession*)session
 {
-    self.directChatTargetUser = directChatTargetUser;
-    
     // Release existing room data source or preview
     [self displayRoom:nil];
+    
+    self.directChatTargetUser = directChatTargetUser;
     
     self.eventsAcknowledgementEnabled = NO;
     
@@ -5024,7 +5030,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)roomInputToolbarView:(RoomInputToolbarView *)toolbarView sendAttributedTextMessage:(NSAttributedString *)attributedTextMessage
 {
-    // Re-invite the left member before sending the message in case of a discussion (direct chat)
+    // Create or invite again the left member before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
     [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
         MXStrongifyAndReturnIfNil(self);
@@ -7499,7 +7505,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 }
 
 - (void)sendImage:(NSData *)imageData mimeType:(NSString *)mimeType {
-    // Re-invite the left member before sending the message in case of a discussion (direct chat)
+    // Create or invite again the left member before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
     [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
         MXStrongifyAndReturnIfNil(self);
@@ -7515,7 +7521,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 }
 
 - (void)sendVideo:(NSURL * _Nonnull)url {
-    // Re-invite the left member before sending the message in case of a discussion (direct chat)
+    // Create or invite again the left member before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
     [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
         MXStrongifyAndReturnIfNil(self);
@@ -7531,7 +7537,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 }
 
 - (void)sendFile:(NSURL * _Nonnull)url mimeType:(NSString *)mimeType {
-    // Re-invite the left member before sending the message in case of a discussion (direct chat)
+    // Create or invite again the left member before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
     [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
         MXStrongifyAndReturnIfNil(self);
@@ -7614,7 +7620,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     {
         NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
         
-        // Re-invite the left member before sending the message in case of a discussion (direct chat)
+        // Create or invite again the left member before sending the message in case of a discussion (direct chat)
         [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
             if (success)
             {
@@ -7652,7 +7658,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
     if (roomInputToolbarView)
     {
-        // Re-invite the left member before sending the message in case of a discussion (direct chat)
+        // Create or invite again the left member before sending the message in case of a discussion (direct chat)
         [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
             if (success)
             {
@@ -7684,7 +7690,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         // Set a 1080p video conversion preset as compression mode only has an effect on the images.
         [MXSDKOptions sharedInstance].videoConversionPresetName = AVAssetExportPreset1920x1080;
         
-        // Re-invite the left member before sending the message in case of a discussion (direct chat)
+        // Create or invite again the left member before sending the message in case of a discussion (direct chat)
         [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
             if (success)
             {
