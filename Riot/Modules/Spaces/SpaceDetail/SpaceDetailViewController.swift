@@ -34,10 +34,13 @@ class SpaceDetailViewController: UIViewController {
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
     private var isJoined: Bool = false
+    private var showCancel: Bool = true
 
     // MARK: Outlets
 
-    @IBOutlet private weak var inviterPanelHeight: NSLayoutConstraint!
+    @IBOutlet private var inviterView: UIView!
+    @IBOutlet private weak var inviterContentView: UIView!
+    @IBOutlet private weak var inviterContentViewHeight: NSLayoutConstraint!
     @IBOutlet private weak var inviterAvatarView: RoomAvatarView!
     @IBOutlet private weak var inviterTitleLabel: UILabel!
     @IBOutlet private weak var inviterIdLabel: UILabel!
@@ -60,11 +63,12 @@ class SpaceDetailViewController: UIViewController {
 
     // MARK: - Setup
     
-    class func instantiate(mediaManager: MXMediaManager, viewModel: SpaceDetailViewModelType!) -> SpaceDetailViewController {
+    class func instantiate(mediaManager: MXMediaManager, viewModel: SpaceDetailViewModelType!, showCancel: Bool) -> SpaceDetailViewController {
         let viewController = StoryboardScene.SpaceDetailViewController.initialScene.instantiate()
         viewController.mediaManager = mediaManager
         viewController.viewModel = viewModel
         viewController.theme = ThemeService.shared().theme
+        viewController.showCancel = showCancel
         return viewController
     }
     
@@ -176,6 +180,7 @@ class SpaceDetailViewController: UIViewController {
     private func setupViews() {
         self.closeButton.layer.masksToBounds = true
         self.closeButton.layer.cornerRadius = self.closeButton.bounds.height / 2
+        self.closeButton.isHidden = !self.showCancel
         
         self.setup(button: self.joinButton, withTitle: VectorL10n.join)
         self.setup(button: self.acceptButton, withTitle: VectorL10n.accept)
@@ -204,19 +209,36 @@ class SpaceDetailViewController: UIViewController {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
     }
     
+    private func addInviterView() {
+//        if self.navigationController != nil {
+//            self.navigationItem.leftItemsSupplementBackButton = true
+//            self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.inviterView)
+//            self.inviterContentViewHeight.constant = 0
+//        } else {
+            self.inviterContentView.addSubview(inviterView)
+            inviterView.translatesAutoresizingMaskIntoConstraints = false
+            inviterView.topAnchor.constraint(equalTo: inviterContentView.topAnchor).isActive = true
+            inviterView.leadingAnchor.constraint(equalTo: inviterContentView.leadingAnchor).isActive = true
+            inviterView.trailingAnchor.constraint(equalTo: inviterContentView.trailingAnchor).isActive = true
+//        }
+    }
+    
     private func renderLoaded(parameters: SpaceDetailLoadedParameters) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         
+        self.title = parameters.displayName
+        
         switch parameters.membership {
         case .invite:
+            self.addInviterView()
             self.joinButton.isHidden = true
             self.inviteActionPanel.isHidden = false
         case .join:
-            self.inviterPanelHeight.constant = 0
+            self.inviterContentViewHeight.constant = 0
             self.joinButton.setTitle(VectorL10n.open, for: .normal)
             self.isJoined = true
         default:
-            self.inviterPanelHeight.constant = 0
+            self.inviterContentViewHeight.constant = 0
         }
         
         let avatarViewData = AvatarViewData(matrixItemId: parameters.spaceId,

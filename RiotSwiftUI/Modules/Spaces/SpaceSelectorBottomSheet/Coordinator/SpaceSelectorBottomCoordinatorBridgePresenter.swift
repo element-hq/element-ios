@@ -70,6 +70,8 @@ final class SpaceSelectorBottomSheetCoordinatorBridgePresenter: NSObject {
                 self.delegate?.spaceSelectorBottomSheetCoordinatorBridgePresenter(self, didSelectSpaceWithId: item.id)
             case .createSpace(let parentSpaceId):
                 self.delegate?.spaceSelectorBottomSheetCoordinatorBridgePresenter(self, didCreateSpaceWithinSpaceWithId: parentSpaceId)
+            case .spaceJoined(let spaceId):
+                self.delegate?.spaceSelectorBottomSheetCoordinatorBridgePresenter(self, didSelectSpaceWithId: spaceId)
             }
         }
         let presentable = coordinator.toPresentable()
