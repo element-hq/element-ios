@@ -37,7 +37,7 @@ struct SpaceSelectorBottomSheetCoordinatorParameters {
     }
 }
 
-final class SpaceSelectorBottomSheetCoordinator: Coordinator, Presentable {
+final class SpaceSelectorBottomSheetCoordinator: NSObject, Coordinator, Presentable {
     
     // MARK: - Properties
     
@@ -62,6 +62,9 @@ final class SpaceSelectorBottomSheetCoordinator: Coordinator, Presentable {
         self.parameters = parameters
         self.navigationRouter = navigationRouter
         self.spaceIdStack = []
+        
+        super.init()
+        
         self.setupNavigationRouter()
     }
     
@@ -89,6 +92,8 @@ final class SpaceSelectorBottomSheetCoordinator: Coordinator, Presentable {
         sheetController.prefersGrabberVisible = true
         sheetController.selectedDetentIdentifier = .medium
         sheetController.prefersScrollingExpandsWhenScrolledToEdge = true
+        
+        self.navigationRouter.toPresentable().presentationController?.delegate = self
     }
 
     private func createSpaceSelectorCoordinator(parentSpaceId: String?) -> SpaceSelectorCoordinator {
@@ -150,4 +155,14 @@ final class SpaceSelectorBottomSheetCoordinator: Coordinator, Presentable {
         
         Analytics.shared.trackInteraction(.spacePanelSwitchSpace)
     }
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+
+extension SpaceSelectorBottomSheetCoordinator: UIAdaptivePresentationControllerDelegate {
+    
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        completion?(.cancel)
+    }
+    
 }
