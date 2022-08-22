@@ -95,7 +95,7 @@ final class SpaceSelectorBottomSheetCoordinator: Coordinator, Presentable {
         if self.navigationRouter.modules.isEmpty {
             self.navigationRouter.setRootModule(coordinator)
         } else {
-            self.navigationRouter.push(coordinator.toPresentable(), animated: true) {
+            self.navigationRouter.push(coordinator.toPresentable(), animated: true) { [weak self] in
                 self.remove(childCoordinator: coordinator)
                 if coordinator is SpaceSelectorCoordinator {
                     self.spaceIdStack.removeLast()
