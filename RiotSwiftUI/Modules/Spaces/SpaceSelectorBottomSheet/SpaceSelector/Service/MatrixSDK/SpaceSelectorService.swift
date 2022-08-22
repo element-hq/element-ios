@@ -29,19 +29,23 @@ class SpaceSelectorService: SpaceSelectorServiceProtocol {
     private let showHomeSpace: Bool
 
     private var spaceList: [SpaceSelectorListItemData] {
-        var itemList = showHomeSpace && parentSpaceId == nil ? [SpaceSelectorListItemData(id: SpaceSelectorConstants.homeSpaceId, icon: Asset.Images.sideMenuActionIconFeedback.image, displayName: VectorL10n.allChatsTitle)] : []
-        
         let notificationCounter = session.spaceService.notificationCounter
         
+        let childSpaces: [SpaceSelectorListItemData]
         if let parentSpaceId = parentSpaceId, let parentSpace = session.spaceService.getSpace(withId: parentSpaceId) {
-            itemList.append(contentsOf: parentSpace.childSpaces.compactMap { space in
+            childSpaces = parentSpace.childSpaces.compactMap { space in
                 SpaceSelectorListItemData.itemData(with: space, notificationCounter: notificationCounter)
-            })
+            }
         } else {
-            itemList.append(contentsOf: session.spaceService.rootSpaces.compactMap { space in
+            childSpaces = session.spaceService.rootSpaces.compactMap { space in
                 SpaceSelectorListItemData.itemData(with: space, notificationCounter: notificationCounter)
-            })
+            }
         }
+
+        var itemList = showHomeSpace && parentSpaceId == nil && !childSpaces.isEmpty ? [SpaceSelectorListItemData(id: SpaceSelectorConstants.homeSpaceId, icon: Asset.Images.sideMenuActionIconFeedback.image, displayName: VectorL10n.allChatsTitle)] : []
+        
+        itemList.append(contentsOf: childSpaces)
+        
         return itemList
     }
     

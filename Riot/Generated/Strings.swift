@@ -179,6 +179,22 @@ public class VectorL10n: NSObject {
   public static var allChatsEditMenuSpaceSettings: String { 
     return VectorL10n.tr("Vector", "all_chats_edit_menu_space_settings") 
   }
+  /// Nothing to report.
+  public static var allChatsEmptyListPlaceholderTitle: String { 
+    return VectorL10n.tr("Vector", "all_chats_empty_list_placeholder_title") 
+  }
+  /// This is where you're unread messages will show up, when you have some.
+  public static var allChatsEmptyUnreadsPlaceholderMessage: String { 
+    return VectorL10n.tr("Vector", "all_chats_empty_unreads_placeholder_message") 
+  }
+  /// Spaces are a new way to group rooms and people. Add an existing room, or create a new one, to get started.
+  public static var allChatsEmptyViewInformation: String { 
+    return VectorL10n.tr("Vector", "all_chats_empty_view_information") 
+  }
+  /// %@\nis looking a little empty.
+  public static func allChatsEmptyViewTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "all_chats_empty_view_title", p1)
+  }
   /// Chats
   public static var allChatsSectionTitle: String { 
     return VectorL10n.tr("Vector", "all_chats_section_title") 
@@ -7794,6 +7810,18 @@ public class VectorL10n: NSObject {
   /// Open to anyone, best for communities
   public static var spacePublicJoinRuleDetail: String { 
     return VectorL10n.tr("Vector", "space_public_join_rule_detail") 
+  }
+  /// Create Space
+  public static var spaceSelectorCreateSpace: String { 
+    return VectorL10n.tr("Vector", "space_selector_create_space") 
+  }
+  /// Spaces are a way to group rooms and people. Create a space to get started.
+  public static var spaceSelectorEmptyViewInformation: String { 
+    return VectorL10n.tr("Vector", "space_selector_empty_view_information") 
+  }
+  /// No spaces yet.
+  public static var spaceSelectorEmptyViewTitle: String { 
+    return VectorL10n.tr("Vector", "space_selector_empty_view_title") 
   }
   /// My spaces
   public static var spaceSelectorTitle: String { 

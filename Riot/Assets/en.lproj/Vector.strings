@@ -2178,6 +2178,10 @@ Tap the + to start adding people.";
 "all_chats_edit_layout_activity_order" = "Sort by activity";
 "all_chats_edit_layout_alphabetical_order" = "Sort A-Z";
 "all_chats_all_filter" = "All";
+"all_chats_empty_view_title" = "%@\nis looking a little empty.";
+"all_chats_empty_view_information" = "Spaces are a new way to group rooms and people. Add an existing room, or create a new one, to get started.";
+"all_chats_empty_list_placeholder_title" = "Nothing to report.";
+"all_chats_empty_unreads_placeholder_message" = "This is where you're unread messages will show up, when you have some.";
 
 "room_recents_recently_viewed_section" = "Recently viewed";
 
@@ -2189,6 +2193,9 @@ Tap the + to start adding people.";
 // Mark: - Space Selector
 
 "space_selector_title" = "My spaces";
+"space_selector_empty_view_title" = "No spaces yet.";
+"space_selector_empty_view_information" = "Spaces are a way to group rooms and people. Create a space to get started.";
+"space_selector_create_space" = "Create Space";
 
 // Mark: - Polls
 
