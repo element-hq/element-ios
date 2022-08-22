@@ -503,9 +503,36 @@
             </objects>
             <point key="canvasLocation" x="-153" y="-419"/>
         </scene>
+        <!--Room Invites View Controller-->
+        <scene sceneID="ied-3I-huo">
+            <objects>
+                <viewController storyboardIdentifier="RoomInvitesViewController" extendedLayoutIncludesOpaqueBars="YES" id="BYq-qZ-orN" customClass="RoomInvitesViewController" customModule="Element" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="NpE-qA-EJG"/>
+                        <viewControllerLayoutGuide type="bottom" id="N2q-zt-KdC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ln5-wB-A9e">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="" image="tab_home" id="vSs-0M-T3r">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="TabBarItemHome"/>
+                        </userDefinedRuntimeAttributes>
+                    </tabBarItem>
+                    <navigationItem key="navigationItem" id="FIq-cg-lge"/>
+                    <connections>
+                        <segue destination="WDS-Ip-RQ9" kind="presentation" identifier="presentStartChat" id="rok-Xg-Mhx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="r4V-Xa-ZoW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2734" y="-2050"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="y6u-0X-urR"/>
+        <segue reference="rok-Xg-Mhx"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="launch_screen_logo" width="240" height="240"/>

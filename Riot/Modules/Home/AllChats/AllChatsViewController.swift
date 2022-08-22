@@ -56,7 +56,8 @@ class AllChatsViewController: HomeViewController {
         recentsTableView.tag = RecentsDataSourceMode.allChats.rawValue
         recentsTableView.clipsToBounds = false
         recentsTableView.register(RecentEmptySectionTableViewCell.nib, forCellReuseIdentifier: RecentEmptySectionTableViewCell.reuseIdentifier)
-        
+        recentsTableView.register(RecentsInvitesTableViewCell.nib, forCellReuseIdentifier: RecentsInvitesTableViewCell.reuseIdentifier)
+
         updateUI()
         vc_setLargeTitleDisplayMode(.automatic)
 
@@ -125,6 +126,51 @@ class AllChatsViewController: HomeViewController {
         spaceSelectorBridgePresenter.present(from: self, animated: true)
         spaceSelectorBridgePresenter.delegate = self
         self.spaceSelectorBridgePresenter = spaceSelectorBridgePresenter
+    }
+    
+    // MARK: - UITableViewDataSource
+    
+    private func sectionType(forSectionAt index: Int) -> RecentsDataSourceSectionType? {
+        guard let recentsDataSource = dataSource as? RecentsDataSource else {
+            return nil
+        }
+        
+        return recentsDataSource.sections.sectionType(forSectionIndex: index)
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let sectionType = sectionType(forSectionAt: section), sectionType == .invites else {
+            return super.tableView(tableView, numberOfRowsInSection: section)
+        }
+        
+        return dataSource.tableView(tableView, numberOfRowsInSection: section)
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let sectionType = sectionType(forSectionAt: indexPath.section), sectionType == .invites else {
+            return super.tableView(tableView, cellForRowAt: indexPath)
+        }
+        
+        return dataSource.tableView(tableView, cellForRowAt: indexPath)
+    }
+    
+    // MARK: - UITableViewDelegate
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let sectionType = sectionType(forSectionAt: indexPath.section), sectionType == .invites else {
+            return super.tableView(tableView, heightForRowAt: indexPath)
+        }
+        
+        return dataSource.cellHeight(at: indexPath)
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let sectionType = sectionType(forSectionAt: indexPath.section), sectionType == .invites else {
+            super.tableView(tableView, didSelectRowAt: indexPath)
+            return
+        }
+
+        showRoomInviteList()
     }
     
     // MARK: - Toolbar animation
@@ -384,6 +430,16 @@ class AllChatsViewController: HomeViewController {
             }
         }
         present(coordinator.toPresentable(), animated: true)
+    }
+    
+    private func showRoomInviteList() {
+        let invitesViewController = RoomInvitesViewController.instantiate()
+        invitesViewController.userIndicatorStore = self.userIndicatorStore
+//        invitesViewController.displayList(self.dataSource)
+        let recentsListService = RecentsListService(withSession: mainSession)
+        let recentsDataSource = RecentsDataSource(matrixSession: mainSession, recentsListService: recentsListService)
+        invitesViewController.displayList(recentsDataSource)
+        self.navigationController?.pushViewController(invitesViewController, animated: true)
     }
 }
 
