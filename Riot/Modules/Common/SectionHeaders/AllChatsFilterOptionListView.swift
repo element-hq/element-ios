@@ -18,6 +18,14 @@ import UIKit
 
 class AllChatsFilterOptionListView: UIView, Themable {
     
+    // MARK: - Constants
+    
+    private enum Constants {
+        static let separatorHeight: Double = 1
+    }
+    
+    // MARK: - Option definition
+    
     class Option {
         let type: AllChatsLayoutFilterType
         let name: String
@@ -84,11 +92,11 @@ class AllChatsFilterOptionListView: UIView, Themable {
     func update(theme: Theme) {
         backgroundColor = theme.colors.background.withAlphaComponent(0.7)
         
-        tabListView.itemFont = theme.fonts.callout
+        tabListView.itemFont = theme.fonts.calloutSB
         tabListView.tintColor = theme.colors.accent
-        tabListView.unselectedItemColor = theme.colors.secondaryContent
+        tabListView.unselectedItemColor = theme.colors.tertiaryContent
         
-        separator.backgroundColor = theme.colors.tertiaryContent
+        separator.backgroundColor = theme.colors.system
     }
     
     // MARK: - Private
@@ -99,10 +107,11 @@ class AllChatsFilterOptionListView: UIView, Themable {
         addSubview(separator)
         
         separator.translatesAutoresizingMaskIntoConstraints = false
-        separator.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        separator.bottomAnchor.constraint(equalTo: self.bottomAnchor,
+                                          constant: -(TabListView.Constants.cursorHeight - Constants.separatorHeight) / 2).isActive = true
         separator.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         separator.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        separator.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        separator.heightAnchor.constraint(equalToConstant: Constants.separatorHeight).isActive = true
 
         tabListView.delegate = self
         vc_addSubViewMatchingParent(tabListView)
