@@ -63,7 +63,7 @@ class UILog: LoggerProtocol {
     }
     
     static func error(
-        _ message: @autoclosure () -> Any,
+        _ message: @autoclosure () -> StaticString,
         _ file: String = #file,
         _ function: String = #function,
         line: Int = #line,

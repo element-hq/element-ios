@@ -72,7 +72,7 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
                                                       localEcho: nil, success: nil) { [weak self] error in
                     guard let self = self else { return }
                     
-                    MXLog.error("[TimelinePollCoordinator]] Failed submitting response with error \(String(describing: error))")
+                    MXLog.error("[TimelinePollCoordinator]] Failed submitting response", context: error)
                     
                     self.viewModel.showAnsweringFailure()
                 }

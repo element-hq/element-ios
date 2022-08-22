@@ -1618,11 +1618,15 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         if (retry)
         {
             [self attemptDeviceDehydrationWithKeyData:keyData retry:NO success:success failure:failure];
-            MXLogError(@"[MXKAccount] attemptDeviceDehydrationWithRetry: device dehydration failed due to error: %@. Retrying.", error);
+            MXLogErrorDetails(@"[MXKAccount] attemptDeviceDehydrationWithRetry: device dehydration failed due to error: Retrying.", @{
+                @"error": error ?: @"unknown"
+            });
         }
         else
         {
-            MXLogError(@"[MXKAccount] attemptDeviceDehydrationWithRetry: device dehydration failed due to error: %@", error);
+            MXLogErrorDetails(@"[MXKAccount] attemptDeviceDehydrationWithRetry: device dehydration failed due to error", @{
+                @"error": error ?: @"unknown"
+            });
             
             if (failure)
             {
@@ -1772,7 +1776,9 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                     
                     dispatch_group_leave(dispatchGroup);
                 } failure:^(NSError *error) {
-                    MXLogError(@"[MXKAccount] onDateTimeFormatUpdate: event fetch failed: %@", error);
+                    MXLogErrorDetails(@"[MXKAccount] onDateTimeFormatUpdate: event fetch failed", @{
+                        @"error": error ?: @"unknown"
+                    });
                     dispatch_group_leave(dispatchGroup);
                 }];
             }

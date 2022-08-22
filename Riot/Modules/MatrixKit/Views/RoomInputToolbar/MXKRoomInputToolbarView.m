@@ -1197,7 +1197,8 @@ NSString* MXKFileSizes_description(MXKFileSizes sizes)
                         pasteboardImage = [UIImage imageWithData:[dict objectForKey:key]];
                     }
                     else {
-                        MXLogError(@"[MXKRoomInputToolbarView] Unsupported image format %@ for mimetype %@ pasted.", MIMEType, NSStringFromClass([[dict objectForKey:key] class]));
+                        NSString *message = [NSString stringWithFormat:@"[MXKRoomInputToolbarView] Unsupported image format %@ for mimetype %@ pasted.", MIMEType, NSStringFromClass([[dict objectForKey:key] class])];
+                        MXLogError(message);
                     }
                     
                     if (pasteboardImage)

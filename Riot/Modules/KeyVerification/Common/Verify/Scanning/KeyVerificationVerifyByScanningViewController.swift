@@ -219,7 +219,7 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
         do {
             return try codeGenerator.generateCode(from: data, with: codeImageView.frame.size)
         } catch {
-            MXLog.error("[KeyVerificationVerifyByScanningViewController] qrCodeImage: cannot generate QR code - \(error)")
+            MXLog.error("[KeyVerificationVerifyByScanningViewController] qrCodeImage: cannot generate QR code", context: error)
             return nil
         }
     }

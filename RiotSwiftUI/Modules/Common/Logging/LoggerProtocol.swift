@@ -22,5 +22,5 @@ protocol LoggerProtocol {
     static func debug(_ message: @autoclosure () -> Any, _ file: String, _ function: String, line: Int, context: Any?)
     static func info(_ message: @autoclosure () -> Any, _ file: String, _ function: String, line: Int, context: Any?)
     static func warning(_ message: @autoclosure () -> Any, _ file: String, _ function: String, line: Int, context: Any?)
-    static func error(_ message: @autoclosure () -> Any, _ file: String, _ function: String, line: Int, context: Any?)
+    static func error(_ message: @autoclosure () -> StaticString, _ file: String, _ function: String, line: Int, context: Any?)
 }
