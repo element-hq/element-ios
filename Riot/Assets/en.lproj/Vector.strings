@@ -894,6 +894,9 @@ Tap the + to start adding people.";
 "manage_session_not_trusted" = "Not trusted";
 "manage_session_sign_out" = "Sign out of this session";
 
+// User sessions management
+"user_sessions_settings" = "Manage sessions";
+
 // AuthenticatedSessionViewControllerFactory
 "authenticated_session_flow_not_supported" = "This app does not support the authentication mechanism on your homeserver.";
 
@@ -2328,6 +2331,10 @@ To enable access, tap Settings> Location and select Always";
 "location_sharing_live_lab_promotion_title" = "Live location sharing";
 "location_sharing_live_lab_promotion_text" = "Please note: this is a labs feature using a temporary implementation that allows the history of your shared location to be permanently visible to other people in the room.";
 "location_sharing_live_lab_promotion_activation" = "Enable live location sharing";
+
+// MARK: User sessions management
+
+"user_sessions_overview_title" = "Sessions";
 
 // MARK: - MatrixKit
 
