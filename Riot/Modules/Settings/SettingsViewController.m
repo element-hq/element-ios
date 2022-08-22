@@ -178,6 +178,7 @@ typedef NS_ENUM(NSUInteger, LABS_ENABLE)
 typedef NS_ENUM(NSUInteger, SECURITY)
 {
     SECURITY_BUTTON_INDEX = 0,
+    DEVICE_MANAGER_INDEX
 };
 
 typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
@@ -284,6 +285,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
 @property (nonatomic, strong) ThreadsBetaCoordinatorBridgePresenter *threadsBetaBridgePresenter;
 @property (nonatomic, strong) ChangePasswordCoordinatorBridgePresenter *changePasswordBridgePresenter;
+@property (nonatomic, strong) UserSessionsFlowCoordinatorBridgePresenter *userSessionsFlowCoordinatorBridgePresenter;
 
 /**
  Whether or not to check for contacts access after the user accepts the service terms. The value of this property is
@@ -400,6 +402,13 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     
     Section *sectionSecurity = [Section sectionWithTag:SECTION_TAG_SECURITY];
     [sectionSecurity addRowWithTag:SECURITY_BUTTON_INDEX];
+        
+    if (BuildSettings.deviceManagerEnabled)
+    {
+        // NOTE: Add device manager entry point in the security section atm for debug purpose
+        [sectionSecurity addRowWithTag:DEVICE_MANAGER_INDEX];
+    }
+    
     sectionSecurity.headerTitle = [VectorL10n settingsSecurity];
     [tmpSections addObject:sectionSecurity];
     
@@ -2533,6 +2542,11 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                 cell.textLabel.text = [VectorL10n securitySettingsTitle];
                 [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
                 break;
+            case DEVICE_MANAGER_INDEX:
+                cell = [self getDefaultTableViewCell:tableView];
+                cell.textLabel.text = [VectorL10n userSessionsSettings];
+                [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
+                break;
         }
     }
     else if (section == SECTION_TAG_DEACTIVATE_ACCOUNT)
@@ -2883,6 +2897,11 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                     SecurityViewController *securityViewController = [SecurityViewController instantiateWithMatrixSession:self.mainSession];
 
                     [self pushViewController:securityViewController];
+                    break;
+                }
+                case DEVICE_MANAGER_INDEX:
+                {
+                    [self showUserSessionsFlow];
                     break;
                 }
             }
@@ -4521,6 +4540,37 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 {
     [bridgePresenter dismissWithAnimated:YES completion:nil];
     self.changePasswordBridgePresenter = nil;
+}
+
+#pragma mark - User sessions management
+
+- (void)showUserSessionsFlow
+{
+    if (!self.mainSession)
+    {
+        MXLogError(@"[SettingsViewController] Cannot show user sessions flow, no user session available");
+        return;
+    }
+    
+    if (!self.navigationController)
+    {
+        MXLogError(@"[SettingsViewController] Cannot show user sessions flow, no navigation controller available");
+        return;
+    }
+    
+    UserSessionsFlowCoordinatorBridgePresenter *userSessionsFlowCoordinatorBridgePresenter = [[UserSessionsFlowCoordinatorBridgePresenter alloc] initWithMxSession:self.mainSession];
+    
+    MXWeakify(self);
+    
+    userSessionsFlowCoordinatorBridgePresenter.completion = ^{
+        MXStrongifyAndReturnIfNil(self);
+        
+        self.userSessionsFlowCoordinatorBridgePresenter = nil;
+    };
+
+    self.userSessionsFlowCoordinatorBridgePresenter = userSessionsFlowCoordinatorBridgePresenter;
+
+    [self.userSessionsFlowCoordinatorBridgePresenter pushFrom:self.navigationController animated:YES];
 }
 
 @end
