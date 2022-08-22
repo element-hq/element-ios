@@ -38,9 +38,7 @@ class SpaceDetailViewController: UIViewController {
 
     // MARK: Outlets
 
-    @IBOutlet private var inviterView: UIView!
-    @IBOutlet private weak var inviterContentView: UIView!
-    @IBOutlet private weak var inviterContentViewHeight: NSLayoutConstraint!
+    @IBOutlet private weak var inviterPanelHeight: NSLayoutConstraint!
     @IBOutlet private weak var inviterAvatarView: RoomAvatarView!
     @IBOutlet private weak var inviterTitleLabel: UILabel!
     @IBOutlet private weak var inviterIdLabel: UILabel!
@@ -209,36 +207,22 @@ class SpaceDetailViewController: UIViewController {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
     }
     
-    private func addInviterView() {
-//        if self.navigationController != nil {
-//            self.navigationItem.leftItemsSupplementBackButton = true
-//            self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.inviterView)
-//            self.inviterContentViewHeight.constant = 0
-//        } else {
-            self.inviterContentView.addSubview(inviterView)
-            inviterView.translatesAutoresizingMaskIntoConstraints = false
-            inviterView.topAnchor.constraint(equalTo: inviterContentView.topAnchor).isActive = true
-            inviterView.leadingAnchor.constraint(equalTo: inviterContentView.leadingAnchor).isActive = true
-            inviterView.trailingAnchor.constraint(equalTo: inviterContentView.trailingAnchor).isActive = true
-//        }
-    }
-    
     private func renderLoaded(parameters: SpaceDetailLoadedParameters) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         
-        self.title = parameters.displayName
-        
         switch parameters.membership {
         case .invite:
-            self.addInviterView()
+            self.title = VectorL10n.spaceInviteNavTitle
             self.joinButton.isHidden = true
             self.inviteActionPanel.isHidden = false
         case .join:
-            self.inviterContentViewHeight.constant = 0
+            self.title = VectorL10n.spaceDetailNavTitle
+            self.inviterPanelHeight.constant = 0
             self.joinButton.setTitle(VectorL10n.open, for: .normal)
             self.isJoined = true
         default:
-            self.inviterContentViewHeight.constant = 0
+            self.title = VectorL10n.spaceDetailNavTitle
+            self.inviterPanelHeight.constant = 0
         }
         
         let avatarViewData = AvatarViewData(matrixItemId: parameters.spaceId,
