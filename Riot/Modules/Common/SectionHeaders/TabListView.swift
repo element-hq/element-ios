@@ -22,6 +22,16 @@ protocol TabListViewDelegate: AnyObject {
 
 class TabListView: UIView {
     
+    // MARK: - Constants
+    
+    enum Constants {
+        static let cursorHeight: Double = 3
+        static let itemSpacing: Double = 30
+        static let cursorPadding: Double = 6
+    }
+    
+    // MARK: - Item definition
+    
     class Item {
         let id: Any
         let text: String?
@@ -36,6 +46,8 @@ class TabListView: UIView {
         }
     }
 
+    // MARK: - Properties
+    
     weak var delegate: TabListViewDelegate?
     var items: [Item] = [] {
         didSet {
@@ -61,11 +73,6 @@ class TabListView: UIView {
     }
     
     // MARK: - Private
-    
-    private enum Constants {
-        static let cursorHeight: Double = 2
-        static let itemSpacing: Double = 30
-    }
     
     private var itemViews: [UIButton] = []
     private let scrollView = UIScrollView(frame: .zero)
@@ -149,6 +156,7 @@ class TabListView: UIView {
 
         cursorView.backgroundColor = tintColor
         cursorView.isUserInteractionEnabled = false
+        cursorView.layer.masksToBounds = true
 
         scrollView.addSubview(cursorView)
     }
@@ -190,21 +198,23 @@ class TabListView: UIView {
         let focusedButton = itemViews[Int(integral)]
         let nextButtonIndex = Int(integral) + 1
         
-        let x: Double
-        let width: Double
+        let x: CGFloat
+        let width: CGFloat
+        let focusedButtonFrame: CGRect = titleLabelFrame(with: focusedButton).insetBy(dx: -Constants.cursorPadding, dy: 0)
         if nextButtonIndex < itemViews.count {
-            let nextButton = itemViews[nextButtonIndex]
-            x = focusedButton.frame.minX + (nextButton.frame.minX - focusedButton.frame.minX) * fractional
-            width = focusedButton.frame.width + (nextButton.frame.width - focusedButton.frame.width) * fractional
+            let nextButtonFrame = titleLabelFrame(with: itemViews[nextButtonIndex]).insetBy(dx: -Constants.cursorPadding, dy: 0)
+            x = focusedButtonFrame.minX + (nextButtonFrame.minX - focusedButtonFrame.minX) * fractional
+            width = focusedButtonFrame.width + (nextButtonFrame.width - focusedButtonFrame.width) * fractional
         } else {
-            x = focusedButton.frame.minX
-            width = focusedButton.frame.width
+            x = focusedButtonFrame.minX
+            width = focusedButtonFrame.width
         }
         
         cursorView.frame = CGRect(x: x,
                                   y: bounds.height - Constants.cursorHeight,
                                   width: width,
                                   height: Constants.cursorHeight)
+        cursorView.layer.cornerRadius = cursorView.bounds.height / 2
         
         for button in self.itemViews {
             if button == focusedButton {
@@ -213,6 +223,17 @@ class TabListView: UIView {
                 button.tintColor = self.unselectedItemColor
             }
         }
+    }
+    
+    private func titleLabelFrame(with button: UIButton) -> CGRect {
+        guard let titleLabel = button.titleLabel else {
+            return button.frame
+        }
+        
+        return CGRect(x: button.frame.minX + titleLabel.frame.minX,
+                      y: button.frame.minY + titleLabel.frame.minY,
+                      width: titleLabel.frame.width,
+                      height: titleLabel.frame.height)
     }
 
 }
