@@ -48,6 +48,7 @@ struct SpaceSelector: View {
                                          icon: item.icon,
                                          displayName: item.displayName,
                                          hasSubItems: item.hasSubItems,
+                                         isJoined: item.isJoined,
                                          isSelected: item.id == viewModel.viewState.selectedSpaceId,
                                          notificationCount: item.notificationCount,
                                          highlightedNotificationCount: item.highlightedNotificationCount,

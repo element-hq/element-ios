@@ -21,6 +21,7 @@ enum SpaceSelectorBottomSheetCoordinatorResult {
     case homeSelected
     case spaceSelected(_ item: SpaceSelectorListItemData)
     case createSpace(_ parentSpaceId: String?)
+    case spaceJoined(_ spaceId: String)
 }
 
 struct SpaceSelectorBottomSheetCoordinatorParameters {
@@ -47,7 +48,6 @@ final class SpaceSelectorBottomSheetCoordinator: NSObject, Coordinator, Presenta
     private var spaceIdStack: [String]
     
     private weak var roomDetailCoordinator: SpaceChildRoomDetailCoordinator?
-    private weak var currentSpaceSelectorCoordinator: SpaceSelectorCoordinator?
 
     // MARK: - Public
 
@@ -71,7 +71,7 @@ final class SpaceSelectorBottomSheetCoordinator: NSObject, Coordinator, Presenta
     // MARK: - Public
     
     func start() {
-        pushSpace(withId: nil)
+        push(createSpaceSelectorCoordinator(parentSpaceId: nil))
     }
     
     func toPresentable() -> UIViewController {
@@ -96,6 +96,19 @@ final class SpaceSelectorBottomSheetCoordinator: NSObject, Coordinator, Presenta
         self.navigationRouter.toPresentable().presentationController?.delegate = self
     }
 
+    private func push(_ coordinator: Coordinator & Presentable) {
+        if self.navigationRouter.modules.isEmpty {
+            self.navigationRouter.setRootModule(coordinator)
+        } else {
+            self.navigationRouter.push(coordinator.toPresentable(), animated: true) { [weak self] in
+                self.remove(childCoordinator: coordinator)
+                if coordinator is SpaceSelectorCoordinator {
+                    self.spaceIdStack.removeLast()
+                }
+            }
+        }
+    }
+    
     private func createSpaceSelectorCoordinator(parentSpaceId: String?) -> SpaceSelectorCoordinator {
         let parameters = SpaceSelectorCoordinatorParameters(session: parameters.session,
                                                             parentSpaceId: parentSpaceId,
@@ -113,38 +126,51 @@ final class SpaceSelectorBottomSheetCoordinator: NSObject, Coordinator, Presenta
                 self.trackSpaceSelection(with: nil)
                 self.completion?(.homeSelected)
             case .spaceSelected(let item):
-                self.trackSpaceSelection(with: item.id)
-                self.completion?(.spaceSelected(item))
+                if item.isJoined {
+                    self.trackSpaceSelection(with: item.id)
+                    self.completion?(.spaceSelected(item))
+                } else {
+                    self.push(self.createSpaceDetailCoordinator(forSpaceWithId: item.id))
+                }
             case .spaceDisclosure(let item):
-                self.pushSpace(withId: item.id)
+                self.push(self.createSpaceSelectorCoordinator(parentSpaceId: item.id))
             case .createSpace(let parentSpaceId):
                 self.completion?(.createSpace(parentSpaceId))
             }
         }
         
+        coordinator.start()
+        
+        self.add(childCoordinator: coordinator)
+
+        if let spaceId = parentSpaceId {
+            self.spaceIdStack.append(spaceId)
+        }
+        
         return coordinator
     }
-
-    private func pushSpace(withId spaceId: String?) {
-        let coordinator = self.createSpaceSelectorCoordinator(parentSpaceId: spaceId)
+    
+    private func createSpaceDetailCoordinator(forSpaceWithId spaceId: String) -> SpaceDetailCoordinator {
+        let parameters = SpaceDetailCoordinatorParameters(spaceId: spaceId, session: parameters.session, showCancel: false)
+        let coordinator = SpaceDetailCoordinator(parameters: parameters)
+        coordinator.completion = { [weak self] result in
+            guard let self = self else { return }
+            
+            self.remove(childCoordinator: coordinator)
+            switch result {
+            case .join:
+                self.completion?(.spaceJoined(spaceId))
+            case .open, .cancel, .dismiss:
+                self.navigationRouter.popModule(animated: true)
+                break
+            }
+        }
         
         coordinator.start()
         
         self.add(childCoordinator: coordinator)
-        self.currentSpaceSelectorCoordinator = coordinator
 
-        if let spaceId = spaceId {
-            self.spaceIdStack.append(spaceId)
-        }
-
-        if self.navigationRouter.modules.isEmpty {
-            self.navigationRouter.setRootModule(coordinator)
-        } else {
-            self.navigationRouter.push(coordinator.toPresentable(), animated: true) {
-                self.remove(childCoordinator: coordinator)
-                self.spaceIdStack.removeLast()
-            }
-        }
+        return coordinator
     }
     
     private func trackSpaceSelection(with spaceId: String?) {

@@ -42,6 +42,7 @@ class SpaceSelectorViewModel: SpaceSelectorViewModelType, SpaceSelectorViewModel
     private init(service: SpaceSelectorServiceProtocol, showCancel: Bool) {
         self.service = service
         super.init(initialViewState: Self.defaultState(service: service, showCancel: showCancel))
+        setupObservers()
     }
 
     private static func defaultState(service: SpaceSelectorServiceProtocol, showCancel: Bool) -> SpaceSelectorViewState {
@@ -52,6 +53,13 @@ class SpaceSelectorViewModel: SpaceSelectorViewModelType, SpaceSelectorViewModel
                                       showCancel: showCancel)
     }
     
+    private func setupObservers() {
+        service.spaceListSubject.sink { [weak self] spaceList in
+                self?.state.items = spaceList
+        }
+        .store(in: &cancellables)
+    }
+
     // MARK: - Public
 
     override func process(viewAction: SpaceSelectorViewAction) {

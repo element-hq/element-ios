@@ -7767,6 +7767,10 @@ public class VectorL10n: NSObject {
   public static var spaceBetaAnnounceTitle: String { 
     return VectorL10n.tr("Vector", "space_beta_announce_title") 
   }
+  /// Space detail
+  public static var spaceDetailNavTitle: String { 
+    return VectorL10n.tr("Vector", "space_detail_nav_title") 
+  }
   /// Spaces are a new way to group rooms and people.\n\nThey’ll be here soon. For now, if you join one on another platform, you will be able to access any rooms you join here.
   public static var spaceFeatureUnavailableInformation: String { 
     return VectorL10n.tr("Vector", "space_feature_unavailable_information") 
@@ -7782,6 +7786,10 @@ public class VectorL10n: NSObject {
   /// Show all rooms
   public static var spaceHomeShowAllRooms: String { 
     return VectorL10n.tr("Vector", "space_home_show_all_rooms") 
+  }
+  /// Space invite
+  public static var spaceInviteNavTitle: String { 
+    return VectorL10n.tr("Vector", "space_invite_nav_title") 
   }
   /// You do not have permission to invite people to this space
   public static var spaceInviteNotEnoughPermission: String { 
