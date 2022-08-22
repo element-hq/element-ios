@@ -101,6 +101,8 @@ final class SpaceSelectorBottomSheetCoordinator: NSObject, Coordinator, Presenta
             self.navigationRouter.setRootModule(coordinator)
         } else {
             self.navigationRouter.push(coordinator.toPresentable(), animated: true) { [weak self] in
+                guard let self = self else { return }
+                
                 self.remove(childCoordinator: coordinator)
                 if coordinator is SpaceSelectorCoordinator {
                     self.spaceIdStack.removeLast()
