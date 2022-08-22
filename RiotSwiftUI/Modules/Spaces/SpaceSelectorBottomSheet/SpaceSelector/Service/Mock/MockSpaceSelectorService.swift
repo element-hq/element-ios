@@ -23,7 +23,7 @@ class MockSpaceSelectorService: SpaceSelectorServiceProtocol {
     static let homeItem = SpaceSelectorListItemData(id: SpaceSelectorConstants.homeSpaceId, avatar: nil, icon: UIImage(systemName: "house"), displayName: "All Chats", notificationCount: 0, highlightedNotificationCount: 0, hasSubItems: false)
     static let defaultSpaceList = [
         homeItem,
-        SpaceSelectorListItemData(id: "!lennfd:matrix.org", avatar: nil, icon: UIImage(systemName: "number"), displayName: "Invited sapce", notificationCount: 0, highlightedNotificationCount: 0, hasSubItems: false, isJoined: false),
+        SpaceSelectorListItemData(id: "!lennfd:matrix.org", avatar: nil, icon: UIImage(systemName: "number"), displayName: "Invited space", notificationCount: 0, highlightedNotificationCount: 0, hasSubItems: false, isJoined: false),
         SpaceSelectorListItemData(id: "!aaabaa:matrix.org", avatar: nil, icon: UIImage(systemName: "number"), displayName: "Default Space", notificationCount: 0, highlightedNotificationCount: 0, hasSubItems: false, isJoined: true),
         SpaceSelectorListItemData(id: "!zzasds:matrix.org", avatar: nil, icon: UIImage(systemName: "number"), displayName: "Space with sub items", notificationCount: 0, highlightedNotificationCount: 0, hasSubItems: true, isJoined: true),
         SpaceSelectorListItemData(id: "!scthve:matrix.org", avatar: nil, icon: UIImage(systemName: "number"), displayName: "Space with notifications", notificationCount: 55, highlightedNotificationCount: 0, hasSubItems: true, isJoined: true),
