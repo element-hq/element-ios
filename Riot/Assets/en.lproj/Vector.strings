@@ -2200,6 +2200,9 @@ Tap the + to start adding people.";
 "space_selector_empty_view_information" = "Spaces are a way to group rooms and people. Create a space to get started.";
 "space_selector_create_space" = "Create Space";
 
+"space_detail_nav_title" = "Space detail";
+"space_invite_nav_title" = "Space invite";
+
 // Mark: - Polls
 
 "poll_edit_form_create_poll" = "Create poll";

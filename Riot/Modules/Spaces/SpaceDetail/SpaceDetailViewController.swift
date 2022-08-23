@@ -34,6 +34,7 @@ class SpaceDetailViewController: UIViewController {
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
     private var isJoined: Bool = false
+    private var showCancel: Bool = true
 
     // MARK: Outlets
 
@@ -60,11 +61,12 @@ class SpaceDetailViewController: UIViewController {
 
     // MARK: - Setup
     
-    class func instantiate(mediaManager: MXMediaManager, viewModel: SpaceDetailViewModelType!) -> SpaceDetailViewController {
+    class func instantiate(mediaManager: MXMediaManager, viewModel: SpaceDetailViewModelType!, showCancel: Bool) -> SpaceDetailViewController {
         let viewController = StoryboardScene.SpaceDetailViewController.initialScene.instantiate()
         viewController.mediaManager = mediaManager
         viewController.viewModel = viewModel
         viewController.theme = ThemeService.shared().theme
+        viewController.showCancel = showCancel
         return viewController
     }
     
@@ -176,6 +178,7 @@ class SpaceDetailViewController: UIViewController {
     private func setupViews() {
         self.closeButton.layer.masksToBounds = true
         self.closeButton.layer.cornerRadius = self.closeButton.bounds.height / 2
+        self.closeButton.isHidden = !self.showCancel
         
         self.setup(button: self.joinButton, withTitle: VectorL10n.join)
         self.setup(button: self.acceptButton, withTitle: VectorL10n.accept)
@@ -209,13 +212,16 @@ class SpaceDetailViewController: UIViewController {
         
         switch parameters.membership {
         case .invite:
+            self.title = VectorL10n.spaceInviteNavTitle
             self.joinButton.isHidden = true
             self.inviteActionPanel.isHidden = false
         case .join:
+            self.title = VectorL10n.spaceDetailNavTitle
             self.inviterPanelHeight.constant = 0
             self.joinButton.setTitle(VectorL10n.open, for: .normal)
             self.isJoined = true
         default:
+            self.title = VectorL10n.spaceDetailNavTitle
             self.inviterPanelHeight.constant = 0
         }
         

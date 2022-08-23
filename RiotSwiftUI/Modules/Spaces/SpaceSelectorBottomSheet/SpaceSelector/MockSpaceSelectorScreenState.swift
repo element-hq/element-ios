@@ -46,7 +46,7 @@ enum MockSpaceSelectorScreenState: MockScreenState, CaseIterable {
         case .initialList:
             service = MockSpaceSelectorService()
         case .selection:
-            service = MockSpaceSelectorService(selectedSpaceId: MockSpaceSelectorService.defaultSpaceList[2].id)
+            service = MockSpaceSelectorService(selectedSpaceId: MockSpaceSelectorService.defaultSpaceList[3].id)
         }
         let viewModel = SpaceSelectorViewModel.makeViewModel(service: service, showCancel: true)
         

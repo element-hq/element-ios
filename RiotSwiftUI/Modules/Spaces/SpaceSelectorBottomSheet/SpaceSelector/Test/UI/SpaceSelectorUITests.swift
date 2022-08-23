@@ -26,10 +26,15 @@ class SpaceSelectorUITests: MockScreenTestCase {
         XCTAssertEqual(disclosureButtons.count, MockSpaceSelectorService.defaultSpaceList.filter { $0.hasSubItems }.count)
 
         let notificationBadges = app.staticTexts.matching(identifier: "notificationBadge").allElementsBoundByIndex
-        let itemsWithNotifications = MockSpaceSelectorService.defaultSpaceList.filter { $0.notificationCount > 0 }
+        let itemsWithNotifications = MockSpaceSelectorService.defaultSpaceList.filter { $0.notificationCount > 0 || !$0.isJoined }
         XCTAssertEqual(notificationBadges.count, itemsWithNotifications.count)
         for (index, notificationBadge) in notificationBadges.enumerated() {
-            XCTAssertEqual("\(itemsWithNotifications[index].notificationCount)", notificationBadge.label)
+            let item = itemsWithNotifications[index]
+            if item.isJoined {
+                XCTAssertEqual("\(item.notificationCount)", notificationBadge.label)
+            } else {
+                XCTAssertEqual("! ", notificationBadge.label)
+            }
         }
         
         let spaceItemNameList = app.staticTexts.matching(identifier: "itemName").allElementsBoundByIndex
