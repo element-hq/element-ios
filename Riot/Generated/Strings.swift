@@ -8391,6 +8391,14 @@ public class VectorL10n: NSObject {
   public static var userIdTitle: String { 
     return VectorL10n.tr("Vector", "user_id_title") 
   }
+  /// Sessions
+  public static var userSessionsOverviewTitle: String { 
+    return VectorL10n.tr("Vector", "user_sessions_overview_title") 
+  }
+  /// Manage sessions
+  public static var userSessionsSettings: String { 
+    return VectorL10n.tr("Vector", "user_sessions_settings") 
+  }
   /// If you didn’t sign in to this session, your account may be compromised.
   public static var userVerificationSessionDetailsAdditionalInformationUntrustedCurrentUser: String { 
     return VectorL10n.tr("Vector", "user_verification_session_details_additional_information_untrusted_current_user") 
