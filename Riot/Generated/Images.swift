@@ -22,6 +22,10 @@ internal typealias AssetImageTypeAlias = ImageAsset.Image
 internal class Asset: NSObject {
   @objcMembers
   @objc(AssetImages) internal class Images: NSObject {
+    internal static let allChatsOnboardingDark1 = ImageAsset(name: "all_chats_onboarding_dark1")
+    internal static let allChatsOnboardingDark2 = ImageAsset(name: "all_chats_onboarding_dark2")
+    internal static let allChatsOnboardingDark3 = ImageAsset(name: "all_chats_onboarding_dark3")
+    internal static let allChatsOnboardingDark4 = ImageAsset(name: "all_chats_onboarding_dark4")
     internal static let analyticsCheckmark = ImageAsset(name: "AnalyticsCheckmark")
     internal static let analyticsLogo = ImageAsset(name: "AnalyticsLogo")
     internal static let socialLoginButtonApple = ImageAsset(name: "social_login_button_apple")

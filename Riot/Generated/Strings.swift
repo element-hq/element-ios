@@ -195,6 +195,46 @@ public class VectorL10n: NSObject {
   public static func allChatsEmptyViewTitle(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "all_chats_empty_view_title", p1)
   }
+  /// We made some changes, don’t be alarmed! Everything is the same, it just looks different.\nSwipe to learn more.
+  public static var allChatsOnboardingPageMessage1: String { 
+    return VectorL10n.tr("Vector", "all_chats_onboarding_page_message1") 
+  }
+  /// We removed tabs by default but you can turn on filters in the top right.
+  public static var allChatsOnboardingPageMessage2: String { 
+    return VectorL10n.tr("Vector", "all_chats_onboarding_page_message2") 
+  }
+  /// Use the spaces icon to move between all chats and spaces easier.
+  public static var allChatsOnboardingPageMessage3: String { 
+    return VectorL10n.tr("Vector", "all_chats_onboarding_page_message3") 
+  }
+  /// Tap your profile photo to see the option to feedback.
+  public static var allChatsOnboardingPageMessage4: String { 
+    return VectorL10n.tr("Vector", "all_chats_onboarding_page_message4") 
+  }
+  /// New look
+  public static var allChatsOnboardingPageTitle1: String { 
+    return VectorL10n.tr("Vector", "all_chats_onboarding_page_title1") 
+  }
+  /// Customise your Element
+  public static var allChatsOnboardingPageTitle2: String { 
+    return VectorL10n.tr("Vector", "all_chats_onboarding_page_title2") 
+  }
+  /// Spaces are more accessible
+  public static var allChatsOnboardingPageTitle3: String { 
+    return VectorL10n.tr("Vector", "all_chats_onboarding_page_title3") 
+  }
+  /// Feedback is welcome
+  public static var allChatsOnboardingPageTitle4: String { 
+    return VectorL10n.tr("Vector", "all_chats_onboarding_page_title4") 
+  }
+  /// What's new
+  public static var allChatsOnboardingTitle: String { 
+    return VectorL10n.tr("Vector", "all_chats_onboarding_title") 
+  }
+  /// Try it out
+  public static var allChatsOnboardingTryIt: String { 
+    return VectorL10n.tr("Vector", "all_chats_onboarding_try_it") 
+  }
   /// Chats
   public static var allChatsSectionTitle: String { 
     return VectorL10n.tr("Vector", "all_chats_section_title") 

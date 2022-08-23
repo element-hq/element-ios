@@ -435,7 +435,6 @@ class AllChatsViewController: HomeViewController {
     private func showRoomInviteList() {
         let invitesViewController = RoomInvitesViewController.instantiate()
         invitesViewController.userIndicatorStore = self.userIndicatorStore
-//        invitesViewController.displayList(self.dataSource)
         let recentsListService = RecentsListService(withSession: mainSession)
         let recentsDataSource = RecentsDataSource(matrixSession: mainSession, recentsListService: recentsListService)
         invitesViewController.displayList(recentsDataSource)

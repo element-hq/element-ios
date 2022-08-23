@@ -54,6 +54,7 @@
 @property(nonatomic,getter=isHidden) BOOL hidden;
 
 @property (nonatomic, readwrite) OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter;
+@property (nonatomic) AllChatsOnboardingCoordinatorBridgePresenter *allChatsOnboardingCoordinatorBridgePresenter;
 
 // Tell whether the onboarding screen is preparing.
 @property (nonatomic, readwrite) BOOL isOnboardingCoordinatorPreparing;
@@ -212,6 +213,11 @@
         }
         
         [[AppDelegate theDelegate] checkAppVersion];
+        
+        if (BuildSettings.newAppLayoutEnabled && !RiotSettings.shared.allChatsOnboardingHasBeenDisplayed)
+        {
+            [self showAllChatsOnboardingScreen];
+        }
     }
 }
 
@@ -437,6 +443,19 @@
 - (void)onMatrixSessionStateDidChange:(NSNotification *)notif
 {
     [self refreshTabBarBadges];
+}
+
+- (void)showAllChatsOnboardingScreen
+{
+    self.allChatsOnboardingCoordinatorBridgePresenter = [AllChatsOnboardingCoordinatorBridgePresenter new];
+    MXWeakify(self);
+    self.allChatsOnboardingCoordinatorBridgePresenter.completion = ^{
+        MXStrongifyAndReturnIfNil(self);
+        [self.allChatsOnboardingCoordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+            self.allChatsOnboardingCoordinatorBridgePresenter = nil;
+        }];
+    };
+    [self.allChatsOnboardingCoordinatorBridgePresenter presentFrom:self animated:YES];
 }
 
 // TODO: Manage the onboarding coordinator at the AppCoordinator level
