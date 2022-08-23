@@ -207,6 +207,38 @@ public class VectorL10n: NSObject {
   public static var allChatsNothingFoundPlaceholderTitle: String { 
     return VectorL10n.tr("Vector", "all_chats_nothing_found_placeholder_title") 
   }
+  /// To simplify your Element, tabs are now optional. Manage them using the top-right menu.
+  public static var allChatsOnboardingPageMessage1: String { 
+    return VectorL10n.tr("Vector", "all_chats_onboarding_page_message1") 
+  }
+  /// Access your Spaces (bottom-left) faster and easier than ever before.
+  public static var allChatsOnboardingPageMessage2: String { 
+    return VectorL10n.tr("Vector", "all_chats_onboarding_page_message2") 
+  }
+  /// Tap your profile to let us know what you think.
+  public static var allChatsOnboardingPageMessage3: String { 
+    return VectorL10n.tr("Vector", "all_chats_onboarding_page_message3") 
+  }
+  /// Welcome to a new view!
+  public static var allChatsOnboardingPageTitle1: String { 
+    return VectorL10n.tr("Vector", "all_chats_onboarding_page_title1") 
+  }
+  /// Access Spaces
+  public static var allChatsOnboardingPageTitle2: String { 
+    return VectorL10n.tr("Vector", "all_chats_onboarding_page_title2") 
+  }
+  /// Give Feedback
+  public static var allChatsOnboardingPageTitle3: String { 
+    return VectorL10n.tr("Vector", "all_chats_onboarding_page_title3") 
+  }
+  /// What's new
+  public static var allChatsOnboardingTitle: String { 
+    return VectorL10n.tr("Vector", "all_chats_onboarding_title") 
+  }
+  /// Try it out
+  public static var allChatsOnboardingTryIt: String { 
+    return VectorL10n.tr("Vector", "all_chats_onboarding_try_it") 
+  }
   /// Chats
   public static var allChatsSectionTitle: String { 
     return VectorL10n.tr("Vector", "all_chats_section_title") 
