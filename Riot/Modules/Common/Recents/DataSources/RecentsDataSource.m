@@ -1092,8 +1092,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         RecentEmptySectionTableViewCell *tableViewCell = [tableView dequeueReusableCellWithIdentifier:[RecentEmptySectionTableViewCell defaultReuseIdentifier]];
         
         tableViewCell.iconView.image = self.searchPatternsList ? [UIImage systemImageNamed:@"magnifyingglass"] : AssetImages.allChatsEmptyListPlaceholderIcon.image;
-        tableViewCell.titleLabel.text = VectorL10n.allChatsEmptyListPlaceholderTitle;
-        tableViewCell.messageLabel.text = self.searchPatternsList ? VectorL10n.searchNoResult : VectorL10n.allChatsEmptyUnreadsPlaceholderMessage;
+        tableViewCell.titleLabel.text = self.searchPatternsList ? VectorL10n.allChatsNothingFoundPlaceholderTitle : VectorL10n.allChatsEmptyListPlaceholderTitle;
+        tableViewCell.messageLabel.text = self.searchPatternsList ? VectorL10n.allChatsNothingFoundPlaceholderMessage : VectorL10n.allChatsEmptyUnreadsPlaceholderMessage;
 
         return tableViewCell;
     }
