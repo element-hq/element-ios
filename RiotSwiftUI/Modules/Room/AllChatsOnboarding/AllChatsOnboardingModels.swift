@@ -27,7 +27,7 @@ enum AllChatsOnboardingViewModelResult {
 
 // MARK: View
 
-struct AllChatsOnboardingPage: Identifiable {
+struct AllChatsOnboardingPageData: Identifiable {
     let id = UUID().uuidString
     let image: UIImage
     let title: String
@@ -35,7 +35,7 @@ struct AllChatsOnboardingPage: Identifiable {
 }
 
 struct AllChatsOnboardingViewState: BindableState {
-    let pages: [AllChatsOnboardingPage]
+    let pages: [AllChatsOnboardingPageData]
 }
 
 enum AllChatsOnboardingViewAction {

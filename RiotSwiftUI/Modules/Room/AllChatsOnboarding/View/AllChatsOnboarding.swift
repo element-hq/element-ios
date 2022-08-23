@@ -23,6 +23,7 @@ struct AllChatsOnboarding: View {
     // MARK: Private
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
+    @State private var selectedTab = 0
     
     // MARK: Public
     
@@ -34,51 +35,39 @@ struct AllChatsOnboarding: View {
                 .font(theme.fonts.title3SB)
                 .foregroundColor(theme.colors.primaryContent)
                 .padding()
-            TabView {
-                ForEach(viewModel.viewState.pages) { page in
-                    pageView(image: page.image,
-                             title: page.title,
-                             message: page.message)
+            TabView(selection: $selectedTab) {
+                ForEach(viewModel.viewState.pages.indices) { index in
+                    let page = viewModel.viewState.pages[index]
+                    AllChatsOnboardingPage(image: page.image,
+                                           title: page.title,
+                                           message: page.message)
+                    .tag(index)
                 }
             }
-            .tabViewStyle(PageTabViewStyle())
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
+            .indexViewStyle(.page(backgroundDisplayMode: .always))
 
-            Button { viewModel.send(viewAction: .cancel) } label: {
-                Text(VectorL10n.allChatsOnboardingTryIt)
+            Button { onCallToAction() } label: {
+                Text(selectedTab == viewModel.viewState.pages.count - 1 ? VectorL10n.allChatsOnboardingTryIt : VectorL10n.next)
+                    .animation(nil)
             }
             .buttonStyle(PrimaryActionButtonStyle())
             .padding()
         }
         .background(theme.colors.background.ignoresSafeArea())
         .frame(maxHeight: .infinity)
-        .onAppear {
-            self.setupAppearance()
-        }
     }
+
+    // MARK: - Private
     
-    @ViewBuilder
-    private func pageView(image: UIImage, title: String, message: String) -> some View {
-        VStack {
-            Spacer()
-            Image(uiImage: image)
-            Spacer()
-            Text(title)
-                .font(theme.fonts.title2B)
-                .foregroundColor(theme.colors.primaryContent)
-                .padding(.bottom, 16)
-            Text(message)
-                .multilineTextAlignment(.center)
-                .font(theme.fonts.callout)
-                .foregroundColor(theme.colors.primaryContent)
-            Spacer()
+    private func onCallToAction() {
+        if (selectedTab == viewModel.viewState.pages.count - 1) {
+            viewModel.send(viewAction: .cancel)
+        } else {
+            withAnimation {
+                selectedTab += 1
+            }
         }
-        .padding(.horizontal)
-    }
-    
-    private func setupAppearance() {
-        let tintColor: UIColor = theme.isDark ? .white : .black
-        UIPageControl.appearance().currentPageIndicatorTintColor = tintColor
-        UIPageControl.appearance().pageIndicatorTintColor = tintColor.withAlphaComponent(0.2)
     }
 }
 

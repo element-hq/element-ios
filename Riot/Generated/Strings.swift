@@ -195,37 +195,29 @@ public class VectorL10n: NSObject {
   public static func allChatsEmptyViewTitle(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "all_chats_empty_view_title", p1)
   }
-  /// We made some changes, don’t be alarmed! Everything is the same, it just looks different.\nSwipe to learn more.
+  /// To simplify your Element, tabs are now optional. Manage them using the top-right menu.
   public static var allChatsOnboardingPageMessage1: String { 
     return VectorL10n.tr("Vector", "all_chats_onboarding_page_message1") 
   }
-  /// We removed tabs by default but you can turn on filters in the top right.
+  /// Access your Spaces (bottom-left) faster and easier than ever before.
   public static var allChatsOnboardingPageMessage2: String { 
     return VectorL10n.tr("Vector", "all_chats_onboarding_page_message2") 
   }
-  /// Use the spaces icon to move between all chats and spaces easier.
+  /// Tap your profile to let us know what you think.
   public static var allChatsOnboardingPageMessage3: String { 
     return VectorL10n.tr("Vector", "all_chats_onboarding_page_message3") 
   }
-  /// Tap your profile photo to see the option to feedback.
-  public static var allChatsOnboardingPageMessage4: String { 
-    return VectorL10n.tr("Vector", "all_chats_onboarding_page_message4") 
-  }
-  /// New look
+  /// Welcome to a new view!
   public static var allChatsOnboardingPageTitle1: String { 
     return VectorL10n.tr("Vector", "all_chats_onboarding_page_title1") 
   }
-  /// Customise your Element
+  /// Access Spaces
   public static var allChatsOnboardingPageTitle2: String { 
     return VectorL10n.tr("Vector", "all_chats_onboarding_page_title2") 
   }
-  /// Spaces are more accessible
+  /// Give Feedback
   public static var allChatsOnboardingPageTitle3: String { 
     return VectorL10n.tr("Vector", "all_chats_onboarding_page_title3") 
-  }
-  /// Feedback is welcome
-  public static var allChatsOnboardingPageTitle4: String { 
-    return VectorL10n.tr("Vector", "all_chats_onboarding_page_title4") 
   }
   /// What's new
   public static var allChatsOnboardingTitle: String { 

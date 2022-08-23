@@ -43,18 +43,15 @@ class AllChatsOnboardingViewModel: AllChatsOnboardingViewModelType, AllChatsOnbo
 
     private static func defaultState() -> AllChatsOnboardingViewState {
         return AllChatsOnboardingViewState(pages: [
-            AllChatsOnboardingPage(image: Asset.Images.allChatsOnboardingDark1.image,
-                                   title: VectorL10n.allChatsOnboardingPageTitle1,
-                                   message: VectorL10n.allChatsOnboardingPageMessage1),
-            AllChatsOnboardingPage(image: Asset.Images.allChatsOnboardingDark2.image,
-                                   title: VectorL10n.allChatsOnboardingPageTitle2,
-                                   message: VectorL10n.allChatsOnboardingPageMessage2),
-            AllChatsOnboardingPage(image: Asset.Images.allChatsOnboardingDark3.image,
-                                   title: VectorL10n.allChatsOnboardingPageTitle3,
-                                   message: VectorL10n.allChatsOnboardingPageMessage3),
-            AllChatsOnboardingPage(image: Asset.Images.allChatsOnboardingDark4.image,
-                                   title: VectorL10n.allChatsOnboardingPageTitle4,
-                                   message: VectorL10n.allChatsOnboardingPageMessage4),
+            AllChatsOnboardingPageData(image: Asset.Images.allChatsOnboarding1.image,
+                                       title: VectorL10n.allChatsOnboardingPageTitle1,
+                                       message: VectorL10n.allChatsOnboardingPageMessage1),
+            AllChatsOnboardingPageData(image: Asset.Images.allChatsOnboarding2.image,
+                                       title: VectorL10n.allChatsOnboardingPageTitle2,
+                                       message: VectorL10n.allChatsOnboardingPageMessage2),
+            AllChatsOnboardingPageData(image: Asset.Images.allChatsOnboarding3.image,
+                                       title: VectorL10n.allChatsOnboardingPageTitle3,
+                                       message: VectorL10n.allChatsOnboardingPageMessage3)
         ])
     }
     

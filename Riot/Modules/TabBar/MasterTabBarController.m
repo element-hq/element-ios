@@ -450,8 +450,13 @@
     self.allChatsOnboardingCoordinatorBridgePresenter = [AllChatsOnboardingCoordinatorBridgePresenter new];
     MXWeakify(self);
     self.allChatsOnboardingCoordinatorBridgePresenter.completion = ^{
+        RiotSettings.shared.allChatsOnboardingHasBeenDisplayed = YES;
+        
         MXStrongifyAndReturnIfNil(self);
+        
+        MXWeakify(self);
         [self.allChatsOnboardingCoordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+            MXStrongifyAndReturnIfNil(self);
             self.allChatsOnboardingCoordinatorBridgePresenter = nil;
         }];
     };
