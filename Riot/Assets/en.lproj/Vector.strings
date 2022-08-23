@@ -2193,6 +2193,15 @@ Tap the + to start adding people.";
 "all_chats_edit_menu_leave_space" = "Leave %@";
 "all_chats_edit_menu_space_settings" = "Space settings";
 
+"all_chats_onboarding_page_title1" = "Welcome to a new view!";
+"all_chats_onboarding_page_message1" = "To simplify your Element, tabs are now optional. Manage them using the top-right menu.";
+"all_chats_onboarding_page_title2" = "Access Spaces";
+"all_chats_onboarding_page_message2" = "Access your Spaces (bottom-left) faster and easier than ever before.";
+"all_chats_onboarding_page_title3" = "Give Feedback";
+"all_chats_onboarding_page_message3" = "Tap your profile to let us know what you think.";
+"all_chats_onboarding_title" = "What's new";
+"all_chats_onboarding_try_it" = "Try it out";
+
 // Mark: - Space Selector
 
 "space_selector_title" = "My spaces";
