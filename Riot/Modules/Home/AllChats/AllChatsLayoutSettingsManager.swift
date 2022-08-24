@@ -114,6 +114,8 @@ final class AllChatsLayoutSettingsManager: NSObject {
         }
 
         switch activeFilters {
+        case [], .all:
+            Analytics.shared.updateUserProperties(allChatsActiveFilter: .all)
         case .unreads:
             Analytics.shared.updateUserProperties(allChatsActiveFilter: .unreads)
         case .favourites:
@@ -121,7 +123,7 @@ final class AllChatsLayoutSettingsManager: NSObject {
         case .people:
             Analytics.shared.updateUserProperties(allChatsActiveFilter: .people)
         default:
-            Analytics.shared.updateUserProperties(allChatsActiveFilter: .all)
+            Analytics.shared.updateUserProperties(allChatsActiveFilter: nil)
         }
     }
 }
