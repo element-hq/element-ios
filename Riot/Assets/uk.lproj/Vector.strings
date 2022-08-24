@@ -159,7 +159,7 @@
 // People tab
 "people_invites_section" = "ЗАПРОШЕННЯ";
 "people_conversation_section" = "БЕСІДИ";
-"people_no_conversation" = "Нема балачок";
+"people_no_conversation" = "Немає бесід";
 "room_participants_leave_prompt_msg_for_dm" = "Ви впевнені, що хочете вийти?";
 "room_participants_leave_prompt_title_for_dm" = "Вийти";
 "client_android_name" = "Element Android";
@@ -1039,7 +1039,7 @@
 "security_settings_blacklist_unverified_devices_description" = "Звірте всі сеанси користувача, щоб позначити його довіреним і надіслати йому повідомлення.";
 "security_settings_crosssigning_bootstrap" = "Налаштувати";
 "security_settings_crosssigning_info_ok" = "Перехресне підписування готове до використання.";
-"security_settings_crosssigning_info_trusted" = "Перехресне підписування увімкнено. Ви можете робити інших користувачів і свої інші сеанси довіреними на підставі перехресного підпису, але ви не можете перехресно підписувати цим сеансом, бо в нього ще нема закритих ключів перехресного підписування. Доповніть захист цього сеансу.";
+"security_settings_crosssigning_info_trusted" = "Перехресне підписування увімкнено. Ви можете робити інших користувачів і свої інші сеанси довіреними на підставі перехресного підписування, але ви не можете перехресно підписувати з цього сеансу, оскільки в нього ще немає приватних ключів перехресного підписування. Завершіть захист цього сеансу.";
 "security_settings_crosssigning_info_exists" = "Ваш обліковий запис має ідентичність перехресного підписування, але вона ще не довірена цим сеансом. Доповніть захист цього сеансу.";
 "security_settings_secure_backup_description" = "Зробіть резервну копію своїх ключів шифрування й даних облікового запису на випадок втрати доступу до своїх сеансів. Ваші ключі будуть захищені унікальним ключем безпеки.";
 "security_settings_crypto_sessions_description_2" = "Якщо не впізнаєте сеанс, скиньте пароль облікового запису Matrix і налаштування безпечного резервного копіювання.";
@@ -1059,7 +1059,7 @@
 "settings_confirm_media_size_description" = "Коли це ввімкнено, при надсиланні зображень чи відео вам пропонуватиметься підтвердити їхній розмір.";
 "settings_three_pids_management_information_part2" = "Знаходження";
 "settings_config_user_id" = "Ви ввійшли як %@";
-"unknown_devices_alert" = "Кімната містить сеанси, які досі не пройшли звірку.\nТобто нема гарантії, що ці сеанси належать користувачам, від імені яких вони створені.\nРадимо звірити кожен сеанс, перш ніж продовжити; але за потреби можете повторити надсилання повідомлення без звірки.";
+"unknown_devices_alert" = "Кімната містить невідомі не звірені сеанси.\nТобто немає гарантії, що ці сеанси належать користувачам, від імені яких вони створені.\nРадимо звірити кожен сеанс, перш ніж продовжувати; але за потреби можете повторити надсилання повідомлення без звірки.";
 "room_action_camera" = "Зробити світлину або відео";
 "room_member_power_level_short_custom" = "Інше";
 "room_member_power_level_custom_in" = "Інше (%@) у %@";
@@ -1479,8 +1479,8 @@
 "widget_integration_room_not_visible" = "Кімната %@ недоступна.";
 "widget_integration_missing_user_id" = "В запиті бракує user_id.";
 "widget_integration_missing_room_id" = "В запиті бракує room_id.";
-"widget_integration_no_permission_in_room" = "У вас нема такого дозволу в цій кімнаті.";
-"widget_integration_must_be_in_room" = "Вас нема в цій кімнаті.";
+"widget_integration_no_permission_in_room" = "У вас немає такого дозволу в цій кімнаті.";
+"widget_integration_must_be_in_room" = "Вас немає в цій кімнаті.";
 "widget_integration_positive_power_level" = "Рівень повноважень має бути цілим додатним числом.";
 "widget_integration_room_not_recognised" = "Кімнату не знайдено.";
 "widget_integration_failed_to_send_request" = "Не вдалося надіслати запит.";
@@ -2624,3 +2624,35 @@
 "location_sharing_invalid_power_level_title" = "Ви не маєте дозволу ділитися поточним місцем перебування";
 "authentication_choose_password_not_verified_message" = "Перевірте свою поштову скриньку";
 "authentication_choose_password_not_verified_title" = "Електронна адреса не підтверджена";
+"location_sharing_map_loading_error" = "Неможливо завантажити карту\nЦей домашній сервер не налаштовано для показу карт";
+
+// Mark: - Space Selector
+
+"space_selector_title" = "Мої простори";
+"all_chats_edit_menu_space_settings" = "Налаштування простору";
+"all_chats_user_menu_settings" = "Налаштування користувача";
+"all_chats_edit_menu_leave_space" = "Вийти з %@";
+"room_recents_recently_viewed_section" = "Останні переглянуті";
+"all_chats_all_filter" = "Усі";
+"all_chats_edit_layout_alphabetical_order" = "Упорядкувати А-Я";
+"all_chats_edit_layout_activity_order" = "Упорядкувати за активністю";
+"all_chats_edit_layout_show_filters" = "Показати фільтри";
+"all_chats_edit_layout_show_recents" = "Показати найновіші";
+"all_chats_edit_layout_sorting_options_title" = "Упорядкувати повідомлення за";
+"all_chats_edit_layout_pin_spaces_title" = "Прикріплюйте свої простори";
+"all_chats_edit_layout_add_filters_message" = "Автоматично упорядковуйте свої повідомлення за категоріями на ваш вибір";
+"all_chats_edit_layout_add_filters_title" = "Упорядковуйте свої повідомлення";
+"all_chats_edit_layout_add_section_message" = "Закріпіть розділи в домівці для легкого доступу";
+"all_chats_edit_layout_add_section_title" = "Додати розділ у домівку";
+"all_chats_edit_layout_unreads" = "Непрочитані";
+"all_chats_edit_layout_recents" = "Найновіші";
+"all_chats_edit_layout" = "Параметри макета";
+"all_chats_section_title" = "Бесіди";
+
+// Mark: - All Chats
+
+"all_chats_title" = "Усі бесіди";
+"spaces_subspace_creation_visibility_message" = "Створений простір буде додано до %@.";
+"spaces_subspace_creation_visibility_title" = "Який тип підпростору ви хочете створити?";
+"spaces_create_subspace_title" = "Створити підпростір";
+"spaces_add_subspace_title" = "Створити простір у %@";

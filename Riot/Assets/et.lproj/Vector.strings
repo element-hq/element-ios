@@ -2371,3 +2371,35 @@
 "authentication_verify_email_text_field_placeholder" = "E-posti aadress";
 /* The placeholder will show the homeserver's domain */
 "authentication_verify_email_input_message" = "%@ soovib sinu kasutajakonto verifitseerimist";
+"location_sharing_map_loading_error" = "Kaardi laadimine ei õnnestu\nSee koduserver ei pruugi olla seadistatud kuvama kaarte";
+
+// Mark: - Space Selector
+
+"space_selector_title" = "Minu kogukonnad";
+"all_chats_edit_menu_space_settings" = "Kogukonna seadistused";
+"all_chats_edit_menu_leave_space" = "Lahku %@ kogukonnast";
+"all_chats_user_menu_settings" = "Kasutaja seadistused";
+"room_recents_recently_viewed_section" = "Hiljuti vaadatud";
+"all_chats_all_filter" = "Kõik";
+"all_chats_edit_layout_alphabetical_order" = "Sorteeri A-Z tähestiku järjekorras";
+"all_chats_edit_layout_activity_order" = "Sorteeri aktiivsuse alusel";
+"all_chats_edit_layout_show_filters" = "Näita otsinguvalikuid";
+"all_chats_edit_layout_show_recents" = "Näita hiljutisi sõnumeid";
+"all_chats_edit_layout_sorting_options_title" = "Sõnumite sortimise alus";
+"all_chats_edit_layout_pin_spaces_title" = "Lisa oma kogukonnad avalehele";
+"all_chats_edit_layout_add_filters_message" = "Liigita sõnumeid automaatselt sinu eelistatud kategooriate alusel";
+"all_chats_edit_layout_add_filters_title" = "Jaga oma sõnumeid";
+"all_chats_edit_layout_add_section_message" = "Lihtsamaks ligipääsuks lisa valik avalehele";
+"all_chats_edit_layout_add_section_title" = "Lisa valik avalehele";
+"all_chats_edit_layout_unreads" = "Lugemata";
+"all_chats_edit_layout_recents" = "Hiljutised";
+"all_chats_edit_layout" = "Paigutuse seadistused";
+"all_chats_section_title" = "Vestlused";
+
+// Mark: - All Chats
+
+"all_chats_title" = "Kõik vestlused";
+"spaces_subspace_creation_visibility_message" = "Loodud kogukond saab olema osa %@ kogukonnast.";
+"spaces_subspace_creation_visibility_title" = "Missugust alamkogukonda sooviksid sa luua?";
+"spaces_create_subspace_title" = "Loo alamkogukond";
+"spaces_add_subspace_title" = "Loo uus alamkogukond olemasolevas kogukonnas %@";
