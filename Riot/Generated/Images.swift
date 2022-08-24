@@ -22,6 +22,9 @@ internal typealias AssetImageTypeAlias = ImageAsset.Image
 internal class Asset: NSObject {
   @objcMembers
   @objc(AssetImages) internal class Images: NSObject {
+    internal static let allChatsOnboarding1 = ImageAsset(name: "all_chats_onboarding1")
+    internal static let allChatsOnboarding2 = ImageAsset(name: "all_chats_onboarding2")
+    internal static let allChatsOnboarding3 = ImageAsset(name: "all_chats_onboarding3")
     internal static let analyticsCheckmark = ImageAsset(name: "AnalyticsCheckmark")
     internal static let analyticsLogo = ImageAsset(name: "AnalyticsLogo")
     internal static let socialLoginButtonApple = ImageAsset(name: "social_login_button_apple")
@@ -113,9 +116,11 @@ internal class Asset: NSObject {
     internal static let roomActionNotificationMuted = ImageAsset(name: "room_action_notification_muted")
     internal static let roomActionPriorityHigh = ImageAsset(name: "room_action_priority_high")
     internal static let roomActionPriorityLow = ImageAsset(name: "room_action_priority_low")
+    internal static let allChatsEditIcon = ImageAsset(name: "all_chats_edit_icon")
+    internal static let allChatsEmptyListPlaceholderIcon = ImageAsset(name: "all_chats_empty_list_placeholder_icon")
+    internal static let allChatsSpacesIcon = ImageAsset(name: "all_chats_spaces_icon")
     internal static let homeEmptyScreenArtwork = ImageAsset(name: "home_empty_screen_artwork")
     internal static let homeEmptyScreenArtworkDark = ImageAsset(name: "home_empty_screen_artwork_dark")
-    internal static let homeMySpacesAction = ImageAsset(name: "home_my_spaces_action")
     internal static let plusFloatingAction = ImageAsset(name: "plus_floating_action")
     internal static let versionCheckCloseIcon = ImageAsset(name: "version_check_close_icon")
     internal static let versionCheckInfoIcon = ImageAsset(name: "version_check_info_icon")

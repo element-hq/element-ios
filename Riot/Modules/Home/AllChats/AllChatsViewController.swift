@@ -37,6 +37,8 @@ class AllChatsViewController: HomeViewController {
     
     private let searchController = UISearchController(searchResultsController: nil)
     
+    private let spaceActionProvider = AllChatsSpaceActionProvider()
+    
     private let editActionProvider = AllChatsEditActionProvider()
 
     private var spaceSelectorBridgePresenter: SpaceSelectorBottomSheetCoordinatorBridgePresenter?
@@ -49,17 +51,19 @@ class AllChatsViewController: HomeViewController {
         super.viewDidLoad()
         
         editActionProvider.delegate = self
+        spaceActionProvider.delegate = self
         
         recentsTableView.tag = RecentsDataSourceMode.allChats.rawValue
         recentsTableView.clipsToBounds = false
-        
+        recentsTableView.register(RecentEmptySectionTableViewCell.nib, forCellReuseIdentifier: RecentEmptySectionTableViewCell.reuseIdentifier)
+        recentsTableView.register(RecentsInvitesTableViewCell.nib, forCellReuseIdentifier: RecentsInvitesTableViewCell.reuseIdentifier)
+
         updateUI()
         vc_setLargeTitleDisplayMode(.automatic)
 
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchResultsUpdater = self
 
-        self.setupEditOptions()
         NotificationCenter.default.addObserver(self, selector: #selector(self.setupEditOptions), name: AllChatsLayoutSettingsManager.didUpdateSettings, object: nil)
     }
     
@@ -117,11 +121,57 @@ class AllChatsViewController: HomeViewController {
     // MARK: - Actions
     
     @objc private func showSpaceSelectorAction(sender: AnyObject) {
+        Analytics.shared.viewRoomTrigger = .roomList
         let currentSpaceId = self.dataSource.currentSpace?.spaceId ?? SpaceSelectorConstants.homeSpaceId
         let spaceSelectorBridgePresenter = SpaceSelectorBottomSheetCoordinatorBridgePresenter(session: self.mainSession, selectedSpaceId: currentSpaceId, showHomeSpace: true)
         spaceSelectorBridgePresenter.present(from: self, animated: true)
         spaceSelectorBridgePresenter.delegate = self
         self.spaceSelectorBridgePresenter = spaceSelectorBridgePresenter
+    }
+    
+    // MARK: - UITableViewDataSource
+    
+    private func sectionType(forSectionAt index: Int) -> RecentsDataSourceSectionType? {
+        guard let recentsDataSource = dataSource as? RecentsDataSource else {
+            return nil
+        }
+        
+        return recentsDataSource.sections.sectionType(forSectionIndex: index)
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let sectionType = sectionType(forSectionAt: section), sectionType == .invites else {
+            return super.tableView(tableView, numberOfRowsInSection: section)
+        }
+        
+        return dataSource.tableView(tableView, numberOfRowsInSection: section)
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let sectionType = sectionType(forSectionAt: indexPath.section), sectionType == .invites else {
+            return super.tableView(tableView, cellForRowAt: indexPath)
+        }
+        
+        return dataSource.tableView(tableView, cellForRowAt: indexPath)
+    }
+    
+    // MARK: - UITableViewDelegate
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let sectionType = sectionType(forSectionAt: indexPath.section), sectionType == .invites else {
+            return super.tableView(tableView, heightForRowAt: indexPath)
+        }
+        
+        return dataSource.cellHeight(at: indexPath)
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let sectionType = sectionType(forSectionAt: indexPath.section), sectionType == .invites else {
+            super.tableView(tableView, didSelectRowAt: indexPath)
+            return
+        }
+
+        showRoomInviteList()
     }
     
     // MARK: - Toolbar animation
@@ -152,6 +202,57 @@ class AllChatsViewController: HomeViewController {
         lastScrollPosition = scrollPosition
     }
     
+    // MARK: - Empty view management
+    
+    override func updateEmptyView() {
+        guard let mainSession = self.mainSession else {
+            return
+        }
+        
+        let title: String
+        let informationText: String
+        if let currentSpace = self.dataSource?.currentSpace {
+            title = VectorL10n.allChatsEmptyViewTitle(currentSpace.summary?.displayname ?? VectorL10n.spaceTag)
+            informationText = VectorL10n.allChatsEmptySpaceInformation
+        } else {
+            let myUser = mainSession.myUser
+            let displayName = (myUser?.displayName ?? myUser?.userId) ?? ""
+            let appName = AppInfo.current.displayName
+            title = VectorL10n.homeEmptyViewTitle(appName, displayName)
+            informationText = VectorL10n.allChatsEmptyViewInformation
+        }
+        
+        self.emptyView?.fill(with: emptyViewArtwork,
+                             title: title,
+                             informationText: informationText,
+                             displayMode: self.dataSource?.currentSpace == nil ? .default : .icon)
+    }
+    
+    private var emptyViewArtwork: UIImage {
+        if self.dataSource?.currentSpace == nil {
+            return ThemeService.shared().isCurrentThemeDark() ? Asset.Images.peopleEmptyScreenArtworkDark.image : Asset.Images.peopleEmptyScreenArtwork.image
+        } else {
+            return Asset.Images.allChatsEditIcon.image
+        }
+    }
+    
+    override func shouldShowEmptyView() -> Bool {
+        let shouldShowEmptyView = super.shouldShowEmptyView()
+        
+        if shouldShowEmptyView {
+            self.tabBarController?.navigationItem.searchController = nil
+            navigationItem.largeTitleDisplayMode = .never
+            navigationController?.navigationBar.prefersLargeTitles = false
+        } else {
+            self.tabBarController?.navigationItem.searchController = searchController
+            navigationItem.largeTitleDisplayMode = .automatic
+            navigationController?.navigationBar.prefersLargeTitles = true
+        }
+
+        return shouldShowEmptyView
+    }
+    
+
     // MARK: - Theme management
     
     override func userInterfaceThemeDidChange() {
@@ -171,26 +272,38 @@ class AllChatsViewController: HomeViewController {
     // MARK: - Private
     
     @objc private func setupEditOptions() {
-        self.tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal.decrease.circle"), menu: AllChatsActionProvider().menu)
+        guard let currentSpace = self.dataSource?.currentSpace else {
+            updateRightNavigationItem(with: AllChatsActionProvider().menu)
+            return
+        }
+        
+        updateRightNavigationItem(with: spaceActionProvider.updateMenu(with: mainSession, space: currentSpace) { [weak self] menu in
+            self?.updateRightNavigationItem(with: menu)
+        })
     }
 
     private func updateUI() {
         let currentSpace = self.dataSource?.currentSpace
         self.tabBarController?.title = currentSpace?.summary?.displayname ?? VectorL10n.allChatsTitle
         
+        setupEditOptions()
         updateToolbar(with: editActionProvider.updateMenu(with: mainSession, parentSpace: currentSpace, completion: { [weak self] menu in
             self?.updateToolbar(with: menu)
         }))
+        updateEmptyView()
+    }
+    
+    private func updateRightNavigationItem(with menu: UIMenu) {
+        self.tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), menu: menu)
     }
     
     private func updateToolbar(with menu: UIMenu) {
-        let currentSpace = self.dataSource?.currentSpace
         self.navigationController?.isToolbarHidden = false
         self.update(with: ThemeService.shared().theme)
         self.tabBarController?.setToolbarItems([
-            UIBarButtonItem(image: Asset.Images.homeMySpacesAction.image, style: .done, target: self, action: #selector(self.showSpaceSelectorAction(sender: ))),
+            UIBarButtonItem(image: Asset.Images.allChatsSpacesIcon.image, style: .done, target: self, action: #selector(self.showSpaceSelectorAction(sender: ))),
             UIBarButtonItem.flexibleSpace(),
-            UIBarButtonItem(image: UIImage(systemName: currentSpace == nil ? "square.and.pencil" : "ellipsis.circle"), menu: menu)
+            UIBarButtonItem(image: Asset.Images.allChatsEditIcon.image, menu: menu)
         ], animated: true)
     }
     
@@ -314,11 +427,22 @@ class AllChatsViewController: HomeViewController {
         coordinator.start()
         add(childCoordinator: coordinator)
         coordinator.completion = { [weak self] result in
+            // switching to home space
+            self?.switchSpace(withId: nil)
             coordinator.toPresentable().dismiss(animated: true) {
                 self?.remove(childCoordinator: coordinator)
             }
         }
         present(coordinator.toPresentable(), animated: true)
+    }
+    
+    private func showRoomInviteList() {
+        let invitesViewController = RoomInvitesViewController.instantiate()
+        invitesViewController.userIndicatorStore = self.userIndicatorStore
+        let recentsListService = RecentsListService(withSession: mainSession)
+        let recentsDataSource = RecentsDataSource(matrixSession: mainSession, recentsListService: recentsListService)
+        invitesViewController.displayList(recentsDataSource)
+        self.navigationController?.pushViewController(invitesViewController, animated: true)
     }
 }
 
@@ -393,6 +517,17 @@ extension AllChatsViewController: AllChatsEditActionProviderDelegate {
             createNewRoom()
         case .startChat:
             startChat()
+        case .createSpace:
+            showCreateSpace(parentSpaceId: dataSource.currentSpace?.spaceId)
+        }
+    }
+    
+}
+
+// MARK: - AllChatsSpaceActionProviderDelegate
+extension AllChatsViewController: AllChatsSpaceActionProviderDelegate {
+    func allChatsSpaceActionProvider(_ actionProvider: AllChatsSpaceActionProvider, didSelect option: AllChatsSpaceActionProviderOption) {
+        switch option {
         case .invitePeople:
             showSpaceInvite()
         case .spaceMembers:
@@ -401,11 +536,8 @@ extension AllChatsViewController: AllChatsEditActionProviderDelegate {
             showSpaceSettings()
         case .leaveSpace:
             showLeaveSpace()
-        case .createSpace:
-            showCreateSpace(parentSpaceId: dataSource.currentSpace?.spaceId)
         }
     }
-    
 }
 
 // MARK: - ContactsPickerCoordinatorDelegate

@@ -44,7 +44,7 @@ extension MarkdownToHTMLRenderer: MarkdownToHTMLRendererProtocol {
             ast.repairLinks()
             return try DownHTMLRenderer.astToHTML(ast, options: options)
         } catch {
-            MXLog.error("[MarkdownToHTMLRenderer] renderToHTML failed with string: \(markdown)")
+            MXLog.error("[MarkdownToHTMLRenderer] renderToHTML failed")
             return nil
         }
     }

@@ -2622,3 +2622,35 @@
 "location_sharing_invalid_power_level_title" = "Nemáte oprávnenie na zdieľanie polohy v reálnom čase";
 "authentication_choose_password_not_verified_message" = "Skontrolujte si doručenú poštu";
 "authentication_choose_password_not_verified_title" = "E-mail nie je overený";
+"location_sharing_map_loading_error" = "Nie je možné načítať mapu\nTento domovský server nemusí byť nakonfigurovaný na zobrazovanie máp";
+
+// Mark: - Space Selector
+
+"space_selector_title" = "Moje priestory";
+"all_chats_edit_menu_space_settings" = "Nastavenia priestoru";
+"all_chats_edit_menu_leave_space" = "Opustiť %@";
+"all_chats_user_menu_settings" = "Používateľské nastavenia";
+"room_recents_recently_viewed_section" = "Nedávno zobrazené";
+"all_chats_all_filter" = "Všetky";
+"all_chats_edit_layout_alphabetical_order" = "Zoradiť A-Z";
+"all_chats_edit_layout_activity_order" = "Zoradiť podľa aktivity";
+"all_chats_edit_layout_show_filters" = "Zobraziť filtre";
+"all_chats_edit_layout_show_recents" = "Zobraziť posledné";
+"all_chats_edit_layout_sorting_options_title" = "Zoradiť správy podľa";
+"all_chats_edit_layout_pin_spaces_title" = "Pripnite svoje priestory";
+"all_chats_edit_layout_add_filters_message" = "Automaticky filtrujte svoje správy do kategórií podľa vlastného výberu";
+"all_chats_edit_layout_add_filters_title" = "Filtrujte svoje správy";
+"all_chats_edit_layout_add_section_message" = "Pripnite sekcie na domovskú obrazovku, aby ste k nim mali ľahký prístup";
+"all_chats_edit_layout_add_section_title" = "Pridať sekciu na domovskú stránku";
+"all_chats_edit_layout_unreads" = "Neprečítané";
+"all_chats_edit_layout_recents" = "Nedávne";
+"all_chats_edit_layout" = "Predvoľby rozmiestnenia";
+"all_chats_section_title" = "Konverzácie";
+
+// Mark: - All Chats
+
+"all_chats_title" = "Všetky konverzácie";
+"spaces_subspace_creation_visibility_message" = "Vytvorený priestor bude zaradený do %@.";
+"spaces_subspace_creation_visibility_title" = "Aký typ podpriestoru chcete vytvoriť?";
+"spaces_create_subspace_title" = "Vytvoriť podpriestor";
+"spaces_add_subspace_title" = "Vytvoriť priestor v rámci %@";

@@ -96,7 +96,7 @@ final class KeyBackupSetupPassphraseViewModel: KeyBackupSetupPassphraseViewModel
         
         self.update(viewState: .loading)
         
-        self.keyBackup.prepareKeyBackupVersion(withPassword: passphrase, success: { [weak self] (megolmBackupCreationInfo) in
+        self.keyBackup.prepareKeyBackupVersion(withPassword: passphrase, algorithm: nil, success: { [weak self] (megolmBackupCreationInfo) in
             guard let sself = self else {
                 return
             }
@@ -122,7 +122,7 @@ final class KeyBackupSetupPassphraseViewModel: KeyBackupSetupPassphraseViewModel
     private func setupRecoveryKey() {
         self.update(viewState: .loading)
         
-        self.keyBackup.prepareKeyBackupVersion(withPassword: nil, success: { [weak self] (megolmBackupCreationInfo) in
+        self.keyBackup.prepareKeyBackupVersion(withPassword: nil, algorithm: nil, success: { [weak self] (megolmBackupCreationInfo) in
             guard let sself = self else {
                 return
             }

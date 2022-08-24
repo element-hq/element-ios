@@ -83,7 +83,7 @@ final class PollEditFormCoordinator: Coordinator, Presentable {
                 } failure: { [weak self] error in
                     guard let self = self else { return }
                     
-                    MXLog.error("Failed creating poll with error: \(String(describing: error))")
+                    MXLog.error("Failed creating poll", context: error)
                     self.pollEditFormViewModel.stopLoading(errorAlertType: .failedCreatingPoll)
                 }
                 
@@ -111,7 +111,7 @@ final class PollEditFormCoordinator: Coordinator, Presentable {
                 } failure: { [weak self] error in
                     guard let self = self else { return }
                     
-                    MXLog.error("Failed updating poll with error: \(String(describing: error))")
+                    MXLog.error("Failed updating poll", context: error)
                     self.pollEditFormViewModel.stopLoading(errorAlertType: .failedUpdatingPoll)
                 }   
             }

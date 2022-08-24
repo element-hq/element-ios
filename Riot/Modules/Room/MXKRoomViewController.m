@@ -308,7 +308,9 @@
     }
     
     // Finalize view controller appearance
-    [self updateViewControllerAppearanceOnRoomDataSourceState];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self updateViewControllerAppearanceOnRoomDataSourceState];
+    });
     
     // no need to reload the tableview at this stage
     // IOS is going to load it after calling this method
@@ -493,7 +495,7 @@
     if (!keyboardView)
     {
         // Check whether the first responder is the input tool bar text composer
-        keyboardView = inputToolbarView.inputAccessoryView.superview;
+        keyboardView = inputToolbarView.inputAccessoryViewForKeyboard.superview;
     }
     
     // Report the keyboard view in order to track keyboard frame changes

@@ -32,7 +32,6 @@ targets:
 
     dependencies:
     - target: RiotSwiftUI
-    - package: DesignKit
 
     settings:
       base:

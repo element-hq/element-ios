@@ -229,10 +229,11 @@ extension Analytics {
     /// Updates any user properties to help with creating cohorts.
     /// 
     /// Only non-nil properties will be updated when calling this method.
-    func updateUserProperties(ftueUseCase: UserSessionProperties.UseCase? = nil, numFavouriteRooms: Int? = nil, numSpaces: Int? = nil) {
+    func updateUserProperties(ftueUseCase: UserSessionProperties.UseCase? = nil, numFavouriteRooms: Int? = nil, numSpaces: Int? = nil, allChatsActiveFilter: UserSessionProperties.AllChatsActiveFilter? = nil) {
         let userProperties = AnalyticsEvent.UserProperties(ftueUseCaseSelection: ftueUseCase?.analyticsName,
                                                            numFavouriteRooms: numFavouriteRooms,
-                                                           numSpaces: numSpaces)
+                                                           numSpaces: numSpaces,
+                                                           allChatsActiveFilter: allChatsActiveFilter?.analyticsName)
         client.updateUserProperties(userProperties)
     }
     
@@ -384,7 +385,7 @@ extension Analytics: MXAnalyticsDelegate {
         capture(event: event)
     }
 
-    func trackNonFatalIssue(_ issue: String, details: [String : Any]?) {
+    func trackNonFatalIssue(_ issue: String, details: [String: Any]?) {
         monitoringClient.trackNonFatalIssue(issue, details: details)
     }
 }

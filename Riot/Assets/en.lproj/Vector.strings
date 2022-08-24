@@ -77,6 +77,7 @@
 "suggest" = "Suggest";
 "edit" = "Edit";
 "confirm" = "Confirm";
+"invite_to" = "Invite to %@";
 
 // Activities
 "loading" = "Loading";
@@ -892,6 +893,9 @@ Tap the + to start adding people.";
 "manage_session_trusted" = "Trusted by you";
 "manage_session_not_trusted" = "Not trusted";
 "manage_session_sign_out" = "Sign out of this session";
+
+// User sessions management
+"user_sessions_settings" = "Manage sessions";
 
 // AuthenticatedSessionViewControllerFactory
 "authenticated_session_flow_not_supported" = "This app does not support the authentication mechanism on your homeserver.";
@@ -2006,6 +2010,7 @@ Tap the + to start adding people.";
 "leave_space_only_action" = "Don't leave any rooms";
 "leave_space_and_all_rooms_action" = "Leave all rooms and spaces";
 "spaces_explore_rooms" = "Explore rooms";
+"spaces_explore_rooms_format" = "Explore %@";
 "spaces_suggested_room" = "Suggested";
 "spaces_explore_rooms_room_number" = "%@ rooms";
 "spaces_explore_rooms_one_room" = "1 room";
@@ -2176,6 +2181,13 @@ Tap the + to start adding people.";
 "all_chats_edit_layout_activity_order" = "Sort by activity";
 "all_chats_edit_layout_alphabetical_order" = "Sort A-Z";
 "all_chats_all_filter" = "All";
+"all_chats_empty_view_title" = "%@\nis looking a little empty.";
+"all_chats_empty_space_information" = "Spaces are a new way to group rooms and people. Add an existing room, or create a new one, using the bottom-right button.";
+"all_chats_empty_view_information" = "The all-in-one secure chat app for teams, friends and organisations. Create a chat, or join an existing room, to get started.";
+"all_chats_empty_list_placeholder_title" = "You’re all caught up.";
+"all_chats_empty_unreads_placeholder_message" = "This is where you're unread messages will show up, when you have some.";
+"all_chats_nothing_found_placeholder_title" = "Nothing found.";
+"all_chats_nothing_found_placeholder_message" = "Try adjusting your search.";
 
 "room_recents_recently_viewed_section" = "Recently viewed";
 
@@ -2184,9 +2196,29 @@ Tap the + to start adding people.";
 "all_chats_edit_menu_leave_space" = "Leave %@";
 "all_chats_edit_menu_space_settings" = "Space settings";
 
+"all_chats_onboarding_page_title1" = "Welcome to a new view!";
+"all_chats_onboarding_page_message1" = "To simplify your Element, tabs are now optional. Manage them using the top-right menu.";
+"all_chats_onboarding_page_title2" = "Access Spaces";
+"all_chats_onboarding_page_message2" = "Access your Spaces (bottom-left) faster and easier than ever before.";
+"all_chats_onboarding_page_title3" = "Give Feedback";
+"all_chats_onboarding_page_message3" = "Tap your profile to let us know what you think.";
+"all_chats_onboarding_title" = "What's new";
+"all_chats_onboarding_try_it" = "Try it out";
+
+// Mark: - Room invites
+
+"room_invites_empty_view_title" = "Nothing new.";
+"room_invites_empty_view_information" = "This is where your invites appear.";
+
 // Mark: - Space Selector
 
 "space_selector_title" = "My spaces";
+"space_selector_empty_view_title" = "No spaces yet.";
+"space_selector_empty_view_information" = "Spaces are a way to group rooms and people. Create a space to get started.";
+"space_selector_create_space" = "Create Space";
+
+"space_detail_nav_title" = "Space detail";
+"space_invite_nav_title" = "Space invite";
 
 // Mark: - Polls
 
@@ -2319,6 +2351,10 @@ To enable access, tap Settings> Location and select Always";
 "location_sharing_live_lab_promotion_title" = "Live location sharing";
 "location_sharing_live_lab_promotion_text" = "Please note: this is a labs feature using a temporary implementation that allows the history of your shared location to be permanently visible to other people in the room.";
 "location_sharing_live_lab_promotion_activation" = "Enable live location sharing";
+
+// MARK: User sessions management
+
+"user_sessions_overview_title" = "Sessions";
 
 // MARK: - MatrixKit
 

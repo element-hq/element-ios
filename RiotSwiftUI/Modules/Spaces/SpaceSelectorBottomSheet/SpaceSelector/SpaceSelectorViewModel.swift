@@ -35,22 +35,31 @@ class SpaceSelectorViewModel: SpaceSelectorViewModelType, SpaceSelectorViewModel
 
     // MARK: - Setup
 
-    static func makeViewModel(service: SpaceSelectorServiceProtocol) -> SpaceSelectorViewModelProtocol {
-        return SpaceSelectorViewModel(service: service)
+    static func makeViewModel(service: SpaceSelectorServiceProtocol, showCancel: Bool) -> SpaceSelectorViewModelProtocol {
+        return SpaceSelectorViewModel(service: service, showCancel: showCancel)
     }
 
-    private init(service: SpaceSelectorServiceProtocol) {
+    private init(service: SpaceSelectorServiceProtocol, showCancel: Bool) {
         self.service = service
-        super.init(initialViewState: Self.defaultState(service: service))
+        super.init(initialViewState: Self.defaultState(service: service, showCancel: showCancel))
+        setupObservers()
     }
 
-    private static func defaultState(service: SpaceSelectorServiceProtocol) -> SpaceSelectorViewState {
+    private static func defaultState(service: SpaceSelectorServiceProtocol, showCancel: Bool) -> SpaceSelectorViewState {
         let parentName = service.parentSpaceNameSubject.value
         return SpaceSelectorViewState(items: service.spaceListSubject.value,
                                       selectedSpaceId: service.selectedSpaceId,
-                                      navigationTitle: parentName ?? VectorL10n.spaceSelectorTitle)
+                                      navigationTitle: parentName ?? VectorL10n.spaceSelectorTitle,
+                                      showCancel: showCancel)
     }
     
+    private func setupObservers() {
+        service.spaceListSubject.sink { [weak self] spaceList in
+                self?.state.items = spaceList
+        }
+        .store(in: &cancellables)
+    }
+
     // MARK: - Public
 
     override func process(viewAction: SpaceSelectorViewAction) {

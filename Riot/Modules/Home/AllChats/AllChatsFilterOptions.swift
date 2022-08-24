@@ -37,10 +37,22 @@ class AllChatsFilterOptions: NSObject {
         filterOptionListView.selectedOptionType = AllChatsLayoutSettingsManager.shared.activeFilters
         filterOptionListView.selectionChanged = { filter in
             guard filter != .all else {
+                Analytics.shared.trackInteraction(.allChatsFilterAll)
                 AllChatsLayoutSettingsManager.shared.activeFilters = []
                 return
             }
-         
+            
+            switch filter {
+            case .all:
+                Analytics.shared.trackInteraction(.allChatsFilterAll)
+            case .favourites:
+                Analytics.shared.trackInteraction(.allChatsFilterFavourites)
+            case .people:
+                Analytics.shared.trackInteraction(.allChatsFilterPeople)
+            case .unreads:
+                Analytics.shared.trackInteraction(.allChatsFilterUnreads)
+            default: break
+            }
             AllChatsLayoutSettingsManager.shared.activeFilters = filter
         }
 

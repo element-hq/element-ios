@@ -12,6 +12,6 @@ Various features of Element iOS can be enabled/disabled/configured via flags in 
 
 ## Theme
 
-Element iOS has a [dependency](https://github.com/vector-im/element-ios/blob/92fc7046ede2720d4b46bffd07d97ce59b50d95f/project.yml#L42-L44) on our DesignKit package which supplies the fonts, colours and some common components we use across multiple apps. The fonts are defined [directly](https://github.com/vector-im/element-x-ios/tree/develop/DesignKit/Sources/Fonts) in this package. The colours come from a [dependency](https://github.com/vector-im/element-x-ios/blob/2f69c9978231b6e7cf0b0c3126846f2369e999bb/Package.swift#L13) on our [Design Tokens](https://github.com/vector-im/element-design-tokens) repo which is a style dictionary that allows to us share definitions across multiple platforms.
+The themes used in Element iOS can be found in `Riot/Managers/Theme/Themes`. A newer theming system is available as nested `colors` and `fonts` properties on these themes and can be found in `DesignKit/Variants/Colors` and `DesignKit/Variants/Fonts` respectively. The newer system is used for screens built in UIKit with Swift and all of the SwiftUI screens.
 
 For logos, they're currently regular assets that can be found either in [Images.xcassets](https://github.com/vector-im/element-ios/tree/develop/Riot/Assets/Images.xcassets) or [SharedImages.xcassets](https://github.com/vector-im/element-ios/tree/develop/Riot/Assets/SharedImages.xcassets).

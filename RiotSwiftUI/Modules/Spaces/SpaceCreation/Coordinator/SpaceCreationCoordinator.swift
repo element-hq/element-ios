@@ -89,6 +89,8 @@ final class SpaceCreationCoordinator: Coordinator {
     func start() {
         MXLog.debug("[SpaceCreationCoordinator] did start.")
         
+        Analytics.shared.trackScreen(.createSpace)
+        
         let rootCoordinator = self.createMenuCoordinator(with: spaceVisibilityMenuParameters)
         rootCoordinator.start()
         

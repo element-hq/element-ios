@@ -47,7 +47,10 @@ platform :ios do
 
   desc "Builds an Alpha ipa for pull request branches"
   lane :alpha do
+    # Check we have all the tokens and tools necessary
     UI.user_error!("'DIAWI_API_TOKEN' environment variable should be set to use this lane") unless !ENV["DIAWI_API_TOKEN"].to_s.empty?
+    UI.user_error!("'SENTRY_AUTH_TOKEN' environment variable should be set to use this lane") unless !ENV["SENTRY_AUTH_TOKEN"].to_s.empty?
+    sentry_check_cli_installed
             
     # Generate the "Alpha" app variant    
     setup_app_variant(name: "Alpha")    
@@ -55,6 +58,8 @@ platform :ios do
     adhoc
     # Upload to Diawi
     upload_to_diawi
+
+    upload_dsyms_to_sentry
   end
 
   desc "Upload IPA to Diawi"
@@ -242,7 +247,7 @@ platform :ios do
     
     # Clear derived data
     clear_derived_data(derived_data_path: ENV["DERIVED_DATA_PATH"])
-
+    
     # Setup project provisioning profiles
     download_provisioning_profiles(adhoc: adhoc)
     disable_automatic_code_signing
@@ -441,6 +446,21 @@ platform :ios do
     UI.command_output("Content of modified Podfile:\n" + podfile_content)
   end
 
+  desc "Upload dsym files to Sentry to symbolicate crashes"
+  private_lane :upload_dsyms_to_sentry do
+    UI.user_error!("'SENTRY_AUTH_TOKEN' environment variable should be set to use this lane") unless !ENV["SENTRY_AUTH_TOKEN"].to_s.empty?
+
+    dsym_path = "#{ENV["BUILD_OUTPUT_DIRECTORY"]}/#{ENV["IPA_NAME"]}.app.dSYM.zip"
+  
+    sentry_upload_dif(
+      auth_token: ENV["SENTRY_AUTH_TOKEN"],
+      org_slug: 'element',
+      project_slug: 'element-ios',
+      url: 'https://sentry.tools.element.io/',
+      path: dsym_path,
+    )
+  end
+
   # git_branch can return an empty screen with some CI tools (like GH actions) 
   # The CI build script needs to define MX_GIT_BRANCH with the right branch.
   def mx_git_branch
@@ -463,21 +483,21 @@ platform :ios do
   end
 end
 
-  # Update an arbitrary file by applying some RegExp replacements to its content
-  #
-  # @param [String] file The path to the file that needs replacing
-  # @param [Hash<RegExp, String>] replacements A list of replacements to apply
-  #
-  def update_file_content(file, replacements)
-    content = File.read(file)
-    replacements.each do |pattern, replacement|
-      content.gsub!(pattern, replacement)
-    end
-    File.write(file, content)
+# Update an arbitrary file by applying some RegExp replacements to its content
+#
+# @param [String] file The path to the file that needs replacing
+# @param [Hash<RegExp, String>] replacements A list of replacements to apply
+#
+def update_file_content(file, replacements)
+  content = File.read(file)
+  replacements.each do |pattern, replacement|
+    content.gsub!(pattern, replacement)
   end
+  File.write(file, content)
+end
 
-  # Generates a new build number based on timestamp
-  def generate_build_number()
-    require 'date'
-    return DateTime.now.strftime("%Y%m%d%H%M%S")
-  end
+# Generates a new build number based on timestamp
+def generate_build_number()
+  require 'date'
+  return DateTime.now.strftime("%Y%m%d%H%M%S")
+end

@@ -54,6 +54,8 @@ struct SpaceSelectorListItemData {
     let highlightedNotificationCount: UInt
     /// Indicates if the space has sub spaces (condition the display of the disclosure button)
     let hasSubItems: Bool
+    /// Indicates if the space has has already been joined
+    let isJoined: Bool
     
     init(id: String,
          avatar: AvatarInput? = nil,
@@ -61,7 +63,8 @@ struct SpaceSelectorListItemData {
          displayName: String?,
          notificationCount: UInt = 0,
          highlightedNotificationCount: UInt = 0,
-         hasSubItems: Bool = false) {
+         hasSubItems: Bool = false,
+         isJoined: Bool = false) {
         self.id = id
         self.avatar = avatar
         self.icon = icon
@@ -69,6 +72,7 @@ struct SpaceSelectorListItemData {
         self.notificationCount = notificationCount
         self.highlightedNotificationCount = highlightedNotificationCount
         self.hasSubItems = hasSubItems
+        self.isJoined = isJoined
     }
 }
 
@@ -96,6 +100,8 @@ struct SpaceSelectorViewState: BindableState {
     var selectedSpaceId: String?
     /// String to be displayed as title for the navigation bar
     var navigationTitle: String
+    /// `true` if the view should display the cancel button in the navigation bar
+    let showCancel: Bool
 }
 
 enum SpaceSelectorViewAction {

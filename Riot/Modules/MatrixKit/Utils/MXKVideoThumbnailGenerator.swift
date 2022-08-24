@@ -67,7 +67,7 @@ public class MXKVideoThumbnailGenerator: NSObject {
             let image = try assetImageGenerator.copyCGImage(at: .zero, actualTime: nil)
             thumbnailImage = UIImage(cgImage: image)
         } catch {
-            MXLog.error(error.localizedDescription)
+            MXLog.error("[MXKVideoThumbnailGenerator] generateThumbnail:", context: error)
             thumbnailImage = nil
         }
         

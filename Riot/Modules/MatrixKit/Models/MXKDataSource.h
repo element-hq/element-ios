@@ -221,5 +221,15 @@ typedef enum : NSUInteger {
  */
 - (BOOL)dataSource:(MXKDataSource*)dataSource shouldDoAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo defaultValue:(BOOL)defaultValue;
 
+/**
+ Notify the delegate that invites count did change
+
+ @see `MXKCellRenderingDelegate` for more details.
+
+ @param dataSource the involved data source.
+ @param invitesCount number of rooms in the invites section.
+  */
+- (void)dataSource:(MXKDataSource*)dataSource didUpdateInvitesCount:(NSUInteger)invitesCount;
+
 @end
 

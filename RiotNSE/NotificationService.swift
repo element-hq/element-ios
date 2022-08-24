@@ -241,7 +241,7 @@ class NotificationService: UNNotificationServiceExtension {
                 MXLog.debug("[NotificationService] fetchAndProcessEvent: Event fetched successfully")
                 self?.checkPlaybackAndContinueProcessing(event, roomId: roomId)
             case .failure(let error):
-                MXLog.error("[NotificationService] fetchAndProcessEvent: Failed fetching notification event with error: \(error)")
+                MXLog.error("[NotificationService] fetchAndProcessEvent: Failed fetching notification event", context: error)
                 self?.fallbackToBestAttemptContent(forEventId: eventId)
             }
         }
@@ -265,7 +265,7 @@ class NotificationService: UNNotificationServiceExtension {
                 }
                 
             case .failure(let error):
-                MXLog.error("[NotificationService] checkPlaybackAndContinueProcessing: Failed fetching read marker event with error: \(error)")
+                MXLog.error("[NotificationService] checkPlaybackAndContinueProcessing: Failed fetching read marker event", context: error)
                 self?.processEvent(notificationEvent)
             }
         }
@@ -849,7 +849,7 @@ class NotificationService: UNNotificationServiceExtension {
             if response.isSuccess {
                 MXLog.debug("[NotificationService] sendReadReceipt: Read receipt send successfully.")
             } else if let error = response.error {
-                MXLog.error("[NotificationService] sendReadReceipt: Read receipt send failed with error \(error).")
+                MXLog.error("[NotificationService] sendReadReceipt: Read receipt send failed", context: error)
             }
         }
     }

@@ -100,11 +100,6 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
      The queue of events that need to be processed in order to compute their display.
      */
     NSMutableArray<MXKQueuedEvent*> *eventsToProcess;
-    
-    /**
-     The dictionary of the related groups that the current user did not join.
-     */
-    NSMutableDictionary<NSString*, MXGroup*> *externalRelatedGroups;
 }
 
 /**
@@ -776,17 +771,6 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
  @param collapsed YES to collapse. NO to expand.
  */
 - (void)collapseRoomBubble:(id<MXKRoomBubbleCellDataStoring>)bubbleData collapsed:(BOOL)collapsed;
-
-#pragma mark - Groups
-
-/**
- Get a MXGroup instance for a group.
- This method is used by the bubble to retrieve a related groups of the room.
- 
- @param groupId The identifier to the group.
- @return the MXGroup instance.
- */
-- (MXGroup *)groupWithGroupId:(NSString*)groupId;
 
 #pragma mark - Reactions
 

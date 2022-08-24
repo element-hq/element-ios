@@ -1542,12 +1542,16 @@
         
         if (retry)
         {
-            MXLogError(@"[MXKAuthenticationViewController] attemptDeviceRehydration: device rehydration failed due to error: %@. Retrying", error);
+            MXLogErrorDetails(@"[MXKAuthenticationViewController] attemptDeviceRehydration: device rehydration failed due to error: Retrying", @{
+                @"error": error ?: @"unknown"
+            });
             [self attemptDeviceRehydrationWithKeyData:keyData credentials:credentials retry:NO];
             return;
         }
         
-        MXLogError(@"[MXKAuthenticationViewController] attemptDeviceRehydration: device rehydration failed due to error: %@", error);
+        MXLogErrorDetails(@"[MXKAuthenticationViewController] attemptDeviceRehydration: device rehydration failed due to error", @{
+            @"error": error ?: @"unknown"
+        });
         
         [self _createAccountWithCredentials:credentials];
     }];

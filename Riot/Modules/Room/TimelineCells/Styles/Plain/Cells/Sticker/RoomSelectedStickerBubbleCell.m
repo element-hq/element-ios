@@ -102,15 +102,7 @@
             // Display sender's name except if the name appears in the displayed text (see emote and membership events)
             if (bubbleData.shouldHideSenderName == NO)
             {
-                if (bubbleData.senderFlair)
-                {
-                    [self renderSenderFlair];
-                }
-                else
-                {
-                    self.userNameLabel.text = bubbleData.senderDisplayName;
-                }
-                
+                self.userNameLabel.text = bubbleData.senderDisplayName;
                 self.userNameLabel.hidden = NO;
                 self.userNameTapGestureMaskView.userInteractionEnabled = YES;
             }

@@ -332,13 +332,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         return roomsViewController
     }
     
-    private func createGroupsViewController() -> GroupsViewController {
-        let groupsViewController: GroupsViewController = GroupsViewController.instantiate()
-        groupsViewController.tabBarItem.tag = Int(TABBAR_GROUPS_INDEX)
-        groupsViewController.accessibilityLabel = VectorL10n.titleGroups
-        return groupsViewController
-    }
-    
     private func createUnifiedSearchController() -> UnifiedSearchViewController {
         
         let viewController: UnifiedSearchViewController = UnifiedSearchViewController.instantiate()
@@ -392,11 +385,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                 let roomsViewController = self.createRoomsViewController()
                 viewControllers.append(roomsViewController)
             }
-            
-            if RiotSettings.shared.homeScreenShowCommunitiesTab && !(self.currentMatrixSession?.groups().isEmpty ?? false) && showCommunities {
-                let groupsViewController = self.createGroupsViewController()
-                viewControllers.append(groupsViewController)
-            }
         }
         
         tabBarController.updateViewControllers(viewControllers)
@@ -441,18 +429,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         
         let coordinatorParameters = ContactDetailsCoordinatorParameters(contact: contact)
         let coordinator = ContactDetailsCoordinator(parameters: coordinatorParameters)
-        coordinator.start()
-        self.add(childCoordinator: coordinator)
-        
-        self.showSplitViewDetails(with: coordinator, stackedOnSplitViewDetail: presentationParameters.stackAboveVisibleViews) { [weak self] in
-            self?.remove(childCoordinator: coordinator)
-        }
-    }
-    
-    // FIXME: Should be displayed from a tab.
-    private func showGroupDetails(with group: MXGroup, for matrixSession: MXSession, presentationParameters: ScreenPresentationParameters) {
-        let coordinatorParameters = GroupDetailsCoordinatorParameters(session: matrixSession, group: group)
-        let coordinator = GroupDetailsCoordinator(parameters: coordinatorParameters)
         coordinator.start()
         self.add(childCoordinator: coordinator)
         
@@ -690,10 +666,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         }
         
         self.addMatrixSessionToMasterTabBarController(userSession.matrixSession)
-        
-        if let matrixSession = self.currentMatrixSession, matrixSession.groups().isEmpty {
-            self.masterTabBarController.removeTab(at: .groups)
-        }
     }
     
     @objc private func userSessionsServiceWillRemoveUserSession(_ notification: Notification) {
@@ -721,10 +693,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     }
     
     @objc private func sessionDidSync(_ notification: Notification) {
-        if self.currentMatrixSession?.groups().isEmpty ?? true {
-            self.masterTabBarController.removeTab(at: .groups)
-        }
-        
         if let session = notification.object as? MXSession {
             showCoachMessageIfNeeded(with: session)
         }
@@ -775,13 +743,13 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private func createAvatarButtonItem(for viewController: UIViewController) {
         var actions: [UIMenuElement] = []
         
-        actions.append(UIAction(title: VectorL10n.allChatsUserMenuSettings, image: UIImage(systemName: "gearshape")) { [weak self] action in
+        actions.append(UIAction(title: VectorL10n.settings, image: UIImage(systemName: "gearshape")) { [weak self] action in
             self?.showSettings()
         })
         
         var subMenuActions: [UIAction] = []
         if BuildSettings.sideMenuShowInviteFriends {
-            subMenuActions.append(UIAction(title: VectorL10n.sideMenuActionInviteFriends, image: UIImage(systemName: "square.and.arrow.up.fill")) { [weak self] action in
+            subMenuActions.append(UIAction(title: VectorL10n.inviteTo(AppInfo.current.displayName), image: UIImage(systemName: "envelope")) { [weak self] action in
                         self?.showInviteFriends(from: nil)
             })
         }
@@ -966,10 +934,6 @@ extension TabBarCoordinator: MasterTabBarControllerDelegate {
     
     func masterTabBarController(_ masterTabBarController: MasterTabBarController!, didSelectRoomWithId roomId: String!, andEventId eventId: String!, inMatrixSession matrixSession: MXSession!, completion: (() -> Void)!) {
         self.showRoom(with: roomId, eventId: eventId, matrixSession: matrixSession, completion: completion)
-    }
-    
-    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, didSelect group: MXGroup!, inMatrixSession matrixSession: MXSession!, presentationParameters: ScreenPresentationParameters!) {
-        self.showGroupDetails(with: group, for: matrixSession, presentationParameters: presentationParameters)
     }
     
     func masterTabBarController(_ masterTabBarController: MasterTabBarController!, needsSideMenuIconWithNotification displayNotification: Bool) {

@@ -598,7 +598,9 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     
     func threadsCoordinator(for roomViewController: RoomViewController, threadId: String?) -> ThreadsCoordinatorBridgePresenter? {
         guard let session = mxSession, let roomId = roomId else {
-            MXLog.error("[RoomCoordinator] Cannot create threads coordinator for room \(roomId ?? "")")
+            MXLog.error("[RoomCoordinator] Cannot create threads coordinator for room", context: [
+                "room_id": roomId
+            ])
             return nil
         }
         

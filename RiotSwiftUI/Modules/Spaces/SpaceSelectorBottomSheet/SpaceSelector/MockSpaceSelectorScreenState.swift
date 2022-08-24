@@ -23,8 +23,8 @@ enum MockSpaceSelectorScreenState: MockScreenState, CaseIterable {
     // A case for each state you want to represent
     // with specific, minimal associated data that will allow you
     // mock that screen.
-    case initialList
     case emptyList
+    case initialList
     case selection
 
     /// The associated screen
@@ -34,21 +34,21 @@ enum MockSpaceSelectorScreenState: MockScreenState, CaseIterable {
     
     /// A list of screen state definitions
     static var allCases: [MockSpaceSelectorScreenState] {
-        [.initialList, .emptyList, .selection]
+        [.emptyList, .initialList, .selection]
     }
     
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView)  {
         let service: MockSpaceSelectorService
         switch self {
+        case .emptyList:
+            service = MockSpaceSelectorService(spaceList: [])
         case .initialList:
             service = MockSpaceSelectorService()
-        case .emptyList:
-            service = MockSpaceSelectorService(spaceList: [MockSpaceSelectorService.homeItem])
         case .selection:
-            service = MockSpaceSelectorService(selectedSpaceId: MockSpaceSelectorService.defaultSpaceList[2].id)
+            service = MockSpaceSelectorService(selectedSpaceId: MockSpaceSelectorService.defaultSpaceList[3].id)
         }
-        let viewModel = SpaceSelectorViewModel.makeViewModel(service: service)
+        let viewModel = SpaceSelectorViewModel.makeViewModel(service: service, showCancel: true)
         
         // can simulate service and viewModel actions here if needs be.
         

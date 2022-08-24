@@ -30,8 +30,8 @@
     [super awakeFromNib];
     
     // Add an accessory view to the text view in order to retrieve keyboard view.
-    inputAccessoryView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.messageComposerTextView.inputAccessoryView = self.inputAccessoryView;
+    inputAccessoryViewForKeyboard = [[UIView alloc] initWithFrame:CGRectZero];
+    self.messageComposerTextView.inputAccessoryView = inputAccessoryViewForKeyboard;
 }
 
 -(void)customizeViewRendering
