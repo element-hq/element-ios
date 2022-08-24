@@ -1403,7 +1403,7 @@
 "leave_space_message_admin_warning" = "Ви адмініструєте цей простір. Перед виходом переконайтесь, що передали права адміністрування іншому учаснику.";
 "leave_space_only_action" = "Не виходити з жодної кімнати";
 "leave_space_and_all_rooms_action" = "Вийти з усіх кімнат і просторів";
-"spaces_explore_rooms" = "Дослідити кімнати";
+"spaces_explore_rooms" = "Оглянути кімнати";
 "spaces_empty_space_detail" = "Деяких кімнат може бути не видно, бо вони закриті й потребують запрошення.";
 "spaces_suggested_room" = "Пропоновано";
 "room_details_access_section_anyone_for_dm" = "Будь-хто з посиланням, зокрема гості";
@@ -2570,7 +2570,7 @@
 "authentication_recaptcha_title" = "Ви людина?";
 "authentication_terms_policy_url_error" = "Не вдалося знайти вибране правило. Повторіть спробу пізніше.";
 "authentication_terms_message" = "Прочитайте умови та правила %@";
-"authentication_terms_title" = "Правила сервера";
+"authentication_terms_title" = "Політики приватності";
 "authentication_verify_msisdn_invalid_phone_number" = "Недійсний номер телефону";
 "authentication_verify_msisdn_waiting_button" = "Повторно надіслати код";
 /* The placeholder will show the phone number that was entered. */
@@ -2656,3 +2656,37 @@
 "spaces_subspace_creation_visibility_title" = "Який тип підпростору ви хочете створити?";
 "spaces_create_subspace_title" = "Створити підпростір";
 "spaces_add_subspace_title" = "Створити простір у %@";
+
+// MARK: User sessions management
+
+"user_sessions_overview_title" = "Сеанси";
+"space_invite_nav_title" = "Запрошення простору";
+"space_detail_nav_title" = "Подробиці простору";
+"space_selector_create_space" = "Створити простір";
+"space_selector_empty_view_information" = "Простори – це спосіб групувати кімнати та людей. Створіть простір, щоб розпочати.";
+"space_selector_empty_view_title" = "Ще немає просторів.";
+"room_invites_empty_view_information" = "Тут з’являтимуться ваші запрошення.";
+
+// Mark: - Room invites
+
+"room_invites_empty_view_title" = "Нічого нового.";
+"all_chats_onboarding_try_it" = "Спробувати";
+"all_chats_onboarding_title" = "Що нового";
+"all_chats_onboarding_page_message3" = "Торкніться свого профілю, щоб розповісти нам свою думку.";
+"all_chats_onboarding_page_title3" = "Напишіть відгук";
+"all_chats_onboarding_page_message2" = "Отримуйте доступ до своїх просторів (унизу ліворуч) швидше та легше, ніж раніше.";
+"all_chats_onboarding_page_title2" = "Доступ до просторів";
+"all_chats_onboarding_page_message1" = "Щоб спростити ваш Element, вкладки тепер необов’язкові. Керуйте ними у верхньому правому меню.";
+"all_chats_onboarding_page_title1" = "Вітаємо в новому вигляді!";
+"all_chats_nothing_found_placeholder_message" = "Спробуйте налаштувати пошук.";
+"all_chats_nothing_found_placeholder_title" = "Нічого не знайдено.";
+"all_chats_empty_unreads_placeholder_message" = "Тут з'являтимуться ваші непрочитані повідомлення, якщо вони є.";
+"all_chats_empty_list_placeholder_title" = "У вас усе під контролем.";
+"all_chats_empty_view_information" = "Універсальний безпечний застосунок для спілкування з командами, друзями й організаціями. Створіть бесіду або приєднайтеся до наявної кімнати, щоб розпочати.";
+"all_chats_empty_space_information" = "Простори – це новий спосіб групувати кімнати та людей. Додайте наявну кімнату або створіть нову, використовуючи кнопку внизу праворуч.";
+"all_chats_empty_view_title" = "%@\nмає дещо порожній вигляд.";
+"spaces_explore_rooms_format" = "Оглянути %@";
+
+// User sessions management
+"user_sessions_settings" = "Керувати сеансами";
+"invite_to" = "Запросити до %@";
