@@ -93,6 +93,7 @@ static const int kThreadListBarButtonItemTag = 99;
 static UIEdgeInsets kThreadListBarButtonItemContentInsetsNoDot;
 static UIEdgeInsets kThreadListBarButtonItemContentInsetsDot;
 static CGSize kThreadListBarButtonItemImageSize;
+NSString *const RoomViewControllerErrorDomain = @"RoomViewControllerErrorDomain";
 
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
@@ -1339,9 +1340,9 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     // Create or invite again the left member before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
-    [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
+    [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
         MXStrongifyAndReturnIfNil(self);
-        if (success)
+        if (readyToSend)
         {
             // The event modified is always fetch from the actual data source
             MXEvent *eventModified = [self.roomDataSource eventWithEventId:self.customizedRoomDataSource.selectedEventId];
@@ -1379,6 +1380,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                 }
             }];
         }
+        // Errors are handled at the request level. This should be improved in case of code rewriting.
     }];
 }
 
@@ -1519,7 +1521,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 /**
  Check whether the current room is a direct chat left by the other member.
  */
-- (void)isDirectChatLeftByTheOther:(void (^)(BOOL isEmptyDirect))onComplete
+- (void)isDirectChatLeftByTheOther:(void (^)(BOOL isEmptyDirect, NSError *error))onComplete
 {
     // In the case of a direct chat, we check if the other member has left the room.
     if (self.roomDataSource)
@@ -1534,39 +1536,48 @@ static CGSize kThreadListBarButtonItemImageSize;
                     MXMembership directUserMembership = directUserMember.membership;
                     if (directUserMembership != MXMembershipJoin && directUserMembership != MXMembershipInvite)
                     {
-                        onComplete(YES);
+                        onComplete(YES, nil);
                     }
                     else
                     {
-                        onComplete(NO);
+                        onComplete(NO, nil);
                     }
                 }
                 else
                 {
                     MXLogDebug(@"[RoomViewController] isEmptyDirectChat: the direct user has disappeared");
-                    onComplete(YES);
+                    onComplete(YES, nil);
                 }
             } failure:^(NSError *error) {
                 MXLogDebug(@"[RoomViewController] isEmptyDirectChat: cannot get all room members");
-                onComplete(NO);
+                onComplete(NO, error);
             }];
             return;
         }
+        
+        // This is not a direct chat
+        onComplete(NO, nil);
+    } else {
+        NSError* error = [NSError errorWithDomain:RoomViewControllerErrorDomain
+                                             code:0
+                                         userInfo:@{ NSLocalizedDescriptionKey: [VectorL10n errorCommonMessage] }];
+        // Stop the current process
+        onComplete(NO, error);
     }
-    
-    // This is not a direct chat
-    onComplete(NO);
 }
 
 /**
  Check whether the current room is a direct chat left by the other member.
  In this case, this method will invite again the left member.
  */
-- (void)restoreDiscussionIfNeeded:(void (^)(BOOL success))onComplete
+- (void)restoreDiscussionIfNeeded:(void (^)(BOOL readyToSend))onComplete
 {
-    [self isDirectChatLeftByTheOther:^(BOOL isEmptyDirect) {
-        if (isEmptyDirect)
-        {
+    [self isDirectChatLeftByTheOther:^(BOOL isEmptyDirect, NSError *error) {
+        if (error != nil) {
+            MXLogDebug(@"[RoomViewController] restoreDiscussionIfNeeded: isDirectChatLeftByTheOther finished with error : %@ ", error.localizedDescription);
+            [self showError:error];
+            onComplete(NO);
+        } else if (isEmptyDirect) {
             NSString *directUserId = self.roomDataSource.room.directUserId;
             
             MXWeakify(self);
@@ -1615,6 +1626,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         }
         else
         {
+            [self stopActivityIndicator];
             onComplete(NO);
         }
     }];
@@ -1624,16 +1636,16 @@ static CGSize kThreadListBarButtonItemImageSize;
  Check whether the current room is a direct chat left by the other member.
  In this case, this method will invite again the left member.
  */
-- (void)createOrRestoreDiscussionIfNeeded:(void (^)(BOOL success))onComplete
+- (void)createOrRestoreDiscussionIfNeeded:(void (^)(BOOL readyToSend))onComplete
 {
     // Disable the input tool bar during this operation. This prevents us from creating several discussions, or
     // trying to send several invites.
     self.inputToolbarView.userInteractionEnabled = false;
     
-    void(^completion)(BOOL) = ^(BOOL success) {
+    void(^completion)(BOOL) = ^(BOOL readyToSend) {
         self.inputToolbarView.userInteractionEnabled = true;
         if (onComplete) {
-            onComplete(success);
+            onComplete(readyToSend);
         }
     };
     
@@ -2506,11 +2518,12 @@ static CGSize kThreadListBarButtonItemImageSize;
             [MXSDKOptions sharedInstance].videoConversionPresetName = presetName;
             
             // Create or invite again the left member before sending the message in case of a discussion (direct chat)
-            [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
-                if (success)
+            [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
+                if (readyToSend)
                 {
                     [roomInputToolbarView sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:isPhotoLibraryAsset];
                 }
+                // Errors are handled at the request level. This should be improved in case of code rewriting.
             }];
         }];
         compressionPrompt.popoverPresentationController.sourceView = roomInputToolbarView.attachMediaButton;
@@ -2524,11 +2537,12 @@ static CGSize kThreadListBarButtonItemImageSize;
         [MXSDKOptions sharedInstance].videoConversionPresetName = AVAssetExportPreset1920x1080;
         
         // Create or invite again the left member before sending the message in case of a discussion (direct chat)
-        [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
-            if (success)
+        [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
+            if (readyToSend)
             {
                 [roomInputToolbarView sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:isPhotoLibraryAsset];
             }
+            // Errors are handled at the request level. This should be improved in case of code rewriting.
         }];
     }
 }
@@ -5032,31 +5046,34 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     // Create or invite again the left member before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
-    [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
+    [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
         MXStrongifyAndReturnIfNil(self);
         
-        BOOL isMessageAHandledCommand = NO;
-        // "/me" command is supported with Pills in RoomDataSource.
-        if (![attributedTextMessage.string hasPrefix:kMXKSlashCmdEmote])
-        {
-            // Other commands currently work with identifiers (e.g. ban, invite, op, etc).
-            NSString *message;
-            if (@available(iOS 15.0, *))
+        if (readyToSend) {
+            BOOL isMessageAHandledCommand = NO;
+            // "/me" command is supported with Pills in RoomDataSource.
+            if (![attributedTextMessage.string hasPrefix:kMXKSlashCmdEmote])
             {
-                message = [PillsFormatter stringByReplacingPillsIn:attributedTextMessage mode:PillsReplacementTextModeIdentifier];
+                // Other commands currently work with identifiers (e.g. ban, invite, op, etc).
+                NSString *message;
+                if (@available(iOS 15.0, *))
+                {
+                    message = [PillsFormatter stringByReplacingPillsIn:attributedTextMessage mode:PillsReplacementTextModeIdentifier];
+                }
+                else
+                {
+                    message = attributedTextMessage.string;
+                }
+                // Try to send the slash command
+                isMessageAHandledCommand = [self sendAsIRCStyleCommandIfPossible:message];
             }
-            else
+            
+            if (!isMessageAHandledCommand)
             {
-                message = attributedTextMessage.string;
+                [self sendAttributedTextMessage:attributedTextMessage];
             }
-            // Try to send the slash command
-            isMessageAHandledCommand = [self sendAsIRCStyleCommandIfPossible:message];
         }
-
-        if (!isMessageAHandledCommand)
-        {
-            [self sendAttributedTextMessage:attributedTextMessage];
-        }
+        // Errors are handled at the request level. This should be improved in case of code rewriting.
     }];
 }
 
@@ -7507,9 +7524,9 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (void)sendImage:(NSData *)imageData mimeType:(NSString *)mimeType {
     // Create or invite again the left member before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
-    [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
+    [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
         MXStrongifyAndReturnIfNil(self);
-        if (success)
+        if (readyToSend)
         {
             // Let the datasource send it and manage the local echo
             [self.roomDataSource sendImage:imageData mimeType:mimeType success:nil failure:^(NSError *error) {
@@ -7517,15 +7534,16 @@ static CGSize kThreadListBarButtonItemImageSize;
                 MXLogDebug(@"[MXKRoomViewController] sendImage failed.");
             }];
         }
+        // Errors are handled at the request level. This should be improved in case of code rewriting.
     }];
 }
 
 - (void)sendVideo:(NSURL * _Nonnull)url {
     // Create or invite again the left member before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
-    [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
+    [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
         MXStrongifyAndReturnIfNil(self);
-        if (success)
+        if (readyToSend)
         {
             // Let the datasource send it and manage the local echo
             [(RoomDataSource*)self.roomDataSource sendVideo:url success:nil failure:^(NSError *error) {
@@ -7533,15 +7551,16 @@ static CGSize kThreadListBarButtonItemImageSize;
                 MXLogDebug(@"[MXKRoomViewController] sendVideo failed.");
             }];
         }
+        // Errors are handled at the request level. This should be improved in case of code rewriting.
     }];
 }
 
 - (void)sendFile:(NSURL * _Nonnull)url mimeType:(NSString *)mimeType {
     // Create or invite again the left member before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
-    [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
+    [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
         MXStrongifyAndReturnIfNil(self);
-        if (success)
+        if (readyToSend)
         {
             // Let the datasource send it and manage the local echo
             [self.roomDataSource sendFile:url mimeType:mimeType success:nil failure:^(NSError *error) {
@@ -7549,6 +7568,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                 MXLogDebug(@"[MXKRoomViewController] sendFile failed.");
             }];
         }
+        // Errors are handled at the request level. This should be improved in case of code rewriting.
     }];
 }
 
@@ -7621,14 +7641,15 @@ static CGSize kThreadListBarButtonItemImageSize;
         NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
         
         // Create or invite again the left member before sending the message in case of a discussion (direct chat)
-        [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
-            if (success)
+        [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
+            if (readyToSend)
             {
                 [roomInputToolbarView sendSelectedImage:imageData
                                            withMimeType:MXKUTI.jpeg.mimeType
                                      andCompressionMode:MediaCompressionHelper.defaultCompressionMode
                                     isPhotoLibraryAsset:NO];
             }
+            // Errors are handled at the request level. This should be improved in case of code rewriting.
         }];
     }
 }
@@ -7659,14 +7680,15 @@ static CGSize kThreadListBarButtonItemImageSize;
     if (roomInputToolbarView)
     {
         // Create or invite again the left member before sending the message in case of a discussion (direct chat)
-        [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
-            if (success)
+        [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
+            if (readyToSend)
             {
                 [roomInputToolbarView sendSelectedImage:imageData
                                            withMimeType:uti.mimeType
                                      andCompressionMode:MediaCompressionHelper.defaultCompressionMode
                                     isPhotoLibraryAsset:YES];
             }
+            // Errors are handled at the request level. This should be improved in case of code rewriting.
         }];
     }
 }
@@ -7691,11 +7713,12 @@ static CGSize kThreadListBarButtonItemImageSize;
         [MXSDKOptions sharedInstance].videoConversionPresetName = AVAssetExportPreset1920x1080;
         
         // Create or invite again the left member before sending the message in case of a discussion (direct chat)
-        [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
-            if (success)
+        [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
+            if (readyToSend)
             {
                 [roomInputToolbarView sendSelectedAssets:assets withCompressionMode:MediaCompressionHelper.defaultCompressionMode];
             }
+            // Errors are handled at the request level. This should be improved in case of code rewriting.
         }];
     }
 }

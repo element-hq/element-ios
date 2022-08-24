@@ -97,7 +97,7 @@ struct RoomCoordinatorParameters {
          userIndicatorPresenter: UserIndicatorTypePresenterProtocol,
          session: MXSession,
          parentSpaceId: String?,
-         roomId: String? = nil,
+         roomId: String?,
          eventId: String? = nil,
          threadId: String? = nil,
          userId: String? = nil,

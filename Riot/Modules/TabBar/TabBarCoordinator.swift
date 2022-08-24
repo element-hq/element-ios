@@ -991,6 +991,10 @@ extension TabBarCoordinator: RoomCoordinatorDelegate {
         self.showRoom(with: roomCoordinatorParameters,
                       stackOnSplitViewDetail: false)
     }
+    
+    func roomCoordinatorDidCancelNewDirectChat(_ coordinator: RoomCoordinatorProtocol) {
+        self.navigationRouter.popModule(animated: true)
+    }
 }
 
 // MARK: - UIGestureRecognizerDelegate

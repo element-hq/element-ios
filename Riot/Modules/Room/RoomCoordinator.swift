@@ -261,37 +261,39 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         startLoading()
         
         // Try to search target user if not exist in local session
-        if let user = self.parameters.session.getOrCreateUser(userId), user.displayname != nil {
-            // User has already been found from local session no update needed
-            self.stopLoading()
-            
-            // Update RoomViewController with found target user
-            self.roomViewController.displayNewDirectChat(withTargetUser: user, session: self.parameters.session)
-        } else if let user = MXUser(userId: userId) {
-            user.update(fromHomeserverOfMatrixSession: self.parameters.session) {
+        if let user = self.parameters.session.getOrCreateUser(userId) {
+            if user.displayname != nil {
+                // User has already been found from local session no update needed
                 self.stopLoading()
-                
-                self.parameters.session.store.store(user)
                 
                 // Update RoomViewController with found target user
                 self.roomViewController.displayNewDirectChat(withTargetUser: user, session: self.parameters.session)
-            } failure: { [weak self] error in
-                guard let self = self else { return }
-                self.stopLoading()
-                
-                MXLog.error("[RoomCoordinator] User does not exist")
-                
-                // Alert user
-                let alert = UIAlertController(title: nil, message: VectorL10n.roomCreationDmError, preferredStyle: .alert)
-                
-                let cancelActionTitle = VectorL10n.ok
-                let cancelAction = UIAlertAction(title: cancelActionTitle, style: .cancel) { (_) in
-                    self.roomViewController.popToHomeViewController()
+            } else {
+                // update user from homeserver
+                user.update(fromHomeserverOfMatrixSession: self.parameters.session) {
+                    self.stopLoading()
+                    
+                    self.parameters.session.store.store(user)
+                    
+                    // Update RoomViewController with found target user
+                    self.roomViewController.displayNewDirectChat(withTargetUser: user, session: self.parameters.session)
+                } failure: { [weak self] error in
+                    guard let self = self else { return }
+                    self.stopLoading()
+                    
+                    MXLog.error("[RoomCoordinator] User does not exist")
+                    
+                    // Alert user
+                    self.displayError(message: VectorL10n.roomCreationDmError) { [weak self] in
+                        guard let self = self else { return }
+                        self.delegate?.roomCoordinatorDidCancelNewDirectChat(self)
+                    }
                 }
-                
-                alert.addAction(cancelAction)
-                self.toPresentable().present(alert, animated: true)
             }
+        } else {
+            self.stopLoading()
+            
+            self.displayError(message: VectorL10n.roomCreationDmError)
         }
     }
     
@@ -511,6 +513,15 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     private func hideLocationSharingIndicator() {
         locationSharingIndicatorCancel?()
         locationSharingIndicatorCancel = nil
+    }
+    
+    private func displayError(message: String, completion: (() -> Void)? = nil) {
+        let alert = UIAlertController(title: VectorL10n.error, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: VectorL10n.ok, style: .default) { _ in
+            completion?()
+        }
+        alert.addAction(action)
+        toPresentable().present(alert, animated: true)
     }
 }
 

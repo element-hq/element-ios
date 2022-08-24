@@ -199,5 +199,9 @@ extension ThreadsCoordinator: RoomCoordinatorDelegate {
     func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didReplaceRoomWithReplacementId roomId: String) {
         
     }
+    
+    func roomCoordinatorDidCancelNewDirectChat(_ coordinator: RoomCoordinatorProtocol) {
+        
+    }
 
 }
