@@ -50,6 +50,7 @@ class AllChatsActionProvider {
                                                                      filters: settings.filters,
                                                                      sorting: settings.sorting)
                             AllChatsLayoutSettingsManager.shared.allChatLayoutSettings = newSettings
+                            Analytics.shared.trackInteraction(action.state == .on ? .allChatsRecentsDisabled : .allChatsRecentsEnabled)
                         }
     }
     
@@ -62,6 +63,7 @@ class AllChatsActionProvider {
                                                                      filters: action.state == .on ? [] : [.unreads, .favourites, .people],
                                                                      sorting: settings.sorting)
                             AllChatsLayoutSettingsManager.shared.allChatLayoutSettings = newSettings
+                            Analytics.shared.trackInteraction(action.state == .on ? .allChatsFiltersDisabled : .allChatsFiltersEnabled)
                         }
     }
     

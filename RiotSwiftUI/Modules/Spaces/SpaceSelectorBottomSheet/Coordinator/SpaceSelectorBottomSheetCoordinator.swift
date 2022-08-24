@@ -71,6 +71,7 @@ final class SpaceSelectorBottomSheetCoordinator: NSObject, Coordinator, Presenta
     // MARK: - Public
     
     func start() {
+        Analytics.shared.trackScreen(.spaceBottomSheet)
         push(createSpaceSelectorCoordinator(parentSpaceId: nil))
     }
     
@@ -135,6 +136,7 @@ final class SpaceSelectorBottomSheetCoordinator: NSObject, Coordinator, Presenta
                     self.push(self.createSpaceDetailCoordinator(forSpaceWithId: item.id))
                 }
             case .spaceDisclosure(let item):
+                Analytics.shared.viewRoomTrigger = .spaceBottomSheet
                 self.push(self.createSpaceSelectorCoordinator(parentSpaceId: item.id))
             case .createSpace(let parentSpaceId):
                 self.completion?(.createSpace(parentSpaceId))
@@ -181,7 +183,11 @@ final class SpaceSelectorBottomSheetCoordinator: NSObject, Coordinator, Presenta
             return
         }
         
-        Analytics.shared.trackInteraction(.spacePanelSwitchSpace)
+        if spaceIdStack.isEmpty {
+            Analytics.shared.trackInteraction(.spacePanelSwitchSpace)
+        } else {
+            Analytics.shared.trackInteraction(.spacePanelSwitchSubSpace)
+        }
     }
 }
 

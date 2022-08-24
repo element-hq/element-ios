@@ -22,6 +22,7 @@ class UserSessionProperties: NSObject {
     // MARK: - Constants
     private enum Constants {
         static let useCaseKey = "useCase"
+        static let activeFilterKey = "activeFilter"
     }
     
     // MARK: - Properties
@@ -64,6 +65,25 @@ class UserSessionProperties: NSObject {
         case skipped
     }
     
+    /// The active filter in the All Chats screen.
+    var allChatsActiveFilter: AllChatsActiveFilter? {
+        get {
+            guard let rawValue = dictionary[Constants.activeFilterKey] as? String else { return nil }
+            return AllChatsActiveFilter(rawValue: rawValue)
+        } set {
+            dictionary[Constants.activeFilterKey] = newValue?.rawValue
+        }
+    }
+    
+    /// Represents the active filter in the All Chats screen.
+    /// Note: The raw string value is used for storage.
+    public enum AllChatsActiveFilter: String {
+        case all
+        case favourites
+        case people
+        case unreads
+    }
+
     // MARK: - Setup
     
     /// Create new properties for the specified user ID.
