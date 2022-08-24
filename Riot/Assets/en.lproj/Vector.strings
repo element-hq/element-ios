@@ -2182,9 +2182,12 @@ Tap the + to start adding people.";
 "all_chats_edit_layout_alphabetical_order" = "Sort A-Z";
 "all_chats_all_filter" = "All";
 "all_chats_empty_view_title" = "%@\nis looking a little empty.";
-"all_chats_empty_view_information" = "Spaces are a new way to group rooms and people. Add an existing room, or create a new one, to get started.";
-"all_chats_empty_list_placeholder_title" = "Nothing to report.";
+"all_chats_empty_space_information" = "Spaces are a new way to group rooms and people. Add an existing room, or create a new one, using the bottom-right button.";
+"all_chats_empty_view_information" = "The all-in-one secure chat app for teams, friends and organisations. Create a chat, or join an existing room, to get started.";
+"all_chats_empty_list_placeholder_title" = "You’re all caught up.";
 "all_chats_empty_unreads_placeholder_message" = "This is where you're unread messages will show up, when you have some.";
+"all_chats_nothing_found_placeholder_title" = "Nothing found.";
+"all_chats_nothing_found_placeholder_message" = "Try adjusting your search.";
 
 "room_recents_recently_viewed_section" = "Recently viewed";
 
@@ -2201,6 +2204,11 @@ Tap the + to start adding people.";
 "all_chats_onboarding_page_message3" = "Tap your profile to let us know what you think.";
 "all_chats_onboarding_title" = "What's new";
 "all_chats_onboarding_try_it" = "Try it out";
+
+// Mark: - Room invites
+
+"room_invites_empty_view_title" = "Nothing new.";
+"room_invites_empty_view_information" = "This is where your invites appear.";
 
 // Mark: - Space Selector
 

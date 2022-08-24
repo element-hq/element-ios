@@ -212,23 +212,26 @@ class AllChatsViewController: HomeViewController {
         let informationText: String
         if let currentSpace = self.dataSource?.currentSpace {
             title = VectorL10n.allChatsEmptyViewTitle(currentSpace.summary?.displayname ?? VectorL10n.spaceTag)
-            informationText = VectorL10n.allChatsEmptyViewInformation
+            informationText = VectorL10n.allChatsEmptySpaceInformation
         } else {
             let myUser = mainSession.myUser
             let displayName = (myUser?.displayName ?? myUser?.userId) ?? ""
             let appName = AppInfo.current.displayName
             title = VectorL10n.homeEmptyViewTitle(appName, displayName)
-            informationText = VectorL10n.homeEmptyViewInformation
+            informationText = VectorL10n.allChatsEmptyViewInformation
         }
         
-        self.emptyView?.fill(with: emptyViewArtwork, title: title, informationText: informationText)
+        self.emptyView?.fill(with: emptyViewArtwork,
+                             title: title,
+                             informationText: informationText,
+                             displayMode: self.dataSource?.currentSpace == nil ? .default : .icon)
     }
     
     private var emptyViewArtwork: UIImage {
         if self.dataSource?.currentSpace == nil {
-            return ThemeService.shared().isCurrentThemeDark() ? Asset.Images.roomsEmptyScreenArtworkDark.image : Asset.Images.roomsEmptyScreenArtwork.image
+            return ThemeService.shared().isCurrentThemeDark() ? Asset.Images.peopleEmptyScreenArtworkDark.image : Asset.Images.peopleEmptyScreenArtwork.image
         } else {
-            return ThemeService.shared().isCurrentThemeDark() ? Asset.Images.homeEmptyScreenArtworkDark.image : Asset.Images.homeEmptyScreenArtwork.image
+            return Asset.Images.allChatsEditIcon.image
         }
     }
     
@@ -297,9 +300,9 @@ class AllChatsViewController: HomeViewController {
         self.navigationController?.isToolbarHidden = false
         self.update(with: ThemeService.shared().theme)
         self.tabBarController?.setToolbarItems([
-            UIBarButtonItem(image: UIImage(systemName: "square.grid.2x2"), style: .done, target: self, action: #selector(self.showSpaceSelectorAction(sender: ))),
+            UIBarButtonItem(image: Asset.Images.allChatsSpacesIcon.image, style: .done, target: self, action: #selector(self.showSpaceSelectorAction(sender: ))),
             UIBarButtonItem.flexibleSpace(),
-            UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), menu: menu)
+            UIBarButtonItem(image: Asset.Images.allChatsEditIcon.image, menu: menu)
         ], animated: true)
     }
     

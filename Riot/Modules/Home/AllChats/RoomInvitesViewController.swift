@@ -111,17 +111,11 @@ class RoomInvitesViewController: RecentsViewController {
     // MARK: - Empty view management
     
     override func updateEmptyView() {
-        emptyView?.fill(with: self.emptyViewArtwork,
-                        title: VectorL10n.roomsEmptyViewTitle,
-                        informationText: VectorL10n.roomsEmptyViewInformation)
-    }
-    
-    private var emptyViewArtwork: UIImage {
-        if ThemeService.shared().isCurrentThemeDark() {
-            return Asset.Images.roomsEmptyScreenArtworkDark.image
-        } else {
-            return Asset.Images.roomsEmptyScreenArtwork.image
-        }
+        let image = UIImage(systemName: "envelope.open.fill") ?? UIImage()
+        emptyView?.fill(with: image,
+                        title: VectorL10n.roomInvitesEmptyViewTitle,
+                        informationText: VectorL10n.roomInvitesEmptyViewInformation,
+                        displayMode: .icon)
     }
     
 }

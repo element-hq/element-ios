@@ -179,21 +179,33 @@ public class VectorL10n: NSObject {
   public static var allChatsEditMenuSpaceSettings: String { 
     return VectorL10n.tr("Vector", "all_chats_edit_menu_space_settings") 
   }
-  /// Nothing to report.
+  /// You’re all caught up.
   public static var allChatsEmptyListPlaceholderTitle: String { 
     return VectorL10n.tr("Vector", "all_chats_empty_list_placeholder_title") 
+  }
+  /// Spaces are a new way to group rooms and people. Add an existing room, or create a new one, using the bottom-right button.
+  public static var allChatsEmptySpaceInformation: String { 
+    return VectorL10n.tr("Vector", "all_chats_empty_space_information") 
   }
   /// This is where you're unread messages will show up, when you have some.
   public static var allChatsEmptyUnreadsPlaceholderMessage: String { 
     return VectorL10n.tr("Vector", "all_chats_empty_unreads_placeholder_message") 
   }
-  /// Spaces are a new way to group rooms and people. Add an existing room, or create a new one, to get started.
+  /// The all-in-one secure chat app for teams, friends and organisations. Create a chat, or join an existing room, to get started.
   public static var allChatsEmptyViewInformation: String { 
     return VectorL10n.tr("Vector", "all_chats_empty_view_information") 
   }
   /// %@\nis looking a little empty.
   public static func allChatsEmptyViewTitle(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "all_chats_empty_view_title", p1)
+  }
+  /// Try adjusting your search.
+  public static var allChatsNothingFoundPlaceholderMessage: String { 
+    return VectorL10n.tr("Vector", "all_chats_nothing_found_placeholder_message") 
+  }
+  /// Nothing found.
+  public static var allChatsNothingFoundPlaceholderTitle: String { 
+    return VectorL10n.tr("Vector", "all_chats_nothing_found_placeholder_title") 
   }
   /// To simplify your Element, tabs are now optional. Manage them using the top-right menu.
   public static var allChatsOnboardingPageMessage1: String { 
@@ -5702,6 +5714,14 @@ public class VectorL10n: NSObject {
   /// To %@
   public static func roomInviteToSpaceOptionTitle(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "room_invite_to_space_option_title", p1)
+  }
+  /// This is where your invites appear.
+  public static var roomInvitesEmptyViewInformation: String { 
+    return VectorL10n.tr("Vector", "room_invites_empty_view_information") 
+  }
+  /// Nothing new.
+  public static var roomInvitesEmptyViewTitle: String { 
+    return VectorL10n.tr("Vector", "room_invites_empty_view_title") 
   }
   /// Join
   public static var roomJoinGroupCall: String { 
