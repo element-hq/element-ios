@@ -37,6 +37,7 @@ class AllChatsFilterOptions: NSObject {
         filterOptionListView.selectedOptionType = AllChatsLayoutSettingsManager.shared.activeFilters
         filterOptionListView.selectionChanged = { filter in
             guard filter != .all else {
+                Analytics.shared.trackInteraction(.allChatsFilterAll)
                 AllChatsLayoutSettingsManager.shared.activeFilters = []
                 return
             }
