@@ -22,15 +22,18 @@ struct SpaceSelectorCoordinatorParameters {
     let parentSpaceId: String?
     let selectedSpaceId: String?
     let showHomeSpace: Bool
+    let showCancel: Bool
     
     init(session: MXSession,
          parentSpaceId: String? = nil,
          selectedSpaceId: String? = nil,
-         showHomeSpace: Bool = false) {
+         showHomeSpace: Bool = false,
+         showCancel: Bool) {
         self.session = session
         self.parentSpaceId = parentSpaceId
         self.selectedSpaceId = selectedSpaceId
         self.showHomeSpace = showHomeSpace
+        self.showCancel = showCancel
     }
 }
 
@@ -58,7 +61,7 @@ final class SpaceSelectorCoordinator: Coordinator, Presentable {
     init(parameters: SpaceSelectorCoordinatorParameters) {
         self.parameters = parameters
         let service = SpaceSelectorService(session: parameters.session, parentSpaceId: parameters.parentSpaceId, showHomeSpace: parameters.showHomeSpace, selectedSpaceId: parameters.selectedSpaceId)
-        let viewModel = SpaceSelectorViewModel.makeViewModel(service: service)
+        let viewModel = SpaceSelectorViewModel.makeViewModel(service: service, showCancel: parameters.showCancel)
         let view = SpaceSelector(viewModel: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
         self.viewModel = viewModel
@@ -72,6 +75,10 @@ final class SpaceSelectorCoordinator: Coordinator, Presentable {
     // MARK: - Public
     
     func start() {
+        if let room = parameters.session.room(withRoomId: parameters.parentSpaceId) {
+            Analytics.shared.trackViewRoom(room)
+        }
+
         MXLog.debug("[SpaceSelectorCoordinator] did start.")
         viewModel.completion = { [weak self] result in
             guard let self = self else { return }

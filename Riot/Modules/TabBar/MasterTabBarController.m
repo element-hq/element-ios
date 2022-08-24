@@ -18,7 +18,6 @@
 #import "MasterTabBarController.h"
 
 #import "RecentsDataSource.h"
-#import "GroupsDataSource.h"
 
 
 #import "MXRoom+Riot.h"
@@ -46,9 +45,6 @@
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
     
-    // The groups data source
-    GroupsDataSource *groupsDataSource;
-    
     // Custom title view of the navigation bar
     MainTitleView *titleView;
     
@@ -58,6 +54,7 @@
 @property(nonatomic,getter=isHidden) BOOL hidden;
 
 @property (nonatomic, readwrite) OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter;
+@property (nonatomic) AllChatsOnboardingCoordinatorBridgePresenter *allChatsOnboardingCoordinatorBridgePresenter;
 
 // Tell whether the onboarding screen is preparing.
 @property (nonatomic, readwrite) BOOL isOnboardingCoordinatorPreparing;
@@ -90,11 +87,6 @@
 - (RoomsViewController *)roomsViewController
 {
     return (RoomsViewController*)[self viewControllerForClass:RoomsViewController.class];
-}
-
-- (GroupsViewController *)groupsViewController
-{
-    return (GroupsViewController*)[self viewControllerForClass:GroupsViewController.class];
 }
 
 #pragma mark - Life cycle
@@ -221,6 +213,11 @@
         }
         
         [[AppDelegate theDelegate] checkAppVersion];
+        
+        if (BuildSettings.newAppLayoutEnabled && !RiotSettings.shared.allChatsOnboardingHasBeenDisplayed)
+        {
+            [self showAllChatsOnboardingScreen];
+        }
     }
 }
 
@@ -357,11 +354,6 @@
         }
         [recentsDataSource setDelegate:recentsDataSourceDelegate andRecentsDataSourceMode:recentsDataSourceMode];
         
-        // Init the recents data source
-        groupsDataSource = [[GroupsDataSource alloc] initWithMatrixSession:mainSession];
-        [groupsDataSource finalizeInitialization];
-        [self.groupsViewController displayList:groupsDataSource];
-        
         // Check whether there are others sessions
         NSArray<MXSession*>* mxSessions = self.mxSessions;
         if (mxSessions.count > 1)
@@ -418,8 +410,6 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMatrixSessionStateDidChange:) name:kMXSessionStateDidChangeNotification object:nil];
     }
     [mxSessionArray addObject:mxSession];
-    
-    // @TODO: handle multi sessions for groups
 }
 
 - (void)removeMatrixSession:(MXSession *)mxSession
@@ -448,13 +438,29 @@
     }
     
     [mxSessionArray removeObject:mxSession];
-    
-    // @TODO: handle multi sessions for groups
 }
 
 - (void)onMatrixSessionStateDidChange:(NSNotification *)notif
 {
     [self refreshTabBarBadges];
+}
+
+- (void)showAllChatsOnboardingScreen
+{
+    self.allChatsOnboardingCoordinatorBridgePresenter = [AllChatsOnboardingCoordinatorBridgePresenter new];
+    MXWeakify(self);
+    self.allChatsOnboardingCoordinatorBridgePresenter.completion = ^{
+        RiotSettings.shared.allChatsOnboardingHasBeenDisplayed = YES;
+        
+        MXStrongifyAndReturnIfNil(self);
+        
+        MXWeakify(self);
+        [self.allChatsOnboardingCoordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+            MXStrongifyAndReturnIfNil(self);
+            self.allChatsOnboardingCoordinatorBridgePresenter = nil;
+        }];
+    };
+    [self.allChatsOnboardingCoordinatorBridgePresenter presentFrom:self animated:YES];
 }
 
 // TODO: Manage the onboarding coordinator at the AppCoordinator level
@@ -566,25 +572,6 @@
     [self refreshSelectedControllerSelectedCellIfNeeded];
 }
 
-- (void)selectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession
-{
-    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES stackAboveVisibleViews:NO];
-    
-    [self selectGroup:group inMatrixSession:matrixSession presentationParameters:presentationParameters];
-}
-
-- (void)selectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession presentationParameters:(ScreenPresentationParameters*)presentationParameters
-{
-    [self releaseSelectedItem];
-    
-    _selectedGroup = group;
-    _selectedGroupSession = matrixSession;
-    
-    [self.masterTabBarDelegate masterTabBarController:self didSelectGroup:group inMatrixSession:matrixSession presentationParameters:presentationParameters];
-    
-    [self refreshSelectedControllerSelectedCellIfNeeded];
-}
-
 - (void)releaseSelectedItem
 {
     _selectedRoomId = nil;
@@ -593,9 +580,6 @@
     _selectedRoomPreviewData = nil;
     
     _selectedContact = nil;
-    
-    _selectedGroup = nil;
-    _selectedGroupSession = nil;        
 }
 
 - (NSUInteger)missedDiscussionsCount

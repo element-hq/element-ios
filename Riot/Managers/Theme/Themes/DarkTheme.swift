@@ -185,9 +185,9 @@ class DarkTheme: NSObject, Theme {
         button.setTitleColor(self.tintColor, for: .normal)
     }
     
-    // MARK: - Theme v2
-    var colors = UIColor.elementDark
+    ///  MARK: - Theme v2
+    var colors: ColorsUIKit = DarkColors.uiKit
     
-    var fonts = UIFont.element
+    var fonts: FontsUIKit = FontsUIKit(values: ElementFonts())
     
 }

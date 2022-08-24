@@ -19,6 +19,6 @@ import Foundation
 protocol SpaceSelectorViewModelProtocol {
     
     var completion: ((SpaceSelectorViewModelResult) -> Void)? { get set }
-    static func makeViewModel(service: SpaceSelectorServiceProtocol) -> SpaceSelectorViewModelProtocol
+    static func makeViewModel(service: SpaceSelectorServiceProtocol, showCancel: Bool) -> SpaceSelectorViewModelProtocol
     var context: SpaceSelectorViewModelType.Context { get }
 }

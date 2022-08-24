@@ -14,33 +14,10 @@
 // limitations under the License.
 //
 
-import SwiftUI
+import Foundation
 import DesignKit
-import DesignTokens
 
 protocol ThemeSwiftUI: ThemeSwiftUIType {
     var identifier: ThemeIdentifier { get }
     var isDark: Bool { get }
-}
-
-/// Theme v2 for SwiftUI.
-@available(iOS 14.0, *)
-public protocol ThemeSwiftUIType {
-    
-    /// Colors object
-    var colors: ElementColors { get }
-    
-    /// Fonts object
-    var fonts: ElementFonts { get }
-    
-    /// may contain more design components in future, like icons, audio files etc.
-}
-
-// MARK: - Legacy Colors
-
-public extension ElementColors {
-    var legacyTile: Color {
-        let dynamicColor = UIColor { $0.userInterfaceStyle == .light ? .elementLight.tile : .elementDark.tile }
-        return Color(dynamicColor)
-    }
 }

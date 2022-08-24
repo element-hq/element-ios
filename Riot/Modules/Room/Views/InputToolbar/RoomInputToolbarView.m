@@ -80,10 +80,9 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     [self updateUIWithAttributedTextMessage:nil animated:NO];
     
     self.textView.toolbarDelegate = self;
-    
-    // Add an accessory view to the text view in order to retrieve keyboard view.
-    inputAccessoryView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.textView.inputAccessoryView = inputAccessoryView;
+
+    inputAccessoryViewForKeyboard = [[UIView alloc] initWithFrame:CGRectZero];
+    self.textView.inputAccessoryView = inputAccessoryViewForKeyboard;
 }
 
 - (void)setVoiceMessageToolbarView:(UIView *)voiceMessageToolbarView

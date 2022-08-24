@@ -92,11 +92,6 @@
 @property (nonatomic) UIImage *targetAvatarPlaceholder;
 
 /**
- The current sender flair (list of the publicised groups in the sender profile which matches the room flair settings)
- */
-@property (nonatomic) NSArray<MXGroup*> *senderFlair;
-
-/**
  Tell whether the room is encrypted.
  */
 @property (nonatomic) BOOL isEncryptedRoom;
@@ -303,11 +298,6 @@ Update the event because its sent state changed or it is has been redacted.
                   withBackgroundColor:(UIColor *)backgroundColor
                       foregroundColor:(UIColor*)foregroundColor
                               andFont:(UIFont*)patternFont;
-
-/**
- Refresh the sender flair information
- */
-- (void)refreshSenderFlair;
 
 /**
  Indicate that the current text message layout is no longer valid and should be recomputed

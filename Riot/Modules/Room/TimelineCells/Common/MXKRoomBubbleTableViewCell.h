@@ -305,11 +305,6 @@ extern NSString *const kMXKRoomBubbleCellUrlItemInteraction;
 - (void)prepareRender:(MXKCellData*)cellData;
 
 /**
- Refresh the flair information added to the sender display name.
- */
-- (void)renderSenderFlair;
-
-/**
  Highlight text message related to a specific event in the displayed message.
  
  @param eventId the id of the event to highlight (use nil to cancel highlighting).

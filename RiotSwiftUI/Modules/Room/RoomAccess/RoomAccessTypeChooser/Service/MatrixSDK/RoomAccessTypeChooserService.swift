@@ -100,7 +100,9 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
     
     func applySelection(completion: @escaping () -> Void) {
         guard let room = session.room(withRoomId: currentRoomId) else {
-            MXLog.error("[RoomAccessTypeChooserService] applySelection: room with ID \(currentRoomId) not found")
+            MXLog.error("[RoomAccessTypeChooserService] applySelection: room with ID not found", context: [
+                "room_id": currentRoomId
+            ])
             return
         }
         
@@ -164,7 +166,9 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
     
     private func readRoomState() {
         guard let room = session.room(withRoomId: currentRoomId) else {
-            MXLog.error("[RoomAccessTypeChooserService] readRoomState: room with ID \(currentRoomId) not found")
+            MXLog.error("[RoomAccessTypeChooserService] readRoomState: room with ID not found", context: [
+                "room_id": currentRoomId
+            ])
             return
         }
         

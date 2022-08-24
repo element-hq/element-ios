@@ -19,7 +19,8 @@ import Foundation
 class RoomInviteViewController: ContactsTableViewController {
     
     var room: MXRoom?
-    var roomAlias: String?
+    private var roomAlias: String?
+    private var joinRule: MXRoomJoinRule?
     
     private lazy var shareLinkPresenter: ShareInviteLinkPresenter = ShareInviteLinkPresenter()
     
@@ -27,11 +28,15 @@ class RoomInviteViewController: ContactsTableViewController {
         super.viewDidLoad()
         
         roomAlias = room?.summary?.aliases?.first
+        joinRule = MXRoomJoinRule(identifier: room?.summary?.joinRule)
         setupShareInviteLinkHeader()
     }
     
     private func setupShareInviteLinkHeader() {
-        guard roomAlias != nil, RiotSettings.shared.allowInviteExernalUsers else {
+        guard roomAlias != nil,
+              RiotSettings.shared.allowInviteExernalUsers,
+              joinRule != .invite,
+              joinRule != .restricted else {
             contactsTableView.tableHeaderView = nil
             return
         }

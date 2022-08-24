@@ -31,7 +31,7 @@ class EffectsScene: SCNScene {
     static func confetti(with theme: ThemeSwiftUI) -> EffectsScene? {
         guard let scene = EffectsScene(named: Constants.confettiSceneName) else { return nil }
         
-        let colors: [[Float]] = theme.colors.contentAndAvatars.compactMap { $0.floatComponents }
+        let colors: [[Float]] = theme.colors.namesAndAvatars.compactMap { $0.floatComponents }
         
         if let particles = scene.rootNode.childNode(withName: Constants.particlesNodeName, recursively: false)?.particleSystems?.first {
             // The particles need a non-zero color variation for the handler to affect the color

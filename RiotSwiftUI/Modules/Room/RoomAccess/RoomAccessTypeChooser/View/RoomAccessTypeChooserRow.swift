@@ -45,7 +45,7 @@ struct RoomAccessTypeChooserRow: View {
                 Spacer()
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                     .renderingMode(.template)
-                    .foregroundColor(isSelected ? theme.colors.accent : theme.colors.quaternaryContent)
+                    .foregroundColor(isSelected ? theme.colors.accent : theme.colors.quarterlyContent)
             }
             if let badgeText = badgeText {
                 Text(badgeText)

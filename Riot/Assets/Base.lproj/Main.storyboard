@@ -171,7 +171,7 @@
         <!--All Chats View Controller-->
         <scene sceneID="VNs-EF-YAe">
             <objects>
-                <viewController storyboardIdentifier="AllChatsViewController" extendedLayoutIncludesOpaqueBars="YES" id="EOr-kV-8pa" customClass="AllChatsViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AllChatsViewController" extendedLayoutIncludesOpaqueBars="YES" id="EOr-kV-8pa" customClass="AllChatsViewController" customModule="Element" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5IA-we-z5u"/>
                         <viewControllerLayoutGuide type="bottom" id="9LE-SN-vqG"/>
@@ -257,7 +257,6 @@
                         <segue destination="HnD-LA-psC" kind="relationship" relationship="viewControllers" id="zON-Qp-EVq"/>
                         <segue destination="IGB-jr-yFz" kind="relationship" relationship="viewControllers" id="CeF-yL-aO0"/>
                         <segue destination="HPQ-zg-lZR" kind="relationship" relationship="viewControllers" id="y12-eg-vhO"/>
-                        <segue destination="SLx-Wj-p7E" kind="relationship" relationship="viewControllers" id="MLn-VT-30W"/>
                         <segue destination="EOr-kV-8pa" kind="relationship" relationship="viewControllers" id="j67-Px-Dkd"/>
                     </connections>
                 </tabBarController>
@@ -371,7 +370,7 @@
         <!--Placeholder Detail View Controller-->
         <scene sceneID="2wP-Cu-Wca">
             <objects>
-                <viewController storyboardIdentifier="EmptyDetailsViewControllerStoryboardId" id="Cpr-Tz-Az0" customClass="PlaceholderDetailViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EmptyDetailsViewControllerStoryboardId" id="Cpr-Tz-Az0" customClass="PlaceholderDetailViewController" customModule="Element" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="yS4-RU-AsN"/>
                         <viewControllerLayoutGuide type="bottom" id="VKG-pW-vMU"/>
@@ -402,25 +401,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pZm-ap-zdK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-153" y="-1121"/>
-        </scene>
-        <!--Groups View Controller-->
-        <scene sceneID="Rqp-Ti-qpu">
-            <objects>
-                <viewController storyboardIdentifier="GroupsViewController" id="SLx-Wj-p7E" customClass="GroupsViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="N1j-ye-uQa"/>
-                        <viewControllerLayoutGuide type="bottom" id="FYD-2t-u4k"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Sl8-9u-7yE">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="" image="tab_groups" id="5x2-xc-uIB"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="xpc-LV-krz" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="942" y="-1299"/>
         </scene>
         <!--Rooms View Controller-->
         <scene sceneID="SDg-Pp-8Uj">
@@ -506,7 +486,7 @@
         <!--Thread-->
         <scene sceneID="Opl-gU-pwm">
             <objects>
-                <viewController storyboardIdentifier="ThreadViewControllerStoryboardId" title="Room" hidesBottomBarWhenPushed="YES" id="R2h-H9-hdJ" userLabel="Thread" customClass="ThreadViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ThreadViewControllerStoryboardId" title="Room" hidesBottomBarWhenPushed="YES" id="R2h-H9-hdJ" userLabel="Thread" customClass="ThreadViewController" customModule="Element" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="TFF-nx-BSb">
                         <nil key="title"/>
                         <view key="titleView" contentMode="scaleToFill" id="e4J-vI-jzo" userLabel="Room title view container">
@@ -523,16 +503,42 @@
             </objects>
             <point key="canvasLocation" x="-153" y="-419"/>
         </scene>
+        <!--Room Invites View Controller-->
+        <scene sceneID="ied-3I-huo">
+            <objects>
+                <viewController storyboardIdentifier="RoomInvitesViewController" extendedLayoutIncludesOpaqueBars="YES" id="BYq-qZ-orN" customClass="RoomInvitesViewController" customModule="Element" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="NpE-qA-EJG"/>
+                        <viewControllerLayoutGuide type="bottom" id="N2q-zt-KdC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ln5-wB-A9e">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="" image="tab_home" id="vSs-0M-T3r">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="TabBarItemHome"/>
+                        </userDefinedRuntimeAttributes>
+                    </tabBarItem>
+                    <navigationItem key="navigationItem" id="FIq-cg-lge"/>
+                    <connections>
+                        <segue destination="WDS-Ip-RQ9" kind="presentation" identifier="presentStartChat" id="rok-Xg-Mhx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="r4V-Xa-ZoW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2734" y="-2050"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="y6u-0X-urR"/>
+        <segue reference="rok-Xg-Mhx"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="launch_screen_logo" width="240" height="240"/>
         <image name="search_icon" width="24" height="24"/>
         <image name="settings_icon" width="24" height="24"/>
         <image name="tab_favourites" width="24" height="24"/>
-        <image name="tab_groups" width="24" height="24"/>
         <image name="tab_home" width="20" height="23.5"/>
         <image name="tab_people" width="24" height="24"/>
         <image name="tab_rooms" width="24" height="24"/>

@@ -396,7 +396,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     
     func mapViewDidFailLoadingMap(_ mapView: MGLMapView, withError error: Error) {
         
-        MXLog.error("[RoomTimelineLocationView] Failed to load map with error: \(error)")
+        MXLog.error("[RoomTimelineLocationView] Failed to load map", context: error)
         
         self.isMapViewLoadingFailed = true
     }

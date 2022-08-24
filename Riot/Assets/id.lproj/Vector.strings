@@ -2626,3 +2626,35 @@
 "location_sharing_invalid_power_level_title" = "Anda tidak memiliki izin untuk membagikan lokasi";
 "authentication_choose_password_not_verified_message" = "Periksa kotak masuk Anda";
 "authentication_choose_password_not_verified_title" = "Email belum diverifikasi";
+"location_sharing_map_loading_error" = "Tidak dapat memuat peta\nHomeserver ini tidak diatur untuk menampilkan peta";
+
+// Mark: - Space Selector
+
+"space_selector_title" = "Space saya";
+"all_chats_edit_menu_space_settings" = "Pengaturan space";
+"all_chats_edit_menu_leave_space" = "Tinggalkan %@";
+"all_chats_user_menu_settings" = "Pengaturan pengguna";
+"room_recents_recently_viewed_section" = "Baru saja dilihat";
+"all_chats_all_filter" = "Semua";
+"all_chats_edit_layout_alphabetical_order" = "Urutkan A-Z";
+"all_chats_edit_layout_activity_order" = "Urutkan berdasarkan aktivitas";
+"all_chats_edit_layout_show_filters" = "Tampikan saringan";
+"all_chats_edit_layout_show_recents" = "Tampilkan yang terkini";
+"all_chats_edit_layout_sorting_options_title" = "Urutkan pesan berdasarkan";
+"all_chats_edit_layout_pin_spaces_title" = "Sematkan space Anda";
+"all_chats_edit_layout_add_filters_message" = "Saring pesan Anda ke kategori pilihan Anda secara otomatis";
+"all_chats_edit_layout_add_filters_title" = "Saring pesan Anda";
+"all_chats_edit_layout_add_section_message" = "Sematkan bagian ke beranda untuk akses yang mudah";
+"all_chats_edit_layout_add_section_title" = "Tambahkan bagian ke beranda";
+"all_chats_edit_layout_unreads" = "Belum dibaca";
+"all_chats_edit_layout_recents" = "Terkini";
+"all_chats_edit_layout" = "Preferensi tata letak";
+"all_chats_section_title" = "Obrolan";
+
+// Mark: - All Chats
+
+"all_chats_title" = "Semua obrolan";
+"spaces_subspace_creation_visibility_message" = "Space yang dibuat akan ditambahkan ke %@.";
+"spaces_subspace_creation_visibility_title" = "Tipe subspace apa yang Anda ingin buat?";
+"spaces_create_subspace_title" = "Buat sebuah subspace";
+"spaces_add_subspace_title" = "Buat space dalam %@";

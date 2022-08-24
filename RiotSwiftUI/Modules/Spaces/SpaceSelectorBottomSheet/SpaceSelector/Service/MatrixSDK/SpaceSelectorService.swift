@@ -29,19 +29,47 @@ class SpaceSelectorService: SpaceSelectorServiceProtocol {
     private let showHomeSpace: Bool
 
     private var spaceList: [SpaceSelectorListItemData] {
-        var itemList = showHomeSpace && parentSpaceId == nil ? [SpaceSelectorListItemData(id: SpaceSelectorConstants.homeSpaceId, icon: Asset.Images.sideMenuActionIconFeedback.image, displayName: VectorL10n.allChatsTitle)] : []
-        
         let notificationCounter = session.spaceService.notificationCounter
         
+        var invitedSpaces: [SpaceSelectorListItemData] = []
+        var joinedSpaces: [SpaceSelectorListItemData] = []
         if let parentSpaceId = parentSpaceId, let parentSpace = session.spaceService.getSpace(withId: parentSpaceId) {
-            itemList.append(contentsOf: parentSpace.childSpaces.compactMap { space in
-                SpaceSelectorListItemData.itemData(with: space, notificationCounter: notificationCounter)
-            })
+            for space in parentSpace.childSpaces {
+                guard let item = SpaceSelectorListItemData.itemData(with: space, notificationCounter: notificationCounter) else {
+                    continue
+                }
+                
+                if item.isJoined {
+                    joinedSpaces.append(item)
+                } else {
+                    invitedSpaces.append(item)
+                }
+            }
         } else {
-            itemList.append(contentsOf: session.spaceService.rootSpaces.compactMap { space in
-                SpaceSelectorListItemData.itemData(with: space, notificationCounter: notificationCounter)
-            })
+            for space in session.spaceService.rootSpaces {
+                guard let item = SpaceSelectorListItemData.itemData(with: space, notificationCounter: notificationCounter) else {
+                    continue
+                }
+                
+                if item.isJoined {
+                    joinedSpaces.append(item)
+                } else {
+                    invitedSpaces.append(item)
+                }
+            }
         }
+        
+        guard !invitedSpaces.isEmpty || !joinedSpaces.isEmpty else {
+            return []
+        }
+
+        var itemList: [SpaceSelectorListItemData] = []
+        itemList.append(contentsOf: invitedSpaces)
+        if showHomeSpace && parentSpaceId == nil {
+            itemList.append(SpaceSelectorListItemData(id: SpaceSelectorConstants.homeSpaceId, icon: Asset.Images.sideMenuActionIconFeedback.image, displayName: VectorL10n.allChatsTitle, isJoined: true))
+        }
+        itemList.append(contentsOf: joinedSpaces)
+
         return itemList
     }
     
@@ -71,6 +99,12 @@ class SpaceSelectorService: SpaceSelectorServiceProtocol {
 
         spaceListSubject.send(spaceList)
         parentSpaceNameSubject.send(parentSpaceName)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.spaceServiceDidUpdate), name: MXSpaceService.didBuildSpaceGraph, object: nil)
+    }
+    
+    @objc private func spaceServiceDidUpdate() {
+        spaceListSubject.send(spaceList)
     }
 }
 
@@ -87,6 +121,7 @@ fileprivate extension SpaceSelectorListItemData {
                                          displayName: summary.displayname,
                                          notificationCount: notificationState?.groupMissedDiscussionsCount ?? 0,
                                          highlightedNotificationCount: notificationState?.groupMissedDiscussionsHighlightedCount ?? 0,
-                                         hasSubItems: !space.childSpaces.isEmpty)
+                                         hasSubItems: !space.childSpaces.isEmpty,
+                                         isJoined: summary.isJoined)
     }
 }

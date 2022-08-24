@@ -84,7 +84,7 @@ final class KeyBackupRecoverCoordinator: KeyBackupRecoverCoordinatorType {
         let coordinator: Coordinator & Presentable
         
         // Check if a passphrase has been set for given backup
-        if let megolmBackupAuthData = MXMegolmBackupAuthData(fromJSON: self.keyBackupVersion.authData), megolmBackupAuthData.privateKeySalt != nil {
+        if self.keyBackupVersion.authData["private_key_salt"] != nil {
             coordinator = self.createRecoverFromPassphraseCoordinator()
         } else {
             coordinator = self.createRecoverFromRecoveryKeyCoordinator()

@@ -2399,3 +2399,35 @@
 "location_sharing_invalid_power_level_title" = "Non hai l'autorizzazione di condividere la posizione in tempo reale";
 "authentication_choose_password_not_verified_message" = "Controlla la posta in arrivo";
 "authentication_choose_password_not_verified_title" = "Email non verificata";
+"location_sharing_map_loading_error" = "Impossibile caricare la mappa\nQuesto homeserver non è configurato per mostrare mappe";
+
+// Mark: - Space Selector
+
+"space_selector_title" = "I miei spazi";
+"all_chats_edit_menu_space_settings" = "Impostazioni spazio";
+"all_chats_edit_menu_leave_space" = "Esci da %@";
+"all_chats_user_menu_settings" = "Impostazioni utente";
+"room_recents_recently_viewed_section" = "Viste di recente";
+"all_chats_all_filter" = "Tutte";
+"all_chats_edit_layout_alphabetical_order" = "Ordina A-Z";
+"all_chats_edit_layout_activity_order" = "Ordina per attività";
+"all_chats_edit_layout_show_filters" = "Mostra filtri";
+"all_chats_edit_layout_show_recents" = "Mostra recenti";
+"all_chats_edit_layout_sorting_options_title" = "Ordina messaggi per";
+"all_chats_edit_layout_pin_spaces_title" = "Fissa i tuoi spazi";
+"all_chats_edit_layout_add_filters_message" = "Filtra automaticamente i tuoi messaggi in categorie di tua scelta";
+"all_chats_edit_layout_add_filters_title" = "Filtra i tuoi messaggi";
+"all_chats_edit_layout_add_section_message" = "Fissa le sezioni alla pagina principale per un facile accesso";
+"all_chats_edit_layout_add_section_title" = "Aggiungi sezione a pagina principale";
+"all_chats_edit_layout_unreads" = "Non lette";
+"all_chats_edit_layout_recents" = "Recenti";
+"all_chats_edit_layout" = "Preferenze layout";
+"all_chats_section_title" = "Chat";
+
+// Mark: - All Chats
+
+"all_chats_title" = "Tutte le chat";
+"spaces_subspace_creation_visibility_message" = "Lo spazio creato verrà aggiunto a %@.";
+"spaces_subspace_creation_visibility_title" = "Che tipo di sottospazio vuoi creare?";
+"spaces_create_subspace_title" = "Crea un sottospazio";
+"spaces_add_subspace_title" = "Crea spazio all'interno di %@";

@@ -2415,3 +2415,39 @@
 // MARK: Authentication
 "authentication_registration_title" = "Fiók létrehozása";
 "authentication_server_info_title_login" = "Ahol a beszélgetéseid lesznek";
+"location_sharing_map_loading_error" = "A térkép betöltése sikertelen\nEz a matrix szerver nincs beállítva, hogy térképet mutasson";
+"location_sharing_invalid_power_level_message" = "Az élő helymegosztáshoz ebben a szobában megfelelő jogosultságokra van szükséged.";
+"location_sharing_invalid_power_level_title" = "Nincs jogosultságod a élő helymegosztáshoz";
+
+// Mark: - Space Selector
+
+"space_selector_title" = "Tereim";
+"all_chats_edit_menu_space_settings" = "Tér beállítások";
+"all_chats_edit_menu_leave_space" = "Elhagy: %@";
+"all_chats_user_menu_settings" = "Felhasználói beállítások";
+"room_recents_recently_viewed_section" = "Nemrég megtekintett";
+"all_chats_all_filter" = "Mind";
+"all_chats_edit_layout_alphabetical_order" = "Rendezés A-Z";
+"all_chats_edit_layout_activity_order" = "Rendezés aktivitás szerint";
+"all_chats_edit_layout_show_filters" = "Szűrők megjelenítése";
+"all_chats_edit_layout_show_recents" = "Legfrissebbek megjelenítése";
+"all_chats_edit_layout_sorting_options_title" = "Üzenetek rendezése";
+"all_chats_edit_layout_pin_spaces_title" = "Terek kitűzése";
+"all_chats_edit_layout_add_filters_message" = "Üzeneteid automatikus szűrése az általad választott kategóriákba";
+"all_chats_edit_layout_add_filters_title" = "Üzenetek szűrése";
+"all_chats_edit_layout_add_section_message" = "Rész kitűzése a kezdő képernyőhöz a könnyebb hozzáféréshez";
+"all_chats_edit_layout_add_section_title" = "Rész hozzáadása a kezdőképernyőhöz";
+"all_chats_edit_layout_unreads" = "Olvasatlan";
+"all_chats_edit_layout_recents" = "Legutóbbiak";
+"all_chats_edit_layout" = "Kinézet beállításai";
+"all_chats_section_title" = "Csevegések";
+
+// Mark: - All Chats
+
+"all_chats_title" = "Minden beszélgetés";
+"spaces_subspace_creation_visibility_message" = "Az elkészített tér hozzá lesz adva ehhez: %@.";
+"spaces_subspace_creation_visibility_title" = "Milyen típusú al-teret szeretnél készíteni?";
+"spaces_create_subspace_title" = "Téren belüli tér készítése";
+"spaces_add_subspace_title" = "Tér készítés itt: %@";
+"authentication_choose_password_not_verified_message" = "Nézd meg a bejövő e-mailjeidet";
+"authentication_choose_password_not_verified_title" = "E-mail nincs ellenőrizve";

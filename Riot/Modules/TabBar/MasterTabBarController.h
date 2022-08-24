@@ -22,21 +22,18 @@
 #import "FavouritesViewController.h"
 #import "PeopleViewController.h"
 #import "RoomsViewController.h"
-#import "GroupsViewController.h"
 
 #define TABBAR_HOME_INDEX         0
 #define TABBAR_FAVOURITES_INDEX   1
 #define TABBAR_PEOPLE_INDEX       2
 #define TABBAR_ROOMS_INDEX        3
-#define TABBAR_GROUPS_INDEX       4
-#define TABBAR_COUNT              5
+#define TABBAR_COUNT              4
 
 typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
     MasterTabBarIndexHome = TABBAR_HOME_INDEX,
     MasterTabBarIndexFavourites = TABBAR_FAVOURITES_INDEX,
     MasterTabBarIndexPeople = TABBAR_PEOPLE_INDEX,
-    MasterTabBarIndexRooms = TABBAR_ROOMS_INDEX,
-    MasterTabBarIndexGroups = TABBAR_GROUPS_INDEX
+    MasterTabBarIndexRooms = TABBAR_ROOMS_INDEX
 };
 
 @protocol MasterTabBarControllerDelegate;
@@ -89,16 +86,6 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 - (void)selectContact:(MXKContact*)contact withPresentationParameters:(ScreenPresentationParameters*)presentationParameters;
 
 /**
- Open a GroupDetailsViewController to display the information of the provided group.
- 
- @param group Selected community.
- @param matrixSession the matrix session in which the group should be available.
- */
-- (void)selectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession;
-
-- (void)selectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession presentationParameters:(ScreenPresentationParameters*)presentationParameters;
-
-/**
  Release the current selected item (if any).
  */
 - (void)releaseSelectedItem;
@@ -147,7 +134,6 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 @property (nonatomic, readonly) FavouritesViewController *favouritesViewController;
 @property (nonatomic, readonly) PeopleViewController *peopleViewController;
 @property (nonatomic, readonly) RoomsViewController *roomsViewController;
-@property (nonatomic, readonly) GroupsViewController *groupsViewController;
 
 
 // References on the currently selected room
@@ -158,10 +144,6 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 
 // References on the currently selected contact
 @property (nonatomic, readonly) MXKContact *selectedContact;
-
-// References on the currently selected group
-@property (nonatomic, readonly) MXGroup *selectedGroup;
-@property (nonatomic, readonly) MXSession *selectedGroupSession;
 
 // YES while the onboarding flow is displayed
 @property (nonatomic, readonly) BOOL isOnboardingInProgress;
@@ -183,6 +165,5 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 - (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectRoomWithParameters:(RoomNavigationParameters*)roomNavigationParameters completion:(void (^)(void))completion;
 - (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectRoomPreviewWithParameters:(RoomPreviewNavigationParameters*)roomPreviewNavigationParameters completion:(void (^)(void))completion;
 - (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectContact:(MXKContact*)contact withPresentationParameters:(ScreenPresentationParameters*)presentationParameters;
-- (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession presentationParameters:(ScreenPresentationParameters*)presentationParameters;
 
 @end

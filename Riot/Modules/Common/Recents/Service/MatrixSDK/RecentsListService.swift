@@ -35,7 +35,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     
     private var invitedRoomListDataFetcher: MXRoomListDataFetcher? {
         switch mode {
-        case .home, .allChats:
+        case .home, .allChats, .roomInvites:
             return invitedRoomListDataFetcherForHome
         case .people:
             return invitedRoomListDataFetcherForPeople
@@ -87,6 +87,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         .favourites: [.favorited],
         .people: [.invited, .directPeople],
         .rooms: [.invited, .conversationRooms, .suggested],
+        .roomInvites: [.invited],
         .allChats: [.breadcrumbs, .favorited, .directHome, .invited, .allChats, .lowPriority, .serverNotice, .suggested]
     ]
     
@@ -140,7 +141,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         if space != nil, let fetcher = suggestedRoomListDataFetcher, fetcherTypes.contains(.suggested) {
             result.append(fetcher)
         }
-        if let fetcher = breadcrumbsRoomListDataFetcher, fetcherTypes.contains(.breadcrumbs) {
+        if let fetcher = breadcrumbsRoomListDataFetcher, fetcherTypes.contains(.breadcrumbs), shouldShowBreadcrumbs {
             result.append(fetcher)
         }
         if let fetcher = allChatsRoomListDataFetcher, fetcherTypes.contains(.allChats) {
@@ -493,7 +494,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     }
     
     private var shouldShowBreadcrumbs: Bool {
-        return fetcherTypesForMode[mode]?.contains(.breadcrumbs) ?? false
+        return AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.sections.contains(.recents) && (fetcherTypesForMode[mode]?.contains(.breadcrumbs) ?? false)
     }
     
     private var shouldShowAllChats: Bool {

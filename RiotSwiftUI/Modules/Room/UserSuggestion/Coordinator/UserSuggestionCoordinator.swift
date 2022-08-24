@@ -117,7 +117,7 @@ private class UserSuggestionCoordinatorRoomMemberProvider: RoomMembersProviderPr
             self.roomMembers = joinedMembers
             members(self.roomMembersToProviderMembers(joinedMembers))
         }, failure: { error in
-            MXLog.error("[UserSuggestionCoordinatorRoomMemberProvider] Failed loading room with error: \(String(describing: error))")
+            MXLog.error("[UserSuggestionCoordinatorRoomMemberProvider] Failed loading room", context: error)
         })
     }
     

@@ -148,7 +148,9 @@ extension SpaceMenuPresenter: SpaceMenuModelViewModelCoordinatorDelegate {
         case .leaveSpaceAndChooseRooms:
             self.showLeaveSpace()
         default:
-            MXLog.error("[SpaceMenuPresenter] spaceListViewModel didSelectItem: invalid action \(action)")
+            MXLog.error("[SpaceMenuPresenter] spaceListViewModel didSelectItem: invalid action", context: [
+                "action": action
+            ])
         }
     }
 }

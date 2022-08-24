@@ -95,7 +95,7 @@
         // Notify unreads and bing
         if (roomCellData.hasUnread)
         {
-            self.missedNotifAndUnreadIndicator.hidden = BuildSettings.newAppLayoutEnabled;
+            self.missedNotifAndUnreadIndicator.hidden = NO;
             
             if (0 < roomCellData.notificationCount)
             {

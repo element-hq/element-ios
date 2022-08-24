@@ -32,7 +32,7 @@ class PrintLogger: LoggerProtocol {
     static func warning(_ message: @autoclosure () -> Any, _ file: String = #file, _ function: String = #function, line: Int = #line, context: Any? = nil) {
         print(message())
     }
-    static func error(_ message: @autoclosure () -> Any, _ file: String = #file, _ function: String = #function, line: Int = #line, context: Any? = nil) {
+    static func error(_ message: @autoclosure () -> StaticString, _ file: String = #file, _ function: String = #function, line: Int = #line, context: Any? = nil) {
         print(message())
     }
 }
