@@ -75,6 +75,10 @@ final class SpaceSelectorCoordinator: Coordinator, Presentable {
     // MARK: - Public
     
     func start() {
+        if let room = parameters.session.room(withRoomId: parameters.parentSpaceId) {
+            Analytics.shared.trackViewRoom(room)
+        }
+
         MXLog.debug("[SpaceSelectorCoordinator] did start.")
         viewModel.completion = { [weak self] result in
             guard let self = self else { return }

@@ -73,8 +73,7 @@ class RoomInvitesViewController: RecentsViewController {
         super.finalizeInit()
         
         title = VectorL10n.roomRecentsInvitesSection.capitalized
-        // TODO: add right screen tracker
-//        self.screenTracker = AnalyticsScreenTracker(screen: .rooms)
+        self.screenTracker = AnalyticsScreenTracker(screen: .invites)
         tableViewPaginationThrottler = MXThrottler(minimumDelay: 0.1)
     }
 

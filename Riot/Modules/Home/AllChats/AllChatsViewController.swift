@@ -121,6 +121,7 @@ class AllChatsViewController: HomeViewController {
     // MARK: - Actions
     
     @objc private func showSpaceSelectorAction(sender: AnyObject) {
+        Analytics.shared.viewRoomTrigger = .roomList
         let currentSpaceId = self.dataSource.currentSpace?.spaceId ?? SpaceSelectorConstants.homeSpaceId
         let spaceSelectorBridgePresenter = SpaceSelectorBottomSheetCoordinatorBridgePresenter(session: self.mainSession, selectedSpaceId: currentSpaceId, showHomeSpace: true)
         spaceSelectorBridgePresenter.present(from: self, animated: true)
