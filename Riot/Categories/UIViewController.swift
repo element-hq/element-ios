@@ -142,7 +142,7 @@ extension UIViewController {
             // Even when .never, needs to be true otherwise animation will be broken on iOS11, 12, 13
             navigationController?.navigationBar.prefersLargeTitles = true
         @unknown default:
-            MXLog.failure("[UIViewController] setLargeTitleDisplayMode: Missing handler for \(largeTitleDisplayMode)")
+            MXLog.failure("[UIViewController] setLargeTitleDisplayMode: Missing handler", context: largeTitleDisplayMode)
         }
     }
 

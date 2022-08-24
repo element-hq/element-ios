@@ -32,7 +32,9 @@ struct SentryMonitoringClient {
         MXLog.debug("[SentryMonitoringClient] Started")
         SentrySDK.start { options in
             options.dsn = Self.sentryDSN
-            options.tracesSampleRate = 1.0
+            
+            // Collecting only 10% of all events
+            options.tracesSampleRate = 0.1
             
             options.beforeSend = { event in
                 MXLog.debug("[SentryMonitoringClient] Issue detected: \(event)")

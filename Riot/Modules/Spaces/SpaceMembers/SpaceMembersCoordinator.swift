@@ -156,7 +156,9 @@ extension SpaceMembersCoordinator: SpaceMemberListCoordinatorDelegate {
     
     func spaceMemberListCoordinatorShowInvite(_ coordinator: SpaceMemberListCoordinatorType) {
         guard let space = parameters.session.spaceService.getSpace(withId: parameters.spaceId), let spaceRoom = space.room else {
-            MXLog.error("[SpaceMembersCoordinator] spaceMemberListCoordinatorShowInvite: failed to find space with id \(parameters.spaceId)")
+            MXLog.error("[SpaceMembersCoordinator] spaceMemberListCoordinatorShowInvite: failed to find space", context: [
+                "space_id": parameters.spaceId
+            ])
             return
         }
         

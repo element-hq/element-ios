@@ -384,7 +384,7 @@ extension Analytics: MXAnalyticsDelegate {
         capture(event: event)
     }
 
-    func trackNonFatalIssue(_ issue: String, details: [String : Any]?) {
+    func trackNonFatalIssue(_ issue: String, details: [String: Any]?) {
         monitoringClient.trackNonFatalIssue(issue, details: details)
     }
 }

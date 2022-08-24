@@ -214,6 +214,6 @@ extension LocationManager: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        MXLog.error("[LocationManager] Did failed with error :\(error)")
+        MXLog.error("[LocationManager] Did failed", context: error)
     }
 }

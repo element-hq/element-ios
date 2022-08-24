@@ -1365,7 +1365,9 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 {
     if (event.eventType != MXEventTypeBeaconInfo)
     {
-        MXLogError(@"[RoomBubbleCellData] Try to update beacon info summary with wrong event type with event id %@", eventId);
+        MXLogErrorDetails(@"[RoomBubbleCellData] Try to update beacon info summary with wrong event type", @{
+            @"event_id": eventId ?: @"unknown"
+        });
         return;
     }
     
@@ -1378,7 +1380,9 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         // A start beacon info event (isLive == true) should have an associated BeaconInfoSummary
         if (beaconInfo && beaconInfo.isLive)
         {
-            MXLogError(@"[RoomBubbleCellData] No beacon info summary found for beacon info start event with id %@", eventId);
+            MXLogErrorDetails(@"[RoomBubbleCellData] No beacon info summary found for beacon info start event", @{
+                @"event_id": eventId ?: @"unknown"
+            });
         }
     }
     

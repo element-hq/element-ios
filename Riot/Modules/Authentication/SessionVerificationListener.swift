@@ -99,7 +99,7 @@ class SessionVerificationListener {
                                     MXLog.debug("[SessionVerificationListener] sessionStateDidChange: Bootstrap succeeded")
                                     self.completion?(.authenticationIsComplete)
                                 } failure: { error in
-                                    MXLog.error("[SessionVerificationListener] sessionStateDidChange: Bootstrap failed. Error: \(error)")
+                                    MXLog.error("[SessionVerificationListener] sessionStateDidChange: Bootstrap failed", context: error)
                                     crypto.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
                                     self.completion?(.authenticationIsComplete)
                                 }
@@ -128,7 +128,7 @@ class SessionVerificationListener {
                         self.completion?(.authenticationIsComplete)
                     }
                 } failure: { [weak self] error in
-                    MXLog.error("[SessionVerificationListener] sessionStateDidChange: Fail to refresh crypto state with error: \(error)")
+                    MXLog.error("[SessionVerificationListener] sessionStateDidChange: Fail to refresh crypto state", context: error)
                     crypto.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
                     self?.completion?(.authenticationIsComplete)
                 }

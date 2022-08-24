@@ -84,7 +84,7 @@ class LeaveSpaceItemsProcessor: MatrixItemChooserProcessorProtocol {
             case .success:
                 self.leaveAllRooms(from: roomIds, at: index+1, completion: completion)
             case .failure(let error):
-                MXLog.error("[LeaveSpaceItemsProcessor] failed to leave room with error: \(error)")
+                MXLog.error("[LeaveSpaceItemsProcessor] failed to leave room", context: error)
                 completion(.failure(error))
             }
         }
@@ -97,7 +97,7 @@ class LeaveSpaceItemsProcessor: MatrixItemChooserProcessorProtocol {
             case .success:
                 completion(.success(()))
             case .failure(let error):
-                MXLog.error("[LeaveSpaceItemsProcessor] failed to leave space with error: \(error)")
+                MXLog.error("[LeaveSpaceItemsProcessor] failed to leave space", context: error)
                 completion(.failure(error))
             }
         })

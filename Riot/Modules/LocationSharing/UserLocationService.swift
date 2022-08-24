@@ -217,7 +217,7 @@ class UserLocationService: UserLocationServiceProtocol {
             case .success:
                 break
             case .failure(let error):
-                MXLog.error("Fail to send location with error \(error)")
+                MXLog.error("Fail to send location", context: error)
             }
         }
     }

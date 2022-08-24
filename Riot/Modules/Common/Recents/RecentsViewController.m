@@ -2046,7 +2046,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         }
         else if (section >= self.recentsTableView.numberOfSections)
         {
-            MXLogFailure(@"[RecentsViewController] Section %ld is invalid in a table view with only %ld sections", section, self.recentsTableView.numberOfSections);
+            NSDictionary *details = @{
+                @"section": @(section),
+                @"number_of_sections": @(self.recentsTableView.numberOfSections)
+            };
+            MXLogFailureDetails(@"[RecentsViewController] Section in a table view is invalid", details);
         }
     }
 }

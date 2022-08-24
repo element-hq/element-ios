@@ -134,7 +134,7 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
         } failure: { [weak self] error in
             guard let self = self else { return }
             
-            MXLog.error("[LocationSharingCoordinator] Failed sharing location with error: \(String(describing: error))")
+            MXLog.error("[LocationSharingCoordinator] Failed sharing location", context: error)
             self.locationSharingViewModel.stopLoading(error: .locationSharingError)
         }
     }
@@ -156,7 +156,7 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
                     self.completion?()
                 }
             case .failure(let error):
-                MXLog.error("[LocationSharingCoordinator] Failed to start live location sharing with error: \(String(describing: error))")
+                MXLog.error("[LocationSharingCoordinator] Failed to start live location sharing", context: error)
                 
                 DispatchQueue.main.async {
                     self.locationSharingViewModel.stopLoading(error: .locationSharingError)
