@@ -100,6 +100,7 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     else
     {
         [self.voiceMessageToolbarView removeFromSuperview];
+        _voiceMessageToolbarView = nil;
     }
 }
 
