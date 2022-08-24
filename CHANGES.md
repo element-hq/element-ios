@@ -1,3 +1,45 @@
+## Changes in 1.9.0 (2022-08-24)
+
+🙌 Improvements
+
+- KeyBackup: Adapt changes from sdk, add an entry into encryption info view of a message. ([#6555](https://github.com/vector-im/element-ios/pull/6555))
+- Upgrade MatrixSDK version ([v0.23.16](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.23.16)).
+- Display the option "Share invite link" only when the room is accessible by link. ([#6496](https://github.com/vector-im/element-ios/issues/6496))
+- New App Layout: Added missing empty states in room list and space bottom sheet ([#6514](https://github.com/vector-im/element-ios/issues/6514))
+- Groups: Support for groups has been removed now that Spaces are fully available. ([#6523](https://github.com/vector-im/element-ios/issues/6523))
+- Change text when swiping on room from Delete to Leave. ([#6568](https://github.com/vector-im/element-ios/issues/6568))
+- New App Layout: added suppport for room invites in the all chats screen ([#6600](https://github.com/vector-im/element-ios/issues/6600))
+- App Layout: UI tweaks for Tabs ([#6605](https://github.com/vector-im/element-ios/issues/6605))
+- New App Layout: Added onboarding screen ([#6607](https://github.com/vector-im/element-ios/issues/6607))
+- App Layout: last UI tweaks before RC ([#6608](https://github.com/vector-im/element-ios/issues/6608))
+- App Layout: Activated feature in BuildSettings ([#6616](https://github.com/vector-im/element-ios/issues/6616))
+- App Layout: Added usage measures ([#6618](https://github.com/vector-im/element-ios/issues/6618))
+
+🐛 Bugfixes
+
+- RoomViewController: Wait for table view updates before checing read marker visibility. ([#5932](https://github.com/vector-im/element-ios/issues/5932))
+- Add a login and signup fallback SSO option for homeservers that don't offer a list of identity providers. ([#6569](https://github.com/vector-im/element-ios/issues/6569))
+- App Layout: fixed Cancel and Back on Spaces Bottom Sheet ([#6572](https://github.com/vector-im/element-ios/issues/6572))
+- App Layout: updated context menus according to last design update ([#6574](https://github.com/vector-im/element-ios/issues/6574))
+- App Layout: reintroduced existing Notification left markers on room cells ([#6578](https://github.com/vector-im/element-ios/issues/6578))
+- App Layout: Leaving a Space now sends user to All Chats ([#6581](https://github.com/vector-im/element-ios/issues/6581))
+- App Layout: added space invites in space bottom sheet ([#6599](https://github.com/vector-im/element-ios/issues/6599))
+
+⚠️ API Changes
+
+- Reverts #6275, bringing the local DesignKit package back. ([#6586](https://github.com/vector-im/element-ios/pull/6586))
+- Communities: GroupsViewController etc have all been removed now that Spaces are available in the app. ([#6523](https://github.com/vector-im/element-ios/issues/6523))
+
+🚧 In development 🚧
+
+- Device manager: Add new session management screen. ([#6585](https://github.com/vector-im/element-ios/issues/6585))
+
+Others
+
+- Sentry: Upload Dsyms to Sentry when building Alpha ([#6413](https://github.com/vector-im/element-ios/pull/6413))
+- Analytics: Log all errors to analytics ([#6611](https://github.com/vector-im/element-ios/pull/6611))
+
+
 ## Changes in 1.8.27 (2022-08-12)
 
 Others
