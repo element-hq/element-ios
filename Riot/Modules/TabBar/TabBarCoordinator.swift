@@ -703,6 +703,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     // MARK: Navigation bar items management
     
     private weak var rightMenuAvatarView: AvatarView?
+    private weak var rightMenuButton: UIButton?
     
     private func createLeftButtonItem(for viewController: UIViewController) {
         guard !BuildSettings.newAppLayoutEnabled else {
@@ -776,6 +777,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         button.showsMenuAsPrimaryAction = true
         button.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         view.addSubview(button)
+        self.rightMenuButton = button
         
         let avatarView = UserAvatarView(frame: view.bounds.inset(by: UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)))
         avatarView.isUserInteractionEnabled = false
@@ -792,10 +794,11 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     }
     
     private func updateAvatarButtonItem() {
-        guard let avatarView = rightMenuAvatarView, let avatar = userAvatarViewData(from: currentMatrixSession) else {
+        guard let avatarView = rightMenuAvatarView, let button = rightMenuButton, let avatar = userAvatarViewData(from: currentMatrixSession) else {
             return
         }
         
+        button.setImage(nil, for: .normal)
         avatarView.fill(with: avatar)
     }
     
