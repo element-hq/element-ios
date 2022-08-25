@@ -1,7 +1,7 @@
 "back" = "Zurück";
 "continue" = "Fortsetzen";
 "retry" = "Wiederholen";
-"cancel" = "Abbruch";
+"cancel" = "Abbrechen";
 "save" = "Speichern";
 "leave" = "Verlassen";
 // Actions
@@ -1180,7 +1180,7 @@
 "create_room_title" = "Neuer Raum";
 "create_room_section_header_name" = "Raumname";
 "create_room_placeholder_name" = "Name";
-"create_room_section_header_topic" = "Raumthema (optional)";
+"create_room_section_header_topic" = "THEMA (OPTIONAL)";
 "create_room_placeholder_topic" = "Um was geht es in diesem Raum?";
 "create_room_section_header_encryption" = "Raumverschlüsselung";
 "create_room_enable_encryption" = "Verschlüsselung aktivieren";
@@ -2189,7 +2189,7 @@
 "authentication_terms_policy_url_error" = "Richtlinie konnte nicht gefunden werden. Versuche es später noch einmal.";
 /* The placeholder will show the homeserver's domain */
 "authentication_terms_message" = "Bitte lies %@s Nutzungsbedingungen";
-"authentication_terms_title" = "Serverrichtlinien";
+"authentication_terms_title" = "Datenschutzrichtlinien";
 "authentication_verify_msisdn_invalid_phone_number" = "Ungültige Telefonnummer";
 "authentication_verify_msisdn_waiting_button" = "Code erneut senden";
 /* The placeholder will show the phone number that was entered. */
@@ -2303,7 +2303,7 @@
 // MARK: Live location sharing
 
 "location_sharing_live_share_title" = "Teile Live-Standort";
-"side_menu_coach_message" = "Wische nach rechts oder tippe, um alle Räume zu sehen.";
+"side_menu_coach_message" = "Wische nach rechts oder tippe, um alle Räume zu sehen";
 "spaces_add_room_missing_permission_message" = "Du hast keine Berechtigung, Räume zu diesem Space hinzuzufügen.";
 "spaces_creation_in_one_space" = "in 1 Space";
 "spaces_creation_in_many_spaces" = "in %@ Spaces";
@@ -2374,8 +2374,8 @@
 // Mark: - Room invite
 
 "room_invite_to_space_option_title" = "Zu %@";
-"share_invite_link_space_text" = "Hey, tritt diesem Raum auf %@ bei.";
-"share_invite_link_room_text" = "Hey, tritt diesem Raum auf %@ bei.";
+"share_invite_link_space_text" = "Hey, tritt diesem Raum auf %@ bei";
+"share_invite_link_room_text" = "Hey, tritt diesem Raum auf %@ bei";
 
 // MARK: - Share invite link
 
@@ -2421,3 +2421,42 @@
 "room_displayname_more_than_two_members" = "%@ und %@ andere";
 "settings_key_backup_info_algorithm" = "Algorithmus: %@";
 "joining" = "Trete bei";
+
+// MARK: User sessions management
+
+"user_sessions_overview_title" = "Sitzungen";
+"location_sharing_map_loading_error" = "Laden der Karte nicht möglich\nDieser Heimserver ist nicht so konfiguriert, dass er Karten darstellen kann";
+"location_sharing_map_credits_title" = "© Copyright";
+"spaces_subspace_creation_visibility_message" = "Der erstellte Space wird zu %@ hinzugefügt.";
+"spaces_add_subspace_title" = "Space in %@ erstellen";
+"room_access_space_chooser_known_spaces_section" = "Spaces, die du kennst, welche %@ enthalten";
+
+// User sessions management
+"user_sessions_settings" = "Sitzungen verwalten";
+"all_chats_edit_layout_alphabetical_order" = "Alphabetisch sortieren";
+"all_chats_edit_layout_activity_order" = "Nach Aktivität sortieren";
+
+// Mark: - Space Selector
+
+"space_selector_title" = "Meine Spaces";
+"space_selector_empty_view_title" = "Noch keine Spaces.";
+"space_invite_nav_title" = "Zum Space einladen";
+"space_selector_create_space" = "Space erstellen";
+
+// Mark: - Room invites
+
+"room_invites_empty_view_title" = "Nichts neues.";
+"all_chats_edit_layout_add_filters_title" = "Filtere deine Nachrichten";
+"all_chats_edit_layout_unreads" = "Ungelesene";
+"all_chats_section_title" = "Chats";
+
+// Mark: - All Chats
+
+"all_chats_title" = "Alle Chats";
+"all_chats_empty_view_title" = "%@\nsieht ein bisschen leer aus.";
+"all_chats_all_filter" = "Alle";
+"all_chats_edit_layout_show_filters" = "Filter anzeigen";
+"all_chats_edit_menu_leave_space" = "%@ verlassen";
+"all_chats_onboarding_page_title3" = "Feedback geben";
+"room_invites_empty_view_information" = "Hier erscheinen deine Einladungen.";
+"all_chats_onboarding_try_it" = "Probiere es aus";
