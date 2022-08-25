@@ -105,6 +105,11 @@ final class AllChatsLayoutSettingsManager: NSObject {
         }
     }
     
+    /// `true` if filters are activated in the All Chats Layout screen and a filter other than `.all` is active
+    var hasAnActiveFilter: Bool {
+        return !allChatLayoutSettings.filters.isEmpty && !activeFilters.isEmpty && activeFilters != .all
+    }
+    
     // MARK: - Private
     
     private func track(activeFilters: AllChatsLayoutFilterType?) {
