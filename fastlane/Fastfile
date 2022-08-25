@@ -38,19 +38,21 @@ platform :ios do
 
   desc "Builds an ipa for the App Store"
   lane :app_store do |options|
+    UI.user_error!("'SENTRY_AUTH_TOKEN' environment variable should be set to use this lane, see Passbolt") unless !ENV["SENTRY_AUTH_TOKEN"].to_s.empty?
+    sentry_check_cli_installed
+
     if !options.has_key?(:build_number)
       build_number = generate_build_number()
       options = { build_number: build_number }.merge(options)
     end
     build_release(options)
+    upload_dsyms_to_sentry
   end
 
   desc "Builds an Alpha ipa for pull request branches"
   lane :alpha do
     # Check we have all the tokens and tools necessary
     UI.user_error!("'DIAWI_API_TOKEN' environment variable should be set to use this lane") unless !ENV["DIAWI_API_TOKEN"].to_s.empty?
-    UI.user_error!("'SENTRY_AUTH_TOKEN' environment variable should be set to use this lane") unless !ENV["SENTRY_AUTH_TOKEN"].to_s.empty?
-    sentry_check_cli_installed
             
     # Generate the "Alpha" app variant    
     setup_app_variant(name: "Alpha")    
@@ -58,8 +60,6 @@ platform :ios do
     adhoc
     # Upload to Diawi
     upload_to_diawi
-
-    upload_dsyms_to_sentry
   end
 
   desc "Upload IPA to Diawi"

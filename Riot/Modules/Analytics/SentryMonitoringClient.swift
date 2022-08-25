@@ -34,6 +34,7 @@ struct SentryMonitoringClient {
             options.dsn = Self.sentryDSN
             
             // Collecting only 10% of all events
+            options.sampleRate = 0.1
             options.tracesSampleRate = 0.1
             
             options.beforeSend = { event in
