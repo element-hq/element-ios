@@ -1,0 +1,15 @@
+--swiftversion 5.6
+
+--exclude Riot/Generated,vendor
+
+--disable wrapMultiLineStatementBraces
+--disable hoistPatternLet
+
+--commas inline
+--ifdef no-indent
+--nospaceoperators ...,..<
+--stripunusedargs closure-only
+--trimwhitespace nonblank-lines
+--wrapparameters after-first
+--redundanttype inferred
+--emptybraces spaced
